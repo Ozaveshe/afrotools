@@ -1121,54 +1121,55 @@ function renderMissingProfile() {
 
   /* ===== RENDER NET WORTH ===== */
   (function renderNetWorth() {
-    var streamRev = creator.gifts;
-    var sponsorships = Math.floor(streamRev * 1.8);
-    var merch = Math.floor(streamRev * 0.6);
-    var brandDeals = Math.floor(streamRev * 2.2);
-    var earningEstimate = streamRev + sponsorships + merch + brandDeals;
-    var total = creator.netWorth || earningEstimate;
-    var maxBar = Math.max(streamRev, sponsorships, merch, brandDeals);
-
-    var breakdown = [
-      {label:'Streaming Revenue', amount: streamRev, color:'#007AFF'},
-      {label:'Sponsorships (est.)', amount: sponsorships, color:'#06B6D4'},
-      {label:'Merchandise (est.)', amount: merch, color:'#F59E0B'},
-      {label:'Brand Deals (est.)', amount: brandDeals, color:'#10B981'}
-    ];
-
-    var netWorthMode = creator.netWorth ? 'Reported estimate' : 'Annual earnings estimate';
-    var coverageLabel = maxBar > 0 ? 'Revenue split attached' : 'Breakdown pending';
-    var valuationLabel = creator.netWorth ? 'Reported creator valuation' : 'Modeled creator earnings';
+    var snapshots = (creator._apiSnapshots || []).slice().sort(function(a, b) {
+      return (b.date || '').localeCompare(a.date || '');
+    });
+    var latestSnapshot = snapshots[0] || null;
+    var previousSnapshot = snapshots.find(function(row) {
+      return latestSnapshot && row.date && row.date !== latestSnapshot.date;
+    }) || null;
+    var total = latestSnapshot && latestSnapshot.netWorth ? latestSnapshot.netWorth : creator.netWorth;
+    var valuationLabel = total ? 'Tracked creator valuation' : 'Valuation tracking';
+    var netWorthMode = latestSnapshot && latestSnapshot.netWorth ? 'Snapshot-backed estimate' : (creator.netWorth ? 'Profile-backed estimate' : 'Not tracked yet');
+    var evidenceStatus = latestSnapshot && latestSnapshot.date
+      ? 'Latest snapshot ' + latestSnapshot.date
+      : 'Waiting for a verified valuation source';
     var html = '<div class="as-nw-hero">' +
       '<div class="as-nw-kicker">' + valuationLabel + '</div>' +
-      '<strong class="as-nw-total">' + fmtUSDFull(total) + '</strong>' +
-      '<p class="as-nw-subcopy">Built from the creator profile record, public platform signals, and verified AfroStream tracking inputs.</p>' +
+      '<strong class="as-nw-total">' + (total ? fmtUSDFull(total) : 'Not tracked yet') + '</strong>' +
+      '<p class="as-nw-subcopy">Built only from tracked AfroStream profile values and dated snapshot reads. No synthetic sponsorship, merch, or payout split is shown here.</p>' +
       '<div class="as-nw-facts" aria-label="Estimate context">' +
         '<span><b>Mode</b>' + netWorthMode + '</span>' +
-        '<span><b>Basis</b>Public profile signals</span>' +
-        '<span><b>Status</b>' + coverageLabel + '</span>' +
+        '<span><b>Basis</b>Profile plus snapshot history</span>' +
+        '<span><b>Status</b>' + evidenceStatus + '</span>' +
       '</div>' +
     '</div>';
 
-    if (maxBar > 0) {
+    if (latestSnapshot && latestSnapshot.date) {
       html += '<div class="as-nw-breakdown">';
-      breakdown.forEach(function(b) {
-        var pct = Math.max(2, Math.round(b.amount / maxBar * 100));
+      html += '<div class="as-nw-row">' +
+        '<div class="as-nw-row-label">Latest tracked read</div>' +
+        '<div class="as-nw-row-bar"><div class="as-nw-bar-fill" style="width:100%;background:#007AFF"></div></div>' +
+        '<div class="as-nw-row-val">' + latestSnapshot.date + '</div>' +
+      '</div>';
+      if (previousSnapshot && previousSnapshot.netWorth && latestSnapshot.netWorth) {
+        var delta = latestSnapshot.netWorth - previousSnapshot.netWorth;
+        var deltaLabel = delta === 0 ? 'No change' : (delta > 0 ? '+' : '') + fmtUSDFull(delta);
         html += '<div class="as-nw-row">' +
-          '<div class="as-nw-row-label">' + b.label + '</div>' +
-          '<div class="as-nw-row-bar"><div class="as-nw-bar-fill" style="width:' + pct + '%;background:' + b.color + '"></div></div>' +
-          '<div class="as-nw-row-val">' + fmtUSDFull(b.amount) + '</div>' +
+          '<div class="as-nw-row-label">Change vs previous read</div>' +
+          '<div class="as-nw-row-bar"><div class="as-nw-bar-fill" style="width:100%;background:' + (delta >= 0 ? '#10B981' : '#F59E0B') + '"></div></div>' +
+          '<div class="as-nw-row-val">' + deltaLabel + '</div>' +
         '</div>';
-      });
+      }
       html += '</div>';
     } else {
       html += '<div class="as-nw-empty">' +
-        '<strong>No revenue split yet</strong>' +
-        '<span>Live revenue rows will appear after verified stream, supporter, sponsorship, or merch signals are attached.</span>' +
+        '<strong>No tracked valuation yet</strong>' +
+        '<span>AfroStream will show a value here after a verified profile estimate or dated snapshot read is attached.</span>' +
       '</div>';
     }
 
-    html += '<div class="as-nw-disclaimer">Estimates are based on public profile data, platform signals, and available creator metadata. Actual figures may vary.</div>';
+    html += '<div class="as-nw-disclaimer">Valuation rows should be source-backed. AfroStream does not infer private earnings, sponsorship totals, or gifter payouts from thin public signals.</div>';
 
     document.getElementById('networthCard').innerHTML = html;
   })();

@@ -279,3 +279,20 @@ The deeper payroll engine and Supabase persistence should come after the shell p
 - Estimate or next packs: TZ, UG, RW, SN, CM, EG.
 
 Keep this layer as display and workflow metadata until payroll calculations, exports, and Supabase persistence are reviewed separately. Do not mark a country as filing-ready from this file alone.
+
+## Current SaaS Architecture Layer
+
+- Architecture guide: `docs/AFROPAYROLL-PRO-ARCHITECTURE.md`
+- Browser contract: `assets/js/lib/afropayroll-pro-architecture.js`
+- Verifier: `scripts/verify-afropayroll-pro-architecture.js`
+- Cloud API: `netlify/functions/api-afropayroll.js`
+- Supabase schema: `supabase/migrations/033-afropayroll-pro-schema.sql`
+- Hardening migrations:
+  - `supabase/migrations/034-afropayroll-pro-rls-helper-hardening.sql`
+  - `supabase/migrations/035-afropayroll-pro-fk-indexes.sql`
+
+The architecture contract exists so future agents do not invent new roles, run states, API actions, or table responsibilities independently. If an implementation changes roles, workflow states, synced actions, or table ownership, update the contract and run:
+
+```bash
+node scripts/verify-afropayroll-pro-architecture.js
+```

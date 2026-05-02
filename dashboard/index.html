@@ -1828,6 +1828,14 @@
         }
         .ws-panel { display: none; margin-bottom: 24px; }
         .ws-panel.active { display: block; }
+        .ws-subhead {
+            margin: 16px 0 8px;
+            color: #0f172a;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
         .energy-plan-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -3450,6 +3458,40 @@
             });
         }
 
+        function getSalaryReportsLocal() {
+            var items = dashReadJson('afro_salary_reports_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'salary-report' || item.toolSlug);
+            }).sort(function(a, b) {
+                return new Date(b.savedAt || b.generatedAt || 0).getTime() - new Date(a.savedAt || a.generatedAt || 0).getTime();
+            });
+        }
+
+        function getSalaryReportsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'salary-report' || item.itemType === 'salary-report');
+            });
+        }
+
+        function getSalaryHandoffsLocal() {
+            var items = dashReadJson('afro_salary_handoff_briefs_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'salary-handoff' || item.toolSlug === 'salary-tax-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getSalaryHandoffsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'salary-handoff' || item.itemType === 'salary-handoff');
+            });
+        }
+
         function getReligiousCulturalPlansLocal() {
             var items = dashReadJson('afro_religious_cultural_workspace', []);
             if (!Array.isArray(items)) items = [];
@@ -3505,6 +3547,8 @@
             if (!Array.isArray(climateReports)) climateReports = [];
 
             var sportsReports = getSportsReportsLocal();
+            var salaryReports = getSalaryReportsLocal();
+            var salaryHandoffs = getSalaryHandoffsLocal();
 
             var religiousCulturalPlans = getReligiousCulturalPlansLocal();
 
@@ -3521,7 +3565,7 @@
                 }
             } catch(e) {}
 
-            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + religiousCulturalPlans.length + healthPlans.length;
+            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + salaryReports.length + salaryHandoffs.length + religiousCulturalPlans.length + healthPlans.length;
             var cloudTotal = typeof dashboardWorkspaceState.count === 'number' ? dashboardWorkspaceState.count : null;
             return {
                 favorites: favorites.length,
@@ -3538,6 +3582,8 @@
                 energyReports: energyReports.length,
                 climateReports: climateReports.length,
                 sportsReports: sportsReports.length,
+                salaryReports: salaryReports.length,
+                salaryHandoffs: salaryHandoffs.length,
                 religiousCulturalPlans: religiousCulturalPlans.length,
                 healthPlans: healthPlans.length,
                 localTotal: localTotal,
@@ -3746,6 +3792,28 @@
                 });
             }
 
+            if (counts.salaryReports > 0) {
+                add({
+                    key: 'salary-reports',
+                    tag: 'Salary',
+                    label: dashPlural(counts.salaryReports, 'salary report'),
+                    detail: 'Open saved Salary & PAYE PDF report trails from upgraded payroll calculators.',
+                    cta: 'Open salary reports',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.salaryHandoffs > 0) {
+                add({
+                    key: 'salary-handoffs',
+                    tag: 'Salary',
+                    label: dashPlural(counts.salaryHandoffs, 'payroll handoff'),
+                    detail: 'Continue local Salary & PAYE planner briefs into payroll workspace or client follow-up.',
+                    cta: 'Open salary workspace',
+                    href: '#myWorkspace'
+                });
+            }
+
             if (counts.religiousCulturalPlans > 0) {
                 add({
                     key: 'religious-cultural-plans',
@@ -3773,7 +3841,7 @@
                     key: 'workspace',
                     tag: 'Workspace',
                     label: dashPlural(counts.total, 'saved item'),
-                    detail: 'Review saved tools, engineering packs, health plans, faith and culture packs, sports reports, energy plans, climate reports, African workflows, trade packs, documents, CVs, floor plans, and calculator scenarios.',
+                    detail: 'Review saved tools, salary reports, engineering packs, health plans, faith and culture packs, sports reports, energy plans, climate reports, African workflows, trade packs, documents, CVs, floor plans, and calculator scenarios.',
                     cta: 'Open workspace',
                     href: '#myWorkspace'
                 });
@@ -4662,6 +4730,157 @@
             });
         }
 
+        function getSalaryReportItems(localItems) {
+            var merged = {};
+            (Array.isArray(localItems) ? localItems : getSalaryReportsLocal()).forEach(function(item) {
+                if (!item) return;
+                var id = item.id || item.itemKey || item.item_key || item.fileName || '';
+                if (!id) return;
+                merged[id] = item;
+            });
+            getSalaryReportsCloud().forEach(function(item) {
+                if (!item) return;
+                var id = item.item_key || item.itemKey || item.id || '';
+                if (!id || merged[id]) return;
+                merged[id] = {
+                    id: id,
+                    itemType: 'salary-report',
+                    toolSlug: item.tool_slug || item.toolSlug || '',
+                    title: item.title || 'Salary report',
+                    summary: item.summary || 'Saved Salary & PAYE report from AfroTools.',
+                    href: item.href || (item.tool_slug ? '/tools/' + String(item.tool_slug).replace(/[^a-z0-9-]/gi, '') + '/' : '/salary-tax/'),
+                    fileName: item.payload && item.payload.fileName || '',
+                    ref: item.payload && item.payload.ref || '',
+                    countryCode: item.meta && (item.meta.country || item.meta.countryCode) || '',
+                    currency: item.meta && item.meta.currency || '',
+                    generatedAt: item.updated_at || item.created_at || item.savedAt || item.createdAt,
+                    synced: true
+                };
+            });
+            return Object.keys(merged).map(function(id) { return merged[id]; }).sort(function(a, b) {
+                return new Date(b.savedAt || b.generatedAt || b.createdAt || 0).getTime() - new Date(a.savedAt || a.generatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getSalaryHandoffItems(localItems) {
+            var merged = {};
+            (Array.isArray(localItems) ? localItems : getSalaryHandoffsLocal()).forEach(function(item) {
+                if (!item) return;
+                var id = item.id || item.itemKey || item.item_key || '';
+                if (!id) return;
+                merged[id] = item;
+            });
+            getSalaryHandoffsCloud().forEach(function(item) {
+                if (!item) return;
+                var id = item.item_key || item.itemKey || item.id || '';
+                if (!id || merged[id]) return;
+                merged[id] = {
+                    id: id,
+                    itemType: 'salary-handoff',
+                    toolSlug: item.tool_slug || item.toolSlug || 'salary-tax-workflow',
+                    title: item.title || 'Salary handoff',
+                    summary: item.summary || 'Saved Salary & PAYE handoff brief.',
+                    href: item.href || '/tools/afropayroll-os/workspace.html',
+                    primaryHref: item.payload && item.payload.primaryHref || '/salary-tax/',
+                    sourceReportTitle: item.payload && item.payload.sourceReportTitle || '',
+                    countryCode: item.meta && (item.meta.country || item.meta.countryCode) || '',
+                    currency: item.meta && item.meta.currency || '',
+                    intent: item.meta && item.meta.intent || '',
+                    createdAt: item.created_at || item.createdAt,
+                    updatedAt: item.updated_at || item.updatedAt || item.created_at || item.createdAt,
+                    synced: true
+                };
+            });
+            return Object.keys(merged).map(function(id) { return merged[id]; }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function renderSalaryReportWorkspace(container, items) {
+            if (!container) return;
+            var reportList = getSalaryReportItems(items).slice(0, 12);
+            var handoffList = getSalaryHandoffItems().slice(0, 12);
+            if (!reportList.length && !handoffList.length) {
+                container.innerHTML = '<div class="ws-empty">No Salary & PAYE reports or handoff briefs saved yet. Run an upgraded PAYE calculator, download the PDF, or use the Salary hub planner.</div>';
+                return;
+            }
+            var reportHtml = reportList.map(function(item) {
+                var saved = dashTimeAgo(item.savedAt || item.generatedAt || item.createdAt);
+                var href = dashSafeHref(item.href || '/salary-tax/');
+                var detail = [item.countryCode || item.country || 'Salary & PAYE', item.currency || '', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Salary report') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Generated PAYE report') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + (item.fileName ? ' | ' + dashEscapeHtml(item.fileName) : '') + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open tool</a>' +
+                        '<a class="btn-small" href="/salary-tax/">Salary hub</a>' +
+                        '<button class="btn-small" type="button" data-salary-report-remove="' + dashEscapeHtml(item.id || item.itemKey || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var handoffHtml = handoffList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var href = dashSafeHref(item.href || '/tools/afropayroll-os/workspace.html');
+                var source = item.sourceReportTitle ? ' | Source: ' + item.sourceReportTitle : '';
+                var detail = [item.countryCode || item.countryName || 'Salary & PAYE', item.intentLabel || item.intent || 'handoff', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Salary handoff') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Saved Salary & PAYE handoff brief') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail + source) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Payroll workspace</a>' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(dashSafeHref(item.primaryHref || '/salary-tax/')) + '">Open route</a>' +
+                        '<button class="btn-small" type="button" data-salary-handoff-remove="' + dashEscapeHtml(item.id || item.itemKey || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            container.innerHTML = (handoffHtml ? '<div class="ws-subhead">Payroll handoffs</div>' + handoffHtml : '') +
+                (reportHtml ? '<div class="ws-subhead">Report trails</div>' + reportHtml : '');
+
+            container.querySelectorAll('[data-salary-report-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-salary-report-remove');
+                    if (!id || !confirm('Remove this Salary & PAYE report?')) return;
+                    var current = dashReadJson('afro_salary_reports_v1', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afro_salary_reports_v1', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                        AfroWorkspace.remove({ itemType: 'salary-report', itemKey: id }).catch(function(e) {
+                            console.warn('[Dashboard] salary report delete sync failed:', e.message || e);
+                        });
+                    }
+                });
+            });
+
+            container.querySelectorAll('[data-salary-handoff-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-salary-handoff-remove');
+                    if (!id || !confirm('Remove this Salary & PAYE handoff?')) return;
+                    var current = dashReadJson('afro_salary_handoff_briefs_v1', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afro_salary_handoff_briefs_v1', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                        AfroWorkspace.remove({ itemType: 'salary-handoff', itemKey: id }).catch(function(e) {
+                            console.warn('[Dashboard] salary handoff delete sync failed:', e.message || e);
+                        });
+                    }
+                });
+            });
+        }
+
         function getReligiousCulturalPlanItems(localItems) {
             var merged = {};
             (Array.isArray(localItems) ? localItems : getReligiousCulturalPlansLocal()).forEach(function(item) {
@@ -4757,6 +4976,10 @@
             var sportsReports = getSportsReportsLocal();
             if (sportsReports.length > 0 || getSportsReportsCloud().length > 0) tabs.push({ id: 'ws-sports', label: 'Sports Reports', icon: 'SPT' });
 
+            var salaryReports = getSalaryReportsLocal();
+            var salaryHandoffs = getSalaryHandoffsLocal();
+            if (salaryReports.length > 0 || salaryHandoffs.length > 0 || getSalaryReportsCloud().length > 0 || getSalaryHandoffsCloud().length > 0) tabs.push({ id: 'ws-salary', label: 'Salary Workspace', icon: 'PAY' });
+
             var religiousCulturalPlans = getReligiousCulturalPlansLocal();
             if (religiousCulturalPlans.length > 0 || getReligiousCulturalPlansCloud().length > 0) tabs.push({ id: 'ws-religious-cultural', label: 'Faith & Culture', icon: 'CUL' });
 
@@ -4799,7 +5022,7 @@
             if (hasDocs) tabs.push({ id: 'ws-docs', label: 'Documents', icon: '\uD83D\uDCC1' });
 
             if (tabs.length === 0) {
-                container.innerHTML = '<div class="ws-empty"><div style="font-size:2rem;margin-bottom:8px;">\u2B50</div>Start using tools to build your workspace.<br><span style="font-size:.78rem;color:#9CA3AF;">Your saved tools, engineering packs, health plans, faith and culture packs, sports reports, energy plans, climate reports, trade packs, insurance packs, telecom plans, legal workflows, African workflows, CVs, documents, and floor plans will appear here.</span></div>';
+                container.innerHTML = '<div class="ws-empty"><div style="font-size:2rem;margin-bottom:8px;">\u2B50</div>Start using tools to build your workspace.<br><span style="font-size:.78rem;color:#9CA3AF;">Your saved tools, salary reports, engineering packs, health plans, faith and culture packs, sports reports, energy plans, climate reports, trade packs, insurance packs, telecom plans, legal workflows, African workflows, CVs, documents, and floor plans will appear here.</span></div>';
                 return;
             }
 
@@ -4845,6 +5068,9 @@
             }
             if (document.getElementById('ws-sports')) {
                 renderSportsReportWorkspace(document.getElementById('ws-sports'), sportsReports);
+            }
+            if (document.getElementById('ws-salary')) {
+                renderSalaryReportWorkspace(document.getElementById('ws-salary'), salaryReports);
             }
             if (document.getElementById('ws-religious-cultural')) {
                 renderReligiousCulturalWorkspace(document.getElementById('ws-religious-cultural'), religiousCulturalPlans);

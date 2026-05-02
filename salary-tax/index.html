@@ -33,7 +33,24 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<link rel="stylesheet" href="/assets/css/salary-tax.css?v=1"><script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
+<link rel="stylesheet" href="/assets/css/salary-tax.css?v=1">
+<link rel="stylesheet" href="/assets/css/salary-tax-workflow.css?v=20260502">
+<script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
+<style>
+.salary-workflow{margin:2.75rem calc(50% - 50vw) 3rem;padding:2rem max(1rem,calc((100vw - 1120px)/2));border-top:1px solid #dbe7ff;border-bottom:1px solid #dbe7ff;background:#f8fbff}
+.salary-workflow-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1.25rem;margin-bottom:1.25rem}
+.salary-workflow-head h2{font-size:clamp(1.25rem,2.5vw,1.7rem);line-height:1.15;letter-spacing:0;color:#0f172a;margin:.2rem 0 .5rem}
+.salary-workflow-head p{font-size:.9rem;line-height:1.65;color:#475569;max-width:680px;margin:0}
+.salary-workflow-cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.65rem 1rem;border-radius:8px;background:var(--st-accent);color:#fff;font-size:.84rem;font-weight:800;text-decoration:none;white-space:nowrap}
+.salary-workflow-cta:hover{background:var(--st-accent-dark)}
+.salary-workflow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.85rem}
+.salary-workflow-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;box-shadow:0 1px 0 rgba(15,23,42,.03)}
+.salary-workflow-step{display:inline-flex;align-items:center;justify-content:center;width:34px;height:26px;border-radius:999px;background:var(--st-accent-light);color:var(--st-accent-dark);font-size:.68rem;font-weight:900;letter-spacing:0;margin-bottom:.7rem}
+.salary-workflow-card h3{font-size:.95rem;line-height:1.25;color:#0f172a;margin:0 0 .45rem;font-weight:850}
+.salary-workflow-card p{font-size:.8rem;line-height:1.55;color:#64748b;margin:0}
+@media (max-width:860px){.salary-workflow-head{display:block}.salary-workflow-cta{margin-top:1rem}.salary-workflow-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.salary-workflow{padding:1rem}.salary-workflow-grid{grid-template-columns:1fr}}
+</style>
 
 <script src="/assets/js/components/navbar.min.js?v=3e2ee069" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
@@ -193,7 +210,7 @@
         </div>
       </a>
 
-      <a class="hub-card" href="/salary-tax/francophone/">
+      <a class="hub-card" href="/fr/salary-tax/francophone/">
         <div class="hc-icon" aria-hidden="true">🇫🇷</div>
         <div class="hc-body">
           <div class="hc-name">Outils Francophones</div>
@@ -207,6 +224,49 @@
         </div>
       </a>
 
+    </div>
+  </section>
+
+  <section class="salary-workflow" aria-labelledby="salary-workflow-title">
+    <div class="salary-workflow-head">
+      <div>
+        <div class="sec-ey">Unified Workflow</div>
+        <h2 id="salary-workflow-title">Calculate, save, report, then continue the payroll work</h2>
+        <p>Salary and tax users should not stop at one answer. The category now needs one clear path from a calculator result to a saved scenario, reusable report, payroll draft, and handoff packet.</p>
+      </div>
+      <a class="salary-workflow-cta" href="/tools/afropayroll-os/workspace">Open payroll workspace</a>
+    </div>
+    <div class="salary-workflow-grid">
+      <article class="salary-workflow-card">
+        <span class="salary-workflow-step">01</span>
+        <h3>Run the right calculator</h3>
+        <p>Start with PAYE, payroll, business tax, property, savings, crypto, FX, or the Francophone route depending on the user job.</p>
+      </article>
+      <article class="salary-workflow-card">
+        <span class="salary-workflow-step">02</span>
+        <h3>Save the scenario</h3>
+        <p>High-value PAYE pages should save named scenarios locally and sync to dashboard workspace when the user is signed in.</p>
+      </article>
+      <article class="salary-workflow-card">
+        <span class="salary-workflow-step">03</span>
+        <h3>Build a report</h3>
+        <p>Turn the result into a payslip-style summary, source note, exportable PDF, or payroll review item the user can return to.</p>
+      </article>
+      <article class="salary-workflow-card">
+        <span class="salary-workflow-step">04</span>
+        <h3>Continue in AfroPayroll</h3>
+        <p>For employer work, move from individual salary checks into a local-only payroll run draft with saved snapshots and export packets.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="salary-flow-lab" data-salary-workflow-app aria-labelledby="salary-flow-lab-title">
+    <div class="salary-flow-head">
+      <div>
+        <div class="sec-ey">Workflow Intelligence</div>
+        <h2 id="salary-flow-lab-title">Plan the next Salary &amp; PAYE move</h2>
+        <p>Pick a country and route from calculator to report trail, dashboard workspace, and payroll handoff.</p>
+      </div>
     </div>
   </section>
 
@@ -285,6 +345,7 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/salary-tax-index.js?v=1" defer></script>
+<script src="/assets/js/lib/salary-tax-workflow.js?v=20260502" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

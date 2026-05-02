@@ -10,10 +10,44 @@ Nigeria PAYE is the current reference implementation:
 - `assets/css/paye-calculation-sync.css`
 - `assets/js/lib/paye-tool-save-cta.js`
 - `assets/js/lib/paye-calculation-sync.js`
+- `assets/js/lib/paye-report-sync.js`
 - `dashboard/dashboard-sync.js`
 - `dashboard/dashboard-app.js`
 
 Use this document when upgrading an existing PAYE page or creating a new one.
+
+## Salary And PAYE Category Workflow
+
+The `/salary-tax/` category is a workflow surface, not only a list of PAYE calculators. It should guide users through:
+
+1. Choose the right calculator family.
+2. Run a salary, payroll, tax, property, savings, crypto, FX, or Francophone calculation.
+3. Save a named scenario locally.
+4. Sync the scenario to the dashboard workspace when signed in.
+5. Generate a report, source note, PDF, payslip-style summary, or payroll review item.
+6. Continue employer work in `/tools/afropayroll-os/workspace.html` when a single calculator result becomes a payroll run draft.
+7. Use the Salary hub planner to choose a country/job route and create a metadata-only handoff brief when the user is ready to continue.
+
+The category count should come from the curated hub map in `assets/js/salary-tax-index.js`, not from a plain `category === 'financial'` registry filter. As of this standard, the expected curated total is `188` unique tools across:
+
+- PAYE calculators
+- Payroll and HR
+- Business and capital tax
+- Property and loans
+- Savings and investment
+- Crypto suite
+- Currency and FX
+- Francophone tools
+
+Some Francophone tools are real local routes even when their French display IDs are not standalone registry IDs. Keep those route-only tools in the category search through the `staticTools` fallback map in `assets/js/salary-tax-index.js`, and verify the routes exist before changing the total.
+
+The Francophone hub link should point directly to `/fr/salary-tax/francophone/`. The legacy `/salary-tax/francophone/` route can remain as a redirect, but category cards and related links should use the canonical French hub.
+
+Suggested banner direction for this category:
+
+```text
+Create a premium horizontal website banner for AfroTools Salary and PAYE. Show an Africa-first payroll and tax workspace with payslip cards, salary calculators, tax brackets, report exports, and dashboard-style saved scenarios. Include subtle African map geometry, professional finance colors, clean data tables, soft daylight, high trust, modern SaaS UI, no text, no logos, 16:9 wide composition.
+```
 
 ## Minimum Product Standard
 
@@ -26,6 +60,8 @@ Every PAYE page should provide:
 5. Signed-in calculation activity written to dashboard history.
 6. Signed-in saved scenarios synced into the dashboard workspace.
 7. Reopen support from dashboard back into the calculator state.
+8. Account-gated PDF/report downloads with report metadata saved for later follow-up.
+9. Category-level planner and handoff briefs that connect a single calculation to employer, advisory, and dashboard workflows.
 
 ## Required Data Flows
 
@@ -51,6 +87,29 @@ Every PAYE page should provide:
 - Device activity can still write through `AfroData` for local recents and suggestions.
 - History is for recent activity only.
 - Named saves belong in `workspace_items`, not `calculation_history`.
+
+### 4. PDF reports and report workspace
+
+- Use `window.AfroTools.pdf.generate(...)` for generated PAYE PDF reports where possible.
+- The shared PDF template must call `window.AfroPdfDownloadGate.guardPromise(...)` before saving a generated report.
+- Guests can calculate freely, but must create or sign into a free account before downloading a generated PDF/report file.
+- Signed-in users should bypass the modal automatically through the same broad auth checks used by PAYE sync.
+- After a PDF is generated, `pdf-template.js` dispatches `afro-pdf-generated` with report metadata.
+- Upgraded PAYE pages should load `assets/js/lib/paye-report-sync.js` after `paye-calculation-sync.js`.
+- Device report metadata is saved to `localStorage` key `afro_salary_reports_v1`.
+- Signed-in report metadata syncs to the dashboard workspace as `item_type = 'salary-report'`.
+- Store metadata only for salary reports: title, summary, file name, ref, country, currency, tool URL, and gate context. Do not upload the generated PDF blob or raw salary inputs unless a future backend contract explicitly allows it.
+
+### 5. Category planner and payroll handoff briefs
+
+- The main `/salary-tax/` hub loads `assets/js/lib/salary-tax-workflow.js` and `assets/css/salary-tax-workflow.css`.
+- Planner state is saved locally under `afro_salary_workflow_plan_v1`.
+- Handoff briefs are saved locally under `afro_salary_handoff_briefs_v1`.
+- Signed-in handoff metadata syncs to the dashboard workspace as `item_type = 'salary-handoff'`.
+- Handoff briefs are metadata-only: selected country, work type, recommended route, source report title/ref, and next-step links.
+- Handoff downloads use the same account gate before generating the JSON brief.
+- The dashboard Salary Workspace should show both `salary-report` trails and `salary-handoff` briefs.
+- The planner must route users only to verified local routes and must not invent tax deductions, filings, or compliance status.
 
 ## Payload Contract
 
@@ -212,6 +271,9 @@ When upgrading another PAYE page to this standard:
 7. Verify dashboard reopen links restore state through `?saved_calc=...`.
 8. Verify delete works for saved scenarios and history.
 9. Verify auth hydration does not leave the page in a false signed-out state.
+10. Load `assets/js/lib/paye-report-sync.js` after `paye-calculation-sync.js` when the page can generate a PDF/report.
+11. Verify guest report download opens the account gate, signed-in report download bypasses it, and the dashboard shows the saved salary report metadata.
+12. Verify the Salary hub planner can save a route, create a handoff brief, gate the brief download, and show the handoff in the dashboard Salary Workspace.
 
 ## Current Scope
 

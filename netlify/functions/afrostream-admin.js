@@ -31,6 +31,11 @@ var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 var ADMIN_SECRET = process.env.ADMIN_SECRET;
 
+// Extra admin coverage beyond the original CRUD:
+// - news-sources CRUD
+// - supporters CRUD
+// - manual news-monitor trigger
+
 function getCorsHeaders(event) {
   var origin = event.headers?.origin || '';
   var isAllowed =
@@ -82,6 +87,20 @@ function ok(headers, data, code) {
 
 function err(headers, msg, code) {
   return { statusCode: code || 400, headers: headers, body: JSON.stringify({ error: msg }) };
+}
+
+async function runInternalFunction(modPath, event) {
+  var mod = require(modPath);
+  if (!mod || typeof mod.handler !== 'function') {
+    throw new Error('Internal function handler unavailable: ' + modPath);
+  }
+  var res = await mod.handler(event);
+  var body = {};
+  try { body = res && res.body ? JSON.parse(res.body) : {}; } catch (e) { body = { raw: res && res.body ? res.body : '' }; }
+  if (!res || res.statusCode >= 400) {
+    throw new Error(body.error || body.message || ('Internal function failed with status ' + (res && res.statusCode)));
+  }
+  return body;
 }
 
 exports.handler = async function(event) {
@@ -301,6 +320,71 @@ exports.handler = async function(event) {
     // SUBMISSIONS (admin review queue)
     // ══════════════════════════════════════════════════════════════
 
+    if (path === 'news-sources' && method === 'GET') {
+      var allSources = await sb('GET', 'as_news_sources?order=is_active.desc,updated_at.desc', null);
+      return ok(headers, allSources);
+    }
+
+    if (path === 'news-sources' && method === 'POST') {
+      if (!body.name || !body.feed_url || !body.category) return err(headers, 'Missing: name, feed_url, category');
+      if (body.is_active === undefined) body.is_active = true;
+      body.updated_at = new Date().toISOString();
+      var createdSource = await sb('POST', 'as_news_sources', body);
+      return ok(headers, createdSource, 201);
+    }
+
+    var sourceMatch = path.match(/^news-sources\/(\d+)$/);
+    if (sourceMatch && method === 'PUT') {
+      delete body.id; delete body.created_at;
+      body.updated_at = new Date().toISOString();
+      var updatedSource = await sb('PATCH', 'as_news_sources?id=eq.' + sourceMatch[1], body);
+      return ok(headers, updatedSource);
+    }
+    if (sourceMatch && method === 'DELETE') {
+      await sb('DELETE', 'as_news_sources?id=eq.' + sourceMatch[1], null);
+      return ok(headers, { message: 'News source deleted' });
+    }
+
+    if (path === 'supporters' && method === 'GET') {
+      var creatorFilter = event.queryStringParameters && event.queryStringParameters.creator_id
+        ? '&creator_id=eq.' + encodeURIComponent(event.queryStringParameters.creator_id)
+        : '';
+      var allSupporters = await sb('GET', 'as_creator_supporters?order=event_date.desc,updated_at.desc' + creatorFilter, null);
+      return ok(headers, allSupporters);
+    }
+
+    if (path === 'supporters' && method === 'POST') {
+      if (!body.creator_id || !body.supporter_name || body.amount === undefined || body.amount === null) {
+        return err(headers, 'Missing: creator_id, supporter_name, amount');
+      }
+      if (!body.currency) body.currency = 'USD';
+      if (body.is_verified === undefined) body.is_verified = true;
+      if (body.is_published === undefined) body.is_published = true;
+      body.updated_at = new Date().toISOString();
+      var createdSupporter = await sb('POST', 'as_creator_supporters', body);
+      return ok(headers, createdSupporter, 201);
+    }
+
+    var supporterMatch = path.match(/^supporters\/(\d+)$/);
+    if (supporterMatch && method === 'PUT') {
+      delete body.id; delete body.created_at;
+      body.updated_at = new Date().toISOString();
+      var updatedSupporter = await sb('PATCH', 'as_creator_supporters?id=eq.' + supporterMatch[1], body);
+      return ok(headers, updatedSupporter);
+    }
+    if (supporterMatch && method === 'DELETE') {
+      await sb('DELETE', 'as_creator_supporters?id=eq.' + supporterMatch[1], null);
+      return ok(headers, { message: 'Supporter row deleted' });
+    }
+
+    if (path === 'ops/news-monitor' && method === 'POST') {
+      var monitorResult = await runInternalFunction('./afrostream-news-monitor.js', {
+        httpMethod: 'GET',
+        headers: { authorization: 'Bearer ' + ADMIN_SECRET }
+      });
+      return ok(headers, monitorResult);
+    }
+
     if (path === 'submissions' && method === 'GET') {
       var statusFilter = event.queryStringParameters?.status || 'pending';
       var subs = await sb('GET', 'as_submissions?status=eq.' + statusFilter + '&order=created_at.desc&limit=100', null);
@@ -427,14 +511,20 @@ exports.handler = async function(event) {
         sb('GET', 'as_streams?select=id', null),
         sb('GET', 'as_news?select=id&is_published=eq.true', null),
         sb('GET', 'as_featured?select=id', null),
-        sb('GET', 'as_submissions?select=id&status=eq.pending', null)
+        sb('GET', 'as_submissions?select=id&status=eq.pending', null),
+        sb('GET', 'as_news_sources?select=id&is_active=eq.true', null),
+        sb('GET', 'as_news_creator_mentions?select=id', null),
+        sb('GET', 'as_creator_supporters?select=id&is_published=eq.true', null)
       ]);
       return ok(headers, {
         creators: counts[0] ? counts[0].length : 0,
         streams: counts[1] ? counts[1].length : 0,
         news: counts[2] ? counts[2].length : 0,
         featured: counts[3] ? counts[3].length : 0,
-        pending_submissions: counts[4] ? counts[4].length : 0
+        pending_submissions: counts[4] ? counts[4].length : 0,
+        active_sources: counts[5] ? counts[5].length : 0,
+        mentions: counts[6] ? counts[6].length : 0,
+        supporters: counts[7] ? counts[7].length : 0
       });
     }
 

@@ -16,9 +16,11 @@
 <script src="/assets/js/components/navbar.min.js?v=1" defer></script>
 <script src="/assets/js/components/footer.min.js?v=1" defer></script>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/data/hr/afropayroll-country-packs.js?v=d38502d3"></script>
 <script src="/assets/js/lib/afropayroll-country-packs.js?v=26b24347"></script>
 <script src="/assets/js/lib/afropayroll-language-packs.js?v=523cf177"></script>
+<script src="/assets/js/lib/afropayroll-pro-architecture.js?v=20260502a"></script>
 <script src="/assets/js/engines/ng-paye.js?v=85cfcb14"></script>
 <script src="/assets/js/engines/ke-paye.js?v=1ce3deb6"></script>
 <script src="/assets/js/engines/gh-paye.js?v=25eda45a"></script>
@@ -93,6 +95,22 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .apw-status-card{border:1px solid var(--ap-line);border-radius:10px;background:#f8fafc;padding:11px}
 .apw-status-card strong{display:block;font-size:1.3rem;line-height:1;color:var(--ap-text);margin-bottom:5px}
 .apw-status-card span{font-size:.65rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:var(--ap-muted)}
+.apw-command-grid{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;margin-bottom:14px}
+.apw-pro-grid{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:12px}
+.apw-pro-grid .wide{grid-column:span 2}
+.apw-pro-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.apw-file-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.apw-file-row input[type=file]{max-width:260px;font-size:.76rem;color:var(--ap-muted)}
+.apw-mini-table{border:1px solid var(--ap-line);border-radius:10px;overflow:hidden;margin-top:12px}
+.apw-mini-row{display:grid;grid-template-columns:1.4fr .9fr .7fr .8fr;gap:10px;padding:8px 10px;border-bottom:1px solid #edf2f7;font-size:.72rem;align-items:center}
+.apw-mini-row:last-child{border-bottom:0}
+.apw-mini-row.head{background:#f8fafc;color:#52627a;font-size:.62rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+.apw-status-note{font-size:.72rem;line-height:1.45;color:var(--ap-muted);margin:9px 0 0}
+.apw-status-note.warn{color:#78350f}
+.apw-audit-list{display:grid;gap:7px;margin-top:10px}
+.apw-audit-item{border:1px solid var(--ap-line);border-radius:9px;padding:8px 9px;background:#fff}
+.apw-audit-title{font-size:.72rem;font-weight:900;color:var(--ap-text)}
+.apw-audit-meta{font-size:.66rem;color:var(--ap-muted);line-height:1.4;margin-top:2px}
 .apw-total-group{border:1px solid var(--ap-line);border-radius:11px;overflow:hidden;margin-top:10px}
 .apw-total-title{display:flex;justify-content:space-between;gap:10px;background:#f8fafc;border-bottom:1px solid var(--ap-line);padding:9px 11px;font-size:.75rem;font-weight:900;color:var(--ap-text)}
 .apw-total-row{display:flex;justify-content:space-between;gap:12px;padding:8px 11px;border-bottom:1px solid #edf2f7;font-size:.76rem}
@@ -137,6 +155,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 @media(max-width:1080px){
   .apw-layout{grid-template-columns:1fr}
   .apw-setup-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .apw-command-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .apw-pro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .apw-pro-grid .wide{grid-column:span 2}
 }
 @media(max-width:720px){
   .apw-wrap{padding:0 14px}
@@ -145,7 +166,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   .apw-top-actions{justify-content:flex-start;margin-top:14px}
   .apw-section-head{display:block}
   .apw-section-head .apw-btn{margin-top:12px}
-  .apw-setup-grid,.apw-status-strip{grid-template-columns:1fr}
+  .apw-setup-grid,.apw-status-strip,.apw-command-grid,.apw-pro-grid{grid-template-columns:1fr}
+  .apw-pro-grid .wide{grid-column:span 1}
+  .apw-mini-row{grid-template-columns:1fr}
   .apw-table{min-width:1280px}
 }
 </style>
@@ -220,6 +243,67 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       </div>
     </section>
 
+    <section class="apw-section" aria-labelledby="pro-command-title">
+      <div class="apw-section-head">
+        <div>
+          <div class="apw-kicker" id="proKicker">Pro command center</div>
+          <h2 class="apw-h2" id="pro-command-title">Payroll operating board</h2>
+          <p class="apw-note" id="proNote">Run imports, branded exports, approval, payslips, statutory pack drafts, roles, and audit checks from one workspace.</p>
+        </div>
+      </div>
+      <div class="apw-section-body">
+        <div class="apw-command-grid">
+          <div class="apw-status-card"><strong id="metricReadyRows">0</strong><span id="metricReadyLabel">Ready rows</span></div>
+          <div class="apw-status-card"><strong id="metricNeedsReviewRows">0</strong><span id="metricNeedsReviewLabel">Needs review</span></div>
+          <div class="apw-status-card"><strong id="metricPayslips">0</strong><span id="metricPayslipLabel">Payslips</span></div>
+          <div class="apw-status-card"><strong id="metricStatPacks">0</strong><span id="metricStatPackLabel">Stat packs</span></div>
+          <div class="apw-status-card"><strong id="metricExports">0</strong><span id="metricExportLabel">Exports</span></div>
+        </div>
+        <div class="apw-pro-grid">
+          <div class="apw-field">
+            <label for="brandName" id="brandNameLabel">Brand / firm name</label>
+            <input id="brandName" type="text" placeholder="Payroll desk, accountant, or firm">
+          </div>
+          <div class="apw-field">
+            <label for="preparedBy" id="preparedByLabel">Prepared by</label>
+            <input id="preparedBy" type="text" placeholder="Operator or accountant">
+          </div>
+          <div class="apw-field">
+            <label for="brandAccent" id="brandAccentLabel">Accent</label>
+            <input id="brandAccent" type="color" value="#1d4ed8">
+          </div>
+          <div class="apw-field">
+            <label for="inviteEmail" id="inviteEmailLabel">Invite email</label>
+            <input id="inviteEmail" type="email" placeholder="client@example.com">
+          </div>
+          <div class="apw-field">
+            <label for="inviteRole" id="inviteRoleLabel">Role</label>
+            <select id="inviteRole">
+              <option value="accountant">Accountant</option>
+              <option value="approver">Approver</option>
+              <option value="viewer">Viewer</option>
+              <option value="payroll_admin">Payroll admin</option>
+            </select>
+          </div>
+          <div class="apw-field">
+            <label for="approvalNote" id="approvalNoteLabel">Approval note</label>
+            <input id="approvalNote" type="text" placeholder="Ready for client review">
+          </div>
+        </div>
+        <div class="apw-file-row">
+          <input id="importFile" type="file" accept=".csv,.tsv,.txt,.xlsx,.xls">
+          <button class="apw-btn muted" type="button" id="importRowsBtn">Import CSV / Excel</button>
+          <button class="apw-btn muted" type="button" id="generatePayslipsBtn">Generate payslips</button>
+          <button class="apw-btn muted" type="button" id="generateStatutoryBtn">Statutory pack CSV</button>
+          <button class="apw-btn muted" type="button" id="requestApprovalBtn">Request approval</button>
+          <button class="apw-btn muted" type="button" id="approveRunBtn">Mark approved</button>
+          <button class="apw-btn primary" type="button" id="brandedPacketBtn">Branded packet</button>
+          <button class="apw-btn muted" type="button" id="inviteMemberBtn">Invite role</button>
+        </div>
+        <p class="apw-status-note" id="proStatus">Use local actions anytime. Sync the run to enable cloud audit, approvals, and roles.</p>
+      </div>
+    </section>
+
     <div class="apw-layout">
       <div>
         <section class="apw-section" aria-labelledby="run-title">
@@ -284,6 +368,34 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
           </div>
         </section>
 
+        <section class="apw-section" aria-labelledby="roles-title">
+          <div class="apw-section-head">
+            <div>
+              <div class="apw-kicker" id="rolesKicker">Workspace roles</div>
+              <h2 class="apw-h2" id="roles-title">Accountant / client access</h2>
+              <p class="apw-note" id="rolesNote">Role permissions are enforced by the cloud API when a run is synced.</p>
+            </div>
+          </div>
+          <div class="apw-section-body">
+            <div class="apw-mini-table" id="rolesList"></div>
+            <p class="apw-status-note" id="rolesStatus">Sync a run to inspect live role permissions.</p>
+          </div>
+        </section>
+
+        <section class="apw-section" aria-labelledby="audit-title">
+          <div class="apw-section-head">
+            <div>
+              <div class="apw-kicker" id="auditKicker">Audit trail</div>
+              <h2 class="apw-h2" id="audit-title">Run activity</h2>
+              <p class="apw-note" id="auditNote">Save, approval, payslip, statutory, import, export, and member events are logged for synced runs.</p>
+            </div>
+          </div>
+          <div class="apw-section-body">
+            <div class="apw-audit-list" id="auditList"></div>
+            <p class="apw-status-note" id="auditStatus">No cloud audit loaded yet.</p>
+          </div>
+        </section>
+
         <section class="apw-section">
           <div class="apw-section-head">
             <div>
@@ -296,6 +408,26 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
             <div class="apw-history-summary" id="historySummary" data-ap-lang-key="history.empty">No saved runs yet. Add rows, calculate, then save a run snapshot.</div>
             <div class="apw-history-list" id="historyList"></div>
             <p class="apw-history-status" id="historyStatus" data-ap-lang-key="history.unsavedHint">Current draft autosaves separately. Use Save run to keep a monthly snapshot.</p>
+          </div>
+        </section>
+
+        <section class="apw-section" aria-labelledby="cloud-sync-title">
+          <div class="apw-section-head">
+            <div>
+              <div class="apw-kicker" id="cloudKicker">Account sync</div>
+              <h2 class="apw-h2" id="cloud-sync-title">Cloud run history</h2>
+              <p class="apw-note" id="cloudNote">Signed-in workspaces can save runs to the protected payroll database. Local draft mode still works without an account.</p>
+            </div>
+          </div>
+          <div class="apw-section-body">
+            <div class="apw-history-summary" id="cloudSummary">Sign in to sync payroll runs across devices.</div>
+            <div class="apw-pro-actions" aria-label="Account sync actions">
+              <button class="apw-btn primary" type="button" id="cloudSaveBtn">Sync run</button>
+              <button class="apw-btn muted" type="button" id="cloudRefreshBtn">Refresh</button>
+              <a class="apw-btn muted" id="cloudSigninLink" href="/dashboard/">Sign in</a>
+            </div>
+            <div class="apw-history-list" id="cloudList"></div>
+            <p class="apw-history-status" id="cloudStatus">Cloud sync uses your AfroTools account. No statutory filing or salary disbursement is performed.</p>
           </div>
         </section>
 
@@ -368,6 +500,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
   var STORAGE_KEY = "afropayroll_pro_workspace_preview";
   var HISTORY_KEY = "afropayroll_pro_saved_runs";
+  var CLOUD_API = "/api/afropayroll";
   var MAX_SAVED_RUNS = 24;
   var packApi = window.AfroTools && window.AfroTools.afropayrollCountryPacks;
   var langApi = window.AfroTools && window.AfroTools.afropayrollLanguagePacks;
@@ -398,9 +531,293 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       labelKey: "engine.ZA"
     }
   };
+  var cloudLabels = {
+    en: {
+      kicker: "Account sync",
+      title: "Cloud run history",
+      note: "Signed-in workspaces can save runs to the protected payroll database. Local draft mode still works without an account.",
+      signIn: "Sign in",
+      save: "Sync run",
+      refresh: "Refresh",
+      signedOutSummary: "Sign in to sync payroll runs across devices.",
+      signedOutStatus: "Local draft and local saved runs still work on this device.",
+      signedInSummary: "Signed in as {email}. Runs sync to the RLS-protected payroll database.",
+      empty: "No cloud runs yet. Add rows, then sync the run.",
+      loading: "Loading cloud payroll runs...",
+      ready: "{count} cloud run(s) available.",
+      saving: "Syncing this payroll run...",
+      saved: "Synced {company} for {period}.",
+      saveNoRows: "Add at least one active payroll row before syncing.",
+      saveSignin: "Sign in before syncing salary-sensitive payroll runs.",
+      refreshError: "Cloud sync could not load: {error}",
+      saveError: "Cloud sync could not save: {error}",
+      loadError: "Cloud run could not load: {error}",
+      deleteError: "Cloud run could not delete: {error}",
+      load: "Load",
+      delete: "Delete",
+      current: "Open",
+      rows: "{count} rows",
+      reviewRows: "{count} review",
+      noPeriod: "No period",
+      netTotal: "Net total {total}",
+      deleteConfirm: "Delete this cloud run? Local drafts and local saved runs are not deleted.",
+      deleted: "Cloud run deleted.",
+      loaded: "Loaded cloud run for {company} / {period}.",
+      guardrail: "Cloud sync stores drafts only. It does not file taxes, move money, or certify compliance.",
+      statusDraft: "Draft",
+      statusReview: "Needs review",
+      statusReady: "Ready",
+      statusApproval: "Approval",
+      statusApproved: "Approved",
+      statusExported: "Exported"
+    },
+    fr: {
+      kicker: "Sync compte",
+      title: "Historique cloud",
+      note: "Les espaces connectes peuvent enregistrer les runs dans la base paie protegee. Le mode brouillon local reste disponible sans compte.",
+      signIn: "Connexion",
+      save: "Synchroniser",
+      refresh: "Rafraichir",
+      signedOutSummary: "Connectez-vous pour synchroniser les runs de paie entre appareils.",
+      signedOutStatus: "Le brouillon local et l'historique local restent disponibles sur cet appareil.",
+      signedInSummary: "Connecte comme {email}. Les runs sont stockes dans la base paie protegee par RLS.",
+      empty: "Aucun run cloud. Ajoutez des lignes, puis synchronisez.",
+      loading: "Chargement des runs cloud...",
+      ready: "{count} run(s) cloud disponible(s).",
+      saving: "Synchronisation du run...",
+      saved: "{company} synchronise pour {period}.",
+      saveNoRows: "Ajoutez au moins une ligne de paie active avant de synchroniser.",
+      saveSignin: "Connectez-vous avant de synchroniser des donnees de paie sensibles.",
+      refreshError: "La synchronisation ne peut pas charger: {error}",
+      saveError: "La synchronisation ne peut pas enregistrer: {error}",
+      loadError: "Le run cloud ne peut pas charger: {error}",
+      deleteError: "Le run cloud ne peut pas etre supprime: {error}",
+      load: "Charger",
+      delete: "Supprimer",
+      current: "Ouvert",
+      rows: "{count} lignes",
+      reviewRows: "{count} revue",
+      noPeriod: "Aucune periode",
+      netTotal: "Net total {total}",
+      deleteConfirm: "Supprimer ce run cloud ? Les brouillons locaux ne sont pas supprimes.",
+      deleted: "Run cloud supprime.",
+      loaded: "Run cloud charge pour {company} / {period}.",
+      guardrail: "La synchronisation cloud stocke seulement des brouillons. Elle ne declare pas, ne paie pas, et ne certifie pas la conformite.",
+      statusDraft: "Brouillon",
+      statusReview: "A revoir",
+      statusReady: "Pret",
+      statusApproval: "Approbation",
+      statusApproved: "Approuve",
+      statusExported: "Exporte"
+    },
+    sw: {
+      kicker: "Usawazishaji",
+      title: "Historia ya wingu",
+      note: "Akaunti iliyoingia inaweza kuhifadhi runs kwenye hifadhidata salama ya mishahara. Rasimu ya kifaa bado inafanya kazi bila akaunti.",
+      signIn: "Ingia",
+      save: "Sawazisha",
+      refresh: "Onyesha upya",
+      signedOutSummary: "Ingia ili kusawazisha runs za mishahara kwenye vifaa tofauti.",
+      signedOutStatus: "Rasimu ya kifaa na historia ya kifaa bado zinafanya kazi hapa.",
+      signedInSummary: "Umeingia kama {email}. Runs zinahifadhiwa kwenye hifadhidata ya mishahara yenye RLS.",
+      empty: "Hakuna run ya wingu bado. Ongeza mistari, kisha sawazisha.",
+      loading: "Inapakia runs za wingu...",
+      ready: "Run {count} za wingu zipo.",
+      saving: "Inasawazisha run hii...",
+      saved: "{company} imesawazishwa kwa {period}.",
+      saveNoRows: "Ongeza angalau mstari mmoja wa mshahara kabla ya kusawazisha.",
+      saveSignin: "Ingia kabla ya kusawazisha data nyeti za mishahara.",
+      refreshError: "Usawazishaji haukuweza kupakia: {error}",
+      saveError: "Usawazishaji haukuweza kuhifadhi: {error}",
+      loadError: "Run ya wingu haikuweza kupakia: {error}",
+      deleteError: "Run ya wingu haikuweza kufutwa: {error}",
+      load: "Pakia",
+      delete: "Futa",
+      current: "Imefunguliwa",
+      rows: "Mistari {count}",
+      reviewRows: "Mapitio {count}",
+      noPeriod: "Hakuna kipindi",
+      netTotal: "Jumla neti {total}",
+      deleteConfirm: "Futa run hii ya wingu? Rasimu za kifaa hazitafutwa.",
+      deleted: "Run ya wingu imefutwa.",
+      loaded: "Run ya wingu imepakiwa kwa {company} / {period}.",
+      guardrail: "Usawazishaji wa wingu huhifadhi rasimu tu. Haufanyi filing, haulipi mishahara, wala kuthibitisha compliance.",
+      statusDraft: "Rasimu",
+      statusReview: "Inahitaji mapitio",
+      statusReady: "Tayari",
+      statusApproval: "Idhini",
+      statusApproved: "Imeidhinishwa",
+      statusExported: "Imetumwa"
+    }
+  };
+  var proLabels = {
+    en: {
+      kicker: "Pro command center",
+      title: "Payroll operating board",
+      note: "Run imports, branded exports, approval, payslips, statutory pack drafts, roles, and audit checks from one workspace.",
+      readyRows: "Ready rows",
+      needsReview: "Needs review",
+      payslips: "Payslips",
+      statPacks: "Stat packs",
+      exports: "Exports",
+      brandName: "Brand / firm name",
+      preparedBy: "Prepared by",
+      accent: "Accent",
+      inviteEmail: "Invite email",
+      inviteRole: "Role",
+      approvalNote: "Approval note",
+      import: "Import CSV / Excel",
+      generatePayslips: "Generate payslips",
+      statutory: "Statutory pack CSV",
+      requestApproval: "Request approval",
+      approve: "Mark approved",
+      brandedPacket: "Branded packet",
+      invite: "Invite role",
+      idle: "Use local actions anytime. Sync the run to enable cloud audit, approvals, and roles.",
+      noRows: "Add active payroll rows first.",
+      importNoFile: "Choose a CSV, TSV, XLS, or XLSX payroll file first.",
+      importDone: "Imported {count} row(s) from {file}.",
+      importError: "Import failed: {error}",
+      xlsxLoading: "Loading the local Excel parser...",
+      payslipsDone: "Generated {count} payslip record(s).",
+      statDone: "Prepared {count} statutory country pack draft(s).",
+      approvalRequested: "Approval requested.",
+      approved: "Run marked approved.",
+      packetDone: "Branded packet downloaded.",
+      cloudNeeded: "Sync this run before using cloud roles, audit, and approval records.",
+      inviteDone: "Invite recorded for {email}.",
+      inviteError: "Invite failed: {error}",
+      cloudError: "Cloud action failed: {error}",
+      rolesTitle: "Accountant / client access",
+      rolesKicker: "Workspace roles",
+      rolesNote: "Role permissions are enforced by the cloud API when a run is synced.",
+      rolesEmpty: "Sync a run to inspect live role permissions.",
+      rolesLoaded: "Loaded {count} role definition(s) and {members} member invite(s).",
+      auditTitle: "Run activity",
+      auditKicker: "Audit trail",
+      auditNote: "Save, approval, payslip, statutory, import, export, and member events are logged for synced runs.",
+      auditEmpty: "No cloud audit loaded yet.",
+      auditLoaded: "Loaded {count} audit event(s).",
+      viewSalary: "View salary",
+      editSalary: "Edit salary",
+      approveRuns: "Approve",
+      manageMembers: "Members"
+    },
+    fr: {
+      kicker: "Centre Pro",
+      title: "Tableau de pilotage paie",
+      note: "Import, exports marques, approbation, bulletins, packs statutaires, roles et audit dans le meme espace.",
+      readyRows: "Lignes pretes",
+      needsReview: "A revoir",
+      payslips: "Bulletins",
+      statPacks: "Packs stat.",
+      exports: "Exports",
+      brandName: "Marque / cabinet",
+      preparedBy: "Prepare par",
+      accent: "Accent",
+      inviteEmail: "Email invite",
+      inviteRole: "Role",
+      approvalNote: "Note d'approbation",
+      import: "Importer CSV / Excel",
+      generatePayslips: "Generer bulletins",
+      statutory: "Pack statutaire CSV",
+      requestApproval: "Demander accord",
+      approve: "Marquer approuve",
+      brandedPacket: "Dossier marque",
+      invite: "Inviter role",
+      idle: "Les actions locales marchent toujours. Synchronisez le run pour activer audit, accords et roles cloud.",
+      noRows: "Ajoutez d'abord des lignes de paie actives.",
+      importNoFile: "Choisissez un fichier CSV, TSV, XLS ou XLSX.",
+      importDone: "{count} ligne(s) importee(s) depuis {file}.",
+      importError: "Import impossible: {error}",
+      xlsxLoading: "Chargement du parseur Excel local...",
+      payslipsDone: "{count} bulletin(s) prepare(s).",
+      statDone: "{count} pack(s) statutaire(s) pays prepare(s).",
+      approvalRequested: "Approbation demandee.",
+      approved: "Run marque approuve.",
+      packetDone: "Dossier marque telecharge.",
+      cloudNeeded: "Synchronisez ce run avant les roles, l'audit et les approbations cloud.",
+      inviteDone: "Invitation enregistree pour {email}.",
+      inviteError: "Invitation impossible: {error}",
+      cloudError: "Action cloud impossible: {error}",
+      rolesTitle: "Acces comptable / client",
+      rolesKicker: "Roles espace",
+      rolesNote: "Les permissions sont appliquees par l'API cloud quand le run est synchronise.",
+      rolesEmpty: "Synchronisez un run pour voir les permissions.",
+      rolesLoaded: "{count} role(s) et {members} invitation(s) charges.",
+      auditTitle: "Activite du run",
+      auditKicker: "Audit",
+      auditNote: "Sauvegarde, approbation, bulletins, packs, imports, exports et membres sont journalises.",
+      auditEmpty: "Aucun audit cloud charge.",
+      auditLoaded: "{count} evenement(s) d'audit charge(s).",
+      viewSalary: "Voir salaire",
+      editSalary: "Editer salaire",
+      approveRuns: "Approuver",
+      manageMembers: "Membres"
+    },
+    sw: {
+      kicker: "Kituo cha Pro",
+      title: "Bodi ya uendeshaji wa mishahara",
+      note: "Ingiza faili, toa exports zenye chapa, approvals, payslips, statutory packs, roles, na audit kwenye workspace moja.",
+      readyRows: "Mistari tayari",
+      needsReview: "Mapitio",
+      payslips: "Payslips",
+      statPacks: "Stat packs",
+      exports: "Exports",
+      brandName: "Chapa / ofisi",
+      preparedBy: "Imeandaliwa na",
+      accent: "Rangi",
+      inviteEmail: "Email ya mwalikwa",
+      inviteRole: "Role",
+      approvalNote: "Ujumbe wa approval",
+      import: "Ingiza CSV / Excel",
+      generatePayslips: "Tengeneza payslips",
+      statutory: "Statutory pack CSV",
+      requestApproval: "Omba approval",
+      approve: "Weka approved",
+      brandedPacket: "Packet yenye chapa",
+      invite: "Alika role",
+      idle: "Actions za kifaa zinafanya kazi. Sawazisha run ili kutumia cloud audit, approvals, na roles.",
+      noRows: "Ongeza kwanza mistari ya mshahara.",
+      importNoFile: "Chagua faili ya CSV, TSV, XLS, au XLSX.",
+      importDone: "Mistari {count} imeingizwa kutoka {file}.",
+      importError: "Import imeshindikana: {error}",
+      xlsxLoading: "Inapakia parser ya Excel ya kifaa...",
+      payslipsDone: "Payslip {count} zimetengenezwa.",
+      statDone: "Statutory pack {count} za nchi zimeandaliwa.",
+      approvalRequested: "Approval imeombwa.",
+      approved: "Run imewekwa approved.",
+      packetDone: "Packet yenye chapa imepakuliwa.",
+      cloudNeeded: "Sawazisha run hii kabla ya kutumia roles, audit, na approvals za cloud.",
+      inviteDone: "Invite imeandikwa kwa {email}.",
+      inviteError: "Invite imeshindikana: {error}",
+      cloudError: "Cloud action imeshindikana: {error}",
+      rolesTitle: "Access ya accountant / client",
+      rolesKicker: "Roles za workspace",
+      rolesNote: "Permissions zinatekelezwa na cloud API baada ya run kusawazishwa.",
+      rolesEmpty: "Sawazisha run ili kuona permissions.",
+      rolesLoaded: "Role {count} na invite {members} zimepakiwa.",
+      auditTitle: "Matukio ya run",
+      auditKicker: "Audit trail",
+      auditNote: "Save, approvals, payslips, packs, imports, exports, na members zinaandikwa kwa synced runs.",
+      auditEmpty: "Hakuna cloud audit iliyopakiwa.",
+      auditLoaded: "Event {count} za audit zimepakiwa.",
+      viewSalary: "Ona mshahara",
+      editSalary: "Hariri mshahara",
+      approveRuns: "Approve",
+      manageMembers: "Members"
+    }
+  };
 
   var state = loadState();
   var savedRuns = loadSavedRuns();
+  var cloudRuns = [];
+  var cloudLoaded = false;
+  var cloudBusy = false;
+  var rolePermissions = [];
+  var memberInvites = [];
+  var auditEvents = [];
+  var xlsxLoadPromise = null;
   var elements = {};
 
   function currentLang() {
@@ -411,6 +828,24 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
   function t(key, vars) {
     return langApi && typeof langApi.t === "function" ? langApi.t(currentLang(), key, vars) : key;
+  }
+
+  function cloudText(key, vars) {
+    var labels = cloudLabels[currentLang()] || cloudLabels.en;
+    var text = labels[key] || cloudLabels.en[key] || key;
+    Object.keys(vars || {}).forEach(function (name) {
+      text = text.replace(new RegExp("\\{" + name + "\\}", "g"), vars[name]);
+    });
+    return text;
+  }
+
+  function proText(key, vars) {
+    var labels = proLabels[currentLang()] || proLabels.en;
+    var text = labels[key] || proLabels.en[key] || key;
+    Object.keys(vars || {}).forEach(function (name) {
+      text = text.replace(new RegExp("\\{" + name + "\\}", "g"), vars[name]);
+    });
+    return text;
   }
 
   function applyLanguage() {
@@ -489,9 +924,52 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     };
   }
 
+  function defaultBrand() {
+    return {
+      name: "",
+      preparedBy: "",
+      accent: "#1d4ed8"
+    };
+  }
+
+  function normalizeBrand(brand) {
+    brand = brand && typeof brand === "object" ? brand : {};
+    return {
+      name: String(brand.name || "").slice(0, 120),
+      preparedBy: String(brand.preparedBy || "").slice(0, 120),
+      accent: /^#[0-9a-f]{6}$/i.test(String(brand.accent || "")) ? String(brand.accent) : "#1d4ed8"
+    };
+  }
+
+  function defaultWorkflow() {
+    return {
+      payslipCount: 0,
+      statutoryPackCount: 0,
+      exportedCount: 0,
+      approvalStatus: "not_requested",
+      lastImportAt: "",
+      lastExportAt: "",
+      lastWorkflowAt: ""
+    };
+  }
+
+  function normalizeWorkflow(workflow) {
+    workflow = workflow && typeof workflow === "object" ? workflow : {};
+    return {
+      payslipCount: toNumber(workflow.payslipCount),
+      statutoryPackCount: toNumber(workflow.statutoryPackCount),
+      exportedCount: toNumber(workflow.exportedCount),
+      approvalStatus: workflow.approvalStatus || "not_requested",
+      lastImportAt: workflow.lastImportAt || "",
+      lastExportAt: workflow.lastExportAt || "",
+      lastWorkflowAt: workflow.lastWorkflowAt || ""
+    };
+  }
+
   function normalizeRow(row) {
     return {
       id: row.id || String(Date.now()) + "-" + Math.random().toString(16).slice(2),
+      cloudRowId: row.cloudRowId || "",
       name: row.name || "",
       role: row.role || row.department || "",
       country: String(row.country || defaultCountry()).toUpperCase(),
@@ -514,7 +992,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       languageLane: "en",
       runStatus: "draft",
       currentRunId: "",
+      cloudRunId: "",
+      cloudClientId: "",
+      cloudCompanyId: "",
       lastCalculatedAt: "",
+      brand: defaultBrand(),
+      workflow: defaultWorkflow(),
       rows: []
     };
     try {
@@ -528,7 +1011,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       fallback.languageLane = saved.languageLane || saved.lang || "en";
       fallback.runStatus = saved.runStatus || "draft";
       fallback.currentRunId = saved.currentRunId || "";
+      fallback.cloudRunId = saved.cloudRunId || "";
+      fallback.cloudClientId = saved.cloudClientId || "";
+      fallback.cloudCompanyId = saved.cloudCompanyId || "";
       fallback.lastCalculatedAt = saved.lastCalculatedAt || "";
+      fallback.brand = normalizeBrand(saved.brand);
+      fallback.workflow = normalizeWorkflow(saved.workflow);
       fallback.rows = Array.isArray(legacyRows) ? legacyRows.map(normalizeRow) : [];
     } catch (error) {
       fallback.rows = [];
@@ -562,7 +1050,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       defaultCountry: String(run.defaultCountry || run.country || defaultCountry()).toUpperCase(),
       languageLane: run.languageLane || run.lang || "en",
       runStatus: run.runStatus || "draft",
+      cloudRunId: run.cloudRunId || "",
+      cloudClientId: run.cloudClientId || "",
+      cloudCompanyId: run.cloudCompanyId || "",
       lastCalculatedAt: run.lastCalculatedAt || "",
+      brand: normalizeBrand(run.brand),
+      workflow: normalizeWorkflow(run.workflow),
       rows: rows,
       summary: run.summary || buildRunSummary(rows.filter(isRowActive))
     };
@@ -580,6 +1073,39 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       "defaultCountry",
       "languageLane",
       "runStatus",
+      "proKicker",
+      "proNote",
+      "metricReadyRows",
+      "metricNeedsReviewRows",
+      "metricPayslips",
+      "metricStatPacks",
+      "metricExports",
+      "metricReadyLabel",
+      "metricNeedsReviewLabel",
+      "metricPayslipLabel",
+      "metricStatPackLabel",
+      "metricExportLabel",
+      "brandName",
+      "preparedBy",
+      "brandAccent",
+      "brandNameLabel",
+      "preparedByLabel",
+      "brandAccentLabel",
+      "inviteEmail",
+      "inviteRole",
+      "inviteEmailLabel",
+      "inviteRoleLabel",
+      "approvalNote",
+      "approvalNoteLabel",
+      "importFile",
+      "importRowsBtn",
+      "generatePayslipsBtn",
+      "generateStatutoryBtn",
+      "requestApprovalBtn",
+      "approveRunBtn",
+      "brandedPacketBtn",
+      "inviteMemberBtn",
+      "proStatus",
       "addRowBtn",
       "calculateBtn",
       "saveRunBtn",
@@ -601,6 +1127,22 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       "historySummary",
       "historyList",
       "historyStatus",
+      "cloudKicker",
+      "cloudNote",
+      "cloudSummary",
+      "cloudSaveBtn",
+      "cloudRefreshBtn",
+      "cloudSigninLink",
+      "cloudList",
+      "cloudStatus",
+      "rolesKicker",
+      "rolesNote",
+      "rolesList",
+      "rolesStatus",
+      "auditKicker",
+      "auditNote",
+      "auditList",
+      "auditStatus",
       "reviewList",
       "packSummary"
     ].forEach(function (id) {
@@ -626,6 +1168,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     elements.languageLane.value = state.languageLane;
     elements.runStatus.value = state.runStatus;
     document.documentElement.lang = state.languageLane || "en";
+  }
+
+  function syncProForm() {
+    state.brand = normalizeBrand(state.brand);
+    state.workflow = normalizeWorkflow(state.workflow);
+    if (elements.brandName) elements.brandName.value = state.brand.name;
+    if (elements.preparedBy) elements.preparedBy.value = state.brand.preparedBy;
+    if (elements.brandAccent) elements.brandAccent.value = state.brand.accent;
   }
 
   function saveState() {
@@ -658,6 +1208,22 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     });
   }
 
+  function bindProInputs() {
+    ["brandName", "preparedBy", "brandAccent"].forEach(function (id) {
+      var input = elements[id];
+      if (!input) return;
+      input.addEventListener("input", function () {
+        state.brand = normalizeBrand({
+          name: elements.brandName.value,
+          preparedBy: elements.preparedBy.value,
+          accent: elements.brandAccent.value
+        });
+        saveState();
+        renderProDashboard();
+      });
+    });
+  }
+
   function bindActions() {
     elements.addRowBtn.addEventListener("click", function () {
       state.rows.push(createBlankRow(state.defaultCountry));
@@ -687,6 +1253,38 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     elements.exportWarningsBtn.addEventListener("click", exportReviewWarningsCsv);
     elements.exportNoteBtn.addEventListener("click", exportHandoffNote);
     elements.historyList.addEventListener("click", handleHistoryAction);
+    elements.importRowsBtn.addEventListener("click", importRowsFromFile);
+    elements.generatePayslipsBtn.addEventListener("click", generatePayslipPacket);
+    elements.generateStatutoryBtn.addEventListener("click", generateStatutoryPackCsv);
+    elements.requestApprovalBtn.addEventListener("click", requestRunApproval);
+    elements.approveRunBtn.addEventListener("click", approveCurrentRun);
+    elements.brandedPacketBtn.addEventListener("click", exportBrandedPacket);
+    elements.inviteMemberBtn.addEventListener("click", inviteWorkspaceMember);
+    elements.cloudSaveBtn.addEventListener("click", saveCurrentRunToCloud);
+    elements.cloudRefreshBtn.addEventListener("click", function () { refreshCloudRuns({ silent: false }); });
+    elements.cloudList.addEventListener("click", handleCloudAction);
+    window.addEventListener("afro-auth-change", function () {
+      renderCloudSync();
+      if (isCloudSignedIn()) {
+        refreshCloudRuns({ silent: true });
+        if (state.cloudRunId) {
+          refreshRolesFromCloud(true);
+          refreshAuditFromCloud(true);
+        }
+      }
+    });
+    if (window.AfroAuth && typeof window.AfroAuth.onReady === "function") {
+      window.AfroAuth.onReady(function () {
+        renderCloudSync();
+        if (isCloudSignedIn()) {
+          refreshCloudRuns({ silent: true });
+          if (state.cloudRunId) {
+            refreshRolesFromCloud(true);
+            refreshAuditFromCloud(true);
+          }
+        }
+      });
+    }
     elements.runRows.addEventListener("input", handleRowInput);
     elements.runRows.addEventListener("change", function (event) {
       handleRowInput(event);
@@ -718,6 +1316,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     renderMeta();
     renderExportControls();
     renderHistory();
+    renderCloudSync();
     setHistoryStatus(t("history.unsavedHint"), false);
   }
 
@@ -725,6 +1324,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     applyLanguage();
     hydrateCountrySelects();
     syncSetupForm();
+    syncProForm();
     renderRows();
     renderTotals();
     renderReviews();
@@ -732,6 +1332,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     renderPacks();
     renderExportControls();
     renderMeta();
+    renderCloudSync();
+    renderProDashboard();
+    renderRoles();
+    renderAudit();
   }
 
   function renderRows() {
@@ -1068,6 +1672,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       languageLane: state.languageLane || "en",
       runStatus: state.runStatus || "draft",
       lastCalculatedAt: state.lastCalculatedAt || "",
+      brand: normalizeBrand(state.brand),
+      workflow: normalizeWorkflow(state.workflow),
       rows: rows,
       summary: buildRunSummary(rows)
     };
@@ -1102,6 +1708,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       runStatus: run.runStatus || "draft",
       currentRunId: run.id,
       lastCalculatedAt: run.lastCalculatedAt || "",
+      brand: normalizeBrand(run.brand),
+      workflow: normalizeWorkflow(run.workflow),
       rows: run.rows.length ? run.rows.map(normalizeRow) : [createBlankRow(run.defaultCountry)]
     };
     saveState();
@@ -1138,6 +1746,858 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     if (!elements.historyStatus) return;
     elements.historyStatus.textContent = message;
     elements.historyStatus.classList.toggle("warn", Boolean(isWarning));
+  }
+
+  function isCloudSignedIn() {
+    return Boolean(window.AfroAuth && typeof window.AfroAuth.isLoggedIn === "function" && window.AfroAuth.isLoggedIn());
+  }
+
+  function getCloudUser() {
+    return window.AfroAuth && typeof window.AfroAuth.getUser === "function" ? window.AfroAuth.getUser() : null;
+  }
+
+  function getCloudToken() {
+    return window.AfroAuth && typeof window.AfroAuth.getSessionToken === "function" ? window.AfroAuth.getSessionToken() : "";
+  }
+
+  function cloudRequest(path, options) {
+    var config = options || {};
+    var headers = { "Content-Type": "application/json" };
+    var token = getCloudToken();
+    if (token) headers.Authorization = "Bearer " + token;
+    return fetch(path, {
+      method: config.method || "GET",
+      headers: headers,
+      credentials: "include",
+      body: config.body === undefined ? undefined : JSON.stringify(config.body)
+    }).then(function (response) {
+      return response.text().then(function (text) {
+        var data = {};
+        try {
+          data = text ? JSON.parse(text) : {};
+        } catch (error) {
+          data = { error: text || response.statusText };
+        }
+        if (!response.ok) {
+          var failure = new Error(data.error || data.detail || response.statusText || "Request failed");
+          failure.status = response.status;
+          failure.data = data;
+          throw failure;
+        }
+        return data;
+      });
+    });
+  }
+
+  function renderCloudSync() {
+    if (!elements.cloudSummary) return;
+    var signedIn = isCloudSignedIn();
+    var user = getCloudUser();
+    var activeCount = getActiveRows().length;
+    if (elements.cloudKicker) elements.cloudKicker.textContent = cloudText("kicker");
+    if (document.getElementById("cloud-sync-title")) document.getElementById("cloud-sync-title").textContent = cloudText("title");
+    if (elements.cloudNote) elements.cloudNote.textContent = cloudText("note");
+    if (elements.cloudSaveBtn) {
+      elements.cloudSaveBtn.textContent = cloudText("save");
+      elements.cloudSaveBtn.disabled = cloudBusy || !signedIn || activeCount === 0;
+    }
+    if (elements.cloudRefreshBtn) {
+      elements.cloudRefreshBtn.textContent = cloudText("refresh");
+      elements.cloudRefreshBtn.disabled = cloudBusy || !signedIn;
+    }
+    if (elements.cloudSigninLink) {
+      elements.cloudSigninLink.textContent = cloudText("signIn");
+      elements.cloudSigninLink.hidden = signedIn;
+    }
+
+    if (!signedIn) {
+      elements.cloudSummary.textContent = cloudText("signedOutSummary");
+      elements.cloudList.innerHTML = "";
+      setCloudStatus(cloudText("signedOutStatus"), false);
+      return;
+    }
+
+    elements.cloudSummary.textContent = user && user.email
+      ? cloudText("signedInSummary", { email: user.email })
+      : cloudText("signedInSummary", { email: "AfroTools" });
+
+    if (cloudBusy && !cloudLoaded) {
+      elements.cloudList.innerHTML = "<div class=\"apw-empty\">" + escapeHtml(cloudText("loading")) + "</div>";
+      return;
+    }
+
+    elements.cloudList.innerHTML = cloudRuns.length
+      ? cloudRuns.map(renderCloudItem).join("")
+      : "<div class=\"apw-empty\">" + escapeHtml(cloudText("empty")) + "</div>";
+    if (!cloudBusy && !cloudLoaded) setCloudStatus(cloudText("guardrail"), false);
+  }
+
+  function renderCloudItem(run) {
+    var id = run.run_id || run.id || "";
+    var isCurrent = id && id === state.cloudRunId;
+    var period = formatCloudPeriod(run);
+    var reviewCount = toNumber(run.needs_review_count || run.review_count || run.warning_count);
+    var meta = [
+      period || cloudText("noPeriod"),
+      cloudText("rows", { count: toNumber(run.row_count) }),
+      cloudText("reviewRows", { count: reviewCount })
+    ];
+    var currencies = Array.isArray(run.currency_codes) && run.currency_codes.length
+      ? run.currency_codes.join(", ")
+      : "";
+    if (currencies) meta.push(currencies);
+    return "<div class=\"apw-history-item" + (isCurrent ? " current" : "") + "\">"
+      + "<div class=\"apw-history-top\"><div><div class=\"apw-history-name\">" + escapeHtml(run.company_name || run.title || t("history.untitledCompany")) + "</div>"
+      + "<div class=\"apw-history-meta\">" + escapeHtml(meta.join(" - ")) + "</div></div>"
+      + "<span class=\"apw-pack-badge " + escapeHtml(cloudStatusClass(run.status)) + "\">" + escapeHtml(formatCloudRunStatus(run.status)) + "</span>"
+      + "</div>"
+      + "<div class=\"apw-history-meta\">" + escapeHtml(formatHistoryDate(run.updated_at)) + "</div>"
+      + "<div class=\"apw-history-actions\">"
+      + "<button class=\"apw-btn muted\" type=\"button\" data-cloud-action=\"load\" data-cloud-id=\"" + escapeHtml(id) + "\">" + escapeHtml(cloudText("load")) + "</button>"
+      + "<button class=\"apw-btn danger\" type=\"button\" data-cloud-action=\"delete\" data-cloud-id=\"" + escapeHtml(id) + "\">" + escapeHtml(cloudText("delete")) + "</button>"
+      + (isCurrent ? "<span class=\"apw-pack-badge full\">" + escapeHtml(cloudText("current")) + "</span>" : "")
+      + "</div></div>";
+  }
+
+  function formatCloudPeriod(run) {
+    if (run.pay_period_start) return String(run.pay_period_start).slice(0, 7);
+    if (run.pay_period_end) return String(run.pay_period_end).slice(0, 7);
+    return "";
+  }
+
+  function formatCloudRunStatus(status) {
+    if (status === "ready") return cloudText("statusReady");
+    if (status === "needs_review") return cloudText("statusReview");
+    if (status === "approval_requested") return cloudText("statusApproval");
+    if (status === "approved") return cloudText("statusApproved");
+    if (status === "exported" || status === "closed") return cloudText("statusExported");
+    return cloudText("statusDraft");
+  }
+
+  function cloudStatusClass(status) {
+    if (status === "ready" || status === "approved" || status === "exported" || status === "closed") return "full";
+    if (status === "needs_review" || status === "approval_requested") return "estimate";
+    return "verify";
+  }
+
+  function saveCurrentRunToCloud() {
+    var activeRows = getActiveRows();
+    if (!activeRows.length) {
+      renderCloudSync();
+      setCloudStatus(cloudText("saveNoRows"), true);
+      return;
+    }
+    if (!isCloudSignedIn()) {
+      renderCloudSync();
+      setCloudStatus(cloudText("saveSignin"), true);
+      return;
+    }
+
+    applyStatusSuggestion();
+    state.lastCalculatedAt = new Date().toISOString();
+    saveState();
+    cloudBusy = true;
+    setCloudStatus(cloudText("saving"), false);
+    renderCloudSync();
+
+    cloudRequest(CLOUD_API, {
+      method: "POST",
+      body: {
+        action: "save_run",
+        run: buildCloudRunPayload()
+      }
+    }).then(function (data) {
+      var workspace = data.workspaceState || {};
+      state.cloudRunId = workspace.cloudRunId || data.run && data.run.id || "";
+      state.cloudClientId = workspace.cloudClientId || data.client && data.client.id || "";
+      state.cloudCompanyId = workspace.cloudCompanyId || data.company && data.company.id || "";
+      saveState();
+      return refreshCloudRuns({ silent: true }).then(function () {
+        refreshRolesFromCloud(true);
+        refreshAuditFromCloud(true);
+        renderAll();
+        setCloudStatus(cloudText("saved", {
+          company: state.companyName || t("history.untitledCompany"),
+          period: state.payPeriod || cloudText("noPeriod")
+        }), false);
+      });
+    }).catch(function (error) {
+      setCloudStatus(cloudText("saveError", { error: cloudErrorMessage(error) }), true);
+    }).finally(function () {
+      cloudBusy = false;
+      renderCloudSync();
+    });
+  }
+
+  function buildCloudRunPayload() {
+    var activeRows = getActiveRows();
+    var rows = activeRows.map(function (row) {
+      var normalized = normalizeRow(row);
+      var calc = calculateRow(row);
+      normalized.calc = calc;
+      normalized.currency = calc.currency || "";
+      return normalized;
+    });
+    return {
+      companyName: state.companyName || "",
+      payPeriod: state.payPeriod || "",
+      payDate: state.payDate || "",
+      defaultCountry: state.defaultCountry || defaultCountry(),
+      defaultCurrency: defaultCurrencyForRun(rows),
+      languageLane: state.languageLane || "en",
+      runStatus: state.runStatus || "draft",
+      lastCalculatedAt: state.lastCalculatedAt || "",
+      brand: normalizeBrand(state.brand),
+      workflow: normalizeWorkflow(state.workflow),
+      rows: rows,
+      summary: buildRunSummary(activeRows)
+    };
+  }
+
+  function defaultCurrencyForRun(rows) {
+    var setupPack = getPack(state.defaultCountry);
+    if (setupPack && setupPack.currency) return setupPack.currency;
+    for (var index = 0; index < rows.length; index += 1) {
+      if (rows[index].currency) return rows[index].currency;
+    }
+    return "";
+  }
+
+  function refreshCloudRuns(options) {
+    var config = options || {};
+    if (!isCloudSignedIn()) {
+      cloudRuns = [];
+      cloudLoaded = false;
+      renderCloudSync();
+      return Promise.resolve();
+    }
+    cloudBusy = true;
+    if (!config.silent) setCloudStatus(cloudText("loading"), false);
+    renderCloudSync();
+    return cloudRequest(CLOUD_API + "?action=list&limit=30")
+      .then(function (data) {
+        cloudRuns = Array.isArray(data.runs) ? data.runs : [];
+        cloudLoaded = true;
+        if (!config.silent) setCloudStatus(cloudText("ready", { count: cloudRuns.length }), false);
+      })
+      .catch(function (error) {
+        setCloudStatus(cloudText("refreshError", { error: cloudErrorMessage(error) }), true);
+      })
+      .finally(function () {
+        cloudBusy = false;
+        renderCloudSync();
+      });
+  }
+
+  function handleCloudAction(event) {
+    var button = event.target.closest("[data-cloud-action]");
+    if (!button) return;
+    var action = button.getAttribute("data-cloud-action");
+    var id = button.getAttribute("data-cloud-id");
+    if (action === "load") loadCloudRun(id);
+    if (action === "delete") deleteCloudRun(id);
+  }
+
+  function loadCloudRun(id) {
+    if (!id || !isCloudSignedIn()) return;
+    cloudBusy = true;
+    setCloudStatus(cloudText("loading"), false);
+    renderCloudSync();
+    cloudRequest(CLOUD_API + "?action=load&run_id=" + encodeURIComponent(id))
+      .then(function (data) {
+        if (!data.workspaceState) throw new Error("Missing workspace state");
+        applyCloudWorkspaceState(data.workspaceState);
+        saveState();
+        refreshRolesFromCloud(true);
+        refreshAuditFromCloud(true);
+        renderAll();
+        setCloudStatus(cloudText("loaded", {
+          company: state.companyName || t("history.untitledCompany"),
+          period: state.payPeriod || cloudText("noPeriod")
+        }), false);
+      })
+      .catch(function (error) {
+        setCloudStatus(cloudText("loadError", { error: cloudErrorMessage(error) }), true);
+      })
+      .finally(function () {
+        cloudBusy = false;
+        renderCloudSync();
+      });
+  }
+
+  function deleteCloudRun(id) {
+    if (!id || !isCloudSignedIn()) return;
+    if (!window.confirm(cloudText("deleteConfirm"))) return;
+    cloudBusy = true;
+    setCloudStatus(cloudText("loading"), false);
+    renderCloudSync();
+    cloudRequest(CLOUD_API + "?run_id=" + encodeURIComponent(id), { method: "DELETE" })
+      .then(function () {
+        if (state.cloudRunId === id) state.cloudRunId = "";
+        saveState();
+        return refreshCloudRuns({ silent: true }).then(function () {
+          setCloudStatus(cloudText("deleted"), false);
+        });
+      })
+      .catch(function (error) {
+        setCloudStatus(cloudText("deleteError", { error: cloudErrorMessage(error) }), true);
+      })
+      .finally(function () {
+        cloudBusy = false;
+        renderCloudSync();
+      });
+  }
+
+  function applyCloudWorkspaceState(workspace) {
+    var period = workspace.payPeriod || workspace.period || defaultPeriod();
+    state = {
+      companyName: workspace.companyName || "",
+      payPeriod: period,
+      payDate: workspace.payDate || defaultPayDate(period),
+      defaultCountry: String(workspace.defaultCountry || defaultCountry()).toUpperCase(),
+      languageLane: workspace.languageLane || "en",
+      runStatus: workspace.runStatus || "draft",
+      currentRunId: state.currentRunId || "",
+      cloudRunId: workspace.cloudRunId || workspace.id || "",
+      cloudClientId: workspace.cloudClientId || "",
+      cloudCompanyId: workspace.cloudCompanyId || "",
+      lastCalculatedAt: workspace.lastCalculatedAt || "",
+      brand: normalizeBrand(workspace.brand || state.brand),
+      workflow: normalizeWorkflow(workspace.workflow || state.workflow),
+      rows: Array.isArray(workspace.rows) && workspace.rows.length ? workspace.rows.map(normalizeRow) : [createBlankRow(workspace.defaultCountry)]
+    };
+  }
+
+  function setCloudStatus(message, isWarning) {
+    if (!elements.cloudStatus) return;
+    elements.cloudStatus.textContent = message;
+    elements.cloudStatus.classList.toggle("warn", Boolean(isWarning));
+  }
+
+  function cloudErrorMessage(error) {
+    if (!error) return "Unknown error";
+    if (error.status === 401) return "Unauthorized";
+    return error.message || String(error);
+  }
+
+  function setProStatus(message, isWarning) {
+    if (!elements.proStatus) return;
+    elements.proStatus.textContent = message;
+    elements.proStatus.classList.toggle("warn", Boolean(isWarning));
+  }
+
+  function renderProDashboard() {
+    state.workflow = normalizeWorkflow(state.workflow);
+    var activeRows = getActiveRows();
+    var summary = buildRunSummary(activeRows);
+    setText("proKicker", proText("kicker"));
+    if (document.getElementById("pro-command-title")) document.getElementById("pro-command-title").textContent = proText("title");
+    setText("proNote", proText("note"));
+    setText("metricReadyRows", String(summary.fullRows));
+    setText("metricNeedsReviewRows", String(summary.reviewRows));
+    setText("metricPayslips", String(state.workflow.payslipCount || 0));
+    setText("metricStatPacks", String(state.workflow.statutoryPackCount || 0));
+    setText("metricExports", String(state.workflow.exportedCount || 0));
+    setText("metricReadyLabel", proText("readyRows"));
+    setText("metricNeedsReviewLabel", proText("needsReview"));
+    setText("metricPayslipLabel", proText("payslips"));
+    setText("metricStatPackLabel", proText("statPacks"));
+    setText("metricExportLabel", proText("exports"));
+    setText("brandNameLabel", proText("brandName"));
+    setText("preparedByLabel", proText("preparedBy"));
+    setText("brandAccentLabel", proText("accent"));
+    setText("inviteEmailLabel", proText("inviteEmail"));
+    setText("inviteRoleLabel", proText("inviteRole"));
+    setText("approvalNoteLabel", proText("approvalNote"));
+    setButtonText("importRowsBtn", proText("import"));
+    setButtonText("generatePayslipsBtn", proText("generatePayslips"));
+    setButtonText("generateStatutoryBtn", proText("statutory"));
+    setButtonText("requestApprovalBtn", proText("requestApproval"));
+    setButtonText("approveRunBtn", proText("approve"));
+    setButtonText("brandedPacketBtn", proText("brandedPacket"));
+    setButtonText("inviteMemberBtn", proText("invite"));
+    var hasRows = activeRows.length > 0;
+    ["generatePayslipsBtn", "generateStatutoryBtn", "requestApprovalBtn", "approveRunBtn", "brandedPacketBtn"].forEach(function (id) {
+      if (elements[id]) elements[id].disabled = !hasRows;
+    });
+    if (elements.inviteMemberBtn) elements.inviteMemberBtn.disabled = !isCloudSignedIn() || !state.cloudRunId;
+    if (elements.proStatus && !elements.proStatus.textContent) setProStatus(proText("idle"), false);
+  }
+
+  function setText(id, value) {
+    if (elements[id]) elements[id].textContent = value;
+  }
+
+  function setButtonText(id, value) {
+    if (elements[id]) elements[id].textContent = value;
+  }
+
+  function markWorkflow(fields) {
+    state.workflow = normalizeWorkflow(Object.assign({}, state.workflow || {}, fields || {}, {
+      lastWorkflowAt: new Date().toISOString()
+    }));
+    saveState();
+    renderProDashboard();
+  }
+
+  function cloudRunAction(action, payload) {
+    if (!isCloudSignedIn() || !state.cloudRunId) {
+      setProStatus(proText("cloudNeeded"), true);
+      return Promise.resolve(null);
+    }
+    return cloudRequest(CLOUD_API, {
+      method: "POST",
+      body: Object.assign({
+        action: action,
+        run_id: state.cloudRunId,
+        brand: state.brand || {}
+      }, payload || {})
+    }).catch(function (error) {
+      setProStatus(proText("cloudError", { error: cloudErrorMessage(error) }), true);
+      return null;
+    });
+  }
+
+  function recordCloudExport(exportType, filename, rowCount) {
+    markWorkflow({
+      exportedCount: (state.workflow && state.workflow.exportedCount || 0) + 1,
+      lastExportAt: new Date().toISOString()
+    });
+    if (!isCloudSignedIn() || !state.cloudRunId) return Promise.resolve(null);
+    return cloudRunAction("record_export", {
+      export_type: exportType,
+      file_name: filename,
+      row_count: rowCount,
+      metadata: { local_export: true }
+    }).then(function () {
+      refreshAuditFromCloud(true);
+      refreshCloudRuns({ silent: true });
+    });
+  }
+
+  function importRowsFromFile() {
+    var file = elements.importFile && elements.importFile.files && elements.importFile.files[0];
+    if (!file) {
+      setProStatus(proText("importNoFile"), true);
+      return;
+    }
+    var lower = file.name.toLowerCase();
+    var readPromise;
+    if (lower.endsWith(".xlsx") || lower.endsWith(".xls")) {
+      setProStatus(proText("xlsxLoading"), false);
+      readPromise = file.arrayBuffer().then(function (buffer) {
+        return loadXlsxParser().then(function () {
+          var workbook = window.XLSX.read(buffer, { type: "array" });
+          var sheet = workbook.Sheets[workbook.SheetNames[0]];
+          return window.XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false });
+        });
+      });
+    } else {
+      readPromise = file.text().then(function (text) {
+        return parseDelimitedText(text, lower.endsWith(".tsv") ? "\t" : ",");
+      });
+    }
+    readPromise.then(function (table) {
+      var importedRows = rowsFromImportTable(table);
+      if (!importedRows.length) throw new Error("No usable payroll rows found");
+      var activeExisting = getActiveRows();
+      state.rows = activeExisting.length ? state.rows.concat(importedRows) : importedRows;
+      state.runStatus = "draft";
+      markWorkflow({ lastImportAt: new Date().toISOString() });
+      saveState();
+      renderAll();
+      setProStatus(proText("importDone", { count: importedRows.length, file: file.name }), false);
+      cloudRunAction("record_import", {
+        import_type: lower.endsWith(".xlsx") || lower.endsWith(".xls") ? "payroll_run_excel" : "payroll_run_csv",
+        source_filename: file.name,
+        source_mime: file.type || "",
+        row_count: importedRows.length
+      });
+    }).catch(function (error) {
+      setProStatus(proText("importError", { error: error.message || String(error) }), true);
+    });
+  }
+
+  function loadXlsxParser() {
+    if (window.XLSX && window.XLSX.read) return Promise.resolve(window.XLSX);
+    if (xlsxLoadPromise) return xlsxLoadPromise;
+    xlsxLoadPromise = new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+      script.onload = function () { resolve(window.XLSX); };
+      script.onerror = function () { reject(new Error("Excel parser could not load. Save as CSV and import again.")); };
+      document.head.appendChild(script);
+    });
+    return xlsxLoadPromise;
+  }
+
+  function parseDelimitedText(text, delimiter) {
+    var rows = [];
+    var row = [];
+    var cell = "";
+    var quoted = false;
+    for (var index = 0; index < text.length; index += 1) {
+      var char = text[index];
+      var next = text[index + 1];
+      if (char === "\"") {
+        if (quoted && next === "\"") {
+          cell += "\"";
+          index += 1;
+        } else {
+          quoted = !quoted;
+        }
+      } else if (char === delimiter && !quoted) {
+        row.push(cell);
+        cell = "";
+      } else if ((char === "\n" || char === "\r") && !quoted) {
+        if (char === "\r" && next === "\n") index += 1;
+        row.push(cell);
+        if (row.some(function (value) { return String(value).trim(); })) rows.push(row);
+        row = [];
+        cell = "";
+      } else {
+        cell += char;
+      }
+    }
+    row.push(cell);
+    if (row.some(function (value) { return String(value).trim(); })) rows.push(row);
+    return rows;
+  }
+
+  function rowsFromImportTable(table) {
+    table = Array.isArray(table) ? table : [];
+    if (!table.length) return [];
+    var headers = table[0].map(function (value) { return String(value || "").trim().toLowerCase(); });
+    var hasHeader = headers.some(function (header) {
+      return /employee|name|gross|salary|country|allowance|overtime|deduction|role|department/.test(header);
+    });
+    var bodyRows = hasHeader ? table.slice(1) : table;
+    return bodyRows.map(function (cells) {
+      function read(names, fallbackIndex) {
+        var found = -1;
+        names.some(function (name) {
+          found = headers.indexOf(name);
+          return found >= 0;
+        });
+        return cells[found >= 0 ? found : fallbackIndex];
+      }
+      var row = {
+        id: createId("row"),
+        name: String(read(["employee", "employee name", "name", "full name", "worker"], 0) || "").trim(),
+        role: String(read(["role", "department", "role / dept", "job title"], 1) || "").trim(),
+        country: String(read(["country", "country code", "jurisdiction"], 2) || state.defaultCountry || defaultCountry()).toUpperCase().slice(0, 8),
+        gross: toNumber(cleanNumber(read(["gross", "gross salary", "salary", "basic salary", "gross pay"], 3))),
+        allowances: toNumber(cleanNumber(read(["allowance", "allowances"], 4))),
+        overtime: toNumber(cleanNumber(read(["overtime", "overtime / extra", "extra pay"], 5))),
+        unpaidDays: toNumber(cleanNumber(read(["unpaid days", "unpaid_days"], 6))),
+        unpaidAmount: toNumber(cleanNumber(read(["unpaid amount", "unpaid_amount"], 7))),
+        customDeductions: toNumber(cleanNumber(read(["deductions", "custom deductions", "custom_deductions"], 8)))
+      };
+      return isRowActive(row) ? row : null;
+    }).filter(Boolean);
+  }
+
+  function cleanNumber(value) {
+    return String(value == null ? "" : value).replace(/[^0-9.-]/g, "");
+  }
+
+  function generatePayslipPacket() {
+    var packets = getExportPackets();
+    if (!packets.length) {
+      setProStatus(proText("noRows"), true);
+      return;
+    }
+    var html = buildPayslipHtml(packets);
+    var filename = exportFileName("payslips", "html");
+    downloadText(filename, html, "text/html;charset=utf-8");
+    markWorkflow({ payslipCount: packets.length });
+    setProStatus(proText("payslipsDone", { count: packets.length }), false);
+    cloudRunAction("generate_payslips", { row_count: packets.length }).then(function () {
+      refreshAuditFromCloud(true);
+    });
+  }
+
+  function buildPayslipHtml(packets) {
+    var brand = normalizeBrand(state.brand);
+    var title = brand.name || state.companyName || "AfroPayroll";
+    var accent = brand.accent;
+    var cards = packets.map(function (packet) {
+      return "<section class=\"payslip\"><header><strong>" + escapeHtml(title) + "</strong><span>" + escapeHtml(state.payPeriod || "") + "</span></header>"
+        + "<h2>" + escapeHtml(packet.employee) + "</h2>"
+        + "<p>" + escapeHtml(packet.role || "") + " | " + escapeHtml(packet.country) + "</p>"
+        + "<dl>"
+        + payslipLine("Gross", packet.calc.gross, packet.currency)
+        + payslipLine("Allowances + overtime", packet.calc.allowances + packet.calc.overtime, packet.currency)
+        + payslipLine("Employee deductions", packet.calc.employeeDeductions + packet.calc.customDeductions, packet.currency)
+        + payslipLine("Employer cost", packet.calc.employerCost, packet.currency)
+        + payslipLine("Net pay", packet.calc.netPay, packet.currency)
+        + "</dl><p class=\"warn\">" + escapeHtml(packet.warning) + "</p></section>";
+    }).join("");
+    return "<!doctype html><html><head><meta charset=\"utf-8\"><title>" + escapeHtml(title) + " payslips</title><style>"
+      + "body{font-family:Arial,sans-serif;background:#f6f8fb;color:#111827;margin:0;padding:24px}.payslip{page-break-after:always;background:#fff;border:1px solid #dbe4f0;border-top:5px solid " + accent + ";border-radius:10px;margin:0 auto 18px;max-width:760px;padding:24px}header{display:flex;justify-content:space-between;color:#475569}h2{margin:18px 0 4px}dl{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:22px}dt{color:#64748b}dd{margin:0;font-weight:700}.warn{font-size:12px;color:#92400e;margin-top:18px}@media print{body{background:#fff}.payslip{box-shadow:none}}"
+      + "</style></head><body>" + cards + "</body></html>";
+  }
+
+  function payslipLine(label, value, currency) {
+    return "<dt>" + escapeHtml(label) + "</dt><dd>" + escapeHtml(formatMoney(value, currency)) + "</dd>";
+  }
+
+  function generateStatutoryPackCsv() {
+    var rows = getActiveRows();
+    if (!rows.length) {
+      setProStatus(proText("noRows"), true);
+      return;
+    }
+    var packsByCountry = summarizeStatutoryRows(rows);
+    var csvRows = [[
+      "country",
+      "currency",
+      "rows",
+      "gross_pay",
+      "preview_gross",
+      "employee_deductions",
+      "employer_cost",
+      "net_pay",
+      "review_rows",
+      "pack_statuses"
+    ]];
+    Object.keys(packsByCountry).sort().forEach(function (country) {
+      var item = packsByCountry[country];
+      csvRows.push([
+        country,
+        item.currency,
+        item.rows,
+        csvNumber(item.gross),
+        csvNumber(item.previewGross),
+        csvNumber(item.employeeDeductions),
+        csvNumber(item.employerCost),
+        csvNumber(item.netPay),
+        item.reviewRows,
+        Object.keys(item.statuses).sort().join("|")
+      ]);
+    });
+    var filename = exportFileName("statutory-pack", "csv");
+    downloadText(filename, toCsv(csvRows), "text/csv;charset=utf-8");
+    var count = Object.keys(packsByCountry).length;
+    markWorkflow({ statutoryPackCount: count });
+    setProStatus(proText("statDone", { count: count }), false);
+    cloudRunAction("generate_statutory_packs", { country_count: count }).then(function () {
+      refreshAuditFromCloud(true);
+    });
+    recordCloudExport("statutory_pack_csv", filename, count);
+  }
+
+  function summarizeStatutoryRows(rows) {
+    var output = {};
+    rows.forEach(function (row) {
+      var calc = calculateRow(row);
+      var country = String(row.country || state.defaultCountry || "N/A").toUpperCase();
+      if (!output[country]) {
+        output[country] = {
+          currency: calc.currency || "",
+          rows: 0,
+          gross: 0,
+          previewGross: 0,
+          employeeDeductions: 0,
+          employerCost: 0,
+          netPay: 0,
+          reviewRows: 0,
+          statuses: {}
+        };
+      }
+      output[country].rows += 1;
+      output[country].gross += calc.gross;
+      output[country].previewGross += calc.previewGross;
+      output[country].employeeDeductions += calc.employeeDeductions;
+      output[country].employerCost += calc.employerCost;
+      output[country].netPay += calc.netPay;
+      if (isReviewRow(calc)) output[country].reviewRows += 1;
+      output[country].statuses[calc.status] = true;
+    });
+    return output;
+  }
+
+  function requestRunApproval() {
+    if (!getActiveRows().length) {
+      setProStatus(proText("noRows"), true);
+      return;
+    }
+    state.workflow = normalizeWorkflow(state.workflow);
+    state.workflow.approvalStatus = "pending";
+    state.runStatus = "review";
+    saveState();
+    renderAll();
+    setProStatus(proText("approvalRequested"), false);
+    cloudRunAction("request_approval", {
+      note: elements.approvalNote && elements.approvalNote.value || ""
+    }).then(function () {
+      refreshAuditFromCloud(true);
+      refreshCloudRuns({ silent: true });
+    });
+  }
+
+  function approveCurrentRun() {
+    if (!getActiveRows().length) {
+      setProStatus(proText("noRows"), true);
+      return;
+    }
+    state.workflow = normalizeWorkflow(state.workflow);
+    state.workflow.approvalStatus = "approved";
+    state.runStatus = "ready";
+    saveState();
+    renderAll();
+    setProStatus(proText("approved"), false);
+    cloudRunAction("approve_run", {
+      note: elements.approvalNote && elements.approvalNote.value || ""
+    }).then(function () {
+      refreshAuditFromCloud(true);
+      refreshCloudRuns({ silent: true });
+    });
+  }
+
+  function exportBrandedPacket() {
+    var packets = getExportPackets();
+    if (!packets.length) {
+      setProStatus(proText("noRows"), true);
+      return;
+    }
+    var filename = exportFileName("branded-packet", "html");
+    downloadText(filename, buildBrandedPacketHtml(packets), "text/html;charset=utf-8");
+    markWorkflow({
+      exportedCount: (state.workflow && state.workflow.exportedCount || 0) + 1,
+      lastExportAt: new Date().toISOString()
+    });
+    setProStatus(proText("packetDone"), false);
+    cloudRunAction("record_export", {
+      export_type: "other",
+      file_name: filename,
+      row_count: packets.length,
+      metadata: { local_html_packet: true, branded_packet: true }
+    }).then(function () {
+      refreshAuditFromCloud(true);
+      refreshCloudRuns({ silent: true });
+    });
+  }
+
+  function buildBrandedPacketHtml(packets) {
+    var brand = normalizeBrand(state.brand);
+    var summary = buildRunSummary(packets.map(function (packet) { return packet.row; }));
+    var title = brand.name || state.companyName || "AfroPayroll packet";
+    var rows = packets.map(function (packet) {
+      return "<tr><td>" + escapeHtml(packet.employee) + "</td><td>" + escapeHtml(packet.country) + "</td><td>" + escapeHtml(packet.packStatus) + "</td><td>" + escapeHtml(formatMoney(packet.calc.previewGross, packet.currency)) + "</td><td>" + escapeHtml(formatMoney(packet.calc.netPay, packet.currency)) + "</td><td>" + escapeHtml(packet.warning) + "</td></tr>";
+    }).join("");
+    var totals = Object.keys(summary.totals).sort().map(function (currency) {
+      var total = summary.totals[currency];
+      return "<li>" + escapeHtml(currency) + ": " + escapeHtml(formatMoney(total.netPay, currency)) + " net, " + escapeHtml(formatMoney(total.employerCost, currency)) + " employer cost</li>";
+    }).join("");
+    return "<!doctype html><html><head><meta charset=\"utf-8\"><title>" + escapeHtml(title) + "</title><style>"
+      + "body{font-family:Arial,sans-serif;margin:0;background:#f5f7fb;color:#0f172a}.wrap{max-width:1020px;margin:0 auto;padding:28px}.hero{background:" + brand.accent + ";color:#fff;border-radius:14px;padding:24px}table{width:100%;border-collapse:collapse;background:#fff;margin-top:18px}th,td{border:1px solid #dbe4f0;padding:9px;text-align:left;font-size:13px}th{background:#f8fafc}section{background:#fff;border:1px solid #dbe4f0;border-radius:12px;padding:18px;margin-top:16px}.small{color:#64748b;font-size:12px;line-height:1.5}@media print{body{background:#fff}.wrap{padding:0}.hero,section{border-radius:0}}"
+      + "</style></head><body><div class=\"wrap\"><div class=\"hero\"><h1>" + escapeHtml(title) + "</h1><p>" + escapeHtml(state.companyName || "") + " | " + escapeHtml(state.payPeriod || "") + " | Prepared by " + escapeHtml(brand.preparedBy || "AfroPayroll") + "</p></div>"
+      + "<section><h2>Totals</h2><ul>" + totals + "</ul></section>"
+      + "<section><h2>Payroll rows</h2><table><thead><tr><th>Employee</th><th>Country</th><th>Pack</th><th>Preview gross</th><th>Net pay</th><th>Review note</th></tr></thead><tbody>" + rows + "</tbody></table></section>"
+      + "<section class=\"small\"><strong>Guardrails:</strong> This is a draft payroll packet. It does not file taxes, remit statutory deductions, move salary funds, or certify compliance.</section></div></body></html>";
+  }
+
+  function inviteWorkspaceMember() {
+    var email = elements.inviteEmail && elements.inviteEmail.value.trim();
+    var role = elements.inviteRole && elements.inviteRole.value;
+    if (!email || !state.cloudRunId || !isCloudSignedIn()) {
+      setProStatus(proText("cloudNeeded"), true);
+      return;
+    }
+    cloudRunAction("invite_member", {
+      email: email,
+      role: role
+    }).then(function (data) {
+      if (!data) return;
+      setProStatus(proText("inviteDone", { email: email }), false);
+      refreshRolesFromCloud(true);
+      refreshAuditFromCloud(true);
+    }).catch(function (error) {
+      setProStatus(proText("inviteError", { error: cloudErrorMessage(error) }), true);
+    });
+  }
+
+  function refreshRolesFromCloud(silent) {
+    if (!state.cloudRunId || !isCloudSignedIn()) {
+      rolePermissions = [];
+      memberInvites = [];
+      renderRoles();
+      return Promise.resolve();
+    }
+    return cloudRequest(CLOUD_API + "?action=roles&run_id=" + encodeURIComponent(state.cloudRunId))
+      .then(function (data) {
+        rolePermissions = Array.isArray(data.role_permissions) ? data.role_permissions : [];
+        memberInvites = Array.isArray(data.members) ? data.members : [];
+        renderRoles();
+        if (!silent) setRoleStatus(proText("rolesLoaded", { count: rolePermissions.length, members: memberInvites.length }), false);
+      })
+      .catch(function (error) {
+        setRoleStatus(proText("cloudError", { error: cloudErrorMessage(error) }), true);
+      });
+  }
+
+  function refreshAuditFromCloud(silent) {
+    if (!state.cloudRunId || !isCloudSignedIn()) {
+      auditEvents = [];
+      renderAudit();
+      return Promise.resolve();
+    }
+    return cloudRequest(CLOUD_API + "?action=audit&run_id=" + encodeURIComponent(state.cloudRunId))
+      .then(function (data) {
+        auditEvents = Array.isArray(data.events) ? data.events : [];
+        renderAudit();
+        if (!silent) setAuditStatus(proText("auditLoaded", { count: auditEvents.length }), false);
+      })
+      .catch(function (error) {
+        setAuditStatus(proText("cloudError", { error: cloudErrorMessage(error) }), true);
+      });
+  }
+
+  function renderRoles() {
+    setText("rolesKicker", proText("rolesKicker"));
+    if (document.getElementById("roles-title")) document.getElementById("roles-title").textContent = proText("rolesTitle");
+    setText("rolesNote", proText("rolesNote"));
+    if (!elements.rolesList) return;
+    if (!rolePermissions.length) {
+      elements.rolesList.innerHTML = "<div class=\"apw-empty\">" + escapeHtml(proText("rolesEmpty")) + "</div>";
+      setRoleStatus(proText("rolesEmpty"), false);
+      return;
+    }
+    elements.rolesList.innerHTML = "<div class=\"apw-mini-row head\"><span>Role</span><span>" + escapeHtml(proText("viewSalary")) + "</span><span>" + escapeHtml(proText("editSalary")) + "</span><span>" + escapeHtml(proText("manageMembers")) + "</span></div>"
+      + rolePermissions.map(function (role) {
+        return "<div class=\"apw-mini-row\"><strong>" + escapeHtml(role.role) + "</strong><span>" + yesNo(role.can_view_salary_data) + "</span><span>" + yesNo(role.can_edit_salary_data || role.can_approve_runs) + "</span><span>" + yesNo(role.can_manage_members) + "</span></div>";
+      }).join("")
+      + (memberInvites.length ? "<div class=\"apw-status-note\">" + escapeHtml(memberInvites.map(function (member) { return (member.invited_email || member.user_id || "member") + " - " + member.role + " - " + member.status; }).join(" | ")) + "</div>" : "");
+  }
+
+  function renderAudit() {
+    setText("auditKicker", proText("auditKicker"));
+    if (document.getElementById("audit-title")) document.getElementById("audit-title").textContent = proText("auditTitle");
+    setText("auditNote", proText("auditNote"));
+    if (!elements.auditList) return;
+    elements.auditList.innerHTML = auditEvents.length
+      ? auditEvents.slice(0, 8).map(function (event) {
+        return "<div class=\"apw-audit-item\"><div class=\"apw-audit-title\">" + escapeHtml(event.action || "") + "</div><div class=\"apw-audit-meta\">" + escapeHtml(event.summary || "") + " - " + escapeHtml(formatHistoryDate(event.created_at)) + "</div></div>";
+      }).join("")
+      : "<div class=\"apw-empty\">" + escapeHtml(proText("auditEmpty")) + "</div>";
+    if (!auditEvents.length) setAuditStatus(proText("auditEmpty"), false);
+  }
+
+  function setRoleStatus(message, isWarning) {
+    if (!elements.rolesStatus) return;
+    elements.rolesStatus.textContent = message;
+    elements.rolesStatus.classList.toggle("warn", Boolean(isWarning));
+  }
+
+  function setAuditStatus(message, isWarning) {
+    if (!elements.auditStatus) return;
+    elements.auditStatus.textContent = message;
+    elements.auditStatus.classList.toggle("warn", Boolean(isWarning));
+  }
+
+  function yesNo(value) {
+    return value ? t("export.yes") : t("export.no");
   }
 
   function renderPacks() {
@@ -1197,7 +2657,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         packet.currency
       ];
     });
-    downloadText(exportFileName("roster", "csv"), toCsv([headers].concat(rows)), "text/csv;charset=utf-8");
+    var filename = exportFileName("roster", "csv");
+    downloadText(filename, toCsv([headers].concat(rows)), "text/csv;charset=utf-8");
+    recordCloudExport("roster_csv", filename, packets.length);
   }
 
   function exportPayrollSummaryCsv() {
@@ -1243,7 +2705,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         packet.calculationMode
       ];
     });
-    downloadText(exportFileName("payroll-summary", "csv"), toCsv([headers].concat(rows)), "text/csv;charset=utf-8");
+    var filename = exportFileName("payroll-summary", "csv");
+    downloadText(filename, toCsv([headers].concat(rows)), "text/csv;charset=utf-8");
+    recordCloudExport("payroll_summary_csv", filename, packets.length);
   }
 
   function exportReviewWarningsCsv() {
@@ -1267,13 +2731,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         packet.sourceReviewNote
       ];
     });
-    downloadText(exportFileName("review-warnings", "csv"), toCsv([headers].concat(rows)), "text/csv;charset=utf-8");
+    var filename = exportFileName("review-warnings", "csv");
+    downloadText(filename, toCsv([headers].concat(rows)), "text/csv;charset=utf-8");
+    recordCloudExport("review_warnings_csv", filename, packets.length);
   }
 
   function exportHandoffNote() {
     var packets = getExportPackets();
     if (!packets.length) return;
-    downloadText(exportFileName("handoff-note", "md"), buildHandoffNote(packets), "text/markdown;charset=utf-8");
+    var filename = exportFileName("handoff-note", "md");
+    downloadText(filename, buildHandoffNote(packets), "text/markdown;charset=utf-8");
+    recordCloudExport("handoff_note_md", filename, packets.length);
   }
 
   function getExportPackets() {
@@ -1533,6 +3001,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   cacheElements();
   hydrateCountrySelects();
   bindSetupInputs();
+  bindProInputs();
   bindActions();
   renderAll();
 })();

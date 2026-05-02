@@ -46,6 +46,16 @@ const BUNDLE_DEFS = {
   ],
 };
 
+const LEGACY_BUNDLE_ALIASES = {
+  // Some generated and country-level salary/tax pages still reference these
+  // historical tool-page bundle names. Keep them available until a full HTML
+  // bundle rewrite has safely moved every route to the current hash.
+  'tool-page': [
+    'tool-page.4701dd1d.min.js',
+    'tool-page.c4ee75a0.min.js',
+  ],
+};
+
 // Ensure bundles directory exists
 if (!fs.existsSync(BUNDLES_DIR)) {
   fs.mkdirSync(BUNDLES_DIR, { recursive: true });
@@ -102,22 +112,31 @@ for (const [name, files] of Object.entries(BUNDLE_DEFS)) {
   const outPath = path.join(BUNDLES_DIR, outFilename);
 
   fs.writeFileSync(outPath, concatenated, 'utf8');
+  const aliases = (LEGACY_BUNDLE_ALIASES[name] || []).filter(alias => alias !== outFilename);
+  for (const alias of aliases) {
+    fs.writeFileSync(path.join(BUNDLES_DIR, alias), concatenated, 'utf8');
+  }
 
   const outSize = Buffer.byteLength(concatenated, 'utf8');
   totalIn += inputSize;
   totalOut += outSize;
 
-  manifest[name] = {
+  const bundleInfo = {
     file: outFilename,
     hash: hash,
     path: `/assets/js/bundles/${outFilename}`,
     files: files,
     size: outSize,
   };
+  if (aliases.length) {
+    bundleInfo.aliases = aliases.map(alias => `/assets/js/bundles/${alias}`);
+  }
+  manifest[name] = bundleInfo;
 
   const inKB = (inputSize / 1024).toFixed(1);
   const outKB = (outSize / 1024).toFixed(1);
-  console.log(`  BUNDLE  ${name}: ${files.length} files, ${inKB}KB → ${outKB}KB → ${outFilename}`);
+  const aliasNote = aliases.length ? ` (+${aliases.length} aliases)` : '';
+  console.log(`  BUNDLE  ${name}: ${files.length} files, ${inKB}KB → ${outKB}KB → ${outFilename}${aliasNote}`);
 }
 
 // Write manifest

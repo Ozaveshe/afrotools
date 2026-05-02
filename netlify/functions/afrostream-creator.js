@@ -33,12 +33,6 @@ async function safeSb(path, fallback) {
   }
 }
 
-function mentionFilter(name) {
-  var term = encodeURIComponent(String(name || '').trim());
-  if (!term) return '';
-  return 'or=(title.ilike.*' + term + '*,excerpt.ilike.*' + term + '*,body.ilike.*' + term + '*)';
-}
-
 exports.handler = async function(event) {
   var h = cors(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: h, body: '' };
@@ -60,20 +54,30 @@ exports.handler = async function(event) {
     var streamsPath = 'as_streams?creator_id=eq.' + id + '&is_published=eq.true&order=stream_date.desc&limit=20';
     var snapshotsPath = 'as_creator_snapshots?creator_id=eq.' + id + '&order=snapshot_date.desc&limit=30';
     var supportersPath = 'as_creator_supporters?creator_id=eq.' + id + '&is_published=eq.true&order=amount.desc,event_date.desc&limit=10';
-    var newsPath = 'as_news?is_published=eq.true&' + mentionFilter(creator.name) + '&order=published_at.desc&limit=10';
     var similarPath = 'as_creators?country=eq.' + encodeURIComponent(creator.country) + '&slug=neq.' + encodeURIComponent(slug) + '&is_published=eq.true&order=total_followers.desc&limit=5';
+    var mentionPath = 'as_news_creator_mentions?creator_id=eq.' + id + '&order=detected_at.desc&limit=10';
 
     var results = await Promise.all([
       safeSb(streamsPath, []),
       safeSb(snapshotsPath, []),
       safeSb(supportersPath, []),
-      safeSb(newsPath, []),
+      safeSb(mentionPath, []),
       safeSb(similarPath, [])
     ]);
 
     var streams = results[0];
     if ((!streams || !streams.length) && creator.name) {
       streams = await safeSb('as_streams?creator_name=eq.' + encodedName + '&is_published=eq.true&order=stream_date.desc&limit=20', []);
+    }
+
+    var mentionRows = Array.isArray(results[3]) ? results[3] : [];
+    var newsRows = [];
+    if (mentionRows.length) {
+      var newsIds = mentionRows.map(function(row) { return row.news_id; }).filter(Boolean);
+      if (newsIds.length) {
+        var newsPath = 'as_news?id=in.(' + newsIds.join(',') + ')&is_published=eq.true&order=published_at.desc';
+        newsRows = await safeSb(newsPath, []);
+      }
     }
 
     return {
@@ -86,7 +90,7 @@ exports.handler = async function(event) {
           streams: streams || [],
           snapshots: results[1] || [],
           supporters: results[2] || [],
-          news: results[3] || [],
+          news: newsRows || [],
           similar: results[4] || []
         }
       })

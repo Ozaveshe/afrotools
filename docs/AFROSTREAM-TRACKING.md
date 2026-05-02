@@ -32,6 +32,12 @@ Live stream thumbnails are user-facing media and must pass the same display poli
 `netlify/functions/afrostream-news-monitor.js` runs daily.
 It reads active rows from `public.as_news_sources`, fetches RSS or Atom feeds, matches published AfroStream creator names, writes matching stories into `public.as_news`, and links them through `public.as_news_creator_mentions`.
 
+Ops workflow:
+
+- Maintain sources in the AfroStream admin under the `Ops` tab, or through `GET/POST/PUT/DELETE /api/admin/afrostream/news-sources`.
+- Run the monitor manually through the AfroStream admin `Run News Monitor` action, or `POST /api/admin/afrostream/ops/news-monitor`.
+- Creator pages should read linked mention rows from `public.as_news_creator_mentions`, not a loose text search over `public.as_news`.
+
 RSS sources can also be supplied through:
 
 ```text
@@ -43,6 +49,12 @@ AFROSTREAM_NEWS_RSS_FEEDS=[{"name":"Source name","feed_url":"https://example.com
 Verified supporter rows live in `public.as_creator_supporters`.
 The creator page reads this table through `/api/afrostream/creator`.
 Do not invent gifter rows from aggregate revenue. Only write rows when a source identifies supporter names or public gift totals.
+
+Ops workflow:
+
+- Add verified supporter rows in the AfroStream admin `Ops` tab, or through `GET/POST/PUT/DELETE /api/admin/afrostream/supporters`.
+- Every supporter row should include the creator, amount, currency, and a source label. Add a source URL whenever one exists.
+- If there is no verified supporter evidence, leave the row count at zero. The product should show the empty state, not synthetic gifters.
 
 ## Creator Profile Link Audits
 

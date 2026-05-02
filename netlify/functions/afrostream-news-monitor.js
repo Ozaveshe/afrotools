@@ -88,6 +88,17 @@ function hash(value) {
   return Math.abs(h).toString(36);
 }
 
+function escapeRegex(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function normalizeForMatch(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
 function parseFeedsFromEnv() {
   if (!ENV_FEEDS.trim()) return [];
   try {
@@ -127,11 +138,15 @@ function parseFeed(xml) {
 }
 
 function findCreatorMatches(item, creators) {
-  var haystack = (item.title + ' ' + item.description).toLowerCase();
+  var haystack = normalizeForMatch(item.title + ' ' + item.description);
   return creators.filter(function(creator) {
-    var name = String(creator.name || '').toLowerCase();
-    if (!name || name.length < 3) return false;
-    return haystack.indexOf(name) !== -1;
+    var name = normalizeForMatch(creator.name);
+    if (!name || name.length < 4) return false;
+
+    // Require whole-word matching so short creator names do not match
+    // unrelated words like "systems" or "transparency".
+    var pattern = new RegExp('(?:^|\\s)' + escapeRegex(name) + '(?:\\s|$)', 'i');
+    return pattern.test(haystack);
   });
 }
 

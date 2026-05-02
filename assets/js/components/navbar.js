@@ -348,7 +348,7 @@
     {
       id: 'telecom', label: 'Telecom & Mobile', labelFr: 'Télécom & Mobile', labelSw: 'Mawasiliano', icon: '📱',
       desc: 'Data plans, USSD codes, roaming, ISPs', descFr: 'Forfaits data, codes USSD, itinérance', descSw: 'Mipango ya data, misimbo ya USSD',
-      href: '/telecom/', color: '#ECFEFF', accent: '#06B6D4',
+      href: '/telecom/', hrefSw: '/sw/mawasiliano-na-mtandao/', color: '#ECFEFF', accent: '#06B6D4',
       tools: [
         { label: 'Data Plan Comparator', href: '/telecom/data-plan-compare/', emoji: '📊', badge: 'LIVE' },
         { label: 'USSD Code Directory', href: '/telecom/ussd-directory/', emoji: '📱', badge: 'LIVE' },
@@ -754,6 +754,7 @@
     ecommerce: '/sw/vat-na-kodi/',
     legal: '/sw/biashara-na-uzingatiaji/',
     'data-productivity': '/sw/data-na-tija/',
+    telecom: '/sw/mawasiliano-na-mtandao/',
     african: '/sw/nchi/',
     trade: '/sw/biashara-ya-nje/',
     government: '/sw/serikali-na-nyaraka/',
