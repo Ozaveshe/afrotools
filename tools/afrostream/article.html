@@ -16,7 +16,7 @@
 <meta property="og:url" content="https://afrotools.com/tools/afrostream/article">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Syne:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Syne:wght@400;500;600;700;800&display=swap"></noscript>
@@ -185,6 +185,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   if (canonical) canonical.setAttribute('href', articleUrl);
   var ogUrl = document.querySelector('meta[property="og:url"]');
   if (ogUrl) ogUrl.setAttribute('content', articleUrl);
+  var robots = document.querySelector('meta[name="robots"]');
+  if (robots) robots.setAttribute('content', 'index, follow');
   var ogImage = document.querySelector('meta[property="og:image"]');
   var twitterImage = document.querySelector('meta[name="twitter:image"]');
   var safeImage = U.safeHttpUrl ? U.safeHttpUrl(article.image_url || '') : (article.image_url || '');
