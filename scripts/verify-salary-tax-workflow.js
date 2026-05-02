@@ -77,8 +77,8 @@ for (const route of workflowRoutes) {
 
 const salaryHub = read('salary-tax/index.html');
 assert(salaryHub.includes('data-salary-workflow-app'), 'salary-tax/index.html is missing workflow planner mount');
-assert(salaryHub.includes('/assets/js/lib/salary-tax-workflow.js?v=20260502'), 'salary-tax/index.html is missing salary workflow script');
-assert(salaryHub.includes('/assets/css/salary-tax-workflow.css?v=20260502'), 'salary-tax/index.html is missing salary workflow stylesheet');
+assert(/\/assets\/js\/lib\/salary-tax-workflow\.js\?v=[a-z0-9]+/.test(salaryHub), 'salary-tax/index.html is missing salary workflow script');
+assert(/\/assets\/css\/salary-tax-workflow\.css\?v=[a-z0-9]+/.test(salaryHub), 'salary-tax/index.html is missing salary workflow stylesheet');
 
 const manifest = JSON.parse(read('assets/js/bundles/manifest.json'));
 const toolPage = manifest['tool-page'] || {};
