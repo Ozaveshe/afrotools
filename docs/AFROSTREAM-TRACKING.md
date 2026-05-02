@@ -38,6 +38,14 @@ Ops workflow:
 - Run the monitor manually through the AfroStream admin `Run News Monitor` action, or `POST /api/admin/afrostream/ops/news-monitor`.
 - Creator pages should read linked mention rows from `public.as_news_creator_mentions`, not a loose text search over `public.as_news`.
 
+Manual review runs can use dry-run mode before allowing writes:
+
+```text
+/.netlify/functions/afrostream-news-monitor?dry_run=1
+```
+
+Dry-run mode still fetches active sources and checks published creator names, but it reports matched items, existing news rows, would-insert counts, and skipped weak matches without writing news or mention rows. The monitor uses normalized whole-word or whole-phrase creator matching, ignores very short single-token names, and applies a lightweight editorial relevance gate so generic celebrity or birthday items do not become automated AfroStream news.
+
 RSS sources can also be supplied through:
 
 ```text
