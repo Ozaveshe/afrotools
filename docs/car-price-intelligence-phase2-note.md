@@ -47,6 +47,11 @@
   - country financing offers
   - scoring-model config
   - page/result preview
+- Expanded public car-directory country coverage from the six full-rule launch markets to a 20-market local-price start:
+  - full rule-pack mode: Nigeria, Kenya, Ghana, Uganda, Zambia, Tanzania
+  - directory-estimate mode: South Africa, Egypt, Morocco, Cote d'Ivoire, Senegal, Cameroon, Ethiopia, Rwanda, Angola, Algeria, Tunisia, Mozambique, Botswana, Namibia
+- Added local-currency rendering on the public directory, detail pages, comparison cards, tabbed costs, and CSV exports. The UI now shows the local figure first and keeps USD as the audit/reference amount.
+- Countries without a full car-import rule pack are labelled as directory estimates. They do not claim full customs-rule coverage or link users into a missing country calculator route.
 
 ## New infrastructure added
 
@@ -55,6 +60,7 @@
 - `assets/js/cars-directory.js`: shared route-aware UI for all car directory pages.
 - `assets/css/cars-directory.css`: page styling.
 - `scripts/generate-car-price-pages.js`: static route generator.
+- `scripts/sync-car-market-countries.js`: reusable seed sync for the 20-market local-price coverage layer.
 - `admin/car-price-intelligence.html`: consolidated car backend admin.
 - `supabase/migrations/017-car-price-intelligence.sql`: additive normalized schema for countries, ports, cities, vehicles, valuation packs, source/local prices, shipping, registration, practical costs, saved quotes, and watchlists.
 - `supabase/migrations/018-car-media-financing-and-scoring.sql`: additive schema for car media assets, media bindings, financing offers, and scoring models.
@@ -64,7 +70,8 @@
 - Seed price ranges are broad planning estimates, not official quotes or live marketplace feeds.
 - Explicit local-market samples were added for deterministic examples; other combinations use country-level modelled fallback profiles and are labelled with lower confidence when appropriate.
 - Official customs/rule data still comes from the Phase 1 rule packs and source metadata; no runtime scraping is used.
-- The configured Supabase data project denied schema inspection, so the migration was added to the repo but not applied live.
+- Live FX is served through the shared live-data store key `forex-latest`, exposed publicly through `/api/forex?base=USD`, with `/data/forex/latest.json` as the static fallback. On 2026-05-03, the configured Supabase project had a `forex-latest` row updated at `2026-05-03 04:16:39 UTC`; the scheduled fetcher metadata reported 50 tracked currency codes, which covers the 54 African countries because some countries share currencies.
+- The configured Supabase data project is accessible for live inspection, but car-price marketplace tables remain migration-backed until the normalized car backend is intentionally applied.
 
 ## Manual verification still needed
 
@@ -75,5 +82,6 @@
 - Apply and review `017-car-price-intelligence.sql` in the intended Supabase data project.
 - Apply and review `018-car-media-financing-and-scoring.sql` in the intended Supabase data project.
 - Refresh generated pages after any major seed dataset update with `node scripts/generate-car-price-pages.js`.
+- Refresh the 20-market seed coverage after adding or changing market eligibility with `node scripts/sync-car-market-countries.js`, then run `node scripts/generate-car-price-pages.js`.
 - Run the normal minify/build pipeline to refresh any minified registries and cache-busted asset references.
 - Validate official rule packs and valuation schedules against each country source before using the app for paid partner flows.

@@ -2,8 +2,9 @@
 // AI content repurposing — one source → multiple platform-ready outputs
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const { safeAnthropicText } = require('./_shared/anthropic-request');
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 const AUTH_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 const AUTH_SUPABASE_KEY = process.env.SUPABASE_ANON_KEY_AUTH || process.env.SUPABASE_ANON_KEY;
@@ -106,6 +107,7 @@ async function getUser(event) {
 }
 
 async function checkRateLimit(userId) {
+  if (!SUPABASE_KEY) return { allowed: false, remaining: 0, serviceUnavailable: true };
   var today = new Date().toISOString().split('T')[0];
   var res = await fetch(
     SUPABASE_URL + '/rest/v1/creator_repurpose_history?user_id=eq.' + userId +
@@ -119,6 +121,7 @@ async function checkRateLimit(userId) {
 }
 
 async function saveGeneration(userId, sourceType, sourceText, platforms, outputs) {
+  if (!SUPABASE_KEY) return;
   await fetch(SUPABASE_URL + '/rest/v1/creator_repurpose_history', {
     method: 'POST',
     headers: {
@@ -144,6 +147,13 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
+  if (!ANTHROPIC_API_KEY) {
+    return { statusCode: 503, headers, body: JSON.stringify({ error: 'AI service not configured' }) };
+  }
+  if (!SUPABASE_KEY) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server config error' }) };
+  }
+
   try {
     var user = await getUser(event);
     if (!user) {
@@ -163,7 +173,7 @@ exports.handler = async (event) => {
         };
       }
 
-      var prompt = body.prompt || '';
+      var prompt = safeAnthropicText(body.prompt || '', 'Creator repurpose prompt', 180000);
       if (!prompt) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Prompt is required' }) };
       }
@@ -178,7 +188,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 3000,
-          system: SYSTEM_PROMPT,
+          system: safeAnthropicText(SYSTEM_PROMPT, 'Creator repurpose system prompt', 120000),
           messages: [{ role: 'user', content: prompt }]
         })
       });

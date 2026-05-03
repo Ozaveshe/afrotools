@@ -20,6 +20,7 @@ Each file targets a specific instance.
 | 035-afropayroll-pro-fk-indexes.sql | FK index completion for `payroll_*` tables | **AUTH** - zpclagtgczsygrgztlts.supabase.co |
 | 038-email-marketing-engine.sql | `profiles` email fields, `email_leads` lifecycle state | **AUTH** - zpclagtgczsygrgztlts.supabase.co |
 | 039-email-lifecycle-dedup.sql | `profiles.email_welcome_sent_at` | **AUTH** - zpclagtgczsygrgztlts.supabase.co |
+| 043-email-automation-preferences.sql | weekly newsletter and sign-in reminder send state | **AUTH** - zpclagtgczsygrgztlts.supabase.co |
 
 ## Run Order
 
@@ -34,5 +35,6 @@ Run in numerical order. Migration 007 depends on 001 because it needs the
 - **035 AfroPayroll Pro indexes**: Adds direct FK indexes flagged by Supabase performance advisor after the first schema apply.
 - **038 Email marketing engine**: Targets the AUTH instance because account profiles, PDF leads, unsubscribe tokens, and Resend lifecycle sends need one project contract.
 - **039 Email lifecycle dedupe**: Lets signup welcome sends be idempotent instead of sending repeated welcomes for the same account.
+- **043 Email automation preferences**: Adds weekly-newsletter and sign-in-reminder send-state columns so scheduled email automation is repeat-safe.
 - All migrations use `IF NOT EXISTS` where possible to be safely re-runnable.
 - Free tier save limit: 5/month (configurable in application code).

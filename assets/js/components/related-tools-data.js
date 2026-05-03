@@ -12,7 +12,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 100,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "ke-paye",
@@ -23,7 +24,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 100,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "webp"
       },
       {
         "id": "afrotools-pro",
@@ -34,7 +36,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 99,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "za-paye",
@@ -45,7 +48,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 96,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "gh-paye",
@@ -56,7 +60,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 96,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "webp"
       },
       {
         "id": "fuel-tracker",
@@ -67,7 +72,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 30000
+        "estTraffic": 30000,
+        "imageExt": "svg"
       },
       {
         "id": "import-duty",
@@ -78,7 +84,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "crypto-p2p",
@@ -89,7 +96,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "afrorates",
@@ -100,7 +108,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 94,
-        "estTraffic": 25000
+        "estTraffic": 25000,
+        "imageExt": "webp"
       },
       {
         "id": "crypto-portfolio",
@@ -111,7 +120,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 94,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "eg-paye",
@@ -122,7 +132,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 94,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "currency-converter",
@@ -133,7 +144,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "crypto-prices",
@@ -144,7 +156,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "payslip-generator",
@@ -155,7 +168,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "business-planner",
@@ -166,7 +180,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "crypto-remittance",
@@ -177,7 +192,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "crypto-scam",
@@ -188,7 +204,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "crypto-stablecoins",
@@ -199,7 +216,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       }
     ],
     "en::document-pdf": [
@@ -212,7 +230,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 97,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-editor",
@@ -223,7 +242,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 96,
-        "estTraffic": 40000
+        "estTraffic": 40000,
+        "imageExt": "webp"
       },
       {
         "id": "invoice-generator",
@@ -234,7 +254,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 96,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-merge-split",
@@ -245,7 +266,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 25000
+        "estTraffic": 25000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-workspace",
@@ -256,7 +278,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 25000
+        "estTraffic": 25000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-convert",
@@ -267,7 +290,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 94,
-        "estTraffic": 30000
+        "estTraffic": 30000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-compress",
@@ -278,7 +302,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 94,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-chat",
@@ -289,7 +314,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "cover-letter",
@@ -300,7 +326,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "meeting-minutes",
@@ -311,7 +338,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-image-convert",
@@ -322,7 +350,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "pdf-sign",
@@ -333,7 +362,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-translate",
@@ -344,7 +374,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-password",
@@ -355,7 +386,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 89,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-reorder",
@@ -366,7 +398,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-compare",
@@ -377,7 +410,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-watermark",
@@ -388,7 +422,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-form-filler",
@@ -399,7 +434,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       }
     ],
     "en::african": [
@@ -412,7 +448,8 @@
         "category": "african",
         "lang": "en",
         "priority": 98,
-        "estTraffic": 50000
+        "estTraffic": 50000,
+        "imageExt": "webp"
       },
       {
         "id": "remittance-compare",
@@ -423,7 +460,8 @@
         "category": "african",
         "lang": "en",
         "priority": 98,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "remittance-v2",
@@ -434,7 +472,8 @@
         "category": "african",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "informal-fx-watch",
@@ -445,7 +484,8 @@
         "category": "african",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 11000
+        "estTraffic": 11000,
+        "imageExt": "webp"
       },
       {
         "id": "africa-conflict",
@@ -456,7 +496,8 @@
         "category": "african",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "japa-calculator",
@@ -467,7 +508,8 @@
         "category": "african",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "afrokitchen",
@@ -478,7 +520,8 @@
         "category": "african",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "staple-basket",
@@ -489,7 +532,8 @@
         "category": "african",
         "lang": "en",
         "priority": 89,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "mobile-money-fees",
@@ -500,7 +544,8 @@
         "category": "african",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "brideprice-advisor",
@@ -511,7 +556,8 @@
         "category": "african",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "fintech-fee-watch",
@@ -522,7 +568,8 @@
         "category": "african",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "cost-of-living",
@@ -533,7 +580,8 @@
         "category": "african",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "svg"
       },
       {
         "id": "electricity-estimator",
@@ -544,7 +592,8 @@
         "category": "african",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "wholesale-retail-spread",
@@ -555,7 +604,8 @@
         "category": "african",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 8500
+        "estTraffic": 8500,
+        "imageExt": "webp"
       },
       {
         "id": "diaspora-guide",
@@ -566,7 +616,8 @@
         "category": "african",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "svg"
       },
       {
         "id": "generator-fuel-african",
@@ -577,7 +628,8 @@
         "category": "african",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": ""
       },
       {
         "id": "ajo-chama",
@@ -588,7 +640,8 @@
         "category": "african",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "land-size",
@@ -599,7 +652,8 @@
         "category": "african",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       }
     ],
     "en::health": [
@@ -612,7 +666,8 @@
         "category": "health",
         "lang": "en",
         "priority": 99,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "pharmacy-prices",
@@ -623,7 +678,8 @@
         "category": "health",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 9500
+        "estTraffic": 9500,
+        "imageExt": "webp"
       },
       {
         "id": "clinic-costs",
@@ -634,7 +690,8 @@
         "category": "health",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "sickle-cell",
@@ -645,7 +702,8 @@
         "category": "health",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 11000
+        "estTraffic": 11000,
+        "imageExt": "svg"
       },
       {
         "id": "calorie-counter",
@@ -656,7 +714,8 @@
         "category": "health",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "pregnancy-nutrition",
@@ -667,7 +726,8 @@
         "category": "health",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": ""
       },
       {
         "id": "hiv-treatment-cost",
@@ -678,7 +738,8 @@
         "category": "health",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": ""
       },
       {
         "id": "blood-pressure",
@@ -689,7 +750,8 @@
         "category": "health",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "vaccine-schedule",
@@ -700,7 +762,8 @@
         "category": "health",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "svg"
       },
       {
         "id": "bmi-calculator",
@@ -711,7 +774,8 @@
         "category": "health",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "diabetes-risk",
@@ -722,7 +786,8 @@
         "category": "health",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "medical-tourism",
@@ -733,7 +798,8 @@
         "category": "health",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": ""
       },
       {
         "id": "due-date",
@@ -744,7 +810,8 @@
         "category": "health",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "hospital-cost",
@@ -755,7 +822,8 @@
         "category": "health",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "svg"
       },
       {
         "id": "drug-dosage",
@@ -766,7 +834,8 @@
         "category": "health",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "mental-health-cost",
@@ -777,7 +846,8 @@
         "category": "health",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": ""
       },
       {
         "id": "breastfeeding-tracker",
@@ -788,7 +858,8 @@
         "category": "health",
         "lang": "en",
         "priority": 75,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": ""
       },
       {
         "id": "ovulation-calc",
@@ -799,7 +870,8 @@
         "category": "health",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       }
     ],
     "en::ecommerce": [
@@ -812,7 +884,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "za-vat",
@@ -823,7 +896,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "webp"
       },
       {
         "id": "ng-vat",
@@ -834,7 +908,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "webp"
       },
       {
         "id": "ke-vat",
@@ -845,7 +920,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "webp"
       },
       {
         "id": "eg-vat",
@@ -856,7 +932,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "webp"
       },
       {
         "id": "gh-vat",
@@ -867,7 +944,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 3500
+        "estTraffic": 3500,
+        "imageExt": "webp"
       },
       {
         "id": "profit-margin",
@@ -878,7 +956,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "vat-calculator",
@@ -889,7 +968,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 11000
+        "estTraffic": 11000,
+        "imageExt": "webp"
       },
       {
         "id": "business-name-gen",
@@ -900,7 +980,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "inventory",
@@ -911,7 +992,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "market-stall-profit",
@@ -922,7 +1004,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "shipping-calc",
@@ -933,7 +1016,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "ma-vat",
@@ -944,7 +1028,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 3200
+        "estTraffic": 3200,
+        "imageExt": "webp"
       },
       {
         "id": "tz-vat",
@@ -955,7 +1040,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 2500
+        "estTraffic": 2500,
+        "imageExt": "webp"
       },
       {
         "id": "et-vat",
@@ -966,7 +1052,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 75,
-        "estTraffic": 2500
+        "estTraffic": 2500,
+        "imageExt": "webp"
       },
       {
         "id": "markup-calc",
@@ -977,7 +1064,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "dz-vat",
@@ -988,7 +1076,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 2800
+        "estTraffic": 2800,
+        "imageExt": "webp"
       },
       {
         "id": "ug-vat",
@@ -999,20 +1088,22 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 2000
+        "estTraffic": 2000,
+        "imageExt": "webp"
       }
     ],
     "en::image-design": [
       {
         "id": "image-compress",
-        "name": "Image Compressor",
+        "name": "Image Compressor Studio",
         "icon": "📷",
-        "desc": "Reduce image file size with quality slider. Crit...",
+        "desc": "Batch compress, resize, convert, compare, and ta...",
         "href": "/tools/image-compress/",
         "category": "image-design",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "background-remover",
@@ -1023,18 +1114,20 @@
         "category": "image-design",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "image-resize",
-        "name": "Image Resizer & Converter",
+        "name": "Image Resizer Studio",
         "icon": "↔️",
-        "desc": "Resize images, convert between WebP/PNG/JPG. Soc...",
+        "desc": "Batch resize, crop, pad, convert, compare, and e...",
         "href": "/tools/image-resize/",
         "category": "image-design",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "qr-generator",
@@ -1045,7 +1138,20 @@
         "category": "image-design",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
+      },
+      {
+        "id": "image-crop",
+        "name": "Image Crop Studio",
+        "icon": "🖼️",
+        "desc": "Interactive crop box with aspect presets, rotate...",
+        "href": "/tools/image-crop/",
+        "category": "image-design",
+        "lang": "en",
+        "priority": 88,
+        "estTraffic": 14000,
+        "imageExt": "svg"
       },
       {
         "id": "passport-photo",
@@ -1056,7 +1162,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "meme-generator",
@@ -1067,7 +1174,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "svg"
       },
       {
         "id": "flyer-maker",
@@ -1078,7 +1186,20 @@
         "category": "image-design",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "svg"
+      },
+      {
+        "id": "image-format-convert",
+        "name": "Image Format Converter Studio",
+        "icon": "🔄",
+        "desc": "Batch convert browser-supported images into JPG,...",
+        "href": "/tools/image-format-convert/",
+        "category": "image-design",
+        "lang": "en",
+        "priority": 86,
+        "estTraffic": 11000,
+        "imageExt": "svg"
       },
       {
         "id": "image-to-text",
@@ -1089,7 +1210,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "logo-maker",
@@ -1100,7 +1222,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "social-card",
@@ -1111,18 +1234,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 10000
-      },
-      {
-        "id": "image-crop",
-        "name": "Image Crop & Rotate",
-        "icon": "🖼️",
-        "desc": "Free-form crop, rotate, flip. Social media aspec...",
-        "href": "/tools/image-crop/",
-        "category": "image-design",
-        "lang": "en",
-        "priority": 82,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "certificate-maker",
@@ -1133,7 +1246,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "thumbnail-maker",
@@ -1144,7 +1258,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "color-picker",
@@ -1155,7 +1270,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "image-filters",
@@ -1166,7 +1282,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 77,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "colour-palette",
@@ -1177,7 +1294,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "favicon-generator",
@@ -1188,18 +1306,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 6000
-      },
-      {
-        "id": "watermark-bulk",
-        "name": "Bulk Watermark Tool",
-        "icon": "💧",
-        "desc": "Add text or image watermarks to up to 50 photos ...",
-        "href": "/tools/watermark-bulk/",
-        "category": "image-design",
-        "lang": "en",
-        "priority": 74,
-        "estTraffic": 7000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       }
     ],
     "en::developer": [
@@ -1212,7 +1320,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "data-converter",
@@ -1223,7 +1332,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "svg"
       },
       {
         "id": "ussd-simulator",
@@ -1234,7 +1344,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "api-tester",
@@ -1245,7 +1356,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 77,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "base64",
@@ -1256,7 +1368,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "hash-generator",
@@ -1267,7 +1380,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 75,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "markdown-editor",
@@ -1278,7 +1392,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "regex-tester",
@@ -1289,7 +1404,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "sql-playground",
@@ -1300,7 +1416,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "diff-checker",
@@ -1311,7 +1428,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 73,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "meta-tag-generator",
@@ -1322,7 +1440,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "svg"
       },
       {
         "id": "url-encoder",
@@ -1333,7 +1452,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "sql-formatter",
@@ -1344,7 +1464,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 70,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "css-gradient",
@@ -1355,7 +1476,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 70,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "cron-builder",
@@ -1366,7 +1488,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 70,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "jwt-decoder",
@@ -1377,7 +1500,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 70,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "meta-tag-gen",
@@ -1388,7 +1512,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 68,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "uuid-generator",
@@ -1399,7 +1524,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 68,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       }
     ],
     "en::education": [
@@ -1412,7 +1538,8 @@
         "category": "education",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 25000
+        "estTraffic": 25000,
+        "imageExt": "webp"
       },
       {
         "id": "waec-calculator",
@@ -1423,7 +1550,8 @@
         "category": "education",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "scholarship-finder",
@@ -1434,7 +1562,8 @@
         "category": "education",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "jamb-aggregate",
@@ -1445,7 +1574,8 @@
         "category": "education",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "scientific-calc",
@@ -1456,7 +1586,8 @@
         "category": "education",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "university-ranking",
@@ -1467,7 +1598,8 @@
         "category": "education",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "gpa-calculator",
@@ -1478,7 +1610,8 @@
         "category": "education",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "study-planner",
@@ -1489,7 +1622,8 @@
         "category": "education",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "svg"
       },
       {
         "id": "degree-checker",
@@ -1500,7 +1634,8 @@
         "category": "education",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "percentage-calc",
@@ -1511,7 +1646,8 @@
         "category": "education",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "citation-generator",
@@ -1522,7 +1658,8 @@
         "category": "education",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "flashcard-maker",
@@ -1533,7 +1670,8 @@
         "category": "education",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "school-fees",
@@ -1544,7 +1682,8 @@
         "category": "education",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "exam-countdown",
@@ -1555,7 +1694,8 @@
         "category": "education",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "matric-points",
@@ -1566,7 +1706,8 @@
         "category": "education",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "algebra-solver",
@@ -1577,7 +1718,8 @@
         "category": "education",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "word-counter",
@@ -1588,7 +1730,8 @@
         "category": "education",
         "lang": "en",
         "priority": 75,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "periodic-table",
@@ -1599,7 +1742,8 @@
         "category": "education",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       }
     ],
     "en::religious-cultural": [
@@ -1612,7 +1756,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "lobola-calculator",
@@ -1623,7 +1768,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "svg"
       },
       {
         "id": "prayer-times",
@@ -1634,7 +1780,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "faraid-inheritance",
@@ -1645,7 +1792,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "ramadan-timetable",
@@ -1656,7 +1804,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "tithe-offering",
@@ -1667,7 +1816,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "hajj-budget",
@@ -1678,7 +1828,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "islamic-finance",
@@ -1689,7 +1840,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 79,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "wedding-budget",
@@ -1700,7 +1852,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "funeral-cost",
@@ -1711,7 +1864,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 77,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "baby-name-generator",
@@ -1722,7 +1876,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 75,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "festival-calendar",
@@ -1733,7 +1888,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "aso-ebi-cost",
@@ -1744,7 +1900,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "naming-ceremony",
@@ -1755,7 +1912,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "traditional-attire",
@@ -1766,7 +1924,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "traditional-calendar",
@@ -1777,7 +1936,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "age-calculator-african",
@@ -1788,7 +1948,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 70,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "african-proverbs",
@@ -1799,7 +1960,8 @@
         "category": "religious-cultural",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::agriculture": [
@@ -1812,7 +1974,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "cassava-processing-calculator",
@@ -1823,7 +1986,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 16000
+        "estTraffic": 16000,
+        "imageExt": "webp"
       },
       {
         "id": "crop-yield-estimator",
@@ -1834,7 +1998,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "fish-farming-roi",
@@ -1845,7 +2010,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 81,
-        "estTraffic": 14000
+        "estTraffic": 14000,
+        "imageExt": "webp"
       },
       {
         "id": "greenhouse-cost-estimator",
@@ -1856,7 +2022,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 81,
-        "estTraffic": 14000
+        "estTraffic": 14000,
+        "imageExt": "webp"
       },
       {
         "id": "input-prices",
@@ -1867,7 +2034,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": ""
       },
       {
         "id": "farm-payroll-calculator",
@@ -1878,7 +2046,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 14000
+        "estTraffic": 14000,
+        "imageExt": "webp"
       },
       {
         "id": "commodity-prices",
@@ -1889,7 +2058,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "fertilizer-calculator",
@@ -1900,7 +2070,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "storage-loss",
@@ -1911,7 +2082,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 79,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "seed-rate-calculator",
@@ -1922,7 +2094,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 79,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "agric-profit",
@@ -1933,7 +2106,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 79,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "harvest-date-estimator",
@@ -1944,7 +2118,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": ""
       },
       {
         "id": "irrigation-calculator",
@@ -1955,7 +2130,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "livestock-feed-calculator",
@@ -1966,7 +2142,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": ""
       },
       {
         "id": "planting-calendar",
@@ -1977,7 +2154,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "pesticide-dosage-calculator",
@@ -1988,7 +2166,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 77,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": ""
       },
       {
         "id": "poultry-roi-calculator",
@@ -1999,7 +2178,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 77,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       }
     ],
     "en::legal": [
@@ -2012,7 +2192,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "rent-intelligence",
@@ -2023,7 +2204,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 11000
+        "estTraffic": 11000,
+        "imageExt": "webp"
       },
       {
         "id": "nda-generator",
@@ -2034,7 +2216,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "land-title-check",
@@ -2045,7 +2228,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "company-type-selector",
@@ -2056,7 +2240,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "lease-risk-check",
@@ -2067,7 +2252,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "tenancy-agreement",
@@ -2078,7 +2264,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "svg"
       },
       {
         "id": "rental-agreement",
@@ -2089,7 +2276,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "contract-gen",
@@ -2100,7 +2288,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "privacy-policy-gen",
@@ -2111,7 +2300,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "ng-nhf",
@@ -2122,7 +2312,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "building-materials",
@@ -2133,7 +2324,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "diaspora-property",
@@ -2144,7 +2336,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "property-valuation",
@@ -2155,7 +2348,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "property-tax",
@@ -2166,7 +2360,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "construction-budget",
@@ -2177,7 +2372,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "rental-yield",
@@ -2188,7 +2384,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "will-generator",
@@ -2199,7 +2396,8 @@
         "category": "legal",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       }
     ],
     "en::language": [
@@ -2212,7 +2410,8 @@
         "category": "language",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "african-name-meaning",
@@ -2223,7 +2422,8 @@
         "category": "language",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "swahili-translator",
@@ -2234,7 +2434,8 @@
         "category": "language",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "french-african",
@@ -2245,7 +2446,8 @@
         "category": "language",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "svg"
       },
       {
         "id": "yoruba-translator",
@@ -2256,7 +2458,8 @@
         "category": "language",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "hausa-translator",
@@ -2267,7 +2470,8 @@
         "category": "language",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "amharic-translator",
@@ -2278,7 +2482,8 @@
         "category": "language",
         "lang": "en",
         "priority": 75,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "igbo-translator",
@@ -2289,7 +2494,8 @@
         "category": "language",
         "lang": "en",
         "priority": 75,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "zulu-translator",
@@ -2300,7 +2506,8 @@
         "category": "language",
         "lang": "en",
         "priority": 73,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "arabic-calc",
@@ -2311,7 +2518,8 @@
         "category": "language",
         "lang": "en",
         "priority": 64,
-        "estTraffic": 3000
+        "estTraffic": 3000,
+        "imageExt": "svg"
       },
       {
         "id": "transliterate",
@@ -2322,7 +2530,8 @@
         "category": "language",
         "lang": "en",
         "priority": 62,
-        "estTraffic": 3000
+        "estTraffic": 3000,
+        "imageExt": "svg"
       }
     ],
     "en::engineering": [
@@ -2335,7 +2544,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "webp"
       },
       {
         "id": "afroplan-floor-planner",
@@ -2346,7 +2556,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "webp"
       },
       {
         "id": "solar-calculator",
@@ -2357,7 +2568,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "floor-plan",
@@ -2368,7 +2580,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "boq-generator",
@@ -2379,7 +2592,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "webp"
       },
       {
         "id": "electrical-load",
@@ -2390,7 +2604,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "rebar-calc",
@@ -2401,7 +2616,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": ""
       },
       {
         "id": "generator-sizing",
@@ -2412,7 +2628,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 77,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "svg"
       },
       {
         "id": "concrete-calc",
@@ -2423,7 +2640,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "structural-calc",
@@ -2434,7 +2652,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 3000
+        "estTraffic": 3000,
+        "imageExt": "svg"
       },
       {
         "id": "borehole-cost",
@@ -2445,7 +2664,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "webp"
       },
       {
         "id": "paint-calc",
@@ -2456,7 +2676,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 73,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "roofing-calc",
@@ -2467,7 +2688,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 73,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "tiles-calc",
@@ -2478,7 +2700,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 73,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "water-tank",
@@ -2489,7 +2712,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 71,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "boq-gen",
@@ -2500,7 +2724,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 55,
-        "estTraffic": 450
+        "estTraffic": 450,
+        "imageExt": ""
       },
       {
         "id": "home-renovation-cost",
@@ -2511,7 +2736,8 @@
         "category": "engineering",
         "lang": "en",
         "priority": 48,
-        "estTraffic": 400
+        "estTraffic": 400,
+        "imageExt": ""
       }
     ],
     "en::data-productivity": [
@@ -2524,7 +2750,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "svg"
       },
       {
         "id": "budget-planner",
@@ -2535,7 +2762,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "public-holidays",
@@ -2546,7 +2774,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "grade-tracker",
@@ -2557,7 +2786,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "pomodoro",
@@ -2568,7 +2798,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 68,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "age-calculator",
@@ -2579,7 +2810,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 67,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "svg"
       },
       {
         "id": "time-zone",
@@ -2590,7 +2822,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 66,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "working-days",
@@ -2601,7 +2834,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 66,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "random-picker",
@@ -2612,7 +2846,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 64,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "svg"
       },
       {
         "id": "countdown-timer",
@@ -2623,7 +2858,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 62,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "tip-calculator",
@@ -2634,7 +2870,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 62,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": "svg"
       },
       {
         "id": "meeting-cost",
@@ -2645,7 +2882,8 @@
         "category": "data-productivity",
         "lang": "en",
         "priority": 60,
-        "estTraffic": 3000
+        "estTraffic": 3000,
+        "imageExt": "svg"
       }
     ],
     "fr::financial": [
@@ -2658,7 +2896,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 83,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "dz-paye-fr",
@@ -2669,7 +2908,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 80,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "cd-paye-fr",
@@ -2680,7 +2920,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 79,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ci-paye-fr",
@@ -2691,7 +2932,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 78,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "tn-paye-fr",
@@ -2702,7 +2944,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 77,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "cm-paye-fr",
@@ -2713,7 +2956,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 76,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "sn-paye-fr",
@@ -2724,7 +2968,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 75,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "convertisseur-devises-fr",
@@ -2735,7 +2980,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 75,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ma-tva-fr",
@@ -2746,7 +2992,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 74,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "dz-tva-fr",
@@ -2757,7 +3004,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 72,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "calculateur-tva-fr",
@@ -2768,7 +3016,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 72,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "cm-tva-fr",
@@ -2779,7 +3028,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 70,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "tn-tva-fr",
@@ -2790,7 +3040,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 69,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "droits-douane-fr",
@@ -2801,7 +3052,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 68,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "sn-tva-fr",
@@ -2812,7 +3064,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 68,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "sn-vs-ci-fr",
@@ -2823,7 +3076,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 65,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ga-paye-fr",
@@ -2834,7 +3088,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 63,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "comparateur-salaires-fr",
@@ -2845,7 +3100,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 63,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       }
     ],
     "fr::document-pdf": [
@@ -2858,7 +3114,8 @@
         "category": "document-pdf",
         "lang": "fr",
         "priority": 69,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       }
     ],
     "sw::financial": [
@@ -2871,7 +3128,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 78,
-        "estTraffic": 1500
+        "estTraffic": 1500,
+        "imageExt": ""
       },
       {
         "id": "tz-paye-sw",
@@ -2882,7 +3140,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 75,
-        "estTraffic": 1200
+        "estTraffic": 1200,
+        "imageExt": ""
       },
       {
         "id": "ug-paye-sw",
@@ -2893,7 +3152,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 70,
-        "estTraffic": 900
+        "estTraffic": 900,
+        "imageExt": ""
       },
       {
         "id": "rw-paye-sw",
@@ -2904,7 +3164,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 68,
-        "estTraffic": 800
+        "estTraffic": 800,
+        "imageExt": ""
       },
       {
         "id": "ke-vs-tz-sw",
@@ -2915,7 +3176,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 65,
-        "estTraffic": 600
+        "estTraffic": 600,
+        "imageExt": ""
       },
       {
         "id": "bi-paye-sw",
@@ -2926,7 +3188,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 62,
-        "estTraffic": 500
+        "estTraffic": 500,
+        "imageExt": ""
       }
     ],
     "en::trade": [
@@ -2939,7 +3202,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "webp"
       },
       {
         "id": "landed-cost",
@@ -2950,7 +3214,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "webp"
       },
       {
         "id": "incoterms-calculator",
@@ -2961,7 +3226,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 81,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": ""
       },
       {
         "id": "shipping-estimator",
@@ -2972,7 +3238,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 4000
+        "estTraffic": 4000,
+        "imageExt": ""
       },
       {
         "id": "export-docs-trade",
@@ -2983,7 +3250,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 79,
-        "estTraffic": 4500
+        "estTraffic": 4500,
+        "imageExt": ""
       },
       {
         "id": "fx-import-impact",
@@ -2994,7 +3262,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 78,
-        "estTraffic": 3500
+        "estTraffic": 3500,
+        "imageExt": ""
       },
       {
         "id": "coo-generator",
@@ -3005,7 +3274,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 77,
-        "estTraffic": 3500
+        "estTraffic": 3500,
+        "imageExt": ""
       },
       {
         "id": "lc-calculator",
@@ -3016,7 +3286,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 76,
-        "estTraffic": 3000
+        "estTraffic": 3000,
+        "imageExt": ""
       },
       {
         "id": "demurrage-calculator",
@@ -3027,7 +3298,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 74,
-        "estTraffic": 2800
+        "estTraffic": 2800,
+        "imageExt": ""
       },
       {
         "id": "hs-code-lookup",
@@ -3038,7 +3310,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 63,
-        "estTraffic": 700
+        "estTraffic": 700,
+        "imageExt": ""
       },
       {
         "id": "cross-border-data",
@@ -3049,7 +3322,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "customs-time",
@@ -3060,7 +3334,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "shipping-weight",
@@ -3071,7 +3346,8 @@
         "category": "trade",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::insurance": [
@@ -3084,7 +3360,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 89,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "car-insurance",
@@ -3095,7 +3372,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "life-insurance-calc",
@@ -3106,7 +3384,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "travel-insurance",
@@ -3117,7 +3396,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "business-insurance",
@@ -3128,7 +3408,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 6500
+        "estTraffic": 6500,
+        "imageExt": "webp"
       },
       {
         "id": "motor-third-party",
@@ -3139,7 +3420,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "webp"
       },
       {
         "id": "health-contribution",
@@ -3150,7 +3432,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "webp"
       },
       {
         "id": "funeral-insurance",
@@ -3161,7 +3444,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": ""
       },
       {
         "id": "workers-comp",
@@ -3172,7 +3456,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 4500
+        "estTraffic": 4500,
+        "imageExt": ""
       },
       {
         "id": "crop-insurance-calc",
@@ -3183,7 +3468,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "fire-insurance",
@@ -3194,7 +3480,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "claim-tracker",
@@ -3205,7 +3492,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "insurance-fraud-checker",
@@ -3216,7 +3504,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "marine-insurance",
@@ -3227,7 +3516,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "microinsurance",
@@ -3238,7 +3528,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "professional-indemnity",
@@ -3249,7 +3540,8 @@
         "category": "insurance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::fintech": [
@@ -3262,7 +3554,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 89,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "mobile-vs-bank",
@@ -3273,7 +3566,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "digital-lending",
@@ -3284,7 +3578,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "fixed-deposit",
@@ -3295,7 +3590,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "microfinance-loan",
@@ -3306,7 +3602,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "payment-gateway",
@@ -3317,7 +3614,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "sacco-calc",
@@ -3328,7 +3626,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "webp"
       },
       {
         "id": "tbill-calc",
@@ -3339,7 +3638,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": "webp"
       },
       {
         "id": "bnpl-calc",
@@ -3350,7 +3650,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": ""
       },
       {
         "id": "real-return",
@@ -3361,7 +3662,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "webp"
       },
       {
         "id": "emergency-fund",
@@ -3372,7 +3674,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 81,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "webp"
       },
       {
         "id": "asset-finance",
@@ -3383,7 +3686,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "bill-split",
@@ -3394,7 +3698,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "credit-score",
@@ -3405,7 +3710,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "b2b-payment",
@@ -3416,7 +3722,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "debt-snowball",
@@ -3427,7 +3734,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "dividend-yield",
@@ -3438,7 +3746,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "dca-calc",
@@ -3449,7 +3758,8 @@
         "category": "fintech",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       }
     ],
     "en::telecom": [
@@ -3462,7 +3772,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "telecom-data-plan",
@@ -3473,7 +3784,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "telecom-data-usage",
@@ -3484,7 +3796,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "telecom-whatsapp-vs-sms",
@@ -3495,7 +3808,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 7500
+        "estTraffic": 7500,
+        "imageExt": "webp"
       },
       {
         "id": "telecom-roaming",
@@ -3506,7 +3820,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "telecom-bulk-sms",
@@ -3517,7 +3832,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "telecom-business-internet",
@@ -3528,7 +3844,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 6500
+        "estTraffic": 6500,
+        "imageExt": ""
       },
       {
         "id": "telecom-fiber-lte-5g",
@@ -3539,7 +3856,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       }
     ],
     "en::energy": [
@@ -3552,7 +3870,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "generator-fuel",
@@ -3563,7 +3882,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "electricity-tariff",
@@ -3574,7 +3894,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "solar-vs-generator",
@@ -3585,7 +3906,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 11000
+        "estTraffic": 11000,
+        "imageExt": "webp"
       },
       {
         "id": "prepaid-meter",
@@ -3596,7 +3918,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 89,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "solar-sizing",
@@ -3607,7 +3930,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "electricity-bill-verify",
@@ -3618,7 +3942,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "battery-sizing",
@@ -3629,7 +3954,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "appliance-power",
@@ -3640,7 +3966,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "energy-audit",
@@ -3651,7 +3978,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "gas-lpg-cost",
@@ -3662,7 +3990,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "water-bill",
@@ -3673,7 +4002,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "outage-cost",
@@ -3684,7 +4014,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "backup-duration",
@@ -3695,7 +4026,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": ""
       },
       {
         "id": "paygo-solar",
@@ -3706,7 +4038,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": ""
       },
       {
         "id": "carbon-footprint-energy",
@@ -3717,7 +4050,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 81,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": ""
       },
       {
         "id": "diesel-vs-solar-farm",
@@ -3728,7 +4062,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": ""
       },
       {
         "id": "ev-charging",
@@ -3739,7 +4074,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 79,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": ""
       }
     ],
     "en::transport": [
@@ -3752,7 +4088,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 97,
-        "estTraffic": 24000
+        "estTraffic": 24000,
+        "imageExt": "webp"
       },
       {
         "id": "car-import-cost",
@@ -3763,7 +4100,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 96,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "ride-fare",
@@ -3774,7 +4112,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 12000
+        "estTraffic": 12000,
+        "imageExt": "webp"
       },
       {
         "id": "vehicle-import-duty",
@@ -3785,7 +4124,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 89,
-        "estTraffic": 10000
+        "estTraffic": 10000,
+        "imageExt": "webp"
       },
       {
         "id": "matatu-fare",
@@ -3796,7 +4136,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 86,
-        "estTraffic": 9000
+        "estTraffic": 9000,
+        "imageExt": "webp"
       },
       {
         "id": "boda-income",
@@ -3807,7 +4148,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "delivery-cost",
@@ -3818,7 +4160,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 85,
-        "estTraffic": 8000
+        "estTraffic": 8000,
+        "imageExt": "webp"
       },
       {
         "id": "car-loan-vs-cash",
@@ -3829,7 +4172,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 84,
-        "estTraffic": 7000
+        "estTraffic": 7000,
+        "imageExt": "webp"
       },
       {
         "id": "vehicle-registration",
@@ -3840,7 +4184,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 81,
-        "estTraffic": 6000
+        "estTraffic": 6000,
+        "imageExt": ""
       },
       {
         "id": "roadworthiness",
@@ -3851,7 +4196,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 79,
-        "estTraffic": 5000
+        "estTraffic": 5000,
+        "imageExt": "webp"
       },
       {
         "id": "fleet-fuel",
@@ -3862,7 +4208,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "last-mile-delivery",
@@ -3873,7 +4220,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "route-cost",
@@ -3884,7 +4232,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "parking-fee",
@@ -3895,7 +4244,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "toll-calc",
@@ -3906,7 +4256,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "truck-load",
@@ -3917,7 +4268,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "vehicle-operating-cost",
@@ -3928,7 +4280,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "vehicle-tracker-roi",
@@ -3939,7 +4292,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::career": [
@@ -3952,7 +4306,8 @@
         "category": "career",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "career-switch",
@@ -3963,7 +4318,8 @@
         "category": "career",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "retirement-readiness",
@@ -3974,7 +4330,8 @@
         "category": "career",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "salary-negotiation",
@@ -3985,7 +4342,8 @@
         "category": "career",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::climate": [
@@ -3998,7 +4356,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 72,
-        "estTraffic": 3200
+        "estTraffic": 3200,
+        "imageExt": ""
       },
       {
         "id": "tree-planting-roi",
@@ -4009,7 +4368,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 70,
-        "estTraffic": 2600
+        "estTraffic": 2600,
+        "imageExt": ""
       },
       {
         "id": "air-quality",
@@ -4020,7 +4380,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 69,
-        "estTraffic": 2800
+        "estTraffic": 2800,
+        "imageExt": ""
       },
       {
         "id": "flood-risk",
@@ -4031,7 +4392,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 68,
-        "estTraffic": 2600
+        "estTraffic": 2600,
+        "imageExt": ""
       },
       {
         "id": "sustainability-scorecard",
@@ -4042,7 +4404,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 68,
-        "estTraffic": 2500
+        "estTraffic": 2500,
+        "imageExt": ""
       },
       {
         "id": "charcoal-vs-clean",
@@ -4053,7 +4416,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 67,
-        "estTraffic": 2600
+        "estTraffic": 2600,
+        "imageExt": ""
       },
       {
         "id": "ewaste-value",
@@ -4064,7 +4428,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 66,
-        "estTraffic": 2400
+        "estTraffic": 2400,
+        "imageExt": ""
       },
       {
         "id": "water-scarcity",
@@ -4075,7 +4440,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 65,
-        "estTraffic": 2400
+        "estTraffic": 2400,
+        "imageExt": ""
       },
       {
         "id": "waste-management",
@@ -4086,7 +4452,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 64,
-        "estTraffic": 2300
+        "estTraffic": 2300,
+        "imageExt": ""
       },
       {
         "id": "drought-risk",
@@ -4097,7 +4464,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 64,
-        "estTraffic": 2200
+        "estTraffic": 2200,
+        "imageExt": ""
       },
       {
         "id": "recycling-revenue",
@@ -4108,7 +4476,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 63,
-        "estTraffic": 2300
+        "estTraffic": 2300,
+        "imageExt": ""
       },
       {
         "id": "rainfall-tracker",
@@ -4119,7 +4488,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 62,
-        "estTraffic": 2100
+        "estTraffic": 2100,
+        "imageExt": ""
       },
       {
         "id": "deforestation",
@@ -4130,7 +4500,8 @@
         "category": "climate",
         "lang": "en",
         "priority": 58,
-        "estTraffic": 1800
+        "estTraffic": 1800,
+        "imageExt": ""
       }
     ],
     "en::creative": [
@@ -4143,7 +4514,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "afrostream",
@@ -4154,7 +4526,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "art-commission",
@@ -4165,7 +4538,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "creator-bios",
@@ -4176,7 +4550,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "book-publishing-cost",
@@ -4187,7 +4562,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "creator-captions",
@@ -4198,7 +4574,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "creator-carousel",
@@ -4209,7 +4586,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "creator-analytics",
@@ -4220,7 +4598,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "creator-brand",
@@ -4231,7 +4610,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "creator-calendar",
@@ -4242,7 +4622,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "creator-canvas",
@@ -4253,7 +4634,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "creator-clip",
@@ -4264,7 +4646,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "creator-club",
@@ -4275,7 +4658,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "creator-course",
@@ -4286,7 +4670,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "creator-desk",
@@ -4297,7 +4682,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "creator-invoice",
@@ -4308,7 +4694,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "creator-kit",
@@ -4319,7 +4706,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "creator-mail",
@@ -4330,7 +4718,8 @@
         "category": "creative",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::diaspora": [
@@ -4343,7 +4732,8 @@
         "category": "diaspora",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "visa-tracker",
@@ -4354,7 +4744,8 @@
         "category": "diaspora",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::government": [
@@ -4367,7 +4758,8 @@
         "category": "government",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "work-permit-cost",
@@ -4378,7 +4770,8 @@
         "category": "government",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::hr-payroll": [
@@ -4391,7 +4784,8 @@
         "category": "hr-payroll",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "domestic-worker",
@@ -4402,7 +4796,8 @@
         "category": "hr-payroll",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "employee-cost",
@@ -4413,7 +4808,8 @@
         "category": "hr-payroll",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "gratuity-calculator",
@@ -4424,7 +4820,8 @@
         "category": "hr-payroll",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "maternity-leave",
@@ -4435,7 +4832,8 @@
         "category": "hr-payroll",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "retrenchment-calculator",
@@ -4446,7 +4844,8 @@
         "category": "hr-payroll",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::personal-finance": [
@@ -4459,7 +4858,8 @@
         "category": "personal-finance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "side-hustle-ranker",
@@ -4470,7 +4870,8 @@
         "category": "personal-finance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "album-budget",
@@ -4481,7 +4882,8 @@
         "category": "personal-finance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "film-budget",
@@ -4492,7 +4894,8 @@
         "category": "personal-finance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "security-emergency-fund",
@@ -4503,7 +4906,8 @@
         "category": "personal-finance",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::security": [
@@ -4516,7 +4920,8 @@
         "category": "security",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "cybersecurity-assessment",
@@ -4527,7 +4932,8 @@
         "category": "security",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "data-breach-cost",
@@ -4538,7 +4944,8 @@
         "category": "security",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "fire-safety-checklist",
@@ -4549,7 +4956,8 @@
         "category": "security",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "home-security-cost",
@@ -4560,7 +4968,8 @@
         "category": "security",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "password-strength",
@@ -4571,7 +4980,8 @@
         "category": "security",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "phishing-quiz",
@@ -4582,7 +4992,8 @@
         "category": "security",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::small-business": [
@@ -4595,7 +5006,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "business-continuity",
@@ -4606,7 +5018,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": "webp"
       },
       {
         "id": "event-decoration-cost",
@@ -4617,7 +5030,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "factory-setup-cost",
@@ -4628,7 +5042,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "fashion-brand-startup",
@@ -4639,7 +5054,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "freelance-contract",
@@ -4650,7 +5066,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "freelancer-rate",
@@ -4661,7 +5078,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "graphic-design-pricing",
@@ -4672,7 +5090,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "guard-service-cost",
@@ -4683,7 +5102,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "influencer-rate",
@@ -4694,7 +5114,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "made-in-africa-label",
@@ -4705,7 +5126,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "oee-calculator",
@@ -4716,7 +5138,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "packaging-cost",
@@ -4727,7 +5150,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "nafdac-registration",
@@ -4738,7 +5162,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "production-cost",
@@ -4749,7 +5174,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "quality-sampling",
@@ -4760,7 +5186,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "tailoring-pricing",
@@ -4771,7 +5198,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "youtube-revenue",
@@ -4782,7 +5210,8 @@
         "category": "small-business",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::sports": [
@@ -4795,7 +5224,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 66,
-        "estTraffic": 1800
+        "estTraffic": 1800,
+        "imageExt": ""
       },
       {
         "id": "streaming-royalties",
@@ -4806,7 +5236,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 65,
-        "estTraffic": 1700
+        "estTraffic": 1700,
+        "imageExt": ""
       },
       {
         "id": "sports-scholarship",
@@ -4817,7 +5248,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 64,
-        "estTraffic": 1500
+        "estTraffic": 1500,
+        "imageExt": ""
       },
       {
         "id": "gaming-pc-build",
@@ -4828,7 +5260,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 63,
-        "estTraffic": 1600
+        "estTraffic": 1600,
+        "imageExt": ""
       },
       {
         "id": "photo-video-pricing",
@@ -4839,7 +5272,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 62,
-        "estTraffic": 1500
+        "estTraffic": 1500,
+        "imageExt": ""
       },
       {
         "id": "concert-budget",
@@ -4850,7 +5284,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 62,
-        "estTraffic": 1400
+        "estTraffic": 1400,
+        "imageExt": ""
       },
       {
         "id": "dj-booking-rate",
@@ -4861,7 +5296,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 62,
-        "estTraffic": 1400
+        "estTraffic": 1400,
+        "imageExt": ""
       },
       {
         "id": "gym-roi-business",
@@ -4872,7 +5308,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 61,
-        "estTraffic": 1300
+        "estTraffic": 1300,
+        "imageExt": ""
       },
       {
         "id": "betting-odds",
@@ -4883,7 +5320,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 60,
-        "estTraffic": 1600
+        "estTraffic": 1600,
+        "imageExt": ""
       },
       {
         "id": "fantasy-football",
@@ -4894,7 +5332,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 60,
-        "estTraffic": 1500
+        "estTraffic": 1500,
+        "imageExt": ""
       },
       {
         "id": "event-ticket-revenue",
@@ -4905,7 +5344,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 60,
-        "estTraffic": 1300
+        "estTraffic": 1300,
+        "imageExt": ""
       },
       {
         "id": "afcon-predictor",
@@ -4916,7 +5356,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 58,
-        "estTraffic": 1400
+        "estTraffic": 1400,
+        "imageExt": ""
       },
       {
         "id": "nollywood-box-office",
@@ -4927,7 +5368,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 56,
-        "estTraffic": 1200
+        "estTraffic": 1200,
+        "imageExt": ""
       },
       {
         "id": "match-tickets",
@@ -4938,7 +5380,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 54,
-        "estTraffic": 1100
+        "estTraffic": 1100,
+        "imageExt": ""
       },
       {
         "id": "athlete-earnings",
@@ -4949,7 +5392,8 @@
         "category": "sports",
         "lang": "en",
         "priority": 54,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ],
     "en::travel-tourism": [
@@ -4962,7 +5406,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "beach-holiday-budget",
@@ -4973,7 +5418,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "festival-travel-budget",
@@ -4984,7 +5430,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "safari-cost",
@@ -4995,7 +5442,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "airbnb-vs-hotel",
@@ -5006,7 +5454,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "airport-transfer",
@@ -5017,7 +5466,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "hotel-star-guide",
@@ -5028,7 +5478,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "travel-packing-list",
@@ -5039,7 +5490,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       },
       {
         "id": "travel-vaccination-cost",
@@ -5050,7 +5502,8 @@
         "category": "travel-tourism",
         "lang": "en",
         "priority": 50,
-        "estTraffic": 1000
+        "estTraffic": 1000,
+        "imageExt": ""
       }
     ]
   },
@@ -5065,7 +5518,8 @@
         "category": "african",
         "lang": "en",
         "priority": 98,
-        "estTraffic": 50000
+        "estTraffic": 50000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-editor",
@@ -5076,7 +5530,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 96,
-        "estTraffic": 40000
+        "estTraffic": 40000,
+        "imageExt": "webp"
       },
       {
         "id": "fuel-tracker",
@@ -5087,7 +5542,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 30000
+        "estTraffic": 30000,
+        "imageExt": "svg"
       },
       {
         "id": "pdf-convert",
@@ -5098,7 +5554,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 94,
-        "estTraffic": 30000
+        "estTraffic": 30000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-merge-split",
@@ -5109,7 +5566,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 25000
+        "estTraffic": 25000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-workspace",
@@ -5120,7 +5578,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 25000
+        "estTraffic": 25000,
+        "imageExt": "webp"
       },
       {
         "id": "afrorates",
@@ -5131,7 +5590,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 94,
-        "estTraffic": 25000
+        "estTraffic": 25000,
+        "imageExt": "webp"
       },
       {
         "id": "education-hub",
@@ -5142,7 +5602,8 @@
         "category": "education",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 25000
+        "estTraffic": 25000,
+        "imageExt": "webp"
       },
       {
         "id": "car-price-intelligence",
@@ -5153,7 +5614,8 @@
         "category": "transport",
         "lang": "en",
         "priority": 97,
-        "estTraffic": 24000
+        "estTraffic": 24000,
+        "imageExt": "webp"
       },
       {
         "id": "cv-builder",
@@ -5164,7 +5626,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 97,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-compress",
@@ -5175,7 +5638,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 94,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "currency-converter",
@@ -5186,7 +5650,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "pdf-chat",
@@ -5197,7 +5662,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "crypto-prices",
@@ -5208,7 +5674,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 93,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "afrokitchen",
@@ -5219,7 +5686,8 @@
         "category": "african",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "scholarship-finder",
@@ -5230,7 +5698,8 @@
         "category": "education",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "webp"
       },
       {
         "id": "meme-generator",
@@ -5241,7 +5710,8 @@
         "category": "image-design",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 20000
+        "estTraffic": 20000,
+        "imageExt": "svg"
       },
       {
         "id": "car-import-cost",
@@ -5252,18 +5722,20 @@
         "category": "transport",
         "lang": "en",
         "priority": 96,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "image-compress",
-        "name": "Image Compressor",
+        "name": "Image Compressor Studio",
         "icon": "📷",
-        "desc": "Reduce image file size with quality slider. Crit...",
+        "desc": "Batch compress, resize, convert, compare, and ta...",
         "href": "/tools/image-compress/",
         "category": "image-design",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "brideprice-advisor",
@@ -5274,7 +5746,8 @@
         "category": "african",
         "lang": "en",
         "priority": 87,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "african-name-meaning",
@@ -5285,7 +5758,8 @@
         "category": "language",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "farm-profit-calculator",
@@ -5296,7 +5770,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 83,
-        "estTraffic": 18000
+        "estTraffic": 18000,
+        "imageExt": "webp"
       },
       {
         "id": "cassava-processing-calculator",
@@ -5307,7 +5782,8 @@
         "category": "agriculture",
         "lang": "en",
         "priority": 82,
-        "estTraffic": 16000
+        "estTraffic": 16000,
+        "imageExt": "webp"
       },
       {
         "id": "medical-report",
@@ -5318,7 +5794,8 @@
         "category": "health",
         "lang": "en",
         "priority": 99,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "invoice-generator",
@@ -5329,7 +5806,8 @@
         "category": "document-pdf",
         "lang": "en",
         "priority": 96,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "import-duty",
@@ -5340,7 +5818,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "crypto-p2p",
@@ -5351,7 +5830,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "remittance-v2",
@@ -5362,7 +5842,8 @@
         "category": "african",
         "lang": "en",
         "priority": 95,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "africa-conflict",
@@ -5373,7 +5854,8 @@
         "category": "african",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "solar-roi",
@@ -5384,7 +5866,8 @@
         "category": "energy",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "telecom-ussd",
@@ -5395,7 +5878,8 @@
         "category": "telecom",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "vat-calc-pan-african",
@@ -5406,7 +5890,8 @@
         "category": "ecommerce",
         "lang": "en",
         "priority": 92,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "background-remover",
@@ -5417,18 +5902,20 @@
         "category": "image-design",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "image-resize",
-        "name": "Image Resizer & Converter",
+        "name": "Image Resizer Studio",
         "icon": "↔️",
-        "desc": "Resize images, convert between WebP/PNG/JPG. Soc...",
+        "desc": "Batch resize, crop, pad, convert, compare, and e...",
         "href": "/tools/image-resize/",
         "category": "image-design",
         "lang": "en",
         "priority": 91,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "svg"
       },
       {
         "id": "salary-compare",
@@ -5439,7 +5926,8 @@
         "category": "financial",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       },
       {
         "id": "json-formatter",
@@ -5450,7 +5938,8 @@
         "category": "developer",
         "lang": "en",
         "priority": 90,
-        "estTraffic": 15000
+        "estTraffic": 15000,
+        "imageExt": "webp"
       }
     ],
     "fr": [
@@ -5463,7 +5952,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 83,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "dz-paye-fr",
@@ -5474,7 +5964,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 80,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "cd-paye-fr",
@@ -5485,7 +5976,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 79,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ci-paye-fr",
@@ -5496,7 +5988,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 78,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "tn-paye-fr",
@@ -5507,7 +6000,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 77,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "cm-paye-fr",
@@ -5518,7 +6012,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 76,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "sn-paye-fr",
@@ -5529,7 +6024,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 75,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "convertisseur-devises-fr",
@@ -5540,7 +6036,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 75,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ma-tva-fr",
@@ -5551,7 +6048,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 74,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "dz-tva-fr",
@@ -5562,7 +6060,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 72,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "calculateur-tva-fr",
@@ -5573,7 +6072,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 72,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "cm-tva-fr",
@@ -5584,7 +6084,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 70,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "tn-tva-fr",
@@ -5595,7 +6096,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 69,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "generateur-cv-fr",
@@ -5606,7 +6108,8 @@
         "category": "document-pdf",
         "lang": "fr",
         "priority": 69,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "droits-douane-fr",
@@ -5617,7 +6120,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 68,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "sn-tva-fr",
@@ -5628,7 +6132,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 68,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "sn-vs-ci-fr",
@@ -5639,7 +6144,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 65,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ga-paye-fr",
@@ -5650,7 +6156,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 63,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "comparateur-salaires-fr",
@@ -5661,7 +6168,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 63,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "cg-paye-fr",
@@ -5672,7 +6180,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 62,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": "webp"
       },
       {
         "id": "calculateur-conges-fr",
@@ -5683,7 +6192,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 60,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "mg-paye-fr",
@@ -5694,7 +6204,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 60,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ci-tva-fr",
@@ -5705,7 +6216,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 60,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "cd-tva-fr",
@@ -5716,7 +6228,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 60,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "calculateur-hypothecaire-fr",
@@ -5727,7 +6240,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 58,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "bj-paye-fr",
@@ -5738,7 +6252,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 58,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "gn-paye-fr",
@@ -5749,7 +6264,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 58,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "salaire-minimum-fr",
@@ -5760,7 +6276,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 58,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ne-paye-fr",
@@ -5771,7 +6288,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 57,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "td-paye-fr",
@@ -5782,7 +6300,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 57,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "comparateur-prets-fr",
@@ -5793,7 +6312,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 57,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "frais-bancaires-fr",
@@ -5804,7 +6324,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 57,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "profit-forex-fr",
@@ -5815,7 +6336,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 56,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "eligibilite-pret-immobilier-fr",
@@ -5826,7 +6348,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 56,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "ng-impot-societes-fr",
@@ -5837,7 +6360,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 56,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       },
       {
         "id": "bi-paye-fr",
@@ -5848,7 +6372,8 @@
         "category": "financial",
         "lang": "fr",
         "priority": 55,
-        "estTraffic": 0
+        "estTraffic": 0,
+        "imageExt": ""
       }
     ],
     "sw": [
@@ -5861,7 +6386,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 78,
-        "estTraffic": 1500
+        "estTraffic": 1500,
+        "imageExt": ""
       },
       {
         "id": "tz-paye-sw",
@@ -5872,7 +6398,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 75,
-        "estTraffic": 1200
+        "estTraffic": 1200,
+        "imageExt": ""
       },
       {
         "id": "ug-paye-sw",
@@ -5883,7 +6410,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 70,
-        "estTraffic": 900
+        "estTraffic": 900,
+        "imageExt": ""
       },
       {
         "id": "rw-paye-sw",
@@ -5894,7 +6422,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 68,
-        "estTraffic": 800
+        "estTraffic": 800,
+        "imageExt": ""
       },
       {
         "id": "ke-vs-tz-sw",
@@ -5905,7 +6434,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 65,
-        "estTraffic": 600
+        "estTraffic": 600,
+        "imageExt": ""
       },
       {
         "id": "bi-paye-sw",
@@ -5916,7 +6446,8 @@
         "category": "financial",
         "lang": "sw",
         "priority": 62,
-        "estTraffic": 500
+        "estTraffic": 500,
+        "imageExt": ""
       }
     ]
   }

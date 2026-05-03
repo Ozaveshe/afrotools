@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="manifest" href="/manifest.json">
@@ -1805,44 +1805,354 @@
         .whatsnew-desc { font-size: 0.78rem; color: #64748b; margin-top: 2px; }
 
         /* My Workspace */
-        .ws-empty {
-            background: #F9FAFB;
-            border: 1.5px dashed #D1D5DB;
-            border-radius: 12px;
-            padding: 32px;
-            text-align: center;
-            color: #6B7280;
+        #wsSection {
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: 18px;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+            padding: 18px;
+            margin-bottom: 28px;
+        }
+        .section-row--workspace {
+            align-items: flex-start;
+            border-bottom: 1px solid #E8EDF5;
+            gap: 14px;
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+        }
+        .section-subtitle {
+            color: #64748B;
+            font-size: 0.86rem;
+            line-height: 1.5;
+            margin: 5px 0 0;
+        }
+        .section-link {
+            align-items: center;
+            border: 1px solid #BFDBFE;
+            border-radius: 999px;
+            color: #1D4ED8;
+            display: inline-flex;
+            flex: 0 0 auto;
+            font-size: 0.78rem;
+            font-weight: 800;
+            min-height: 34px;
+            padding: 7px 12px;
+            text-decoration: none;
+        }
+        .section-link:hover {
+            background: #EFF6FF;
+            border-color: #93C5FD;
+        }
+        .ws-empty,
+        .workspace-empty-card {
+            background: #F8FAFC;
+            border: 1.5px dashed #CBD5E1;
+            border-radius: 14px;
+            color: #64748B;
             font-size: 0.88rem;
-            margin-bottom: 24px;
+            line-height: 1.55;
+            padding: 28px;
+            text-align: center;
+        }
+        .workspace-empty-card strong {
+            color: #0F172A;
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .workspace-overview {
+            align-items: center;
+            background: linear-gradient(135deg, #F8FBFF, #F8FAFC);
+            border: 1px solid #DBEAFE;
+            border-radius: 14px;
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 12px 14px;
+        }
+        .workspace-overview-main {
+            min-width: 0;
+        }
+        .workspace-overview-title {
+            color: #0F172A;
+            font-size: 0.9rem;
+            font-weight: 850;
+            line-height: 1.35;
+        }
+        .workspace-overview-copy {
+            color: #64748B;
+            font-size: 0.78rem;
+            line-height: 1.45;
+            margin-top: 2px;
+        }
+        .workspace-overview-count {
+            align-items: center;
+            background: #FFFFFF;
+            border: 1px solid #BFDBFE;
+            border-radius: 12px;
+            color: #1D4ED8;
+            display: inline-flex;
+            flex: 0 0 auto;
+            font-size: 0.82rem;
+            font-weight: 850;
+            min-height: 36px;
+            padding: 8px 11px;
         }
         .ws-tabs {
+            align-items: center;
             display: flex;
-            gap: 4px;
-            margin-bottom: 16px;
+            gap: 8px;
+            margin-bottom: 12px;
             overflow-x: auto;
+            padding-bottom: 2px;
+            scrollbar-width: thin;
             -webkit-overflow-scrolling: touch;
         }
         .ws-tab {
-            padding: 10px 18px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            border: 1.5px solid #E5E7EB;
-            border-radius: 10px;
-            background: #fff;
-            color: #64748b;
+            align-items: center;
+            background: #FFFFFF;
+            border: 1px solid #D8E1F0;
+            border-radius: 999px;
+            color: #475569;
             cursor: pointer;
+            display: inline-flex;
             font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            gap: 7px;
+            min-height: 40px;
+            padding: 8px 13px;
+            transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
             white-space: nowrap;
-            transition: all 0.15s;
         }
-        .ws-tab:hover { border-color: #007AFF; color: #007AFF; }
+        .ws-tab:hover {
+            border-color: #93C5FD;
+            color: #1D4ED8;
+        }
         .ws-tab.active {
-            background: #007AFF;
-            color: #fff;
-            border-color: #007AFF;
+            background: #0F172A;
+            border-color: #0F172A;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+            color: #FFFFFF;
         }
-        .ws-panel { display: none; margin-bottom: 24px; }
+        .ws-tab-count {
+            align-items: center;
+            background: rgba(15, 23, 42, 0.08);
+            border-radius: 999px;
+            display: inline-flex;
+            font-size: 0.68rem;
+            justify-content: center;
+            min-width: 22px;
+            padding: 2px 7px;
+        }
+        .ws-tab.active .ws-tab-count {
+            background: rgba(255, 255, 255, 0.18);
+            color: #FFFFFF;
+        }
+        .ws-panel {
+            display: none;
+            margin-bottom: 0;
+        }
         .ws-panel.active { display: block; }
+        #myWorkspaceContent .favorites-grid {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr;
+            margin-bottom: 0;
+        }
+        .workspace-note {
+            align-items: center;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            color: #475569;
+            display: flex;
+            font-size: 0.8rem;
+            gap: 8px;
+            line-height: 1.45;
+            margin-bottom: 10px;
+            padding: 10px 12px;
+        }
+        .workspace-fav-item {
+            align-items: center;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            display: grid;
+            gap: 12px;
+            grid-template-columns: 56px minmax(0, 1fr) auto;
+            min-height: 80px;
+            padding: 12px 14px;
+            transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+        }
+        .workspace-fav-item:hover {
+            border-color: #BFDBFE;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            transform: translateY(-1px);
+        }
+        .workspace-fav-thumb {
+            align-items: center;
+            background: #EFF6FF;
+            border-radius: 14px;
+            display: flex;
+            height: 52px;
+            justify-content: center;
+            overflow: hidden;
+            width: 52px;
+        }
+        .workspace-fav-thumb img {
+            border-radius: 8px;
+            height: 38px;
+            object-fit: contain;
+            width: 38px;
+        }
+        .workspace-fav-fallback {
+            color: #2563EB;
+            font-size: 1rem;
+            font-weight: 900;
+        }
+        .workspace-fav-main {
+            min-width: 0;
+        }
+        .workspace-fav-title {
+            color: #0F172A;
+            display: inline-block;
+            font-size: 0.92rem;
+            font-weight: 850;
+            line-height: 1.35;
+            text-decoration: none;
+        }
+        .workspace-fav-title:hover {
+            color: #1D4ED8;
+        }
+        .workspace-fav-meta {
+            color: #64748B;
+            font-size: 0.76rem;
+            line-height: 1.45;
+            margin-top: 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .workspace-fav-actions {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .workspace-fav-open,
+        .workspace-fav-remove {
+            align-items: center;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            cursor: pointer;
+            display: inline-flex;
+            font: inherit;
+            font-size: 0.76rem;
+            font-weight: 850;
+            justify-content: center;
+            min-height: 34px;
+            padding: 7px 12px;
+            text-decoration: none;
+        }
+        .workspace-fav-open {
+            background: #EFF6FF;
+            border-color: #BFDBFE;
+            color: #1D4ED8;
+        }
+        .workspace-fav-open:hover {
+            background: #DBEAFE;
+            border-color: #93C5FD;
+        }
+        .workspace-fav-remove {
+            background: #FFF1F2;
+            color: #BE123C;
+        }
+        .workspace-fav-remove:hover {
+            background: #FFE4E6;
+        }
+        #myWorkspaceContent .saved-item {
+            border-radius: 14px;
+            box-shadow: none;
+            padding: 13px 15px;
+        }
+        #myWorkspaceContent .saved-content h3 {
+            font-size: 0.9rem;
+            margin: 0 0 3px;
+        }
+        #myWorkspaceContent .saved-value {
+            color: #334155;
+            font-size: 0.84rem;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+        #myWorkspaceContent .saved-actions {
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        #myWorkspaceContent .cv-card-grid {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr;
+        }
+        #myWorkspaceContent .cv-card {
+            border-radius: 14px;
+            box-shadow: none;
+            padding: 14px;
+        }
+        #myWorkspaceContent .cv-card-actions {
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        #myWorkspaceContent .cv-card-edit,
+        #myWorkspaceContent .cv-card-dup {
+            border-radius: 999px;
+            min-height: 34px;
+        }
+        #myWorkspaceContent .btn-small,
+        #myWorkspaceContent .btn.btn-secondary {
+            border-radius: 999px;
+            min-height: 34px;
+        }
+        @media (max-width: 720px) {
+            #wsSection {
+                border-radius: 14px;
+                padding: 14px;
+            }
+            .section-row--workspace {
+                align-items: stretch;
+                flex-direction: column;
+            }
+            .section-link {
+                justify-content: center;
+                width: 100%;
+            }
+            .workspace-overview {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .workspace-fav-item {
+                grid-template-columns: 48px minmax(0, 1fr);
+                min-height: 0;
+                padding: 12px;
+            }
+            .workspace-fav-thumb {
+                height: 46px;
+                width: 46px;
+            }
+            .workspace-fav-thumb img {
+                height: 34px;
+                width: 34px;
+            }
+            .workspace-fav-actions {
+                grid-column: 1 / -1;
+                justify-content: flex-start;
+                padding-left: 60px;
+            }
+        }
         .ws-subhead {
             margin: 16px 0 8px;
             color: #0f172a;
@@ -2456,8 +2766,12 @@
 
             <!-- My Workspace -->
             <div id="wsSection">
-              <div class="section-row" id="myWorkspace">
-                <h2 class="section-title" style="margin-bottom:0;">My Workspace</h2>
+              <div class="section-row section-row--workspace" id="myWorkspace">
+                <div>
+                  <h2 class="section-title" style="margin-bottom:0;">My Workspace</h2>
+                  <p class="section-subtitle">Saved tools, synced calculations, and local drafts in one clean place.</p>
+                </div>
+                <a class="section-link" href="/tools/">Find tools</a>
               </div>
               <div id="myWorkspaceContent"></div>
             </div>
@@ -2509,7 +2823,7 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
-    <script src="/assets/js/components/tool-registry.min.js?v=55a78de8" defer></script>
+    <script src="/assets/js/components/tool-registry.min.js?v=b046eb2e" defer></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
     <script src="/assets/js/components/auth-modal.js?v=3f65305a"></script>
     <script src="/assets/js/auth-cookie-upgrade.js?v=5f8a65c3"></script>
@@ -2522,7 +2836,7 @@
     <script src="/engines/afropoints-engine.js?v=2"></script>
     <script src="/dashboard/dashboard-app.js?v=05100b7e"></script>
     <script src="/dashboard/afropoints-lane-account.js?v=20260502a"></script>
-    <script src="/assets/js/components/navbar.min.js?v=de4fc4a7"></script>
+    <script src="/assets/js/components/navbar.min.js?v=d849d432"></script>
     <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
     <script>
@@ -6495,6 +6809,7 @@
         waitForAuth();
     </script>
 <script src="/dashboard/dashboard-sync.js?v=20260417b"></script>
+<script src="/dashboard/dashboard-workspace-polish.js?v=20260503a"></script>
 <script src="/dashboard/insurance-workspace.js?v=a73570d7"></script>
 <script src="/dashboard/telecom-workspace.js?v=c7b778cc"></script>
 <script src="/dashboard/climate-workspace.js?v=806565c9"></script>

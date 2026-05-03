@@ -86,12 +86,14 @@ function html(routePath, meta) {
   <meta property="og:url" content="${canonical(routePath)}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AfroTools">
-  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og/og-cars.webp">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og/og-cars.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/design-system.css">
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <link rel="stylesheet" href="/assets/css/cars-directory.css">
@@ -123,24 +125,24 @@ function escapeHtml(value) {
 function writeSitemap() {
   const urls = generatedRoutes
     .sort()
-    .map((routePath) => `  <url><loc>${canonical(routePath)}</loc><lastmod>2026-04-10</lastmod><changefreq>weekly</changefreq><priority>${routePath === "cars" ? "0.9" : "0.7"}</priority></url>`)
+    .map((routePath) => `  <url><loc>${canonical(routePath)}</loc><lastmod>2026-05-03</lastmod><changefreq>weekly</changefreq><priority>${routePath === "cars" ? "0.9" : "0.7"}</priority></url>`)
     .join("\n");
   fs.writeFileSync(path.join(root, "sitemap-cars.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, "utf8");
 }
 
 writePage("cars", {
   title: "African Car Price Directory | Import vs Local Landed Cost | AfroTools",
-  description: "Search popular imported cars in Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania with source price, landed-cost, local asking-price, financing, and risk layers."
+  description: "Search popular imported cars across 20 major African markets with live local-currency price bands, source price, landed-cost estimate, local asking range, financing, and risk layers."
 });
 writePage("cars/compare", {
   title: "Compare Car Source Markets | Japan, UAE, UK, South Africa | AfroTools",
   description: "Compare source-market price, shipping assumptions, landed cost, local dealer ranges, financing outlook, and risk layers for African car imports."
 });
 
-Object.values(data.countries).forEach((country) => {
+Object.values(data.countries).filter((country) => country.directory_enabled !== false).forEach((country) => {
   writePage(`cars/${country.slug}`, {
     title: `${country.name} Car Import Price Directory | AfroTools`,
-    description: `Search car landed-cost and local asking-price ranges for ${country.name}, including source-market comparisons, financing outlook, and import-vs-local recommendations.`,
+    description: `Search car landed-cost and local asking-price ranges in ${country.currency_code || "local currency"} for ${country.name}, including source-market comparisons, financing outlook, and import-vs-local recommendations.`,
     country: country.name
   });
 

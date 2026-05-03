@@ -1,840 +1,265 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Image Format Converter | AfroTools</title>
-<meta name="description" content="Convert image files for WhatsApp, job portals, marketplaces, and faster websites. Batch-friendly and fully in-browser.">
-<meta name="keywords" content="image converter, format converter, WhatsApp image resize, marketplace photo converter, WebP converter">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Format Converter Studio - Batch JPG, PNG, WebP, AVIF | AfroTools</title>
+<meta name="description" content="Free local image format converter studio. Batch convert browser-supported images to JPG, PNG, WebP, and AVIF, package zip exports, preview savings, and copy picture markup.">
+<meta name="keywords" content="image format converter, jpg converter, png converter, webp converter, avif converter, batch image converter">
 <link rel="canonical" href="https://afrotools.com/tools/image-format-convert/">
-<meta property="og:title" content="Image Format Converter | AfroTools">
-<meta property="og:description" content="Convert images for WhatsApp, job portals, marketplaces, and web delivery.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Image Format Converter Studio | AfroTools">
+<meta property="og:description" content="Batch convert images locally to JPG, PNG, WebP, and AVIF with previews, zip packaging, and web delivery markup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/image-format-convert/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/image-format-convert.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
-<meta name="robots" content="index, follow">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Image Format Converter | AfroTools">
-<meta name="twitter:description" content="Convert images for delivery targets like WhatsApp, portals, marketplaces, and fast websites.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Format Converter","description":"Convert image files for WhatsApp, job portals, marketplaces, and faster websites.","url":"https://afrotools.com/tools/image-format-convert/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=34121d56" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=de4fc4a7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<style>
-  :root {
-    --ink: #0f172a;
-    --muted: #5b6473;
-    --line: #d8deea;
-    --brand: #1d4ed8;
-    --brand-strong: #1e40af;
-    --accent: #f97316;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: "DM Sans", system-ui, sans-serif;
-    color: var(--ink);
-    background: linear-gradient(180deg, #f5f8ff 0%, #eef3fb 100%);
-  }
-  .hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #60a5fa 120%);
-    color: #fff;
-    padding: 52px 24px 40px;
-  }
-  .hero-inner, .workspace, .related {
-    max-width: 1180px;
-    margin: 0 auto;
-  }
-  .hero-inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(260px, .85fr);
-    gap: 28px;
-    align-items: end;
-  }
-  .eyebrow {
-    margin-bottom: 14px;
-    font-size: .78rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.8);
-  }
-  .hero h1 {
-    margin: 0 0 12px;
-    font-size: clamp(2rem, 4.4vw, 3.5rem);
-    line-height: 1;
-    letter-spacing: -.04em;
-    max-width: 760px;
-  }
-  .hero p {
-    margin: 0;
-    max-width: 650px;
-    color: rgba(255,255,255,.86);
-    line-height: 1.65;
-  }
-  .badge-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .badge {
-    padding: 10px 14px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.14);
-    border: 1px solid rgba(255,255,255,.2);
-    font-size: .82rem;
-    font-weight: 700;
-  }
-  .workspace {
-    margin-top: -18px;
-    padding: 0 24px 72px;
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(300px, .72fr);
-    gap: 22px;
-    align-items: start;
-  }
-  .stack { display: grid; gap: 18px; }
-  .card, .side-card {
-    background: rgba(255,255,255,.93);
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    box-shadow: 0 18px 40px rgba(15, 23, 42, .07);
-  }
-  .card-head { padding: 22px 24px 0; }
-  .card-body, .side-card { padding: 22px 24px 24px; }
-  .card-title, .side-card h2 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 800;
-    letter-spacing: -.02em;
-  }
-  .card-sub, .side-card p {
-    margin: 6px 0 0;
-    color: var(--muted);
-    font-size: .9rem;
-    line-height: 1.65;
-  }
-  .drop-zone {
-    border: 1.5px dashed #b9c6e2;
-    border-radius: 20px;
-    padding: 30px 24px;
-    background: linear-gradient(180deg, #fdfefe 0%, #f2f7ff 100%);
-    text-align: center;
-    cursor: pointer;
-  }
-  .drop-zone.active, .drop-zone:hover { border-color: var(--brand); }
-  #fileInput { display: none; }
-  .drop-icon { font-size: 2.3rem; margin-bottom: 8px; }
-  .drop-title { font-size: 1rem; font-weight: 700; }
-  .drop-copy, .status, .mini {
-    color: var(--muted);
-    font-size: .88rem;
-    line-height: 1.55;
-  }
-  .file-list { display: grid; gap: 10px; margin-top: 16px; }
-  .file-item {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 14px;
-    border-radius: 16px;
-    border: 1px solid #d8deea;
-    background: #fff;
-    cursor: pointer;
-  }
-  .file-item.active {
-    border-color: rgba(29, 78, 216, .45);
-    background: #eff6ff;
-  }
-  .preset-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-  .preset-btn {
-    width: 100%;
-    text-align: left;
-    padding: 14px 16px;
-    border-radius: 18px;
-    border: 1px solid #d8deea;
-    background: #fff;
-    cursor: pointer;
-    font: inherit;
-  }
-  .preset-btn.active {
-    border-color: rgba(29, 78, 216, .45);
-    box-shadow: 0 12px 28px rgba(29, 78, 216, .12);
-    background: linear-gradient(180deg, #fff 0%, #eff6ff 100%);
-  }
-  .preset-label {
-    display: block;
-    margin-bottom: 4px;
-    font-size: .92rem;
-    font-weight: 800;
-  }
-  .preset-copy {
-    display: block;
-    font-size: .82rem;
-    color: var(--muted);
-    line-height: 1.45;
-  }
-  .form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-  }
-  .field { display: grid; gap: 6px; }
-  .field.full { grid-column: 1 / -1; }
-  .field label {
-    font-size: .82rem;
-    font-weight: 700;
-    color: #334155;
-  }
-  .field input, .field select {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1.5px solid #d8deea;
-    background: #fbfdff;
-    color: var(--ink);
-    font: inherit;
-  }
-  .field input:focus, .field select:focus {
-    outline: none;
-    border-color: rgba(29, 78, 216, .45);
-    box-shadow: 0 0 0 3px rgba(29, 78, 216, .12);
-    background: #fff;
-  }
-  .range-wrap { display: grid; gap: 8px; }
-  .range-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: .8rem;
-    color: var(--muted);
-  }
-  input[type="range"] { accent-color: var(--brand); padding: 0; }
-  .preview-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-  }
-  .preview-box {
-    overflow: hidden;
-    border-radius: 20px;
-    border: 1px solid var(--line);
-    background: #fff;
-  }
-  .preview-box img {
-    width: 100%;
-    max-height: 320px;
-    object-fit: contain;
-    display: block;
-    background:
-      linear-gradient(45deg, rgba(216,222,234,.45) 25%, transparent 25%) -10px 0/20px 20px,
-      linear-gradient(-45deg, rgba(216,222,234,.45) 25%, transparent 25%) -10px 0/20px 20px,
-      linear-gradient(45deg, transparent 75%, rgba(216,222,234,.45) 75%) -10px 0/20px 20px,
-      linear-gradient(-45deg, transparent 75%, rgba(216,222,234,.45) 75%) -10px 0/20px 20px,
-      #fff;
-  }
-  .preview-pad {
-    min-height: 260px;
-    display: grid;
-    place-items: center;
-    padding: 20px;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.6;
-  }
-  .info-strip {
-    padding: 12px 14px;
-    border-top: 1px solid var(--line);
-    font-size: .84rem;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-  .action-row, .chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
-  .btn {
-    appearance: none;
-    border: none;
-    border-radius: 999px;
-    padding: 12px 18px;
-    cursor: pointer;
-    font: inherit;
-    font-weight: 700;
-  }
-  .btn-primary {
-    background: var(--brand);
-    color: #fff;
-    box-shadow: 0 12px 24px rgba(29, 78, 216, .18);
-  }
-  .btn-secondary {
-    background: #fff;
-    color: var(--ink);
-    border: 1px solid #d8deea;
-  }
-  .filename-demo {
-    margin-top: 14px;
-    padding: 12px 14px;
-    border-radius: 16px;
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
-    font-size: .84rem;
-    color: #9a3412;
-    word-break: break-word;
-  }
-  .side-list {
-    margin: 14px 0 0;
-    padding-left: 18px;
-    display: grid;
-    gap: 10px;
-    font-size: .88rem;
-    color: #334155;
-  }
-  .related { padding: 0 24px 40px; }
-  .related h2 { margin: 0 0 14px; font-size: 1.18rem; }
-  .chip-row a {
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid #d8deea;
-    background: rgba(255,255,255,.92);
-    color: var(--ink);
-    text-decoration: none;
-    font-weight: 700;
-    font-size: .9rem;
-  }
-  @media (max-width: 980px) {
-    .hero-inner, .workspace { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 720px) {
-    .preset-grid, .form-grid, .preview-grid { grid-template-columns: 1fr; }
-  }
-</style>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/image-format-convert/">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/image-format-convert/">
-  <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-format-ya-picha/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
-<meta property="article:modified_time" content="2026-04-09">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image Format Converter Studio | AfroTools">
+<meta name="twitter:description" content="Convert images for portals, websites, marketplaces, and sharing without uploading private files.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/image-format-convert.svg">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/image-format-convert/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/image-format-convert/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-format-ya-picha/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/image-format-convert-studio.css?v=20260503">
+<script src="/assets/js/components/related-tools-data.min.js?v=64a6e367" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Format Converter Studio","description":"Batch convert browser-supported images to JPG, PNG, WebP, and AVIF locally in your browser, with preview, zip packaging, and web delivery markup.","url":"https://afrotools.com/tools/image-format-convert/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and browser image encoding support","image":"https://afrotools.com/assets/img/tools/image-format-convert.svg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Image Format Converter Studio","url":"https://afrotools.com/tools/image-format-convert/","description":"Convert image formats for portals, websites, marketplaces, and sharing without uploading private files.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/image-format-convert.svg"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Image Format Converter Studio","item":"https://afrotools.com/tools/image-format-convert/"}]}</script>
+<meta property="article:modified_time" content="2026-05-03">
 </head>
 <body>
-<afro-navbar></afro-navbar>
-<section class="hero">
-  <div class="hero-inner">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="ifc-hero">
+  <div class="ifc-hero-inner">
     <div>
-      <div class="eyebrow">Image &amp; Design / Delivery Presets</div>
-      <h1>Convert images for WhatsApp, portals, marketplaces, and faster web delivery.</h1>
-      <p>Instead of only choosing a format, start from the real destination. The quick targets below tune format, quality, size, and naming for common everyday use.</p>
+      <p class="ifc-eyebrow">Image &amp; Design / Format Studio</p>
+      <h1>Convert images into upload-ready and web-ready format packs.</h1>
+      <p>Build JPG, PNG, WebP, and AVIF exports from one local workflow. Preview the result, package batch outputs as a zip, and copy the picture markup developers need for fast web delivery.</p>
     </div>
-    <div class="badge-row">
-      <span class="badge">Batch-friendly</span>
-      <span class="badge">No uploads</span>
-      <span class="badge">WhatsApp-aware</span>
+    <div class="ifc-badges">
+      <span class="ifc-badge">Tier Gold</span>
+      <span class="ifc-badge">Batch zip</span>
+      <span class="ifc-badge">No upload</span>
+      <span class="ifc-badge">Format support check</span>
     </div>
   </div>
 </section>
-<main class="workspace">
-  <section class="stack">
-    <article class="card">
-      <div class="card-head">
-        <h2 class="card-title">1. Upload files</h2>
-        <p class="card-sub">Pick one image for a quick conversion or a whole set if you want the same export recipe on every file.</p>
-      </div>
-      <div class="card-body">
-        <div class="drop-zone" id="dropZone">
-          <div class="drop-icon">🖼️</div>
-          <div class="drop-title">Drop images here or click to browse</div>
-          <div class="drop-copy">PNG, JPG, WebP, BMP, GIF, AVIF, or SVG sources are accepted when your browser can decode them.</div>
-          <input type="file" id="fileInput" accept="image/*,.avif,.svg" multiple>
+
+<main class="ifc-studio" id="main-content">
+  <div class="ifc-workspace">
+    <section class="ifc-stack" aria-label="Image format converter">
+      <article class="ifc-panel">
+        <div class="ifc-panel-head">
+          <div>
+            <span class="ifc-step">1. Load images</span>
+            <h2 class="ifc-panel-title">Drop, paste, or choose a batch</h2>
+            <p class="ifc-panel-copy">Source files stay on this device. HEIC, AVIF, SVG, BMP, GIF, PNG, JPG, and WebP depend on what your browser can decode.</p>
+          </div>
+          <div class="ifc-status" id="ifcStatus" role="status" aria-live="polite">Checking browser encoders...</div>
         </div>
-        <div class="file-list" id="fileList"></div>
-      </div>
-    </article>
-    <article class="card">
-      <div class="card-head">
-        <h2 class="card-title">2. Pick a delivery target</h2>
-        <p class="card-sub">These presets are designed around how people actually send or upload files, not just around file formats.</p>
-      </div>
-      <div class="card-body">
-        <div class="preset-grid" id="presetGrid"></div>
-      </div>
-    </article>
-    <article class="card">
-      <div class="card-head">
-        <h2 class="card-title">3. Fine-tune export settings</h2>
-        <p class="card-sub">Adjust the preset if needed, then export just the current image or the full batch.</p>
-      </div>
-      <div class="card-body">
-        <div class="form-grid">
-          <div class="field">
-            <label for="format">Output format</label>
-            <select id="format">
-              <option value="image/png">PNG</option>
-              <option value="image/jpeg">JPG</option>
-              <option value="image/webp">WebP</option>
-              <option value="image/avif">AVIF</option>
-              <option value="image/bmp">BMP</option>
-            </select>
+        <div class="ifc-drop" id="ifcDropZone" role="button" tabindex="0" aria-label="Choose or drop images">
+          <div class="ifc-drop-main">
+            <span class="ifc-drop-mark">IMG</span>
+            <span><strong>Choose images</strong><span>Drag files here, paste from clipboard, or click to browse.</span></span>
           </div>
-          <div class="field">
-            <label for="suffix">Filename suffix</label>
-            <input id="suffix" type="text" value="whatsapp">
+          <div class="ifc-drop-side">Local only<br>Batch friendly</div>
+          <input type="file" id="ifcInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
+        </div>
+        <div class="ifc-queue" id="ifcQueue"></div>
+      </article>
+
+      <article class="ifc-panel">
+        <div class="ifc-panel-head">
+          <div>
+            <span class="ifc-step">2. Choose a recipe</span>
+            <h2 class="ifc-panel-title">Start from the destination, then adjust</h2>
+            <p class="ifc-panel-copy">The presets set formats, quality, dimensions, and file naming for common real-world delivery jobs.</p>
           </div>
-          <div class="field">
-            <label for="resize">Resize</label>
-            <select id="resize">
-              <option value="100">100% of original</option>
-              <option value="90">90%</option>
-              <option value="85">85%</option>
-              <option value="80">80%</option>
-              <option value="75">75%</option>
-              <option value="70">70%</option>
-              <option value="60">60%</option>
-            </select>
+        </div>
+        <div class="ifc-target-grid" aria-label="Conversion recipes">
+          <button type="button" class="ifc-target" data-ifc-preset="portal" aria-pressed="false"><strong>Portal-safe JPG</strong><span>Forms and uploads</span></button>
+          <button type="button" class="ifc-target" data-ifc-preset="web" aria-pressed="true"><strong>Web delivery pack</strong><span>WebP plus fallback</span></button>
+          <button type="button" class="ifc-target" data-ifc-preset="modern" aria-pressed="false"><strong>Modern bundle</strong><span>AVIF, WebP, JPG</span></button>
+          <button type="button" class="ifc-target" data-ifc-preset="transparent" aria-pressed="false"><strong>Transparent PNG</strong><span>Logos and UI</span></button>
+          <button type="button" class="ifc-target" data-ifc-preset="data" aria-pressed="false"><strong>Data saver</strong><span>Small share files</span></button>
+          <button type="button" class="ifc-target" data-ifc-preset="archive" aria-pressed="false"><strong>Clean archive</strong><span>Editing copy plus web</span></button>
+        </div>
+      </article>
+
+      <article class="ifc-panel">
+        <div class="ifc-panel-head">
+          <div>
+            <span class="ifc-step">3. Export settings</span>
+            <h2 class="ifc-panel-title">Select output formats, quality, size limits, and naming</h2>
+            <p class="ifc-panel-copy">Unsupported encoders are disabled after a browser capability check. PNG is always the fallback target.</p>
           </div>
-          <div class="field">
-            <label for="quality">Quality</label>
-            <div class="range-wrap">
-              <input id="quality" type="range" min="10" max="100" value="78">
-              <div class="range-meta"><span>Smaller</span><strong id="qualityValue">78%</strong></div>
+        </div>
+        <div class="ifc-form">
+          <div class="ifc-field wide">
+            <span class="ifc-label">Output formats</span>
+            <div class="ifc-format-grid">
+              <label class="ifc-format"><input type="checkbox" data-ifc-format value="image/jpeg"> JPG</label>
+              <label class="ifc-format"><input type="checkbox" data-ifc-format value="image/png"> PNG</label>
+              <label class="ifc-format"><input type="checkbox" data-ifc-format value="image/webp"> WebP</label>
+              <label class="ifc-format"><input type="checkbox" data-ifc-format value="image/avif"> AVIF</label>
             </div>
+            <span class="ifc-help">JPG flattens transparent pixels onto the background color below. PNG, WebP, and AVIF preserve alpha when supported.</span>
           </div>
-          <div class="field full">
-            <div class="mini" id="settingNote">JPG, WebP, and AVIF use the quality slider. PNG and BMP ignore it and keep full output quality.</div>
+          <label class="ifc-field">
+            <span class="ifc-label">Quality</span>
+            <span class="ifc-range">
+              <input class="ifc-input" id="ifcQuality" type="range" min="35" max="100" value="78">
+              <span class="ifc-range-value" id="ifcQualityValue">78%</span>
+            </span>
+          </label>
+          <label class="ifc-field">
+            <span class="ifc-label">Scale</span>
+            <span class="ifc-range">
+              <input class="ifc-input" id="ifcScale" type="range" min="25" max="150" value="100">
+              <span class="ifc-range-value" id="ifcScaleValue">100%</span>
+            </span>
+          </label>
+          <label class="ifc-field">
+            <span class="ifc-label">JPG background</span>
+            <input class="ifc-input" id="ifcBackground" type="color" value="#ffffff">
+          </label>
+          <label class="ifc-field">
+            <span class="ifc-label">Max width</span>
+            <input class="ifc-input" id="ifcMaxWidth" type="number" min="1" max="12000" inputmode="numeric" placeholder="No limit">
+          </label>
+          <label class="ifc-field">
+            <span class="ifc-label">Max height</span>
+            <input class="ifc-input" id="ifcMaxHeight" type="number" min="1" max="12000" inputmode="numeric" placeholder="No limit">
+          </label>
+          <label class="ifc-field">
+            <span class="ifc-label">File suffix</span>
+            <input class="ifc-input" id="ifcSuffix" type="text" value="web" maxlength="42">
+          </label>
+        </div>
+      </article>
+
+      <article class="ifc-panel">
+        <div class="ifc-panel-head">
+          <div>
+            <span class="ifc-step">4. Preview and package</span>
+            <h2 class="ifc-panel-title">Convert one image, then build the full batch</h2>
+            <p class="ifc-panel-copy">The batch zip includes folders by format plus a manifest that records source dimensions, output sizes, and settings.</p>
           </div>
         </div>
-      </div>
-    </article>
-    <article class="card">
-      <div class="card-head">
-        <h2 class="card-title">4. Preview and download</h2>
-        <p class="card-sub">Preview the first selected file, check the estimated size change, then download the current file or the whole queue.</p>
-      </div>
-      <div class="card-body">
-        <div class="preview-grid">
-          <div class="preview-box" id="originalBox">
-            <div class="preview-pad">Upload a file to see the original preview here.</div>
+        <div class="ifc-preview-grid">
+          <div class="ifc-preview-box" id="ifcOriginalBox"><div class="ifc-preview-empty">Upload an image to see the original.</div></div>
+          <div class="ifc-preview-box" id="ifcOutputBox"><div class="ifc-preview-empty">Convert this file to preview the result.</div></div>
+        </div>
+        <div class="ifc-actions">
+          <button type="button" class="ifc-btn" id="ifcConvertCurrent" disabled>Convert current</button>
+          <button type="button" class="ifc-btn secondary" id="ifcDownloadCurrent" disabled>Download current</button>
+          <button type="button" class="ifc-btn" id="ifcConvertAll" disabled>Build batch zip</button>
+          <button type="button" class="ifc-btn secondary" id="ifcDownloadZip" disabled>Download zip</button>
+          <button type="button" class="ifc-btn warning" id="ifcCopyMarkup" disabled>Copy picture markup</button>
+          <share-result-button tool-name="Image Format Converter Studio" tool-slug="image-format-convert"></share-result-button>
+        </div>
+      </article>
+    </section>
+
+    <aside class="ifc-stack" aria-label="Conversion guidance">
+      <article class="ifc-panel">
+        <div class="ifc-panel-head">
+          <div>
+            <span class="ifc-step">Summary</span>
+            <h2 class="ifc-panel-title">Conversion totals</h2>
+            <p class="ifc-panel-copy">Use the first preview to judge quality before running the batch.</p>
           </div>
-          <div class="preview-box" id="outputBox">
-            <div class="preview-pad">Click convert to generate the export preview.</div>
+        </div>
+        <div class="ifc-stat-grid">
+          <div class="ifc-stat"><span>Source</span><strong id="ifcSourceTotal">-</strong></div>
+          <div class="ifc-stat"><span>Output</span><strong id="ifcOutputTotal">-</strong></div>
+          <div class="ifc-stat"><span>Change</span><strong id="ifcSavings">-</strong></div>
+          <div class="ifc-stat"><span>Outputs</span><strong id="ifcOutputCount">-</strong></div>
+        </div>
+      </article>
+
+      <article class="ifc-panel">
+        <div class="ifc-panel-head">
+          <div>
+            <span class="ifc-step">Browser support</span>
+            <h2 class="ifc-panel-title">Available encoders</h2>
+            <p class="ifc-panel-copy">Canvas export support changes by browser. The studio checks before enabling formats.</p>
           </div>
         </div>
-        <div class="action-row" style="margin-top:18px">
-          <button class="btn btn-primary" id="convertBtn" type="button">Convert Current</button>
-          <button class="btn btn-secondary" id="downloadAllBtn" type="button">Convert All &amp; Download</button>
+        <div class="ifc-support" id="ifcSupportList"></div>
+      </article>
+
+      <article class="ifc-panel">
+        <div class="ifc-panel-head">
+          <div>
+            <span class="ifc-step">Current recipe</span>
+            <h2 class="ifc-panel-title" id="ifcGuideTitle">Web delivery pack</h2>
+            <p class="ifc-panel-copy" id="ifcGuideIntro">WebP plus JPG fallback for sites and CMS uploads.</p>
+          </div>
         </div>
-        <div class="status" id="statusText">Nothing is uploaded. All conversion happens in the browser.</div>
-        <div class="result-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
-          <share-result-button tool-name="Image Format Convert" tool-slug="image-format-convert"></share-result-button>
+        <ul class="ifc-guide-list" id="ifcGuideList"></ul>
+      </article>
+
+      <article class="ifc-panel">
+        <div class="ifc-panel-head">
+          <div>
+            <span class="ifc-step">Saved state</span>
+            <h2 class="ifc-panel-title">Recent conversion history</h2>
+            <p class="ifc-panel-copy">Recent recipes are stored locally on this device.</p>
+          </div>
         </div>
-      </div>
-    </article>
-  </section>
-  <aside class="stack">
-    <article class="side-card">
-      <h2 id="guideTitle">WhatsApp share</h2>
-      <p id="guideIntro">Lower the file size before sending so uploads finish faster and WhatsApp does less extra compression.</p>
-      <ul class="side-list" id="guideChecklist"></ul>
-      <div class="filename-demo" id="filenameDemo">menu-whatsapp.jpg</div>
-    </article>
-    <article class="side-card">
-      <h2>Format reminders</h2>
-      <p>JPG is still the safest default for portals and marketplaces. WebP is usually best for websites. PNG is right for logos, screenshots, and anything that needs transparency.</p>
-      <ul class="side-list">
-        <li>Use JPG for forms, profile photos, and most upload portals.</li>
-        <li>Use WebP for web delivery when you want a smaller file with good visual quality.</li>
-        <li>Use PNG only when crisp text or transparency matters more than file size.</li>
-      </ul>
-    </article>
-  </aside>
-</main>
-<afro-related-tools category="image-design" current="image-format-convert"></afro-related-tools>
-<section class="related">
-  <h2>Related image workflows</h2>
-  <div class="chip-row">
-    <a href="/tools/image-compress/">Image Compress</a>
-    <a href="/tools/image-resize/">Image Resize</a>
-    <a href="/tools/watermark-bulk/">Bulk Watermark</a>
-    <a href="/image-design/">View all image tools</a>
+        <div class="ifc-history" id="ifcHistoryList"></div>
+      </article>
+    </aside>
   </div>
+</main>
+
+<afro-related-tools category="image-design" current="image-format-convert"></afro-related-tools>
+
+<section class="ifc-seo">
+  <h2>Image Format Converter Studio: What It Does</h2>
+  <p>AfroTools Image Format Converter Studio converts browser-supported image files locally using Canvas export. It is designed for practical handoffs: JPG for portals and marketplaces, PNG for transparency and sharp graphics, WebP for modern sites, and AVIF when the browser can encode it. Batch mode packages outputs into a zip with a manifest, which helps developers, designers, and small teams track exactly what was generated.</p>
+  <h3>Frequently Asked Questions</h3>
+  <details>
+    <summary>Why are some output formats disabled?</summary>
+    <p>Browsers do not all support the same Canvas encoders. The studio tests JPG, PNG, WebP, and AVIF on load, then disables formats that the current browser cannot export correctly.</p>
+  </details>
+  <details>
+    <summary>Can I convert HEIC files?</summary>
+    <p>You can choose HEIC or HEIF sources, but conversion only works if your browser can decode that file. If it cannot, use a browser or device with native HEIC support first.</p>
+  </details>
+  <details>
+    <summary>Are my files uploaded?</summary>
+    <p>No. The image is decoded and exported in the browser. The zip file is also assembled locally on your device.</p>
+  </details>
+  <details>
+    <summary>Does conversion keep metadata?</summary>
+    <p>Canvas export usually creates a clean pixel export and does not preserve most original metadata. Keep the original file separately if camera, legal, or archival metadata matters.</p>
+  </details>
 </section>
+
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
-<script>
-const PRESETS = {
-  whatsapp: {
-    label: 'WhatsApp share',
-    copy: 'For sending photos, menus, flyers, and updates without oversized uploads.',
-    intro: 'Lower the file size before sending so uploads finish faster and WhatsApp does less extra compression.',
-    checklist: [
-      'JPG is usually safest for photos and mixed graphics.',
-      'Resizing slightly helps preserve quality after messaging apps recompress the file.',
-      'Best for status posts, vendor chats, and community updates.'
-    ],
-    settings: { format: 'image/jpeg', quality: 78, resize: '85', suffix: 'whatsapp' }
-  },
-  marketplace: {
-    label: 'Marketplace upload',
-    copy: 'For product photos and store uploads where images should stay clean and clear.',
-    intro: 'Keep enough detail for listings while still reducing upload friction on low or unstable connections.',
-    checklist: [
-      'Use JPG for broad compatibility across seller dashboards.',
-      'Keep resize close to the original so details remain visible.',
-      'Best for Jumia, Konga, WhatsApp catalogues, and online vendor menus.'
-    ],
-    settings: { format: 'image/jpeg', quality: 88, resize: '95', suffix: 'marketplace' }
-  },
-  portal: {
-    label: 'Visa or job portal',
-    copy: 'For profile photos and document attachments that often reject huge files.',
-    intro: 'Use a safe JPG export that stays light enough for portals while keeping faces and document scans readable.',
-    checklist: [
-      'Portals are often stricter than social apps, so stick with JPG.',
-      'A smaller resize can help if the upload form has a hidden file limit.',
-      'Best for passport photos, CV attachments, and form uploads.'
-    ],
-    settings: { format: 'image/jpeg', quality: 80, resize: '75', suffix: 'portal' }
-  },
-  datasaver: {
-    label: 'Data saver',
-    copy: 'For very small files when bandwidth is the main concern.',
-    intro: 'This setting trades a bit more detail for a smaller file, which can matter on low data budgets and slower networks.',
-    checklist: [
-      'WebP usually gives the best size reduction for this use case.',
-      'Use it for internal sharing, drafts, and quick approvals.',
-      'Not ideal for print or fine-detail graphics.'
-    ],
-    settings: { format: 'image/webp', quality: 55, resize: '70', suffix: 'data-saver' }
-  },
-  webfast: {
-    label: 'Fast website',
-    copy: 'For landing pages, blogs, and product pages where speed matters.',
-    intro: 'Use WebP for a web-friendly balance of quality and size without forcing a tiny resize.',
-    checklist: [
-      'WebP is usually a strong default for modern browsers.',
-      'Keep resize at or near 100% when you still need crisp layout images.',
-      'Best for site uploads, CMS media libraries, and product cards.'
-    ],
-    settings: { format: 'image/webp', quality: 80, resize: '100', suffix: 'web' }
-  },
-  printsafe: {
-    label: 'Print-safe graphic',
-    copy: 'For logos, signatures, and graphics where crisp edges matter more than file size.',
-    intro: 'Keep the export lossless when the file is meant for a printer, a designer, or another editing step.',
-    checklist: [
-      'PNG is best when you need transparency or sharp text.',
-      'Do not over-shrink if the file may be reused in a flyer or certificate.',
-      'Best for logos, icons, certificates, and branded assets.'
-    ],
-    settings: { format: 'image/png', quality: 100, resize: '100', suffix: 'print' }
-  }
-};
-
-const FORMAT_GUIDES = {
-  'image/png': 'PNG keeps edges sharp and preserves transparency. It is best for logos, screenshots, and design assets.',
-  'image/jpeg': 'JPG is usually the safest upload format for portals, marketplaces, and messaging platforms.',
-  'image/webp': 'WebP is a strong balance between file size and quality for modern websites and lightweight sharing.',
-  'image/avif': 'AVIF can be very small, but some browsers or older systems may not export or open it reliably.',
-  'image/bmp': 'BMP is mostly useful for niche compatibility cases and is usually much larger than other formats.'
-};
-
-const EXT_MAP = {
-  'image/png': 'png',
-  'image/jpeg': 'jpg',
-  'image/webp': 'webp',
-  'image/avif': 'avif',
-  'image/bmp': 'bmp'
-};
-
-const elements = {
-  dropZone: document.getElementById('dropZone'),
-  fileInput: document.getElementById('fileInput'),
-  fileList: document.getElementById('fileList'),
-  presetGrid: document.getElementById('presetGrid'),
-  format: document.getElementById('format'),
-  suffix: document.getElementById('suffix'),
-  resize: document.getElementById('resize'),
-  quality: document.getElementById('quality'),
-  qualityValue: document.getElementById('qualityValue'),
-  settingNote: document.getElementById('settingNote'),
-  originalBox: document.getElementById('originalBox'),
-  outputBox: document.getElementById('outputBox'),
-  convertBtn: document.getElementById('convertBtn'),
-  downloadAllBtn: document.getElementById('downloadAllBtn'),
-  statusText: document.getElementById('statusText'),
-  guideTitle: document.getElementById('guideTitle'),
-  guideIntro: document.getElementById('guideIntro'),
-  guideChecklist: document.getElementById('guideChecklist'),
-  filenameDemo: document.getElementById('filenameDemo')
-};
-
-let files = [];
-let activeIndex = 0;
-let activePreset = 'whatsapp';
-let previewUrl = '';
-
-function isImageFile(file) {
-  return file && (file.type.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif|svg|avif)$/i.test(file.name));
-}
-
-function fmt(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1048576) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / 1048576).toFixed(1)} MB`;
-}
-
-function buildOutputName(originalName) {
-  const base = (originalName || 'image').replace(/\.[^.]+$/, '');
-  const suffix = (elements.suffix.value || 'converted').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-  const ext = EXT_MAP[elements.format.value] || 'png';
-  return `${base}-${suffix || 'converted'}.${ext}`;
-}
-
-function applyPreset(key) {
-  const preset = PRESETS[key];
-  if (!preset) return;
-  activePreset = key;
-  document.querySelectorAll('.preset-btn').forEach((button) => {
-    button.classList.toggle('active', button.dataset.preset === key);
-  });
-  elements.format.value = preset.settings.format;
-  elements.quality.value = preset.settings.quality;
-  elements.resize.value = preset.settings.resize;
-  elements.suffix.value = preset.settings.suffix;
-  updateQualityLabel();
-  renderGuide();
-}
-
-function clearPreset() {
-  activePreset = '';
-  document.querySelectorAll('.preset-btn').forEach((button) => button.classList.remove('active'));
-  renderGuide();
-}
-
-function updateQualityLabel() {
-  elements.qualityValue.textContent = `${elements.quality.value}%`;
-  const format = elements.format.value;
-  elements.settingNote.textContent = format === 'image/png' || format === 'image/bmp'
-    ? 'PNG and BMP ignore the quality slider and keep full output quality.'
-    : 'JPG, WebP, and AVIF use the quality slider to trade file size against visual quality.';
-}
-
-function renderGuide() {
-  if (activePreset) {
-    const preset = PRESETS[activePreset];
-    elements.guideTitle.textContent = preset.label;
-    elements.guideIntro.textContent = preset.intro;
-    elements.guideChecklist.innerHTML = preset.checklist.map((item) => `<li>${item}</li>`).join('');
-  } else {
-    elements.guideTitle.textContent = 'Custom export';
-    elements.guideIntro.textContent = FORMAT_GUIDES[elements.format.value] || 'Use the settings below to define your own export recipe.';
-    elements.guideChecklist.innerHTML = `
-      <li>Check the output format against where the file will be uploaded.</li>
-      <li>Use a smaller resize if you need to reduce file size quickly.</li>
-      <li>Preview the result before downloading a full batch.</li>
-    `;
-  }
-  const currentName = files[activeIndex] ? buildOutputName(files[activeIndex].name) : buildOutputName('sample.png');
-  elements.filenameDemo.textContent = currentName;
-}
-
-function renderPresetButtons() {
-  elements.presetGrid.innerHTML = Object.entries(PRESETS).map(([key, preset]) => `
-    <button class="preset-btn${key === activePreset ? ' active' : ''}" type="button" data-preset="${key}">
-      <span class="preset-label">${preset.label}</span>
-      <span class="preset-copy">${preset.copy}</span>
-    </button>
-  `).join('');
-}
-
-function renderFileList() {
-  if (!files.length) {
-    elements.fileList.innerHTML = '';
-    return;
-  }
-  elements.fileList.innerHTML = files.map((file, index) => `
-    <button class="file-item ${index === activeIndex ? 'active' : ''}" type="button" data-index="${index}">
-      <span>${file.name}</span>
-      <span class="mini">${fmt(file.size)}</span>
-    </button>
-  `).join('');
-}
-
-function readFileAsDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (event) => resolve(event.target.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-function readFileAsImage(file) {
-  return readFileAsDataUrl(file).then((src) => new Promise((resolve, reject) => {
-    const image = new Image();
-    image.onload = () => resolve({ image, src });
-    image.onerror = reject;
-    image.src = src;
-  }));
-}
-
-function showOriginalPreview(file) {
-  readFileAsImage(file).then(({ image, src }) => {
-    elements.originalBox.innerHTML = `
-      <img src="${src}" alt="">
-      <div class="info-strip">Original: ${image.width} × ${image.height} • ${file.type || 'image'} • ${fmt(file.size)}</div>
-    `;
-  }).catch(() => {
-    elements.originalBox.innerHTML = '<div class="preview-pad">This file could not be previewed in your browser.</div>';
-  });
-}
-
-function convertFile(file) {
-  return readFileAsImage(file).then(({ image }) => new Promise((resolve, reject) => {
-    const scale = Number(elements.resize.value) / 100;
-    const width = Math.max(1, Math.round(image.width * scale));
-    const height = Math.max(1, Math.round(image.height * scale));
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-    if (elements.format.value === 'image/jpeg') {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, width, height);
-    }
-    ctx.drawImage(image, 0, 0, width, height);
-    canvas.toBlob((blob) => {
-      if (!blob) {
-        reject(new Error('unsupported-export'));
-        return;
-      }
-      resolve({ blob, width, height });
-    }, elements.format.value, Number(elements.quality.value) / 100);
-  }));
-}
-
-function revokePreviewUrl() {
-  if (previewUrl) {
-    URL.revokeObjectURL(previewUrl);
-    previewUrl = '';
-  }
-}
-
-function showOutputPreview(file, result) {
-  revokePreviewUrl();
-  previewUrl = URL.createObjectURL(result.blob);
-  const change = file.size > 0 ? Math.round((1 - result.blob.size / file.size) * 100) : 0;
-  const note = change > 0
-    ? `${change}% smaller`
-    : change < 0
-      ? `${Math.abs(change)}% larger`
-      : 'same size';
-  elements.outputBox.innerHTML = `
-    <img src="${previewUrl}" alt="">
-    <div class="info-strip">
-      Converted: ${result.width} × ${result.height} • ${EXT_MAP[elements.format.value].toUpperCase()} • ${fmt(result.blob.size)} • ${note}
-      <a href="${previewUrl}" download="${buildOutputName(file.name)}" style="margin-left:8px;font-weight:700;color:#1d4ed8;text-decoration:none">Download</a>
-    </div>
-  `;
-}
-
-function handleFiles(fileList) {
-  files = Array.from(fileList || []).filter(isImageFile);
-  activeIndex = 0;
-  renderFileList();
-  renderGuide();
-  if (!files.length) {
-    elements.statusText.textContent = 'Please choose image files only.';
-    return;
-  }
-  showOriginalPreview(files[0]);
-  elements.outputBox.innerHTML = '<div class="preview-pad">Click convert to generate the export preview.</div>';
-  elements.statusText.textContent = `${files.length} file${files.length === 1 ? '' : 's'} ready for conversion.`;
-}
-
-function convertCurrent() {
-  if (!files.length) {
-    elements.statusText.textContent = 'Upload at least one image first.';
-    return;
-  }
-  const file = files[activeIndex];
-  convertFile(file).then((result) => {
-    showOutputPreview(file, result);
-    elements.statusText.textContent = `Converted ${buildOutputName(file.name)}.`;
-  }).catch(() => {
-    elements.statusText.textContent = 'This browser could not export the selected format. Try JPG, PNG, or WebP.';
-  });
-}
-
-function downloadAll() {
-  if (!files.length) {
-    elements.statusText.textContent = 'Upload files first, then run the batch conversion.';
-    return;
-  }
-  files.forEach((file, index) => {
-    window.setTimeout(() => {
-      convertFile(file).then((result) => {
-        const url = URL.createObjectURL(result.blob);
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = buildOutputName(file.name);
-        anchor.click();
-        window.setTimeout(() => URL.revokeObjectURL(url), 1200);
-        if (index === files.length - 1) {
-          elements.statusText.textContent = `Started ${files.length} download${files.length === 1 ? '' : 's'} with the current export settings.`;
-        }
-      }).catch(() => {
-        elements.statusText.textContent = 'At least one file could not be exported in the selected format.';
-      });
-    }, index * 220);
-  });
-}
-
-renderPresetButtons();
-updateQualityLabel();
-renderGuide();
-
-elements.dropZone.addEventListener('click', () => elements.fileInput.click());
-elements.dropZone.addEventListener('dragover', (event) => { event.preventDefault(); elements.dropZone.classList.add('active'); });
-elements.dropZone.addEventListener('dragleave', () => elements.dropZone.classList.remove('active'));
-elements.dropZone.addEventListener('drop', (event) => {
-  event.preventDefault();
-  elements.dropZone.classList.remove('active');
-  handleFiles(event.dataTransfer.files);
-});
-elements.fileInput.addEventListener('change', (event) => handleFiles(event.target.files));
-elements.fileList.addEventListener('click', (event) => {
-  const button = event.target.closest('.file-item');
-  if (!button) return;
-  activeIndex = Number(button.dataset.index);
-  renderFileList();
-  showOriginalPreview(files[activeIndex]);
-  renderGuide();
-});
-elements.presetGrid.addEventListener('click', (event) => {
-  const button = event.target.closest('.preset-btn');
-  if (!button) return;
-  applyPreset(button.dataset.preset);
-});
-[elements.format, elements.resize, elements.suffix].forEach((input) => {
-  input.addEventListener('change', () => { clearPreset(); updateQualityLabel(); renderGuide(); });
-  input.addEventListener('input', () => { clearPreset(); updateQualityLabel(); renderGuide(); });
-});
-elements.quality.addEventListener('input', () => {
-  clearPreset();
-  updateQualityLabel();
-  renderGuide();
-});
-elements.convertBtn.addEventListener('click', convertCurrent);
-elements.downloadAllBtn.addEventListener('click', downloadAll);
-applyPreset('whatsapp');
-</script>
+<script src="/assets/vendor/jszip/jszip.min.js" defer></script>
+<script src="/assets/js/lib/image-format-convert-studio.js?v=20260503" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=20260503" defer></script>
+<script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

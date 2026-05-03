@@ -83,6 +83,7 @@ exports.handler = async function (event) {
       // Onboarding & preferences
       'onboarding_completed', 'country_code', 'currency',
       'employment_type', 'preferred_tools', 'email_digest_enabled',
+      'email_weekly_enabled',
       // Education fields
       'education_level', 'institution', 'gpa_value', 'gpa_scale',
       'target_study_level', 'target_countries', 'target_fields',

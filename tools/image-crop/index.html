@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Crop Tool — Crop, Rotate, Flip Images | AfroTools</title>
-<meta name="description" content="Free online image cropper. Crop, rotate, and flip images with aspect ratio presets (1:1, 4:3, 16:9). Download as PNG or JPG. Client-side processing.">
+<title>Image Crop Studio - Crop, Rotate, Flip, Export | AfroTools</title>
+<meta name="description" content="Free local image crop studio. Crop with draggable aspect presets, rotate, flip, export JPG, PNG, WebP, compare details, and download without uploading.">
 <link rel="canonical" href="https://afrotools.com/tools/image-crop/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Image Crop Tool | AfroTools">
-<meta property="og:description" content="Crop and rotate images with aspect ratio control. Fast and free.">
+<meta property="og:title" content="Image Crop Studio | AfroTools">
+<meta property="og:description" content="Crop, rotate, flip, and export precise social, passport, product, and banner image cuts locally in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/image-crop/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -17,8 +17,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Image Crop Tool | AfroTools">
-<meta name="twitter:description" content="Free image cropping tool with rotation and flip options.">
+<meta name="twitter:title" content="Image Crop Studio | AfroTools">
+<meta name="twitter:description" content="Interactive local crop editor with aspect presets, rotation, flip, JPG, PNG, and WebP exports.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,8 +26,10 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=34121d56" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=de4fc4a7" defer></script>
+<link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/image-crop-studio.css?v=20260503">
+<script src="/assets/js/components/related-tools-data.min.js?v=64a6e367" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
   :root {
@@ -448,8 +450,8 @@
   }
 </style>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Crop Studio","description":"Crop, rotate, flip, and export precise JPG, PNG, or WebP images locally in your browser.","url":"https://afrotools.com/tools/image-crop/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","image":"https://afrotools.com/assets/img/og-default.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Image Crop Studio","url":"https://afrotools.com/tools/image-crop/","description":"Interactive local crop editor for social, passport, product, and banner image exports.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/image-crop/" />
@@ -478,13 +480,13 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Image Crop Tool",
+      "name": "Image Crop Studio",
       "item": "https://afrotools.com/tools/image-crop/"
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-05-03">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -494,132 +496,205 @@
     <div class="breadcrumb">
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
-    <h1>Image <em>Crop</em></h1>
-    <p class="hero-sub">Crop, rotate, and flip images with aspect ratio presets. Adjust dimensions precisely and download as PNG or JPG.</p>
+    <h1>Image <em>Crop Studio</em></h1>
+    <p class="hero-sub">Crop, rotate, flip, and export exact social, passport, product, and banner image cuts without uploading private files.</p>
     <div class="hero-badges">
+      <span class="badge b-green">Tier Gold</span>
       <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Fast</span>
+      <span class="badge b-green">Interactive crop</span>
+      <span class="badge b-green">No upload</span>
     </div>
   </div>
 </div>
 
-<div class="tool-main">
-  <div class="tool-main-inner">
-    <div>
-      <!-- Upload Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Upload Image</span>
-        </div>
-        <div class="card-body">
-          <div class="upload-area" id="uploadArea">
-            <div class="upload-icon">📤</div>
-            <div class="upload-text">Choose an image or drag it here</div>
-            <div class="upload-hint">PNG, JPG, WebP (Max 10MB)</div>
-            <input type="file" id="imageInput" accept="image/*">
+<main class="crop-studio" id="main-content">
+  <div class="crop-workspace">
+    <section class="crop-stack" aria-label="Crop editor">
+      <div class="crop-panel">
+        <div class="crop-panel-head">
+          <div>
+            <span class="crop-eyebrow">1. Load image</span>
+            <h2 class="crop-panel-title">Drop, paste, or choose a private image</h2>
+            <p class="crop-panel-copy">The file stays in this browser. Use PNG, JPG, WebP, or any standard browser image up to 25 MB.</p>
           </div>
+          <div class="crop-status" id="cropStudioStatus" role="status" aria-live="polite">Choose an image to begin.</div>
+        </div>
+        <div class="crop-drop" id="cropDropZone" role="button" tabindex="0" aria-label="Choose or drop an image">
+          <div class="crop-drop-main">
+            <span class="crop-drop-mark">IMG</span>
+            <span><strong>Choose an image</strong><span>Drag a file here, paste from clipboard, or click to browse.</span></span>
+          </div>
+          <div class="crop-drop-side">Local only<br>PNG, JPG, WebP</div>
+          <input type="file" id="cropInput" accept="image/*">
         </div>
       </div>
 
-      <!-- Aspect Ratio Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Aspect Ratio</span>
-        </div>
-        <div class="card-body">
-          <div class="preset-grid">
-            <button class="preset-btn on" data-ratio="freeform">Freeform</button>
-            <button class="preset-btn" data-ratio="1:1">1:1 Square</button>
-            <button class="preset-btn" data-ratio="4:3">4:3</button>
-            <button class="preset-btn" data-ratio="16:9">16:9</button>
-            <button class="preset-btn" data-ratio="9:16">9:16</button>
-            <button class="preset-btn" data-ratio="3:2">3:2</button>
+      <div class="crop-panel">
+        <div class="crop-panel-head">
+          <div>
+            <span class="crop-eyebrow">2. Pick a target</span>
+            <h2 class="crop-panel-title">Aspect presets that match real jobs</h2>
+            <p class="crop-panel-copy">Switch from social crops to passport, product photo, and banner output without losing the original.</p>
           </div>
+        </div>
+        <div class="crop-target-grid" role="list" aria-label="Crop aspect targets">
+          <button type="button" class="crop-target-card" data-crop-target="free" aria-pressed="true"><strong>Free</strong><span>Custom crop</span></button>
+          <button type="button" class="crop-target-card" data-crop-target="square" aria-pressed="false"><strong>Square</strong><span>1:1 profile</span></button>
+          <button type="button" class="crop-target-card" data-crop-target="portrait" aria-pressed="false"><strong>Portrait</strong><span>4:5 feed</span></button>
+          <button type="button" class="crop-target-card" data-crop-target="story" aria-pressed="false"><strong>Story</strong><span>9:16 vertical</span></button>
+          <button type="button" class="crop-target-card" data-crop-target="landscape" aria-pressed="false"><strong>Landscape</strong><span>16:9 cover</span></button>
+          <button type="button" class="crop-target-card" data-crop-target="photo" aria-pressed="false"><strong>Photo</strong><span>3:2 print</span></button>
+          <button type="button" class="crop-target-card" data-crop-target="passport" aria-pressed="false"><strong>Passport</strong><span>35:45 crop</span></button>
+          <button type="button" class="crop-target-card" data-crop-target="banner" aria-pressed="false"><strong>Banner</strong><span>4:1 header</span></button>
         </div>
       </div>
 
-      <!-- Crop Settings Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Crop & Transform</span>
-        </div>
-        <div class="card-body">
-          <div class="action-btn-row">
-            <button class="action-btn" id="rotateLeftBtn">↺ Rotate Left</button>
-            <button class="action-btn" id="rotateRightBtn">↻ Rotate Right</button>
-            <button class="action-btn" id="flipHBtn">↔️ Flip H</button>
-            <button class="action-btn" id="flipVBtn">↕️ Flip V</button>
+      <div class="crop-panel">
+        <div class="crop-panel-head">
+          <div>
+            <span class="crop-eyebrow">3. Frame the subject</span>
+            <h2 class="crop-panel-title">Drag the crop box, resize corners, or nudge precisely</h2>
+            <p class="crop-panel-copy">Use the live rule-of-thirds grid for headshots, product photos, thumbnails, and social crops.</p>
           </div>
+        </div>
+        <div class="crop-stage-wrap">
+          <div class="crop-stage" id="cropStage">
+            <div class="crop-empty" id="cropStageEmpty">Your image editor appears here.</div>
+            <canvas id="cropStageCanvas" aria-label="Interactive crop canvas" hidden></canvas>
+          </div>
+        </div>
+        <div class="crop-button-grid" aria-label="Image transform controls">
+          <button type="button" class="crop-tool-btn" id="cropRotateLeft" disabled>Rotate left</button>
+          <button type="button" class="crop-tool-btn" id="cropRotateRight" disabled>Rotate right</button>
+          <button type="button" class="crop-tool-btn" id="cropFlipH" disabled>Flip H</button>
+          <button type="button" class="crop-tool-btn" id="cropFlipV" disabled>Flip V</button>
+          <button type="button" class="crop-nudge-btn" data-crop-nudge="up" disabled>Nudge up</button>
+          <button type="button" class="crop-nudge-btn" data-crop-nudge="left" disabled>Nudge left</button>
+          <button type="button" class="crop-nudge-btn" data-crop-nudge="right" disabled>Nudge right</button>
+          <button type="button" class="crop-nudge-btn" data-crop-nudge="down" disabled>Nudge down</button>
+        </div>
+        <div class="crop-actions">
+          <button type="button" class="crop-btn secondary" id="cropReset" disabled>Reset transform</button>
+        </div>
+      </div>
 
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Format</span>
-            </label>
-            <select class="f-input" id="formatSelect">
+      <div class="crop-panel">
+        <div class="crop-panel-head">
+          <div>
+            <span class="crop-eyebrow">4. Export</span>
+            <h2 class="crop-panel-title">Choose size, format, quality, and file name</h2>
+            <p class="crop-panel-copy">Leave width and height blank to export the selected pixels, or enter exact delivery dimensions.</p>
+          </div>
+        </div>
+        <div class="crop-control-grid">
+          <label class="crop-field">
+            <span class="crop-label">Width</span>
+            <input class="crop-input" id="cropExportWidth" type="number" inputmode="numeric" min="1" max="12000" placeholder="Auto">
+          </label>
+          <label class="crop-field">
+            <span class="crop-label">Height</span>
+            <input class="crop-input" id="cropExportHeight" type="number" inputmode="numeric" min="1" max="12000" placeholder="Auto">
+          </label>
+          <label class="crop-field">
+            <span class="crop-label">Format</span>
+            <select class="crop-select" id="cropFormat">
+              <option value="same">Keep sensible format</option>
+              <option value="jpeg">JPG</option>
               <option value="png">PNG</option>
-              <option value="jpg">JPG</option>
+              <option value="webp">WebP</option>
             </select>
+          </label>
+          <label class="crop-field crop-control-wide">
+            <span class="crop-label">Quality</span>
+            <span class="crop-range">
+              <input class="crop-input" id="cropQuality" type="range" min="40" max="100" value="88">
+              <span class="crop-range-value" id="cropQualityValue">88%</span>
+            </span>
+            <span class="crop-help">Used for JPG and WebP. PNG remains lossless.</span>
+          </label>
+          <label class="crop-field">
+            <span class="crop-label">JPG background</span>
+            <input class="crop-input" id="cropBackground" type="color" value="#ffffff">
+          </label>
+          <label class="crop-field crop-control-wide">
+            <span class="crop-label">File suffix</span>
+            <input class="crop-input" id="cropSuffix" type="text" value="cropped" maxlength="40">
+          </label>
+        </div>
+        <div class="crop-actions">
+          <button type="button" class="crop-btn" id="cropExportBtn" disabled>Export crop</button>
+          <button type="button" class="crop-btn secondary" id="cropDownloadBtn" disabled>Download</button>
+          <button type="button" class="crop-btn warning" id="cropCopyRecipeBtn" disabled>Copy recipe</button>
+          <share-result-button tool-name="Image Crop Studio" tool-slug="image-crop"></share-result-button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="crop-stack" aria-label="Crop output">
+      <div class="crop-panel">
+        <div class="crop-panel-head">
+          <div>
+            <span class="crop-eyebrow">Live preview</span>
+            <h2 class="crop-panel-title">Export result</h2>
+            <p class="crop-panel-copy">Preview updates as you crop, transform, or change output settings.</p>
           </div>
-
-          <button class="calc-btn" id="cropBtn" disabled>Apply Crop</button>
         </div>
-      </div>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Preview -->
-      <div class="card preview-card" id="previewCard">
-        <div class="card-head">
-          <span class="card-title">Preview</span>
-        </div>
-        <div class="card-body">
-          <div class="canvas-container">
-            <canvas id="previewCanvas" style="max-width: 100%; border-radius: 8px; border: 1px solid #DBEAFE;"></canvas>
+        <div class="crop-preview-stage">
+          <div class="crop-preview-frame">
+            <div class="crop-preview-empty" id="cropPreviewEmpty">Preview appears after you load an image.</div>
+            <canvas id="cropPreviewCanvas" hidden></canvas>
+          </div>
+          <div class="crop-detail-grid">
+            <div class="crop-detail"><span>Selection</span><strong id="cropDetailSelection">No image</strong></div>
+            <div class="crop-detail"><span>Output</span><strong id="cropDetailOutput">-</strong></div>
+            <div class="crop-detail"><span>Transform</span><strong id="cropDetailTransform">-</strong></div>
           </div>
         </div>
-        <div class="action-row">
-          <button class="act-btn act-download" id="downloadBtn">📥 Download</button>
-        </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="Image Crop"
-    tool-slug="image-crop">
-  </share-result-button>
-</div>
       </div>
 
-      <!-- Info Card -->
-      <div class="info-card">
-        <div class="info-title">Image Crop Tool</div>
-        <div class="info-text">
-          Crop images with multiple aspect ratios and transformations.
-          <ul style="margin-top:10px;">
-            <li>✓ Aspect ratio presets</li>
-            <li>✓ Rotate & flip options</li>
-            <li>✓ PNG/JPG export</li>
-            <li>✓ Client-side only</li>
-          </ul>
+      <div class="crop-panel">
+        <div class="crop-panel-head">
+          <div>
+            <span class="crop-eyebrow">Saved state</span>
+            <h2 class="crop-panel-title">Recent export history</h2>
+            <p class="crop-panel-copy">The last few export recipes are stored locally on this device.</p>
+          </div>
+        </div>
+        <div class="crop-history" id="cropHistoryList"></div>
+      </div>
+
+      <div class="crop-panel">
+        <div class="crop-panel-head">
+          <div>
+            <span class="crop-eyebrow">Workflow</span>
+            <h2 class="crop-panel-title">Built for useful image prep</h2>
+            <p class="crop-panel-copy">Fast enough for screenshots, careful enough for product and profile images.</p>
+            <ul class="crop-feature-list">
+              <li>Interactive crop box with corner resize handles.</li>
+              <li>Aspect presets tuned for social, passport, product, and banner work.</li>
+              <li>Rotate, flip, nudge, and exact export dimensions.</li>
+              <li>JPG, PNG, WebP output with local settings and history.</li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </aside>
   </div>
-</div>
+</main>
 
 
 <afro-related-tools category="image-design" current="image-crop"></afro-related-tools>
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Image Crop Tool: How It Works</h2>
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Image Crop Studio: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Image Crop Tool gives you precise control over cropping, rotating, and flipping your images directly in the browser. Upload any image and use the interactive crop area to select exactly the portion you want to keep. Choose from popular aspect ratio presets including 1:1 (square for Instagram and profile pictures), 4:3 (standard photo), 16:9 (widescreen and YouTube thumbnails), 3:2, and free-form cropping for custom dimensions. Rotate your image in 90-degree increments or flip it horizontally and vertically to get the perfect orientation. The crop area can be resized and repositioned by dragging, and a grid overlay helps you align subjects using the rule of thirds. Download your cropped image as a high-quality PNG or JPG file. All processing is handled locally in your browser using the HTML5 Canvas API, so your photos stay private and never leave your device. This tool is ideal for preparing social media images, resizing product photos, creating profile pictures, or cleaning up screenshots quickly without needing Photoshop or any other software.</p>
+    <p>The AfroTools Image Crop Studio gives you practical control over cropping, rotating, flipping, and exporting images directly in the browser. Upload an image, choose a target like square, portrait, story, landscape, passport, photo, banner, or free crop, then drag or resize the crop box on the canvas. The live preview updates as you adjust the frame, rotate in 90-degree steps, flip horizontally or vertically, nudge the selection, and enter exact export dimensions. Download as JPG, PNG, or WebP, with a quality slider for compressed formats and a background color for JPG exports with transparent areas. Settings and recent export recipes are stored locally so repeated crop jobs feel faster. All processing uses browser canvas APIs, so your photos stay private and never leave your device.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
   <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What aspect ratio presets are available?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool includes presets for 1:1 (square), 4:3 (standard), 16:9 (widescreen), 3:2 (photo), and free-form cropping where you can drag to any custom dimension you need.</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The studio includes free crop, square 1:1, portrait 4:5, story 9:16, landscape 16:9, photo 3:2, passport 35:45, and banner 4:1 presets.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I rotate and flip images?</summary>
@@ -627,11 +702,11 @@
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What image formats can I upload?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can upload JPG, PNG, WebP, and most other standard image formats. The tool outputs your cropped image as either PNG (lossless) or JPG (smaller file size).</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can upload JPG, PNG, WebP, and most standard browser image formats. The tool outputs your cropped image as JPG, PNG, WebP, or a sensible default based on the original file.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Does cropping reduce image quality?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The crop tool preserves the original pixel quality within the selected area. If you download as PNG, the output is lossless. JPG output uses high-quality compression to keep file sizes manageable.</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The crop keeps the selected pixels from the transformed image. PNG output is lossless, while JPG and WebP exports use the quality value you choose.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is my image uploaded to a server?</summary>
@@ -649,143 +724,11 @@
 </div></section>
 <afro-footer></afro-footer>
 
-<script>
-  const uploadArea = document.getElementById('uploadArea');
-  const imageInput = document.getElementById('imageInput');
-  const presetBtns = document.querySelectorAll('.preset-btn');
-  const rotateLeftBtn = document.getElementById('rotateLeftBtn');
-  const rotateRightBtn = document.getElementById('rotateRightBtn');
-  const flipHBtn = document.getElementById('flipHBtn');
-  const flipVBtn = document.getElementById('flipVBtn');
-  const formatSelect = document.getElementById('formatSelect');
-  const cropBtn = document.getElementById('cropBtn');
-  const previewCard = document.getElementById('previewCard');
-  const previewCanvas = document.getElementById('previewCanvas');
-  const downloadBtn = document.getElementById('downloadBtn');
-
-  let originalImage = null;
-  let currentRatio = 'freeform';
-  let rotation = 0;
-  let flipH = false;
-  let flipV = false;
-
-  // Upload area events
-  uploadArea.addEventListener('click', () => imageInput.click());
-  uploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadArea.classList.add('active');
-  });
-  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
-  uploadArea.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadArea.classList.remove('active');
-    if (e.dataTransfer.files.length) {
-      imageInput.files = e.dataTransfer.files;
-      handleImageUpload();
-    }
-  });
-
-  imageInput.addEventListener('change', handleImageUpload);
-
-  function handleImageUpload() {
-    const file = imageInput.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        originalImage = img;
-        cropBtn.disabled = false;
-        previewCard.classList.add('on');
-        drawPreview();
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  presetBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      presetBtns.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      currentRatio = btn.dataset.ratio;
-      if (originalImage) drawPreview();
-    });
-  });
-
-  rotateLeftBtn.addEventListener('click', () => {
-    rotation = (rotation - 90 + 360) % 360;
-    if (originalImage) drawPreview();
-  });
-
-  rotateRightBtn.addEventListener('click', () => {
-    rotation = (rotation + 90) % 360;
-    if (originalImage) drawPreview();
-  });
-
-  flipHBtn.addEventListener('click', () => {
-    flipH = !flipH;
-    if (originalImage) drawPreview();
-  });
-
-  flipVBtn.addEventListener('click', () => {
-    flipV = !flipV;
-    if (originalImage) drawPreview();
-  });
-
-  function drawPreview() {
-    const canvas = previewCanvas;
-    const ctx = canvas.getContext('2d');
-
-    const isRotated = (rotation === 90 || rotation === 270);
-    let rotatedW = isRotated ? originalImage.height : originalImage.width;
-    let rotatedH = isRotated ? originalImage.width : originalImage.height;
-
-    let cropW = rotatedW;
-    let cropH = rotatedH;
-
-    if (currentRatio !== 'freeform') {
-      const [rw, rh] = currentRatio.split(':').map(Number);
-      const ratio = isRotated ? rh / rw : rw / rh;
-      const imgRatio = rotatedW / rotatedH;
-      if (imgRatio > ratio) {
-        cropW = rotatedH * ratio;
-      } else {
-        cropH = rotatedW / ratio;
-      }
-    }
-
-    canvas.width = cropW;
-    canvas.height = cropH;
-
-    ctx.save();
-    ctx.translate(cropW / 2, cropH / 2);
-    ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
-    ctx.rotate((rotation * Math.PI) / 180);
-    ctx.drawImage(originalImage, -originalImage.width / 2, -originalImage.height / 2);
-    ctx.restore();
-  }
-
-  cropBtn.addEventListener('click', () => {
-    const canvas = previewCanvas;
-    const format = formatSelect.value;
-    const mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
-
-    downloadBtn.onclick = () => {
-      canvas.toBlob((blob) => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `cropped.${format}`;
-        a.click();
-        URL.revokeObjectURL(url);
-      }, mimeType, format === 'jpg' ? 0.9 : undefined);
-    };
-  });
-</script>
+<script src="/assets/js/lib/image-crop-studio.js?v=20260503" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=20260503" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
+<script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

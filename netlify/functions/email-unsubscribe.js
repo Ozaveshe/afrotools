@@ -65,7 +65,7 @@ exports.handler = async function (event) {
   // Look up profile by unsubscribe token
   const { data, error } = await sb
     .from('profiles')
-    .update({ email_digest_enabled: false })
+    .update({ email_digest_enabled: false, email_weekly_enabled: false })
     .eq('email_unsubscribe_token', token)
     .select('id')
     .single();

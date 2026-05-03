@@ -10,6 +10,7 @@
  */
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const { safeAnthropicText } = require('./_shared/anthropic-request');
 const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
 if (!SUPABASE_ANON_KEY) console.warn('[crypto-portfolio-advisor] Missing SUPABASE_ANON_KEY_AUTH env var');
@@ -76,10 +77,10 @@ exports.handler = async function (event) {
   }
 
   // Build portfolio context for Claude
-  const holdingsText = holdings
+  const holdingsText = safeAnthropicText(holdings
     .sort((a, b) => (b.allocation || 0) - (a.allocation || 0))
     .map(h => `${h.symbol}: ${(h.allocation || 0).toFixed(1)}% allocation, value ${h.value ? h.value.toFixed(0) : '?'} ${(currency || 'NGN').toUpperCase()}${h.pnl != null ? ', P/L ' + (h.pnl >= 0 ? '+' : '') + h.pnl.toFixed(0) : ''}`)
-    .join('\n');
+    .join('\n'), 'Crypto holdings context', 140000);
 
   const currencyUpper = (currency || 'ngn').toUpperCase();
   const totalValue = marketSummary?.totalValue || 0;
@@ -124,8 +125,8 @@ Provide your analysis.`;
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 500,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMessage }],
+        system: safeAnthropicText(systemPrompt, 'Crypto advisor system prompt', 80000),
+        messages: [{ role: 'user', content: safeAnthropicText(userMessage, 'Crypto advisor prompt', 160000) }],
       }),
     });
 

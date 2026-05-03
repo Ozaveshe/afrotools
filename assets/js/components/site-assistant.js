@@ -194,6 +194,10 @@ IMPORTANT RULES:
       this._loading  = false;
       this._welcomed = false;
       this._hasBeenOpened = !!localStorage.getItem('afrobot_opened');
+      this._position = null;
+      this._dragState = null;
+      this._dragMoved = false;
+      this._suppressNextClick = false;
 
       // Theme: use localStorage if set, otherwise default to light (white)
       const stored = localStorage.getItem('afrobot_theme');
@@ -202,8 +206,13 @@ IMPORTANT RULES:
 
     connectedCallback() {
       this._render();
+      this._restorePosition();
       this._bind();
       this._applyTheme();
+      this._resizeHandler = () => {
+        if (this._position) this._setPosition(this._position.x, this._position.y, true);
+      };
+      window.addEventListener('resize', this._resizeHandler);
 
       // Listen for system theme changes (only matters if user hasn't overridden)
       this._mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -220,6 +229,15 @@ IMPORTANT RULES:
       if (this._mediaQuery && this._mediaHandler) {
         this._mediaQuery.removeEventListener('change', this._mediaHandler);
       }
+      if (this._resizeHandler) {
+        window.removeEventListener('resize', this._resizeHandler);
+      }
+      if (this._dragMoveHandler) {
+        window.removeEventListener('pointermove', this._dragMoveHandler);
+      }
+      if (this._dragEndHandler) {
+        window.removeEventListener('pointerup', this._dragEndHandler);
+      }
     }
 
     _render() {
@@ -231,8 +249,12 @@ IMPORTANT RULES:
             position: fixed;
             bottom: 24px;
             right: 24px;
+            width: 56px;
+            height: 56px;
+            display: block;
             z-index: 99999;
             font-family: 'DM Sans', -apple-system, 'SF Pro Text', system-ui, sans-serif;
+            touch-action: none;
           }
 
           /* ── FAB trigger button ── */
@@ -242,7 +264,7 @@ IMPORTANT RULES:
             border-radius: 50%;
             background: var(--fab-bg, #ffffff);
             border: none;
-            cursor: pointer;
+            cursor: grab;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -250,12 +272,18 @@ IMPORTANT RULES:
             transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease;
             position: relative;
             padding: 0;
+            touch-action: none;
+            user-select: none;
           }
           .fab:hover {
             transform: scale(1.08);
             box-shadow: var(--fab-hover-shadow, 0 4px 24px rgba(0,122,255,0.28), 0 8px 32px rgba(0,0,0,0.10));
           }
           .fab:active { transform: scale(.95); }
+          :host(.dragging) .fab,
+          .fab.dragging {
+            cursor: grabbing;
+          }
 
           /* Subtle blue dot badge — replaces old red "1" badge */
           .badge {
@@ -291,6 +319,11 @@ IMPORTANT RULES:
               opacity .22s ease;
             overflow: hidden;
           }
+          .panel-wrap.from-left {
+            left: 0;
+            right: auto;
+            transform-origin: bottom left;
+          }
           .panel-wrap.open {
             transform: scale(1) translateY(0);
             opacity: 1;
@@ -314,7 +347,11 @@ IMPORTANT RULES:
             border-bottom: 1px solid var(--border, #E2E8F0);
             flex-shrink: 0;
             transition: background .25s, border-color .25s;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
           }
+          :host(.dragging) .p-head { cursor: grabbing; }
           .p-head-text { flex:1; min-width:0; }
           .p-title {
             font-size: 0.88rem;
@@ -593,11 +630,12 @@ IMPORTANT RULES:
           @media (max-width: 480px) {
             :host { bottom: 16px; right: 14px; }
             .panel-wrap { width: calc(100vw - 28px); right: -14px; }
+            .panel-wrap.from-left { left: -14px; right: auto; }
           }
         </style>
 
         <!-- FAB button -->
-        <button class="fab" id="fab" aria-label="Open AfroTools AI Advisor" title="AfroBot — AI Advisor">
+        <button class="fab" id="fab" aria-label="Open AfroTools AI Advisor" title="AfroBot - drag to move">
           ${BOT_SVG}
           <div class="badge" id="badge"></div>
         </button>
@@ -679,8 +717,20 @@ IMPORTANT RULES:
       const sugs  = sr.getElementById('sugs');
       const themeBtn = sr.getElementById('themeBtn');
       const clearBtn = sr.getElementById('clearBtn');
+      const panelHead = sr.querySelector('.p-head');
 
-      fab.addEventListener('click', () => this._toggle());
+      fab.addEventListener('click', () => {
+        if (this._suppressNextClick) {
+          this._suppressNextClick = false;
+          return;
+        }
+        this._toggle();
+      });
+      fab.addEventListener('pointerdown', e => this._startDrag(e));
+      panelHead?.addEventListener('pointerdown', e => {
+        if (e.target.closest('button, a, input, textarea, select')) return;
+        this._startDrag(e);
+      });
       close.addEventListener('click', () => this._close());
       send.addEventListener('click', () => this._send());
       inp.addEventListener('keydown', e => {
@@ -733,6 +783,118 @@ IMPORTANT RULES:
       if (!this._hasBeenOpened) {
         sr.getElementById('badge').classList.add('show');
       }
+    }
+
+    _restorePosition() {
+      let saved = null;
+      try {
+        saved = JSON.parse(localStorage.getItem('afrobot_position') || 'null');
+      } catch {}
+      if (saved && Number.isFinite(Number(saved.x)) && Number.isFinite(Number(saved.y))) {
+        this._setPosition(Number(saved.x), Number(saved.y), false);
+        return;
+      }
+      this._updatePanelAnchor();
+    }
+
+    _setPosition(x, y, persist) {
+      const margin = 12;
+      const rect = this.getBoundingClientRect();
+      const width = rect.width || 56;
+      const height = rect.height || 56;
+      const maxX = Math.max(margin, window.innerWidth - width - margin);
+      const maxY = Math.max(margin, window.innerHeight - height - margin);
+      const nextX = Math.min(Math.max(Number(x) || margin, margin), maxX);
+      const nextY = Math.min(Math.max(Number(y) || margin, margin), maxY);
+      const position = { x: Math.round(nextX), y: Math.round(nextY) };
+
+      this.style.left = position.x + 'px';
+      this.style.top = position.y + 'px';
+      this.style.right = 'auto';
+      this.style.bottom = 'auto';
+      this._position = position;
+      this._updatePanelAnchor();
+
+      if (persist) {
+        try {
+          localStorage.setItem('afrobot_position', JSON.stringify(position));
+        } catch {}
+      }
+    }
+
+    _updatePanelAnchor() {
+      const panel = this.shadowRoot?.getElementById('panel');
+      if (!panel) return;
+      const rect = this.getBoundingClientRect();
+      const leftSide = rect.left + (rect.width || 56) / 2 < window.innerWidth / 2;
+      panel.classList.toggle('from-left', leftSide);
+    }
+
+    _startDrag(e) {
+      if (typeof e.button === 'number' && e.button !== 0) return;
+      if (this._dragMoveHandler) {
+        window.removeEventListener('pointermove', this._dragMoveHandler);
+      }
+      if (this._dragEndHandler) {
+        window.removeEventListener('pointerup', this._dragEndHandler);
+      }
+      const rect = this.getBoundingClientRect();
+      this._dragState = {
+        pointerId: e.pointerId,
+        startX: e.clientX,
+        startY: e.clientY,
+        originX: rect.left,
+        originY: rect.top,
+        target: e.currentTarget
+      };
+      this._dragMoved = false;
+      this._dragMoveHandler = event => this._moveDrag(event);
+      this._dragEndHandler = event => this._endDrag(event);
+      window.addEventListener('pointermove', this._dragMoveHandler, { passive: false });
+      window.addEventListener('pointerup', this._dragEndHandler);
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch {}
+    }
+
+    _moveDrag(e) {
+      if (!this._dragState || e.pointerId !== this._dragState.pointerId) return;
+      const dx = e.clientX - this._dragState.startX;
+      const dy = e.clientY - this._dragState.startY;
+      if (!this._dragMoved && Math.hypot(dx, dy) < 4) return;
+
+      this._dragMoved = true;
+      e.preventDefault();
+      this.classList.add('dragging');
+      this._dragState.target?.classList?.add('dragging');
+      this._setPosition(this._dragState.originX + dx, this._dragState.originY + dy, false);
+    }
+
+    _endDrag(e) {
+      if (!this._dragState) return;
+      if (this._dragMoveHandler) {
+        window.removeEventListener('pointermove', this._dragMoveHandler);
+      }
+      if (this._dragEndHandler) {
+        window.removeEventListener('pointerup', this._dragEndHandler);
+      }
+
+      if (this._dragMoved && (!e || e.pointerId === this._dragState.pointerId)) {
+        const dx = e ? e.clientX - this._dragState.startX : 0;
+        const dy = e ? e.clientY - this._dragState.startY : 0;
+        this._setPosition(this._dragState.originX + dx, this._dragState.originY + dy, true);
+        this._suppressNextClick = true;
+      }
+
+      try {
+        this._dragState.target?.releasePointerCapture?.(this._dragState.pointerId);
+      } catch {}
+      this.classList.remove('dragging');
+      this._dragState.target?.classList?.remove('dragging');
+      this._dragState = null;
+      this._dragMoveHandler = null;
+      this._dragEndHandler = null;
+      setTimeout(() => { this._dragMoved = false; }, 0);
     }
 
     _applyTheme() {
@@ -807,6 +969,7 @@ IMPORTANT RULES:
       this._open = true;
       const panel = this.shadowRoot.getElementById('panel');
       const badge = this.shadowRoot.getElementById('badge');
+      this._updatePanelAnchor();
       panel.classList.add('open');
 
       // Hide badge on first open and remember

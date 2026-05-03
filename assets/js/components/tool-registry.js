@@ -170,12 +170,12 @@ var AFRO_TOOLS = [
   // ═══════════════════════════════════════════════════════════
   //  PHASE 1 — Image & Design Tools
   // ═══════════════════════════════════════════════════════════
-  { id: 'image-compress', name: 'Image Compressor', icon: '📷', desc: 'Reduce image file size with quality slider. Critical for Africa bandwidth. Batch mode.', href: '/tools/image-compress/', category: 'image-design', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 18000, estRevenue: 220, priority: 92 },
-  { id: 'image-resize', name: 'Image Resizer & Converter', icon: '↔️', desc: 'Resize images, convert between WebP/PNG/JPG. Social media presets included.', href: '/tools/image-resize/', category: 'image-design', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 15000, estRevenue: 180, priority: 91 },
+  { id: 'image-compress', name: 'Image Compressor Studio', icon: '📷', desc: 'Batch compress, resize, convert, compare, and target file-size limits locally in the browser.', href: '/tools/image-compress/', category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 18000, estRevenue: 220, priority: 92 },
+  { id: 'image-resize', name: 'Image Resizer Studio', icon: '↔️', desc: 'Batch resize, crop, pad, convert, compare, and export multiple social or web sizes locally.', href: '/tools/image-resize/', category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 15000, estRevenue: 180, priority: 91 },
   { id: 'qr-generator', name: 'QR Code Generator', icon: '📲', desc: 'Generate QR codes for M-Pesa links, WhatsApp, WiFi, URLs. Download as PNG/SVG.', href: '/tools/qr-generator/', category: 'image-design', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 12000, estRevenue: 150, priority: 90 },
   { id: 'background-remover', name: 'Background Remover', icon: '✂️', desc: 'AI-powered background removal in-browser. No upload. Batch support.', href: '/tools/background-remover/', category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Premium batch', estTraffic: 15000, estRevenue: 300, priority: 91 },
 { id: 'passport-photo', name: 'Passport Photo Tool', icon: '📸', desc: 'Crop and resize photos for popular African travel sizes plus major international standards.', href: '/tools/passport-photo/', category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Premium prints', estTraffic: 10000, estRevenue: 200, priority: 88 },
-  { id: 'image-crop', name: 'Image Crop & Rotate', icon: '🖼️', desc: 'Free-form crop, rotate, flip. Social media aspect ratio presets.', href: '/tools/image-crop/', category: 'image-design', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Free', estTraffic: 10000, estRevenue: 80, priority: 82 },
+  { id: 'image-crop', name: 'Image Crop Studio', icon: '🖼️', desc: 'Interactive crop box with aspect presets, rotate, flip, exact JPG, PNG, and WebP exports.', href: '/tools/image-crop/', category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 14000, estRevenue: 160, priority: 88 },
   { id: 'color-picker', name: 'Color Picker & Converter', icon: '🎨', desc: 'HEX/RGB/HSL/CMYK conversion. WCAG contrast checker. Palette generator.', href: '/tools/color-picker/', category: 'image-design', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Free', estTraffic: 8000, estRevenue: 80, priority: 80 },
   { id: 'favicon-generator', name: 'Favicon Generator', icon: '⭐', desc: 'Generate favicon sets (ICO, PNG 16/32/64) from any image or text.', href: '/tools/favicon-generator/', category: 'image-design', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Free', estTraffic: 6000, estRevenue: 50, priority: 76 },
   { id: 'image-to-text', name: 'Image to Text (OCR)', icon: '🔤', desc: 'Extract text from images. Supports Arabic, Swahili, French, English.', href: '/tools/image-to-text/', category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 10000, estRevenue: 150, priority: 85 },
@@ -908,7 +908,7 @@ var AFRO_TOOLS = [
   { id: 'thumbnail-maker',        name: 'YouTube Thumbnail Maker',         icon: '🖼️', desc: 'Design viral YouTube thumbnails with African art styles and custom text overlays.',     href: '/tools/thumbnail-maker/',        category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 10000, estRevenue: 150, priority: 80 },
   // flyer-maker duplicate — consolidated to line 166
   { id: 'watermark-bulk',         name: 'Bulk Watermark Tool',             icon: '💧', desc: 'Add text or image watermarks to up to 50 photos at once. Perfect for photographers.',   href: '/tools/watermark-bulk/',         category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 7000,  estRevenue: 105, priority: 74 },
-  { id: 'image-format-convert',   name: 'Image Format Converter',          icon: '🔄', desc: 'Convert JPG, PNG, WebP, HEIC, AVIF. Batch convert up to 100 images at once.',          href: '/tools/image-format-convert/',   category: 'image-design', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Free',     estTraffic: 8000,  estRevenue: 80,  priority: 73 },
+  { id: 'image-format-convert',   name: 'Image Format Converter Studio',    icon: '🔄', desc: 'Batch convert browser-supported images into JPG, PNG, WebP, and AVIF packs with previews and zip manifests.', href: '/tools/image-format-convert/',   category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 11000, estRevenue: 150, priority: 86 },
   { id: 'colour-palette',         name: 'African Colour Palette Generator',icon: '🎨', desc: 'Generate brand palettes inspired by kente, ankara, mudcloth, and African art motifs.',  href: '/tools/colour-palette/',         category: 'image-design', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 8000,  estRevenue: 120, priority: 76 },
   // REMOVED: photo-editor — too complex for static site, requires Canvas/WebGL editing engine
 
@@ -1803,6 +1803,17 @@ function getToolGridLabels(locale) {
       allCategories: 'Aina zote',
       madeFor: 'Za {country}',
       africaWide: 'Afrika nzima',
+      featuredTools: 'Zana muhimu sasa',
+      goalLanes: 'Anza kwa hitaji',
+      goalAll: 'Mahitaji yote',
+      goalSalary: 'Mshahara na malipo',
+      goalTax: 'Kodi na VAT',
+      goalBusiness: 'Biashara',
+      goalFarm: 'Kilimo na chakula',
+      goalDocuments: 'Nyaraka',
+      goalSchool: 'Shule na mitihani',
+      goalTravel: 'Safari na kuhama',
+      goalLive: 'Takwimu hai',
       popularCategories: 'Aina maarufu',
       moreCategories: 'Aina zaidi',
       searchLabel: 'Tafuta zana za nchi',
@@ -1819,7 +1830,8 @@ function getToolGridLabels(locale) {
       startHere: 'Anza hapa',
       open: 'Fungua',
       loading: 'Inapakia...',
-      unavailable: 'Haipatikani sasa'
+      unavailable: 'Haipatikani sasa',
+      rateFeedPending: 'Chanzo cha nchi hakijakamilika bado'
     };
   }
   if (normalized.indexOf('fr') === 0) {
@@ -1833,6 +1845,17 @@ function getToolGridLabels(locale) {
       allCategories: 'Toutes categories',
       madeFor: 'Pour {country}',
       africaWide: 'Afrique entiere',
+      featuredTools: 'Outils utiles maintenant',
+      goalLanes: 'Commencer par besoin',
+      goalAll: 'Tous les besoins',
+      goalSalary: 'Salaire et paie',
+      goalTax: 'Impots et TVA',
+      goalBusiness: 'Entreprise',
+      goalFarm: 'Agriculture et aliments',
+      goalDocuments: 'Documents',
+      goalSchool: 'Ecole et examens',
+      goalTravel: 'Voyage et mobilite',
+      goalLive: 'Donnees en direct',
       popularCategories: 'Categories populaires',
       moreCategories: 'Plus de categories',
       searchLabel: 'Rechercher des outils pays',
@@ -1849,7 +1872,8 @@ function getToolGridLabels(locale) {
       startHere: 'Commencer ici',
       open: 'Ouvrir',
       loading: 'Chargement...',
-      unavailable: 'Indisponible'
+      unavailable: 'Indisponible',
+      rateFeedPending: 'Flux pays a completer'
     };
   }
   return {
@@ -1862,6 +1886,17 @@ function getToolGridLabels(locale) {
     allCategories: 'All categories',
     madeFor: 'Made for {country}',
     africaWide: 'Africa-wide',
+    featuredTools: 'Useful tools right now',
+    goalLanes: 'Start by goal',
+    goalAll: 'All needs',
+    goalSalary: 'Pay and salary',
+    goalTax: 'Tax and VAT',
+    goalBusiness: 'Business',
+    goalFarm: 'Farm and food',
+    goalDocuments: 'Documents',
+    goalSchool: 'School and exams',
+    goalTravel: 'Travel and move',
+    goalLive: 'Live data',
     popularCategories: 'Popular categories',
     moreCategories: 'More categories',
     searchLabel: 'Search country tools',
@@ -1878,7 +1913,8 @@ function getToolGridLabels(locale) {
     startHere: 'Start here',
     open: 'Open',
     loading: 'Loading...',
-    unavailable: 'Unavailable'
+    unavailable: 'Unavailable',
+    rateFeedPending: 'Country feed pending'
   };
 }
 
@@ -2000,6 +2036,78 @@ function countryHubCategoryCounts(tools) {
   });
 }
 
+var COUNTRY_HUB_GOALS = [
+  { key: 'salary', labelKey: 'goalSalary', categories: ['hr-payroll', 'career'], terms: ['salary', 'paye', 'payroll', 'pension', 'wage', 'staff cost', 'nhf', 'uif', 'ssnit', 'nssf', 'leave', 'overtime', 'minimum wage'] },
+  { key: 'tax', labelKey: 'goalTax', categories: [], terms: ['tax', 'vat', 'paye', 'cit', 'cgt', 'wht', 'duty', 'customs', 'tin', 'levy', 'stamp duty', 'transfer pricing'] },
+  { key: 'business', labelKey: 'goalBusiness', categories: ['business', 'small-business', 'ecommerce', 'fintech', 'legal'], terms: ['business', 'invoice', 'registration', 'license', 'loan', 'market', 'pos', 'merchant', 'startup', 'contract', 'cash flow'] },
+  { key: 'farm', labelKey: 'goalFarm', categories: ['agriculture'], terms: ['farm', 'crop', 'seed', 'fertilizer', 'cassava', 'cocoa', 'coffee', 'livestock', 'irrigation', 'harvest', 'commodity', 'food'] },
+  { key: 'documents', labelKey: 'goalDocuments', categories: ['document-pdf', 'legal', 'government'], terms: ['pdf', 'document', 'contract', 'agreement', 'certificate', 'passport', 'visa', 'id', 'form', 'letter'] },
+  { key: 'school', labelKey: 'goalSchool', categories: ['education'], terms: ['school', 'student', 'exam', 'jamb', 'waec', 'university', 'scholarship', 'study', 'grade', 'fees'] },
+  { key: 'travel', labelKey: 'goalTravel', categories: ['travel-tourism', 'diaspora', 'transport'], terms: ['visa', 'travel', 'flight', 'passport', 'route', 'fare', 'shipping', 'import', 'diaspora', 'relocation', 'work permit'] },
+  { key: 'live', labelKey: 'goalLive', categories: ['data-productivity'], terms: ['currency', 'rates', 'forex', 'prices', 'inflation', 'commodity', 'afrorates', 'afroprices', 'market prices', 'basket', 'tracker'] }
+];
+
+function getCountryHubGoal(goalKey) {
+  for (var i = 0; i < COUNTRY_HUB_GOALS.length; i++) {
+    if (COUNTRY_HUB_GOALS[i].key === goalKey) return COUNTRY_HUB_GOALS[i];
+  }
+  return null;
+}
+
+function countryHubToolHaystack(tool) {
+  var tags = Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || '');
+  var cat = AFRO_CATEGORIES[tool.category] || {};
+  return [
+    tool.id, tool.name, tool.desc, tool.revenue, tool.category, cat.name, tags
+  ].join(' ').toLowerCase();
+}
+
+function toolMatchesCountryGoal(tool, goal) {
+  if (!goal) return true;
+  if (goal.categories && goal.categories.indexOf(tool.category) !== -1) return true;
+  var haystack = countryHubToolHaystack(tool);
+  return (goal.terms || []).some(function(term) {
+    return haystack.indexOf(term) !== -1;
+  });
+}
+
+function countryHubGoalCounts(tools) {
+  return COUNTRY_HUB_GOALS.map(function(goal) {
+    var count = tools.filter(function(tool) { return toolMatchesCountryGoal(tool, goal); }).length;
+    return { goal: goal, count: count };
+  }).filter(function(item) {
+    return item.count > 0;
+  });
+}
+
+function countryHubFeaturedTools(tools, countryCode, limit) {
+  var code = String(countryCode || '').toUpperCase();
+  var picked = [];
+  var seen = {};
+
+  function addMatches(test) {
+    tools.forEach(function(tool) {
+      var key = tool.id || tool.href || tool.name;
+      if (!key || seen[key] || !test(tool)) return;
+      seen[key] = true;
+      picked.push(tool);
+    });
+  }
+
+  addMatches(function(tool) {
+    return tool.countries && tool.countries.indexOf(code) !== -1 && !!getToolCardImagePath(tool);
+  });
+  addMatches(function(tool) {
+    return tool.countries && tool.countries.indexOf(code) !== -1;
+  });
+  addMatches(function(tool) {
+    return tool.category === 'financial' || tool.id === 'afrorates' || tool.id === 'afroprices' || tool.id === 'currency-converter';
+  });
+  addMatches(function() { return true; });
+
+  return picked.slice(0, limit || 4);
+}
+
 function ensureCountryHubStyles() {
   if (typeof document === 'undefined' || document.getElementById('afro-country-hub-tools-css')) return;
   var style = document.createElement('style');
@@ -2013,6 +2121,22 @@ function ensureCountryHubStyles() {
     '.country-hub-pulse-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#64748b}',
     '.country-hub-pulse-value{font-size:clamp(1.1rem,2vw,1.38rem);font-weight:800;color:#0f172a;line-height:1.15;margin-top:10px}',
     '.country-hub-pulse-note{font-size:.76rem;line-height:1.45;color:#5b6778;margin-top:10px}',
+    '.country-featured{margin:0 0 18px}',
+    '.country-featured-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px}',
+    '.country-featured-title{font-size:.72rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#64748b}',
+    '.country-featured-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}',
+    '.country-featured-card{min-height:142px;background:#fff;border:1px solid #dbe7f3;border-radius:10px;overflow:hidden;text-decoration:none;color:#111827;display:grid;grid-template-columns:86px minmax(0,1fr);transition:border-color .18s,box-shadow .18s,transform .18s}',
+    '.country-featured-card:hover{border-color:var(--color-primary,#0062CC);box-shadow:0 12px 28px rgba(15,23,42,.08);transform:translateY(-2px)}',
+    '.country-featured-card:focus-visible{outline:2px solid var(--color-primary,#0062CC);outline-offset:3px}',
+    '.country-featured-media{position:relative;background:#eef4ff;min-height:142px;overflow:hidden}',
+    '.country-featured-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#eef4ff}',
+    '.country-featured-img.is-error{display:none}',
+    '.country-featured-media.has-image .country-featured-icon{opacity:0}',
+    '.country-featured-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.55rem;font-weight:800;color:#0f172a}',
+    '.country-featured-body{padding:12px;display:flex;flex-direction:column;gap:7px;min-width:0}',
+    '.country-featured-chip{align-self:flex-start;border-radius:999px;padding:4px 8px;font-size:.62rem;font-weight:900;color:var(--cat-color,#334155);background:var(--cat-bg,#f1f5f9)}',
+    '.country-featured-card h3{font-size:.92rem;line-height:1.2;margin:0;color:#111827;font-weight:800;letter-spacing:0}',
+    '.country-featured-card p{font-size:.75rem;line-height:1.42;color:#5b6778;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}',
     '.country-tool-controls{background:#fff;border:1px solid #dbe7f3;border-radius:10px;padding:16px;margin:0 0 18px;box-shadow:0 10px 28px rgba(15,23,42,.04)}',
     '.country-tool-search-row{display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:12px;align-items:center;margin-bottom:12px}',
     '.country-tool-search{position:relative}',
@@ -2027,11 +2151,18 @@ function ensureCountryHubStyles() {
     '.country-tool-filter{border:1px solid #dbe7f3;background:#fff;color:#334155;border-radius:999px;min-height:34px;padding:7px 11px;font:700 .76rem/1 "DM Sans",sans-serif;cursor:pointer;display:inline-flex;gap:7px;align-items:center;justify-content:center}',
     '.country-tool-filter span{color:#64748b;font-weight:800}',
     '.country-tool-filter:hover{border-color:var(--color-primary,#0062CC);background:#f8fbff}',
-    '.country-tool-filter:focus-visible,.country-tool-category-more summary:focus-visible{outline:2px solid rgba(0,98,204,.28);outline-offset:2px}',
+    '.country-tool-filter:focus-visible,.country-goal:focus-visible,.country-tool-category-more summary:focus-visible{outline:2px solid rgba(0,98,204,.28);outline-offset:2px}',
     '.country-tool-filter.active{background:#0f172a;border-color:#0f172a;color:#fff}',
     '.country-tool-filter.active span{color:#bfdbfe}',
     '.country-tool-scope .country-tool-filter{border-color:transparent;background:transparent;min-height:32px;padding:0 12px}',
     '.country-tool-scope .country-tool-filter.active{background:#0f172a;color:#fff;box-shadow:0 8px 18px rgba(15,23,42,.12)}',
+    '.country-goal-block{margin-top:12px;padding-top:12px;border-top:1px solid #eef2f7}',
+    '.country-goal-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(154px,1fr));gap:8px}',
+    '.country-goal{border:1px solid #dbe7f3;background:#f8fafc;border-radius:10px;min-height:58px;padding:10px 11px;text-align:left;color:#334155;cursor:pointer;font:800 .82rem/1.2 "DM Sans",sans-serif;display:flex;flex-direction:column;justify-content:space-between;gap:8px;transition:border-color .18s,background .18s,box-shadow .18s}',
+    '.country-goal:hover{border-color:var(--color-primary,#0062CC);background:#fff}',
+    '.country-goal span{font-size:.68rem;font-weight:900;color:#64748b}',
+    '.country-goal.active{background:#0f172a;border-color:#0f172a;color:#fff;box-shadow:0 10px 24px rgba(15,23,42,.12)}',
+    '.country-goal.active span{color:#bfdbfe}',
     '.country-tool-category-block{margin-top:12px;padding-top:12px;border-top:1px solid #eef2f7}',
     '.country-tool-category-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}',
     '.country-tool-category-title{font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#64748b}',
@@ -2070,8 +2201,9 @@ function ensureCountryHubStyles() {
     '.country-coming-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}',
     '.country-coming-card{border:1px solid #e5e7eb;border-radius:10px;padding:13px;background:#f8fafc;color:#64748b}',
     '.country-coming-card strong{display:block;color:#334155;font-size:.86rem;margin-bottom:5px}',
+    '@media(max-width:1100px){.country-featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}',
     '@media(max-width:860px){.country-hub-pulse{grid-template-columns:repeat(2,minmax(0,1fr))}.country-tool-search-row{grid-template-columns:1fr}.country-tool-result-count{justify-self:start;white-space:normal}.country-tool-scope{border-radius:14px}.country-tool-scope .country-tool-filter{flex:1 1 auto}}',
-    '@media(max-width:560px){.country-hub-pulse{grid-template-columns:1fr}.country-tool-grid{grid-template-columns:1fr}.country-tool-controls{padding:12px}.country-tool-scope{width:100%;border-radius:12px}.country-tool-scope .country-tool-filter{min-width:46%;padding:0 10px}.country-tool-category-head{align-items:flex-start;flex-direction:column}.country-tool-card{min-height:0}.country-tool-card-media{height:104px}}'
+    '@media(max-width:560px){.country-hub-pulse,.country-featured-grid{grid-template-columns:1fr}.country-featured-card{grid-template-columns:78px minmax(0,1fr);min-height:128px}.country-featured-media{min-height:128px}.country-tool-grid{grid-template-columns:1fr}.country-tool-controls{padding:12px}.country-tool-scope{width:100%;border-radius:12px}.country-tool-scope .country-tool-filter{min-width:46%;padding:0 10px}.country-goal-row{grid-template-columns:repeat(2,minmax(0,1fr))}.country-tool-category-head{align-items:flex-start;flex-direction:column}.country-tool-card{min-height:0}.country-tool-card-media{height:104px}}'
   ].join('\n');
   document.head.appendChild(style);
 }
@@ -2181,15 +2313,43 @@ function refreshCountryPulse(container, countryCode, meta, labels) {
     var inflation = country.inflation || {};
     var headline = inflation.wb_headline != null ? inflation.wb_headline : inflation.headline;
     if (policyValue) policyValue.textContent = policy != null ? formatCountryHubNumber(policy, 2) + '%' : labels.unavailable;
-    if (policyNote) policyNote.textContent = (country.central_bank || 'Central bank') + (country.policy_rate_source_date ? ' - ' + country.policy_rate_source_date : '');
+    if (policyNote) policyNote.textContent = policy != null ? (country.central_bank || 'Central bank') + (country.policy_rate_source_date ? ' - ' + country.policy_rate_source_date : '') : (labels.rateFeedPending || 'Country feed pending');
     if (inflationValue) inflationValue.textContent = headline != null ? formatCountryHubNumber(headline, 2) + '%' : labels.unavailable;
-    if (inflationNote) inflationNote.textContent = inflation.wb_date ? 'CPI ' + inflation.wb_date : 'Latest CPI';
+    if (inflationNote) inflationNote.textContent = headline != null ? (inflation.wb_date ? 'CPI ' + inflation.wb_date : 'Latest CPI') : (labels.rateFeedPending || 'Country feed pending');
   }).catch(function() {
     if (policyValue) policyValue.textContent = labels.unavailable;
     if (inflationValue) inflationValue.textContent = labels.unavailable;
-    if (policyNote) policyNote.textContent = 'Open AfroRates';
-    if (inflationNote) inflationNote.textContent = 'Open AfroRates';
+    if (policyNote) policyNote.textContent = labels.rateFeedPending || 'Country feed pending';
+    if (inflationNote) inflationNote.textContent = labels.rateFeedPending || 'Country feed pending';
   });
+}
+
+function renderCountryFeaturedTools(tools, countryCode, labels, countryName) {
+  if (!tools || !tools.length) return '';
+  return '' +
+    '<section class="country-featured" aria-label="' + countryHubEsc(labels.featuredTools || labels.available) + '">' +
+      '<div class="country-featured-head"><div class="country-featured-title">' + countryHubEsc(labels.featuredTools || labels.available) + '</div></div>' +
+      '<div class="country-featured-grid">' +
+        tools.map(function(tool) {
+          var cat = AFRO_CATEGORIES[tool.category] || { name: tool.category || 'Tool', color: '#334155', bg: '#f1f5f9' };
+          var local = tool.countries && tool.countries.indexOf(countryCode) !== -1;
+          var img = getToolCardImagePath(tool);
+          var scopeLabel = local ? (labels.madeFor || '').replace('{country}', countryName || countryCode) : labels.africaWide;
+          return '' +
+            '<a class="country-featured-card" href="' + countryHubEsc(tool.href || '#') + '" data-tool-id="' + countryHubEsc(tool.id || '') + '">' +
+              '<div class="country-featured-media">' +
+                '<span class="country-featured-icon" aria-hidden="true">' + countryHubEsc(tool.icon || '') + '</span>' +
+                (img ? '<img class="country-tool-card-img country-featured-img" src="' + countryHubEsc(img) + '" alt="" loading="lazy" decoding="async">' : '') +
+              '</div>' +
+              '<div class="country-featured-body">' +
+                '<span class="country-featured-chip" style="--cat-color:' + countryHubEsc(cat.color || '#334155') + ';--cat-bg:' + countryHubEsc(cat.bg || '#f1f5f9') + '">' + countryHubEsc(scopeLabel) + '</span>' +
+                '<h3>' + countryHubEsc(tool.name || '') + '</h3>' +
+                '<p>' + countryHubEsc(tool.desc || '') + '</p>' +
+              '</div>' +
+            '</a>';
+        }).join('') +
+      '</div>' +
+    '</section>';
 }
 
 function renderCountryToolCard(tool, countryCode, labels, countryName) {
@@ -2217,7 +2377,7 @@ function renderCountryToolCard(tool, countryCode, labels, countryName) {
 
 function bindCountryToolImages(container) {
   container.querySelectorAll('.country-tool-card-img').forEach(function(img) {
-    var media = img.closest('.country-tool-card-media');
+    var media = img.closest('.country-tool-card-media') || img.closest('.country-featured-media');
     img.addEventListener('load', function() {
       if (media) media.classList.add('has-image');
     }, { once: true });
@@ -2259,17 +2419,26 @@ function renderToolGrid(containerId, countryCode, opts) {
   var visibleCategoryLimit = Math.max(1, Number(opts.visibleCategoryLimit || 8));
   var visibleCategories = categories.slice(0, visibleCategoryLimit);
   var hiddenCategories = categories.slice(visibleCategoryLimit);
+  var featuredTools = countryHubFeaturedTools(allLive, normalizedCountry, Number(opts.featuredLimit || 4));
+  var goalItems = countryHubGoalCounts(allLive).slice(0, Number(opts.goalLimit || 8));
 
   function renderCategoryButton(item) {
     return '<button class="country-tool-filter" type="button" data-filter-type="category" data-filter-value="' + countryHubEsc(item.key) + '">' + countryHubEsc(item.category.name || item.key) + ' <span>' + item.count + '</span></button>';
   }
 
+  function renderGoalButton(item) {
+    var label = labels[item.goal.labelKey] || item.goal.key;
+    return '<button class="country-goal" type="button" data-filter-type="goal" data-filter-value="' + countryHubEsc(item.goal.key) + '">' + countryHubEsc(label) + ' <span>' + item.count + ' ' + countryHubEsc(labels.tools) + '</span></button>';
+  }
+
   var categoryButtons = '<button class="country-tool-filter active" type="button" data-filter-type="category" data-filter-value="all">' + countryHubEsc(labels.allCategories || labels.all) + ' <span>' + allLive.length + '</span></button>' + visibleCategories.map(renderCategoryButton).join('');
   var hiddenCategoryButtons = hiddenCategories.map(renderCategoryButton).join('');
+  var goalButtons = '<button class="country-goal active" type="button" data-filter-type="goal" data-filter-value="all">' + countryHubEsc(labels.goalAll || labels.all) + ' <span>' + allLive.length + ' ' + countryHubEsc(labels.tools) + '</span></button>' + goalItems.map(renderGoalButton).join('');
 
   container.innerHTML = '' +
     '<div class="country-hub-tools">' +
       renderCountryPulseShell(normalizedCountry, meta, labels, allLive) +
+      renderCountryFeaturedTools(featuredTools, normalizedCountry, labels, countryName) +
       '<div class="country-tool-controls">' +
         '<div class="country-tool-search-row">' +
           '<label class="country-tool-search">' +
@@ -2286,6 +2455,10 @@ function renderToolGrid(containerId, countryCode, opts) {
             '<button class="country-tool-filter" type="button" data-filter-type="scope" data-filter-value="pan">' + countryHubEsc(labels.africaWide) + ' <span>' + panCount + '</span></button>' +
           '</div>' +
         '</div>' +
+        '<div class="country-goal-block">' +
+          '<div class="country-tool-category-head"><div class="country-tool-category-title">' + countryHubEsc(labels.goalLanes || 'Start by goal') + '</div></div>' +
+          '<div class="country-goal-row" aria-label="' + countryHubEsc(labels.goalLanes || 'Start by goal') + '">' + goalButtons + '</div>' +
+        '</div>' +
         '<div class="country-tool-category-block">' +
           '<div class="country-tool-category-head"><div class="country-tool-category-title">' + countryHubEsc(labels.popularCategories || 'Popular categories') + '</div></div>' +
           '<div class="country-tool-category-row" aria-label="Tool categories">' + categoryButtons + '</div>' +
@@ -2298,7 +2471,7 @@ function renderToolGrid(containerId, countryCode, opts) {
       (showComing && comingTools.length ? '<div class="country-coming"><h3>' + countryHubEsc(labels.coming) + '</h3><div class="country-coming-grid">' + comingTools.slice(0, maxComing).map(function(tool) { return '<div class="country-coming-card"><strong>' + countryHubEsc(tool.name || '') + '</strong><span>' + countryHubEsc(tool.desc || '') + '</span></div>'; }).join('') + '</div></div>' : '') +
     '</div>';
 
-  var state = { query: '', category: 'all', scope: 'all', limit: initialLimit };
+  var state = { query: '', category: 'all', scope: 'all', goal: 'all', limit: initialLimit };
   var search = container.querySelector('[data-country-tool-search]');
   var grid = container.querySelector('[data-country-tool-grid]');
   var count = container.querySelector('[data-country-tool-count]');
@@ -2312,12 +2485,9 @@ function renderToolGrid(containerId, countryCode, opts) {
       if (state.category !== 'all' && tool.category !== state.category) return false;
       if (state.scope === 'local' && (!tool.countries || tool.countries.indexOf(normalizedCountry) === -1)) return false;
       if (state.scope === 'pan' && (!tool.countries || tool.countries.indexOf('ALL') === -1)) return false;
+      if (state.goal !== 'all' && !toolMatchesCountryGoal(tool, getCountryHubGoal(state.goal))) return false;
       if (!query) return true;
-      var cat = AFRO_CATEGORIES[tool.category] || {};
-      var haystack = [
-        tool.name, tool.desc, tool.id, tool.revenue, tool.category, cat.name,
-        (Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || ''))
-      ].join(' ').toLowerCase();
+      var haystack = countryHubToolHaystack(tool);
       return haystack.indexOf(query) !== -1;
     });
   }
@@ -2328,6 +2498,9 @@ function renderToolGrid(containerId, countryCode, opts) {
     });
     container.querySelectorAll('[data-filter-type="scope"]').forEach(function(btn) {
       btn.classList.toggle('active', btn.getAttribute('data-filter-value') === state.scope);
+    });
+    container.querySelectorAll('[data-filter-type="goal"]').forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-filter-value') === state.goal);
     });
   }
 
@@ -2354,8 +2527,15 @@ function renderToolGrid(containerId, countryCode, opts) {
     btn.addEventListener('click', function() {
       var type = btn.getAttribute('data-filter-type');
       var value = btn.getAttribute('data-filter-value') || 'all';
-      if (type === 'category') state.category = value;
+      if (type === 'category') {
+        state.category = value;
+        state.goal = 'all';
+      }
       if (type === 'scope') state.scope = value;
+      if (type === 'goal') {
+        state.goal = value;
+        state.category = 'all';
+      }
       state.limit = initialLimit;
       updateList();
     });

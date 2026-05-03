@@ -7,6 +7,8 @@ AfroStream has three scheduled data lanes.
 `netlify/functions/afrostream-sync.js` runs from `netlify.toml` every two hours.
 It updates creator platform counts, recomputes AfroScore, and writes daily rows to `public.as_creator_snapshots`.
 
+Scheduled invocations use the database-side `public.refresh_afrostream_creator_snapshots()` RPC so the daily snapshot set can be refreshed inside Netlify's scheduled-function execution window. Manual admin sync can still run the platform API refresh first, then call the same RPC. If the RPC is changed, keep `supabase/migrations/040-afrostream-snapshot-refresh-rpc.sql` and the public snapshot endpoint validation in sync.
+
 The YouTube lane now uses cached `yt_channel_id` values and defaults to `200` creators per run. Override with:
 
 ```text
@@ -57,6 +59,8 @@ AFROSTREAM_NEWS_RSS_FEEDS=[{"name":"Source name","feed_url":"https://example.com
 Verified supporter rows live in `public.as_creator_supporters`.
 The creator page reads this table through `/api/afrostream/creator`.
 Do not invent gifter rows from aggregate revenue. Only write rows when a source identifies supporter names or public gift totals.
+
+Aggregate supporter rows are allowed only when the source identifies a public gift total, creator, donor group, and event. Record the aggregate as a source-backed row with a clear `supporter_name`, not as individual named gifters.
 
 Ops workflow:
 

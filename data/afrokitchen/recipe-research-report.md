@@ -1,9 +1,9 @@
 # AfroKitchen Recipe Research Report
 
-Generated: 2026-05-02T15:03:21.369Z
+Generated: 2026-05-03T05:03:44.723Z
 
-- Canonical recipe pages: 310
-- Audited recipes: 310
+- Canonical recipe pages: 410
+- Audited recipes: 410
 - Pending recipes: 0
 
 ## Audited
@@ -40,7 +40,12 @@ Generated: 2026-05-02T15:03:21.369Z
 - Poulet Bicyclette (Burkina Faso) - medium confidence, 3 sources, /tools/afrokitchen/recipes/poulet-bicyclette-bf/
 - Riz Gras (Burkina Faso) - medium confidence, 3 sources, /tools/afrokitchen/recipes/riz-gras-bf/
 - Zamne (Burkina Faso) - high confidence, 2 sources, /tools/afrokitchen/recipes/zamne-bf/
+- Agatoke (Burundi) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/agatoke-bi/
+- Burundian Brochettes (Burundi) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/burundian-brochettes-bi/
 - Burundian Isombe (Burundi) - medium confidence, 3 sources, /tools/afrokitchen/recipes/burundian-isombe/
+- Ibiharage (Burundi) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/ibiharage-bi/
+- Ikivuguto (Burundi) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/ikivuguto-bi/
+- Isombe with Peanut (Burundi) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/isombe-peanut-bi/
 - Mukeke (Burundi) - medium confidence, 3 sources, /tools/afrokitchen/recipes/mukeke/
 - Ubugari (Burundi) - medium confidence, 3 sources, /tools/afrokitchen/recipes/ubugari/
 - Achu and Yellow Soup (Cameroon) - high confidence, 3 sources, /tools/afrokitchen/recipes/achu-soup-cm/
@@ -56,15 +61,29 @@ Generated: 2026-05-02T15:03:21.369Z
 - Jagacida (Cape Verde) - high confidence, 2 sources, /tools/afrokitchen/recipes/jagacida-cv/
 - Pastel com Diablo Dentro (Cape Verde) - high confidence, 3 sources, /tools/afrokitchen/recipes/pastel-diablo-cv/
 - Xerem (Cape Verde) - high confidence, 2 sources, /tools/afrokitchen/recipes/xerem-cv/
+- Central African Peanut Stew (Central African Republic) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/central-african-peanut-stew-cf/
+- Ginger Juice (Central African Republic) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/ginger-juice-cf/
 - Gozo (Central African Republic) - medium confidence, 2 sources, /tools/afrokitchen/recipes/gozo-cf/
 - Kanda ti Nyma (Central African Republic) - medium confidence, 3 sources, /tools/afrokitchen/recipes/kanda-ti-nyma-cf/
+- Koko Cassava Leaves (Central African Republic) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/koko-cassava-leaves-cf/
+- Makara Banana Fritters (Central African Republic) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/makara-banana-fritters-cf/
+- Palm Nut Chicken (Central African Republic) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/palm-nut-chicken-cf/
 - Sauce Graine (Central African Republic) - low confidence, 3 sources, /tools/afrokitchen/recipes/sauce-graine-cf/
 - Boule (Chad) - medium confidence, 3 sources, /tools/afrokitchen/recipes/boule-td/
+- Chadian Tamarind Juice (Chad) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/jus-tamarin-td/
 - Daraba (Chad) - high confidence, 3 sources, /tools/afrokitchen/recipes/daraba-td/
+- Fangasou (Chad) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/fangasou-td/
+- Jarret de Boeuf (Chad) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/jarret-boeuf-td/
 - Karkanji (Chad) - high confidence, 3 sources, /tools/afrokitchen/recipes/karkanji-td/
+- Kisser (Chad) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/kisser-td/
 - La Bouillie (Chad) - medium confidence, 3 sources, /tools/afrokitchen/recipes/la-bouillie-td/
+- Jus de Tamarin (Comoros) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/jus-tamarin-km/
 - Langouste a la Vanille (Comoros) - high confidence, 3 sources, /tools/afrokitchen/recipes/langouste-vanille/
+- Langouste a la Vanille (Comoros) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/langouste-vanille-km/
+- Mataba (Comoros) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/mataba-comoros-km/
 - Mkatra Foutra (Comoros) - high confidence, 3 sources, /tools/afrokitchen/recipes/mkatra-foutra/
+- Mkatra Siniya (Comoros) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/mkatra-siniya-km/
+- Pilao Comorien (Comoros) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/pilao-comorien-km/
 - Pilao ya Nazi (Comoros) - medium confidence, 2 sources, /tools/afrokitchen/recipes/pilao-nazi/
 - Fumbwa (Democratic Republic of Congo) - high confidence, 3 sources, /tools/afrokitchen/recipes/fumbwa-cd/
 - Liboke ya Mbika (Democratic Republic of Congo) - medium confidence, 2 sources, /tools/afrokitchen/recipes/liboke-ya-mbika-cd/
@@ -72,8 +91,12 @@ Generated: 2026-05-02T15:03:21.369Z
 - Moambe Chicken (Democratic Republic of Congo) - high confidence, 3 sources, /tools/afrokitchen/recipes/moambe-chicken-cd/
 - Ntaba (Democratic Republic of Congo) - high confidence, 3 sources, /tools/afrokitchen/recipes/ntaba-cd/
 - Saka-Saka (Democratic Republic of Congo) - high confidence, 3 sources, /tools/afrokitchen/recipes/saka-saka-cd/
+- Cambaboor (Djibouti) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/cambaboor-dj/
 - Djiboutian Laxoox (Djibouti) - medium confidence, 2 sources, /tools/afrokitchen/recipes/djiboutian-laxoox/
+- Fah-fah (Djibouti) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/fah-fah-dj/
 - Fah-Fah (Djibouti) - medium confidence, 2 sources, /tools/afrokitchen/recipes/fah-fah/
+- Lahoh (Djibouti) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/lahoh-dj/
+- Shaah Cadays (Djibouti) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/shaah-cadays-dj/
 - Skoudehkaris (Djibouti) - high confidence, 3 sources, /tools/afrokitchen/recipes/skoudehkaris/
 - Feteer Meshaltet (Egypt) - high confidence, 3 sources, /tools/afrokitchen/recipes/feteer-meshaltet-eg/
 - Ful Medames (Egypt) - high confidence, 3 sources, /tools/afrokitchen/recipes/ful-medames-eg/
@@ -84,15 +107,29 @@ Generated: 2026-05-02T15:03:21.369Z
 - Sayadeya (Egypt) - high confidence, 3 sources, /tools/afrokitchen/recipes/sayadeya-eg/
 - Ta'ameya (Egypt) - high confidence, 3 sources, /tools/afrokitchen/recipes/taameya-eg/
 - Umm Ali (Egypt) - high confidence, 3 sources, /tools/afrokitchen/recipes/umm-ali-eg/
+- Bilola (Equatorial Guinea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/bilola-gq/
+- Equatoguinean Banana Fritters (Equatorial Guinea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/banana-fritters-gq/
+- Ginger Pineapple Drink (Equatorial Guinea) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/ginger-pineapple-drink-gq/
 - Jollof Rice Equatoguineano (Equatorial Guinea) - medium confidence, 3 sources, /tools/afrokitchen/recipes/jollof-rice-gq/
+- Malamba (Equatorial Guinea) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/malamba-gq/
 - Pepesoup (Equatorial Guinea) - medium confidence, 3 sources, /tools/afrokitchen/recipes/pepesoup-gq/
+- Pescado con Salsa de Cacahuete (Equatorial Guinea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/pescado-cacahuete-gq/
 - Succotash de Guinée (Equatorial Guinea) - low confidence, 3 sources, /tools/afrokitchen/recipes/succotash-gq/
 - Eritrean Ful Medames (Eritrea) - high confidence, 3 sources, /tools/afrokitchen/recipes/eritrean-ful/
 - Eritrean Shiro (Eritrea) - high confidence, 3 sources, /tools/afrokitchen/recipes/eritrean-shiro/
+- Ga'at (Eritrea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/gaat-er/
+- Shahan Ful (Eritrea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/shahan-ful-er/
+- Suwa (Eritrea) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/suwa-er/
+- Taita (Eritrea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/taita-er/
 - Zigini with Injera (Eritrea) - high confidence, 3 sources, /tools/afrokitchen/recipes/zigini/
+- Emasi Etinkhobe (Eswatini) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/emasi-etinkhobe-sz/
 - Incwancwa (Eswatini) - medium confidence, 3 sources, /tools/afrokitchen/recipes/incwancwa-sz/
+- Roasted Mealie (Eswatini) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/roasted-mealie-sz/
+- Sidvudvu (Eswatini) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/sidvudvu-sz/
+- Siphuphe Setindlubu (Eswatini) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/siphuphe-setindlubu-sz/
 - Sishwala with Emasi (Eswatini) - high confidence, 3 sources, /tools/afrokitchen/recipes/sishwala-emasi-sz/
 - Umbhidvo Wetintsanga (Eswatini) - high confidence, 3 sources, /tools/afrokitchen/recipes/umbhidvo-wetintsanga-sz/
+- Umcombotsi (Eswatini) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/umcombotsi-sz/
 - Atkilt Wat (Ethiopia) - high confidence, 3 sources, /tools/afrokitchen/recipes/atkilt-wat-et/
 - Doro Wat (Ethiopia) - high confidence, 3 sources, /tools/afrokitchen/recipes/doro-wat/
 - Genfo (Ethiopia) - high confidence, 3 sources, /tools/afrokitchen/recipes/genfo-et/
@@ -127,11 +164,19 @@ Generated: 2026-05-02T15:03:21.369Z
 - Tuo Zaafi with Ayoyo Soup (Ghana) - high confidence, 2 sources, /tools/afrokitchen/recipes/tuo-zaafi-gh/
 - Waakye (Ghana) - high confidence, 3 sources, /tools/afrokitchen/recipes/waakye-gh/
 - Fouti (Guinea) - medium confidence, 3 sources, /tools/afrokitchen/recipes/fouti-gn/
+- Fouti (Guinea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/fouti-guinea-gn/
 - Guinean Chicken Yassa (Guinea) - medium confidence, 3 sources, /tools/afrokitchen/recipes/poulet-yassa-gn/
+- Guinean Ginger Juice (Guinea) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/ginger-juice-gn/
+- Konkoe (Guinea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/konkoe-gn/
+- Latchiri Kossan (Guinea) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/latchiri-kossan-gn/
 - Sauce Feuille (Guinea) - medium confidence, 3 sources, /tools/afrokitchen/recipes/sauce-feuille-gn/
+- Cafriela (Guinea-Bissau) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/cafriela-gw/
+- Caldo de Chabeu (Guinea-Bissau) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/caldo-chabeu-gw/
 - Caldo de Chabeu (Guinea-Bissau) - medium confidence, 3 sources, /tools/afrokitchen/recipes/chabeu-gw/
 - Caldo de Mancarra (Guinea-Bissau) - high confidence, 3 sources, /tools/afrokitchen/recipes/caldo-de-mancarra-gw/
+- Caldo de Mancarra (Guinea-Bissau) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/caldo-mancarra-gw/
 - Cashew Rice (Guinea-Bissau) - low confidence, 3 sources, /tools/afrokitchen/recipes/arroz-de-caju-gw/
+- Vinho de Caju (Guinea-Bissau) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/vinho-caju-gw/
 - Alloco (Ivory Coast) - high confidence, 3 sources, /tools/afrokitchen/recipes/alloco-ci/
 - Attiéké with Grilled Fish (Ivory Coast) - high confidence, 3 sources, /tools/afrokitchen/recipes/attieke-poisson-ci/
 - Foutou Sauce Graine (Ivory Coast) - high confidence, 2 sources, /tools/afrokitchen/recipes/foutou-sauce-graine-ci/
@@ -161,12 +206,22 @@ Generated: 2026-05-02T15:03:21.369Z
 - Rishta Kiskas (Libya) - high confidence, 3 sources, /tools/afrokitchen/recipes/rishta-kiskas-ly/
 - Sharba Libiya (Libya) - high confidence, 3 sources, /tools/afrokitchen/recipes/sharba-libiya-ly/
 - Usban (Libya) - high confidence, 3 sources, /tools/afrokitchen/recipes/usban-ly/
+- Akoho sy Voanio (Madagascar) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/akoho-sy-voanio-mg/
+- Koba (Madagascar) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/koba-mg/
+- Lasary Voatabia (Madagascar) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/lasary-voatabia-mg/
 - Mofo Gasy (Madagascar) - high confidence, 3 sources, /tools/afrokitchen/recipes/mofo-gasy/
+- Ranonapango (Madagascar) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/ranonapango-mg/
 - Ravitoto (Madagascar) - high confidence, 3 sources, /tools/afrokitchen/recipes/ravitoto/
 - Romazava (Madagascar) - high confidence, 3 sources, /tools/afrokitchen/recipes/romazava/
+- Vary Amin'anana (Madagascar) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/vary-aminanana-mg/
+- Futali (Malawi) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/futali-mw/
 - Kondowole (Malawi) - high confidence, 3 sources, /tools/afrokitchen/recipes/kondowole/
+- Kondowole (Malawi) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/kondowole-mw/
+- Malawian Mandasi (Malawi) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/mandasi-malawi-mw/
 - Mandasi (Malawi) - high confidence, 3 sources, /tools/afrokitchen/recipes/mandasi/
 - Nsima with Chambo (Malawi) - high confidence, 3 sources, /tools/afrokitchen/recipes/nsima-chambo/
+- Nthochi Bread (Malawi) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/nthochi-bread-mw/
+- Thobwa (Malawi) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/thobwa-mw/
 - Djabadji (Mali) - high confidence, 2 sources, /tools/afrokitchen/recipes/djabadji-ml/
 - Djouka de Fonio (Mali) - high confidence, 2 sources, /tools/afrokitchen/recipes/djouka-fonio-ml/
 - Fakoye (Mali) - medium confidence, 3 sources, /tools/afrokitchen/recipes/fakoye-ml/
@@ -176,9 +231,14 @@ Generated: 2026-05-02T15:03:21.369Z
 - Maru We Llham (Mauritania) - high confidence, 3 sources, /tools/afrokitchen/recipes/maru-we-llham-mr/
 - Mauritanian Fish Rice (Mauritania) - medium confidence, 3 sources, /tools/afrokitchen/recipes/thieboudienne-mr/
 - Mechoui (Mauritania) - medium confidence, 3 sources, /tools/afrokitchen/recipes/mechoui-mr/
+- Alouda (Mauritius) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/alouda-mu/
 - Dholl Puri (Mauritius) - high confidence, 3 sources, /tools/afrokitchen/recipes/dholl-puri/
+- Dholl Puri (Mauritius) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/dholl-puri-mu/
 - Gateau Piment (Mauritius) - high confidence, 3 sources, /tools/afrokitchen/recipes/gateau-piment/
+- Gateaux Piments (Mauritius) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/gateaux-piments-mu/
+- Mauritian Biryani (Mauritius) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/mauritian-biryani-mu/
 - Rougaille (Mauritius) - high confidence, 3 sources, /tools/afrokitchen/recipes/rougaille/
+- Vindaye Poisson (Mauritius) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/vindaye-poisson-mu/
 - Bessara (Morocco) - high confidence, 3 sources, /tools/afrokitchen/recipes/bessara-ma/
 - Chebakia (Morocco) - high confidence, 3 sources, /tools/afrokitchen/recipes/chebakia-ma/
 - Chicken Pastilla (Morocco) - high confidence, 3 sources, /tools/afrokitchen/recipes/chicken-pastilla-ma/
@@ -193,9 +253,14 @@ Generated: 2026-05-02T15:03:21.369Z
 - Seffa Medfouna (Morocco) - high confidence, 3 sources, /tools/afrokitchen/recipes/seffa-medfouna-ma/
 - Taktouka (Morocco) - high confidence, 3 sources, /tools/afrokitchen/recipes/taktouka-ma/
 - Zaalouk (Morocco) - high confidence, 3 sources, /tools/afrokitchen/recipes/zaalouk-ma/
+- Badjia (Mozambique) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/badjia-mz/
+- Bolo Polana (Mozambique) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/bolo-polanna-mz/
 - Caril de Camarao (Mozambique) - medium confidence, 3 sources, /tools/afrokitchen/recipes/caril-de-camarao/
 - Matapa (Mozambique) - high confidence, 3 sources, /tools/afrokitchen/recipes/matapa/
+- Matapa (Mozambique) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/matapa-mz/
 - Piri Piri Chicken (Mozambique) - high confidence, 3 sources, /tools/afrokitchen/recipes/piri-piri-chicken/
+- Sumo de Caju (Mozambique) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/sumo-de-caju-mz/
+- Xima (Mozambique) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/xima-mz/
 - Kapana (Namibia) - high confidence, 3 sources, /tools/afrokitchen/recipes/kapana-na/
 - Omagungu (Namibia) - high confidence, 3 sources, /tools/afrokitchen/recipes/omagungu-na/
 - Omajowa Mushrooms (Namibia) - high confidence, 3 sources, /tools/afrokitchen/recipes/omajowa-na/
@@ -220,6 +285,7 @@ Generated: 2026-05-02T15:03:21.369Z
 - Egusi Soup (Nigeria) - high confidence, 3 sources, /tools/afrokitchen/recipes/egusi-soup-ng/
 - Fisherman Soup (Nigeria) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/fisherman-soup-ng/
 - Jollof Rice (Nigeria) - high confidence, 3 sources, /tools/afrokitchen/recipes/jollof-rice-ng/
+- Kunu Zaki (Nigeria) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/kunu-zaki-ng/
 - Masa (Nigeria) - high confidence, 3 sources, /tools/afrokitchen/recipes/masa-waina-ng/
 - Miyan Kuka (Nigeria) - high confidence, 3 sources, /tools/afrokitchen/recipes/miyan-kuka-ng/
 - Miyan Taushe (Nigeria) - high confidence, 3 sources, /tools/afrokitchen/recipes/miyan-taushe-ng/
@@ -231,17 +297,27 @@ Generated: 2026-05-02T15:03:21.369Z
 - Puff Puff (Nigeria) - high confidence, 3 sources, /tools/afrokitchen/recipes/puff-puff-ng/
 - Suya (Nigeria) - high confidence, 3 sources, /tools/afrokitchen/recipes/suya-ng/
 - Tuwo Shinkafa (Nigeria) - high confidence, 3 sources, /tools/afrokitchen/recipes/tuwo-shinkafa-ng/
+- Zobo (Nigeria) - medium-high confidence, 5 sources, /tools/afrokitchen/recipes/zobo-ng/
 - Liboke de Poisson (Republic of Congo) - high confidence, 3 sources, /tools/afrokitchen/recipes/liboke-poisson-cg/
 - Madesu (Republic of Congo) - high confidence, 3 sources, /tools/afrokitchen/recipes/madesu-cg/
 - Mbisi ya Makala (Republic of Congo) - medium confidence, 3 sources, /tools/afrokitchen/recipes/mbisi-ye-kalou-cg/
 - Poulet à la Muambé (Republic of Congo) - high confidence, 3 sources, /tools/afrokitchen/recipes/poulet-muambe-cg/
 - Saka-Saka au Poisson Fumé (Republic of Congo) - high confidence, 3 sources, /tools/afrokitchen/recipes/saka-saka-poisson-cg/
+- Agatogo (Rwanda) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/agatogo-rw/
+- Ibihaza (Rwanda) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/ibihaza-rw/
 - Igisafuliya (Rwanda) - medium confidence, 3 sources, /tools/afrokitchen/recipes/igisafuria/
 - Isombe (Rwanda) - high confidence, 3 sources, /tools/afrokitchen/recipes/isombe/
+- Isombe (Rwanda) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/isombe-rw/
 - Rwandan Brochettes (Rwanda) - high confidence, 3 sources, /tools/afrokitchen/recipes/rwandan-brochettes/
+- Rwandan Ikivuguto (Rwanda) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/ikivuguto-rw/
+- Urwagwa (Rwanda) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/urwagwa-rw/
 - Angú de Banana (São Tomé and Príncipe) - medium confidence, 3 sources, /tools/afrokitchen/recipes/angu-de-banana-st/
+- Banana Assada (São Tomé and Príncipe) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/banana-assada-st/
+- Blabla (São Tomé and Príncipe) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/blabla-st/
 - Calulu (São Tomé and Príncipe) - high confidence, 3 sources, /tools/afrokitchen/recipes/calulu-st/
+- Ponche de Coco (São Tomé and Príncipe) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/ponche-coco-st/
 - Sao Tomean Hot Chocolate (São Tomé and Príncipe) - medium confidence, 3 sources, /tools/afrokitchen/recipes/chocolate-quente-st/
+- Sonhos de Banana (São Tomé and Príncipe) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/sonhos-banana-st/
 - Ceebu Yapp (Senegal) - high confidence, 3 sources, /tools/afrokitchen/recipes/ceebu-yapp-sn/
 - Chicken Yassa (Senegal) - high confidence, 3 sources, /tools/afrokitchen/recipes/yassa-poulet-sn/
 - Dibi (Senegal) - high confidence, 3 sources, /tools/afrokitchen/recipes/dibi-sn/
@@ -251,13 +327,22 @@ Generated: 2026-05-02T15:03:21.369Z
 - Soupe Kandia (Senegal) - high confidence, 3 sources, /tools/afrokitchen/recipes/soupe-kandia-sn/
 - Thiakry (Senegal) - high confidence, 3 sources, /tools/afrokitchen/recipes/thiakry-sn/
 - Thieboudienne (Senegal) - high confidence, 3 sources, /tools/afrokitchen/recipes/thieboudienne-sn/
+- Citronelle Tea (Seychelles) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/citronelle-tea-sc/
 - Grilled Fish Creole (Seychelles) - medium confidence, 3 sources, /tools/afrokitchen/recipes/grilled-fish-creole/
+- Kat-Kat Banane (Seychelles) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/kat-kat-banane-sc/
 - Ladob (Seychelles) - high confidence, 3 sources, /tools/afrokitchen/recipes/ladob/
+- Ladob (Seychelles) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/ladob-sc/
+- Octopus Curry (Seychelles) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/octopus-curry-sc/
+- Satini Reken (Seychelles) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/satini-reken-sc/
 - Shark Chutney (Seychelles) - high confidence, 3 sources, /tools/afrokitchen/recipes/shark-chutney/
 - Banana Akara (Sierra Leone) - high confidence, 3 sources, /tools/afrokitchen/recipes/akara-sl/
 - Binch Akara (Sierra Leone) - high confidence, 2 sources, /tools/afrokitchen/recipes/binch-akara-sl/
 - Cassava Leaf Stew (Sierra Leone) - high confidence, 3 sources, /tools/afrokitchen/recipes/cassava-leaf-stew-sl/
+- Cassava Leaves (Sierra Leone) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/cassava-leaves-sl/
+- Groundnut Stew (Sierra Leone) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/groundnut-stew-sierra-leone-sl/
 - Groundnut Stew (Sierra Leone) - high confidence, 3 sources, /tools/afrokitchen/recipes/groundnut-stew-sl/
+- Oleleh (Sierra Leone) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/oleleh-sl/
+- Sierra Leone Ginger Beer (Sierra Leone) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/ginger-beer-sl/
 - Bariis Iskukaris (Somalia) - high confidence, 3 sources, /tools/afrokitchen/recipes/bariis-iskukaris/
 - Canjeero (Somalia) - high confidence, 3 sources, /tools/afrokitchen/recipes/canjeero/
 - Somali Sambusa (Somalia) - high confidence, 3 sources, /tools/afrokitchen/recipes/sambusa-so/
@@ -274,7 +359,12 @@ Generated: 2026-05-02T15:03:21.369Z
 - Umngqusho (South Africa) - high confidence, 3 sources, /tools/afrokitchen/recipes/umngqusho-za/
 - Asida (South Sudan) - high confidence, 3 sources, /tools/afrokitchen/recipes/asida/
 - Bamia (South Sudan) - high confidence, 3 sources, /tools/afrokitchen/recipes/bamia/
+- Bamia (South Sudan) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/bamia-south-sudan-ss/
+- Karkade (South Sudan) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/karkade-south-sudan-ss/
 - Kisra with Mulah (South Sudan) - high confidence, 3 sources, /tools/afrokitchen/recipes/kisra-mulah/
+- South Sudanese Asida (South Sudan) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/asida-south-sudan-ss/
+- South Sudanese Kisra (South Sudan) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/kisra-south-sudan-ss/
+- South Sudanese Shorba (South Sudan) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/shorba-south-sudan-ss/
 - Agashe (Sudan) - high confidence, 3 sources, /tools/afrokitchen/recipes/agashe-sd/
 - Basbousa (Sudan) - high confidence, 3 sources, /tools/afrokitchen/recipes/basbousa-sd/
 - Ful Medames (Sudan) - high confidence, 3 sources, /tools/afrokitchen/recipes/ful-medames-sd/
@@ -283,8 +373,13 @@ Generated: 2026-05-02T15:03:21.369Z
 - Mullah Ahmar Tagalia (Sudan) - high confidence, 3 sources, /tools/afrokitchen/recipes/mullah-ahmar-tagalia-sd/
 - Shaiyah (Sudan) - high confidence, 3 sources, /tools/afrokitchen/recipes/shaiyah-sd/
 - Chipsi Mayai (Tanzania) - high confidence, 3 sources, /tools/afrokitchen/recipes/chipsi-mayai/
+- Mchemsho (Tanzania) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/mchemsho-tz/
+- Ndizi na Nyama (Tanzania) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/ndizi-nyama-tz/
+- Tangawizi (Tanzania) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/tangawizi-tz/
+- Tanzanian Mandazi (Tanzania) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/mandazi-tanzania-tz/
 - Tanzanian Pilau (Tanzania) - high confidence, 3 sources, /tools/afrokitchen/recipes/tanzanian-pilau/
 - Ugali na Nyama (Tanzania) - high confidence, 3 sources, /tools/afrokitchen/recipes/ugali-na-nyama/
+- Urojo (Tanzania) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/urojo-zanzibar-tz/
 - Ablo (Togo) - high confidence, 2 sources, /tools/afrokitchen/recipes/ablo-tg/
 - Akoumé (Togo) - high confidence, 3 sources, /tools/afrokitchen/recipes/akoume-tg/
 - Djenkoume (Togo) - high confidence, 3 sources, /tools/afrokitchen/recipes/djenkoume-tg/
@@ -308,8 +403,13 @@ Generated: 2026-05-02T15:03:21.369Z
 - Sahrawi Vegetable Couscous (Western Sahara) - medium confidence, 3 sources, /tools/afrokitchen/recipes/sahrawi-couscous-eh/
 - Zrig (Western Sahara) - high confidence, 3 sources, /tools/afrokitchen/recipes/zrig-eh/
 - Chikanda (Zambia) - high confidence, 3 sources, /tools/afrokitchen/recipes/chikanda/
+- Chikanda (Zambia) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/chikanda-zm/
+- Delele (Zambia) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/deleele-zm/
 - Kapenta (Zambia) - high confidence, 3 sources, /tools/afrokitchen/recipes/kapenta/
+- Kapenta Stew (Zambia) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/kapenta-stew-zm/
 - Nshima with Ifisashi (Zambia) - high confidence, 3 sources, /tools/afrokitchen/recipes/nshima-ifisashi/
+- Vinkubala (Zambia) - medium-high confidence, 4 sources, /tools/afrokitchen/recipes/vinkubala-zm/
+- Zambian Maheu (Zambia) - medium-high confidence, 3 sources, /tools/afrokitchen/recipes/maheu-zm/
 - Dovi (Zimbabwe) - high confidence, 3 sources, /tools/afrokitchen/recipes/dovi-zw/
 - Madora (Zimbabwe) - medium confidence, 3 sources, /tools/afrokitchen/recipes/madora/
 - Mapopo Candy (Zimbabwe) - high confidence, 3 sources, /tools/afrokitchen/recipes/mapopo-candy-zw/

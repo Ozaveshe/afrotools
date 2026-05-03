@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="manifest" href="/manifest.json">
@@ -20,9 +20,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0"><script src="/assets/js/components/tool-registry.min.js?v=55a78de8" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0"><script src="/assets/js/components/tool-registry.min.js?v=b046eb2e" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=de4fc4a7" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 
 <style>
@@ -312,7 +312,7 @@
 <meta name="twitter:description" content="Every new tool, feature, fix, and improvement to AfroTools — updated as we ship.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Changelog","item":"https://afrotools.com/changelog/"}]}</script>
-<meta property="article:modified_time" content="2026-04-10">
+<meta property="article:modified_time" content="2026-05-03">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -353,7 +353,8 @@
   <aside>
     <nav class="version-nav">
       <div class="version-nav-title">Versions</div>
-      <a class="version-link active" href="#v2-10-0">v2.10.0 <span class="version-date">Apr 10</span></a>
+      <a class="version-link active" href="#v2-11-0">v2.11.0 <span class="version-date">May 3</span></a>
+      <a class="version-link" href="#v2-10-0">v2.10.0 <span class="version-date">Apr 10</span></a>
       <a class="version-link" href="#v2-9-0">v2.9.0 <span class="version-date">Mar 28</span></a>
       <a class="version-link" href="#v2-8-0">v2.8.0 <span class="version-date">Mar 27</span></a>
       <a class="version-link" href="#v2-7-0">v2.7.0 <span class="version-date">Mar 26</span></a>
@@ -382,6 +383,51 @@
 
   <!-- Changelog entries -->
   <div class="entries" id="entries">
+
+    <!-- v2.11.0 - BACKEND RESILIENCE AND ACCOUNT WORKSPACE ROUTING -->
+    <div class="entry" id="v2-11-0" data-tags="improve,fix,security">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v2.11.0 - Backend Resilience and Account Workspace Routing</div>
+          <div class="entry-tags">
+            <span class="tag tag-improve">Improved</span>
+            <span class="tag tag-fix">Fix</span>
+            <span class="tag tag-security">Security</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">May 3, 2026</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">AI</span>
+          <div class="change-body">
+            <div class="change-title">AI Request Guards Extended <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">Direct Anthropic-backed creator, business-plan, and crypto advisor functions now share a standard input guard so oversized prompts are trimmed before reaching the provider. The main AI Advisor path remains on the standard Claude API without the retired 1M-context beta header.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">DB</span>
+          <div class="change-body">
+            <div class="change-title">Supabase Helper RPCs Locked Down <span class="change-type ct-security">Security</span></div>
+            <div class="change-desc">Internal security-definer helpers for usage tracking, account triggers, AfroStream snapshots, and counter maintenance are now callable only by Postgres or the service role. A duplicate AfroStream snapshot index was removed after advisor verification.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">API</span>
+          <div class="change-body">
+            <div class="change-title">Workspace API Routing Added <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">The account workspace endpoint is now exposed through both Netlify redirect sources at <code>/api/workspace</code>, preparing cloud-backed dashboard drafts and saved workspace items to work after deployment.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">PTS</span>
+          <div class="change-body">
+            <div class="change-title">AfroPoints Backend Env Handling Aligned <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">AfroPoints leaderboard and shared market-data helpers now accept the same service-role env variants as the account and workspace APIs, while still failing closed when no server key is configured.</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- ── v2.10.0 — TOOL REGISTRY COUNT AUDIT ── -->
     <div class="entry" id="v2-10-0" data-tags="improve,fix">

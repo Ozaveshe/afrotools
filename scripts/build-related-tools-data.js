@@ -34,6 +34,7 @@ const liveTools = allTools
     lang: tool.lang || 'en',
     priority: tool.priority || 0,
     estTraffic: tool.estTraffic || 0,
+    imageExt: (context.TOOL_CARD_IMAGE_EXTENSIONS && context.TOOL_CARD_IMAGE_EXTENSIONS[tool.id]) || '',
   }));
 
 const sortByPriority = (a, b) => (b.priority - a.priority) || (b.estTraffic - a.estTraffic) || a.name.localeCompare(b.name);

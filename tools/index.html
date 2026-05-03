@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -23,9 +23,9 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-  <script src="/assets/js/components/tool-registry.min.js?v=55a78de8" defer></script>
+  <script src="/assets/js/components/tool-registry.min.js?v=b046eb2e" defer></script>
   <script src="/assets/js/components/country-selector.js?v=1" defer></script>
-  <script src="/assets/js/components/navbar.min.js?v=de4fc4a7" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -68,6 +68,17 @@
     .directory-country{max-width:1200px;margin:-18px auto 18px;padding:0 20px;display:grid;grid-template-columns:minmax(260px,420px) minmax(0,1fr);gap:14px;align-items:end}
     .directory-country-note{border:1px solid #dbe4ef;background:#fff;border-radius:12px;padding:12px 14px;color:#475569;font-size:.82rem;line-height:1.55;font-weight:600}
     .directory-country-note[hidden]{display:none}
+    .goal-context{max-width:1200px;margin:-4px auto 18px;padding:0 20px}
+    .goal-context[hidden]{display:none}
+    .goal-context-inner{border:1px solid #cfe1ff;background:#f8fbff;border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+    .goal-eyebrow{display:block;margin:0 0 3px;color:#0062cc;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em}
+    .goal-title{margin:0;color:#0f172a;font-size:1rem;font-weight:900;line-height:1.25}
+    .goal-copy{margin:3px 0 0;color:#64748b;font-size:.8rem;line-height:1.45;font-weight:700}
+    .goal-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+    .goal-actions a,.goal-actions button{min-height:36px;border-radius:999px;border:1px solid #cfe1ff;background:#fff;color:#0062cc;padding:8px 12px;font:inherit;font-size:.76rem;font-weight:900;text-decoration:none;cursor:pointer;white-space:nowrap}
+    .goal-actions button:hover,.goal-actions a:hover{border-color:#0062cc;background:#eef5ff}
+    body.has-goal-filter .filter-wrap{display:none}
+    body.has-goal-filter .search-section{margin-bottom:18px}
     .directory-controls{max-width:1200px;margin:0 auto 30px;padding:0 20px;display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:10px}
     .directory-controls select{width:100%;border:1.5px solid #e5e7eb;background:#fff;border-radius:10px;padding:10px 12px;font:inherit;font-size:.82rem;color:#334155}
     .directory-note{max-width:1160px;margin:0 auto 18px;padding:0 20px;color:#64748b;font-size:.82rem;line-height:1.6}
@@ -133,6 +144,9 @@
       .filter-bar{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
       .filter-bar::-webkit-scrollbar{display:none}
       .directory-country{grid-template-columns:1fr;padding:0 16px;margin-top:-18px}
+      .goal-context{padding:0 16px}
+      .goal-context-inner{align-items:flex-start;flex-direction:column}
+      .goal-actions{width:100%;justify-content:space-between}
       .directory-controls{grid-template-columns:1fr;padding:0 16px;margin-top:-18px}
       .section-header{padding:0 16px}
       .search-bar kbd{display:none}
@@ -259,6 +273,20 @@
   <div class="stat-pill">
     <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 8.5C6 6 10 6 11.5 8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
     <span class="sn">54</span> countries
+  </div>
+</div>
+
+<div class="goal-context" id="goal-context" hidden>
+  <div class="goal-context-inner">
+    <div>
+      <span class="goal-eyebrow">Onboarding lane</span>
+      <h2 class="goal-title" id="goal-title">Local tools</h2>
+      <p class="goal-copy" id="goal-copy">Showing tools for the selected country.</p>
+    </div>
+    <div class="goal-actions">
+      <a href="/start/" id="goal-change-link">Change lane</a>
+      <button type="button" id="goal-clear">Show all local tools</button>
+    </div>
   </div>
 </div>
 
@@ -6377,8 +6405,8 @@
     <div class="section-header"><div class="section-icon">🛠️</div><h2 class="section-title">Image &amp; Design</h2><div class="section-count">19 registry rows</div></div>
     <div class="tg-grid">
       <a class="tc static-tool-card" data-tool-card data-category="image-design" data-country="ALL" data-status="live" data-language="en" href="/tools/image-compress/">
-        <div class="tc-top"><div class="tc-icon">🛠️</div><h3>Image Compressor</h3></div>
-        <p>Reduce image file size with quality slider. Critical for Africa bandwidth. Batch mode.</p>
+        <div class="tc-top"><div class="tc-icon">🛠️</div><h3>Image Compressor Studio</h3></div>
+        <p>Batch compress, resize, convert, compare, and target file-size limits locally in the browser.</p>
         <div class="tc-meta"><span><strong>Countries:</strong> ALL</span><span><strong>Category:</strong> Image &amp; Design</span><span><strong>Language:</strong> EN · <strong>Updated:</strong> 2026-05-03</span></div>
         <div class="tc-foot"><span class="tc-badge tc-badge-live">Live</span><span class="tc-cta">Open Tool →</span></div>
       </a>
@@ -7979,7 +8007,14 @@ document.addEventListener('DOMContentLoaded', function() {
   var languageFilter = document.getElementById('language-filter');
   var sortFilter = document.getElementById('sort-filter');
   var countryContext = document.getElementById('tools-country-context');
+  var goalContext = document.getElementById('goal-context');
+  var goalTitle = document.getElementById('goal-title');
+  var goalCopy = document.getElementById('goal-copy');
+  var goalClear = document.getElementById('goal-clear');
+  var goalChangeLink = document.getElementById('goal-change-link');
+  var urlParams = new URLSearchParams(window.location.search || '');
   var activeFilter = 'all';
+  var activeGoal = '';
 
   var ACCENT_MAP = {
     'financial': 'var(--color-primary)', 'document-pdf': '#3b82f6', 'image-design': '#ec4899',
@@ -7997,6 +8032,53 @@ document.addEventListener('DOMContentLoaded', function() {
     'crypto': '#f3e8ff'
   };
 
+  var GOAL_FILTERS = {
+    documents: {
+      label: 'Document tools',
+      copy: 'PDF, CV, writing, forms, image and office utilities for {country}.',
+      categories: ['document-pdf', 'image-design', 'career', 'language'],
+      ids: ['invoice-generator', 'passport-photo']
+    },
+    business: {
+      label: 'Business tools',
+      copy: 'Invoices, trade, VAT, registration, merchant fees and SME math for {country}.',
+      categories: ['small-business', 'ecommerce', 'trade', 'fintech', 'data-productivity'],
+      ids: ['invoice-generator', 'business-planner', 'business-registration', 'marketplace-fees', 'payment-gateway']
+    },
+    life: {
+      label: 'Life admin tools',
+      copy: 'Health, education, travel, civic, family and everyday planning tools for {country}.',
+      categories: ['health', 'education', 'government', 'travel-tourism', 'religious-cultural', 'sports', 'african'],
+      ids: ['childbirth-cost', 'education-hub', 'passport-checklist', 'national-id-guide', 'afrokitchen']
+    },
+    operations: {
+      label: 'Operations tools',
+      copy: 'Agriculture, power, transport, telecom, construction and climate tools for {country}.',
+      categories: ['agriculture', 'energy', 'transport', 'engineering', 'telecom', 'climate'],
+      ids: ['route-fares', 'generator-fuel', 'solar-calculator', 'crop-yield-estimator']
+    },
+    legal: {
+      label: 'Legal and civic tools',
+      copy: 'Property, company, contract, ID, civic and safety tools for {country}.',
+      categories: ['legal', 'government', 'security', 'insurance'],
+      ids: ['business-registration', 'contract-gen', 'national-id-guide']
+    },
+    developer: {
+      label: 'Developer tools',
+      copy: 'APIs, data tools, launch utilities and security checks for builders in {country}.',
+      categories: ['developer', 'data-productivity', 'security'],
+      ids: ['api-tester', 'african-api-directory']
+    },
+    money: {
+      label: 'Money tools',
+      copy: 'Salary, tax, currency, savings, insurance and fintech tools for {country}.',
+      categories: ['financial', 'personal-finance', 'fintech', 'insurance', 'hr-payroll'],
+      ids: ['currency-converter', 'vat-calc-pan-african']
+    }
+  };
+
+  activeGoal = normalizeGoal(urlParams.get('goal'));
+
   // Stats
   var stats = typeof getPublicToolStats === 'function' ? getPublicToolStats('en') : null;
   var total = stats ? stats.liveTools : AFRO_TOOLS.filter(function(t) { return t.status === 'live' || t.status === 'new'; }).length;
@@ -8006,6 +8088,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('s-live').textContent = live;
   document.getElementById('s-cats').textContent = cats;
   searchInput.placeholder = 'Search ' + (stats ? stats.display.liveToolsPlus : (live.toLocaleString() + '+')) + ' tools...';
+  if (activeGoal && GOAL_FILTERS[activeGoal]) {
+    searchInput.placeholder = 'Search ' + GOAL_FILTERS[activeGoal].label.toLowerCase() + '...';
+  }
 
   // Build filter buttons
   var filterHtml = '<button class="f-tab on" data-cat="all">All Tools</button>';
@@ -8018,6 +8103,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function normalizeText(value) {
     return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  function normalizeGoal(value) {
+    value = normalizeText(value);
+    return GOAL_FILTERS[value] ? value : '';
+  }
+
+  function selectedCountryFromFilter() {
+    if (!countryFilter || countryFilter.value === 'all' || !window.AfroCountry || typeof window.AfroCountry.get !== 'function') return null;
+    return window.AfroCountry.get(countryFilter.value);
+  }
+
+  function activeCountryName() {
+    var country = selectedCountryFromFilter() || storedCountry();
+    return country && country.name ? country.name : 'your country';
+  }
+
+  function updateGoalContext() {
+    if (!goalContext) return;
+    var goal = GOAL_FILTERS[activeGoal];
+    if (!goal) {
+      goalContext.hidden = true;
+      document.body.classList.remove('has-goal-filter');
+      return;
+    }
+    var country = activeCountryName();
+    goalContext.hidden = false;
+    document.body.classList.add('has-goal-filter');
+    if (goalTitle) goalTitle.textContent = country + ' ' + goal.label;
+    if (goalCopy) goalCopy.textContent = goal.copy.replace('{country}', country);
+    if (goalChangeLink) goalChangeLink.href = '/start/?goal=' + encodeURIComponent(activeGoal);
+  }
+
+  function clearGoalFilter(updateUrl) {
+    activeGoal = '';
+    updateGoalContext();
+    if (updateUrl && window.history && window.history.replaceState) {
+      var params = new URLSearchParams(window.location.search || '');
+      params.delete('goal');
+      var next = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+      window.history.replaceState({}, '', next);
+    }
+  }
+
+  function goalMatches(tool) {
+    var goal = GOAL_FILTERS[activeGoal];
+    if (!goal) return true;
+    if (goal.categories.indexOf(tool.category) !== -1) return true;
+    return goal.ids && goal.ids.indexOf(tool.id) !== -1;
   }
 
   function inferCountries(tool) {
@@ -8058,6 +8192,7 @@ document.addEventListener('DOMContentLoaded', function() {
   filterBar.addEventListener('click', function(e) {
     var btn = e.target.closest('.f-tab');
     if (!btn) return;
+    clearGoalFilter(true);
     filterBar.querySelectorAll('.f-tab').forEach(function(b) { b.classList.remove('on'); });
     btn.classList.add('on');
     activeFilter = btn.dataset.cat;
@@ -8124,6 +8259,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     countryFilter.value = matched;
     updateCountryContext(country);
+    updateGoalContext();
     return true;
   }
 
@@ -8145,9 +8281,11 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateCountryContextFromFilter() {
     if (!countryFilter || countryFilter.value === 'all' || !window.AfroCountry) {
       updateCountryContext(null);
+      updateGoalContext();
       return;
     }
     updateCountryContext(window.AfroCountry.get(countryFilter.value));
+    updateGoalContext();
   }
 
   var arrowSvg = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -8165,10 +8303,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (t.category !== activeFilter) return;
       }
 
+      if (!goalMatches(t)) return;
+
       if (countryFilter && countryFilter.value !== 'all') {
         var countryNeedle = normalizeText(countryFilter.value);
         var countries = inferCountries(t).map(normalizeText);
-        if (countries.indexOf(countryNeedle) === -1 && countries.indexOf('all african countries') === -1) return;
+        if (countries.indexOf(countryNeedle) === -1 && countries.indexOf('all') === -1 && countries.indexOf('all african countries') === -1 && countries.indexOf('pan african') === -1) return;
       }
 
       if (statusFilter && statusFilter.value !== 'all' && statusKey(t) !== statusFilter.value) return;
@@ -8195,6 +8335,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sort === 'name') return (a.name || '').localeCompare(b.name || '');
         if (sort === 'newest') return (b.priority || 0) - (a.priority || 0);
         if (sort === 'updated') return updatedLabel(b).localeCompare(updatedLabel(a));
+        var selected = countryFilter && countryFilter.value !== 'all' ? normalizeText(countryFilter.value) : '';
+        if (selected) {
+          var aCountries = inferCountries(a).map(normalizeText);
+          var bCountries = inferCountries(b).map(normalizeText);
+          var aLocal = aCountries.indexOf(selected) !== -1 ? 2 : (aCountries.indexOf('all') !== -1 || aCountries.indexOf('all african countries') !== -1 || aCountries.indexOf('pan african') !== -1 ? 1 : 0);
+          var bLocal = bCountries.indexOf(selected) !== -1 ? 2 : (bCountries.indexOf('all') !== -1 || bCountries.indexOf('all african countries') !== -1 || bCountries.indexOf('pan african') !== -1 ? 1 : 0);
+          if (bLocal !== aLocal) return bLocal - aLocal;
+        }
         var aLive = (a.status === 'live' || a.status === 'new') ? 1 : 0;
         var bLive = (b.status === 'live' || b.status === 'new') ? 1 : 0;
         if (bLive !== aLive) return bLive - aLive;
@@ -8254,6 +8402,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     container.innerHTML = html;
     noResults.style.display = totalShown === 0 ? 'block' : 'none';
+    updateGoalContext();
   }
 
   // Search input
@@ -8274,6 +8423,13 @@ document.addEventListener('DOMContentLoaded', function() {
     var country = event && event.detail && event.detail.country;
     if (applyCountryFilter(country)) render();
   });
+
+  if (goalClear) {
+    goalClear.addEventListener('click', function() {
+      clearGoalFilter(true);
+      render();
+    });
+  }
 
   // Ctrl+K shortcut
   document.addEventListener('keydown', function(e) {

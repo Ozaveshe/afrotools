@@ -1,22 +1,22 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Compressor — Reduce File Size, Keep Quality</title>
-<meta name="description" content="Free image compressor. Compress JPG, PNG, WebP files. Drag-drop upload, quality slider, before/after comparison. Client-side processing.">
+<title>Image Compressor Studio — Batch Compress, Resize, Compare | AfroTools</title>
+<meta name="description" content="Free local image compressor studio. Batch compress, resize, convert JPG, PNG, WebP, compare before and after, target file sizes, and download clean exports.">
 <link rel="canonical" href="https://afrotools.com/tools/image-compress/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Image Compressor | AfroTools">
-<meta property="og:description" content="Compress images online. Reduce file size with live preview. Download compressed JPG, PNG, or WebP.">
+<meta property="og:title" content="Image Compressor Studio | AfroTools">
+<meta property="og:description" content="Batch compress, resize, convert, compare, and download images locally in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/image-compress/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/image-compress.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Image Compressor | AfroTools">
-<meta name="twitter:description" content="Compress images online with live preview. No data sent to servers.">
+<meta name="twitter:title" content="Image Compressor Studio | AfroTools">
+<meta name="twitter:description" content="Batch compress, resize, compare, and download images locally in your browser.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=de4fc4a7" defer></script>
+<link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
   :root {
@@ -91,12 +92,86 @@
   .info-card { background: #F5F9FF; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
   .info-title { font-size: 0.72rem; font-weight: 700; color: #0a4018; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
   .info-text { font-size: 0.8rem; color: #244d2c; line-height: 1.6; }
-  @media (max-width: 768px) { .tool-main-inner { grid-template-columns: 1fr; } .comparison { grid-template-columns: 1fr; } }
+  .gold-workspace { display: grid; grid-template-columns: minmax(0, 1fr) 370px; gap: 20px; align-items: start; }
+  .gold-stack { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .gold-panel { background: #fff; border: 1px solid #dbe5f2; border-radius: 12px; box-shadow: 0 12px 34px rgba(15, 23, 42, .06); overflow: hidden; }
+  .gold-panel-head { display: flex; gap: 14px; justify-content: space-between; align-items: flex-start; padding: 18px 20px; border-bottom: 1px solid #e7edf5; background: linear-gradient(180deg, #f8fbff, #ffffff); }
+  .gold-eyebrow { display: block; margin-bottom: 5px; color: #b84315; font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .gold-panel-title { margin: 0; color: #0f172a; font-size: 1.08rem; line-height: 1.2; letter-spacing: -.02em; }
+  .gold-panel-copy { margin: 6px 0 0; color: #526173; font-size: .86rem; line-height: 1.55; }
+  .gold-status { min-height: 24px; padding: 5px 9px; border-radius: 999px; background: #fff7ec; color: #8a4d1e; font-size: .72rem; font-weight: 800; white-space: nowrap; }
+  .studio-drop { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 24px; border: 2px dashed #c9d8ea; border-radius: 12px; background: linear-gradient(135deg, #f8fbff 0%, #fffaf2 100%); cursor: pointer; transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease; }
+  .studio-drop:hover, .studio-drop.dragover { border-color: #b84315; box-shadow: 0 16px 40px rgba(184, 67, 21, .1); transform: translateY(-1px); }
+  .drop-main { display: flex; gap: 14px; align-items: center; min-width: 0; }
+  .drop-mark { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: #0f172a; color: #fff; font-size: 1.35rem; flex: 0 0 auto; }
+  .drop-main strong { display: block; color: #0f172a; font-size: 1rem; }
+  .drop-main span { display: block; margin-top: 4px; color: #526173; font-size: .84rem; line-height: 1.5; }
+  .drop-side { color: #64748b; font-size: .78rem; font-weight: 800; text-align: right; }
+  .preset-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .preset-card { padding: 13px; border: 1px solid #dbe5f2; border-radius: 10px; background: #fff; color: #0f172a; text-align: left; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
+  .preset-card strong { display: block; font-size: .84rem; line-height: 1.2; }
+  .preset-card span { display: block; margin-top: 5px; color: #64748b; font-size: .72rem; line-height: 1.4; }
+  .preset-card.active { border-color: #b84315; background: #fff7ec; box-shadow: 0 10px 24px rgba(184, 67, 21, .1); }
+  .control-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 18px 20px 20px; }
+  .control-wide { grid-column: 1 / -1; }
+  .control-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+  .control-label { color: #26364c; font-size: .75rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+  .control-input, .control-select { width: 100%; min-height: 42px; border: 1px solid #dbe5f2; border-radius: 8px; background: #fff; color: #0f172a; padding: 0 11px; font: 700 .88rem/1 'DM Sans', sans-serif; }
+  .control-input:focus, .control-select:focus { outline: 3px solid #bfdbfe; border-color: #2563eb; }
+  .control-help { color: #64748b; font-size: .74rem; line-height: 1.45; }
+  .range-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 56px; gap: 12px; align-items: center; }
+  .range-value { color: #b84315; font-size: .92rem; font-weight: 900; text-align: right; }
+  .toggle-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .toggle-pill { display: inline-grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; align-items: center; padding: 9px 11px; border: 1px solid #dbe5f2; border-radius: 999px; color: #26364c; font-size: .8rem; font-weight: 750; }
+  .toggle-pill input { width: 18px; height: 18px; margin: 0; accent-color: #b84315; }
+  .workspace-actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 20px 20px; }
+  .gold-btn { min-height: 42px; padding: 0 14px; border: 1px solid #0f172a; border-radius: 9px; background: #0f172a; color: #fff; cursor: pointer; font: 800 .84rem/1 'DM Sans', sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .gold-btn.secondary { background: #fff; color: #0f172a; border-color: #dbe5f2; }
+  .gold-btn.warning { background: #fff7ec; color: #8a4d1e; border-color: #f0c8aa; }
+  .gold-btn:disabled { opacity: .52; cursor: not-allowed; }
+  .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 16px 20px; border-bottom: 1px solid #e7edf5; }
+  .metric { padding: 12px; border: 1px solid #e7edf5; border-radius: 10px; background: #f8fbff; }
+  .metric strong { display: block; color: #0f172a; font-size: 1.05rem; }
+  .metric span { display: block; margin-top: 4px; color: #64748b; font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+  .queue-list { display: grid; gap: 10px; padding: 18px 20px 20px; }
+  .queue-empty { padding: 24px; border: 1px dashed #c9d8ea; border-radius: 10px; color: #64748b; text-align: center; font-size: .86rem; }
+  .queue-card { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px; border: 1px solid #dbe5f2; border-radius: 10px; background: #fff; }
+  .queue-card.is-active { border-color: #b84315; box-shadow: 0 10px 24px rgba(184, 67, 21, .08); }
+  .queue-thumb { width: 72px; height: 56px; border-radius: 8px; object-fit: cover; background: #eff6ff; border: 1px solid #e7edf5; }
+  .queue-name { margin: 0 0 4px; color: #0f172a; font-size: .88rem; font-weight: 850; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .queue-meta { color: #64748b; font-size: .74rem; line-height: 1.45; }
+  .queue-badge { display: inline-flex; align-items: center; min-height: 24px; padding: 0 8px; border-radius: 999px; background: #eef6ff; color: #1d4ed8; font-size: .68rem; font-weight: 850; }
+  .queue-badge.done { background: #edf7f0; color: #166534; }
+  .queue-badge.error { background: #fef2f2; color: #b91c1c; }
+  .queue-actions { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+  .mini-btn { min-height: 32px; padding: 0 9px; border: 1px solid #dbe5f2; border-radius: 7px; background: #fff; color: #0f172a; cursor: pointer; font: 800 .72rem/1 'DM Sans', sans-serif; }
+  .mini-btn.primary { background: #0f172a; border-color: #0f172a; color: #fff; }
+  .compare-stage { padding: 18px 20px 20px; }
+  .compare-frame { position: relative; min-height: 360px; border: 1px solid #dbe5f2; border-radius: 12px; background: #101827; overflow: hidden; display: grid; place-items: center; }
+  .compare-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #101827; }
+  .compare-after { clip-path: inset(0 0 0 50%); }
+  .compare-handle { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: ew-resize; z-index: 4; }
+  .compare-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #fff; box-shadow: 0 0 0 1px rgba(15,23,42,.18); z-index: 3; pointer-events: none; }
+  .compare-labels { position: absolute; inset: 12px 12px auto; display: flex; justify-content: space-between; gap: 10px; z-index: 5; pointer-events: none; }
+  .compare-labels span { min-height: 28px; padding: 7px 10px; border-radius: 999px; background: rgba(15, 23, 42, .72); color: #fff; font-size: .72rem; font-weight: 850; }
+  .compare-empty { color: rgba(255,255,255,.74); font-weight: 800; text-align: center; padding: 30px; }
+  .detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+  .detail-card { padding: 11px; border: 1px solid #e7edf5; border-radius: 9px; background: #f8fbff; }
+  .detail-card span { display: block; color: #64748b; font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+  .detail-card strong { display: block; margin-top: 4px; color: #0f172a; font-size: .95rem; }
+  .history-list { display: grid; gap: 8px; margin-top: 10px; }
+  .history-item { padding: 10px; border: 1px solid #dbe5f2; border-radius: 8px; background: #fff; color: #26364c; font-size: .78rem; line-height: 1.45; }
+  .feature-list { display: grid; gap: 9px; margin: 10px 0 0; padding: 0; list-style: none; }
+  .feature-list li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; color: #26364c; font-size: .8rem; line-height: 1.45; }
+  .feature-list li::before { content: ""; width: 8px; height: 8px; margin-top: 6px; border-radius: 999px; background: #b84315; }
+  @media (max-width: 980px) { .gold-workspace, .tool-main-inner { grid-template-columns: 1fr; } .preset-grid, .summary-grid, .control-grid, .detail-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) { .studio-drop, .queue-card, .preset-grid, .summary-grid, .control-grid, .detail-grid { grid-template-columns: 1fr; } .drop-side { text-align: left; } .compare-frame { min-height: 260px; } .gold-panel-head { flex-direction: column; } .gold-status { white-space: normal; } }
+  @media (prefers-reduced-motion: reduce) { .studio-drop, .preset-card, .gold-btn, .mini-btn { transition: none !important; } }
   details[open] summary svg { transform: rotate(180deg); }
   details summary::-webkit-details-marker { display: none; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Compressor","description":"Free image compressor. Compress JPG, PNG, WebP files. Drag-drop upload, quality slider, before/after comparison. Client-side processing.","url":"https://afrotools.com/tools/image-compress/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/image-compress.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Image Compressor","url":"https://afrotools.com/tools/image-compress/","description":"Free image compressor. Compress JPG, PNG, WebP files. Drag-drop upload, quality slider, before/after comparison. Client-side processing.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/image-compress.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Compressor Studio","description":"Free local image compressor studio for batch compression, resize, format conversion, target file sizes, and before-after comparison.","url":"https://afrotools.com/tools/image-compress/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and browser image encoding support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/image-compress.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Image Compressor Studio","url":"https://afrotools.com/tools/image-compress/","description":"Batch compress, resize, convert, compare, and download images locally in your browser.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/image-compress.webp"}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -115,7 +190,7 @@
       "name": "What image formats are supported?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "You can upload JPG, PNG, and WebP images. For output, you can choose between JPEG, PNG, or WebP format. WebP typically provides 25-35% better compression than JPEG at similar quality levels."
+        "text": "You can upload JPG, PNG, WebP, and other browser-decodable image formats such as AVIF where supported. Exports can be JPEG, PNG, WebP, or auto-selected for the smallest supported result."
       }
     },
     {
@@ -136,10 +211,10 @@
     },
     {
       "@type": "Question",
-      "name": "Does compressing an image reduce its dimensions?",
+      "name": "Can I resize while compressing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. The AfroTools compressor reduces file size by adjusting encoding quality, not by resizing. Your image dimensions (width and height in pixels) remain exactly the same after compression."
+        "text": "Yes. Leave max width and max height blank to keep the original dimensions, or set one or both limits to resize proportionally while compressing. The no-upscale option prevents accidental enlargement."
       }
     }
   ]
@@ -179,7 +254,7 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-05-03">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -187,104 +262,205 @@
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
-    <h1>Image <em>Compressor</em></h1>
-    <p class="hero-sub">Reduce image file size for WhatsApp, job portals, storefront listings, and lightweight websites without leaving your browser.</p>
+    <h1>Image <em>Compressor Studio</em></h1>
+    <p class="hero-sub">Batch compress, resize, compare, and prepare clean exports for WhatsApp, portals, storefronts, and fast websites without uploading private images.</p>
     <div class="hero-badges">
-      <span class="badge b-green">No AI</span>
+      <span class="badge b-green">Tier Gold</span>
       <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">Fast</span>
+      <span class="badge b-green">Batch ready</span>
+      <span class="badge b-green">No upload</span>
     </div>
   </div>
 </div>
 
-<div class="tool-main">
+<div class="tool-main" id="main-content" role="main">
   <div class="tool-main-inner">
-    <div>
-      <div class="card">
-        <div class="card-head"><span class="card-title">Upload Image</span></div>
-        <div class="card-body">
-          <div class="drop-zone" id="dropZone">
-            <div class="drop-icon">📤</div>
-            <div class="drop-text">Drop image here or click to upload</div>
-            <div class="drop-hint">JPG, PNG, WebP • Max 50MB</div>
-          </div>
-          <input type="file" id="fileInput" accept="image/*">
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head"><span class="card-title">Quick Targets</span></div>
-        <div class="card-body">
-          <div class="template-grid">
-            <button class="template-btn active" type="button" data-preset="whatsapp">WhatsApp Share</button>
-            <button class="template-btn" type="button" data-preset="portal">Visa / Job Portal</button>
-            <button class="template-btn" type="button" data-preset="marketplace">Marketplace Listing</button>
-            <button class="template-btn" type="button" data-preset="website">Fast Website</button>
-          </div>
-          <div class="context-note" id="presetNote"><strong>WhatsApp Share:</strong> Keeps images light for statuses, chats, and community updates on limited data.</div>
-        </div>
-      </div>
-
-      <div class="card" id="settingsCard" style="display:none;">
-        <div class="card-head"><span class="card-title">Settings</span></div>
-        <div class="card-body">
-          <div class="slider-wrap">
-            <div class="slider-row">
-              <span class="slider-label">Quality</span>
-              <span class="slider-val"><span id="qualityValue">80</span>%</span>
+    <div class="gold-workspace">
+      <div class="gold-stack">
+        <section class="gold-panel" aria-labelledby="upload-title">
+          <div class="gold-panel-head">
+            <div>
+              <span class="gold-eyebrow">Local batch intake</span>
+              <h2 class="gold-panel-title" id="upload-title">Drop, paste, or choose images.</h2>
+              <p class="gold-panel-copy">Add several files, tune the export recipe once, then compress the whole queue.</p>
             </div>
-            <input type="range" id="qualitySlider" min="10" max="100" value="80">
+            <span class="gold-status" id="studioStatus" role="status" aria-live="polite">Ready</span>
           </div>
-          <div class="field">
-            <label class="f-label"><span class="f-label-text">Output Format</span></label>
-            <select id="formatSelect" class="f-input">
-              <option value="jpeg">JPEG</option>
-              <option value="png">PNG</option>
-              <option value="webp">WebP (smaller)</option>
-            </select>
-          </div>
-          <button class="calc-btn" id="compressBtn">Compress Image</button>
-        </div>
-      </div>
-
-      <div class="card" id="resultsCard" style="display:none;">
-        <div class="card-head"><span class="card-title">Comparison</span></div>
-        <div class="card-body">
-          <div class="comparison">
-            <div class="comp-box">
-              <div class="comp-label">Original</div>
-              <div class="comp-size" id="originalSize">0 KB</div>
-              <div style="font-size:0.75rem;color:#6B8CAE;" id="originalDim">-</div>
+          <div class="card-body">
+            <div class="studio-drop" id="dropZone" tabindex="0" role="button" aria-label="Upload image files">
+              <div class="drop-main">
+                <span class="drop-mark" aria-hidden="true">+</span>
+                <div>
+                  <strong>Add images to the queue</strong>
+                  <span>JPG, PNG, WebP, AVIF where your browser can decode it. Up to 50MB each.</span>
+                </div>
+              </div>
+              <div class="drop-side">Paste with Ctrl V<br>or drag files here</div>
             </div>
-            <div class="comp-box">
-              <div class="comp-label">Compressed</div>
-              <div class="comp-size" id="compressedSize">0 KB</div>
-              <div class="comp-percent" id="savingPercent">0% saved</div>
+            <input type="file" id="fileInput" accept="image/*" multiple>
+          </div>
+        </section>
+
+        <section class="gold-panel" aria-labelledby="preset-title">
+          <div class="gold-panel-head">
+            <div>
+              <span class="gold-eyebrow">Export recipes</span>
+              <h2 class="gold-panel-title" id="preset-title">Choose the job before compression.</h2>
+              <p class="gold-panel-copy" id="presetNote">WhatsApp Share keeps images light for chats and community updates on limited data.</p>
             </div>
           </div>
-          <img id="compressedImage" class="preview-img" alt="Compressed image">
-          <div class="action-row">
-            <button class="act-btn" id="downloadBtn">📥 Download</button>
+          <div class="card-body">
+            <div class="preset-grid" role="list">
+              <button class="preset-card active" type="button" data-preset="whatsapp"><strong>WhatsApp Share</strong><span>JPEG, smaller file, safe dimensions</span></button>
+              <button class="preset-card" type="button" data-preset="portal"><strong>Portal Upload</strong><span>Target under 500 KB when possible</span></button>
+              <button class="preset-card" type="button" data-preset="marketplace"><strong>Marketplace</strong><span>Clear product photos, 1600px max</span></button>
+              <button class="preset-card" type="button" data-preset="website"><strong>Fast Website</strong><span>WebP, responsive-ready export</span></button>
+            </div>
           </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="Image Compress"
-    tool-slug="image-compress">
-  </share-result-button>
-</div>
-        </div>
-      </div>
-    </div>
+        </section>
 
-    <div class="sidebar">
-      <div class="info-card">
-        <div class="info-title">Compression Tips</div>
-        <div class="info-text">
-          <strong>Quality levels:</strong>
-          <ul style="margin-top:10px;"><li><strong>90-100%:</strong> High quality, larger file</li><li><strong>70-85%:</strong> Good balance</li><li><strong>50-70%:</strong> Smaller files, some quality loss</li></ul>
-          <p style="margin-top:10px;"><strong>WebP format</strong> provides 25-35% better compression than JPEG. Use the quick targets above when you are optimizing for WhatsApp, embassy portals, or low-data web pages.</p>
-        </div>
+        <section class="gold-panel" aria-labelledby="settings-title">
+          <div class="gold-panel-head">
+            <div>
+              <span class="gold-eyebrow">Gold controls</span>
+              <h2 class="gold-panel-title" id="settings-title">Compression, resize, and naming.</h2>
+              <p class="gold-panel-copy">Tune quality, target a max file size, resize without upscaling, fill transparency for JPEG, and keep filenames readable.</p>
+            </div>
+          </div>
+          <div class="control-grid">
+            <div class="control-field control-wide">
+              <label class="control-label" for="qualitySlider">Quality</label>
+              <div class="range-wrap">
+                <input type="range" id="qualitySlider" min="10" max="100" value="76">
+                <span class="range-value"><span id="qualityValue">76</span>%</span>
+              </div>
+              <span class="control-help">Higher quality keeps more detail. Target-size mode may lower this automatically.</span>
+            </div>
+            <div class="control-field">
+              <label class="control-label" for="formatSelect">Output format</label>
+              <select id="formatSelect" class="control-select">
+                <option value="auto">Auto smallest supported</option>
+                <option value="jpeg">JPEG</option>
+                <option value="webp">WebP</option>
+                <option value="png">PNG</option>
+              </select>
+            </div>
+            <div class="control-field">
+              <label class="control-label" for="targetKb">Target KB</label>
+              <input id="targetKb" class="control-input" type="number" min="0" step="10" placeholder="Optional">
+              <span class="control-help">Example: 500 for upload portals.</span>
+            </div>
+            <div class="control-field">
+              <label class="control-label" for="maxWidth">Max width</label>
+              <input id="maxWidth" class="control-input" type="number" min="1" step="1" placeholder="Keep original">
+            </div>
+            <div class="control-field">
+              <label class="control-label" for="maxHeight">Max height</label>
+              <input id="maxHeight" class="control-input" type="number" min="1" step="1" placeholder="Keep original">
+            </div>
+            <div class="control-field">
+              <label class="control-label" for="nameSuffix">Filename suffix</label>
+              <input id="nameSuffix" class="control-input" type="text" value="-compressed" maxlength="32">
+            </div>
+            <div class="control-field">
+              <label class="control-label" for="backgroundColor">JPEG background</label>
+              <input id="backgroundColor" class="control-input" type="color" value="#ffffff">
+            </div>
+            <div class="control-field control-wide">
+              <span class="control-label">Workflow options</span>
+              <div class="toggle-row">
+                <label class="toggle-pill"><input type="checkbox" id="noUpscale" checked>Do not upscale</label>
+                <label class="toggle-pill"><input type="checkbox" id="autoRun" checked>Auto recompress on setting changes</label>
+                <label class="toggle-pill"><input type="checkbox" id="stripMeta" checked disabled>Strip private metadata on export</label>
+              </div>
+              <span class="control-help">Canvas exports remove EXIF/GPS metadata by default. Originals remain untouched.</span>
+            </div>
+          </div>
+          <div class="workspace-actions">
+            <button class="gold-btn" id="compressBtn" type="button">Compress queue</button>
+            <button class="gold-btn secondary" id="downloadAllBtn" type="button" disabled>Download all</button>
+            <button class="gold-btn warning" id="clearQueueBtn" type="button">Clear queue</button>
+          </div>
+        </section>
+
+        <section class="gold-panel" aria-labelledby="queue-title">
+          <div class="gold-panel-head">
+            <div>
+              <span class="gold-eyebrow">Batch queue</span>
+              <h2 class="gold-panel-title" id="queue-title">Files and savings.</h2>
+              <p class="gold-panel-copy">Select any processed file to inspect the before and after preview.</p>
+            </div>
+          </div>
+          <div class="summary-grid">
+            <div class="metric"><strong id="metricFiles">0</strong><span>Files</span></div>
+            <div class="metric"><strong id="metricOriginal">0 KB</strong><span>Original</span></div>
+            <div class="metric"><strong id="metricOutput">0 KB</strong><span>Output</span></div>
+            <div class="metric"><strong id="metricSaved">0%</strong><span>Saved</span></div>
+          </div>
+          <div class="queue-list" id="queueList">
+            <div class="queue-empty">No images yet. Add files above to start.</div>
+          </div>
+        </section>
       </div>
+
+      <aside class="gold-stack">
+        <section class="gold-panel" aria-labelledby="compare-title">
+          <div class="gold-panel-head">
+            <div>
+              <span class="gold-eyebrow">Before and after</span>
+              <h2 class="gold-panel-title" id="compare-title">Inspect one export.</h2>
+              <p class="gold-panel-copy">Move the compare handle after compression to check detail, text, and edges.</p>
+            </div>
+          </div>
+          <div class="compare-stage">
+            <div class="compare-frame" id="compareFrame">
+              <div class="compare-empty" id="compareEmpty">Compressed previews appear here.</div>
+              <img id="beforeImage" alt="Original preview" hidden>
+              <img id="afterImage" class="compare-after" alt="Compressed preview" hidden>
+              <div class="compare-labels" id="compareLabels" hidden><span>Original</span><span>Compressed</span></div>
+              <div class="compare-line" id="compareLine" hidden></div>
+              <input class="compare-handle" id="compareSlider" type="range" min="0" max="100" value="50" aria-label="Before and after comparison" hidden>
+            </div>
+            <div class="detail-grid">
+              <div class="detail-card"><span>Dimensions</span><strong id="detailDimensions">-</strong></div>
+              <div class="detail-card"><span>Export</span><strong id="detailFormat">-</strong></div>
+              <div class="detail-card"><span>Saved</span><strong id="detailSaved">-</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="gold-panel">
+          <div class="gold-panel-head">
+            <div>
+              <span class="gold-eyebrow">Why this is safe</span>
+              <h2 class="gold-panel-title">Local-first processing.</h2>
+              <p class="gold-panel-copy">The browser decodes your image into memory, re-encodes the export, and never sends the file to AfroTools servers.</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="feature-list">
+              <li>Batch compression with per-file status and downloads.</li>
+              <li>Target-size search for portal limits and application forms.</li>
+              <li>Resize fit mode that preserves aspect ratio and prevents accidental upscaling.</li>
+              <li>JPEG background fill for transparent images that must become JPG.</li>
+              <li>Last-used settings and recent run summaries saved only on this device.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="gold-panel">
+          <div class="gold-panel-head">
+            <div>
+              <span class="gold-eyebrow">Recent runs</span>
+              <h2 class="gold-panel-title">Local history.</h2>
+              <p class="gold-panel-copy">Metadata only. No source images are stored.</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="history-list" id="historyList"></div>
+          </div>
+        </section>
+      </aside>
     </div>
   </div>
 </div>
@@ -312,7 +488,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        You can upload JPG, PNG, and WebP images. For output, you can choose between JPEG, PNG, or WebP format. WebP typically provides 25-35% better compression than JPEG at similar quality levels.
+        You can upload JPG, PNG, WebP, and other browser-decodable image formats such as AVIF where supported. Exports can be JPEG, PNG, WebP, or auto-selected for the smallest supported result.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -335,11 +511,11 @@
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
       <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
-        Does compressing an image reduce its dimensions?
+        Can I resize while compressing?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        No. The AfroTools compressor reduces file size by adjusting encoding quality, not by resizing. Your image dimensions (width and height in pixels) remain exactly the same after compression.
+        Yes. Leave max width and max height blank to keep the original dimensions, or set one or both limits to resize proportionally while compressing. The no-upscale option prevents accidental enlargement.
       </div>
     </details>
   </div>
@@ -357,107 +533,549 @@
 <afro-footer></afro-footer>
 
 <script>
-  const dropZone = document.getElementById('dropZone');
-  const fileInput = document.getElementById('fileInput');
-  const settingsCard = document.getElementById('settingsCard');
-  const resultsCard = document.getElementById('resultsCard');
-  const qualitySlider = document.getElementById('qualitySlider');
-  const qualityValue = document.getElementById('qualityValue');
-  const compressBtn = document.getElementById('compressBtn');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const formatSelect = document.getElementById('formatSelect');
-  const presetButtons = document.querySelectorAll('[data-preset]');
-  const presetNote = document.getElementById('presetNote');
-  let originalFile = null, compressedBlob = null, originalFileName = '';
-  const PRESETS = {
-    whatsapp: { quality: 72, format: 'jpeg', label: 'WhatsApp Share', note: 'Keeps images light for statuses, chats, and community updates on limited data.' },
-    portal: { quality: 78, format: 'jpeg', label: 'Visa / Job Portal', note: 'A safe middle ground for embassy forms, CV uploads, school portals, and application websites.' },
-    marketplace: { quality: 84, format: 'jpeg', label: 'Marketplace Listing', note: 'Preserves product clarity for shops, listings, menus, and seller catalogs while trimming file size.' },
-    website: { quality: 68, format: 'webp', label: 'Fast Website', note: 'Best for lighter landing pages, blog posts, and low-bandwidth site performance.' }
-  };
+  (function () {
+    'use strict';
 
-  dropZone.addEventListener('click', () => fileInput.click());
-  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-  dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('dragover'); if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]); });
-  fileInput.addEventListener('change', e => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
+    const STORAGE_KEY = 'afro_image_compress_settings_v2';
+    const HISTORY_KEY = 'afro_image_compress_history_v1';
+    const MAX_FILE_SIZE = 50 * 1024 * 1024;
+    const $ = (id) => document.getElementById(id);
 
-  function handleFile(file) {
-    if (!file.type.startsWith('image/')) { alert('Please select an image file'); return; }
-    const maxSize = 50 * 1024 * 1024; // 50MB
-    if (file.size > maxSize) { alert('File too large. Maximum size is 50MB. Your file is ' + (file.size / (1024 * 1024)).toFixed(1) + 'MB.'); return; }
-    originalFile = file;
-    originalFileName = file.name.split('.')[0];
-    settingsCard.style.display = 'block';
-    resultsCard.style.display = 'none';
-  }
+    const dropZone = $('dropZone');
+    const fileInput = $('fileInput');
+    const qualitySlider = $('qualitySlider');
+    const qualityValue = $('qualityValue');
+    const formatSelect = $('formatSelect');
+    const targetKb = $('targetKb');
+    const maxWidth = $('maxWidth');
+    const maxHeight = $('maxHeight');
+    const nameSuffix = $('nameSuffix');
+    const backgroundColor = $('backgroundColor');
+    const noUpscale = $('noUpscale');
+    const autoRun = $('autoRun');
+    const compressBtn = $('compressBtn');
+    const downloadAllBtn = $('downloadAllBtn');
+    const clearQueueBtn = $('clearQueueBtn');
+    const queueList = $('queueList');
+    const studioStatus = $('studioStatus');
+    const presetNote = $('presetNote');
+    const presetButtons = Array.from(document.querySelectorAll('[data-preset]'));
+    const compareSlider = $('compareSlider');
+    const compareLine = $('compareLine');
+    const beforeImage = $('beforeImage');
+    const afterImage = $('afterImage');
+    const compareEmpty = $('compareEmpty');
+    const compareLabels = $('compareLabels');
+    const historyList = $('historyList');
 
-  qualitySlider.addEventListener('input', e => qualityValue.textContent = e.target.value);
+    let queue = [];
+    let selectedId = '';
+    let busy = false;
+    let debounceTimer = 0;
 
-  function applyPreset(key) {
-    const preset = PRESETS[key];
-    if (!preset) return;
-    qualitySlider.value = preset.quality;
-    qualityValue.textContent = preset.quality;
-    formatSelect.value = preset.format;
-    presetNote.innerHTML = '<strong>' + preset.label + ':</strong> ' + preset.note;
-    presetButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.preset === key));
-  }
-
-  presetButtons.forEach(btn => {
-    btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
-  });
-
-  applyPreset('whatsapp');
-
-  compressBtn.addEventListener('click', () => {
-    if (!originalFile) return;
-    const quality = parseInt(qualitySlider.value) / 100;
-    const format = formatSelect.value;
-    const img = new Image();
-    img.onload = () => {
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) { alert('Could not initialize canvas. Your browser may not support this feature.'); return; }
-        ctx.drawImage(img, 0, 0);
-        const mimeType = format === 'webp' ? 'image/webp' : `image/${format}`;
-        canvas.toBlob(blob => {
-          if (!blob) { alert('Compression failed. Try a different format or smaller image.'); return; }
-          compressedBlob = blob;
-          const originalSize = originalFile.size / 1024;
-          const compressedSize = blob.size / 1024;
-          const saving = ((1 - blob.size / originalFile.size) * 100).toFixed(1);
-          document.getElementById('originalSize').textContent = originalSize.toFixed(1) + ' KB';
-          document.getElementById('compressedSize').textContent = compressedSize.toFixed(1) + ' KB';
-          document.getElementById('savingPercent').textContent = saving + '% saved';
-          document.getElementById('originalDim').textContent = img.width + '×' + img.height + 'px';
-          document.getElementById('compressedImage').src = URL.createObjectURL(blob);
-          resultsCard.style.display = 'block';
-        }, mimeType, quality);
-      } catch (e) {
-        alert('Error processing image: ' + e.message);
-      }
+    const PRESETS = {
+      whatsapp: { quality: 72, format: 'jpeg', target: '', maxW: 1600, maxH: 1600, suffix: '-whatsapp', note: 'WhatsApp Share keeps images light for chats, statuses, and community updates on limited data.' },
+      portal: { quality: 78, format: 'jpeg', target: 500, maxW: 1800, maxH: 1800, suffix: '-portal', note: 'Portal Upload aims for a practical size limit while keeping faces, text, and document details readable.' },
+      marketplace: { quality: 84, format: 'jpeg', target: '', maxW: 1600, maxH: 1600, suffix: '-listing', note: 'Marketplace preserves product clarity for shops, menus, seller catalogs, and listing photos.' },
+      website: { quality: 68, format: 'webp', target: '', maxW: 1400, maxH: 1400, suffix: '-web', note: 'Fast Website creates lighter WebP exports for pages, blogs, and low-bandwidth browsing.' }
     };
-    const reader = new FileReader();
-    reader.onload = e => img.src = e.target.result;
-    reader.readAsDataURL(originalFile);
-  });
 
-  downloadBtn.addEventListener('click', () => {
-    if (compressedBlob) {
-      const format = formatSelect.value;
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(compressedBlob);
-      link.download = `${originalFileName}-compressed.${format}`;
-      link.click();
+    function setStatus(message) {
+      studioStatus.textContent = message;
     }
-  });
+
+    function formatBytes(bytes) {
+      if (!bytes) return '0 KB';
+      const units = ['B', 'KB', 'MB'];
+      let value = bytes;
+      let unit = 0;
+      while (value >= 1024 && unit < units.length - 1) {
+        value /= 1024;
+        unit += 1;
+      }
+      return value.toFixed(value >= 10 || unit === 0 ? 0 : 1) + ' ' + units[unit];
+    }
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    }
+
+    function baseName(name) {
+      return String(name || 'image').replace(/\.[^.]+$/, '').replace(/[^\w.-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'image';
+    }
+
+    function mimeFor(format) {
+      if (format === 'webp') return 'image/webp';
+      if (format === 'png') return 'image/png';
+      return 'image/jpeg';
+    }
+
+    function extForMime(mime) {
+      if (mime === 'image/webp') return 'webp';
+      if (mime === 'image/png') return 'png';
+      return 'jpg';
+    }
+
+    function getSettings() {
+      return {
+        quality: Math.max(10, Math.min(100, Number(qualitySlider.value) || 76)) / 100,
+        format: formatSelect.value || 'auto',
+        targetBytes: Math.max(0, Number(targetKb.value) || 0) * 1024,
+        maxW: Math.max(0, Number(maxWidth.value) || 0),
+        maxH: Math.max(0, Number(maxHeight.value) || 0),
+        suffix: nameSuffix.value || '-compressed',
+        bg: backgroundColor.value || '#ffffff',
+        noUpscale: !!noUpscale.checked,
+        autoRun: !!autoRun.checked
+      };
+    }
+
+    function saveSettings() {
+      try {
+        const settings = getSettings();
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          quality: Math.round(settings.quality * 100),
+          format: settings.format,
+          targetKb: targetKb.value || '',
+          maxW: maxWidth.value || '',
+          maxH: maxHeight.value || '',
+          suffix: settings.suffix,
+          bg: settings.bg,
+          noUpscale: settings.noUpscale,
+          autoRun: settings.autoRun
+        }));
+      } catch (error) {}
+    }
+
+    function loadSettings() {
+      try {
+        const saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '{}');
+        if (saved.quality) qualitySlider.value = saved.quality;
+        if (saved.format) formatSelect.value = saved.format;
+        if (saved.targetKb !== undefined) targetKb.value = saved.targetKb;
+        if (saved.maxW !== undefined) maxWidth.value = saved.maxW;
+        if (saved.maxH !== undefined) maxHeight.value = saved.maxH;
+        if (saved.suffix) nameSuffix.value = saved.suffix;
+        if (saved.bg) backgroundColor.value = saved.bg;
+        if (saved.noUpscale !== undefined) noUpscale.checked = !!saved.noUpscale;
+        if (saved.autoRun !== undefined) autoRun.checked = !!saved.autoRun;
+      } catch (error) {}
+      qualityValue.textContent = qualitySlider.value;
+    }
+
+    function scheduleAutoProcess() {
+      saveSettings();
+      window.clearTimeout(debounceTimer);
+      if (!autoRun.checked || !queue.length) return;
+      debounceTimer = window.setTimeout(() => processQueue(), 450);
+    }
+
+    function addFiles(files) {
+      const accepted = Array.from(files || []).filter((file) => {
+        if (!file.type || !file.type.startsWith('image/')) return false;
+        if (file.size > MAX_FILE_SIZE) {
+          setStatus(file.name + ' is over 50MB.');
+          return false;
+        }
+        return true;
+      });
+
+      accepted.forEach((file) => {
+        const id = 'img-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+        const url = URL.createObjectURL(file);
+        queue.push({
+          id,
+          file,
+          url,
+          name: file.name,
+          status: 'queued',
+          statusText: 'Queued',
+          originalBytes: file.size,
+          outputBytes: 0,
+          outputBlob: null,
+          outputUrl: '',
+          outputName: '',
+          outputMime: '',
+          width: 0,
+          height: 0,
+          outputWidth: 0,
+          outputHeight: 0,
+          qualityUsed: 0,
+          error: ''
+        });
+        if (!selectedId) selectedId = id;
+      });
+
+      if (!accepted.length) {
+        setStatus('No supported image files found.');
+        return;
+      }
+      setStatus(accepted.length + ' image' + (accepted.length === 1 ? '' : 's') + ' added.');
+      renderAll();
+      processQueue();
+    }
+
+    async function decodeImage(file) {
+      if (window.createImageBitmap) {
+        try {
+          return await createImageBitmap(file, { imageOrientation: 'from-image' });
+        } catch (error) {}
+      }
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(img);
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error('The browser could not decode this image.'));
+        };
+        img.src = url;
+      });
+    }
+
+    function canvasFor(image, settings, mime) {
+      const sourceW = image.width;
+      const sourceH = image.height;
+      let ratio = 1;
+      if (settings.maxW || settings.maxH) {
+        const ratios = [];
+        if (settings.maxW) ratios.push(settings.maxW / sourceW);
+        if (settings.maxH) ratios.push(settings.maxH / sourceH);
+        ratio = Math.min.apply(Math, ratios);
+        if (settings.noUpscale) ratio = Math.min(1, ratio);
+      }
+      if (!isFinite(ratio) || ratio <= 0) ratio = 1;
+      const width = Math.max(1, Math.round(sourceW * ratio));
+      const height = Math.max(1, Math.round(sourceH * ratio));
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d', { alpha: mime !== 'image/jpeg' });
+      if (!ctx) throw new Error('Canvas is not available in this browser.');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      if (mime === 'image/jpeg') {
+        ctx.fillStyle = settings.bg;
+        ctx.fillRect(0, 0, width, height);
+      }
+      ctx.drawImage(image, 0, 0, width, height);
+      return { canvas, width, height, sourceW, sourceH };
+    }
+
+    function encode(canvas, mime, quality) {
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+          if (!blob || (mime !== 'image/png' && blob.type && blob.type !== mime)) {
+            resolve(null);
+            return;
+          }
+          resolve(blob);
+        }, mime, mime === 'image/png' ? undefined : quality);
+      });
+    }
+
+    async function encodeWithTarget(canvas, mime, settings) {
+      if (mime === 'image/png') {
+        const png = await encode(canvas, mime, settings.quality);
+        return { blob: png, quality: 1 };
+      }
+
+      if (!settings.targetBytes) {
+        const blob = await encode(canvas, mime, settings.quality);
+        return { blob, quality: settings.quality };
+      }
+
+      let low = 0.1;
+      let high = settings.quality;
+      let bestUnder = null;
+      let smallest = null;
+      for (let i = 0; i < 7; i += 1) {
+        const mid = (low + high) / 2;
+        const blob = await encode(canvas, mime, mid);
+        if (!blob) break;
+        const candidate = { blob, quality: mid };
+        if (!smallest || blob.size < smallest.blob.size) smallest = candidate;
+        if (blob.size <= settings.targetBytes) {
+          bestUnder = candidate;
+          low = mid;
+        } else {
+          high = mid;
+        }
+      }
+      return bestUnder || smallest || { blob: null, quality: settings.quality };
+    }
+
+    async function processItem(item, settings) {
+      item.status = 'processing';
+      item.statusText = 'Processing';
+      item.error = '';
+      renderQueue();
+      const image = await decodeImage(item.file);
+      const requested = settings.format === 'auto' ? ['image/webp', 'image/jpeg', 'image/png'] : [mimeFor(settings.format)];
+      const candidates = [];
+      for (const mime of requested) {
+        const built = canvasFor(image, settings, mime);
+        const encoded = await encodeWithTarget(built.canvas, mime, settings);
+        if (encoded.blob) {
+          candidates.push({ mime, blob: encoded.blob, quality: encoded.quality, width: built.width, height: built.height, sourceW: built.sourceW, sourceH: built.sourceH });
+        }
+      }
+      if (image.close) image.close();
+      if (!candidates.length) throw new Error('This browser could not encode the requested format.');
+      let winner = candidates[0];
+      if (settings.targetBytes) {
+        const under = candidates.filter((candidate) => candidate.blob.size <= settings.targetBytes).sort((a, b) => b.quality - a.quality || a.blob.size - b.blob.size)[0];
+        winner = under || candidates.sort((a, b) => a.blob.size - b.blob.size)[0];
+      } else {
+        winner = candidates.sort((a, b) => a.blob.size - b.blob.size)[0];
+      }
+      if (item.outputUrl) URL.revokeObjectURL(item.outputUrl);
+      item.outputBlob = winner.blob;
+      item.outputUrl = URL.createObjectURL(winner.blob);
+      item.outputBytes = winner.blob.size;
+      item.outputMime = winner.mime;
+      item.outputName = baseName(item.name) + settings.suffix + '.' + extForMime(winner.mime);
+      item.width = winner.sourceW;
+      item.height = winner.sourceH;
+      item.outputWidth = winner.width;
+      item.outputHeight = winner.height;
+      item.qualityUsed = Math.round(winner.quality * 100);
+      item.status = 'done';
+      item.statusText = 'Done';
+    }
+
+    async function processQueue() {
+      if (busy || !queue.length) return;
+      busy = true;
+      compressBtn.disabled = true;
+      setStatus('Compressing ' + queue.length + ' image' + (queue.length === 1 ? '' : 's') + '...');
+      const settings = getSettings();
+      saveSettings();
+      for (const item of queue) {
+        try {
+          await processItem(item, settings);
+        } catch (error) {
+          item.status = 'error';
+          item.statusText = 'Needs attention';
+          item.error = error.message || 'Compression failed.';
+        }
+      }
+      busy = false;
+      compressBtn.disabled = false;
+      setStatus('Queue complete.');
+      renderAll();
+      saveHistory();
+    }
+
+    function renderMetrics() {
+      const original = queue.reduce((sum, item) => sum + item.originalBytes, 0);
+      const output = queue.reduce((sum, item) => sum + (item.outputBytes || 0), 0);
+      const done = queue.filter((item) => item.status === 'done').length;
+      $('metricFiles').textContent = queue.length;
+      $('metricOriginal').textContent = formatBytes(original);
+      $('metricOutput').textContent = output ? formatBytes(output) : '0 KB';
+      $('metricSaved').textContent = original && output ? Math.max(0, (100 - output / original * 100)).toFixed(0) + '%' : '0%';
+      downloadAllBtn.disabled = done === 0;
+    }
+
+    function renderQueue() {
+      if (!queue.length) {
+        queueList.innerHTML = '<div class="queue-empty">No images yet. Add files above to start.</div>';
+        renderMetrics();
+        renderCompare();
+        return;
+      }
+      queueList.innerHTML = queue.map((item) => {
+        const saved = item.outputBytes ? Math.max(0, (100 - item.outputBytes / item.originalBytes * 100)).toFixed(1) + '% saved' : 'Waiting';
+        const detail = item.error || [formatBytes(item.originalBytes), item.outputBytes ? formatBytes(item.outputBytes) : '', item.outputWidth ? item.outputWidth + 'x' + item.outputHeight : ''].filter(Boolean).join(' -> ');
+        return '<article class="queue-card' + (item.id === selectedId ? ' is-active' : '') + '" data-id="' + item.id + '">' +
+          '<img class="queue-thumb" src="' + item.url + '" alt="">' +
+          '<div><h3 class="queue-name">' + escapeHtml(item.name) + '</h3><div class="queue-meta">' + escapeHtml(detail) + '</div></div>' +
+          '<div class="queue-actions"><span class="queue-badge ' + (item.status === 'done' ? 'done' : item.status === 'error' ? 'error' : '') + '">' + escapeHtml(item.status === 'done' ? saved : item.statusText) + '</span>' +
+          '<button type="button" class="mini-btn" data-action="select" data-id="' + item.id + '">View</button>' +
+          '<button type="button" class="mini-btn primary" data-action="download" data-id="' + item.id + '"' + (!item.outputBlob ? ' disabled' : '') + '>Save</button>' +
+          '<button type="button" class="mini-btn" data-action="remove" data-id="' + item.id + '">Remove</button></div></article>';
+      }).join('');
+      renderMetrics();
+      renderCompare();
+    }
+
+    function renderCompare() {
+      const item = queue.find((entry) => entry.id === selectedId && entry.status === 'done');
+      const hasItem = !!item;
+      compareEmpty.hidden = hasItem;
+      beforeImage.hidden = !hasItem;
+      afterImage.hidden = !hasItem;
+      compareLabels.hidden = !hasItem;
+      compareLine.hidden = !hasItem;
+      compareSlider.hidden = !hasItem;
+      if (!hasItem) {
+        $('detailDimensions').textContent = '-';
+        $('detailFormat').textContent = '-';
+        $('detailSaved').textContent = '-';
+        return;
+      }
+      beforeImage.src = item.url;
+      afterImage.src = item.outputUrl;
+      $('detailDimensions').textContent = item.outputWidth + 'x' + item.outputHeight;
+      $('detailFormat').textContent = extForMime(item.outputMime).toUpperCase() + ' q' + item.qualityUsed;
+      $('detailSaved').textContent = Math.max(0, (100 - item.outputBytes / item.originalBytes * 100)).toFixed(1) + '%';
+      updateCompare();
+    }
+
+    function updateCompare() {
+      const value = Number(compareSlider.value) || 50;
+      afterImage.style.clipPath = 'inset(0 0 0 ' + value + '%)';
+      compareLine.style.left = value + '%';
+    }
+
+    function renderAll() {
+      renderQueue();
+      renderHistory();
+    }
+
+    function downloadItem(item) {
+      if (!item || !item.outputBlob) return;
+      const link = document.createElement('a');
+      link.href = item.outputUrl;
+      link.download = item.outputName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+
+    function saveHistory() {
+      const done = queue.filter((item) => item.status === 'done');
+      if (!done.length) return;
+      const original = done.reduce((sum, item) => sum + item.originalBytes, 0);
+      const output = done.reduce((sum, item) => sum + item.outputBytes, 0);
+      const entry = {
+        date: new Date().toISOString(),
+        count: done.length,
+        original,
+        output,
+        saved: original && output ? Math.max(0, 100 - output / original * 100) : 0
+      };
+      try {
+        const history = JSON.parse(window.localStorage.getItem(HISTORY_KEY) || '[]');
+        history.unshift(entry);
+        window.localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 5)));
+      } catch (error) {}
+      renderHistory();
+    }
+
+    function renderHistory() {
+      let history = [];
+      try {
+        history = JSON.parse(window.localStorage.getItem(HISTORY_KEY) || '[]');
+      } catch (error) {}
+      if (!history.length) {
+        historyList.innerHTML = '<div class="history-item">No local run history yet.</div>';
+        return;
+      }
+      historyList.innerHTML = history.slice(0, 5).map((entry) => {
+        const date = new Date(entry.date).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        return '<div class="history-item"><strong>' + escapeHtml(date) + '</strong><br>' + entry.count + ' file' + (entry.count === 1 ? '' : 's') + ', ' + formatBytes(entry.original) + ' to ' + formatBytes(entry.output) + ', ' + entry.saved.toFixed(0) + '% saved.</div>';
+      }).join('');
+    }
+
+    function applyPreset(key) {
+      const preset = PRESETS[key];
+      if (!preset) return;
+      qualitySlider.value = preset.quality;
+      qualityValue.textContent = preset.quality;
+      formatSelect.value = preset.format;
+      targetKb.value = preset.target;
+      maxWidth.value = preset.maxW;
+      maxHeight.value = preset.maxH;
+      nameSuffix.value = preset.suffix;
+      presetNote.textContent = preset.note;
+      presetButtons.forEach((button) => button.classList.toggle('active', button.dataset.preset === key));
+      scheduleAutoProcess();
+    }
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      fileInput.click();
+    });
+    dropZone.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (event) => {
+      event.preventDefault();
+      dropZone.classList.remove('dragover');
+      addFiles(event.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', (event) => {
+      addFiles(event.target.files);
+      fileInput.value = '';
+    });
+    document.addEventListener('paste', (event) => {
+      if (!event.clipboardData || !event.clipboardData.files || !event.clipboardData.files.length) return;
+      addFiles(event.clipboardData.files);
+    });
+    presetButtons.forEach((button) => button.addEventListener('click', () => applyPreset(button.dataset.preset)));
+    [qualitySlider, formatSelect, targetKb, maxWidth, maxHeight, nameSuffix, backgroundColor, noUpscale, autoRun].forEach((control) => {
+      control.addEventListener('input', () => {
+        qualityValue.textContent = qualitySlider.value;
+        scheduleAutoProcess();
+      });
+      control.addEventListener('change', scheduleAutoProcess);
+    });
+    compressBtn.addEventListener('click', processQueue);
+    clearQueueBtn.addEventListener('click', () => {
+      queue.forEach((item) => {
+        URL.revokeObjectURL(item.url);
+        if (item.outputUrl) URL.revokeObjectURL(item.outputUrl);
+      });
+      queue = [];
+      selectedId = '';
+      setStatus('Queue cleared.');
+      renderAll();
+    });
+    downloadAllBtn.addEventListener('click', () => {
+      queue.filter((item) => item.outputBlob).forEach((item, index) => {
+        window.setTimeout(() => downloadItem(item), index * 150);
+      });
+    });
+    queueList.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-action]');
+      const card = event.target.closest('.queue-card');
+      const id = (button && button.dataset.id) || (card && card.dataset.id);
+      if (!id) return;
+      if (!button || button.dataset.action === 'select') {
+        selectedId = id;
+        renderQueue();
+        return;
+      }
+      const item = queue.find((entry) => entry.id === id);
+      if (button.dataset.action === 'download') downloadItem(item);
+      if (button.dataset.action === 'remove') {
+        if (item) {
+          URL.revokeObjectURL(item.url);
+          if (item.outputUrl) URL.revokeObjectURL(item.outputUrl);
+        }
+        queue = queue.filter((entry) => entry.id !== id);
+        if (selectedId === id) selectedId = queue[0] ? queue[0].id : '';
+        renderAll();
+      }
+    });
+    compareSlider.addEventListener('input', updateCompare);
+
+    loadSettings();
+    renderAll();
+  })();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=34121d56" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=64a6e367" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
+<script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

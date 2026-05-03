@@ -3,8 +3,9 @@
 // Uses Anthropic Claude API directly for fast title generation
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const { safeAnthropicText } = require('./_shared/anthropic-request');
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 const AUTH_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 const AUTH_SUPABASE_KEY = process.env.SUPABASE_ANON_KEY_AUTH || process.env.SUPABASE_ANON_KEY;
@@ -48,6 +49,7 @@ async function getUser(event) {
 }
 
 async function checkRateLimit(userId) {
+  if (!SUPABASE_KEY) return { allowed: true, remaining: null, serviceUnavailable: true };
   var today = new Date().toISOString().split('T')[0];
   var res = await fetch(
     SUPABASE_URL + '/rest/v1/creator_titles_history?user_id=eq.' + userId +
@@ -62,6 +64,7 @@ async function checkRateLimit(userId) {
 }
 
 async function saveGeneration(userId, topic, platform, titles) {
+  if (!SUPABASE_KEY) return;
   await fetch(SUPABASE_URL + '/rest/v1/creator_titles_history', {
     method: 'POST',
     headers: {
@@ -87,15 +90,19 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
+  if (!ANTHROPIC_API_KEY) {
+    return { statusCode: 503, headers, body: JSON.stringify({ error: 'AI service not configured' }) };
+  }
+
   try {
     var body = JSON.parse(event.body || '{}');
     var path = event.path.replace('/.netlify/functions/creator-titles', '').replace(/^\//, '');
 
     // ── GENERATE TITLES ──
     if (path === 'generate' || path === '') {
-      var topic = body.topic || '';
+      var topic = safeAnthropicText(body.topic || '', 'Creator title topic', 80000);
       var platform = body.platform || 'youtube';
-      var prompt = body.prompt || '';
+      var prompt = safeAnthropicText(body.prompt || '', 'Creator title prompt', 160000);
 
       if (!topic && !prompt) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Topic is required' }) };
@@ -113,7 +120,9 @@ exports.handler = async (event) => {
             body: JSON.stringify({ error: 'Daily limit reached (' + rateCheck.limit + ' generations). Resets at midnight.', remaining: 0 })
           };
         }
-        remaining = rateCheck.remaining - 1;
+        remaining = rateCheck.remaining === null || rateCheck.remaining === undefined
+          ? null
+          : rateCheck.remaining - 1;
       }
 
       var aiRes = await fetch('https://api.anthropic.com/v1/messages', {
@@ -126,7 +135,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 1200,
-          system: SYSTEM_PROMPT,
+          system: safeAnthropicText(SYSTEM_PROMPT, 'Creator title system prompt', 120000),
           messages: [{ role: 'user', content: prompt || topic }]
         })
       });
@@ -153,17 +162,20 @@ exports.handler = async (event) => {
     // ── MORE LIKE THIS ──
     if (path === 'variations') {
       var style = body.style || '';
-      var topic2 = body.topic || '';
+      var topic2 = safeAnthropicText(body.topic || '', 'Creator title topic', 80000);
       var platform2 = body.platform || 'youtube';
 
       if (!style || !topic2) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Style and topic required' }) };
       }
 
-      var variationPrompt = 'Generate 3 more title variations in the "' + style + '" style for this topic:\n\n' +
+      var variationPrompt = safeAnthropicText('Generate 3 more title variations in the "' + style + '" style for this topic:\n\n' +
         'Topic: ' + topic2 + '\nPlatform: ' + platform2 + '\n\n' +
         'Return ONLY valid JSON, no markdown:\n' +
-        '{"titles":[{"style":"' + style + '","title":"...","charCount":55,"whyItWorks":"..."},{"style":"' + style + '","title":"...","charCount":48,"whyItWorks":"..."},{"style":"' + style + '","title":"...","charCount":62,"whyItWorks":"..."}]}';
+        '{"titles":[{"style":"' + style + '","title":"...","charCount":55,"whyItWorks":"..."},{"style":"' + style + '","title":"...","charCount":48,"whyItWorks":"..."},{"style":"' + style + '","title":"...","charCount":62,"whyItWorks":"..."}]}',
+        'Title variation prompt',
+        160000
+      );
 
       var aiRes2 = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -175,7 +187,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 600,
-          system: SYSTEM_PROMPT,
+          system: safeAnthropicText(SYSTEM_PROMPT, 'Creator title system prompt', 120000),
           messages: [{ role: 'user', content: variationPrompt }]
         })
       });

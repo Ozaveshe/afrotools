@@ -58,6 +58,10 @@ const LEGACY_BUNDLE_ALIASES = {
     'tool-page.4701dd1d.min.js',
     'tool-page.c4ee75a0.min.js',
   ],
+  // Current pages lazy-load this historical chat bundle through data-chat-bundle.
+  chat: [
+    'chat.e57fe38a.min.js',
+  ],
 };
 
 // Ensure bundles directory exists

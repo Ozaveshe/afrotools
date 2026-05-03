@@ -3,8 +3,9 @@
 // Uses Anthropic Claude API directly (not through ai-advisor) for streaming & control
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const { safeAnthropicText } = require('./_shared/anthropic-request');
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 const AUTH_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 const AUTH_SUPABASE_KEY = process.env.SUPABASE_ANON_KEY_AUTH || process.env.SUPABASE_ANON_KEY;
@@ -89,6 +90,7 @@ async function getUser(event) {
 }
 
 async function checkRateLimit(userId) {
+  if (!SUPABASE_KEY) return { allowed: false, remaining: 0, serviceUnavailable: true };
   var today = new Date().toISOString().split('T')[0];
   var res = await fetch(
     SUPABASE_URL + '/rest/v1/creator_mind_projects?user_id=eq.' + userId +
@@ -103,6 +105,7 @@ async function checkRateLimit(userId) {
 }
 
 async function getVoiceProfile(userId) {
+  if (!SUPABASE_KEY) return null;
   var res = await fetch(
     SUPABASE_URL + '/rest/v1/creator_voice_profiles?user_id=eq.' + userId + '&is_active=eq.true&limit=1',
     { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
@@ -113,6 +116,7 @@ async function getVoiceProfile(userId) {
 }
 
 async function saveGeneration(userId, type, inputData, platform, outputs) {
+  if (!SUPABASE_KEY) return;
   var projectRes = await fetch(SUPABASE_URL + '/rest/v1/creator_mind_projects', {
     method: 'POST',
     headers: {
@@ -154,6 +158,13 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
+  if (!ANTHROPIC_API_KEY) {
+    return { statusCode: 503, headers, body: JSON.stringify({ error: 'AI service not configured' }) };
+  }
+  if (!SUPABASE_KEY) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Server config error' }) };
+  }
+
   try {
     var user = await getUser(event);
     if (!user) {
@@ -165,12 +176,14 @@ exports.handler = async (event) => {
 
     // ── VOICE ANALYSIS ──
     if (path === 'analyze-voice') {
-      var examples = body.examples || [];
+      var examples = Array.isArray(body.examples) ? body.examples.slice(0, 8).map(function(example) {
+        return safeAnthropicText(example, 'Voice example', 40000);
+      }) : [];
       if (!examples.length) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Provide at least one writing example' }) };
       }
 
-      var voicePrompt = 'Analyze these writing examples and extract the author\'s voice profile. Return a JSON object with these fields:\n' +
+      var voicePrompt = safeAnthropicText('Analyze these writing examples and extract the author\'s voice profile. Return a JSON object with these fields:\n' +
         '- tone (string): overall tone description\n' +
         '- sentence_style (string): how they structure sentences\n' +
         '- vocabulary (array of strings): notable slang, terms, or phrases they use\n' +
@@ -179,7 +192,10 @@ exports.handler = async (event) => {
         '- avoid (array of strings): things this writer would never do\n' +
         '- cultural_context (string): cultural background inferred from writing\n\n' +
         'WRITING EXAMPLES:\n' + examples.map(function(e, i) { return '--- Example ' + (i + 1) + ' ---\n' + e; }).join('\n\n') +
-        '\n\nReturn ONLY valid JSON, no markdown code fences.';
+        '\n\nReturn ONLY valid JSON, no markdown code fences.',
+        'Voice analysis prompt',
+        180000
+      );
 
       var aiRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -239,7 +255,7 @@ exports.handler = async (event) => {
       }
 
       var genType = body.type || 'freeform';
-      var prompt = body.prompt || '';
+      var prompt = safeAnthropicText(body.prompt || '', 'CreatorMind prompt', 180000);
       if (!prompt) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Prompt is required' }) };
       }
@@ -250,6 +266,7 @@ exports.handler = async (event) => {
         systemPrompt += '\n\nCREATOR VOICE PROFILE:\n' + JSON.stringify(voiceProfile) +
           '\nIMPORTANT: Match this voice exactly. Every output must sound like this specific creator.';
       }
+      systemPrompt = safeAnthropicText(systemPrompt, 'CreatorMind system prompt', 160000);
 
       var model = MODEL_ROUTING[genType] || MODEL_ROUTING.freeform;
       var maxTokens = TOKEN_LIMITS[genType] || TOKEN_LIMITS.freeform;

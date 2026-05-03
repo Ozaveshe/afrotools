@@ -73,8 +73,10 @@ class AfroRelatedTools extends HTMLElement {
 
     const cards = tools.map(t => {
       const cs   = this._cat(t.category);
-      const img  = `/assets/img/tools/${t.id}.webp`;
-      const imgFallback = `/assets/img/tools/${t.id}.svg`;
+      const imageExt = (t.imageExt === 'svg' || t.imageExt === 'webp') ? t.imageExt : 'webp';
+      const fallbackExt = imageExt === 'svg' ? 'webp' : 'svg';
+      const img  = `/assets/img/tools/${t.id}.${imageExt}`;
+      const imgFallback = `/assets/img/tools/${t.id}.${fallbackExt}`;
       const useImage = !fallbackOnlyIds.has(t.id);
       const desc = t.desc && t.desc.length > 50 ? t.desc.slice(0,48)+'…' : (t.desc||'');
       return `

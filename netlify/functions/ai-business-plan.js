@@ -3,6 +3,7 @@
 // Called sequentially for each of 5 sections
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const { safeAnthropicText } = require('./_shared/anthropic-request');
 
 const SECTION_PROMPTS = {
   'executive-summary': (ctx) => ({
@@ -134,9 +135,9 @@ exports.handler = async function(event) {
     countryCode: countryCode || '',
     businessType: businessType || 'business',
     industry: industry || 'general',
-    description: description || '',
+    description: safeAnthropicText(description || '', 'Business plan description', 80000),
     hasEmployees: hasEmployees || false,
-    startupCost: startupCost || '',
+    startupCost: safeAnthropicText(startupCost || '', 'Business plan startup cost', 20000),
     currency: currency || 'USD',
     currencyCode: currencyCode || 'USD'
   };
@@ -158,7 +159,7 @@ exports.handler = async function(event) {
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
         max_tokens: promptConfig.maxTokens,
-        system: promptConfig.system,
+        system: safeAnthropicText(promptConfig.system, 'Business plan system prompt', 180000),
         messages: [{ role: "user", content: `Generate the ${section.replace(/-/g, ' ')} section for a ${ctx.industry} ${ctx.businessType} in ${ctx.country}.` }]
       })
     });

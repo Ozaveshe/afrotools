@@ -62,6 +62,12 @@ async function sb(method, path, body, upsert) {
   return parsed;
 }
 
+async function refreshSnapshotsViaRpc(snapshotDate) {
+  var body = {};
+  if (snapshotDate) body.p_snapshot_date = snapshotDate;
+  return sb('POST', 'rpc/refresh_afrostream_creator_snapshots', body);
+}
+
 // ── Twitch API ───────────────────────────────────────────────────
 
 async function getTwitchToken() {
@@ -783,6 +789,19 @@ exports.handler = async function(event) {
   }
 
   try {
+    if (isScheduled) {
+      var scheduledScoring = await refreshSnapshotsViaRpc();
+      return {
+        statusCode: 200,
+        headers: cors,
+        body: JSON.stringify({
+          success: true,
+          message: 'Scheduled snapshot refresh completed',
+          data: { scoring: scheduledScoring }
+        })
+      };
+    }
+
     var twitchResults = { creators_synced: 0, live_count: 0, errors: ['Twitch credentials not configured'] };
     var kickResults = { creators_synced: 0, live_count: 0, errors: ['Kick credentials not configured'] };
     var youtubeResults = { creators_synced: 0, live_count: 0, errors: ['YouTube API key not configured'] };
@@ -798,7 +817,13 @@ exports.handler = async function(event) {
     }
 
     // ── Compute scores + snapshots after all syncs ──
-    var scoreResults = await computeScores();
+    var scoreResults;
+    try {
+      scoreResults = await refreshSnapshotsViaRpc();
+    } catch (rpcError) {
+      scoreResults = await computeScores();
+      scoreResults.rpc_error = rpcError.message;
+    }
 
     return {
       statusCode: 200,

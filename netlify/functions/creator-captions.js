@@ -2,8 +2,9 @@
 // AI caption generation for CaptionCraft — platform-specific, 3 variations per generation
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const { safeAnthropicText } = require('./_shared/anthropic-request');
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 const AUTH_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 const AUTH_SUPABASE_KEY = process.env.SUPABASE_ANON_KEY_AUTH || process.env.SUPABASE_ANON_KEY;
@@ -62,6 +63,7 @@ async function getUser(event) {
 }
 
 async function checkRateLimit(userId) {
+  if (!SUPABASE_KEY) return { allowed: true, remaining: null, serviceUnavailable: true };
   var today = new Date().toISOString().split('T')[0];
   var res = await fetch(
     SUPABASE_URL + '/rest/v1/creator_captions_history?user_id=eq.' + userId +
@@ -75,6 +77,7 @@ async function checkRateLimit(userId) {
 }
 
 async function saveGeneration(userId, brief, platform, tone, captions) {
+  if (!SUPABASE_KEY) return;
   await fetch(SUPABASE_URL + '/rest/v1/creator_captions_history', {
     method: 'POST',
     headers: {
@@ -100,6 +103,10 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
+  if (!ANTHROPIC_API_KEY) {
+    return { statusCode: 503, headers, body: JSON.stringify({ error: 'AI service not configured' }) };
+  }
+
   try {
     var user = await getUser(event);
     var path = event.path.replace('/.netlify/functions/creator-captions', '').replace(/^\//, '');
@@ -115,7 +122,7 @@ exports.handler = async (event) => {
         };
       }
 
-      var prompt = body.prompt || '';
+      var prompt = safeAnthropicText(body.prompt || '', 'Creator caption prompt', 160000);
       if (!prompt) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Prompt is required' }) };
       }
@@ -130,7 +137,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 1200,
-          system: SYSTEM_PROMPT,
+          system: safeAnthropicText(SYSTEM_PROMPT, 'Creator caption system prompt', 120000),
           messages: [{ role: 'user', content: prompt }]
         })
       });
@@ -166,13 +173,17 @@ exports.handler = async (event) => {
         };
       }
 
-      var existingCaption = body.caption || '';
+      var existingCaption = safeAnthropicText(body.caption || '', 'Caption rewrite input', 140000);
       var rewritePlatform = body.platform || 'instagram';
       if (!existingCaption) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'Paste a caption to rewrite' }) };
       }
 
-      var rewritePrompt = 'Rewrite and improve this existing ' + rewritePlatform + ' caption. Generate 3 improved variations:\n\n"' + existingCaption + '"';
+      var rewritePrompt = safeAnthropicText(
+        'Rewrite and improve this existing ' + rewritePlatform + ' caption. Generate 3 improved variations:\n\n"' + existingCaption + '"',
+        'Caption rewrite prompt',
+        160000
+      );
 
       var aiRes2 = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -184,7 +195,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 1200,
-          system: SYSTEM_PROMPT,
+          system: safeAnthropicText(SYSTEM_PROMPT, 'Creator caption system prompt', 120000),
           messages: [{ role: 'user', content: rewritePrompt }]
         })
       });

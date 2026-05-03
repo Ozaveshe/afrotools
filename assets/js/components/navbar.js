@@ -1869,7 +1869,7 @@
         authHref:     '/auth/?mode=login&next=' + encodeURIComponent(isFr ? '/fr/dashboard/' : '/dashboard/'),
         vaultHref:    isFr ? '/fr/dashboard/vault/'         : '/dashboard/vault/',
         mobNote:      isSw ? '🌍 Nchi 54 · bure · bila usajili'                 : isFr ? '🌍 54 pays · gratuit · sans inscription'          : '🌍 54 countries · always free · no sign-up required',
-        srchEmpty:    isSw ? 'Zana 1,390+ za Afrika'          : isFr ? '1 390+ outils africains'                            : 'Search 1,390+ African tools',
+        srchEmpty:    isSw ? 'Zana 2,594+ za Afrika'          : isFr ? '2 594+ outils africains'                            : 'Search 2,594+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
       };
       var T_BY_LANG = {
@@ -1897,7 +1897,7 @@
           proUpgrade: 'Ṣí Pro',
           proWorkspace: 'Pro Workspace',
           mobNote: 'Orílẹ̀-èdè 54 · ọfẹ · kò sí ìforúkọsílẹ̀',
-          srchEmpty: 'Wa irinṣẹ Afirika 1,390+',
+          srchEmpty: 'Wa irinṣẹ Afirika 2,594+',
           srchHint: 'Gbìyànjú "PAYE", "PDF", "owo-ori"...'
         },
         ha: {
@@ -1924,7 +1924,7 @@
           proUpgrade: 'Bude Pro',
           proWorkspace: 'Pro Workspace',
           mobNote: 'Kasashe 54 · kyauta · babu rajista',
-          srchEmpty: 'Bincika kayan aikin Afirka 1,390+',
+          srchEmpty: 'Bincika kayan aikin Afirka 2,594+',
           srchHint: 'Gwada "PAYE", "PDF", "haraji"...'
         }
       };
@@ -2368,16 +2368,16 @@
                   </div>
                 </a>`).join('') +
               '<div class="search-section-label" style="padding-top:16px">All Tools</div>' +
-              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 1,390+ tools</div></div>';
+              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 2,594+ tools</div></div>';
             _activeIdx = 0;
             container.querySelector('#clearRecent')?.addEventListener('click', e => {
               e.preventDefault(); e.stopPropagation();
               try { localStorage.removeItem(RECENT_KEY); } catch {}
-              container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,390+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+              container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 2,594+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
             });
             return;
           }
-          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,390+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 2,594+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
           return;
         }
         if (tools.length === 0) {
