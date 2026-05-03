@@ -1799,8 +1799,12 @@ function getToolGridLabels(locale) {
       live: 'Hai',
       fresh: 'Mpya',
       all: 'Zote',
+      allTools: 'Zana zote',
+      allCategories: 'Aina zote',
       madeFor: 'Za {country}',
       africaWide: 'Afrika nzima',
+      popularCategories: 'Aina maarufu',
+      moreCategories: 'Aina zaidi',
       searchLabel: 'Tafuta zana za nchi',
       searchPlaceholder: 'Tafuta kwa jina, aina au hitaji',
       showing: 'Inaonyesha',
@@ -1825,8 +1829,12 @@ function getToolGridLabels(locale) {
       live: 'En ligne',
       fresh: 'Nouveau',
       all: 'Tous',
+      allTools: 'Tous les outils',
+      allCategories: 'Toutes categories',
       madeFor: 'Pour {country}',
       africaWide: 'Afrique entiere',
+      popularCategories: 'Categories populaires',
+      moreCategories: 'Plus de categories',
       searchLabel: 'Rechercher des outils pays',
       searchPlaceholder: 'Chercher par nom, categorie ou besoin',
       showing: 'Affichage',
@@ -1850,8 +1858,12 @@ function getToolGridLabels(locale) {
     live: 'Live',
     fresh: 'New',
     all: 'All',
+    allTools: 'All tools',
+    allCategories: 'All categories',
     madeFor: 'Made for {country}',
     africaWide: 'Africa-wide',
+    popularCategories: 'Popular categories',
+    moreCategories: 'More categories',
     searchLabel: 'Search country tools',
     searchPlaceholder: 'Search by name, category, or need',
     showing: 'Showing',
@@ -2001,20 +2013,38 @@ function ensureCountryHubStyles() {
     '.country-hub-pulse-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#64748b}',
     '.country-hub-pulse-value{font-size:clamp(1.1rem,2vw,1.38rem);font-weight:800;color:#0f172a;line-height:1.15;margin-top:10px}',
     '.country-hub-pulse-note{font-size:.76rem;line-height:1.45;color:#5b6778;margin-top:10px}',
-    '.country-tool-controls{background:#fff;border:1px solid #dbe7f3;border-radius:10px;padding:14px;margin:0 0 18px}',
-    '.country-tool-search-row{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:center;margin-bottom:12px}',
+    '.country-tool-controls{background:#fff;border:1px solid #dbe7f3;border-radius:10px;padding:16px;margin:0 0 18px;box-shadow:0 10px 28px rgba(15,23,42,.04)}',
+    '.country-tool-search-row{display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:12px;align-items:center;margin-bottom:12px}',
     '.country-tool-search{position:relative}',
     '.country-tool-search .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}',
-    '.country-tool-search input{width:100%;height:46px;border:1px solid #cbd5e1;border-radius:8px;padding:0 14px 0 42px;font:600 .9rem/1 "DM Sans",sans-serif;color:#0f172a;background:#f8fafc}',
+    '.country-tool-search input{width:100%;height:48px;border:1px solid #cbd5e1;border-radius:8px;padding:0 14px 0 42px;font:600 .9rem/1 "DM Sans",sans-serif;color:#0f172a;background:#f8fafc}',
     '.country-tool-search input:focus{outline:2px solid rgba(0,98,204,.18);border-color:var(--color-primary,#0062CC);background:#fff}',
     '.country-tool-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:#64748b;pointer-events:none}',
-    '.country-tool-result-count{font-size:.78rem;font-weight:700;color:#475569;white-space:nowrap}',
+    '.country-tool-result-count{justify-self:end;border:1px solid #e2e8f0;background:#f8fafc;border-radius:999px;padding:8px 11px;font-size:.76rem;font-weight:800;color:#475569;white-space:nowrap}',
+    '.country-tool-scope-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}',
+    '.country-tool-scope{display:flex;gap:4px;flex-wrap:wrap;border:1px solid #e2e8f0;background:#f8fafc;border-radius:999px;padding:4px}',
     '.country-tool-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}',
-    '.country-tool-filter{border:1px solid #dbe7f3;background:#fff;color:#334155;border-radius:999px;padding:7px 11px;font:700 .76rem/1 "DM Sans",sans-serif;cursor:pointer;display:inline-flex;gap:7px;align-items:center}',
+    '.country-tool-filter{border:1px solid #dbe7f3;background:#fff;color:#334155;border-radius:999px;min-height:34px;padding:7px 11px;font:700 .76rem/1 "DM Sans",sans-serif;cursor:pointer;display:inline-flex;gap:7px;align-items:center;justify-content:center}',
     '.country-tool-filter span{color:#64748b;font-weight:800}',
     '.country-tool-filter:hover{border-color:var(--color-primary,#0062CC);background:#f8fbff}',
+    '.country-tool-filter:focus-visible,.country-tool-category-more summary:focus-visible{outline:2px solid rgba(0,98,204,.28);outline-offset:2px}',
     '.country-tool-filter.active{background:#0f172a;border-color:#0f172a;color:#fff}',
     '.country-tool-filter.active span{color:#bfdbfe}',
+    '.country-tool-scope .country-tool-filter{border-color:transparent;background:transparent;min-height:32px;padding:0 12px}',
+    '.country-tool-scope .country-tool-filter.active{background:#0f172a;color:#fff;box-shadow:0 8px 18px rgba(15,23,42,.12)}',
+    '.country-tool-category-block{margin-top:12px;padding-top:12px;border-top:1px solid #eef2f7}',
+    '.country-tool-category-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}',
+    '.country-tool-category-title{font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#64748b}',
+    '.country-tool-category-row{display:flex;gap:7px;flex-wrap:wrap}',
+    '.country-tool-category-row .country-tool-filter{background:#f8fafc}',
+    '.country-tool-category-row .country-tool-filter.active{background:#0f172a;border-color:#0f172a;color:#fff}',
+    '.country-tool-category-row .country-tool-filter.active span{color:#bfdbfe}',
+    '.country-tool-category-more{margin-top:9px}',
+    '.country-tool-category-more summary{width:max-content;max-width:100%;min-height:34px;border:1px solid #dbe7f3;background:#fff;border-radius:999px;padding:0 12px;font:800 .76rem/1 "DM Sans",sans-serif;color:#2563eb;cursor:pointer;display:inline-flex;align-items:center;gap:7px;list-style:none}',
+    '.country-tool-category-more summary::-webkit-details-marker{display:none}',
+    '.country-tool-category-more summary span{color:#64748b}',
+    '.country-tool-category-more[open] summary{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}',
+    '.country-tool-category-more .country-tool-category-row{margin-top:9px}',
     '.country-tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:16px}',
     '.country-tool-card{background:#fff;border:1px solid #dbe7f3;border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;display:flex;min-height:316px;flex-direction:column;transition:border-color .18s,box-shadow .18s,transform .18s}',
     '.country-tool-card:hover{border-color:var(--color-primary,#0062CC);box-shadow:0 14px 32px rgba(15,23,42,.10);transform:translateY(-2px)}',
@@ -2040,8 +2070,8 @@ function ensureCountryHubStyles() {
     '.country-coming-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}',
     '.country-coming-card{border:1px solid #e5e7eb;border-radius:10px;padding:13px;background:#f8fafc;color:#64748b}',
     '.country-coming-card strong{display:block;color:#334155;font-size:.86rem;margin-bottom:5px}',
-    '@media(max-width:860px){.country-hub-pulse{grid-template-columns:repeat(2,minmax(0,1fr))}.country-tool-search-row{grid-template-columns:1fr}.country-tool-result-count{white-space:normal}}',
-    '@media(max-width:560px){.country-hub-pulse{grid-template-columns:1fr}.country-tool-grid{grid-template-columns:1fr}.country-tool-controls{padding:12px}.country-tool-card{min-height:0}.country-tool-card-media{height:104px}}'
+    '@media(max-width:860px){.country-hub-pulse{grid-template-columns:repeat(2,minmax(0,1fr))}.country-tool-search-row{grid-template-columns:1fr}.country-tool-result-count{justify-self:start;white-space:normal}.country-tool-scope{border-radius:14px}.country-tool-scope .country-tool-filter{flex:1 1 auto}}',
+    '@media(max-width:560px){.country-hub-pulse{grid-template-columns:1fr}.country-tool-grid{grid-template-columns:1fr}.country-tool-controls{padding:12px}.country-tool-scope{width:100%;border-radius:12px}.country-tool-scope .country-tool-filter{min-width:46%;padding:0 10px}.country-tool-category-head{align-items:flex-start;flex-direction:column}.country-tool-card{min-height:0}.country-tool-card-media{height:104px}}'
   ].join('\n');
   document.head.appendChild(style);
 }
@@ -2226,11 +2256,16 @@ function renderToolGrid(containerId, countryCode, opts) {
   var localCount = allLive.filter(function(tool) { return tool.countries && tool.countries.indexOf(normalizedCountry) !== -1; }).length;
   var panCount = allLive.filter(function(tool) { return tool.countries && tool.countries.indexOf('ALL') !== -1; }).length;
   var countryName = meta.name || normalizedCountry;
+  var visibleCategoryLimit = Math.max(1, Number(opts.visibleCategoryLimit || 8));
+  var visibleCategories = categories.slice(0, visibleCategoryLimit);
+  var hiddenCategories = categories.slice(visibleCategoryLimit);
 
-  var categoryButtons = '<button class="country-tool-filter active" type="button" data-filter-type="category" data-filter-value="all">' + countryHubEsc(labels.all) + ' <span>' + allLive.length + '</span></button>';
-  categories.forEach(function(item) {
-    categoryButtons += '<button class="country-tool-filter" type="button" data-filter-type="category" data-filter-value="' + countryHubEsc(item.key) + '">' + countryHubEsc(item.category.name || item.key) + ' <span>' + item.count + '</span></button>';
-  });
+  function renderCategoryButton(item) {
+    return '<button class="country-tool-filter" type="button" data-filter-type="category" data-filter-value="' + countryHubEsc(item.key) + '">' + countryHubEsc(item.category.name || item.key) + ' <span>' + item.count + '</span></button>';
+  }
+
+  var categoryButtons = '<button class="country-tool-filter active" type="button" data-filter-type="category" data-filter-value="all">' + countryHubEsc(labels.allCategories || labels.all) + ' <span>' + allLive.length + '</span></button>' + visibleCategories.map(renderCategoryButton).join('');
+  var hiddenCategoryButtons = hiddenCategories.map(renderCategoryButton).join('');
 
   container.innerHTML = '' +
     '<div class="country-hub-tools">' +
@@ -2244,12 +2279,18 @@ function renderToolGrid(containerId, countryCode, opts) {
           '</label>' +
           '<div class="country-tool-result-count" data-country-tool-count></div>' +
         '</div>' +
-        '<div class="country-tool-filter-row" aria-label="Tool scope">' +
-          '<button class="country-tool-filter active" type="button" data-filter-type="scope" data-filter-value="all">' + countryHubEsc(labels.all) + ' <span>' + allLive.length + '</span></button>' +
-          '<button class="country-tool-filter" type="button" data-filter-type="scope" data-filter-value="local">' + countryHubLabel(labels, 'madeFor', countryName) + ' <span>' + localCount + '</span></button>' +
-          '<button class="country-tool-filter" type="button" data-filter-type="scope" data-filter-value="pan">' + countryHubEsc(labels.africaWide) + ' <span>' + panCount + '</span></button>' +
+        '<div class="country-tool-scope-row">' +
+          '<div class="country-tool-scope" aria-label="Tool scope">' +
+            '<button class="country-tool-filter active" type="button" data-filter-type="scope" data-filter-value="all">' + countryHubEsc(labels.allTools || labels.all) + ' <span>' + allLive.length + '</span></button>' +
+            '<button class="country-tool-filter" type="button" data-filter-type="scope" data-filter-value="local">' + countryHubLabel(labels, 'madeFor', countryName) + ' <span>' + localCount + '</span></button>' +
+            '<button class="country-tool-filter" type="button" data-filter-type="scope" data-filter-value="pan">' + countryHubEsc(labels.africaWide) + ' <span>' + panCount + '</span></button>' +
+          '</div>' +
         '</div>' +
-        '<div class="country-tool-filter-row" aria-label="Tool categories">' + categoryButtons + '</div>' +
+        '<div class="country-tool-category-block">' +
+          '<div class="country-tool-category-head"><div class="country-tool-category-title">' + countryHubEsc(labels.popularCategories || 'Popular categories') + '</div></div>' +
+          '<div class="country-tool-category-row" aria-label="Tool categories">' + categoryButtons + '</div>' +
+          (hiddenCategoryButtons ? '<details class="country-tool-category-more"><summary>' + countryHubEsc(labels.moreCategories || 'More categories') + ' <span>' + hiddenCategories.length + '</span></summary><div class="country-tool-category-row" aria-label="More tool categories">' + hiddenCategoryButtons + '</div></details>' : '') +
+        '</div>' +
       '</div>' +
       '<div class="country-tool-grid" data-country-tool-grid></div>' +
       '<div class="country-tool-empty" data-country-tool-empty hidden>' + countryHubEsc(labels.noResults) + '</div>' +
