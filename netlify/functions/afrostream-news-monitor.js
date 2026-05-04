@@ -52,6 +52,18 @@ async function sb(method, path, body, upsert) {
   return parsed;
 }
 
+async function recordSourceHealth(source, patch, summary) {
+  if (!source || !source.id) return;
+  try {
+    await sb('PATCH', 'as_news_sources?id=eq.' + encodeURIComponent(source.id), Object.assign({
+      updated_at: new Date().toISOString()
+    }, patch));
+    summary.source_health_updated++;
+  } catch (e) {
+    summary.errors.push((source.name || source.feed_url) + ' health update: ' + e.message);
+  }
+}
+
 function decodeXml(value) {
   return String(value || '')
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
@@ -210,6 +222,7 @@ exports.handler = async function(event) {
     existing_news: 0,
     would_create_mentions: 0,
     skipped_matches: 0,
+    source_health_updated: 0,
     mentions: 0,
     inserted_news: 0,
     matches: [],
@@ -218,7 +231,7 @@ exports.handler = async function(event) {
   };
 
   try {
-    var dbSources = await sb('GET', 'as_news_sources?is_active=eq.true&select=name,feed_url,category');
+    var dbSources = await sb('GET', 'as_news_sources?is_active=eq.true&select=id,name,feed_url,category');
     var envSources = parseFeedsFromEnv();
     var sources = []
       .concat(Array.isArray(dbSources) ? dbSources : [])
@@ -237,6 +250,7 @@ exports.handler = async function(event) {
 
     for (var s = 0; s < sources.length; s++) {
       var source = sources[s];
+      var sourceFetched = false;
       try {
         var res = await fetch(source.feed_url, {
           headers: {
@@ -246,11 +260,28 @@ exports.handler = async function(event) {
         });
         if (!res.ok) {
           summary.errors.push(source.name + ': HTTP ' + res.status);
+          if (!dryRun) {
+            await recordSourceHealth(source, {
+              last_checked_at: new Date().toISOString(),
+              last_status_code: res.status,
+              last_error: 'HTTP ' + res.status
+            }, summary);
+          }
           continue;
         }
         var xml = await res.text();
         var items = parseFeed(xml).slice(0, 30);
+        sourceFetched = true;
         summary.items_seen += items.length;
+        if (!dryRun) {
+          await recordSourceHealth(source, {
+            last_checked_at: new Date().toISOString(),
+            last_success_at: new Date().toISOString(),
+            last_status_code: res.status,
+            last_item_count: items.length,
+            last_error: null
+          }, summary);
+        }
 
         for (var i = 0; i < items.length; i++) {
           var item = items[i];
@@ -324,6 +355,13 @@ exports.handler = async function(event) {
         }
       } catch (e) {
         summary.errors.push((source.name || source.feed_url) + ': ' + e.message);
+        if (!dryRun && !sourceFetched) {
+          await recordSourceHealth(source, {
+            last_checked_at: new Date().toISOString(),
+            last_status_code: null,
+            last_error: e.message
+          }, summary);
+        }
       }
     }
 

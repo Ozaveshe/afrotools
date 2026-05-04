@@ -145,6 +145,7 @@ Do not send a `featured` field through the fallback admin or REST publish path u
 - `business`
 - `rising`
 - `drama`
+- `gaming`
 
 ### AfroStream editorial standards
 
