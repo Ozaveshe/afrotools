@@ -29,15 +29,22 @@ const dashboard = read('dashboard/index.html');
 [
   'afro_category_workflow_packs_v1',
   'category-workflow-pack',
-  'legal:',
-  'agriculture:',
-  'education:',
   'guardPromise',
   'AfroWorkspace.upsert',
   'Free accounts can keep',
   'Metadata only'
 ].forEach((needle) => {
   assert(helper.includes(needle), `Missing helper marker: ${needle}`);
+});
+
+[
+  /legal\s*:/,
+  /agriculture\s*:/,
+  /education\s*:/,
+  /id\s*:\s*['"]personal['"]/,
+  /id\s*:\s*['"]travel-records['"]/
+].forEach((pattern) => {
+  assert(pattern.test(helper), `Missing helper pattern: ${pattern}`);
 });
 
 [
@@ -101,6 +108,8 @@ assert(/display\s*:\s*none/.test(tighteningCss), 'Missing tightening CSS hidden 
   '/tools/contract-generator/',
   '/tools/land-title-check/',
   '/tools/employment-contract/',
+  '/tools/legal-aid/',
+  '/tools/visa-cost/',
   '/agriculture/farm-budget/',
   '/agriculture/crop-yield/',
   '/agriculture/irrigation/',
