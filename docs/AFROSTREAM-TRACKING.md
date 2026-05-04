@@ -39,6 +39,7 @@ Ops workflow:
 - Maintain sources in the AfroStream admin under the `Ops` tab, or through `GET/POST/PUT/DELETE /api/admin/afrostream/news-sources`.
 - Run the monitor manually through the AfroStream admin `Run News Monitor` action, or `POST /api/admin/afrostream/ops/news-monitor`.
 - Creator pages should read linked mention rows from `public.as_news_creator_mentions`, not a loose text search over `public.as_news`.
+- Manual article creates or updates through `netlify/functions/afrostream-admin.js` now also upsert matching `public.as_news_creator_mentions` rows, so direct AfroStream news publishes do not stay thin by default.
 
 Manual review runs can use dry-run mode before allowing writes:
 

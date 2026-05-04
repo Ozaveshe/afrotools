@@ -81,6 +81,66 @@ function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+function normalizeForMatch(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function creatorAliases(name) {
+  var raw = String(name || '').trim();
+  var aliases = [raw];
+  var withoutParenthetical = raw.replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+  if (withoutParenthetical && withoutParenthetical !== raw) aliases.push(withoutParenthetical);
+  var parenthetical = raw.match(/\(([^)]+)\)/);
+  if (parenthetical && parenthetical[1]) aliases.push(parenthetical[1]);
+  return aliases.filter(function(alias, idx, all) {
+    return alias && all.indexOf(alias) === idx;
+  });
+}
+
+function aliasMatches(haystack, alias) {
+  var normalizedAlias = normalizeForMatch(alias);
+  if (!normalizedAlias) return false;
+  var tokens = normalizedAlias.split(' ').filter(Boolean);
+  if (tokens.length === 1 && tokens[0].length < 4) return false;
+  return (' ' + haystack + ' ').indexOf(' ' + normalizedAlias + ' ') !== -1;
+}
+
+function findCreatorMatchesForNews(newsRow, creators) {
+  var haystack = normalizeForMatch([
+    newsRow && newsRow.title,
+    newsRow && newsRow.excerpt,
+    newsRow && newsRow.body
+  ].join(' '));
+  return (creators || []).filter(function(creator) {
+    return creatorAliases(creator.name).some(function(alias) {
+      return aliasMatches(haystack, alias);
+    });
+  });
+}
+
+async function syncCreatorMentionsForNews(newsRow) {
+  if (!newsRow || !newsRow.id) return 0;
+  var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,slug', null);
+  creators = Array.isArray(creators) ? creators : [];
+  var matches = findCreatorMatchesForNews(newsRow, creators);
+  for (var i = 0; i < matches.length; i++) {
+    await sb('POST', 'as_news_creator_mentions?on_conflict=news_id,creator_id', {
+      news_id: newsRow.id,
+      creator_id: matches[i].id,
+      matched_name: matches[i].name,
+      source_url: newsRow.source_url || null
+    });
+  }
+  return matches.length;
+}
+
 function ok(headers, data, code) {
   return { statusCode: code || 200, headers: headers, body: JSON.stringify({ success: true, data: data }) };
 }
@@ -254,7 +314,10 @@ exports.handler = async function(event) {
       if (!body.slug) body.slug = slugify(body.title);
       if (!body.published_at) body.published_at = new Date().toISOString();
       var createdN = await sb('POST', 'as_news', body);
+      var createdNewsRow = Array.isArray(createdN) ? createdN[0] : createdN;
+      var createdMentionCount = await syncCreatorMentionsForNews(createdNewsRow);
       console.log('[afrostream-admin] Published article: ' + body.slug);
+      console.log('[afrostream-admin] Linked creator mentions: ' + createdMentionCount);
       return ok(headers, createdN, 201);
     }
 
@@ -264,6 +327,9 @@ exports.handler = async function(event) {
       delete body.id; delete body.created_at;
       body.updated_at = new Date().toISOString();
       var updatedN = await sb('PATCH', 'as_news?id=eq.' + nid, body);
+      var updatedNewsRow = Array.isArray(updatedN) ? updatedN[0] : updatedN;
+      var updatedMentionCount = await syncCreatorMentionsForNews(updatedNewsRow);
+      console.log('[afrostream-admin] Refreshed creator mentions: ' + updatedMentionCount + ' for news ' + nid);
       return ok(headers, updatedN);
     }
     if (newsMatch && method === 'DELETE') {
