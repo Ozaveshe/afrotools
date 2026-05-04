@@ -19,6 +19,7 @@ const IGNORE_DIRS = new Set([
   ".jamb-tools",
   "node_modules",
   "afrotools-deploy",
+  "dist",
 ]);
 
 function escapeRegExp(value) {

@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const SKIP_DIRS = new Set(['node_modules', '.git', '.claude', 'scripts', 'netlify']);
+const SKIP_DIRS = new Set(['node_modules', '.git', '.claude', 'scripts', 'netlify', 'dist']);
 const REGISTRY_SCRIPT_RE = /\s*<script\b[^>]*src=["'][^"']*tool-registry(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>\s*/gi;
 const REGISTRY_USAGE_RE = /AFRO_TOOLS|AFRO_CATEGORIES|getTotalToolCount|onRegistryReady|afrotools:registry-ready|renderToolGrid|getToolsFor|country-tools(?:\.min)?\.js|salary-tax-hub\.js|salary-tax-index\.js|tool-search(?:\.min)?\.js/;
 const RELATED_TOOLS_RE = /related-tools(?:\.min)?\.js|<afro-related-tools\b/i;

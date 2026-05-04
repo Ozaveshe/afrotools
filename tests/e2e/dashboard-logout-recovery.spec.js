@@ -90,7 +90,7 @@ async function stubDashboardAuth(page) {
 
     if (url.pathname === '/api/auth/session') {
       return route.fulfill({
-        status: 200,
+        status: signedOut ? 401 : 200,
         contentType: 'application/json; charset=utf-8',
         body: JSON.stringify(signedOut ? { authenticated: false, user: null } : { authenticated: true, user: TEST_USER })
       });
@@ -114,7 +114,13 @@ test('dashboard logout recovers if signed-in panels are already missing', async 
   await page.goto('/dashboard/', { waitUntil: 'commit' });
 
   await expect(page.locator('html')).toHaveAttribute('data-dashboard-auth-state', 'signedIn', { timeout: 15000 });
+  await expect(page.locator('#dashboardSection')).toBeVisible();
   await expect(page.locator('#logoutBtn')).toHaveText(/sign out/i);
+  await expect.poll(function() {
+    return page.evaluate(function() {
+      return Boolean(window.AfroAuth && window.AfroAuth._cookiePatched);
+    });
+  }).toBe(true);
 
   await page.evaluate(function() {
     const editor = document.getElementById('profileEditor');

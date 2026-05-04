@@ -34,19 +34,28 @@ const COOKIE_OPTS = {
   domain: IS_PROD ? '.afrotools.com' : undefined,
 };
 
-function setCookie(name, value, maxAge) {
+function setCookie(name, value, maxAge, options) {
+  options = options || {};
   var parts = [name + '=' + encodeURIComponent(value)];
   parts.push('HttpOnly');
   parts.push('Secure');
   parts.push('SameSite=Lax');
   parts.push('Path=/');
-  if (IS_PROD) parts.push('Domain=.afrotools.com');
+  var includeDomain = options.domain === undefined ? IS_PROD : !!options.domain;
+  if (includeDomain) parts.push('Domain=.afrotools.com');
   if (maxAge !== undefined && maxAge !== null) parts.push('Max-Age=' + maxAge);
+  if (maxAge === 0) parts.push('Expires=Thu, 01 Jan 1970 00:00:00 GMT');
   return parts.join('; ');
 }
 
-function clearCookie(name) {
-  return setCookie(name, '', 0);
+function clearCookie(name, options) {
+  return setCookie(name, '', 0, options);
+}
+
+function clearCookieVariants(name) {
+  var headers = [clearCookie(name, { domain: false })];
+  if (IS_PROD) headers.push(clearCookie(name, { domain: true }));
+  return headers;
 }
 
 function parseCookies(cookieHeader) {
@@ -170,10 +179,10 @@ function accessCookieHeaders(accessToken, maxAge) {
 
 function clearCookieHeaders() {
   return {
-    'Set-Cookie': [
-      clearCookie('afro_session'),
-      clearCookie('afro_refresh'),
-    ],
+    'Set-Cookie': [].concat(
+      clearCookieVariants('afro_session'),
+      clearCookieVariants('afro_refresh')
+    ),
   };
 }
 

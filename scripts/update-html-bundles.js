@@ -39,7 +39,7 @@ function walkHtml(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
-    if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
+    if (entry.name.startsWith('.') || entry.name === 'node_modules' || entry.name === 'dist') continue;
     if (entry.isDirectory()) {
       results.push(...walkHtml(fullPath));
     } else if (entry.name.endsWith('.html')) {
