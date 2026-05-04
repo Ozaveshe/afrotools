@@ -1166,6 +1166,18 @@
         "imageExt": "svg"
       },
       {
+        "id": "thumbnail-maker",
+        "name": "YouTube Thumbnail Studio",
+        "icon": "🖼️",
+        "desc": "Design exact-size YouTube thumbnails with creato...",
+        "href": "/tools/thumbnail-maker/",
+        "category": "image-design",
+        "lang": "en",
+        "priority": 88,
+        "estTraffic": 10000,
+        "imageExt": "svg"
+      },
+      {
         "id": "meme-generator",
         "name": "Meme Generator",
         "icon": "😂",
@@ -1259,18 +1271,6 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "svg"
-      },
-      {
-        "id": "thumbnail-maker",
-        "name": "YouTube Thumbnail Maker",
-        "icon": "🖼️",
-        "desc": "Design viral YouTube thumbnails with African art...",
-        "href": "/tools/thumbnail-maker/",
-        "category": "image-design",
-        "lang": "en",
-        "priority": 80,
-        "estTraffic": 10000,
         "imageExt": "svg"
       },
       {
