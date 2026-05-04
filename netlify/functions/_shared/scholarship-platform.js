@@ -9,12 +9,23 @@ try {
   fallbackFeedModule = null;
 }
 
+let curatedCatalogModule = null;
+try {
+  curatedCatalogModule = require('./scholarship-curated-catalog');
+} catch (error) {
+  curatedCatalogModule = null;
+}
+
 const AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const AUTH_SERVICE_KEY =
   process.env.SUPABASE_AUTH_SERVICE_KEY ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_SERVICE_KEY;
-const DATA_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const DATA_URL =
+  process.env.SUPABASE_DATA_URL ||
+  process.env.SUPABASE_URL_DATA ||
+  process.env.SUPABASE_URL ||
+  'https://jbmhfpkzbgyeodsqhprx.supabase.co';
 const DATA_READ_KEY =
   process.env.SUPABASE_DATA_ANON_KEY ||
   process.env.SUPABASE_ANON_KEY_DATA ||
@@ -137,6 +148,12 @@ function normalizeOffsets(offsets) {
 }
 
 function getFallbackScholarships() {
+  if (Array.isArray(curatedCatalogModule) && curatedCatalogModule.length) {
+    return curatedCatalogModule.slice();
+  }
+  if (curatedCatalogModule && Array.isArray(curatedCatalogModule.scholarships) && curatedCatalogModule.scholarships.length) {
+    return curatedCatalogModule.scholarships.slice();
+  }
   if (fallbackFeedModule && typeof fallbackFeedModule.getFallbackScholarships === 'function') {
     return fallbackFeedModule.getFallbackScholarships();
   }
@@ -248,18 +265,18 @@ function buildFeedMeta(rows, options) {
   let tone = isDegraded ? 'warn' : 'ok';
 
   if (mode === 'curated') {
-    label = hasSourceError ? 'Curated fallback feed' : 'Curated feed';
+    label = hasSourceError ? 'Current curated feed' : 'Curated feed';
     message = 'Showing the curated AfroTools scholarship catalog' + (lastCheckedLabel ? ' last checked on ' + lastCheckedLabel + '.' : '.');
     if (hasSourceError) {
-      message = 'Live scholarship refresh is unavailable. Showing the curated AfroTools scholarship catalog instead' +
+      message = 'Live scholarship import is unavailable. Showing the maintained AfroTools curated scholarship catalog instead' +
         (lastCheckedLabel ? ' last checked on ' + lastCheckedLabel + '.' : '.');
     }
   } else if (mode === 'cached') {
     label = 'Cached feed';
     message = 'Live scholarship refresh is unavailable. Showing cached scholarship data' + (lastCheckedLabel ? ' last checked on ' + lastCheckedLabel + '.' : '.');
   } else if (mode === 'fallback') {
-    label = 'Fallback feed';
-    message = 'Live scholarship pipeline is unavailable. Showing the narrower fallback scholarship dataset instead.';
+    label = 'Repo curated fallback';
+    message = 'Live scholarship pipeline is unavailable. Showing the maintained repo-backed scholarship dataset instead.';
   } else {
     message = 'Live scholarship feed refreshed' + (lastCheckedLabel ? ' on ' + lastCheckedLabel + '.' : '.');
   }
@@ -394,15 +411,32 @@ async function fetchDataInstanceScholarships() {
     throw new Error('No Supabase data credentials configured for scholarship import');
   }
 
-  const response = await fetch(DATA_URL + '/rest/v1/scholarships?is_active=eq.true&select=*', {
-    headers: {
-      apikey: DATA_READ_KEY,
-      Authorization: 'Bearer ' + DATA_READ_KEY
-    }
-  });
+  const endpoint = DATA_URL + '/rest/v1/scholarships?is_active=eq.true&select=*';
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const timeout = controller ? setTimeout(function () {
+    controller.abort(new Error('Scholarship source request timed out'));
+  }, 15000) : null;
+
+  let response;
+  try {
+    response = await fetch(endpoint, {
+      headers: {
+        apikey: DATA_READ_KEY,
+        Authorization: 'Bearer ' + DATA_READ_KEY
+      },
+      signal: controller ? controller.signal : undefined
+    });
+  } catch (error) {
+    const reason = error && error.cause && error.cause.code
+      ? error.cause.code
+      : (error && error.message ? error.message : 'fetch failed');
+    throw new Error('Data scholarship source request failed for ' + DATA_URL + ': ' + reason);
+  } finally {
+    if (timeout) clearTimeout(timeout);
+  }
 
   if (!response.ok) {
-    throw new Error('Data scholarship source returned HTTP ' + response.status);
+    throw new Error('Data scholarship source returned HTTP ' + response.status + ' for ' + DATA_URL);
   }
 
   return response.json();
@@ -490,6 +524,12 @@ async function importSourceItems(client, source, rawItems) {
   if (existingError) throw existingError;
 
   const existingSet = new Set((existingRows || []).map(function (row) { return row.slug; }));
+  const { data: sourceOwnedRows, error: sourceOwnedError } = await client
+    .from('scholarships')
+    .select('id, slug')
+    .eq('last_source_id', source.id)
+    .eq('is_active', true);
+  if (sourceOwnedError) throw sourceOwnedError;
 
   const { error: rawError } = await client
     .from('scholarship_raw_items')
@@ -501,6 +541,21 @@ async function importSourceItems(client, source, rawItems) {
     .upsert(parsedItems, { onConflict: 'slug' });
   if (upsertError) throw upsertError;
 
+  const staleSourceIds = (sourceOwnedRows || [])
+    .filter(function (row) { return slugs.indexOf(row.slug) === -1; })
+    .map(function (row) { return row.id; });
+
+  if (staleSourceIds.length) {
+    const { error: deactivateError } = await client
+      .from('scholarships')
+      .update({
+        is_active: false,
+        last_verified_at: new Date().toISOString()
+      })
+      .in('id', staleSourceIds);
+    if (deactivateError) throw deactivateError;
+  }
+
   const { data: persistedRows, error: persistedError } = await client
     .from('scholarships')
     .select('id, slug')
@@ -511,6 +566,7 @@ async function importSourceItems(client, source, rawItems) {
     itemsSeen: Array.isArray(rawItems) ? rawItems.length : 0,
     itemsCreated: parsedItems.filter(function (item) { return !existingSet.has(item.slug); }).length,
     itemsUpdated: parsedItems.filter(function (item) { return existingSet.has(item.slug); }).length,
+    itemsDeactivated: staleSourceIds.length,
     scholarshipIds: (persistedRows || []).map(function (row) { return row.id; })
   };
 }

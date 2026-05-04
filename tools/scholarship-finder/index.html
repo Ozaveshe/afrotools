@@ -5,7 +5,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>African Scholarship Finder & Eligibility Check | AfroTools</title>
-<meta name="description" content="Run a quick scholarship eligibility check or explore 120+ scholarships with profile-aware match scoring, fit explanations, and shortlist tools for African students.">
+<meta name="description" content="Run a quick scholarship eligibility check or explore AfroTools current scholarship feed with profile-aware match scoring, fit explanations, and shortlist tools for African students.">
 <link rel="canonical" href="https://afrotools.com/tools/scholarship-finder/">
 <meta name="tool-id" content="scholarship-finder">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -131,7 +131,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="African Scholarship Finder & Eligibility Check | AfroTools">
-<meta name="twitter:description" content="Quick scholarship check plus 120+ scholarships with profile-aware match scoring, fit explanations, and shortlist tools.">
+<meta name="twitter:description" content="Quick scholarship check plus the current AfroTools scholarship feed with profile-aware match scoring, fit explanations, and shortlist tools.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/scholarship-finder.webp">
 <script type="application/ld+json">
 {
@@ -169,7 +169,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Scholarship Finder</span></div>
 <h1>African <em>Scholarship</em> Finder</h1>
 <p class="hero-sub">Start with a quick eligibility check, then refine your GPA, IELTS, field, level, and destination to see profile-aware scholarship matches for African students.</p>
-<div class="hero-badges"><span class="badge b-em" id="totalBadge">120+ Scholarships</span><span class="badge b-em">Quick Check</span><span class="badge b-em">Fit Explanations</span><span class="badge b-em">Shortlists</span></div>
+<div class="hero-badges"><span class="badge b-em" id="totalBadge">Current Scholarship Feed</span><span class="badge b-em">Quick Check</span><span class="badge b-em">Fit Explanations</span><span class="badge b-em">Shortlists</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -664,7 +664,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   }
 
   function formatScholarshipCount(count) {
-    return count >= 120 ? '120+ Scholarships' : count + ' Scholarships';
+    if (!count) return 'Scholarship Feed';
+    return count === 1 ? '1 Current Scholarship' : count + ' Current Scholarships';
   }
 
   function updateFeedStatus() {
@@ -1045,7 +1046,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
             isDegraded = !!(data && data.stale);
           } else if (mode === 'fallback') {
             label = 'Curated fallback';
-            message = 'Live scholarship feed is unavailable. Showing a narrower curated backup dataset instead.';
+            message = 'Live scholarship feed is unavailable. Showing the maintained curated scholarship catalog instead.';
             isDegraded = true;
           }
 
@@ -1064,7 +1065,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
             scholarships: FALLBACK,
             meta: {
               label: 'Curated fallback',
-              message: 'Live scholarship feed is unavailable. Showing a narrower curated backup dataset instead.',
+              message: 'Live scholarship feed is unavailable. Showing the maintained curated scholarship catalog instead.',
               isDegraded: true
             }
           };

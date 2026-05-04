@@ -21,7 +21,7 @@ Scholarship platform data now lives in the auth-side Supabase project alongside 
 
 - Auth project: durable scholarship mirror, user saves, reminders, notification queue
 - Data project: upstream structured scholarship catalog used as the primary import source for MVP
-- Repo fallback: curated scholarship backup from `assets/js/education-scholarship-feed.js`
+- Repo fallback: curated scholarship backup from `netlify/functions/_shared/scholarship-curated-catalog.js`, with the browser helper still able to fall back to `assets/js/education-scholarship-feed.js` if needed
 
 Keep repo edits and live project actions separate in notes and summaries.
 
@@ -47,13 +47,14 @@ Start with stable sources only.
   - trust: structured import from the AfroTools data catalog
 - `afrotools-curated-backup`
   - parser key: `curated_backup_catalog`
-  - trust: curated backup from the repo fallback dataset
+  - trust: maintained repo-backed curated catalog with official-link records and current status notes
 
 MVP rule:
 
 - prefer official pages, APIs, RSS, or structured imports
 - only add scrape-heavy sources when they are permitted and operationally sane
 - keep every scholarship tied to a source and a freshness timestamp
+- if the primary data-catalog import is unavailable, keep the public product current through the maintained curated catalog rather than leaving stale rows active
 
 ## Netlify Functions
 
