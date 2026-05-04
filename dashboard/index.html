@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="/assets/css/design-system.css?v=df6f3e05">
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-  <link rel="stylesheet" href="/assets/css/dashboard.css?v=20260503a">
-    <script src="/assets/js/components/country-selector.js?v=1" defer></script>
+  <link rel="stylesheet" href="/assets/css/dashboard.css?v=42eaebcc">
+    <script src="/assets/js/components/country-selector.js?v=3d97f5a3" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Instrument+Serif:ital@0;1&display=swap">
@@ -2824,18 +2824,18 @@
 
     <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
     <script src="/assets/js/components/tool-registry.min.js?v=1344f2c7" defer></script>
-    <script src="/assets/js/afro-auth.js?v=6"></script>
+    <script src="/assets/js/afro-auth.js?v=3978e101"></script>
     <script src="/assets/js/components/auth-modal.js?v=3f65305a"></script>
     <script src="/assets/js/auth-cookie-upgrade.js?v=5f8a65c3"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
     <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
-    <script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
+    <script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
     <script src="/assets/js/tax-calendar.js?v=be0e44a9"></script>
     <script src="/assets/js/dashboard.js?v=c9eef2d3"></script>
     <script src="/dashboard/dashboard-alerts-hardened.js?v=f4f833ce"></script>
-    <script src="/engines/afropoints-engine.js?v=2"></script>
+    <script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
     <script src="/dashboard/dashboard-app.js?v=05100b7e"></script>
-    <script src="/dashboard/afropoints-lane-account.js?v=20260502a"></script>
+    <script src="/dashboard/afropoints-lane-account.js?v=401e149a"></script>
     <script src="/assets/js/components/navbar.min.js?v=d849d432"></script>
     <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
@@ -4333,6 +4333,121 @@
             });
         }
 
+        function getCategoryWorkflowPacksLocal() {
+            var items = dashReadJson('afro_category_workflow_packs_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'category-workflow-pack' || item.item_type === 'category-workflow-pack');
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getCategoryWorkflowPacksCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'category-workflow-pack' || item.itemType === 'category-workflow-pack');
+            });
+        }
+
+        function getCategoryWorkflowPackItems() {
+            var merged = {};
+            getCategoryWorkflowPacksLocal().forEach(function(item) {
+                if (!item) return;
+                var id = item.id || item.itemKey || item.item_key;
+                if (!id) return;
+                merged[id] = Object.assign({}, item, {
+                    id: id,
+                    itemType: 'category-workflow-pack',
+                    synced: !!item.synced
+                });
+            });
+            getCategoryWorkflowPacksCloud().forEach(function(item) {
+                if (!item) return;
+                var payload = item.payload || {};
+                var meta = item.meta || {};
+                var id = item.item_key || item.itemKey || item.id || payload.id;
+                if (!id) return;
+                merged[id] = Object.assign({}, merged[id] || {}, {
+                    id: id,
+                    itemKey: id,
+                    itemType: 'category-workflow-pack',
+                    category: payload.category || meta.category || (merged[id] && merged[id].category) || '',
+                    categoryLabel: payload.categoryLabel || (merged[id] && merged[id].categoryLabel) || 'Category workflow',
+                    lane: payload.lane || meta.lane || (merged[id] && merged[id].lane) || '',
+                    laneLabel: payload.laneLabel || (merged[id] && merged[id].laneLabel) || '',
+                    destination: payload.destination || meta.destination || (merged[id] && merged[id].destination) || '',
+                    destinationLabel: payload.destinationLabel || (merged[id] && merged[id].destinationLabel) || '',
+                    title: item.title || payload.title || (merged[id] && merged[id].title) || 'Category workflow pack',
+                    summary: item.summary || payload.summary || (merged[id] && merged[id].summary) || '',
+                    href: item.href || payload.href || (merged[id] && merged[id].href) || '/dashboard/',
+                    hubHref: payload.hubHref || (merged[id] && merged[id].hubHref) || '/dashboard/',
+                    targetHref: payload.targetHref || (merged[id] && merged[id].targetHref) || '/dashboard/',
+                    readinessScore: payload.readinessScore || meta.readinessScore || (merged[id] && merged[id].readinessScore) || 0,
+                    risk: payload.risk || (merged[id] && merged[id].risk) || '',
+                    planTier: payload.planTier || meta.planTier || (merged[id] && merged[id].planTier) || '',
+                    updatedAt: item.updated_at || payload.updatedAt || (merged[id] && merged[id].updatedAt) || '',
+                    createdAt: item.created_at || payload.createdAt || (merged[id] && merged[id].createdAt) || '',
+                    synced: true
+                });
+            });
+            return Object.keys(merged).map(function(id) { return merged[id]; }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function removeCategoryWorkflowPackLocal(id) {
+            var current = dashReadJson('afro_category_workflow_packs_v1', []);
+            if (!Array.isArray(current)) current = [];
+            current = current.filter(function(item) { return item && item.id !== id && item.itemKey !== id; });
+            try { localStorage.setItem('afro_category_workflow_packs_v1', JSON.stringify(current)); } catch(e) {}
+        }
+
+        function removeCategoryWorkflowPackWorkspace(id) {
+            if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                AfroWorkspace.remove({ itemType: 'category-workflow-pack', itemKey: id }).catch(function(e) {
+                    console.warn('[Dashboard] category workflow pack delete sync failed:', e.message || e);
+                });
+            }
+        }
+
+        function renderCategoryWorkflowPackWorkspace(container) {
+            if (!container) return;
+            var packs = getCategoryWorkflowPackItems().slice(0, 18);
+            if (!packs.length) {
+                container.innerHTML = '<div class="ws-empty">No category workflow packs saved yet. Start from Legal, Agriculture, or Education and save a pack.</div>';
+                return;
+            }
+            container.innerHTML = '<div class="ws-subhead">Category workflow packs</div>' + packs.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var href = dashSafeHref(item.href || item.hubHref || '/dashboard/');
+                var targetHref = dashSafeHref(item.targetHref || item.hubHref || '/dashboard/');
+                var detail = [item.categoryLabel || item.category || 'Category', item.destinationLabel || item.destination || 'dashboard', item.risk ? item.risk + ' risk' : '', item.readinessScore ? item.readinessScore + '% ready' : '', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Category workflow pack') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Saved category workflow metadata pack') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open route</a>' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(targetHref) + '">Continue</a>' +
+                        '<button class="btn-small" type="button" data-category-workflow-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+            container.querySelectorAll('[data-category-workflow-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-category-workflow-remove');
+                    if (!id || !confirm('Remove this category workflow pack?')) return;
+                    removeCategoryWorkflowPackLocal(id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeCategoryWorkflowPackWorkspace(id);
+                });
+            });
+        }
+
         function getDashboardWorkspaceCounts() {
             var favorites = dashReadJson('afro_favs_v2', []);
             if (!Array.isArray(favorites)) favorites = [];
@@ -4384,6 +4499,8 @@
             var vatBusinessTaxFilingPacks = getVatBusinessTaxFilingPacksLocal();
             var vatBusinessTaxReadiness = getVatBusinessTaxReadinessLocal();
             var vatBusinessTaxAuditPackets = getVatBusinessTaxAuditPacketsLocal();
+            var categoryWorkflowPacks = getCategoryWorkflowPacksLocal();
+            var categoryWorkflowPacksCloud = getCategoryWorkflowPacksCloud();
 
             var religiousCulturalPlans = getReligiousCulturalPlansLocal();
 
@@ -4400,7 +4517,7 @@
                 }
             } catch(e) {}
 
-            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + salaryReports.length + salaryHandoffs.length + salaryReadiness.length + salaryAuditPackets.length + documentPdfReports.length + documentPdfHandoffs.length + documentPdfRecipes.length + documentPdfReadiness.length + documentPdfAuditPackets.length + vatBusinessTaxReports.length + vatBusinessTaxFilingPacks.length + vatBusinessTaxReadiness.length + vatBusinessTaxAuditPackets.length + religiousCulturalPlans.length + healthPlans.length;
+            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + salaryReports.length + salaryHandoffs.length + salaryReadiness.length + salaryAuditPackets.length + documentPdfReports.length + documentPdfHandoffs.length + documentPdfRecipes.length + documentPdfReadiness.length + documentPdfAuditPackets.length + vatBusinessTaxReports.length + vatBusinessTaxFilingPacks.length + vatBusinessTaxReadiness.length + vatBusinessTaxAuditPackets.length + categoryWorkflowPacks.length + religiousCulturalPlans.length + healthPlans.length;
             var cloudTotal = typeof dashboardWorkspaceState.count === 'number' ? dashboardWorkspaceState.count : null;
             return {
                 favorites: favorites.length,
@@ -4430,6 +4547,7 @@
                 vatBusinessTaxFilingPacks: vatBusinessTaxFilingPacks.length,
                 vatBusinessTaxReadiness: vatBusinessTaxReadiness.length,
                 vatBusinessTaxAuditPackets: vatBusinessTaxAuditPackets.length,
+                categoryWorkflowPacks: Math.max(categoryWorkflowPacks.length, categoryWorkflowPacksCloud.length),
                 religiousCulturalPlans: religiousCulturalPlans.length,
                 healthPlans: healthPlans.length,
                 localTotal: localTotal,
@@ -4758,6 +4876,18 @@
                 });
             }
 
+            if (counts.categoryWorkflowPacks > 0) {
+                add({
+                    key: 'category-workflow-packs',
+                    tag: 'Workflows',
+                    label: dashPlural(counts.categoryWorkflowPacks, 'category pack'),
+                    detail: 'Continue saved Legal, Agriculture, and Education workflow packs across dashboard, documents, tax, trade, insurance, or the next route.',
+                    cta: 'Open workflow packs',
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-category-workflows'
+                });
+            }
+
             if (counts.religiousCulturalPlans > 0) {
                 add({
                     key: 'religious-cultural-plans',
@@ -4875,7 +5005,8 @@
             var fullTargets = {
                 'ws-salary': true,
                 'ws-document-pdf': true,
-                'ws-vat-business-tax': true
+                'ws-vat-business-tax': true,
+                'ws-category-workflows': true
             };
             var renderWorkspace = fullTargets[panelId] && typeof window.renderFullDashboardWorkspace === 'function'
                 ? window.renderFullDashboardWorkspace
@@ -6551,6 +6682,9 @@
             var vatBusinessTaxAuditPackets = getVatBusinessTaxAuditPacketsLocal();
             if (vatBusinessTaxReports.length > 0 || vatBusinessTaxFilingPacks.length > 0 || vatBusinessTaxReadiness.length > 0 || vatBusinessTaxAuditPackets.length > 0 || getVatBusinessTaxReportsCloud().length > 0 || getVatBusinessTaxFilingPacksCloud().length > 0 || getVatBusinessTaxReadinessCloud().length > 0 || getVatBusinessTaxAuditPacketsCloud().length > 0) tabs.push({ id: 'ws-vat-business-tax', label: 'VAT Workspace', icon: 'VAT' });
 
+            var categoryWorkflowPacks = getCategoryWorkflowPacksLocal();
+            if (categoryWorkflowPacks.length > 0 || getCategoryWorkflowPacksCloud().length > 0) tabs.push({ id: 'ws-category-workflows', label: 'Workflow Packs', icon: 'WF' });
+
             var religiousCulturalPlans = getReligiousCulturalPlansLocal();
             if (religiousCulturalPlans.length > 0 || getReligiousCulturalPlansCloud().length > 0) tabs.push({ id: 'ws-religious-cultural', label: 'Faith & Culture', icon: 'CUL' });
 
@@ -6593,7 +6727,7 @@
             if (hasDocs) tabs.push({ id: 'ws-docs', label: 'Documents', icon: '\uD83D\uDCC1' });
 
             if (tabs.length === 0) {
-                container.innerHTML = '<div class="ws-empty"><div style="font-size:2rem;margin-bottom:8px;">\u2B50</div>Start using tools to build your workspace.<br><span style="font-size:.78rem;color:#9CA3AF;">Your saved tools, salary reports, engineering packs, health plans, faith and culture packs, sports reports, energy plans, climate reports, trade packs, insurance packs, telecom plans, legal workflows, African workflows, CVs, documents, and floor plans will appear here.</span></div>';
+                container.innerHTML = '<div class="ws-empty"><div style="font-size:2rem;margin-bottom:8px;">\u2B50</div>Start using tools to build your workspace.<br><span style="font-size:.78rem;color:#9CA3AF;">Your saved tools, salary reports, category workflow packs, engineering packs, health plans, faith and culture packs, sports reports, energy plans, climate reports, trade packs, insurance packs, telecom plans, legal workflows, African workflows, CVs, documents, and floor plans will appear here.</span></div>';
                 return;
             }
 
@@ -6648,6 +6782,9 @@
             }
             if (document.getElementById('ws-vat-business-tax')) {
                 renderVatBusinessTaxWorkspace(document.getElementById('ws-vat-business-tax'), vatBusinessTaxReports);
+            }
+            if (document.getElementById('ws-category-workflows')) {
+                renderCategoryWorkflowPackWorkspace(document.getElementById('ws-category-workflows'));
             }
             if (document.getElementById('ws-religious-cultural')) {
                 renderReligiousCulturalWorkspace(document.getElementById('ws-religious-cultural'), religiousCulturalPlans);
@@ -7149,8 +7286,8 @@
         window.renderFullDashboardWorkspace = renderMyWorkspace;
         waitForAuth();
     </script>
-<script src="/dashboard/dashboard-sync.js?v=20260417b"></script>
-<script src="/dashboard/dashboard-workspace-polish.js?v=20260503a"></script>
+<script src="/dashboard/dashboard-sync.js?v=f6bf826a"></script>
+<script src="/dashboard/dashboard-workspace-polish.js?v=89a50bde"></script>
 <script>if (window.renderFullDashboardWorkspaceCore) window.renderFullDashboardWorkspace = window.renderFullDashboardWorkspaceCore;</script>
 <script src="/dashboard/insurance-workspace.js?v=a73570d7"></script>
 <script src="/dashboard/telecom-workspace.js?v=c7b778cc"></script>

@@ -86,10 +86,9 @@ function resolveAssetPath(htmlPath, ref) {
   return path.resolve(path.dirname(htmlPath), ref);
 }
 
-// Match CSS link tags: <link ... href="...css" ...>
-const CSS_RE = /(<link\b[^>]*\bhref=["'])([^"']+\.css)(["'][^>]*>)/g;
-// Match JS script tags: <script ... src="...js" ...>
-const JS_RE = /(<script\b[^>]*\bsrc=["'])([^"']+\.js)(["'][^>]*>)/g;
+// Match CSS/JS tags, including stale query strings from earlier cache-bust passes.
+const CSS_RE = /(<link\b[^>]*\bhref=["'])([^"']+\.css(?:\?[^"']*)?)(["'][^>]*>)/g;
+const JS_RE = /(<script\b[^>]*\bsrc=["'])([^"']+\.js(?:\?[^"']*)?)(["'][^>]*>)/g;
 // Match inline string literals pointing to local CSS/JS assets inside HTML scripts
 const INLINE_ASSET_RE = /(["'])((?:\/|\.\.?\/)[^"'?\s]+\.(?:css|js))(?:\?v=[a-f0-9]{8})?\1/g;
 
