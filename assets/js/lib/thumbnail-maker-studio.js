@@ -6,7 +6,8 @@
   var HISTORY_KEY = 'afro_thumbnail_history_v1';
 
   var SIZES = {
-    youtube: { label: 'YouTube thumbnail', width: 1280, height: 720, note: 'Recommended upload size' },
+    youtube4k: { label: 'YouTube recommended', width: 3840, height: 2160, note: 'Current large 16:9 upload size' },
+    youtube: { label: 'YouTube compact', width: 1280, height: 720, note: 'Lightweight 16:9 export' },
     fullhd: { label: 'Full HD draft', width: 1920, height: 1080, note: 'High-resolution source export' },
     shorts: { label: 'Shorts cover draft', width: 1080, height: 1920, note: 'Vertical cover reuse' },
     square: { label: 'Square promo', width: 1080, height: 1080, note: 'Community and cross-posting' }
@@ -145,7 +146,7 @@
   };
 
   var DEFAULT_STATE = Object.assign({
-    size: 'youtube',
+    size: 'youtube4k',
     preset: 'reaction',
     exportFormat: 'image/png',
     quality: 0.9,
@@ -228,7 +229,7 @@
     var hashState = readHashState();
     var saved = safeJsonParse(localStorage.getItem(STORAGE_KEY), null);
     state = Object.assign({}, DEFAULT_STATE, saved || {}, hashState || {});
-    if (!SIZES[state.size]) state.size = 'youtube';
+    if (!SIZES[state.size]) state.size = 'youtube4k';
     if (!PALETTES[state.palette] && state.palette !== 'custom') state.palette = 'punch';
     if (!PRESETS[state.preset]) state.preset = 'reaction';
     history = safeJsonParse(localStorage.getItem(HISTORY_KEY), []);
@@ -665,7 +666,7 @@
   }
 
   function drawThumbnail(canvas, options) {
-    var size = SIZES[state.size] || SIZES.youtube;
+    var size = SIZES[state.size] || SIZES.youtube4k;
     canvas.width = size.width;
     canvas.height = size.height;
     var ctx = canvas.getContext('2d');
@@ -758,22 +759,25 @@
   function readiness() {
     var headlineWords = words(state.headline).length;
     var ratio = contrastRatio(state.primary, state.textColor);
-    var size = SIZES[state.size] || SIZES.youtube;
-    var exactYoutube = state.size === 'youtube' && size.width === 1280 && size.height === 720;
+    var size = SIZES[state.size] || SIZES.youtube4k;
+    var recommendedYoutube = state.size === 'youtube4k' && size.width === 3840 && size.height === 2160;
+    var compactYoutube = state.size === 'youtube' && size.width === 1280 && size.height === 720;
+    var youtubeRatio = Math.abs((size.width / size.height) - (16 / 9)) < 0.002;
     var hasVisual = !!subjectImage || !!backgroundImage;
     var hasBrand = !!state.channel || !!logoImage;
     var score = 0;
-    if (exactYoutube) score += 25;
+    if (recommendedYoutube) score += 25;
+    else if (compactYoutube) score += 20;
     if (headlineWords > 0 && headlineWords <= 6) score += 22;
     if (ratio >= 4.5 || state.backgroundStyle === 'image') score += 18;
     if (hasVisual) score += 18;
     if (hasBrand) score += 10;
     if (state.showGuides) score += 7;
-    return { score: score, headlineWords: headlineWords, ratio: ratio, exactYoutube: exactYoutube, hasVisual: hasVisual, hasBrand: hasBrand };
+    return { score: score, headlineWords: headlineWords, ratio: ratio, recommendedYoutube: recommendedYoutube, compactYoutube: compactYoutube, youtubeRatio: youtubeRatio, hasVisual: hasVisual, hasBrand: hasBrand };
   }
 
   function updateMetrics() {
-    var size = SIZES[state.size] || SIZES.youtube;
+    var size = SIZES[state.size] || SIZES.youtube4k;
     var data = readiness();
     if (els.previewTitle) els.previewTitle.textContent = size.label;
     if (els.sizeMetric) els.sizeMetric.textContent = size.width + ' x ' + size.height;
@@ -785,15 +789,15 @@
 
   function renderChecklist(data) {
     if (!els.checklist) return;
-    var size = SIZES[state.size] || SIZES.youtube;
+    var size = SIZES[state.size] || SIZES.youtube4k;
     var items = [
-      { ok: data.exactYoutube, text: data.exactYoutube ? 'Default YouTube upload size is selected: 1280 x 720 px.' : 'Use 1280 x 720 for the safest YouTube thumbnail upload.' },
+      { ok: data.recommendedYoutube || data.compactYoutube, text: data.recommendedYoutube ? 'Current large YouTube 16:9 canvas is selected: 3840 x 2160 px.' : data.compactYoutube ? 'Compact 16:9 creator export is selected: 1280 x 720 px.' : 'Use a 16:9 canvas for YouTube thumbnail uploads.' },
       { ok: data.headlineWords > 0 && data.headlineWords <= 6, text: data.headlineWords <= 6 ? 'Main text is short enough for mobile feeds.' : 'Main text is long. Aim for 3 to 6 words.' },
       { ok: data.ratio >= 4.5 || state.backgroundStyle === 'image', text: data.ratio >= 4.5 ? 'Base text contrast is strong.' : 'Contrast may be low. Adjust primary or text color.' },
       { ok: data.hasVisual, text: data.hasVisual ? 'A subject or still frame is available.' : 'Add a face, object, or still frame for stronger visual pull.' },
       { ok: data.hasBrand, text: data.hasBrand ? 'Channel mark is present.' : 'Add a channel mark or logo for recognition.' },
       { ok: state.showGuides, text: state.showGuides ? 'Runtime corner guide is visible while editing.' : 'Turn on safe zones before final export.' },
-      { ok: size.width / size.height === 16 / 9 || state.size !== 'youtube', text: 'Current canvas: ' + size.width + ' x ' + size.height + ' px.' }
+      { ok: data.youtubeRatio || (state.size !== 'youtube4k' && state.size !== 'youtube'), text: 'Current canvas: ' + size.width + ' x ' + size.height + ' px.' }
     ];
     els.checklist.innerHTML = items.map(function (item) {
       return '<li class="' + (item.ok ? '' : 'warn') + '"><i>' + (item.ok ? 'OK' : '!') + '</i><span>' + item.text + '</span></li>';
@@ -861,7 +865,7 @@
       setStatus('Export failed');
       return;
     }
-    var size = SIZES[state.size] || SIZES.youtube;
+    var size = SIZES[state.size] || SIZES.youtube4k;
     var url = URL.createObjectURL(blob);
     var link = document.createElement('a');
     var fileSuffix = slugify(suffix || state.filenameSuffix || state.headline);
@@ -906,7 +910,8 @@
     var data = readiness();
     return [
       'YouTube thumbnail checklist',
-      'Canvas: ' + (SIZES[state.size] || SIZES.youtube).width + ' x ' + (SIZES[state.size] || SIZES.youtube).height,
+      'Canvas: ' + (SIZES[state.size] || SIZES.youtube4k).width + ' x ' + (SIZES[state.size] || SIZES.youtube4k).height,
+      'Upload note: 16:9 canvas; use JPEG/WebP or 1280 x 720 when a mobile 2 MB limit matters.',
       'Readiness score: ' + data.score + '/100',
       'Main text words: ' + data.headlineWords,
       'Contrast: ' + data.ratio.toFixed(1) + ':1',
@@ -917,7 +922,7 @@
   }
 
   function uploadBrief() {
-    var size = SIZES[state.size] || SIZES.youtube;
+    var size = SIZES[state.size] || SIZES.youtube4k;
     return [
       'Thumbnail upload brief',
       'Video idea: ' + state.videoIdea,
@@ -926,6 +931,7 @@
       'Badge: ' + state.badge,
       'Channel: ' + state.channel,
       'Canvas: ' + size.label + ' (' + size.width + ' x ' + size.height + ')',
+      'Upload note: 16:9 canvas; use JPEG/WebP or 1280 x 720 when a mobile 2 MB limit matters.',
       'Layout: ' + state.layout,
       'Colors: primary ' + state.primary + ', accent ' + state.accent + ', text ' + state.textColor,
       'Export: ' + fileExtension().toUpperCase() + ' at ' + Math.round(state.quality * 100) + '% quality'

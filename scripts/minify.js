@@ -182,6 +182,7 @@ async function run() {
     'dist',
     'output',
     'reports',
+    'tests',
     'test-results',
   ];
   function walkAll(dir) {
