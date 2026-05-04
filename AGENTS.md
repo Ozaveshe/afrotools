@@ -29,11 +29,16 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run build:deploy` - rebuild and prepare the publishable `dist/` artifact
 - `npm run counts:sync` - refresh public tool-count copy from the registry-backed source of truth
 - `npm run sitemap` - regenerate sitemap files from source routes
+- `npm run blog:feed:check` - detect static blog feed drift without rewriting files
+- `npm run blog:verify` - verify static blog hub, feed, canonical, and JSON-LD integrity
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
 - `npm run audit` - tool audit
+- `npm run pro:verify` - verify shared Pro workspace and app-directory architecture
+- `npm run afrostream:media:audit` - report missing or broken AfroStream media coverage
 - `npm run audit:dist` - verify the deploy artifact only contains publishable output
 - `npm run pdf:verify` - verify PDF category gate coverage and workflow wiring
+- `npm run category-workflow:verify` - verify shared category workflow planner wiring and dashboard continuity
 - `npm run security:scan` - scan publish surfaces for leaked repo internals and risky files
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:og` - apply or refresh OG image fallbacks for tool routes
@@ -41,6 +46,7 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run seo:priority` - rebuild SEO system
 - `npm run seo:widgets` - normalize embed and thin utility surface SEO
 - `npm run build:i18n -- --all` - regenerate translations
+- `npm run build:i18n:dry-run` - preview translation build impact without writing output
 - `npm run build:i18n:validate` - validate i18n output
 - `npm run build:i18n:full` - rebuild i18n output and validate hreflang together
 - `npm run validate:hreflang` - hreflang validation
@@ -107,11 +113,14 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Read `docs/CONTENT-PUBLISHING-WORKFLOW.md`.
 - Treat `/blog/` as static repo-backed content.
+- For static blog changes, use `npm run blog:feed:check` for feed drift and `npm run blog:verify` for hub/feed/canonical validation before broader release checks.
 - Treat AfroStream news as a live Supabase-backed publishing surface and use the configured `supabase` MCP server first for live publishing or inspection.
+- For AfroStream presentation QA, use `npm run afrostream:media:audit`; add `-- --strict` only when missing or broken media should fail the pass.
 
 ### i18n work
 
 - Treat translated pages as build outputs unless the task is a targeted manual fix.
+- Use `npm run build:i18n:dry-run` when you need a low-risk preview before a broader translation rebuild.
 - Validate hreflang after non-trivial translation changes.
 
 ### Supabase work
@@ -126,6 +135,12 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - For Netlify, redirects, functions, or publish-surface changes, run `npm run security:scan`, `npm run build:deploy`, and `npm run audit:dist`.
 - Inspect `dist/` directly when validating a release or deploy-surface fix.
 
+### Pro and shared workflow surfaces
+
+- Use `npm run pro:verify` when changes affect `/pro/`, `/pro/workspace/`, `/pro/apps/`, or shared Pro navigation/state wiring.
+- Read `docs/CATEGORY-WORKFLOW-LITE.md` when category hubs adopt the shared saved-workflow layer.
+- Run `npm run category-workflow:verify` for shared category workflow changes, and keep `npm run salary-tax:verify`, `npm run document-pdf:verify`, and `npm run vat-business-tax:verify` green when those category-specific lanes are touched.
+
 ### Internal inventory work
 
 - If `mc-7a2f9x.html` counts look stale after registry or page changes, run `npm run inventory:site` before relying on the dashboard.
@@ -134,8 +149,11 @@ Do not hand-edit generated files unless the source is missing or the task explic
 ## Preferred Validation
 
 - HTML or content changes: `npm test`
+- Static blog changes: `npm run blog:feed:check`, `npm run blog:verify`, then `npm run check-links` for new routes
 - PDF/document tool changes: `npm run pdf:verify`, `npm run audit`, plus a guest and registered-user browser smoke when downloads changed
 - Registry or navigation changes: `npm run check-links` and `npm run audit`
+- Pro surface changes: `npm run pro:verify`
+- Shared category workflow changes: `npm run category-workflow:verify`, plus the affected category-specific verifier when applicable
 - SEO changes: `npm run seo:report` or the narrower script that matches the change
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
 - Car data changes: `npm run cars:catalog:refresh`
