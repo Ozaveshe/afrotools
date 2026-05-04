@@ -29,9 +29,13 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run build:deploy` - rebuild and prepare the publishable `dist/` artifact
 - `npm run counts:sync` - refresh public tool-count copy from the registry-backed source of truth
 - `npm run sitemap` - regenerate sitemap files from source routes
+- `npm run blog:feed:check` - detect blog feed drift without writing files
+- `npm run blog:verify` - verify static blog hub, feed, canonical, and JSON-LD integrity
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
 - `npm run audit` - tool audit
+- `npm run pro:verify` - verify Pro control/dashboard architecture wiring
+- `npm run afrostream:media:audit` - audit AfroStream live-media thumbnail coverage and fallback policy
 - `npm run audit:dist` - verify the deploy artifact only contains publishable output
 - `npm run pdf:verify` - verify PDF category gate coverage and workflow wiring
 - `npm run security:scan` - scan publish surfaces for leaked repo internals and risky files
@@ -107,7 +111,15 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Read `docs/CONTENT-PUBLISHING-WORKFLOW.md`.
 - Treat `/blog/` as static repo-backed content.
+- Run `npm run blog:feed:check` to catch RSS/feed drift without rewriting output.
+- Run `npm run blog:verify` when changing static blog cards, metadata, or feed-linked posts.
 - Treat AfroStream news as a live Supabase-backed publishing surface and use the configured `supabase` MCP server first for live publishing or inspection.
+- Run `npm run afrostream:media:audit` during AfroStream QA when live thumbnails, fallbacks, or media policy behavior changes.
+
+### Pro surfaces
+
+- Read `docs/AFROTOOLS-PRO-CONTROL-DASHBOARD.md` when changing Pro dashboard, app directory, or shared architecture helpers.
+- Run `npm run pro:verify` after Pro control or registry-backed app-directory changes.
 
 ### i18n work
 
@@ -118,6 +130,12 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use the configured `supabase` MCP server first whenever a task needs live project access, schema inspection, SQL execution, logs, storage, auth, or generated types.
 - Keep repo edits and live project actions conceptually separate in your notes and summaries.
+
+### Email marketing
+
+- Read `docs/EMAIL-MARKETING-WORKFLOW.md` before changing lifecycle, lead-capture, digest, or unsubscribe email flows.
+- Treat Resend delivery and Supabase recipient state as live systems; keep secrets and one-time send tokens out of docs, commits, and summaries.
+- After email-function changes, run the narrow `node --check` commands listed in that doc plus `npm run security:scan`.
 
 ### Release and publish-surface work
 
@@ -137,6 +155,9 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - PDF/document tool changes: `npm run pdf:verify`, `npm run audit`, plus a guest and registered-user browser smoke when downloads changed
 - Registry or navigation changes: `npm run check-links` and `npm run audit`
 - SEO changes: `npm run seo:report` or the narrower script that matches the change
+- Static blog changes: `npm run blog:feed:check`, `npm run blog:verify`, and `npm run check-links`
+- Pro dashboard/app-directory changes: `npm run pro:verify`
+- AfroStream media changes: `npm run afrostream:media:audit`
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
 - Car data changes: `npm run cars:catalog:refresh`
 - Netlify/server code changes: `npm run security:scan`, `npm run build:deploy`, `npm run audit:dist`, plus targeted `node -c` or direct function smoke checks when available
