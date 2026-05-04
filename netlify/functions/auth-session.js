@@ -58,6 +58,13 @@ function clearCookieVariants(name) {
   return headers;
 }
 
+function setCookieVariants(name, value, maxAge) {
+  var headers = [];
+  if (IS_PROD) headers.push(clearCookie(name, { domain: false }));
+  headers.push(setCookie(name, value, maxAge));
+  return headers;
+}
+
 function parseCookies(cookieHeader) {
   var cookies = {};
   if (!cookieHeader) return cookies;
@@ -162,18 +169,16 @@ function authSuccessResponse(statusCode, body, cors, multiValueHeaders, isForm, 
 
 function sessionCookieHeaders(session) {
   return {
-    'Set-Cookie': [
-      setCookie('afro_session', session.access_token, session.expires_in || 3600),
-      setCookie('afro_refresh', session.refresh_token, 30 * 24 * 3600),
-    ],
+    'Set-Cookie': [].concat(
+      setCookieVariants('afro_session', session.access_token, session.expires_in || 3600),
+      setCookieVariants('afro_refresh', session.refresh_token, 30 * 24 * 3600)
+    ),
   };
 }
 
 function accessCookieHeaders(accessToken, maxAge) {
   return {
-    'Set-Cookie': [
-      setCookie('afro_session', accessToken, maxAge || 3600),
-    ],
+    'Set-Cookie': setCookieVariants('afro_session', accessToken, maxAge || 3600),
   };
 }
 
