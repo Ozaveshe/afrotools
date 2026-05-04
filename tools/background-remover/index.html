@@ -1,856 +1,326 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Background Remover — Remove Image Backgrounds Online</title>
-<meta name="description" content="Free online background remover. Upload an image and automatically remove the background. Download as PNG with transparency. No server uploads, instant processing.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Background Remover Studio - Cutout, Refine, Replace Backgrounds | AfroTools</title>
+<meta name="description" content="Remove and replace image backgrounds locally. Use AI person cutout, smart edge cleanup, color keying, erase and restore brushes, crop-to-subject exports, and saved sessions.">
+<meta name="keywords" content="background remover, remove image background, transparent PNG maker, product photo background remover, erase background, restore brush">
 <link rel="canonical" href="https://afrotools.com/tools/background-remover/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Background Remover | AfroTools">
-<meta property="og:description" content="Remove image backgrounds with one click. Download as PNG with transparency.">
+<meta property="og:title" content="Background Remover Studio | AfroTools">
+<meta property="og:description" content="Cut out people, products, signatures, and creator assets with local processing, refine brushes, background replacement, and export-ready files.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/background-remover/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/background-remover.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Background Remover | AfroTools">
-<meta name="twitter:description" content="Remove backgrounds instantly. No data sent to servers.">
+<meta name="twitter:title" content="Background Remover Studio | AfroTools">
+<meta name="twitter:description" content="Local background remover with AI person cutout, edge cleanup, manual refine, and transparent PNG/WebP exports.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/background-remover.svg">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/background-remover/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/background-remover/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/background-remover-studio.css?v=20260503">
 <script src="/assets/js/components/related-tools-data.min.js?v=23cf84e9" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0"></script>
-<style>
-  :root {
-    --afro-blue: var(--color-primary);
-    --afro-dark: #0f1419;
-    --afro-light: #f5f7fa;
-  }
-
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .tool-hero::after {
-    content: '✂️';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
-
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
-
-  .breadcrumb span {
-    color: var(--afro-blue);
-  }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
-  h1 em {
-    color: var(--afro-blue);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 6px;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
-  }
-
-  .tool-main {
-    padding: 28px 0 72px;
-  }
-
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .card + .card {
-    margin-top: 18px;
-  }
-
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #EFF6FF;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #F5F9FF;
-  }
-
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
-
-  .card-body {
-    padding: 22px;
-  }
-
-  .field {
-    margin-bottom: 18px;
-  }
-
-  .field:last-child {
-    margin-bottom: 0;
-  }
-
-  .f-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-  }
-
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .f-input:focus {
-    border-color: var(--afro-blue);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-  }
-
-  .template-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .template-btn {
-    padding: 10px 12px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #244d2c;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .template-btn:hover {
-    border-color: var(--afro-blue);
-  }
-
-  .template-btn.active {
-    border-color: var(--afro-blue);
-    background: var(--afro-blue);
-    color: #fff;
-  }
-
-  .context-note {
-    padding: 12px 14px;
-    border-radius: 8px;
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    color: #244d2c;
-    font-size: 0.78rem;
-    line-height: 1.6;
-    margin-bottom: 14px;
-  }
-
-  .context-note strong {
-    color: #0d2813;
-  }
-
-  .upload-area {
-    border: 2px dashed #BFDBFE;
-    border-radius: 8px;
-    padding: 30px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.18s;
-    background: #EFF6FF;
-  }
-
-  .upload-area:hover {
-    border-color: var(--afro-blue);
-    background: rgba(0, 113, 227, 0.05);
-  }
-
-  .upload-area.active {
-    border-color: var(--afro-blue);
-    background: rgba(0, 113, 227, 0.08);
-  }
-
-  .upload-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-  }
-
-  .upload-text {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #244d2c;
-    margin-bottom: 4px;
-  }
-
-  .upload-hint {
-    font-size: 0.75rem;
-    color: #6B8CAE;
-  }
-
-  #imageInput {
-    display: none;
-  }
-
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--afro-blue);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .calc-btn:hover {
-    background: #0059B3;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
-  }
-
-  .calc-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .progress-bar {
-    width: 100%;
-    height: 4px;
-    background: #EFF6FF;
-    border-radius: 2px;
-    overflow: hidden;
-    margin-top: 8px;
-    display: none;
-  }
-
-  .progress-bar.active {
-    display: block;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--afro-blue);
-    width: 0%;
-    transition: width 0.3s;
-  }
-
-  .preview-card {
-    background: #F5F9FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    display: none;
-  }
-
-  .preview-card.on {
-    display: block;
-  }
-
-  .canvas-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 12px;
-  }
-
-  canvas {
-    max-width: 100%;
-    border-radius: 8px;
-    border: 1px solid #DBEAFE;
-  }
-
-  .action-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 0 22px 22px;
-  }
-
-  .act-btn {
-    padding: 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-family: 'DM Sans', sans-serif;
-    border: none;
-  }
-
-  .act-download {
-    background: rgba(0, 113, 227, 0.1);
-    border: 1.5px solid rgba(0, 113, 227, 0.35);
-    color: #1a5c3a;
-  }
-
-  .act-download:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
-
-  .info-text li {
-    margin-bottom: 8px;
-  }
-
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
-
-    .action-row {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/background-remover/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/background-remover/" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Background Remover",
-      "item": "https://afrotools.com/tools/background-remover/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/lib/background-remover-studio.js?v=20260503" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Background Remover Studio","description":"Remove and replace image backgrounds locally with AI person cutout when available, smart edge cleanup, color keying, erase and restore brushes, crop-to-subject exports, and saved session settings.","url":"https://afrotools.com/tools/background-remover/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and browser Canvas support","image":"https://afrotools.com/assets/img/tools/background-remover.svg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Background Remover Studio","url":"https://afrotools.com/tools/background-remover/","description":"Local image background remover with cutout, manual refine, background replacement, and export workflow.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/background-remover.svg"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Background Remover Studio","item":"https://afrotools.com/tools/background-remover/"}]}</script>
+<meta property="article:modified_time" content="2026-05-03">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
-    <h1>Background <em>Remover</em></h1>
-    <p class="hero-sub">Remove backgrounds from people and clear subject photos instantly. Powered by AI, no server uploads, and ready for transparent or solid-color exports.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">AI-Powered</span>
-      <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">Instant</span>
-    </div>
-  </div>
-</div>
-
-<div class="tool-main" id="main-content" role="main">
-  <div class="tool-main-inner">
+<section class="br-hero">
+  <div class="br-hero-inner">
     <div>
-      <!-- Upload Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Upload Image</span>
-        </div>
-        <div class="card-body">
-          <div class="upload-area" id="uploadArea">
-            <div class="upload-icon">📤</div>
-            <div class="upload-text">Choose an image or drag it here</div>
-            <div class="upload-hint">PNG, JPG, WebP (Max 10MB)</div>
-            <input type="file" id="imageInput" accept="image/*">
-          </div>
-        </div>
-      </div>
-
-      <!-- Processing Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Processing</span>
-        </div>
-        <div class="card-body">
-          <p style="font-size: 0.85rem; color: #244d2c; margin-bottom: 12px;">The model will be downloaded on first use (35MB). Processing happens on your device.</p>
-          <div class="template-grid">
-            <button class="template-btn active" type="button" data-usecase="passport">Passport Headshot</button>
-            <button class="template-btn" type="button" data-usecase="profile">Profile Photo</button>
-            <button class="template-btn" type="button" data-usecase="marketplace">Marketplace Item</button>
-            <button class="template-btn" type="button" data-usecase="sticker">Sticker Cutout</button>
-          </div>
-          <div class="context-note" id="useCaseNote"><strong>Passport Headshot:</strong> Best when you want a clean cutout that you can place on white or blue before moving into passport-photo.</div>
-          <div class="template-grid">
-            <button class="template-btn active" type="button" data-output-bg="transparent">Transparent</button>
-            <button class="template-btn" type="button" data-output-bg="white">White</button>
-            <button class="template-btn" type="button" data-output-bg="blue">Blue</button>
-            <button class="template-btn" type="button" data-output-bg="charcoal">Charcoal</button>
-          </div>
-          <button class="calc-btn" id="removeBtn" disabled>Remove Background</button>
-          <div class="progress-bar" id="progressBar">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-          <div id="statusText" style="font-size: 0.75rem; color: #6B8CAE; margin-top: 8px; text-align: center; display: none;"></div>
-        </div>
-      </div>
+      <p class="br-eyebrow">Image &amp; Design / Background Remover Studio</p>
+      <h1>Remove backgrounds, refine the cutout, and export files ready to use.</h1>
+      <p>Start with AI person cutout, smart edge cleanup, or color keying. Finish with erase and restore brushes, crop-to-subject exports, and transparent or branded backgrounds. Your source image stays on this device.</p>
     </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Preview -->
-      <div class="card preview-card" id="previewCard">
-        <div class="card-head">
-          <span class="card-title">Result</span>
-        </div>
-        <div class="card-body">
-          <div class="canvas-container">
-            <canvas id="outputCanvas" style="max-width: 100%; border-radius: 8px; border: 1px solid #DBEAFE;"></canvas>
-          </div>
-        </div>
-        <div class="action-row">
-          <button class="act-btn act-download" id="downloadBtn">📥 Download PNG</button>
-        </div>
-      </div>
-
-      <!-- Info Card -->
-      <div class="info-card">
-        <div class="info-title">How It Works</div>
-        <div class="info-text">
-          Uses TensorFlow.js to detect people and clear foreground subjects directly in your browser.
-          <ul style="margin-top:10px;">
-            <li>✓ AI-powered detection</li>
-            <li>✓ No server uploads</li>
-            <li>✓ Privacy protected</li>
-            <li>✓ Transparent or solid-color export</li>
-          </ul>
-        </div>
-      </div>
+    <div class="br-badges" aria-label="Tool highlights">
+      <span class="br-badge">Tier Gold</span>
+      <span class="br-badge">No upload</span>
+      <span class="br-badge">Brush refine</span>
+      <span class="br-badge">PNG WebP JPG</span>
     </div>
   </div>
-</div>
+</section>
 
+<main class="br-studio" id="main-content">
+  <div class="br-workspace">
+    <section class="br-stack" aria-label="Background remover editor">
+      <article class="br-panel">
+        <div class="br-panel-head">
+          <div>
+            <span class="br-step">1. Source</span>
+            <h2 class="br-panel-title">Load one image or a small session queue</h2>
+            <p class="br-panel-copy">Use clear edges for best results. Multiple files stay in the browser session so you can apply the same cleanup recipe one by one.</p>
+          </div>
+          <div class="br-status" id="brStatus" role="status" aria-live="polite">Loading editor...</div>
+        </div>
+        <div class="br-drop" id="brDropZone" role="button" tabindex="0" aria-label="Choose, paste, or drop images for background removal">
+          <div class="br-drop-main">
+            <span class="br-drop-mark">BG</span>
+            <span><strong>Choose images</strong><span>Drag files here, paste from clipboard, or click to browse.</span></span>
+          </div>
+          <div class="br-drop-side">Local only<br>JPG, PNG, WebP</div>
+          <input type="file" id="brInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
+        </div>
+        <div class="br-queue" id="brQueue" aria-label="Current image queue"></div>
+      </article>
+
+      <article class="br-panel">
+        <div class="br-panel-head">
+          <div>
+            <span class="br-step">2. Cutout recipe</span>
+            <h2 class="br-panel-title">Pick the workflow that matches the photo</h2>
+            <p class="br-panel-copy">Person photos can use the optional in-browser model. Products, logos, signatures, and flat-lay shots usually work better with edge cleanup or color keying.</p>
+          </div>
+        </div>
+        <div class="br-preset-row" aria-label="Cutout presets">
+          <button type="button" class="br-preset active" data-br-preset="product" aria-pressed="true">Product</button>
+          <button type="button" class="br-preset" data-br-preset="portrait" aria-pressed="false">Portrait</button>
+          <button type="button" class="br-preset" data-br-preset="signature" aria-pressed="false">Signature</button>
+          <button type="button" class="br-preset" data-br-preset="creator" aria-pressed="false">Creator asset</button>
+        </div>
+        <div class="br-form-grid">
+          <label class="br-field">
+            <span class="br-label">Removal method</span>
+            <select class="br-select" id="brMode">
+              <option value="edge">Smart edge cleanup</option>
+              <option value="color">Color key cleanup</option>
+              <option value="person">AI person cutout</option>
+            </select>
+            <span class="br-help">AI mode downloads a browser model only when selected. Photos are not uploaded.</span>
+          </label>
+          <label class="br-field">
+            <span class="br-label">Background sample</span>
+            <span class="br-color-row">
+              <input class="br-color-input" id="brSampleColor" type="color" value="#f3f4f6">
+              <button type="button" class="br-mini-btn" id="brPickColor">Pick from image</button>
+            </span>
+          </label>
+          <label class="br-field">
+            <span class="br-label">Tolerance</span>
+            <span class="br-range"><input class="br-input" id="brTolerance" type="range" min="8" max="160" value="42"><span class="br-range-value" id="brToleranceValue">42</span></span>
+          </label>
+          <label class="br-field">
+            <span class="br-label">Edge feather</span>
+            <span class="br-range"><input class="br-input" id="brFeather" type="range" min="0" max="8" value="1"><span class="br-range-value" id="brFeatherValue">1 px</span></span>
+          </label>
+        </div>
+        <div class="br-actions">
+          <button type="button" class="br-btn" id="brProcessBtn" disabled>Remove background</button>
+          <button type="button" class="br-btn secondary" id="brBatchBtn" disabled>Process queue</button>
+          <button type="button" class="br-btn secondary" id="brResetMaskBtn" disabled>Reset mask</button>
+          <button type="button" class="br-btn secondary" id="brUndoBtn" disabled>Undo refine</button>
+        </div>
+      </article>
+
+      <article class="br-panel">
+        <div class="br-panel-head">
+          <div>
+            <span class="br-step">3. Refine</span>
+            <h2 class="br-panel-title">Erase missed background or restore subject edges</h2>
+            <p class="br-panel-copy">Brush edits update the mask immediately. Use restore when hair, fabric, product corners, or signature strokes are removed by mistake.</p>
+          </div>
+        </div>
+        <div class="br-refine-tools">
+          <div class="br-segmented" aria-label="Brush mode">
+            <button type="button" class="active" data-br-brush="erase" aria-pressed="true">Erase</button>
+            <button type="button" data-br-brush="restore" aria-pressed="false">Restore</button>
+          </div>
+          <label class="br-field compact">
+            <span class="br-label">Brush</span>
+            <span class="br-range"><input class="br-input" id="brBrushSize" type="range" min="8" max="120" value="34"><span class="br-range-value" id="brBrushSizeValue">34 px</span></span>
+          </label>
+        </div>
+        <div class="br-preview-grid">
+          <div class="br-canvas-card">
+            <div class="br-canvas-head"><span>Original</span><span id="brOriginalMeta">No image</span></div>
+            <div class="br-canvas-shell">
+              <canvas id="brOriginalCanvas" hidden></canvas>
+              <div class="br-empty" id="brOriginalEmpty">Upload an image to preview the source.</div>
+            </div>
+          </div>
+          <div class="br-canvas-card">
+            <div class="br-canvas-head"><span>Cutout preview</span><span id="brResultMeta">Ready</span></div>
+            <div class="br-canvas-shell checker">
+              <canvas id="brResultCanvas" hidden></canvas>
+              <div class="br-empty" id="brResultEmpty">Run a cutout recipe, then refine the mask here.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="br-panel">
+        <div class="br-panel-head">
+          <div>
+            <span class="br-step">4. Export</span>
+            <h2 class="br-panel-title">Choose background, crop, format, and file name</h2>
+            <p class="br-panel-copy">Transparent PNG and WebP keep alpha. JPG uses the selected solid background so the export does not flatten to black.</p>
+          </div>
+        </div>
+        <div class="br-form-grid">
+          <label class="br-field">
+            <span class="br-label">Background</span>
+            <select class="br-select" id="brBackground">
+              <option value="transparent">Transparent</option>
+              <option value="white">White</option>
+              <option value="charcoal">Charcoal</option>
+              <option value="brand-blue">Brand blue</option>
+              <option value="soft-grey">Soft grey</option>
+              <option value="custom">Custom color</option>
+            </select>
+          </label>
+          <label class="br-field">
+            <span class="br-label">Custom color</span>
+            <input class="br-color-input wide" id="brCustomBackground" type="color" value="#ffffff">
+          </label>
+          <label class="br-field">
+            <span class="br-label">Format</span>
+            <select class="br-select" id="brFormat">
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WebP</option>
+              <option value="image/jpeg">JPG</option>
+            </select>
+          </label>
+          <label class="br-field">
+            <span class="br-label">Quality</span>
+            <span class="br-range"><input class="br-input" id="brQuality" type="range" min="60" max="100" value="92"><span class="br-range-value" id="brQualityValue">92%</span></span>
+          </label>
+          <label class="br-field">
+            <span class="br-label">Max width</span>
+            <input class="br-input" id="brMaxWidth" type="number" min="0" max="6000" step="50" value="1600">
+            <span class="br-help">Use 0 to keep the working size.</span>
+          </label>
+          <label class="br-field">
+            <span class="br-label">File suffix</span>
+            <input class="br-input" id="brSuffix" type="text" maxlength="36" value="cutout">
+          </label>
+          <label class="br-check-row">
+            <input type="checkbox" id="brCropSubject" checked>
+            <span>Crop to visible subject</span>
+          </label>
+          <label class="br-field">
+            <span class="br-label">Crop padding</span>
+            <span class="br-range"><input class="br-input" id="brPadding" type="range" min="0" max="180" value="24"><span class="br-range-value" id="brPaddingValue">24 px</span></span>
+          </label>
+        </div>
+        <div class="br-actions">
+          <button type="button" class="br-btn" id="brRenderBtn" disabled>Render export</button>
+          <button type="button" class="br-btn secondary" id="brDownloadBtn" disabled>Download</button>
+          <button type="button" class="br-btn warning" id="brCopyBriefBtn" disabled>Copy handoff brief</button>
+          <share-result-button tool-name="Background Remover Studio" tool-slug="background-remover"></share-result-button>
+        </div>
+      </article>
+    </section>
+
+    <aside class="br-stack" aria-label="Background remover status and history">
+      <article class="br-panel">
+        <div class="br-panel-head">
+          <div>
+            <span class="br-step">Output</span>
+            <h2 class="br-panel-title">Cutout summary</h2>
+            <p class="br-panel-copy">Saved locally for the next session.</p>
+          </div>
+        </div>
+        <div class="br-metric-grid">
+          <div class="br-metric"><span>Source</span><strong id="brSourceStat">-</strong></div>
+          <div class="br-metric"><span>Mask removed</span><strong id="brRemovedStat">-</strong></div>
+          <div class="br-metric"><span>Export</span><strong id="brExportStat">-</strong></div>
+          <div class="br-metric"><span>Recipe</span><strong id="brRecipeStat">Product</strong></div>
+        </div>
+      </article>
+
+      <article class="br-panel">
+        <div class="br-panel-head">
+          <div>
+            <span class="br-step">Checklist</span>
+            <h2 class="br-panel-title">Before download</h2>
+          </div>
+        </div>
+        <div class="br-checklist" id="brChecklist">
+          <label><input type="checkbox" data-br-check="edges"><span>Edges look clean at 100 percent.</span></label>
+          <label><input type="checkbox" data-br-check="background"><span>Background matches the destination.</span></label>
+          <label><input type="checkbox" data-br-check="format"><span>Format supports the needed transparency.</span></label>
+        </div>
+      </article>
+
+      <article class="br-panel">
+        <div class="br-panel-head">
+          <div>
+            <span class="br-step">Recent</span>
+            <h2 class="br-panel-title">Session history</h2>
+          </div>
+        </div>
+        <div class="br-history" id="brHistoryList"></div>
+      </article>
+
+      <article class="br-panel br-note-panel">
+        <div class="br-panel-head">
+          <div>
+            <span class="br-step">Good fit</span>
+            <h2 class="br-panel-title">Move between image tools</h2>
+          </div>
+        </div>
+        <div class="br-tool-links">
+          <a href="/tools/passport-photo/">Passport photo studio</a>
+          <a href="/tools/image-crop/">Crop and rotate</a>
+          <a href="/tools/image-resize/">Resize exports</a>
+          <a href="/tools/image-format-convert/">Convert formats</a>
+        </div>
+      </article>
+    </aside>
+  </div>
+</main>
 
 <afro-related-tools category="image-design" current="background-remover"></afro-related-tools>
 
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Background Remover: How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Background Remover lets you remove image backgrounds instantly, right in your browser. Powered by TensorFlow and the BodyPix machine-learning model, this tool works best on people, profile photos, and clear foreground subjects where the person or item stands out from the background. Upload any JPG or PNG image, and the AI segments the foreground from the background, producing a clean transparent PNG or a solid-color export you can download immediately. Because all processing happens client-side, your images never leave your device — there are no server uploads, no waiting in queues, and no privacy concerns. This makes it especially useful for passport-prep workflows, profile pictures, creator assets, storefront images with clean contrast, and quick sticker cutouts. The tool works on any modern browser and is completely free to use with no watermarks on the output.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is the background removal done on a server?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. All processing happens entirely in your browser using TensorFlow.js. Your images are never uploaded to any server, ensuring complete privacy and faster results.</p>
+<section class="br-seo" aria-label="Background remover guidance">
+  <h2>Background remover that still works when one-click AI is not enough</h2>
+  <p>Most background tools are excellent when the subject is obvious, then frustrating when a shadow, white product, hair edge, signature line, or busy corner gets misread. AfroTools keeps the one-click path, but adds the controls people need to finish the job: smart edge cleanup for plain backgrounds, global color keying for logos and signatures, optional AI person segmentation for portraits, and manual erase or restore brushes for the last five percent.</p>
+  <div class="br-faq">
+    <details>
+      <summary>Are images uploaded to AfroTools?</summary>
+      <p>No. The image is drawn to browser canvas and processed on your device. If you choose AI person cutout, the browser may download TensorFlow.js and BodyPix model files, but your photo is not sent to AfroTools.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What image formats are supported?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can upload JPG, PNG, and WebP images. The output is always a PNG file with a transparent background, which is ideal for layering onto other designs.</p>
+    <details>
+      <summary>Which method should I use?</summary>
+      <p>Use smart edge cleanup for products or objects on a plain background, color keying for signatures and logos, and AI person cutout for portraits. After that, use erase and restore brushes to correct edge mistakes.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Does the tool add watermarks to the output?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. The Background Remover is completely free and does not add any watermarks, logos, or branding to your downloaded images.</p>
+    <details>
+      <summary>Can I export transparent files?</summary>
+      <p>Yes. PNG and WebP can preserve transparent backgrounds. JPG does not support alpha, so the studio uses your selected solid background for JPG exports.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How accurate is the AI background detection?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool uses Google's BodyPix model which works best with photos of people. For product photos and objects, results can still work when there is strong contrast between the subject and background, but people and headshots remain the safest use case.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is there a file size limit?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">There is no strict file size limit since processing happens on your device. However, very large images may take longer to process depending on your device's hardware capabilities.</p>
+    <details>
+      <summary>Does the queue save my images?</summary>
+      <p>No. The queue is session-only and disappears when the tab is closed. Settings, checklist state, and lightweight export history are saved locally without storing image data.</p>
     </details>
   </div>
 </section>
 
-
-<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
-<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
-<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/passport-photo/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Passport Photo Tool</a><a href="/tools/image-crop/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Image Crop & Rotate</a><a href="/tools/image-filters/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Photo Filter & Editor</a>
-<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
-</div>
-</div></section>
 <afro-footer></afro-footer>
-
-<script>
-  const uploadArea = document.getElementById('uploadArea');
-  const imageInput = document.getElementById('imageInput');
-  const removeBtn = document.getElementById('removeBtn');
-  const previewCard = document.getElementById('previewCard');
-  const outputCanvas = document.getElementById('outputCanvas');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const progressBar = document.getElementById('progressBar');
-  const progressFill = document.getElementById('progressFill');
-  const statusText = document.getElementById('statusText');
-  const useCaseButtons = document.querySelectorAll('[data-usecase]');
-  const outputBgButtons = document.querySelectorAll('[data-output-bg]');
-  const useCaseNote = document.getElementById('useCaseNote');
-
-  let net = null;
-  let originalImage = null;
-  let processedCanvas = null;
-  let selectedOutputBg = 'transparent';
-  const USE_CASES = {
-    passport: { outputBg: 'white', label: 'Passport Headshot', note: 'Best when you want a clean cutout that you can place on white or blue before moving into passport-photo.' },
-    profile: { outputBg: 'charcoal', label: 'Profile Photo', note: 'Good for LinkedIn, team pages, speaker bios, and professional profile graphics with a clean dark base.' },
-    marketplace: { outputBg: 'transparent', label: 'Marketplace Item', note: 'Keep a transparent export for product listings, catalogs, social promos, and storefront graphics.' },
-    sticker: { outputBg: 'transparent', label: 'Sticker Cutout', note: 'Transparent export works best for sticker-style creator assets and overlay graphics for social posts.' }
-  };
-
-  function renderOutput() {
-    if (!processedCanvas) return;
-    const canvas = outputCanvas;
-    canvas.width = processedCanvas.width;
-    canvas.height = processedCanvas.height;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (selectedOutputBg !== 'transparent') {
-      const colors = {
-        white: '#FFFFFF',
-        blue: '#0A66CC',
-        charcoal: '#0F172A'
-      };
-      ctx.fillStyle = colors[selectedOutputBg] || '#FFFFFF';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-    ctx.drawImage(processedCanvas, 0, 0);
-  }
-
-  function setOutputBg(nextBg) {
-    selectedOutputBg = nextBg;
-    outputBgButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.outputBg === nextBg));
-    renderOutput();
-  }
-
-  function applyUseCase(key) {
-    const preset = USE_CASES[key];
-    if (!preset) return;
-    useCaseButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.usecase === key));
-    useCaseNote.innerHTML = '<strong>' + preset.label + ':</strong> ' + preset.note;
-    setOutputBg(preset.outputBg);
-  }
-
-  // Load BodyPix model
-  async function loadModel() {
-    statusText.style.display = 'block';
-    statusText.textContent = 'Loading AI model...';
-    try {
-      net = await bodyPix.load({
-        architecture: 'MobileNetV1',
-        outputStride: 16,
-        multiplier: 0.75,
-        quantBytes: 2
-      });
-      statusText.style.display = 'none';
-    } catch (e) {
-      statusText.textContent = 'Model loading failed. Please refresh.';
-    }
-  }
-
-  // Load model on page load
-  loadModel();
-
-  // Upload area events
-  uploadArea.addEventListener('click', () => imageInput.click());
-  uploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadArea.classList.add('active');
-  });
-  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
-  uploadArea.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadArea.classList.remove('active');
-    if (e.dataTransfer.files.length) {
-      imageInput.files = e.dataTransfer.files;
-      handleImageUpload();
-    }
-  });
-
-  imageInput.addEventListener('change', handleImageUpload);
-
-  useCaseButtons.forEach(btn => {
-    btn.addEventListener('click', () => applyUseCase(btn.dataset.usecase));
-  });
-
-  outputBgButtons.forEach(btn => {
-    btn.addEventListener('click', () => setOutputBg(btn.dataset.outputBg));
-  });
-
-  function handleImageUpload() {
-    const file = imageInput.files[0];
-    if (!file) return;
-
-    const maxSize = 10 * 1024 * 1024; // 10MB
-    if (file.size > maxSize) {
-      alert('File is too large. Please upload an image under 10MB.');
-      return;
-    }
-
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload a valid image file.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        originalImage = img;
-        removeBtn.disabled = !net;
-        previewCard.classList.add('on');
-      };
-      img.onerror = () => {
-        alert('Failed to load the image. The file may be corrupted.');
-      };
-      img.src = e.target.result;
-    };
-    reader.onerror = () => {
-      alert('Failed to read the file. Please try again.');
-    };
-    reader.readAsDataURL(file);
-  }
-
-  removeBtn.addEventListener('click', async () => {
-    if (!net || !originalImage) return;
-
-    removeBtn.disabled = true;
-    progressBar.classList.add('active');
-    statusText.style.display = 'block';
-    statusText.textContent = 'Processing...';
-
-    try {
-      // Get segmentation
-      const segmentation = await net.segmentPerson(originalImage, {
-        flipHorizontal: false,
-        internalResolution: 'medium',
-        segmentationThreshold: 0.5
-      });
-
-      // Create output canvas with transparency
-      const canvas = document.createElement('canvas');
-      canvas.width = originalImage.width;
-      canvas.height = originalImage.height;
-      const ctx = canvas.getContext('2d');
-
-      if (!ctx) {
-        throw new Error('Canvas is not supported in your browser.');
-      }
-
-      // Draw image
-      ctx.drawImage(originalImage, 0, 0);
-
-      // Get image data
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imageData.data;
-
-      // Apply segmentation mask (every 4th element is alpha)
-      for (let i = 0; i < segmentation.data.length; i++) {
-        const alpha = segmentation.data[i] * 255;
-        data[i * 4 + 3] = alpha;
-      }
-
-      ctx.putImageData(imageData, 0, 0);
-      processedCanvas = canvas;
-      renderOutput();
-
-      progressFill.style.width = '100%';
-      statusText.textContent = 'Done!';
-      setTimeout(() => {
-        statusText.style.display = 'none';
-        progressBar.classList.remove('active');
-        progressFill.style.width = '0%';
-        removeBtn.disabled = false;
-      }, 2000);
-
-      // Set download handler
-      downloadBtn.onclick = () => {
-        try {
-          outputCanvas.toBlob((blob) => {
-            if (!blob) {
-              alert('Failed to generate the download. Please try again.');
-              return;
-            }
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'no-background.png';
-            a.click();
-            URL.revokeObjectURL(url);
-          });
-        } catch (e) {
-          alert('Failed to download. Please try again.');
-        }
-      };
-    } catch (e) {
-      statusText.textContent = 'Error processing image.';
-      removeBtn.disabled = false;
-      progressBar.classList.remove('active');
-    }
-  });
-
-  applyUseCase('passport');
-</script>
+<script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

@@ -62,6 +62,10 @@ function slugToName(slug) {
 
 const SEO_NAV_MARKER = '<!-- seo-internal-links -->';
 
+const CATEGORY_CHILD_LINK_EXCLUSIONS = {
+  health: new Set(['medical-aid', 'nhif'])
+};
+
 function injectLinks(indexPath, links, sectionTitle) {
   let html = fs.readFileSync(indexPath, 'utf8');
 
@@ -380,12 +384,14 @@ function processCategoryHubs() {
       if (!fs.existsSync(indexPath)) continue;
 
       // Find sub-directories with index.html (child tools)
+      const excludedChildren = CATEGORY_CHILD_LINK_EXCLUSIONS[cat] || new Set();
+
       const subDirs = fs.readdirSync(catDir, { withFileTypes: true })
-        .filter(d => d.isDirectory() && fs.existsSync(path.join(catDir, d.name, 'index.html')));
+        .filter(d => d.isDirectory() && !excludedChildren.has(d.name) && fs.existsSync(path.join(catDir, d.name, 'index.html')));
 
       // Find sibling .html files
       const subFiles = fs.readdirSync(catDir)
-        .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template'));
+        .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template') && !excludedChildren.has(f.replace(/\.html$/, '')));
 
       const links = [];
 

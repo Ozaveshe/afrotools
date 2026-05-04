@@ -1,991 +1,306 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passport Photo Generator — Travel & ID Photo Sizes | AfroTools</title>
-<meta name="description" content="Free passport photo generator for popular African and international travel standards. Auto-crop, choose white or blue backgrounds, and export print-ready layouts.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passport Photo Studio - African Country Specs, Visa Photos, Print Sheets | AfroTools</title>
+<meta name="description" content="Create passport and visa photo files locally. Use African country and popular destination presets, manual face guides, 300 DPI exports, 4x6 and A4 print sheets, and source-backed requirement notes.">
+<meta name="keywords" content="passport photo maker, African passport photo requirements, visa photo maker, 35x45mm passport photo, 2x2 passport photo, passport photo print sheet">
 <link rel="canonical" href="https://afrotools.com/tools/passport-photo/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Passport Photo Generator | AfroTools">
-<meta property="og:description" content="Create passport photos for popular African countries and international travel standards.">
+<meta property="og:title" content="Passport Photo Studio | AfroTools">
+<meta property="og:description" content="Prepare passport and visa photos with African country presets, popular destination specs, manual face guides, and print-ready sheets.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/passport-photo/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/passport-photo.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Passport Photo Generator | AfroTools">
-<meta name="twitter:description" content="Create passport photos in popular travel and ID sizes.">
+<meta name="twitter:title" content="Passport Photo Studio | AfroTools">
+<meta name="twitter:description" content="Local passport photo cropper with source-backed country presets, manual guides, print sheets, and download-ready exports.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/passport-photo.svg">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/passport-photo/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/passport-photo/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/passport-photo-studio.css?v=20260503">
 <script src="/assets/js/components/related-tools-data.min.js?v=23cf84e9" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<style>
-  :root {
-    --afro-blue: var(--color-primary);
-    --afro-dark: #0f1419;
-    --afro-light: #f5f7fa;
-  }
-
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .tool-hero::after {
-    content: '📸';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
-
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
-
-  .breadcrumb span {
-    color: var(--afro-blue);
-  }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
-  h1 em {
-    color: var(--afro-blue);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 6px;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
-  }
-
-  .tool-main {
-    padding: 28px 0 72px;
-  }
-
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .card + .card {
-    margin-top: 18px;
-  }
-
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #EFF6FF;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #F5F9FF;
-  }
-
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
-
-  .card-body {
-    padding: 22px;
-  }
-
-  .field {
-    margin-bottom: 18px;
-  }
-
-  .field:last-child {
-    margin-bottom: 0;
-  }
-
-  .f-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-  }
-
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .f-input:focus {
-    border-color: var(--afro-blue);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-  }
-
-  .template-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .template-btn {
-    padding: 10px 12px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #244d2c;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .template-btn:hover {
-    border-color: var(--afro-blue);
-  }
-
-  .template-btn.active {
-    border-color: var(--afro-blue);
-    background: var(--afro-blue);
-    color: #fff;
-  }
-
-  .context-note {
-    padding: 12px 14px;
-    border-radius: 8px;
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    color: #244d2c;
-    font-size: 0.78rem;
-    line-height: 1.6;
-  }
-
-  .context-note strong {
-    color: #0d2813;
-  }
-
-  .upload-area {
-    border: 2px dashed #BFDBFE;
-    border-radius: 8px;
-    padding: 30px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.18s;
-    background: #EFF6FF;
-  }
-
-  .upload-area:hover {
-    border-color: var(--afro-blue);
-    background: rgba(0, 113, 227, 0.05);
-  }
-
-  .upload-area.active {
-    border-color: var(--afro-blue);
-    background: rgba(0, 113, 227, 0.08);
-  }
-
-  .upload-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-  }
-
-  .upload-text {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #244d2c;
-    margin-bottom: 4px;
-  }
-
-  .upload-hint {
-    font-size: 0.75rem;
-    color: #6B8CAE;
-  }
-
-  #imageInput {
-    display: none;
-  }
-
-  .mode-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-
-  .mode-btn {
-    padding: 10px 12px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #244d2c;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .mode-btn:hover {
-    border-color: var(--afro-blue);
-  }
-
-  .mode-btn.on {
-    border-color: var(--afro-blue);
-    background: var(--afro-blue);
-    color: #fff;
-  }
-
-  .color-input {
-    width: 100%;
-    height: 45px;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    cursor: pointer;
-    background: #EFF6FF;
-  }
-
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--afro-blue);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .calc-btn:hover {
-    background: #0059B3;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
-  }
-
-  .calc-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .preview-card {
-    background: #F5F9FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    display: none;
-  }
-
-  .preview-card.on {
-    display: block;
-  }
-
-  .canvas-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 12px;
-  }
-
-  canvas {
-    max-width: 100%;
-    border-radius: 8px;
-    border: 1px solid #DBEAFE;
-  }
-
-  .action-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 0 22px 22px;
-  }
-
-  .act-btn {
-    padding: 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-family: 'DM Sans', sans-serif;
-    border: none;
-  }
-
-  .act-download {
-    background: rgba(0, 113, 227, 0.1);
-    border: 1.5px solid rgba(0, 113, 227, 0.35);
-    color: #1a5c3a;
-  }
-
-  .act-download:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
-
-  .info-text li {
-    margin-bottom: 8px;
-  }
-
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
-
-    .mode-row {
-      grid-template-columns: 1fr;
-    }
-
-    .action-row {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/passport-photo/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/passport-photo/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/picha-ya-pasipoti/" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Passport Photo Generator",
-      "item": "https://afrotools.com/tools/passport-photo/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Passport Photo Studio","description":"Create passport and visa photo files locally with African country and popular destination presets, manual face guides, 300 DPI exports, print sheets, and source-backed requirement notes.","url":"https://afrotools.com/tools/passport-photo/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and browser Canvas support","image":"https://afrotools.com/assets/img/tools/passport-photo.svg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Passport Photo Studio","url":"https://afrotools.com/tools/passport-photo/","description":"Prepare passport and visa photos with country presets, manual crop guides, local exports, and print sheets.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/passport-photo.svg"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Passport Photo Studio","item":"https://afrotools.com/tools/passport-photo/"}]}</script>
+<meta property="article:modified_time" content="2026-05-03">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
-    <h1>Passport <em>Photo</em></h1>
-    <p class="hero-sub">Generate passport photos for popular African countries and international travel standards. Auto-crop, choose backgrounds, and export print-ready layouts.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">Travel & ID Sizes</span>
-      <span class="badge b-green">Auto-crop</span>
-      <span class="badge b-green">Print Ready</span>
-    </div>
-  </div>
-</div>
-
-<div class="tool-main" id="main-content" role="main">
-  <div class="tool-main-inner">
+<section class="pp-hero">
+  <div class="pp-hero-inner">
     <div>
-      <!-- Upload Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Upload Photo</span>
-        </div>
-        <div class="card-body">
-          <div class="upload-area" id="uploadArea">
-            <div class="upload-icon">📤</div>
-            <div class="upload-text">Choose a photo or drag it here</div>
-            <div class="upload-hint">PNG, JPG, WebP (Face photo)</div>
-            <input type="file" id="imageInput" accept="image/*">
-          </div>
-          <div class="context-note" style="margin-top:12px;"><strong>Need a cleaner background first?</strong> If your wall is busy or shadowy, use <a href="/tools/background-remover/" style="color:#0059B3;font-weight:700;text-decoration:none;">Background Remover</a> first, then come back here for sizing and print layout.</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Quick Starts</span>
-        </div>
-        <div class="card-body">
-          <div class="template-grid">
-            <button type="button" class="template-btn active" data-preset="ng-travel">Nigeria Travel</button>
-            <button type="button" class="template-btn" data-preset="gh-embassy">Ghana Embassy</button>
-            <button type="button" class="template-btn" data-preset="ke-visa">Kenya Visa Pack</button>
-            <button type="button" class="template-btn" data-preset="uk-study">UK / Study Docs</button>
-          </div>
-          <div class="context-note" id="presetNote"><strong>Nigeria Travel:</strong> Sets a common 35x45mm travel workflow with white background and 4-up print layout for easy photo-shop printing.</div>
-        </div>
-      </div>
-
-      <!-- Country Selection -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Country/Standard</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Select Country</span>
-            </label>
-            <select class="f-input" id="countrySelect">
-              <option value="">Choose country...</option>
-              <optgroup label="Popular African Countries">
-                <option value="ng" data-w="35" data-h="45">Nigeria (35x45mm)</option>
-                <option value="gh" data-w="40" data-h="50">Ghana (40x50mm)</option>
-                <option value="ke" data-w="45" data-h="35">Kenya (45x35mm)</option>
-                <option value="za" data-w="35" data-h="45">South Africa (35x45mm)</option>
-                <option value="eg" data-w="40" data-h="60">Egypt (40x60mm)</option>
-                <option value="tz" data-w="35" data-h="45">Tanzania (35x45mm)</option>
-                <option value="ug" data-w="35" data-h="45">Uganda (35x45mm)</option>
-                <option value="rw" data-w="35" data-h="45">Rwanda (35x45mm)</option>
-                <option value="et" data-w="35" data-h="45">Ethiopia (35x45mm)</option>
-                <option value="sn" data-w="35" data-h="45">Senegal (35x45mm)</option>
-              </optgroup>
-              <optgroup label="International">
-                <option value="int-us" data-w="51" data-h="51">USA (2x2 inch)</option>
-                <option value="int-uk" data-w="35" data-h="45">UK (35x45mm)</option>
-                <option value="int-eu" data-w="40" data-h="50">EU (40x50mm)</option>
-              </optgroup>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Settings Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Settings</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Background Color</span>
-            </label>
-            <div class="mode-row">
-              <button class="mode-btn on" data-bg="white">White</button>
-              <button class="mode-btn" data-bg="blue">Blue</button>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Print Layout</span>
-            </label>
-            <select class="f-input" id="layoutSelect">
-              <option value="single">Single (1x1)</option>
-              <option value="4up">4-up (2x2)</option>
-              <option value="6up">6-up (2x3)</option>
-            </select>
-          </div>
-
-          <button class="calc-btn" id="generateBtn" disabled>Generate Photo</button>
-        </div>
-      </div>
+      <p class="pp-eyebrow">Image &amp; Design / Passport Photo Studio</p>
+      <h1>Prepare passport and visa photos without guessing the size.</h1>
+      <p>Choose an African country or popular destination preset, align the face with manual guides, export a clean digital file, or build a 300 DPI print sheet for the photo lab. Your photo stays on this device.</p>
     </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Preview -->
-      <div class="card preview-card" id="previewCard">
-        <div class="card-head">
-          <span class="card-title">Preview</span>
-        </div>
-        <div class="card-body">
-          <div class="canvas-container">
-            <canvas id="previewCanvas" style="max-width: 100%; border-radius: 8px; border: 1px solid #DBEAFE;"></canvas>
-          </div>
-        </div>
-        <div class="action-row">
-          <button class="act-btn act-download" id="downloadBtn">📥 Download PNG</button>
-        </div>
-      </div>
-
-      <!-- Info Card -->
-      <div class="info-card">
-        <div class="info-title">Selected Spec</div>
-        <div class="info-text" id="countryGuide">
-          Pick a quick start or choose a country to see the recommended size, background, and print layout.
-          <ul style="margin-top:10px;">
-            <li>✓ Popular African travel sizes</li>
-            <li>✓ Auto-crop to size</li>
-            <li>✓ Multiple backgrounds</li>
-            <li>✓ Print layouts included</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Photo Checklist</div>
-        <div class="info-text" id="checklistGuide">
-          <ul style="margin:0;padding-left:16px;">
-            <li>Use a front-facing image with even lighting</li>
-            <li>Keep the face centered and clearly visible</li>
-            <li>Avoid filters, portrait blur, and heavy editing</li>
-            <li>Print a fresh copy before submission</li>
-          </ul>
-        </div>
-      </div>
+    <div class="pp-badges">
+      <span class="pp-badge">Tier Gold</span>
+      <span class="pp-badge">Africa specs</span>
+      <span class="pp-badge">Popular visas</span>
+      <span class="pp-badge">No upload</span>
     </div>
-  </div>
-</div>
-
-
-<afro-related-tools category="image-design" current="passport-photo"></afro-related-tools>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Passport Photo Generator: How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Passport Photo Generator creates correctly sized passport and ID photos for popular African countries plus international destinations. Select a country and the tool applies the matching photo dimensions, then export a print-ready layout for local photo shops or home printing. Upload a clear headshot, and the tool crops and resizes your photo to meet common standards — whether that is 35x45mm for a Nigerian passport, 2x2 inches for a US visa, or other frequently used travel formats. Choose between white and blue backgrounds, both commonly accepted at embassies and consulates. The tool also generates print-ready layouts with multiple photos arranged on a single sheet, so you can print at home or at a local photo shop and cut to size. This saves you trips to expensive photo studios and gives you control over retakes until you get the perfect shot. All image processing happens in your browser, so your photos are never uploaded to a server. Ideal for travellers, visa applicants, students applying for international programmes, and anyone needing official ID photos.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How many countries are supported?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool currently covers a set of popular African travel sizes plus major international destinations. We are expanding coverage over time, so always double-check the latest embassy requirement before submission.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Will the photo be accepted for visa applications?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool generates photos that meet the dimensional requirements specified by each country. For best results, use a well-lit photo with a neutral expression, taken against a plain background. Always check your specific embassy's latest requirements.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I print the photos at home?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. The tool generates a print layout with multiple passport photos arranged on a standard paper size. Print it on photo paper using a home printer or take it to a local print shop and cut along the guidelines.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What background colours are available?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">White and blue backgrounds are available. White is the most universally accepted background colour for passports and visas. Blue is required by some countries and ID card systems.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is this free to use?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes, the Passport Photo Generator is completely free with no watermarks, no limits on the number of photos, and no account required. Process as many photos as you need.</p>
-    </details>
   </div>
 </section>
 
+<main class="pp-studio" id="main-content">
+  <div class="pp-workspace">
+    <section class="pp-stack" aria-label="Passport photo editor">
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">1. Load a photo</span>
+            <h2 class="pp-panel-title">Start with a plain, front-facing image</h2>
+            <p class="pp-panel-copy">The studio frames and sizes photos. It does not retouch faces or remove backgrounds, because some authorities reject altered passport photos.</p>
+          </div>
+          <div class="pp-status" id="ppStatus" role="status" aria-live="polite">Loading editor...</div>
+        </div>
+        <div class="pp-drop" id="ppDropZone" role="button" tabindex="0" aria-label="Choose or drop a passport photo source image">
+          <div class="pp-drop-main">
+            <span class="pp-drop-mark">ID</span>
+            <span><strong>Choose a photo</strong><span>Drag a file here, paste from clipboard, or click to browse.</span></span>
+          </div>
+          <div class="pp-drop-side">Local only<br>JPG, PNG, WebP</div>
+          <input type="file" id="ppInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp">
+        </div>
+      </article>
 
-<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
-<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
-<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/background-remover/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Background Remover</a><a href="/tools/image-resize/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Image Resizer</a><a href="/tools/image-crop/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Image Crop & Rotate</a>
-<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
-</div>
-</div></section>
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">2. Choose requirement</span>
+            <h2 class="pp-panel-title">African countries and popular destination presets</h2>
+            <p class="pp-panel-copy">Each preset shows the output size, head guide, background guidance, source confidence, and submission notes.</p>
+          </div>
+        </div>
+        <div class="pp-filter-row" aria-label="Requirement groups">
+          <button type="button" class="pp-filter active" data-pp-group="all" aria-pressed="true">All</button>
+          <button type="button" class="pp-filter" data-pp-group="African passports" aria-pressed="false">African passports</button>
+          <button type="button" class="pp-filter" data-pp-group="African visa and ID" aria-pressed="false">African visa and ID</button>
+          <button type="button" class="pp-filter" data-pp-group="Popular destinations" aria-pressed="false">Popular destinations</button>
+          <button type="button" class="pp-filter" data-pp-group="Common sizes" aria-pressed="false">Common sizes</button>
+        </div>
+        <div class="pp-form-grid">
+          <label class="pp-field">
+            <span class="pp-label">Search presets</span>
+            <input class="pp-input" id="ppSearch" type="search" placeholder="Nigeria, Canada, Schengen...">
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Requirement</span>
+            <select class="pp-select" id="ppSpecSelect"></select>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Background fill</span>
+            <input class="pp-input" id="ppBackground" type="color" value="#ffffff">
+            <span class="pp-help">This fills the canvas behind the crop. Start with a real plain background for official use.</span>
+          </label>
+          <div class="pp-field">
+            <span class="pp-label">Guide overlay</span>
+            <label class="pp-check-row"><input type="checkbox" id="ppShowGuides" checked><span>Show crown and chin guides in the preview.</span></label>
+          </div>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">3. Align face</span>
+            <h2 class="pp-panel-title">Zoom, move, and rotate without stretching the portrait</h2>
+            <p class="pp-panel-copy">Use the blue guide to place the crown and chin. Exports never include the guide overlay.</p>
+          </div>
+        </div>
+        <div class="pp-form-grid">
+          <label class="pp-field">
+            <span class="pp-label">Zoom</span>
+            <span class="pp-range"><input class="pp-input" id="ppZoom" type="range" min="60" max="220" value="100"><span class="pp-range-value" id="ppZoomValue">100%</span></span>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Move left/right</span>
+            <span class="pp-range"><input class="pp-input" id="ppOffsetX" type="range" min="-50" max="50" value="0"><span class="pp-range-value" id="ppOffsetXValue">0</span></span>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Move up/down</span>
+            <span class="pp-range"><input class="pp-input" id="ppOffsetY" type="range" min="-50" max="50" value="0"><span class="pp-range-value" id="ppOffsetYValue">0</span></span>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Straighten</span>
+            <span class="pp-range"><input class="pp-input" id="ppRotation" type="range" min="-15" max="15" step="0.5" value="0"><span class="pp-range-value" id="ppRotationValue">0 deg</span></span>
+          </label>
+        </div>
+        <div class="pp-preview-wrap">
+          <div class="pp-preview-frame" id="ppPreviewFrame">
+            <div class="pp-preview-empty" id="ppPreviewEmpty">Upload a front-facing photo to start framing.</div>
+            <canvas id="ppPreviewCanvas" hidden></canvas>
+          </div>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">4. Export</span>
+            <h2 class="pp-panel-title">Download a single photo or a print-ready sheet</h2>
+            <p class="pp-panel-copy">The 4 x 6 inch sheet is useful for pharmacy and photo-lab prints. A4 is useful when you want many cut copies on one page.</p>
+          </div>
+        </div>
+        <div class="pp-form-grid">
+          <label class="pp-field">
+            <span class="pp-label">Layout</span>
+            <select class="pp-select" id="ppLayout">
+              <option value="sheet-4x6">4 x 6 inch print sheet</option>
+              <option value="single">Single digital photo</option>
+              <option value="a4">A4 print sheet</option>
+            </select>
+          </label>
+          <label class="pp-field">
+            <span class="pp-label">Format</span>
+            <select class="pp-select" id="ppFormat">
+              <option value="image/jpeg">JPG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </label>
+          <label class="pp-field wide">
+            <span class="pp-label">Quality</span>
+            <span class="pp-range"><input class="pp-input" id="ppQuality" type="range" min="70" max="100" value="92"><span class="pp-range-value" id="ppQualityValue">92%</span></span>
+          </label>
+        </div>
+        <div class="pp-actions">
+          <button type="button" class="pp-btn" id="ppRenderBtn" disabled>Render export</button>
+          <button type="button" class="pp-btn secondary" id="ppDownloadBtn" disabled>Download</button>
+          <button type="button" class="pp-btn warning" id="ppCopyBtn" disabled>Copy requirement brief</button>
+          <button type="button" class="pp-btn secondary" id="ppResetBtn">Reset crop</button>
+          <share-result-button tool-name="Passport Photo Studio" tool-slug="passport-photo"></share-result-button>
+        </div>
+      </article>
+    </section>
+
+    <aside class="pp-stack" aria-label="Passport photo guidance">
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">Requirement</span>
+            <h2 class="pp-panel-title" id="ppSpecTitle">Requirement details</h2>
+            <p class="pp-panel-copy">Use this as preparation help, then confirm with the current issuing authority before submitting.</p>
+          </div>
+        </div>
+        <div class="pp-requirement-card">
+          <div class="pp-spec-grid">
+            <div class="pp-spec"><span>Size</span><strong id="ppSpecSize">-</strong></div>
+            <div class="pp-spec"><span>Head guide</span><strong id="ppSpecHead">-</strong></div>
+            <div class="pp-spec"><span>Background</span><strong id="ppSpecBackground">-</strong></div>
+            <div class="pp-spec"><span>Copies</span><strong id="ppSpecCopies">-</strong></div>
+          </div>
+          <div class="pp-spec"><span>Confidence</span><strong id="ppSpecConfidence">-</strong></div>
+          <div class="pp-source-box" id="ppSourceBox"></div>
+          <div id="ppNotesList"></div>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">Output</span>
+            <h2 class="pp-panel-title">Current file</h2>
+            <p class="pp-panel-copy">The export canvas is rendered at 300 DPI for the selected layout.</p>
+          </div>
+        </div>
+        <div class="pp-stat-grid" style="padding:18px 20px 20px;">
+          <div class="pp-stat"><span>Source</span><strong id="ppSourceFile">-</strong></div>
+          <div class="pp-stat"><span>Output</span><strong id="ppOutputType">-</strong></div>
+          <div class="pp-stat"><span>Canvas</span><strong id="ppOutputDimensions">-</strong></div>
+          <div class="pp-stat"><span>File size</span><strong id="ppOutputBytes">-</strong></div>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">Checklist</span>
+            <h2 class="pp-panel-title">Manual acceptance checks</h2>
+            <p class="pp-panel-copy">The browser cannot verify identity-photo compliance. Use this before printing or uploading.</p>
+          </div>
+        </div>
+        <div class="pp-score">
+          <strong id="ppScoreText">0 of 7 checks complete</strong>
+          <div class="pp-score-bar"><span id="ppScoreBar"></span></div>
+        </div>
+        <div class="pp-checklist">
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="recent"><span>Photo is recent and still looks like the applicant.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="lighting"><span>Lighting is even with no shadows, glare, or red-eye.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="background"><span>Background is plain, uniform, and matches the selected requirement.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="pose"><span>Face is square to the camera, not tilted, with both face edges visible.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="expression"><span>Expression is neutral with mouth closed where required.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="accessories"><span>Glasses, hats, head coverings, hair, and accessories follow the requirement.</span></label>
+          <label class="pp-check-row"><input type="checkbox" data-pp-check value="authority"><span>Latest official authority guidance was checked before submission.</span></label>
+        </div>
+      </article>
+
+      <article class="pp-panel">
+        <div class="pp-panel-head">
+          <div>
+            <span class="pp-step">Saved state</span>
+            <h2 class="pp-panel-title">Recent exports</h2>
+            <p class="pp-panel-copy">Recent export recipes are stored locally on this device.</p>
+          </div>
+        </div>
+        <div class="pp-history" id="ppHistoryList"></div>
+      </article>
+    </aside>
+  </div>
+</main>
+
+<afro-related-tools category="image-design" current="passport-photo"></afro-related-tools>
+
+<section class="pp-seo">
+  <h2>Passport Photo Studio: What It Does</h2>
+  <p>AfroTools Passport Photo Studio prepares passport, visa, and ID photo files locally in the browser. It includes source-backed presets for selected African country workflows and popular foreign destinations such as the United States, United Kingdom, Schengen visa routes, Canada, Australia, and the Netherlands. The studio creates a correctly sized 300 DPI image, adds manual crown and chin guides for framing, and can export a single digital photo or printable 4 x 6 inch and A4 sheets.</p>
+  <h3>Frequently Asked Questions</h3>
+  <details>
+    <summary>Does this guarantee acceptance?</summary>
+    <p>No. It helps with size, framing, and print layout. Passport and visa authorities can reject photos for lighting, facial expression, background, age, accessories, retouching, or local policy changes.</p>
+  </details>
+  <details>
+    <summary>Does the tool remove or replace the background?</summary>
+    <p>No. The background color fills the canvas behind the crop only. Start with a real plain background because many authorities reject edited or retouched passport photos.</p>
+  </details>
+  <details>
+    <summary>Are my photos uploaded?</summary>
+    <p>No. Upload, preview, crop, render, and export all happen locally in your browser using Canvas.</p>
+  </details>
+  <details>
+    <summary>Why do some African country presets say common crop?</summary>
+    <p>Some official pages ask for passport-sized photos but do not publish exact millimetre dimensions. Those presets use a common 35 x 45 mm studio crop and clearly mark the source confidence so you can verify with the issuing office.</p>
+  </details>
+</section>
+
 <afro-footer></afro-footer>
-
-<script>
-  const uploadArea = document.getElementById('uploadArea');
-  const imageInput = document.getElementById('imageInput');
-  const countrySelect = document.getElementById('countrySelect');
-  const layoutSelect = document.getElementById('layoutSelect');
-  const bgModeBtns = document.querySelectorAll('[data-bg]');
-  const generateBtn = document.getElementById('generateBtn');
-  const previewCard = document.getElementById('previewCard');
-  const previewCanvas = document.getElementById('previewCanvas');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const presetButtons = document.querySelectorAll('[data-preset]');
-  const presetNote = document.getElementById('presetNote');
-  const countryGuide = document.getElementById('countryGuide');
-  const checklistGuide = document.getElementById('checklistGuide');
-
-  let originalImage = null;
-  let selectedBg = 'white';
-  const COUNTRY_GUIDES = {
-    ng: '35x45mm is a common travel size for Nigeria. White background is safest, and 4-up prints work well at local photo studios.',
-    gh: 'Ghana often uses 40x50mm. Keep the face centered, use a plain background, and export a 4-up sheet for embassy packets.',
-    ke: 'Kenya commonly uses 45x35mm. Use a clear headshot, avoid shadows, and take a fresh print to visa or permit appointments.',
-    za: 'South Africa usually accepts 35x45mm passport photos. A bright, even background and neutral expression help avoid retakes.',
-    eg: 'Egypt often uses a taller 40x60mm format, so leave more headroom in your source image.',
-    tz: 'Tanzania travel photos are commonly printed at 35x45mm. Use white when unsure and keep shoulders fully visible.',
-    ug: 'Uganda travel and school uses often rely on 35x45mm prints with a clean white background.',
-    rw: 'Rwanda applications usually expect a neat 35x45mm headshot with even lighting and no strong shadows.',
-    et: 'Ethiopia travel documents commonly use 35x45mm. Start from a sharp portrait for better auto-crop results.',
-    sn: 'Senegal paperwork often works with 35x45mm travel photos. Use 4-up if you want easy printing at a local shop.',
-    'int-us': 'US visas and passports use 2x2 inch photos. Single layout helps when you want one larger master print first.',
-    'int-uk': 'UK travel documents use 35x45mm. White background and a centered face usually work best.',
-    'int-eu': 'EU document packets often use 40x50mm. Export a 4-up sheet if you need several copies quickly.'
-  };
-  const COUNTRY_CHECKLISTS = {
-    default: [
-      'Use a front-facing image with even lighting and no strong shadows',
-      'Keep the face centered with the full head clearly visible',
-      'Avoid filters, portrait blur, beauty edits, and heavy retouching',
-      'Print a fresh copy on good paper before submission'
-    ],
-    ng: [
-      'Use white background when unsure and avoid dark wall shadows',
-      'Keep your shoulders square and your head upright',
-      'Print a 4-up sheet for easy cutting at local photo shops',
-      'Carry a digital copy in case the portal asks for online upload too'
-    ],
-    gh: [
-      'Use a clean, bright background and a centered face',
-      'Keep jewelry and accessories minimal unless required for faith reasons',
-      'Bring multiple copies for embassy or school packets',
-      'Check the current embassy checklist before final submission'
-    ],
-    ke: [
-      'Start from a sharp portrait with good headroom',
-      'Avoid busy patterns behind the head and shoulders',
-      'Use 4-up prints if the application asks for several copies',
-      'Keep one extra print for permits or office follow-up'
-    ],
-    'int-us': [
-      'Use a square-style headshot with clear space around the head',
-      'Do not over-crop the forehead or chin',
-      'Single layout can help when you want one master print first',
-      'Always compare against the latest US travel guidance before upload'
-    ],
-    'int-uk': [
-      'Keep the face centered with both sides clearly visible',
-      'Use a plain light background and avoid harsh shadows',
-      'Print several copies if you are preparing a school or visa packet',
-      'Double-check the latest UK photo guidance before submission'
-    ]
-  };
-  const PRESETS = {
-    'ng-travel': { country: 'ng', bg: 'white', layout: '4up', label: 'Nigeria Travel', note: 'Sets a common 35x45mm travel workflow with white background and 4-up print layout for easy photo-shop printing.' },
-    'gh-embassy': { country: 'gh', bg: 'white', layout: '4up', label: 'Ghana Embassy', note: 'Useful for embassy packets, school applications, and official submissions that need several prints at once.' },
-    'ke-visa': { country: 'ke', bg: 'white', layout: '4up', label: 'Kenya Visa Pack', note: 'A practical preset for Kenyan visa and permit submissions where you want multiple copies ready to cut.' },
-    'uk-study': { country: 'int-uk', bg: 'white', layout: '4up', label: 'UK / Study Docs', note: 'Good starting point for UK travel, school applications, and international document packs.' }
-  };
-
-  function setBackgroundMode(nextBg) {
-    selectedBg = nextBg;
-    bgModeBtns.forEach(btn => btn.classList.toggle('on', btn.dataset.bg === nextBg));
-  }
-
-  function updateCountryGuide() {
-    if (!countrySelect.value) {
-      countryGuide.innerHTML = 'Pick a quick start or choose a country to see the recommended size, background, and print layout.<ul style="margin-top:10px;"><li>✓ Popular African travel sizes</li><li>✓ Auto-crop to size</li><li>✓ Multiple backgrounds</li><li>✓ Print layouts included</li></ul>';
-      checklistGuide.innerHTML = '<ul style="margin:0;padding-left:16px;">' + COUNTRY_CHECKLISTS.default.map(item => '<li>' + item + '</li>').join('') + '</ul>';
-      return;
-    }
-    const option = countrySelect.options[countrySelect.selectedIndex];
-    const size = option.dataset.w + 'x' + option.dataset.h + 'mm';
-    const layoutLabel = layoutSelect.options[layoutSelect.selectedIndex].text;
-    const bgLabel = selectedBg === 'white' ? 'White' : 'Blue';
-    const guide = COUNTRY_GUIDES[countrySelect.value] || 'Use a sharp, front-facing image with even lighting for the cleanest crop.';
-    countryGuide.innerHTML = '<strong>' + option.textContent + '</strong><br>' + guide + '<ul style="margin-top:10px;"><li>✓ Size: ' + size + '</li><li>✓ Background: ' + bgLabel + '</li><li>✓ Print layout: ' + layoutLabel + '</li><li>✓ Tip: export a fresh print after every retake</li></ul>';
-    const checklist = COUNTRY_CHECKLISTS[countrySelect.value] || COUNTRY_CHECKLISTS.default;
-    checklistGuide.innerHTML = '<ul style="margin:0;padding-left:16px;">' + checklist.map(item => '<li>' + item + '</li>').join('') + '</ul>';
-  }
-
-  function applyPreset(key) {
-    const preset = PRESETS[key];
-    if (!preset) return;
-    countrySelect.value = preset.country;
-    layoutSelect.value = preset.layout;
-    setBackgroundMode(preset.bg);
-    presetButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.preset === key));
-    presetNote.innerHTML = '<strong>' + preset.label + ':</strong> ' + preset.note;
-    updateCountryGuide();
-    if (originalImage) generatePhoto();
-  }
-
-  // Upload area events
-  uploadArea.addEventListener('click', () => imageInput.click());
-  uploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadArea.classList.add('active');
-  });
-  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
-  uploadArea.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadArea.classList.remove('active');
-    if (e.dataTransfer.files.length) {
-      imageInput.files = e.dataTransfer.files;
-      handleImageUpload();
-    }
-  });
-
-  imageInput.addEventListener('change', handleImageUpload);
-
-  function handleImageUpload() {
-    const file = imageInput.files[0];
-    if (!file) return;
-
-    const maxSize = 10 * 1024 * 1024; // 10MB
-    if (file.size > maxSize) {
-      alert('File is too large. Please upload an image under 10MB.');
-      return;
-    }
-
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload a valid image file.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        originalImage = img;
-        generateBtn.disabled = false;
-      };
-      img.onerror = () => {
-        alert('Failed to load the image. The file may be corrupted.');
-      };
-      img.src = e.target.result;
-    };
-    reader.onerror = () => {
-      alert('Failed to read the file. Please try again.');
-    };
-    reader.readAsDataURL(file);
-  }
-
-  bgModeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      setBackgroundMode(btn.dataset.bg);
-      updateCountryGuide();
-      if (originalImage) generatePhoto();
-    });
-  });
-
-  countrySelect.addEventListener('change', () => {
-    presetButtons.forEach(btn => btn.classList.remove('active'));
-    updateCountryGuide();
-    if (originalImage) generatePhoto();
-  });
-
-  layoutSelect.addEventListener('change', () => {
-    updateCountryGuide();
-    if (originalImage && countrySelect.value) generatePhoto();
-  });
-
-  presetButtons.forEach(btn => {
-    btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
-  });
-
-  generateBtn.addEventListener('click', () => {
-    if (originalImage && countrySelect.value) {
-      generatePhoto();
-      previewCard.classList.add('on');
-    }
-  });
-
-  function generatePhoto() {
-    if (!originalImage || !countrySelect.value) return;
-
-    const option = countrySelect.options[countrySelect.selectedIndex];
-    const width = parseInt(option.dataset.w);
-    const height = parseInt(option.dataset.h);
-    const layout = layoutSelect.value;
-
-    const dpi = 300 / 25.4; // mm to pixels at 300 DPI
-    const photoWidth = Math.round(width * dpi);
-    const photoHeight = Math.round(height * dpi);
-
-    let canvasWidth = photoWidth;
-    let canvasHeight = photoHeight;
-
-    if (layout === '4up') {
-      canvasWidth *= 2;
-      canvasHeight *= 2;
-    } else if (layout === '6up') {
-      canvasWidth *= 2;
-      canvasHeight *= 3;
-    }
-
-    const canvas = previewCanvas;
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-    const ctx = canvas.getContext('2d');
-
-    if (!ctx) {
-      alert('Canvas is not supported in your browser.');
-      return;
-    }
-
-    try {
-      // Background
-      ctx.fillStyle = selectedBg === 'white' ? '#fff' : '#0066cc';
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-      // Draw photos
-      const rows = layout === '6up' ? 3 : layout === '4up' ? 2 : 1;
-      const cols = layout === '6up' ? 2 : layout === '4up' ? 2 : 1;
-
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-          const x = col * photoWidth;
-          const y = row * photoHeight;
-          ctx.drawImage(originalImage, x, y, photoWidth, photoHeight);
-        }
-      }
-    } catch (e) {
-      alert('Error generating photo. Please try a different image.');
-      return;
-    }
-
-    downloadBtn.onclick = () => {
-      try {
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            alert('Failed to generate the download. Please try again.');
-            return;
-          }
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `passport-photo-${countrySelect.value}.png`;
-          a.click();
-          URL.revokeObjectURL(url);
-        });
-      } catch (e) {
-        alert('Failed to download. Please try again.');
-      }
-    };
-  }
-
-  applyPreset('ng-travel');
-</script>
+<script src="/assets/js/lib/passport-photo-studio.js?v=20260503" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

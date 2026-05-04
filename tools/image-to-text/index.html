@@ -1,835 +1,339 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image to Text (OCR) | Extract Text from Images | AfroTools</title>
-<meta name="description" content="Free OCR tool to extract text from images. Supports multiple languages: English, French, Arabic, Swahili. Copy extracted text instantly.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image to Text OCR Studio - Extract, Clean, Export Text | AfroTools</title>
+<meta name="description" content="Extract text from images locally with OCR. Upload, paste, or queue screenshots and document photos, improve readability, choose African and global languages, edit results, and export TXT, JSON, CSV, or Markdown.">
+<meta name="keywords" content="image to text, OCR, extract text from image, screenshot OCR, receipt OCR, Arabic OCR, Swahili OCR, French OCR">
 <link rel="canonical" href="https://afrotools.com/tools/image-to-text/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Image to Text OCR | AfroTools">
-<meta property="og:description" content="Extract text from images with OCR. Supports 4 languages.">
+<meta property="og:title" content="Image to Text OCR Studio | AfroTools">
+<meta property="og:description" content="Local OCR workspace for screenshots, receipts, forms, school notices, signs, and multilingual documents.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/image-to-text/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/image-to-text.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Image to Text OCR | AfroTools">
-<meta name="twitter:description" content="Extract text from images with OCR.">
+<meta name="twitter:title" content="Image to Text OCR Studio | AfroTools">
+<meta name="twitter:description" content="Extract editable text from images with language presets, cleanup tools, structured fields, and export-ready results.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/image-to-text.svg">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/image-to-text/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/image-to-text/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/image-to-text-studio.css?v=20260503">
 <script src="/assets/js/components/related-tools-data.min.js?v=23cf84e9" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<style>
-  :root {
-    --afro-blue: var(--color-primary);
-    --afro-dark: #0f1419;
-  }
-
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .tool-hero::after {
-    content: '📷';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
-
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
-
-  .breadcrumb span {
-    color: var(--afro-blue);
-  }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
-  h1 em {
-    color: var(--afro-blue);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
-  }
-
-  .tool-main {
-    padding: 28px 0 72px;
-  }
-
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .card + .card {
-    margin-top: 18px;
-  }
-
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #EFF6FF;
-    background: #F5F9FF;
-  }
-
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
-
-  .card-body {
-    padding: 22px;
-  }
-
-  .file-input-label {
-    display: block;
-    padding: 24px;
-    background: #EFF6FF;
-    border: 2px dashed #BFDBFE;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    font-size: 0.9rem;
-    color: #244d2c;
-    font-weight: 600;
-  }
-
-  .file-input-label:hover {
-    border-color: var(--afro-blue);
-    background: #EFF6FF;
-  }
-
-  .file-input-label.dragover {
-    border-color: var(--afro-blue);
-    background: rgba(0, 113, 227, 0.1);
-  }
-
-  input[type="file"] {
-    display: none;
-  }
-
-  .field {
-    margin-bottom: 18px;
-  }
-
-  .field:last-child {
-    margin-bottom: 0;
-  }
-
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .f-input:focus {
-    border-color: var(--afro-blue);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-  }
-
-  .template-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .template-btn {
-    padding: 10px 12px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #244d2c;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .template-btn:hover {
-    border-color: var(--afro-blue);
-  }
-
-  .template-btn.active {
-    border-color: var(--afro-blue);
-    background: var(--afro-blue);
-    color: #fff;
-  }
-
-  .context-note {
-    padding: 12px 14px;
-    border-radius: 8px;
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    color: #244d2c;
-    font-size: 0.78rem;
-    line-height: 1.6;
-    margin-top: 12px;
-  }
-
-  .context-note strong {
-    color: #0d2813;
-  }
-
-  .file-meta {
-    margin-top: 12px;
-    font-size: 0.78rem;
-    color: #6B8CAE;
-    line-height: 1.6;
-  }
-
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--afro-blue);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .calc-btn:hover {
-    background: #0059B3;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
-  }
-
-  .calc-btn:disabled {
-    background: #BFDBFE;
-    cursor: not-allowed;
-  }
-
-  .progress-section {
-    margin-top: 16px;
-  }
-
-  .progress-bar {
-    width: 100%;
-    height: 6px;
-    background: #DBEAFE;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--afro-blue);
-    width: 0%;
-    transition: width 0.2s;
-  }
-
-  .progress-text {
-    font-size: 0.7rem;
-    color: #6B8CAE;
-    text-align: center;
-  }
-
-  .result-card {
-    background: #F5F9FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 10px;
-    padding: 20px;
-    display: none;
-  }
-
-  .result-card.on {
-    display: block;
-  }
-
-  .extracted-text {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 6px;
-    padding: 14px;
-    font-size: 0.85rem;
-    color: #0d2813;
-    line-height: 1.6;
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 12px;
-    white-space: pre-wrap;
-  }
-
-  .action-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .act-btn {
-    padding: 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    border: none;
-    font-family: 'DM Sans', sans-serif;
-    background: rgba(0, 113, 227, 0.1);
-    border: 1.5px solid rgba(0, 113, 227, 0.35);
-    color: #1a5c3a;
-  }
-
-  .act-btn:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
-
-  .info-text li {
-    margin-bottom: 6px;
-  }
-
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/image-to-text/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/image-to-text/" />
-  <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kutoa-maandishi-kwenye-picha/">
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Image to Text OCR",
-      "item": "https://afrotools.com/tools/image-to-text/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
+<script src="/assets/js/lib/image-to-text-studio.js?v=20260503" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image to Text OCR Studio","description":"Extract editable text from images locally with OCR, language presets, image cleanup, batch queue, structured field extraction, and TXT, JSON, CSV, or Markdown exports.","url":"https://afrotools.com/tools/image-to-text/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and browser Canvas support","image":"https://afrotools.com/assets/img/tools/image-to-text.svg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Image to Text OCR Studio","url":"https://afrotools.com/tools/image-to-text/","description":"Local OCR workspace for screenshots, receipts, forms, notices, signs, and multilingual document photos.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/image-to-text.svg"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Image to Text OCR Studio","item":"https://afrotools.com/tools/image-to-text/"}]}</script>
+<meta property="article:modified_time" content="2026-05-03">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
+<section class="ocr-hero">
+  <div class="ocr-hero-inner">
+    <div>
+      <p class="ocr-eyebrow">Image &amp; Design / Image to Text OCR Studio</p>
+      <h1>Turn screenshots, receipts, forms, and signs into editable text.</h1>
+      <p>Drop images, paste screenshots, choose the language, improve the scan, run OCR, edit the result, then export clean text, structured fields, JSON, CSV, or a handoff brief. Your images stay on this device.</p>
     </div>
-    <h1>Image to <em>Text</em></h1>
-    <p class="hero-sub">Extract text from receipts, school notices, screenshots, invoices, and multilingual documents using OCR in your browser.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">4 Languages</span>
+    <div class="ocr-badges" aria-label="Tool highlights">
+      <span class="ocr-badge">Tier Gold</span>
+      <span class="ocr-badge">No upload</span>
+      <span class="ocr-badge">Batch queue</span>
+      <span class="ocr-badge">TXT JSON CSV</span>
     </div>
   </div>
-</div>
+</section>
 
-<div class="tool-main" id="main-content" role="main">
-  <div class="tool-main-inner">
-    <div>
-      <!-- Upload Image -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Upload Image</span>
-        </div>
-        <div class="card-body">
-          <input type="file" id="imageInput" accept="image/*">
-          <label for="imageInput" class="file-input-label">
-            📸 Click or drag & drop an image
-          </label>
-          <div class="file-meta" id="fileMeta">Best for receipts, school notices, invoices, screenshots, and multilingual admin documents.</div>
-        </div>
-      </div>
-
-      <!-- Language Selection -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Language</span>
-        </div>
-        <div class="card-body">
-          <div class="template-grid">
-            <button type="button" class="template-btn active" data-task="receipt">Receipt / Expense</button>
-            <button type="button" class="template-btn" data-task="school">School Notice</button>
-            <button type="button" class="template-btn" data-task="french">French Document</button>
-            <button type="button" class="template-btn" data-task="arabic">Arabic Sign</button>
+<main class="ocr-studio" id="main-content">
+  <div class="ocr-workspace">
+    <section class="ocr-stack" aria-label="OCR editor">
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">1. Source</span>
+            <h2 class="ocr-panel-title">Upload, drop, or paste image files</h2>
+            <p class="ocr-panel-copy">Use crisp screenshots or well-lit document photos. For scanned PDFs, use the PDF OCR tool or export the page as an image first.</p>
           </div>
-          <div class="field">
-            <label class="f-label-text">Select Language</label>
-            <select class="f-input" id="languageSelect">
+          <div class="ocr-status" id="ocrStatus" role="status" aria-live="polite">Loading editor...</div>
+        </div>
+        <div class="ocr-drop" id="ocrDropZone" role="button" tabindex="0" aria-label="Choose, paste, or drop images for OCR">
+          <div class="ocr-drop-main">
+            <span class="ocr-drop-mark">OCR</span>
+            <span><strong>Choose images</strong><span>Drag files here, paste from clipboard, or click to browse.</span></span>
+          </div>
+          <div class="ocr-drop-side">Local only<br>JPG, PNG, WebP</div>
+          <input type="file" id="ocrInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
+        </div>
+        <div class="ocr-queue" id="ocrQueue" aria-label="Current OCR queue"></div>
+      </article>
+
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">2. Workflow</span>
+            <h2 class="ocr-panel-title">Pick the OCR recipe and language</h2>
+            <p class="ocr-panel-copy">Recipes tune cleanup and the default result view. Mixed-language OCR downloads more model data and can take longer on the first run.</p>
+          </div>
+        </div>
+        <div class="ocr-preset-row" aria-label="OCR workflow presets">
+          <button type="button" class="ocr-preset active" data-ocr-preset="receipt" aria-pressed="true">Receipt</button>
+          <button type="button" class="ocr-preset" data-ocr-preset="school" aria-pressed="false">School notice</button>
+          <button type="button" class="ocr-preset" data-ocr-preset="invoice" aria-pressed="false">Invoice</button>
+          <button type="button" class="ocr-preset" data-ocr-preset="multilingual" aria-pressed="false">Multilingual</button>
+          <button type="button" class="ocr-preset" data-ocr-preset="signage" aria-pressed="false">Sign or menu</button>
+        </div>
+        <div class="ocr-form-grid">
+          <label class="ocr-field">
+            <span class="ocr-label">OCR language</span>
+            <select class="ocr-select" id="ocrLanguage">
               <option value="eng">English</option>
               <option value="fra">French</option>
               <option value="ara">Arabic</option>
               <option value="swa">Swahili</option>
+              <option value="por">Portuguese</option>
+              <option value="amh">Amharic</option>
+              <option value="eng+fra">English + French</option>
+              <option value="eng+swa">English + Swahili</option>
+              <option value="eng+ara">English + Arabic</option>
+              <option value="fra+ara">French + Arabic</option>
             </select>
-          </div>
-          <div class="context-note" id="taskNote"><strong>Receipt / Expense:</strong> Use clear photos of supermarket receipts, fuel slips, POS printouts, and invoice screenshots for the cleanest extraction.</div>
+          </label>
+          <label class="ocr-field">
+            <span class="ocr-label">Result view</span>
+            <select class="ocr-select" id="ocrView">
+              <option value="clean">Clean text</option>
+              <option value="raw">Raw OCR</option>
+              <option value="lines">Line list</option>
+              <option value="fields">Structured fields</option>
+              <option value="markdown">Markdown notes</option>
+            </select>
+          </label>
+          <label class="ocr-field">
+            <span class="ocr-label">Rotate</span>
+            <select class="ocr-select" id="ocrRotate">
+              <option value="0">No rotation</option>
+              <option value="90">Rotate right</option>
+              <option value="180">Upside down</option>
+              <option value="270">Rotate left</option>
+            </select>
+          </label>
+          <label class="ocr-field">
+            <span class="ocr-label">Upscale before OCR</span>
+            <select class="ocr-select" id="ocrScale">
+              <option value="1">Keep size</option>
+              <option value="1.5">1.5x</option>
+              <option value="2">2x</option>
+            </select>
+          </label>
+        </div>
+      </article>
 
-          <button class="calc-btn" id="extractBtn" disabled>Extract Text</button>
-          <div class="progress-section" id="progressSection" style="display:none;">
-            <div class="progress-bar">
-              <div class="progress-fill" id="progressFill"></div>
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">3. Clean the scan</span>
+            <h2 class="ocr-panel-title">Improve contrast before OCR</h2>
+            <p class="ocr-panel-copy">OCR quality often improves when shadows are reduced, contrast is higher, or a receipt is converted to black and white.</p>
+          </div>
+        </div>
+        <div class="ocr-form-grid">
+          <label class="ocr-check-row">
+            <input type="checkbox" id="ocrGrayscale" checked>
+            <span>Convert to grayscale</span>
+          </label>
+          <label class="ocr-check-row">
+            <input type="checkbox" id="ocrInvert">
+            <span>Invert dark screenshots</span>
+          </label>
+          <label class="ocr-field">
+            <span class="ocr-label">Contrast</span>
+            <span class="ocr-range"><input class="ocr-input" id="ocrContrast" type="range" min="-40" max="80" value="22"><span class="ocr-range-value" id="ocrContrastValue">22</span></span>
+          </label>
+          <label class="ocr-field">
+            <span class="ocr-label">Threshold</span>
+            <span class="ocr-range"><input class="ocr-input" id="ocrThreshold" type="range" min="0" max="245" value="0"><span class="ocr-range-value" id="ocrThresholdValue">Off</span></span>
+          </label>
+        </div>
+        <div class="ocr-preview-grid">
+          <div class="ocr-canvas-card">
+            <div class="ocr-canvas-head"><span>Original</span><span id="ocrOriginalMeta">No image</span></div>
+            <div class="ocr-canvas-shell">
+              <canvas id="ocrOriginalCanvas" hidden></canvas>
+              <div class="ocr-empty" id="ocrOriginalEmpty">Upload an image to preview the source.</div>
             </div>
-            <div class="progress-text" id="progressText">Processing...</div>
+          </div>
+          <div class="ocr-canvas-card">
+            <div class="ocr-canvas-head"><span>OCR preview</span><span id="ocrPreparedMeta">Ready</span></div>
+            <div class="ocr-canvas-shell">
+              <canvas id="ocrPreparedCanvas" hidden></canvas>
+              <div class="ocr-empty" id="ocrPreparedEmpty">The cleaned OCR input appears here.</div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+        <div class="ocr-actions">
+          <button type="button" class="ocr-btn" id="ocrRunBtn" disabled>Extract text</button>
+          <button type="button" class="ocr-btn secondary" id="ocrBatchBtn" disabled>Process queue</button>
+          <button type="button" class="ocr-btn secondary" id="ocrResetImageBtn" disabled>Reset cleanup</button>
+        </div>
+        <div class="ocr-progress" id="ocrProgress" hidden>
+          <div class="ocr-progress-track"><span id="ocrProgressFill"></span></div>
+          <span id="ocrProgressText">Waiting...</span>
+        </div>
+      </article>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="card result-card" id="resultCard">
-        <div class="card-head">
-          <span class="card-title">Extracted Text</span>
-        </div>
-        <div class="card-body">
-          <div class="extracted-text" id="extractedText"></div>
-          <div class="template-grid" style="margin-bottom:12px;">
-            <button type="button" class="template-btn active" data-output="clean">Cleaned Text</button>
-            <button type="button" class="template-btn" data-output="raw">Original OCR</button>
-            <button type="button" class="template-btn" data-output="lines">Line List</button>
-            <button type="button" class="template-btn" data-output="amounts">Amounts Only</button>
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">4. Edit and export</span>
+            <h2 class="ocr-panel-title">Turn OCR into usable text</h2>
+            <p class="ocr-panel-copy">Edit the result before copying or exporting. The raw OCR stays available while you refine the current view.</p>
           </div>
-          <div class="context-note" id="outputNote"><strong>Cleaned Text:</strong> Removes messy spacing while keeping the content readable for notes, emails, and document drafting.</div>
-          <div class="action-row">
-            <button class="act-btn" id="copyBtn">📋 Copy Current</button>
-            <button class="act-btn" id="downloadTextBtn">📥 TXT</button>
-          </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="Image To Text"
-    tool-slug="image-to-text">
-  </share-result-button>
-</div>
         </div>
-      </div>
+        <div class="ocr-result-tools">
+          <div class="ocr-segmented" aria-label="Result views">
+            <button type="button" class="active" data-ocr-view="clean" aria-pressed="true">Clean</button>
+            <button type="button" data-ocr-view="raw" aria-pressed="false">Raw</button>
+            <button type="button" data-ocr-view="lines" aria-pressed="false">Lines</button>
+            <button type="button" data-ocr-view="fields" aria-pressed="false">Fields</button>
+            <button type="button" data-ocr-view="markdown" aria-pressed="false">Markdown</button>
+          </div>
+          <label class="ocr-field compact">
+            <span class="ocr-label">Find in result</span>
+            <input class="ocr-input" id="ocrFind" type="search" placeholder="Search extracted text">
+          </label>
+        </div>
+        <div class="ocr-editor-wrap">
+          <textarea id="ocrTextArea" class="ocr-textarea" spellcheck="true" placeholder="Extracted text appears here and can be edited before export."></textarea>
+        </div>
+        <div class="ocr-actions">
+          <button type="button" class="ocr-btn" id="ocrCopyBtn" disabled>Copy current view</button>
+          <button type="button" class="ocr-btn secondary" id="ocrDownloadTxtBtn" disabled>TXT</button>
+          <button type="button" class="ocr-btn secondary" id="ocrDownloadMdBtn" disabled>Markdown</button>
+          <button type="button" class="ocr-btn secondary" id="ocrDownloadJsonBtn" disabled>JSON</button>
+          <button type="button" class="ocr-btn secondary" id="ocrDownloadCsvBtn" disabled>CSV fields</button>
+          <button type="button" class="ocr-btn warning" id="ocrCopyBriefBtn" disabled>Copy handoff brief</button>
+          <share-result-button tool-name="Image to Text OCR Studio" tool-slug="image-to-text"></share-result-button>
+        </div>
+      </article>
+    </section>
 
-      <div class="info-card">
-        <div class="info-title">How It Works</div>
-        <div class="info-text">
-          <ul style="margin:0;padding-left:16px;">
-            <li>Upload receipts, notices, forms, or screenshots</li>
-            <li>Select the closest language</li>
-            <li>Text extracted locally</li>
-            <li>Switch between cleaned text, line list, or amounts-only view</li>
-          </ul>
+    <aside class="ocr-stack" aria-label="OCR status and guidance">
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">Quality</span>
+            <h2 class="ocr-panel-title">Result summary</h2>
+            <p class="ocr-panel-copy">Confidence is reported by the OCR engine when available.</p>
+          </div>
         </div>
-      </div>
-    </div>
+        <div class="ocr-metric-grid">
+          <div class="ocr-metric"><span>Source</span><strong id="ocrSourceStat">-</strong></div>
+          <div class="ocr-metric"><span>Confidence</span><strong id="ocrConfidenceStat">-</strong></div>
+          <div class="ocr-metric"><span>Text</span><strong id="ocrTextStat">-</strong></div>
+          <div class="ocr-metric"><span>Language</span><strong id="ocrLanguageStat">English</strong></div>
+        </div>
+      </article>
+
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">Fields</span>
+            <h2 class="ocr-panel-title">Detected data</h2>
+          </div>
+        </div>
+        <div class="ocr-fields" id="ocrFieldsList"></div>
+      </article>
+
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">Checklist</span>
+            <h2 class="ocr-panel-title">Before using the text</h2>
+          </div>
+        </div>
+        <div class="ocr-checklist" id="ocrChecklist">
+          <label><input type="checkbox" data-ocr-check="names"><span>Names, IDs, and account numbers were manually checked.</span></label>
+          <label><input type="checkbox" data-ocr-check="amounts"><span>Amounts and dates match the image.</span></label>
+          <label><input type="checkbox" data-ocr-check="language"><span>The correct language or mixed-language setting was used.</span></label>
+        </div>
+      </article>
+
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">Recent</span>
+            <h2 class="ocr-panel-title">Session history</h2>
+          </div>
+        </div>
+        <div class="ocr-history" id="ocrHistoryList"></div>
+      </article>
+
+      <article class="ocr-panel">
+        <div class="ocr-panel-head">
+          <div>
+            <span class="ocr-step">Next tools</span>
+            <h2 class="ocr-panel-title">Keep moving</h2>
+          </div>
+        </div>
+        <div class="ocr-tool-links">
+          <a href="/tools/pdf-ocr/">PDF OCR</a>
+          <a href="/tools/image-crop/">Crop the scan</a>
+          <a href="/tools/image-filters/">Improve photo clarity</a>
+          <a href="/tools/data-converter/">Clean structured data</a>
+        </div>
+      </article>
+    </aside>
   </div>
-</div>
-
+</main>
 
 <afro-related-tools category="image-design" current="image-to-text"></afro-related-tools>
 
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Image to Text (OCR): How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Image to Text tool uses Optical Character Recognition (OCR) technology to extract readable text from images. Upload a photo, screenshot, scanned document, or any image containing text, and the tool analyses the visual content to identify and extract all text characters. It supports multiple languages including English, French, Arabic, and Swahili — making it especially useful for multilingual African contexts where documents may contain text in several languages. Once the text is extracted, you can copy it to your clipboard with one click for pasting into documents, emails, or spreadsheets. The tool is powered by the Tesseract.js OCR engine, which runs entirely in your browser. This means your images and extracted text stay on your device with no server uploads required. Common use cases include digitising printed documents, extracting text from screenshots, converting scanned receipts to editable text, pulling data from infographics, and capturing text from photos of signs, menus, or business cards. The OCR accuracy is highest with clear, well-lit images and standard fonts.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What languages are supported for OCR?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool supports English, French, Arabic, and Swahili. Select the appropriate language before uploading your image for the best recognition accuracy.</p>
+<section class="ocr-seo" aria-label="Image to text OCR guidance">
+  <h2>OCR is more useful when the tool helps after extraction</h2>
+  <p>Good image-to-text workflows do more than return a text box. They help you prepare the image, choose the language, check confidence, separate raw and cleaned output, identify fields such as amounts, dates, emails, phones, and links, then export the result in the format your next step needs. AfroTools keeps that entire workflow in the browser so receipts, school notices, invoices, screenshots, and multilingual forms can be handled quickly without sending the image to an AfroTools server.</p>
+  <div class="ocr-faq">
+    <details>
+      <summary>Are my images uploaded?</summary>
+      <p>No. The image is decoded and processed in your browser. The OCR engine and language files may be downloaded from a CDN the first time you run a language, but your image is not uploaded to AfroTools.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How accurate is the text extraction?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Accuracy depends on image quality. Clear, high-resolution images with standard fonts produce excellent results. Handwritten text, low-resolution images, and unusual fonts may reduce accuracy. Well-lit photos with good contrast give the best outcomes.</p>
+    <details>
+      <summary>Which image types work best?</summary>
+      <p>Clear screenshots and sharp document photos work best. Avoid motion blur, deep shadows, curved pages, and tiny text. Use crop, contrast, grayscale, and threshold settings when the scan is hard to read.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I extract text from scanned PDFs?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">This tool works with image files (JPG, PNG, WebP). For scanned PDFs, take a screenshot of the page or save the PDF page as an image first, then upload it to the OCR tool.</p>
+    <details>
+      <summary>Can it read handwriting?</summary>
+      <p>It may read neat handwriting, but printed text is more reliable. Always manually check names, account numbers, dates, totals, and legal or official text before using the result.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is my image sent to a server for processing?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. The OCR engine (Tesseract.js) runs entirely in your browser. Your images and extracted text are never uploaded to any server, making it safe for sensitive or confidential documents.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Why does the first extraction take longer?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">On the first use, the tool downloads the OCR language model to your browser (a one-time download). Subsequent extractions are faster because the model is cached locally in your browser.</p>
+    <details>
+      <summary>Can I extract text from PDFs?</summary>
+      <p>This image tool works with browser-supported image files. Use the AfroTools PDF OCR tool for scanned PDFs, or export a PDF page as an image and run it here.</p>
     </details>
   </div>
 </section>
 
-
-<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
-<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
-<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/image-compress/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Image Compressor</a><a href="/tools/image-resize/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Image Resizer</a><a href="/tools/image-format-convert/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Format Converter</a>
-<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
-</div>
-</div></section>
 <afro-footer></afro-footer>
-
-<script>
-  let currentImage = null;
-  let extractedText = '';
-  let currentTask = 'receipt';
-  let displayMode = 'clean';
-
-  const imageInput = document.getElementById('imageInput');
-  const label = document.querySelector('.file-input-label');
-  const languageSelect = document.getElementById('languageSelect');
-  const extractBtn = document.getElementById('extractBtn');
-  const resultCard = document.getElementById('resultCard');
-  const extractedTextDiv = document.getElementById('extractedText');
-  const copyBtn = document.getElementById('copyBtn');
-  const downloadTextBtn = document.getElementById('downloadTextBtn');
-  const outputButtons = document.querySelectorAll('[data-output]');
-  const outputNote = document.getElementById('outputNote');
-  const progressSection = document.getElementById('progressSection');
-  const progressFill = document.getElementById('progressFill');
-  const progressText = document.getElementById('progressText');
-  const fileMeta = document.getElementById('fileMeta');
-  const taskButtons = document.querySelectorAll('[data-task]');
-  const taskNote = document.getElementById('taskNote');
-  const TASK_PRESETS = {
-    receipt: { language: 'eng', view: 'amounts', label: 'Receipt / Expense', note: 'Use clear photos of supermarket receipts, fuel slips, POS printouts, and invoice screenshots for the cleanest extraction.' },
-    school: { language: 'eng', view: 'lines', label: 'School Notice', note: 'Great for timetables, result notices, handouts, and campus announcements shared as screenshots.' },
-    french: { language: 'fra', view: 'clean', label: 'French Document', note: 'Best for francophone forms, public notices, and scanned paperwork from West and Central Africa.' },
-    arabic: { language: 'ara', view: 'raw', label: 'Arabic Sign', note: 'Use for Arabic signs, notices, shop boards, and printed forms with good contrast and straight framing.' }
-  };
-  const OUTPUT_MODES = {
-    clean: { label: 'Cleaned Text', note: 'Removes messy spacing while keeping the content readable for notes, emails, and document drafting.' },
-    raw: { label: 'Original OCR', note: 'Shows the OCR output exactly as detected, which is useful when you want the raw scan result.' },
-    lines: { label: 'Line List', note: 'Breaks the result into scan-friendly lines for school notices, handouts, and structured announcements.' },
-    amounts: { label: 'Amounts Only', note: 'Pulls out money figures and obvious numeric values from receipts, invoices, and expense screenshots.' }
-  };
-
-  function normalizeText(text) {
-    return String(text || '')
-      .replace(/\r/g, '')
-      .split('\n')
-      .map(line => line.replace(/[ \t]+/g, ' ').trim())
-      .filter(Boolean)
-      .join('\n');
-  }
-
-  function getAmountsOnly(text) {
-    const source = String(text || '');
-    if (!source.trim()) return '';
-    const matches = source.match(/\b(?:NGN|GHS|KES|UGX|TZS|RWF|ZAR|USD|EUR|KSh|USh|Shs|GBP)?\s?\d[\d,]*(?:\.\d{2})?\b/g) || [];
-    const cleaned = Array.from(new Set(matches.map(item => item.trim()).filter(Boolean)));
-    return cleaned.length ? cleaned.join('\n') : 'No clear monetary or numeric values found.';
-  }
-
-  function getDisplayedText() {
-    if (!extractedText || !String(extractedText).trim()) return '';
-    if (displayMode === 'raw') return String(extractedText).trim();
-    if (displayMode === 'lines') {
-      const lines = normalizeText(extractedText).split('\n').filter(Boolean);
-      return lines.map(line => '• ' + line).join('\n');
-    }
-    if (displayMode === 'amounts') return getAmountsOnly(extractedText);
-    return normalizeText(extractedText);
-  }
-
-  function setDisplayMode(mode) {
-    displayMode = OUTPUT_MODES[mode] ? mode : 'clean';
-    outputButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.output === displayMode));
-    outputNote.innerHTML = '<strong>' + OUTPUT_MODES[displayMode].label + ':</strong> ' + OUTPUT_MODES[displayMode].note;
-    extractedTextDiv.textContent = getDisplayedText();
-  }
-
-  function applyTaskPreset(key) {
-    const preset = TASK_PRESETS[key];
-    if (!preset) return;
-    currentTask = key;
-    languageSelect.value = preset.language;
-    taskButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.task === key));
-    taskNote.innerHTML = '<strong>' + preset.label + ':</strong> ' + preset.note;
-    setDisplayMode(preset.view);
-  }
-
-  imageInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const maxSize = 10 * 1024 * 1024; // 10MB
-    if (file.size > maxSize) {
-      alert('File is too large. Please upload an image under 10MB.');
-      return;
-    }
-
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload a valid image file.');
-      return;
-    }
-
-    currentImage = file;
-    extractedText = '';
-    extractBtn.disabled = false;
-    resultCard.classList.remove('on');
-    fileMeta.textContent = 'Selected file: ' + file.name + ' • ' + (file.size / 1024).toFixed(1) + ' KB';
-  });
-
-  label.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    label.classList.add('dragover');
-  });
-
-  label.addEventListener('dragleave', () => {
-    label.classList.remove('dragover');
-  });
-
-  label.addEventListener('drop', (e) => {
-    e.preventDefault();
-    label.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      currentImage = file;
-      extractedText = '';
-      imageInput.files = e.dataTransfer.files;
-      extractBtn.disabled = false;
-      resultCard.classList.remove('on');
-      fileMeta.textContent = 'Selected file: ' + file.name + ' • ' + (file.size / 1024).toFixed(1) + ' KB';
-    }
-  });
-
-  taskButtons.forEach(btn => {
-    btn.addEventListener('click', () => applyTaskPreset(btn.dataset.task));
-  });
-
-  outputButtons.forEach(btn => {
-    btn.addEventListener('click', () => setDisplayMode(btn.dataset.output));
-  });
-
-  extractBtn.addEventListener('click', async () => {
-    if (!currentImage) return;
-
-    progressSection.style.display = 'block';
-    progressFill.style.width = '20%';
-    extractBtn.disabled = true;
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      try {
-        const img = e.target.result;
-        const language = languageSelect.value;
-
-        progressFill.style.width = '40%';
-        progressText.textContent = 'Loading OCR engine...';
-
-        const { Tesseract } = window;
-        const worker = await Tesseract.createWorker();
-
-        progressFill.style.width = '60%';
-        progressText.textContent = 'Recognizing text...';
-
-        const result = await worker.recognize(img, language);
-        extractedText = result.data.text;
-
-        progressFill.style.width = '100%';
-        progressText.textContent = 'Complete!';
-
-        setTimeout(() => {
-          progressSection.style.display = 'none';
-          setDisplayMode(displayMode);
-          resultCard.classList.add('on');
-          extractBtn.disabled = false;
-        }, 500);
-
-        await worker.terminate();
-      } catch (err) {
-        progressText.textContent = 'Error: ' + (err.message || 'OCR processing failed');
-        extractBtn.disabled = false;
-      }
-    };
-    reader.onerror = () => {
-      progressText.textContent = 'Error: Failed to read the image file.';
-      extractBtn.disabled = false;
-    };
-    reader.readAsDataURL(currentImage);
-  });
-
-  copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(getDisplayedText()).then(() => {
-      copyBtn.textContent = '✓ Copied!';
-      setTimeout(() => {
-        copyBtn.textContent = '📋 Copy Current';
-      }, 2000);
-    }).catch(() => {
-      alert('Failed to copy to clipboard. Please select and copy the text manually.');
-    });
-  });
-
-  downloadTextBtn.addEventListener('click', () => {
-    const text = getDisplayedText();
-    if (!text) return;
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = currentTask + '-' + displayMode + '-ocr.txt';
-    link.click();
-    URL.revokeObjectURL(url);
-  });
-
-  applyTaskPreset('receipt');
-</script>
+<script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

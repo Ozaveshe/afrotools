@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
-<link rel="stylesheet" href="/assets/css/image-crop-studio.css?v=3bcc7240">
+<link rel="stylesheet" href="/assets/css/image-crop-studio.css?v=20260503b">
 <script src="/assets/js/components/related-tools-data.min.js?v=23cf84e9" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
@@ -553,8 +553,8 @@
         <div class="crop-panel-head">
           <div>
             <span class="crop-eyebrow">3. Frame the subject</span>
-            <h2 class="crop-panel-title">Drag the crop box, resize corners, or nudge precisely</h2>
-            <p class="crop-panel-copy">Use the live rule-of-thirds grid for headshots, product photos, thumbnails, and social crops.</p>
+            <h2 class="crop-panel-title">Drag the crop box, resize corners, nudge, or type exact pixels</h2>
+            <p class="crop-panel-copy">Use the live rule-of-thirds grid for headshots, product photos, thumbnails, and exact crop rectangles.</p>
           </div>
         </div>
         <div class="crop-stage-wrap">
@@ -575,6 +575,28 @@
         </div>
         <div class="crop-actions">
           <button type="button" class="crop-btn secondary" id="cropReset" disabled>Reset transform</button>
+        </div>
+        <div class="crop-control-grid crop-selection-grid" aria-label="Manual crop selection">
+          <label class="crop-field">
+            <span class="crop-label">Crop X</span>
+            <input class="crop-input" id="cropSelectionX" type="number" inputmode="numeric" min="0" step="1" placeholder="Auto">
+          </label>
+          <label class="crop-field">
+            <span class="crop-label">Crop Y</span>
+            <input class="crop-input" id="cropSelectionY" type="number" inputmode="numeric" min="0" step="1" placeholder="Auto">
+          </label>
+          <label class="crop-field">
+            <span class="crop-label">Crop width</span>
+            <input class="crop-input" id="cropSelectionW" type="number" inputmode="numeric" min="1" step="1" placeholder="Auto">
+          </label>
+          <label class="crop-field">
+            <span class="crop-label">Crop height</span>
+            <input class="crop-input" id="cropSelectionH" type="number" inputmode="numeric" min="1" step="1" placeholder="Auto">
+          </label>
+          <div class="crop-field crop-control-wide">
+            <button type="button" class="crop-tool-btn crop-apply-selection" id="cropApplySelection" disabled>Apply exact selection</button>
+            <span class="crop-help">Values are in pixels on the transformed image. Fixed aspect presets keep their ratio when you apply width.</span>
+          </div>
         </div>
       </div>
 
@@ -672,7 +694,7 @@
             <ul class="crop-feature-list">
               <li>Interactive crop box with corner resize handles.</li>
               <li>Aspect presets tuned for social, passport, product, and banner work.</li>
-              <li>Rotate, flip, nudge, and exact export dimensions.</li>
+              <li>Rotate, flip, nudge, exact crop coordinates, and exact export dimensions.</li>
               <li>JPG, PNG, WebP output with local settings and history.</li>
             </ul>
           </div>
@@ -688,7 +710,7 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Image Crop Studio: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Image Crop Studio gives you practical control over cropping, rotating, flipping, and exporting images directly in the browser. Upload an image, choose a target like square, portrait, story, landscape, passport, photo, banner, or free crop, then drag or resize the crop box on the canvas. The live preview updates as you adjust the frame, rotate in 90-degree steps, flip horizontally or vertically, nudge the selection, and enter exact export dimensions. Download as JPG, PNG, or WebP, with a quality slider for compressed formats and a background color for JPG exports with transparent areas. Settings and recent export recipes are stored locally so repeated crop jobs feel faster. All processing uses browser canvas APIs, so your photos stay private and never leave your device.</p>
+    <p>The AfroTools Image Crop Studio gives you practical control over cropping, rotating, flipping, and exporting images directly in the browser. Upload an image, choose a target like square, portrait, story, landscape, passport, photo, banner, or free crop, then drag or resize the crop box on the canvas. You can also type exact crop X, Y, width, and height values for pixel-level work. The live preview updates as you adjust the frame, rotate in 90-degree steps, flip horizontally or vertically, nudge the selection, and enter exact export dimensions. Download as JPG, PNG, or WebP, with a quality slider for compressed formats and a background color for JPG exports with transparent areas. Settings and recent export recipes are stored locally so repeated crop jobs feel faster. All processing uses browser canvas APIs, so your photos stay private and never leave your device.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
   <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
@@ -724,7 +746,7 @@
 </div></section>
 <afro-footer></afro-footer>
 
-<script src="/assets/js/lib/image-crop-studio.js?v=f7757c68" defer></script>
+<script src="/assets/js/lib/image-crop-studio.js?v=20260503b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>

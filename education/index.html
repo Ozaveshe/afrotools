@@ -82,7 +82,7 @@
   .ss{max-width:680px;font-size:.9rem;line-height:1.72;color:#64748b;margin:0 0 24px}
   .note{font-size:.84rem;line-height:1.65;color:#475569;background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px 16px;margin:0 0 22px}
   .overview-grid,.product-grid,.subhub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-  .overview-card,.product-card,.registry-card,.route-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.04)}
+  .overview-card,.product-card,.route-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.04)}
   .overview-card{padding:20px}
   .overview-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
   .overview-icon{font-size:1.55rem}
@@ -119,16 +119,17 @@
   .tool-foot{margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .tool-country{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8}
   .tool-cta{font-size:.76rem;font-weight:800;color:var(--color-primary)}
-  .registry-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-  .registry-card{padding:18px}
-  .registry-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .registry-grid{display:grid;gap:0;background:#fff;border:1.5px solid #e2e8f0;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.04);overflow:hidden}
+  .registry-card{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(0,1.35fr);gap:16px;padding:15px 18px;background:#fff}
+  .registry-card+.registry-card{border-top:1px solid #e2e8f0}
+  .registry-head{display:grid;align-content:start;gap:6px;margin:0}
   .registry-head h3{font-size:.98rem;font-weight:800;line-height:1.25;color:#0f172a;margin:0 0 4px}
   .registry-head p{margin:0;font-size:.8rem;line-height:1.58;color:#64748b}
-  .registry-count{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2563eb;white-space:nowrap}
+  .registry-count{width:max-content;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2563eb;white-space:nowrap}
   .registry-pills{display:flex;flex-wrap:wrap;gap:8px}
-  .registry-pills a{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;font-size:.76rem;font-weight:700;color:#0f172a}
+  .registry-pills a{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;font-size:.74rem;font-weight:700;color:#0f172a}
   .registry-pills a:hover{border-color:var(--color-primary);color:var(--color-primary)}
-  .registry-note{margin-top:10px;font-size:.74rem;line-height:1.6;color:#64748b}
+  .registry-note{grid-column:2;margin-top:-4px;font-size:.74rem;line-height:1.6;color:#64748b}
   .route-card{padding:18px;display:flex;flex-direction:column;gap:10px}
   .route-card:hover{border-color:var(--color-primary);box-shadow:0 16px 34px rgba(37,99,235,.08);transform:translateY(-2px)}
   .route-card h3{font-size:1rem;font-weight:800;line-height:1.25;color:#0f172a;margin:0}
@@ -138,7 +139,7 @@
   .cta h3{font-size:1.18rem;font-weight:800;line-height:1.2;margin:0 0 8px}
   .cta p{font-size:.88rem;line-height:1.7;color:rgba(255,255,255,.82);max-width:620px;margin:0 auto 16px}
   .cta a{display:inline-flex;align-items:center;justify-content:center;padding:11px 22px;border-radius:999px;background:#fff;color:#1d4ed8;font-size:.82rem;font-weight:800}
-  @media(max-width:720px){.bucket-head{flex-direction:column}.bucket-count{align-self:flex-start}}
+  @media(max-width:720px){.bucket-head{flex-direction:column}.bucket-count{align-self:flex-start}.registry-card{grid-template-columns:1fr}.registry-note{grid-column:1;margin-top:0}}
   @media(max-width:640px){.wrap{padding:0 18px}.hero{padding:48px 0 38px}.hero-stats{gap:18px}.hero-stat-value{font-size:1.6rem}}
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/education/" />
@@ -359,7 +360,7 @@ function renderRegistryBucket(bucket){
           '<h3>',escapeHtml(bucket.title),'</h3>',
           '<p>',escapeHtml(bucket.description),'</p>',
         '</div>',
-        '<span class="registry-count">',bucket.registryCount,' tools</span>',
+        '<span class="registry-count">',bucket.registryCount,' ',bucket.registryCount===1?'tool':'tools','</span>',
       '</div>',
       '<div class="registry-pills">',pills,'</div>',
       note,

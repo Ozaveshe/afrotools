@@ -9,6 +9,7 @@ Use `assets/js/components/category-taxonomy.js` when a category page grows too l
   - `agriculture/index.html`
   - Agriculture bucket hubs under `agriculture/*/index.html`
   - `scripts/agriculture-taxonomy-report.js`
+- Pages that use `assets/js/pages/agriculture-taxonomy-hub.js` must also load `assets/js/components/tool-registry.min.js` before the hub renderer runs. Without the registry include, the page keeps the fallback "Loading tools..." state and no tool cards or bucket links are built.
 
 ## Design Rules
 

@@ -4241,6 +4241,74 @@
             });
         }
 
+        function getVatBusinessTaxReportsLocal() {
+            var items = dashReadJson('afro_vat_business_tax_reports_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'vat-business-tax-report' || item.toolSlug);
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.savedAt || 0).getTime() - new Date(a.updatedAt || a.savedAt || 0).getTime();
+            });
+        }
+
+        function getVatBusinessTaxReportsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'vat-business-tax-report' || item.itemType === 'vat-business-tax-report');
+            });
+        }
+
+        function getVatBusinessTaxFilingPacksLocal() {
+            var items = dashReadJson('afro_vat_business_tax_filing_packs_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'vat-business-tax-filing-pack' || item.toolSlug === 'vat-business-tax-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getVatBusinessTaxFilingPacksCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'vat-business-tax-filing-pack' || item.itemType === 'vat-business-tax-filing-pack');
+            });
+        }
+
+        function getVatBusinessTaxReadinessLocal() {
+            var items = dashReadJson('afro_vat_business_tax_readiness_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'vat-business-tax-readiness' || item.toolSlug === 'vat-business-tax-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getVatBusinessTaxReadinessCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'vat-business-tax-readiness' || item.itemType === 'vat-business-tax-readiness');
+            });
+        }
+
+        function getVatBusinessTaxAuditPacketsLocal() {
+            var items = dashReadJson('afro_vat_business_tax_audit_packets_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'vat-business-tax-audit-packet' || item.toolSlug === 'vat-business-tax-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.createdAt || b.exportedAt || 0).getTime() - new Date(a.createdAt || a.exportedAt || 0).getTime();
+            });
+        }
+
+        function getVatBusinessTaxAuditPacketsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'vat-business-tax-audit-packet' || item.itemType === 'vat-business-tax-audit-packet');
+            });
+        }
+
         function getReligiousCulturalPlansLocal() {
             var items = dashReadJson('afro_religious_cultural_workspace', []);
             if (!Array.isArray(items)) items = [];
@@ -4305,6 +4373,10 @@
             var documentPdfRecipes = getDocumentPdfRecipesLocal();
             var documentPdfReadiness = getDocumentPdfReadinessLocal();
             var documentPdfAuditPackets = getDocumentPdfAuditPacketsLocal();
+            var vatBusinessTaxReports = getVatBusinessTaxReportsLocal();
+            var vatBusinessTaxFilingPacks = getVatBusinessTaxFilingPacksLocal();
+            var vatBusinessTaxReadiness = getVatBusinessTaxReadinessLocal();
+            var vatBusinessTaxAuditPackets = getVatBusinessTaxAuditPacketsLocal();
 
             var religiousCulturalPlans = getReligiousCulturalPlansLocal();
 
@@ -4321,7 +4393,7 @@
                 }
             } catch(e) {}
 
-            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + salaryReports.length + salaryHandoffs.length + salaryReadiness.length + salaryAuditPackets.length + documentPdfReports.length + documentPdfHandoffs.length + documentPdfRecipes.length + documentPdfReadiness.length + documentPdfAuditPackets.length + religiousCulturalPlans.length + healthPlans.length;
+            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + salaryReports.length + salaryHandoffs.length + salaryReadiness.length + salaryAuditPackets.length + documentPdfReports.length + documentPdfHandoffs.length + documentPdfRecipes.length + documentPdfReadiness.length + documentPdfAuditPackets.length + vatBusinessTaxReports.length + vatBusinessTaxFilingPacks.length + vatBusinessTaxReadiness.length + vatBusinessTaxAuditPackets.length + religiousCulturalPlans.length + healthPlans.length;
             var cloudTotal = typeof dashboardWorkspaceState.count === 'number' ? dashboardWorkspaceState.count : null;
             return {
                 favorites: favorites.length,
@@ -4347,6 +4419,10 @@
                 documentPdfRecipes: documentPdfRecipes.length,
                 documentPdfReadiness: documentPdfReadiness.length,
                 documentPdfAuditPackets: documentPdfAuditPackets.length,
+                vatBusinessTaxReports: vatBusinessTaxReports.length,
+                vatBusinessTaxFilingPacks: vatBusinessTaxFilingPacks.length,
+                vatBusinessTaxReadiness: vatBusinessTaxReadiness.length,
+                vatBusinessTaxAuditPackets: vatBusinessTaxAuditPackets.length,
                 religiousCulturalPlans: religiousCulturalPlans.length,
                 healthPlans: healthPlans.length,
                 localTotal: localTotal,
@@ -4639,6 +4715,42 @@
                 });
             }
 
+            if (counts.vatBusinessTaxReports > 0) {
+                add({
+                    key: 'vat-business-tax-reports',
+                    tag: 'VAT',
+                    label: dashPlural(counts.vatBusinessTaxReports, 'tax report'),
+                    detail: 'Open saved VAT and business tax export trails captured after gated downloads.',
+                    cta: 'Open VAT workspace',
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-vat-business-tax'
+                });
+            }
+
+            if (counts.vatBusinessTaxFilingPacks > 0) {
+                add({
+                    key: 'vat-business-tax-filing',
+                    tag: 'VAT',
+                    label: dashPlural(counts.vatBusinessTaxFilingPacks, 'filing pack'),
+                    detail: 'Continue VAT filing packs into dashboard, Document & PDF, salary, trade, legal, or payroll workflows.',
+                    cta: 'Open VAT workspace',
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-vat-business-tax'
+                });
+            }
+
+            if (counts.vatBusinessTaxAuditPackets > 0 || counts.vatBusinessTaxReadiness > 0) {
+                add({
+                    key: 'vat-business-tax-audit',
+                    tag: 'VAT',
+                    label: dashPlural(counts.vatBusinessTaxAuditPackets || counts.vatBusinessTaxReadiness, counts.vatBusinessTaxAuditPackets ? 'audit packet' : 'readiness board'),
+                    detail: 'Review VAT source checks, filing readiness, exception queues, and metadata audit packets.',
+                    cta: 'Open VAT workspace',
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-vat-business-tax'
+                });
+            }
+
             if (counts.religiousCulturalPlans > 0) {
                 add({
                     key: 'religious-cultural-plans',
@@ -4755,7 +4867,8 @@
             var section = document.getElementById('myWorkspace');
             var fullTargets = {
                 'ws-salary': true,
-                'ws-document-pdf': true
+                'ws-document-pdf': true,
+                'ws-vat-business-tax': true
             };
             var renderWorkspace = fullTargets[panelId] && typeof window.renderFullDashboardWorkspace === 'function'
                 ? window.renderFullDashboardWorkspace
@@ -6106,6 +6219,217 @@
             });
         }
 
+        function mergeVatBusinessTaxWorkspaceItems(localItems, cloudItems, itemType) {
+            var merged = {};
+            (Array.isArray(localItems) ? localItems : []).forEach(function(item) {
+                if (!item) return;
+                var id = item.id || item.itemKey || item.item_key || item.ref || '';
+                if (!id) return;
+                merged[id] = Object.assign({}, item, { id: id, itemType: item.itemType || itemType, synced: item.synced === true || item.localOnly === false });
+            });
+            (cloudItems || []).forEach(function(item) {
+                if (!item) return;
+                var payload = item.payload || {};
+                var meta = item.meta || {};
+                var id = item.item_key || item.itemKey || item.id;
+                if (!id) return;
+                merged[id] = Object.assign({}, merged[id] || {}, {
+                    id: id,
+                    itemType: item.item_type || item.itemType || itemType,
+                    toolSlug: item.tool_slug || item.toolSlug || payload.toolSlug || 'vat-business-tax-workflow',
+                    title: item.title || payload.title || (merged[id] && merged[id].title) || 'VAT & Business Tax workspace item',
+                    summary: item.summary || payload.summary || (merged[id] && merged[id].summary) || '',
+                    href: item.href || payload.href || (merged[id] && merged[id].href) || '/vat-business-tax/',
+                    primaryHref: payload.primaryHref || (merged[id] && merged[id].primaryHref) || '',
+                    targetHref: payload.targetHref || (merged[id] && merged[id].targetHref) || '',
+                    workflow: meta.workflow || payload.workflow || (merged[id] && merged[id].workflow) || '',
+                    workflowLabel: payload.workflowLabel || (merged[id] && merged[id].workflowLabel) || '',
+                    target: meta.target || payload.target || (merged[id] && merged[id].target) || '',
+                    targetLabel: payload.targetLabel || (merged[id] && merged[id].targetLabel) || '',
+                    targetCategory: meta.targetCategory || payload.targetCategory || (merged[id] && merged[id].targetCategory) || '',
+                    countryCode: meta.countryCode || payload.countryCode || (merged[id] && merged[id].countryCode) || '',
+                    planTier: meta.planTier || payload.planTier || (merged[id] && merged[id].planTier) || '',
+                    fileName: payload.fileName || (merged[id] && merged[id].fileName) || '',
+                    ref: payload.ref || (merged[id] && merged[id].ref) || '',
+                    sourceReportTitle: payload.sourceReportTitle || (merged[id] && merged[id].sourceReportTitle) || '',
+                    filingPackTitle: payload.filingPackTitle || (merged[id] && merged[id].filingPackTitle) || '',
+                    readinessScore: payload.readinessScore || (merged[id] && merged[id].readinessScore) || 0,
+                    readinessStatus: payload.readinessStatus || (merged[id] && merged[id].readinessStatus) || '',
+                    exceptions: payload.exceptions || (merged[id] && merged[id].exceptions) || [],
+                    createdAt: item.created_at || payload.createdAt || (merged[id] && merged[id].createdAt) || '',
+                    updatedAt: item.updated_at || payload.updatedAt || payload.savedAt || payload.exportedAt || (merged[id] && (merged[id].updatedAt || merged[id].savedAt || merged[id].createdAt)) || '',
+                    synced: true
+                });
+            });
+            return Object.keys(merged).map(function(id) { return merged[id]; }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || b.savedAt || b.exportedAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || a.savedAt || a.exportedAt || 0).getTime();
+            });
+        }
+
+        function getVatBusinessTaxReportItems(localItems) {
+            return mergeVatBusinessTaxWorkspaceItems(localItems || getVatBusinessTaxReportsLocal(), getVatBusinessTaxReportsCloud(), 'vat-business-tax-report');
+        }
+
+        function getVatBusinessTaxFilingPackItems() {
+            return mergeVatBusinessTaxWorkspaceItems(getVatBusinessTaxFilingPacksLocal(), getVatBusinessTaxFilingPacksCloud(), 'vat-business-tax-filing-pack');
+        }
+
+        function getVatBusinessTaxReadinessItems() {
+            return mergeVatBusinessTaxWorkspaceItems(getVatBusinessTaxReadinessLocal(), getVatBusinessTaxReadinessCloud(), 'vat-business-tax-readiness');
+        }
+
+        function getVatBusinessTaxAuditPacketItems() {
+            return mergeVatBusinessTaxWorkspaceItems(getVatBusinessTaxAuditPacketsLocal(), getVatBusinessTaxAuditPacketsCloud(), 'vat-business-tax-audit-packet');
+        }
+
+        function removeVatBusinessTaxLocalItem(storageKey, id) {
+            var current = dashReadJson(storageKey, []);
+            if (!Array.isArray(current)) current = [];
+            current = current.filter(function(item) { return item && item.id !== id; });
+            try { localStorage.setItem(storageKey, JSON.stringify(current)); } catch(e) {}
+        }
+
+        function removeVatBusinessTaxWorkspaceItem(itemType, id) {
+            if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                AfroWorkspace.remove({ itemType: itemType, itemKey: id }).catch(function(e) {
+                    console.warn('[Dashboard] VAT & Business Tax workspace delete sync failed:', e.message || e);
+                });
+            }
+        }
+
+        function renderVatBusinessTaxWorkspace(container, items) {
+            if (!container) return;
+            var reportList = getVatBusinessTaxReportItems(items).slice(0, 14);
+            var filingList = getVatBusinessTaxFilingPackItems().slice(0, 14);
+            var readinessList = getVatBusinessTaxReadinessItems().slice(0, 14);
+            var auditList = getVatBusinessTaxAuditPacketItems().slice(0, 14);
+            if (!reportList.length && !filingList.length && !readinessList.length && !auditList.length) {
+                container.innerHTML = '<div class="ws-empty">No VAT & Business Tax reports, filing packs, readiness boards, or audit packets saved yet. Use the VAT hub planner or export a generated VAT report.</div>';
+                return;
+            }
+
+            var readinessHtml = readinessList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var exceptions = Array.isArray(item.exceptions) ? item.exceptions.length : 0;
+                var detail = [item.workflowLabel || item.workflow || 'VAT workflow', item.targetLabel || item.target || 'handoff', item.status || item.readinessStatus || 'draft', saved].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'VAT readiness board') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml((item.score || item.readinessScore || 0) + '% ready' + (exceptions ? ' | ' + exceptions + ' open exception' + (exceptions === 1 ? '' : 's') : ' | no open exceptions')) + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="/vat-business-tax/">Open planner</a>' +
+                        '<button class="btn-small" type="button" data-vatbiz-readiness-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var auditHtml = auditList.map(function(item) {
+                var saved = dashTimeAgo(item.createdAt || item.exportedAt || item.updatedAt);
+                var detail = [item.workflowLabel || item.workflow || 'VAT workflow', item.targetLabel || item.target || 'audit', item.readinessScore != null ? item.readinessScore + '% ready' : '', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'VAT audit packet') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Saved VAT & Business Tax audit metadata packet') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="/vat-business-tax/">Open planner</a>' +
+                        '<button class="btn-small" type="button" data-vatbiz-audit-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var filingHtml = filingList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var href = dashSafeHref(item.primaryHref || item.href || '/vat-business-tax/');
+                var targetHref = dashSafeHref(item.targetHref || item.href || '/vat-business-tax/');
+                var source = item.sourceReportTitle ? ' | Source: ' + item.sourceReportTitle : '';
+                var detail = [item.workflowLabel || item.workflow || 'VAT workflow', item.targetLabel || item.target || 'filing pack', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'VAT filing pack') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Saved VAT filing metadata pack') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail + source) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open route</a>' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(targetHref) + '">Destination</a>' +
+                        '<button class="btn-small" type="button" data-vatbiz-filing-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var reportHtml = reportList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.savedAt || item.createdAt);
+                var href = dashSafeHref(item.href || '/vat-business-tax/');
+                var country = item.countryCode ? item.countryCode : '';
+                var detail = [item.toolName || item.toolSlug || 'VAT tool', country, item.fileName || '', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'VAT report') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Generated VAT & Business Tax export trail') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + (item.ref ? ' | ' + dashEscapeHtml(item.ref) : '') + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open tool</a>' +
+                        '<a class="btn-small" href="/vat-business-tax/">VAT hub</a>' +
+                        '<button class="btn-small" type="button" data-vatbiz-report-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            container.innerHTML = (readinessHtml ? '<div class="ws-subhead">Readiness boards</div>' + readinessHtml : '') +
+                (auditHtml ? '<div class="ws-subhead">Audit packets</div>' + auditHtml : '') +
+                (filingHtml ? '<div class="ws-subhead">Filing packs</div>' + filingHtml : '') +
+                (reportHtml ? '<div class="ws-subhead">Report trails</div>' + reportHtml : '');
+
+            container.querySelectorAll('[data-vatbiz-report-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-vatbiz-report-remove');
+                    if (!id || !confirm('Remove this VAT report?')) return;
+                    removeVatBusinessTaxLocalItem('afro_vat_business_tax_reports_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeVatBusinessTaxWorkspaceItem('vat-business-tax-report', id);
+                });
+            });
+
+            container.querySelectorAll('[data-vatbiz-filing-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-vatbiz-filing-remove');
+                    if (!id || !confirm('Remove this VAT filing pack?')) return;
+                    removeVatBusinessTaxLocalItem('afro_vat_business_tax_filing_packs_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeVatBusinessTaxWorkspaceItem('vat-business-tax-filing-pack', id);
+                });
+            });
+
+            container.querySelectorAll('[data-vatbiz-readiness-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-vatbiz-readiness-remove');
+                    if (!id || !confirm('Remove this VAT readiness board?')) return;
+                    removeVatBusinessTaxLocalItem('afro_vat_business_tax_readiness_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeVatBusinessTaxWorkspaceItem('vat-business-tax-readiness', id);
+                });
+            });
+
+            container.querySelectorAll('[data-vatbiz-audit-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-vatbiz-audit-remove');
+                    if (!id || !confirm('Remove this VAT audit packet?')) return;
+                    removeVatBusinessTaxLocalItem('afro_vat_business_tax_audit_packets_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeVatBusinessTaxWorkspaceItem('vat-business-tax-audit-packet', id);
+                });
+            });
+        }
+
         function getReligiousCulturalPlanItems(localItems) {
             var merged = {};
             (Array.isArray(localItems) ? localItems : getReligiousCulturalPlansLocal()).forEach(function(item) {
@@ -6214,6 +6538,12 @@
             var documentPdfAuditPackets = getDocumentPdfAuditPacketsLocal();
             if (documentPdfReports.length > 0 || documentPdfHandoffs.length > 0 || documentPdfRecipes.length > 0 || documentPdfReadiness.length > 0 || documentPdfAuditPackets.length > 0 || getDocumentPdfReportsCloud().length > 0 || getDocumentPdfHandoffsCloud().length > 0 || getDocumentPdfRecipesCloud().length > 0 || getDocumentPdfReadinessCloud().length > 0 || getDocumentPdfAuditPacketsCloud().length > 0) tabs.push({ id: 'ws-document-pdf', label: 'PDF Workspace', icon: 'PDF' });
 
+            var vatBusinessTaxReports = getVatBusinessTaxReportsLocal();
+            var vatBusinessTaxFilingPacks = getVatBusinessTaxFilingPacksLocal();
+            var vatBusinessTaxReadiness = getVatBusinessTaxReadinessLocal();
+            var vatBusinessTaxAuditPackets = getVatBusinessTaxAuditPacketsLocal();
+            if (vatBusinessTaxReports.length > 0 || vatBusinessTaxFilingPacks.length > 0 || vatBusinessTaxReadiness.length > 0 || vatBusinessTaxAuditPackets.length > 0 || getVatBusinessTaxReportsCloud().length > 0 || getVatBusinessTaxFilingPacksCloud().length > 0 || getVatBusinessTaxReadinessCloud().length > 0 || getVatBusinessTaxAuditPacketsCloud().length > 0) tabs.push({ id: 'ws-vat-business-tax', label: 'VAT Workspace', icon: 'VAT' });
+
             var religiousCulturalPlans = getReligiousCulturalPlansLocal();
             if (religiousCulturalPlans.length > 0 || getReligiousCulturalPlansCloud().length > 0) tabs.push({ id: 'ws-religious-cultural', label: 'Faith & Culture', icon: 'CUL' });
 
@@ -6308,6 +6638,9 @@
             }
             if (document.getElementById('ws-document-pdf')) {
                 renderDocumentPdfWorkspace(document.getElementById('ws-document-pdf'), documentPdfReports);
+            }
+            if (document.getElementById('ws-vat-business-tax')) {
+                renderVatBusinessTaxWorkspace(document.getElementById('ws-vat-business-tax'), vatBusinessTaxReports);
             }
             if (document.getElementById('ws-religious-cultural')) {
                 renderReligiousCulturalWorkspace(document.getElementById('ws-religious-cultural'), religiousCulturalPlans);
@@ -6805,11 +7138,13 @@
         }
 
         // Start
+        window.renderFullDashboardWorkspaceCore = renderMyWorkspace;
         window.renderFullDashboardWorkspace = renderMyWorkspace;
         waitForAuth();
     </script>
 <script src="/dashboard/dashboard-sync.js?v=20260417b"></script>
 <script src="/dashboard/dashboard-workspace-polish.js?v=20260503a"></script>
+<script>if (window.renderFullDashboardWorkspaceCore) window.renderFullDashboardWorkspace = window.renderFullDashboardWorkspaceCore;</script>
 <script src="/dashboard/insurance-workspace.js?v=a73570d7"></script>
 <script src="/dashboard/telecom-workspace.js?v=c7b778cc"></script>
 <script src="/dashboard/climate-workspace.js?v=806565c9"></script>

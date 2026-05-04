@@ -90,10 +90,15 @@ a{text-decoration:none;color:inherit}
 
 /* FILTER BAR */
 .filter-bar{max-width:1100px;margin:-24px auto 0;padding:0 24px;position:relative;z-index:10}
-.filter-inner{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,.06);flex-wrap:wrap}
+.filter-inner{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px 20px;display:flex;align-items:stretch;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,.06);flex-direction:column}
+.filter-search{display:flex;align-items:center;gap:12px;width:100%}
 .filter-input{flex:1;min-width:200px;border:none;outline:none;font-size:.9rem;font-weight:500;color:#111827;font-family:inherit;background:transparent}
 .filter-input::placeholder{color:#9ca3af}
 .filter-count{font-size:.75rem;font-weight:600;color:#6b7280;white-space:nowrap}
+.intent-row{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px}
+.intent-chip{border:1px solid #dbe3ee;background:#f8fafc;color:#475569;border-radius:999px;padding:7px 11px;font-size:.74rem;font-weight:800;font-family:inherit;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.intent-chip:hover{border-color:#94a3b8;color:#0f172a}
+.intent-chip.active{background:#0f172a;border-color:#0f172a;color:#fff}
 
 /* GRID */
 .sec{padding:48px 0 64px}
@@ -101,7 +106,7 @@ a{text-decoration:none;color:inherit}
 @media(max-width:720px){.cg{grid-template-columns:1fr}}
 
 /* CATEGORY CARD */
-.cc{padding:24px;background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;display:flex;flex-direction:column;gap:12px;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden;min-width:0}
+.cc{padding:24px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;display:flex;flex-direction:column;gap:12px;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden;min-width:0}
 .cc:hover{border-color:var(--cc-accent,#0062CC);box-shadow:0 8px 28px rgba(0,0,0,.06);transform:translateY(-2px)}
 .cc-top{display:flex;align-items:center;gap:12px}
 .cc-i{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
@@ -115,13 +120,15 @@ a{text-decoration:none;color:inherit}
 .cc-tool:hover{background:#EEF4FF;border-color:#0062CC;color:#0062CC}
 .cc-more{display:inline-flex;align-items:center;font-size:.7rem;font-weight:700;color:var(--cc-accent,#0062CC);padding:5px 10px;border-radius:100px;white-space:nowrap}
 .cc-count{font-size:.68rem;font-weight:600;color:#9ca3af;margin-top:4px}
+.cat-empty{display:none;margin-top:18px;padding:22px;border:1px dashed #cbd5e1;border-radius:10px;background:#fff;color:#64748b;text-align:center;font-size:.9rem}
+.cat-empty.show{display:block}
 
 /* RESPONSIVE */
 @media(max-width:480px){
   .hero{padding:48px 0 36px}
   .hero h1{font-size:1.8rem}
   .hero-stats{gap:16px}
-  .filter-inner{flex-direction:column;align-items:stretch}
+  .filter-search{align-items:flex-start}
   .cc{padding:18px}
   .cc-top{align-items:flex-start}
   .cc-tools{gap:7px}
@@ -156,13 +163,16 @@ a{text-decoration:none;color:inherit}
 
 <div class="filter-bar">
   <div class="filter-inner">
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/></svg>
-    <input class="filter-input" type="text" id="catFilter" placeholder="Filter categories..." autocomplete="off">
-    <span class="filter-count" id="catCount">32 categories</span>
+    <div class="filter-search">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/></svg>
+      <input class="filter-input" type="text" id="catFilter" placeholder="Search categories or tools..." autocomplete="off">
+      <span class="filter-count" id="catCount">32 categories</span>
+    </div>
+    <div class="intent-row" id="catIntentFilters" aria-label="Filter categories by intent"></div>
   </div>
 </div>
 
-<section class="sec"><div class="wrap"><div class="cg" id="cg"></div></div></section>
+<section class="sec"><div class="wrap"><div class="cg" id="cg"></div><div class="cat-empty" id="catEmpty">No categories match that search.</div></div></section>
 
 <afro-footer></afro-footer>
 <script>
@@ -177,7 +187,7 @@ var ALL_CATS = [
   { key:'insurance', slug:'insurance', name:'Insurance', icon:'\u{1F6E1}\uFE0F', bg:'#fef2f2', accent:'#dc2626', desc:'Car, health, life, funeral, motor third-party, business, travel, and workers compensation insurance calculators \u2014 54 countries.' },
   { key:'fintech', slug:'fintech', name:'Fintech & Banking', icon:'\u{1F4B3}', bg:'#ecfdf5', accent:'#10b981', desc:'Remittance fees, mobile money vs bank, fixed deposits, T-bills, microfinance, digital lending, SACCOs, payment gateways, BNPL.' },
   { key:'agriculture', slug:'agriculture', name:'Agriculture', icon:'\u{1F33E}', bg:'#E8F2FF', accent:'#007AFF', desc:'Crop yield estimators, seed rate calculators, fertilizer tools, irrigation calculators, and farm profit/loss analysis.' },
-  { key:'ecommerce', slug:'vat-business-tax', name:'VAT & Business Tax', icon:'\u{1F9FE}', bg:'#fff7ed', accent:'#f59e0b', desc:'Pan-African VAT calculator plus country-specific VAT tools for Nigeria, South Africa, Kenya, Ghana, Egypt, and 2,594+ more.' },
+  { key:'ecommerce', slug:'vat-business-tax', name:'VAT & Business Tax', icon:'\u{1F9FE}', bg:'#fff7ed', accent:'#f59e0b', desc:'Pan-African VAT calculator plus country-specific VAT tools for Nigeria, South Africa, Kenya, Ghana, Egypt, and broader business tax workflows.' },
   { key:'legal', slug:'legal', name:'Legal & Compliance', icon:'\u2696\uFE0F', bg:'#f5f3ff', accent:'#7c3aed', desc:'Business registration checklists, NDA/privacy policy generators, will drafting, data privacy compliance (NDPA, POPIA), court fees, child support.' },
   { key:'data-productivity', slug:'data-productivity', name:'Business & ROI', icon:'\u{1F4CA}', bg:'#eef2ff', accent:'#6366f1', desc:'Budget planners, unit converters, public holiday calendars, working days calculators, time zones, age calculators, pomodoro timer.' },
   { key:'language', slug:'language', name:'Language & Translation', icon:'\u{1F5E3}\uFE0F', bg:'#faf5ff', accent:'#a855f7', desc:'Nigerian Pidgin, Swahili, Yoruba, Hausa, Amharic translators. African name meanings and Francophone Africa translator.' },
@@ -200,6 +210,23 @@ var ALL_CATS = [
   { key:'sports', slug:'sports', name:'Sports & Entertainment', icon:'\u26BD', bg:'#fdf4ff', accent:'#9333ea', desc:'Betting odds, AFCON predictor, fantasy football, streaming royalties, DJ booking rates, concert budgets, Nollywood box office.' },
   { key:'mining', slug:'mining', name:'Mining & Extractives', icon:'\u26CF\uFE0F', bg:'#fef9c3', accent:'#ca8a04', desc:'Gold price tracker, diamond valuation, mining royalties, oil production, artisanal mining income, mineral export duty, petroleum pricing.' }
 ];
+
+var CATEGORY_INTENTS = [
+  { key:'all', label:'All' },
+  { key:'money', label:'Money', cats:['financial','hr-payroll','ecommerce','fintech','insurance','personal-finance'] },
+  { key:'business', label:'Business', cats:['small-business','trade','agriculture','transport','creative','data-productivity'] },
+  { key:'people', label:'People', cats:['education','health','career','diaspora','language','religious-cultural'] },
+  { key:'build', label:'Build', cats:['developer','engineering','energy','telecom','security','climate'] },
+  { key:'explore', label:'Explore', cats:['legal','government','travel-tourism','african','sports','mining'] }
+];
+
+var CATEGORY_INTENT_BY_KEY = {};
+CATEGORY_INTENTS.forEach(function(intent) {
+  (intent.cats || []).forEach(function(key) {
+    CATEGORY_INTENT_BY_KEY[key] = intent.key;
+  });
+});
+var ACTIVE_CATEGORY_INTENT = 'all';
 
 var _NAV_TOOLS = {
   'financial': [
@@ -673,6 +700,16 @@ function _renderCats() {
   if (categoryHero) categoryHero.textContent = formatCount(ALL_CATS.length);
   var countEl = document.getElementById('catCount');
   if (countEl) countEl.textContent = ALL_CATS.length + ' categories';
+  var intentEl = document.getElementById('catIntentFilters');
+  if (intentEl) {
+    intentEl.innerHTML = CATEGORY_INTENTS.map(function(intent) {
+      var count = intent.key === 'all' ? ALL_CATS.length : ALL_CATS.filter(function(cm) {
+        return CATEGORY_INTENT_BY_KEY[cm.key] === intent.key;
+      }).length;
+      return '<button class="intent-chip' + (ACTIVE_CATEGORY_INTENT === intent.key ? ' active' : '') + '" type="button" data-intent="' + escapeHtml(intent.key) + '">'
+        + escapeHtml(intent.label) + ' <span>' + formatCount(count) + '</span></button>';
+    }).join('');
+  }
 
   var html = '';
   ALL_CATS.forEach(function(cm){
@@ -695,9 +732,10 @@ function _renderCats() {
       }
     }
     var countText = toolCount > 0 ? countLabel(toolCount) : 'Category hub';
+    var intentKey = CATEGORY_INTENT_BY_KEY[cm.key] || 'explore';
     var searchText = (cm.name + ' ' + cm.desc + ' ' + topTools.map(function(t){ return t.label; }).join(' ')).toLowerCase();
 
-    html += '<a href="/' + escapeHtml(cm.slug) + '/" class="cc" data-search="' + escapeHtml(searchText) + '" style="--cc-accent:' + escapeHtml(cm.accent) + '">'
+    html += '<a href="/' + escapeHtml(cm.slug) + '/" class="cc" data-search="' + escapeHtml(searchText) + '" data-intent="' + escapeHtml(intentKey) + '" style="--cc-accent:' + escapeHtml(cm.accent) + '">'
       + '<div class="cc-top">'
       + '<div class="cc-i" style="background:' + escapeHtml(cm.bg) + '">' + escapeHtml(cm.icon) + '</div>'
       + '<div class="cc-info"><div class="cc-n">' + escapeHtml(cm.name) + '</div>'
@@ -709,23 +747,40 @@ function _renderCats() {
   });
   g.innerHTML = html;
 
-  // Filter
   var filter = document.getElementById('catFilter');
-  var countEl = document.getElementById('catCount');
+  var emptyEl = document.getElementById('catEmpty');
+  function applyFilters() {
+    var q = filter ? filter.value.toLowerCase().trim() : '';
+    var cards = g.querySelectorAll('.cc');
+    var vis = 0;
+    cards.forEach(function(card){
+      var haystack = card.getAttribute('data-search') || '';
+      var intent = card.getAttribute('data-intent') || 'explore';
+      var matchesSearch = !q || haystack.indexOf(q) !== -1;
+      var matchesIntent = ACTIVE_CATEGORY_INTENT === 'all' || intent === ACTIVE_CATEGORY_INTENT;
+      var match = matchesSearch && matchesIntent;
+      card.style.display = match ? '' : 'none';
+      if (match) vis++;
+    });
+    if (countEl) countEl.textContent = vis + ' categor' + (vis === 1 ? 'y' : 'ies');
+    if (emptyEl) emptyEl.classList.toggle('show', vis === 0);
+  }
+
   if (filter) {
-    filter.addEventListener('input', function(){
-      var q = this.value.toLowerCase().trim();
-      var cards = g.querySelectorAll('.cc');
-      var vis = 0;
-      cards.forEach(function(card){
-        var haystack = card.getAttribute('data-search') || '';
-        var match = !q || haystack.indexOf(q) !== -1;
-        card.style.display = match ? '' : 'none';
-        if (match) vis++;
-      });
-      if (countEl) countEl.textContent = vis + ' categor' + (vis === 1 ? 'y' : 'ies');
+    filter.oninput = applyFilters;
+  }
+  if (intentEl) {
+    intentEl.querySelectorAll('[data-intent]').forEach(function(btn){
+      btn.onclick = function() {
+        ACTIVE_CATEGORY_INTENT = btn.getAttribute('data-intent') || 'all';
+        intentEl.querySelectorAll('[data-intent]').forEach(function(other){
+          other.classList.toggle('active', other === btn);
+        });
+        applyFilters();
+      };
     });
   }
+  applyFilters();
 }
 // Run when registry is ready, or immediately if no registry
 if (typeof onRegistryReady === 'function') { onRegistryReady(_renderCats); }

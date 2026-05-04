@@ -113,7 +113,7 @@
     <button class="vat-quick-btn" data-quick="NG">🇳🇬 Nigeria 7.5%</button>
     <button class="vat-quick-btn" data-quick="KE">🇰🇪 Kenya 16%</button>
     <button class="vat-quick-btn" data-quick="ZA">🇿🇦 South Africa 15%</button>
-    <button class="vat-quick-btn" data-quick="GH">🇬🇭 Ghana 21.9%</button>
+    <button class="vat-quick-btn" data-quick="GH">🇬🇭 Ghana 20%</button>
     <button class="vat-quick-btn" data-quick="EG">🇪🇬 Egypt 14%</button>
     <button class="vat-quick-btn" data-quick="MA">🇲🇦 Morocco 20%</button>
   </div>
@@ -365,7 +365,7 @@
         <div class="vat-stats">
           <div class="vat-stat"><span class="vat-stat-value">54</span><span class="vat-stat-label">Countries</span></div>
           <div class="vat-stat"><span class="vat-stat-value" id="avgRate">15.5%</span><span class="vat-stat-label">Avg. Rate</span></div>
-          <div class="vat-stat"><span class="vat-stat-value" id="highRate">21.9%</span><span class="vat-stat-label">Highest</span></div>
+          <div class="vat-stat"><span class="vat-stat-value" id="highRate">20%</span><span class="vat-stat-label">Highest</span></div>
           <div class="vat-stat"><span class="vat-stat-value">0%</span><span class="vat-stat-label">Lowest</span></div>
         </div>
       </div>
@@ -481,6 +481,8 @@
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/related-tools-data.min.js?v=23cf84e9" defer></script>
 <script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/lib/share-state.js?v=a06e4cb8" defer></script>
+<script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
+<script src="/assets/js/lib/vat-business-tax-report-sync.js?v=20260503a" defer></script>
 <script src="/assets/js/lib/pdf-template.js?v=d67ce358" defer></script>
 
 <script>
@@ -490,9 +492,9 @@
   // ═══ VAT DATABASE (enhanced with thresholds, filing, authority) ═══
   const DB = {
     NG:{name:'Nigeria',flag:'\u{1F1F3}\u{1F1EC}',currency:'\u20A6',rate:7.5,reduced:'Exempt (food)',exemptions:'Basic food, medicine, exports',notes:'Zero-rated food from Jan 2026',threshold:'\u20A625M/yr',filing:'Monthly',authority:'FIRS'},
-    KE:{name:'Kenya',flag:'\u{1F1F0}\u{1F1EA}',currency:'KES',rate:16,reduced:'8% (petroleum)',exemptions:'Basic food, health, education',notes:'8% for petroleum products',threshold:'KES 5M/yr',filing:'Monthly',authority:'KRA'},
-    ZA:{name:'South Africa',flag:'\u{1F1FF}\u{1F1E6}',currency:'R',rate:15,reduced:'0% (basic food)',exemptions:'Basic food, health, education',notes:'Zero-rated basic food basket',threshold:'R1M/yr',filing:'Bi-monthly',authority:'SARS'},
-    GH:{name:'Ghana',flag:'\u{1F1EC}\u{1F1ED}',currency:'GHS',rate:21.9,reduced:'Flat rate 3%',exemptions:'Some food, health, education',notes:'Standard 15% + NHIL 2.5% + GETFund 2.5% + COVID levy 1% + Debt Recovery 1.9% = effective ~21.9%',threshold:'GHS 200K/yr',filing:'Monthly',authority:'GRA'},
+    KE:{name:'Kenya',flag:'\u{1F1F0}\u{1F1EA}',currency:'KES',rate:16,reduced:'0% (zero-rated supplies)',exemptions:'Basic food, health, education',notes:'The former 8% petroleum VAT rate was deleted; current VAT rates are 16% standard and 0% zero-rated supplies.',threshold:'KES 5M/yr',filing:'Monthly',authority:'KRA'},
+    ZA:{name:'South Africa',flag:'\u{1F1FF}\u{1F1E6}',currency:'R',rate:15,reduced:'0% (basic food)',exemptions:'Basic food, health, education',notes:'Zero-rated basic food basket',threshold:'R2.3M/yr',filing:'Bi-monthly',authority:'SARS'},
+    GH:{name:'Ghana',flag:'\u{1F1EC}\u{1F1ED}',currency:'GHS',rate:20,reduced:'0% (zero-rated supplies)',exemptions:'Some food, health, education',notes:'Standard 15% VAT + NHIL 2.5% + GETFund 2.5% = 20% effective charge. COVID-19 Health Recovery Levy abolished.',threshold:'GHS 750K/yr',filing:'Monthly',authority:'GRA'},
     TZ:{name:'Tanzania',flag:'\u{1F1F9}\u{1F1FF}',currency:'TSh',rate:18,reduced:'16% (digital B2C)',exemptions:'Basic food, health',notes:'',threshold:'TZS 200M/yr',filing:'Monthly',authority:'TRA'},
     RW:{name:'Rwanda',flag:'\u{1F1F7}\u{1F1FC}',currency:'FRw',rate:18,reduced:'6%',exemptions:'Food, medicine, health',notes:'',threshold:'FRw 20M/yr',filing:'Monthly',authority:'RRA'},
     UG:{name:'Uganda',flag:'\u{1F1FA}\u{1F1EC}',currency:'USh',rate:18,reduced:'0% (food)',exemptions:'Basic food, health, education',notes:'',threshold:'UGX 150M/yr',filing:'Monthly',authority:'URA'},
@@ -891,7 +893,7 @@
     // Ghana composite rate notice
     if (code === 'GH') {
       $('rateNotice').style.display = 'block';
-      $('rateNotice').innerHTML = '<strong>Note:</strong> Ghana\'s effective rate of 21.9% includes VAT (15%) + NHIL (2.5%) + GETFund (2.5%) + COVID levy (1%) + Debt Recovery (1.9%).';
+      $('rateNotice').innerHTML = '<strong>Note:</strong> Ghana\'s effective standard charge is 20%: VAT (15%) + NHIL (2.5%) + GETFund (2.5%). The COVID-19 Health Recovery Levy has been abolished.';
     } else if (d.notes && d.rate > 0) {
       $('rateNotice').style.display = 'block';
       $('rateNotice').innerHTML = '<strong>Note:</strong> ' + d.notes;
@@ -1097,6 +1099,10 @@
         subtitle: d.name + ' \u2014 ' + effectiveRate + '% VAT' + (isCustom ? ' (custom)' : ''),
         country: d.name,
         toolId: 'vat-calc',
+        category: 'vat-business-tax',
+        countryCode: code,
+        currency: d.currency,
+        reportTitle: 'VAT Calculation Report',
         heroStats: [
           { label: 'Net Amount', value: fmtC(net, d.currency) },
           { label: 'VAT (' + effectiveRate + '%)', value: fmtC(vat, d.currency), color: 'red' },
@@ -1114,7 +1120,7 @@
           ]
         }],
         chartImage: chartInstance ? $('vatChart') : null,
-        source: 'VAT rates verified against national revenue authorities as of March 2026. ' + (isCustom ? 'A custom rate override was applied for this calculation. ' : '') + (d.notes || ''),
+        source: 'VAT rates checked against national revenue authority guidance on 3 May 2026. ' + (isCustom ? 'A custom rate override was applied for this calculation. ' : '') + (d.notes || ''),
         disclaimer: 'This report is for informational purposes only. VAT rates, exemptions, and thresholds change. Consult a tax professional for binding advice.'
       });
     }
@@ -1150,13 +1156,17 @@
         subtitle: d.name + ' \u2014 ' + d.rate + '% VAT',
         country: d.name,
         toolId: 'vat-invoice',
+        category: 'vat-business-tax',
+        countryCode: code,
+        currency: d.currency,
+        reportTitle: 'VAT Invoice Receipt',
         heroStats: [
           { label: 'Subtotal', value: fmtC(subtotal, d.currency) },
           { label: 'Total VAT', value: fmtC(totalVat, d.currency), color: 'red' },
           { label: 'Grand Total', value: fmtC(subtotal + totalVat, d.currency), highlight: true }
         ],
         sections: [{ title: 'Line Items', rows }],
-        source: d.name + ' VAT rate: ' + d.rate + '%. Verified March 2026.',
+        source: d.name + ' VAT rate: ' + d.rate + '%. Checked against national revenue authority guidance on 3 May 2026.',
         disclaimer: 'This receipt is for reference only and does not constitute a tax invoice.'
       });
     }

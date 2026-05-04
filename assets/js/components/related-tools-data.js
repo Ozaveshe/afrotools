@@ -939,7 +939,7 @@
         "id": "gh-vat",
         "name": "Ghana VAT Calculator",
         "icon": "🇬🇭",
-        "desc": "GRA VAT 15% + 2.5% NHIL + 1% GetFund. Standard +...",
+        "desc": "GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard...",
         "href": "/ghana/gh-vat",
         "category": "ecommerce",
         "lang": "en",
@@ -1107,9 +1107,9 @@
       },
       {
         "id": "background-remover",
-        "name": "Background Remover",
+        "name": "Background Remover Studio",
         "icon": "✂️",
-        "desc": "AI-powered background removal in-browser. No upl...",
+        "desc": "Remove or replace backgrounds with AI person cut...",
         "href": "/tools/background-remover/",
         "category": "image-design",
         "lang": "en",
@@ -1142,6 +1142,18 @@
         "imageExt": "webp"
       },
       {
+        "id": "passport-photo",
+        "name": "Passport Photo Studio",
+        "icon": "📸",
+        "desc": "Create source-backed passport and visa photos wi...",
+        "href": "/tools/passport-photo/",
+        "category": "image-design",
+        "lang": "en",
+        "priority": 90,
+        "estTraffic": 10000,
+        "imageExt": "svg"
+      },
+      {
         "id": "image-crop",
         "name": "Image Crop Studio",
         "icon": "🖼️",
@@ -1151,18 +1163,6 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 14000,
-        "imageExt": "svg"
-      },
-      {
-        "id": "passport-photo",
-        "name": "Passport Photo Tool",
-        "icon": "📸",
-        "desc": "Crop and resize photos for popular African trave...",
-        "href": "/tools/passport-photo/",
-        "category": "image-design",
-        "lang": "en",
-        "priority": 88,
-        "estTraffic": 10000,
         "imageExt": "svg"
       },
       {
@@ -1203,13 +1203,13 @@
       },
       {
         "id": "image-to-text",
-        "name": "Image to Text (OCR)",
+        "name": "Image to Text OCR Studio",
         "icon": "🔤",
-        "desc": "Extract text from images. Supports Arabic, Swahi...",
+        "desc": "Extract, clean, edit, and export OCR text from r...",
         "href": "/tools/image-to-text/",
         "category": "image-design",
         "lang": "en",
-        "priority": 85,
+        "priority": 86,
         "estTraffic": 10000,
         "imageExt": "svg"
       },
@@ -1250,6 +1250,18 @@
         "imageExt": "svg"
       },
       {
+        "id": "image-filters",
+        "name": "Photo Filter Studio",
+        "icon": "✨",
+        "desc": "Apply presets, pro adjustments, before-after com...",
+        "href": "/tools/image-filters/",
+        "category": "image-design",
+        "lang": "en",
+        "priority": 82,
+        "estTraffic": 8000,
+        "imageExt": "svg"
+      },
+      {
         "id": "thumbnail-maker",
         "name": "YouTube Thumbnail Maker",
         "icon": "🖼️",
@@ -1270,18 +1282,6 @@
         "category": "image-design",
         "lang": "en",
         "priority": 80,
-        "estTraffic": 8000,
-        "imageExt": "svg"
-      },
-      {
-        "id": "image-filters",
-        "name": "Photo Filter & Editor",
-        "icon": "✨",
-        "desc": "Apply filters, adjust brightness, contrast, satu...",
-        "href": "/tools/image-filters/",
-        "category": "image-design",
-        "lang": "en",
-        "priority": 77,
         "estTraffic": 8000,
         "imageExt": "svg"
       },
@@ -5895,9 +5895,9 @@
       },
       {
         "id": "background-remover",
-        "name": "Background Remover",
+        "name": "Background Remover Studio",
         "icon": "✂️",
-        "desc": "AI-powered background removal in-browser. No upl...",
+        "desc": "Remove or replace backgrounds with AI person cut...",
         "href": "/tools/background-remover/",
         "category": "image-design",
         "lang": "en",

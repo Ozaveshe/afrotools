@@ -1,706 +1,321 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo Filter Editor | Apply Filters to Images | AfroTools</title>
-<meta name="description" content="Apply real-time filters to photos: grayscale, sepia, blur, brightness, contrast, saturation, hue rotate. Download edited images instantly.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Filter Studio - Presets, Adjustments, Batch Export | AfroTools</title>
+<meta name="description" content="Free local photo filter studio. Apply useful presets, tune brightness, contrast, warmth, grain, vignette, sharpen, compare before and after, and export batch zip packs.">
+<meta name="keywords" content="photo filter editor, online image filters, batch photo filters, image editor, browser photo editor, AfroTools">
 <link rel="canonical" href="https://afrotools.com/tools/image-filters/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Photo Filter Editor | AfroTools">
-<meta property="og:description" content="Apply filters to photos with real-time preview.">
+<meta property="og:title" content="Photo Filter Studio | AfroTools">
+<meta property="og:description" content="Apply presets and fine-grain photo adjustments locally, compare before and after, and export filtered images or batch zip packs.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/image-filters/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/image-filters.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Photo Filter Editor | AfroTools">
-<meta name="twitter:description" content="Apply filters to photos with real-time preview.">
+<meta name="twitter:title" content="Photo Filter Studio | AfroTools">
+<meta name="twitter:description" content="Presets, precise adjustments, before-after compare, local history, and batch exports for practical photo editing.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/image-filters.svg">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/image-filters/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/image-filters/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
+<link rel="stylesheet" href="/assets/css/image-filters-studio.css?v=20260503">
 <script src="/assets/js/components/related-tools-data.min.js?v=23cf84e9" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<style>
-  :root {
-    --afro-blue: var(--color-primary);
-    --afro-dark: #0f1419;
-  }
-
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .tool-hero::after {
-    content: '🎞️';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
-
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
-
-  .breadcrumb span {
-    color: var(--afro-blue);
-  }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
-  h1 em {
-    color: var(--afro-blue);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
-  }
-
-  .tool-main {
-    padding: 28px 0 72px;
-  }
-
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .card + .card {
-    margin-top: 18px;
-  }
-
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #EFF6FF;
-    background: #F5F9FF;
-  }
-
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
-
-  .card-body {
-    padding: 22px;
-  }
-
-  .file-input-label {
-    display: block;
-    padding: 24px;
-    background: #EFF6FF;
-    border: 2px dashed #BFDBFE;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    font-size: 0.9rem;
-    color: #244d2c;
-    font-weight: 600;
-  }
-
-  .file-input-label:hover {
-    border-color: var(--afro-blue);
-    background: #EFF6FF;
-  }
-
-  .file-input-label.dragover {
-    border-color: var(--afro-blue);
-    background: rgba(0, 113, 227, 0.1);
-  }
-
-  input[type="file"] {
-    display: none;
-  }
-
-  .filter-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-
-  .filter-btn {
-    padding: 10px 12px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #244d2c;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .filter-btn:hover {
-    border-color: var(--afro-blue);
-  }
-
-  .filter-btn.active {
-    border-color: var(--afro-blue);
-    background: var(--afro-blue);
-    color: #fff;
-  }
-
-  .slider-group {
-    margin-bottom: 16px;
-  }
-
-  .slider {
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
-    background: #DBEAFE;
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-
-  .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--afro-blue);
-    cursor: pointer;
-  }
-
-  .slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--afro-blue);
-    cursor: pointer;
-    border: none;
-  }
-
-  .slider-label {
-    font-size: 0.7rem;
-    color: #6B8CAE;
-    margin-bottom: 4px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .preview {
-    background: #F5F9FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 10px;
-    padding: 20px;
-  }
-
-  img {
-    max-width: 100%;
-    border-radius: 8px;
-    display: none;
-  }
-
-  img.active {
-    display: block;
-  }
-
-  .action-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin-top: 12px;
-  }
-
-  .act-btn {
-    padding: 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    border: 1.5px solid rgba(0, 113, 227, 0.35);
-    background: rgba(0, 113, 227, 0.1);
-    color: #1a5c3a;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .act-btn:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
-
-  .info-text li {
-    margin-bottom: 6px;
-  }
-
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
-
-    .filter-buttons {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/image-filters/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/image-filters/" />
-  <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/filters-za-picha/">
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Photo Filter Editor",
-      "item": "https://afrotools.com/tools/image-filters/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Photo Filter Studio","description":"Apply local photo filter presets, fine-tune brightness, contrast, saturation, warmth, hue, grain, vignette, sharpen, compare before and after, and export images or batch zip packs.","url":"https://afrotools.com/tools/image-filters/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript, Canvas, and browser image decoding support","image":"https://afrotools.com/assets/img/tools/image-filters.svg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Photo Filter Studio","url":"https://afrotools.com/tools/image-filters/","description":"Edit photos locally with presets, adjustment sliders, before-after compare, local recipe history, and batch exports.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/image-filters.svg"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Photo Filter Studio","item":"https://afrotools.com/tools/image-filters/"}]}</script>
+<meta property="article:modified_time" content="2026-05-03">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
-    <h1>Photo Filter <em>Editor</em></h1>
-    <p class="hero-sub">Apply stunning filters to your photos with real-time preview. Adjust brightness, contrast, saturation, and more.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">8 Filters</span>
-      <span class="badge b-green">Real-time</span>
-      <span class="badge b-green">Client-side</span>
-    </div>
-  </div>
-</div>
-
-<div class="tool-main" id="main-content" role="main">
-  <div class="tool-main-inner">
+<section class="filters-hero">
+  <div class="filters-hero-inner">
     <div>
-      <!-- Upload Image -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Upload Photo</span>
-        </div>
-        <div class="card-body">
-          <input type="file" id="imageInput" accept="image/*">
-          <label for="imageInput" class="file-input-label">
-            📸 Click or drag & drop a photo
-          </label>
-        </div>
-      </div>
-
-      <!-- Filters -->
-      <div class="card" id="filterCard" style="display:none;">
-        <div class="card-head">
-          <span class="card-title">Filters</span>
-        </div>
-        <div class="card-body">
-          <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="grayscale">Grayscale</button>
-            <button class="filter-btn" data-filter="sepia">Sepia</button>
-            <button class="filter-btn" data-filter="blur">Blur</button>
-            <button class="filter-btn" data-filter="brightness">Brightness</button>
-            <button class="filter-btn" data-filter="contrast">Contrast</button>
-            <button class="filter-btn" data-filter="saturate">Saturate</button>
-            <button class="filter-btn" data-filter="huerotate">Hue Rotate</button>
-            <button class="filter-btn" data-filter="invert">Invert</button>
-          </div>
-
-          <div class="slider-group" id="sliderGroup">
-            <div class="slider-label">
-              <span>Grayscale</span>
-              <span id="sliderValue">0%</span>
-            </div>
-            <input type="range" class="slider" id="filterSlider" min="0" max="100" value="0">
-          </div>
-        </div>
-      </div>
-
-      <!-- Reset Button -->
-      <div class="card" id="controlCard" style="display:none;">
-        <div class="card-body">
-          <button class="act-btn" id="resetBtn" style="width:100%;border:none;background:#EFF6FF;border:1.5px solid #BFDBFE;">↺ Reset</button>
-          <button class="act-btn" id="downloadBtn" style="width:100%;border:none;margin-top:8px;">📥 Download</button>
-        </div>
-      </div>
+      <p class="filters-eyebrow">Image &amp; Design / Filter Studio</p>
+      <h1>Turn raw photos into polished, upload-ready images.</h1>
+      <p>Apply practical looks, tune color and texture, compare before and after, then export one image or a full batch zip. Everything runs locally in your browser, so private photos stay on this device.</p>
     </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="preview">
-        <div style="text-align:center;color:#6B8CAE;font-size:0.85rem;">Upload an image to preview</div>
-        <img id="previewImage" class="active" alt="">
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Filters</div>
-        <div class="info-text">
-          <ul style="margin:0;padding-left:16px;">
-            <li>✓ 8 photo filters</li>
-            <li>✓ Real-time preview</li>
-            <li>✓ Adjustable intensity</li>
-            <li>✓ Download edited photo</li>
-          </ul>
-        </div>
-      </div>
+    <div class="filters-badges">
+      <span class="filters-badge">Tier Gold</span>
+      <span class="filters-badge">Before-after compare</span>
+      <span class="filters-badge">Batch zip</span>
+      <span class="filters-badge">No upload</span>
     </div>
-  </div>
-</div>
-
-
-<afro-related-tools category="image-design" current="image-filters"></afro-related-tools>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Photo Filter Editor: How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Photo Filter Editor lets you apply real-time visual effects to your images without any software installation. Upload a photo and instantly preview filters including grayscale, sepia, blur, and adjustments for brightness, contrast, saturation, and hue rotation. Each filter has a slider control so you can fine-tune the intensity to get exactly the look you want. Combine multiple filters to create unique effects — for example, boost the saturation while shifting the hue for a vibrant, stylised look, or add a sepia tone with reduced brightness for a vintage aesthetic. The preview updates in real time as you adjust sliders, making it easy to experiment with different combinations. When you are satisfied with the result, download the edited image as a high-quality file. This tool is perfect for social media content creators, bloggers, small business owners editing product photos, and anyone who wants to enhance images quickly without learning complex editing software. All processing happens client-side in your browser, so your photos remain private and the edits are instant regardless of your internet speed.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What filters are available?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Available filters include grayscale, sepia, blur, brightness, contrast, saturation, and hue rotation. Each filter has an adjustable slider so you can control the exact intensity of the effect.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I combine multiple filters on one image?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. All filters can be applied simultaneously. Adjust each slider independently and the preview shows the combined effect in real time, allowing you to create unique custom looks.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I reset the filters and start over?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. Use the reset button to return all filter sliders to their default values and restore your original image. You can then start experimenting with new filter combinations.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What image formats are supported?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can upload JPG, PNG, and WebP images. The filtered output is downloaded as a high-quality image file that you can share on social media or use in your projects.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Are my photos sent to a server for processing?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. All filter effects are applied using CSS filters and Canvas rendering in your browser. Your photos never leave your device, ensuring complete privacy and instant performance.</p>
-    </details>
   </div>
 </section>
 
+<main class="filters-studio" id="main-content">
+  <div class="filters-workspace">
+    <section class="filters-stack" aria-label="Photo filter editor">
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">1. Load images</span>
+            <h2 class="filters-panel-title">Drop, paste, or choose a batch</h2>
+            <p class="filters-panel-copy">JPG, PNG, WebP, SVG, GIF, AVIF, HEIC, and other browser-supported images can be edited without uploading them.</p>
+          </div>
+          <div class="filters-status" id="filtersStatus" role="status" aria-live="polite">Loading editor...</div>
+        </div>
+        <div class="filters-drop" id="filtersDropZone" role="button" tabindex="0" aria-label="Choose or drop images">
+          <div class="filters-drop-main">
+            <span class="filters-drop-mark">IMG</span>
+            <span><strong>Choose photos</strong><span>Drag files here, paste from clipboard, or click to browse.</span></span>
+          </div>
+          <div class="filters-drop-side">Local only<br>Batch friendly</div>
+          <input type="file" id="filtersInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
+        </div>
+        <div class="filters-queue" id="filtersQueue"></div>
+      </article>
 
-<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
-<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
-<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/image-crop/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Image Crop & Rotate</a><a href="/tools/image-compress/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Image Compressor</a><a href="/tools/background-remover/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Background Remover</a>
-<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
-</div>
-</div></section>
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">2. Pick a useful look</span>
+            <h2 class="filters-panel-title">Presets for real editing jobs</h2>
+            <p class="filters-panel-copy">Start with a look for the destination, then use the sliders when the photo needs more care.</p>
+          </div>
+        </div>
+        <div class="filters-look-grid" aria-label="Photo filter presets">
+          <button type="button" class="filters-look" data-filters-look="neutral" aria-pressed="false"><strong>Clean photo</strong><span>Balanced reset</span></button>
+          <button type="button" class="filters-look" data-filters-look="market" aria-pressed="false"><strong>Warm market</strong><span>Retail and outdoor</span></button>
+          <button type="button" class="filters-look" data-filters-look="dusk" aria-pressed="false"><strong>Cool dusk</strong><span>Event atmosphere</span></button>
+          <button type="button" class="filters-look" data-filters-look="vintage" aria-pressed="false"><strong>Vintage print</strong><span>Editorial texture</span></button>
+          <button type="button" class="filters-look" data-filters-look="mono" aria-pressed="false"><strong>Mono newsprint</strong><span>Black and white</span></button>
+          <button type="button" class="filters-look" data-filters-look="portrait" aria-pressed="false"><strong>Soft portrait</strong><span>Profile photos</span></button>
+          <button type="button" class="filters-look" data-filters-look="product" aria-pressed="true"><strong>Product clarity</strong><span>Listings and menus</span></button>
+          <button type="button" class="filters-look" data-filters-look="food" aria-pressed="false"><strong>Food pop</strong><span>Meals and hospitality</span></button>
+          <button type="button" class="filters-look" data-filters-look="document" aria-pressed="false"><strong>Document scan</strong><span>Receipts and notes</span></button>
+        </div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">3. Fine tune</span>
+            <h2 class="filters-panel-title">Adjust color, clarity, texture, and edge focus</h2>
+            <p class="filters-panel-copy">The recipe saves locally as you work, so repeated image batches can start from the last settings.</p>
+          </div>
+        </div>
+        <div class="filters-control-grid">
+          <label class="filters-field">
+            <span class="filters-label">Brightness</span>
+            <span class="filters-range"><input class="filters-input" id="filtersBrightness" data-filter-control="brightness" type="range" min="-60" max="60" value="10"><span class="filters-range-value" id="filtersBrightnessValue">+10</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Contrast</span>
+            <span class="filters-range"><input class="filters-input" id="filtersContrast" data-filter-control="contrast" type="range" min="-60" max="90" value="18"><span class="filters-range-value" id="filtersContrastValue">+18</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Saturation</span>
+            <span class="filters-range"><input class="filters-input" id="filtersSaturation" data-filter-control="saturation" type="range" min="-100" max="140" value="12"><span class="filters-range-value" id="filtersSaturationValue">+12</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Warmth</span>
+            <span class="filters-range"><input class="filters-input" id="filtersWarmth" data-filter-control="warmth" type="range" min="-50" max="50" value="3"><span class="filters-range-value" id="filtersWarmthValue">+3</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Hue</span>
+            <span class="filters-range"><input class="filters-input" id="filtersHue" data-filter-control="hue" type="range" min="-180" max="180" value="0"><span class="filters-range-value" id="filtersHueValue">0 deg</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Grayscale</span>
+            <span class="filters-range"><input class="filters-input" id="filtersGrayscale" data-filter-control="grayscale" type="range" min="0" max="100" value="0"><span class="filters-range-value" id="filtersGrayscaleValue">0</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Sepia</span>
+            <span class="filters-range"><input class="filters-input" id="filtersSepia" data-filter-control="sepia" type="range" min="0" max="100" value="0"><span class="filters-range-value" id="filtersSepiaValue">0</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Blur</span>
+            <span class="filters-range"><input class="filters-input" id="filtersBlur" data-filter-control="blur" type="range" min="0" max="8" step="0.1" value="0"><span class="filters-range-value" id="filtersBlurValue">0 px</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Sharpen</span>
+            <span class="filters-range"><input class="filters-input" id="filtersSharpen" data-filter-control="sharpen" type="range" min="0" max="80" value="28"><span class="filters-range-value" id="filtersSharpenValue">+28</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Vignette</span>
+            <span class="filters-range"><input class="filters-input" id="filtersVignette" data-filter-control="vignette" type="range" min="0" max="80" value="0"><span class="filters-range-value" id="filtersVignetteValue">0</span></span>
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Grain</span>
+            <span class="filters-range"><input class="filters-input" id="filtersGrain" data-filter-control="grain" type="range" min="0" max="40" value="0"><span class="filters-range-value" id="filtersGrainValue">0</span></span>
+          </label>
+          <div class="filters-field">
+            <span class="filters-label">Recipe control</span>
+            <button type="button" class="filters-btn secondary" id="filtersReset">Reset to clean</button>
+            <span class="filters-help">Reset only changes the filter recipe. Uploaded files remain in the queue.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">4. Compare and export</span>
+            <h2 class="filters-panel-title">Check before and after, then export the exact delivery pack</h2>
+            <p class="filters-panel-copy">Use JPG for portals and marketplaces, PNG for crisp or transparent assets, and WebP for modern web delivery.</p>
+          </div>
+        </div>
+        <div class="filters-compare">
+          <div class="filters-compare-frame" id="filtersCompareFrame">
+            <div class="filters-preview-empty" id="filtersPreviewEmpty">Upload an image to compare the original and edited result.</div>
+            <img id="filtersOriginalImage" alt="" hidden>
+            <canvas id="filtersPreviewCanvas" hidden></canvas>
+          </div>
+          <div class="filters-compare-controls">
+            <span>Original</span>
+            <input id="filtersCompareRange" type="range" min="0" max="100" value="50" aria-label="Before and after comparison">
+            <span>Edited</span>
+          </div>
+        </div>
+        <div class="filters-control-grid">
+          <div class="filters-output-row filters-field wide">
+            <label class="filters-field">
+              <span class="filters-label">Format</span>
+              <select class="filters-select" id="filtersFormat">
+                <option value="image/jpeg">JPG</option>
+                <option value="image/png">PNG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </label>
+            <label class="filters-field">
+              <span class="filters-label">Quality</span>
+              <span class="filters-range"><input class="filters-input" id="filtersQuality" type="range" min="35" max="100" value="86"><span class="filters-range-value" id="filtersQualityValue">86%</span></span>
+            </label>
+            <label class="filters-field">
+              <span class="filters-label">JPG background</span>
+              <input class="filters-input" id="filtersBackground" type="color" value="#ffffff">
+            </label>
+          </div>
+          <label class="filters-field">
+            <span class="filters-label">Max width</span>
+            <input class="filters-input" id="filtersMaxWidth" type="number" min="1" max="12000" inputmode="numeric" placeholder="No limit">
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">Max height</span>
+            <input class="filters-input" id="filtersMaxHeight" type="number" min="1" max="12000" inputmode="numeric" placeholder="No limit">
+          </label>
+          <label class="filters-field">
+            <span class="filters-label">File suffix</span>
+            <input class="filters-input" id="filtersSuffix" type="text" value="filtered" maxlength="42">
+          </label>
+        </div>
+        <div class="filters-actions">
+          <button type="button" class="filters-btn" id="filtersExportCurrent" disabled>Export current</button>
+          <button type="button" class="filters-btn secondary" id="filtersDownloadCurrent" disabled>Download current</button>
+          <button type="button" class="filters-btn" id="filtersBuildBatch" disabled>Build batch zip</button>
+          <button type="button" class="filters-btn secondary" id="filtersDownloadBatch" disabled>Download zip</button>
+          <button type="button" class="filters-btn warning" id="filtersCopyRecipe" disabled>Copy recipe</button>
+          <share-result-button tool-name="Photo Filter Studio" tool-slug="image-filters"></share-result-button>
+        </div>
+      </article>
+    </section>
+
+    <aside class="filters-stack" aria-label="Filter guidance">
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">Summary</span>
+            <h2 class="filters-panel-title">Current output</h2>
+            <p class="filters-panel-copy">Run one export before packaging the full batch.</p>
+          </div>
+        </div>
+        <div class="filters-stat-grid">
+          <div class="filters-stat"><span>Source</span><strong id="filtersSourceTotal">-</strong></div>
+          <div class="filters-stat"><span>Output size</span><strong id="filtersOutputSize">-</strong></div>
+          <div class="filters-stat"><span>Recipe</span><strong id="filtersRecipeName">Product clarity</strong></div>
+          <div class="filters-stat"><span>Last export</span><strong id="filtersLastExport">-</strong></div>
+        </div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">Browser support</span>
+            <h2 class="filters-panel-title">Filter and encoder checks</h2>
+            <p class="filters-panel-copy">The studio tests local Canvas support before enabling export formats.</p>
+          </div>
+        </div>
+        <div class="filters-support" id="filtersSupportList"></div>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">Current recipe</span>
+            <h2 class="filters-panel-title" id="filtersGuideTitle">Product clarity</h2>
+            <p class="filters-panel-copy" id="filtersGuideIntro">Sharper, brighter output for listings, catalogs, and shop images.</p>
+          </div>
+        </div>
+        <ul class="filters-guide-list" id="filtersGuideList"></ul>
+      </article>
+
+      <article class="filters-panel">
+        <div class="filters-panel-head">
+          <div>
+            <span class="filters-step">Saved state</span>
+            <h2 class="filters-panel-title">Recent filter history</h2>
+            <p class="filters-panel-copy">Recent exports and recipes are stored locally on this device.</p>
+          </div>
+        </div>
+        <div class="filters-history" id="filtersHistoryList"></div>
+      </article>
+    </aside>
+  </div>
+</main>
+
+<afro-related-tools category="image-design" current="image-filters"></afro-related-tools>
+
+<section class="filters-seo">
+  <h2>Photo Filter Studio: What It Does</h2>
+  <p>AfroTools Photo Filter Studio is a local browser-based image editor for practical filter work. It combines photo looks with manual controls for brightness, contrast, saturation, warmth, hue, grayscale, sepia, blur, sharpening, vignette, and grain. You can compare before and after, export the current image, or build a batch zip with a manifest that records the recipe and output details.</p>
+  <h3>Frequently Asked Questions</h3>
+  <details>
+    <summary>Are my photos uploaded?</summary>
+    <p>No. The tool decodes, filters, previews, and exports images in your browser using Canvas. The batch zip is also assembled locally.</p>
+  </details>
+  <details>
+    <summary>Which export format should I use?</summary>
+    <p>Use JPG for portals, marketplaces, and general photo uploads. Use PNG for crisp graphics, screenshots, and transparency. Use WebP when your destination supports modern web images.</p>
+  </details>
+  <details>
+    <summary>Why is a format disabled?</summary>
+    <p>Canvas encoders vary by browser. The editor tests JPG, PNG, and WebP support on load, then disables formats the current browser cannot export reliably.</p>
+  </details>
+  <details>
+    <summary>Does the editor preserve metadata?</summary>
+    <p>Canvas export usually creates a clean pixel output and does not preserve most camera metadata. Keep the original file separately if metadata matters.</p>
+  </details>
+</section>
+
 <afro-footer></afro-footer>
-
-<script>
-  let currentImage = null;
-  let currentFilter = 'grayscale';
-  let filterValues = {
-    grayscale: 0,
-    sepia: 0,
-    blur: 0,
-    brightness: 0,
-    contrast: 0,
-    saturate: 0,
-    huerotate: 0,
-    invert: 0
-  };
-
-  const imageInput = document.getElementById('imageInput');
-  const label = document.querySelector('.file-input-label');
-  const previewImage = document.getElementById('previewImage');
-  const filterCard = document.getElementById('filterCard');
-  const controlCard = document.getElementById('controlCard');
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  const filterSlider = document.getElementById('filterSlider');
-  const sliderValue = document.getElementById('sliderValue');
-  const sliderLabel = document.querySelector('.slider-label span:first-child');
-  const resetBtn = document.getElementById('resetBtn');
-  const downloadBtn = document.getElementById('downloadBtn');
-
-  imageInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        currentImage = evt.target.result;
-        previewImage.src = currentImage;
-        previewImage.classList.add('active');
-        filterCard.style.display = 'block';
-        controlCard.style.display = 'block';
-        updatePreview();
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
-  label.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    label.classList.add('dragover');
-  });
-
-  label.addEventListener('dragleave', () => {
-    label.classList.remove('dragover');
-  });
-
-  label.addEventListener('drop', (e) => {
-    e.preventDefault();
-    label.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      imageInput.files = e.dataTransfer.files;
-      const evt = new Event('change');
-      imageInput.dispatchEvent(evt);
-    }
-  });
-
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentFilter = btn.dataset.filter;
-      filterSlider.value = filterValues[currentFilter];
-      updateSliderLabel();
-      const val = filterValues[currentFilter];
-      sliderValue.textContent = val + (currentFilter === 'blur' ? 'px' : currentFilter === 'huerotate' ? '\u00B0' : '%');
-      updatePreview();
-    });
-  });
-
-  function updateSliderLabel() {
-    const labels = {
-      grayscale: 'Grayscale',
-      sepia: 'Sepia',
-      blur: 'Blur (px)',
-      brightness: 'Brightness (%)',
-      contrast: 'Contrast (%)',
-      saturate: 'Saturate (%)',
-      huerotate: 'Hue Rotate (°)',
-      invert: 'Invert (%)'
-    };
-    sliderLabel.textContent = labels[currentFilter];
-  }
-
-  filterSlider.addEventListener('input', (e) => {
-    filterValues[currentFilter] = parseInt(e.target.value);
-    sliderValue.textContent = e.target.value + (currentFilter === 'blur' ? 'px' : currentFilter === 'huerotate' ? '°' : '%');
-    updatePreview();
-  });
-
-  function updatePreview() {
-    let filters = '';
-    filters += `grayscale(${filterValues.grayscale}%) `;
-    filters += `sepia(${filterValues.sepia}%) `;
-    filters += `blur(${filterValues.blur}px) `;
-    filters += `brightness(${100 + filterValues.brightness}%) `;
-    filters += `contrast(${100 + filterValues.contrast}%) `;
-    filters += `saturate(${100 + filterValues.saturate}%) `;
-    filters += `hue-rotate(${filterValues.huerotate}deg) `;
-    filters += `invert(${filterValues.invert}%)`;
-
-    previewImage.style.filter = filters;
-  }
-
-  resetBtn.addEventListener('click', () => {
-    filterValues = {
-      grayscale: 0,
-      sepia: 0,
-      blur: 0,
-      brightness: 0,
-      contrast: 0,
-      saturate: 0,
-      huerotate: 0,
-      invert: 0
-    };
-    filterButtons.forEach(b => b.classList.remove('active'));
-    filterButtons[0].classList.add('active');
-    currentFilter = 'grayscale';
-    filterSlider.value = 0;
-    sliderValue.textContent = '0%';
-    updateSliderLabel();
-    updatePreview();
-  });
-
-  downloadBtn.addEventListener('click', () => {
-    if (!currentImage) { alert('No image loaded.'); return; }
-    try {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      if (!ctx) { alert('Could not initialize canvas.'); return; }
-      const img = new Image();
-      img.onload = () => {
-        try {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.filter = previewImage.style.filter;
-          ctx.drawImage(img, 0, 0);
-          const link = document.createElement('a');
-          link.href = canvas.toDataURL('image/png');
-          link.download = 'filtered-photo.png';
-          link.click();
-        } catch (e) {
-          alert('Error applying filters for download: ' + e.message);
-        }
-      };
-      img.onerror = () => { alert('Failed to load image for download.'); };
-      img.src = currentImage;
-    } catch (e) {
-      alert('Error preparing download: ' + e.message);
-    }
-  });
-</script>
+<script src="/assets/vendor/jszip/jszip.min.js?v=b5d02b3f" defer></script>
+<script src="/assets/js/lib/image-filters-studio.js?v=20260503" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Image Filters" tool-slug="image-filters"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>
