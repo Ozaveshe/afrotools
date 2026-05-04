@@ -97,4 +97,4 @@ Keep these lanes separate in copy, UI, and ranking logic. Do not treat a mega-cr
 - Netlify hosting + functions
 - Supabase PostgreSQL
 - Brand color: #007AFF (Apple Blue)
-- Fonts: DM Sans (body), Syne (headings)
+- Fonts: DM Sans throughout

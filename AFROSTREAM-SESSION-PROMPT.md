@@ -164,7 +164,7 @@ Platform URL coverage: 8 YouTube, 11 Twitch, 3 Kick out of 30 creators.
 
 - Plain HTML + CSS + vanilla JS only. NO React, NO frameworks, NO build tools
 - Use `var` not `let`/`const` (project convention for browser compat)
-- Brand color: `#007AFF` (blue), fonts: DM Sans (body) + Syne (headings)
+- Brand color: `#007AFF` (blue), fonts: DM Sans throughout
 - Supabase project: `zpclagtgczsygrgztlts`
 - Netlify site: `afrotools` (site ID: `8aa543db-b4bd-4631-98f8-221440055c41`)
 - AfroTools has **1,300+ free tools** (never say 600 or 850)
