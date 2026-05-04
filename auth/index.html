@@ -349,7 +349,8 @@
       setStatus('Sending reset link...');
       try {
         var supa = await getSupabaseClient();
-        var result = await supa.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/auth/?mode=login' });
+        var resetRedirect = window.location.origin + '/auth/?mode=login&next=' + encodeURIComponent(next);
+        var result = await supa.auth.resetPasswordForEmail(email, { redirectTo: resetRedirect });
         if (result.error) throw result.error;
         setStatus('Password reset email sent. Check your inbox.', false, true);
       } catch (err) {

@@ -2823,7 +2823,7 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
-    <script src="/assets/js/components/tool-registry.min.js?v=1a7d076a" defer></script>
+    <script src="/assets/js/components/tool-registry.min.js?v=d9fdbeff" defer></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
     <script src="/assets/js/components/auth-modal.js?v=3f65305a"></script>
     <script src="/assets/js/auth-cookie-upgrade.js?v=5f8a65c3"></script>
@@ -3179,7 +3179,8 @@
 
         function closeProfileEditor() {
             editorOpen = false;
-            document.getElementById('profileEditor').classList.remove('open');
+            var editor = document.getElementById('profileEditor');
+            if (editor) editor.classList.remove('open');
         }
 
         function setSelectFuzzy(selId, val) {
@@ -3863,6 +3864,7 @@
             var btn = document.getElementById('logoutBtn');
             var originalLabel = btn ? btn.textContent : '';
             if (btn && btn.disabled) return;
+            if (dashboardLogoutInProgress) return;
             dashboardLogoutInProgress = true;
             if (btn) {
                 btn.disabled = true;
@@ -3877,20 +3879,25 @@
             } catch(e) {
                 console.warn('[Dashboard] logout error:', e);
                 clearDashboardAuthCache('dashboard-signout-timeout');
+            } finally {
+                isLoggedIn = false;
+                currentUser = null;
+                extendedProfile = {};
+                selectedInterests = [];
+                try { closeProfileEditor(); } catch(e) {}
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = originalLabel || 'Sign Out';
+                }
+                dashboardLogoutInProgress = false;
             }
-            isLoggedIn = false;
-            currentUser = null;
-            extendedProfile = {};
-            selectedInterests = [];
-            closeProfileEditor();
-            if (btn) {
-                btn.disabled = false;
-                btn.textContent = originalLabel || 'Sign Out';
+            try {
+                showAuth({
+                    message: 'You are signed out. Sign in to view saved calculations, workspace items, and account details.'
+                });
+            } catch(e) {
+                console.warn('[Dashboard] signed-out render error:', e);
             }
-            dashboardLogoutInProgress = false;
-            showAuth({
-                message: 'You are signed out. Sign in to view saved calculations, workspace items, and account details.'
-            });
         }
 
         // ===================== LOAD DASHBOARD DATA =====================

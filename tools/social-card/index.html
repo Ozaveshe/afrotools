@@ -1,794 +1,348 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Social Media Card Generator | Create Share Cards | AfroTools</title>
-<meta name="description" content="Create social media cards for Twitter, LinkedIn, WhatsApp, Instagram with custom text and colors. Download as PNG instantly.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Card Studio - Social, OG, and Story Graphics | AfroTools</title>
+<meta name="description" content="Create exact-size social media cards, Open Graph images, WhatsApp status graphics, and campaign posts locally with templates, brand kits, safe zones, and PNG, JPEG, or WebP export.">
+<meta name="keywords" content="social card generator, og image generator, open graph image maker, social media design tool, WhatsApp status maker, AfroTools">
 <link rel="canonical" href="https://afrotools.com/tools/social-card/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Social Media Card Generator | AfroTools">
-<meta property="og:description" content="Create custom social media cards with templates.">
+<meta property="og:title" content="Social Card Studio | AfroTools">
+<meta property="og:description" content="Design exact-size social, OG, story, and WhatsApp graphics locally with templates, brand kits, safe zones, and export-ready files.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/social-card/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/social-card.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Social Media Card Generator | AfroTools">
-<meta name="twitter:description" content="Create custom social media cards with templates.">
+<meta name="twitter:title" content="Social Card Studio | AfroTools">
+<meta name="twitter:description" content="Create platform-ready campaign graphics with exact canvas sizes, saved brand kits, metadata snippets, and local exports.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/social-card.svg">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/social-card/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/social-card/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kadi-ya-mitandao/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital,wght@0,400;0,600;1,400&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
-<script src="/assets/js/components/related-tools-data.min.js?v=23cf84e9" defer></script>
+<link rel="stylesheet" href="/assets/css/social-card-studio.css?v=c6294355">
+<script src="/assets/js/components/related-tools-data.min.js?v=33960e98" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<style>
-  :root {
-    --afro-blue: var(--color-primary);
-    --afro-dark: #0f1419;
-  }
-
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .tool-hero::after {
-    content: '📱';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
-
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
-
-  .breadcrumb span {
-    color: var(--afro-blue);
-  }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
-  h1 em {
-    color: var(--afro-blue);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
-  }
-
-  .upgrade-note {
-    max-width: 1200px;
-    margin: 18px auto 0;
-    padding: 0 24px;
-  }
-
-  .upgrade-note-box {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px 18px;
-    padding: 16px 18px;
-    border: 1px solid #DBEAFE;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #F5F9FF, #FFFFFF);
-  }
-
-  .upgrade-note-copy strong {
-    display: block;
-    color: #0f172a;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-  }
-
-  .upgrade-note-copy p {
-    margin: 0;
-    color: #475569;
-    font-size: 0.88rem;
-    line-height: 1.6;
-  }
-
-  .upgrade-note-box a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 42px;
-    padding: 0 16px;
-    border-radius: 999px;
-    background: #0f172a;
-    color: #fff;
-    font-size: 0.84rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .tool-main {
-    padding: 28px 0 72px;
-  }
-
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .card + .card {
-    margin-top: 18px;
-  }
-
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #EFF6FF;
-    background: #F5F9FF;
-  }
-
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
-
-  .card-body {
-    padding: 22px;
-  }
-
-  .field {
-    margin-bottom: 18px;
-  }
-
-  .field:last-child {
-    margin-bottom: 0;
-  }
-
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .f-input:focus {
-    border-color: var(--afro-blue);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-  }
-
-  .template-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-
-  .template-btn {
-    padding: 10px 12px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #244d2c;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .template-btn:hover {
-    border-color: var(--afro-blue);
-  }
-
-  .template-btn.active {
-    border-color: var(--afro-blue);
-    background: var(--afro-blue);
-    color: #fff;
-  }
-
-  .color-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .color-input {
-    width: 60px;
-    height: 40px;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    cursor: pointer;
-  }
-
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--afro-blue);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .calc-btn:hover {
-    background: #0059B3;
-  }
-
-  .preview {
-    background: #F5F9FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    min-height: 250px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .card-preview {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    border-radius: 8px;
-    padding: 20px;
-    color: #fff;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .card-preview h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.2rem;
-    font-weight: 700;
-  }
-
-  .card-preview p {
-    margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.5;
-  }
-
-  .action-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin-top: 12px;
-  }
-
-  .act-btn {
-    padding: 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    border: 1.5px solid rgba(0, 113, 227, 0.35);
-    background: rgba(0, 113, 227, 0.1);
-    color: #1a5c3a;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .act-btn:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
-
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
-
-    .template-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/social-card/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/social-card/" />
-  <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kadi-ya-mitandao/">
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Social Media Card Generator",
-      "item": "https://afrotools.com/tools/social-card/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
+<script src="/assets/js/lib/social-card-studio.js?v=c19e2320" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Social Card Studio","description":"Create exact-size social media cards, Open Graph images, WhatsApp status graphics, and campaign posts locally with templates, brand kits, safe zones, and PNG, JPEG, or WebP export.","url":"https://afrotools.com/tools/social-card/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript, Canvas, and browser image decoding support","image":"https://afrotools.com/assets/img/tools/social-card.svg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Social Card Studio","url":"https://afrotools.com/tools/social-card/","description":"Design exact-size social, OG, story, and WhatsApp graphics with templates, saved brand settings, safe zones, metadata snippets, and local exports.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/social-card.svg"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Social Card Studio","item":"https://afrotools.com/tools/social-card/"}]}</script>
+<meta property="article:modified_time" content="2026-05-04">
 </head>
 <body>
+<a class="social-skip" href="#main-content">Skip to editor</a>
 <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
+<section class="social-hero">
+  <div class="social-hero-inner">
+    <div class="social-hero-copy">
+      <p class="social-eyebrow">Image &amp; Design / Campaign Graphics</p>
+      <h1>Build social cards that are actually ready to post.</h1>
+      <p>Create exact-size Open Graph images, X cards, LinkedIn graphics, Instagram posts, WhatsApp statuses, and YouTube community art. Templates, brand kit, safe zones, copyable metadata, and export history all run locally in your browser.</p>
     </div>
-    <h1>Social Media Card <em>Generator</em></h1>
-    <p class="hero-sub">Create beautiful social media cards for Twitter, LinkedIn, WhatsApp, and Instagram. Download as PNG instantly.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">4 Platforms</span>
-      <span class="badge b-green">Custom Colors</span>
-      <span class="badge b-green">PNG Export</span>
+    <div class="social-hero-badges" aria-label="Tool highlights">
+      <span>Tier Gold</span>
+      <span>Exact pixel export</span>
+      <span>Brand kit</span>
+      <span>No upload</span>
     </div>
-  </div>
-</div>
-
-<div class="upgrade-note">
-  <div class="upgrade-note-box">
-    <div class="upgrade-note-copy">
-      <strong>Need a broader graphics workflow?</strong>
-      <p>Use this page for quick promo cards and announcements. For layered layouts, creator templates, and reusable campaign graphics, switch to CreatorCanvas.</p>
-    </div>
-    <a href="/tools/creator-canvas/">Open CreatorCanvas</a>
-  </div>
-</div>
-
-<div class="tool-main" id="main-content" role="main">
-  <div class="tool-main-inner">
-    <div>
-      <!-- Platform Selection -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Platform</span>
-        </div>
-        <div class="card-body">
-          <div class="template-grid">
-            <button class="template-btn active" data-template="twitter">Twitter/X</button>
-            <button class="template-btn" data-template="linkedin">LinkedIn</button>
-            <button class="template-btn" data-template="whatsapp">WhatsApp</button>
-            <button class="template-btn" data-template="instagram">Instagram</button>
-          </div>
-          <p style="font-size:0.78rem;color:#64748b;line-height:1.6;">Start with the platform size, then load a local-use card for promos, launches, church programs, training cohorts, and market updates.</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">African Starters</span>
-        </div>
-        <div class="card-body">
-          <div class="template-grid">
-            <button class="template-btn starter-btn active" data-preset="market-day">Market Day</button>
-            <button class="template-btn starter-btn" data-preset="church-program">Church Program</button>
-            <button class="template-btn starter-btn" data-preset="product-drop">Product Drop</button>
-            <button class="template-btn starter-btn" data-preset="creator-quote">Quote Card</button>
-            <button class="template-btn starter-btn" data-preset="bootcamp">Bootcamp</button>
-            <button class="template-btn starter-btn" data-preset="funding-update">Funding Update</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Content -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Content</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label-text">Title</label>
-            <input type="text" class="f-input" id="cardTitle" placeholder="Your Title" value="AfroTools">
-          </div>
-
-          <div class="field">
-            <label class="f-label-text">Message</label>
-            <textarea class="f-input" id="cardMessage" placeholder="Your message here..." style="resize:vertical;min-height:80px;">Create amazing content with AfroTools</textarea>
-          </div>
-
-          <div class="field">
-            <label class="f-label-text">Background Color</label>
-            <div class="color-row">
-              <input type="color" class="color-input" id="bgColor" value="#007AFF">
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="f-label-text">Brand / Footer</label>
-            <input type="text" class="f-input" id="brandLabel" placeholder="e.g. Built for East Africa founders" value="Built for African creators">
-          </div>
-
-          <button class="calc-btn" id="generateBtn">Generate Card</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Preview</span>
-        </div>
-        <div class="card-body">
-          <div class="preview">
-            <div class="card-preview" id="cardPreview" style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);width:100%;height:auto;min-height:200px;">
-              <div id="previewTag" style="display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.18);font-size:0.68rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;">Twitter/X</div>
-              <h3 id="previewTitle">AfroTools</h3>
-              <p id="previewMessage">Create amazing content</p>
-              <div id="previewBrand" style="margin-top:18px;font-size:0.72rem;font-weight:700;letter-spacing:0.04em;opacity:0.9;">Built for African creators</div>
-            </div>
-          </div>
-          <div class="action-row">
-            <button class="act-btn" id="downloadBtn">📥 Download PNG</button>
-          </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="Social Card"
-    tool-slug="social-card">
-  </share-result-button>
-</div>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-title">Tips</div>
-        <div class="info-text">
-          <ul style="margin:0;padding-left:16px;">
-            <li>✓ 4 platform sizes</li>
-            <li>✓ Custom colors</li>
-            <li>✓ Download as PNG</li>
-            <li>✓ Share-ready</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<afro-related-tools category="image-design" current="social-card"></afro-related-tools>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Social Media Card Generator: How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Social Media Card Generator creates eye-catching share cards and Open Graph images for Twitter, LinkedIn, WhatsApp, Instagram, and other social platforms. Enter your headline, description, and optional branding, then choose from platform-specific templates that are pre-sized for optimal display on each network. Customise the background colour, gradient, text colour, font size, and layout to match your brand identity. The live preview shows exactly how your card will appear when shared, so you can fine-tune every detail before downloading. Export your finished card as a high-quality PNG image ready to upload as an Open Graph image for your website, blog post, or social media update. Creating consistent, professional share graphics is essential for increasing click-through rates and engagement on social media — posts with custom images receive significantly more interaction than those with generic or auto-generated previews. This tool is invaluable for content creators, bloggers, marketers, developers, and anyone who shares links on social media and wants them to stand out. No design skills required — the templates handle the layout while you focus on the message.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What platforms are supported?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool includes templates sized for Twitter (1200x675), LinkedIn (1200x627), WhatsApp, and Instagram. Each template uses the optimal dimensions recommended by that platform for link preview images.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What is an Open Graph image?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">An Open Graph (OG) image is the preview image that appears when your link is shared on social media. Setting a custom OG image in your website's meta tags ensures your content looks professional and clickable when shared.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I customise the colours and fonts?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. You can customise background colours, gradients, text colour, and font size. This lets you match the card design to your brand identity for a consistent visual presence across social platforms.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What format is the card downloaded in?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Cards are downloaded as PNG images, which is the recommended format for social media preview images. PNG provides crisp text rendering and supports all the colour variations in your design.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How do I add the card to my website as an OG image?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Upload the downloaded image to your website, then add a meta tag in your HTML head: &lt;meta property="og:image" content="https://yoursite.com/path-to-image.png"&gt;. Social platforms will display this image when your link is shared.</p>
-    </details>
   </div>
 </section>
 
+<main class="social-studio" id="main-content">
+  <section class="social-workspace" aria-label="Social card editor">
+    <div class="social-controls">
+      <article class="social-panel">
+        <div class="social-panel-head">
+          <div>
+            <span class="social-step">1. Pick the job</span>
+            <h2>Campaign starter</h2>
+            <p>Load a practical layout for a launch, event, quote, hiring post, market update, or founder note.</p>
+          </div>
+          <div class="social-status" id="socialStatus" role="status" aria-live="polite">Loading studio...</div>
+        </div>
+        <div class="social-preset-grid" id="socialPresetGrid" aria-label="Campaign templates"></div>
+      </article>
 
-<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
-<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
-<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/thumbnail-maker/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">YouTube Thumbnail Maker</a><a href="/tools/flyer-maker/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Flyer & Poster Maker</a><a href="/tools/meme-generator/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Meme Generator</a>
-<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
-</div>
-</div></section>
+      <article class="social-panel">
+        <div class="social-panel-head compact">
+          <div>
+            <span class="social-step">2. Size and layout</span>
+            <h2>Platform canvas</h2>
+          </div>
+        </div>
+        <div class="social-platform-grid" id="socialPlatformGrid" aria-label="Platform sizes"></div>
+        <div class="social-form-grid two">
+          <label class="social-field">
+            <span>Layout</span>
+            <select id="socialLayout" data-sc-field="layout">
+              <option value="bold-left">Bold left</option>
+              <option value="centered">Centered</option>
+              <option value="split">Split feature</option>
+              <option value="quote">Quote card</option>
+              <option value="lower-third">Lower third</option>
+              <option value="badge">Badge focus</option>
+            </select>
+          </label>
+          <label class="social-field">
+            <span>Background</span>
+            <select id="socialBackgroundStyle" data-sc-field="bgStyle">
+              <option value="gradient">Gradient</option>
+              <option value="solid">Solid</option>
+              <option value="pattern">Pattern</option>
+              <option value="image">Uploaded image</option>
+            </select>
+          </label>
+        </div>
+      </article>
+
+      <article class="social-panel">
+        <div class="social-panel-head compact">
+          <div>
+            <span class="social-step">3. Message</span>
+            <h2>Copy that fits</h2>
+          </div>
+        </div>
+        <div class="social-form-grid">
+          <label class="social-field">
+            <span>Eyebrow</span>
+            <input type="text" id="socialEyebrow" data-sc-field="eyebrow" maxlength="54" autocomplete="off">
+          </label>
+          <label class="social-field">
+            <span>Headline</span>
+            <textarea id="socialTitle" data-sc-field="title" rows="3" maxlength="140"></textarea>
+          </label>
+          <label class="social-field">
+            <span>Supporting copy</span>
+            <textarea id="socialSubtitle" data-sc-field="subtitle" rows="4" maxlength="220"></textarea>
+          </label>
+        </div>
+        <div class="social-form-grid two">
+          <label class="social-field">
+            <span>CTA</span>
+            <input type="text" id="socialCta" data-sc-field="cta" maxlength="40" autocomplete="off">
+          </label>
+          <label class="social-field">
+            <span>Brand / footer</span>
+            <input type="text" id="socialFooter" data-sc-field="footer" maxlength="64" autocomplete="organization">
+          </label>
+        </div>
+      </article>
+
+      <article class="social-panel">
+        <div class="social-panel-head compact">
+          <div>
+            <span class="social-step">4. Brand look</span>
+            <h2>Palette and assets</h2>
+          </div>
+          <button class="social-quiet-btn" type="button" id="socialLoadBrand">Load brand</button>
+        </div>
+        <div class="social-palette-grid" id="socialPaletteGrid" aria-label="Color palettes"></div>
+        <div class="social-form-grid three">
+          <label class="social-field">
+            <span>Primary</span>
+            <input type="color" id="socialPrimary" data-sc-field="primary">
+          </label>
+          <label class="social-field">
+            <span>Accent</span>
+            <input type="color" id="socialAccent" data-sc-field="accent">
+          </label>
+          <label class="social-field">
+            <span>Text</span>
+            <input type="color" id="socialTextColor" data-sc-field="textColor">
+          </label>
+        </div>
+        <div class="social-upload-grid">
+          <label class="social-upload" for="socialBackgroundInput">
+            <span>Background image</span>
+            <strong id="socialBackgroundName">Choose image</strong>
+            <input type="file" id="socialBackgroundInput" accept="image/*,.svg,.webp,.avif,.bmp">
+          </label>
+          <label class="social-upload" for="socialLogoInput">
+            <span>Logo or mark</span>
+            <strong id="socialLogoName">Choose logo</strong>
+            <input type="file" id="socialLogoInput" accept="image/*,.svg,.webp,.avif,.bmp">
+          </label>
+        </div>
+        <div class="social-slider-grid">
+          <label class="social-range">
+            <span>Text scale <output id="socialTextScaleValue">100%</output></span>
+            <input type="range" id="socialTextScale" data-sc-field="textScale" min="80" max="130" step="1">
+          </label>
+          <label class="social-range">
+            <span>Safe padding <output id="socialPaddingValue">8%</output></span>
+            <input type="range" id="socialPadding" data-sc-field="padding" min="5" max="14" step="1">
+          </label>
+          <label class="social-range">
+            <span>Image overlay <output id="socialOverlayValue">34%</output></span>
+            <input type="range" id="socialOverlay" data-sc-field="overlay" min="0" max="72" step="1">
+          </label>
+          <label class="social-range">
+            <span>Image blur <output id="socialBlurValue">0 px</output></span>
+            <input type="range" id="socialBlur" data-sc-field="blur" min="0" max="12" step="1">
+          </label>
+        </div>
+      </article>
+    </div>
+
+    <aside class="social-preview-column" aria-label="Preview and export">
+      <article class="social-preview-panel">
+        <div class="social-preview-head">
+          <div>
+            <span class="social-step">Live canvas</span>
+            <h2 id="socialPreviewTitle">Open Graph / X / WhatsApp</h2>
+          </div>
+          <label class="social-toggle">
+            <input type="checkbox" id="socialGuides" data-sc-field="showGuides">
+            <span>Safe zones</span>
+          </label>
+        </div>
+        <div class="social-canvas-shell">
+          <canvas id="socialCanvas" width="1200" height="630" aria-label="Rendered social card preview"></canvas>
+        </div>
+        <div class="social-metrics" aria-label="Design checks">
+          <div>
+            <span>Size</span>
+            <strong id="socialSizeMetric">1200 x 630</strong>
+          </div>
+          <div>
+            <span>Contrast</span>
+            <strong id="socialContrastMetric">Checking</strong>
+          </div>
+          <div>
+            <span>Fit</span>
+            <strong id="socialFitMetric">Checking</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="social-panel export">
+        <div class="social-panel-head compact">
+          <div>
+            <span class="social-step">5. Export</span>
+            <h2>Download and handoff</h2>
+          </div>
+        </div>
+        <div class="social-form-grid two">
+          <label class="social-field">
+            <span>Format</span>
+            <select id="socialFormat" data-sc-field="exportFormat">
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WebP</option>
+              <option value="image/jpeg">JPEG</option>
+            </select>
+          </label>
+          <label class="social-field">
+            <span>Filename suffix</span>
+            <input type="text" id="socialSuffix" data-sc-field="filenameSuffix" maxlength="42" autocomplete="off">
+          </label>
+        </div>
+        <label class="social-range">
+          <span>JPEG/WebP quality <output id="socialQualityValue">92%</output></span>
+          <input type="range" id="socialQuality" data-sc-field="quality" min="0.6" max="1" step="0.01">
+        </label>
+        <div class="social-actions">
+          <button class="social-primary-btn" type="button" id="socialDownload">Download current</button>
+          <button class="social-secondary-btn" type="button" id="socialDownloadSet">Export platform set</button>
+          <button class="social-secondary-btn" type="button" id="socialCopyMeta">Copy OG snippet</button>
+          <button class="social-secondary-btn" type="button" id="socialCopyBrief">Copy handoff brief</button>
+          <button class="social-secondary-btn" type="button" id="socialCopyLink">Copy design link</button>
+          <button class="social-secondary-btn" type="button" id="socialSaveBrand">Save brand kit</button>
+          <button class="social-quiet-btn" type="button" id="socialReset">Reset</button>
+        </div>
+        <div class="social-share-row">
+          <share-result-button tool-name="Social Card Studio" tool-slug="social-card"></share-result-button>
+        </div>
+      </article>
+
+      <article class="social-panel">
+        <div class="social-panel-head compact">
+          <div>
+            <span class="social-step">Readiness</span>
+            <h2>Posting checklist</h2>
+          </div>
+        </div>
+        <ul class="social-checklist" id="socialChecklist"></ul>
+      </article>
+
+      <article class="social-panel">
+        <div class="social-panel-head compact">
+          <div>
+            <span class="social-step">Recent exports</span>
+            <h2>Local history</h2>
+          </div>
+        </div>
+        <div class="social-history" id="socialHistory"></div>
+      </article>
+    </aside>
+  </section>
+
+  <section class="social-guide-section" aria-labelledby="social-guide-title">
+    <div>
+      <p class="social-eyebrow">Workflow</p>
+      <h2 id="social-guide-title">How to use Social Card Studio</h2>
+      <p>Start with the platform where the graphic will appear, then choose a campaign starter. The canvas renders at the exact pixel size shown in the export panel, so the file you download is ready for website meta tags, creator posts, ad drafts, WhatsApp broadcasts, event flyers, and founder updates.</p>
+    </div>
+    <div class="social-guide-grid">
+      <article>
+        <h3>For websites and blogs</h3>
+        <p>Use the Open Graph size, keep the main headline inside the safe zone, export PNG or WebP, then paste the generated metadata snippet into your page head after uploading the image.</p>
+      </article>
+      <article>
+        <h3>For social teams</h3>
+        <p>Save your brand kit, export the platform set, and copy the handoff brief so another person knows the copy, colors, dimensions, and intended placement.</p>
+      </article>
+      <article>
+        <h3>For creators and local businesses</h3>
+        <p>Use the WhatsApp or story sizes for launches, market days, training cohorts, church events, hiring posts, and community announcements without sending files to a server.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="social-faq" aria-labelledby="social-faq-title">
+    <h2 id="social-faq-title">Social Card Studio FAQ</h2>
+    <details>
+      <summary>Does this upload my image or logo?</summary>
+      <p>No. Rendering happens in your browser with Canvas. Uploaded images and logos are only used locally on this device.</p>
+    </details>
+    <details>
+      <summary>Which sizes are included?</summary>
+      <p>The studio includes Open Graph and X, LinkedIn, Instagram square, portrait feed, story or WhatsApp status, and YouTube community sizes. The exported canvas uses the exact selected dimensions.</p>
+    </details>
+    <details>
+      <summary>Can I reuse my brand settings?</summary>
+      <p>Yes. Save your brand kit to local storage, then load it later on the same browser. The editor also autosaves the current design state.</p>
+    </details>
+    <details>
+      <summary>What should I export for a website preview image?</summary>
+      <p>Use the Open Graph option at 1200 x 630 and export PNG or WebP. After uploading the file to your website, copy the OG snippet and update the image URL.</p>
+    </details>
+  </section>
+
+  <afro-related-tools category="image-design" current="social-card"></afro-related-tools>
+</main>
+
 <afro-footer></afro-footer>
-
-<script>
-  let currentTemplate = 'twitter';
-  const templateSizes = {
-    twitter: { width: 1024, height: 512 },
-    linkedin: { width: 1200, height: 627 },
-    whatsapp: { width: 720, height: 720 },
-    instagram: { width: 1080, height: 1080 }
-  };
-
-  const templateButtons = document.querySelectorAll('.template-btn');
-  const cardTitle = document.getElementById('cardTitle');
-  const cardMessage = document.getElementById('cardMessage');
-  const bgColor = document.getElementById('bgColor');
-  const brandLabel = document.getElementById('brandLabel');
-  const generateBtn = document.getElementById('generateBtn');
-  const cardPreview = document.getElementById('cardPreview');
-  const previewTitle = document.getElementById('previewTitle');
-  const previewMessage = document.getElementById('previewMessage');
-  const previewTag = document.getElementById('previewTag');
-  const previewBrand = document.getElementById('previewBrand');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const starterButtons = document.querySelectorAll('.starter-btn');
-  const platformLabels = {
-    twitter: 'Twitter/X',
-    linkedin: 'LinkedIn',
-    whatsapp: 'WhatsApp',
-    instagram: 'Instagram'
-  };
-  const starterPresets = {
-    'market-day': {
-      template: 'whatsapp',
-      title: 'Saturday Market Day',
-      message: 'Fresh produce, fabric, and home goods. Share this card across WhatsApp groups before sunrise.',
-      color: '#15803D',
-      brand: 'For local traders and community sellers'
-    },
-    'church-program': {
-      template: 'instagram',
-      title: 'Revival Night',
-      message: 'Worship, prayer, and teaching this Friday at 6 PM. Save and share with your church network.',
-      color: '#4338CA',
-      brand: 'Built for church and fellowship teams'
-    },
-    'product-drop': {
-      template: 'instagram',
-      title: 'New Drop Live',
-      message: 'Announce a fresh collection, food menu, or beauty launch with a clean promo card.',
-      color: '#EA580C',
-      brand: 'Great for fashion, beauty, and product brands'
-    },
-    'creator-quote': {
-      template: 'twitter',
-      title: 'Creator Note',
-      message: 'Turn a clear insight, quote, or lesson into a branded card your audience can repost.',
-      color: '#0F766E',
-      brand: 'For creators, coaches, and storytellers'
-    },
-    'bootcamp': {
-      template: 'linkedin',
-      title: 'Cohort Applications Open',
-      message: 'Share programme dates, mentors, and key outcomes for your next training intake.',
-      color: '#0369A1',
-      brand: 'Perfect for academies and tech training'
-    },
-    'funding-update': {
-      template: 'linkedin',
-      title: 'Funding Update',
-      message: 'Highlight traction, expansion, or a big milestone with a card that reads professionally.',
-      color: '#7C3AED',
-      brand: 'Made for founders and startup teams'
-    }
-  };
-
-  function darken(hex, amount) {
-    var clean = (hex || '').replace('#', '');
-    if (clean.length !== 6) return '#003B8F';
-    var num = parseInt(clean, 16);
-    var r = Math.max(0, (num >> 16) - amount);
-    var g = Math.max(0, ((num >> 8) & 255) - amount);
-    var b = Math.max(0, (num & 255) - amount);
-    return '#' + [r, g, b].map(function(v) { return v.toString(16).padStart(2, '0'); }).join('');
-  }
-
-  templateButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      templateButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentTemplate = btn.dataset.template;
-      updatePreview();
-    });
-  });
-
-  cardTitle.addEventListener('input', updatePreview);
-  cardMessage.addEventListener('input', updatePreview);
-  bgColor.addEventListener('change', updatePreview);
-  brandLabel.addEventListener('input', updatePreview);
-
-  starterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      starterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      var preset = starterPresets[btn.dataset.preset];
-      if (!preset) return;
-      currentTemplate = preset.template;
-      templateButtons.forEach(b => b.classList.toggle('active', b.dataset.template === currentTemplate));
-      cardTitle.value = preset.title;
-      cardMessage.value = preset.message;
-      bgColor.value = preset.color;
-      brandLabel.value = preset.brand;
-      updatePreview();
-    });
-  });
-
-  function updatePreview() {
-    previewTitle.textContent = cardTitle.value || 'Your Title';
-    previewMessage.textContent = cardMessage.value || 'Your message';
-    previewTag.textContent = platformLabels[currentTemplate] || 'Social';
-    previewBrand.textContent = brandLabel.value || 'Built for African creators';
-    cardPreview.style.background = 'linear-gradient(135deg,' + bgColor.value + ',' + darken(bgColor.value, 72) + ')';
-    cardPreview.style.boxShadow = '0 14px 34px rgba(15, 23, 42, 0.18)';
-  }
-
-  generateBtn.addEventListener('click', updatePreview);
-
-  downloadBtn.addEventListener('click', async () => {
-    const size = templateSizes[currentTemplate];
-    try {
-      const canvas = await html2canvas(cardPreview, {
-        width: size.width,
-        height: size.height,
-        scale: 2,
-        backgroundColor: bgColor.value
-      });
-
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = `social-card-${currentTemplate}.png`;
-      link.click();
-    } catch (e) {
-      alert('Failed to generate the card image. Please try again.');
-    }
-  });
-
-  updatePreview();
-</script>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

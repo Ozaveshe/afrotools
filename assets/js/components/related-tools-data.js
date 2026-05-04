@@ -1178,6 +1178,18 @@
         "imageExt": "svg"
       },
       {
+        "id": "social-card",
+        "name": "Social Card Studio",
+        "icon": "📢",
+        "desc": "Design social, OG, story, and WhatsApp cards wit...",
+        "href": "/tools/social-card/",
+        "category": "image-design",
+        "lang": "en",
+        "priority": 87,
+        "estTraffic": 10000,
+        "imageExt": "svg"
+      },
+      {
         "id": "flyer-maker",
         "name": "Flyer & Poster Maker",
         "icon": "📰",
@@ -1223,18 +1235,6 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 8000,
-        "imageExt": "svg"
-      },
-      {
-        "id": "social-card",
-        "name": "Social Media Card Generator",
-        "icon": "📢",
-        "desc": "Design Twitter/LinkedIn/WhatsApp cards. African ...",
-        "href": "/tools/social-card/",
-        "category": "image-design",
-        "lang": "en",
-        "priority": 83,
-        "estTraffic": 10000,
         "imageExt": "svg"
       },
       {
