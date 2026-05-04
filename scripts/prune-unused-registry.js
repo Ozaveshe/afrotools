@@ -11,12 +11,12 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const SKIP_DIRS = new Set(['node_modules', '.git', '.claude', 'scripts', 'netlify', 'dist']);
 const REGISTRY_SCRIPT_RE = /\s*<script\b[^>]*src=["'][^"']*tool-registry(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>\s*/gi;
-const REGISTRY_USAGE_RE = /AFRO_TOOLS|AFRO_CATEGORIES|getTotalToolCount|onRegistryReady|afrotools:registry-ready|renderToolGrid|getToolsFor|country-tools(?:\.min)?\.js|salary-tax-hub\.js|salary-tax-index\.js|tool-search(?:\.min)?\.js/;
+const REGISTRY_USAGE_RE = /AFRO_TOOLS|AFRO_CATEGORIES|getTotalToolCount|onRegistryReady|afrotools:registry-ready|renderToolGrid|getToolsFor|country-tools(?:\.min)?\.js|agriculture-taxonomy-hub\.js|salary-tax-hub\.js|salary-tax-index\.js|tool-search(?:\.min)?\.js/;
 const RELATED_TOOLS_RE = /related-tools(?:\.min)?\.js|<afro-related-tools\b/i;
 const REGISTRY_SCRIPT_TAG = '<script src="/assets/js/components/tool-registry.min.js" defer></script>';
 const RELATED_DATA_SCRIPT = '<script src="/assets/js/components/related-tools-data.min.js" defer></script>';
 const RELATED_DATA_RE = /<script\b[^>]*src=["'][^"']*related-tools-data\.min\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>/i;
-const HEAD_INSERT_RE = /(\s*<script\b[^>]*src=["'][^"']*\/assets\/js\/components\/navbar(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>)/i;
+const HEAD_INSERT_RE = /(<script\b[^>]*src=["'][^"']*\/assets\/js\/components\/navbar(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>)/i;
 const WRITE_RETRY_CODES = new Set(['EPERM', 'EBUSY', 'UNKNOWN']);
 
 function writeFileWithRetry(filePath, content, attempts = 3) {
