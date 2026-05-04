@@ -19,6 +19,22 @@ function clientIp(event) {
   ).split(',')[0].trim() || 'unknown';
 }
 
+function getHeader(headers, name) {
+  headers = headers || {};
+  var wanted = String(name || '').toLowerCase();
+  var keys = Object.keys(headers);
+  for (var i = 0; i < keys.length; i++) {
+    if (keys[i].toLowerCase() === wanted) return headers[keys[i]];
+  }
+  return '';
+}
+
+function isAuthorized(event) {
+  var token = process.env.LIFECYCLE_EMAIL_TOKEN || process.env.EMAIL_ADMIN_TOKEN || '';
+  if (!token) return false;
+  return String(getHeader(event.headers, 'authorization') || '') === 'Bearer ' + token;
+}
+
 async function sbRequest(path, options) {
   options = options || {};
   return fetch(MARKETING_SUPABASE.url + '/rest/v1/' + path, {
@@ -117,6 +133,10 @@ exports.handler = async function (event) {
 
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers: headers, body: JSON.stringify({ error: 'Method not allowed' }) };
+  }
+
+  if (!isAuthorized(event)) {
+    return { statusCode: 401, headers: headers, body: JSON.stringify({ ok: false, error: 'Unauthorized' }) };
   }
 
   try {
