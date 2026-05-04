@@ -16,6 +16,11 @@
 const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
 const { getData } = require('./_shared/data-store');
 
+const SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY;
+
 // All 54 African countries with GlobalPetrolPrices slugs
 var COUNTRIES = [
   { code: 'DZ', name: 'Algeria', currency: 'DZD', region: 'north', slug: 'Algeria' },
@@ -318,6 +323,53 @@ function transformFuelData(countries) {
   };
 }
 
+function fuelPriceRows(data) {
+  var syncedAt = data.timestamp || new Date().toISOString();
+  return (data.countries || []).filter(function(country) {
+    return country && country.code && country.name;
+  }).map(function(country) {
+    return {
+      country_code: country.code,
+      country_name: country.name,
+      petrol_usd: country.petrol && typeof country.petrol.usd === 'number' ? country.petrol.usd : null,
+      diesel_usd: country.diesel && typeof country.diesel.usd === 'number' ? country.diesel.usd : null,
+      lpg_usd: country.lpg && typeof country.lpg.usd === 'number' ? country.lpg.usd : null,
+      petrol_change: country.petrol && country.petrol.change ? country.petrol.change : 'unknown',
+      diesel_change: country.diesel && country.diesel.change ? country.diesel.change : 'unknown',
+      regulated: typeof country.regulated === 'boolean' ? country.regulated : false,
+      updated_at: syncedAt,
+      updated_by: 'scheduled-fetch-fuel-prices',
+    };
+  });
+}
+
+async function syncFuelPricesTable(data) {
+  if (!SUPABASE_SERVICE_KEY) {
+    console.warn('[fuel-prices] No Supabase service key - skipping fuel_prices sync');
+    return;
+  }
+
+  var rows = fuelPriceRows(data);
+  if (!rows.length) throw new Error('No fuel price rows to sync');
+
+  var res = await fetch(SUPABASE_URL + '/rest/v1/fuel_prices?on_conflict=country_code', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_SERVICE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY,
+      'Prefer': 'resolution=merge-duplicates,return=minimal',
+    },
+    body: JSON.stringify(rows),
+  });
+
+  if (!res.ok) {
+    throw new Error('fuel_prices upsert failed: ' + res.status + ' ' + await res.text());
+  }
+
+  console.log('[fuel-prices] Synced ' + rows.length + ' rows to public.fuel_prices');
+}
+
 exports.handler = async function(event) {
   return runScraper({
     id: 'fuel-prices',
@@ -328,6 +380,7 @@ exports.handler = async function(event) {
       { name: 'SeedWithForex', fn: fetchFromSeedWithForexUpdate },
     ],
     transform: transformFuelData,
+    afterWrite: syncFuelPricesTable,
     validateOpts: { maxChangeRatio: 5.0 },
   });
 };

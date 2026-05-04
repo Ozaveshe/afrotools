@@ -188,6 +188,7 @@ async function logRun(scraperId, status, details) {
  * @param {Array}  config.sources     - [{ name, fn }] — each fn() returns raw data
  * @param {Function} [config.transform] - (rawData) => blob-ready data
  * @param {Function} [config.validate]  - (newData, oldData) => { valid, warnings }
+ * @param {Function} [config.afterWrite] - optional post-write sync hook
  * @param {object} [config.validateOpts] - Options passed to default validateData()
  * @returns {{ statusCode, body }}
  */
@@ -292,6 +293,31 @@ async function runScraper(config) {
   else if (typeof newData.record_count === 'number') recordCount = newData.record_count;
 
   var written = await setData(blobKey, newData);
+
+  if (written && typeof config.afterWrite === 'function') {
+    try {
+      await config.afterWrite(newData, {
+        id: id,
+        blobKey: blobKey,
+        metaKey: metaKey,
+        source: usedSource,
+        records_count: recordCount,
+      });
+    } catch (err) {
+      await logRun(id, 'error', {
+        source: usedSource,
+        records_count: recordCount,
+        error_message: 'Post-write sync failed: ' + err.message,
+        duration_ms: Date.now() - startTime,
+      });
+      await updateMeta(metaKey, {
+        status: 'sync-failed',
+        error: 'Post-write sync failed: ' + err.message,
+        last_attempt: new Date().toISOString(),
+      });
+      return { statusCode: 500, body: id + ': post-write sync failed - ' + err.message };
+    }
+  }
 
   // Step 5: Write confidence scores (fire-and-forget)
   var sourceType = 'scraper';

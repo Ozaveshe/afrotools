@@ -8,6 +8,7 @@ The first supported datasets are:
 
 - `fintech_fee`
 - `remittance_quote`
+- `fuel_price`
 
 ## Principles
 
@@ -28,6 +29,8 @@ The first supported datasets are:
   - now supports `source_id`, `source_name`, `source_url`, `ingestion_method`, `published_at`, `expires_at`, and `last_checked_at`
 - `public.remittance_quotes`
   - now supports the same freshness metadata plus `funding_method`
+- `public.fuel_prices`
+  - receives source-backed country fuel rows from the scheduled fuel scraper after `fuel-latest` is written
 
 ## Admin Endpoint
 
@@ -66,6 +69,15 @@ The first automated collectors cover the currently registered live sources:
 
 Unsupported source keys stay in inventory but will log a failed run until a collector is added for that key.
 Sites that block server-side fetches can also produce failed runs even when a collector exists; those sources need either a different official endpoint or a browser-assisted refresh lane.
+
+## Fuel Price Sync
+
+- `scheduled-fetch-fuel-prices`
+  - runs every 6 hours via Netlify Scheduled Functions
+  - scrapes public GlobalPetrolPrices country gasoline and diesel pages
+  - writes the full source payload to `public.live_data_store` at `fuel-latest`
+  - upserts normalized USD petrol, diesel, and LPG fields into `public.fuel_prices`
+  - registers the source as `globalpetrolprices-country-fuel-pages` under dataset `fuel_price`
 
 ## AfroAlerts Change Detection
 
