@@ -1169,7 +1169,7 @@
         "id": "thumbnail-maker",
         "name": "YouTube Thumbnail Studio",
         "icon": "🖼️",
-        "desc": "Design exact-size YouTube thumbnails with creato...",
+        "desc": "Design 3840x2160 and 1280x720 YouTube thumbnails...",
         "href": "/tools/thumbnail-maker/",
         "category": "image-design",
         "lang": "en",
