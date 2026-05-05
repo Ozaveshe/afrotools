@@ -10,7 +10,8 @@
  *   GET /api/v1/telecom?country=GH&provider=MTN
  *   GET /api/v1/health                         — data freshness summary
  *
- * Auth: x-api-key header. Free tier: 100 req/day. Pro: unlimited.
+ * Auth: x-api-key header. Free tier: 100 req/day. Paid API tiers are
+ * manually activated as Growth, Pro, or Enterprise/custom plans.
  *
  * This is the public-facing API for third-party developers.
  * Individual endpoints (api-fuel.js, api-forex.js) continue to work
@@ -102,7 +103,7 @@ exports.handler = async function(event) {
           '/api/v1/crypto', '/api/v1/health',
         ],
         docs: 'https://afrotools.com/api/docs',
-        rate_limit: hasValidKey ? 'unlimited' : '100/day',
+        rate_limit: hasValidKey ? (auth.daily_limit === -1 ? 'custom' : auth.daily_limit + '/day') : '100/day',
       }, CORS);
     default:
       return jsonResp(404, { error: 'Unknown endpoint: ' + path }, CORS);

@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <title>AfroTools â€” Mission Control</title>
+<link rel="stylesheet" href="/assets/css/design-system.css?v=df6f3e05">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&display=swap"></noscript>
 <style>
@@ -251,9 +252,54 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .rv-export-btn{padding:7px 16px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)}
 .rv-export-btn:hover{border-color:var(--brand);color:var(--brand)}
 
+/* 50K EXECUTION */
+.fk-shell{display:grid;gap:16px}
+.fk-hero{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start;background:var(--color-surface,#fff);border:1px solid var(--color-border,var(--border));border-radius:var(--radius-lg,var(--r));padding:18px;box-shadow:var(--shadow-xs,var(--shadow))}
+.fk-kicker{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary,var(--brand));margin-bottom:6px}
+.fk-title{font-size:22px;font-weight:900;line-height:1.15;margin:0 0 8px;color:var(--color-text,var(--text))}
+.fk-copy{font-size:12px;line-height:1.55;color:var(--color-text-muted,var(--text3));max-width:780px}
+.fk-source-stack{display:grid;gap:8px}
+.fk-source-card{border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,var(--r));padding:10px 12px;background:var(--color-muted,var(--card2))}
+.fk-source-label{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--color-text-muted,var(--text3));letter-spacing:.06em}
+.fk-source-value{font-size:12px;font-weight:800;color:var(--color-text,var(--text));margin-top:3px}
+.fk-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.fk-action{width:auto;height:auto;min-height:34px}
+.fk-linkbar{display:flex;flex-wrap:wrap;gap:8px}
+.fk-linkbar a{display:inline-flex;align-items:center;min-height:30px;padding:6px 10px;border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);background:var(--color-surface,#fff);color:var(--color-text,var(--text));font-size:11px;font-weight:700;text-decoration:none}
+.fk-linkbar a:hover{border-color:var(--color-primary,var(--brand));color:var(--color-primary,var(--brand));background:var(--color-primary-soft,var(--brand-l))}
+.fk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.fk-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.fk-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fk-metric{border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);background:var(--color-surface,#fff);padding:11px}
+.fk-metric-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.fk-metric-label{font-size:12px;font-weight:800;color:var(--color-text,var(--text));line-height:1.25}
+.fk-tag{display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:var(--color-warning-soft,var(--amber-l));color:var(--color-warning,var(--amber));white-space:nowrap}
+.fk-tag.local{background:var(--color-primary-soft,var(--brand-l));color:var(--color-primary,var(--brand))}
+.fk-input{width:100%;height:34px;border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);padding:7px 9px;font:600 12px var(--sans);color:var(--color-text,var(--text));background:var(--color-surface,#fff);outline:none}
+.fk-input:focus{border-color:var(--color-primary,var(--brand));box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+.fk-source-note{font-size:10px;line-height:1.45;color:var(--color-text-muted,var(--text3));margin-top:7px}
+.fk-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.fk-summary-card{border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);background:var(--color-muted,var(--card2));padding:12px}
+.fk-summary-label{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--color-text-muted,var(--text3));letter-spacing:.06em}
+.fk-summary-value{font-size:20px;font-weight:900;color:var(--color-text,var(--text));margin-top:5px}
+.fk-checklist{display:grid;gap:9px}
+.fk-check-row{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);background:var(--color-surface,#fff);padding:10px}
+.fk-check-row input{width:18px;height:18px;margin-top:1px;accent-color:var(--color-primary,var(--brand));flex:0 0 auto}
+.fk-check-title{font-size:12px;font-weight:800;color:var(--color-text,var(--text))}
+.fk-check-note{font-size:10px;color:var(--color-text-muted,var(--text3));line-height:1.45;margin-top:2px}
+.fk-readiness{display:grid;gap:8px}
+.fk-ready-row{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;border-bottom:1px solid var(--color-border,var(--border));padding:8px 0}
+.fk-ready-row:last-child{border-bottom:none}
+.fk-ready-name{font-size:11px;font-weight:800;color:var(--color-text,var(--text))}
+.fk-ready-source{font-size:10px;color:var(--color-text-muted,var(--text3));line-height:1.45}
+.fk-note{font-size:11px;line-height:1.6;color:var(--color-text-muted,var(--text3));background:var(--color-muted,var(--card2));border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,var(--r));padding:11px 12px}
+.fk-textarea{min-height:92px;resize:vertical}
+.fk-status-line{font-size:10px;font-family:var(--mono);color:var(--color-text-muted,var(--text3));margin-top:8px}
+
 /* â”€â”€ RESPONSIVE â”€â”€ */
 @media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1100px){.fk-hero,.fk-grid{grid-template-columns:1fr}.fk-summary,.fk-grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.fk-metrics,.fk-summary,.fk-grid-3{grid-template-columns:1fr}.fk-ready-row{grid-template-columns:1fr}}
 </style>
 <meta property="article:modified_time" content="2026-04-16">
 </head>
@@ -288,6 +334,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
   <!-- â”€â”€ NAV RAIL â”€â”€ -->
   <nav class="rail">
     <button class="rail-btn on" data-page="dashboard" onclick="showPage('dashboard', this)" title="Dashboard">ðŸ </button>
+    <button class="rail-btn" data-page="fiftyk" onclick="showPage('fiftyk', this)" title="50K Execution">50K</button>
     <button class="rail-btn" data-page="checklist" onclick="showPage('checklist', this)" title="Morning Checklist">â˜‘ï¸</button>
     <button class="rail-btn" data-page="pipelines" onclick="showPage('pipelines', this)" title="Data Pipelines">ðŸ”„</button>
     <div class="rail-sep"></div>
@@ -534,8 +581,115 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
     </div>
 
     <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-         PAGE: MORNING CHECKLIST
+         PAGE: 50K EXECUTION
          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- 50K EXECUTION -->
+    <div class="page" id="page-fiftyk">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title">50K Execution Dashboard</div>
+          <div class="page-sub">Weekly B2B operating panel for revenue, outreach, distribution, and growth signals.</div>
+        </div>
+        <div class="date-badge" id="fiftyk-week-label">Manual week</div>
+      </div>
+
+      <div class="fk-shell">
+        <section class="fk-hero">
+          <div>
+            <div class="fk-kicker">Internal revenue cockpit</div>
+            <h2 class="fk-title">Run the 50K week from one panel.</h2>
+            <p class="fk-copy">This dashboard structures the founder motion without inventing live numbers. Fields are manual/local until Stripe or Paystack, Search Console, email, WhatsApp, CRM, backlink, and B2B enquiry data are connected.</p>
+            <div class="fk-actions">
+              <button class="qa-btn fk-action" type="button" onclick="saveFiftyKWeek()">Save week locally</button>
+              <button class="qa-btn fk-action" type="button" onclick="copyFiftyKSummary()">Copy weekly summary</button>
+              <button class="qa-btn fk-action" type="button" onclick="resetFiftyKWeek()">Reset week</button>
+            </div>
+            <div class="fk-status-line" id="fiftyk-status">Manual/local tracker. No live values loaded.</div>
+          </div>
+          <div class="fk-source-stack">
+            <div class="fk-source-card">
+              <div class="fk-source-label">Storage</div>
+              <div class="fk-source-value">Browser localStorage only</div>
+            </div>
+            <div class="fk-source-card">
+              <div class="fk-source-label">Live source status</div>
+              <div class="fk-source-value">Pending integrations</div>
+            </div>
+            <div class="fk-source-card">
+              <div class="fk-source-label">Week cadence</div>
+              <div class="fk-source-value">Review every Monday</div>
+            </div>
+          </div>
+        </section>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">50K</span> Weekly Scoreboard</div>
+            <div class="panel-badge">manual/local</div>
+          </div>
+          <div class="panel-body">
+            <div class="fk-summary" id="fiftyk-summary"></div>
+          </div>
+        </div>
+
+        <div class="fk-grid" id="fiftyk-metric-groups"></div>
+
+        <div class="fk-grid">
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">7D</span> 7-Day Execution Checklist</div>
+              <div class="panel-badge" id="fiftyk-check-count">0/6</div>
+            </div>
+            <div class="panel-body">
+              <div class="fk-checklist" id="fiftyk-checklist"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">SRC</span> Data Readiness</div>
+              <div class="panel-badge">pending live feeds</div>
+            </div>
+            <div class="panel-body">
+              <div class="fk-readiness" id="fiftyk-readiness"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fk-grid">
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">PIPE</span> Commercial Route Links</div>
+              <div class="panel-badge">sell this week</div>
+            </div>
+            <div class="panel-body">
+              <div class="fk-linkbar">
+                <a href="/widgets/" target="_blank" rel="noopener">Widgets</a>
+                <a href="/sponsored-tools/" target="_blank" rel="noopener">Sponsored tools</a>
+                <a href="/custom-calculators/" target="_blank" rel="noopener">Custom calculators</a>
+                <a href="/media-kit/" target="_blank" rel="noopener">Media kit</a>
+                <a href="/api/pricing" target="_blank" rel="noopener">API pricing</a>
+                <a href="/business-enquiry/" target="_blank" rel="noopener">B2B enquiries</a>
+              </div>
+              <div class="fk-note" style="margin-top:12px">Use these routes for outreach links and pilot follow-up. This panel tracks the sales motion; it does not replace the actual enquiry inbox or live revenue ledger.</div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">NOTE</span> Weekly Notes</div>
+              <div class="panel-badge">manual/local</div>
+            </div>
+            <div class="panel-body">
+              <textarea class="fk-input fk-textarea" id="fiftyk-notes" placeholder="Manual notes: best replies, blockers, hot prospects, proposal next steps." oninput="setFiftyKNotes(this.value)"></textarea>
+              <div class="fk-source-note">Stored only in this browser. Keep private deal details in the real CRM or prospect tracker when available.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MORNING CHECKLIST -->
     <div class="page" id="page-checklist">
       <div class="page-hdr">
         <div>
@@ -1018,6 +1172,282 @@ function mcToneSpec(status){
 function mcBadgeHtml(text, status){
   var tone = mcToneSpec(status);
   return '<span style="display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:'+tone.bg+';color:'+tone.color+'">'+escapeHtml(text)+'</span>';
+}
+
+var FIFTYK_STORAGE_PREFIX = 'afrotools-mc-50k-week-';
+var FIFTYK_METRIC_GROUPS = [
+  {
+    title: 'Revenue',
+    badge: 'manual/local',
+    metrics: [
+      { key: 'mrr', label: 'MRR', source: 'Manual/local. Pending Stripe, Paystack, bank transfer, or invoice ledger.' },
+      { key: 'oneTimeRevenue', label: 'One-time revenue', source: 'Manual/local. Pending pilot invoice and custom build ledger.' }
+    ]
+  },
+  {
+    title: 'Sales Motion',
+    badge: 'manual/local',
+    metrics: [
+      { key: 'outreachSent', label: 'Outreach sent', source: 'Manual/local. Pending prospect tracker or outbound inbox connection.' },
+      { key: 'followUpsSent', label: 'Follow-ups sent', source: 'Manual/local. Pending prospect tracker or email sequence connection.' },
+      { key: 'replies', label: 'Replies', source: 'Manual/local. Pending inbox or CRM connection.' },
+      { key: 'demosBooked', label: 'Demos/calls booked', source: 'Manual/local. Pending calendar or CRM connection.' },
+      { key: 'proposalsSent', label: 'Proposals sent', source: 'Manual/local. Pending proposal tracker connection.' },
+      { key: 'dealsWon', label: 'Deals won', source: 'Manual/local. Pending payment and CRM source of truth.' }
+    ]
+  },
+  {
+    title: 'Partner Distribution',
+    badge: 'manual/local',
+    metrics: [
+      { key: 'freeWidgetPartners', label: 'Free widget partners', source: 'Manual/local. Pending widget install registry.' },
+      { key: 'paidWidgetCustomers', label: 'Paid widget customers', source: 'Manual/local. Pending billing and white-label customer registry.' },
+      { key: 'sponsoredToolConversations', label: 'Sponsored tool conversations', source: 'Manual/local. Pending B2B enquiry and CRM tagging.' }
+    ]
+  },
+  {
+    title: 'Growth Signals',
+    badge: 'pending live',
+    metrics: [
+      { key: 'backlinksRefDomains', label: 'Backlinks/referring domains', source: 'Pending live source. Connect Search Console or backlink export before automation.' },
+      { key: 'organicClicks', label: 'Organic clicks', source: 'Pending live source. Connect Google Search Console before automation.' },
+      { key: 'emailWhatsappSubscribers', label: 'Email/WhatsApp subscribers', source: 'Pending live source. Reconcile email_leads, profiles, and WhatsApp list first.' }
+    ]
+  }
+];
+
+var FIFTYK_CHECKLIST = [
+  { key: 'commercialPages', label: 'Commercial pages', note: 'Widgets, sponsored tools, custom calculators, media kit, and API path are ready for founder outreach.' },
+  { key: 'topMoneyToolsCta', label: 'Top 10 money tools CTA upgrade', note: 'Priority calculators route business buyers to embed, sponsor, API, and white-label offers.' },
+  { key: 'prospectTracker300', label: '300 prospect tracker', note: 'Build or update the manual prospect list before automating outreach metrics.' },
+  { key: 'founderOutreach150250', label: '150-250 founder outreach', note: 'Record sent count manually until outbound inbox or CRM data is wired.' },
+  { key: 'demos2to5', label: '2-5 demos', note: 'Track booked calls from replies, B2B forms, and partner referrals.' },
+  { key: 'paidPilotProposal', label: '1 paid pilot proposal', note: 'Send at least one concrete widget, sponsored tool, API, or calculator pilot proposal.' }
+];
+
+var FIFTYK_READINESS = [
+  { area: 'Revenue', source: 'Stripe, Paystack, bank transfer, and manual invoice ledger', status: 'Pending' },
+  { area: 'Outreach', source: '300 prospect tracker, founder inbox, and follow-up sequence log', status: 'Manual/local' },
+  { area: 'Demos and proposals', source: 'Calendar, CRM, proposal folder, or internal deal board', status: 'Manual/local' },
+  { area: 'Widget partners', source: 'Free widget installs, paid widget customers, backlink terms, and white-label pilots', status: 'Manual/local' },
+  { area: 'Sponsored tools', source: 'B2B enquiry tags and founder sales notes', status: 'Manual/local' },
+  { area: 'Backlinks and clicks', source: 'Google Search Console and backlink/referring domain export', status: 'Pending' },
+  { area: 'Subscribers', source: 'public.profiles, email_leads, newsletter flows, and WhatsApp list', status: 'Pending' }
+];
+
+function getFiftyKWeekStart(){
+  var d = new Date();
+  var day = d.getDay();
+  var diff = day === 0 ? -6 : 1 - day;
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + diff);
+  return d;
+}
+
+function getFiftyKWeekKey(){
+  return getFiftyKWeekStart().toISOString().slice(0, 10);
+}
+
+function getFiftyKStorageKey(){
+  return FIFTYK_STORAGE_PREFIX + getFiftyKWeekKey();
+}
+
+function getFiftyKState(){
+  var empty = { metrics: {}, checks: {}, notes: '', updatedAt: null };
+  try {
+    var raw = localStorage.getItem(getFiftyKStorageKey());
+    if(!raw) return empty;
+    var parsed = JSON.parse(raw);
+    parsed.metrics = parsed.metrics || {};
+    parsed.checks = parsed.checks || {};
+    parsed.notes = parsed.notes || '';
+    return parsed;
+  } catch(e) {
+    return empty;
+  }
+}
+
+function saveFiftyKState(state){
+  state.updatedAt = new Date().toISOString();
+  localStorage.setItem(getFiftyKStorageKey(), JSON.stringify(state));
+}
+
+function setFiftyKStatus(message){
+  var el = document.getElementById('fiftyk-status');
+  if(el) el.textContent = message;
+}
+
+function setFiftyKMetric(key, value){
+  var state = getFiftyKState();
+  state.metrics[key] = value;
+  saveFiftyKState(state);
+  updateFiftyKSummary();
+}
+
+function setFiftyKNotes(value){
+  var state = getFiftyKState();
+  state.notes = value;
+  saveFiftyKState(state);
+  setFiftyKStatus('Weekly notes saved locally at ' + new Date().toLocaleTimeString());
+}
+
+function toggleFiftyKCheck(key, checked){
+  var state = getFiftyKState();
+  state.checks[key] = !!checked;
+  saveFiftyKState(state);
+  updateFiftyKSummary();
+  setFiftyKStatus('Checklist saved locally at ' + new Date().toLocaleTimeString());
+}
+
+function fiftyKAllMetrics(){
+  return FIFTYK_METRIC_GROUPS.reduce(function(list, group){
+    return list.concat(group.metrics);
+  }, []);
+}
+
+function metricValueDisplay(value){
+  var cleaned = String(value == null ? '' : value).trim();
+  return cleaned ? cleaned : 'Manual';
+}
+
+function metricFillCount(keys, metrics){
+  return keys.filter(function(key){
+    return String(metrics[key] || '').trim().length > 0;
+  }).length;
+}
+
+function renderFiftyKMetricGroups(state){
+  var el = document.getElementById('fiftyk-metric-groups');
+  if(!el) return;
+  el.innerHTML = FIFTYK_METRIC_GROUPS.map(function(group){
+    var cards = group.metrics.map(function(metric){
+      var value = state.metrics[metric.key] || '';
+      var pending = metric.source.indexOf('Pending live source') === 0;
+      return '<div class="fk-metric">' +
+        '<div class="fk-metric-top">' +
+          '<div class="fk-metric-label">' + escapeHtml(metric.label) + '</div>' +
+          '<span class="fk-tag ' + (pending ? '' : 'local') + '">' + (pending ? 'pending' : 'manual/local') + '</span>' +
+        '</div>' +
+        '<input class="fk-input" value="' + escapeHtml(value) + '" placeholder="Manual value" oninput="setFiftyKMetric(\'' + metric.key + '\', this.value)">' +
+        '<div class="fk-source-note">' + escapeHtml(metric.source) + '</div>' +
+      '</div>';
+    }).join('');
+    return '<div class="panel">' +
+      '<div class="panel-hdr"><div class="panel-title"><span class="icon">50K</span> ' + escapeHtml(group.title) + '</div><div class="panel-badge">' + escapeHtml(group.badge) + '</div></div>' +
+      '<div class="panel-body"><div class="fk-metrics">' + cards + '</div></div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderFiftyKChecklist(state){
+  var el = document.getElementById('fiftyk-checklist');
+  if(!el) return;
+  el.innerHTML = FIFTYK_CHECKLIST.map(function(item){
+    var checked = !!state.checks[item.key];
+    return '<label class="fk-check-row">' +
+      '<input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="toggleFiftyKCheck(\'' + item.key + '\', this.checked)">' +
+      '<span><span class="fk-check-title">' + escapeHtml(item.label) + '</span><span class="fk-check-note">' + escapeHtml(item.note) + '</span></span>' +
+    '</label>';
+  }).join('');
+}
+
+function renderFiftyKReadiness(){
+  var el = document.getElementById('fiftyk-readiness');
+  if(!el) return;
+  el.innerHTML = FIFTYK_READINESS.map(function(row){
+    var status = row.status === 'Pending' ? 'degraded' : 'working';
+    return '<div class="fk-ready-row">' +
+      '<div class="fk-ready-name">' + escapeHtml(row.area) + '</div>' +
+      '<div class="fk-ready-source">' + escapeHtml(row.source) + '</div>' +
+      mcBadgeHtml(row.status, status) +
+    '</div>';
+  }).join('');
+}
+
+function updateFiftyKSummary(){
+  var summaryEl = document.getElementById('fiftyk-summary');
+  if(!summaryEl) return;
+  var state = getFiftyKState();
+  var metrics = state.metrics || {};
+  var revenueKeys = ['mrr', 'oneTimeRevenue'];
+  var salesKeys = ['outreachSent', 'followUpsSent', 'replies', 'demosBooked', 'proposalsSent', 'dealsWon'];
+  var distributionKeys = ['freeWidgetPartners', 'paidWidgetCustomers', 'sponsoredToolConversations'];
+  var filledAll = metricFillCount(fiftyKAllMetrics().map(function(metric){ return metric.key; }), metrics);
+  var completed = FIFTYK_CHECKLIST.filter(function(item){ return !!state.checks[item.key]; }).length;
+  summaryEl.innerHTML = [
+    { label: 'Revenue fields', value: metricFillCount(revenueKeys, metrics) + '/' + revenueKeys.length },
+    { label: 'Sales motion fields', value: metricFillCount(salesKeys, metrics) + '/' + salesKeys.length },
+    { label: 'Distribution fields', value: metricFillCount(distributionKeys, metrics) + '/' + distributionKeys.length },
+    { label: '7-day checklist', value: completed + '/' + FIFTYK_CHECKLIST.length }
+  ].map(function(card){
+    return '<div class="fk-summary-card"><div class="fk-summary-label">' + escapeHtml(card.label) + '</div><div class="fk-summary-value">' + escapeHtml(card.value) + '</div></div>';
+  }).join('');
+  var countEl = document.getElementById('fiftyk-check-count');
+  if(countEl) countEl.textContent = completed + '/' + FIFTYK_CHECKLIST.length;
+  var weekEl = document.getElementById('fiftyk-week-label');
+  if(weekEl) weekEl.textContent = 'Week of ' + getFiftyKWeekStart().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  var status = filledAll ? (filledAll + ' manual KPI fields filled locally.') : 'Manual/local tracker. No live values loaded.';
+  if(state.updatedAt) status += ' Last saved ' + new Date(state.updatedAt).toLocaleString() + '.';
+  setFiftyKStatus(status);
+}
+
+function buildFiftyKDashboard(){
+  var state = getFiftyKState();
+  renderFiftyKMetricGroups(state);
+  renderFiftyKChecklist(state);
+  renderFiftyKReadiness();
+  var notesEl = document.getElementById('fiftyk-notes');
+  if(notesEl) notesEl.value = state.notes || '';
+  updateFiftyKSummary();
+}
+
+function saveFiftyKWeek(){
+  var state = getFiftyKState();
+  saveFiftyKState(state);
+  updateFiftyKSummary();
+  setFiftyKStatus('Week saved locally at ' + new Date().toLocaleTimeString() + '.');
+}
+
+function buildFiftyKSummaryText(){
+  var state = getFiftyKState();
+  var metrics = state.metrics || {};
+  var lines = [
+    'AfroTools 50K weekly summary',
+    'Week of ' + getFiftyKWeekStart().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    '',
+    'KPIs:'
+  ];
+  fiftyKAllMetrics().forEach(function(metric){
+    lines.push('- ' + metric.label + ': ' + metricValueDisplay(metrics[metric.key]) + ' (' + metric.source + ')');
+  });
+  lines.push('', '7-day checklist:');
+  FIFTYK_CHECKLIST.forEach(function(item){
+    lines.push('- [' + (state.checks[item.key] ? 'x' : ' ') + '] ' + item.label);
+  });
+  if(state.notes){
+    lines.push('', 'Notes:', state.notes);
+  }
+  return lines.join('\n');
+}
+
+function copyFiftyKSummary(){
+  var text = buildFiftyKSummaryText();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){
+      setFiftyKStatus('Weekly summary copied.');
+    }).catch(function(){
+      setFiftyKStatus('Copy failed. Browser clipboard permission is blocked.');
+    });
+  } else {
+    setFiftyKStatus('Copy unavailable in this browser.');
+  }
+}
+
+function resetFiftyKWeek(){
+  if(!confirm('Reset this local 50K weekly tracker?')) return;
+  localStorage.removeItem(getFiftyKStorageKey());
+  buildFiftyKDashboard();
+  setFiftyKStatus('Week reset locally.');
 }
 
 function mcFindEndpointCheck(id){
@@ -2600,6 +3030,7 @@ function drMarkReviewed(idx){
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function initAll(){
   buildDashStats();
+  buildFiftyKDashboard();
   buildRegistry();
   buildInventoryPage();
   buildSEOPage();

@@ -9,6 +9,7 @@ var { randomBytes } = require('crypto');
 var { getAllowedOrigin } = require('./utils/cors');
 var { checkRateLimit } = require('./_shared/rate-limit');
 var { resolveAuthenticatedUser } = require('./utils/supabase-session');
+var { getApiPlanLimit } = require('./_shared/api-plans');
 
 function cleanEnvValue(value) {
   return String(value || '').trim().replace(/^['"]|['"]$/g, '');
@@ -137,12 +138,13 @@ exports.handler = async function(event) {
     }
   } catch(e) { /* non-critical */ }
 
+  var freeLimits = getApiPlanLimit('free');
   return json(200, {
     ok: true,
     apiKey: apiKey,
     key: apiKey,
     tier: 'free',
-    rateLimit: { requests_per_day: 100, requests_per_month: 3000 },
+    rateLimit: { requests_per_day: freeLimits.day, requests_per_month: freeLimits.month },
     message: 'Store this key securely. It will not be shown again in full.'
   });
 };

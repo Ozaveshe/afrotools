@@ -17,6 +17,15 @@
 
 ## Task Routing
 
+### 50K commercial or revenue work
+
+- Read `docs/AFROTOOLS-50K-EXECUTION-HANDOFF.md`.
+- Treat AfroTools as sales-led, SEO-assisted: every new feature should support revenue, backlinks, email capture, partner distribution, or a verified user/release need.
+- Prioritize `/widgets/`, `/sponsored-tools/`, `/custom-calculators/`, `/media-kit/`, `/api/`, `/business-enquiry/`, top money tools, and Pro/business subscription routes.
+- Use the shared business CTA component on high-intent money tools instead of creating one-off CTA blocks.
+- Keep B2B lead capture server-side through Netlify functions; do not add anonymous browser Supabase writes.
+- Separate baseline repo debt from net-new issues in the final report.
+
 ### Add or repair a tool page
 
 - Read `docs/ADDING-A-TOOL.md`

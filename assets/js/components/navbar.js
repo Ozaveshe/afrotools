@@ -818,6 +818,39 @@
     }
   };
 
+  const BUSINESS_LINKS = [
+    {
+      label: 'Widgets',
+      href: '/widgets/',
+      icon: 'W',
+      desc: 'Free embeds, Widget Pro, white-label setup, analytics, and lead capture.'
+    },
+    {
+      label: 'API',
+      href: '/api/',
+      icon: 'API',
+      desc: 'Sandbox keys, API Growth pilots, Pro access, and enterprise data subscriptions.'
+    },
+    {
+      label: 'Sponsored Tools',
+      href: '/sponsored-tools/',
+      icon: 'SP',
+      desc: 'Tool, category, and country sponsorship placements with pilot pricing.'
+    },
+    {
+      label: 'Custom Calculators',
+      href: '/custom-calculators/',
+      icon: 'CC',
+      desc: 'Branded calculators for HR, payroll, fintech, accounting, schools, and media.'
+    },
+    {
+      label: 'Media Kit',
+      href: '/media-kit/',
+      icon: 'MK',
+      desc: 'Audience, inventory, offer ladder, pricing ranges, placements, and FAQ.'
+    }
+  ];
+
   function localizedItemText(item, field, lang) {
     var overrides = TOOL_MENU_COPY[lang] && TOOL_MENU_COPY[lang][item.id];
     if (overrides && overrides[field]) return overrides[field];
@@ -940,6 +973,11 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
     }
+    .business-mega-grid {
+      max-width: 980px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
 
     .mega-col {
       border-radius: 12px; padding: 15px;
@@ -949,6 +987,18 @@
       text-decoration: none; cursor: pointer;
     }
     .mega-col:hover { border-color: var(--col-accent, #0062CC); background: #f8fbff; }
+    .business-col {
+      align-items: flex-start;
+      flex-direction: column;
+      min-height: 136px;
+      gap: 10px;
+    }
+    .business-col .mega-col-icon {
+      color: #0062CC;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
 
     .mega-col-icon {
       width: 34px; height: 34px; border-radius: 8px;
@@ -1305,6 +1355,11 @@
       .country-control-shell { width: 148px; flex-basis: 148px; }
       .search-btn .search-kbd { display: none; }
       .btn-pro { padding-left: 12px; padding-right: 12px; }
+    }
+    @media (max-width: 1120px) {
+      .business-mega-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
     @media (max-width: 1180px) {
       .nav-links li:nth-child(6) { display: none; }
@@ -1675,6 +1730,29 @@
       return html;
     }
 
+    _businessContent() {
+      return BUSINESS_LINKS.map(item => `
+        <a href="${item.href}" class="mega-col business-col" style="--col-accent:#0062CC">
+          <div class="mega-col-icon" style="background:#EEF4FF">${item.icon}</div>
+          <div>
+            <div class="mega-col-name">${item.label}</div>
+            <div class="mega-col-desc">${item.desc}</div>
+          </div>
+        </a>`).join('');
+    }
+
+    _mobileBusinessContent() {
+      return BUSINESS_LINKS.map(item => `
+        <a href="${item.href}" class="mob-cat">
+          <div class="mob-cat-icon" style="background:#EEF4FF;color:#0062CC;font-size:0.75rem;font-weight:800">${item.icon}</div>
+          <div>
+            <div class="mob-cat-label">${item.label}</div>
+            <div class="mob-cat-desc">${item.desc}</div>
+          </div>
+          <span class="mob-arr">â€º</span>
+        </a>`).join('');
+    }
+
     _mobileContent() {
       var lang = this._getLang();
       var isFr = lang === 'fr';
@@ -1831,8 +1909,10 @@
         tools:        isSw ? 'Zana'                         : isFr ? 'Outils'                                           : 'Tools',
         countries:    isSw ? 'Nchi'                         : isFr ? 'Pays'                                             : 'Countries',
         countriesHref:isSw ? '/sw/nchi/'                    : isFr ? '/fr/countries/'                                  : '/countries/',
-        business:     isSw ? 'Biashara'                     : isFr ? 'Business'                                         : 'Business',
-        businessHref: isSw ? '/sw/biashara-ndogo/'          : isFr ? '/fr/business/'                                    : '/business/',
+        business:     isSw ? 'Biashara'                     : isFr ? 'Business'                                         : 'For business',
+        businessNote: isSw ? 'Widgets, API, ufadhili, na vikokotoo maalum' : isFr ? 'Widgets, API, sponsoring, calculateurs sur mesure' : 'Widgets, API, sponsorships, custom calculators, and media inventory',
+        businessBrowse:isSw ? 'Fungua media kit ->'         : isFr ? 'Ouvrir le media kit ->'                           : 'Open media kit ->',
+        businessBrowseHref:'/media-kit/',
         resources:    isSw ? 'Rasilimali'                   : isFr ? 'Ressources'                                       : 'Resources',
         resourcesHref:isSw ? '/sw/'                         : isFr ? '/fr/blog/'                                        : '/blog/',
         search:       isSw ? 'Tafuta'                       : isFr ? 'Recherche'                                        : 'Search',
@@ -1961,7 +2041,14 @@
               </li>
               <li><a href="${T.salaryHref}" class="lnk">${T.salaryTax}</a></li>
               <li><a href="${T.pdfHref}" class="lnk">PDF</a></li>
-              <li><a href="${T.businessHref}" class="lnk">${T.business}</a></li>
+              <li>
+                <button class="lnk" id="businessBtn" type="button" aria-haspopup="true" aria-expanded="false">
+                  ${T.business}
+                  <svg class="chev" viewBox="0 0 7 4" fill="none">
+                    <polyline points="0.5,0.5 3.5,3.5 6.5,0.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </li>
               <li><a href="${T.resourcesHref}" class="lnk">${T.resources}</a></li>
             </ul>
 
@@ -2006,6 +2093,16 @@
           </div>
         </div>
 
+        <div class="mega" id="businessMega" role="menu" aria-label="${T.business}">
+          <div class="mega-inner business-mega-grid">
+            ${this._businessContent()}
+          </div>
+          <div class="mega-footer">
+            <span class="mega-footer-note">${T.businessNote}</span>
+            <a href="${T.businessBrowseHref}" class="mega-footer-lnk">${T.businessBrowse}</a>
+          </div>
+        </div>
+
         <div class="mob" role="dialog" aria-modal="true" aria-label="${T.ariaMenu}">
           <div class="mob-search-bar">
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2021,6 +2118,10 @@
             </div>
             <div class="mob-country-results" id="mobileCountrySearchResults" role="listbox" aria-label="${T.startByCountry}"></div>
             <div class="mob-country-grid">${this._mobileCountriesContent()}</div>
+          </div>
+          <div class="mob-business-block">
+            <div class="mob-section-label">${T.business}</div>
+            ${this._mobileBusinessContent()}
           </div>
           <div id="mobCategoriesWrap">
             <div class="mob-section-label">${T.allCats}</div>
@@ -2049,6 +2150,8 @@
       const mega   = sr.querySelector('#mega');
       const countriesBtn = sr.querySelector('#countriesBtn');
       const countriesMega = sr.querySelector('#countriesMega');
+      const businessBtn = sr.querySelector('#businessBtn');
+      const businessMega = sr.querySelector('#businessMega');
       const searchBtn = sr.querySelector('#searchBtn');
       const burger = sr.querySelector('.burger');
       const mob    = sr.querySelector('.mob');
@@ -2062,6 +2165,7 @@
       const openMega  = () => {
         this._megaOpen = true;
         closeCountries();
+        closeBusiness();
         allBtn?.classList.add('open');
         mega?.classList.add('open');
         allBtn?.setAttribute('aria-expanded','true');
@@ -2075,6 +2179,7 @@
       const openCountries = () => {
         this._countriesOpen = true;
         closeMega();
+        closeBusiness();
         countriesBtn?.classList.add('open');
         countriesMega?.classList.add('open');
         countriesBtn?.setAttribute('aria-expanded','true');
@@ -2085,18 +2190,34 @@
         countriesMega?.classList.remove('open');
         countriesBtn?.setAttribute('aria-expanded','false');
       };
-      const closeMenus = () => { closeMega(); closeCountries(); };
+      const openBusiness = () => {
+        this._businessOpen = true;
+        closeMega();
+        closeCountries();
+        businessBtn?.classList.add('open');
+        businessMega?.classList.add('open');
+        businessBtn?.setAttribute('aria-expanded','true');
+      };
+      const closeBusiness = () => {
+        this._businessOpen = false;
+        businessBtn?.classList.remove('open');
+        businessMega?.classList.remove('open');
+        businessBtn?.setAttribute('aria-expanded','false');
+      };
+      const closeMenus = () => { closeMega(); closeCountries(); closeBusiness(); };
       const resetMobileSearch = () => {
         const mobSearchInput = sr.querySelector('.mob-search-input');
         const mobSearchResults = sr.querySelector('#mobSearchResults');
         const mobCategoriesWrap = sr.querySelector('#mobCategoriesWrap');
         const mobCountryBlock = sr.querySelector('.mob-country-block');
+        const mobBusinessBlock = sr.querySelector('.mob-business-block');
         const mobileCountrySearchInput = sr.querySelector('#mobileCountrySearchInput');
         const mobileCountrySearchResults = sr.querySelector('#mobileCountrySearchResults');
         if (mobSearchInput) mobSearchInput.value = '';
         if (mobSearchResults) mobSearchResults.innerHTML = '';
         if (mobCategoriesWrap) mobCategoriesWrap.style.display = '';
         if (mobCountryBlock) mobCountryBlock.style.display = '';
+        if (mobBusinessBlock) mobBusinessBlock.style.display = '';
         if (mobileCountrySearchInput) mobileCountrySearchInput.value = '';
         if (mobileCountrySearchResults) mobileCountrySearchResults.innerHTML = '';
       };
@@ -2117,6 +2238,7 @@
       // Click toggle
       allBtn?.addEventListener('click', e => { e.stopPropagation(); this._megaOpen ? closeMega() : openMega(); });
       countriesBtn?.addEventListener('click', e => { e.stopPropagation(); this._countriesOpen ? closeCountries() : openCountries(); });
+      businessBtn?.addEventListener('click', e => { e.stopPropagation(); this._businessOpen ? closeBusiness() : openBusiness(); });
       searchBtn?.addEventListener('click', e => {
         e.preventDefault();
         if (typeof window.__openCommandPalette === 'function') {
@@ -2140,6 +2262,13 @@
       countriesNavEl?.addEventListener('mouseleave', () => { countriesHoverTimer = setTimeout(closeCountries, 200); });
       countriesMega?.addEventListener('mouseenter', () => clearTimeout(countriesHoverTimer));
       countriesMega?.addEventListener('mouseleave', () => { countriesHoverTimer = setTimeout(closeCountries, 200); });
+
+      let businessHoverTimer;
+      const businessNavEl = businessBtn?.closest('li');
+      businessNavEl?.addEventListener('mouseenter', () => { clearTimeout(businessHoverTimer); openBusiness(); });
+      businessNavEl?.addEventListener('mouseleave', () => { businessHoverTimer = setTimeout(closeBusiness, 200); });
+      businessMega?.addEventListener('mouseenter', () => clearTimeout(businessHoverTimer));
+      businessMega?.addEventListener('mouseleave', () => { businessHoverTimer = setTimeout(closeBusiness, 200); });
 
       // Tool sub-panels: disabled — category cards navigate directly to their pages
 
@@ -2190,6 +2319,9 @@
       if (/^\/(all-tools|zana-zote|categories|tools|zana)(\/|$)/.test(activePath)) {
         allBtn?.classList.add('active');
       }
+      if (/^\/(widgets|api|sponsored-tools|custom-calculators|media-kit|business-enquiry)(\/|$)/.test(activePath)) {
+        businessBtn?.classList.add('active');
+      }
 
       // ── RECENTLY USED TOOLS (localStorage) ──
       const RECENT_KEY = 'aft_recent_tools';
@@ -2223,6 +2355,7 @@
       const mobSearchResults = sr.querySelector('#mobSearchResults');
       const mobCategoriesWrap = sr.querySelector('#mobCategoriesWrap');
       const mobCountryBlock = sr.querySelector('.mob-country-block');
+      const mobBusinessBlock = sr.querySelector('.mob-business-block');
       const countrySearchInput = sr.querySelector('#countrySearchInput');
       const countrySearchResults = sr.querySelector('#countrySearchResults');
       const mobileCountrySearchInput = sr.querySelector('#mobileCountrySearchInput');
@@ -2406,6 +2539,7 @@
             mobSearchResults.innerHTML = '';
             mobCategoriesWrap.style.display = '';
             if (mobCountryBlock) mobCountryBlock.style.display = '';
+            if (mobBusinessBlock) mobBusinessBlock.style.display = '';
             return;
           }
           const results = searchTools(q);
@@ -2413,12 +2547,14 @@
             mobSearchResults.innerHTML = '<div class="mob-search-empty">Loading tools…</div>';
             mobCategoriesWrap.style.display = 'none';
             if (mobCountryBlock) mobCountryBlock.style.display = 'none';
+            if (mobBusinessBlock) mobBusinessBlock.style.display = 'none';
             return;
           }
           if (results.length === 0) {
             mobSearchResults.innerHTML = '<div class="mob-search-empty">No tools found</div>';
             mobCategoriesWrap.style.display = 'none';
             if (mobCountryBlock) mobCountryBlock.style.display = 'none';
+            if (mobBusinessBlock) mobBusinessBlock.style.display = 'none';
             // Analytics: track mobile search no results
             if (q && q.length >= 2 && window.AfroTools?.analytics) {
               window.AfroTools.analytics.trackSearch(q, 0, 'navbar');
@@ -2429,6 +2565,7 @@
           }
           mobCategoriesWrap.style.display = 'none';
           if (mobCountryBlock) mobCountryBlock.style.display = 'none';
+          if (mobBusinessBlock) mobBusinessBlock.style.display = 'none';
           mobSearchResults.innerHTML = results.map(t => `
             <a href="${t.href}" class="search-result" role="option">
               <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
@@ -2740,6 +2877,7 @@
 
   /* Expose localized NAV_ITEMS globally for command palette + other consumers */
   window.__AFRO_NAV_ITEMS = _localizedGlobalNavItems();
+  window.__AFRO_BUSINESS_NAV_ITEMS = BUSINESS_LINKS.slice();
 
   if (!customElements.get('afro-navbar')) {
     customElements.define('afro-navbar', AfroNavbar);

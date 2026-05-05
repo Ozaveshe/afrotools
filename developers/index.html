@@ -5,7 +5,7 @@
   <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AfroTools API — Developer Portal | AfroTools</title>
-  <meta name="description" content="Build payroll, HR, and fintech products with accurate PAYE, VAT, and compliance data for 54 African countries. Free API access available.">
+  <meta name="description" content="Build payroll, HR, fintech, and business-data products with AfroTools API. Start with a free key, then request API Growth, API Pro, or Enterprise/custom access.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -321,6 +321,7 @@
       font-size: 1.05rem;
       transition: transform .15s;
     }
+    .dev-cta a + a { margin-left: .75rem; }
     .dev-cta a:hover { transform: translateY(-2px); }
 
     /* Responsive */
@@ -330,6 +331,7 @@
       .dev-section h2 { font-size: 1.5rem; }
       .tier-price { font-size: 1.8rem; }
       .code-tab { padding: .6rem 1rem; font-size: .85rem; }
+      .dev-cta a + a { margin-left: 0; margin-top: .75rem; }
     }
   </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/developers/" />
@@ -340,12 +342,12 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AfroTools API — Developer Portal | AfroTools">
-<meta name="twitter:description" content="Build payroll, HR, and fintech products with accurate PAYE, VAT, and compliance data for 54 African countries. Free API access available.">
+<meta name="twitter:description" content="Build payroll, HR, fintech, and business-data products with AfroTools API. Start with a free key, then request API Growth, API Pro, or Enterprise/custom access.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 
 
 <meta property="og:title" content="AfroTools API - Developer Portal | AfroTools">
-<meta property="og:description" content="Build payroll, HR, and fintech products with accurate PAYE, VAT, and compliance data for 54 African countries. Free API access available.">
+<meta property="og:description" content="Build payroll, HR, fintech, and business-data products with AfroTools API. Start with a free key, then request API Growth, API Pro, or Enterprise/custom access.">
 <meta property="article:modified_time" content="2026-03-28">
 <meta property="og:url" content="https://afrotools.com/developers/">
 </head>
@@ -358,7 +360,7 @@
 <section class="dev-hero">
   <div class="badge">Beta - Now Available</div>
   <h1>Afro<span>Tools</span> API</h1>
-  <p>Tax calculation infrastructure for 54 African countries. Build payroll, HR, and fintech products with accurate PAYE, VAT, and compliance data.</p>
+  <p>Tax and business-data infrastructure for African payroll, HR, fintech, accounting, and media products. Start free, then request API Growth, API Pro, or Enterprise/custom when a paid integration is real.</p>
 </section>
 
 <!-- Getting Started -->
@@ -379,7 +381,7 @@
     <div class="step">
       <div class="step-num">3</div>
       <h3>Go to Production</h3>
-      <p>Upgrade to Pro or Enterprise when you need higher limits, SLA guarantees, and dedicated support.</p>
+      <p>Request API Growth, API Pro, or Enterprise/custom when you need higher limits, support, data review, or custom terms. Paid access is manually activated during a pilot.</p>
     </div>
   </div>
 </section>
@@ -388,7 +390,7 @@
 <section class="dark-section">
   <div class="dev-section" style="padding-top:4rem;padding-bottom:4rem;">
     <h2>Code Examples</h2>
-    <p class="subtitle">Calculate Nigerian PAYE tax in one API call.</p>
+    <p class="subtitle">Calculate Nigerian PAYE tax with the canonical v1 endpoint.</p>
     <div>
       <div class="code-tabs">
         <button class="code-tab active" data-tab="curl" onclick="switchTab('curl')">cURL</button>
@@ -396,28 +398,29 @@
         <button class="code-tab" data-tab="python" onclick="switchTab('python')">Python</button>
       </div>
       <div class="code-block">
-        <div class="code-panel active" id="panel-curl"><pre><span class="fn">curl</span> <span class="kw">-X</span> POST https://afrotools.com/api/v1/calculate \
+        <div class="code-panel active" id="panel-curl"><pre><span class="fn">curl</span> <span class="kw">-X</span> POST https://afrotools.com/api/v1/tax/paye \
   <span class="kw">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="kw">-H</span> <span class="str">"x-api-key: YOUR_API_KEY"</span> \
-  <span class="kw">-d</span> <span class="str">'{"tool":"tax","inputs":{"country":"NG","grossAnnual":5000000,"pension":true}}'</span></pre></div>
-        <div class="code-panel" id="panel-javascript"><pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://afrotools.com/api/v1/calculate'</span>, {
+  <span class="kw">-d</span> <span class="str">'{"country":"NG","grossAnnual":5000000,"pension":true}'</span></pre></div>
+        <div class="code-panel" id="panel-javascript"><pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://afrotools.com/api/v1/tax/paye'</span>, {
   <span class="fn">method</span>: <span class="str">'POST'</span>,
   <span class="fn">headers</span>: {
     <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>,
     <span class="str">'x-api-key'</span>: <span class="str">'YOUR_API_KEY'</span>
   },
   <span class="fn">body</span>: JSON.<span class="fn">stringify</span>({
-    <span class="fn">tool</span>: <span class="str">'tax'</span>,
-    <span class="fn">inputs</span>: { <span class="fn">country</span>: <span class="str">'NG'</span>, <span class="fn">grossAnnual</span>: <span class="num">5000000</span>, <span class="fn">pension</span>: <span class="num">true</span> }
+    <span class="fn">country</span>: <span class="str">'NG'</span>,
+    <span class="fn">grossAnnual</span>: <span class="num">5000000</span>,
+    <span class="fn">pension</span>: <span class="num">true</span>
   })
 });
 <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
 console.<span class="fn">log</span>(data);</pre></div>
         <div class="code-panel" id="panel-python"><pre><span class="kw">import</span> requests
 
-resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotools.com/api/v1/calculate'</span>,
+resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotools.com/api/v1/tax/paye'</span>,
     <span class="fn">headers</span>={<span class="str">'x-api-key'</span>: <span class="str">'YOUR_API_KEY'</span>},
-    <span class="fn">json</span>={<span class="str">'tool'</span>: <span class="str">'tax'</span>, <span class="str">'inputs'</span>: {<span class="str">'country'</span>: <span class="str">'NG'</span>, <span class="str">'grossAnnual'</span>: <span class="num">5000000</span>, <span class="str">'pension'</span>: <span class="num">True</span>}}
+    <span class="fn">json</span>={<span class="str">'country'</span>: <span class="str">'NG'</span>, <span class="str">'grossAnnual'</span>: <span class="num">5000000</span>, <span class="str">'pension'</span>: <span class="num">True</span>}
 )
 <span class="fn">print</span>(resp.<span class="fn">json</span>())</pre></div>
       </div>
@@ -429,40 +432,52 @@ resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotool
 <section class="dark-section" style="background:#111;">
   <div class="dev-section" style="padding-top:4rem;padding-bottom:4rem;">
     <h2 style="text-align:center;">API Tiers</h2>
-    <p class="subtitle" style="text-align:center;">Simple, transparent pricing. Start free, scale as you grow.</p>
+    <p class="subtitle" style="text-align:center;">Start free, then move B2B integrations into a paid pilot when the use case is real.</p>
     <div class="tier-grid">
       <!-- Free -->
       <div class="tier-card">
         <h3>Free</h3>
         <div class="tier-price">$0<span> /month</span></div>
         <ul class="tier-features">
-          <li>100 API calls / month</li>
+          <li>100 API calls / day</li>
+          <li>3,000 API calls / month</li>
           <li>PAYE calculators</li>
-          <li>Community support</li>
+          <li>Dashboard key management</li>
         </ul>
         <a href="/auth/?mode=signup&amp;intent=api-key&amp;next=/dashboard/api/" class="tier-btn tier-btn-outline">Get Started</a>
       </div>
-      <!-- Pro -->
+      <!-- Growth -->
       <div class="tier-card featured">
-        <h3>Pro</h3>
-        <div class="tier-price">$29<span> /month</span></div>
+        <h3>API Growth</h3>
+        <div class="tier-price">$149<span> /month</span></div>
         <ul class="tier-features">
-          <li>10,000 API calls / month</li>
-          <li>All tools</li>
-          <li>Email support</li>
+          <li>10,000 API calls / day</li>
+          <li>300,000 API calls / month</li>
+          <li>Pilot setup support</li>
         </ul>
-        <a href="/auth/?mode=signup&amp;intent=api-key&amp;next=/dashboard/api/" class="tier-btn tier-btn-primary">Get Started</a>
+        <a href="/contact/?subject=api-growth-pilot" class="tier-btn tier-btn-primary">Request Growth Pilot</a>
+      </div>
+      <!-- API Pro -->
+      <div class="tier-card">
+        <h3>API Pro</h3>
+        <div class="tier-price">$499<span> /month</span></div>
+        <ul class="tier-features">
+          <li>100,000 API calls / day</li>
+          <li>3,000,000 API calls / month</li>
+          <li>Priority pilot support</li>
+        </ul>
+        <a href="/contact/?subject=api-pro-pilot" class="tier-btn tier-btn-outline">Request API Pro</a>
       </div>
       <!-- Enterprise -->
       <div class="tier-card">
-        <h3>Enterprise</h3>
+        <h3>Enterprise/custom</h3>
         <div class="tier-price">Custom</div>
         <ul class="tier-features">
-          <li>Unlimited API calls</li>
-          <li>All tools + SLA</li>
+          <li>Custom limits and data scope</li>
+          <li>Custom calculators or data subscriptions</li>
           <li>Dedicated support</li>
         </ul>
-        <a href="/contact/" class="tier-btn tier-btn-outline">Contact Us</a>
+        <a href="mailto:api@afrotools.com?subject=AfroTools%20Enterprise%20API" class="tier-btn tier-btn-outline">Contact API Sales</a>
       </div>
     </div>
   </div>
@@ -472,20 +487,17 @@ resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotool
 <section class="dark-section">
   <div class="dev-section" style="padding-top:4rem;padding-bottom:4rem;">
     <h2>Endpoints Reference</h2>
-    <p class="subtitle">All calculations go through a single, unified endpoint.</p>
+    <p class="subtitle">Use the canonical PAYE route for salary tax calculations.</p>
     <div class="endpoint-box">
       <div>
         <span class="endpoint-method">POST</span>
-        <span class="endpoint-path">/api/v1/calculate</span>
+        <span class="endpoint-path">/api/v1/tax/paye</span>
       </div>
       <h4>Request Body</h4>
       <pre>{
-  "tool": "tax",
-  "inputs": {
-    "country": "NG",
-    "grossAnnual": 5000000,
-    "pension": true
-  }
+  "country": "NG",
+  "grossAnnual": 5000000,
+  "pension": true
 }</pre>
       <h4>Response</h4>
       <pre>{
@@ -493,7 +505,7 @@ resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotool
   "country": "NG",
   "currency": "NGN",
   "_meta": {
-    "tool": "tax",
+    "endpoint": "tax/paye",
     "version": "1.0",
     "timestamp": "2026-03-13T12:00:00.000Z",
     "usage": {
@@ -510,14 +522,15 @@ resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotool
 <!-- CTA -->
 <section class="dev-cta">
   <h2>Get Your API Key</h2>
-  <p>Start building with AfroTools API today. Free tier available, no credit card required.</p>
+  <p>Start with a free verified key. Request API Growth or API Pro when a partner or product needs paid B2B limits.</p>
   <a href="/auth/?mode=signup&amp;intent=api-key&amp;next=/dashboard/api/">Sign Up for Free</a>
+  <a href="/api/pricing">View API Pricing</a>
 </section>
 
 <!-- Footer -->
 <div id="footer"></div>
 
-<script src="/assets/js/components/navbar.min.js?v=d849d432"></script>
+<script src="/assets/js/components/navbar.min.js?v=9b02f2cc"></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 <script>
 function switchTab(tab) {

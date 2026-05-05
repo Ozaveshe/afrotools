@@ -2,19 +2,13 @@ const { getStore } = require('@netlify/blobs');
 const { randomBytes } = require('crypto');
 const { getAllowedOrigin } = require('./utils/cors');
 const { resolveAuthenticatedUser } = require('./utils/supabase-session');
+const { getApiPlanLimit, getApiTierRank, normalizeApiTier } = require('./_shared/api-plans');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Content-Type': 'application/json'
-};
-
-const LIMITS = {
-  free: { day: 100, month: 3000 },
-  starter: { day: 10000, month: 300000 },
-  pro: { day: 100000, month: 3000000 },
-  enterprise: { day: -1, month: -1 }
 };
 
 function json(status, body) {
@@ -72,7 +66,8 @@ async function aggregateUserUsage(store, userId) {
       try {
         const data = await store.get(key, { type: 'json' });
         if (!data || data.userId !== userId) continue;
-        if (data.tier && data.tier !== 'free') tier = data.tier;
+        const keyTier = normalizeApiTier(data.tier || 'free');
+        if (getApiTierRank(keyTier) > getApiTierRank(tier)) tier = keyTier;
         const usage = data.usage || data.monthlyUsage || {};
         callsToday += usage[today] || 0;
         callsMonth += usage[month] || 0;
@@ -86,11 +81,12 @@ async function aggregateUserUsage(store, userId) {
   } catch (err) {
     console.error('aggregateUserUsage error:', err.message);
   }
-  const limits = LIMITS[tier] || LIMITS.free;
+  const limits = getApiPlanLimit(tier);
   return {
     tier,
-    daily_limit: limits.day === -1 ? 1000000 : limits.day,
-    monthly_limit: limits.month === -1 ? 30000000 : limits.month,
+    plan_label: limits.label,
+    daily_limit: limits.day,
+    monthly_limit: limits.month,
     calls_today: callsToday,
     calls_month: callsMonth,
     daily: Object.keys(daily).sort().map((date) => ({ date, count: daily[date] }))
@@ -117,8 +113,8 @@ async function listUserKeys(store, userId) {
             keyPrefix: maskKey(key),
             keyId: key.slice(0, 18),
             name: data.name || 'Unnamed key',
-            tier: data.tier || 'free',
-            plan: data.tier || 'free',
+            tier: normalizeApiTier(data.tier || 'free'),
+            plan: normalizeApiTier(data.tier || 'free'),
             created_at: data.createdAt,
             createdAt: data.createdAt,
             last_used_at: data.lastUsed || null,
@@ -175,6 +171,7 @@ exports.handler = async function (event) {
      ---------------------------------------------------------------- */
   if (action === 'create') {
     const key = generateKey();
+    const freeLimits = getApiPlanLimit('free');
     const keyData = {
       userId: payload.userId,
       email: payload.email,
@@ -191,7 +188,7 @@ exports.handler = async function (event) {
       apiKey: key,
       name: keyData.name,
       tier: 'free',
-      rateLimit: { requests_per_day: 100, requests_per_month: 3000 },
+      rateLimit: { requests_per_day: freeLimits.day, requests_per_month: freeLimits.month },
       message: 'Store this key securely. It will not be shown again in full.'
     });
   }
@@ -294,8 +291,8 @@ exports.handler = async function (event) {
     const usage = data.usage || data.monthlyUsage || {};
     const today = new Date().toISOString().split('T')[0];
     const month = today.slice(0, 7);
-    const tier = data.tier || 'free';
-    const limits = LIMITS[tier];
+    const tier = normalizeApiTier(data.tier || 'free');
+    const limits = getApiPlanLimit(tier);
 
     // Build daily breakdown for the current month
     const dailyBreakdown = {};
@@ -318,16 +315,16 @@ exports.handler = async function (event) {
       name: data.name || 'Unnamed key',
       tier,
       limits: {
-        daily: limits.day === -1 ? 'unlimited' : limits.day,
-        monthly: limits.month === -1 ? 'unlimited' : limits.month
+        daily: limits.day === -1 ? 'custom' : limits.day,
+        monthly: limits.month === -1 ? 'custom' : limits.month
       },
       today: {
         used: usage[today] || 0,
-        remaining: limits.day === -1 ? 'unlimited' : Math.max(0, limits.day - (usage[today] || 0))
+        remaining: limits.day === -1 ? 'custom' : Math.max(0, limits.day - (usage[today] || 0))
       },
       thisMonth: {
         used: usage[month] || 0,
-        remaining: limits.month === -1 ? 'unlimited' : Math.max(0, limits.month - (usage[month] || 0))
+        remaining: limits.month === -1 ? 'custom' : Math.max(0, limits.month - (usage[month] || 0))
       },
       dailyBreakdown,
       monthlyBreakdown,

@@ -61,6 +61,15 @@
 [functions."send-signin-reminders"]
   schedule = "0 9 * * 3"
 
+[functions."send-onboarding-nudges"]
+  schedule = "0 10 * * *"
+
+[functions."send-activity-milestones"]
+  schedule = "0 11 * * *"
+
+[functions."send-lead-followups"]
+  schedule = "0 12 * * *"
+
 [functions."scheduled-send-jamb-daily"]
   schedule = "0 * * * *"
 
@@ -449,6 +458,18 @@
 [[redirects]]
   from = "/api/keys/*"
   to = "/.netlify/functions/api-keys"
+  status = 200
+
+# --- B2B Lead Capture ---
+
+[[redirects]]
+  from = "/api/b2b-enquiry"
+  to = "/.netlify/functions/capture-b2b-lead"
+  status = 200
+
+[[redirects]]
+  from = "/api/b2b-enquiry/"
+  to = "/.netlify/functions/capture-b2b-lead"
   status = 200
 
 # --- Profile API ---

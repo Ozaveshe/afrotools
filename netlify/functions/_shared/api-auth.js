@@ -1,8 +1,9 @@
 /**
  * AfroTools — API Authentication & Tier System
  *
- * Validates API keys against Supabase api_keys table.
- * Enforces rate limits per tier (free/pro/enterprise).
+ * Validates dashboard API keys from Netlify Blobs, with legacy Supabase
+ * api_keys support for older keys.
+ * Enforces rate limits per tier (free/growth/pro/enterprise).
  * Tracks usage in api_usage table.
  *
  * Usage:
@@ -13,8 +14,12 @@
  */
 
 var crypto = require('crypto');
+var { getStore } = require('@netlify/blobs');
+var { getApiPlanLimit, normalizeApiTier } = require('./api-plans');
 
-var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var SUPABASE_URL = process.env.SUPABASE_AUTH_URL ||
+                   process.env.SUPABASE_URL ||
+                   'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
                    process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
                    process.env.SUPABASE_SERVICE_KEY;
@@ -25,13 +30,28 @@ var KEY_CACHE_TTL = 5 * 60 * 1000; // 5 min
 
 // Use shared rate limiter (bounded, auto-evicting)
 var { checkRateLimit: checkSharedRateLimit } = require('./rate-limit');
-var ANON_DAILY_LIMIT = 100;
+var ANON_DAILY_LIMIT = getApiPlanLimit('free').day;
 
 /**
  * Hash an API key for lookup
  */
 function hashKey(key) {
   return crypto.createHash('sha256').update(key).digest('hex');
+}
+
+function getHeader(event, name) {
+  var headers = event.headers || {};
+  var wanted = String(name || '').toLowerCase();
+  var keys = Object.keys(headers);
+  for (var i = 0; i < keys.length; i++) {
+    if (keys[i].toLowerCase() === wanted) return headers[keys[i]];
+  }
+  return null;
+}
+
+function todayBuckets() {
+  var today = new Date().toISOString().split('T')[0];
+  return { today: today, month: today.slice(0, 7) };
 }
 
 /**
@@ -41,12 +61,25 @@ function hashKey(key) {
  * @returns {object} { tier, key_prefix, remaining, daily_limit } or { error, status }
  */
 async function validateApiKey(event, endpoint) {
-  var rawKey = event.headers['x-api-key'];
-  var clientIp = event.headers['x-forwarded-for'] || 'unknown';
+  var rawKey = getHeader(event, 'x-api-key') || ((event.queryStringParameters || {}).api_key);
+  var clientIp = getHeader(event, 'x-forwarded-for') || 'unknown';
 
   // No key provided — anonymous access
   if (!rawKey || rawKey.length < 10) {
     return checkAnonLimit(clientIp);
+  }
+
+  if (rawKey.indexOf('afro_test_') === 0) {
+    return {
+      error: 'Test keys are supported on PAYE and VAT sandbox endpoints only. Use a free dashboard key for live data APIs.',
+      status: 403,
+    };
+  }
+
+  if (rawKey.indexOf('afro_live_') === 0) {
+    var blobAuth = await checkBlobKeyLimit(rawKey, endpoint);
+    if (blobAuth) return blobAuth;
+    return { error: 'Invalid API key', status: 401 };
   }
 
   // Check key cache first
@@ -58,8 +91,8 @@ async function validateApiKey(event, endpoint) {
 
   // Lookup in Supabase
   if (!SUPABASE_KEY) {
-    // No Supabase key — fall back to basic length check
-    return { tier: 'basic', key_prefix: rawKey.slice(0, 8), remaining: 9999, daily_limit: 10000 };
+    // No legacy Supabase key configured.
+    return { error: 'API key verification unavailable', status: 503 };
   }
 
   try {
@@ -69,8 +102,8 @@ async function validateApiKey(event, endpoint) {
     );
 
     if (!res.ok) {
-      // DB error — allow through with basic limits
-      return { tier: 'basic', key_prefix: rawKey.slice(0, 8), remaining: 100, daily_limit: 100 };
+      // Legacy Supabase lookup failed.
+      return { error: 'API key verification unavailable', status: 503 };
     }
 
     var keys = await res.json();
@@ -107,8 +140,68 @@ async function validateApiKey(event, endpoint) {
 
     return checkKeyLimit(keyRecord, endpoint);
   } catch (err) {
-    // Network error — allow through with basic limits
-    return { tier: 'basic', key_prefix: rawKey.slice(0, 8), remaining: 100, daily_limit: 100 };
+    // Legacy Supabase lookup failed.
+    return { error: 'API key verification unavailable', status: 503 };
+  }
+}
+
+async function checkBlobKeyLimit(rawKey, endpoint) {
+  try {
+    var store = getStore('apikeys');
+    var keyRecord = await store.get(rawKey, { type: 'json' });
+    if (!keyRecord) return null;
+
+    var tier = normalizeApiTier(keyRecord.tier || 'free');
+    var limits = getApiPlanLimit(tier);
+    var buckets = todayBuckets();
+    var usage = keyRecord.usage || keyRecord.monthlyUsage || {};
+    if (!usage[buckets.today]) usage[buckets.today] = 0;
+    if (!usage[buckets.month]) usage[buckets.month] = 0;
+
+    var dailyUsage = usage[buckets.today];
+    var monthlyUsage = usage[buckets.month];
+    if (limits.day !== -1 && dailyUsage >= limits.day) {
+      return {
+        error: 'Rate limit exceeded',
+        status: 429,
+        tier: tier,
+        key_prefix: rawKey.slice(0, 18),
+        remaining: 0,
+        daily_limit: limits.day,
+        monthly_limit: limits.month,
+      };
+    }
+    if (limits.month !== -1 && monthlyUsage >= limits.month) {
+      return {
+        error: 'Monthly rate limit exceeded',
+        status: 429,
+        tier: tier,
+        key_prefix: rawKey.slice(0, 18),
+        remaining: 0,
+        daily_limit: limits.day,
+        monthly_limit: limits.month,
+      };
+    }
+
+    usage[buckets.today] = dailyUsage + 1;
+    usage[buckets.month] = monthlyUsage + 1;
+    keyRecord.usage = usage;
+    keyRecord.tier = tier;
+    keyRecord.lastUsed = new Date().toISOString();
+    keyRecord.lastUsedEndpoint = endpoint || null;
+    await store.setJSON(rawKey, keyRecord);
+
+    return {
+      tier: tier,
+      key_prefix: rawKey.slice(0, 18),
+      remaining: limits.day === -1 ? 999999 : Math.max(0, limits.day - dailyUsage - 1),
+      daily_limit: limits.day,
+      monthly_limit: limits.month,
+      owner: keyRecord.email || keyRecord.owner_email || null,
+    };
+  } catch (err) {
+    console.error('[api-auth] blob key validation failed:', err.message);
+    return { error: 'API key verification unavailable', status: 503 };
   }
 }
 
@@ -118,7 +211,7 @@ async function validateApiKey(event, endpoint) {
 function checkAnonLimit(ip) {
   if (!checkSharedRateLimit(ip, ANON_DAILY_LIMIT)) {
     return {
-      error: 'Rate limit exceeded. Free tier: ' + ANON_DAILY_LIMIT + '/day. Get an API key at https://afrotools.com/developer-tools/',
+      error: 'Rate limit exceeded. Free tier: ' + ANON_DAILY_LIMIT + '/day. Get an API key at https://afrotools.com/dashboard/api/',
       status: 429,
     };
   }
@@ -142,15 +235,16 @@ function checkKeyLimit(keyRecord, endpoint) {
     }).catch(function() {});
   }
 
-  var tierLimits = { free: 100, pro: 10000, enterprise: 1000000 };
-  var dailyLimit = keyRecord.daily_limit || tierLimits[keyRecord.tier] || 100;
+  var tier = normalizeApiTier(keyRecord.tier || 'free');
+  var limits = getApiPlanLimit(tier);
+  var dailyLimit = keyRecord.daily_limit || limits.day || 100;
 
-  // Pro and enterprise tiers effectively have no meaningful limit to track in-memory
-  // Free tier authenticated keys are rare — just report the limit
+  // Legacy Supabase-backed keys report their configured limit here.
   return {
-    tier: keyRecord.tier,
+    tier: tier,
     key_prefix: keyRecord.key_prefix,
     daily_limit: dailyLimit,
+    monthly_limit: keyRecord.monthly_limit || limits.month,
     owner: keyRecord.owner_email,
   };
 }

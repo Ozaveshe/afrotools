@@ -83,7 +83,10 @@
             font-size: 0.8rem; font-weight: 600; margin-left: 0.5rem;
         }
         .plan-badge.free { background: #f0f9ff; color: #0369a1; }
+        .plan-badge.growth,
+        .plan-badge.starter { background: #ecfdf5; color: #047857; }
         .plan-badge.pro { background: #fef3c7; color: #92400e; }
+        .plan-badge.enterprise { background: #f5f3ff; color: #6d28d9; }
 
         .usage-meter { width: 100%; max-width: 400px; }
         .usage-bar-bg {
@@ -213,7 +216,7 @@
             <a href="/auth/?mode=login&amp;intent=api-key&amp;next=/dashboard/api/" style="max-width:300px;margin:0 auto;display:block;font-size:1rem;padding:0.875rem 2rem;border-radius:12px;background:#007AFF;color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;">
                 Sign in to get started
             </a>
-            <p style="margin-top:1.5rem;font-size:0.85rem;color:#94a3b8;">Free tier: 100 requests/day and 3,000/month. No credit card required.</p>
+            <p style="margin-top:1.5rem;font-size:0.85rem;color:#94a3b8;">Free tier: 100 requests/day and 3,000/month. Paid API Growth and API Pro are manually activated pilots.</p>
         </div>
 
         <!-- Dashboard content -->
@@ -239,7 +242,7 @@
                     </div>
                     <div class="usage-text" id="monthlyUsage">0 calls this month</div>
                 </div>
-                <a href="/pricing/" class="btn-secondary" id="upgradeCta">Upgrade to Pro</a>
+                <a href="/api/pricing" class="btn-secondary" id="upgradeCta">View API Growth options</a>
             </div>
 
             <!-- API Keys Table -->
@@ -334,8 +337,8 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/afro-auth.js?v=3978e101"></script>
-    <script src="/assets/js/auth-cookie-upgrade.js?v=5f8a65c3"></script>
-    <script src="/assets/js/components/navbar.min.js?v=d849d432"></script>
+    <script src="/assets/js/auth-cookie-upgrade.js?v=14c038dc"></script>
+    <script src="/assets/js/components/navbar.min.js?v=9b02f2cc"></script>
     <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
     <script>
@@ -344,6 +347,29 @@
         let isLoggedIn = false;
         let usageChart = null;
         let apiKeys = [];
+        const PLAN_LABELS = {
+            free: 'Free API',
+            starter: 'API Growth',
+            growth: 'API Growth',
+            pro: 'API Pro',
+            enterprise: 'Enterprise'
+        };
+
+        function normalizeTier(tier) {
+            var value = String(tier || 'free').toLowerCase();
+            return value === 'starter' ? 'growth' : value;
+        }
+
+        function formatTierName(tier) {
+            var normalized = normalizeTier(tier);
+            return PLAN_LABELS[normalized] || 'Free API';
+        }
+
+        function formatLimit(value) {
+            var number = Number(value);
+            if (!Number.isFinite(number) || number < 0) return 'custom';
+            return number.toLocaleString();
+        }
 
         // ── Auth ──────────────────────────────────────────────
         function waitForAuth() {
@@ -473,7 +499,7 @@
                 return '<tr>' +
                     '<td class="key-name">' + escapeHtml(key.name) + '</td>' +
                     '<td class="key-prefix">' + escapeHtml(prefix) + '...</td>' +
-                    '<td>' + (key.plan || 'free') + '</td>' +
+                    '<td>' + escapeHtml(formatTierName(key.tier || key.plan || 'free')) + '</td>' +
                     '<td>' + (key.calls_today || 0) + ' / ' + (key.calls_month || 0) + '</td>' +
                     '<td>' + created + '</td>' +
                     '<td>' + lastUsed + '</td>' +
@@ -494,21 +520,29 @@
             var monthly = document.getElementById('monthlyUsage');
             var cta = document.getElementById('upgradeCta');
 
-            var tier = plan.tier || 'free';
-            var limit = plan.daily_limit || 100;
+            var tier = normalizeTier(plan.tier || 'free');
+            var limit = Number(plan.daily_limit);
+            var monthlyLimit = Number(plan.monthly_limit);
             var today = plan.calls_today || 0;
             var month = plan.calls_month || 0;
-            var pct = Math.min(100, Math.round((today / limit) * 100));
+            var hasCustomLimit = !Number.isFinite(limit) || limit < 0;
+            var pct = hasCustomLimit || limit === 0 ? 0 : Math.min(100, Math.round((today / limit) * 100));
 
-            badge.textContent = tier === 'pro' ? 'Pro' : 'Free';
+            badge.textContent = formatTierName(tier);
             badge.className = 'plan-badge ' + tier;
-            desc.textContent = limit.toLocaleString() + ' API calls per day';
-            count.textContent = today.toLocaleString() + ' / ' + limit.toLocaleString();
+            desc.textContent = formatLimit(limit) + ' requests/day and ' + formatLimit(monthlyLimit) + '/month';
+            count.textContent = today.toLocaleString() + ' / ' + formatLimit(limit);
             monthly.textContent = month.toLocaleString() + ' calls this month';
             bar.style.width = pct + '%';
             bar.className = 'usage-bar-fill' + (pct > 90 ? ' danger' : pct > 70 ? ' warning' : '');
 
-            if (tier === 'pro') cta.style.display = 'none';
+            if (tier === 'enterprise') {
+                cta.style.display = 'none';
+            } else {
+                cta.style.display = '';
+                cta.href = '/api/pricing';
+                cta.textContent = tier === 'free' ? 'View API Growth options' : 'Discuss a higher API tier';
+            }
         }
 
         // ── Usage chart ──────────────────────────────────────

@@ -5,12 +5,12 @@
   <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AfroTools API Documentation | AfroTools</title>
-  <meta name="description" content="Free API for African financial data. Tax rates, FX rates, salary benchmarks, and PAYE calculations for all 54 African countries.">
+  <meta name="description" content="AfroTools API documentation for free keys, PAYE and VAT sandbox requests, API Growth pilots, API Pro limits, and Enterprise/custom access.">
   <link rel="canonical" href="https://afrotools.com/api/docs/">
   <meta property="og:title" content="AfroTools API — African Financial Data for Developers">
 <meta property="og:url" content="https://afrotools.com/api/docs/">
 <meta property="og:type" content="website">
-  <meta property="og:description" content="Tax, forex, salary, and country data for 54 African countries. RESTful JSON API.">
+  <meta property="og:description" content="AfroTools API docs for free keys, PAYE and VAT sandbox calls, API Growth pilots, API Pro limits, and Enterprise/custom access.">
   <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -18,7 +18,7 @@
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AfroTools API — African Financial Data for Developers">
-<meta name="twitter:description" content="Tax, forex, salary, and country data for 54 African countries. RESTful JSON API.">
+<meta name="twitter:description" content="AfroTools API docs for free keys, PAYE and VAT sandbox calls, API Growth pilots, API Pro limits, and Enterprise/custom access.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-  <script src="/assets/js/components/navbar.min.js?v=d849d432" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -174,6 +174,7 @@ pre .num{color:#FBBF24}
     <a href="#v1-health">Health Check</a>
     <h3>Resources</h3>
     <a href="#get-key">Get API Key</a>
+    <a href="/api/pricing">Pricing</a>
     <a href="/developers/">Developer Portal</a>
   </nav>
 
@@ -181,8 +182,8 @@ pre .num{color:#FBBF24}
 
     <!-- Overview -->
     <h2 id="overview">Overview</h2>
-    <p>The AfroTools API provides programmatic access to African financial data — tax rates, exchange rates, salary benchmarks, and PAYE calculations covering all 54 African countries.</p>
-    <p>Built for fintechs, HR platforms, payroll systems, and developer tools. Start with the free tier (100 requests/day and 3,000/month). No credit card required.</p>
+    <p>The AfroTools API provides programmatic access to African financial data: tax rates, exchange rates, salary benchmarks, and PAYE calculations across supported African markets.</p>
+    <p>Built for fintechs, HR platforms, payroll systems, accounting firms, and business media. Start with the free tier (100 requests/day and 3,000/month). Paid API Growth, API Pro, and Enterprise/custom access are manually activated commercial pilots.</p>
 
     <div class="info-box">
       <strong>Base URL:</strong> <code style="background:none;color:inherit">https://afrotools.com/api/v1</code><br>
@@ -218,19 +219,22 @@ data = requests.get(
 ).json()</code></pre>
 
     <div class="info-box">
-      <strong>Test keys:</strong> Keys starting with <code style="background:none;color:inherit">afro_test_</code> return deterministic sandbox data and have separate sandbox limits. Use live keys for production data.
+      <strong>Test keys:</strong> Test keys return deterministic sandbox data on supported PAYE and VAT sandbox endpoints. Keys starting with <code style="background:none;color:inherit">afro_test_</code> have free-tier sandbox limits. Use live dashboard keys for production data.
     </div>
 
     <!-- Rate Limits -->
     <h2 id="rate-limits">Rate Limits</h2>
     <table class="params">
-      <thead><tr><th>Tier</th><th>Daily Limit</th><th>Monthly Limit</th></tr></thead>
+      <thead><tr><th>Tier</th><th>Daily Limit</th><th>Monthly Limit</th><th>Activation</th></tr></thead>
       <tbody>
-        <tr><td>Free</td><td>100</td><td>3,000</td></tr>
-        <tr><td>Pro (coming soon)</td><td>10,000</td><td>300,000</td></tr>
+        <tr><td>Free API</td><td>100</td><td>3,000</td><td>Verified dashboard key</td></tr>
+        <tr><td>API Growth</td><td>10,000</td><td>300,000</td><td>Manual paid pilot</td></tr>
+        <tr><td>API Pro</td><td>100,000</td><td>3,000,000</td><td>Manual paid pilot</td></tr>
+        <tr><td>Enterprise/custom</td><td>Custom</td><td>Custom</td><td>Contracted access</td></tr>
       </tbody>
     </table>
-    <p>Rate limit headers are included in every response:</p>
+    <p>Free keys are created from <a href="/dashboard/api/">the API dashboard</a>. Paid API Growth and API Pro limits can be applied manually during a pilot; request activation from <a href="/api/pricing">API pricing</a>.</p>
+    <p>Where a route exposes rate limit headers, they follow this shape. The dashboard is the main usage view:</p>
     <pre><code>X-RateLimit-Limit: <span class="num">100</span>
 X-RateLimit-Remaining: <span class="num">87</span></code></pre>
     <p>Limits reset at midnight UTC daily.</p>
@@ -562,8 +566,8 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
   if (!main) return;
 
   var endpoints = [
-    { id: 'v1-forex', title: 'Forex Rates', method: 'GET', path: '/api/v1/fx/rates', params: 'base, target', example: 'curl "https://afrotools.com/api/v1/fx/rates?base=NGN&target=KES"', desc: 'Latest available exchange rates for all African + major global currencies. Supports single pair, base conversion, or full rate table.' },
-    { id: 'v1-fuel', title: 'Fuel Prices', method: 'GET', path: '/api/v1/fuel/prices', params: 'country, region', example: 'curl "https://afrotools.com/api/v1/fuel/prices?country=NG"', desc: 'Petrol, diesel, and LPG prices for 54 African countries in local currency and USD. Updated every 6 hours.' },
+    { id: 'v1-forex', title: 'Forex Rates', method: 'GET', path: '/api/v1/fx/rates', params: 'base, target', example: 'curl "https://afrotools.com/api/v1/fx/rates?base=NGN&target=KES"', desc: 'Latest available exchange rates for African and major global currencies. Supports single pair, base conversion, or full rate table where source coverage is available.' },
+    { id: 'v1-fuel', title: 'Fuel Prices', method: 'GET', path: '/api/v1/fuel/prices', params: 'country, region', example: 'curl "https://afrotools.com/api/v1/fuel/prices?country=NG"', desc: 'Petrol, diesel, and LPG prices for African markets where source coverage is available.' },
     { id: 'v1-commodities', title: 'Commodity Prices', method: 'GET', path: '/api/v1/commodities', params: 'id, category', example: 'curl "https://afrotools.com/api/v1/commodities?id=gold"', desc: 'Live prices for 20+ commodities: crude oil, gold, cocoa, coffee, tea, cotton, copper, platinum, and more. Updated daily.' },
     { id: 'v1-electricity', title: 'Electricity Tariffs', method: 'GET', path: '/api/v1/electricity', params: 'country, region, sort', example: 'curl "https://afrotools.com/api/v1/electricity?country=KE"', desc: 'Residential electricity tariffs in local currency and USD/kWh. 46+ African countries. Sort by cheapest or most expensive.' },
     { id: 'v1-telecom', title: 'Telecom Plans', method: 'GET', path: '/api/v1/telecom', params: 'country, provider, sort', example: 'curl "https://afrotools.com/api/v1/telecom?country=GH&provider=MTN"', desc: 'Mobile data plan pricing by country and provider. Average and cheapest cost per GB. 30 countries, all major MNOs.' },

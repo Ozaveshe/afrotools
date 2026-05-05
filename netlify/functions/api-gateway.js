@@ -1,6 +1,7 @@
 const { getStore } = require('@netlify/blobs');
 const { getAllowedOrigin } = require('./utils/cors');
 const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
+const { getApiPlanLimit, normalizeApiTier } = require('./_shared/api-plans');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -77,11 +78,12 @@ exports.handler = async function (event) {
   // --- Rate limiting ---
   const month = new Date().toISOString().slice(0, 7);
   const usage = keyData.monthlyUsage?.[month] || 0;
-  const limits = { free: 100, pro: 10000, enterprise: 999999 };
-  const limit = limits[keyData.tier] || 100;
+  const tier = normalizeApiTier(keyData.tier || 'free');
+  const limits = getApiPlanLimit(tier);
+  const limit = limits.month === -1 ? 999999999 : limits.month;
 
   if (usage >= limit) {
-    return respond(429, { error: 'Monthly rate limit exceeded', usage, limit, tier: keyData.tier });
+    return respond(429, { error: 'Monthly rate limit exceeded', usage, limit, tier });
   }
 
   // --- Parse request ---
@@ -99,7 +101,7 @@ exports.handler = async function (event) {
     await store.setJSON(apiKey, keyData);
   } catch {}
 
-  const authInfo = { usageCurrent: usage + 1, limit, tier: keyData.tier };
+  const authInfo = { usageCurrent: usage + 1, limit, tier };
   const startTime = Date.now();
   const toolLower = tool.toLowerCase();
 

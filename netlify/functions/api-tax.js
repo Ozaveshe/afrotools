@@ -9,19 +9,13 @@ const { getStore } = require('@netlify/blobs');
 const { getAllowedOrigin } = require('./utils/cors');
 const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
 const { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
+const { getApiPlanLimit, normalizeApiTier } = require('./_shared/api-plans');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Content-Type': 'application/json'
-};
-
-const LIMITS = {
-  free: { day: 100, month: 3000 },
-  starter: { day: 10000, month: 300000 },
-  pro: { day: 100000, month: 3000000 },
-  enterprise: { day: -1, month: -1 }
 };
 
 function respond(status, body, extra = {}) {
@@ -81,11 +75,12 @@ async function validateApiKey(apiKey, event) {
 
   // Sandbox keys use deterministic data and their own free-tier limits.
   if (apiKey.startsWith('afro_test_')) {
+    const freeLimits = getApiPlanLimit('free');
     const key = sandboxRateKey(apiKey, event);
-    if (!checkRateLimit(key, LIMITS.free.day)) {
-      return { valid: true, tier: 'sandbox', sandbox: true, remaining: 0, limit: LIMITS.free.day, resetAt: 'midnight UTC' };
+    if (!checkRateLimit(key, freeLimits.day)) {
+      return { valid: true, tier: 'sandbox', sandbox: true, remaining: 0, limit: freeLimits.day, resetAt: 'midnight UTC' };
     }
-    return { valid: true, tier: 'sandbox', sandbox: true, remaining: getRemaining(key, LIMITS.free.day), limit: LIMITS.free.day };
+    return { valid: true, tier: 'sandbox', sandbox: true, remaining: getRemaining(key, freeLimits.day), limit: freeLimits.day };
   }
 
   try {
@@ -93,8 +88,8 @@ async function validateApiKey(apiKey, event) {
     const data = await store.get(apiKey, { type: 'json' });
     if (!data) return { valid: false };
 
-    const tier = data.tier || 'free';
-    const limits = LIMITS[tier];
+    const tier = normalizeApiTier(data.tier || 'free');
+    const limits = getApiPlanLimit(tier);
     const today = new Date().toISOString().split('T')[0];
     const month = today.slice(0, 7);
 
@@ -106,7 +101,7 @@ async function validateApiKey(apiKey, event) {
     const dailyUsage = data.usage[today];
     const monthlyUsage = data.usage[month];
 
-    // Check daily limit (-1 means unlimited)
+    // Check daily limit (-1 means custom contract limit)
     if (limits.day !== -1 && dailyUsage >= limits.day) {
       return { valid: true, tier, remaining: 0, limit: limits.day, resetAt: 'midnight UTC' };
     }

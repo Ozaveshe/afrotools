@@ -97,6 +97,22 @@ If your tool involves calculations, create a pure function engine:
 <afro-footer></afro-footer>
 ```
 
+**Priority money tool commercial CTA:**
+
+For high-intent salary, tax, invoice, payroll, import, remittance, employer-cost, and other money tools, load the shared business CTA component and place it near the end of the page before related tools or the footer:
+
+```html
+<script src="/assets/js/components/business-cta.js" defer></script>
+```
+
+```html
+<afro-business-cta
+  tool-name="Nigeria PAYE Calculator"
+  save-note="Save named salary scenarios or use the PDF report action after calculating."></afro-business-cta>
+```
+
+Use the shared component instead of writing one-off CTA blocks. The component routes commercial actions to `/widgets/`, `/sponsored-tools/`, `/api/`, and `/custom-calculators/`.
+
 ---
 
 ## Step 3: Add to Tool Registry
