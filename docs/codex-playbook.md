@@ -24,6 +24,9 @@
 - Prioritize `/widgets/`, `/sponsored-tools/`, `/custom-calculators/`, `/media-kit/`, `/api/`, `/business-enquiry/`, top money tools, and Pro/business subscription routes.
 - Use the shared business CTA component on high-intent money tools instead of creating one-off CTA blocks.
 - Keep B2B lead capture server-side through Netlify functions; do not add anonymous browser Supabase writes.
+- For the post-foundation execution layer, keep `mc-7a2f9x.html` as the founder-facing 50K OS: route QA, local-only 300-prospect tracker, copyable proposal/outreach templates, and the 7-day execution checklist.
+- Treat `/for-accountants/`, `/for-hr-payroll/`, `/for-fintechs/`, and `/for-schools/` as practical segment sales pages that route buyers into `/business-enquiry/`.
+- Preserve CTA source context through `offer`, `tool`, `source_route`, `prospect_segment`, `cta_type`, safe referrer, and UTMs when touching commercial CTAs or the B2B enquiry form.
 - Separate baseline repo debt from net-new issues in the final report.
 
 ### Add or repair a tool page

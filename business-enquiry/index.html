@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="/assets/css/commercial-pages.css?v=9a085d6e">
 <script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/assets/js/components/b2b-enquiry-form.js?v=12bd6db6" defer></script>
+<script src="/assets/js/components/b2b-enquiry-form.js?v=35a86967" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -90,7 +90,10 @@
           <h2>Send a buying brief</h2>
           <p>Required fields are kept to the facts needed to qualify a pilot. For sensitive briefs, email <a href="mailto:hello@afrotools.com">hello@afrotools.com</a>.</p>
         </div>
-        <form class="b2b-form" data-b2b-enquiry-form data-source="business-enquiry">
+        <noscript>
+          <div class="b2b-status" data-tone="error">JavaScript is off. Email hello@afrotools.com with your company, offer, market, and use case so the enquiry is not lost.</div>
+        </noscript>
+        <form class="b2b-form" data-b2b-enquiry-form data-source="business-enquiry" action="/api/b2b-enquiry" method="post">
           <div class="b2b-form__grid">
             <div class="b2b-field">
               <label for="company">Company</label>
@@ -155,10 +158,20 @@
               <label for="website_confirm">Leave this blank</label>
               <input id="website_confirm" name="website_confirm" type="text" tabindex="-1" autocomplete="off">
             </div>
+            <input type="hidden" name="source_path" value="business-enquiry">
+            <input type="hidden" name="source_route" value="business-enquiry">
+            <input type="hidden" name="cta_type" value="business-enquiry-form">
+            <input type="hidden" name="prospect_segment" value="">
+            <input type="hidden" name="page_url" value="">
+            <input type="hidden" name="referrer_url" value="">
+            <input type="hidden" name="utm_source" value="">
+            <input type="hidden" name="utm_medium" value="">
+            <input type="hidden" name="utm_campaign" value="">
+            <input type="hidden" name="utm_content" value="">
           </div>
           <label class="b2b-consent">
             <input name="consent" type="checkbox" required>
-            <span>I consent to AfroTools storing this enquiry and contacting me about this business request.</span>
+            <span>I consent to AfroTools storing this enquiry and contacting me about this business request. This is not an automated quote or guaranteed callback.</span>
           </label>
           <button class="btn btn-primary" type="submit">Send business enquiry</button>
           <div class="b2b-status" data-b2b-status aria-live="polite"></div>

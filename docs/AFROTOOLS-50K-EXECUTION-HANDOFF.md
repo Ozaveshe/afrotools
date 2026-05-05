@@ -77,17 +77,19 @@ If the answer is no, the work is lower priority unless it fixes a live user prob
 - `/pro/apps/`
 - `/advertise/`
 - `/contact/`
-
-### Priority segment routes still needed
-
-As of this handoff, these routes were requested for the 50K direction but no source route was found:
-
 - `/for-accountants/`
 - `/for-hr-payroll/`
 - `/for-fintechs/`
 - `/for-schools/`
 
-Build these after the main commercial offer pages and top money tools are stable. They should route buyers into `/business-enquiry/`, not become generic landing pages.
+### Segment routes
+
+The first four 50K segment routes now exist and should route buyers into `/business-enquiry/`, not become generic landing pages:
+
+- `/for-accountants/` for VAT, PAYE, invoice, tax-calendar, import-duty, widget, custom calculator, and API pilots.
+- `/for-hr-payroll/` for PAYE, payslip, employer-cost, payroll education, Widget Pro, custom calculator, and API pilots.
+- `/for-fintechs/` for fee, loan, remittance, savings, FX, sponsored tool, custom calculator, and API pilots.
+- `/for-schools/` for admissions, fees, grades, scholarships, education sponsorship, and custom calculator pilots.
 
 ## Priority Money Tools
 
@@ -180,6 +182,8 @@ Follow this order unless the user gives a narrower emergency task:
 7. Internal operating dashboard
    - Keep founder metrics operational: MRR, one-time revenue, outreach, follow-ups, replies, demos, proposals, deals, widget partners, sponsored conversations, backlinks, organic clicks, and subscribers.
    - Label manual/local/pending fields clearly.
+   - Keep the 50K surface in `mc-7a2f9x.html` useful for route QA, the first 300 local prospects, copyable proposal/outreach templates, and the 7-day execution checklist.
+   - Prospect tracking is localStorage/CSV only until a safe backend or CRM path is explicitly added.
 
 ## Validation Commands
 

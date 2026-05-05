@@ -295,11 +295,43 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .fk-note{font-size:11px;line-height:1.6;color:var(--color-text-muted,var(--text3));background:var(--color-muted,var(--card2));border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,var(--r));padding:11px 12px}
 .fk-textarea{min-height:92px;resize:vertical}
 .fk-status-line{font-size:10px;font-family:var(--mono);color:var(--color-text-muted,var(--text3));margin-top:8px}
+.fk-full{grid-column:1 / -1}
+.fk-status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fk-status-card{border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);background:var(--color-surface,#fff);padding:11px;display:grid;gap:7px}
+.fk-status-card h4{font-size:12px;font-weight:900;color:var(--color-text,var(--text));margin:0}
+.fk-status-card p{font-size:10px;line-height:1.45;color:var(--color-text-muted,var(--text3));margin:0}
+.fk-status-card a{font-size:10px;font-weight:800;color:var(--color-primary,var(--brand));text-decoration:none}
+.fk-status-card a:hover{text-decoration:underline}
+.fk-form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.fk-field{display:grid;gap:4px}
+.fk-field label{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted,var(--text3))}
+.fk-field--wide{grid-column:span 2}
+.fk-field--full{grid-column:1 / -1}
+.fk-input-sm{width:100%;min-height:32px;border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);padding:6px 8px;font:600 11px var(--sans);color:var(--color-text,var(--text));background:var(--color-surface,#fff);outline:none}
+.fk-input-sm:focus{border-color:var(--color-primary,var(--brand));box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+.fk-textarea-sm{min-height:58px;resize:vertical}
+.fk-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin:10px 0}
+.fk-toolbar-left,.fk-toolbar-right{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fk-table-wrap{border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);overflow:auto;max-height:360px;background:var(--color-surface,#fff)}
+.fk-table{width:100%;border-collapse:collapse;font-size:10px;min-width:1120px}
+.fk-table th{background:var(--color-muted,var(--card2));border-bottom:1px solid var(--color-border,var(--border));color:var(--color-text-muted,var(--text3));font-size:9px;font-weight:900;letter-spacing:.06em;text-align:left;text-transform:uppercase;padding:7px 8px;position:sticky;top:0;z-index:1}
+.fk-table td{border-bottom:1px solid var(--color-border,var(--border));color:var(--color-text,var(--text));padding:7px 8px;vertical-align:top}
+.fk-table tr:last-child td{border-bottom:0}
+.fk-table .muted{color:var(--color-text-muted,var(--text3))}
+.fk-table button{border:1px solid var(--color-border,var(--border));border-radius:6px;background:var(--color-surface,#fff);color:var(--color-primary,var(--brand));cursor:pointer;font:800 10px var(--sans);padding:4px 7px}
+.fk-template-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fk-template-card{border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);background:var(--color-surface,#fff);padding:12px;display:grid;gap:8px}
+.fk-template-card h4{font-size:12px;font-weight:900;margin:0;color:var(--color-text,var(--text))}
+.fk-template-meta{display:flex;flex-wrap:wrap;gap:6px}
+.fk-template-meta span{border-radius:999px;background:var(--color-primary-soft,var(--brand-l));color:var(--color-primary,var(--brand));font-size:9px;font-weight:900;padding:3px 7px}
+.fk-template-card p{font-size:10px;line-height:1.45;color:var(--color-text-muted,var(--text3));margin:0}
+.fk-template-card textarea{width:100%;min-height:126px;border:1px solid var(--color-border,var(--border));border-radius:8px;padding:8px;font:500 10px/1.45 var(--mono);color:var(--color-text,var(--text));background:var(--color-muted,var(--card2));resize:vertical}
+.fk-copy-status{font-size:10px;font-family:var(--mono);color:var(--color-text-muted,var(--text3));min-height:1.3em}
 
 /* â”€â”€ RESPONSIVE â”€â”€ */
 @media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:1100px){.fk-hero,.fk-grid{grid-template-columns:1fr}.fk-summary,.fk-grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.fk-metrics,.fk-summary,.fk-grid-3{grid-template-columns:1fr}.fk-ready-row{grid-template-columns:1fr}}
+@media(max-width:1100px){.fk-hero,.fk-grid{grid-template-columns:1fr}.fk-summary,.fk-grid-3,.fk-form-grid,.fk-template-grid,.fk-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.fk-metrics,.fk-summary,.fk-grid-3,.fk-form-grid,.fk-template-grid,.fk-status-grid{grid-template-columns:1fr}.fk-ready-row{grid-template-columns:1fr}.fk-field--wide,.fk-field--full{grid-column:1}}
 </style>
 <meta property="article:modified_time" content="2026-04-16">
 </head>
@@ -665,11 +697,19 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             <div class="panel-body">
               <div class="fk-linkbar">
                 <a href="/widgets/" target="_blank" rel="noopener">Widgets</a>
+                <a href="/widgets/demo/" target="_blank" rel="noopener">Widget demo</a>
                 <a href="/sponsored-tools/" target="_blank" rel="noopener">Sponsored tools</a>
                 <a href="/custom-calculators/" target="_blank" rel="noopener">Custom calculators</a>
                 <a href="/media-kit/" target="_blank" rel="noopener">Media kit</a>
+                <a href="/api/" target="_blank" rel="noopener">API</a>
                 <a href="/api/pricing" target="_blank" rel="noopener">API pricing</a>
+                <a href="/pricing/" target="_blank" rel="noopener">Pricing</a>
+                <a href="/pro/" target="_blank" rel="noopener">Pro</a>
                 <a href="/business-enquiry/" target="_blank" rel="noopener">B2B enquiries</a>
+                <a href="/for-accountants/" target="_blank" rel="noopener">Accountants</a>
+                <a href="/for-hr-payroll/" target="_blank" rel="noopener">HR/payroll</a>
+                <a href="/for-fintechs/" target="_blank" rel="noopener">Fintechs</a>
+                <a href="/for-schools/" target="_blank" rel="noopener">Schools</a>
               </div>
               <div class="fk-note" style="margin-top:12px">Use these routes for outreach links and pilot follow-up. This panel tracks the sales motion; it does not replace the actual enquiry inbox or live revenue ledger.</div>
             </div>
@@ -684,6 +724,77 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
               <textarea class="fk-input fk-textarea" id="fiftyk-notes" placeholder="Manual notes: best replies, blockers, hot prospects, proposal next steps." oninput="setFiftyKNotes(this.value)"></textarea>
               <div class="fk-source-note">Stored only in this browser. Keep private deal details in the real CRM or prospect tracker when available.</div>
             </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">QA</span> Post-Deploy Commercial QA</div>
+            <div class="panel-badge">manual/local status</div>
+          </div>
+          <div class="panel-body">
+            <div class="fk-note" style="margin-bottom:12px">This is a founder-facing QA checklist for the deployed 50K foundation. It links to the commercial routes and records manual/pending status only; it does not claim live traffic, revenue, lead volume, or uptime.</div>
+            <div class="fk-status-grid" id="fiftyk-qa-grid"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">CRM</span> First 300 Prospect Tracker</div>
+            <div class="panel-badge" id="fiftyk-prospect-count">0/300 local</div>
+          </div>
+          <div class="panel-body">
+            <div class="fk-note">Local-only founder tracker for outreach targets. Export CSV before clearing browser data or moving the list to a real CRM. No server persistence is used here.</div>
+            <form id="fiftyk-prospect-form" class="fk-form-grid" onsubmit="saveFiftyKProspect(event)">
+              <input type="hidden" id="fk-prospect-id">
+              <div class="fk-field"><label for="fk-company">Company</label><input class="fk-input-sm" id="fk-company" required></div>
+              <div class="fk-field"><label for="fk-segment">Segment</label><select class="fk-input-sm" id="fk-segment" required><option>payroll</option><option>HR</option><option>fintech</option><option>accounting</option><option>education</option><option>media</option><option>trade</option><option>tax</option><option>employer services</option></select></div>
+              <div class="fk-field"><label for="fk-region">Country/region</label><input class="fk-input-sm" id="fk-region" placeholder="Nigeria, Kenya, pan-Africa"></div>
+              <div class="fk-field"><label for="fk-contact-name">Contact name</label><input class="fk-input-sm" id="fk-contact-name"></div>
+              <div class="fk-field fk-field--wide"><label for="fk-contact">Email or LinkedIn</label><input class="fk-input-sm" id="fk-contact" type="text" placeholder="name@company.com or LinkedIn URL"></div>
+              <div class="fk-field"><label for="fk-offer-fit">Offer fit</label><select class="fk-input-sm" id="fk-offer-fit"><option>widget</option><option>sponsored tool</option><option>custom calculator</option><option>API pilot</option><option>media sponsorship</option></select></div>
+              <div class="fk-field"><label for="fk-priority">Priority</label><select class="fk-input-sm" id="fk-priority"><option>High</option><option>Medium</option><option>Low</option></select></div>
+              <div class="fk-field"><label for="fk-source">Source</label><input class="fk-input-sm" id="fk-source" placeholder="Search, referral, directory"></div>
+              <div class="fk-field"><label for="fk-first-touch">First touch</label><input class="fk-input-sm" id="fk-first-touch" type="date"></div>
+              <div class="fk-field"><label for="fk-last-touch">Last touch</label><input class="fk-input-sm" id="fk-last-touch" type="date"></div>
+              <div class="fk-field"><label for="fk-next-follow">Next follow-up</label><input class="fk-input-sm" id="fk-next-follow" type="date"></div>
+              <div class="fk-field"><label for="fk-status">Status</label><select class="fk-input-sm" id="fk-status"><option>not contacted</option><option>contacted</option><option>replied</option><option>demo booked</option><option>proposal sent</option><option>negotiating</option><option>won</option><option>lost</option><option>paused</option></select></div>
+              <div class="fk-field"><label for="fk-deal-value">Deal estimate</label><input class="fk-input-sm" id="fk-deal-value" placeholder="$500/mo or $2,000 build"></div>
+              <div class="fk-field fk-field--wide"><label for="fk-route">Related route/tool</label><input class="fk-input-sm" id="fk-route" placeholder="/widgets/ or Nigeria PAYE"></div>
+              <div class="fk-field fk-field--full"><label for="fk-notes">Notes</label><textarea class="fk-input-sm fk-textarea-sm" id="fk-notes" placeholder="Pain point, angle, reply, blocker, next ask"></textarea></div>
+              <div class="fk-field fk-field--full">
+                <button class="qa-btn fk-action" type="submit">Save prospect locally</button>
+                <button class="qa-btn fk-action" type="button" onclick="resetFiftyKProspectForm()">Clear form</button>
+              </div>
+            </form>
+            <div class="fk-toolbar">
+              <div class="fk-toolbar-left">
+                <input class="fk-input-sm" id="fiftyk-prospect-filter" placeholder="Filter prospects" oninput="renderFiftyKProspects()">
+                <select class="fk-input-sm" id="fiftyk-prospect-status-filter" onchange="renderFiftyKProspects()"><option value="">All statuses</option><option>not contacted</option><option>contacted</option><option>replied</option><option>demo booked</option><option>proposal sent</option><option>negotiating</option><option>won</option><option>lost</option><option>paused</option></select>
+              </div>
+              <div class="fk-toolbar-right">
+                <button class="qa-btn fk-action" type="button" onclick="exportFiftyKProspectsCsv()">Export CSV</button>
+                <label class="qa-btn fk-action">Import CSV<input type="file" accept=".csv,text/csv" onchange="importFiftyKProspectsCsv(this)" hidden></label>
+              </div>
+            </div>
+            <div class="fk-table-wrap">
+              <table class="fk-table">
+                <thead><tr><th>Company</th><th>Segment</th><th>Market</th><th>Contact</th><th>Offer</th><th>Priority</th><th>Next follow-up</th><th>Status</th><th>Deal</th><th>Route/tool</th><th>Notes</th><th>Actions</th></tr></thead>
+                <tbody id="fiftyk-prospect-rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">KIT</span> Proposal and Outreach Templates</div>
+            <div class="panel-badge">copyable founder kit</div>
+          </div>
+          <div class="panel-body">
+            <div class="fk-note" style="margin-bottom:12px">Templates avoid invented claims and route buyers into the deployed commercial pages. Customize the first line and target page before sending.</div>
+            <div class="fk-template-grid" id="fiftyk-template-grid"></div>
+            <div class="fk-copy-status" id="fiftyk-template-status" aria-live="polite"></div>
           </div>
         </div>
       </div>
@@ -1217,12 +1328,17 @@ var FIFTYK_METRIC_GROUPS = [
 ];
 
 var FIFTYK_CHECKLIST = [
-  { key: 'commercialPages', label: 'Commercial pages', note: 'Widgets, sponsored tools, custom calculators, media kit, and API path are ready for founder outreach.' },
-  { key: 'topMoneyToolsCta', label: 'Top 10 money tools CTA upgrade', note: 'Priority calculators route business buyers to embed, sponsor, API, and white-label offers.' },
-  { key: 'prospectTracker300', label: '300 prospect tracker', note: 'Build or update the manual prospect list before automating outreach metrics.' },
-  { key: 'founderOutreach150250', label: '150-250 founder outreach', note: 'Record sent count manually until outbound inbox or CRM data is wired.' },
-  { key: 'demos2to5', label: '2-5 demos', note: 'Track booked calls from replies, B2B forms, and partner referrals.' },
-  { key: 'paidPilotProposal', label: '1 paid pilot proposal', note: 'Send at least one concrete widget, sponsored tool, API, or calculator pilot proposal.' }
+  { key: 'prospectsCollected300', label: '300 prospects collected', note: 'Use the local prospect tracker or exported CRM list as the manual source.' },
+  { key: 'firstMessages150', label: '150 first messages sent', note: 'Log outbound count from founder inbox, LinkedIn, WhatsApp, or manual tracker.' },
+  { key: 'followUpsQueued100', label: '100 follow-ups queued', note: 'Queue follow-up 1 and follow-up 2 dates before starting another cold list.' },
+  { key: 'replies20', label: '20 replies', note: 'Count real replies only. Do not include bounces or autoresponders.' },
+  { key: 'demosBooked10', label: '10 demos booked', note: 'Calendar-confirmed calls for widget, sponsor, calculator, API, media, or Pro pilots.' },
+  { key: 'proposalsSent5', label: '5 proposals sent', note: 'Send concrete pilot terms tied to a route, placement, or build scope.' },
+  { key: 'pilotDealsTargeted2', label: '2 pilot deals targeted', note: 'Choose the two highest-probability paid pilots and define next action.' },
+  { key: 'widgetDemoTested', label: 'Widget demo tested', note: 'Open /widgets/demo/ and one iframe/demo route before using widget pitches.' },
+  { key: 'mediaKitSent', label: 'Media kit sent', note: 'Send /media-kit/ to sponsor or publisher buyers with a narrow ask.' },
+  { key: 'apiPilotOfferSent', label: 'API pilot offer sent', note: 'Send /api/pricing.html or /api/ only after the buyer use case is clear.' },
+  { key: 'backlinkPartnerListStarted', label: 'Backlink/widget partner list started', note: 'Start with free widget distribution targets that can publish live pages.' }
 ];
 
 var FIFTYK_READINESS = [
@@ -1233,6 +1349,120 @@ var FIFTYK_READINESS = [
   { area: 'Sponsored tools', source: 'B2B enquiry tags and founder sales notes', status: 'Manual/local' },
   { area: 'Backlinks and clicks', source: 'Google Search Console and backlink/referring domain export', status: 'Pending' },
   { area: 'Subscribers', source: 'public.profiles, email_leads, newsletter flows, and WhatsApp list', status: 'Pending' }
+];
+
+var FIFTYK_QA_ITEMS = [
+  { label: '/widgets/', route: '/widgets/', status: 'manual', note: 'Public widget offer page. Use for free widget and Widget Pro pitches.' },
+  { label: '/widgets/demo/', route: '/widgets/demo/', status: 'manual', note: 'Technical gallery. Manually test at least one widget and one iframe before outreach.' },
+  { label: '/sponsored-tools/', route: '/sponsored-tools/', status: 'manual', note: 'Sponsor inventory, pilot ranges, and guardrails.' },
+  { label: '/custom-calculators/', route: '/custom-calculators/', status: 'manual', note: 'Custom build offers for HR, payroll, fintech, accounting, schools, media, and tax.' },
+  { label: '/media-kit/', route: '/media-kit/', status: 'manual', note: 'Buyer-facing inventory and offer ladder. No public traffic claims are assumed.' },
+  { label: '/business-enquiry/', route: '/business-enquiry/?offer=widget-demo&prospect=hr-payroll&source=mc-50k&tool=nigeria-paye', status: 'server-backed', note: 'Submits through /api/b2b-enquiry Netlify function with validation and consent.' },
+  { label: '/api/', route: '/api/', status: 'manual', note: 'API overview and docs path. Paid access remains pilot/contact-led where billing is not self-serve.' },
+  { label: '/api/pricing.html', route: '/api/pricing.html', status: 'manual', note: 'API pricing alias. Keep route links honest between .html and clean URLs.' },
+  { label: '/pricing/', route: '/pricing/', status: 'manual', note: 'Business subscription route. Confirm Pro boundaries before sales use.' },
+  { label: '/pro/', route: '/pro/', status: 'manual', note: 'Pro public route. Run pro:verify after Pro route or registry changes.' },
+  { label: 'Top money-tool CTA coverage', route: '/docs/AFROTOOLS-50K-EXECUTION-HANDOFF.md', status: 'manual/pending', note: 'Use the priority money-tool list in the handoff. Do not infer complete coverage without a route sweep.' },
+  { label: 'B2B enquiry endpoint', route: '/api/b2b-enquiry', status: 'server-backed', note: 'Netlify function endpoint. Manual smoke should use a consented test payload or deployed form.' },
+  { label: 'Widget iframe/demo health', route: '/widgets/demo/', status: 'manual/pending', note: 'Open demo plus one /widgets/iframe/ route. This panel does not run live iframe health checks.' }
+];
+
+var FIFTYK_PROSPECT_KEY = 'afrotools-mc-50k-prospects-v1';
+var FIFTYK_PROSPECT_FIELDS = [
+  'company','segment','region','contactName','contact','offerFit','priority','source','firstTouch','lastTouch','nextFollowUp','status','dealValue','routeTool','notes'
+];
+
+var FIFTYK_TEMPLATES = [
+  {
+    title: 'Free widget/backlink pitch',
+    subject: 'Useful AfroTools calculator for your resource page',
+    segment: 'accounting, HR, media, education',
+    cta: 'Add one free widget with attribution',
+    route: '/widgets/',
+    short: 'We have a free AfroTools calculator widget that could make your guide more useful. It keeps AfroTools attribution and a backlink, and you can start with one calculator before considering paid setup.',
+    body: 'Hi {{name}},\n\nI saw {{company}} publishes resources for {{audience}}. AfroTools has embeddable calculators for salary, PAYE, VAT, invoices, school fees, remittance, and other African workflows.\n\nA simple first step is a free widget on one relevant page with visible AfroTools attribution and backlink. If it helps your audience, we can discuss Widget Pro later for branding, setup, analytics, or lead capture.\n\nWould you like me to suggest one widget for a live page on your site?\n\nRoute: https://afrotools.com/widgets/',
+    note: 'Use when the buyer has content pages and backlink/distribution is the first ask.'
+  },
+  {
+    title: 'Widget Pro/white-label pilot',
+    subject: 'Widget Pro pilot for {{company}}',
+    segment: 'HR, payroll, fintech, accounting, media',
+    cta: 'Book a widget pilot call',
+    route: '/widgets/',
+    short: 'AfroTools can set up a branded or co-branded calculator widget with agreed attribution, setup support, analytics notes, and optional opt-in lead capture.',
+    body: 'Hi {{name}},\n\nAfroTools can help {{company}} turn one high-intent resource page into a practical calculator workflow.\n\nThe Widget Pro pilot can include a relevant calculator pack, co-branded or white-label styling under agreed attribution terms, setup help, analytics notes, and optional opt-in lead capture. We would start with one page and one conversion goal.\n\nWould a 20-minute call next week be useful to choose the first widget and pilot page?\n\nRoute: https://afrotools.com/widgets/',
+    note: 'Use after interest in free embeds or when the partner needs branding/support from day one.'
+  },
+  {
+    title: 'Sponsored tool pilot',
+    subject: 'Sponsor one AfroTools calculator page',
+    segment: 'payroll, tax, fintech, education, employer services',
+    cta: 'Pick one sponsored placement',
+    route: '/sponsored-tools/',
+    short: 'AfroTools can run a clearly labeled sponsor placement on one relevant calculator or workflow page without changing the calculator logic.',
+    body: 'Hi {{name}},\n\nAfroTools is opening sponsored placements on practical calculator pages. The useful first pilot is one relevant tool, one clearly labeled sponsor block, one CTA, and a short proof window.\n\nSponsors cannot change formulas or source notes, but they can place a practical offer beside the workflow where it fits the user need.\n\nWould you like me to send two or three page options that match {{company}}?\n\nRoute: https://afrotools.com/sponsored-tools/',
+    note: 'Use when the buyer sells to a clear audience already served by a tool or category.'
+  },
+  {
+    title: 'Custom calculator build',
+    subject: 'Custom calculator idea for {{company}}',
+    segment: 'HR, payroll, fintech, accounting, schools, trade',
+    cta: 'Scope one calculator build',
+    route: '/custom-calculators/',
+    short: 'AfroTools can turn a buyer workflow into a branded calculator with source notes, an embed option, and a lead path.',
+    body: 'Hi {{name}},\n\nIf {{company}} has a recurring question customers ask with numbers, rules, fees, eligibility, or documents, AfroTools can turn it into a branded calculator.\n\nThe clean first step is a scope sprint: workflow, source list, inputs, outputs, compliance limits, CTA, and a fixed build quote. The MVP can live on AfroTools, embed on your site, or both.\n\nIs there one workflow you would want to turn into a calculator this quarter?\n\nRoute: https://afrotools.com/custom-calculators/',
+    note: 'Use when the buyer needs proprietary logic, a lead magnet, or a product education tool.'
+  },
+  {
+    title: 'API Growth pilot',
+    subject: 'AfroTools API pilot for African business data',
+    segment: 'fintech, payroll, accounting, developer API',
+    cta: 'Request API Growth pilot',
+    route: '/api/pricing.html',
+    short: 'AfroTools API can support tax, VAT, FX, fuel, rates, and country-data pilots where the use case is clear.',
+    body: 'Hi {{name}},\n\nAfroTools is opening API pilots for teams that need African tax, VAT, FX, fuel, rates, or country data inside a product workflow.\n\nThe best first pilot is narrow: one endpoint family, one country or market set, one use case, and clear limits around freshness and source coverage. Paid API tiers are handled as pilot/contact-led where self-serve billing is not wired.\n\nWould you like to compare your use case against the current API pricing and pilot path?\n\nRoute: https://afrotools.com/api/pricing.html',
+    note: 'Use for technical buyers. Do not promise unsupported endpoint coverage.'
+  },
+  {
+    title: 'Media kit sponsorship',
+    subject: 'AfroTools media kit for {{company}}',
+    segment: 'media, fintech, HR, education, employer services',
+    cta: 'Review sponsorship inventory',
+    route: '/media-kit/',
+    short: 'The media kit packages sponsored tools, category/country placements, widgets, custom calculators, and API pilots without public traffic claims.',
+    body: 'Hi {{name}},\n\nAfroTools has practical commercial inventory for sponsors: calculator placements, category or country bundles, widgets, custom calculators, API pilots, and partner distribution.\n\nThe media kit explains the offer ladder and pilot ranges. Current traffic or audience details should be shared privately for the exact pages you are considering.\n\nWould you like the narrowest sponsorship package for {{company}} based on one target audience?\n\nRoute: https://afrotools.com/media-kit/',
+    note: 'Use when the buyer is a sponsor/publisher or asks for inventory before a call.'
+  },
+  {
+    title: 'Follow-up 1',
+    subject: 'Quick follow-up on the AfroTools pilot idea',
+    segment: 'all commercial segments',
+    cta: 'Choose a first pilot page',
+    route: '/business-enquiry/',
+    short: 'Following up with one practical next step: choose a page, widget, sponsor slot, calculator, API pilot, or media package.',
+    body: 'Hi {{name}},\n\nQuick follow-up on the AfroTools idea. The easiest next step is not a broad partnership. It is one page or one workflow: a free widget, Widget Pro pilot, sponsored tool, custom calculator, API pilot, or media sponsorship.\n\nIf helpful, send me the page or workflow you want to improve and I will suggest the smallest pilot.\n\nRoute: https://afrotools.com/business-enquiry/',
+    note: 'Send 3 to 5 business days after first contact if there is no reply.'
+  },
+  {
+    title: 'Follow-up 2',
+    subject: 'Should I send one concrete AfroTools option?',
+    segment: 'all commercial segments',
+    cta: 'Ask for one route recommendation',
+    route: '/widgets/',
+    short: 'Offer to send one concrete option instead of asking for a call.',
+    body: 'Hi {{name}},\n\nI know this may not be priority this week. Would it help if I sent one concrete AfroTools option for {{company}} instead of asking for a call?\n\nI can keep it simple: one relevant calculator or placement, one target page, one CTA, and what it would take to launch.\n\nRoute: https://afrotools.com/widgets/',
+    note: 'Send after follow-up 1 when a lower-friction reply may work better.'
+  },
+  {
+    title: 'Breakup email',
+    subject: 'Closing the loop on AfroTools',
+    segment: 'all commercial segments',
+    cta: 'Leave the door open',
+    route: '/media-kit/',
+    short: 'Close politely without pressure and leave the media kit or widget route for later.',
+    body: 'Hi {{name}},\n\nI will close the loop for now. If {{company}} later wants a calculator widget, sponsored tool, custom calculator, API pilot, or media sponsorship for an African business workflow, AfroTools has the routes below.\n\nNo need to reply unless there is a live page or workflow you want to test.\n\nRoute: https://afrotools.com/media-kit/',
+    note: 'Use after two follow-ups. Do not add fake scarcity or pressure.'
+  }
 ];
 
 function getFiftyKWeekStart(){
@@ -1364,6 +1594,286 @@ function renderFiftyKReadiness(){
   }).join('');
 }
 
+function renderFiftyKQa(){
+  var el = document.getElementById('fiftyk-qa-grid');
+  if(!el) return;
+  el.innerHTML = FIFTYK_QA_ITEMS.map(function(item){
+    var badgeStatus = item.status.indexOf('pending') !== -1 ? 'degraded' : (item.status.indexOf('server') !== -1 ? 'working' : 'unknown');
+    return '<article class="fk-status-card">' +
+      '<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">' +
+        '<h4>' + escapeHtml(item.label) + '</h4>' + mcBadgeHtml(item.status, badgeStatus) +
+      '</div>' +
+      '<p>' + escapeHtml(item.note) + '</p>' +
+      '<a href="' + escapeHtml(item.route) + '" target="_blank" rel="noopener">Open route</a>' +
+    '</article>';
+  }).join('');
+}
+
+function getFiftyKProspects(){
+  try {
+    var parsed = JSON.parse(localStorage.getItem(FIFTYK_PROSPECT_KEY) || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch(e) {
+    return [];
+  }
+}
+
+function saveFiftyKProspects(list){
+  localStorage.setItem(FIFTYK_PROSPECT_KEY, JSON.stringify(list.slice(0, 300)));
+}
+
+function getProspectFormValue(id){
+  var el = document.getElementById(id);
+  return el ? String(el.value || '').trim() : '';
+}
+
+function resetFiftyKProspectForm(){
+  var form = document.getElementById('fiftyk-prospect-form');
+  if(form) form.reset();
+  var idEl = document.getElementById('fk-prospect-id');
+  if(idEl) idEl.value = '';
+  setFiftyKStatus('Prospect form cleared.');
+}
+
+function saveFiftyKProspect(event){
+  if(event) event.preventDefault();
+  var prospects = getFiftyKProspects();
+  var id = getProspectFormValue('fk-prospect-id') || String(Date.now());
+  var record = {
+    id: id,
+    company: getProspectFormValue('fk-company'),
+    segment: getProspectFormValue('fk-segment'),
+    region: getProspectFormValue('fk-region'),
+    contactName: getProspectFormValue('fk-contact-name'),
+    contact: getProspectFormValue('fk-contact'),
+    offerFit: getProspectFormValue('fk-offer-fit'),
+    priority: getProspectFormValue('fk-priority'),
+    source: getProspectFormValue('fk-source'),
+    firstTouch: getProspectFormValue('fk-first-touch'),
+    lastTouch: getProspectFormValue('fk-last-touch'),
+    nextFollowUp: getProspectFormValue('fk-next-follow'),
+    status: getProspectFormValue('fk-status'),
+    dealValue: getProspectFormValue('fk-deal-value'),
+    routeTool: getProspectFormValue('fk-route'),
+    notes: getProspectFormValue('fk-notes'),
+    updatedAt: new Date().toISOString()
+  };
+  var existingIndex = prospects.findIndex(function(item){ return item.id === id; });
+  if(existingIndex >= 0) {
+    prospects[existingIndex] = record;
+  } else {
+    if(prospects.length >= 300) {
+      setFiftyKStatus('Prospect tracker is capped at the first 300 targets. Export CSV or remove rows before adding more.');
+      return;
+    }
+    prospects.unshift(record);
+  }
+  saveFiftyKProspects(prospects);
+  resetFiftyKProspectForm();
+  renderFiftyKProspects();
+  setFiftyKStatus('Prospect saved locally at ' + new Date().toLocaleTimeString() + '.');
+}
+
+function editFiftyKProspect(id){
+  var record = getFiftyKProspects().find(function(item){ return item.id === id; });
+  if(!record) return;
+  var map = {
+    'fk-prospect-id': 'id',
+    'fk-company': 'company',
+    'fk-segment': 'segment',
+    'fk-region': 'region',
+    'fk-contact-name': 'contactName',
+    'fk-contact': 'contact',
+    'fk-offer-fit': 'offerFit',
+    'fk-priority': 'priority',
+    'fk-source': 'source',
+    'fk-first-touch': 'firstTouch',
+    'fk-last-touch': 'lastTouch',
+    'fk-next-follow': 'nextFollowUp',
+    'fk-status': 'status',
+    'fk-deal-value': 'dealValue',
+    'fk-route': 'routeTool',
+    'fk-notes': 'notes'
+  };
+  Object.keys(map).forEach(function(idKey){
+    var el = document.getElementById(idKey);
+    if(el) el.value = record[map[idKey]] || '';
+  });
+  setFiftyKStatus('Editing prospect locally: ' + (record.company || 'Untitled prospect'));
+}
+
+function deleteFiftyKProspect(id){
+  if(!confirm('Delete this local prospect row?')) return;
+  saveFiftyKProspects(getFiftyKProspects().filter(function(item){ return item.id !== id; }));
+  renderFiftyKProspects();
+  setFiftyKStatus('Prospect deleted locally.');
+}
+
+function renderFiftyKProspects(){
+  var rowsEl = document.getElementById('fiftyk-prospect-rows');
+  var countEl = document.getElementById('fiftyk-prospect-count');
+  if(!rowsEl) return;
+  var filterEl = document.getElementById('fiftyk-prospect-filter');
+  var statusEl = document.getElementById('fiftyk-prospect-status-filter');
+  var query = filterEl ? String(filterEl.value || '').toLowerCase() : '';
+  var status = statusEl ? String(statusEl.value || '') : '';
+  var prospects = getFiftyKProspects();
+  var filtered = prospects.filter(function(item){
+    var haystack = FIFTYK_PROSPECT_FIELDS.map(function(field){ return item[field] || ''; }).join(' ').toLowerCase();
+    return (!query || haystack.indexOf(query) !== -1) && (!status || item.status === status);
+  });
+  if(countEl) countEl.textContent = prospects.length + '/300 local';
+  if(!filtered.length){
+    rowsEl.innerHTML = '<tr><td colspan="12" class="muted">No local prospects yet. Add the first target or import a CSV.</td></tr>';
+    return;
+  }
+  rowsEl.innerHTML = filtered.map(function(item){
+    return '<tr>' +
+      '<td><strong>' + escapeHtml(item.company || '') + '</strong><div class="muted">' + escapeHtml(item.source || '') + '</div></td>' +
+      '<td>' + escapeHtml(item.segment || '') + '</td>' +
+      '<td>' + escapeHtml(item.region || '') + '</td>' +
+      '<td>' + escapeHtml(item.contactName || '') + '<div class="muted">' + escapeHtml(item.contact || '') + '</div></td>' +
+      '<td>' + escapeHtml(item.offerFit || '') + '</td>' +
+      '<td>' + escapeHtml(item.priority || '') + '</td>' +
+      '<td>' + escapeHtml(item.nextFollowUp || '') + '</td>' +
+      '<td>' + escapeHtml(item.status || '') + '</td>' +
+      '<td>' + escapeHtml(item.dealValue || '') + '</td>' +
+      '<td>' + escapeHtml(item.routeTool || '') + '</td>' +
+      '<td>' + escapeHtml(item.notes || '') + '</td>' +
+      '<td><button type="button" onclick="editFiftyKProspect(\'' + escapeHtml(item.id) + '\')">Edit</button> <button type="button" onclick="deleteFiftyKProspect(\'' + escapeHtml(item.id) + '\')">Delete</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+function csvEscape(value){
+  var text = String(value == null ? '' : value);
+  return '"' + text.replace(/"/g, '""') + '"';
+}
+
+function exportFiftyKProspectsCsv(){
+  var headers = FIFTYK_PROSPECT_FIELDS;
+  var lines = [headers.join(',')];
+  getFiftyKProspects().forEach(function(item){
+    lines.push(headers.map(function(field){ return csvEscape(item[field]); }).join(','));
+  });
+  var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'afrotools-50k-prospects-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setFiftyKStatus('Prospect CSV exported locally.');
+}
+
+function parseCsvRows(text){
+  var rows = [];
+  var row = [];
+  var cell = '';
+  var quoted = false;
+  for(var i = 0; i < text.length; i++){
+    var ch = text.charAt(i);
+    var next = text.charAt(i + 1);
+    if(quoted && ch === '"' && next === '"'){
+      cell += '"';
+      i++;
+    } else if(ch === '"'){
+      quoted = !quoted;
+    } else if(ch === ',' && !quoted){
+      row.push(cell);
+      cell = '';
+    } else if((ch === '\n' || ch === '\r') && !quoted){
+      if(ch === '\r' && next === '\n') i++;
+      row.push(cell);
+      if(row.some(function(value){ return value.trim(); })) rows.push(row);
+      row = [];
+      cell = '';
+    } else {
+      cell += ch;
+    }
+  }
+  row.push(cell);
+  if(row.some(function(value){ return value.trim(); })) rows.push(row);
+  return rows;
+}
+
+function importFiftyKProspectsCsv(input){
+  var file = input.files && input.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(event){
+    var rows = parseCsvRows(String(event.target.result || ''));
+    if(!rows.length) {
+      setFiftyKStatus('CSV import found no rows.');
+      return;
+    }
+    var headers = rows.shift().map(function(value){ return value.trim(); });
+    var imported = rows.map(function(row){
+      var item = { id: String(Date.now() + Math.random()), updatedAt: new Date().toISOString() };
+      headers.forEach(function(header, index){
+        if(FIFTYK_PROSPECT_FIELDS.indexOf(header) !== -1) item[header] = row[index] || '';
+      });
+      return item;
+    }).filter(function(item){ return item.company; });
+    var merged = imported.concat(getFiftyKProspects()).slice(0, 300);
+    saveFiftyKProspects(merged);
+    renderFiftyKProspects();
+    setFiftyKStatus('Imported ' + imported.length + ' prospects locally. Tracker is capped at 300 rows.');
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function buildTemplateText(template){
+  return [
+    'Subject: ' + template.subject,
+    '',
+    template.body,
+    '',
+    'Short LinkedIn/WhatsApp:',
+    template.short,
+    '',
+    'Suggested target segment: ' + template.segment,
+    'Primary CTA: ' + template.cta,
+    'Route to link: https://afrotools.com' + template.route,
+    'When to use: ' + template.note
+  ].join('\n');
+}
+
+function renderFiftyKTemplates(){
+  var el = document.getElementById('fiftyk-template-grid');
+  if(!el) return;
+  el.innerHTML = FIFTYK_TEMPLATES.map(function(template, index){
+    return '<article class="fk-template-card">' +
+      '<h4>' + escapeHtml(template.title) + '</h4>' +
+      '<div class="fk-template-meta"><span>' + escapeHtml(template.segment) + '</span><span>' + escapeHtml(template.cta) + '</span></div>' +
+      '<p><strong>Route:</strong> https://afrotools.com' + escapeHtml(template.route) + '</p>' +
+      '<textarea readonly id="fk-template-' + index + '">' + escapeHtml(buildTemplateText(template)) + '</textarea>' +
+      '<button class="qa-btn fk-action" type="button" onclick="copyFiftyKTemplate(' + index + ')">Copy template</button>' +
+    '</article>';
+  }).join('');
+}
+
+function copyFiftyKTemplate(index){
+  var el = document.getElementById('fk-template-' + index);
+  var status = document.getElementById('fiftyk-template-status');
+  if(!el) return;
+  var text = el.value;
+  function done(){
+    if(status) status.textContent = 'Template copied: ' + FIFTYK_TEMPLATES[index].title;
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){
+      el.focus();
+      el.select();
+      if(status) status.textContent = 'Copy blocked. Template selected for manual copy.';
+    });
+  } else {
+    el.focus();
+    el.select();
+    if(status) status.textContent = 'Copy unavailable. Template selected for manual copy.';
+  }
+}
+
 function updateFiftyKSummary(){
   var summaryEl = document.getElementById('fiftyk-summary');
   if(!summaryEl) return;
@@ -1374,10 +1884,12 @@ function updateFiftyKSummary(){
   var distributionKeys = ['freeWidgetPartners', 'paidWidgetCustomers', 'sponsoredToolConversations'];
   var filledAll = metricFillCount(fiftyKAllMetrics().map(function(metric){ return metric.key; }), metrics);
   var completed = FIFTYK_CHECKLIST.filter(function(item){ return !!state.checks[item.key]; }).length;
+  var prospects = getFiftyKProspects().length;
   summaryEl.innerHTML = [
     { label: 'Revenue fields', value: metricFillCount(revenueKeys, metrics) + '/' + revenueKeys.length },
     { label: 'Sales motion fields', value: metricFillCount(salesKeys, metrics) + '/' + salesKeys.length },
     { label: 'Distribution fields', value: metricFillCount(distributionKeys, metrics) + '/' + distributionKeys.length },
+    { label: 'Prospect tracker', value: prospects + '/300' },
     { label: '7-day checklist', value: completed + '/' + FIFTYK_CHECKLIST.length }
   ].map(function(card){
     return '<div class="fk-summary-card"><div class="fk-summary-label">' + escapeHtml(card.label) + '</div><div class="fk-summary-value">' + escapeHtml(card.value) + '</div></div>';
@@ -1396,6 +1908,9 @@ function buildFiftyKDashboard(){
   renderFiftyKMetricGroups(state);
   renderFiftyKChecklist(state);
   renderFiftyKReadiness();
+  renderFiftyKQa();
+  renderFiftyKProspects();
+  renderFiftyKTemplates();
   var notesEl = document.getElementById('fiftyk-notes');
   if(notesEl) notesEl.value = state.notes || '';
   updateFiftyKSummary();

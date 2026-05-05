@@ -127,6 +127,20 @@ function cleanUrl(value) {
   }
 }
 
+function cleanPath(value) {
+  const raw = cleanField(value, 500);
+  if (!raw) return null;
+  if (/^https?:\/\//i.test(raw)) {
+    try {
+      const parsed = new URL(raw);
+      return parsed.pathname + parsed.search.slice(0, 180);
+    } catch (error) {
+      return null;
+    }
+  }
+  return raw.replace(/[^\w\-./?=&%:]/g, '').slice(0, 500);
+}
+
 function normalizeChoice(value, aliases, labels, fallback) {
   const raw = cleanField(value, 80);
   if (!raw) return fallback;
@@ -153,6 +167,15 @@ function hashIp(ip) {
 function parseBody(event) {
   if ((event.body || '').length > 12000) {
     return { error: 'Request is too large' };
+  }
+  const contentType = String((event.headers || {})['content-type'] || (event.headers || {})['Content-Type'] || '');
+  if (contentType.includes('application/x-www-form-urlencoded')) {
+    const params = new URLSearchParams(event.body || '');
+    const body = {};
+    params.forEach((value, key) => {
+      body[key] = value;
+    });
+    return { body };
   }
   try {
     return { body: JSON.parse(event.body || '{}') };
@@ -189,7 +212,10 @@ function normalizeLead(body, event) {
     return { error: 'Missing required fields: ' + missing.join(', ') };
   }
 
-  const sourcePath = cleanField(body.source_path || body.sourcePath, 300);
+  const sourcePath = cleanPath(body.source_path || body.sourcePath);
+  const sourceRoute = cleanPath(body.source_route || body.sourceRoute || sourcePath);
+  const ctaType = cleanField(body.cta_type || body.ctaType, 80);
+  const prospectSegment = cleanField(body.prospect_segment || body.prospectSegment, 120);
   const pageUrl = cleanUrl(body.page_url || body.pageUrl);
   const referrerUrl = cleanUrl(body.referrer_url || body.referrerUrl);
   const userAgent = cleanField((event.headers || {})['user-agent'] || (event.headers || {})['User-Agent'], 500);
@@ -207,6 +233,8 @@ function normalizeLead(body, event) {
     website ? 'Website: ' + website : null,
     country ? 'Country: ' + country : null,
     'Relevant tool/use case: ' + relevantTool,
+    sourceRoute ? 'Source route: ' + sourceRoute : null,
+    ctaType ? 'CTA type: ' + ctaType : null,
     pageUrl || sourcePath ? 'Source page: ' + (pageUrl || sourcePath) : null,
     '',
     'Message:',
@@ -240,6 +268,9 @@ function normalizeLead(body, event) {
     relevant_tool: relevantTool,
     message: message,
     source_path: sourcePath,
+    source_route: sourceRoute,
+    cta_type: ctaType,
+    prospect_segment: prospectSegment,
     page_url: pageUrl,
     referrer_url: referrerUrl,
     user_agent: userAgent,
@@ -247,7 +278,10 @@ function normalizeLead(body, event) {
     metadata: {
       utm: utm,
       offer_label: OFFER_LABELS[requestedOffer],
-      prospect_label: PROSPECT_LABELS[prospectType]
+      prospect_label: PROSPECT_LABELS[prospectType],
+      source_route: sourceRoute,
+      cta_type: ctaType,
+      prospect_segment: prospectSegment
     }
   });
 

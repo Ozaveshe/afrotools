@@ -25,11 +25,24 @@ The form supports these offer types:
 
 The browser sends company, name, email, website, country, prospect type, requested offer, relevant tool or use case, message, and explicit consent.
 
-The Netlify function validates the payload, rate limits by connection, hashes the client IP, normalizes offer/prospect aliases, and writes with a server-side Supabase service key.
+Commercial CTA context is also preserved when available:
+
+- `offer`
+- `tool` or relevant tool/use case
+- `source_path`
+- `source_route`
+- `prospect_segment`
+- `cta_type`
+- safe referrer URL, stripped to origin and path in the browser helper
+- UTM source, medium, campaign, and content
+
+The Netlify function validates the payload, rate limits by connection, hashes the client IP, normalizes offer/prospect aliases, accepts JSON and URL-encoded fallback form submissions, and writes with a server-side Supabase service key.
 
 ## Storage Compatibility
 
 The function first attempts to write enriched columns added by `supabase/migrations/046-b2b-commercial-enquiry-fields.sql`.
+
+The enriched schema includes route/source fields for 50K commercial attribution, including `source_path`, `source_route`, `cta_type`, `prospect_segment`, `page_url`, `referrer_url`, UTM metadata, user agent, and hashed IP. If the live table does not have those columns yet, the function falls back to the base schema and stores the key context inside the structured `use_case` text.
 
 If the live table has not been upgraded yet, the function retries using the existing `data_buyer_leads` schema:
 
