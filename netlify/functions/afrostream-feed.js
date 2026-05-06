@@ -42,7 +42,7 @@ exports.handler = async function(event) {
     var xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
       '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n' +
       '  <channel>\n' +
-      '    <title>AfroStream — African Creator News</title>\n' +
+      '    <title>AfroStream - African Creator News</title>\n' +
       '    <link>https://afrotools.com/tools/afrostream/news.html</link>\n' +
       '    <description>Latest news from Africa\'s streaming and creator economy. Milestones, platform updates, collaborations, and rising stars.</description>\n' +
       '    <language>en</language>\n' +

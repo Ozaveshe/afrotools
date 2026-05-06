@@ -81,7 +81,7 @@ exports.handler = async function (event) {
         // Fetch last month's calculations
         var { data: calcs } = await sb
           .from('calculation_history')
-          .select('tool_name, result_summary, created_at')
+          .select('tool_name, tool_slug, outputs, created_at')
           .eq('user_id', user.id)
           .gte('created_at', lastMonth.toISOString())
           .lte('created_at', lastMonthEnd.toISOString())
@@ -93,9 +93,9 @@ exports.handler = async function (event) {
         if (user.currency && user.currency !== 'USD') {
           var { data: fx } = await sb
             .from('fx_snapshots')
-            .select('pair, rate, change_pct')
-            .like('pair', '%/' + user.currency)
-            .order('snapshot_date', { ascending: false })
+            .select('base_currency, quote_currency, bank_rate, market_rate, remittance_rate, spread_pct, captured_at')
+            .eq('quote_currency', user.currency)
+            .order('captured_at', { ascending: false })
             .limit(3);
           if (fx && fx.length > 0) fxData = fx;
         }
@@ -103,13 +103,13 @@ exports.handler = async function (event) {
         // Fetch salary benchmark
         var benchmarkData = null;
         if (user.country_code) {
-          var { data: bench } = await sb
+          var { data: benchRows } = await sb
             .from('salary_benchmarks')
-            .select('percentile, median_salary, currency')
+            .select('role_category, experience_level, median_gross, median_net, currency, period, updated_at')
             .eq('country_code', user.country_code)
-            .limit(1)
-            .single();
-          if (bench) benchmarkData = bench;
+            .order('updated_at', { ascending: false })
+            .limit(1);
+          if (benchRows && benchRows[0]) benchmarkData = benchRows[0];
         }
 
         var displayName = (user.name || '').split(' ')[0] || 'there';
@@ -167,7 +167,8 @@ function buildDigestEmail(name, monthName, year, lastMonthName, calcs, fxData, b
     activityHtml += '<div style="margin-bottom:8px;font-size:14px;color:#475569;">' + calcs.length + ' calculation' + (calcs.length !== 1 ? 's' : '') + ' in ' + lastMonthName + '</div>';
     var latest = calcs[0];
     activityHtml += '<div style="font-size:14px;color:#1e293b;">Last: <strong>' + esc(latest.tool_name) + '</strong>';
-    if (latest.result_summary) activityHtml += ' &mdash; ' + esc(latest.result_summary);
+    var summary = summarizeCalculation(latest);
+    if (summary) activityHtml += ' - ' + esc(summary);
     activityHtml += '</div>';
   }
 
@@ -177,11 +178,13 @@ function buildDigestEmail(name, monthName, year, lastMonthName, calcs, fxData, b
       '<div style="font-size:13px;font-weight:700;color:#007AFF;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCB1 FX Rates</div>';
     for (var i = 0; i < fxData.length; i++) {
       var fx = fxData[i];
-      var arrow = fx.change_pct >= 0 ? '\u2191' : '\u2193';
-      var color = fx.change_pct >= 0 ? '#059669' : '#dc2626';
+      var pair = (fx.base_currency || 'USD') + '/' + (fx.quote_currency || '');
+      var rate = fx.market_rate || fx.bank_rate || fx.remittance_rate || 0;
+      var spread = Number(fx.spread_pct || 0);
+      var color = spread <= 5 ? '#059669' : '#dc2626';
       fxHtml += '<div style="font-size:14px;color:#1e293b;margin-bottom:4px;">' +
-        esc(fx.pair) + ': <strong>' + Number(fx.rate).toLocaleString() + '</strong> ' +
-        '<span style="color:' + color + ';">(' + arrow + Math.abs(fx.change_pct || 0).toFixed(1) + '%)</span></div>';
+        esc(pair) + ': <strong>' + Number(rate).toLocaleString() + '</strong> ' +
+        '<span style="color:' + color + ';">(' + Math.abs(spread).toFixed(1) + '% spread)</span></div>';
     }
     fxHtml += '</td></tr>';
   }
@@ -191,7 +194,7 @@ function buildDigestEmail(name, monthName, year, lastMonthName, calcs, fxData, b
     benchHtml = '<tr><td style="padding:0 24px 24px;">' +
       '<div style="font-size:13px;font-weight:700;color:#007AFF;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCC8 Salary Benchmark</div>' +
       '<div style="font-size:14px;color:#1e293b;">Median salary in your country: <strong>' +
-      (benchmark.currency || '') + ' ' + Number(benchmark.median_salary || 0).toLocaleString() + '</strong></div>' +
+      (benchmark.currency || '') + ' ' + Number(benchmark.median_gross || benchmark.median_net || 0).toLocaleString() + '</strong></div>' +
       '</td></tr>';
   }
 
@@ -279,21 +282,23 @@ function buildDigestText(name, monthName, year, lastMonthName, calcs, fxData, be
   ];
   if (calcs && calcs.length > 0) {
     lines.push(calcs.length + ' calculation(s) in ' + lastMonthName);
-    lines.push('Last: ' + calcs[0].tool_name + (calcs[0].result_summary ? ' - ' + calcs[0].result_summary : ''));
+    var latestSummary = summarizeCalculation(calcs[0]);
+    lines.push('Last: ' + calcs[0].tool_name + (latestSummary ? ' - ' + latestSummary : ''));
   }
   lines.push('');
   if (fxData && fxData.length > 0) {
     lines.push('FX RATES');
     for (var i = 0; i < fxData.length; i++) {
       var fx = fxData[i];
-      var dir = fx.change_pct >= 0 ? '+' : '';
-      lines.push(fx.pair + ': ' + Number(fx.rate).toLocaleString() + ' (' + dir + (fx.change_pct || 0).toFixed(1) + '%)');
+      var pair = (fx.base_currency || 'USD') + '/' + (fx.quote_currency || '');
+      var rate = fx.market_rate || fx.bank_rate || fx.remittance_rate || 0;
+      lines.push(pair + ': ' + Number(rate).toLocaleString() + ' (' + Number(fx.spread_pct || 0).toFixed(1) + '% spread)');
     }
     lines.push('');
   }
   if (benchmark) {
     lines.push('SALARY BENCHMARK');
-    lines.push('Median: ' + (benchmark.currency || '') + ' ' + Number(benchmark.median_salary || 0).toLocaleString());
+    lines.push('Median: ' + (benchmark.currency || '') + ' ' + Number(benchmark.median_gross || benchmark.median_net || 0).toLocaleString());
     lines.push('');
   }
   lines.push('Open your dashboard: https://afrotools.com/dashboard/');
@@ -327,4 +332,17 @@ function esc(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function summarizeCalculation(calc) {
+  var outputs = calc && calc.outputs && typeof calc.outputs === 'object' ? calc.outputs : null;
+  if (!outputs) return '';
+  var keys = ['result_summary', 'summary', 'takeHomePay', 'netPay', 'total', 'amount', 'monthlyPayment', 'result'];
+  for (var i = 0; i < keys.length; i++) {
+    var value = outputs[keys[i]];
+    if (value == null || value === '') continue;
+    if (typeof value === 'number') return keys[i] + ': ' + Number(value).toLocaleString();
+    if (typeof value === 'string') return value.slice(0, 120);
+  }
+  return '';
 }

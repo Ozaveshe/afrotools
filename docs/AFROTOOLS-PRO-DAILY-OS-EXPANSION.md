@@ -29,7 +29,7 @@ This keeps the path toward 100 plus Pro apps realistic. Each vertical should be 
 | Priority | App | Route | First build slice |
 | --- | --- | --- | --- |
 | 1 | AfroSeller Social Commerce OS | `/pro/apps/seller/` | Catalog, orders, stock alerts, customer balances, WhatsApp templates, local exports |
-| 2 | AfroEvents & Ceremony OS | `/pro/apps/events/` | Event profile, guest list, vendor tracker, budget board, handoff packet |
+| 2 | AfroEvents & Ceremony OS | `/pro/apps/events/` | Event profile, guest list, vendor tracker, budget board, running order, WhatsApp templates, local exports |
 | 3 | AfroBeauty Booking OS | `/pro/apps/beauty/` | Service menu, booking board, client cards, deposits, commission summary |
 | 4 | AfroFood & Kitchen OS | `/pro/apps/food-kitchen/` | Menu items, recipe costing, stock count, prep board, daily close |
 | 5 | AfroFix Field Service OS | `/pro/apps/field-service/` | Customer intake, job board, quote builder, parts log, service report |
@@ -63,12 +63,12 @@ Keep the UI mobile-first, Africa-first, WhatsApp-friendly, local/export-ready, a
 Validation: node --check assets/js/lib/pro-daily-os-registry.js assets/js/lib/pro-daily-os-shell.js; parse inline scripts for pro/apps/seller/index.html; npm run audit; npm run check-links.
 ```
 
-Current implementation note (2026-05-03):
+Current implementation note (2026-05-05):
 
 - `/pro/apps/seller/` is now a local-only Pro workspace, not just the shared Daily OS shell.
-- The workspace covers business setup, product catalog, order book, customer balance CRM, dashboard metrics, CSV exports, Markdown receipt or handoff note, and WhatsApp copy templates.
+- The workspace covers business setup, product catalog with SKU/variant/supplier/location/photo placeholders, order book, payment and proof notes, delivery tracker, stock movement ledger, customer labels, daily close panel, dashboard metrics, CSV exports, branded Markdown receipt, and WhatsApp copy plus wa.me deep links.
 - Browser persistence uses localStorage key `afroseller_social_commerce_os_v1`.
-- Still shell-only or deliberately absent: account sync, Supabase storage, connected payments, storefront publishing, delivery integrations, and WhatsApp API sending.
+- Still deliberately absent: account sync, Supabase storage, connected payments, storefront publishing, delivery integrations, and WhatsApp API sending.
 
 ### Agent 2: AfroEvents & Ceremony OS
 
@@ -83,6 +83,13 @@ Read competitor product pages before implementation: Eventbrite, Cvent, Planning
 Keep the UI mobile-first, Africa-first, WhatsApp-friendly, local/export-ready, and honest about local-only state.
 Validation: node --check assets/js/lib/pro-daily-os-registry.js assets/js/lib/pro-daily-os-shell.js; parse inline scripts for pro/apps/events/index.html; npm run audit; npm run check-links.
 ```
+
+Current implementation note (2026-05-05):
+
+- `/pro/apps/events/` is now a local-only Pro workspace, not just the shared Daily OS shell.
+- The workspace covers event setup, guest list and RSVP states, vendor payment schedule, budget board, contribution totals, running order, attention queue, CSV exports, Markdown ceremony handoff note, and WhatsApp copy templates.
+- Browser persistence uses localStorage key `afroevents_ceremony_os_v1`.
+- Still shell-only or deliberately absent: account sync, Supabase storage, ticket sales, connected payments, live RSVP forms, vendor booking, delivery or logistics integrations, and WhatsApp API sending.
 
 ### Agent 3: AfroBeauty Booking OS
 

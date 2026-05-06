@@ -3,8 +3,8 @@
  *
  * GET /api/email/unsubscribe?token=xxx
  *
- * Looks up profile by unsubscribe token, sets email_digest_enabled = false,
- * returns a simple confirmation HTML page.
+ * Looks up profile by unsubscribe token, disables lifecycle/digest emails,
+ * and returns a simple confirmation HTML page.
  */
 const { createClient } = require('@supabase/supabase-js');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
@@ -79,13 +79,13 @@ exports.handler = async function (event) {
   }
 
   return {
-    statusCode: 200,
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
-    body: htmlPage(
-      'Unsubscribed',
-      "You've been unsubscribed from AfroTools monthly digest emails.<br><br>" +
+      statusCode: 200,
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      body: htmlPage(
+        'Unsubscribed',
+        "You've been unsubscribed from AfroTools lifecycle, newsletter, and digest emails.<br><br>" +
         'You can re-enable them anytime from your <a href="https://afrotools.com/dashboard/" style="color:#007AFF;">Dashboard</a>.'
-    ),
+      ),
   };
 };
 

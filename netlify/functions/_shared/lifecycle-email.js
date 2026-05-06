@@ -57,6 +57,13 @@ function featureRow(title, text, linkLabel, linkUrl) {
     '</td></tr>';
 }
 
+function toolName(value, fallback) {
+  var text = String(value || '').trim();
+  if (!text) text = String(fallback || '').trim();
+  if (!text) return 'AfroTools';
+  return text.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 function buildWelcomeHtml(name, mode) {
   var delayed = mode === 'founding_user_welcome';
   return '<p style="margin:0 0 14px;">Hi ' + esc(name) + ',</p>' +
@@ -129,6 +136,84 @@ function buildLifecycleMessage(kind, recipient) {
   var name = firstName(recipient.name, email);
   var unsubscribeUrl = recipient.unsubscribeUrl || '';
 
+  if (kind === 'onboarding_nudge') {
+    var onboardingSubject = 'Three quick ways to make AfroTools useful';
+    var onboardingHtml = '<p style="margin:0 0 14px;">Hi ' + esc(name) + ',</p>' +
+      '<p style="margin:0 0 14px;">Your AfroTools account is ready. The best first move is not complicated: pick one tool you actually need, save it, and let the dashboard keep the thread for later.</p>' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 2px;">' +
+        featureRow(
+          'Set your local context',
+          'Add your country and currency so tools, reports, and recommendations can feel less generic.',
+          'Update profile',
+          'https://afrotools.com/dashboard/?utm_source=resend&utm_medium=email&utm_campaign=onboarding_nudge'
+        ) +
+        featureRow(
+          'Save one tool you will reuse',
+          'Salary, tax, PDF, scholarship, business, food, and country tools are easier to return to when saved.',
+          'Find a tool',
+          'https://afrotools.com/search/?utm_source=resend&utm_medium=email&utm_campaign=onboarding_nudge'
+        ) +
+        featureRow(
+          'Keep report work connected',
+          'If you generate PDFs or reports, use the dashboard so your next visit starts with context, not guesswork.',
+          'Open dashboard',
+          'https://afrotools.com/dashboard/?utm_source=resend&utm_medium=email&utm_campaign=onboarding_nudge'
+        ) +
+      '</table>' +
+      '<p style="margin:18px 0 0;color:#475569;">This is a gentle setup nudge, not another noisy sequence. One useful saved path is enough to start.</p>';
+    var onboarding = shell(
+      onboardingSubject,
+      'A simple first setup path for your AfroTools account.',
+      onboardingHtml,
+      'Open your dashboard',
+      'https://afrotools.com/dashboard/?utm_source=resend&utm_medium=email&utm_campaign=onboarding_nudge',
+      unsubscribeUrl
+    );
+    return {
+      to: email,
+      subject: onboardingSubject,
+      html: onboarding,
+      text: textFromHtml(onboarding),
+    };
+  }
+
+  if (kind === 'activity_milestone') {
+    var activityTitle = toolName(recipient.activityTitle || recipient.toolName, recipient.toolSlug || recipient.activityType);
+    var activitySubject = 'Nice, your AfroTools workspace has started';
+    var activityHtml = '<p style="margin:0 0 14px;">Hi ' + esc(name) + ',</p>' +
+      '<p style="margin:0 0 14px;">Good move. You have started building a useful AfroTools trail with <strong>' + esc(activityTitle) + '</strong>.</p>' +
+      '<p style="margin:0 0 14px;">The next useful step is to keep that work connected: save related tools, return through the dashboard, and use the same workspace when you need a report, calculation, checklist, or country-specific helper again.</p>' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 2px;">' +
+        featureRow(
+          'Return to the work trail',
+          'Your dashboard is the place to continue from saved tools, calculations, reports, and workspace items.',
+          'Open dashboard',
+          'https://afrotools.com/dashboard/?utm_source=resend&utm_medium=email&utm_campaign=activity_milestone'
+        ) +
+        featureRow(
+          'Find the next related tool',
+          'Search the directory when the next job is a calculator, PDF helper, education route, business helper, or country page.',
+          'Search tools',
+          'https://afrotools.com/search/?utm_source=resend&utm_medium=email&utm_campaign=activity_milestone'
+        ) +
+      '</table>' +
+      '<p style="margin:18px 0 0;color:#475569;">Small trails compound. That is the product doing its job.</p>';
+    var activity = shell(
+      activitySubject,
+      'Your first useful AfroTools activity is worth keeping connected.',
+      activityHtml,
+      'Open your dashboard',
+      'https://afrotools.com/dashboard/?utm_source=resend&utm_medium=email&utm_campaign=activity_milestone',
+      unsubscribeUrl
+    );
+    return {
+      to: email,
+      subject: activitySubject,
+      html: activity,
+      text: textFromHtml(activity),
+    };
+  }
+
   if (kind === 'pdf_lead_welcome') {
     var tool = recipient.toolSlug ? recipient.toolSlug.replace(/-/g, ' ') : 'your report';
     var pdfHtml = '<p style="margin:0 0 14px;">Hi ' + esc(name) + ',</p>' +
@@ -142,6 +227,43 @@ function buildLifecycleMessage(kind, recipient) {
       subject: pdfSubject,
       html: pdf,
       text: textFromHtml(pdf),
+    };
+  }
+
+  if (kind === 'pdf_lead_followup') {
+    var reportTool = toolName(recipient.toolSlug, 'your report');
+    var leadSubject = 'Keep your AfroTools report from going cold';
+    var leadHtml = '<p style="margin:0 0 14px;">Hi ' + esc(name) + ',</p>' +
+      '<p style="margin:0 0 14px;">You recently used AfroTools to unlock <strong>' + esc(reportTool) + '</strong>. A report is more useful when the next step is easy to find.</p>' +
+      '<p style="margin:0 0 14px;">Create or open your AfroTools account to keep downloads, calculators, saved tools, and follow-up work in one dashboard.</p>' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 2px;">' +
+        featureRow(
+          'Save the context',
+          'Keep the report trail attached to related tools so you can return without rebuilding the same work.',
+          'Open dashboard',
+          'https://afrotools.com/dashboard/?utm_source=resend&utm_medium=email&utm_campaign=pdf_lead_followup'
+        ) +
+        featureRow(
+          'Find related helpers',
+          'Search salary, tax, PDF, education, country, business, food, and finance tools built for African use cases.',
+          'Explore tools',
+          'https://afrotools.com/search/?utm_source=resend&utm_medium=email&utm_campaign=pdf_lead_followup'
+        ) +
+      '</table>' +
+      '<p style="margin:18px 0 0;color:#475569;">This is the follow-up we should have had from day one: useful, calm, and tied to the report you requested.</p>';
+    var lead = shell(
+      leadSubject,
+      'A practical follow-up for your AfroTools report download.',
+      leadHtml,
+      'Open AfroTools',
+      'https://afrotools.com/dashboard/?utm_source=resend&utm_medium=email&utm_campaign=pdf_lead_followup',
+      unsubscribeUrl
+    );
+    return {
+      to: email,
+      subject: leadSubject,
+      html: lead,
+      text: textFromHtml(lead),
     };
   }
 

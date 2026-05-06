@@ -1955,11 +1955,20 @@
             margin-bottom: 0;
         }
         .ws-panel.active { display: block; }
+        #myWorkspaceContent .ws-panel:not(.active) {
+            display: none !important;
+        }
         #myWorkspaceContent .favorites-grid {
             display: grid;
             gap: 8px;
             grid-template-columns: 1fr;
             margin-bottom: 0;
+        }
+        #myWorkspaceContent .ws-panel.favorites-grid {
+            display: none;
+        }
+        #myWorkspaceContent .ws-panel.favorites-grid.active {
+            display: grid;
         }
         .workspace-note {
             align-items: center;
@@ -2093,6 +2102,231 @@
             flex-wrap: wrap;
             justify-content: flex-end;
         }
+        .workspace-calculation-panel {
+            display: grid;
+            gap: 12px;
+        }
+        .workspace-scenario-section,
+        .workspace-activity-section {
+            display: grid;
+            gap: 10px;
+        }
+        .workspace-scenario-header {
+            align-items: flex-start;
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+        }
+        .workspace-scenario-kicker {
+            color: #94A3B8;
+            font-size: 0.72rem;
+            font-weight: 850;
+            letter-spacing: 0.08em;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+        .workspace-scenario-copy {
+            color: #64748B;
+            font-size: 0.82rem;
+            line-height: 1.45;
+            margin-top: 3px;
+        }
+        .workspace-scenario-grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+        .workspace-scenario-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            display: grid;
+            gap: 12px;
+            min-width: 0;
+            padding: 14px;
+        }
+        .workspace-scenario-card-head {
+            align-items: flex-start;
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .workspace-scenario-title {
+            color: #0F172A;
+            font-size: 0.94rem;
+            font-weight: 850;
+            line-height: 1.35;
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+        .workspace-scenario-meta {
+            color: #64748B;
+            font-size: 0.76rem;
+            line-height: 1.45;
+            margin-top: 4px;
+        }
+        .workspace-scenario-badge {
+            align-items: center;
+            background: #DBEAFE;
+            border-radius: 999px;
+            color: #1D4ED8;
+            display: inline-flex;
+            flex: 0 0 auto;
+            font-size: 0.68rem;
+            font-weight: 850;
+            min-height: 24px;
+            padding: 4px 10px;
+        }
+        .workspace-scenario-badge[data-local="true"] {
+            background: #F1F5F9;
+            color: #475569;
+        }
+        .workspace-scenario-result {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 11px 12px;
+        }
+        .workspace-scenario-label {
+            color: #64748B;
+            font-size: 0.68rem;
+            font-weight: 850;
+            letter-spacing: 0.07em;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+        .workspace-scenario-value {
+            color: #0F172A;
+            font-size: 1.05rem;
+            font-weight: 900;
+            line-height: 1.35;
+            margin-top: 4px;
+            overflow-wrap: anywhere;
+        }
+        .workspace-scenario-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .workspace-scenario-chip {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 999px;
+            color: #475569;
+            font-size: 0.72rem;
+            font-weight: 750;
+            line-height: 1.3;
+            padding: 6px 9px;
+        }
+        .workspace-scenario-actions {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .workspace-scenario-open,
+        .workspace-scenario-delete {
+            align-items: center;
+            border-radius: 999px;
+            cursor: pointer;
+            display: inline-flex;
+            font: inherit;
+            font-size: 0.76rem;
+            font-weight: 850;
+            justify-content: center;
+            min-height: 34px;
+            padding: 7px 12px;
+            text-decoration: none;
+        }
+        .workspace-scenario-open {
+            background: #2563EB;
+            border: 1px solid #2563EB;
+            color: #FFFFFF;
+        }
+        .workspace-scenario-open:hover {
+            background: #1D4ED8;
+            border-color: #1D4ED8;
+        }
+        .workspace-scenario-delete {
+            background: #FFF1F2;
+            border: 1px solid transparent;
+            color: #BE123C;
+        }
+        .workspace-scenario-delete:hover {
+            background: #FFE4E6;
+        }
+        .workspace-document-panel {
+            display: grid;
+            gap: 12px;
+        }
+        .workspace-document-grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        .workspace-document-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            color: inherit;
+            display: grid;
+            gap: 10px;
+            min-width: 0;
+            padding: 14px;
+            text-decoration: none;
+            transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+        }
+        .workspace-document-card:hover {
+            border-color: #BFDBFE;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            transform: translateY(-1px);
+        }
+        .workspace-document-head {
+            align-items: center;
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .workspace-document-icon {
+            align-items: center;
+            background: #EFF6FF;
+            border-radius: 12px;
+            color: #2563EB;
+            display: inline-flex;
+            font-size: 1.05rem;
+            font-weight: 900;
+            height: 40px;
+            justify-content: center;
+            width: 40px;
+        }
+        .workspace-document-type {
+            background: #DBEAFE;
+            border-radius: 999px;
+            color: #1D4ED8;
+            font-size: 0.66rem;
+            font-weight: 850;
+            letter-spacing: 0.06em;
+            padding: 5px 9px;
+            text-transform: uppercase;
+        }
+        .workspace-document-title {
+            color: #0F172A;
+            font-size: 0.92rem;
+            font-weight: 850;
+            line-height: 1.35;
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+        .workspace-document-detail {
+            color: #64748B;
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+        .workspace-document-meta {
+            color: #94A3B8;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
         #myWorkspaceContent .cv-card-grid {
             display: grid;
             gap: 8px;
@@ -2151,6 +2385,14 @@
                 grid-column: 1 / -1;
                 justify-content: flex-start;
                 padding-left: 60px;
+            }
+            .workspace-scenario-card-head,
+            .workspace-scenario-header {
+                align-items: stretch;
+                flex-direction: column;
+            }
+            .workspace-scenario-grid {
+                grid-template-columns: 1fr;
             }
         }
         .ws-subhead {
@@ -2826,7 +3068,7 @@
     <script src="/assets/js/components/tool-registry.min.js?v=1344f2c7" defer></script>
     <script src="/assets/js/afro-auth.js?v=3978e101"></script>
     <script src="/assets/js/components/auth-modal.js?v=3f65305a"></script>
-    <script src="/assets/js/auth-cookie-upgrade.js?v=5f8a65c3"></script>
+    <script src="/assets/js/auth-cookie-upgrade.js?v=14c038dc"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
     <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
     <script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
@@ -3448,9 +3690,8 @@
         function init() {
             setupEventListeners();
             var authParams = new URLSearchParams(window.location.search);
-            var isOAuthCallback = authParams.get('auth') === 'callback' || window.location.hash.indexOf('access_token') > -1;
             runDashboardSessionCheck({
-                oauthCallback: isOAuthCallback,
+                oauthCallback: isDashboardOAuthCallbackUrl(),
                 next: dashboardSafeNext(authParams.get('next') || '')
             });
         }
@@ -3600,6 +3841,15 @@
             return value;
         }
 
+        function isDashboardOAuthCallbackUrl() {
+            try {
+                var authParams = new URLSearchParams(window.location.search);
+                return authParams.get('auth') === 'callback' || window.location.hash.indexOf('access_token') > -1;
+            } catch(e) {
+                return false;
+            }
+        }
+
         function delay(ms) {
             return new Promise(function(resolve) { setTimeout(resolve, ms); });
         }
@@ -3670,7 +3920,7 @@
                     isLoggedIn = true;
                     currentUser = result.user;
                     cacheDashboardUser(currentUser);
-                    if (options.oauthCallback) {
+                    if (options.oauthCallback || isDashboardOAuthCallbackUrl()) {
                         var callbackNext = dashboardSafeNext(options.next || '');
                         if (callbackNext && callbackNext !== window.location.pathname) {
                             window.location.replace(callbackNext);
@@ -3838,7 +4088,10 @@
                 if (dashboardLogoutInProgress) return;
                 var nextUser = getCachedDashboardUser();
                 if (nextUser) {
-                    runDashboardSessionCheck({ reason: 'authChange' });
+                    runDashboardSessionCheck({
+                        reason: 'authChange',
+                        oauthCallback: isDashboardOAuthCallbackUrl()
+                    });
                 } else {
                     showAuth({
                         message: 'You are signed out. Sign in to view saved calculations, workspace items, and account details.'
@@ -7289,6 +7542,7 @@
 <script src="/dashboard/dashboard-sync.js?v=f6bf826a"></script>
 <script src="/dashboard/dashboard-workspace-polish.js?v=89a50bde"></script>
 <script>if (window.renderFullDashboardWorkspaceCore) window.renderFullDashboardWorkspace = window.renderFullDashboardWorkspaceCore;</script>
+<script src="/dashboard/dashboard-workspace-calculations-fix.js?v=657d8fc5"></script>
 <script src="/dashboard/insurance-workspace.js?v=a73570d7"></script>
 <script src="/dashboard/telecom-workspace.js?v=c7b778cc"></script>
 <script src="/dashboard/climate-workspace.js?v=806565c9"></script>
