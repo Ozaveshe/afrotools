@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AfroTax Compliance OS | AfroTools Pro</title>
-  <meta name="description" content="AfroTax Compliance OS is a Pro workflow shell for tax calendars, evidence packs, source review, filing checklists, and accountant handoff across African markets.">
+  <meta name="description" content="AfroTax Compliance OS is a Pro workspace for tax calendars, evidence packs, source review, filing checklists, and accountant handoff across African markets.">
   <meta name="robots" content="noindex, follow">
   <meta name="tool-id" content="afrotax-compliance-os">
   <meta name="tool-category" content="pro">
@@ -172,7 +172,7 @@
         <div class="tax-brand-mark" aria-hidden="true">TC</div>
         <div>
           <div class="tax-brand-title">AfroTax Compliance OS</div>
-          <div class="tax-brand-meta">Pro app shell</div>
+          <div class="tax-brand-meta">Pro workspace</div>
         </div>
       </div>
       <nav class="tax-nav" aria-label="Tax OS sections">
@@ -187,7 +187,7 @@
       </nav>
       <div class="tax-side-box">
         <strong>Honest boundary</strong>
-        <p>This shell prepares checklists and handoff packets only. It does not file returns, remit tax, move salary funds, or certify compliance.</p>
+        <p>This workspace prepares checklists and handoff packets only. It does not file returns, remit tax, move salary funds, or certify compliance.</p>
       </div>
       <div class="tax-side-foot">
         <a class="tax-btn" href="/pro/apps/">Browse Pro Apps</a>
@@ -204,8 +204,8 @@
             <label class="tax-label" for="clientSelect">Client or company</label>
             <select class="tax-select" id="clientSelect">
               <option value="local-demo">Local demo company</option>
-              <option value="accountant-book">Accountant book placeholder</option>
-              <option value="payroll-client">Payroll client placeholder</option>
+              <option value="accountant-book">Accountant book setup</option>
+              <option value="payroll-client">Payroll client setup</option>
             </select>
           </div>
           <div class="tax-field">
@@ -227,7 +227,7 @@
           <a class="tax-btn" href="/pro/apps/">Browse apps</a>
           <a class="tax-btn" href="/dashboard/">Account</a>
           <button class="tax-btn" type="button" id="refreshBtn">Refresh</button>
-          <button class="tax-btn warn" type="button" id="resetBtn">Reset local demo</button>
+          <button class="tax-btn warn" type="button" id="resetBtn">Reset sample data</button>
           <button class="tax-btn primary" type="button" id="exportBtn">Prepare export packet</button>
         </div>
       </header>
@@ -239,9 +239,9 @@
               <div>
                 <div class="tax-kicker">What needs attention</div>
                 <h1 class="tax-title">AfroTax Compliance OS</h1>
-                <p class="tax-subtitle">A Pro workflow shell for tax calendars, source review, evidence packs, filing checklists, and accountant handoff across African markets. It is workflow software, not a statutory filing engine.</p>
+                <p class="tax-subtitle">A Pro workspace for tax calendars, source review, evidence packs, filing checklists, and accountant handoff across African markets. It is workflow software, not a statutory filing engine.</p>
               </div>
-              <span class="tax-pill shell" id="modePill">Local shell</span>
+              <span class="tax-pill shell" id="modePill">Saved workspace</span>
             </div>
             <div class="tax-attention-grid">
               <div class="tax-attention"><strong id="metricMissing">0</strong><span>Missing payroll data</span></div>
@@ -268,7 +268,7 @@
           <div class="tax-metric"><strong id="metricReady">0</strong><span>Ready lanes</span><small>Ready for accountant or exported</small></div>
           <div class="tax-metric"><strong id="metricChecklist">0/0</strong><span>Checklist</span><small>Local state only</small></div>
           <div class="tax-metric"><strong id="metricPackets">0</strong><span>Export packets</span><small>Browser demo packets</small></div>
-          <div class="tax-metric"><strong id="metricLocal">Saved</strong><span>Storage</span><small>localStorage only</small></div>
+          <div class="tax-metric"><strong id="metricLocal">Saved</strong><span>Storage</span><small>Saved on this device</small></div>
         </section>
 
         <div class="tax-layout">
@@ -278,7 +278,7 @@
                 <div>
                   <div class="tax-kicker">Tax calendar</div>
                   <h2 class="tax-h2" id="calendarTitle">Upcoming compliance calendar</h2>
-                  <p class="tax-note">Demo deadlines are placeholders for workflow design. They should be replaced by verified country calendar records before production use.</p>
+                  <p class="tax-note">Sample deadlines show the workflow shape. Replace them with verified country calendar records before compliance use.</p>
                 </div>
                 <span class="tax-pill upcoming" id="deadlineSummary">0 upcoming</span>
               </div>
@@ -380,7 +380,7 @@
                 <div>
                   <div class="tax-kicker">Export packet area</div>
                   <h2 class="tax-h2" id="exportTitle">Draft export packets</h2>
-                  <p class="tax-note">Generated records are demo packet manifests stored in localStorage only.</p>
+                  <p class="tax-note">Generated records are demo packet manifests stored in Saved on this device.</p>
                 </div>
               </div>
               <div class="tax-panel-body">
@@ -626,7 +626,7 @@
       els.navPackCount.textContent = String(state.evidence.length);
       els.queueCount.textContent = queueTotal + " open";
       els.deadlineSummary.textContent = upcoming + " upcoming";
-      els.modePill.textContent = "localStorage only";
+      els.modePill.textContent = "Saved on this device";
     }
 
     function renderCalendar() {
@@ -690,7 +690,7 @@
         }
       });
       upcomingDeadlines().forEach(function (country) {
-        items.push({ title: country.name + " upcoming deadline", meta: dateLabel(country.deadline) + " placeholder deadline. Verify before use.", label: "upcoming deadline", tone: "upcoming" });
+        items.push({ title: country.name + " upcoming deadline", meta: dateLabel(country.deadline) + " sample deadline. Verify before use.", label: "upcoming deadline", tone: "upcoming" });
       });
       countries.forEach(function (country) {
         if (state.lanes[country.id] === "needs review") {
@@ -704,7 +704,7 @@
       clear(els.queueList);
       var items = queueItems();
       if (!items.length) {
-        els.queueList.appendChild(create("div", "tax-empty", "No open queue items in the local demo state."));
+        els.queueList.appendChild(create("div", "tax-empty", "No open queue items in the local sample workspace."));
         return;
       }
       items.slice(0, 10).forEach(function (item) {

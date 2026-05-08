@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pro App Directory | AfroTools</title>
-  <meta name="description" content="Dense AfroTools Pro app directory showing app routes, shell status, real data surfaces, and setup gaps.">
+  <meta name="description" content="Dense AfroTools Pro app directory showing app routes, workspace status, real data surfaces, and setup gaps.">
   <meta name="robots" content="noindex, nofollow">
   <meta name="tool-id" content="pro-app-directory">
   <meta name="tool-category" content="pro">
@@ -105,7 +105,7 @@
         <div>
           <div class="pad-crumb"><a href="/pro/workspace/">Pro Workspace</a> / Apps</div>
           <h1 class="pad-title">Pro App Directory</h1>
-          <p class="pad-subtitle">One registry view for AfroTools Pro app shells. The first registry covers control and compliance apps. The new daily operating systems layer covers sellers, events, beauty, food, field service, schools, clinics, faith groups, farms, and family administration.</p>
+          <p class="pad-subtitle">One registry view for AfroTools Pro workspaces. The first registry covers control and compliance apps. The new daily operating systems layer covers sellers, events, beauty, food, field service, schools, clinics, faith groups, farms, and family administration.</p>
         </div>
         <div class="pad-actions">
           <a class="pad-btn primary" href="/pro/workspace/">Back to Pro Workspace</a>
@@ -119,13 +119,13 @@
       </div>
 
       <div class="pad-warning">
-        Schema-bound and blocked planning surfaces stay clearly labelled. Their intended routes remain visible for planning while the page avoids claiming fake production data.
+        Workspaces that are waiting on account sync or deeper setup stay clearly labelled. Users can still see the product direction without any false data claims.
       </div>
 
       <section class="pad-metrics" aria-label="Pro app summary">
         <div class="pad-metric"><strong id="metricTotal">0</strong><span>Total Pro apps</span></div>
         <div class="pad-metric"><strong id="metricActive">0</strong><span>Route-ready apps</span></div>
-        <div class="pad-metric"><strong id="metricShell">0</strong><span>Shell or local</span></div>
+        <div class="pad-metric"><strong id="metricShell">0</strong><span>Saved workspaces</span></div>
         <div class="pad-metric"><strong id="metricPlanned">0</strong><span>Planned</span></div>
         <div class="pad-metric"><strong id="metricBlocked">0</strong><span>Blocked</span></div>
       </section>
@@ -133,9 +133,9 @@
       <section class="pad-panel">
         <div class="pad-panel-head">
           <div>
-            <div class="pad-kicker">App Registry</div>
+            <div class="pad-kicker">App Launcher</div>
             <h2 class="pad-h2">Control Pro Apps</h2>
-            <p class="pad-note">This page overlays current route reality on top of <code>assets/js/lib/pro-app-registry.js</code> without rewriting individual app pages.</p>
+            <p class="pad-note">Open every Pro control workspace from one place and see which ones are active, sync-pending, or in preview.</p>
           </div>
         </div>
         <div class="pad-table-wrap">
@@ -144,7 +144,7 @@
               <tr>
                 <th>App</th>
                 <th>Route</th>
-                <th>Route status</th>
+                <th>Availability</th>
                 <th>Product status</th>
                 <th>Data surface</th>
                 <th>Next gap</th>
@@ -161,7 +161,7 @@
           <div>
             <div class="pad-kicker">Daily Operating Systems</div>
             <h2 class="pad-h2">Next Ten Pro Apps</h2>
-            <p class="pad-note">These routes come from <code>assets/js/lib/pro-daily-os-registry.js</code>. They are Pro-gated product shells with customer segments, paid workflows, competitor benchmarks, moats, and dedicated prompts for future agents.</p>
+            <p class="pad-note">These Pro-gated workspaces cover customer segments, paid workflows, competitor benchmarks, moats, and launch plans for deeper product passes.</p>
           </div>
         </div>
         <div class="pad-table-wrap">
@@ -185,9 +185,9 @@
       <section class="pad-panel">
         <div class="pad-panel-head">
           <div>
-            <div class="pad-kicker">Backbone</div>
+            <div class="pad-kicker">Shared Routes</div>
             <h2 class="pad-h2">Support And Account Routes</h2>
-            <p class="pad-note">Vault, Team, and Settings are now shared Pro backbone routes. The payroll country-pack support console remains a gated read-only support page.</p>
+            <p class="pad-note">Vault, Team, and Settings are shared Pro account routes. Payroll country-pack support remains a gated read-only support page.</p>
           </div>
         </div>
         <div class="pad-table-wrap">
@@ -237,33 +237,33 @@
 
     var appNavOverrides = {
       payroll: { routeStatus: "active", shellState: "Active", statusTone: "active", routeExists: true },
-      "tax-compliance": { routeStatus: "shell", shellState: "Shell", statusTone: "shell", routeExists: true },
-      books: { routeStatus: "shell", shellState: "Shell", statusTone: "shell", routeExists: true },
-      hr: { routeStatus: "shell", shellState: "Shell", statusTone: "shell", routeExists: true },
-      "trade-desk": { routeStatus: "shell", shellState: "Shell", statusTone: "shell", routeExists: true },
+      "tax-compliance": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      books: { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      hr: { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "trade-desk": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
       "legal-desk": {
         route: "/pro/apps/legal-desk/",
         fallbackRoute: "/pro/apps/legal/",
         routeStatus: "shell",
-        shellState: "Shell",
+        shellState: "Workspace preview",
         statusTone: "shell",
         routeExists: true,
-        buildStatus: "Expected Legal Desk route exists and forwards to the current /pro/apps/legal/ shell.",
-        dataSurface: "Browser-local legal shell state only.",
+        buildStatus: "Legal workspace opens from the current /pro/apps/legal/ route.",
+        dataSurface: "Saved legal workspace data on this device only.",
         needsAttention: "Keep the document storage boundary and legal disclaimer language honest."
       },
-      "grants-tenders": { routeStatus: "shell", shellState: "Shell", statusTone: "shell", routeExists: true },
-      "creator-studio": { routeStatus: "shell", shellState: "Shell", statusTone: "shell", routeExists: true },
+      "grants-tenders": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "creator-studio": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
       "stream-intelligence": {
-        routeStatus: "needs schema",
-        shellState: "Needs schema",
+        routeStatus: "needs account setup",
+        shellState: "Account setup pending",
         statusTone: "schema",
         routeExists: true,
-        buildStatus: "Blocked planning shell exists. It needs source, inference, and user-edit boundaries before activation.",
-        dataSurface: "Route exists as a blocked planning shell; no private intelligence queue is wired.",
+        buildStatus: "Source review is required before this workspace is activated.",
+        dataSurface: "Route exists, but the private intelligence queue is not connected yet.",
         needsAttention: "Define what is sourced, inferred, user-edited, and reviewer-approved before activation."
       },
-      "property-projects": { routeStatus: "shell", shellState: "Shell", statusTone: "shell", routeExists: true }
+      "property-projects": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true }
     };
 
     function controlApps() {
@@ -281,7 +281,7 @@
           safeRoute: "/pro/vault/",
           routeExists: true,
           routeStatus: "active",
-          summary: "Shared route for export packets, documents, payslips, compliance packs, invoices, and local/cloud data labels."
+          summary: "Shared route for export packets, documents, payslips, compliance packs, invoices, and device/account data labels."
         },
         {
           id: "team",
@@ -290,7 +290,7 @@
           safeRoute: "/pro/team/",
           routeExists: true,
           routeStatus: "active",
-          summary: "Shared route for roles, members, invites, clients, and permission model placeholders."
+          summary: "Shared route for roles, members, invites, clients, and permission model setups."
         },
         {
           id: "settings",
@@ -303,7 +303,7 @@
         },
         {
           id: "payroll-pack-support",
-          name: "Payroll country-pack support console",
+          name: "Payroll country-pack support",
           route: "/tools/afropayroll-os/support.html",
           safeRoute: "/tools/afropayroll-os/support.html",
           routeExists: true,
@@ -330,11 +330,23 @@
       if (status === "active") return "active";
       if (status === "shell") return "shell";
       if (status === "setup needed") return "setup";
-      if (status === "needs schema") return "schema";
+      if (status === "needs cloud setup" || status === "needs account setup") return "schema";
       if (status === "coming online") return "online";
       if (status === "planned") return "planned";
       if (status === "blocked") return "blocked";
       return "";
+    }
+
+    function statusLabel(status, fallback) {
+      status = String(status || "").toLowerCase();
+      if (status === "active") return "Active";
+      if (status === "shell") return "Workspace preview";
+      if (status === "setup needed") return "Setup needed";
+      if (status === "needs schema" || status === "needs cloud setup" || status === "needs account setup") return "Account setup pending";
+      if (status === "coming online") return "Coming online";
+      if (status === "planned") return "Planned";
+      if (status === "blocked") return "Not available";
+      return fallback || "Workspace preview";
     }
 
     function setText(id, value) {
@@ -361,14 +373,14 @@
       body.innerHTML = items.map(function (app) {
         var exists = app.routeExists !== false;
         var actionRoute = safeRoute(app);
-        var actionLabel = exists ? "Open route" : "Blocked";
+        var actionLabel = exists ? "Open workspace" : "Not available";
         return [
           "<tr>",
           "<td><div class=\"pad-app-name\">", escapeHtml(app.name), "</div><div class=\"pad-meta\">", escapeHtml(app.domain || ""), " / ", escapeHtml(app.owner || ""), "</div></td>",
           "<td><code class=\"pad-route\">", escapeHtml(app.route), "</code></td>",
-          "<td><span class=\"pad-pill ", statusClass(app.routeStatus), "\">", escapeHtml(app.routeStatus || app.shellState || "shell"), "</span><div class=\"pad-meta\">", escapeHtml(exists ? "Route exists" : "Route missing"), "</div></td>",
-          "<td><span class=\"pad-pill ", escapeHtml(app.statusTone || ""), "\">", escapeHtml(app.shellState || "Shell"), "</span><div class=\"pad-meta\">", escapeHtml(app.buildStatus || ""), "</div></td>",
-          "<td>", escapeHtml(app.dataSurface || app.dataModel || "Not wired"), "</td>",
+          "<td><span class=\"pad-pill ", statusClass(app.routeStatus), "\">", escapeHtml(statusLabel(app.routeStatus, app.shellState)), "</span><div class=\"pad-meta\">", escapeHtml(exists ? "Route exists" : "Route missing"), "</div></td>",
+          "<td><span class=\"pad-pill ", escapeHtml(app.statusTone || ""), "\">", escapeHtml(app.shellState || "Workspace preview"), "</span><div class=\"pad-meta\">", escapeHtml(app.buildStatus || ""), "</div></td>",
+          "<td>", escapeHtml(app.dataSurface || app.dataModel || "Not connected"), "</td>",
           "<td>", escapeHtml(app.needsAttention || ""), "</td>",
           "<td><div class=\"pad-row-actions\"><a class=\"pad-btn", app.id === "payroll" ? " primary" : "", "\" href=\"", escapeHtml(actionRoute), "\">", escapeHtml(actionLabel), "</a><a class=\"pad-btn\" href=\"/pro/workspace/\">Workspace</a></div></td>",
           "</tr>"
@@ -385,13 +397,13 @@
         var actionRoute = api && api.safeRoute ? api.safeRoute(app) : app.route || "/pro/apps/daily-os/";
         return [
           "<tr>",
-          "<td><div class=\"pad-app-name\">", escapeHtml(app.name), "</div><div class=\"pad-meta\">", escapeHtml(app.category || ""), " / ", escapeHtml(app.shellState || "Shell"), "</div></td>",
+          "<td><div class=\"pad-app-name\">", escapeHtml(app.name), "</div><div class=\"pad-meta\">", escapeHtml(app.category || ""), " / ", escapeHtml(app.shellState || "Workspace preview"), "</div></td>",
           "<td><code class=\"pad-route\">", escapeHtml(app.route), "</code></td>",
           "<td><span class=\"pad-pill ", app.priority <= 3 ? "active" : "local", "\">P", escapeHtml(app.priority), "</span></td>",
           "<td>", escapeHtml((app.customers || []).slice(0, 4).join(", ")), "</td>",
           "<td>", escapeHtml(app.paidReason || ""), "</td>",
           "<td>", escapeHtml((app.competitors || []).join(", ")), "</td>",
-          "<td><div class=\"pad-row-actions\"><a class=\"pad-btn", app.priority <= 3 ? " primary" : "", "\" href=\"", escapeHtml(actionRoute), "\">Open shell</a></div></td>",
+          "<td><div class=\"pad-row-actions\"><a class=\"pad-btn", app.priority <= 3 ? " primary" : "", "\" href=\"", escapeHtml(actionRoute), "\">Open workspace</a></div></td>",
           "</tr>"
         ].join("");
       }).join("");
@@ -407,8 +419,8 @@
           "<tr>",
           "<td><div class=\"pad-app-name\">", escapeHtml(route.name), "</div></td>",
           "<td><code class=\"pad-route\">", escapeHtml(route.route), "</code></td>",
-          "<td><span class=\"pad-pill ", exists ? "exists" : "missing", "\">", escapeHtml(exists ? route.routeStatus || "active" : "missing route"), "</span></td>",
-          "<td><a class=\"pad-btn\" href=\"", escapeHtml(actionRoute), "\">Open safe entry</a></td>",
+          "<td><span class=\"pad-pill ", exists ? "exists" : "missing", "\">", escapeHtml(exists ? route.routeStatus || "active" : "not available"), "</span></td>",
+          "<td><a class=\"pad-btn\" href=\"", escapeHtml(actionRoute), "\">Open</a></td>",
           "<td>", escapeHtml(route.summary || ""), "</td>",
           "</tr>"
         ].join("");

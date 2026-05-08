@@ -106,10 +106,11 @@ The page intentionally does not create fake members, invites, or clients. It onl
 - language lane
 - default country
 - default currency
+- manual theme mode
 - data label preferences
 - privacy and export-warning preferences
 
-Profile data is read-only on this shell. Preference controls are browser-local until an account-backed settings API exists.
+Profile data is read-only on this shell. Preference controls are browser-local until an account-backed settings API exists. Manual light/dark theme selection starts here as a Pro-gated preference; free users still get the automatic device theme.
 
 ## Local Preference Storage
 
@@ -127,6 +128,7 @@ This key is only for shell preferences:
 - default currency
 - workspace label
 - packet naming preference
+- manual theme mode
 - local/cloud data label preference
 - privacy display toggles
 

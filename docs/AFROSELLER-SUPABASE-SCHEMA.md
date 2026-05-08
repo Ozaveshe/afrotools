@@ -4,13 +4,15 @@ Updated: 2026-05-06
 
 ## Scope
 
-This is schema preparation for AfroSeller Social Commerce OS. It does not turn on live sync, payment provider collection, storefront publishing, delivery-provider integration, or WhatsApp API sending.
+This is the schema and first schema-aware bridge for AfroSeller Social Commerce OS. It does not turn on automatic cloud sync, payment provider collection, storefront publishing, delivery-provider integration, or WhatsApp API sending.
 
 Primary local source: `pro/apps/seller/index.html`
 
 Local browser key: `afroseller_social_commerce_os_v1`
 
 Migration: `supabase/migrations/047-afroseller-social-commerce-schema.sql`
+
+Live migration applied in the configured Supabase project as `20260506023920 afroseller_social_commerce_schema`.
 
 ## Tables
 
@@ -171,9 +173,55 @@ Export actions map to `seller_exports`:
 - daily close CSV -> `daily_close`
 - branded receipt Markdown -> `branded_receipt`
 
+## Current Sync Bridge
+
+`assets/js/lib/afroseller-sync.js` is the first browser-side bridge. It uses the existing AfroTools `AfroAuth.getSupabase()` browser client and the signed-in user's anon/RLS session. It does not use or expose service-role keys.
+
+Exposed API:
+
+- `isCloudAvailable()`
+- `loadBusinesses()`
+- `createBusinessFromLocalSnapshot(localState)`
+- `syncLocalSnapshot(localState, businessId)`
+- `loadBusinessSnapshot(businessId)`
+
+Current behavior:
+
+- signed-out users stay local-only
+- import creates or updates one `seller_businesses` row owned by the signed-in user
+- the owner membership is created by the live database trigger
+- local products, variants, customers, labels, orders, order items, payments, deliveries, and stock movements are written through normal RLS policies
+- importing a local snapshot replaces the operational child rows for that business, while audit rows remain append-only
+- pulling from account replaces this browser's localStorage snapshot only after user confirmation
+- local exports continue to run from the browser copy
+
+Cloud metadata is stored separately under `afroseller_social_commerce_os_cloud_v1` so the core local key remains `afroseller_social_commerce_os_v1`.
+
+Types:
+
+- Supabase TypeScript types were generated through MCP on 2026-05-06 to confirm the live schema shape includes the seller tables.
+- No generated type file is committed in this pass because the current Seller app is plain HTML/JS and the repo does not yet have a dedicated committed generated-types target for this app.
+
+## RLS Smoke Status
+
+Live RLS write/read smoke is still blocked until the team confirms a safe Pro test account for AfroSeller data. The live project contains a real Pro user, but this pass did not insert seller smoke rows against that account without explicit confirmation.
+
+Once a safe signed-in account is confirmed, use the browser session, not a service role, to verify:
+
+1. Sign in as the test Pro user.
+2. Open `/pro/apps/seller/`.
+3. Click `Import local workspace`.
+4. Confirm `seller_businesses` has one owner business and `seller_team_members` auto-created the owner row.
+5. Confirm product, variant, customer, label, order, order item, payment, delivery, and stock movement rows are readable through that same browser session.
+6. Confirm `seller_audit_events` receives trigger-created rows.
+7. Delete the test seller business if the smoke data should not remain.
+
 ## Still Not Implemented
 
-- Browser-to-Supabase sync
+- automatic two-way sync
+- conflict resolution
+- background sync or offline replay
+- committed generated TypeScript bindings for this app
 - Supabase storage bucket creation
 - payment provider collection or verification
 - WhatsApp Business API sending

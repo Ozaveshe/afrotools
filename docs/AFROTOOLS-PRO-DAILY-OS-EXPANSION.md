@@ -68,7 +68,9 @@ Current implementation note (2026-05-05):
 - `/pro/apps/seller/` is now a local-only Pro workspace, not just the shared Daily OS shell.
 - The workspace covers business setup, product catalog with SKU/variant/supplier/location/photo placeholders, order book, payment and proof notes, delivery tracker, stock movement ledger, customer labels, daily close panel, dashboard metrics, CSV exports, branded Markdown receipt, and WhatsApp copy plus wa.me deep links.
 - Browser persistence uses localStorage key `afroseller_social_commerce_os_v1`.
-- Still deliberately absent: account sync, Supabase storage, connected payments, storefront publishing, delivery integrations, and WhatsApp API sending.
+- `assets/js/lib/afroseller-sync.js` adds the first schema-aware bridge for signed-in Pro users. It uses the browser Supabase anon/RLS session from `AfroAuth`, can import the local snapshot to one account-backed seller business, and can pull an account snapshot back into localStorage.
+- The localStorage flow remains the fallback. Import/pull are manual actions, not automatic sync.
+- Still deliberately absent: Supabase storage for photos/proofs, connected payments, storefront publishing, delivery integrations, WhatsApp API sending, background sync, conflict resolution, and automatic cloud history.
 
 ### Agent 2: AfroEvents & Ceremony OS
 

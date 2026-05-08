@@ -161,7 +161,7 @@
         <div class="apo-mark">AP</div>
         <div>
           <strong>AfroPayroll OS</strong>
-          <span>Pro command app</span>
+          <span>Payroll command center</span>
         </div>
       </div>
       <nav class="apo-nav">
@@ -177,7 +177,7 @@
         <a href="/dashboard/">Account <span>go</span></a>
       </nav>
       <div class="apo-side-foot">
-        Pro app shell for accountants, SMEs, schools, clinics, NGOs, and multi-country operators. Review packets only; no filing or money movement.
+        Pro workspace for accountants, SMEs, schools, clinics, NGOs, and multi-country operators. Review packets only; no filing or money movement.
       </div>
     </aside>
 
@@ -204,14 +204,14 @@
             <div>
               <div class="apo-card-label">Account</div>
               <div class="apo-card-main">Checking Pro status...</div>
-              <div class="apo-card-note">Live profile tier is read before account-backed workflows load.</div>
+              <div class="apo-card-note">Your Pro account status controls account-backed workflows.</div>
             </div>
             <span class="apo-pill warn">Checking</span>
           </div>
-          <div class="apo-metric"><strong id="metricClients">0</strong><span>Clients</span><small>Cloud workspace</small></div>
-          <div class="apo-metric"><strong id="metricRuns">0</strong><span>Runs</span><small>Cloud and local</small></div>
+          <div class="apo-metric"><strong id="metricClients">0</strong><span>Clients</span><small>Account workspace</small></div>
+          <div class="apo-metric"><strong id="metricRuns">0</strong><span>Runs</span><small>Account and device</small></div>
           <div class="apo-metric"><strong id="metricReview">0</strong><span>Needs review</span><small>Rows or runs</small></div>
-          <div class="apo-metric"><strong id="metricEmployees">0</strong><span>Employees</span><small>Local master</small></div>
+          <div class="apo-metric"><strong id="metricEmployees">0</strong><span>Employees</span><small>Employee records</small></div>
           <div class="apo-metric"><strong id="metricReadiness">0%</strong><span>Readiness</span><small>Close score</small></div>
         </section>
 
@@ -221,10 +221,10 @@
               <div class="apo-head">
                 <div>
                   <div class="apo-kicker">Operating workflows</div>
-                  <h2 class="apo-h2" id="workflows-title">What a paid user should be able to do</h2>
-                  <p class="apo-note">These are the payroll jobs we are turning into real SaaS flows, not one-off calculators.</p>
+                  <h2 class="apo-h2" id="workflows-title">Run payroll with a clear month-end process</h2>
+                  <p class="apo-note">Set up employees, review calculations, prepare handoff packs, and keep approval history in one workspace.</p>
                 </div>
-                <span class="apo-pill pro">App 1</span>
+                <span class="apo-pill pro">Payroll</span>
               </div>
               <div class="apo-body">
                 <div class="apo-workflow-list" id="workflowList"></div>
@@ -236,9 +236,9 @@
                 <div>
                   <div class="apo-kicker">Month close control</div>
                   <h2 class="apo-h2" id="close-title">Payroll close board</h2>
-                  <p class="apo-note">A control model for capture, review, approval, and handoff. It uses cloud run state where available and browser-local state where the user has not synced.</p>
+                  <p class="apo-note">Track capture, review, approval, and handoff across account data and saved workspaces on this device.</p>
                 </div>
-                <span class="apo-pill warn">Review model</span>
+                <span class="apo-pill warn">Close control</span>
               </div>
               <div class="apo-body">
                 <div class="apo-score" aria-live="polite">
@@ -247,7 +247,7 @@
                     <div class="apo-score-label" id="readinessLabel">Calculating</div>
                     <div class="apo-progress"><span id="readinessBar"></span></div>
                   </div>
-                  <p class="apo-score-copy" id="readinessCopy">Readiness combines employee master completeness, cloud run warnings, approval state, export state, and whether salary data is still local-only.</p>
+                  <p class="apo-score-copy" id="readinessCopy">Readiness combines employee completeness, run warnings, approval state, handoff exports, and unsynced salary work.</p>
                 </div>
                 <div class="apo-stage-grid" id="closeStageBoard"></div>
               </div>
@@ -676,7 +676,7 @@
         [model.missingStat, "Missing statutory IDs", "Employee records missing tax, pension, or social security identifiers.", "warn"],
         [model.approvalPending, "Approval pending", "Cloud runs waiting for reviewer action.", "blue"],
         [model.warnings, "Run warnings", "Rows needing human review before handoff.", "warn"],
-        [model.unsyncedItems, "Local-only payroll work", "Browser-only drafts or saved runs that are not account-backed sync.", "blue"]
+        [model.unsyncedItems, "Saved on this device payroll work", "Device-only drafts or saved runs that are not account-backed sync.", "blue"]
       ];
 
       els.metricEmployees.textContent = model.local.employees.length;
@@ -719,7 +719,7 @@
       els.readinessLabel.textContent = readinessLabel(score);
       els.readinessBar.style.width = score + "%";
       els.readinessBar.style.background = score >= 82 ? "var(--apo-green)" : score >= 64 ? "var(--apo-blue)" : score >= 42 ? "var(--apo-amber)" : "var(--apo-red)";
-      els.readinessCopy.textContent = "Score is reduced by missing payment routes, missing statutory IDs, run warnings, pending approvals, unexported runs, and local-only salary work.";
+      els.readinessCopy.textContent = "Score is reduced by missing payment routes, missing statutory IDs, run warnings, pending approvals, unexported runs, and unsynced salary work.";
 
       var captureTone = model.hasPayrollWork ? "pro" : "warn";
       var reviewTone = model.warnings ? "warn" : model.hasPayrollWork ? "pro" : "blue";
@@ -729,7 +729,7 @@
         ["Capture", captureTone, model.cloudRows + model.localRows + " rows", model.activeEmployees + " active employee records", model.hasPayrollWork ? "Payroll data exists. Check completeness before review." : "Create a draft run or import employees to start."],
         ["Review", reviewTone, model.warnings + " warnings", model.missingPayment + model.missingStat + " employee gaps", model.warnings ? "Resolve warnings before accountant handoff." : "No cloud warning rows loaded yet."],
         ["Approve", approvalTone, model.approvalPending + " pending", model.approvedRuns + " approved", model.approvalPending ? "Reviewer action is needed." : "No pending approval found in loaded cloud runs."],
-        ["Handoff", handoffTone, model.exportedRuns + " exported", model.unsyncedItems + " local-only", model.exportedRuns ? "At least one cloud run is exported." : "Generate handoff exports after review and approval."]
+        ["Handoff", handoffTone, model.exportedRuns + " exported", model.unsyncedItems + " saved on this device", model.exportedRuns ? "At least one cloud run is exported." : "Generate handoff exports after review and approval."]
       ];
 
       els.closeStageBoard.innerHTML = stages.map(function (stage) {
@@ -762,7 +762,7 @@
         [model.warnings === 0 && model.hasPayrollWork, "Warnings cleared", "Loaded cloud runs do not show unresolved review warnings."],
         [model.approvalPending === 0 && model.hasPayrollWork, "Approval queue clear", "No loaded cloud run is waiting for reviewer action."],
         [model.exportedRuns > 0, "Handoff exports", "At least one loaded cloud run has reached exported state."],
-        [model.unsyncedItems === 0, "Local-only data resolved", "No local browser draft or saved run is waiting to be synced."]
+        [model.unsyncedItems === 0, "Saved on this device data resolved", "No local browser draft or saved run is waiting to be synced."]
       ];
 
       els.closeChecklist.innerHTML = checks.map(function (check) {
@@ -788,7 +788,7 @@
       var model = buildPayrollModel(data);
       var rows = [];
       if (model.local.hasDraft) {
-        rows.push(["Current draft", model.local.draft.companyName || "Untitled company", model.local.draft.payPeriod || "No period", "Browser-only"]);
+        rows.push(["Current draft", model.local.draft.companyName || "Untitled company", model.local.draft.payPeriod || "No period", "Device-only"]);
       }
       model.local.savedRuns.slice(0, 6).forEach(function (run, index) {
         rows.push(["Saved run " + (index + 1), run.companyName || run.company || "Saved payroll run", run.payPeriod || "No period", "Local snapshot"]);

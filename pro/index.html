@@ -62,6 +62,17 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .pro-account-status.is-pro{background:#ECFDF5;border-color:#A7F3D0;color:#065F46}
 .pro-account-status.is-free{background:#FFF7ED;border-color:#FDBA74;color:#9A3412}
 .pro-account-status.is-signed-out{background:#EFF6FF;border-color:#BFDBFE;color:#1E3A8A}
+.plan-boundary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.plan-boundary-card{border:1px solid #D8E2EE;border-radius:12px;background:#fff;padding:16px;display:grid;gap:10px}
+.plan-boundary-card h3{font-size:15px;font-weight:800;line-height:1.2;color:#111827;margin:0;letter-spacing:0}
+.plan-boundary-card p{font-size:12px;line-height:1.5;color:#64748B;margin:0}
+.plan-boundary-card ul{list-style:none;padding:0;margin:0;display:grid;gap:7px}
+.plan-boundary-card li{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.45;color:#475569}
+.plan-boundary-card li::before{content:"";width:6px;height:6px;border-radius:50%;background:#94A3B8;flex:0 0 auto;margin-top:5px}
+.plan-boundary-card.pro-side{border-color:#93C5FD;background:#EFF6FF}
+.plan-boundary-card.pro-side li::before{background:var(--color-primary)}
+.plan-boundary-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#64748B}
+.plan-boundary-card.pro-side .plan-boundary-kicker{color:#1D4ED8}
 .pro-lab-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:stretch}
 .pro-lab-card{border:1px solid #D8E2EE;border-radius:14px;background:#fff;padding:22px;box-shadow:0 10px 28px rgba(15,23,42,.06)}
 .pro-lab-card h3{font-size:18px;line-height:1.25;margin:0 0 8px;color:#111827;font-weight:700}
@@ -133,12 +144,43 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .bottom-cta a{display:inline-block;background:#fff;color:var(--color-primary);padding:16px 40px;border-radius:980px;font-weight:700;font-size:17px;text-decoration:none;transition:transform .15s}
 .bottom-cta a:hover{transform:translateY(-2px)}
 .bottom-cta .cta-sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:12px}
+:root[data-theme="dark"] body{background:var(--color-bg);color:var(--color-text)}
+:root[data-theme="dark"] .pro-lab h2,
+:root[data-theme="dark"] .pricing-section h2,
+:root[data-theme="dark"] .compare-section h2,
+:root[data-theme="dark"] .testimonials h2,
+:root[data-theme="dark"] .faq-section h2,
+:root[data-theme="dark"] .pro-lab-card h3,
+:root[data-theme="dark"] .plan-boundary-card h3,
+:root[data-theme="dark"] .p-card .price,
+:root[data-theme="dark"] .compare-table td.feat,
+:root[data-theme="dark"] .faq-q{color:var(--color-text)}
+:root[data-theme="dark"] .pro-lab p,
+:root[data-theme="dark"] .pro-lab-card li,
+:root[data-theme="dark"] .plan-boundary-card p,
+:root[data-theme="dark"] .plan-boundary-card li,
+:root[data-theme="dark"] .pricing-section .subtitle,
+:root[data-theme="dark"] .p-card li,
+:root[data-theme="dark"] .faq-a{color:var(--color-text-muted)}
+:root[data-theme="dark"] .pro-lab-card,
+:root[data-theme="dark"] .plan-boundary-card,
+:root[data-theme="dark"] .p-card,
+:root[data-theme="dark"] .faq-item,
+:root[data-theme="dark"] .faq-q{background:var(--color-bg-card);border-color:var(--color-border)}
+:root[data-theme="dark"] .plan-boundary-card.pro-side{background:#0F1A2A;border-color:#1D4ED8}
+:root[data-theme="dark"] .testimonials{background:var(--color-bg-subtle)}
+:root[data-theme="dark"] .testimonial-card,
+:root[data-theme="dark"] .compare-table thead th,
+:root[data-theme="dark"] #currency-select{background:var(--color-bg-card);border-color:var(--color-border);color:var(--color-text)}
+:root[data-theme="dark"] .compare-table th,
+:root[data-theme="dark"] .compare-table td{border-bottom-color:var(--color-border)}
 
 /* Responsive */
 @media(max-width:768px){
   .pro-hero{padding:80px 20px 64px}
   .pro-lab-grid{grid-template-columns:1fr}
   .pro-account-status{align-items:flex-start;flex-direction:column}
+  .plan-boundary{grid-template-columns:1fr}
   .pricing-grid{grid-template-columns:1fr;gap:20px}
   .p-card{padding:32px 24px}
   .testimonial-grid{grid-template-columns:1fr;gap:16px}
@@ -212,6 +254,28 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     <span>Checking your Pro access...</span>
     <span class="status-pill">Checking</span>
   </div>
+  <div class="plan-boundary" aria-label="Free and Pro plan boundaries">
+    <article class="plan-boundary-card">
+      <div class="plan-boundary-kicker">Free</div>
+      <h3>Open tools with clear limits</h3>
+      <p>Free remains useful without pretending it has Pro workflow depth.</p>
+      <ul>
+        <li>AI Advisor: 3 questions per day.</li>
+        <li>Theme follows the device setting automatically.</li>
+        <li>History and exports stay lightweight where supported.</li>
+      </ul>
+    </article>
+    <article class="plan-boundary-card pro-side">
+      <div class="plan-boundary-kicker">Pro</div>
+      <h3>Workspace depth for repeat work</h3>
+      <p>Pro adds account-bound workflow surfaces without changing the free core tools.</p>
+      <ul>
+        <li>AI Advisor: unlimited for active Pro accounts.</li>
+        <li>Manual light/dark theme control in Pro Settings.</li>
+        <li>Clean exports and expanded saved history where supported.</li>
+      </ul>
+    </article>
+  </div>
   <div class="pro-lab-grid">
     <article class="pro-lab-card">
       <h3>AfroPayroll Pro workspace</h3>
@@ -228,7 +292,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         <a href="/pro/vault/">Open Pro Vault</a>
         <a href="/pro/team/">Team</a>
         <a href="/pro/settings/">Settings</a>
-        <a href="/pro/apps/daily-os/">Explore Daily OS Shells</a>
+        <a href="/pro/apps/daily-os/">Explore Daily OS Workspaces</a>
         <a href="/tools/afropayroll-os/workspace">Open AfroPayroll Pro</a>
         <a href="/tools/payslip-generator/">Start from Payslip Tool</a>
       </div>
@@ -236,7 +300,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     <aside class="pro-lab-card">
       <h3>New Pro direction</h3>
       <p>The next paid layer is not just compliance. It is daily-life software: saved records, reminders, exports, portals, WhatsApp templates, team handoff, and affordable vertical workflows.</p>
-      <div class="pro-lab-small">AfroSeller, AfroEvents, and AfroBeauty are the first three daily OS shells to deepen because their value can be felt in one working day.</div>
+      <div class="pro-lab-small">AfroSeller, AfroEvents, and AfroBeauty are the first three daily OS workspaces to deepen because their value can be felt in one working day.</div>
     </aside>
   </div>
 </section>
@@ -330,7 +394,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     </div>
     <div class="testimonial-card">
       <div class="stars">App directory</div>
-      <p>Use the workspace to launch the 20 Pro app routes, with shell, local, schema-bound, and live-backed states called out directly.</p>
+      <p>Use the workspace to launch the 20 Pro app routes, with account-backed, device-saved, setup-pending, and live states called out directly.</p>
       <div class="author">Current state <span>- app readiness is shown before you open a route.</span></div>
     </div>
   </div>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pro Settings | AfroTools Pro</title>
-  <meta name="description" content="AfroTools Pro Settings shell for account profile, Pro status, language lane, default country and currency, and data privacy preferences.">
+  <meta name="description" content="AfroTools Pro settings workspace for account profile, Pro status, language lane, default country and currency, and data privacy preferences.">
   <meta name="robots" content="noindex, follow">
   <meta name="tool-id" content="pro-settings">
   <meta name="tool-category" content="pro">
@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
   <script src="/assets/js/afro-auth.js?v=3978e101"></script>
   <script src="/assets/js/pro-gate.js?v=3c7ae705"></script>
+  <script src="/assets/js/lib/dark-mode.js?v=1"></script>
   <style>
     :root{
       --ps-bg:var(--color-bg,#f8fafd);
@@ -39,6 +40,16 @@
       --ps-purple:#5b21b6;
       --ps-purple-soft:#f5f3ff;
       --ps-radius:var(--radius-sm,6px);
+    }
+    :root[data-theme="dark"]{
+      --ps-surface:var(--color-bg-card,#131d2e);
+      --ps-soft:var(--color-bg-subtle,#131d2e);
+      --ps-line:var(--color-border,#1e2d40);
+      --ps-line-strong:var(--color-border-strong,#2a3d55);
+      --ps-green-soft:rgba(4,120,87,.16);
+      --ps-amber-soft:rgba(146,64,14,.18);
+      --ps-red-soft:rgba(153,27,27,.18);
+      --ps-purple-soft:rgba(91,33,182,.18);
     }
     *{box-sizing:border-box}
     body{margin:0;background:var(--ps-bg);color:var(--ps-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}
@@ -119,6 +130,16 @@
     .ps-check span{display:block;font-size:11px;color:var(--ps-muted);line-height:1.38;margin-top:2px}
     .ps-code{font-family:var(--font-mono,"JetBrains Mono",Consolas,monospace);font-size:11px;color:#475569;word-break:break-all}
     .ps-warning{border:1px solid #fde68a;background:var(--ps-amber-soft);color:#78350f;border-radius:var(--ps-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    :root[data-theme="dark"] .ps-sidebar,
+    :root[data-theme="dark"] .ps-panel-head,
+    :root[data-theme="dark"] .ps-check,
+    :root[data-theme="dark"] .ps-btn,
+    :root[data-theme="dark"] .ps-select,
+    :root[data-theme="dark"] .ps-input{background:var(--ps-surface);color:var(--ps-ink)}
+    :root[data-theme="dark"] .ps-topbar{background:rgba(11,17,32,.94)}
+    :root[data-theme="dark"] .ps-code,
+    :root[data-theme="dark"] .ps-nav a{color:var(--ps-muted)}
+    :root[data-theme="dark"] .ps-warning{border-color:#92400e;color:#fcd34d}
     @media(max-width:1120px){
       .ps-shell{grid-template-columns:1fr}
       .ps-sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--ps-line)}
@@ -141,12 +162,12 @@
 </head>
 <body>
   <main class="ps-shell pro-gated-content">
-    <aside class="ps-sidebar" aria-label="Pro backbone navigation">
+    <aside class="ps-sidebar" aria-label="Pro settings navigation">
       <div class="ps-brand">
         <div class="ps-brand-mark" aria-hidden="true">AT</div>
         <div>
           <div class="ps-brand-title">AfroTools Pro</div>
-          <div class="ps-brand-meta">Settings backbone</div>
+          <div class="ps-brand-meta">Account settings</div>
         </div>
       </div>
       <nav class="ps-nav">
@@ -158,12 +179,12 @@
         <a href="/dashboard/">Account <span>auth</span></a>
       </nav>
       <div class="ps-side-box">
-        <strong>Settings boundary</strong>
-        <p>Account data is read from the Pro gate. This shell stores language, country, currency, and privacy preferences locally only.</p>
+        <strong>Settings coverage</strong>
+        <p>Shows current account access and saves language, country, currency, and privacy preferences on this device until account sync is available.</p>
       </div>
       <div class="ps-side-box">
-        <strong>Preference key</strong>
-        <p class="ps-code">afrotools_pro_backbone_preferences_v1</p>
+        <strong>Preference storage</strong>
+        <p class="ps-code">Saved on this device.</p>
       </div>
       <div class="ps-side-foot">
         <a class="ps-btn primary" href="/pro/workspace/">Pro Control</a>
@@ -181,8 +202,8 @@
               <option value="en">English</option>
               <option value="fr">French</option>
               <option value="sw">Kiswahili</option>
-              <option value="pt">Portuguese placeholder</option>
-              <option value="ar">Arabic placeholder</option>
+              <option value="pt">Portuguese</option>
+              <option value="ar">Arabic</option>
             </select>
           </label>
           <label class="ps-field">
@@ -203,7 +224,7 @@
             <div class="ps-avatar" aria-hidden="true">PRO</div>
             <div>
               <div class="ps-account-name">Checking Pro account...</div>
-              <div class="ps-account-note">Reading AfroProGate status.</div>
+              <div class="ps-account-note">Checking account access.</div>
             </div>
           </div>
         </div>
@@ -217,32 +238,32 @@
         <section class="ps-command-grid">
           <div class="ps-command">
             <div>
-              <div class="ps-kicker">PRO BACKBONE</div>
+              <div class="ps-kicker">ACCOUNT WORKSPACE</div>
               <h1 class="ps-title">Settings</h1>
-              <p class="ps-subtitle">A shared settings route for account profile visibility, Pro status, language lane, default country and currency, data labels, and privacy preferences.</p>
+              <p class="ps-subtitle">Set the default language, country, currency, data labels, and privacy preferences your Pro workspaces should use.</p>
             </div>
             <div class="ps-row-actions">
-              <span class="ps-pill local">preferences local only</span>
-              <span class="ps-pill schema">profile API read-only</span>
+              <span class="ps-pill local">device preferences</span>
+              <span class="ps-pill schema">profile read-only</span>
               <span class="ps-pill pro">Pro gated</span>
             </div>
           </div>
           <aside class="ps-status-card">
             <div class="ps-card-top">
-              <h2>Live Pro Status</h2>
+              <h2>Account Access</h2>
               <span class="ps-pill warn" id="statusPill">Checking</span>
             </div>
-            <p id="statusCopy">Reading the signed-in account through AfroProGate.</p>
-            <p class="ps-code" id="statusMeta">source: pending</p>
+            <p id="statusCopy">Checking the signed-in account.</p>
+            <p class="ps-code" id="statusMeta">status pending</p>
           </aside>
         </section>
 
         <section class="ps-metrics" aria-label="Settings metrics">
-          <div class="ps-metric"><strong id="metricTier">...</strong><span>Plan tier</span><small>Read from AfroProGate profile</small></div>
-          <div class="ps-metric"><strong id="metricLanguage">EN</strong><span>Language lane</span><small>Shell preference only</small></div>
-          <div class="ps-metric"><strong id="metricCountry">NG</strong><span>Default country</span><small>Used by future app defaults</small></div>
-          <div class="ps-metric"><strong id="metricCurrency">USD</strong><span>Default currency</span><small>Shell preference only</small></div>
-          <div class="ps-metric"><strong>Local</strong><span>Data settings</span><small>No cloud settings API wired</small></div>
+          <div class="ps-metric"><strong id="metricTier">...</strong><span>Plan tier</span><small>Read from account profile</small></div>
+          <div class="ps-metric"><strong id="metricLanguage">EN</strong><span>Language lane</span><small>Device preference only</small></div>
+          <div class="ps-metric"><strong id="metricCountry">NG</strong><span>Default country</span><small>Used by planned app defaults</small></div>
+          <div class="ps-metric"><strong id="metricCurrency">USD</strong><span>Default currency</span><small>Device preference only</small></div>
+          <div class="ps-metric"><strong>Device</strong><span>Data settings</span><small>Account settings sync pending</small></div>
         </section>
 
         <section class="ps-layout">
@@ -251,9 +272,9 @@
               <div class="ps-panel-head">
                 <div>
                   <h2 class="ps-h2">Account Profile</h2>
-                  <p class="ps-note">Profile values are read from the current auth/Pro gate status. This shell does not edit Supabase profile records.</p>
+                  <p class="ps-note">Profile values are read from the signed-in account. Profile editing is not available from this workspace yet.</p>
                 </div>
-                <span class="ps-pill real">gate read</span>
+                <span class="ps-pill real">profile read</span>
               </div>
               <div class="ps-panel-body">
                 <div class="ps-form-grid">
@@ -281,9 +302,9 @@
               <div class="ps-panel-head">
                 <div>
                   <h2 class="ps-h2">Defaults</h2>
-                  <p class="ps-note">These controls save browser-local preferences only. They are not account-backed settings yet.</p>
+                  <p class="ps-note">These controls save preferences on this device. Account-synced settings are not connected yet.</p>
                 </div>
-                <span class="ps-pill local">localStorage</span>
+                <span class="ps-pill local">device saved</span>
               </div>
               <div class="ps-panel-body">
                 <div class="ps-form-grid">
@@ -316,9 +337,17 @@
                   <label class="ps-field">
                     <span class="ps-label">Default data label</span>
                     <select class="ps-select" id="dataLabel">
-                      <option value="show-origin">Show local/cloud origin</option>
-                      <option value="warn-local">Warn on local-only records</option>
+                      <option value="show-origin">Show device/account origin</option>
+                      <option value="warn-local">Warn on device-only records</option>
                       <option value="compact">Compact labels</option>
+                    </select>
+                  </label>
+                  <label class="ps-field">
+                    <span class="ps-label">Theme mode</span>
+                    <select class="ps-select" id="themeMode">
+                      <option value="auto">Auto from device</option>
+                      <option value="light">Light</option>
+                      <option value="dark">Dark</option>
                     </select>
                   </label>
                 </div>
@@ -329,27 +358,27 @@
               <div class="ps-panel-head">
                 <div>
                   <h2 class="ps-h2">Data &amp; Privacy</h2>
-                  <p class="ps-note">These preferences control shell labels and export warnings only. They do not change backend policy.</p>
+                  <p class="ps-note">These preferences control workspace labels and export warnings only. They do not change account policy.</p>
                 </div>
-                <span class="ps-pill shell">shell prefs</span>
+                <span class="ps-pill shell">privacy prefs</span>
               </div>
               <div class="ps-panel-body">
                 <div class="ps-grid">
                   <label class="ps-check">
                     <input id="showCloudLabels" type="checkbox">
-                    <span><strong>Show cloud-backed labels</strong><span>Keep local-only versus cloud-backed badges visible on Pro pages.</span></span>
+                    <span><strong>Show account-backed labels</strong><span>Keep device-only versus account-backed badges visible on Pro pages.</span></span>
                   </label>
                   <label class="ps-check">
                     <input id="warnBeforeExport" type="checkbox">
-                    <span><strong>Warn before packet export</strong><span>Ask before downloading local packets that may include sensitive records.</span></span>
+                    <span><strong>Warn before packet export</strong><span>Ask before downloading device-saved packets that may include sensitive records.</span></span>
                   </label>
                   <label class="ps-check">
                     <input id="hideSensitivePreview" type="checkbox">
-                    <span><strong>Hide sensitive previews</strong><span>Prefer summary counts over names in shared backbone pages.</span></span>
+                    <span><strong>Hide sensitive previews</strong><span>Prefer summary counts over names in shared Pro pages.</span></span>
                   </label>
                   <label class="ps-check">
-                    <input id="preferLocalProof" type="checkbox">
-                    <span><strong>Keep local proof explicit</strong><span>Show when data comes only from browser storage or shell state.</span></span>
+                    <input id="preferDeviceProof" type="checkbox">
+                    <span><strong>Show data origin clearly</strong><span>Show when data comes only from this device or workspace state.</span></span>
                   </label>
                 </div>
               </div>
@@ -361,7 +390,7 @@
               <div class="ps-panel-head">
                 <div>
                   <h2 class="ps-h2">Preference Summary</h2>
-                  <p class="ps-note">Current local settings visible to all backbone pages.</p>
+                  <p class="ps-note">Current device settings visible to all Pro workspace pages.</p>
                 </div>
               </div>
               <div class="ps-panel-body">
@@ -372,17 +401,17 @@
             <section class="ps-panel">
               <div class="ps-panel-head">
                 <div>
-                  <h2 class="ps-h2">Cloud Settings Status</h2>
-                  <p class="ps-note">No fake cloud settings are created on this shell.</p>
+                  <h2 class="ps-h2">Account Sync Status</h2>
+                  <p class="ps-note">Account-synced settings are not connected yet, so this page keeps the boundary visible.</p>
                 </div>
-                <span class="ps-pill schema">needs schema</span>
+                <span class="ps-pill schema">sync pending</span>
               </div>
               <div class="ps-panel-body">
                 <div class="ps-list">
-                  <article class="ps-row"><div><h3 class="ps-row-title">Account profile writes</h3><div class="ps-row-meta">Requires `/api/profile` update flow and RLS policy.</div></div><span class="ps-pill missing">not wired</span></article>
-                  <article class="ps-row"><div><h3 class="ps-row-title">Team settings</h3><div class="ps-row-meta">Requires workspace membership and role tables.</div></div><span class="ps-pill schema">future</span></article>
-                  <article class="ps-row"><div><h3 class="ps-row-title">Vault policy</h3><div class="ps-row-meta">Requires document vault tables and audit events.</div></div><span class="ps-pill schema">future</span></article>
-                  <article class="ps-row"><div><h3 class="ps-row-title">App defaults</h3><div class="ps-row-meta">Country, currency, language, and packet naming should become account-backed later.</div></div><span class="ps-pill local">local now</span></article>
+                  <article class="ps-row"><div><h3 class="ps-row-title">Account profile edits</h3><div class="ps-row-meta">Profile updates need a secure account-edit flow.</div></div><span class="ps-pill missing">not connected</span></article>
+                  <article class="ps-row"><div><h3 class="ps-row-title">Team settings</h3><div class="ps-row-meta">Team membership settings will appear when shared workspaces are connected.</div></div><span class="ps-pill schema">planned</span></article>
+                  <article class="ps-row"><div><h3 class="ps-row-title">Vault policy</h3><div class="ps-row-meta">Document vault controls will appear when vault sync is connected.</div></div><span class="ps-pill schema">planned</span></article>
+                  <article class="ps-row"><div><h3 class="ps-row-title">App defaults</h3><div class="ps-row-meta">Country, currency, language, and packet naming will become account-backed when settings sync is connected.</div></div><span class="ps-pill local">device now</span></article>
                 </div>
               </div>
             </section>
@@ -391,13 +420,13 @@
               <div class="ps-panel-head">
                 <div>
                   <h2 class="ps-h2">Actions</h2>
-                  <p class="ps-note">Local preference controls only.</p>
+                  <p class="ps-note">Device preference controls only.</p>
                 </div>
               </div>
               <div class="ps-panel-body">
                 <div class="ps-list">
                   <button class="ps-btn primary" type="button" id="savePrefsBtn2">Save preferences</button>
-                  <button class="ps-btn" type="button" id="resetPrefsBtn">Reset local preferences</button>
+                  <button class="ps-btn" type="button" id="resetPrefsBtn">Reset device preferences</button>
                   <a class="ps-btn" href="/pro/team/">Open Team</a>
                   <a class="ps-btn" href="/pro/vault/">Open Vault</a>
                 </div>
@@ -422,10 +451,11 @@
         workspaceLabel: "Primary Pro workspace",
         packetNaming: "client-period-app",
         dataLabel: "show-origin",
+        themeMode: "auto",
         showCloudLabels: true,
         warnBeforeExport: true,
         hideSensitivePreview: false,
-        preferLocalProof: true
+        preferDeviceProof: true
       };
 
       function byId(id){ return document.getElementById(id); }
@@ -444,6 +474,11 @@
       function savePrefs(prefs){
         localStorage.setItem(PREF_KEY, JSON.stringify(Object.assign({}, defaults, prefs || {})));
       }
+      function applyThemePreference(theme){
+        if (window.AfroTools && window.AfroTools.darkMode) {
+          window.AfroTools.darkMode.set(theme || defaults.themeMode);
+        }
+      }
       function formPrefs(){
         return {
           languageLane: byId("languageLane").value,
@@ -452,10 +487,11 @@
           workspaceLabel: byId("workspaceLabel").value.trim() || defaults.workspaceLabel,
           packetNaming: byId("packetNaming").value,
           dataLabel: byId("dataLabel").value,
+          themeMode: byId("themeMode").value,
           showCloudLabels: byId("showCloudLabels").checked,
           warnBeforeExport: byId("warnBeforeExport").checked,
           hideSensitivePreview: byId("hideSensitivePreview").checked,
-          preferLocalProof: byId("preferLocalProof").checked
+          preferDeviceProof: byId("preferDeviceProof").checked
         };
       }
       function applyPrefs(prefs){
@@ -465,10 +501,12 @@
         byId("workspaceLabel").value = prefs.workspaceLabel;
         byId("packetNaming").value = prefs.packetNaming;
         byId("dataLabel").value = prefs.dataLabel;
+        byId("themeMode").value = prefs.themeMode || defaults.themeMode;
+        applyThemePreference(byId("themeMode").value);
         byId("showCloudLabels").checked = !!prefs.showCloudLabels;
         byId("warnBeforeExport").checked = !!prefs.warnBeforeExport;
         byId("hideSensitivePreview").checked = !!prefs.hideSensitivePreview;
-        byId("preferLocalProof").checked = !!prefs.preferLocalProof;
+        byId("preferDeviceProof").checked = !!prefs.preferDeviceProof;
         renderPrefs(prefs);
       }
       async function readStatus(){
@@ -505,8 +543,8 @@
 
         byId("statusPill").textContent = status.isPro ? "Pro" : "Locked";
         byId("statusPill").className = "ps-pill " + (status.isPro ? "pro" : "lock");
-        byId("statusCopy").textContent = status.isPro ? "Settings shell is reading an active Pro account." : "AfroProGate did not read this account as active Pro.";
-        byId("statusMeta").textContent = "source: AfroProGate fresh status | reason: " + (status.reason || "unknown");
+        byId("statusCopy").textContent = status.isPro ? "Settings is reading an active Pro account." : "This account is not reading as active Pro yet.";
+        byId("statusMeta").textContent = "account status: " + (status.reason || "unknown");
         byId("profileName").value = name;
         byId("profileEmail").value = email;
         byId("profileTier").value = tier;
@@ -524,10 +562,11 @@
           ["Workspace label", prefs.workspaceLabel, "shell"],
           ["Packet naming", prefs.packetNaming, "shell"],
           ["Data label mode", prefs.dataLabel, "shell"],
-          ["Show cloud labels", prefs.showCloudLabels ? "Yes" : "No", prefs.showCloudLabels ? "ready" : "warn"],
+          ["Theme mode", prefs.themeMode || "auto", prefs.themeMode && prefs.themeMode !== "auto" ? "pro" : "local"],
+          ["Show account labels", prefs.showCloudLabels ? "Yes" : "No", prefs.showCloudLabels ? "ready" : "warn"],
           ["Warn before export", prefs.warnBeforeExport ? "Yes" : "No", prefs.warnBeforeExport ? "ready" : "warn"],
           ["Hide sensitive previews", prefs.hideSensitivePreview ? "Yes" : "No", prefs.hideSensitivePreview ? "ready" : "shell"],
-          ["Keep local proof explicit", prefs.preferLocalProof ? "Yes" : "No", prefs.preferLocalProof ? "ready" : "warn"]
+          ["Show data origin clearly", prefs.preferDeviceProof ? "Yes" : "No", prefs.preferDeviceProof ? "ready" : "warn"]
         ];
         var list = byId("summaryList");
         clear(list);
@@ -537,21 +576,22 @@
           copy.appendChild(create("h3", "ps-row-title", row[0]));
           copy.appendChild(create("div", "ps-row-meta", row[1]));
           item.appendChild(copy);
-          item.appendChild(pill(row[2] === "local" ? "Local" : row[2] === "ready" ? "On" : row[2], row[2]));
+          item.appendChild(pill(row[2] === "local" ? "Device" : row[2] === "ready" ? "On" : row[2], row[2]));
           list.appendChild(item);
         });
       }
       function saveCurrent(){
         var prefs = formPrefs();
         savePrefs(prefs);
+        applyThemePreference(prefs.themeMode);
         renderPrefs(prefs);
-        byId("saveNotice").textContent = "Preferences saved locally at " + new Date().toLocaleString() + ".";
+        byId("saveNotice").textContent = "Preferences saved on this device at " + new Date().toLocaleString() + ".";
       }
       function resetPrefs(){
-        if (!window.confirm("Reset local Pro backbone preferences on this browser?")) return;
+        if (!window.confirm("Reset Pro preferences saved on this browser?")) return;
         localStorage.removeItem(PREF_KEY);
         applyPrefs(Object.assign({}, defaults));
-        byId("saveNotice").textContent = "Local preferences reset.";
+        byId("saveNotice").textContent = "Device preferences reset.";
       }
       async function refresh(){
         try {
@@ -562,8 +602,12 @@
       }
       function boot(){
         applyPrefs(readPrefs());
-        ["languageLane","defaultCountry","defaultCurrency","workspaceLabel","packetNaming","dataLabel","showCloudLabels","warnBeforeExport","hideSensitivePreview","preferLocalProof"].forEach(function(id){
-          byId(id).addEventListener("change", function(){ renderPrefs(formPrefs()); });
+        ["languageLane","defaultCountry","defaultCurrency","workspaceLabel","packetNaming","dataLabel","themeMode","showCloudLabels","warnBeforeExport","hideSensitivePreview","preferDeviceProof"].forEach(function(id){
+          byId(id).addEventListener("change", function(){
+            var prefs = formPrefs();
+            if (id === "themeMode") applyThemePreference(prefs.themeMode);
+            renderPrefs(prefs);
+          });
         });
         byId("workspaceLabel").addEventListener("input", function(){ renderPrefs(formPrefs()); });
         byId("savePrefsBtn").addEventListener("click", saveCurrent);

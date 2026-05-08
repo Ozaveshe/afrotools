@@ -15,6 +15,42 @@ function readJson(res) {
   });
 }
 
+async function fetchSnapshotPage(baseParts, offset, pageSize) {
+  var parts = baseParts.slice();
+  parts.push('limit=' + pageSize);
+  parts.push('offset=' + offset);
+  var res = await fetch(SUPABASE_URL + '/rest/v1/as_creator_snapshots?' + parts.join('&'), {
+    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+  });
+  var rows = await readJson(res);
+  return { res: res, rows: rows };
+}
+
+async function fetchSnapshotDates(baseParts) {
+  var dateParts = baseParts.filter(function(part) {
+    return part.indexOf('select=') !== 0 && part.indexOf('order=') !== 0 && part.indexOf('limit=') !== 0 && part.indexOf('offset=') !== 0;
+  });
+  dateParts.unshift('select=snapshot_date');
+  dateParts.push('order=snapshot_date.desc');
+
+  var rows = [];
+  var offset = 0;
+  var pageSize = 1000;
+
+  while (true) {
+    var page = await fetchSnapshotPage(dateParts, offset, pageSize);
+    if (!page.res.ok) return page;
+
+    var chunk = Array.isArray(page.rows) ? page.rows : [];
+    rows = rows.concat(chunk);
+    if (chunk.length < pageSize) {
+      page.rows = rows;
+      return page;
+    }
+    offset += chunk.length;
+  }
+}
+
 function isoDate(daysBack) {
   var d = new Date(Date.now() - daysBack * 86400000);
   return d.toISOString().slice(0, 10);
@@ -28,29 +64,56 @@ exports.handler = async function(event) {
 
   var qs = event.queryStringParameters || {};
   var period = qs.period || 'month';
-  var limit = Math.min(parseInt(qs.limit, 10) || 500, 1000);
-  var parts = ['select=*', 'order=snapshot_date.desc,creator_id.asc', 'limit=' + limit];
+  var requestedLimit = parseInt(qs.limit, 10) || 500;
+  var limit = Math.min(Math.max(requestedLimit, 1), 5000);
+  var parts = ['select=*', 'order=snapshot_date.desc,creator_id.asc'];
 
   if (period === 'week') parts.push('snapshot_date=gte.' + isoDate(7));
   else if (period === 'month') parts.push('snapshot_date=gte.' + isoDate(30));
   else if (period !== 'all') return { statusCode: 400, headers: h, body: '{"error":"Unsupported period"}' };
 
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/as_creator_snapshots?' + parts.join('&'), {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
-    });
-    var rows = await readJson(res);
-    if (!res.ok) {
+    var rows = [];
+    var offset = 0;
+    var pageSize = Math.min(limit, 1000);
+
+    while (rows.length < limit) {
+      var page = await fetchSnapshotPage(parts, offset, Math.min(pageSize, limit - rows.length));
+      if (!page.res.ok) {
+        return {
+          statusCode: page.res.status >= 500 ? 502 : page.res.status,
+          headers: h,
+          body: JSON.stringify({ error: 'Supabase request failed', detail: page.rows && page.rows.message ? page.rows.message : 'Unexpected upstream error' })
+        };
+      }
+
+      var chunk = Array.isArray(page.rows) ? page.rows : [];
+      rows = rows.concat(chunk);
+      if (chunk.length < Math.min(pageSize, limit - rows.length + chunk.length)) break;
+      offset += chunk.length;
+    }
+
+    if (!rows) {
       return {
-        statusCode: res.status >= 500 ? 502 : res.status,
+        statusCode: 502,
         headers: h,
-        body: JSON.stringify({ error: 'Supabase request failed', detail: rows && rows.message ? rows.message : 'Unexpected upstream error' })
+        body: JSON.stringify({ error: 'Supabase request failed', detail: 'Unexpected upstream error' })
       };
     }
 
-    rows = Array.isArray(rows) ? rows : [];
+    var dateMeta = await fetchSnapshotDates(parts);
+    if (!dateMeta.res.ok) {
+      return {
+        statusCode: dateMeta.res.status >= 500 ? 502 : dateMeta.res.status,
+        headers: h,
+        body: JSON.stringify({ error: 'Supabase request failed', detail: dateMeta.rows && dateMeta.rows.message ? dateMeta.rows.message : 'Unexpected upstream error' })
+      };
+    }
+
     var dates = {};
-    rows.forEach(function(row) { if (row.snapshot_date) dates[row.snapshot_date] = true; });
+    (Array.isArray(dateMeta.rows) ? dateMeta.rows : []).forEach(function(row) {
+      if (row && row.snapshot_date) dates[row.snapshot_date] = true;
+    });
     var dateList = Object.keys(dates).sort();
     return {
       statusCode: 200,

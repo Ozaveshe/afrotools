@@ -5,6 +5,13 @@
 (function () {
   'use strict';
 
+  try {
+    const theme = localStorage.getItem('aft_theme');
+    if (theme === 'dark' || theme === 'light') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  } catch (_) {}
+
   const NAV_ITEMS = [
     {
       id: 'financial', label: 'Salary & Tax', labelFr: 'Salaire & Impôts', labelSw: 'Mshahara & Kodi', icon: '💰',

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pro Data Vault | AfroTools Pro</title>
-  <meta name="description" content="AfroTools Pro Data Vault shell for export packets, documents, payslips, compliance packs, invoices, and local-only versus cloud-backed data labels.">
+  <meta name="description" content="AfroTools Pro Data Vault workspace for export packets, documents, payslips, compliance packs, invoices, and saved on this device versus cloud-backed data labels.">
   <meta name="robots" content="noindex, follow">
   <meta name="tool-id" content="pro-data-vault">
   <meta name="tool-category" content="pro">
@@ -140,12 +140,12 @@
 </head>
 <body>
   <main class="pb-shell pro-gated-content">
-    <aside class="pb-sidebar" aria-label="Pro backbone navigation">
+    <aside class="pb-sidebar" aria-label="Pro vault navigation">
       <div class="pb-brand">
         <div class="pb-brand-mark" aria-hidden="true">AT</div>
         <div>
           <div class="pb-brand-title">AfroTools Pro</div>
-          <div class="pb-brand-meta">Backbone routes</div>
+          <div class="pb-brand-meta">Vault routes</div>
         </div>
       </div>
       <nav class="pb-nav">
@@ -157,12 +157,12 @@
         <a href="/dashboard/">Account <span>auth</span></a>
       </nav>
       <div class="pb-side-box">
-        <strong>Vault boundary</strong>
-        <p>Shows browser-local shell records and account status. Cloud-backed vault storage is labelled as not connected until a real schema exists.</p>
+        <strong>Vault coverage</strong>
+        <p>Shows saved workspace records and account status. Account-backed vault storage is marked not connected until sync is available.</p>
       </div>
       <div class="pb-side-box">
-        <strong>Shell preference</strong>
-        <p id="sidePreference">Filter preference is stored locally only.</p>
+        <strong>Workspace preview preference</strong>
+        <p id="sidePreference">Filter preference is saved on this device.</p>
       </div>
       <div class="pb-side-foot">
         <a class="pb-btn primary" href="/pro/workspace/">Pro Control</a>
@@ -178,8 +178,8 @@
             <span class="pb-label">Vault view</span>
             <select class="pb-select" id="vaultFilter">
               <option value="all">All lanes</option>
-              <option value="local">Local-only lanes</option>
-              <option value="cloud">Cloud-backed labels</option>
+              <option value="local">Saved on this device lanes</option>
+              <option value="cloud">Account-backed labels</option>
               <option value="packets">Export packets</option>
             </select>
           </label>
@@ -187,13 +187,13 @@
             <div class="pb-avatar" aria-hidden="true">PRO</div>
             <div>
               <div class="pb-account-name">Checking Pro account...</div>
-              <div class="pb-account-note">Reading AfroProGate status.</div>
+              <div class="pb-account-note">Checking account access.</div>
             </div>
           </div>
         </div>
         <div class="pb-actions">
           <button class="pb-btn" type="button" id="refreshBtn">Refresh</button>
-          <button class="pb-btn primary" type="button" id="exportIndexBtn">Export local index</button>
+          <button class="pb-btn primary" type="button" id="exportIndexBtn">Export device index</button>
         </div>
       </header>
 
@@ -201,32 +201,32 @@
         <section class="pb-command-grid">
           <div class="pb-command">
             <div>
-              <div class="pb-kicker">PRO BACKBONE</div>
+              <div class="pb-kicker">ACCOUNT WORKSPACE</div>
               <h1 class="pb-title">Data Vault</h1>
-              <p class="pb-subtitle">A shared place for Pro apps to point when they need export packets, documents, payslips, compliance packs, invoices, and clear local-only versus cloud-backed labels.</p>
+              <p class="pb-subtitle">A shared place for export packets, documents, payslips, compliance packs, invoices, and clear device-versus-account data labels.</p>
             </div>
             <div class="pb-row-actions">
-              <span class="pb-pill local">local scan</span>
-              <span class="pb-pill schema">cloud schema needed</span>
+              <span class="pb-pill local">device scan</span>
+              <span class="pb-pill schema">vault sync pending</span>
               <span class="pb-pill pro">Pro gated</span>
             </div>
           </div>
           <aside class="pb-status-card">
             <div class="pb-card-top">
-              <h2>Live Pro Status</h2>
+              <h2>Account Access</h2>
               <span class="pb-pill warn" id="statusPill">Checking</span>
             </div>
-            <p id="statusCopy">Reading the signed-in account through AfroProGate.</p>
-            <p class="pb-code" id="statusMeta">source: pending</p>
+            <p id="statusCopy">Checking the signed-in account.</p>
+            <p class="pb-code" id="statusMeta">status pending</p>
           </aside>
         </section>
 
         <section class="pb-metrics" aria-label="Vault metrics">
-          <div class="pb-metric"><strong id="metricSources">0</strong><span>Local sources with data</span><small>Detected from existing browser keys only</small></div>
-          <div class="pb-metric"><strong id="metricRecords">0</strong><span>Local record groups</span><small>Arrays or object groups found locally</small></div>
-          <div class="pb-metric"><strong id="metricCloud">0</strong><span>Cloud vault records</span><small>No shared vault API is wired yet</small></div>
+          <div class="pb-metric"><strong id="metricSources">0</strong><span>Device sources with data</span><small>Detected from saved workspace data</small></div>
+          <div class="pb-metric"><strong id="metricRecords">0</strong><span>Device record groups</span><small>Arrays or object groups found on this device</small></div>
+          <div class="pb-metric"><strong id="metricCloud">0</strong><span>Account vault records</span><small>Account vault sync is not connected yet</small></div>
           <div class="pb-metric"><strong id="metricLanes">0</strong><span>Vault lanes</span><small>Packets, docs, payslips, compliance, invoices</small></div>
-          <div class="pb-metric"><strong id="metricMode">Local</strong><span>Storage mode</span><small>Shell preferences only are saved here</small></div>
+          <div class="pb-metric"><strong id="metricMode">Device</strong><span>Storage mode</span><small>Preference labels are saved here</small></div>
         </section>
 
         <section class="pb-layout">
@@ -235,7 +235,7 @@
               <div class="pb-panel-head">
                 <div>
                   <h2 class="pb-h2">Vault Lanes</h2>
-                  <p class="pb-note">These are shared entry points for the 10 Pro apps. Counts come from local browser data where present. Cloud-backed lanes stay empty until real backend tables exist.</p>
+                  <p class="pb-note">These are shared entry points for the Pro apps. Counts come from device-saved data where present. Account-backed lanes stay empty until sync is connected.</p>
                 </div>
                 <span class="pb-pill local" id="laneCount">0 lanes</span>
               </div>
@@ -247,10 +247,10 @@
             <section class="pb-panel">
               <div class="pb-panel-head">
                 <div>
-                  <h2 class="pb-h2">Detected Local Sources</h2>
-                  <p class="pb-note">This audit reads known Pro localStorage keys. It does not upload data and does not create vault documents.</p>
+                  <h2 class="pb-h2">Detected Device Sources</h2>
+                  <p class="pb-note">This check reads known Pro records saved on this device. It does not upload data and does not create vault documents.</p>
                 </div>
-                <span class="pb-pill local">browser only</span>
+                <span class="pb-pill local">device only</span>
               </div>
               <div class="pb-panel-body">
                 <div class="pb-table-wrap">
@@ -259,7 +259,7 @@
                       <tr>
                         <th>Source</th>
                         <th>Lane</th>
-                        <th>Key</th>
+                        <th>Device status</th>
                         <th>Detected</th>
                         <th>Route</th>
                       </tr>
@@ -275,22 +275,22 @@
             <section class="pb-panel">
               <div class="pb-panel-head">
                 <div>
-                  <h2 class="pb-h2">Local Vs Cloud Labels</h2>
+                  <h2 class="pb-h2">Device Vs Account Labels</h2>
                   <p class="pb-note">The vault should never blur data origin.</p>
                 </div>
               </div>
               <div class="pb-panel-body">
                 <div class="pb-list">
                   <article class="pb-row">
-                    <div><h3 class="pb-row-title">Local-only</h3><div class="pb-row-meta">Browser records from app shells or payroll history. They are not account-backed proof.</div></div>
-                    <div class="pb-row-actions"><span class="pb-pill local">local</span></div>
+                    <div><h3 class="pb-row-title">Saved on this device</h3><div class="pb-row-meta">Records from app workspaces or payroll history. They are not account-backed records.</div></div>
+                    <div class="pb-row-actions"><span class="pb-pill local">device</span></div>
                   </article>
                   <article class="pb-row">
-                    <div><h3 class="pb-row-title">Cloud-backed</h3><div class="pb-row-meta">Reserved for future Supabase-backed vault records. No fake cloud rows are shown here.</div></div>
+                    <div><h3 class="pb-row-title">Account-backed</h3><div class="pb-row-meta">Reserved for future account-synced vault records. No account-backed records are shown until sync is connected.</div></div>
                     <div class="pb-row-actions"><span class="pb-pill schema">not connected</span></div>
                   </article>
                   <article class="pb-row">
-                    <div><h3 class="pb-row-title">Export packet</h3><div class="pb-row-meta">Browser download built from detected local metadata. It is not uploaded.</div></div>
+                    <div><h3 class="pb-row-title">Export packet</h3><div class="pb-row-meta">Browser download built from detected device metadata. It is not uploaded.</div></div>
                     <div class="pb-row-actions"><span class="pb-pill shell">download</span></div>
                   </article>
                 </div>
@@ -300,20 +300,20 @@
             <section class="pb-panel">
               <div class="pb-panel-head">
                 <div>
-                  <h2 class="pb-h2">Backbone Links</h2>
-                  <p class="pb-note">Targets for app sidebars and handoff actions.</p>
+                  <h2 class="pb-h2">Shared Links</h2>
+                  <p class="pb-note">Shortcuts for workspace navigation and handoff actions.</p>
                 </div>
               </div>
               <div class="pb-panel-body">
                 <div class="pb-list">
-                  <a class="pb-row" href="/pro/team/"><span><strong class="pb-row-title">Team and clients</strong><span class="pb-row-meta">Roles, members, invites, and permission model placeholder.</span></span><span class="pb-pill shell">route</span></a>
-                  <a class="pb-row" href="/pro/settings/"><span><strong class="pb-row-title">Settings</strong><span class="pb-row-meta">Language, country, currency, account, and privacy preferences.</span></span><span class="pb-pill shell">route</span></a>
-                  <a class="pb-row" href="/pro/apps/"><span><strong class="pb-row-title">App directory</strong><span class="pb-row-meta">Registry view for the 10 Pro apps and shell states.</span></span><span class="pb-pill ready">registry</span></a>
+                  <a class="pb-row" href="/pro/team/"><span><strong class="pb-row-title">Team and clients</strong><span class="pb-row-meta">Roles, members, invites, and permission model setup.</span></span><span class="pb-pill shell">open</span></a>
+                  <a class="pb-row" href="/pro/settings/"><span><strong class="pb-row-title">Settings</strong><span class="pb-row-meta">Language, country, currency, account, and privacy preferences.</span></span><span class="pb-pill shell">open</span></a>
+                  <a class="pb-row" href="/pro/apps/"><span><strong class="pb-row-title">App directory</strong><span class="pb-row-meta">Workspace view for the Pro app suite.</span></span><span class="pb-pill ready">open</span></a>
                 </div>
               </div>
             </section>
 
-            <div class="pb-warning">No payslips, invoices, compliance packs, or documents are claimed as cloud-backed until a real Pro vault schema and RLS policy exist.</div>
+            <div class="pb-warning">No payslips, invoices, compliance packs, or documents are claimed as account-backed until vault sync is connected.</div>
           </aside>
         </section>
       </div>
@@ -329,20 +329,20 @@
         { label: "Payroll saved runs", lane: "Payslips", key: "afropayroll_pro_saved_runs", route: "/pro/apps/payroll/", kind: "local" },
         { label: "Payroll draft workspace", lane: "Export packets", key: "afropayroll_pro_workspace_preview", route: "/pro/apps/payroll/", kind: "local" },
         { label: "Payroll employee master", lane: "Documents", key: "afropayroll_pro_employee_master", route: "/pro/apps/hr/", kind: "local" },
-        { label: "Tax compliance shell", lane: "Compliance packs", key: "afrotax_compliance_os_demo_v1", route: "/pro/apps/tax-compliance/", kind: "local" },
-        { label: "Books finance shell", lane: "Invoices", key: "afrobooks_finance_os_demo_v1", route: "/pro/apps/books/", kind: "local" },
-        { label: "HR people shell", lane: "Documents", key: "afrohr_people_os_demo_v1", route: "/pro/apps/hr/", kind: "local" },
-        { label: "Trade desk shell", lane: "Export packets", key: "afrotrade_desk_pro_demo_v1", route: "/pro/apps/trade-desk/", kind: "local" },
-        { label: "Legal desk shell", lane: "Documents", key: "afrolegal_desk_pro_demo_v1", route: "/pro/apps/legal/", kind: "local" },
-        { label: "Grants and tenders shell", lane: "Compliance packs", key: "afrogrant_tender_os_demo_v1", route: "/pro/apps/grants-tenders/", kind: "local" },
-        { label: "Creator studio shell", lane: "Invoices", key: "afrocreator_studio_pro_demo_v1", route: "/pro/apps/creator-studio/", kind: "local" },
-        { label: "Property projects shell", lane: "Export packets", key: "afroproperty_project_os_demo_v1", route: "/pro/apps/property-projects/", kind: "local" }
+        { label: "Tax compliance workspace", lane: "Compliance packs", key: "afrotax_compliance_os_demo_v1", route: "/pro/apps/tax-compliance/", kind: "local" },
+        { label: "Books finance workspace", lane: "Invoices", key: "afrobooks_finance_os_demo_v1", route: "/pro/apps/books/", kind: "local" },
+        { label: "HR people workspace", lane: "Documents", key: "afrohr_people_os_demo_v1", route: "/pro/apps/hr/", kind: "local" },
+        { label: "Trade desk workspace", lane: "Export packets", key: "afrotrade_desk_pro_demo_v1", route: "/pro/apps/trade-desk/", kind: "local" },
+        { label: "Legal desk workspace", lane: "Documents", key: "afrolegal_desk_pro_demo_v1", route: "/pro/apps/legal/", kind: "local" },
+        { label: "Grants and tenders workspace", lane: "Compliance packs", key: "afrogrant_tender_os_demo_v1", route: "/pro/apps/grants-tenders/", kind: "local" },
+        { label: "Creator studio workspace", lane: "Invoices", key: "afrocreator_studio_pro_demo_v1", route: "/pro/apps/creator-studio/", kind: "local" },
+        { label: "Property projects workspace", lane: "Export packets", key: "afroproperty_project_os_demo_v1", route: "/pro/apps/property-projects/", kind: "local" }
       ];
       var cloudLabels = [
-        { label: "Shared vault documents", lane: "Documents", status: "Needs schema" },
-        { label: "Account-backed export packets", lane: "Export packets", status: "Needs schema" },
-        { label: "Cloud payslip vault", lane: "Payslips", status: "Needs schema" },
-        { label: "Cloud invoice vault", lane: "Invoices", status: "Needs schema" }
+        { label: "Shared vault documents", lane: "Documents", status: "Account setup pending" },
+        { label: "Account-backed export packets", lane: "Export packets", status: "Account setup pending" },
+        { label: "Account payslip vault", lane: "Payslips", status: "Account setup pending" },
+        { label: "Account invoice vault", lane: "Invoices", status: "Account setup pending" }
       ];
 
       function byId(id){ return document.getElementById(id); }
@@ -430,8 +430,8 @@
         }
         byId("statusPill").textContent = status.isPro ? "Pro" : "Locked";
         byId("statusPill").className = "pb-pill " + (status.isPro ? "pro" : "lock");
-        byId("statusCopy").textContent = status.isPro ? "The page is reading an active Pro account through AfroProGate." : "AfroProGate did not read this account as active Pro.";
-        byId("statusMeta").textContent = "source: AfroProGate fresh status | reason: " + (status.reason || "unknown");
+        byId("statusCopy").textContent = status.isPro ? "The vault is reading an active Pro account." : "This account is not reading as active Pro yet.";
+        byId("statusMeta").textContent = "account status: " + (status.reason || "unknown");
       }
       function renderLanes(detected){
         var filter = byId("vaultFilter").value;
@@ -442,10 +442,10 @@
           var card = create("article", "pb-card");
           var top = create("div", "pb-card-top");
           top.appendChild(create("h3", "", row.lane));
-          top.appendChild(pill(row.localSources ? "Local data" : "Empty", row.localSources ? "local" : "shell"));
+          top.appendChild(pill(row.localSources ? "Device data" : "Empty", row.localSources ? "local" : "shell"));
           card.appendChild(top);
-          card.appendChild(create("p", "", row.localSources ? row.localSources + " local source(s), " + row.count + " detected record group(s)." : "No local records detected in this browser."));
-          card.appendChild(create("p", "pb-code", "Cloud-backed lane: not connected"));
+          card.appendChild(create("p", "", row.localSources ? row.localSources + " device source(s), " + row.count + " detected record group(s)." : "No device records detected in this browser."));
+          card.appendChild(create("p", "pb-code", "Account-backed lane: not connected yet"));
           grid.appendChild(card);
         });
         if (!grid.children.length) grid.appendChild(create("div", "pb-warning", "No lanes match the selected filter."));
@@ -461,9 +461,9 @@
           var tr = document.createElement("tr");
           var source = document.createElement("td");
           source.appendChild(create("strong", "", item.label));
-          source.appendChild(create("div", "pb-row-meta", item.kind === "local" ? "Browser-local source" : "Cloud-backed source"));
+          source.appendChild(create("div", "pb-row-meta", item.kind === "local" ? "Saved on this device source" : "Account-backed source"));
           var lane = create("td", "", item.lane);
-          var key = create("td", "pb-code", item.key);
+          var key = create("td", "pb-code", item.detected ? "Saved on this device" : "No saved data");
           var detectedCell = document.createElement("td");
           detectedCell.appendChild(pill(item.detected ? "Detected" : "Empty", item.detected ? "local" : "shell"));
           detectedCell.appendChild(create("div", "pb-row-meta", item.parseError ? "Stored value could not parse as JSON." : item.count + " record group(s)"));
@@ -477,7 +477,7 @@
         if (filter === "cloud") {
           cloudLabels.forEach(function(item){
             var tr = document.createElement("tr");
-            [item.label, item.lane, "future_schema", "0 cloud records", "Not connected"].forEach(function(value, index){
+            [item.label, item.lane, "account_setup_pending", "0 account records", "Not connected yet"].forEach(function(value, index){
               var td = create("td", index === 2 ? "pb-code" : "", value);
               tr.appendChild(td);
             });
@@ -492,9 +492,9 @@
         byId("metricRecords").textContent = String(records);
         byId("metricCloud").textContent = "0";
         byId("metricLanes").textContent = "5";
-        byId("metricMode").textContent = "Local";
+        byId("metricMode").textContent = "Device";
         byId("laneCount").textContent = "5 lanes";
-        byId("sidePreference").textContent = "Current filter: " + byId("vaultFilter").value + ". Saved locally only.";
+        byId("sidePreference").textContent = "Current filter: " + byId("vaultFilter").value + ". Saved on this device.";
       }
       function renderAll(){
         var detected = detectSources();
@@ -505,7 +505,7 @@
       function exportIndex(){
         var payload = {
           exportedAt: new Date().toISOString(),
-          boundary: "Local metadata index only. No cloud upload and no shared Pro vault schema yet.",
+          boundary: "Device metadata index only. No upload and no shared Pro vault sync yet.",
           sources: detectSources().map(function(item){
             return { label: item.label, lane: item.lane, key: item.key, detected: item.detected, count: item.count, route: item.route };
           })
@@ -514,7 +514,7 @@
         var url = URL.createObjectURL(blob);
         var link = document.createElement("a");
         link.href = url;
-        link.download = "afrotools-pro-vault-local-index.json";
+        link.download = "afrotools-pro-vault-device-index.json";
         document.body.appendChild(link);
         link.click();
         link.remove();

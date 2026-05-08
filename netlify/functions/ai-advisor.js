@@ -1,7 +1,7 @@
 // netlify/functions/ai-advisor.js
 // Universal AI advisor for all AfroTools calculators
 // Proxies requests to Anthropic API using server-side ANTHROPIC_API_KEY
-// Rate limiting: 3 calls/day (anonymous), 10 calls/day (logged-in free), unlimited (Pro users)
+// Rate limiting: 3 calls/day (free), unlimited (Pro users)
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const AUTH_SECRET = process.env.AUTH_SECRET;
@@ -43,7 +43,7 @@ async function checkRateLimit(event) {
 
   // Check if user is authenticated (higher limit)
   // Pro status verified server-side via Supabase Auth API — never trust client JWT claims
-  let limit = 3; // anonymous users: 3 requests/day
+  let limit = 3; // free users: 3 requests/day
   let isPro = false;
   let isLoggedIn = false;
   const authHeader = event.headers.authorization || '';
@@ -69,7 +69,7 @@ async function checkRateLimit(event) {
               isPro = true;
             }
           }
-          limit = isPro ? Infinity : 10; // Pro: unlimited, logged-in free: 10/day
+          limit = isPro ? Infinity : 3; // Pro: unlimited, free: 3/day
         }
       }
     } catch {}
