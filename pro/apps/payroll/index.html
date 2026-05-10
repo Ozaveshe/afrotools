@@ -16,9 +16,9 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-  <script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-  <script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script>
+  <script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
   <script src="/assets/js/afro-auth.js?v=3978e101"></script>
   <script src="/assets/js/pro-gate.js?v=3c7ae705"></script>
   <style>
@@ -67,6 +67,20 @@
     .apo-btn.primary{background:var(--apo-blue);border-color:var(--apo-blue);color:#fff}
     .apo-btn.success{background:var(--apo-green);border-color:var(--apo-green);color:#fff}
     .apo-btn:disabled{opacity:.55;cursor:not-allowed;background:#edf2f7;color:#64748b}
+    .apo-form-grid{display:grid;grid-template-columns:minmax(220px,1fr) minmax(180px,.55fr);gap:10px;margin-bottom:12px}
+    .apo-field{display:grid;gap:6px}
+    .apo-field label{font-size:.66rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#52627a}
+    .apo-input,.apo-select{width:100%;min-height:40px;border:1px solid var(--apo-line);border-radius:9px;background:#fff;color:var(--apo-ink);padding:9px 11px;font-size:.82rem;font-weight:700}
+    .apo-input:focus,.apo-select:focus{outline:2px solid rgba(29,78,216,.18);border-color:#93c5fd}
+    .apo-action-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .apo-action-grid .apo-btn{width:100%}
+    .apo-status-line{margin-top:12px;border:1px solid var(--apo-line);border-radius:11px;background:#f8fafc;padding:11px 12px;color:#475569;font-size:.78rem;line-height:1.48}
+    .apo-status-line.warn{border-color:#fde68a;background:var(--apo-amber-soft);color:#78350f}
+    .apo-status-line.ok{border-color:#a7f3d0;background:var(--apo-green-soft);color:#065f46}
+    .apo-audit-list{display:grid;gap:8px}
+    .apo-audit-item{border:1px solid var(--apo-line);border-radius:10px;background:#fff;padding:10px 11px}
+    .apo-audit-item strong{display:block;font-size:.78rem;line-height:1.3}
+    .apo-audit-item span{display:block;margin-top:4px;font-size:.7rem;color:var(--apo-muted);line-height:1.35}
     .apo-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;min-height:24px;padding:4px 8px;border:1px solid var(--apo-line);background:#f8fafc;color:#475569;font-size:.64rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
     .apo-pill.pro{background:var(--apo-green-soft);border-color:#a7f3d0;color:#065f46}
     .apo-pill.warn{background:var(--apo-amber-soft);border-color:#fde68a;color:#92400e}
@@ -84,7 +98,9 @@
     .apo-metric span{display:block;margin-top:8px;font-size:.67rem;font-weight:900;color:var(--apo-muted);letter-spacing:.08em;text-transform:uppercase}
     .apo-metric small{display:block;margin-top:5px;color:var(--apo-muted);font-size:.72rem;line-height:1.32}
     .apo-layout{display:grid;grid-template-columns:minmax(0,1fr) 398px;gap:16px;align-items:start}
+    .apo-layout>*,.apo-command>*,.apo-grid-2>*,.apo-grid-3>*,.apo-stage-grid>*,.apo-score>*,.apo-form-grid>*,.apo-action-grid>*{min-width:0}
     .apo-panel{margin-bottom:16px;overflow:hidden}
+    .apo-panel,.apo-head,.apo-body,.apo-table-wrap{min-width:0;max-width:100%}
     .apo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #edf2f7;background:#fff}
     .apo-kicker{font-size:.67rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--apo-blue);margin-bottom:4px}
     .apo-h2{font-size:1rem;font-weight:900;line-height:1.25;margin:0}
@@ -149,7 +165,7 @@
       .apo-command,.apo-grid-2,.apo-grid-3,.apo-nav{grid-template-columns:1fr}
       .apo-workflow,.apo-task{grid-template-columns:1fr}
       .apo-task-meta{justify-content:flex-start}
-      .apo-score,.apo-stage-grid,.apo-split-actions{grid-template-columns:1fr}
+      .apo-score,.apo-stage-grid,.apo-split-actions,.apo-form-grid,.apo-action-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -177,7 +193,7 @@
         <a href="/dashboard/">Account <span>go</span></a>
       </nav>
       <div class="apo-side-foot">
-        Pro workspace for accountants, SMEs, schools, clinics, NGOs, and multi-country operators. Review packets only; no filing or money movement.
+        Pro workspace for accountants, SMEs, schools, clinics, NGOs, and multi-country operators. Review packs only; no filing or money movement.
       </div>
     </aside>
 
@@ -187,7 +203,7 @@
           <div>
             <div class="apo-crumb"><a href="/pro/workspace/">Pro Workspace</a> / Apps / Payroll</div>
             <h1 class="apo-title">AfroPayroll OS</h1>
-            <p class="apo-sub">A paid payroll operating console layered above the run workspace: client context, employee readiness, statutory review packs, payment handoff, approvals, audit trail, and accountant delivery.</p>
+            <p class="apo-sub">A payroll command center for setting up companies, managing employee records, reviewing runs, approving payroll, generating payslips, preparing statutory review packs, and exporting payment or accounting handoff files.</p>
           </div>
           <div class="apo-actions">
             <button class="apo-btn" id="refreshBtn" type="button">Refresh</button>
@@ -204,15 +220,15 @@
             <div>
               <div class="apo-card-label">Account</div>
               <div class="apo-card-main">Checking Pro status...</div>
-              <div class="apo-card-note">Your Pro account status controls account-backed workflows.</div>
+              <div class="apo-card-note">Your Pro account status controls saved payroll workflows.</div>
             </div>
             <span class="apo-pill warn">Checking</span>
           </div>
-          <div class="apo-metric"><strong id="metricClients">0</strong><span>Clients</span><small>Account workspace</small></div>
-          <div class="apo-metric"><strong id="metricRuns">0</strong><span>Runs</span><small>Account and device</small></div>
-          <div class="apo-metric"><strong id="metricReview">0</strong><span>Needs review</span><small>Rows or runs</small></div>
-          <div class="apo-metric"><strong id="metricEmployees">0</strong><span>Employees</span><small>Employee records</small></div>
-          <div class="apo-metric"><strong id="metricReadiness">0%</strong><span>Readiness</span><small>Close score</small></div>
+          <div class="apo-metric"><strong id="metricClients">Open</strong><span>Ready</span><small>Payroll close state</small></div>
+          <div class="apo-metric"><strong id="metricRuns">0</strong><span>Needs action</span><small>Reminder center</small></div>
+          <div class="apo-metric"><strong id="metricReview">0</strong><span>Approval pending</span><small>Reviewer action</small></div>
+          <div class="apo-metric"><strong id="metricEmployees">0</strong><span>Export pending</span><small>Handoff drafts</small></div>
+          <div class="apo-metric"><strong id="metricReadiness">0%</strong><span>Readiness</span><small>Setup + close</small></div>
         </section>
 
         <div class="apo-layout">
@@ -222,7 +238,7 @@
                 <div>
                   <div class="apo-kicker">Operating workflows</div>
                   <h2 class="apo-h2" id="workflows-title">Run payroll with a clear month-end process</h2>
-                  <p class="apo-note">Set up employees, review calculations, prepare handoff packs, and keep approval history in one workspace.</p>
+                  <p class="apo-note">Set up the company, add employees, import payroll, review runs, approve payroll, generate payslips, prepare statutory review packs, and export handoff files.</p>
                 </div>
                 <span class="apo-pill pro">Payroll</span>
               </div>
@@ -236,7 +252,7 @@
                 <div>
                   <div class="apo-kicker">Month close control</div>
                   <h2 class="apo-h2" id="close-title">Payroll close board</h2>
-                  <p class="apo-note">Track capture, review, approval, and handoff across account data and saved workspaces on this device.</p>
+                  <p class="apo-note">Track capture, review, approval, and handoff across saved payroll runs and work saved on this device.</p>
                 </div>
                 <span class="apo-pill warn">Close control</span>
               </div>
@@ -247,9 +263,23 @@
                     <div class="apo-score-label" id="readinessLabel">Calculating</div>
                     <div class="apo-progress"><span id="readinessBar"></span></div>
                   </div>
-                  <p class="apo-score-copy" id="readinessCopy">Readiness combines employee completeness, run warnings, approval state, handoff exports, and unsynced salary work.</p>
+                    <p class="apo-score-copy" id="readinessCopy">Readiness combines employee completeness, run warnings, approval state, handoff exports, and salary work saved only on this device.</p>
                 </div>
                 <div class="apo-stage-grid" id="closeStageBoard"></div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="reminders-title" id="reminders">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Reminder center</div>
+                  <h2 class="apo-h2" id="reminders-title">Needs action before payroll close</h2>
+                  <p class="apo-note">Review missing employee details, approvals, source review dates, statutory packs, and handoff exports before closing the month.</p>
+                </div>
+                <a class="apo-btn" href="/tools/afropayroll-os/workspace#work-queue-title">Open reminders</a>
+              </div>
+              <div class="apo-body">
+                <div class="apo-task-list" id="reminderCenterList"></div>
               </div>
             </section>
 
@@ -289,8 +319,8 @@
                     <div class="apo-lane-actions"><a class="apo-btn" href="/tools/afropayroll-os/workspace#handoff-title">Export drafts</a></div>
                   </article>
                   <article class="apo-lane">
-                    <div class="apo-lane-top"><h3>Employee portal</h3><span class="apo-pill violet">Token route</span></div>
-                    <p>Payslip viewing and profile confirmation for employees invited from synced runs.</p>
+                    <div class="apo-lane-top"><h3>Employee portal</h3><span class="apo-pill violet">Secure invite link</span></div>
+                    <p>Payslip viewing and profile confirmation for employees invited from saved payroll runs.</p>
                     <div class="apo-lane-actions"><a class="apo-btn" href="/tools/afropayroll-os/employee">Open portal</a></div>
                   </article>
                 </div>
@@ -302,7 +332,7 @@
                 <div>
                   <div class="apo-kicker">Run control</div>
                   <h2 class="apo-h2" id="runs-title">Payroll run queue</h2>
-                  <p class="apo-note">Cloud runs load from the account API when signed in. Local snapshots are browser-only and marked separately.</p>
+                  <p class="apo-note">Saved payroll runs load through the secure Payroll API. Runs saved only on this device are marked separately.</p>
                 </div>
                 <button class="apo-btn" id="runRefreshBtn" type="button">Reload</button>
               </div>
@@ -311,11 +341,50 @@
               </div>
             </section>
 
+            <section class="apo-panel" aria-labelledby="action-title">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Payroll run actions</div>
+                  <h2 class="apo-h2" id="action-title">Run actions</h2>
+                  <p class="apo-note">Save the current draft to your account, reopen saved runs in the workspace, and record approval, payslip, statutory review, and handoff events.</p>
+                </div>
+                <span class="apo-pill pro">Saved to account</span>
+              </div>
+              <div class="apo-body">
+                <div class="apo-form-grid">
+                  <div class="apo-field">
+                    <label for="actionRunSelect">Payroll run</label>
+                    <select class="apo-select" id="actionRunSelect">
+                      <option value="">No saved payroll runs loaded</option>
+                    </select>
+                  </div>
+                  <div class="apo-field">
+                    <label for="actionNote">Reviewer note</label>
+                    <input class="apo-input" id="actionNote" type="text" placeholder="Optional note for approval or reopen">
+                  </div>
+                </div>
+                <div class="apo-action-grid" aria-label="Payroll run actions">
+                  <button class="apo-btn primary" id="syncDraftBtn" type="button">Save run to account</button>
+                  <button class="apo-btn" id="openSelectedRunBtn" type="button">Open selected run</button>
+                  <button class="apo-btn" id="requestApprovalActionBtn" type="button">Request approval</button>
+                  <button class="apo-btn" id="requestChangesActionBtn" type="button">Request changes</button>
+                  <button class="apo-btn success" id="approveActionBtn" type="button">Approve</button>
+                  <button class="apo-btn" id="finalizeActionBtn" type="button">Finalize</button>
+                  <button class="apo-btn" id="payslipActionBtn" type="button">Generate payslips</button>
+                  <button class="apo-btn" id="statutoryActionBtn" type="button">Create statutory pack</button>
+                  <button class="apo-btn" id="exportActionBtn" type="button">Record handoff export</button>
+                  <button class="apo-btn" id="reopenActionBtn" type="button">Reopen run</button>
+                  <button class="apo-btn" id="auditActionBtn" type="button">Load audit</button>
+                </div>
+                <div class="apo-status-line" id="actionStatus">Sign in with a Pro account, then save a workspace draft or choose a saved run.</div>
+              </div>
+            </section>
+
             <section class="apo-panel" aria-labelledby="recent-title">
               <div class="apo-head">
                 <div>
-                  <div class="apo-kicker">Recent cloud runs</div>
-                  <h2 class="apo-h2" id="recent-title">Account-backed status table</h2>
+                  <div class="apo-kicker">Recent account runs</div>
+                  <h2 class="apo-h2" id="recent-title">Saved payroll run status</h2>
                 </div>
               </div>
               <div class="apo-body">
@@ -329,9 +398,10 @@
                         <th>Rows</th>
                         <th>Warnings</th>
                         <th>Updated</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
-                    <tbody id="recentRunsBody"><tr><td colspan="6">Loading...</td></tr></tbody>
+                    <tbody id="recentRunsBody"><tr><td colspan="7">Loading...</td></tr></tbody>
                   </table>
                 </div>
               </div>
@@ -340,9 +410,9 @@
             <section class="apo-panel" aria-labelledby="local-work-title">
               <div class="apo-head">
                 <div>
-                  <div class="apo-kicker">Local work</div>
-                  <h2 class="apo-h2" id="local-work-title">Unsynced browser queue</h2>
-                  <p class="apo-note">Local saved runs and drafts are useful during testing, but they are not shared account history.</p>
+                  <div class="apo-kicker">Saved on this device</div>
+                  <h2 class="apo-h2" id="local-work-title">Device-only payroll work</h2>
+                  <p class="apo-note">Drafts and saved runs on this device are useful for offline work, but they are not shared account history until saved to your account.</p>
                 </div>
               </div>
               <div class="apo-body">
@@ -357,7 +427,7 @@
                 <div>
                   <div class="apo-kicker">Readiness</div>
                   <h2 class="apo-h2" id="readiness-title">What needs attention</h2>
-                  <p class="apo-note">Generated from local employee state and cloud run status when available.</p>
+                  <p class="apo-note">Generated from employee records, saved run status, and payroll work saved on this device.</p>
                 </div>
               </div>
               <div class="apo-body">
@@ -383,7 +453,7 @@
                 <div>
                   <div class="apo-kicker">Clients</div>
                   <h2 class="apo-h2" id="clients-title">Accountant view</h2>
-                  <p class="apo-note">Client/company records appear after cloud sync.</p>
+                  <p class="apo-note">Client and company records appear after the workspace is saved to your account.</p>
                 </div>
               </div>
               <div class="apo-body">
@@ -415,7 +485,7 @@
                 <div>
                   <div class="apo-kicker">Support ops</div>
                   <h2 class="apo-h2" id="support-title">Payroll support consoles</h2>
-                  <p class="apo-note">Internal read-only pages for pack health and source review.</p>
+                  <p class="apo-note">Country-pack health and source-review pages for payroll operators.</p>
                 </div>
               </div>
               <div class="apo-body">
@@ -426,11 +496,24 @@
               </div>
             </section>
 
+            <section class="apo-panel" aria-labelledby="audit-title">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Audit trail</div>
+                  <h2 class="apo-h2" id="audit-title">Run history</h2>
+                  <p class="apo-note">Saved actions, exports, approvals, and portal events appear here for the selected run.</p>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-audit-list" id="auditList"><div class="apo-empty">Choose a saved run to load its audit trail.</div></div>
+              </div>
+            </section>
+
             <section class="apo-panel" aria-labelledby="guardrails-title" id="guardrails">
               <div class="apo-head">
                 <div>
                   <div class="apo-kicker">Trust rules</div>
-                  <h2 class="apo-h2" id="guardrails-title">No fake compliance claims</h2>
+                  <h2 class="apo-h2" id="guardrails-title">Compliance boundaries</h2>
                 </div>
               </div>
               <div class="apo-body">
@@ -438,7 +521,7 @@
                   <li><span class="apo-dot"></span><span>Engine-backed previews still need human review before payroll sign-off.</span></li>
                   <li><span class="apo-dot"></span><span>Compliance packs are evidence and checklist exports, not statutory filing.</span></li>
                   <li><span class="apo-dot"></span><span>Payment files are handoff drafts. AfroTools does not move money.</span></li>
-                  <li><span class="apo-dot"></span><span>Local salary drafts stay in this browser until explicitly synced by the user.</span></li>
+                  <li><span class="apo-dot"></span><span>Salary drafts stay on this device until the user explicitly saves them to an account.</span></li>
                 </ul>
               </div>
             </section>
@@ -459,11 +542,14 @@
     var EMPLOYEE_KEY = "afropayroll_pro_employee_master";
 
     var workflows = [
-      ["01", "Create a client payroll month", "Select client/company, pay period, country lane, language lane, and default currency.", "Run setup"],
-      ["02", "Load employees and pay inputs", "Use employee master records, import roster rows, or add linked payroll rows manually.", "Data capture"],
-      ["03", "Preview calculations and warnings", "Use full-pack engines where available and estimate-only logic where the country pack is not ready.", "Review"],
-      ["04", "Prepare evidence and handoff", "Generate payslips, statutory review packs, bank/mobile-money drafts, accounting journals, and notes.", "Exports"],
-      ["05", "Request approval and lock the run", "Move from draft to review, approval, finalized, exported, or reopened with audit trail evidence.", "Control"]
+      ["01", "Set up company", "Create the client or company context, pay period, country lane, language lane, and default currency.", "Setup"],
+      ["02", "Add employees", "Keep reusable employee records with payment, statutory, contact, and payslip delivery details.", "People"],
+      ["03", "Import payroll", "Map CSV, Excel, roster, and payment-detail columns before applying them to the run.", "Import"],
+      ["04", "Review payroll", "Preview calculations, country-pack confidence, missing details, and rows that need human review.", "Review"],
+      ["05", "Approve run", "Request approval, capture reviewer notes, lock approved runs, and preserve approval history.", "Approval"],
+      ["06", "Generate payslips", "Create payslip records and packets for reviewed payroll rows without claiming salary payment.", "Payslips"],
+      ["07", "Prepare statutory review pack", "Collect country-specific calendar prompts, evidence, source notes, and review status.", "Review pack"],
+      ["08", "Export payment/accounting handoff", "Download payment instruction drafts, accounting journals, and handoff notes for external processing.", "Handoff"]
     ];
 
     var els = {
@@ -484,9 +570,32 @@
       readinessCopy: document.getElementById("readinessCopy"),
       closeStageBoard: document.getElementById("closeStageBoard"),
       closeChecklist: document.getElementById("closeChecklist"),
+      reminderCenterList: document.getElementById("reminderCenterList"),
       localWorkQueue: document.getElementById("localWorkQueue"),
       refreshBtn: document.getElementById("refreshBtn"),
-      runRefreshBtn: document.getElementById("runRefreshBtn")
+      runRefreshBtn: document.getElementById("runRefreshBtn"),
+      actionRunSelect: document.getElementById("actionRunSelect"),
+      actionNote: document.getElementById("actionNote"),
+      actionStatus: document.getElementById("actionStatus"),
+      syncDraftBtn: document.getElementById("syncDraftBtn"),
+      openSelectedRunBtn: document.getElementById("openSelectedRunBtn"),
+      requestApprovalActionBtn: document.getElementById("requestApprovalActionBtn"),
+      requestChangesActionBtn: document.getElementById("requestChangesActionBtn"),
+      approveActionBtn: document.getElementById("approveActionBtn"),
+      finalizeActionBtn: document.getElementById("finalizeActionBtn"),
+      payslipActionBtn: document.getElementById("payslipActionBtn"),
+      statutoryActionBtn: document.getElementById("statutoryActionBtn"),
+      exportActionBtn: document.getElementById("exportActionBtn"),
+      reopenActionBtn: document.getElementById("reopenActionBtn"),
+      auditActionBtn: document.getElementById("auditActionBtn"),
+      auditList: document.getElementById("auditList")
+    };
+
+    var pageState = {
+      cloudData: null,
+      selectedRunId: "",
+      auditEvents: [],
+      busy: false
     };
 
     function readJson(key, fallback) {
@@ -522,6 +631,11 @@
       return Math.max(min, Math.min(max, value));
     }
 
+    function number(value) {
+      var parsed = Number(String(value === undefined || value === null ? 0 : value).replace(/,/g, ""));
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
     function countRowsFromLocal(local) {
       var draftRows = local.draft && Array.isArray(local.draft.rows) ? local.draft.rows.length : 0;
       var savedRows = local.savedRuns.reduce(function (sum, run) {
@@ -529,6 +643,56 @@
         return sum + rows;
       }, 0);
       return draftRows + savedRows;
+    }
+
+    function localSetupClient(local) {
+      var draft = local && local.draft || {};
+      var client = draft.client || {};
+      return {
+        name: text(client.name || draft.companyName || draft.company),
+        companyName: text(client.companyName || draft.companyName || draft.company),
+        country: text(client.country || draft.defaultCountry || draft.country).toUpperCase(),
+        defaultCurrency: text(client.defaultCurrency || draft.defaultCurrency || draft.currency).toUpperCase(),
+        payrollContact: text(client.payrollContact),
+        reviewerEmail: text(client.reviewerEmail),
+        payFrequency: text(client.payFrequency),
+        defaultPayDay: text(client.defaultPayDay),
+        defaultDepartment: text(client.defaultDepartment),
+        workingDaysPerMonth: text(client.workingDaysPerMonth),
+        employerContributionAssumption: text(client.employerContributionAssumption),
+        setupSavedMode: text(client.setupSavedMode, local && local.hasDraft ? "device" : "")
+      };
+    }
+
+    function accountSetupClient(clients) {
+      var client = Array.isArray(clients) && clients[0] || {};
+      return {
+        name: text(client.name || client.companyName || client.company_name),
+        companyName: text(client.companyName || client.company_name || client.name),
+        country: text(client.country || client.default_country).toUpperCase(),
+        defaultCurrency: text(client.defaultCurrency || client.default_currency).toUpperCase(),
+        payrollContact: text(client.payrollContact || client.billing_email),
+        reviewerEmail: text(client.reviewerEmail),
+        payFrequency: text(client.payFrequency),
+        defaultPayDay: text(client.defaultPayDay),
+        defaultDepartment: text(client.defaultDepartment),
+        workingDaysPerMonth: text(client.workingDaysPerMonth),
+        employerContributionAssumption: text(client.employerContributionAssumption),
+        setupSavedMode: clients && clients.length ? "account" : ""
+      };
+    }
+
+    function setupChecksFor(client, activeEmployees, missingPayment) {
+      var profile = !!(text(client.name || client.companyName) && text(client.country) && text(client.defaultCurrency));
+      var schedule = !!(text(client.payFrequency) && text(client.defaultPayDay) && text(client.workingDaysPerMonth));
+      return [
+        { ok: profile, label: "Company profile complete", detail: profile ? "Company, country, currency, and language are ready." : "Add employer/client name, country, and currency." },
+        { ok: schedule, label: "Pay schedule selected", detail: schedule ? "Frequency, pay day, and working days are set." : "Choose frequency, default pay day, and working days." },
+        { ok: !!text(client.country), label: "Country pack selected", detail: text(client.country) ? client.country + " is selected for review prompts." : "Select the payroll country." },
+        { ok: !!(text(client.payrollContact) && text(client.reviewerEmail)), label: "Reviewer/contact set", detail: "Payroll contact and approver email should both be present." },
+        { ok: activeEmployees > 0, label: "Employees added", detail: activeEmployees ? activeEmployees + " active employee record(s)." : "Add employees before the first run." },
+        { ok: activeEmployees > 0 && missingPayment === 0, label: "Payment details ready", detail: "Bank or mobile-money details are needed for handoff exports." }
+      ];
     }
 
     function statusPill(status) {
@@ -554,11 +718,52 @@
       };
     }
 
+    function closeChecklistForModel(model) {
+      var hasRows = model.cloudRows > 0 || model.localRows > 0;
+      return [
+        { ok: model.activeEmployees > 0 && model.missingPayment === 0 && model.missingStat === 0, label: "Employee records complete", detail: "Active employee records include payroll operations details." },
+        { ok: model.activeEmployees > 0 && model.missingPayment === 0, label: "Payment routes complete", detail: "Bank or mobile-money handoff routes are present." },
+        { ok: model.activeEmployees > 0 && model.missingStat === 0, label: "Statutory IDs complete", detail: "Tax or pension/social security IDs are present where captured." },
+        { ok: hasRows && model.warnings === 0, label: "Country packs reviewed", detail: model.warnings ? model.warnings + " review warning(s) still need attention." : "No warning rows loaded from saved runs." },
+        { ok: hasRows && model.warnings === 0, label: "Warnings resolved or accepted", detail: "Reviewer notes should capture accepted warnings before approval." },
+        { ok: !model.varianceReviewNeeded && (model.approvedRuns > 0 || model.approvalPending > 0 || model.previousRunAvailable), label: "Variance reviewed", detail: model.varianceReviewNeeded ? "A cloned payroll month needs previous-vs-current variance acknowledgement." : "Start the next payroll from a previous run, then acknowledge variance review before approval." },
+        { ok: model.payslipEvents > 0, label: "Payslips generated", detail: model.payslipEvents + " payslip event(s) loaded from audit." },
+        { ok: model.statutoryEvents > 0, label: "Statutory review pack generated", detail: model.statutoryEvents + " statutory review event(s) loaded from audit." },
+        { ok: model.exportedRuns > 0, label: "Payment/accounting handoff exported", detail: "At least one saved run has reached exported state." }
+      ];
+    }
+
+    function reminderSummaryForModel(model) {
+      var hasRows = model.cloudRows > 0 || model.localRows > 0;
+      var exportPending = hasRows && model.exportedRuns === 0 ? 1 : 0;
+      var statutoryMissing = hasRows && model.statutoryEvents === 0 ? 1 : 0;
+      var items = [];
+      if (model.missingPayment) items.push(["Missing payment route", model.missingPayment + " employee record(s) need a bank or mobile-money route.", "warn", "Review employees", "/tools/afropayroll-os/workspace#employee-master-title"]);
+      if (model.missingStat) items.push(["Missing statutory ID", model.missingStat + " employee record(s) need tax, pension, or social security details.", "warn", "Review employees", "/tools/afropayroll-os/workspace#employee-master-title"]);
+      if (model.approvalPending) items.push(["Approval pending", model.approvalPending + " saved run(s) are waiting for reviewer action.", "blue", "Open close room", "/tools/afropayroll-os/workspace#closeRoomTitle"]);
+      if (model.varianceReviewNeeded) items.push(["Variance not reviewed", "A cloned payroll month needs previous-vs-current acknowledgement.", "warn", "Open close room", "/tools/afropayroll-os/workspace#closeRoomTitle"]);
+      if (statutoryMissing) items.push(["Statutory review pack missing", "Prepare a review pack before accountant or owner handoff.", "warn", "Open review pack", "/tools/afropayroll-os/workspace#compliance-title"]);
+      if (exportPending) items.push(["Payment handoff missing", "No payment file draft or handoff export is recorded for the loaded payroll work.", "blue", "Open handoff", "/tools/afropayroll-os/workspace#exportPacket"]);
+      if (exportPending) items.push(["Accounting journal not exported", "Prepare an accounting handoff CSV before close if the client needs journal import.", "blue", "Open accounting", "/tools/afropayroll-os/workspace#accountingProfileTitle"]);
+      if (model.warnings) items.push(["Country source review due", model.warnings + " warning row(s) need source or country-pack review before close.", "warn", "Review warnings", "/tools/afropayroll-os/workspace#warnings-title"]);
+      if (model.unsyncedItems) items.push(["Local draft not saved to account", model.unsyncedItems + " device draft or saved run item(s) are not in account history.", "blue", "Save run", "/tools/afropayroll-os/workspace#cloud-sync-title"]);
+      var needsAction = items.length;
+      return {
+        ready: hasRows && model.setupScore >= 84 && needsAction === 0,
+        needsAction: needsAction,
+        approvalPending: model.approvalPending,
+        exportPending: exportPending,
+        items: items
+      };
+    }
+
     function buildPayrollModel(data) {
       var local = localState();
       var runs = data && Array.isArray(data.runs) ? data.runs : [];
       var clients = data && Array.isArray(data.clients) ? data.clients : [];
-      var employees = local.employees;
+      var accountEmployees = data && Array.isArray(data.employees) ? data.employees : [];
+      var employees = accountEmployees.length ? accountEmployees : local.employees;
+      var employeeSource = accountEmployees.length ? "account" : local.employees.length ? "device" : "none";
       var activeEmployees = employees.filter(function (employee) {
         return text(employee.status, "active") !== "inactive";
       });
@@ -577,6 +782,9 @@
       var exportedRuns = runs.filter(function (run) {
         return /exported|closed/.test(text(run.status));
       }).length;
+      var auditEvents = pageState.auditEvents || [];
+      var payslipEvents = auditEvents.filter(function (event) { return /payslip/i.test(text(event.action)); }).length;
+      var statutoryEvents = auditEvents.filter(function (event) { return /statutory/i.test(text(event.action)); }).length;
       var warnings = runs.reduce(function (sum, run) {
         return sum + Number(run.warning_count || 0) + Number(run.needs_review_count || 0);
       }, 0);
@@ -586,14 +794,41 @@
       var localRows = countRowsFromLocal(local);
       var unsyncedItems = local.savedRuns.length + (local.hasDraft ? 1 : 0);
       var hasPayrollWork = cloudRows > 0 || localRows > 0 || activeEmployees.length > 0;
+      var previousRunAvailable = runs.length > 0 || local.savedRuns.length > 0;
+      var draftWorkflow = local.draft && local.draft.workflow || {};
+      var varianceReviewNeeded = !!(draftWorkflow.clonedFromRunId || draftWorkflow.cloned_from_run_id) && !(draftWorkflow.varianceReviewAcknowledged === true || draftWorkflow.variance_review_acknowledged === true);
+      var setupClient = clients.length ? accountSetupClient(clients) : localSetupClient(local);
+      var setupChecks = setupChecksFor(setupClient, activeEmployees.length, missingPayment);
+      var setupScore = Math.round(setupChecks.filter(function (check) { return check.ok; }).length / setupChecks.length * 100);
+      var setupMode = setupClient.setupSavedMode || (clients.length ? "account" : local.hasDraft ? "device" : "none");
+      var nextSetupAction = setupChecks.find(function (check) { return !check.ok; });
       var score = 100;
+      var provisionalModel = {
+        cloudRows: cloudRows,
+        localRows: localRows,
+        activeEmployees: activeEmployees.length,
+        missingPayment: missingPayment,
+        missingStat: missingStat,
+        warnings: warnings,
+        approvalPending: approvalPending,
+        approvedRuns: approvedRuns,
+        exportedRuns: exportedRuns,
+        payslipEvents: payslipEvents,
+        statutoryEvents: statutoryEvents,
+        varianceReviewNeeded: varianceReviewNeeded
+      };
+      var closeChecks = closeChecklistForModel(provisionalModel);
+      var closeScore = Math.round(closeChecks.filter(function (check) { return check.ok; }).length / closeChecks.length * 100);
 
+      if (setupScore < 84) score -= Math.round((84 - setupScore) / 2);
+      if (closeScore < 78) score -= Math.round((78 - closeScore) / 2);
       if (!hasPayrollWork) score -= 32;
       if (!activeEmployees.length) score -= 18;
       score -= clamp(missingPayment * 7, 0, 24);
       score -= clamp(missingStat * 6, 0, 22);
       score -= clamp(warnings * 2, 0, 24);
       score -= clamp(approvalPending * 8, 0, 20);
+      if (varianceReviewNeeded) score -= 14;
       score -= clamp(unsyncedItems * 5, 0, 18);
       if (runs.length && !approvedRuns) score -= 10;
       if (runs.length && !exportedRuns) score -= 6;
@@ -603,17 +838,31 @@
         local: local,
         runs: runs,
         clients: clients,
+        employees: employees,
+        employeeSource: employeeSource,
+        accountEmployees: accountEmployees,
         activeEmployees: activeEmployees.length,
         missingPayment: missingPayment,
         missingStat: missingStat,
         approvalPending: approvalPending,
         approvedRuns: approvedRuns,
         exportedRuns: exportedRuns,
+        payslipEvents: payslipEvents,
+        statutoryEvents: statutoryEvents,
+        varianceReviewNeeded: varianceReviewNeeded,
         warnings: warnings,
         cloudRows: cloudRows,
         localRows: localRows,
         unsyncedItems: unsyncedItems,
         hasPayrollWork: hasPayrollWork,
+        previousRunAvailable: previousRunAvailable,
+        setupClient: setupClient,
+        setupChecks: setupChecks,
+        setupScore: setupScore,
+        setupMode: setupMode,
+        nextSetupAction: nextSetupAction,
+        closeChecks: closeChecks,
+        closeScore: closeScore,
         score: score
       };
     }
@@ -624,6 +873,172 @@
       } catch (err) {
         return "";
       }
+    }
+
+    function isSignedIn() {
+      if (authToken()) return true;
+      try {
+        return Boolean(window.AfroAuth && window.AfroAuth.isLoggedIn && window.AfroAuth.isLoggedIn());
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function apiRequest(path, options) {
+      var config = options || {};
+      var headers = Object.assign({ Accept: "application/json" }, config.headers || {});
+      var token = authToken();
+      if (config.body !== undefined) headers["Content-Type"] = "application/json";
+      if (token) headers.Authorization = "Bearer " + token;
+      return fetch(path, {
+        method: config.method || "GET",
+        headers: headers,
+        credentials: "include",
+        body: config.body === undefined ? undefined : JSON.stringify(config.body)
+      }).then(function (response) {
+        return response.text().then(function (raw) {
+          var data = {};
+          try {
+            data = raw ? JSON.parse(raw) : {};
+          } catch (err) {
+            data = { error: raw || response.statusText };
+          }
+          if (!response.ok) {
+            var failure = new Error(data.error || data.detail || response.statusText || "Payroll request failed");
+            failure.status = response.status;
+            failure.data = data;
+            throw failure;
+          }
+          return data;
+        });
+      });
+    }
+
+    function setActionStatus(message, tone) {
+      if (!els.actionStatus) return;
+      els.actionStatus.textContent = message;
+      els.actionStatus.classList.toggle("warn", tone === "warn");
+      els.actionStatus.classList.toggle("ok", tone === "ok");
+    }
+
+    function runId(run) {
+      return text(run && (run.run_id || run.id));
+    }
+
+    function selectedRun() {
+      var runs = pageState.cloudData && Array.isArray(pageState.cloudData.runs) ? pageState.cloudData.runs : [];
+      return runs.find(function (run) {
+        return runId(run) === pageState.selectedRunId;
+      }) || null;
+    }
+
+    function selectedRunStatus() {
+      return text(selectedRun() && selectedRun().status, "draft").toLowerCase();
+    }
+
+    function draftRows(draft) {
+      return Array.isArray(draft && draft.rows)
+        ? draft.rows.filter(function (row) { return row && row.removed !== true && row.active !== false; })
+        : [];
+    }
+
+    function rowCalc(row) {
+      var existing = row && (row.calc || row.calculation || row.calculationSnapshot || row.calculation_snapshot) || {};
+      var gross = number(row && (row.gross || row.grossPay || row.gross_pay));
+      var allowances = number(row && row.allowances);
+      var overtime = number(row && (row.overtime || row.overtimePay || row.overtime_pay));
+      var unpaid = number(row && (row.unpaidAmount || row.unpaid_amount));
+      var custom = number(row && (row.customDeductions || row.custom_deductions));
+      var preview = number(existing.previewGross || existing.preview_gross || row && row.previewGross);
+      if (!preview) preview = Math.max(0, gross + allowances + overtime - unpaid);
+      var employeeDeductions = number(existing.employeeDeductions || existing.employee_deductions || custom);
+      var netPay = number(existing.netPay || existing.net_pay);
+      if (!netPay) netPay = Math.max(0, preview - employeeDeductions);
+      return Object.assign({}, existing, {
+        previewGross: preview,
+        employeeDeductions: employeeDeductions,
+        employerCost: number(existing.employerCost || existing.employer_cost || preview),
+        netPay: netPay,
+        unpaid: unpaid,
+        status: existing.status || existing.countryPackStatus || "unknown",
+        currency: existing.currency || row && (row.currency || row.currency_code) || ""
+      });
+    }
+
+    function buildDraftSummary(rows) {
+      var totals = rows.reduce(function (sum, row) {
+        var calc = rowCalc(row);
+        sum.previewGross += number(calc.previewGross);
+        sum.employeeDeductions += number(calc.employeeDeductions);
+        sum.employerCost += number(calc.employerCost);
+        sum.netPay += number(calc.netPay);
+        if (calc.warning || calc.status === "estimate_mode" || calc.status === "next_pack" || calc.status === "unknown") sum.reviewRows += 1;
+        return sum;
+      }, { previewGross: 0, employeeDeductions: 0, employerCost: 0, netPay: 0, reviewRows: 0 });
+      return {
+        totals: {
+          previewGross: totals.previewGross,
+          employeeDeductions: totals.employeeDeductions,
+          employerCost: totals.employerCost,
+          netPay: totals.netPay
+        },
+        reviewRows: totals.reviewRows
+      };
+    }
+
+    function buildDraftCloudPayload() {
+      var local = localState();
+      var draft = local.draft || {};
+      var rows = draftRows(draft);
+      var companyName = text(draft.companyName || draft.company || draft.client && draft.client.companyName || draft.client && draft.client.name, "AfroPayroll workspace");
+      var country = text(draft.defaultCountry || draft.country || draft.client && draft.client.country, "NG").toUpperCase();
+      var normalizedRows = rows.map(function (row) {
+        return {
+          id: text(row.id),
+          employeeRecordId: text(row.employeeRecordId || row.employeeId || row.cloudEmployeeId),
+          cloudEmployeeId: text(row.cloudEmployeeId),
+          employeeId: text(row.employeeId || row.employeeCode || row.employee_code),
+          name: text(row.name || row.employeeName, "Unnamed employee"),
+          role: text(row.role || row.roleTitle),
+          department: text(row.department),
+          country: text(row.country || country).toUpperCase(),
+          gross: number(row.gross || row.grossPay || row.gross_pay),
+          allowances: number(row.allowances),
+          overtime: number(row.overtime || row.overtimePay || row.overtime_pay),
+          unpaidDays: number(row.unpaidDays || row.unpaid_days),
+          unpaidAmount: number(row.unpaidAmount || row.unpaid_amount),
+          customDeductions: number(row.customDeductions || row.custom_deductions),
+          calc: rowCalc(row)
+        };
+      });
+      return {
+        clientId: text(draft.cloudClientId || draft.client && draft.client.clientId),
+        companyId: text(draft.cloudCompanyId || draft.client && draft.client.companyId),
+        client: Object.assign({}, draft.client || {}, {
+          clientId: text(draft.cloudClientId || draft.client && draft.client.clientId),
+          companyId: text(draft.cloudCompanyId || draft.client && draft.client.companyId),
+          name: text(draft.client && draft.client.name, companyName),
+          companyName: companyName,
+          country: country,
+          defaultCurrency: text(draft.defaultCurrency || draft.currency || draft.client && draft.client.defaultCurrency),
+          payrollContact: text(draft.client && draft.client.payrollContact),
+          reviewerEmail: text(draft.client && draft.client.reviewerEmail),
+          status: text(draft.client && draft.client.status, "active")
+        }),
+        companyName: companyName,
+        payPeriod: text(draft.payPeriod, new Date().toISOString().slice(0, 7)),
+        payDate: text(draft.payDate),
+        defaultCountry: country,
+        defaultCurrency: text(draft.defaultCurrency || draft.currency || draft.client && draft.client.defaultCurrency),
+        languageLane: text(draft.languageLane, "en"),
+        runStatus: "draft",
+        lastCalculatedAt: new Date().toISOString(),
+        brand: draft.brand || {},
+        workflow: draft.workflow || {},
+        employees: Array.isArray(draft.employees) && draft.employees.length ? draft.employees : local.employees,
+        rows: normalizedRows,
+        summary: buildDraftSummary(normalizedRows)
+      };
     }
 
     function setAccount(status) {
@@ -638,7 +1053,7 @@
         escapeHtml(email),
         "</div>",
         '<div class="apo-card-note">',
-        escapeHtml(status.isPro ? expires : "Sign in with a Pro account to unlock account-backed workflows."),
+        escapeHtml(status.isPro ? expires : "Sign in with a Pro account to save payroll runs to your account."),
         "</div>",
         "</div>",
         pill
@@ -670,16 +1085,23 @@
 
     function renderReadiness(data) {
       var model = buildPayrollModel(data);
+      var reminderSummary = reminderSummaryForModel(model);
 
       var tasks = [
-        [model.missingPayment, "Missing payment details", "Active employee records without a bank or mobile-money route.", "warn"],
+        [model.setupScore + "%", "Setup completeness", model.nextSetupAction ? "Next action: " + model.nextSetupAction.label + "." : "Company setup is ready for a payroll month.", model.setupScore >= 84 ? "pro" : "warn"],
+        [model.previousRunAvailable ? "Ready" : "Open", "Next payroll can start from previous run", model.previousRunAvailable ? "Use Start from previous run in the workspace to create the next month without rebuilding payroll." : "Save a payroll month first, then use it as the next run baseline.", model.previousRunAvailable ? "pro" : "blue"],
+        [model.varianceReviewNeeded ? "Needed" : "Clear", "Variance review needed", model.varianceReviewNeeded ? "A cloned payroll month is waiting for previous-vs-current variance acknowledgement." : "No unacknowledged cloned-run variance is loaded on this device.", model.varianceReviewNeeded ? "warn" : "pro"],
+        [model.missingPayment, "Missing payment details", "Active employee records without a bank or mobile-money route. Source: " + (model.employeeSource === "account" ? "account employee master." : model.employeeSource === "device" ? "records saved on this device." : "no employee master yet."), "warn"],
         [model.missingStat, "Missing statutory IDs", "Employee records missing tax, pension, or social security identifiers.", "warn"],
-        [model.approvalPending, "Approval pending", "Cloud runs waiting for reviewer action.", "blue"],
+        [model.approvalPending, "Approval pending", "Saved payroll runs waiting for reviewer action.", "blue"],
         [model.warnings, "Run warnings", "Rows needing human review before handoff.", "warn"],
-        [model.unsyncedItems, "Saved on this device payroll work", "Device-only drafts or saved runs that are not account-backed sync.", "blue"]
+        [model.unsyncedItems, "Saved on this device payroll work", "Device drafts or saved runs that are not in account history yet.", "blue"]
       ];
 
-      els.metricEmployees.textContent = model.local.employees.length;
+      els.metricClients.textContent = reminderSummary.ready ? "Ready" : "Open";
+      els.metricRuns.textContent = String(reminderSummary.needsAction);
+      els.metricReview.textContent = String(reminderSummary.approvalPending);
+      els.metricEmployees.textContent = String(reminderSummary.exportPending);
       els.readinessList.innerHTML = tasks.map(function (task) {
         return [
           '<article class="apo-task">',
@@ -700,7 +1122,35 @@
         ].join("");
       }).join("");
       renderCloseControls(data);
+      renderReminderCenter(reminderSummary);
       renderLocalWorkQueue(data);
+    }
+
+    function renderReminderCenter(summary) {
+      if (!els.reminderCenterList) return;
+      var items = summary && Array.isArray(summary.items) ? summary.items : [];
+      if (!items.length) {
+        els.reminderCenterList.innerHTML = '<div class="apo-empty">No active reminders. Keep checking the workspace before approving or exporting the next payroll run.</div>';
+        return;
+      }
+      els.reminderCenterList.innerHTML = items.map(function (item) {
+        return [
+          '<article class="apo-task">',
+          '<div><h3>',
+          escapeHtml(item[0]),
+          '</h3><p>',
+          escapeHtml(item[1]),
+          '</p></div>',
+          '<div class="apo-task-meta"><span class="apo-pill ',
+          escapeHtml(item[2]),
+          '">Needs action</span><a class="apo-btn" href="',
+          escapeHtml(item[4]),
+          '">',
+          escapeHtml(item[3]),
+          '</a></div>',
+          '</article>'
+        ].join("");
+      }).join("");
     }
 
     function readinessLabel(score) {
@@ -719,17 +1169,21 @@
       els.readinessLabel.textContent = readinessLabel(score);
       els.readinessBar.style.width = score + "%";
       els.readinessBar.style.background = score >= 82 ? "var(--apo-green)" : score >= 64 ? "var(--apo-blue)" : score >= 42 ? "var(--apo-amber)" : "var(--apo-red)";
-      els.readinessCopy.textContent = "Score is reduced by missing payment routes, missing statutory IDs, run warnings, pending approvals, unexported runs, and unsynced salary work.";
+      els.readinessCopy.textContent = "Score combines setup completeness, employee payment/statutory readiness from " + (model.employeeSource === "account" ? "account records" : model.employeeSource === "device" ? "records saved on this device" : "employee records") + ", Close Room checklist completion, review warnings, approvals, handoff exports, and local draft work.";
 
+      var setupTone = model.setupScore >= 84 ? "pro" : model.setupScore > 0 ? "warn" : "blue";
       var captureTone = model.hasPayrollWork ? "pro" : "warn";
       var reviewTone = model.warnings ? "warn" : model.hasPayrollWork ? "pro" : "blue";
       var approvalTone = model.approvedRuns ? "pro" : model.approvalPending ? "warn" : "blue";
       var handoffTone = model.exportedRuns ? "pro" : model.hasPayrollWork ? "warn" : "blue";
+      var recurringTone = model.varianceReviewNeeded ? "warn" : model.previousRunAvailable ? "pro" : "blue";
       var stages = [
-        ["Capture", captureTone, model.cloudRows + model.localRows + " rows", model.activeEmployees + " active employee records", model.hasPayrollWork ? "Payroll data exists. Check completeness before review." : "Create a draft run or import employees to start."],
-        ["Review", reviewTone, model.warnings + " warnings", model.missingPayment + model.missingStat + " employee gaps", model.warnings ? "Resolve warnings before accountant handoff." : "No cloud warning rows loaded yet."],
-        ["Approve", approvalTone, model.approvalPending + " pending", model.approvedRuns + " approved", model.approvalPending ? "Reviewer action is needed." : "No pending approval found in loaded cloud runs."],
-        ["Handoff", handoffTone, model.exportedRuns + " exported", model.unsyncedItems + " saved on this device", model.exportedRuns ? "At least one cloud run is exported." : "Generate handoff exports after review and approval."]
+        ["Setup", setupTone, model.setupScore + "% complete", model.setupMode === "account" ? "Saved to account" : model.setupMode === "device" ? "Saved on this device" : "Not started", model.nextSetupAction ? "Next setup action: " + model.nextSetupAction.label + "." : "Company setup is ready for a payroll month."],
+        ["Recurring", recurringTone, model.previousRunAvailable ? "Baseline ready" : "No baseline", model.varianceReviewNeeded ? "Variance review needed" : "Variance clear", model.varianceReviewNeeded ? "A cloned run must be variance-reviewed before approval." : model.previousRunAvailable ? "Next payroll can start from a previous saved run." : "Save a completed month to create a recurring baseline."],
+        ["Capture", captureTone, model.cloudRows + model.localRows + " rows", model.activeEmployees + " active employee records", model.employeeSource === "account" ? "Employee readiness is using account-saved employee master records." : model.hasPayrollWork ? "Payroll data exists. Check completeness before review." : "Create a draft run or import employees to start."],
+        ["Review", reviewTone, model.warnings + " warnings", model.missingPayment + model.missingStat + " employee gaps", model.warnings ? "Resolve warnings before accountant handoff." : "No review warning rows loaded yet."],
+        ["Approve", approvalTone, model.approvalPending + " pending", model.approvedRuns + " approved", model.approvalPending ? "Reviewer action is needed." : "No saved payroll run is waiting for reviewer action."],
+        ["Handoff", handoffTone, model.exportedRuns + " exported", model.unsyncedItems + " saved on this device", model.exportedRuns ? "At least one saved payroll run has an export record." : "Generate handoff exports after review and approval."]
       ];
 
       els.closeStageBoard.innerHTML = stages.map(function (stage) {
@@ -755,15 +1209,12 @@
       }).join("");
 
       var checks = [
-        [model.clients.length > 0, "Client or company context", "Cloud client metadata is loaded for the signed-in account."],
-        [model.activeEmployees > 0, "Employee records", "At least one active employee record exists in local payroll master data."],
-        [model.missingPayment === 0 && model.activeEmployees > 0, "Payment route coverage", "Active employees have bank or mobile-money handoff details."],
-        [model.missingStat === 0 && model.activeEmployees > 0, "Statutory ID coverage", "Active employees have tax or pension/social security identifiers."],
-        [model.warnings === 0 && model.hasPayrollWork, "Warnings cleared", "Loaded cloud runs do not show unresolved review warnings."],
-        [model.approvalPending === 0 && model.hasPayrollWork, "Approval queue clear", "No loaded cloud run is waiting for reviewer action."],
-        [model.exportedRuns > 0, "Handoff exports", "At least one loaded cloud run has reached exported state."],
-        [model.unsyncedItems === 0, "Saved on this device data resolved", "No local browser draft or saved run is waiting to be synced."]
-      ];
+        [model.setupScore >= 84, "Company setup", model.nextSetupAction ? model.nextSetupAction.detail : "Company setup defaults are ready."],
+        [model.clients.length > 0 || model.setupMode === "device", "Client or company context", model.setupMode === "account" ? "Client metadata is loaded for the signed-in account." : "Client setup exists on this device."],
+        [model.unsyncedItems === 0, "Saved on this device data resolved", "No device draft or saved run is waiting to be saved to the account."]
+      ].concat(model.closeChecks.map(function (check) {
+        return [check.ok, check.label, check.detail];
+      }));
 
       els.closeChecklist.innerHTML = checks.map(function (check) {
         var done = !!check[0];
@@ -791,10 +1242,10 @@
         rows.push(["Current draft", model.local.draft.companyName || "Untitled company", model.local.draft.payPeriod || "No period", "Device-only"]);
       }
       model.local.savedRuns.slice(0, 6).forEach(function (run, index) {
-        rows.push(["Saved run " + (index + 1), run.companyName || run.company || "Saved payroll run", run.payPeriod || "No period", "Local snapshot"]);
+        rows.push(["Saved run " + (index + 1), run.companyName || run.company || "Saved payroll run", run.payPeriod || "No period", "Saved on this device"]);
       });
       if (!rows.length) {
-        els.localWorkQueue.innerHTML = '<div class="apo-empty">No local draft or saved payroll run found on this device.</div>';
+        els.localWorkQueue.innerHTML = '<div class="apo-empty">No device draft or saved payroll run yet. Open the run workspace, add employees, then save a run snapshot.</div>';
         return;
       }
       els.localWorkQueue.innerHTML = rows.map(function (row) {
@@ -805,7 +1256,7 @@
           "</h3><p>",
           escapeHtml(row[2] + " - " + row[3]),
           "</p></div>",
-          '<div class="apo-task-meta"><span class="apo-pill warn">Local only</span></div>',
+          '<div class="apo-task-meta"><span class="apo-pill warn">Saved on this device</span></div>',
           "</article>"
         ].join("");
       }).join("");
@@ -813,29 +1264,38 @@
 
     function renderCloudEmpty(message) {
       var local = localState();
+      pageState.cloudData = null;
+      pageState.selectedRunId = "";
       els.metricClients.textContent = "0";
       els.metricRuns.textContent = String(local.savedRuns.length + (local.hasDraft ? 1 : 0));
       els.metricReview.textContent = "0";
-      els.runQueue.innerHTML = '<div class="apo-empty">' + escapeHtml(message || "No cloud payroll runs yet.") + "</div>";
-      els.recentRunsBody.innerHTML = '<tr><td colspan="6">' + escapeHtml(message || "No cloud payroll runs yet.") + "</td></tr>";
-      els.clientList.innerHTML = '<div class="apo-empty">No cloud clients loaded yet.</div>';
+      els.runQueue.innerHTML = '<div class="apo-empty">' + escapeHtml(message || "No saved payroll runs yet. Open the run workspace, add employees, then save the run to your account.") + "</div>";
+      els.recentRunsBody.innerHTML = '<tr><td colspan="7">' + escapeHtml(message || "No saved payroll runs yet.") + "</td></tr>";
+      els.clientList.innerHTML = '<div class="apo-empty">No saved clients loaded yet. Save client details from the run workspace to activate this board.</div>';
+      renderActionControls(null);
+      renderAuditTrail([]);
       renderReadiness(null);
     }
 
     function renderCloud(data) {
+      pageState.cloudData = data || {};
       var local = localState();
       var dashboard = data.dashboard || {};
       var runs = Array.isArray(data.runs) ? data.runs : [];
       var clients = Array.isArray(data.clients) ? data.clients : [];
       var review = Number(dashboard.needs_review_runs || 0) + Number(dashboard.warning_rows || 0) + Number(dashboard.approval_runs || 0);
+      if (runs.length && !runs.some(function (run) { return runId(run) === pageState.selectedRunId; })) {
+        pageState.selectedRunId = runId(runs[0]);
+      }
 
       els.metricClients.textContent = String(clients.length);
       els.metricRuns.textContent = String(Number(dashboard.run_count || runs.length) + local.savedRuns.length + (local.hasDraft ? 1 : 0));
       els.metricReview.textContent = String(review);
 
       if (!runs.length) {
-        els.runQueue.innerHTML = '<div class="apo-empty">No cloud payroll runs yet. Open the run workspace, prepare a payroll month, then sync it to make this queue live.</div>';
-        els.recentRunsBody.innerHTML = '<tr><td colspan="6">No cloud runs yet.</td></tr>';
+        pageState.selectedRunId = "";
+        els.runQueue.innerHTML = '<div class="apo-empty">No saved payroll runs yet. Open the run workspace, prepare a payroll month, then save it to your account to make this queue live.</div>';
+        els.recentRunsBody.innerHTML = '<tr><td colspan="7">No saved payroll runs yet.</td></tr>';
       } else {
         var priority = runs.slice().sort(function (a, b) {
           var aScore = Number(a.warning_count || 0) + Number(a.needs_review_count || 0) + (a.approval_status === "pending" ? 20 : 0);
@@ -859,6 +1319,9 @@
             '<span class="apo-pill warn">',
             escapeHtml(String(Number(run.warning_count || 0))),
             " warnings</span>",
+            '<button class="apo-btn" type="button" data-run-action="select" data-run-id="',
+            escapeHtml(runId(run)),
+            '">Manage</button>',
             "</div>",
             "</article>"
           ].join("");
@@ -887,13 +1350,16 @@
             "<td>",
             escapeHtml(formatDate(run.updated_at)),
             "</td>",
+            '<td><button class="apo-btn" type="button" data-run-action="select" data-run-id="',
+            escapeHtml(runId(run)),
+            '">Manage</button></td>',
             "</tr>"
           ].join("");
         }).join("");
       }
 
       if (!clients.length) {
-        els.clientList.innerHTML = '<div class="apo-empty">No cloud clients yet. Save client metadata from the run workspace to activate this board.</div>';
+        els.clientList.innerHTML = '<div class="apo-empty">No account clients yet. Save client metadata from the run workspace to activate this board.</div>';
       } else {
         els.clientList.innerHTML = clients.slice(0, 8).map(function (client) {
           var country = client.default_country || client.country || "Country";
@@ -915,21 +1381,251 @@
         }).join("");
       }
 
+      renderActionControls(data);
       renderReadiness(data);
     }
 
+    function renderActionControls(data) {
+      var local = localState();
+      var runs = data && Array.isArray(data.runs) ? data.runs : [];
+      var signedIn = isSignedIn();
+      var draftRowCount = draftRows(local.draft || {}).length;
+      var selected = selectedRun();
+      var status = selectedRunStatus();
+      var canUseRun = signedIn && selected && runId(selected) && !pageState.busy;
+      var canReopen = ["review", "approved", "finalized", "exported"].indexOf(status) >= 0;
+      if (els.actionRunSelect) {
+        els.actionRunSelect.innerHTML = runs.length
+          ? runs.map(function (run) {
+              var id = runId(run);
+              var label = [
+                run.company_name || run.title || "Payroll run",
+                String(run.pay_period_start || "").slice(0, 7) || "No period",
+                text(run.status, "draft")
+              ].join(" - ");
+              return '<option value="' + escapeHtml(id) + '"' + (id === pageState.selectedRunId ? " selected" : "") + ">" + escapeHtml(label) + "</option>";
+            }).join("")
+          : '<option value="">No saved payroll runs loaded</option>';
+        els.actionRunSelect.disabled = pageState.busy || !signedIn || !runs.length;
+      }
+      if (els.syncDraftBtn) els.syncDraftBtn.disabled = pageState.busy || !signedIn || draftRowCount === 0;
+      if (els.openSelectedRunBtn) els.openSelectedRunBtn.disabled = !canUseRun;
+      if (els.requestApprovalActionBtn) els.requestApprovalActionBtn.disabled = !canUseRun || ["draft", "reopened"].indexOf(status) < 0;
+      if (els.requestChangesActionBtn) els.requestChangesActionBtn.disabled = !canUseRun || ["review", "approved"].indexOf(status) < 0;
+      if (els.approveActionBtn) els.approveActionBtn.disabled = !canUseRun || status !== "review";
+      if (els.finalizeActionBtn) els.finalizeActionBtn.disabled = !canUseRun || status !== "approved";
+      if (els.payslipActionBtn) els.payslipActionBtn.disabled = !canUseRun;
+      if (els.statutoryActionBtn) els.statutoryActionBtn.disabled = !canUseRun;
+      if (els.exportActionBtn) els.exportActionBtn.disabled = !canUseRun || ["finalized", "exported"].indexOf(status) < 0;
+      if (els.reopenActionBtn) els.reopenActionBtn.disabled = !canUseRun || !canReopen;
+      if (els.auditActionBtn) els.auditActionBtn.disabled = !canUseRun;
+
+      if (!signedIn) {
+        setActionStatus("Sign in with a Pro account to use saved payroll run actions.", "warn");
+      } else if (!runs.length && draftRowCount) {
+        setActionStatus("You have a payroll draft ready to save to your account.", "");
+      } else if (!runs.length) {
+        setActionStatus("No saved payroll runs yet. Add payroll rows in the run workspace, then save the run to your account.", "");
+      } else if (selected) {
+        setActionStatus("Selected run: " + (selected.company_name || selected.title || "Payroll run") + " is " + status.replace(/_/g, " ") + ".", "");
+      }
+    }
+
+    function renderAuditTrail(events) {
+      if (!els.auditList) return;
+      if (!Array.isArray(events) || !events.length) {
+        els.auditList.innerHTML = '<div class="apo-empty">No audit events loaded for this run yet.</div>';
+        return;
+      }
+      els.auditList.innerHTML = events.slice(0, 12).map(function (event) {
+        return [
+          '<article class="apo-audit-item">',
+          '<strong>',
+          escapeHtml((event.action || "payroll_event").replace(/_/g, " ")),
+          '</strong>',
+          '<span>',
+          escapeHtml([event.summary || "Payroll action recorded", formatDate(event.created_at)].filter(Boolean).join(" - ")),
+          '</span>',
+          '</article>'
+        ].join("");
+      }).join("");
+    }
+
+    async function loadSelectedAudit() {
+      var selected = selectedRun();
+      if (!selected) {
+        renderAuditTrail([]);
+        setActionStatus("Choose a saved payroll run before loading approval history.", "warn");
+        return;
+      }
+      pageState.busy = true;
+      renderActionControls(pageState.cloudData);
+      setActionStatus("Loading audit trail...", "");
+      try {
+        var data = await apiRequest(API + "?action=audit&run_id=" + encodeURIComponent(runId(selected)));
+        pageState.auditEvents = Array.isArray(data.events) ? data.events : [];
+        renderAuditTrail(pageState.auditEvents);
+        renderReadiness(pageState.cloudData);
+        setActionStatus("Audit trail loaded for " + (selected.company_name || selected.title || "selected run") + ".", "ok");
+      } catch (err) {
+        pageState.auditEvents = [];
+        renderAuditTrail([]);
+        setActionStatus("Audit trail could not load: " + (err.message || "unknown error"), "warn");
+      } finally {
+        pageState.busy = false;
+        renderActionControls(pageState.cloudData);
+      }
+    }
+
+    async function reloadAfterRunAction(message, selectedId) {
+      var data = await loadPayrollDashboard();
+      if (selectedId) pageState.selectedRunId = selectedId;
+      renderActionControls(data || pageState.cloudData);
+      if (selectedId) await loadSelectedAudit();
+      setActionStatus(message, "ok");
+    }
+
+    async function syncCurrentDraft() {
+      if (!isSignedIn()) {
+        setActionStatus("Sign in before saving salary-sensitive payroll runs to your account.", "warn");
+        return;
+      }
+      var payload = buildDraftCloudPayload();
+      if (!payload.rows.length) {
+        setActionStatus("Add at least one active payroll row in the run workspace before saving to your account.", "warn");
+        return;
+      }
+      pageState.busy = true;
+      renderActionControls(pageState.cloudData);
+      setActionStatus("Saving current payroll draft to your account...", "");
+      try {
+        var data = await apiRequest(API, {
+          method: "POST",
+          body: { action: "save_run", run: payload }
+        });
+        if (data.workspaceState) localStorage.setItem(DRAFT_KEY, JSON.stringify(data.workspaceState));
+        pageState.selectedRunId = data.run && data.run.id || data.workspaceState && data.workspaceState.cloudRunId || "";
+        await reloadAfterRunAction("Payroll run saved to your account.", pageState.selectedRunId);
+      } catch (err) {
+        setActionStatus("Save failed: " + (err.message || "unknown error"), "warn");
+      } finally {
+        pageState.busy = false;
+        renderActionControls(pageState.cloudData);
+      }
+    }
+
+    async function openSelectedRun() {
+      var selected = selectedRun();
+      if (!selected) return;
+      pageState.busy = true;
+      renderActionControls(pageState.cloudData);
+      setActionStatus("Loading selected run into the workspace...", "");
+      try {
+        var data = await apiRequest(API + "?action=load&run_id=" + encodeURIComponent(runId(selected)));
+        if (!data.workspaceState) throw new Error("The payroll API did not return workspace state");
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(data.workspaceState));
+        setActionStatus("Run loaded. Opening the payroll workspace now.", "ok");
+        window.location.href = "/tools/afropayroll-os/workspace.html";
+      } catch (err) {
+        setActionStatus("Could not open selected run: " + (err.message || "unknown error"), "warn");
+      } finally {
+        pageState.busy = false;
+        renderActionControls(pageState.cloudData);
+      }
+    }
+
+    async function postRunAction(action, extraBody, successMessage) {
+      var selected = selectedRun();
+      if (!selected) {
+        setActionStatus("Choose a saved payroll run first.", "warn");
+        return;
+      }
+      var selectedId = runId(selected);
+      var note = text(els.actionNote && els.actionNote.value);
+      if (["approve_run", "finalize_run"].indexOf(action) >= 0 && !note) {
+        setActionStatus("Add an approval note before approving or finalizing this run.", "warn");
+        if (els.actionNote) els.actionNote.focus();
+        return;
+      }
+      if (["request_changes", "reopen_run"].indexOf(action) >= 0 && !note) {
+        setActionStatus("Add a reason before requesting changes or reopening this run.", "warn");
+        if (els.actionNote) els.actionNote.focus();
+        return;
+      }
+      pageState.busy = true;
+      renderActionControls(pageState.cloudData);
+      setActionStatus("Saving payroll action...", "");
+      try {
+        await apiRequest(API, {
+          method: "POST",
+          body: Object.assign({
+            action: action,
+            run_id: selectedId,
+            note: note
+          }, extraBody || {})
+        });
+        await reloadAfterRunAction(successMessage || "Payroll action recorded.", selectedId);
+      } catch (err) {
+        setActionStatus("Payroll action failed: " + (err.message || "unknown error"), "warn");
+      } finally {
+        pageState.busy = false;
+        renderActionControls(pageState.cloudData);
+      }
+    }
+
+    function requestApproval() {
+      return postRunAction("request_approval", {}, "Run sent for approval.");
+    }
+
+    function requestChangesSelectedRun() {
+      return postRunAction("request_changes", {}, "Changes requested and run reopened for corrections.");
+    }
+
+    function approveSelectedRun() {
+      return postRunAction("approve_run", {}, "Run approved and audit trail updated.");
+    }
+
+    function finalizeSelectedRun() {
+      return postRunAction("finalize_run", {}, "Run finalized for handoff.");
+    }
+
+    function generatePayslipRecords() {
+      return postRunAction("generate_payslips", { template_key: "standard" }, "Payslip records generated for the selected run.");
+    }
+
+    function generateStatutoryRecords() {
+      return postRunAction("generate_statutory_packs", { pack_version: "command-center-" + new Date().toISOString().slice(0, 10) }, "Statutory review pack records created.");
+    }
+
+    function recordHandoffExport() {
+      var selected = selectedRun();
+      var markExported = selectedRunStatus() === "finalized";
+      return postRunAction("record_export", {
+        export_type: "handoff_note_md",
+        file_name: "payroll-handoff-" + new Date().toISOString().slice(0, 10) + ".md",
+        row_count: selected ? Number(selected.row_count || 0) : 0,
+        mark_exported: markExported
+      }, markExported ? "Handoff export recorded and run marked exported." : "Handoff export recorded.");
+    }
+
+    function reopenSelectedRun() {
+      return postRunAction("reopen_run", {}, "Run reopened for corrections.");
+    }
+
+    function selectRun(id) {
+      pageState.selectedRunId = text(id);
+      pageState.auditEvents = [];
+      renderActionControls(pageState.cloudData);
+      renderAuditTrail([]);
+      if (pageState.selectedRunId) setActionStatus("Selected run. Use the action buttons to continue the workflow.", "");
+    }
+
     async function loadPayrollDashboard() {
-      var token = authToken();
-      if (!token) {
-        renderCloudEmpty("Sign in to load account-backed payroll dashboard data.");
+      if (!isSignedIn()) {
+        renderCloudEmpty("Sign in to load saved payroll dashboard data.");
         return null;
       }
-      var res = await fetch(API + "?action=dashboard&limit=100", {
-        headers: { Authorization: "Bearer " + token, Accept: "application/json" },
-        credentials: "same-origin"
-      });
-      var data = await res.json();
-      if (!res.ok) throw new Error(data && data.error ? data.error : "Payroll dashboard failed");
+      var data = await apiRequest(API + "?action=dashboard&limit=100");
       renderCloud(data);
       return data;
     }
@@ -947,12 +1643,40 @@
       try {
         await loadPayrollDashboard();
       } catch (err) {
-        renderCloudEmpty("Cloud payroll dashboard could not load: " + (err.message || "unknown error"));
+        renderCloudEmpty("Payroll dashboard could not load: " + (err.message || "unknown error"));
       }
     }
 
     els.refreshBtn.addEventListener("click", refreshAll);
     els.runRefreshBtn.addEventListener("click", refreshAll);
+    if (els.actionRunSelect) {
+      els.actionRunSelect.addEventListener("change", function () {
+        selectRun(els.actionRunSelect.value);
+      });
+    }
+    els.runQueue.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-run-action]");
+      if (!button) return;
+      selectRun(button.getAttribute("data-run-id"));
+      document.getElementById("action-title").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    els.recentRunsBody.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-run-action]");
+      if (!button) return;
+      selectRun(button.getAttribute("data-run-id"));
+      document.getElementById("action-title").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    els.syncDraftBtn.addEventListener("click", syncCurrentDraft);
+    els.openSelectedRunBtn.addEventListener("click", openSelectedRun);
+    els.requestApprovalActionBtn.addEventListener("click", requestApproval);
+    if (els.requestChangesActionBtn) els.requestChangesActionBtn.addEventListener("click", requestChangesSelectedRun);
+    els.approveActionBtn.addEventListener("click", approveSelectedRun);
+    els.finalizeActionBtn.addEventListener("click", finalizeSelectedRun);
+    els.payslipActionBtn.addEventListener("click", generatePayslipRecords);
+    els.statutoryActionBtn.addEventListener("click", generateStatutoryRecords);
+    els.exportActionBtn.addEventListener("click", recordHandoffExport);
+    els.reopenActionBtn.addEventListener("click", reopenSelectedRun);
+    els.auditActionBtn.addEventListener("click", loadSelectedAudit);
     window.addEventListener("afro-auth-change", refreshAll);
     refreshAll();
   })();

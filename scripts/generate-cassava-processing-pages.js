@@ -77,7 +77,7 @@ function generatePage(c) {
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 
-<script src="/assets/js/components/navbar.min.js" defer><\/script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer><\/script>
 <script src="/assets/js/components/footer.min.js" defer><\/script>
 
 <style>

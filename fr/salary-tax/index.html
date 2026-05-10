@@ -37,8 +37,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/salary-tax.css?v=4398afbd">
-<script src="/assets/js/components/tool-registry.min.js?v=1344f2c7" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=378ea24c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 </head>
 <body>
@@ -93,8 +93,8 @@
 <main class="hub-main">
   <section class="hub-section" id="hub-cards">
     <div class="sec-ey">Sous-catégories</div>
-    <h2 class="sec-title">La structure anglaise, pilotée par la couverture française réelle</h2>
-    <p class="sec-sub">Chaque carte reprend une famille d'outils du hub anglais, mais les compteurs et les parcours ne montrent que les pages françaises déjà publiées. C'est plus clair pour les utilisateurs, plus propre pour le SEO, et plus facile à faire grandir.</p>
+    <h2 class="sec-title">Un parcours français fondé sur la couverture réelle</h2>
+    <p class="sec-sub">Chaque carte mène vers une famille utile sans prétendre que tout le catalogue anglais est déjà localisé. Les compteurs et les parcours ne montrent que les pages françaises déjà publiées.</p>
     <div class="hub-cards">
       <a class="hub-card" href="/fr/salary-tax/paye/">
         <div class="hc-icon" aria-hidden="true">💰</div>
@@ -232,7 +232,7 @@
         <div class="why-icon" aria-hidden="true">🧭</div>
         <div class="why-body">
           <h3>Navigation claire</h3>
-          <p>Le visiteur arrive sur le même niveau de lecture que sur l'anglais : une vue d'ensemble, puis la bonne famille d'outils, puis la page utile.</p>
+          <p>Le visiteur arrive sur une vue claire : les familles d'outils déjà prêtes en français, puis la page utile, sans passer par des alias historiques.</p>
         </div>
       </div>
       <div class="why-card">
@@ -275,7 +275,7 @@
         <p>Commencez par la sous-catégorie PAYE si vous voulez calculer un salaire net pays par pays. Si vous ciblez surtout les marchés francophones, ouvrez aussi le hub Afrique francophone.</p>
       </details>
       <details>
-        <summary>Toute la profondeur anglaise est-elle déjà disponible en français ?</summary>
+        <summary>Tout le catalogue AfroTools est-il déjà disponible en français ?</summary>
         <p>Pas encore. Le hub français grandit à mesure que de vraies pages françaises sont mises en ligne. La structure est prête, mais seules les pages déjà publiées sont affichées ici.</p>
       </details>
     </div>
@@ -387,6 +387,15 @@ function _initFrenchSalaryTaxHub() {
     "retirement-planner": "/fr/tools/projection-retraite/",
     "crypto-tax": "/fr/tools/impot-crypto/"
   };
+  var PREFERRED_FR_HREFS = {
+    "/fr/cote-divoire/ci-paye": "/fr/cote-divoire/calculateur-salaire-net",
+    "/fr/dr-congo/cd-paye": "/fr/rdc/calculateur-salaire-net",
+    "/fr/niger/ne-paye": "/fr/niger/calculateur-salaire-net",
+    "/fr/guinea/gn-paye": "/fr/guinee/calculateur-salaire-net",
+    "/fr/congo/cg-paye": "/fr/congo/calculateur-salaire-net",
+    "/fr/gabon/ga-paye": "/fr/gabon/calculateur-salaire-net",
+    "/fr/congo/cg-vat": "/fr/congo/calculateur-tva"
+  };
   var FR_TOOL_COPY = {
     "paye-calculator": { name: "Calculateur PAYE Afrique", desc: "Accédez aux calculateurs de salaire net et aux retenues pays par pays en Afrique." },
     "minimum-wage": { name: "Salaire minimum Afrique", desc: "Consultez les salaires minimums et les niveaux légaux des principaux marchés africains." },
@@ -434,7 +443,10 @@ function _initFrenchSalaryTaxHub() {
 
   function getFrenchHref(tool) {
     if (!tool || !tool.id) return null;
-    if (tool.lang === "fr" && tool.href && tool.href.indexOf("/fr/") === 0) return tool.href;
+    if (tool.lang === "fr" && tool.href && tool.href.indexOf("/fr/") === 0) {
+      var cleanHref = String(tool.href).replace(/\/$/, "");
+      return PREFERRED_FR_HREFS[cleanHref] || tool.href;
+    }
     if (FR_ROUTE_MAP[tool.id]) return FR_ROUTE_MAP[tool.id];
     if (/-paye$/.test(tool.id) && tool.href && tool.href.indexOf("/") === 0) return "/fr" + tool.href;
     return null;
@@ -527,7 +539,7 @@ function _initFrenchSalaryTaxHub() {
   if (heroCountryCount) heroCountryCount.textContent = String(Object.keys(representedCountries).length);
   if (heroTrustLine) {
     heroTrustLine.innerHTML = '<span class="hero-trust-dot" aria-hidden="true"></span>' +
-      allAvailable.length + " outils français déjà publiés, organisés comme le hub anglais";
+      allAvailable.length + " outils français déjà publiés, organisés par besoin";
   }
 
   function updateCardCounts() {

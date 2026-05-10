@@ -32,7 +32,10 @@ const EXCLUDE_PATTERNS = [
   /style-guide\.html$/i,
   /logo-system\.html$/i,
   /afrotools-mission-control\.html$/i,
+  /fr\/widgets\/iframe\/template\.html$/i,
   /mc-7a2f9x\.html$/i,
+  /tools\/afrostream\/admin\.html$/i,
+  /widgets\/iframe\/template\.html$/i,
   /index_old\.html$/i,
   /^404\.html$/i,
 ];

@@ -37,7 +37,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
@@ -364,7 +364,7 @@
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
         <input class="modal-input" type="text" name="name" id="pdfName" placeholder="Jina lako (hiari)" autocomplete="name">
         <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Anwani yako ya barua pepe" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Pata PDF Yangu →</button>
+        <button class="modal-submit" type="submit">Pata PDF yangu →</button>
       </form>
       <button class="modal-cancel" onclick="closePdfModal()">Hapana asante</button>
     </div>
@@ -485,7 +485,7 @@
       <a href="/sw/kenya/kikokotoo-kodi-mshahara/" class="more-tool-link">Kikokotoo Kenya PAYE</a>
       <a href="/sw/tanzania/kikokotoo-kodi-mshahara/" class="more-tool-link">Kikokotoo Tanzania PAYE</a>
       <a href="/sw/rwanda/kikokotoo-kodi-mshahara/" class="more-tool-link">Kikokotoo Rwanda PAYE</a>
-      <a href="/uganda/ug-paye/" class="more-tool-link">Uganda PAYE (Kiingereza)</a>
+      <a href="/sw/uganda/kikokotoo-vat/" class="more-tool-link">Kikokotoo cha VAT Uganda</a>
 <a href="/sw/mshahara-na-kodi/" class="more-tool-link">Mabanda ya Kodi — Nchi Zote</a>
       <a href="/sw/zana-zote/" class="more-tool-link">Zana Zote za AfroTools</a>
     </div>
@@ -832,7 +832,7 @@ async function getAI() {
   btn.disabled = true; btn.textContent = 'Inachambua\u2026';
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
-  const prompt = 'Uchambuzi wa PAYE Uganda (2025/26, URA):\n- Mshahara ghafi wa mwezi: UGX ' + Math.round(R.gross).toLocaleString() + '\n- NSSF employee (5%): UGX ' + Math.round(R.social).toLocaleString() + '/mo\n- Mapato yanayotozwa kodi baada ya NSSF: UGX ' + Math.round(R.gross - R.social).toLocaleString() + '/mo\n- PAYE ya mwezi: UGX ' + Math.round(R.monthlyPAYE).toLocaleString() + '\n- LST monthly: UGX ' + Math.round(R.lstMonthly).toLocaleString() + '\n- Mshahara halisi wa mwezi: UGX ' + Math.round(R.netMonthly).toLocaleString() + '\n- Kiwango halisi cha kodi: ' + pct(R.effectiveRate) + '\n- Ajira ya pili: ' + (R.isSecondary ? 'YES \u2014 flat 30% applied' : 'No') + '\nToa uchambuzi mfupi kwa Kiswahili: 1) Muhtasari wa nafasi ya PAYE Uganda 2) Njia mbili za kisheria za kupunguza kodi Uganda 3) Jambo moja la kuzingatia la URA 4) Kosa moja la kawaida kuhusu NSSF au LST. Chini ya maneno 200. Bila alama za markdown.';
+  const prompt = 'Uchambuzi wa PAYE Uganda (2025/26, URA):\n- Mshahara ghafi wa mwezi: UGX ' + Math.round(R.gross).toLocaleString() + '\n- Mchango wa mfanyakazi NSSF (5%): UGX ' + Math.round(R.social).toLocaleString() + '/mwezi\n- Mapato yanayotozwa kodi baada ya NSSF: UGX ' + Math.round(R.gross - R.social).toLocaleString() + '/mwezi\n- PAYE ya mwezi: UGX ' + Math.round(R.monthlyPAYE).toLocaleString() + '\n- LST ya mwezi: UGX ' + Math.round(R.lstMonthly).toLocaleString() + '\n- Mshahara halisi wa mwezi: UGX ' + Math.round(R.netMonthly).toLocaleString() + '\n- Kiwango halisi cha kodi: ' + pct(R.effectiveRate) + '\n- Ajira ya pili: ' + (R.isSecondary ? 'Ndiyo \u2014 kiwango tambarare cha 30% kimetumika' : 'Hapana') + '\nToa uchambuzi mfupi kwa Kiswahili: 1) Muhtasari wa nafasi ya PAYE Uganda 2) Njia mbili za kisheria za kupunguza kodi Uganda 3) Jambo moja la kuzingatia la URA 4) Kosa moja la kawaida kuhusu NSSF au LST. Chini ya maneno 200. Bila alama za markdown.';
   try {
     const reqH = { 'Content-Type': 'application/json' };
     if (window.AfroAuth) { const t = AfroAuth.getSessionToken(); if (t) reqH['Authorization'] = 'Bearer ' + t; }
@@ -850,7 +850,7 @@ async function getAI() {
     btn.textContent = 'Uliza swali la ufuatiliaji hapa chini \u2193';
   } catch (err) {
     respEl.className = 'ai-response'; respEl.textContent = err.message || 'Uchambuzi wa AI haupatikani kwa sasa.';
-    btn.disabled = false; btn.textContent = 'Jaribu Tena';
+    btn.disabled = false; btn.textContent = 'Jaribu tena';
   }
 }
 

@@ -22,6 +22,10 @@ const fs = require('fs');
 const path = require('path');
 
 const { fileToPublicRoute } = require('./lib/canonical-aliases');
+const {
+  frenchRouteForEnglishToolSource,
+  frenchToolSlugToEnglishSource,
+} = require('./lib/french-tool-route-map');
 
 // ── CONFIG ──────────────────────────────────────────────────────────
 
@@ -272,28 +276,115 @@ discoverTranslatedPages();
 
 const COUNTRY_FR_TO_EN = {
   'algerie': 'algeria', 'cameroun': 'cameroon', 'maroc': 'morocco',
-  'tunisie': 'tunisia', 'guinee': 'guinea', 'rdc': 'drc',
-  'dr-congo': 'drc', 'car': 'central-african-republic',
+  'tunisie': 'tunisia', 'guinee': 'guinea', 'rdc': 'dr-congo',
+  'dr-congo': 'dr-congo', 'car': 'central-african-republic',
   'eq-guinea': 'equatorial-guinea', 'cabo-verde': 'cape-verde',
+  'tchad': 'chad', 'centrafrique': 'central-african-republic',
+  'comores': 'comoros', 'mauritanie': 'mauritania',
+};
+
+const FRENCH_COUNTRY_SLUG_BY_EN = {
+  'algeria': 'algerie',
+  'cameroon': 'cameroun',
+  'morocco': 'maroc',
+  'tunisia': 'tunisie',
+  'guinea': 'guinee',
+  'dr-congo': 'rdc',
+  'drc': 'rdc',
+  'central-african-republic': 'centrafrique',
+  'car': 'centrafrique',
+  'chad': 'tchad',
+  'comoros': 'comores',
+  'mauritania': 'mauritanie',
 };
 
 const PAYE_SLUG_MAP = {
   'algerie':'algeria/dz-paye','burkina-faso':'burkina-faso/bf-paye',
-  'cameroun':'cameroon/cm-paye','congo':'congo/cg-paye',
-  'cote-divoire':'cote-divoire/ci-paye','gabon':'gabon/ga-paye',
-  'guinee':'guinea/gn-paye','mali':'mali/ml-paye','maroc':'morocco/ma-paye',
-  'niger':'niger/ne-paye','rdc':'drc','senegal':'senegal/sn-paye',
+  'burundi':'burundi/bi-paye','cameroun':'cameroon/cm-paye',
+  'centrafrique':'car/cf-paye','chad':'chad/td-paye',
+  'comores':'comoros/km-paye','congo':'congo/cg-paye',
+  'cote-divoire':'cote-divoire/ci-paye','djibouti':'djibouti/dj-paye',
+  'gabon':'gabon/ga-paye','guinee':'guinea/gn-paye',
+  'madagascar':'madagascar/mg-paye','mali':'mali/ml-paye',
+  'maroc':'morocco/ma-paye','mauritanie':'mauritania/mr-paye',
+  'niger':'niger/ne-paye','rdc':'dr-congo/cd-paye',
+  'senegal':'senegal/sn-paye','tchad':'chad/td-paye',
   'togo':'togo/tg-paye','tunisie':'tunisia/tn-paye',
 };
 
 const VAT_SLUG_MAP = {
-  'algerie':'algeria/dz-vat','burkina-faso':'burkina-faso/bf-vat',
-  'cameroun':'cameroon/cm-vat','congo':'congo/cg-vat',
-  'cote-divoire':'cote-divoire/ci-vat','gabon':'gabon/ga-vat',
-  'guinee':'guinea/gn-vat','mali':'mali/ml-vat','maroc':'morocco/ma-vat',
-  'niger':'niger/ne-vat','rdc':'drc','senegal':'senegal/sn-vat',
+  'algerie':'algeria/dz-vat','benin':'benin/bj-vat',
+  'burkina-faso':'burkina-faso/bf-vat','burundi':'burundi/bi-vat',
+  'cameroun':'cameroon/cm-vat','centrafrique':'car/cf-vat',
+  'chad':'chad/td-vat','comores':'comoros/km-vat',
+  'congo':'congo/cg-vat','cote-divoire':'cote-divoire/ci-vat',
+  'gabon':'gabon/ga-vat','guinee':'guinea/gn-vat',
+  'madagascar':'madagascar/mg-vat','mali':'mali/ml-vat',
+  'maroc':'morocco/ma-vat','mauritanie':'mauritania/mr-vat',
+  'niger':'niger/ne-vat','rdc':'dr-congo/cd-vat',
+  'senegal':'senegal/sn-vat','tchad':'chad/td-vat',
   'togo':'togo/tg-vat','tunisie':'tunisia/tn-vat',
 };
+
+function resolveFrenchRouteFile(frRoute) {
+  const clean = frRoute.replace(/^\/+/, '').replace(/\/+$/, '');
+  const indexPath = path.join(ROOT, clean, 'index.html');
+  if (fs.existsSync(indexPath)) return indexPath;
+  const htmlPath = path.join(ROOT, clean + '.html');
+  if (fs.existsSync(htmlPath)) return htmlPath;
+  const rawPath = path.join(ROOT, clean);
+  if (fs.existsSync(rawPath) && fs.statSync(rawPath).isFile()) return rawPath;
+  return null;
+}
+
+function preferredFrenchRouteForEnglishPage(enPage) {
+  const clean = enPage.replace(/^\//, '').replace(/\/$/, '');
+  if (clean === 'document-pdf' && resolveFrenchRouteFile('/fr/document-pdf')) {
+    return '/fr/document-pdf/';
+  }
+
+  const mappedToolRoute = frenchRouteForEnglishToolSource(clean);
+  if (mappedToolRoute && resolveFrenchRouteFile(mappedToolRoute)) {
+    return `${mappedToolRoute}/`;
+  }
+
+  const parts = clean.split('/');
+  const country = parts[0];
+  const slug = parts[1] || '';
+
+  if (country === 'cars' && slug) {
+    const preferredCarsParts = parts.slice();
+    preferredCarsParts[1] = FRENCH_COUNTRY_SLUG_BY_EN[preferredCarsParts[1]] || preferredCarsParts[1];
+    const route = `/fr/${preferredCarsParts.join('/')}`;
+    if (resolveFrenchRouteFile(route)) return route + '/';
+  }
+
+  const preferredCountry = FRENCH_COUNTRY_SLUG_BY_EN[country] || country;
+  const isPaye = /-paye$|salary-tax$/i.test(slug);
+  const isVat = /-vat$/i.test(slug);
+
+  if (country && slug && isPaye) {
+    const route = `/fr/${preferredCountry}/calculateur-salaire-net`;
+    if (resolveFrenchRouteFile(route)) return route;
+  }
+
+  if (country && slug && isVat) {
+    const route = `/fr/${preferredCountry}/calculateur-tva`;
+    if (resolveFrenchRouteFile(route)) return route;
+  }
+
+  if (clean && !slug && FRENCH_COUNTRY_SLUG_BY_EN[country]) {
+    const route = `/fr/${preferredCountry}/`;
+    if (resolveFrenchRouteFile(route)) return route;
+  }
+
+  return null;
+}
+
+function preferredFrenchUrlForEnglishPage(enPage) {
+  const route = preferredFrenchRouteForEnglishPage(enPage);
+  return route ? SITE_URL + route : null;
+}
 
 // existingFrPages: Map<enPagePath, frUrl>
 // Maps English page path -> French URL for existing hand-crafted pages
@@ -316,10 +407,25 @@ function discoverExistingFrPages() {
         let enPage = null;
 
         // French tool slugs -> English equivalents
-        if (fileBase === 'calculateur-salaire-net' && PAYE_SLUG_MAP[country]) {
+        if (country === 'cars') {
+          const carsParts = parts.slice(1);
+          if (carsParts[carsParts.length - 1] === 'index.html') carsParts.pop();
+          if (carsParts.length) {
+            carsParts[0] = COUNTRY_FR_TO_EN[carsParts[0]] || carsParts[0];
+            enPage = ['cars', ...carsParts].join('/');
+          } else {
+            enPage = 'cars';
+          }
+        } else if (country === 'tools') {
+          enPage = frenchToolSlugToEnglishSource(fileBase) || rel.replace('.html', '').replace(/\/index$/, '');
+        } else if (fileBase === 'calculateur-salaire-net' && PAYE_SLUG_MAP[country]) {
           enPage = PAYE_SLUG_MAP[country];
         } else if (fileBase === 'calculateur-tva' && VAT_SLUG_MAP[country]) {
           enPage = VAT_SLUG_MAP[country];
+        } else if (country === 'eq-guinea' && fileBase === 'gq-paye') {
+          enPage = 'eq-guinea/gq-paye';
+        } else if (country === 'eq-guinea' && fileBase === 'gq-vat') {
+          enPage = 'eq-guinea/gq-vat';
         }
         // Country slug mapping for index.html
         else if (COUNTRY_FR_TO_EN[country]) {
@@ -331,14 +437,16 @@ function discoverExistingFrPages() {
           enPage = rel.replace('.html', '').replace(/\/index$/, '');
         }
         // Dir-style index: /fr/XX/tool/index.html -> XX/tool
-        if (parts.length === 3 && parts[2] === 'index.html') {
+        const isEqGuineaTaxRoute = country === 'eq-guinea' && (parts[1] === 'gq-paye' || parts[1] === 'gq-vat');
+        if (country !== 'tools' && !isEqGuineaTaxRoute && parts.length === 3 && parts[2] === 'index.html') {
           const enCountry = COUNTRY_FR_TO_EN[country] || country;
           enPage = enCountry + '/' + parts[1];
         }
 
         // Clean enPage
-        if (enPage) {
+        if (enPage !== null) {
           enPage = enPage.replace(/\/+$/, '').replace(/^\//, '');
+          if (enPage === 'index') enPage = '';
         }
 
         // Build French URL with canonical route rules:
@@ -346,11 +454,12 @@ function discoverExistingFrPages() {
         const frUrl = fileToPublicRoute(path.join(frDir, rel));
 
         // Verify English source exists
-        const enExists = enPage && resolveSourceFile(enPage);
+        const enExists = enPage !== null && resolveSourceFile(enPage);
 
-        if (enPage && enExists) {
-          existingFrPages.set(enPage, SITE_URL + frUrl);
-          existingFrToEn.set(frUrl, enPage);
+        if (enPage !== null && enExists) {
+          const preferredFrUrl = preferredFrenchUrlForEnglishPage(enPage) || SITE_URL + frUrl;
+          existingFrPages.set(enPage, preferredFrUrl);
+          existingFrToEn.set(preferredFrUrl.replace(SITE_URL, ''), enPage);
         } else {
           // French-only page (no English equiv) — still track for sitemap
           existingFrPages.set('_fronly_' + rel, SITE_URL + frUrl);
@@ -388,6 +497,40 @@ const SW_SLUG_TO_EN = {
   // Country PAYE tools
   'kenya/kikokotoo-kodi-mshahara': 'kenya/ke-paye',
   'tanzania/kikokotoo-kodi-mshahara': 'tanzania/tz-paye',
+  'nigeria/kikokotoo-kodi-mshahara': 'nigeria/ng-salary-tax',
+  'ghana/kikokotoo-kodi-mshahara': 'ghana/gh-paye',
+  'south-africa/kikokotoo-kodi-mshahara': 'south-africa/za-paye',
+  'ethiopia/kikokotoo-kodi-mshahara': 'ethiopia/et-paye',
+  'malawi/kikokotoo-kodi-mshahara': 'malawi/mw-paye',
+  'zambia/kikokotoo-kodi-mshahara': 'zambia/zm-paye',
+  'mozambique/kikokotoo-kodi-mshahara': 'mozambique/mz-paye',
+  'dr-congo/kikokotoo-kodi-mshahara': 'dr-congo/cd-paye',
+  'somalia/kikokotoo-kodi-mshahara': 'somalia/so-paye',
+  'sudan/kikokotoo-kodi-mshahara': 'sudan/sd-paye',
+  'egypt/kikokotoo-kodi-mshahara': 'egypt/eg-paye',
+  'morocco/kikokotoo-kodi-mshahara': 'morocco/ma-paye',
+  'algeria/kikokotoo-kodi-mshahara': 'algeria/dz-paye',
+  'burkina-faso/kikokotoo-kodi-mshahara': 'burkina-faso/bf-paye',
+  'cameroon/kikokotoo-kodi-mshahara': 'cameroon/cm-paye',
+  'guinea/kikokotoo-kodi-mshahara': 'guinea/gn-paye',
+  'senegal/kikokotoo-kodi-mshahara': 'senegal/sn-paye',
+  'tunisia/kikokotoo-kodi-mshahara': 'tunisia/tn-paye',
+  // Swahili agriculture country calculators
+  'kilimo/mavuno/kenya': 'agriculture/crop-yield/kenya',
+  'kilimo/mavuno/tanzania': 'agriculture/crop-yield/tanzania',
+  'kilimo/mavuno/uganda': 'agriculture/crop-yield/uganda',
+  'kilimo/mavuno/rwanda': 'agriculture/crop-yield/rwanda',
+  'kilimo/mavuno/burundi': 'agriculture/crop-yield/burundi',
+  'kilimo/mbolea/kenya': 'agriculture/fertilizer/kenya',
+  'kilimo/mbolea/tanzania': 'agriculture/fertilizer/tanzania',
+  'kilimo/mbolea/uganda': 'agriculture/fertilizer/uganda',
+  'kilimo/mbolea/rwanda': 'agriculture/fertilizer/rwanda',
+  'kilimo/mbolea/burundi': 'agriculture/fertilizer/burundi',
+  'kilimo/umwagiliaji/kenya': 'agriculture/irrigation/kenya',
+  'kilimo/umwagiliaji/tanzania': 'agriculture/irrigation/tanzania',
+  'kilimo/umwagiliaji/uganda': 'agriculture/irrigation/uganda',
+  'kilimo/umwagiliaji/rwanda': 'agriculture/irrigation/rwanda',
+  'kilimo/umwagiliaji/burundi': 'agriculture/irrigation/burundi',
 };
 
 // existingSwPages: Map<enPagePath, swUrl>
@@ -464,6 +607,8 @@ function getAvailableLangs(pagePath) {
 // Get the actual French URL for a page (may differ from generated URL pattern)
 function getFrenchUrl(pagePath) {
   const clean = pagePath.replace(/^\//, '').replace(/\/$/, '');
+  const preferredUrl = preferredFrenchUrlForEnglishPage(clean);
+  if (preferredUrl) return preferredUrl;
   // If there's an existing hand-crafted French page, use its URL
   if (existingFrPages.has(clean)) {
     return existingFrPages.get(clean);

@@ -116,7 +116,7 @@
     <div class="card-body">
       <div class="field">
         <label class="f-label" for="companyName">Nom de l'entreprise *</label>
-        <input class="f-input" id="companyName" type="text" placeholder="e.g., Tech Solutions Ltd" required>
+        <input class="f-input" id="companyName" type="text" placeholder="Ex. : Solutions Numeriques SARL" required>
       </div>
       <div class="field">
         <label class="f-label" for="logoInput">Logo de l'entreprise</label>
@@ -133,7 +133,7 @@
       <div class="f-row">
         <div class="field">
           <label class="f-label" for="businessEmail">E-mail</label>
-          <input class="f-input" id="businessEmail" type="email" placeholder="you@company.com">
+          <input class="f-input" id="businessEmail" type="email" placeholder="contact@entreprise.com">
         </div>
         <div class="field">
           <label class="f-label" for="businessPhone">Téléphone</label>
@@ -142,7 +142,7 @@
       </div>
       <div class="field">
         <label class="f-label" for="taxID">N° fiscal / Immatriculation</label>
-        <input class="f-input" id="taxID" type="text" placeholder="e.g., 12345678901">
+        <input class="f-input" id="taxID" type="text" placeholder="Ex. : 12345678901">
       </div>
     </div>
   </div>
@@ -181,7 +181,7 @@
     </div>
   </div>
 
-  <!-- Invoice Details -->
+  <!-- Details de la facture -->
   <div class="card">
     <div class="card-head">
       <span class="card-title">Détails de la facture</span>
@@ -308,7 +308,7 @@
           <span class="discount-inline">
             <label for="discountPercent" class="sr-only">Pourcentage de remise</label>
             Remise
-            <input type="number" id="discountPercent" value="0" min="0" max="100" step="0.01" aria-label="Discount percentage">%
+            <input type="number" id="discountPercent" value="0" min="0" max="100" step="0.01" aria-label="Pourcentage de remise">%
           </span>
           <span id="sumDiscount">0.00</span>
         </div>
@@ -367,13 +367,13 @@
 
       <div class="invoice-preview" id="invoicePreview" data-tpl="modern" role="region" aria-label="Aperçu de la facture">
 
-        <!-- PAID Watermark -->
-        <div class="inv-paid-stamp" id="paidStamp" style="display:none;">PAID</div>
+        <!-- PAYEE Watermark -->
+        <div class="inv-paid-stamp" id="paidStamp" style="display:none;">PAYEE</div>
 
         <!-- Header -->
         <div class="inv-header">
           <div id="previewLogo" style="display:none;">
-            <img class="inv-logo" id="previewLogoImg" alt="Company logo">
+            <img class="inv-logo" id="previewLogoImg" alt="Logo de l entreprise">
           </div>
           <div class="inv-title">
             <h2 id="previewTplTitle">FACTURE</h2>
@@ -416,9 +416,9 @@
           <thead>
             <tr>
               <th>Description</th>
-              <th style="width:10%;text-align:right;">Qty</th>
-              <th style="width:18%;text-align:right;">Unit Price</th>
-              <th style="width:10%;text-align:right;">Tax</th>
+              <th style="width:10%;text-align:right;">Qte</th>
+              <th style="width:18%;text-align:right;">Prix unitaire</th>
+              <th style="width:10%;text-align:right;">Taxe</th>
               <th style="text-align:right;">Total</th>
             </tr>
           </thead>
@@ -476,11 +476,11 @@
     </div>
     <div class="faq-item">
       <div class="faq-q">Puis-je enregistrer les coordonnées de mes clients ?</div>
-      <div class="faq-a">Yes! The client database saves your clients locally in your browser. Click "Save Client" to store details, then select any client to auto-fill on new invoices.</div>
+      <div class="faq-a">Oui. La base clients enregistre vos clients localement dans votre navigateur. Cliquez sur "Enregistrer le client", puis selectionnez un client pour pre-remplir une nouvelle facture.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Comment télécharger en PDF ?</div>
-      <div class="faq-a">Click "Download PDF" to generate a professional PDF using our built-in engine. It includes your logo, items, totals, and notes ready to email.</div>
+      <div class="faq-a">Cliquez sur "Telecharger le PDF" pour generer un PDF professionnel avec votre logo, les lignes, les totaux et les notes, pret a envoyer par e-mail.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Mes données sont-elles sauvegardées en ligne ?</div>
@@ -497,7 +497,7 @@
 
 <!-- Required Scripts -->
 <script src="/assets/js/components/related-tools-data.min.js?v=4300960a" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
@@ -529,9 +529,13 @@ const TAX_RATES = {
 };
 
 const TERMS_MAP = {
-  'due-receipt':'Due on Receipt','net-7':'Net 7 days','net-15':'Net 15 days',
-  'net-30':'Net 30 days','net-45':'Net 45 days','net-60':'Net 60 days'
-};
+    immediate: 'Paiement a reception de la facture.',
+    net7: 'Paiement sous 7 jours.',
+    net15: 'Paiement sous 15 jours.',
+    net30: 'Paiement sous 30 jours.',
+    net60: 'Paiement sous 60 jours.',
+    custom: ''
+  };
 
 const LS_CLIENTS = 'afro_inv_clients';
 const LS_TEMPLATES = 'afro_invoice_templates';
@@ -597,10 +601,10 @@ function saveClients(arr) { localStorage.setItem(LS_CLIENTS, JSON.stringify(arr)
 
 function renderClients() {
   const clients = getClients();
-  $('clientCount').textContent = clients.length + ' saved client' + (clients.length !== 1 ? 's' : '');
+  $('clientCount').textContent = clients.length + ' client enregistre' + (clients.length !== 1 ? 's' : '');
   const list = $('clientList');
   if (clients.length === 0) {
-    list.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.78rem;padding:10px;">No saved clients. Fill in details and click "Save Client".</p>';
+    list.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.78rem;padding:10px;">Aucun client enregistre. Remplissez les informations puis cliquez sur "Enregistrer le client".</p>';
     return;
   }
   list.innerHTML = clients.map((c, i) => `
@@ -804,12 +808,12 @@ function updatePreview() {
   $('sumTotal').textContent = fmtCur(total, cur);
 
   // Preview — parties
-  const compName = $('companyName').value || 'Your Company';
+  const compName = $('companyName').value || 'Votre entreprise';
   $('pCompany').textContent = compName;
-  const bizParts = [$('businessAddress').value, $('businessEmail').value, $('businessPhone').value, $('taxID').value ? 'Tax ID: ' + $('taxID').value : ''].filter(Boolean);
+  const bizParts = [$('businessAddress').value, $('businessEmail').value, $('businessPhone').value, $('taxID').value ? 'Identifiant fiscal : ' + $('taxID').value : ''].filter(Boolean);
   $('pBizDetail').innerHTML = bizParts.join('<br>');
 
-  $('pClient').textContent = $('clientName').value || 'Client Name';
+  $('pClient').textContent = $('clientName').value || 'Nom du client';
   const cParts = [$('clientCompany').value, $('clientAddress').value, $('clientEmail').value].filter(Boolean);
   $('pClientDetail').innerHTML = cParts.join('<br>');
 
@@ -881,10 +885,10 @@ qsa('.line-item').forEach(attachLineListeners);
 /* ── FORM VALIDATION ── */
 function validateForm() {
   const errors = [];
-  if (!$('companyName').value.trim()) errors.push('Company name is required.');
-  if (!$('clientName').value.trim()) errors.push('Client name is required.');
-  if (!$('invoiceNumber').value.trim()) errors.push('Invoice number is required.');
-  if (!$('invoiceDate').value) errors.push('Invoice date is required.');
+  if (!$('companyName').value.trim()) errors.push('Le nom de votre entreprise est obligatoire.');
+  if (!$('clientName').value.trim()) errors.push('Le nom du client est obligatoire.');
+  if (!$('invoiceNumber').value.trim()) errors.push('Le numero de facture est obligatoire.');
+  if (!$('invoiceDate').value) errors.push('La date d emission est obligatoire.');
   if (!$('dueDate').value) errors.push('Due date is required.');
 
   // Check at least one item has a description
@@ -940,9 +944,9 @@ $('btnPDF').addEventListener('click', () => {
 
   // Business + Client info
   sections.push({
-    title: 'Invoice Details',
+    title: 'Details de la facture',
     rows: [
-      {label:'Invoice #', value: $('invoiceNumber').value},
+      {label:'N de facture', value: $('invoiceNumber').value},
       {label:'Date', value: $('invoiceDate').value},
       {label:'Due Date', value: $('dueDate').value},
       {label:'Payment Terms', value: TERMS_MAP[$('paymentTerms').value] || 'Net 30'},
@@ -953,29 +957,29 @@ $('btnPDF').addEventListener('click', () => {
   sections.push({
     title: 'From',
     rows: [
-      {label:'Company', value: $('companyName').value || '-'},
-      {label:'Address', value: $('businessAddress').value || '-'},
-      {label:'Email', value: $('businessEmail').value || '-'},
-      {label:'Phone', value: $('businessPhone').value || '-'},
-      {label:'Tax ID', value: $('taxID').value || '-'},
+      {label:'Entreprise', value: $('companyName').value || '-'},
+      {label:'Adresse', value: $('businessAddress').value || '-'},
+      {label:'E-mail', value: $('businessEmail').value || '-'},
+      {label:'Telephone', value: $('businessPhone').value || '-'},
+      {label:'Identifiant fiscal', value: $('taxID').value || '-'},
     ]
   });
 
   sections.push({
-    title: 'Bill To',
+    title: 'Facture a',
     rows: [
-      {label:'Name', value: $('clientName').value || '-'},
-      {label:'Company', value: $('clientCompany').value || '-'},
-      {label:'Address', value: $('clientAddress').value || '-'},
-      {label:'Email', value: $('clientEmail').value || '-'},
+      {label:'Nom', value: $('clientName').value || '-'},
+      {label:'Societe', value: $('clientCompany').value || '-'},
+      {label:'Adresse', value: $('clientAddress').value || '-'},
+      {label:'E-mail', value: $('clientEmail').value || '-'},
     ]
   });
 
   // Items as a table section
   sections.push({
-    title: 'Line Items',
+    title: 'Lignes de facture',
     table: {
-      headers: ['Description','Qty','Unit Price','Tax','Total'],
+      headers: ['Description','Qte','Prix unitaire','Taxe','Total'],
       rows: items,
       widths: [80,20,35,20,35]
     }
@@ -984,14 +988,14 @@ $('btnPDF').addEventListener('click', () => {
   // Totals
   const discPct = parseFloat($('discountPercent').value) || 0;
   const totalsRows = [
-    {label:'Subtotal', value: $('sumSubtotal').textContent},
+    {label:'Sous-total', value: $('sumSubtotal').textContent},
   ];
-  if (discPct > 0) totalsRows.push({label:'Discount (' + discPct + '%)', value: $('sumDiscount').textContent});
-  totalsRows.push({label:'Tax', value: $('sumTax').textContent});
+  if (discPct > 0) totalsRows.push({label:'Remise (' + discPct + '%)', value: $('sumDiscount').textContent});
+  totalsRows.push({label:'Taxe', value: $('sumTax').textContent});
   totalsRows.push({label:'TOTAL', value: $('sumTotal').textContent, bold:true});
-  if ($('markPaid').checked) totalsRows.push({label:'Status', value:'PAID', bold:true});
+  if ($('markPaid').checked) totalsRows.push({label:'Statut', value:'PAYEE', bold:true});
 
-  sections.push({ title: 'Summary', rows: totalsRows });
+  sections.push({ title: 'Resume', rows: totalsRows });
 
   if ($('notes').value) {
     sections.push({ title: 'Notes', text: $('notes').value });
@@ -1000,16 +1004,16 @@ $('btnPDF').addEventListener('click', () => {
   // Use shared PDF library if available, otherwise fallback to print
   if (window.AfroTools && AfroTools.pdf && AfroTools.pdf.generate) {
     AfroTools.pdf.generate({
-      title: 'Invoice ' + ($('invoiceNumber').value || ''),
-      subtitle: ($('companyName').value || 'Invoice') + ' → ' + ($('clientName').value || 'Client'),
+      title: 'Facture ' + ($('invoiceNumber').value || ''),
+      subtitle: ($('companyName').value || 'Facture') + ' → ' + ($('clientName').value || 'Client'),
       toolId: 'invoice-generator',
       heroStats: [
-        {label:'Invoice #', value: $('invoiceNumber').value},
+        {label:'N de facture', value: $('invoiceNumber').value},
         {label:'Total', value: $('sumTotal').textContent},
-        {label:'Status', value: $('markPaid').checked ? 'PAID' : 'UNPAID'},
+        {label:'Status', value: $('markPaid').checked ? 'PAYEE' : 'UNPAYEE'},
       ],
       sections,
-      disclaimer: 'Generated by AfroTools Invoice Generator. This is a computer-generated document.'
+      disclaimer: 'Genere par le generateur de factures AfroTools. Ce document est produit automatiquement.'
     });
     ga4('pdf_download', {tool:'invoice-generator', invoice: $('invoiceNumber').value});
     toast('PDF downloaded!');
@@ -1023,13 +1027,13 @@ $('btnShare').addEventListener('click', () => {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
     const state = gatherState();
     AfroTools.shareState.share({
-      title: 'Invoice ' + $('invoiceNumber').value,
-      text: 'Invoice from ' + ($('companyName').value || 'AfroTools'),
+      title: 'Facture ' + $('invoiceNumber').value,
+      text: 'Facture de ' + ($('companyName').value || 'AfroTools'),
       state
     });
     ga4('share_click', {tool:'invoice-generator'});
   } else {
-    toast('Share not available', 'error');
+    toast('Partage indisponible', 'error');
   }
 });
 
@@ -1103,7 +1107,7 @@ function restoreState(s) {
 /* ── SAVE / LOAD TEMPLATES ── */
 $('btnSaveTemplate').addEventListener('click', () => {
   const companyName = $('companyName').value.trim();
-  if (!companyName) { toast('Enter your company name first', 'error'); return; }
+  if (!companyName) { toast('Saisissez d abord le nom de votre entreprise', 'error'); return; }
   const templates = JSON.parse(localStorage.getItem(LS_TEMPLATES) || '[]');
   templates.push({
     id: Date.now(),
@@ -1115,7 +1119,7 @@ $('btnSaveTemplate').addEventListener('click', () => {
   while (templates.length > 20) templates.shift();
   localStorage.setItem(LS_TEMPLATES, JSON.stringify(templates));
   renderTemplates();
-  toast('Template saved!');
+  toast('Modele enregistre !');
 });
 
 function renderTemplates() {
@@ -1150,7 +1154,7 @@ window.loadTemplate = function(id) {
     $('invoiceNumber').value = newNum;
     initDates();
     updatePreview();
-    toast('Template loaded with new invoice #' + newNum);
+    toast('Modele charge avec le nouveau numero de facture' + newNum);
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 };
@@ -1160,7 +1164,7 @@ window.deleteTemplate = function(id) {
   const templates = JSON.parse(localStorage.getItem(LS_TEMPLATES) || '[]').filter(t => t.id !== id);
   localStorage.setItem(LS_TEMPLATES, JSON.stringify(templates));
   renderTemplates();
-  toast('Template deleted');
+  toast('Modele supprime');
 };
 
 /* ── NEW INVOICE ── */
@@ -1265,13 +1269,13 @@ init();
 
   window.invDelSaved=function(id){if(confirm('Delete this saved invoice?')){ss.delete(id);render();}};
   window.invSaveCurrentInvoice=function(){
-    var name=prompt('Name this invoice (e.g., "Invoice #001 - Acme Corp"):');
+    var name=prompt('Nommez cette facture (ex. : Facture 001 - Client) :');
     if(!name)return;
     var clientEl=document.getElementById('clientName')||document.querySelector('[name="clientName"]');
     var totalEl=document.querySelector('.total-amount,.inv-total');
     ss.save({title:name,data:{client:clientEl?clientEl.value:'',total:totalEl?totalEl.textContent:''}});
     render();
-    alert('Invoice saved!');
+    alert('Facture enregistree !');
   };
   render();
 })();

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkuletan Ribar Gona Najeriya | AfroTools Hausa</title>
+  <meta name="description" content="Kalkuletan Hausa don ribar gona a Najeriya: revenue, input cost, labour, land, transport, storage, loan, ROI da break-even.">
+  <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/ribar-gona/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/farm-profit/nigeria">
+  <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/ribar-gona/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/farm-profit/nigeria">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/ha/kayan-aiki/ribar-gona/">
+  <meta property="og:title" content="Kalkuletan Ribar Gona Najeriya">
+  <meta property="og:description" content="Hausa UI don lissafin riba da asarar gona a Najeriya tare da formulas na asali.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:locale" content="ha_NG">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kalkuletan Ribar Gona Najeriya","url":"https://afrotools.com/ha/kayan-aiki/ribar-gona/","applicationCategory":"UtilityApplication","operatingSystem":"All","inLanguage":"ha","description":"Kalkuletan riba da asarar gona ga Najeriya, da AfroTools FarmProfitEngine.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/ha/assets/agriculture-ha.css">
+  <script src="/assets/js/components/tool-registry.min.js?v=fe62d0e9" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=81565a85" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+</head>
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+<div class="ha-agri">
+  <section class="ha-agri-hero">
+    <div class="ha-agri-wrap">
+      <nav class="ha-agri-breadcrumb" aria-label="Breadcrumb"><a href="/ha/">Gida</a><span>/</span><a href="/ha/noma/">Noma</a><span>/</span><span>Ribar gona</span></nav>
+      <span class="ha-agri-eyebrow">Engine na ribar gona Najeriya</span>
+      <h1>Ka ga ko gonarka za ta ba riba kafin kaka ta ƙare.</h1>
+      <p>Shigar da yield, farashin kasuwa, labour, taki, transport, post-harvest loss da loan. Wannan shafin yana kiran FarmProfitEngine iri ɗaya da shafin asali na Turanci na Najeriya.</p>
+      <div class="ha-pill-row" id="statsBar"></div>
+    </div>
+  </section>
+  <main class="ha-agri-main">
+    <section class="ha-tool-card">
+      <span class="ha-tool-kicker">1. Crop da gona</span>
+      <div class="ha-form-grid">
+        <div class="ha-field"><label for="selCrop">Crop</label><select id="selCrop"></select></div>
+        <div class="ha-field"><label for="selRegion">Yanki / zone</label><select id="selRegion"></select></div>
+        <div class="ha-field"><label for="inpFarm">Girman gona (hectare)</label><input id="inpFarm" type="number" min="0.1" step="0.1" value="1"></div>
+        <div class="ha-field"><label for="inpYield">Yield da kake sa ran samu (tonnes/ha)</label><input id="inpYield" type="number" min="0.1" step="0.1" value="1"></div>
+        <div class="ha-field"><label for="inpPrice">Farashin kasuwa (per tonne)</label><input id="inpPrice" type="number" min="1" step="1" value="0"></div>
+        <div class="ha-field"><label for="selSelling">Hanyar sayarwa</label><select id="selSelling"><option value="local">Kasuwa ta gida (raw)</option><option value="export">Export raw</option><option value="process">Sarrafa kafin sayarwa</option></select></div>
+        <div class="ha-field full" id="exportPriceField" style="display:none;"><label for="inpExportPrice">Farashin export (per tonne)</label><input id="inpExportPrice" type="number" min="1" step="1" value="0"></div>
+      </div>
+      <div class="ha-copy-row"><a class="ha-secondary-btn" href="/ha/noma/amfanin-gona-najeriya/">Kiyasta yield da farko</a></div>
+    </section>
+    <section class="ha-tool-card">
+      <span class="ha-tool-kicker">2. Kudin shuka da inputs</span>
+      <div class="ha-form-grid">
+        <div class="ha-field"><label for="inpSeedCost">Kudin iri (total)</label><input id="inpSeedCost" type="number" min="0" step="1" value="0"></div>
+        <div class="ha-field"><label for="inpFertilizerCost">Kudin taki (total)</label><input id="inpFertilizerCost" type="number" min="0" step="1" value="0"></div>
+        <div class="ha-field"><label for="inpHerbicide">Herbicide cost (per ha)</label><input id="inpHerbicide" type="number" min="0" step="1" value="0"></div>
+        <div class="ha-field"><label for="inpPesticide">Pesticide cost (per ha)</label><input id="inpPesticide" type="number" min="0" step="1" value="0"></div>
+      </div>
+      <div class="ha-copy-row"><a class="ha-secondary-btn" href="/ha/noma/taki-najeriya/">Kiyasta kudin taki</a></div>
+    </section>
+    <section class="ha-tool-grid">
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">3. Labour</span>
+        <div class="ha-form-grid">
+          <div class="ha-field"><label for="inpManDays">Man-days per hectare</label><input id="inpManDays" type="number" min="1" step="1" value="100"></div>
+          <div class="ha-field"><label for="inpDailyWage">Daily wage rate</label><input id="inpDailyWage" type="number" min="1" step="1" value="0"></div>
+          <div class="ha-field full"><label for="rangeFamily">Family labour: <span id="familyPctDisplay">0%</span></label><input id="rangeFamily" type="range" min="0" max="100" step="5" value="0" oninput="document.getElementById('familyPctDisplay').textContent=this.value+'%'"></div>
+        </div>
+      </div>
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">4. Land da mechanization</span>
+        <div class="ha-form-grid">
+          <div class="ha-field"><label for="selLandType">Nau'in fili</label><select id="selLandType" onchange="updateLandFields()"><option value="communal">Na gida/family land</option><option value="rented">Haya</option><option value="owned">Owned land (opportunity cost)</option></select></div>
+          <div class="ha-field" id="landRentField" style="display:none;"><label for="inpLandRent">Haya per hectare per season</label><input id="inpLandRent" type="number" min="0" step="1" value="0"></div>
+          <div class="ha-field"><label for="selMechType">Mechanization</label><select id="selMechType" onchange="updateMechFields()"><option value="none">Manual</option><option value="animal">Animal traction</option><option value="tractor">Hayan tractor</option><option value="own">Own tractor/equipment</option></select></div>
+          <div class="ha-field" id="tractorCostField" style="display:none;"><label for="inpTractorCost">Tractor cost per hectare</label><input id="inpTractorCost" type="number" min="0" step="1" value="0"></div>
+        </div>
+      </div>
+    </section>
+    <section class="ha-tool-grid">
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">5. Transport da kasuwa</span>
+        <div class="ha-form-grid">
+          <div class="ha-field"><label for="inpDistance">Nisa zuwa kasuwa (km)</label><input id="inpDistance" type="number" min="0" step="1" value="20"></div>
+          <div class="ha-field"><label for="inpTransportRate">Transport cost (per tonne/km)</label><input id="inpTransportRate" type="number" min="0" step="0.01" value="0"></div>
+          <div class="ha-field"><label for="inpMarketFees">Market fees (%)</label><input id="inpMarketFees" type="number" min="0" max="50" step="0.5" value="3"></div>
+          <div class="ha-field"><label for="inpMiddleman">Middleman commission (%)</label><input id="inpMiddleman" type="number" min="0" max="50" step="0.5" value="0"></div>
+        </div>
+      </div>
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">6. Sauran costs</span>
+        <div class="ha-form-grid">
+          <div class="ha-field"><label for="inpPhLoss">Post-harvest loss (%)</label><input id="inpPhLoss" type="number" min="0" max="80" step="1" value="0"></div>
+          <div class="ha-field"><label for="inpIrrigationCost">Irrigation cost (season total)</label><input id="inpIrrigationCost" type="number" min="0" step="1" value="0"></div>
+          <div class="ha-field"><label for="inpStorageMonths">Storage duration (months)</label><input id="inpStorageMonths" type="number" min="0" max="12" step="1" value="0"></div>
+          <div class="ha-field"><label for="inpStorageCost">Storage cost (per tonne/month)</label><input id="inpStorageCost" type="number" min="0" step="1" value="0"></div>
+          <div class="ha-field"><label for="inpLoanAmount">Loan amount</label><input id="inpLoanAmount" type="number" min="0" step="1" value="0"></div>
+          <div class="ha-field"><label for="inpLoanRate">Loan interest rate (%)</label><input id="inpLoanRate" type="number" min="0" max="60" step="0.5" value="0"></div>
+        </div>
+      </div>
+    </section>
+    <section class="ha-tool-card"><button class="ha-calc-btn" type="button" onclick="calculate()">Lissafa riba ko asara</button></section>
+    <section class="ha-results" id="resultsPanel" aria-live="polite">
+      <div class="ha-result-hero" id="profitHero">
+        <div class="ha-result-value" id="rNetProfit">--</div>
+        <div class="ha-result-label" id="rProfitLabel">RIBA / ASARA</div>
+        <div class="ha-result-label" id="rProfitSub"></div>
+      </div>
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">Profit and loss summary</span>
+        <div class="ha-table-wrap"><table class="ha-table" id="summaryTable"><tbody></tbody></table></div>
+      </div>
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">Key metrics</span>
+        <div class="ha-metric-grid" id="metricsGrid"></div>
+      </div>
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">What-if scenarios</span>
+        <div class="ha-agri-grid" id="scenarioGrid"></div>
+      </div>
+    </section>
+    <section class="ha-tool-card">
+      <span class="ha-tool-kicker">Bayani</span>
+      <h2>Yadda ake karanta ROI</h2>
+      <p class="ha-muted" id="countryInfo"></p>
+      <p class="ha-muted">ROI = net profit ÷ total cost x 100. Idan ROI ya yi ƙasa ko negative, duba farashin kasuwa, post-harvest loss, transport, labour da kudin taki.</p>
+    </section>
+    <section class="ha-note-box">Sources: FAOSTAT, ILO, World Food Programme, APHLIS, national agricultural ministries. Estimates only - actual results vary by season, management and market conditions. Last updated: 2026.</section>
+  </main>
+</div>
+<afro-footer></afro-footer>
+<script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
+<script src="/data/agriculture/ng-agri-data.js?v=27133035"></script>
+<script src="/data/agriculture/farm-costs.js?v=771d4cd9"></script>
+<script src="/engines/farm-profit-engine.js?v=c3867ec9"></script>
+<script src="/ha/kayan-aiki/ribar-gona/app.js"></script>
+</body>
+</html>

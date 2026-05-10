@@ -103,7 +103,7 @@ function html(routePath, meta) {
   <afro-navbar theme="dark" active="transport"></afro-navbar>
   <main class="cars-shell"><div id="carsApp"></div></main>
   <afro-footer></afro-footer>
-  <script src="/assets/js/components/navbar.min.js" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
   <script src="/assets/js/lib/analytics.js" defer></script>
   <script src="/assets/js/afro-history.js" defer></script>

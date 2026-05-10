@@ -1,28 +1,39 @@
 # AfroTools Widget System - Build Manifest
 
-**Total Widgets Built:** 128
-**Total Iframe Embeds:** 128 (all widgets have iframe HTML files)
-**Total Registry Entries:** 128
+**Total Widgets Built:** 222
+**Total Iframe Embeds:** 222
+**Total Registry Entries:** 222
 
 ## Counts by Category
 
 - **african**: 4
+- **agriculture**: 14
+- **business**: 10
 - **crypto**: 5
 - **data-productivity**: 6
 - **developer**: 13
 - **document-pdf**: 2
 - **ecommerce**: 2
-- **education**: 5
+- **education**: 11
+- **energy**: 9
 - **engineering**: 2
-- **financial**: 79 (54 PAYE + 9 VAT + 16 financial tools)
-- **health**: 7
+- **financial**: 79
+- **fintech**: 5
+- **health**: 11
 - **image-design**: 2
-- **legal**: 1
+- **insurance**: 6
+- **jobs**: 6
+- **legal**: 5
+- **property**: 8
+- **telecom**: 8
+- **trade**: 8
+- **travel**: 6
 
-## Iframe Embed Files
+## Source Model
 
-All 128 widgets have iframe HTML files in `widgets/iframe/`.
-Pattern: `widgets/iframe/{category}-{id}.html`
+- `widgets/WIDGET-REGISTRY.js` is the public widget registry consumed by the gallery and embed loader.
+- `widgets/lite/widget-pack.js` adds data-driven calculator widgets without one JS file per calculator.
+- `widgets/build-widget-product.js` rebuilds the registry and generated lite iframe pages.
 
 ## Usage
 

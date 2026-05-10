@@ -86,7 +86,7 @@ function generatePage(c) {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/navbar.min.js" defer><\/script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer><\/script>
 <script src="/assets/js/components/footer.min.js" defer><\/script>
 
 <style>

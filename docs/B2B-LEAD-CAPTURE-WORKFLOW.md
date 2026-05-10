@@ -5,6 +5,7 @@ AfroTools business enquiries use a server-side Netlify function. Do not write B2
 ## Public Flow
 
 - Page: `/business-enquiry/`
+- Embedded buyer forms: `/sponsored-tools/#sponsorship-request`, `/custom-calculators/#calculator-request`, `/media-kit/#media-kit-request`
 - Component: `assets/js/components/b2b-enquiry-form.js`
 - Function route: `/api/b2b-enquiry`
 - Function source: `netlify/functions/capture-b2b-lead.js`
@@ -35,6 +36,8 @@ Commercial CTA context is also preserved when available:
 - `cta_type`
 - safe referrer URL, stripped to origin and path in the browser helper
 - UTM source, medium, campaign, and content
+
+When a commercial page embeds the shared form directly, set `data-b2b-enquiry-form`, `data-source`, and any `data-default-offer` values on the `<form>`. Keep hidden `source_path`, `source_route`, and `cta_type` fields aligned with the public route so `/api/b2b-enquiry` receives the same attribution as the standalone `/business-enquiry/` page.
 
 The Netlify function validates the payload, rate limits by connection, hashes the client IP, normalizes offer/prospect aliases, accepts JSON and URL-encoded fallback form submissions, and writes with a server-side Supabase service key.
 

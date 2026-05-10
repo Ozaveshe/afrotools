@@ -83,7 +83,7 @@ If your tool involves calculations, create a pure function engine:
 **Required scripts (in `<head>`):**
 ```html
 <script src="/assets/js/components/tool-registry.js"></script>
-<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/lib/seo.js" defer></script>
 <script src="/assets/js/lib/error-boundary.js"></script>

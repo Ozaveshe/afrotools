@@ -27,7 +27,8 @@
     .ape-field{display:flex;flex-direction:column;gap:5px}
     .ape-field.wide{grid-column:1/-1}
     label{font-size:.72rem;text-transform:uppercase;font-weight:800;letter-spacing:.04em;color:#415065}
-    input{width:100%;box-sizing:border-box;border:1px solid var(--portal-line);border-radius:7px;padding:9px 10px;font:inherit;background:#fff;color:var(--portal-text)}
+    input,textarea{width:100%;box-sizing:border-box;border:1px solid var(--portal-line);border-radius:7px;padding:9px 10px;font:inherit;background:#fff;color:var(--portal-text)}
+    textarea{min-height:84px;resize:vertical}
     input[readonly]{background:#f7f9fc;color:#4b5563}
     .ape-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
     .ape-btn{border:1px solid var(--portal-line);background:#fff;color:var(--portal-text);font-weight:800;border-radius:7px;padding:9px 11px;cursor:pointer}
@@ -51,7 +52,13 @@
     .ape-badge.stop{border-color:#fecaca;background:#fef2f2;color:var(--portal-stop)}
     .ape-empty{border:1px dashed var(--portal-line);border-radius:8px;padding:14px;color:var(--portal-muted);background:#fff;text-align:center}
     .ape-small{font-size:.78rem;color:var(--portal-muted);line-height:1.45}
-    @media (max-width:860px){.ape-grid,.ape-top{display:block}.ape-panel{margin-bottom:14px}.ape-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.ape-token{grid-template-columns:1fr}.ape-field-grid{grid-template-columns:1fr}}
+    .ape-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+    .ape-detail-cell{border:1px solid var(--portal-line);border-radius:8px;background:#fff;padding:10px}
+    .ape-detail-cell span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;font-weight:900;color:var(--portal-muted)}
+    .ape-detail-cell strong{display:block;margin-top:4px;font-size:.95rem}
+    .ape-safe-copy{border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:8px;padding:10px 12px;font-size:.84rem;line-height:1.45;margin-bottom:14px}
+    @media (max-width:860px){.ape-grid,.ape-top{display:block}.ape-panel{margin-bottom:14px}.ape-strip,.ape-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ape-token{grid-template-columns:1fr}.ape-field-grid{grid-template-columns:1fr}}
+    @media (max-width:560px){.ape-detail-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -61,24 +68,24 @@
       <div>
         <div class="ape-kicker">AfroPayroll employee portal</div>
         <h1 class="ape-title">Payslips and profile confirmation</h1>
-        <p class="ape-note">Use the invite link from your payroll team to review your assigned payslip packet and confirm payment, statutory, and delivery details.</p>
+        <p class="ape-note">Use the invite link from your payroll team to view your assigned payslip packet and confirm payment, statutory, and delivery details.</p>
       </div>
-      <div class="ape-status" id="portalStatus">Waiting for invite token.</div>
+      <div class="ape-status" id="portalStatus">Waiting for secure invite link.</div>
     </header>
 
     <section class="ape-panel" aria-labelledby="access-title" style="margin-bottom:14px">
       <div class="ape-panel-head">
         <div>
           <h2 class="ape-panel-title" id="access-title">Access link</h2>
-          <p class="ape-panel-note">The token is checked by the AfroPayroll API before any salary data is returned.</p>
+          <p class="ape-panel-note">This portal shows only the payroll packet assigned to this invite.</p>
         </div>
       </div>
       <div class="ape-panel-body">
         <div class="ape-token">
-          <input id="inviteToken" type="password" autocomplete="off" placeholder="Paste employee invite token">
+          <input id="inviteToken" type="password" autocomplete="off" placeholder="Paste secure invite code">
           <button class="ape-btn primary" type="button" id="loadPortalBtn">Open portal</button>
         </div>
-        <p class="ape-small" id="guardrailNote">Do not forward this link. It grants access to one employee's assigned run until it expires.</p>
+        <p class="ape-small" id="guardrailNote">Contact your payroll team if figures look wrong. AfroPayroll does not confirm salary payment.</p>
       </div>
     </section>
 
@@ -137,6 +144,10 @@
                 <label for="accountOrMobile">Bank account / mobile money</label>
                 <input id="accountOrMobile" type="text" autocomplete="off">
               </div>
+              <div class="ape-field wide">
+                <label for="employeeNote">Note to payroll team</label>
+                <textarea id="employeeNote" maxlength="500" placeholder="Optional: mention a correction or question for your payroll team"></textarea>
+              </div>
               <div class="ape-field">
                 <label for="department">Department</label>
                 <input id="department" type="text" readonly>
@@ -162,6 +173,8 @@
         </div>
         <div class="ape-panel-body">
           <ul class="ape-list" id="missingList"></ul>
+          <h3 class="ape-panel-title" style="margin:16px 0 8px">Confirmation history</h3>
+          <ul class="ape-list" id="historyList"></ul>
         </div>
       </section>
     </div>
@@ -170,10 +183,21 @@
       <div class="ape-panel-head">
         <div>
           <h2 class="ape-panel-title" id="payslips-title">Assigned payslips</h2>
-          <p class="ape-panel-note" id="runSummary">No synced run loaded.</p>
+          <p class="ape-panel-note" id="runSummary">No saved payroll run loaded.</p>
         </div>
       </div>
       <div class="ape-panel-body">
+        <p class="ape-safe-copy" id="payslipSafeCopy">This portal shows only the payroll packet assigned to this invite. Contact your payroll team if figures look wrong.</p>
+        <div class="ape-detail-grid" id="payslipDetail" hidden>
+          <div class="ape-detail-cell"><span>Company</span><strong id="detailCompany">-</strong></div>
+          <div class="ape-detail-cell"><span>Pay period</span><strong id="detailPeriod">-</strong></div>
+          <div class="ape-detail-cell"><span>Pay date</span><strong id="detailPayDate">-</strong></div>
+          <div class="ape-detail-cell"><span>Net pay</span><strong id="detailNet">-</strong></div>
+          <div class="ape-detail-cell"><span>Gross</span><strong id="detailGross">-</strong></div>
+          <div class="ape-detail-cell"><span>Allowances</span><strong id="detailAllowances">-</strong></div>
+          <div class="ape-detail-cell"><span>Deductions</span><strong id="detailDeductions">-</strong></div>
+          <div class="ape-detail-cell"><span>Review note</span><strong id="detailReview">-</strong></div>
+        </div>
         <div class="ape-table-wrap" id="payslipWrap" hidden>
           <table>
             <thead>
@@ -188,20 +212,20 @@
             <tbody id="payslipRows"></tbody>
           </table>
         </div>
-        <div class="ape-empty" id="payslipEmpty">No payslip packet is available yet. Ask your payroll team to generate payslips for the synced run.</div>
+        <div class="ape-empty" id="payslipEmpty">No payslip packet is available yet. Ask your payroll team to generate payslips for the saved payroll run.</div>
       </div>
     </section>
   </main>
   <div data-afrotools-footer></div>
 
-  <script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <script>
 (function () {
   "use strict";
 
   var API = "/api/afropayroll";
-  var state = { token: "", data: null, busy: false };
+  var state = { token: "", data: null, busy: false, selectedPayslipIndex: 0 };
   var els = {};
 
   function byId(id) {
@@ -235,6 +259,13 @@
   function setStatus(message, warn) {
     els.portalStatus.textContent = message;
     els.portalStatus.classList.toggle("warn", Boolean(warn));
+  }
+
+  function safePortalError(error) {
+    if (error && error.status === 400) return "Open the secure invite link from your payroll team or paste the invite code.";
+    if (error && error.status === 404) return "This secure invite link is not valid or has been revoked. Ask your payroll team for a new link.";
+    if (error && error.status === 410) return "This secure invite link has expired. Ask your payroll team for a new link.";
+    return error && error.message || "The portal could not load this invite.";
   }
 
   function setBusy(busy) {
@@ -279,7 +310,9 @@
         data = { error: raw || "Unexpected API response" };
       }
       if (!response.ok) {
-        throw new Error(data.error || data.detail || "AfroPayroll portal request failed");
+        var error = new Error(data.error || data.detail || "AfroPayroll portal request failed");
+        error.status = response.status;
+        throw error;
       }
       return data;
     });
@@ -288,19 +321,20 @@
   function loadPortal() {
     var token = readToken();
     if (!token) {
-      setStatus("Paste the employee invite token or open the full invite link.", true);
+      setStatus("Open the secure invite link from your payroll team or paste the invite code.", true);
       return;
     }
     setBusy(true);
     setStatus("Checking invite and loading assigned payroll records...", false);
     apiGet(token).then(function (data) {
       state.data = data;
+      state.selectedPayslipIndex = 0;
       render();
       setStatus("Portal loaded for " + text(data.employee && data.employee.full_name, "employee") + ".", false);
     }).catch(function (error) {
       state.data = null;
       render();
-      setStatus(error.message, true);
+      setStatus(safePortalError(error), true);
     }).finally(function () {
       setBusy(false);
     });
@@ -314,7 +348,8 @@
       tax_id: els.taxId.value.trim(),
       pension_social_security_id: els.socialId.value.trim(),
       bank_name: els.bankName.value.trim(),
-      account_or_mobile: els.accountOrMobile.value.trim()
+      account_or_mobile: els.accountOrMobile.value.trim(),
+      note: els.employeeNote.value.trim()
     };
   }
 
@@ -351,13 +386,15 @@
     var payslips = Array.isArray(data.payslips) ? data.payslips : [];
     var rows = Array.isArray(data.rows) ? data.rows : [];
     var portal = data.portal || {};
+    var history = Array.isArray(portal.confirmation_history) ? portal.confirmation_history : [];
     els.confirmBtn.disabled = state.busy || !state.data;
 
     els.metricPayslips.textContent = String(payslips.length);
     els.metricRows.textContent = String(rows.length);
     els.metricMissing.textContent = String(missing.length);
     els.metricExpiry.textContent = compactDate(portal.expires_at);
-    els.guardrailNote.textContent = data.guardrail || "Do not forward this link. It grants access to one employee's assigned run until it expires.";
+    els.guardrailNote.textContent = data.guardrail || "This portal shows only the payroll packet assigned to this invite. Contact your payroll team if figures look wrong.";
+    els.payslipSafeCopy.textContent = els.guardrailNote.textContent;
 
     els.employeeName.value = employee.full_name || "";
     els.employeeCode.value = employee.employee_code || "";
@@ -368,14 +405,16 @@
     els.socialId.value = statutory.pension_social_security_id || "";
     els.bankName.value = bank.bank_name || "";
     els.accountOrMobile.value = bank.account_or_mobile || "";
+    els.employeeNote.value = "";
     els.department.value = employee.department || "";
     els.roleTitle.value = employee.role_title || "";
 
     var confirmed = Boolean(portal.confirmed_at || employee.confirmed_at || data.confirmed);
-    els.confirmBadge.textContent = confirmed ? "Confirmed" : "Not confirmed";
+    els.confirmBadge.textContent = confirmed ? "Already confirmed" : "Not confirmed";
     els.confirmBadge.className = "ape-badge " + (confirmed ? "ok" : "warn");
 
     renderMissing(missing);
+    renderHistory(history, portal, missing);
     renderRunSummary(data);
     renderPayslips(payslips, rows, data.run || {});
   }
@@ -390,17 +429,34 @@
     }).join("");
   }
 
+  function renderHistory(history, portal, missing) {
+    var items = Array.isArray(history) ? history.slice().reverse() : [];
+    if (portal && portal.confirmed_at && !items.some(function (item) { return item.status === "profile_confirmed"; })) {
+      items.unshift({ status: "profile_confirmed", at: portal.confirmed_at, note: "Profile details confirmed" });
+    }
+    if (!items.length) {
+      els.historyList.innerHTML = "<li><span class=\"ape-badge warn\">Pending</span> Latest status: " + escapeHtml(portal && portal.latest_status || "needs confirmation") + ". Missing fields requested: " + escapeHtml(String((missing || []).length)) + ".</li>";
+      return;
+    }
+    els.historyList.innerHTML = items.map(function (item) {
+      var status = String(item.status || "portal_update").replace(/_/g, " ");
+      var missingFields = Array.isArray(item.missing_fields) && item.missing_fields.length ? " Missing: " + item.missing_fields.join(", ") + "." : "";
+      return "<li><span class=\"ape-badge ok\">" + escapeHtml(status) + "</span><br><strong>" + escapeHtml(compactDate(item.at)) + "</strong> " + escapeHtml(item.note || "Portal update") + escapeHtml(missingFields) + "</li>";
+    }).join("");
+  }
+
   function renderRunSummary(data) {
     var run = data.run || {};
     var company = data.company || {};
     var name = company.trading_name || company.legal_name || "Payroll company";
     var period = compactDate(run.pay_period_start) + " to " + compactDate(run.pay_period_end);
-    els.runSummary.textContent = state.data ? name + " - " + text(run.title, "Payroll run") + " - " + period + " - pay date " + compactDate(run.pay_date) : "No synced run loaded.";
+    els.runSummary.textContent = state.data ? name + " - " + text(run.title, "Payroll run") + " - " + period + " - pay date " + compactDate(run.pay_date) : "No saved payroll run loaded.";
   }
 
   function renderPayslips(payslips, rows, run) {
     els.payslipWrap.hidden = payslips.length === 0;
     els.payslipEmpty.hidden = payslips.length > 0;
+    renderPayslipDetail(payslips, rows, run);
     els.payslipRows.innerHTML = payslips.map(function (payslip, index) {
       var row = ((payslip.payload_snapshot || {}).row || rows[0] || {});
       var currency = row.currency_code || run.currency_code || "";
@@ -410,9 +466,28 @@
         + "<td>" + escapeHtml(period) + "</td>"
         + "<td><span class=\"ape-badge " + (payslip.status === "generated" ? "ok" : "warn") + "\">" + escapeHtml(payslip.status || "draft") + "</span></td>"
         + "<td>" + escapeHtml(money(row.net_pay, currency)) + "</td>"
-        + "<td><button class=\"ape-btn\" type=\"button\" data-payslip-action=\"html\" data-index=\"" + index + "\">HTML</button> <button class=\"ape-btn\" type=\"button\" data-payslip-action=\"print\" data-index=\"" + index + "\">Print / PDF</button></td>"
+        + "<td><button class=\"ape-btn\" type=\"button\" data-payslip-action=\"view\" data-index=\"" + index + "\">View</button> <button class=\"ape-btn\" type=\"button\" data-payslip-action=\"html\" data-index=\"" + index + "\">Download HTML</button> <button class=\"ape-btn\" type=\"button\" data-payslip-action=\"print\" data-index=\"" + index + "\">Print view</button></td>"
         + "</tr>";
     }).join("");
+  }
+
+  function renderPayslipDetail(payslips, rows, run) {
+    var payslip = payslips[state.selectedPayslipIndex] || payslips[0] || null;
+    els.payslipDetail.hidden = !payslip;
+    if (!payslip) return;
+    var data = state.data || {};
+    var company = data.company || {};
+    var row = (payslip.payload_snapshot || {}).row || rows[0] || {};
+    var currency = row.currency_code || run.currency_code || company.currency_code || "";
+    var deductions = Number(row.employee_deductions || 0) + Number(row.custom_deductions || 0);
+    els.detailCompany.textContent = company.trading_name || company.legal_name || "Payroll company";
+    els.detailPeriod.textContent = compactDate(run.pay_period_start) + " to " + compactDate(run.pay_period_end);
+    els.detailPayDate.textContent = compactDate(run.pay_date);
+    els.detailNet.textContent = money(row.net_pay, currency);
+    els.detailGross.textContent = money(row.gross_pay || row.preview_gross, currency);
+    els.detailAllowances.textContent = money(Number(row.allowances || 0) + Number(row.overtime_pay || 0), currency);
+    els.detailDeductions.textContent = money(deductions, currency);
+    els.detailReview.textContent = row.warning_text || row.calculation_mode || "Contact your payroll team if figures look wrong.";
   }
 
   function payslipDocument(payslip) {
@@ -426,7 +501,7 @@
     return "<!doctype html><html><head><meta charset=\"utf-8\"><title>" + escapeHtml(payslip.payslip_no || "Payslip") + "</title>"
       + "<style>body{font-family:Arial,sans-serif;color:#172033;margin:28px}h1{margin:0 0 8px}.meta{color:#5b6678;margin-bottom:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:760px}.cell{border:1px solid #dbe3ef;padding:10px;border-radius:6px}.label{font-size:11px;text-transform:uppercase;color:#5b6678;font-weight:bold}.value{font-size:17px;margin-top:4px}.note{margin-top:20px;color:#5b6678;font-size:12px}</style></head><body>"
       + "<h1>" + escapeHtml(company.trading_name || company.legal_name || "Payslip") + "</h1>"
-      + "<div class=\"meta\">" + escapeHtml(payslip.payslip_no || "") + " - " + escapeHtml(compactDate(run.pay_period_start)) + " to " + escapeHtml(compactDate(run.pay_period_end)) + "</div>"
+      + "<div class=\"meta\">" + escapeHtml(payslip.payslip_no || "") + " - " + escapeHtml(compactDate(run.pay_period_start)) + " to " + escapeHtml(compactDate(run.pay_period_end)) + " - Pay date " + escapeHtml(compactDate(run.pay_date)) + "</div>"
       + "<div class=\"grid\">"
       + packetCell("Employee", employee.full_name || row.employee_name)
       + packetCell("Employee ID", employee.employee_code)
@@ -436,11 +511,24 @@
       + packetCell("Employee deductions", money(row.employee_deductions, currency))
       + packetCell("Employer cost", money(row.employer_cost, currency))
       + packetCell("Net pay", money(row.net_pay, currency))
+      + packetCell("Review note", row.warning_text || row.calculation_mode || "Contact payroll if figures look wrong.")
       + "</div><p class=\"note\">Generated from AfroPayroll review data. This packet is a payslip access prototype and is not a statutory filing or money movement confirmation.</p></body></html>";
   }
 
   function packetCell(label, value) {
     return "<div class=\"cell\"><div class=\"label\">" + escapeHtml(label) + "</div><div class=\"value\">" + escapeHtml(value || "-") + "</div></div>";
+  }
+
+  function recordPortalEvent(eventType, payslip) {
+    if (!state.token || !payslip) return Promise.resolve();
+    return apiPost({
+      action: "employee_portal_audit",
+      token: state.token,
+      event_type: eventType,
+      payslip_no: payslip.payslip_no || ""
+    }).catch(function () {
+      return null;
+    });
   }
 
   function downloadPayslipHtml(index) {
@@ -454,6 +542,7 @@
     link.click();
     link.remove();
     URL.revokeObjectURL(link.href);
+    recordPortalEvent("payslip_downloaded", payslip);
   }
 
   function printPayslip(index) {
@@ -469,12 +558,19 @@
     win.document.close();
     win.focus();
     setTimeout(function () { win.print(); }, 250);
+    recordPortalEvent("payslip_printed", payslip);
   }
 
   function handlePayslipAction(event) {
     var button = event.target.closest("[data-payslip-action]");
     if (!button) return;
     var index = Number(button.getAttribute("data-index"));
+    var payslip = (state.data && state.data.payslips || [])[index];
+    if (button.getAttribute("data-payslip-action") === "view") {
+      state.selectedPayslipIndex = index;
+      renderPayslipDetail(state.data && state.data.payslips || [], state.data && state.data.rows || [], state.data && state.data.run || {});
+      recordPortalEvent("payslip_viewed", payslip);
+    }
     if (button.getAttribute("data-payslip-action") === "html") downloadPayslipHtml(index);
     if (button.getAttribute("data-payslip-action") === "print") printPayslip(index);
   }
@@ -484,7 +580,9 @@
       "portalStatus", "inviteToken", "loadPortalBtn", "guardrailNote", "metricPayslips", "metricRows",
       "metricMissing", "metricExpiry", "profileForm", "employeeName", "employeeCode", "preferredName",
       "email", "phone", "taxId", "socialId", "bankName", "accountOrMobile", "department", "roleTitle",
-      "confirmBtn", "confirmBadge", "missingList", "runSummary", "payslipWrap", "payslipRows", "payslipEmpty"
+      "employeeNote", "confirmBtn", "confirmBadge", "missingList", "historyList", "runSummary", "payslipSafeCopy",
+      "payslipDetail", "detailCompany", "detailPeriod", "detailPayDate", "detailNet", "detailGross", "detailAllowances",
+      "detailDeductions", "detailReview", "payslipWrap", "payslipRows", "payslipEmpty"
     ].forEach(function (id) {
       els[id] = byId(id);
     });

@@ -1,47 +1,38 @@
 /**
- * api-fx-rates.js — Serves latest FX rates from fx_snapshots table
+ * api-fx-rates.js - Public v1 FX rates endpoint.
  *
  * GET /api/v1/fx/rates?base=USD&target=NGN          -> single pair
- * GET /api/v1/fx/rates?base=USD                     -> all African pairs for USD
- * GET /api/v1/fx/rates?target=NGN                   -> all base currencies for NGN
- * GET /api/v1/fx/rates?base=USD&target=NGN&days=30  -> 30-day history
+ * GET /api/v1/fx/rates?base=USD                     -> all available rates for base
+ * GET /api/v1/fx/rates?target=NGN                   -> all available base rates for target
+ * GET /api/v1/fx/rates?base=USD&target=NGN&days=30  -> 30-day history when stored
  */
 
 var { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
 var { getAllowedOrigin } = require('./utils/cors');
 var { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
-
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+var { getData } = require('./_shared/data-store');
+var { getOrFetch, cacheHeaders } = require('./_lib/cache');
 
 var CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
-  'Cache-Control': 'public, max-age=3600'
+  'Content-Type': 'application/json'
 };
 
-async function querySupabase(path) {
-  var res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json'
-    }
-  });
-  if (!res.ok) throw new Error(`Supabase query failed: ${res.status}`);
-  return res.json();
-}
+var CACHE_OPTS = { browserTTL: 300, cdnTTL: 600, staleTTL: 900 };
+var _reqCacheHdrs = null;
 
 function sandboxFxResponse(params) {
   params = params || {};
-  var base = (params.base || 'USD').toUpperCase();
-  var target = (params.target || 'NGN').toUpperCase();
+  var base = normalizeCode(params.base || params.from || 'USD');
+  var target = normalizeCode(params.target || params.to || 'NGN');
   if (base && target) {
     var amount = Number(params.amount || 0);
     return {
       base: base,
       target: target,
+      pair: base + '/' + target,
       rate: 1500.25,
       amount: amount || undefined,
       converted_amount: amount ? Math.round(amount * 1500.25 * 100) / 100 : undefined,
@@ -61,28 +52,79 @@ function sandboxFxResponse(params) {
   };
 }
 
+function jsonResponse(statusCode, body, extraHeaders) {
+  var base = (statusCode === 200 && _reqCacheHdrs) ? _reqCacheHdrs : CORS_HEADERS;
+  return {
+    statusCode: statusCode,
+    headers: Object.assign({}, base, extraHeaders || {}),
+    body: JSON.stringify(body)
+  };
+}
+
+function normalizeCode(value) {
+  return String(value || '').trim().toUpperCase();
+}
+
+function roundRate(value) {
+  return Math.round(value * 1000000) / 1000000;
+}
+
+function getRatesPayload(data) {
+  return data && data.rates && typeof data.rates === 'object' ? data.rates : null;
+}
+
+function convertPair(rates, defaultBase, base, target) {
+  var baseRate = base === defaultBase ? 1 : rates[base];
+  var targetRate = target === defaultBase ? 1 : rates[target];
+  if (!baseRate || !targetRate) return null;
+  return roundRate(targetRate / baseRate);
+}
+
+function buildBaseRates(rates, defaultBase, base) {
+  var baseRate = base === defaultBase ? 1 : rates[base];
+  if (!baseRate) return null;
+  var out = {};
+  Object.keys(rates).sort().forEach(function(code) {
+    out[code] = roundRate(rates[code] / baseRate);
+  });
+  out[defaultBase] = base === defaultBase ? 1 : roundRate(1 / baseRate);
+  return out;
+}
+
+async function historicalResponse(base, target, days, headers) {
+  var safeDays = Math.min(Math.max(parseInt(days, 10) || 30, 1), 90);
+  var period = safeDays + 'd';
+  var key = 'forex-history-' + base.toLowerCase() + '-' + target.toLowerCase() + '-' + period;
+  var history = await getData(key);
+  if (!history) {
+    return jsonResponse(404, {
+      error: 'Historical data not available for ' + base + '/' + target + ' (' + period + ')',
+      available_pairs: ['USD/NGN', 'USD/KES', 'USD/ZAR', 'USD/GHS', 'USD/EGP'],
+      available_periods: ['30d']
+    }, headers);
+  }
+  return jsonResponse(200, history, Object.assign({ 'Cache-Control': 'public, max-age=3600, s-maxage=7200' }, headers));
+}
+
 exports.handler = async function (event) {
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
+  if (event.httpMethod !== 'GET') {
+    return jsonResponse(405, { error: 'Method not allowed' });
+  }
 
-  /* ---- API key auth (optional — allows unauthenticated for backwards compat) ---- */
-  var apiKey = (event.headers || {})['x-api-key'] || ((event.queryStringParameters || {}).api_key);
+  var params = event.queryStringParameters || {};
+  var apiKey = (event.headers || {})['x-api-key'] || (event.headers || {})['X-Api-Key'] || params.api_key;
   var rlHeaders = {};
   if (apiKey) {
     var auth = await validateApiKey(event);
     if (!auth.valid) {
-      return { statusCode: auth.status || 401, headers: Object.assign({ 'Content-Type': 'application/json' }, CORS_HEADERS), body: JSON.stringify({ error: auth.error }) };
+      return jsonResponse(auth.status || 401, { error: auth.error });
     }
     rlHeaders = rateLimitHeaders(auth);
-    if (auth.sandbox) {
-      return {
-        statusCode: 200,
-        headers: Object.assign({ 'Content-Type': 'application/json' }, CORS_HEADERS, rlHeaders),
-        body: JSON.stringify(sandboxFxResponse(event.queryStringParameters || {}))
-      };
-    }
+    if (auth.sandbox) return jsonResponse(200, sandboxFxResponse(params), rlHeaders);
   } else {
     var clientIp = String(
       (event.headers || {})['x-nf-client-connection-ip'] ||
@@ -92,154 +134,89 @@ exports.handler = async function (event) {
     ).split(',')[0].trim() || 'unknown';
     var limitKey = 'anon:fx-rates:' + clientIp;
     if (!checkRateLimit(limitKey, 100)) {
-      return {
-        statusCode: 429,
-        headers: Object.assign({ 'Content-Type': 'application/json' }, CORS_HEADERS, {
-          'X-RateLimit-Limit': '100',
-          'X-RateLimit-Remaining': '0'
-        }),
-        body: JSON.stringify({ error: 'Rate limit exceeded', message: 'Free tier allows 100 requests/day and 3,000/month. Generate an API key from your dashboard for authenticated limits.' })
-      };
+      return jsonResponse(429, {
+        error: 'Rate limit exceeded',
+        message: 'Free tier allows 100 requests/day and 3,000/month. Generate an API key from your dashboard for authenticated limits.'
+      }, {
+        'X-RateLimit-Limit': '100',
+        'X-RateLimit-Remaining': '0'
+      });
     }
-    rlHeaders = { 'X-RateLimit-Limit': '100', 'X-RateLimit-Remaining': String(getRemaining(limitKey, 100)) };
+    rlHeaders = {
+      'X-RateLimit-Limit': '100',
+      'X-RateLimit-Remaining': String(getRemaining(limitKey, 100))
+    };
   }
 
-  var headers = Object.assign({ 'Content-Type': 'application/json' }, CORS_HEADERS, rlHeaders);
-
   try {
-    if (!SUPABASE_KEY) throw new Error('Service key not configured');
+    var base = normalizeCode(params.base || params.from || 'USD');
+    var target = normalizeCode(params.target || params.to);
+    var days = parseInt(params.days, 10) || 0;
 
-    var params = event.queryStringParameters || {};
-    var base = (params.base || '').toUpperCase();
-    var target = (params.target || '').toUpperCase();
-    var days = parseInt(params.days) || 0;
+    if (days > 0 && base && target) return historicalResponse(base, target, days, rlHeaders);
 
-    // History mode
-    if (days > 0 && base && target) {
-      var since = new Date();
-      since.setDate(since.getDate() - days);
-      var sinceStr = since.toISOString();
+    var fetched = await getOrFetch('forex-latest', 600000);
+    var data = fetched && fetched.data;
+    var rates = getRatesPayload(data);
+    if (!rates) return jsonResponse(503, { error: 'FX data unavailable. Please try again later.' }, rlHeaders);
 
-      var rows = await querySupabase(
-        `fx_snapshots?base_currency=eq.${base}&quote_currency=eq.${target}` +
-        `&captured_at=gte.${sinceStr}&order=captured_at.desc&limit=${days}`
-      );
+    _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fetched.fromCache, CORS_HEADERS);
+    var defaultBase = normalizeCode(data.base || 'USD') || 'USD';
 
-      return {
-        statusCode: 200, headers: headers,
-        body: JSON.stringify({
-          base: base,
-          target: target,
-          history: rows.map(function (r) {
-            return { date: r.captured_at.slice(0, 10), rate: Number(r.bank_rate) };
-          })
-        })
-      };
-    }
-
-    // Single pair
     if (base && target) {
       var amount = parseFloat(params.amount) || 0;
-      var rows = await querySupabase(
-        `fx_snapshots?base_currency=eq.${base}&quote_currency=eq.${target}` +
-        `&order=captured_at.desc&limit=2`
-      );
-
-      if (rows.length === 0) {
-        return {
-          statusCode: 200, headers: headers,
-          body: JSON.stringify({ base: base, target: target, rate: null, message: 'No data yet. The scraper may not have run.' })
-        };
-      }
-
-      var latest = rows[0];
-      var prev = rows[1];
-      var change24h = prev ? Math.round((Number(latest.bank_rate) - Number(prev.bank_rate)) / Number(prev.bank_rate) * 10000) / 100 : null;
-
-      return {
-        statusCode: 200, headers: headers,
-        body: JSON.stringify({
-          base: base,
-          target: target,
-          rate: Number(latest.bank_rate),
-          amount: amount || undefined,
-          converted_amount: amount ? Math.round(amount * Number(latest.bank_rate) * 100) / 100 : undefined,
-          source: latest.source,
-          updated_at: latest.captured_at,
-          change_24h: change24h
-        })
-      };
+      var rate = convertPair(rates, defaultBase, base, target);
+      if (!rate) return jsonResponse(404, { error: 'Currency pair not found', base: base, target: target }, rlHeaders);
+      return jsonResponse(200, {
+        base: base,
+        target: target,
+        pair: base + '/' + target,
+        rate: rate,
+        amount: amount || undefined,
+        converted_amount: amount ? Math.round(amount * rate * 100) / 100 : undefined,
+        source: data.source || null,
+        updated_at: data.timestamp || data.updated_at || data.lastUpdated || null,
+        next_update: data.next_update || null
+      }, rlHeaders);
     }
 
-    // All pairs for a base currency
     if (base) {
-      // Get latest snapshot date for this base
-      var latestRows = await querySupabase(
-        `fx_snapshots?base_currency=eq.${base}&order=captured_at.desc&limit=1`
-      );
-
-      if (latestRows.length === 0) {
-        return {
-          statusCode: 200, headers: headers,
-          body: JSON.stringify({ base: base, rates: {}, message: 'No data yet.' })
-        };
-      }
-
-      var latestDate = latestRows[0].captured_at.slice(0, 10);
-      var allRows = await querySupabase(
-        `fx_snapshots?base_currency=eq.${base}&captured_at=gte.${latestDate}T00:00:00Z&captured_at=lt.${latestDate}T23:59:59Z`
-      );
-
-      var rates = {};
-      allRows.forEach(function (r) { rates[r.quote_currency] = Number(r.bank_rate); });
-
-      return {
-        statusCode: 200, headers: headers,
-        body: JSON.stringify({
-          base: base,
-          updated_at: latestRows[0].captured_at,
-          rates: rates
-        })
-      };
+      var baseRates = buildBaseRates(rates, defaultBase, base);
+      if (!baseRates) return jsonResponse(404, { error: 'Currency not found: ' + base }, rlHeaders);
+      return jsonResponse(200, {
+        base: base,
+        rates: baseRates,
+        source: data.source || null,
+        updated_at: data.timestamp || data.updated_at || data.lastUpdated || null,
+        next_update: data.next_update || null
+      }, rlHeaders);
     }
 
-    // All base currencies for a target
     if (target) {
-      var latestRows = await querySupabase(
-        `fx_snapshots?quote_currency=eq.${target}&order=captured_at.desc&limit=3`
-      );
-
-      if (latestRows.length === 0) {
-        return {
-          statusCode: 200, headers: headers,
-          body: JSON.stringify({ target: target, rates: {}, message: 'No data yet.' })
-        };
-      }
-
-      var rates = {};
-      latestRows.forEach(function (r) { rates[r.base_currency] = Number(r.bank_rate); });
-
-      return {
-        statusCode: 200, headers: headers,
-        body: JSON.stringify({
-          target: target,
-          updated_at: latestRows[0].captured_at,
-          rates: rates
-        })
-      };
+      var targetRates = {};
+      Object.keys(rates).sort().forEach(function(code) {
+        var value = convertPair(rates, defaultBase, code, target);
+        if (value) targetRates[code] = value;
+      });
+      targetRates[defaultBase] = convertPair(rates, defaultBase, defaultBase, target);
+      return jsonResponse(200, {
+        target: target,
+        rates: targetRates,
+        source: data.source || null,
+        updated_at: data.timestamp || data.updated_at || data.lastUpdated || null,
+        next_update: data.next_update || null
+      }, rlHeaders);
     }
 
-    // No params — return USD rates as default
-    return {
-      statusCode: 200, headers: headers,
-      body: JSON.stringify({ error: 'Provide ?base=USD and/or ?target=NGN' })
-    };
-
+    return jsonResponse(200, {
+      base: defaultBase,
+      rates: rates,
+      source: data.source || null,
+      updated_at: data.timestamp || data.updated_at || data.lastUpdated || null,
+      next_update: data.next_update || null
+    }, rlHeaders);
   } catch (err) {
     console.error('[api-fx-rates] Error:', err.message);
-    return {
-      statusCode: 500, headers: headers,
-      body: JSON.stringify({ error: 'Internal error' })
-    };
+    return jsonResponse(500, { error: 'FX data temporarily unavailable. Please try again later.' }, rlHeaders);
   }
 };

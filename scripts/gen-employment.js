@@ -55,7 +55,7 @@ for(const cc in C){
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/multi-country.css?v=1">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer><\/script><script src="/assets/js/components/footer.min.js?v=f68d6568" defer><\/script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer><\/script><script src="/assets/js/components/footer.min.js?v=f68d6568" defer><\/script>
 <style>
 :root{--blue:#1d4ed8;--blue-light:#eff6ff;--blue-dark:#1e40af}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}

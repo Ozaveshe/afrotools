@@ -32,10 +32,10 @@
   "name": "Calculateur TVA Maroc 2026",
   "description": "Calculez la TVA au Maroc pour vos factures, devis et ventes avec les taux de 20%, 14%, 10% ou 7%. Passez d’un montant HT au TTC ou retirez la TVA d’un montant encaissé.",
   "url": "https://afrotools.com/fr/maroc/calculateur-tva",
-  "inLanguage": "https://afrotools.com/fr/",
+  "inLanguage": "fr",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
+  "browserRequirements": "JavaScript requis",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -43,8 +43,8 @@
   },
   "author": {
     "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
+    "name": "AfroTools Fran?ais",
+    "url": "https://afrotools.com/fr/"
   },
   "image": "https://afrotools.com/assets/img/tools/ma-tva-fr.webp"
 }
@@ -56,11 +56,11 @@
   "name": "Calculateur TVA Maroc 2026",
   "url": "https://afrotools.com/fr/maroc/calculateur-tva",
   "description": "Calculateur TVA Maroc 2026 : calculez le HT, la TVA et le TTC sur une facture ou un devis avec les taux 20%, 14%, 10% et 7%.",
-  "inLanguage": "https://afrotools.com/fr/",
+  "inLanguage": "fr",
   "isPartOf": {
     "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
+    "name": "AfroTools Fran?ais",
+    "url": "https://afrotools.com/fr/"
   },
   "image": "https://afrotools.com/assets/img/tools/ma-tva-fr.webp"
 }
@@ -72,7 +72,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
   :root {
@@ -160,7 +160,7 @@
           </div>
 
           <div class="field">
-            <div class="f-label"><span class="f-label-text" id="amountLabel">Montant Hors Taxe (HT)</span><span class="f-hint">En Dirham marocain</span></div>
+            <div class="f-label"><span class="f-label-text" id="amountLabel">Montant hors taxe (HT)</span><span class="f-hint">En Dirham marocain</span></div>
             <div class="f-wrap">
               <span class="f-prefix">MAD</span>
               <input type="number" class="f-input" id="tvaAmount" placeholder="10 000" min="0" step="100" value="10000">
@@ -195,7 +195,7 @@
         </div>
 
         <div class="action-row">
-          <afro-email-gate tool-name="TVA Calculator"><button class="act-btn act-pdf" onclick="exportPdf()">
+          <afro-email-gate tool-name="Calculateur TVA"><button class="act-btn act-pdf" onclick="exportPdf()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Exporter en PDF
           </button></afro-email-gate>
@@ -285,6 +285,7 @@
       <a href="/fr/maroc/calculateur-salaire-net" class="more-tool-link">Salaire net Maroc</a>
       <a href="/fr/maroc/" class="more-tool-link">Hub Maroc</a>
       <a href="/fr/salary-tax/" class="more-tool-link">Hub Salaire &amp; Imp&#244;ts</a>
+      <a href="/fr/vat-business-tax/" class="more-tool-link">Hub TVA et fiscalité d'entreprise</a>
       <a href="/fr/salary-tax/francophone/" class="more-tool-link">S&#233;lection francophone</a>
       <a href="/fr/algerie/calculateur-tva" class="more-tool-link">TVA Alg&#233;rie</a>
       <a href="/fr/cote-divoire/calculateur-tva" class="more-tool-link">TVA C&#244;te d&#8217;Ivoire</a>
@@ -296,11 +297,11 @@
 <afro-footer></afro-footer>
 
 <script>
-// ══════════════════════════════════════════════════════════════════
+// ============================================
 //  CALCULATEUR TVA MAROC 2026
 //  Taux normal 20% · Réduits 14%, 10%, 7%
 //  Source : DGI (tax.gov.ma) · Code Général des Impôts
-// ══════════════════════════════════════════════════════════════════
+// ============================================
 
 var CURRENT_MODE = 'add';
 var CURRENT_RATE = 0.20;
@@ -319,9 +320,9 @@ function setMode(mode, btn) {
   btn.classList.add('active');
   var label = document.getElementById('amountLabel');
   if (mode === 'add') {
-    label.textContent = 'Montant Hors Taxe (HT)';
+    label.textContent = 'Montant hors taxe (HT)';
   } else {
-    label.textContent = 'Montant Toutes Taxes Comprises (TTC)';
+    label.textContent = 'Montant toutes taxes comprises (TTC)';
   }
 }
 

@@ -11,6 +11,18 @@ const START_MARKER = "# BEGIN AUTO HTML CANONICAL ALIASES";
 const END_MARKER = "# END AUTO HTML CANONICAL ALIASES";
 const INSERT_BEFORE = "# Tool pages: /tools/xyz";
 const EOL = "\n";
+const FORBIDDEN_GENERATED_ROUTE_PATTERNS = [
+  /^\/admin(?:\/|\.|$)/i,
+  /^\/docs(?:\/|$)/i,
+  /^\/fr\/docs(?:\/|$)/i,
+  /^\/scripts(?:\/|$)/i,
+  /^\/supabase(?:\/|$)/i,
+  /^\/afrotools-mission-control(?:\.html)?$/i,
+  /^\/mc-7a2f9x(?:\.html)?$/i,
+  /^\/tools\/afrostream\/admin(?:\.html)?$/i,
+  /^\/widgets\/iframe\/template(?:\.html)?$/i,
+  /^\/fr\/widgets\/iframe\/template(?:\.html)?$/i,
+];
 
 function normalizeLf(text) {
   return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
@@ -37,6 +49,15 @@ function buildBlock(eol, aliases, existingSources) {
   const rules = aliases
     .filter((alias) => !existingSources.has(alias.source))
     .map((alias) => `${alias.source}  ${alias.target}  301`);
+
+  const forbiddenRule = rules.find((rule) => {
+    const source = rule.trim().split(/\s+/)[0];
+    return FORBIDDEN_GENERATED_ROUTE_PATTERNS.some((pattern) => pattern.test(source));
+  });
+
+  if (forbiddenRule) {
+    throw new Error(`Refusing to generate internal canonical redirect: ${forbiddenRule}`);
+  }
 
   const lines = [
     START_MARKER,

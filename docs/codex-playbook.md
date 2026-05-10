@@ -36,6 +36,24 @@
 - Update source files, not minified bundles
 - Run `npm run check-links` and `npm run audit`
 
+### Government or civic source freshness
+
+- Use `afrotools-government-source-workflow`
+- Read `docs/GOVERNMENT-SOURCE-WORKFLOW.md`
+- Start from `data/government/official-sources.json` and official government, regulator, treasury, electoral, civil-registration, immigration, pension, welfare, or public-services sources
+- Run `npm run government:sources` after changing the hub source monitor
+- Run `npm run government:sources:check` and `npm run check-links` when government hub routes, schema, or official-source links change
+- Treat blocked portals and changed hashes as review queues, not automatic fact updates
+
+### Transport or logistics source freshness
+
+- Use `afrotools-transport-source-workflow`
+- Read `docs/TRANSPORT-SOURCE-WORKFLOW.md`
+- Start from `data/transport/official-sources.json` and official transport authorities, customs agencies, fuel regulators, port authorities, road agencies, aviation regulators, city authorities, and direct operator pages
+- Run `npm run transport:sources` after changing the hub source monitor
+- Run `npm run transport:sources:check` and `npm run check-links` when transport hub routes, schema, or official-source links change
+- Treat blocked authority portals, operator pages, and changed hashes as review queues, not automatic fact updates
+
 ### PDF and document tools
 
 - Read `docs/PDF-CATEGORY-WORKFLOW.md`

@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <script src="/assets/js/components/related-tools-data.min.js?v=4300960a" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
@@ -145,11 +145,11 @@
   }
 </style>
 
-<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 
 
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="sw_KE">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-merge-split.webp">
 <meta property="article:modified_time" content="2026-04-27">
@@ -166,13 +166,13 @@
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/sw/zana-zote/">Zana zote</a> / <span>Unganisha na Gawanya PDF</span></div>
     <h1>Unganisha na Gawanya PDF</h1>
     <p class="hero-sub">Panga faili, chagua kurasa, unganisha PDF au gawanya sehemu unazohitaji bila kupakia faili mtandaoni.</p>
     <div class="hero-badges">
       <span class="badge b-green">Hakuna kupakia</span>
       <span class="badge b-green">Ndani ya kivinjari</span>
-      <span class="badge b-green">Ranges + ZIP</span>
+      <span class="badge b-green">Masafa + ZIP</span>
     </div>
   </div>
 </div>
@@ -180,7 +180,7 @@
 <div class="tool-main">
   <!-- Mode Selection -->
   <div class="card">
-    <div class="card-head"><span class="card-title">Operation</span></div>
+    <div class="card-head"><span class="card-title">Kazi</span></div>
     <div class="card-body">
       <div class="mode-row">
         <button class="mode-btn on" data-mode="merge">Unganisha PDFs</button>
@@ -191,19 +191,19 @@
 
   <!-- Unganisha Card -->
   <div class="card" id="merge-card">
-    <div class="card-head"><span class="card-title">Pakia PDFs to Unganisha</span></div>
+    <div class="card-head"><span class="card-title">Pakia PDF za kuunganisha</span></div>
     <div class="card-body">
       <div class="file-input-wrapper">
         <input type="file" id="mergeFailiInput" accept=".pdf" multiple>
         <label for="mergeFailiInput" class="file-input-label">
-          Click to add PDFs - click again to add more files
-          <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Each click adds to your list. Use page ranges per file when needed.</div>
+          Bofya kuongeza PDF. Bofya tena kuongeza faili zaidi
+          <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Kila kubofya huongeza kwenye orodha yako. Tumia masafa ya kurasa kwa kila faili inapohitajika.</div>
         </label>
       </div>
       <div class="file-list" id="mergeFailiList"></div>
       <div class="tool-row">
-        <span id="mergeSummary" style="font-size:.76rem;color:#64748b;font-weight:700;">Add at least two PDFs to merge.</span>
-        <button class="subtle-btn" id="clearUnganishaBtn" type="button" disabled>Futa list</button>
+        <span id="mergeSummary" style="font-size:.76rem;color:#64748b;font-weight:700;">Ongeza angalau PDF mbili ili kuunganisha.</span>
+        <button class="subtle-btn" id="clearUnganishaBtn" type="button" disabled>Futa orodha</button>
       </div>
       <button class="calc-btn" id="mergeBtn" disabled>Unganisha PDFs</button>
     </div>
@@ -211,47 +211,47 @@
 
   <!-- Gawanya Card -->
   <div class="card" id="split-card" style="display:none;">
-    <div class="card-head"><span class="card-title">Pakia PDF to Gawanya</span></div>
+    <div class="card-head"><span class="card-title">Pakia PDF ya kugawanya</span></div>
     <div class="card-body">
       <div class="file-input-wrapper">
         <input type="file" id="splitFailiInput" accept=".pdf">
         <label for="splitFailiInput" class="file-input-label">
-          Click to select or drag & drop a PDF here
+          Bofya kuchagua au buruta na dondosha PDF hapa
         </label>
       </div>
       <div id="splitInfo" style="display:none; margin-top:12px;">
-        <div style="font-size:0.82rem;font-weight:700;color:#1e293b;">Faili: <span id="splitFailiName"></span> - <span id="splitUkurasaCount">0</span> pages</div>
+        <div style="font-size:0.82rem;font-weight:700;color:#1e293b;">Faili: <span id="splitFailiName"></span> - kurasa <span id="splitUkurasaCount">0</span></div>
         <div class="split-mode-row">
-          <button class="split-mode-btn on" type="button" data-split-mode="cuts">Gawanya points</button>
-          <button class="split-mode-btn" type="button" data-split-mode="ranges">Custom ranges</button>
-          <button class="split-mode-btn" type="button" data-split-mode="extract">Toa pages</button>
-          <button class="split-mode-btn" type="button" data-split-mode="every">Every page</button>
+          <button class="split-mode-btn on" type="button" data-split-mode="cuts">Alama za kugawanya</button>
+          <button class="split-mode-btn" type="button" data-split-mode="ranges">Masafa maalum</button>
+          <button class="split-mode-btn" type="button" data-split-mode="extract">Toa kurasa</button>
+          <button class="split-mode-btn" type="button" data-split-mode="every">Kila ukurasa</button>
         </div>
         <div class="split-panel on" id="cutsPanel">
-          <div class="sp-info">Click the <span style="color:#dc2626;font-weight:700">scissors</span> between pages to set split points. Kurasa between cuts become separate PDF files.</div>
+          <div class="sp-info">Bofya <span style="color:#dc2626;font-weight:700">mkasi</span> kati ya kurasa kuweka alama za kugawanya. Kurasa kati ya alama hizo hutoka kama PDF tofauti.</div>
         </div>
         <div class="split-panel" id="rangesPanel">
           <div class="range-field">
-            <label for="rangeInput">Ranges to create</label>
+            <label for="rangeInput">Masafa ya kutengeneza</label>
             <input id="rangeInput" type="text" placeholder="1-3, 4-6, 9">
-            <div class="range-help">Use commas for separate outputs. Example: <strong>1-2, 5, 8-10</strong>.</div>
+            <div class="range-help">Tumia koma kwa matokeo tofauti. Mfano: <strong>1-2, 5, 8-10</strong>.</div>
           </div>
-          <label class="range-options"><input type="checkbox" id="rangeCombine"> Combine ranges into one PDF instead of a ZIP</label>
+          <label class="range-options"><input type="checkbox" id="rangeCombine"> Unganisha masafa kuwa PDF moja badala ya ZIP</label>
         </div>
         <div class="split-panel" id="extractPanel">
           <div class="range-field">
-            <label for="extractInput">Kurasa to keep</label>
+            <label for="extractInput">Kurasa za kubakisha</label>
             <input id="extractInput" type="text" placeholder="2, 4-5, 9">
-            <div class="range-help">Click page thumbnails below or type page numbers. Toaed pages download as one PDF.</div>
+            <div class="range-help">Bofya vijipicha vya kurasa hapa chini au andika namba za kurasa. Kurasa zilizotolewa hupakuliwa kama PDF moja.</div>
           </div>
         </div>
         <div class="split-panel" id="everyPanel">
-          <div class="sp-info">Hamisha every page as its own one-page PDF inside a ZIP file.</div>
+          <div class="sp-info">Hamisha kila ukurasa kama PDF ya ukurasa mmoja ndani ya ZIP.</div>
         </div>
         <div class="sp-grid" id="splitGrid"></div>
         <div id="splitSummary" style="margin-top:10px;font-size:0.78rem;color:#4b5563;font-weight:600;"></div>
       </div>
-      <button class="calc-btn" id="splitBtn" disabled>Select split points first</button>
+      <button class="calc-btn" id="splitBtn" disabled>Chagua alama za kugawanya kwanza</button>
     </div>
   </div>
 
@@ -272,12 +272,12 @@
 
   <!-- Tips -->
   <div class="tips-section">
-    <div class="tips-title">How it works</div>
+    <div class="tips-title">Jinsi inavyofanya kazi</div>
     <div class="tips-grid">
-      <div class="tip-item">OK: Drag, reorder, or include page ranges before merge</div>
-      <div class="tip-item">OK: Gawanya by points, ranges, or pages</div>
-      <div class="tip-item">OK: All processing stays in your browser</div>
-      <div class="tip-item">OK: Pakua PDF or ZIP outputs</div>
+      <div class="tip-item">Sawa: Buruta, panga upya au weka masafa ya kurasa kabla ya kuunganisha</div>
+      <div class="tip-item">Sawa: Gawanya kwa alama, masafa au kurasa</div>
+      <div class="tip-item">Sawa: Uchakataji wote hubaki kwenye kivinjari chako</div>
+      <div class="tip-item">Sawa: Pakua matokeo kama PDF au ZIP</div>
     </div>
   </div>
 </div>
@@ -287,34 +287,34 @@
 <afro-newsletter-cta></afro-newsletter-cta>
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Unganisha na Gawanya PDF: How It Works</h2>
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Unganisha na Gawanya PDF: jinsi inavyofanya kazi</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools PDF Unganisha and Gawanya tool combines multiple PDF files into one document, reorders files before export, lets you include only the page ranges you need, splits a document at visual split points, extracts custom ranges, and exports every page as a ZIP. The workflow is designed for application packs, scanned document batches, contracts, reports, and classroom packets where page order matters. Inachakata happens entirely in your browser using local JavaScript libraries, so your documents are never uploaded to a server.</p>
+    <p>Zana ya AfroTools ya kuunganisha na kugawanya PDF huweka PDF nyingi kwenye hati moja, hukuruhusu kupanga faili kabla ya kuhamisha, kuchagua masafa ya kurasa unayohitaji, kugawanya hati kwa alama za kuona, kutoa masafa maalum na kuhamisha kila ukurasa kama ZIP. Inafaa kwa vifurushi vya maombi, makundi ya nyaraka zilizoskaniwa, mikataba, ripoti na nyaraka za darasani ambako mpangilio wa kurasa ni muhimu. Uchakataji hufanyika ndani ya kivinjari kwa maktaba za ndani za JavaScript, hivyo nyaraka zako hazipakiliwi kwenye seva.</p>
   </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Maswali ya mara kwa mara</h3>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
   <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How many PDFs can I merge at once?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can merge as many PDFs as your browser can handle. For typical document sizes, combining 10-20 files works smoothly. Very large files may take a moment to process depending on your device.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Naweza kuunganisha PDF ngapi kwa wakati mmoja?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Unaweza kuunganisha PDF nyingi kadiri kivinjari chako kinavyoweza kushughulikia. Kwa nyaraka za kawaida, faili 10 hadi 20 hufanya kazi vizuri. Faili kubwa sana zinaweza kuchukua muda kulingana na kifaa chako.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I reorder PDFs or merge only certain pages?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. After uploading your files, drag and drop them into any order you like, then leave each page box blank for all pages or enter ranges such as 1-2, 5. The merged PDF follows the exact sequence you arrange on screen.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Naweza kupanga PDF upya au kuunganisha kurasa fulani tu?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Ndiyo. Baada ya kupakia faili, ziburute katika mpangilio unaotaka, kisha acha kisanduku cha kurasa wazi kwa kurasa zote au weka masafa kama 1-2, 5. PDF iliyounganishwa hufuata mpangilio ulioweka kwenye skrini.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How does splitting work?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can split at visual cut points, enter custom ranges such as 1-3, 6, 9-11, extract selected pages into one PDF, or export every page as separate PDFs in a ZIP.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Kugawanya PDF hufanyaje kazi?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Unaweza kugawanya kwa alama za kuona, kuingiza masafa kama 1-3, 6, 9-11, kutoa kurasa ulizochagua kama PDF moja au kuhamisha kila ukurasa kama PDF tofauti ndani ya ZIP.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Are my PDFs uploaded to a server?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. All merging and splitting operations happen entirely in your browser. Your documents stay on your device and are never transmitted to any external server.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Je, PDF zangu hupakiliwa kwenye seva?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Hapana. Kuunganisha na kugawanya hufanyika ndani ya kivinjari chako. Nyaraka zako hubaki kwenye kifaa chako na hazitumwi kwenye seva ya nje.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Does merging reduce the quality of my PDFs?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. The merge process combines the original PDF pages without recompressing or altering their content. The output quality is identical to the source files.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Je, kuunganisha hupunguza ubora wa PDF?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Hapana. Kuunganisha huweka kurasa za awali pamoja bila kuzibana upya au kubadilisha maudhui yake. Ubora wa matokeo hubaki kama faili chanzo.</p>
     </details>
   </div>
 </section>

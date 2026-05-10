@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <script src="/assets/js/components/related-tools-data.min.js?v=4300960a" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
   :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; --afro-light: #f5f7fa; }
@@ -149,11 +149,11 @@
   }
 </style>
 
-<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 
 
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="sw_KE">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-convert.webp">
 <meta property="article:modified_time" content="2026-04-28">
@@ -171,13 +171,13 @@
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>PDF Badilishaer</span></div>
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/sw/zana-zote/">Zana zote</a> / <span>Kubadilisha Format ya PDF</span></div>
     <h1>Kubadilisha Format ya PDF</h1>
     <p class="hero-sub">Badilisha PDF kwa matumizi tofauti ya kazi, shule, biashara na nyaraka za kila siku.</p>
     <div class="hero-badges">
       <span class="badge b-green">Ndani ya kivinjari</span>
       <span class="badge b-green">Hakuna kupakia</span>
-      <span class="badge b-green">Office, Maandishi &amp; Pichas</span>
+      <span class="badge b-green">Office, maandishi na picha</span>
     </div>
   </div>
 </div>
@@ -185,7 +185,7 @@
 <div class="tool-main">
   <!-- Mode Selection -->
   <div class="card">
-    <div class="card-head"><span class="card-title">Conversion Mode</span></div>
+    <div class="card-head"><span class="card-title">Aina ya kubadilisha</span></div>
     <div class="card-body">
       <div class="mode-row">
         <button class="mode-btn on" id="modeWord" onclick="switchMode('word2pdf')">Word &rarr; PDF</button>
@@ -199,12 +199,12 @@
   <!-- ============ WORD TO PDF ============ -->
   <div id="word2pdf-panel">
     <div class="card">
-      <div class="card-head"><span class="card-title">Pakia Word Document</span></div>
+      <div class="card-head"><span class="card-title">Pakia hati ya Word</span></div>
       <div class="card-body">
         <div class="drop-zone" id="wordDropZone">
           <div class="drop-icon">&#128196;</div>
-          <div class="drop-text">Drag &amp; drop your .docx file here, au bofya kuchagua</div>
-          <div class="drop-hint">Supports .docx files (Microsoft Word)</div>
+          <div class="drop-text">Buruta na dondosha faili ya .docx hapa, au bofya kuchagua</div>
+          <div class="drop-hint">Inakubali faili za .docx (Microsoft Word)</div>
           <input type="file" id="wordFailiInput" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
         </div>
         <div class="file-info" id="wordFailiInfo">
@@ -225,15 +225,15 @@
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Margins</label>
+            <label class="f-label">Mipaka ya ukurasa</label>
             <select class="f-select" id="wordMargins">
-              <option value="normal">Normal (25 mm)</option>
-              <option value="narrow">Narrow (13 mm)</option>
-              <option value="wide">Wide (32 mm)</option>
+              <option value="normal">Kawaida (25 mm)</option>
+              <option value="narrow">Nyembamba (13 mm)</option>
+              <option value="wide">Pana (32 mm)</option>
             </select>
           </div>
         </div>
-        <button class="calc-btn" id="wordBadilishaBtn" disabled onclick="convertWord()">Badilisha to PDF</button>
+        <button class="calc-btn" id="wordBadilishaBtn" disabled onclick="convertWord()">Badilisha kuwa PDF</button>
         <div class="progress-bar" id="wordProgress"><div class="progress-fill" id="wordProgressFill"></div></div>
         <div class="progress-text" id="wordProgressMaandishi"></div>
       </div>
@@ -241,14 +241,14 @@
 
     <!-- Word Matokeo -->
     <div class="card hidden" id="wordMatokeoCard">
-      <div class="card-head"><span class="card-title">PDF Created</span></div>
+      <div class="card-head"><span class="card-title">PDF imetengenezwa</span></div>
       <div class="card-body" style="text-align:center;">
         <div style="font-size:3rem;margin-bottom:8px;">&#128196;</div>
         <div style="font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:4px;" id="wordMatokeoName"></div>
         <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="wordMatokeoInfo"></div>
         <div class="result-actions" style="justify-content:center;">
           <button class="act-btn act-download" id="wordPakuaBtn">&#128229; Pakua PDF</button>
-          <button class="act-btn act-reset" onclick="resetWord()">&#8635; Badilisha Another</button>
+          <button class="act-btn act-reset" onclick="resetWord()">&#8635; Badilisha nyingine</button>
         </div>
       </div>
     </div>
@@ -257,12 +257,12 @@
   <!-- ============ EXCEL TO PDF ============ -->
   <div id="excel2pdf-panel" class="hidden">
     <div class="card">
-      <div class="card-head"><span class="card-title">Pakia Spreadsheet</span></div>
+      <div class="card-head"><span class="card-title">Pakia jedwali</span></div>
       <div class="card-body">
         <div class="drop-zone" id="excelDropZone">
           <div class="drop-icon">&#128202;</div>
-          <div class="drop-text">Drag &amp; drop your spreadsheet here, au bofya kuchagua</div>
-          <div class="drop-hint">Supports .xlsx, .xls, .csv files</div>
+          <div class="drop-text">Buruta na dondosha jedwali hapa, au bofya kuchagua</div>
+          <div class="drop-hint">Inakubali faili za .xlsx, .xls na .csv</div>
           <input type="file" id="excelFailiInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" style="display:none">
         </div>
         <div class="file-info" id="excelFailiInfo">
@@ -285,18 +285,18 @@
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Orientation</label>
+            <label class="f-label">Mwelekeo</label>
             <select class="f-select" id="excelOrientation">
-              <option value="portrait">Portrait</option>
-              <option value="landscape" selected>Landscape</option>
+              <option value="portrait">Wima</option>
+              <option value="landscape" selected>Mlalo</option>
             </select>
           </div>
           <div class="field">
             <label class="f-label">Font Ukubwa</label>
             <select class="f-select" id="excelFontUkubwa">
-              <option value="7">Small (7pt)</option>
+              <option value="7">Ndogo (7pt)</option>
               <option value="8" selected>Kati (8pt)</option>
-              <option value="10">Large (10pt)</option>
+              <option value="10">Kubwa (10pt)</option>
             </select>
           </div>
         </div>
@@ -305,9 +305,9 @@
             <input type="checkbox" id="excelFitUkurasa" checked>
             <span class="toggle-track"></span>
           </label>
-          <span class="toggle-label">Auto-fit columns to page width</span>
+          <span class="toggle-label">Safu zijitoshe kwenye upana wa ukurasa</span>
         </div>
-        <button class="calc-btn" id="excelBadilishaBtn" disabled onclick="convertExcel()">Badilisha to PDF</button>
+        <button class="calc-btn" id="excelBadilishaBtn" disabled onclick="convertExcel()">Badilisha kuwa PDF</button>
         <div class="progress-bar" id="excelProgress"><div class="progress-fill" id="excelProgressFill"></div></div>
         <div class="progress-text" id="excelProgressMaandishi"></div>
       </div>
@@ -315,14 +315,14 @@
 
     <!-- Excel Matokeo -->
     <div class="card hidden" id="excelMatokeoCard">
-      <div class="card-head"><span class="card-title">PDF Created</span></div>
+      <div class="card-head"><span class="card-title">PDF imetengenezwa</span></div>
       <div class="card-body" style="text-align:center;">
         <div style="font-size:3rem;margin-bottom:8px;">&#128202;</div>
         <div style="font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:4px;" id="excelMatokeoName"></div>
         <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="excelMatokeoInfo"></div>
         <div class="result-actions" style="justify-content:center;">
           <button class="act-btn act-download" id="excelPakuaBtn">&#128229; Pakua PDF</button>
-          <button class="act-btn act-reset" onclick="resetExcel()">&#8635; Badilisha Another</button>
+          <button class="act-btn act-reset" onclick="resetExcel()">&#8635; Badilisha nyingine</button>
         </div>
       </div>
     </div>
@@ -335,8 +335,8 @@
       <div class="card-body">
         <div class="drop-zone" id="textDropZone">
           <div class="drop-icon">&#128221;</div>
-          <div class="drop-text">Drag &amp; drop your PDF here, au bofya kuchagua</div>
-          <div class="drop-hint">Toas selectable text from PDF files</div>
+          <div class="drop-text">Buruta na dondosha PDF hapa, au bofya kuchagua</div>
+          <div class="drop-hint">Toa maandishi yanayoweza kunakiliwa kutoka PDF</div>
           <input type="file" id="textFailiInput" accept=".pdf,application/pdf" style="display:none">
         </div>
         <div class="file-info" id="textFailiInfo">
@@ -357,14 +357,14 @@
 
     <!-- Maandishi Matokeo -->
     <div class="card hidden" id="textMatokeoCard">
-      <div class="card-head"><span class="card-title">Toaed Maandishi</span></div>
+      <div class="card-head"><span class="card-title">Maandishi yaliyotolewa</span></div>
       <div class="card-body">
         <div class="page-tabs" id="textUkurasaTabs"></div>
         <textarea class="text-output" id="textOutput" readonly></textarea>
         <div class="result-actions">
-          <button class="act-btn act-copy" onclick="copyMaandishi()">&#128203; Copy to Clipboard</button>
-          <button class="act-btn act-download" onclick="downloadMaandishi()">&#128229; Pakua as .txt</button>
-          <button class="act-btn act-reset" onclick="resetPdfMaandishi()">&#8635; Toa Another</button>
+          <button class="act-btn act-copy" onclick="copyMaandishi()">&#128203; Nakili</button>
+          <button class="act-btn act-download" onclick="downloadMaandishi()">&#128229; Pakua kama .txt</button>
+          <button class="act-btn act-reset" onclick="resetPdfMaandishi()">&#8635; Toa nyingine</button>
         </div>
       </div>
     </div>
@@ -377,8 +377,8 @@
       <div class="card-body">
         <div class="drop-zone" id="imageDropZone">
           <div class="drop-icon">&#128444;</div>
-          <div class="drop-text">Drag &amp; drop your PDF here, au bofya kuchagua</div>
-          <div class="drop-hint">Hamisha selected pages as PNG or JPG images</div>
+          <div class="drop-text">Buruta na dondosha PDF hapa, au bofya kuchagua</div>
+          <div class="drop-hint">Hamisha kurasa ulizochagua kama picha za PNG au JPG</div>
           <input type="file" id="imageFailiInput" accept=".pdf,application/pdf" style="display:none">
         </div>
         <div class="file-info" id="imageFailiInfo">
@@ -393,10 +393,10 @@
         </div>
         <div class="settings-row-3">
           <div class="field">
-            <label class="f-label">Picha Format</label>
+            <label class="f-label">Format ya picha</label>
             <select class="f-select" id="imageFormat">
-              <option value="png">PNG (sharp text)</option>
-              <option value="jpeg">JPG (smaller files)</option>
+              <option value="png">PNG (maandishi makali)</option>
+              <option value="jpeg">JPG (faili ndogo)</option>
             </select>
           </div>
           <div class="field">
@@ -414,7 +414,7 @@
             <div class="field-note">Leave blank for all pages. Use commas and ranges.</div>
           </div>
         </div>
-        <button class="calc-btn" id="imageBadilishaBtn" disabled onclick="convertPichas()">Hamisha Pichas as ZIP</button>
+        <button class="calc-btn" id="imageBadilishaBtn" disabled onclick="convertPichas()">Hamisha picha kama ZIP</button>
         <div class="progress-bar" id="imageProgress"><div class="progress-fill" id="imageProgressFill"></div></div>
         <div class="progress-text" id="imageProgressMaandishi"></div>
       </div>
@@ -429,7 +429,7 @@
         <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="imageMatokeoInfo"></div>
         <div class="result-actions" style="justify-content:center;">
           <button class="act-btn act-download" id="imagePakuaBtn">&#128229; Pakua ZIP</button>
-          <button class="act-btn act-reset" onclick="resetPdfPichas()">&#8635; Hamisha Another</button>
+          <button class="act-btn act-reset" onclick="resetPdfPichas()">&#8635; Hamisha nyingine</button>
         </div>
       </div>
     </div>
@@ -443,36 +443,36 @@
       <div class="tip-item">&#128196; Word conversion preserves basic formatting</div>
       <div class="tip-item">&#128202; Excel tables get styled headers &amp; alternating rows</div>
       <div class="tip-item">&#128444; PDF pages can export as PNG/JPG ZIPs</div>
-      <div class="tip-item">&#128221; PDF text extraction works on selectable text only</div>
+      <div class="tip-item">&#128221; Kutoa maandishi ya PDF hufanya kazi kwenye maandishi yanayoweza kuchaguliwa tu</div>
     </div>
   </div>
 </div>
 
 <!-- SEO Content -->
 <div class="seo-section">
-  <h2>Free Faragha PDF Badilishaer</h2>
-  <p>The AfroTools PDF Badilishaer is a browser-based toolkit for everyday document conversion. Badilisha DOCX files to PDF, turn XLSX, XLS, and CSV sheets into PDF tables, extract selectable PDF text, or export PDF pages as PNG or JPG images. All processing happens locally in your browser, so your files are never uploaded to a server.</p>
+  <h2>Kubadilisha format ya PDF kwa faragha</h2>
+  <p>AfroTools Kubadilisha Format ya PDF ni zana ya kivinjari kwa kubadilisha nyaraka za kila siku. Badilisha DOCX kuwa PDF, geuza XLSX, XLS na CSV kuwa majedwali ya PDF, toa maandishi yanayoweza kuchaguliwa au hamisha kurasa za PDF kama picha za PNG au JPG. Uchakataji wote hufanyika ndani ya kivinjari, hivyo faili zako hazipakiliwi kwenye seva.</p>
 
-  <h3>Word to PDF Conversion</h3>
-  <p>Pakia a .docx file and convert it to a clean PDF document. The converter preserves common document structure such as headings, paragraphs, bold and italic text, lists, links, and tables. Choose between A4 and Letter page sizes, then set normal, narrow, or wide margins. Complex Word layouts, custom fonts, floating images, and exact print fidelity may vary because the conversion runs fully in the browser.</p>
+  <h3>Word kwenda PDF</h3>
+  <p>Pakia faili ya .docx na uibadilishe kuwa PDF safi. Zana huhifadhi muundo wa kawaida wa hati kama vichwa, aya, maandishi ya bold au italic, orodha, viungo na majedwali. Chagua A4 au Letter, kisha weka mipaka ya kawaida, myembamba au pana. Miundo changamano ya Word, fonti maalum, picha zinazoelea na ufanisi wa uchapishaji vinaweza kutofautiana kwa sababu ubadilishaji hufanyika ndani ya kivinjari.</p>
 
-  <h3>Excel to PDF Conversion</h3>
-  <p>Transform spreadsheets into professional PDF tables. The tool supports .xlsx, .xls, and .csv files, and handles workbooks with multiple sheets. Tables are formatted with bold headers, alternating row colours, and borders. Choose landscape orientation for wide spreadsheets, and use auto-fit to keep columns inside the page.</p>
+  <h3>Excel kwenda PDF</h3>
+  <p>Geuza majedwali kuwa PDF iliyoandaliwa vizuri. Zana inakubali faili za .xlsx, .xls na .csv, na hushughulikia vitabu vyenye sheets nyingi. Majedwali hupangiliwa kwa vichwa vilivyo bold, rangi za mistari zinazopishana na mipaka. Chagua mlalo kwa majedwali mapana na tumia kujitosheleza ili safu zibaki ndani ya ukurasa.</p>
 
-  <h3>PDF Maandishi Toaion</h3>
-  <p>Toa selectable text from PDF documents page by page. The extracted text can be copied to the clipboard or downloaded as a plain text file. This works with PDFs that contain real text. Scanned documents are images and need OCR before text can be extracted.</p>
+  <h3>Kutoa maandishi ya PDF</h3>
+  <p>Toa maandishi yanayoweza kuchaguliwa kutoka PDF ukurasa kwa ukurasa. Maandishi yaliyotolewa yanaweza kunakiliwa au kupakuliwa kama faili ya maandishi. Hii hufanya kazi kwenye PDF zenye maandishi halisi. Nyaraka zilizoskaniwa ni picha na huhitaji OCR kabla maandishi hayajatolewa.</p>
 
-  <h3>PDF to Picha Hamisha</h3>
-  <p>Hamisha all pages or a selected range of pages as PNG or JPG images. The converter renders pages in your browser, packages the output into a ZIP file, and keeps predictable filenames so the images are ready for sharing, archiving, or uploading into another workflow.</p>
+  <h3>PDF kwenda picha</h3>
+  <p>Hamisha kurasa zote au masafa ya kurasa kama picha za PNG au JPG. Zana huonyesha kurasa ndani ya kivinjari, huweka matokeo kwenye ZIP na huhifadhi majina ya faili yanayotabirika ili picha ziwe tayari kushirikiwa, kuhifadhiwa au kupakiwa kwenye mtiririko mwingine.</p>
 
-  <h3>Why Use This Tool?</h3>
+  <h3>Kwa nini utumie zana hii?</h3>
   <ul>
-    <li><strong>100% Faragha:</strong> All processing happens in your browser. No files are uploaded anywhere.</li>
-    <li><strong>No Software Needed:</strong> No need to install Microsoft Office, LibreOffice, or any desktop application.</li>
-    <li><strong>Multi-Format:</strong> Handle Word, Excel, CSV, PDF text, and PDF image exports in one tool.</li>
-    <li><strong>Ukurasa Range Control:</strong> Hamisha every page or specific page ranges such as 1, 3-5, 8.</li>
-    <li><strong>No Registration:</strong> No account needed. Hakuna kikomo. Fungua and use instantly.</li>
-    <li><strong>Mobile Friendly:</strong> Works on phones, tablets, and desktops alike.</li>
+    <li><strong>Faragha:</strong> Uchakataji wote hufanyika ndani ya kivinjari. Hakuna faili zinazopakiwa.</li>
+    <li><strong>Hakuna programu ya kusakinisha:</strong> Huhitaji Microsoft Office, LibreOffice au programu ya kompyuta.</li>
+    <li><strong>Format nyingi:</strong> Shughulikia Word, Excel, CSV, maandishi ya PDF na picha za PDF kwenye zana moja.</li>
+    <li><strong>Udhibiti wa masafa ya kurasa:</strong> Hamisha kila ukurasa au masafa kama 1, 3-5, 8.</li>
+    <li><strong>Hakuna usajili:</strong> Hakuna akaunti inayohitajika. Fungua na utumie mara moja.</li>
+    <li><strong>Inafaa simu:</strong> Hufanya kazi kwenye simu, tablets na kompyuta.</li>
   </ul>
 </div>
 
@@ -481,26 +481,26 @@
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <div class="faq-section">
-  <h2 class="faq-title">Frequently Asked Questions</h2>
+  <h2 class="faq-title">Maswali ya mara kwa mara</h2>
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I convert a Word document to PDF? <span class="faq-arrow">&#9660;</span></div>
-    <div class="faq-a">Select the "Word to PDF" tab, upload your .docx file by dragging it onto the upload area or clicking to browse. Choose your page size and margin preferences, then click "Badilisha to PDF". Your PDF will be generated instantly in your browser.</div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Ninabadilishaje hati ya Word kuwa PDF? <span class="faq-arrow">&#9660;</span></div>
+    <div class="faq-a">Chagua "Word kwenda PDF", pakia faili yako ya .docx kwa kuiburuta kwenye eneo la kupakia au kubofya kuchagua. Chagua ukubwa wa ukurasa na mipaka, kisha bofya "Badilisha kuwa PDF". PDF itatengenezwa ndani ya kivinjari chako.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I convert Excel files with multiple sheets? <span class="faq-arrow">&#9660;</span></div>
-    <div class="faq-a">Yes. When you upload a multi-sheet workbook, the tool shows tabs for each sheet. You can select which sheet to convert. Each sheet is rendered as a styled table in the PDF.</div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Naweza kubadilisha Excel yenye sheets nyingi? <span class="faq-arrow">&#9660;</span></div>
+    <div class="faq-a">Ndiyo. Ukipakia workbook yenye sheets nyingi, zana huonyesha tabs za kila sheet. Unaweza kuchagua sheet ya kubadilisha. Kila sheet hutolewa kama jedwali lililopangiliwa kwenye PDF.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I turn PDF pages into images? <span class="faq-arrow">&#9660;</span></div>
-    <div class="faq-a">Yes. Select "PDF to Pichas", upload your PDF, choose PNG or JPG, set the render scale, and optionally enter a page range such as 1, 3-5. The tool creates a ZIP file with one image per selected page.</div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Naweza kubadilisha kurasa za PDF kuwa picha? <span class="faq-arrow">&#9660;</span></div>
+    <div class="faq-a">Ndiyo. Chagua "PDF kwenda Picha", pakia PDF yako, chagua PNG au JPG, weka kiwango cha kutoa picha, na ukiitaka ingiza masafa ya kurasa kama 1, 3-5. Zana hutengeneza ZIP yenye picha moja kwa kila ukurasa uliochaguliwa.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data safe? <span class="faq-arrow">&#9660;</span></div>
-    <div class="faq-a">Absolutely. All processing uses JavaScript libraries running entirely in your browser. Your files are never uploaded to any server. No data leaves your device at any point during conversion.</div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je, data yangu iko salama? <span class="faq-arrow">&#9660;</span></div>
+    <div class="faq-a">Ndiyo. Uchakataji wote hutumia maktaba za JavaScript ndani ya kivinjari. Faili zako hazipakiliwi kwenye seva na data haitoki kwenye kifaa chako wakati wa kubadilisha.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What formatting is preserved in Word to PDF? <span class="faq-arrow">&#9660;</span></div>
-    <div class="faq-a">The converter preserves headings, paragraphs, bold, italic, underline, lists (ordered and unordered), tables, and hyperlinks. Complex formatting like custom fonts, images, and advanced layout may not be fully supported.</div>
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Ni mpangilio gani huhifadhiwa Word inapobadilishwa kuwa PDF? <span class="faq-arrow">&#9660;</span></div>
+    <div class="faq-a">Zana huhifadhi vichwa, aya, bold, italic, underline, orodha, majedwali na viungo. Mpangilio changamano kama fonti maalum, picha na layout ya hali ya juu unaweza usihifadhiwe kikamilifu.</div>
   </div>
   <div class="faq-item">
     <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why can't I extract text from my scanned PDF? <span class="faq-arrow">&#9660;</span></div>
@@ -672,7 +672,7 @@ function setupDropZone(zoneId, inputId, handler) {
 function handleWordFile(file) {
   var name = file.name.toLowerCase();
   if (!name.endsWith('.docx')) {
-    showToast('Please select a .docx file.', true);
+    showToast('Tafadhali chagua faili ya .docx.', true);
     return;
   }
   wordFile = file;
@@ -705,7 +705,7 @@ async function convertWord() {
   bar.style.display = 'block';
   ptext.style.display = 'block';
   fill.style.width = '10%';
-  ptext.textContent = 'Loading libraries...';
+  ptext.textContent = 'Inapakia maktaba...';
 
   try {
     await ensureMammoth();
@@ -809,7 +809,7 @@ async function convertWord() {
 function handleExcelFile(file) {
   var name = file.name.toLowerCase();
   if (!name.endsWith('.xlsx') && !name.endsWith('.xls') && !name.endsWith('.csv')) {
-    showToast('Please select an .xlsx, .xls, or .csv file.', true);
+    showToast('Tafadhali chagua faili ya .xlsx, .xls au .csv.', true);
     return;
   }
   excelFile = file;
@@ -852,7 +852,7 @@ async function parseExcelSheets(file) {
     }
     excelSelectedSheet = 0;
   } catch (err) {
-    showToast('Failed to parse spreadsheet: ' + err.message, true);
+    showToast('Imeshindwa kusoma jedwali: ' + err.message, true);
   }
 }
 
@@ -881,7 +881,7 @@ async function convertExcel() {
   bar.style.display = 'block';
   ptext.style.display = 'block';
   fill.style.width = '20%';
-  ptext.textContent = 'Loading PDF library...';
+  ptext.textContent = 'Inapakia maktaba ya PDF...';
 
   try {
     await ensureJsPdf();
@@ -1111,7 +1111,7 @@ async function extractTextPages(pdfDoc) {
 
 async function handlePdfTextFile(file) {
   if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-    showToast('Please select a PDF file.', true);
+    showToast('Tafadhali chagua faili ya PDF.', true);
     return;
   }
 
@@ -1128,7 +1128,7 @@ async function handlePdfTextFile(file) {
     document.getElementById('textPageCount').textContent = textPdfDoc.numPages + ' page' + (textPdfDoc.numPages !== 1 ? 's' : '');
     document.getElementById('textExtractBtn').disabled = false;
   } catch (err) {
-    showToast('Failed to read PDF: ' + err.message, true);
+    showToast('Imeshindwa kusoma PDF: ' + err.message, true);
     document.getElementById('textExtractBtn').disabled = true;
   }
 }
@@ -1282,7 +1282,7 @@ function parsePageRange(input, total) {
   });
 
   var sorted = Array.from(pages).sort(function(a, b) { return a - b; });
-  if (!sorted.length) throw new Error('Enter a valid page range such as 1, 3-5.');
+  if (!sorted.length) throw new Error('Weka masafa sahihi ya kurasa kama 1, 3-5.');
   return sorted;
 }
 
@@ -1290,14 +1290,14 @@ function canvasToBlob(canvas, mimeType, quality) {
   return new Promise(function(resolve, reject) {
     canvas.toBlob(function(blob) {
       if (blob) { resolve(blob); return; }
-      reject(new Error('Could not render page image.'));
+      reject(new Error('Imeshindwa kutoa picha ya ukurasa.'));
     }, mimeType, quality);
   });
 }
 
 async function handlePdfImageFile(file) {
   if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-    showToast('Please select a PDF file.', true);
+    showToast('Tafadhali chagua faili ya PDF.', true);
     return;
   }
 
@@ -1318,7 +1318,7 @@ async function handlePdfImageFile(file) {
     document.getElementById('imagePageCount').textContent = imagePdfDoc.numPages + ' page' + (imagePdfDoc.numPages !== 1 ? 's' : '');
     document.getElementById('imageConvertBtn').disabled = false;
   } catch (err) {
-    showToast('Failed to read PDF: ' + err.message, true);
+    showToast('Imeshindwa kusoma PDF: ' + err.message, true);
     document.getElementById('imageConvertBtn').disabled = true;
   }
 }
@@ -1383,7 +1383,7 @@ async function convertImages() {
       ptext.textContent = 'Rendered page ' + pageNum + ' of ' + imagePdfDoc.numPages + '...';
     }
 
-    ptext.textContent = 'Compressing ZIP...';
+    ptext.textContent = 'Inabana ZIP...';
     imageZipBlob = await zip.generateAsync({ type: 'blob' }, function(meta) {
       fill.style.width = (82 + Math.round(meta.percent * 0.16)) + '%';
     });
@@ -1434,7 +1434,7 @@ setupDropZone('imageDropZone', 'imageFileInput', handlePdfImageFile);
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Pdf Convert" tool-slug="pdf-convert"></share-result-button>';
+  div.innerHTML = '<share-result-button tool-name="Kubadilisha Format ya PDF" tool-slug="pdf-convert"></share-result-button>';
   target.appendChild(div);
 })();
 </script>

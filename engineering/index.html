@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <script src="/assets/js/components/tool-registry.min.js?v=1344f2c7" defer></script>
 <script src="/assets/js/components/category-cards.js?v=99301c5c" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
   body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);margin:0;-webkit-font-smoothing:antialiased}
@@ -171,7 +171,7 @@
           <li>Shape the brief in AfroPlan or AfroDraft.</li>
           <li>Estimate floor area, finishes and project risk.</li>
           <li>Build the BOQ, then check structural, services and materials.</li>
-          <li>Save field packs to the dashboard for quote review and handoff.</li>
+          <li>Save field packs to the dashboard for quote review and sharing.</li>
         </ol>
       </div>
     </div>
@@ -186,7 +186,7 @@
       <div>
         <div class="ey">Project Desk</div>
         <h2>Build the right Engineering workflow</h2>
-        <p>Choose the project stage, type and immediate decision. AfroTools will assemble the next apps in order, then let you save the workflow to your dashboard as a local item or account workspace item when signed in.</p>
+        <p>Choose the project stage, type and immediate decision. AfroTools will assemble the next apps in order, then let you save the workflow to your dashboard on this device or across devices when signed in.</p>
       </div>
       <a class="hero-btn primary" href="/dashboard/#myWorkspace" style="background:#0f5cc0;color:#fff;border-color:#0f5cc0">Dashboard</a>
     </div>
@@ -266,12 +266,12 @@
 <script>
 function _initEngineering(){
   var roster=[
-    {id:'afroplan-floor-planner',name:'AfroPlan Floor Planner',href:'/engineering/floor-planner/',group:'Design',desc:'AI-assisted room planning, layout checks, openings and BOQ handoff.'},
+    {id:'afroplan-floor-planner',name:'AfroPlan Floor Planner',href:'/engineering/floor-planner/',group:'Design',desc:'AI-assisted room planning, layout checks, openings and BOQ export.'},
     {id:'solar-calculator',name:'Solar Panel Calculator',href:'/tools/solar-calculator/',group:'Power',desc:'PV sizing, battery autonomy, roof assumptions, losses and generator comparison.'},
     {id:'floor-plan',name:'Building Cost Estimator',href:'/tools/floor-plan/',group:'Cost',desc:'Area, finish tier, city rate, contingency and contractor comparison note.'},
     {id:'boq-generator',name:'BOQ Builder',href:'/tools/boq-builder/',group:'Cost',desc:'Tender-ready bill of quantities workflow with preliminaries, VAT and exclusions.'},
     {id:'structural-calc',name:'Structural Calculator',href:'/tools/structural-calc/',group:'Structure',desc:'Beam, slab, column and footing assumptions with engineer-review warnings.'},
-    {id:'electrical-load',name:'Electrical Load Calculator',href:'/tools/electrical-load/',group:'Power',desc:'Load schedule, diversity, cable, breaker, generator and phase handoff.'},
+    {id:'electrical-load',name:'Electrical Load Calculator',href:'/tools/electrical-load/',group:'Power',desc:'Load schedule, diversity, cable, breaker, generator and phase planning.'},
     {id:'concrete-calc',name:'Concrete Mix Calculator',href:'/tools/concrete-mix/',group:'Structure',desc:'Concrete volume, grade, bag count, wastage, slump and curing checklist.'},
     {id:'paint-calc',name:'Paint Coverage Calculator',href:'/tools/paint-calculator/',group:'Finishes',desc:'Paint litres, coats, primer, surface condition, access and touch-up allowance.'},
     {id:'tiles-calc',name:'Tiles & Flooring Calculator',href:'/tools/tiles-calc/',group:'Finishes',desc:'Tile boxes, layout waste, grout, trims, waterproofing and batch shade checks.'},
@@ -291,7 +291,7 @@ function _initEngineering(){
     {id:'scaffolding-calc',name:'Scaffolding Calculator',href:'/tools/scaffolding-calc/',group:'Site Works',desc:'Temporary works materials, hire duration, ties, guardrails and inspection.'},
     {id:'window-door-sizing',name:'Window & Door Sizing Guide',href:'/tools/window-door-sizing/',group:'Envelope',desc:'Openings schedule, ventilation, egress, security, glazing and hardware.'},
     {id:'plumbing-material',name:'Plumbing Material Calculator',href:'/tools/plumbing-material/',group:'Water',desc:'Pipes, fittings, valves, fixtures, tanks, pressure test and access panels.'},
-    {id:'afrodraft',name:'AfroDraft 2D CAD',href:'/engineering/afrodraft/',group:'Design',desc:'Special CAD workspace for layers, dimensions, title blocks and DXF/PDF handoff.'}
+    {id:'afrodraft',name:'AfroDraft 2D CAD',href:'/engineering/afrodraft/',group:'Design',desc:'Special CAD workspace for layers, dimensions, title blocks and DXF/PDF export.'}
   ];
   var allTools=roster.map(function(item){
     var reg=(typeof AFRO_TOOLS!=='undefined'?AFRO_TOOLS:[]).find(function(t){return t.href===item.href||t.id===item.id;});
@@ -440,7 +440,7 @@ function _initEngineering(){
       var flow=currentWorkflow();
       if(window.AfroEngineering&&AfroEngineering.saveWorkflow){
         AfroEngineering.saveWorkflow(flow).then(function(saved){
-          if(status)status.textContent=saved.syncStatus==='cloud'?'Workflow saved locally and synced to your account workspace.':'Workflow saved locally. Sign in to sync it across devices.';
+          if(status)status.textContent=saved.syncStatus==='cloud'?'Workflow saved and synced to your account.':'Workflow saved locally. Sign in to sync it across devices.';
         });
       }else{
         try{

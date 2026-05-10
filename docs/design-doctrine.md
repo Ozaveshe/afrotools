@@ -89,6 +89,14 @@ The system should feel boring in the best way: one type scale, one spacing scale
 - For valuation, revenue, score, and follower panels, lead with the number, then add compact source/status metadata and a short note in the same visual rhythm.
 - If a metric needs emphasis, use typography, spacing, and subtle surface texture before adding extra side ornaments.
 
+### 10. Dark mode is a first-class theme
+
+- Use `data-theme="dark"` and `data-theme="light"` on `<html>` through `AfroTools.darkMode`; do not create page-local storage keys.
+- Keep `data-theme` as the active effective theme. When the user has not chosen a preference, set `data-theme-choice="auto"` and let system color scheme decide the active value.
+- Build new surfaces with design tokens so the global dark palette can carry them without page-specific overrides.
+- Keep dark mode calm and readable: deep neutral backgrounds, raised surfaces, blue focus/action states, and at least 4.5:1 contrast for normal text.
+- Add visible theme controls through shared navigation or a reusable settings surface rather than one-off page buttons.
+
 ## Internal Surface Rules
 
 - Mission control, admin pages, and internal consoles should still feel branded.

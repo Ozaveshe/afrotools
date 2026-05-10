@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="ha">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Link Generator a Hausa | AfroTools</title>
+<meta name="description" content="Gina wa.me WhatsApp link da message, QR code da bulk mode ga kasuwanci a Najeriya da sauran kasashen Afirka.">
+<meta name="robots" content="index, follow">
+<meta name="tool-id" content="whatsapp-link-ha">
+<link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/whatsapp-link/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/whatsapp-link/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/whatsapp-link/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/whatsapp-link/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/ha/kayan-aiki/whatsapp-link/">
+<meta property="og:title" content="WhatsApp Link Generator a Hausa | AfroTools">
+<meta property="og:description" content="Gina WhatsApp click-to-chat link, QR code da bulk links da Hausa UI.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="ha_NG">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WhatsApp Link Generator a Hausa | AfroTools">
+<meta name="twitter:description" content="Gina wa.me links da pre-filled messages don kasuwanci.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<script src="/assets/js/components/related-tools-data.min.js?v=4300960a" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"WhatsApp Link Generator a Hausa","description":"Generate WhatsApp wa.me links with pre-filled messages, QR codes, and bulk mode in Hausa.","url":"https://afrotools.com/ha/kayan-aiki/whatsapp-link/","inLanguage":"ha","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--green:var(--color-primary);--dark:#0f1419;--border:#e5e7eb;--light-bg:#f9fafb;--radius:14px;--shadow:0 2px 8px rgba(0,0,0,.06)}
+body{font-family:'Inter',sans-serif;background:#fff;color:var(--dark);line-height:1.6;margin:0}
+.container{max-width:960px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;box-shadow:var(--shadow)}
+.card h2{font-size:1.25rem;font-weight:800;margin:0 0 1rem}
+label{display:block;font-weight:700;margin-bottom:.35rem;font-size:.95rem}
+.input-row{display:flex;gap:.75rem;margin-bottom:1rem}
+select,input[type="text"],textarea{width:100%;padding:.65rem .85rem;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:.95rem;background:#fff}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--green)}
+textarea{resize:vertical;min-height:80px}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.35rem;border:none;border-radius:10px;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer}
+.btn-primary{background:var(--green);color:#fff}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--dark)}
+.btn-sm{padding:.45rem .9rem;font-size:.85rem}
+.tabs{display:flex;gap:0;margin-bottom:1.5rem;border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+.tab{flex:1;padding:.65rem;text-align:center;font-weight:800;font-size:.9rem;cursor:pointer;background:var(--light-bg);border:none}
+.tab.active{background:var(--green);color:#fff}
+.result-area{display:none}
+.result-area.show{display:block}
+.link-display{background:var(--light-bg);border:1.5px solid var(--border);border-radius:10px;padding:1rem;word-break:break-all;font-size:.95rem;margin-bottom:1rem}
+.link-display a{color:var(--green);font-weight:700}
+.preview-grid{display:grid;grid-template-columns:1fr 200px;gap:1.5rem;align-items:start}
+.qr-box{text-align:center}
+.qr-box canvas{border:1.5px solid var(--border);border-radius:10px;padding:8px;background:#fff;max-width:100%}
+.copy-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:.65rem 1.5rem;border-radius:10px;font-weight:700;font-size:.9rem;opacity:0;transition:opacity .3s;z-index:999}
+.copy-toast.show{opacity:1}
+.bulk-results{max-height:400px;overflow-y:auto}
+.bulk-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem .8rem;border-bottom:1px solid var(--border);font-size:.9rem;gap:.5rem}
+.bulk-item a{color:var(--green);word-break:break-all;flex:1}
+.country-select{min-width:140px;flex-shrink:0}
+.template-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;margin:1rem 0}
+.link-coach{margin-top:1rem;border:1.5px solid var(--border);border-radius:8px;background:#f8fafc;padding:1rem;font-size:.88rem;color:#475569;line-height:1.55}
+.link-coach strong{display:block;color:var(--dark);margin-bottom:.25rem}
+.link-score{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-top:.75rem}
+.score-pill{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:.7rem}
+.score-pill b{display:block;color:var(--dark);margin-bottom:.15rem}
+.faq-section{margin-top:2rem}
+.faq-item{border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:.75rem;overflow:hidden}
+.faq-q{padding:1rem 1.25rem;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--light-bg)}
+.faq-q::after{content:'+';font-size:1.3rem;font-weight:800;color:var(--green)}
+.faq-item.open .faq-q::after{content:'-'}
+.faq-a{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:.93rem;color:#555}
+.faq-item.open .faq-a{max-height:320px;padding:.75rem 1.25rem 1rem}
+.actions-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem}
+.hero{background:linear-gradient(135deg,#0f1419 0%,#123b2a 100%);padding:96px 0 36px;color:#fff}
+.hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.45)}
+.hero h1{font-size:clamp(1.7rem,4vw,2.7rem);font-weight:900;line-height:1.1;margin:0 0 10px}
+.hero p{font-size:.95rem;color:rgba(255,255,255,.76);line-height:1.7;max-width:620px;margin:0}
+@media(max-width:680px){.container{padding:1rem}.preview-grid{grid-template-columns:1fr}.input-row{flex-direction:column}.country-select{min-width:100%}.template-grid,.link-score{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar active="telecom"></afro-navbar>
+<section class="hero"><div class="hero-inner">
+<div class="breadcrumb"><a href="/ha/">AfroTools Hausa</a> / <a href="/ha/sadarwa/">Sadarwa</a> / <span>WhatsApp Link</span></div>
+<h1>WhatsApp Link Generator</h1>
+<p>Gina wa.me click-to-chat link da pre-filled message. Yana da amfani ga masu sayarwa, delivery, bookings da customer support a WhatsApp.</p>
+</div></section>
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('single')">Link daya</button>
+    <button class="tab" onclick="switchTab('bulk')">Bulk mode</button>
+  </div>
+  <div id="singleTab" class="card">
+    <h2>Gina WhatsApp link</h2>
+    <label for="countryCode">Lambar kasa</label>
+    <div class="input-row">
+      <select id="countryCode" class="country-select">
+        <option value="234">Nigeria (+234)</option>
+        <option value="254">Kenya (+254)</option>
+        <option value="233">Ghana (+233)</option>
+        <option value="27">South Africa (+27)</option>
+        <option value="20">Egypt (+20)</option>
+        <option value="255">Tanzania (+255)</option>
+        <option value="256">Uganda (+256)</option>
+        <option value="237">Cameroon (+237)</option>
+        <option value="225">Ivory Coast (+225)</option>
+        <option value="251">Ethiopia (+251)</option>
+        <option value="212">Morocco (+212)</option>
+        <option value="213">Algeria (+213)</option>
+        <option value="216">Tunisia (+216)</option>
+        <option value="250">Rwanda (+250)</option>
+        <option value="263">Zimbabwe (+263)</option>
+        <option value="260">Zambia (+260)</option>
+        <option value="265">Malawi (+265)</option>
+        <option value="221">Senegal (+221)</option>
+        <option value="1">USA/Canada (+1)</option>
+        <option value="44">UK (+44)</option>
+        <option value="91">India (+91)</option>
+        <option value="971">UAE (+971)</option>
+        <option value="966">Saudi Arabia (+966)</option>
+        <option value="86">China (+86)</option>
+        <option value="49">Germany (+49)</option>
+        <option value="33">France (+33)</option>
+      </select>
+      <input type="text" id="phoneNumber" placeholder="misali 8012345678" inputmode="tel">
+    </div>
+    <label for="message">Sakon farko (optional)</label>
+    <textarea id="message" placeholder="Sannu! Ina son karin bayani..."></textarea>
+    <div class="template-grid">
+      <div><label for="businessName">Sunan kasuwanci</label><input type="text" id="businessName" placeholder="misali Amina Foods"></div>
+      <div><label for="offerItem">Abu ko service</label><input type="text" id="offerItem" placeholder="misali order, delivery, booking"></div>
+      <div><label for="messageTemplate">Template</label><select id="messageTemplate"><option value="order">Order request</option><option value="support">Customer support</option><option value="booking">Booking</option><option value="payment">Payment confirmation</option><option value="delivery">Delivery update</option></select></div>
+    </div>
+    <div class="actions-row">
+      <button class="btn btn-outline" onclick="applyTemplate()">Saka template</button>
+      <button class="btn btn-primary" onclick="generateLink()">Gina link</button>
+      <button class="btn btn-outline" onclick="clearForm()">Share</button>
+    </div>
+    <div class="link-coach" id="linkCoach"><strong>Shirin link</strong>WhatsApp click-to-chat link yana bukatar cikakkiyar lambar kasa ba tare da plus sign, bracket ko space ba.</div>
+  </div>
+  <div id="bulkTab" class="card" style="display:none;">
+    <h2>Bulk link generator</h2>
+    <label for="bulkCountry">Default country code</label>
+    <select id="bulkCountry" style="margin-bottom:1rem;">
+      <option value="234">Nigeria (+234)</option>
+      <option value="254">Kenya (+254)</option>
+      <option value="233">Ghana (+233)</option>
+      <option value="27">South Africa (+27)</option>
+      <option value="20">Egypt (+20)</option>
+      <option value="1">USA/Canada (+1)</option>
+      <option value="44">UK (+44)</option>
+    </select>
+    <label for="bulkNumbers">Lambobin waya (daya a kowane layi)</label>
+    <textarea id="bulkNumbers" rows="6" placeholder="8012345678&#10;9023456789&#10;7034567890"></textarea>
+    <label for="bulkMessage" style="margin-top:1rem;">Sakon farko (optional)</label>
+    <textarea id="bulkMessage" placeholder="Sannu! Ina son karin bayani..."></textarea>
+    <div class="actions-row">
+      <button class="btn btn-primary" onclick="generateBulk()">Gina duka</button>
+      <button class="btn btn-outline" onclick="copyAllBulk()">Kwafe duka</button>
+    </div>
+    <div id="bulkResults" class="bulk-results" style="margin-top:1rem;"></div>
+  </div>
+  <div id="resultArea" class="card result-area">
+    <h2>WhatsApp link dinka</h2>
+    <div class="preview-grid">
+      <div>
+        <div class="link-display" id="linkDisplay"></div>
+        <div class="link-coach" id="resultCoach"></div>
+        <div class="actions-row">
+          <button class="btn btn-primary btn-sm" onclick="copyLink()">Kwafe link</button>
+          <a id="openLink" href="#" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Bude a WhatsApp</a>
+          <button class="btn btn-outline btn-sm" onclick="downloadQR()">Sauke QR</button>
+        </div>
+      </div>
+      <div class="qr-box"><canvas id="qrCanvas"></canvas></div>
+    </div>
+  </div>
+  <section style="max-width:900px;margin:32px auto 0;">
+    <div style="font-size:.9rem;color:#475569;line-height:1.75;margin-bottom:24px;">
+      <p>WhatsApp Link Generator yana gina link da zai bude chat kai tsaye ba tare da customer ya fara save number ba. Ka saka lambar waya da country code, ka kara message idan kana so, sannan ka raba link din a bio, website, flyer, receipt ko social media.</p>
+    </div>
+  </section>
+  <div class="faq-section">
+    <h2 style="font-size:1.3rem;margin-bottom:1rem;">Tambayoyi</h2>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Ta yaya zan kirkiro WhatsApp link ga kasuwanci?</div>
+      <div class="faq-a">Zabi country code, saka WhatsApp number, kara message idan kana so, sannan danna Gina link. Za ka samu wa.me link da zaka iya raba wa customers.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Zan iya yin links da yawa lokaci daya?</div>
+      <div class="faq-a">Eh. Yi amfani da Bulk mode, saka lambobin waya daya a kowane layi, sannan ka saka message daya da zai tafi da kowanne link.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Shin wa.me link yana aiki ba tare da save number ba?</div>
+      <div class="faq-a">Eh. Link din yana bude chat kai tsaye a WhatsApp, shi yasa yake da amfani ga customer support, ecommerce, bookings da delivery.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Ina amfani da QR code yaya?</div>
+      <div class="faq-a">Bayan ka gina link, sauke QR code sannan ka saka shi a flyer, business card, receipt ko shop counter. Customer zai iya scan ya bude WhatsApp chat.</div>
+    </div>
+  </div>
+</div>
+<div class="copy-toast" id="toast">An kwafe zuwa clipboard!</div>
+<afro-related-tools category="telecom" current="whatsapp-link-ha"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+<script>
+let currentLink = '';
+let currentNormalizedNumber = '';
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', (tab === 'single' && i === 0) || (tab === 'bulk' && i === 1));
+  });
+  document.getElementById('singleTab').style.display = tab === 'single' ? '' : 'none';
+  document.getElementById('bulkTab').style.display = tab === 'bulk' ? '' : 'none';
+  if (tab === 'single') document.getElementById('resultArea').classList.remove('show');
+}
+function cleanNumber(num) {
+  return num.replace(/[\s\-\(\)\+]/g, '').replace(/^0+/, '');
+}
+function buildLink(code, phone, msg) {
+  const clean = cleanNumber(phone);
+  if (!clean) return null;
+  const normalized = clean.startsWith(code) && clean.length > code.length + 5 ? clean : code + clean;
+  currentNormalizedNumber = normalized;
+  let url = 'https://wa.me/' + normalized;
+  if (msg && msg.trim()) url += '?text=' + encodeURIComponent(msg.trim());
+  return url;
+}
+function templateMessage(kind, business, item) {
+  const name = business || 'kasuwancinku';
+  const thing = item || 'abu ko service';
+  const templates = {
+    order: 'Sannu ' + name + ', ina son yin order na ' + thing + '. Don Allah a turo farashi, availability da delivery options.',
+    support: 'Sannu ' + name + ', ina bukatar taimako game da ' + thing + '. Don Allah a sanar da ni mataki na gaba.',
+    booking: 'Sannu ' + name + ', ina son booking na ' + thing + '. Wane lokaci ne available?',
+    payment: 'Sannu ' + name + ', na biya kudin ' + thing + '. Don Allah a tabbatar da receipt.',
+    delivery: 'Sannu ' + name + ', ina son update game da delivery na ' + thing + '.'
+  };
+  return templates[kind] || templates.order;
+}
+function applyTemplate() {
+  const kind = document.getElementById('messageTemplate').value;
+  const business = document.getElementById('businessName').value.trim();
+  const item = document.getElementById('offerItem').value.trim();
+  document.getElementById('message').value = templateMessage(kind, business, item);
+  renderLinkCoach();
+}
+function renderLinkCoach() {
+  const code = document.getElementById('countryCode').value;
+  const phone = document.getElementById('phoneNumber').value.trim();
+  const clean = cleanNumber(phone);
+  const msg = document.getElementById('message').value.trim();
+  const normalized = clean ? (clean.startsWith(code) && clean.length > code.length + 5 ? clean : code + clean) : '';
+  const hasGoodLength = normalized.length >= 8 && normalized.length <= 15;
+  const messageState = msg.length ? (msg.length <= 180 ? 'Gajeren sako' : 'Dogon sako') : 'Babu prefill';
+  const box = document.getElementById('linkCoach');
+  if (!box) return;
+  box.innerHTML = '<strong>Shirin link</strong>' +
+    'Official click-to-chat link yana amfani da cikakkiyar lambar kasa ba tare da plus sign, bracket, space ko leading zero ba.' +
+    '<div class="link-score">' +
+    '<div class="score-pill"><b>' + (normalized || 'Babu number') + '</b>Normalized number</div>' +
+    '<div class="score-pill"><b>' + (hasGoodLength ? 'Ya yi kama da valid' : 'Duba tsawon lamba') + '</b>8 zuwa 15 digits yawanci ya dace</div>' +
+    '<div class="score-pill"><b>' + messageState + '</b>' + msg.length + ' characters</div>' +
+    '</div>';
+}
+['countryCode','phoneNumber','message','businessName','offerItem','messageTemplate'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', renderLinkCoach);
+    el.addEventListener('change', renderLinkCoach);
+  }
+});
+function generateLink() {
+  const code = document.getElementById('countryCode').value;
+  const phone = document.getElementById('phoneNumber').value.trim();
+  const msg = document.getElementById('message').value;
+  if (!phone) { showToast('Saka lambar waya'); return; }
+  const link = buildLink(code, phone, msg);
+  if (!link) { showToast('Lambar waya ba ta dace ba'); return; }
+  currentLink = link;
+  document.getElementById('linkDisplay').innerHTML = '<a href="' + link + '" target="_blank" rel="noopener">' + link + '</a>';
+  document.getElementById('openLink').href = link;
+  document.getElementById('resultCoach').innerHTML = '<strong>Checklist kafin rabawa</strong> Number: ' + currentNormalizedNumber + '. Message yana URL-encoded. Gwada sau daya kafin ka saka a ad, poster, receipt ko profile bio.';
+  document.getElementById('resultArea').classList.add('show');
+  if (typeof QRCode !== 'undefined') {
+    QRCode.toCanvas(document.getElementById('qrCanvas'), link, { width: 180, margin: 1, color: { dark: '#0f1419', light: '#ffffff' } });
+  }
+}
+function generateBulk() {
+  const code = document.getElementById('bulkCountry').value;
+  const raw = document.getElementById('bulkNumbers').value.trim();
+  const msg = document.getElementById('bulkMessage').value;
+  if (!raw) { showToast('Saka akalla lamba daya'); return; }
+  const numbers = raw.split('\n').map(n => n.trim()).filter(Boolean);
+  const container = document.getElementById('bulkResults');
+  container.innerHTML = '';
+  let generated = 0;
+  numbers.forEach(num => {
+    const link = buildLink(code, num, msg);
+    if (!link) return;
+    generated += 1;
+    const div = document.createElement('div');
+    div.className = 'bulk-item';
+    div.innerHTML = '<a href="' + link + '" target="_blank" rel="noopener">' + link + '</a><button class="btn btn-outline btn-sm" onclick="copySingle(this,\'' + link.replace(/'/g, "\\'") + '\')">Kwafe</button>';
+    container.appendChild(div);
+  });
+  if (!generated) showToast('Babu valid number da aka samu');
+}
+function copySingle(btn, link) {
+  navigator.clipboard.writeText(link).then(() => { btn.textContent = 'An kwafe'; setTimeout(() => btn.textContent = 'Kwafe', 1500); });
+}
+function copyAllBulk() {
+  const links = [...document.querySelectorAll('#bulkResults a')].map(a => a.href);
+  if (!links.length) { showToast('Fara gina links'); return; }
+  navigator.clipboard.writeText(links.join('\n')).then(() => showToast('An kwafe duk links'));
+}
+function copyLink() {
+  if (!currentLink) return;
+  navigator.clipboard.writeText(currentLink).then(() => showToast('An kwafe link'));
+}
+function downloadQR() {
+  const canvas = document.getElementById('qrCanvas');
+  const a = document.createElement('a');
+  a.download = 'whatsapp-qr.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+function clearForm() {
+  document.getElementById('phoneNumber').value = '';
+  document.getElementById('message').value = '';
+  document.getElementById('businessName').value = '';
+  document.getElementById('offerItem').value = '';
+  document.getElementById('resultArea').classList.remove('show');
+  currentLink = '';
+  currentNormalizedNumber = '';
+  renderLinkCoach();
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+renderLinkCoach();
+</script>
+</body>
+</html>

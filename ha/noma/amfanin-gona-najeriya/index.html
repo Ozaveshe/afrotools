@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkuletan Amfanin Gona Najeriya | AfroTools Hausa</title>
+  <meta name="description" content="Kiyasta crop yield a Najeriya da Hausa: tonnes per hectare, total yield, revenue range da yield gap bisa Nigeria agroecological zones.">
+  <link rel="canonical" href="https://afrotools.com/ha/noma/amfanin-gona-najeriya/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/crop-yield/nigeria">
+  <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/noma/amfanin-gona-najeriya/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/crop-yield/nigeria">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/ha/noma/amfanin-gona-najeriya/">
+  <meta property="og:title" content="Kalkuletan Amfanin Gona Najeriya">
+  <meta property="og:description" content="Hausa UI don kiyasta amfanin gona a Najeriya da source data da engine na AfroTools.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/crop-yield-nigeria.webp">
+  <meta property="og:locale" content="ha_NG">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/crop-yield-nigeria.webp">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kalkuletan Amfanin Gona Najeriya","url":"https://afrotools.com/ha/noma/amfanin-gona-najeriya/","applicationCategory":"UtilityApplication","operatingSystem":"All","inLanguage":"ha","description":"Kiyasta amfanin gona a Najeriya ta amfani da data da engine na AfroTools.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/ha/assets/agriculture-ha.css">
+  <script src="/assets/js/components/tool-registry.min.js?v=fe62d0e9" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=81565a85" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+</head>
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+<div class="ha-agri">
+  <section class="ha-agri-hero">
+    <div class="ha-agri-wrap">
+      <nav class="ha-agri-breadcrumb" aria-label="Breadcrumb">
+        <a href="/ha/">Gida</a><span>/</span><a href="/ha/noma/">Noma</a><span>/</span><span>Amfanin gona Najeriya</span>
+      </nav>
+      <span class="ha-agri-eyebrow">Engine na amfanin gona Najeriya</span>
+      <h1>Kiyasta amfanin gona kafin ka kashe kudi.</h1>
+      <p>Zaɓi crop, yankin noma, ƙasa, ban ruwa, taki da nau'in iri. Kalkuletan yana amfani da Nigeria data, crop database da CropYieldEngine iri ɗaya da shafin asali na Turanci.</p>
+      <div class="ha-pill-row" id="statsBar"></div>
+    </div>
+  </section>
+  <main class="ha-agri-main">
+    <section class="ha-tool-card">
+      <span class="ha-tool-kicker">Shigar da bayanan gona</span>
+      <h2>Kalkuleta</h2>
+      <div class="ha-form-grid">
+        <div class="ha-field"><label for="selCrop">Amfanin gona</label><select id="selCrop"></select></div>
+        <div class="ha-field"><label for="selRegion">Yanki / zone</label><select id="selRegion"></select></div>
+        <div class="ha-field"><label for="inpFarm">Girman gona (hectare)</label><input id="inpFarm" type="number" min="0.1" step="0.1" value="0.5"></div>
+        <div class="ha-field"><label for="selSoil">Nau'in ƙasa</label><select id="selSoil"></select></div>
+        <div class="ha-field"><label for="selIrrigation">Ban ruwa</label><select id="selIrrigation"><option value="rainfed">Ruwan sama kawai</option><option value="supplemental">Ƙarin ban ruwa</option><option value="full_irrigation">Cikakken ban ruwa</option></select></div>
+        <div class="ha-field"><label for="selFertilizer">Amfani da taki</label><select id="selFertilizer"><option value="none">Babu taki</option><option value="organic_only">Organic kawai (manure/compost)</option><option value="moderate_inorganic" selected>Ƙaramin NPK/inorganic</option><option value="optimized">Cikakken dose da aka ba da shawara</option></select></div>
+        <div class="ha-field"><label for="selSeed">Nau'in iri</label><select id="selSeed"><option value="local_variety">Irin gida / traditional</option><option value="improved_oga">Improved OPV</option><option value="hybrid">Hybrid F1</option><option value="certified">Certified improved seed</option></select></div>
+        <div class="ha-field"><label for="selSeason">Lokacin shuka</label><select id="selSeason"></select></div>
+        <div class="ha-field full"><button class="ha-calc-btn" type="button" onclick="calculate()">Kiyasta amfanin gona</button></div>
+      </div>
+    </section>
+    <section class="ha-results" id="resultsPanel" aria-live="polite">
+      <div class="ha-result-hero">
+        <div class="ha-result-value" id="rYieldPerHa">--</div>
+        <div class="ha-result-label">Amfanin gona da ake sa ran samu a hectare (<span id="rUnit">tonnes</span>/ha)</div>
+      </div>
+      <div class="ha-tool-grid">
+        <div class="ha-tool-card">
+          <span class="ha-tool-kicker">Sakamako</span>
+          <div class="ha-metric-grid">
+            <div class="ha-metric"><div class="ha-metric-value" id="rTotalYield">--</div><div class="ha-metric-label">Jimillar amfanin gonarka</div></div>
+            <div class="ha-metric"><div class="ha-metric-value" id="rYieldGap">--</div><div class="ha-metric-label">Ratar yield da potential</div></div>
+            <div class="ha-metric"><div class="ha-metric-value" id="rFarmSize">--</div><div class="ha-metric-label">Girman gona</div></div>
+          </div>
+          <p class="ha-muted" id="gapText"></p>
+        </div>
+        <div class="ha-tool-card">
+          <span class="ha-tool-kicker">Kudin shiga</span>
+          <div class="ha-metric-grid">
+            <div class="ha-metric"><div class="ha-metric-value" id="rRevLow">--</div><div class="ha-metric-label">Ƙasa</div></div>
+            <div class="ha-metric"><div class="ha-metric-value" id="rRevMid">--</div><div class="ha-metric-label">Matsakaici</div></div>
+            <div class="ha-metric"><div class="ha-metric-value" id="rRevHigh">--</div><div class="ha-metric-label">Sama</div></div>
+          </div>
+          <p class="ha-muted">An dogara da farashin kasuwa a <span id="rCurrency">NGN</span> daga source data.</p>
+        </div>
+      </div>
+      <div class="ha-tool-card" id="recsCard" style="display:none;">
+        <span class="ha-tool-kicker">Abin da zai iya taimakawa</span>
+        <ul class="ha-reco-list" id="recsContainer"></ul>
+      </div>
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">Breakdown</span>
+        <div class="ha-metric-grid" id="multGrid"></div>
+      </div>
+    </section>
+    <section class="ha-tool-card">
+      <span class="ha-tool-kicker">Nigeria source data</span>
+      <h2>Manyan crops da lokutan shuka</h2>
+      <p class="ha-muted" id="countryInfo"></p>
+      <div class="ha-table-wrap" style="margin-top:14px;">
+        <table class="ha-table" id="cropTable">
+          <thead><tr><th>Crop</th><th>Matsakaicin yield (t/ha)</th><th>Potential (t/ha)</th><th>Lokaci</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+    <section class="ha-tool-card">
+      <span class="ha-tool-kicker">Kalandar kaka</span>
+      <div class="ha-season-grid" id="seasonGrid"></div>
+      <p class="ha-muted" style="margin-top:10px;">Kore yana nuna rainy months daga Nigeria source data; rawaya yana nuna dry months.</p>
+    </section>
+    <section class="ha-note-box">
+      Tushen data: FAOSTAT, HarvestStat Africa, Nigeria National Bureau of Statistics, World Bank, CGIAR. Wannan kiyasi ne kawai; yanayin gona, farashin kasuwa da management suna iya canzawa. Sabuntawa ta karshe: 2026.
+    </section>
+  </main>
+</div>
+<afro-footer></afro-footer>
+<script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
+<script src="/data/agriculture/ng-agri-data.js?v=27133035"></script>
+<script src="/engines/crop-yield-engine.js?v=1b4afed8"></script>
+<script src="/ha/noma/amfanin-gona-najeriya/app.js"></script>
+</body>
+</html>

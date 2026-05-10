@@ -32,7 +32,7 @@ const dashboard = read('dashboard/index.html');
   'guardPromise',
   'AfroWorkspace.upsert',
   'Free accounts can keep',
-  'Metadata only'
+  'route details only'
 ].forEach((needle) => {
   assert(helper.includes(needle), `Missing helper marker: ${needle}`);
 });

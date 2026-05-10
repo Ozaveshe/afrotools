@@ -215,7 +215,7 @@ function renderPage(page) {
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><link rel="stylesheet" href="/assets/css/energy.css?v=f8aae7a5"><link rel="stylesheet" href="/assets/css/sports-tools.css">
-<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 </head>
 <body data-sports-tool="${escapeHtml(page.id)}">
 <afro-navbar theme="dark" active="sports"></afro-navbar>

@@ -107,7 +107,7 @@ function main() {
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'checkPlanGate', 'document PDF free/pro gate checks');
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'docpdf-plan-gates', 'document PDF visible plan gate meter');
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'docpdf-upgrade-overlay', 'document PDF upgrade modal');
-  assertIncludes('assets/js/lib/document-pdf-workflow.js', 'docpdf-flow-profile', 'document PDF smart workflow profile');
+  assertIncludes('assets/js/lib/document-pdf-workflow.js', 'Route profile', 'document PDF user-facing route profile');
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'document-pdf-recipe', 'document PDF recipe workspace item type');
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'createWorkflowRecipe', 'document PDF recipe save API');
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'getWorkflowProfile', 'document PDF workflow profile API');
@@ -117,9 +117,9 @@ function main() {
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'document-pdf-readiness', 'document PDF readiness workspace item type');
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'document-pdf-audit-packet', 'document PDF audit workspace item type');
   assertIncludes('assets/js/lib/document-pdf-workflow.js', 'guardPromise', 'gated metadata packet export');
-  assertIncludes('assets/js/lib/document-pdf-workflow.js', 'Exception queue', 'document PDF exception queue UI');
-  assertIncludes('assets/js/lib/document-pdf-workflow.js', 'Salary & PAYE', 'inter-category salary handoff');
-  assertIncludes('assets/js/lib/document-pdf-workflow.js', 'AfroPayroll workspace', 'inter-category payroll handoff');
+  assertIncludes('assets/js/lib/document-pdf-workflow.js', 'Open items', 'document PDF open-items UI');
+  assertIncludes('assets/js/lib/document-pdf-workflow.js', 'Salary & PAYE', 'inter-category salary route');
+  assertIncludes('assets/js/lib/document-pdf-workflow.js', 'AfroPayroll workspace', 'inter-category payroll route');
 
   assertIncludes('assets/css/document-pdf-workflow.css', '.docpdf-flow-lab', 'document PDF workflow lab styles');
   assertIncludes('assets/css/document-pdf-workflow.css', '.docpdf-flow-checklist', 'document PDF checklist styles');

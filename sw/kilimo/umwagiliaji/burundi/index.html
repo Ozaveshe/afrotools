@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=abfab4a3">
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 :root{--ir-green:#007AFF;--ir-green-dark:#0063D1;--ir-green-light:#E8F2FF;--ir-green-pale:#EBF4FF;--ir-blue:#0EA5E9;--ir-blue-light:#E0F2FE;--ir-orange:#F59E0B;--ir-orange-light:#FEF3C7;--ir-bg:#F8F9FA;--ir-card:#FFFFFF;--ir-text:#1A1A2E;--ir-muted:#6B7280;--ir-radius:18px;--ir-btn-radius:980px;}
@@ -262,9 +262,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--ir-bg);color:var(--ir-tex
     <div class="related-tools">
       <a href="/sw/kilimo/mbolea/burundi/" class="related-link">&#127807; Kikokotoo cha Mbolea</a>
       <a href="/sw/kilimo/mavuno/burundi/" class="related-link">&#127807; Kikokotoo cha Mavuno</a>
-      <a href="/agriculture/seed-rate/burundi" class="related-link">&#127807; Kiwango cha Mbegu</a>
-      <a href="/agriculture/farm-profit/burundi" class="related-link">&#128200; Faida ya Shamba</a>
-      <a href="/agriculture/irrigation/burundi/" class="related-link">&#127482;&#127480; Toleo la Kiingereza</a>
+      <a href="/sw/zana/kikokotoo-idadi-ya-mbegu/" class="related-link">Kikokotoo cha mbegu</a>
+      <a href="/sw/zana/faida-na-hasara-ya-shamba/" class="related-link">Faida na hasara ya shamba</a>
+      <a href="/sw/zana/kifuatiliaji-mvua/" class="related-link">Kifuatiliaji cha mvua</a>
     </div>
   </div>
 
@@ -293,7 +293,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--ir-bg);color:var(--ir-tex
   (function(){var sel=$('selCrop');CD.crops.forEach(function(c){var l=c.name;if(c.localNames&&c.localNames.length)l+=' ('+c.localNames[0]+')';var o=document.createElement('option');o.value=c.id;o.textContent=l;sel.appendChild(o);});})();
   (function(){var sel=$('selRegion');CD.regions.forEach(function(r){var o=document.createElement('option');o.value=r.id;o.textContent=r.name;sel.appendChild(o);});})();
   (function(){var tb=document.querySelector('#cropWaterTable tbody');CD.crops.forEach(function(c){var kc=c.cropCoefficients?Math.max(c.cropCoefficients.germination||0,c.cropCoefficients.vegetative||0,c.cropCoefficients.flowering||0,c.cropCoefficients.maturity||0):'\u2014';var tr=document.createElement('tr');tr.innerHTML='<td>'+c.name+'</td><td>'+(c.waterRequirement_mm_season||'\u2014')+'</td><td>'+(c.growingPeriodDays||'\u2014')+' siku</td><td>'+(typeof kc==='number'?kc.toFixed(2):kc)+'</td>';tb.appendChild(tr);});})();
-  (function(){var s=CD.agriStats,t=CD.waterTariff||{};$('countryInfo').textContent='Kilimo kinachangia '+s.gdpSharePercent+'% ya Pato la Taifa la Burundi. Ni '+s.irrigatedPercent+'% ya hekta '+fmtN(s.arableLandHectares/1e6)+' milioni za ardhi ya kilimo inayoumwagiliwa. '+(t.notes||'');})();
+  (function(){var s=CD.agriStats,t=CD.waterTariff||{};$('countryInfo').textContent='Kilimo kinachangia '+s.gdpSharePercent+'% ya Pato la Taifa la Burundi. Ni '+s.irrigatedPercent+'% ya hekta '+fmtN(s.arableLandHectares/1e6)+' milioni za ardhi ya kilimo inayoumwagiliwa. '+(t.maelezo||'');})();
   $('inpFarm').value=CD.agriStats.avgFarmSizeHa||0.5;
 
   window.calculate=function(){

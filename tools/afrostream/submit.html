@@ -171,10 +171,14 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     body[platform + '_url'] = url;
 
     try {
-      var res = await fetch('/api/admin/afrostream/creators', {
+      var res = await fetch('/api/community/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify({
+          type: 'creator',
+          email: document.getElementById('sf-email').value.trim() || null,
+          payload: body
+        })
       });
       if (!res.ok) throw new Error('Submission failed');
       document.getElementById('formWrap').style.display = 'none';

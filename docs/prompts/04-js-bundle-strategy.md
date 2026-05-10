@@ -59,7 +59,7 @@ assets/js/bundles/
 ```html
 <!-- Every page -->
 <script src="/assets/js/bundles/core.min.js" defer></script>
-<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/components/tool-registry.min.js" defer></script>
 

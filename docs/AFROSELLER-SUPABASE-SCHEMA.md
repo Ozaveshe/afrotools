@@ -156,15 +156,16 @@ Product `variant` can be imported as a first `seller_product_variants` row when 
 - `stockAfter` -> `stock_after`
 - `note` -> `reason_note`
 - order-created movements should use `source_type = 'order_item'` once order item ids exist
+- `variantName` and `orderId` are local display helpers in the current Seller page. The existing account bridge still writes product-level movements and keeps order linkage in the reason text until variant/order item source ids are wired end to end.
 
-Template UI state maps to `seller_message_templates`:
+Template UI state target mapping for `seller_message_templates`:
 
 - `templateType` -> `template_type`
 - generated text -> `body`
 - wa.me generated URL -> `last_wa_link_preview`
 - channel stays `whatsapp_manual`
 
-Export actions map to `seller_exports`:
+Export action target mapping for `seller_exports`:
 
 - product catalog CSV -> `product_catalog`
 - order summary CSV -> `order_summary`
@@ -172,6 +173,8 @@ Export actions map to `seller_exports`:
 - stock movement CSV -> `stock_movement`
 - daily close CSV -> `daily_close`
 - branded receipt Markdown -> `branded_receipt`
+
+The current browser account bridge does not yet write message-template rows, export rows, catalog preview settings, finance handoff drafts, saved daily-close history, or the newer local discount/refund review fields. The QA fixture can create tagged fake template and export rows for schema smoke only. Inventory valuation CSV and reorder list CSV are local downloads today. Do not write them to `seller_exports` without first extending the live `export_type` check constraint or mapping them under an existing audited export type.
 
 ## Current Sync Bridge
 
@@ -194,6 +197,7 @@ Current behavior:
 - importing a local snapshot replaces the operational child rows for that business, while audit rows remain append-only
 - pulling from account replaces this browser's localStorage snapshot only after user confirmation
 - local exports continue to run from the browser copy
+- catalog preview settings, saved close history, finance handoff drafts, local discount/refund review fields, inventory valuation downloads, reorder-list downloads, and the newest fulfillment labels remain browser-first until the account bridge and live constraints are expanded
 
 Cloud metadata is stored separately under `afroseller_social_commerce_os_cloud_v1` so the core local key remains `afroseller_social_commerce_os_v1`.
 

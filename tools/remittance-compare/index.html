@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
@@ -38,7 +38,7 @@
 </script>
 
 <style>
-/* ── REMITTANCE TOOL STYLES ─── */
+/* -- REMITTANCE TOOL STYLES --- */
 /* Uses vat-* class prefix pattern from AfroTools design system */
 
 .rc-hero {
@@ -451,6 +451,7 @@
 .ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/remittance-compare/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/transfert-argent/" />
 
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ulinganisho-uhamishaji-pesa/" /><link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/remittance-compare/" />
 <meta property="og:locale" content="en_US">
@@ -745,7 +746,7 @@
 <afro-footer></afro-footer>
 
 <!-- Scripts -->
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/related-tools-data.min.js?v=4300960a" defer></script>
@@ -753,11 +754,11 @@
 (function() {
   'use strict';
 
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   // REMITTANCE PROVIDER DATABASE
   // Fee structures based on published pricing snapshots, not a live quote feed.
   // Exchange rate margins are the % added on top of mid-market rate.
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
 
   /* Fallback mid-market rates for reference estimates only. Overridden by live API when available. */
   const MID_MARKET = {
@@ -812,7 +813,7 @@
   // Speed categories in hours for sorting
   const SPEED_HOURS = { 'Instant': 0, 'Minutes': 0.5, 'Same day': 12, '1-2 days': 36, '1-3 days': 48, '2-4 days': 72, '3-5 days': 96 };
 
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   // PROVIDER DEFINITIONS
   // Each provider has: flat fee tiers, percentage fee, exchange rate
   // margin (% above mid-market), speed, delivery methods, and
@@ -824,7 +825,7 @@
   //
   // This correctly subtracts fees in the SEND currency before
   // converting, unlike the previous version.
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
 
   const PROVIDERS = {
     wise: {
@@ -979,9 +980,9 @@
     },
   };
 
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   // HELPERS
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   const $ = id => document.getElementById(id);
   const parseAmt = str => parseFloat((str || '').replace(/[^0-9.]/g, '')) || 0;
   const fmtNum = (n, decimals) => {
@@ -994,9 +995,9 @@
   let currentMethod = 'all';
   let lastResults = [];
 
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   // INIT
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
     syncCurrencyWithFrom();
@@ -1009,9 +1010,9 @@
     if (cur) $('rcCurrency').value = cur;
   }
 
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   // EVENTS
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   function bindEvents() {
     $('rcCompareBtn').addEventListener('click', compare);
     $('rcAmount').addEventListener('keypress', e => { if (e.key === 'Enter') compare(); });
@@ -1059,9 +1060,9 @@
     });
   }
 
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   // COMPARE CALCULATION
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   function compare() {
     const sendAmount = parseAmt($('rcAmount').value);
     const sendCur = $('rcCurrency').value;
@@ -1150,9 +1151,9 @@
     renderResults();
   }
 
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   // RENDER
-  // ═══════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------
   function renderResults() {
     let filtered = [...lastResults];
 
@@ -1205,7 +1206,7 @@
         return '<span class="rc-method-tag">' + (labels[m] || m) + '</span>';
       }).join('');
 
-      // Wise gets affiliate link + "★ AfroTools Pick" badge when best value, or just link otherwise
+      // Wise gets affiliate link + "? AfroTools Pick" badge when best value, or just link otherwise
       const wiseBadge = isWise && isBest
         ? '<span style="display:inline-block;background:#007AFF;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:980px;text-transform:uppercase;letter-spacing:0.05em;margin-left:6px;vertical-align:middle;">&#9733; AfroTools Pick</span>'
         : '';

@@ -1,16 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF Workspace — Edit, Split, Merge, Rearrange | AfroTools</title>
+  <title>PDF Workspace � Edit, Split, Merge, Rearrange | AfroTools</title>
   <meta name="description" content="Upload a PDF and do everything: split, merge, rearrange, rotate, compress. Free, private, browser-based.">
   <link rel="canonical" href="https://afrotools.com/tools/pdf-workspace/">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AfroTools">
-  <meta property="og:title" content="PDF Workspace — Edit, Split, Merge, Rearrange | AfroTools">
+  <meta property="og:title" content="PDF Workspace � Edit, Split, Merge, Rearrange | AfroTools">
   <meta property="og:description" content="Upload a PDF and do everything: split, merge, rearrange, rotate, compress. Free, private, browser-based.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-workspace.webp">
   <meta name="twitter:card" content="summary_large_image">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <script src="/assets/js/components/related-tools-data.min.js?v=4300960a" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
     .ws-page h1,.ws-page h2,.ws-page h3,.ws-page h4,.ws-page h5{text-transform:none!important;letter-spacing:normal!important;font-family:'DM Sans',sans-serif!important}
@@ -41,7 +41,7 @@
     .dz input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:5}
     .up-feats{display:flex;justify-content:center;gap:28px;margin-top:28px;flex-wrap:wrap}.uf{font-size:13px;color:#6b7280;font-weight:600;display:flex;align-items:center;gap:6px}
     .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}.ws.on{display:flex}
-    .toolbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 16px;display:flex;align-items:center;height:50px;gap:2px;overflow-x:auto;flex-shrink:0}.toolbar::-webkit-scrollbar{height:0}
+    .toolbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 16px;display:flex;align-items:center;height:50px;gap:2px;overflow-x:auto;flex-shrink:0;position:relative}.toolbar::-webkit-scrollbar{height:0}
     .tb-logo{display:flex;align-items:center;gap:8px;margin-right:12px;text-decoration:none;flex-shrink:0}
     .tb-logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:9px}
     .tb-logo-name{font-weight:800;font-size:14px;color:#111}.tb-logo-name em{font-style:normal;color:var(--color-primary)}
@@ -54,6 +54,12 @@
     .tb-zoom span{font-size:12px;font-weight:700;color:#374151;min-width:42px;text-align:center}
     .tb-dl{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35)!important;color:#fff!important;padding:0 18px!important;border-radius:7px;margin-left:auto;font-weight:700}.tb-dl:hover{background:#0059B3!important}
     .tb-close{width:36px;height:36px;border:1px solid #e5e7eb;background:#fff;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:18px;margin-left:8px;flex-shrink:0;transition:.15s}.tb-close:hover{background:#fef2f2;color:#dc2626;border-color:#fca5a5}
+    @media(max-width:2400px){
+      .toolbar{padding-right:178px}
+      .tb-dl{position:fixed;top:7px;right:58px;z-index:625;min-width:122px;margin-left:0;background:linear-gradient(135deg,#007AFF,#0055D4)!important}
+      .tb-close{position:fixed;top:7px;right:14px;z-index:626;margin-left:0}
+      #tbVault{display:none}
+    }
     .ws-body{display:flex;flex:1;overflow:hidden}
     .sidebar{width:160px;background:#f9fafb;border-right:1px solid #e5e7eb;overflow-y:auto;flex-shrink:0;padding:10px}.sidebar::-webkit-scrollbar{width:5px}.sidebar::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
     .sd-thumb{position:relative;margin-bottom:8px;cursor:pointer;border-radius:5px;overflow:hidden;border:2.5px solid transparent;transition:.2s;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06)}
@@ -109,7 +115,7 @@
     .p-card h3{font-size:16px;font-weight:700;color:#111;text-align:center;margin:0 0 4px;overflow-wrap:break-word;word-break:break-word}.p-card p{font-size:13px;color:#6b7280;text-align:center;margin:0;overflow-wrap:break-word;word-break:break-word;text-align:justify;text-align-last:center}
     .p-bar{width:100%;height:5px;background:#e5e7eb;border-radius:100px;margin-top:20px;overflow:hidden}.p-fill{height:100%;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);border-radius:100px;width:0%;transition:width .3s}
     .toast{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:.3s;z-index:2000;max-width:350px}.toast.on{transform:translateY(0);opacity:1}.toast.err{background:#dc2626}
-    /* MOBILE BOTTOM BAR — zoom + page nav for touch */
+    /* MOBILE BOTTOM BAR � zoom + page nav for touch */
     .mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;height:52px;background:#fff;border-top:1px solid #e5e7eb;z-index:610;padding:0 12px;align-items:center;justify-content:space-between;gap:8px}
     .mob-bar button{min-width:44px;height:40px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#374151;gap:4px;padding:0 12px}
     .mob-bar button svg{width:18px;height:18px}
@@ -125,6 +131,7 @@
       .toolbar{height:44px;padding:0 8px}
       .tb-btn{padding:0 8px;font-size:11px;height:32px}
       .tb-btn span{display:none}
+      .tb-dl{width:42px;min-width:42px;padding:0!important;right:56px}
       .tb-fname{display:none}
       .tb-zoom{display:none}
       .tb-logo-name{display:none}
@@ -150,7 +157,7 @@
 
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Workspace","description":"Edit PDFs in your browser: split, merge, rearrange, rotate, add page numbers, annotate, extract, crop, compress, and download without uploading files.","url":"https://afrotools.com/tools/pdf-workspace/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-workspace.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Workspace — Edit, Split, Merge, Rearrange","url":"https://afrotools.com/tools/pdf-workspace/","description":"Upload a PDF and edit it privately in your browser. Split, merge, rearrange, rotate, compress, annotate, extract, crop, and download.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-workspace.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Workspace � Edit, Split, Merge, Rearrange","url":"https://afrotools.com/tools/pdf-workspace/","description":"Upload a PDF and edit it privately in your browser. Split, merge, rearrange, rotate, compress, annotate, extract, crop, and download.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-workspace.webp"}</script>
 <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
 <script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
@@ -212,7 +219,7 @@
     <span style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Rotate Pages</span>
     <span style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Compress PDF</span>
     <span style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Add Page Numbers</span>
-    <span style="background:#EFF6FF;color:var(--color-primary);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1.5px solid #BFDBFE;">100% Private · No Upload</span>
+    <span style="background:#EFF6FF;color:var(--color-primary);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1.5px solid #BFDBFE;">100% Private � No Upload</span>
   </div>
   <div class="dz" id="dz"><div class="dz-emoji">&#128196;</div><h3>Drop a PDF here to get started</h3><p>or <span class="gr">click to browse</span></p><input type="file" id="fileIn" accept=".pdf,application/pdf"></div>
   <div class="up-feats"><div class="uf">&#128274; Private</div><div class="uf">&#9854; No limits</div><div class="uf">&#9889; Instant</div><div class="uf">&#128274; Works offline</div></div>
@@ -268,13 +275,13 @@
 
   <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Available Tools</h3>
   <ul style="padding-left:20px;margin-bottom:16px">
-    <li><strong>Merge PDF</strong> — Combine two or more PDF files into a single document. Drag to reorder pages before merging.</li>
-    <li><strong>Split PDF</strong> — Extract specific pages or split a large document into smaller files by page range.</li>
-    <li><strong>Compress PDF</strong> — Reduce PDF file size while maintaining quality, ideal for email attachments.</li>
-    <li><strong>Add Watermark</strong> — Overlay text or image watermarks on every page of your document.</li>
-    <li><strong>Page Numbers</strong> — Add page numbers in various positions and formats to any PDF.</li>
-<li><strong>Password Protect</strong> — Encrypt PDFs with AES-256 in your browser.</li>
-    <li><strong>Sign PDF</strong> — Draw or type your signature and place it on any page of a document.</li>
+    <li><strong>Merge PDF</strong> � Combine two or more PDF files into a single document. Drag to reorder pages before merging.</li>
+    <li><strong>Split PDF</strong> � Extract specific pages or split a large document into smaller files by page range.</li>
+    <li><strong>Compress PDF</strong> � Reduce PDF file size while maintaining quality, ideal for email attachments.</li>
+    <li><strong>Add Watermark</strong> � Overlay text or image watermarks on every page of your document.</li>
+    <li><strong>Page Numbers</strong> � Add page numbers in various positions and formats to any PDF.</li>
+<li><strong>Password Protect</strong> � Encrypt PDFs with AES-256 in your browser.</li>
+    <li><strong>Sign PDF</strong> � Draw or type your signature and place it on any page of a document.</li>
   </ul>
 
   <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Privacy & Security</h3>
@@ -399,10 +406,17 @@ function updateMobPg(){
   mpg.textContent=cur+" / "+po.length;
 }
 
-async function openPDF(file){
-  showP("Loading PDF...","Reading "+file.name);
+async function ensurePDFRuntime(){
+  if(!window.PDFLib)await loadJS("/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1");
+  if(!window.pdfjsLib){
+    try{await loadJS("/assets/vendor/pdfjs/pdf.min.js?v=96de3233");pdfjsLib.GlobalWorkerOptions.workerSrc="/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2";hasPJ=true}catch(e){}
+  }
+}
+
+async function loadPDFBytes(bytes,name){
   try{
-    var ab=await file.arrayBuffer();pB=new Uint8Array(ab);fn=file.name;
+    await ensurePDFRuntime();
+    pB=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);fn=name||"document.pdf";
     var doc=await PDFLib.PDFDocument.load(pB.slice(),{ignoreEncryption:true});
     var n=doc.getPageCount();po=[];for(var i=0;i<n;i++)po.push(i);pr={};sel=0;th={};
     await genTh();$("upScreen").style.display="none";$("ws").classList.add("on");$("tbFn").textContent=fn;
@@ -410,6 +424,14 @@ async function openPDF(file){
     if(isMob){zm=Math.max(.5,Math.min(2,($("mv").clientWidth-24)/893*1.5))}
     var pct=Math.round(zm/1.5*100);$("zl").textContent=pct+"%";if($("mzl"))$("mzl").textContent=pct+"%";
     rSB();await rMain();hideP();updateMobPg();
+  }catch(e){hideP();toast("Cannot read: "+e.message,1)}
+}
+
+async function openPDF(file){
+  showP("Loading PDF...","Reading "+file.name);
+  try{
+    var ab=await file.arrayBuffer();
+    await loadPDFBytes(new Uint8Array(ab),file.name);
   }catch(e){hideP();toast("Cannot read: "+e.message,1)}
 }
 
@@ -491,7 +513,7 @@ async function addPDFs(fl){
           added++;
         }
       }catch(fe){
-        toast("Skipped: "+fl[f].name+" — not a valid PDF",1);
+        toast("Skipped: "+fl[f].name+" � not a valid PDF",1);
       }
     }
     if(!added){hideP();toast("Could not add any pages",1);return;}
@@ -620,7 +642,7 @@ async function dlPDF(){
 }
 async function doDlPDF(){showP("Building PDF...","");try{var doc=await buildPDF();var b=await doc.save();hideP();dlB(fn.replace(".pdf","")+"_edited.pdf",new Uint8Array(b));toast("Downloaded!")}catch(e){hideP();toast("Error: "+e.message,1)}}
 
-/* ── ADD TEXT ─────────────────────────────────────────────── */
+/* -- ADD TEXT ----------------------------------------------- */
 function openText(){
   $("mT").textContent="Add Text";$("mS").textContent="Add text annotation to current page";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
@@ -659,7 +681,7 @@ async function doAddText(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── ADD SIGNATURE ────────────────────────────────────────── */
+/* -- ADD SIGNATURE ------------------------------------------ */
 var sigCanvas=null,sigCtx=null,sigDrawing=false;
 function openSig(){
   $("mT").textContent="Add Signature";$("mS").textContent="Draw your signature below";
@@ -710,7 +732,7 @@ async function doAddSig(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── ADD IMAGE ────────────────────────────────────────────── */
+/* -- ADD IMAGE ---------------------------------------------- */
 function openImg(){
   $("mT").textContent="Add Image";$("mS").textContent="Insert an image on the current page";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
@@ -758,7 +780,7 @@ async function doAddImg(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── HIGHLIGHT ────────────────────────────────────────────── */
+/* -- HIGHLIGHT ---------------------------------------------- */
 function openHL(){
   $("mT").textContent="Highlight Area";$("mS").textContent="Draw a colored highlight on the current page";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
@@ -790,7 +812,7 @@ async function doHL(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── ADD WATERMARK ────────────────────────────────────────── */
+/* -- ADD WATERMARK ------------------------------------------ */
 function openWM(){
   $("mT").textContent="Add Watermark";$("mS").textContent="Add text watermark to all pages";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
@@ -824,7 +846,7 @@ async function doWM(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── EXTRACT PAGES ────────────────────────────────────────── */
+/* -- EXTRACT PAGES ------------------------------------------ */
 function openExtract(){
   $("mT").textContent="Extract Pages";$("mS").textContent="Select pages to extract as a new PDF";
   var bd=$("mB");bd.innerHTML='<div style="margin-bottom:14px;">'+
@@ -855,7 +877,7 @@ async function doExtract(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── STAMP ────────────────────────────────────────────────── */
+/* -- STAMP -------------------------------------------------- */
 var STAMPS=["CONFIDENTIAL","APPROVED","DRAFT","FINAL","COPY","URGENT","VOID","SAMPLE","REVIEW","SIGNED"];
 function openStamp(){
   $("mT").textContent="Add Stamp";$("mS").textContent="Apply a predefined stamp";
@@ -893,7 +915,7 @@ async function doStamp(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── REDACT ───────────────────────────────────────────────── */
+/* -- REDACT ------------------------------------------------- */
 function openRedact(){
   $("mT").textContent="Redact Area";$("mS").textContent="Black out an area on the current page";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
@@ -920,7 +942,7 @@ async function doRedact(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── CROP PAGES ───────────────────────────────────────────── */
+/* -- CROP PAGES --------------------------------------------- */
 function openCrop(){
   $("mT").textContent="Crop Pages";$("mS").textContent="Set margins to crop";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
@@ -954,7 +976,7 @@ async function doCrop(){
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ── PROTECT / PASSWORD ───────────────────────────────────── */
+/* -- PROTECT / PASSWORD ------------------------------------- */
 function openLock(){
   $("mT").textContent="Protect PDF";$("mS").textContent="AES-256 encryption, all in your browser";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
@@ -992,7 +1014,7 @@ async function doLock(){
     toast("AES-256 protected PDF downloaded");
   }catch(e){hideP();toast("Encryption error: "+e.message,1)}
 }
-function dlB(n,b){var bl=new Blob([b],{type:"application/pdf"});var u=URL.createObjectURL(bl);var a=document.createElement("a");a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},5000);var vb=document.getElementById("tbVault");if(vb&&vb.setFile)vb.setFile(bl,n);if(typeof window.pdfSaveOp==="function")window.pdfSaveOp(n,"Downloaded PDF")}
+function dlB(n,b){var bl=new Blob([b],{type:"application/pdf"});var u=URL.createObjectURL(bl);var a=document.createElement("a");a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},5000);var vb=document.getElementById("tbVault");if(vb&&vb.setFile)vb.setFile(bl,n);if(typeof window.pdfSaveOp==="function")window.pdfSaveOp(n,"Downloaded PDF",b)}
 function opM(){$("mOv").classList.add("on")}
 function clM(){$("mOv").classList.remove("on")}
 function showP(t,s){$("pT").textContent=t;$("pS").textContent=s;$("pF").style.width="0%";$("pOv").classList.add("on")}
@@ -1001,25 +1023,105 @@ function hideP(){$("pOv").classList.remove("on")}
 function toast(m,e){var t=$("toast");t.textContent=m;t.className="toast"+(e?" err":"")+" on";setTimeout(function(){t.classList.remove("on")},3500)}
 </script>
 <script>
-// PDF Workspace — saved recent operations
+// PDF Workspace � saved recent operations
 (function(){
   if(typeof SaveState==='undefined')return;
-  var ss=new SaveState('pdf-workspace',{maxFree:10});
+  var FREE_LIMIT=2,PRO_LIMIT=10,DB_NAME='afrotools-pdf-workspace',DB_STORE='recent-files';
+  var ss=new SaveState('pdf-workspace',{maxFree:PRO_LIMIT});
   var section=document.getElementById('pdf-saved-section');
   var grid=document.getElementById('pdf-saved-grid');
+  var isPro=false,limit=FREE_LIMIT;
   if(!section||!grid)return;
 
+  function openDb(){
+    return new Promise(function(resolve,reject){
+      if(!window.indexedDB){reject(new Error('IndexedDB is unavailable in this browser.'));return;}
+      var req=indexedDB.open(DB_NAME,1);
+      req.onupgradeneeded=function(){var db=req.result;if(!db.objectStoreNames.contains(DB_STORE))db.createObjectStore(DB_STORE);};
+      req.onsuccess=function(){resolve(req.result);};
+      req.onerror=function(){reject(req.error||new Error('Unable to open browser storage.'));};
+    });
+  }
+  function putBytes(id,bytes){
+    return openDb().then(function(db){return new Promise(function(resolve,reject){
+      var tx=db.transaction(DB_STORE,'readwrite');
+      tx.objectStore(DB_STORE).put(bytes instanceof Uint8Array?bytes:new Uint8Array(bytes),id);
+      tx.oncomplete=function(){db.close();resolve();};
+      tx.onerror=function(){db.close();reject(tx.error||new Error('Unable to save PDF copy.'));};
+    });});
+  }
+  function getBytes(id){
+    return openDb().then(function(db){return new Promise(function(resolve,reject){
+      var tx=db.transaction(DB_STORE,'readonly'),req=tx.objectStore(DB_STORE).get(id);
+      req.onsuccess=function(){db.close();resolve(req.result||null);};
+      req.onerror=function(){db.close();reject(req.error||new Error('Unable to read PDF copy.'));};
+    });});
+  }
+  function delBytes(id){
+    return openDb().then(function(db){return new Promise(function(resolve){
+      var tx=db.transaction(DB_STORE,'readwrite');
+      tx.objectStore(DB_STORE).delete(id);
+      tx.oncomplete=function(){db.close();resolve();};
+      tx.onerror=function(){db.close();resolve();};
+    });}).catch(function(){});
+  }
+  function trimBytes(ids){
+    openDb().then(function(db){
+      var tx=db.transaction(DB_STORE,'readwrite'),store=tx.objectStore(DB_STORE),req=store.getAllKeys();
+      req.onsuccess=function(){(req.result||[]).forEach(function(id){if(ids.indexOf(id)===-1)store.delete(id);});};
+      tx.oncomplete=function(){db.close();};
+      tx.onerror=function(){db.close();};
+    }).catch(function(){});
+  }
+  function readJson(key){
+    try{return JSON.parse(localStorage.getItem(key)||'null')}catch(e){return null}
+  }
+  function validExpiry(value){
+    if(!value)return true;
+    var ms=Date.parse(value);
+    return Number.isNaN(ms)||ms>Date.now();
+  }
+  function localIsPro(){
+    var cache=readJson('afro_pro_status_cache');
+    if(cache&&cache.isPro&&validExpiry(cache.expiresAt))return true;
+    var profile=readJson('afro_profile_cache');
+    var user=(profile&&profile.user)||readJson('afro_auth_v2')||{};
+    var tier=String(user.subscription_tier||user.tier||user.plan||'').toLowerCase();
+    var role=String(user.role||'').toLowerCase();
+    return (role==='admin'||role==='owner'||['pro','premium','team','business','enterprise','lifetime','trialing'].indexOf(tier)!==-1)&&validExpiry(user.subscription_expires_at||user.pro_expires_at||user.expires_at);
+  }
+  function refreshPlan(){
+    isPro=localIsPro();limit=isPro?PRO_LIMIT:FREE_LIMIT;render();
+    if(window.AfroProGate&&window.AfroProGate.getStatus){
+      window.AfroProGate.getStatus().then(function(status){
+        isPro=!!(status&&status.isPro);limit=isPro?PRO_LIMIT:FREE_LIMIT;render();
+      }).catch(function(){});
+    }
+  }
   function render(){
-    var items=ss.getAll();
+    var all=ss.getAll(),items=all.slice(0,limit),hidden=Math.max(0,all.length-items.length);
+    trimBytes(all.slice(0,PRO_LIMIT).map(function(it){return it.id;}));
     if(!items.length){section.style.display='none';return;}
     section.style.display='';
+    var head=section.querySelector('[data-pdf-history-status]');
+    if(!head){
+      head=document.createElement('div');
+      head.setAttribute('data-pdf-history-status','');
+      head.style.cssText='font-size:.7rem;color:#64748b;margin:2px 0 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;';
+      grid.parentNode.insertBefore(head,grid);
+    }
+    head.innerHTML='<span>'+esc(isPro?'Pro: showing last 10 PDF operations':'Free: showing last 2 PDF operations')+'</span>'+
+      (hidden?'<a href="/pro/" style="font-weight:800;color:#007AFF;text-decoration:none;">Upgrade to see '+hidden+' more</a>':'');
     grid.innerHTML=items.map(function(it){
       return '<div style="flex:1;min-width:180px;max-width:240px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px;position:relative;">'+
         '<div style="font-size:.8rem;font-weight:700;color:#111827;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(it.title)+'</div>'+
         '<div style="font-size:.68rem;color:#6b7280;">'+esc(it.data&&it.data.operation||'')+'</div>'+
         '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
         '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
+        '<span style="display:flex;gap:8px;align-items:center;">'+
+        '<button onclick="pdfResumeSaved(\''+it.id+'\')" style="background:none;border:none;color:#007AFF;font-size:.65rem;font-weight:800;cursor:pointer;">Resume</button>'+
         '<button onclick="pdfDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
+        '</span>'+
         '</div></div>';
     }).join('');
   }
@@ -1032,15 +1134,30 @@ function toast(m,e){var t=$("toast");t.textContent=m;t.className="toast"+(e?" er
   }
   function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
 
-  window.pdfDelSaved=function(id){if(confirm('Delete this entry?')){ss.delete(id);render();}};
-  window.pdfSaveOp=function(name,operation){ss.save({title:name,data:{operation:operation}});render();};
+  window.pdfResumeSaved=function(id){
+    var item=ss.load(id);
+    if(!item){toast('This recent PDF was not found.',1);return;}
+    showP('Opening recent PDF...','Loading '+item.title+' from this browser');
+    getBytes(id).then(function(bytes){
+      if(!bytes){hideP();toast('This older recent entry has no saved browser copy. Download it again to make it resumable.',1);return;}
+      return loadPDFBytes(bytes,item.title);
+    }).catch(function(e){hideP();toast('Cannot open recent PDF: '+e.message,1);});
+  };
+  window.pdfDelSaved=function(id){if(confirm('Delete this entry?')){ss.delete(id);delBytes(id);render();}};
+  window.pdfSaveOp=function(name,operation,bytes){
+    var item=ss.save({title:name,data:{operation:operation,hasFile:!!bytes}});
+    if(bytes)putBytes(item.id,bytes).catch(function(){toast('PDF downloaded, but this browser could not save it for resume.',1);});
+    render();
+  };
 
-  render();
+  refreshPlan();
+  window.addEventListener('afro-auth-change',refreshPlan);
+  window.addEventListener('afro-pro-gate-ready',refreshPlan);
 })();
 </script>
 
 <script>
-// Save/Share buttons — manual placement needed
+// Save/Share buttons � manual placement needed
 (function(){
   var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;

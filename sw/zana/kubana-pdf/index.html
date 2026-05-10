@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <script src="/assets/js/components/related-tools-data.min.js?v=4300960a" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
@@ -521,11 +521,11 @@
     }
   }
 </style>
-<script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 
 
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="sw_KE">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-compress.webp">
 <meta property="article:modified_time" content="2026-04-27">
@@ -543,14 +543,14 @@
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
+      <a href="/">AfroTools</a> / <a href="/sw/zana-zote/">Zana zote</a> / <span>Kubana PDF</span>
     </div>
     <h1>Kubana PDF</h1>
-    <p class="hero-sub">Punguza ukubwa wa PDF kwa barua pepe, mifumo ya ajira au portals za serikali huku ukichagua kiwango cha ubora.</p>
+    <p class="hero-sub">Punguza ukubwa wa PDF kwa barua pepe, mifumo ya ajira au tovuti za serikali huku ukichagua kiwango cha ubora.</p>
     <div class="hero-badges">
       <span class="badge b-green">Hakuna kupakia</span>
       <span class="badge b-green">Ndani ya kivinjari</span>
-      <span class="badge b-green">Batch ZIP</span>
+      <span class="badge b-green">ZIP ya kundi</span>
     </div>
   </div>
 </div>
@@ -561,20 +561,20 @@
       <!-- Faili Pakia -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Pakia PDFs</span>
-          <span id="batchBadge" style="font-size:0.68rem;font-weight:700;color:var(--color-primary);display:none;">Batch Mode</span>
+          <span class="card-title">Pakia PDF</span>
+          <span id="batchBadge" style="font-size:0.68rem;font-weight:700;color:var(--color-primary);display:none;">Hali ya kundi</span>
         </div>
         <div class="card-body">
           <div class="file-input-wrapper">
             <input type="file" id="pdfFailiInput" accept=".pdf" multiple>
             <label for="pdfFailiInput" class="file-input-label">
-              Click to select or drag & drop PDFs here
-              <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Select one file for PDF download or multiple files for ZIP export.</div>
+              Bofya kuchagua au buruta na dondosha PDF hapa
+              <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Chagua faili moja kupakua PDF, au faili nyingi kuhamisha kama ZIP.</div>
             </label>
           </div>
           <div id="fileInfo" style="display:none; margin-top:12px;">
             <div class="f-label-text"><span id="fileName"></span></div>
-            <div style="font-size:0.7rem;color:#64748b;margin-top:4px;">Total size: <span id="fileUkubwa"></span></div>
+            <div style="font-size:0.7rem;color:#64748b;margin-top:4px;">Ukubwa jumla: <span id="fileUkubwa"></span></div>
           </div>
           <div id="batchFailiList" class="file-list" style="display:none;"></div>
         </div>
@@ -583,29 +583,29 @@
       <!-- Ubora Preset -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Banaion Mode</span>
+          <span class="card-title">Hali ya kubana</span>
         </div>
         <div class="card-body">
           <div class="preset-row">
             <div>
-              <button class="preset-btn on" data-preset="screen" title="Preserve selectable text and structure">Clean</button>
-              <div class="preset-desc">Bila kupoteza ubora first pass</div>
+              <button class="preset-btn on" data-preset="screen" title="Hifadhi maandishi yanayochagulika na muundo">Safi</button>
+              <div class="preset-desc">Jaribio la kwanza bila kupoteza ubora</div>
             </div>
             <div>
-              <button class="preset-btn" data-preset="web" title="Good balance for sharing">Wastani</button>
+              <button class="preset-btn" data-preset="web" title="Uwiano mzuri kwa kushiriki">Wastani</button>
               <div class="preset-desc">110 DPI / 72%</div>
             </div>
             <div>
-              <button class="preset-btn" data-preset="ebook" title="Smaller files for upload portals">Kubwa</button>
+              <button class="preset-btn" data-preset="ebook" title="Faili ndogo kwa tovuti za kupakia nyaraka">Kubwa</button>
               <div class="preset-desc">96 DPI / 58%</div>
             </div>
             <div>
-              <button class="preset-btn" data-preset="print" title="Juuer-quality raster output">Juu quality</button>
+              <button class="preset-btn" data-preset="print" title="Ubora wa juu wa picha">Ubora juu</button>
               <div class="preset-desc">150 DPI / 82%</div>
             </div>
             <div>
-              <button class="preset-btn" data-preset="custom" title="Custom settings">Custom</button>
-              <div class="preset-desc">DPI, quality, target</div>
+              <button class="preset-btn" data-preset="custom" title="Mipangilio maalum">Maalum</button>
+              <div class="preset-desc">DPI, ubora, lengo</div>
             </div>
           </div>
           <div id="customPanel" style="display:none;">
@@ -613,25 +613,25 @@
               <div>
                 <label class="f-label-text">DPI (<span id="dpiVal">110</span>)</label>
                 <input type="range" id="dpiSlider" min="60" max="220" value="110" step="5" style="width:100%;cursor:pointer;">
-                <div style="font-size:0.65rem;color:#64748b;margin-top:4px;">Chinier DPI makes smaller scan-style PDFs.</div>
+                <div style="font-size:0.65rem;color:#64748b;margin-top:4px;">DPI ya chini hutengeneza PDF ndogo kwa nyaraka zilizoskaniwa.</div>
               </div>
               <div>
                 <label class="f-label-text">JPEG Ubora (<span id="qualityVal">70</span>%)</label>
                 <input type="range" id="qualitySlider" min="25" max="92" value="70" step="1" style="width:100%;cursor:pointer;">
-                <div style="font-size:0.65rem;color:#64748b;margin-top:4px;">Chinier quality shrinks image-heavy PDFs more.</div>
+                <div style="font-size:0.65rem;color:#64748b;margin-top:4px;">Ubora wa chini hupunguza zaidi PDF zenye picha nyingi.</div>
               </div>
               <div>
-                <label class="f-label-text" for="targetUkubwaInput">Target size per PDF (optional)</label>
-                <input class="f-input" id="targetUkubwaInput" type="number" min="50" step="50" placeholder="Example: 500 KB">
+                <label class="f-label-text" for="targetUkubwaInput">Ukubwa unaolengwa kwa kila PDF (si lazima)</label>
+                <input class="f-input" id="targetUkubwaInput" type="number" min="50" step="50" placeholder="Mfano: 500 KB">
               </div>
               <div>
-                <label class="f-label-text">Output behavior</label>
-                <div style="font-size:0.74rem;color:#64748b;line-height:1.55;font-weight:700;">The compressor keeps all pages and avoids replacing your PDF with a larger file.</div>
+                <label class="f-label-text">Tabia ya matokeo</label>
+                <div style="font-size:0.74rem;color:#64748b;line-height:1.55;font-weight:700;">Zana ya kubana huhifadhi kurasa zote na huepuka kubadilisha PDF yako na faili kubwa zaidi.</div>
               </div>
             </div>
             <div class="setting-checks">
-              <label class="check-option"><input type="checkbox" id="grayscaleToggle"> Grayscale scans</label>
-              <label class="check-option"><input type="checkbox" id="keepMaandishiToggle"> Use clean mode when possible</label>
+              <label class="check-option"><input type="checkbox" id="grayscaleToggle"> Skani nyeusi na nyeupe</label>
+              <label class="check-option"><input type="checkbox" id="keepMaandishiToggle"> Tumia hali safi inapowezekana</label>
             </div>
           </div>
           <button class="calc-btn" id="compressBtn" disabled>Bana PDF</button>
@@ -649,8 +649,8 @@
         <div class="card-body">
           <div id="resultContent" style="display:none;">
             <div class="size-info">
-              <div><span class="size-label">Original:</span> <span id="originalUkubwa"></span></div>
-              <div><span class="size-label">Banaed:</span> <span id="compressedUkubwa"></span></div>
+              <div><span class="size-label">Awali:</span> <span id="originalUkubwa"></span></div>
+              <div><span class="size-label">Baada ya kubana:</span> <span id="compressedUkubwa"></span></div>
             </div>
             <div class="savings-badge" id="savingsBadge"></div>
             <div class="result-note" id="resultNote"></div>
@@ -666,7 +666,7 @@
 </div>
           </div>
           <div id="processingMaandishi" style="display:none;text-align:center;color:#334155;">
-            <div style="margin-bottom:12px;">Banaing...</div>
+            <div style="margin-bottom:12px;">Inabana...</div>
             <div class="progress-bar">
               <div class="progress-fill" id="progressFill"></div>
             </div>
@@ -676,18 +676,18 @@
 
       <!-- Info Card -->
       <div class="info-card">
-        <div class="info-title">How It Works</div>
+        <div class="info-title">Jinsi inavyofanya kazi</div>
         <div class="info-text">
-          Clean mode rewrites the PDF without rasterizing pages. Wastani, Kubwa, Juu quality, and Custom modes render pages to optimized JPEG images and rebuild the PDF.
+          Hali Safi huandika upya PDF bila kuibadilisha kuwa picha za kurasa. Wastani, Kubwa, Ubora juu na Maalum hutoa kurasa kama picha za JPEG zilizoboreshwa na kujenga PDF mpya ndogo.
           <br><br>
-          <strong>Best results on:</strong> Picha-heavy PDFs and scans.
+          <strong>Matokeo bora kwa:</strong> PDF zenye picha nyingi na skani.
           <br><br>
-          <strong>Note:</strong> Raster modes are best for scanned or image-heavy PDFs. Use Clean when selectable text matters most.
+          <strong>Kumbuka:</strong> Hali zinazotumia picha zinafaa zaidi kwa PDF zilizoskaniwa au zenye picha nyingi. Tumia Safi pale maandishi yanayochagulika ni muhimu zaidi.
           <ul style="margin-top:10px;">
-            <li>Faragha client-side processing</li>
-            <li>Batch ZIP downloads</li>
-            <li>Optional target size and grayscale controls</li>
-            <li>Before and after size reporting</li>
+            <li>Uchakataji wa faragha ndani ya kivinjari</li>
+            <li>Pakua matokeo ya kundi kama ZIP</li>
+            <li>Ukubwa unaolengwa na chaguo la nyeusi na nyeupe</li>
+            <li>Taarifa ya ukubwa kabla na baada</li>
           </ul>
         </div>
       </div>
@@ -700,34 +700,34 @@
 <afro-newsletter-cta></afro-newsletter-cta>
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Kubana PDF: How It Works</h2>
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Kubana PDF: jinsi inavyofanya kazi</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Kubana PDF reduces PDF file size directly in your browser. Clean mode performs a lossless rewrite that preserves selectable text where possible. Wastani, Kubwa, Juu quality, and Custom modes are built for scanned or image-heavy PDFs: they render pages at controlled DPI and JPEG quality, then rebuild a smaller PDF. The tool supports batch compression, ZIP download, optional grayscale conversion, target size attempts, page caps for very large documents, and before-after size reports. Matokeo depend on the source file: scanned documents usually shrink much more than already-optimized or mostly text PDFs. Your documents are never uploaded to a server.</p>
+    <p>AfroTools Kubana PDF hupunguza ukubwa wa PDF moja kwa moja ndani ya kivinjari. Hali Safi hujaribu kuandika upya bila kupoteza ubora na huhifadhi maandishi yanayochagulika pale inapowezekana. Wastani, Kubwa, Ubora juu na Maalum zimeundwa kwa PDF zilizoskaniwa au zenye picha nyingi: hutoa kurasa kwa DPI na ubora wa JPEG uliodhibitiwa, kisha hujenga PDF ndogo. Zana inaunga mkono kubana kwa kundi, kupakua ZIP, kubadilisha kuwa nyeusi na nyeupe, kujaribu ukubwa unaolengwa na taarifa ya ukubwa kabla na baada. Matokeo hutegemea faili chanzo. Nyaraka zako hazipakiliwi kwenye seva.</p>
   </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Maswali ya mara kwa mara</h3>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
   <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How much can my PDF be compressed?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Banaion results vary depending on the content. PDFs with high-resolution images can see 50-80% reduction. Maandishi-heavy PDFs with few images may see smaller reductions since text is already compact.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">PDF yangu inaweza kupungua kiasi gani?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Matokeo hutegemea maudhui. PDF zenye picha kubwa zinaweza kupungua kwa asilimia 50 hadi 80. PDF zenye maandishi mengi na picha chache huweza kupungua kidogo kwa sababu maandishi tayari huwa madogo.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What do the quality presets mean?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Clean preserves document structure where possible. Wastani is a good default for sharing. Kubwa targets upload portals and email limits. Juu quality keeps more visual detail. Custom lets you set DPI, JPEG quality, grayscale, page cap, and optional target size.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Chaguo za ubora zinamaanisha nini?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Safi huhifadhi muundo wa hati inapowezekana. Wastani ni chaguo zuri kwa kushiriki. Kubwa inalenga tovuti za kupakia nyaraka na mipaka ya barua pepe. Ubora juu huhifadhi maelezo zaidi ya mwonekano. Maalum hukuruhusu kuweka DPI, ubora wa JPEG, nyeusi na nyeupe na ukubwa unaolengwa.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Will compression make the text blurry?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Clean mode is the safest choice when selectable text matters. Wastani, Kubwa, Juu quality, and Custom modes rasterize each page, so text remains visually readable but may no longer be selectable. Use those modes mainly for scans and image-heavy files.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Je, kubana kutafanya maandishi yaonekane hafifu?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Hali Safi ndiyo salama zaidi pale maandishi yanayochagulika ni muhimu. Wastani, Kubwa, Ubora juu na Maalum hubadilisha kila ukurasa kuwa picha, hivyo maandishi hubaki kusomeka lakini huenda yasiweze kuchaguliwa. Tumia hali hizo hasa kwa skani na faili zenye picha nyingi.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is my PDF uploaded to a server?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. The entire compression process runs in your browser using JavaScript. Your PDF never leaves your device, making it completely safe for confidential, legal, or sensitive documents.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Je, PDF yangu hupakiliwa kwenye seva?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Hapana. Kubana hufanyika ndani ya kivinjari kwa JavaScript. PDF yako haitoki kwenye kifaa chako, jambo linalofaa kwa nyaraka za siri, kisheria au nyeti.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is there a limit on PDF file size?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">There is no strict server limit since processing is client-side. However, very large PDFs (over 100MB) may take longer to process depending on your device's memory and processing power.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Kuna kikomo cha ukubwa wa PDF?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Hakuna kikomo cha seva kwa sababu uchakataji hufanyika kwenye kivinjari. Hata hivyo, PDF kubwa sana zaidi ya MB 100 zinaweza kuchukua muda kulingana na kumbukumbu na nguvu ya kifaa chako.</p>
     </details>
   </div>
 </section>

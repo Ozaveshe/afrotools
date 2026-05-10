@@ -6,6 +6,80 @@ This document is the operating system for AfroTools Swahili expansion.
 
 The goal is not "translate all 2,594+ tools." The goal is to turn Swahili into a strong East African product surface with real acquisition value, strong local-language SEO, and a batch process that agents can actually finish.
 
+## Current Audit Snapshot - May 9, 2026
+
+Source-of-truth audit artifact: `reports/sw-localization-audit.json`.
+
+This is a no-fix audit snapshot. It does not translate pages, rebuild generated output, touch French, or change the registry.
+
+- English source HTML routes measured: `5,648` direct source routes, with `5,650` discovered by `scripts/build-i18n.js --dry-run`.
+- Swahili HTML routes under `/sw/`: `852`, which is about `15.1%` raw route presence against English source volume.
+- Swahili routes with an English source pair detected by the current `build-i18n.js` style mapping: `74`, about `1.3%` paired-route coverage.
+- Swahili-only or currently unmapped `/sw/` routes: `778`.
+- `lang/pages/**/sw.json` page packs: `0`; `lang/sw.json` passes global key parity but is not a page-level source layer.
+- Swahili registry entries: `6`, all financial/PAYE or comparison entries, which is only `0.7%` of `/sw/` route volume and `1.15%` of Swahili tool-page volume.
+- Obvious English UI leakage heuristic: `138` Swahili pages, about `16.2%` of `/sw/` pages.
+- Swahili pages with English internal links: `227`, about `26.6%` of `/sw/` pages. The biggest English destinations are `/tools/`, root `/`, `/agriculture/`, `/blog/`, `/developer-tools/`, and `/all-tools/`.
+- `npm run build:i18n:validate` passes for `fr`, `sw`, `yo`, and `ha`.
+- `npm run validate:hreflang` passes with `0` fatal errors but reports `1,298` non-bidirectional warnings across `7,637` scanned pages; roughly `68` warning lines are Swahili-related and the rest is mostly baseline French/other hreflang debt.
+
+Current route clusters under `/sw/`:
+
+- Tool pages: `520`.
+- Country subpages, mostly repeated calculator families: `208`.
+- Country hubs: `54`.
+- Category or static hubs: `40`.
+- Agriculture cluster: `16`.
+- Salary cluster: `9`.
+- Core shell: `1`.
+- Blog shell: `1`.
+- Legacy redirect/noindex surfaces: `2`.
+- Utility page: `1`.
+
+Current source ownership map:
+
+- Hand-authored source candidates: `sw/index.html`, `sw/zana-zote/index.html`, `sw/mshahara-na-kodi/index.html`, `sw/nchi/index.html`, plus many category/static hubs.
+- Probable scripted or repeated outputs: country hubs and country subpages, especially repeated PAYE, VAT, employee-cost, severance, contractor-vs-employee, and work-permit families.
+- Tool pages under `sw/zana/` are best treated as hand-authored or copied tool outputs until each source owner is verified.
+- No Swahili page family is currently maintainable through `lang/pages/**/sw.json`.
+
+## Discovery Repair Snapshot - May 9, 2026
+
+This pass repaired Swahili discovery without translating or rewriting page content.
+
+Source-of-truth map for this repair:
+
+- Route existence and usability: page-level HTML under `/sw/`; no route was added unless the matching `index.html` existed and was not marked `noindex`.
+- Shared search and registry discovery: `assets/js/components/tool-registry.js`.
+- Current Swahili all-tools search: `sw/zana-zote/index.html`, which now reads the source registry so newly added Swahili discovery rows are visible before a future registry minification pass.
+- Current navbar search fallback: `assets/js/components/navbar.js` and synced `assets/js/components/navbar.min.js`, which map English registry rows to verified Swahili routes while pages still load the older minified registry bundle.
+
+Discovery counts after the repair:
+
+- Swahili registry rows before: `6`.
+- Swahili registry rows added from existing usable `/sw/` pages: `346`.
+- Swahili registry rows after: `352`.
+- Navbar English-to-Swahili fallback rows: `215`, covering verified paired routes with an English registry source row.
+- Refused missing or not-ready prioritized routes: `0`.
+
+Added discovery rows by cluster:
+
+- Country hubs: `54`.
+- Salary, PAYE, and HR: `68`.
+- VAT and business: `160`.
+- PDF and document: `35`.
+- Agriculture: `28`.
+- All-tools surface: `1`.
+
+Routes not in those clusters were deliberately left out of registry discovery even when the file existed. They need their own source-ownership pass before being promoted into shared search.
+
+Completion reading:
+
+- Raw visible route presence is roughly `15%`.
+- Durable paired route coverage is roughly `1%`.
+- Registry-backed discovery is below `1%` of `/sw/` route volume.
+- Product completion should be described as "partially present but not durable yet," not as a finished localized website.
+
 ## Why This Matters
 
 Swahili is a real product and search opportunity for AfroTools:
@@ -17,7 +91,9 @@ Swahili is a real product and search opportunity for AfroTools:
 
 Treat Swahili as a product line, not a localization checkbox.
 
-## Repo Reality As Of April 15, 2026
+## Older Repo Reality Snapshot - April 15, 2026
+
+The April numbers below are retained for historical context. Use the May 9, 2026 audit snapshot above and `reports/sw-localization-audit.json` for current planning.
 
 The current Swahili surface is much larger than its maintenance layer:
 
@@ -51,6 +127,14 @@ AfroTools should win Swahili by doing four things in order:
 4. Expand into adjacent business-intent tools only after the core is clean.
 
 Swahili should not start as "all of Africa in Kiswahili." It should start as "the best Swahili finance and work-tool experience for East Africa."
+
+After the May 9 audit, the next direction is still repair-first:
+
+1. Make existing Swahili pages source-owned and discoverable before adding large new translation batches.
+2. Expand `build-i18n.js` Swahili route mappings or create page-pack ownership where repeatable page families need durable regeneration.
+3. Add registry entries only for Swahili pages that are user-ready, paired, and safe to surface in shared search.
+4. Clean English UI leakage and English internal links on the core shell, salary/PAYE cluster, and the most-used `sw/zana/` pages.
+5. Treat broad hreflang warnings as baseline debt unless the batch touches the affected reciprocal pair.
 
 ## Non-Negotiables
 
@@ -939,6 +1023,23 @@ Never claim registration approval, name availability, fee accuracy, filing accep
 - Recommended `/sw/biashara-ndogo/` order: business plan and AI business planner; cash flow, burn rate, runway, and unit economics; startup valuation and TAM/SAM/SOM; pricing, markup, discount, and profit margin; inventory and daily sales tracking; Mama Put, market stall, POS agent, and payment gateway; then invoice, merchant fees, POS fees, marketplace fees, VAT, TIN, registration, legal, fintech, and trade links.
 - Retain search-useful terms where helpful: SME, startup, burn rate, runway, cash flow, churn, markup, discount, inventory, POS agent, payment gateway, TAM, SAM, SOM, unit economics, CAC, LTV, and GMV. Explain them in natural Kiswahili instead of leaving unexplained English fragments.
 - Do not overclaim funding success, valuation precision, exact profit, provider availability, market-size certainty, business survival, or tax treatment. Keep pages as planning tools and direct users to accountants, advisors, payment providers, registrars, tax authorities, or qualified professionals when decisions carry risk.
+
+#### Business and Finance Glossary
+
+Use this glossary for Swahili business, VAT, invoice, fintech, SME, and trade-finance pages:
+
+- `cash flow`: use `mtiririko wa fedha`. Use `cash flow` only in first-mention parentheses when search context truly needs it.
+- `quote`: avoid the bare word `quote`. Use `quotation` for supplier, customer, proforma, freight, or service documents. Use `bei ya makadirio` only when the page is not referring to a formal document.
+- `offer`: use `ofa` for job, bank, lender, insurance, or funding offers. Use `ofa mbadala` for `counter-offer`. Do not use `ofa` for a quotation or invoice.
+- `approval`: use `idhini` for banks, regulators, customs, platform, loan, permit, or account decisions. Do not imply approval is guaranteed.
+- `burn rate`: use `kiwango cha matumizi`; add `(burn rate)` only on first mention when the tool is specifically about startup finance.
+- `runway`: use `muda wa fedha` or `muda wa fedha za biashara`.
+- `inventory`: use `akiba ya bidhaa` for business stock tracking. Use `bidhaa` for ordinary stock items.
+- `invoice`: use `ankara`; keep `invoice` only in retained English route names or when explaining an English-only source.
+- `discount`: use `punguzo`.
+- `due date`: use `tarehe ya mwisho`.
+- `payment note`: use `maelezo ya malipo`.
+- `approval/offer/quote` disclaimers should point users to banks, tax authorities, registrars, customs agents, accountants, lawyers, payment providers, or other qualified professionals as appropriate.
 
 ### Creator Economy, Content, and Brand Collaboration Pattern
 

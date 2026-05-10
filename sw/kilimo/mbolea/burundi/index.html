@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=abfab4a3">
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 :root{--calc-accent:#007AFF;--calc-accent-rgb:0,122,255;--calc-accent-dark:#0063D1;--calc-accent-light:#E8F2FF;--calc-accent-pale:#EBF4FF}
@@ -159,7 +159,7 @@
         <table class="shop-table" id="shopTable"><thead><tr><th>Bidhaa</th><th>Mifuko</th><th>Bei/Mfuko</th><th>Jumla</th></tr></thead><tbody></tbody></table>
         <div class="cost-grid">
           <div class="cost-card"><div class="cost-val" id="rCostMarket">--</div><div class="cost-label">Jumla bei ya soko</div></div>
-          <div class="cost-card highlight" id="costSubsidyCard" style="display:none"><div class="cost-val" id="rCostSubsidy">--</div><div class="cost-label">Bei ya ruzuku</div></div>
+          <div class="cost-card highlight" id="costRuzukuCard" style="display:none"><div class="cost-val" id="rCostRuzuku">--</div><div class="cost-label">Bei ya ruzuku</div></div>
         </div>
         <p style="font-size:.75rem;color:#64748b;text-align:center" id="rCostPerHa"></p>
       </div>
@@ -181,9 +181,9 @@
   <div class="related-tools">
     <a href="/sw/kilimo/mavuno/burundi/" class="related-tool-link">&#128200; Kikokotoo cha Mavuno</a>
     <a href="/sw/kilimo/umwagiliaji/burundi/" class="related-tool-link">&#128166; Kikokotoo cha Umwagiliaji</a>
-    <a href="/agriculture/seed-rate/burundi" class="related-tool-link">&#127807; Kikokotoo cha Mbegu</a>
-    <a href="/agriculture/farm-profit/burundi" class="related-tool-link">&#128176; Faida ya Shamba</a>
-    <a href="/agriculture/fertilizer/burundi/" class="related-tool-link">&#127468;&#127463; Toleo la Kiingereza</a>
+    <a href="/sw/zana/kikokotoo-idadi-ya-mbegu/" class="related-tool-link">Kikokotoo cha mbegu</a>
+    <a href="/sw/zana/faida-na-hasara-ya-shamba/" class="related-tool-link">Faida na hasara ya shamba</a>
+    <a href="/sw/burundi/" class="related-tool-link">Kitovu cha Burundi</a>
   </div>
 </section>
 <afro-footer></afro-footer>
@@ -198,23 +198,23 @@
   function fmtN(n){return typeof n==='number'?n.toLocaleString('sw',{maximumFractionDigits:1}):'0'}
   function fmtC(n){return CD.currencySymbol+fmtN(n)}
   (function(){var s=$('selCrop');CD.crops.forEach(function(c){var o=document.createElement('option');o.value=c.id;o.textContent=c.name+(c.localNames&&c.localNames.length?' ('+c.localNames[0]+')':'');s.appendChild(o)});s.addEventListener('change',updateTarget);updateTarget()})();
-  function updateTarget(){var c=CD.crops.find(function(c){return c.id===$('selCrop').value});if(c)$('inpTarget').placeholder=(c.baseYieldPerHa*1.3).toFixed(1)+' (chaguo-msingi)'}
+  function updateTarget(){var c=CD.crops.find(function(c){return c.id===$('selCrop').value});if(c)$('inpTarget').placeholder=(c.baseMavunoPerHa*1.3).toFixed(1)+' (chaguo-msingi)'}
   (function(){var s=$('selRegion');CD.regions.forEach(function(r){var o=document.createElement('option');o.value=r.id;o.textContent=r.name;s.appendChild(o)});s.addEventListener('change',updateSoils);updateSoils()})();
   function updateSoils(){var rg=CD.regions.find(function(r){return r.id===$('selRegion').value}),ss=$('selSoil'),lb={loamy:'Tifutifu',clay:'Mfinyanzi',sandy:'Mchanga',sandy_loam:'Mchanga-tifutifu',clay_loam:'Mfinyanzi-tifutifu',volcanic:'Volkano',laterite:'Laterite',alluvial:'Mto',black_cotton:'Udongo mweusi',red_soil:'Udongo mwekundu'};ss.innerHTML='';if(rg&&rg.soilTypes)rg.soilTypes.forEach(function(st){var o=document.createElement('option');o.value=st;o.textContent=lb[st]||st;ss.appendChild(o)})}
   $('inpFarm').value=CD.agriStats.avgFarmSizeHa||0.4;
   window.toggleSoilTest=function(){$('soilTestPanel').classList.toggle('open')};
   window.calculate=function(){
     var st=null;if($('soilTestPanel').classList.contains('open'))st={pH:parseFloat($('inpPH').value)||null,organicMatter:parseFloat($('inpOM').value)||null,N_ppm:parseFloat($('inpN').value)||null,P_ppm:parseFloat($('inpP').value)||null,K_ppm:parseFloat($('inpK').value)||null};
-    var r=ENG.calculate({cropId:$('selCrop').value,regionId:$('selRegion').value,farmSizeHa:parseFloat($('inpFarm').value)||0.4,targetYieldPerHa:parseFloat($('inpTarget').value)||null,soilType:$('selSoil').value,previousCrop:$('selPrevCrop').value,soilTest:st},CD,CDB);
+    var r=ENG.calculate({cropId:$('selCrop').value,regionId:$('selRegion').value,farmSizeHa:parseFloat($('inpFarm').value)||0.4,targetMavunoPerHa:parseFloat($('inpTarget').value)||null,soilType:$('selSoil').value,previousCrop:$('selPrevCrop').value,soilTest:st},CD,CDB);
     if(r.error){alert(r.message);return}
     var p=$('resultsPanel');p.classList.add('on');p.scrollIntoView({behavior:'smooth',block:'start'});
     $('rN').textContent=fmtN(r.perHa.N);$('rP').textContent=fmtN(r.perHa.P);$('rK').textContent=fmtN(r.perHa.K);
-    $('rCrop').textContent=r.cropName;$('rTarget').textContent=fmtN(r.targetYieldPerHa);$('rFarm').textContent=r.farmSizeHa;
+    $('rCrop').textContent=r.cropName;$('rTarget').textContent=fmtN(r.targetMavunoPerHa);$('rFarm').textContent=r.farmSizeHa;
     var tb=document.querySelector('#shopTable tbody');tb.innerHTML='';
     r.products.forEach(function(pr){var tr=document.createElement('tr');tr.innerHTML='<td>'+pr.name+'</td><td>'+pr.bags+'</td><td>'+fmtC(pr.pricePerBag)+'</td><td>'+fmtC(pr.totalCostMarket)+'</td>';tb.appendChild(tr)});
     var t1=document.createElement('tr');t1.className='total-row';t1.innerHTML='<td colspan="3">Jumla</td><td>'+fmtC(r.costMarket)+'</td>';tb.appendChild(t1);
     $('rCostMarket').textContent=fmtC(r.costMarket);
-    if(r.costSubsidy!==null){$('costSubsidyCard').style.display='block';$('rCostSubsidy').textContent=fmtC(r.costSubsidy)}else{$('costSubsidyCard').style.display='none'}
+    if(r.costRuzuku!==null){$('costRuzukuCard').style.display='block';$('rCostRuzuku').textContent=fmtC(r.costRuzuku)}else{$('costRuzukuCard').style.display='none'}
     $('rCostPerHa').textContent='Gharama kwa hekta: '+fmtC(r.costPerHaMarket);
     $('scheduleContainer').innerHTML=r.schedule.map(function(s,i){var n=[];if(s.nutrients.N>0)n.push(fmtN(s.nutrients.N)+' kg N');if(s.nutrients.P>0)n.push(fmtN(s.nutrients.P)+' kg P');if(s.nutrients.K>0)n.push(fmtN(s.nutrients.K)+' kg K');return'<div class="sched-item"><div class="sched-num">'+(i+1)+'</div><div><div class="sched-stage">'+s.stage+'</div><div class="sched-timing">'+s.timing+'</div><div class="sched-detail"><strong>'+n.join(' + ')+'</strong><br>'+s.note+'</div></div></div>'}).join('');
     $('organicGrid').innerHTML=r.organic.map(function(o){return'<div class="org-card"><div class="org-val">'+fmtN(o.tonnes)+' t</div><div class="org-label">'+o.label+'</div></div>'}).join('');

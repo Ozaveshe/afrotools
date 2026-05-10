@@ -765,3 +765,39 @@ FROM (VALUES
   ('davido', '/assets/img/afrostream/creators/davido-avatar.webp')
 ) AS v(slug, avatar)
 WHERE c.slug = v.slug;
+
+-- Local creator avatars generated in the 2026-05-10 image reconciliation pass.
+UPDATE as_creators AS c
+SET avatar = v.avatar
+FROM (VALUES
+  ('akpenebrigittemon', '/assets/img/afrostream/creators/akpenebrigittemon-avatar.webp'),
+  ('anes-tina', '/assets/img/afrostream/creators/anes-tina-avatar.webp'),
+  ('balti', '/assets/img/afrostream/creators/balti-avatar.webp'),
+  ('ckay', '/assets/img/afrostream/creators/ckay-avatar.webp'),
+  ('damso', '/assets/img/afrostream/creators/damso-avatar.webp'),
+  ('didine-canon-16', '/assets/img/afrostream/creators/didine-canon-16-avatar.webp'),
+  ('douzi', '/assets/img/afrostream/creators/douzi-avatar.webp'),
+  ('dr-hala-samir', '/assets/img/afrostream/creators/dr-hala-samir-avatar.webp'),
+  ('fally-ipupa', '/assets/img/afrostream/creators/fally-ipupa-avatar.webp'),
+  ('flavour-nabania', '/assets/img/afrostream/creators/flavour-nabania-avatar.webp'),
+  ('halima-filali', '/assets/img/afrostream/creators/halima-filali-avatar.webp'),
+  ('hassan-shakosh', '/assets/img/afrostream/creators/hassan-shakosh-avatar.webp'),
+  ('jean-do-fogo', '/assets/img/afrostream/creators/jean-do-fogo-avatar.webp'),
+  ('kakande-ministries', '/assets/img/afrostream/creators/kakande-ministries-avatar.webp'),
+  ('lalgerino', '/assets/img/afrostream/creators/lalgerino-avatar.webp'),
+  ('mbosso', '/assets/img/afrostream/creators/mbosso-avatar.webp'),
+  ('mehdi-mozayine', '/assets/img/afrostream/creators/mehdi-mozayine-avatar.webp'),
+  ('millard-ayo', '/assets/img/afrostream/creators/millard-ayo-avatar.webp'),
+  ('mohamed-tarek', '/assets/img/afrostream/creators/mohamed-tarek-avatar.webp'),
+  ('moribyan', '/assets/img/afrostream/creators/moribyan-avatar.webp'),
+  ('nadia-elsayed', '/assets/img/afrostream/creators/nadia-elsayed-avatar.webp'),
+  ('ninho', '/assets/img/afrostream/creators/ninho-avatar.webp'),
+  ('niska', '/assets/img/afrostream/creators/niska-avatar.webp'),
+  ('tamer-hosny', '/assets/img/afrostream/creators/tamer-hosny-avatar.webp'),
+  ('wegz', '/assets/img/afrostream/creators/wegz-avatar.webp'),
+  ('wizkid', '/assets/img/afrostream/creators/wizkid-avatar.webp'),
+  ('yemi-alade', '/assets/img/afrostream/creators/yemi-alade-avatar.webp'),
+  ('yess-jamal', '/assets/img/afrostream/creators/yess-jamal-avatar.webp'),
+  ('zuchu', '/assets/img/afrostream/creators/zuchu-avatar.webp')
+) AS v(slug, avatar)
+WHERE c.slug = v.slug;

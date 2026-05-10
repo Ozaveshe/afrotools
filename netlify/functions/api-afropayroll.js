@@ -5,12 +5,19 @@
  * GET    /api/afropayroll?action=clients
  * GET    /api/afropayroll?action=list
  * GET    /api/afropayroll?action=load&run_id=<uuid>
+ * GET    /api/afropayroll?action=list_employees&client_id=<uuid>&company_id=<uuid>
  * GET    /api/afropayroll?action=audit&run_id=<uuid>
+ * GET    /api/afropayroll?action=close_room&run_id=<uuid>
  * GET    /api/afropayroll?action=roles&run_id=<uuid>
  * GET    /api/afropayroll?action=employee_portal&token=<invite-token>
  * POST   /api/afropayroll { action: "save_client", client: {...} }
+ * POST   /api/afropayroll { action: "save_employee", client_id: <uuid>, company_id: <uuid>, employee: {...} }
+ * POST   /api/afropayroll { action: "record_employee_event", event_type: "employee_import" | "employee_linked_to_run" | "employee_mark_inactive", ... }
  * POST   /api/afropayroll { action: "save_run", run: {..., employees: [...] } }
+ * POST   /api/afropayroll { action: "clone_run", source_run_id: <uuid>, pay_period: "YYYY-MM", pay_date: "YYYY-MM-DD" }
+ * POST   /api/afropayroll { action: "acknowledge_variance", run_id: <uuid>, variance_summary: {...} }
  * POST   /api/afropayroll { action: "submit_run" | "request_approval" | "request_changes" | "approve_run" | "reject_run" | "finalize_run" | "reopen_run", run_id: <uuid> }
+ * POST   /api/afropayroll { action: "add_comment", run_id: <uuid>, comment: "..." }
  * POST   /api/afropayroll { action: "generate_payslips" | "generate_statutory_packs" | "record_export" | "record_import", run_id: <uuid> }
  * POST   /api/afropayroll { action: "invite_member", run_id: <uuid>, email: "...", role: "..." }
  * POST   /api/afropayroll { action: "create_employee_portal_invite", run_id: <uuid>, employee_id: <uuid> }
@@ -36,7 +43,7 @@ const EMPLOYEE_PORTAL_INVITE_DAYS = 14;
 const VIEW_PAYROLL_ROLES = ['owner', 'admin', 'payroll_admin', 'accountant', 'approver'];
 const EDIT_PAYROLL_ROLES = ['owner', 'admin', 'payroll_admin', 'accountant'];
 const APPROVE_PAYROLL_ROLES = ['owner', 'admin', 'accountant', 'approver'];
-const MANAGE_MEMBER_ROLES = ['owner', 'admin', 'payroll_admin'];
+const MANAGE_MEMBER_ROLES = ['owner', 'admin'];
 const RUN_STATES = ['draft', 'review', 'approved', 'finalized', 'exported', 'reopened', 'archived'];
 const LEGACY_RUN_STATE_MAP = {
   submitted: 'review',
@@ -340,6 +347,21 @@ function normalizeDefaultPayDay(value) {
   return day || null;
 }
 
+function normalizePayFrequency(value) {
+  var frequency = sanitizeText(value, 24).toLowerCase();
+  return ['monthly', 'weekly', 'biweekly', 'fortnightly'].includes(frequency) ? frequency : '';
+}
+
+function normalizeWorkingDays(value) {
+  var days = clampInteger(value, 22, 1, 31);
+  return days || 22;
+}
+
+function normalizeEmployerContributionAssumption(value) {
+  var assumption = sanitizeText(value, 40).toLowerCase();
+  return ['country_pack', 'review_only', 'none'].includes(assumption) ? assumption : 'country_pack';
+}
+
 function normalizeClientMeta(input, defaults) {
   var client = safeJson(input, {});
   var fallback = safeJson(defaults, {});
@@ -359,6 +381,12 @@ function normalizeClientMeta(input, defaults) {
     reviewerEmail: sanitizeText(client.reviewerEmail || client.reviewer_email || fallback.reviewerEmail, 180),
     defaultCurrency: currency,
     defaultPayDay: normalizeDefaultPayDay(client.defaultPayDay || client.default_pay_day || fallback.defaultPayDay),
+    payFrequency: normalizePayFrequency(client.payFrequency || client.pay_frequency || fallback.payFrequency),
+    defaultDepartment: sanitizeText(client.defaultDepartment || client.default_department || client.costCenter || client.cost_center || fallback.defaultDepartment, 120),
+    workingDaysPerMonth: normalizeWorkingDays(client.workingDaysPerMonth || client.working_days_per_month || fallback.workingDaysPerMonth),
+    employerContributionAssumption: normalizeEmployerContributionAssumption(client.employerContributionAssumption || client.employer_contribution_assumption || fallback.employerContributionAssumption),
+    setupSavedAt: sanitizeText(client.setupSavedAt || client.setup_saved_at || fallback.setupSavedAt, 60),
+    setupSavedMode: sanitizeText(client.setupSavedMode || client.setup_saved_mode || fallback.setupSavedMode, 40),
     status: normalizeClientStatus(client.status || client.clientStatus || fallback.clientStatus),
   };
 }
@@ -368,6 +396,12 @@ function clientSettingsFromMeta(meta, existingSettings) {
   settings.payroll_contact = meta.payrollContact || null;
   settings.reviewer_email = meta.reviewerEmail || null;
   settings.default_pay_day = meta.defaultPayDay || null;
+  settings.pay_frequency = meta.payFrequency || null;
+  settings.default_department = meta.defaultDepartment || null;
+  settings.working_days_per_month = meta.workingDaysPerMonth || 22;
+  settings.employer_contribution_assumption = meta.employerContributionAssumption || 'country_pack';
+  settings.setup_saved_at = meta.setupSavedAt || null;
+  settings.setup_saved_mode = meta.setupSavedMode || null;
   settings.source = settings.source || 'afropayroll_workspace';
   return settings;
 }
@@ -377,6 +411,12 @@ function companySettingsFromMeta(meta, existingSettings) {
   settings.payroll_contact = meta.payrollContact || null;
   settings.reviewer_email = meta.reviewerEmail || null;
   settings.default_pay_day = meta.defaultPayDay || null;
+  settings.pay_frequency = meta.payFrequency || null;
+  settings.default_department = meta.defaultDepartment || null;
+  settings.working_days_per_month = meta.workingDaysPerMonth || 22;
+  settings.employer_contribution_assumption = meta.employerContributionAssumption || 'country_pack';
+  settings.setup_saved_at = meta.setupSavedAt || null;
+  settings.setup_saved_mode = meta.setupSavedMode || null;
   settings.source = settings.source || 'afropayroll_workspace';
   return settings;
 }
@@ -385,7 +425,8 @@ function normalizeEmployeeRecord(record, fallbackCountry) {
   var employee = safeJson(record, {});
   var localId = sanitizeText(employee.id || employee.employeeRecordId || employee.localEmployeeId, 120);
   var employeeCode = sanitizeText(employee.employeeId || employee.employeeCode || employee.code, 80);
-  var email = sanitizeText(employee.email, 180);
+  var email = sanitizeEmail(employee.email);
+  var payslipEmail = sanitizeEmail(employee.payslipEmail || employee.payslipDeliveryEmail || employee.payslip_email || employee.payslip_delivery_email);
   var name = sanitizeText(employee.name || employee.fullName || employee.full_name, 180);
   if (!employeeCode && localId) employeeCode = localId;
   return {
@@ -393,17 +434,21 @@ function normalizeEmployeeRecord(record, fallbackCountry) {
     cloudEmployeeId: sanitizeText(employee.cloudEmployeeId || employee.cloudId, 80),
     employeeId: employeeCode,
     name: name,
+    preferredName: sanitizeText(employee.preferredName || employee.preferred_name, 120),
     email: email,
     phone: sanitizeText(employee.phone, 80),
     country: normalizeCountry(employee.country || employee.countryCode, fallbackCountry || 'NG'),
+    currency: normalizeCurrency(employee.currency || employee.currencyCode || employee.currency_code),
     taxId: sanitizeText(employee.taxId || employee.taxID || employee.tax_id, 120),
     socialSecurityId: sanitizeText(employee.socialSecurityId || employee.pensionSocialSecurityId || employee.pensionId || employee.social_id, 120),
     bankName: sanitizeText(employee.bankName || employee.bank_name, 120),
     bankAccountOrMobile: sanitizeText(employee.bankAccountOrMobile || employee.bankAccount || employee.accountNumber || employee.mobileMoney || employee.account_or_mobile, 160),
+    payslipEmail: payslipEmail || email,
     department: sanitizeText(employee.department, 120),
     role: sanitizeText(employee.role || employee.roleTitle || employee.jobTitle, 140),
     startDate: normalizeDate(employee.startDate || employee.hireDate || employee.hire_date),
     employmentType: normalizeEmploymentType(employee.employmentType || employee.type),
+    paySchedule: normalizePayFrequency(employee.paySchedule || employee.pay_schedule),
     status: normalizeEmployeeStatus(employee.status),
   };
 }
@@ -689,44 +734,58 @@ function employeeLookupKeys(employee) {
   return keys;
 }
 
+function employeePayloadFromRecord(client, company, employee, defaults, user) {
+  var fallbackCountry = defaults && defaults.defaultCountry || company && company.country_code || 'NG';
+  var fallbackCurrency = defaults && defaults.defaultCurrency || company && company.currency_code || null;
+  var record = normalizeEmployeeRecord(employee, fallbackCountry);
+  var employeeCode = sanitizeText(record.employeeId || record.localId, 80);
+  var currency = normalizeCurrency(record.currency || fallbackCurrency);
+  return {
+    client_id: client.id,
+    company_id: company.id,
+    employee_code: employeeCode || null,
+    external_ref: sanitizeText(record.localId, 120) || null,
+    full_name: record.name || employeeCode || record.email || 'Unnamed employee',
+    preferred_name: record.preferredName || null,
+    email: record.email || null,
+    phone: record.phone || null,
+    country_code: record.country || fallbackCountry,
+    currency_code: currency || null,
+    role_title: record.role || null,
+    department: record.department || null,
+    employment_type: record.employmentType,
+    pay_schedule: record.paySchedule || defaults && defaults.paySchedule || 'monthly',
+    hire_date: record.startDate || null,
+    statutory_ids: {
+      tax_id: record.taxId || null,
+      pension_social_security_id: record.socialSecurityId || null,
+    },
+    bank_meta: {
+      bank_name: record.bankName || null,
+      account_or_mobile: record.bankAccountOrMobile || null,
+    },
+    pay_setup: {
+      source: 'afropayroll_workspace',
+      local_employee_id: record.localId || null,
+      payslip_email: record.payslipEmail || null,
+    },
+    status: record.status,
+    created_by: user.id,
+    updated_by: user.id,
+  };
+}
+
 async function ensureEmployees(client, company, run, user) {
   var employees = activeEmployees(run.employees, run.defaultCountry);
   var map = {};
   if (!employees.length) return map;
 
   var payload = employees.map(function (employee) {
-    var employeeCode = sanitizeText(employee.employeeId || employee.localId, 80);
-    return {
-      client_id: client.id,
-      company_id: company.id,
-      employee_code: employeeCode || null,
-      external_ref: sanitizeText(employee.localId, 120) || null,
-      full_name: employee.name || employeeCode || employee.email || 'Unnamed employee',
-      email: employee.email || null,
-      phone: employee.phone || null,
-      country_code: employee.country || run.defaultCountry,
-      currency_code: run.defaultCurrency || company.currency_code || null,
-      role_title: employee.role || null,
-      department: employee.department || null,
-      employment_type: employee.employmentType,
-      pay_schedule: 'monthly',
-      hire_date: employee.startDate || null,
-      statutory_ids: {
-        tax_id: employee.taxId || null,
-        pension_social_security_id: employee.socialSecurityId || null,
-      },
-      bank_meta: {
-        bank_name: employee.bankName || null,
-        account_or_mobile: employee.bankAccountOrMobile || null,
-      },
-      pay_setup: {
-        source: 'afropayroll_workspace',
-        local_employee_id: employee.localId || null,
-      },
-      status: employee.status,
-      created_by: user.id,
-      updated_by: user.id,
-    };
+    return employeePayloadFromRecord(client, company, employee, {
+      defaultCountry: run.defaultCountry,
+      defaultCurrency: run.defaultCurrency,
+      paySchedule: run.clientMeta && run.clientMeta.payFrequency || 'monthly',
+    }, user);
   });
 
   var result = await supabaseRequest('/rest/v1/payroll_employees?on_conflict=' + encodeURIComponent('company_id,employee_code'), {
@@ -750,6 +809,19 @@ function buildRunPayload(client, company, run, user) {
   var summary = run.summary || {};
   var workflow = safeJson(run.workflow, {});
   var runState = canonicalRunState(run.runStatus);
+  var recurring = safeJson(workflow.previousRunSnapshot || workflow.recurring, {});
+  var recurringSnapshot = recurring && Array.isArray(recurring.rows) ? recurring : null;
+  var recurringMeta = {
+    cloned_from_run_id: sanitizeText(workflow.clonedFromRunId || workflow.cloned_from_run_id, 120) || null,
+    cloned_from_source: sanitizeText(workflow.clonedFromSource || workflow.cloned_from_source, 40) || null,
+    cloned_from_period: sanitizeText(workflow.clonedFromPeriod || workflow.cloned_from_period, 20) || null,
+    cloned_from_status: canonicalRunState(workflow.clonedFromStatus || workflow.cloned_from_status || 'draft'),
+    variance_review_acknowledged: workflow.varianceReviewAcknowledged === true || workflow.variance_review_acknowledged === true,
+    variance_reviewed_at: sanitizeText(workflow.varianceReviewedAt || workflow.variance_reviewed_at, 40) || null,
+    variance_reviewed_by: sanitizeText(workflow.varianceReviewedBy || workflow.variance_reviewed_by, 180) || null,
+    previous_snapshot: recurringSnapshot,
+  };
+  if (!recurringMeta.cloned_from_run_id) recurringMeta = null;
   return {
     client_id: client.id,
     company_id: company.id,
@@ -769,6 +841,7 @@ function buildRunPayload(client, company, run, user) {
       source: 'browser_preview',
       last_calculated_at: run.lastCalculatedAt || null,
       row_count: run.rowCount,
+      recurring: recurringMeta,
     },
     warnings_count: clampInteger(summary.reviewRows, 0, 0, MAX_ROWS),
     ready_count: Math.max(0, run.rowCount - clampInteger(summary.reviewRows, 0, 0, MAX_ROWS)),
@@ -998,6 +1071,8 @@ function workspaceClientFromRecords(client, company, role, runs) {
   var settings = safeJson(client.settings, {});
   var companySettings = safeJson(company && company.payroll_settings, {});
   var defaultPayDay = normalizeDefaultPayDay(settings.default_pay_day || settings.defaultPayDay || companySettings.default_pay_day);
+  var payFrequency = normalizePayFrequency(settings.pay_frequency || settings.payFrequency || companySettings.pay_frequency);
+  var workingDays = normalizeWorkingDays(settings.working_days_per_month || settings.workingDaysPerMonth || companySettings.working_days_per_month);
   return {
     id: client.id,
     clientId: client.id,
@@ -1011,6 +1086,12 @@ function workspaceClientFromRecords(client, company, role, runs) {
     reviewerEmail: settings.reviewer_email || settings.reviewerEmail || '',
     defaultCurrency: client.default_currency || company && company.currency_code || '',
     defaultPayDay: defaultPayDay || '',
+    payFrequency: payFrequency || '',
+    defaultDepartment: settings.default_department || settings.defaultDepartment || companySettings.default_department || '',
+    workingDaysPerMonth: workingDays || 22,
+    employerContributionAssumption: normalizeEmployerContributionAssumption(settings.employer_contribution_assumption || settings.employerContributionAssumption || companySettings.employer_contribution_assumption),
+    setupSavedAt: settings.setup_saved_at || settings.setupSavedAt || companySettings.setup_saved_at || '',
+    setupSavedMode: settings.setup_saved_mode || settings.setupSavedMode || companySettings.setup_saved_mode || '',
     updatedAt: client.updated_at || client.created_at || '',
     counts: clientCountsFromRuns(runs),
   };
@@ -1062,11 +1143,64 @@ async function handleClients(user, params) {
 async function handleDashboard(user, params) {
   var list = await handleList(user, Object.assign({}, params || {}, { limit: params && params.limit || 100 }));
   var clients = await handleClients(user, Object.assign({}, params || {}, { limit: params && params.limit || 100 }));
+  var clientIds = clients.clients.map(function (client) { return client.clientId || client.id; }).filter(Boolean);
+  var employees = [];
+  if (clientIds.length) {
+    var employeeResult = await supabaseRequest('/rest/v1/payroll_employees?' + qs({
+      client_id: 'in.(' + clientIds.map(function (id) { return String(id).replace(/[^0-9a-f-]/gi, ''); }).filter(Boolean).join(',') + ')',
+      select: EMPLOYEE_SELECT,
+      order: 'updated_at.desc',
+      limit: String(MAX_EMPLOYEES),
+    }));
+    if (employeeResult.ok) employees = Array.isArray(employeeResult.data) ? employeeResult.data.map(toWorkspaceEmployee) : [];
+  }
   return {
     runs: list.runs,
     dashboard: dashboardFromRuns(list.runs),
     clients: clients.clients,
     companies: clients.companies,
+    employees: employees,
+  };
+}
+
+async function loadCompanyForClient(companyId, clientId) {
+  if (!isUuid(companyId)) return null;
+  var companyResult = await supabaseRequest('/rest/v1/payroll_companies?' + qs({
+    id: 'eq.' + companyId,
+    client_id: 'eq.' + clientId,
+    select: 'id,client_id,legal_name,trading_name,country_code,currency_code,payroll_settings,status',
+    limit: '1',
+  }));
+  if (!companyResult.ok) throw new Error('Payroll company lookup failed: ' + companyResult.text);
+  return Array.isArray(companyResult.data) ? companyResult.data[0] : null;
+}
+
+async function handleListEmployees(user, params) {
+  var clientId = sanitizeText(params && (params.client_id || params.clientId), 80);
+  var companyId = sanitizeText(params && (params.company_id || params.companyId), 80);
+  if (!isUuid(clientId)) return { statusCode: 400, body: { error: 'Valid client_id is required' } };
+  var access = await getAccessRecord(user, clientId);
+  if (!access || !VIEW_PAYROLL_ROLES.includes(access.role)) {
+    return { statusCode: 403, body: { error: 'Not allowed to view these employee records' } };
+  }
+  if (companyId) {
+    var company = await loadCompanyForClient(companyId, clientId);
+    if (!company) return { statusCode: 404, body: { error: 'Payroll company not found' } };
+  }
+  var query = {
+    client_id: 'eq.' + clientId,
+    select: EMPLOYEE_SELECT,
+    order: 'full_name.asc',
+    limit: String(MAX_EMPLOYEES),
+  };
+  if (companyId) query.company_id = 'eq.' + companyId;
+  var result = await supabaseRequest('/rest/v1/payroll_employees?' + qs(query));
+  if (!result.ok) throw new Error('Employee records load failed: ' + result.text);
+  return {
+    statusCode: 200,
+    body: {
+      employees: (Array.isArray(result.data) ? result.data : []).map(toWorkspaceEmployee),
+    },
   };
 }
 
@@ -1113,6 +1247,36 @@ async function handleAudit(user, runId) {
     return event.run_id === run.id || event.entity_id === run.id || (event.after_state && event.after_state.run_id === run.id);
   }).slice(0, 30);
   return { statusCode: 200, body: { events: events } };
+}
+
+async function loadRunAuditEvents(run) {
+  var result = await supabaseRequest('/rest/v1/payroll_audit_events?' + qs({
+    client_id: 'eq.' + run.client_id,
+    select: 'id,action,entity_type,entity_id,run_id,summary,after_state,created_at',
+    order: 'created_at.desc',
+    limit: '80',
+  }));
+  if (!result.ok) throw new Error('Audit load failed: ' + result.text);
+  return (Array.isArray(result.data) ? result.data : []).filter(function (event) {
+    return event.run_id === run.id || event.entity_id === run.id || (event.after_state && event.after_state.run_id === run.id);
+  }).slice(0, 30);
+}
+
+async function handleCloseRoom(user, runId) {
+  var checked = await requireRunAccess(user, runId, VIEW_PAYROLL_ROLES, 'Not allowed to view this payroll close room');
+  if (checked.statusCode !== 200) return checked;
+  var run = checked.accessResult.run;
+  var approvalSummary = await loadApprovalSummary(run);
+  var events = await loadRunAuditEvents(run);
+  return {
+    statusCode: 200,
+    body: {
+      run: run,
+      current_role: checked.accessResult.access && checked.accessResult.access.role || '',
+      approval_summary: approvalSummary,
+      events: events,
+    },
+  };
 }
 
 async function handleRoles(user, runId) {
@@ -1217,7 +1381,6 @@ async function loadPortalInvite(rawToken) {
 
   var result = await supabaseRequest('/rest/v1/payroll_employee_portal_invites?' + qs({
     token_hash: 'eq.' + tokenHash(token),
-    status: 'eq.active',
     select: PORTAL_INVITE_SELECT,
     limit: '1',
   }));
@@ -1228,6 +1391,8 @@ async function loadPortalInvite(rawToken) {
 
   var invite = Array.isArray(result.data) ? result.data[0] : null;
   if (!invite) return { statusCode: 404, body: { error: 'Invite link not found or revoked' } };
+  if (invite.status === 'expired') return { statusCode: 410, body: { error: 'Invite link has expired' } };
+  if (invite.status !== 'active') return { statusCode: 404, body: { error: 'Invite link not found or revoked' } };
 
   var expiresAt = invite.expires_at ? new Date(invite.expires_at).getTime() : 0;
   if (!expiresAt || expiresAt < Date.now()) {
@@ -1364,6 +1529,30 @@ function portalPayslipRecord(payslip) {
   };
 }
 
+function portalEventHistory(invite) {
+  var metadata = safeJson(invite && invite.metadata, {});
+  var history = Array.isArray(metadata.history) ? metadata.history : [];
+  return history.slice(-12).map(function (item) {
+    item = safeJson(item, {});
+    return {
+      status: sanitizeText(item.status || item.action, 80),
+      at: sanitizeText(item.at || item.created_at, 40),
+      note: sanitizeText(item.note, 240),
+      missing_fields: Array.isArray(item.missing_fields) ? item.missing_fields.map(function (field) { return sanitizeText(field, 80); }).filter(Boolean) : [],
+    };
+  });
+}
+
+function appendPortalHistory(invite, entry) {
+  var metadata = Object.assign({}, safeJson(invite && invite.metadata, {}));
+  var history = portalEventHistory(invite);
+  history.push(Object.assign({
+    at: new Date().toISOString(),
+  }, entry || {}));
+  metadata.history = history.slice(-12);
+  return metadata;
+}
+
 async function loadPortalPayload(invite) {
   var runResult = await supabaseRequest('/rest/v1/payroll_runs?' + qs({
     id: 'eq.' + invite.run_id,
@@ -1422,6 +1611,8 @@ async function loadPortalPayload(invite) {
         expires_at: invite.expires_at,
         last_viewed_at: invite.last_viewed_at,
         confirmed_at: invite.confirmed_at,
+        latest_status: invite.confirmed_at ? 'confirmed' : 'needs_confirmation',
+        confirmation_history: portalEventHistory(invite),
       },
       company: {
         legal_name: company && company.legal_name || '',
@@ -1446,7 +1637,7 @@ async function loadPortalPayload(invite) {
       missing_information: portalMissingProfileFields(employee),
       rows: (Array.isArray(rowsResult.data) ? rowsResult.data : []).map(portalRunRow),
       payslips: (Array.isArray(payslipResult.data) ? payslipResult.data : []).map(portalPayslipRecord),
-      guardrail: 'This employee portal shows only the employee and payroll run assigned to this invite link. It does not file taxes or move money.',
+      guardrail: 'This portal shows only the payroll packet assigned to this invite. Contact your payroll team if figures look wrong.',
     },
   };
 }
@@ -1457,12 +1648,19 @@ async function handleEmployeePortal(params) {
 
   var payload = await loadPortalPayload(loaded.invite);
   if (payload.statusCode === 200) {
+    var now = new Date().toISOString();
     await supabaseRequest('/rest/v1/payroll_employee_portal_invites?id=eq.' + encodeURIComponent(loaded.invite.id), {
       method: 'PATCH',
       body: {
-        last_viewed_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        last_viewed_at: now,
+        metadata: appendPortalHistory(loaded.invite, { status: 'portal_loaded', note: 'Employee portal opened' }),
+        updated_at: now,
       },
+    });
+    await audit(loaded.invite.client_id, null, 'employee_portal_loaded', 'payroll_employee_portal_invites', loaded.invite.id, 'Employee portal invite opened', {
+      run_id: loaded.invite.run_id,
+      company_id: loaded.invite.company_id,
+      employee_id: loaded.invite.employee_id,
     });
   }
   return payload;
@@ -1486,6 +1684,7 @@ async function handleEmployeeProfileConfirm(body) {
   if (!employee) return { statusCode: 404, body: { error: 'Employee record is no longer available' } };
 
   var profile = safeJson(body && body.profile, {});
+  var employeeNote = sanitizeText(profile.note || profile.employee_note || profile.request_note, 500);
   var emailInput = sanitizeText(profile.email, 180);
   var email = sanitizeEmail(emailInput);
   if (emailInput && !email) return { statusCode: 400, body: { error: 'Valid email is required' } };
@@ -1497,6 +1696,7 @@ async function handleEmployeeProfileConfirm(body) {
     employee_portal_confirmed_at: now,
     employee_portal_invite_id: invite.id,
   });
+  if (employeeNote) paySetup.employee_portal_note = employeeNote;
 
   var taxId = sanitizeText(profile.tax_id || profile.taxId, 120);
   var socialId = sanitizeText(profile.pension_social_security_id || profile.socialSecurityId || profile.social_id, 120);
@@ -1528,9 +1728,14 @@ async function handleEmployeeProfileConfirm(body) {
     method: 'PATCH',
     body: {
       confirmed_at: now,
-      metadata: Object.assign({}, safeJson(invite.metadata, {}), {
+      metadata: Object.assign({}, appendPortalHistory(invite, {
+        status: 'profile_confirmed',
+        note: employeeNote,
+        missing_fields: (currentPayload.body && currentPayload.body.missing_information || []).map(function (item) { return item.field; }).filter(Boolean),
+      }), {
         confirmed_at: now,
         confirmation_source: 'employee_portal',
+        employee_note: employeeNote || null,
       }),
       updated_at: now,
     },
@@ -1539,12 +1744,48 @@ async function handleEmployeeProfileConfirm(body) {
     run_id: invite.run_id,
     company_id: invite.company_id,
     invite_id: invite.id,
+    employee_note_present: Boolean(employeeNote),
   });
 
   var refreshedInvite = Object.assign({}, invite, { confirmed_at: now, last_viewed_at: now });
   var refreshed = await loadPortalPayload(refreshedInvite);
   if (refreshed.statusCode === 200) refreshed.body.confirmed = true;
   return refreshed;
+}
+
+async function handleEmployeePortalAudit(body) {
+  var loaded = await loadPortalInvite(body && body.token);
+  if (loaded.statusCode !== 200) return loaded;
+  var invite = loaded.invite;
+  var eventType = sanitizeText(body && (body.event_type || body.eventType), 80);
+  var allowed = ['payslip_viewed', 'payslip_downloaded', 'payslip_printed'];
+  if (!allowed.includes(eventType)) return { statusCode: 400, body: { error: 'Unsupported portal event' } };
+  var payload = await loadPortalPayload(invite);
+  if (payload.statusCode !== 200) return payload;
+  var payslipNo = sanitizeText(body && (body.payslip_no || body.payslipNo), 120);
+  var payslips = payload.body && Array.isArray(payload.body.payslips) ? payload.body.payslips : [];
+  if (payslipNo && !payslips.some(function (payslip) { return payslip.payslip_no === payslipNo; })) {
+    return { statusCode: 404, body: { error: 'Payslip packet is not assigned to this invite' } };
+  }
+  var now = new Date().toISOString();
+  await supabaseRequest('/rest/v1/payroll_employee_portal_invites?id=eq.' + encodeURIComponent(invite.id), {
+    method: 'PATCH',
+    body: {
+      metadata: appendPortalHistory(invite, {
+        status: eventType,
+        note: payslipNo || 'Payslip packet',
+      }),
+      updated_at: now,
+    },
+  });
+  await audit(invite.client_id, null, eventType, 'payroll_payslips', payslipNo || null, 'Employee portal payslip packet action', {
+    run_id: invite.run_id,
+    company_id: invite.company_id,
+    employee_id: invite.employee_id,
+    invite_id: invite.id,
+    payslip_no: payslipNo,
+  });
+  return { statusCode: 200, body: { recorded: true } };
 }
 
 async function handleCreateEmployeePortalInvite(user, body, event) {
@@ -1648,6 +1889,12 @@ function workflowApprovalStatus(targetState) {
   return targetState;
 }
 
+function runRequiresVarianceReview(run) {
+  var snapshot = safeJson(run && run.engine_snapshot, {});
+  var recurring = safeJson(snapshot.recurring, {});
+  return Boolean(recurring.cloned_from_run_id && recurring.variance_review_acknowledged !== true);
+}
+
 async function insertWorkflowComment(run, user, targetState, note) {
   if (!note) return null;
   var result = await supabaseRequest('/rest/v1/payroll_workspace_comments', {
@@ -1659,6 +1906,22 @@ async function insertWorkflowComment(run, user, targetState, note) {
       author_id: user.id,
       visibility: 'team',
       body: workflowActionLabel(targetState) + ': ' + note,
+    },
+  });
+  if (!result.ok) throw new Error('Reviewer comment save failed: ' + result.text);
+  return Array.isArray(result.data) ? result.data[0] : result.data;
+}
+
+async function insertReviewerComment(run, user, note) {
+  var result = await supabaseRequest('/rest/v1/payroll_workspace_comments', {
+    method: 'POST',
+    headers: { Prefer: 'return=representation' },
+    body: {
+      client_id: run.client_id,
+      run_id: run.id,
+      author_id: user.id,
+      visibility: 'team',
+      body: note,
     },
   });
   if (!result.ok) throw new Error('Reviewer comment save failed: ' + result.text);
@@ -1787,6 +2050,18 @@ async function handleWorkflowTransition(user, body, targetState, roles, message)
       body: { error: 'Reopen reason is required' },
     };
   }
+  if ((toState === 'approved' || toState === 'finalized') && !note) {
+    return {
+      statusCode: 400,
+      body: { error: 'Approval note is required before approval or finalization' },
+    };
+  }
+  if (toState === 'approved' && runRequiresVarianceReview(run)) {
+    return {
+      statusCode: 409,
+      body: { error: 'Variance review must be acknowledged before approving this cloned payroll run' },
+    };
+  }
   var now = new Date().toISOString();
   var approvals = await writeApprovalRecord(run, user, toState, note, body, now);
   var comment = await insertWorkflowComment(run, user, toState, note);
@@ -1840,7 +2115,32 @@ async function handleApprovalRequest(user, body) {
 }
 
 async function handleApprovalDecision(user, body, decision) {
-  return handleWorkflowTransition(user, body, decision === 'approved' ? 'approved' : 'review', APPROVE_PAYROLL_ROLES, 'Not allowed to approve or request changes for this payroll run');
+  return handleWorkflowTransition(user, body, decision === 'approved' ? 'approved' : 'reopened', APPROVE_PAYROLL_ROLES, 'Not allowed to approve or request changes for this payroll run');
+}
+
+async function handleAddComment(user, body) {
+  var runId = normalizeRunId(body);
+  var checked = await requireRunAccess(user, runId, VIEW_PAYROLL_ROLES, 'Not allowed to comment on this payroll run');
+  if (checked.statusCode !== 200) return checked;
+  var run = checked.accessResult.run;
+  var note = sanitizeText(body && (body.comment || body.note || body.body), 1000);
+  if (!note) {
+    return { statusCode: 400, body: { error: 'Reviewer comment is required' } };
+  }
+  var comment = await insertReviewerComment(run, user, note);
+  var approvalSummary = await loadApprovalSummary(run);
+  await audit(run.client_id, user, 'add_comment', 'payroll_workspace_comments', comment && comment.id, 'Added reviewer comment to payroll run', {
+    run_id: run.id,
+    company_id: run.company_id,
+    comment_id: comment && comment.id,
+  });
+  return {
+    statusCode: 200,
+    body: {
+      comment: comment,
+      approval_summary: approvalSummary,
+    },
+  };
 }
 
 async function handleGeneratePayslips(user, body) {
@@ -1934,9 +2234,46 @@ async function handleGenerateStatutoryPacks(user, body) {
   if (!rows.length) return { statusCode: 400, body: { error: 'Run has no payroll rows' } };
   var byCountry = summarizeRowsByCountry(run, rows);
   var packVersion = sanitizeText(body && body.pack_version, 80) || 'workspace-' + periodLabel(run);
+  var submittedPacks = Array.isArray(body && body.packs) ? body.packs : [];
+  var submittedByCountry = {};
+  submittedPacks.forEach(function (pack) {
+    var code = sanitizeText(pack && (pack.country_code || pack.countryCode || pack.country), 8).toUpperCase();
+    if (code) submittedByCountry[code] = safeJson(pack, {});
+  });
   var payload = Object.keys(byCountry).sort().map(function (country) {
     var figures = byCountry[country];
-    var warnings = figures.warning_count ? [{ level: 'warning', message: 'Rows in this country still need review before statutory use.' }] : [];
+    var submitted = submittedByCountry[country] || {};
+    var readiness = Array.isArray(submitted.readiness) ? submitted.readiness.map(function (item) {
+      return {
+        level: sanitizeText(item && item.level, 40) || 'warning',
+        message: sanitizeText(item && (item.message || item.label), 240) || 'Review item needs attention.',
+      };
+    }).filter(function (item) { return item.message; }) : [];
+    var warnings = readiness.filter(function (item) { return item.level !== 'ok'; });
+    if (figures.warning_count) warnings.push({ level: 'warning', message: 'Rows in this country still need review before statutory use.' });
+    var sourceLinks = Array.isArray(submitted.source_links || submitted.sourceLinks)
+      ? (submitted.source_links || submitted.sourceLinks).slice(0, 20).map(function (source) {
+          return {
+            label: sanitizeText(source && (source.label || source.url) || source, 180),
+            url: sanitizeText(source && source.url || source, 500),
+          };
+        }).filter(function (source) { return source.url; })
+      : (Array.isArray(body && body.source_links) ? body.source_links : []);
+    var reviewFigures = Object.assign({}, figures, {
+      review_pack: {
+        country_name: sanitizeText(submitted.country_name || submitted.countryName, 120) || null,
+        pack_status: sanitizeText(submitted.pack_status || submitted.packStatus, 80) || null,
+        effective_date: sanitizeText(submitted.effective_date || submitted.effectiveDate, 40) || null,
+        verification_date: sanitizeText(submitted.verification_date || submitted.verificationDate, 40) || null,
+        next_review_date: sanitizeText(submitted.next_review_date || submitted.nextReviewDate, 40) || null,
+        confidence: sanitizeText(submitted.confidence, 80) || null,
+        employee_count: clampInteger(submitted.employee_count || submitted.employeeCount || figures.row_count, figures.row_count, 0, MAX_ROWS),
+        gross_total: toNumber(submitted.gross_total || submitted.grossTotal || figures.preview_gross),
+        employee_deduction_total: toNumber(submitted.employee_deduction_total || submitted.employeeDeductionTotal || (figures.employee_deductions + figures.custom_deductions)),
+        employer_cost_total: toNumber(submitted.employer_cost_total || submitted.employerCostTotal || figures.employer_cost),
+        net_total: toNumber(submitted.net_total || submitted.netTotal || figures.net_pay),
+      },
+    });
     return {
       client_id: run.client_id,
       run_id: run.id,
@@ -1946,9 +2283,9 @@ async function handleGenerateStatutoryPacks(user, body) {
       period_start: run.pay_period_start,
       period_end: run.pay_period_end,
       due_date: null,
-      status: figures.warning_count ? 'needs_review' : 'ready',
-      figures: figures,
-      source_links: Array.isArray(body && body.source_links) ? body.source_links : [],
+      status: warnings.length ? 'needs_review' : 'ready',
+      figures: reviewFigures,
+      source_links: sourceLinks,
       warnings: warnings,
       prepared_by: user.id,
       prepared_at: new Date().toISOString(),
@@ -1963,6 +2300,7 @@ async function handleGenerateStatutoryPacks(user, body) {
   await audit(run.client_id, user, 'generate_statutory_packs', 'payroll_runs', run.id, 'Generated country statutory pack drafts', {
     run_id: run.id,
     country_count: payload.length,
+    countries: payload.map(function (item) { return item.country_code; }),
   });
   return { statusCode: 200, body: { packs: Array.isArray(result.data) ? result.data : [], country_count: payload.length } };
 }
@@ -1979,7 +2317,11 @@ async function handleRecordExport(user, body) {
     'review_warnings_csv',
     'bank_payment_csv',
     'mobile_money_csv',
+    'mobile_money_payment_csv',
+    'country_currency_payment_csv',
     'missing_payment_details_csv',
+    'payment_exception_csv',
+    'payment_review_checklist_csv',
     'accounting_journal_csv',
     'payment_handoff_note_md',
     'handoff_note_md',
@@ -1987,6 +2329,8 @@ async function handleRecordExport(user, body) {
     'payslip_pdf',
     'payslip_zip',
     'statutory_pack_csv',
+    'statutory_review_note_md',
+    'statutory_review_print_html',
     'statutory_pack_pdf',
     'branded_packet_zip',
     'other',
@@ -2067,7 +2411,19 @@ async function handleImportLog(user, body) {
   if (checked.statusCode !== 200) return checked;
   var run = checked.accessResult.run;
   var importType = sanitizeText(body && body.import_type || body && body.importType, 80);
-  if (!['roster_csv', 'roster_excel', 'payroll_run_csv', 'payroll_run_excel', 'statutory_rates', 'other'].includes(importType)) importType = 'other';
+  var allowedImportTypes = [
+    'roster_csv',
+    'roster_excel',
+    'payroll_run_csv',
+    'payroll_run_excel',
+    'payment_details_csv',
+    'payment_details_excel',
+    'statutory_ids_csv',
+    'statutory_ids_excel',
+    'statutory_rates',
+    'other'
+  ];
+  if (!allowedImportTypes.includes(importType)) importType = 'other';
   var result = await supabaseRequest('/rest/v1/payroll_import_batches', {
     method: 'POST',
     headers: { Prefer: 'return=representation' },
@@ -2084,6 +2440,10 @@ async function handleImportLog(user, body) {
       warning_count: clampInteger(body && body.warning_count || body && body.warningCount, 0, 0, MAX_ROWS),
       mapping: safeJson(body && body.mapping, {}),
       errors: Array.isArray(body && body.errors) ? body.errors.slice(0, 50) : [],
+      metadata: Object.assign({
+        raw_file_uploaded: false,
+        raw_file_storage: 'none',
+      }, safeJson(body && body.metadata, {})),
       uploaded_by: user.id,
       imported_at: new Date().toISOString(),
     },
@@ -2092,6 +2452,9 @@ async function handleImportLog(user, body) {
   await audit(run.client_id, user, 'record_import', 'payroll_runs', run.id, 'Recorded payroll import batch', {
     run_id: run.id,
     row_count: clampInteger(body && body.row_count || body && body.rowCount, 0, 0, MAX_ROWS),
+    error_count: clampInteger(body && body.error_count || body && body.errorCount, 0, 0, MAX_ROWS),
+    warning_count: clampInteger(body && body.warning_count || body && body.warningCount, 0, 0, MAX_ROWS),
+    raw_file_uploaded: false,
   });
   return { statusCode: 200, body: { import_batch: Array.isArray(result.data) ? result.data[0] : result.data } };
 }
@@ -2160,19 +2523,135 @@ function toWorkspaceEmployee(employee) {
     cloudEmployeeId: employee.id || '',
     employeeId: employee.employee_code || '',
     name: employee.full_name || '',
+    preferredName: employee.preferred_name || '',
     email: employee.email || '',
     phone: employee.phone || '',
     country: employee.country_code || '',
+    currency: employee.currency_code || '',
     taxId: statutory.tax_id || '',
     socialSecurityId: statutory.pension_social_security_id || '',
     bankName: bank.bank_name || '',
     bankAccountOrMobile: bank.account_or_mobile || '',
+    payslipEmail: paySetup.payslip_email || employee.email || '',
+    portalConfirmedAt: paySetup.employee_portal_confirmed_at || '',
+    portalInviteId: paySetup.employee_portal_invite_id || '',
+    portalRequestNote: paySetup.employee_portal_note || '',
     department: employee.department || '',
     role: employee.role_title || '',
     startDate: employee.hire_date || '',
     employmentType: employee.employment_type || 'employee',
+    paySchedule: employee.pay_schedule || '',
     status: employee.status === 'inactive' ? 'inactive' : 'active',
   };
+}
+
+async function handleSaveEmployee(user, body) {
+  var clientId = sanitizeText(body && (body.client_id || body.clientId), 80);
+  var companyId = sanitizeText(body && (body.company_id || body.companyId), 80);
+  if (!isUuid(clientId) || !isUuid(companyId)) {
+    return { statusCode: 400, body: { error: 'Valid client_id and company_id are required' } };
+  }
+  var access = await getAccessRecord(user, clientId);
+  if (!access || !EDIT_PAYROLL_ROLES.includes(access.role)) {
+    return { statusCode: 403, body: { error: 'Not allowed to edit these employee records' } };
+  }
+  var company = await loadCompanyForClient(companyId, clientId);
+  if (!company) return { statusCode: 404, body: { error: 'Payroll company not found' } };
+  var client = access.client || { id: clientId };
+  var normalized = normalizeEmployeeRecord(body && body.employee, company.country_code || 'NG');
+  if (!normalized.name && !normalized.employeeId && !normalized.email) {
+    return { statusCode: 400, body: { error: 'Employee name, code, or email is required' } };
+  }
+  var payload = employeePayloadFromRecord(client, company, normalized, {
+    defaultCountry: company.country_code || normalized.country,
+    defaultCurrency: company.currency_code || normalized.currency,
+    paySchedule: normalized.paySchedule || 'monthly',
+  }, user);
+  var cloudEmployeeId = sanitizeText((body.employee && (body.employee.cloudEmployeeId || body.employee.cloudId)) || '', 80);
+  var existing = null;
+  if (isUuid(cloudEmployeeId)) {
+    var lookup = await supabaseRequest('/rest/v1/payroll_employees?' + qs({
+      id: 'eq.' + cloudEmployeeId,
+      client_id: 'eq.' + clientId,
+      company_id: 'eq.' + companyId,
+      select: EMPLOYEE_SELECT,
+      limit: '1',
+    }));
+    if (!lookup.ok) throw new Error('Employee lookup failed: ' + lookup.text);
+    existing = Array.isArray(lookup.data) ? lookup.data[0] : null;
+  }
+
+  var result;
+  if (existing && existing.id) {
+    result = await supabaseRequest('/rest/v1/payroll_employees?' + qs({
+      id: 'eq.' + existing.id,
+      client_id: 'eq.' + clientId,
+      company_id: 'eq.' + companyId,
+    }), {
+      method: 'PATCH',
+      headers: { Prefer: 'return=representation' },
+      body: payload,
+    });
+  } else {
+    result = await supabaseRequest('/rest/v1/payroll_employees?on_conflict=' + encodeURIComponent('company_id,employee_code'), {
+      method: 'POST',
+      headers: { Prefer: 'return=representation,resolution=merge-duplicates' },
+      body: payload,
+    });
+  }
+  if (!result.ok) throw new Error('Employee record save failed: ' + result.text);
+  var saved = Array.isArray(result.data) ? result.data[0] : result.data;
+  var requestedEvent = sanitizeText(body && body.event_type, 80);
+  var allowedEvents = ['employee_create', 'employee_update', 'employee_import', 'employee_linked_to_run', 'employee_mark_inactive'];
+  var auditAction = allowedEvents.includes(requestedEvent) ? requestedEvent : existing && existing.id ? 'employee_update' : 'employee_create';
+  await audit(clientId, user, auditAction, 'payroll_employees', saved && saved.id, auditAction === 'employee_create' ? 'Created employee master record' : 'Updated employee master record', {
+    employee_code: saved && saved.employee_code,
+    company_id: companyId,
+    status: saved && saved.status,
+  });
+  return {
+    statusCode: 200,
+    body: {
+      ok: true,
+      employee: toWorkspaceEmployee(saved),
+    },
+  };
+}
+
+async function handleRecordEmployeeEvent(user, body) {
+  var clientId = sanitizeText(body && (body.client_id || body.clientId), 80);
+  var companyId = sanitizeText(body && (body.company_id || body.companyId), 80);
+  var employeeId = sanitizeText(body && (body.employee_id || body.employeeId || body.cloudEmployeeId), 80);
+  var eventType = sanitizeText(body && body.event_type, 80);
+  var allowedEvents = ['employee_import', 'employee_linked_to_run', 'employee_mark_inactive'];
+  if (!isUuid(clientId) || !isUuid(companyId) || !allowedEvents.includes(eventType)) {
+    return { statusCode: 400, body: { error: 'Valid employee audit event details are required' } };
+  }
+  var access = await getAccessRecord(user, clientId);
+  if (!access || !EDIT_PAYROLL_ROLES.includes(access.role)) {
+    return { statusCode: 403, body: { error: 'Not allowed to record employee events' } };
+  }
+  var company = await loadCompanyForClient(companyId, clientId);
+  if (!company) return { statusCode: 404, body: { error: 'Payroll company not found' } };
+  if (employeeId && isUuid(employeeId)) {
+    var lookup = await supabaseRequest('/rest/v1/payroll_employees?' + qs({
+      id: 'eq.' + employeeId,
+      client_id: 'eq.' + clientId,
+      company_id: 'eq.' + companyId,
+      select: 'id',
+      limit: '1',
+    }));
+    if (!lookup.ok) throw new Error('Employee event lookup failed: ' + lookup.text);
+    if (!Array.isArray(lookup.data) || !lookup.data[0]) {
+      return { statusCode: 404, body: { error: 'Employee record not found' } };
+    }
+  }
+  await audit(clientId, user, eventType, 'payroll_employees', employeeId || null, sanitizeText(body && body.summary, 240) || 'Recorded employee master action', {
+    company_id: companyId,
+    run_id: sanitizeText(body && (body.run_id || body.runId), 80) || null,
+    row_count: clampInteger(body && body.row_count, 0, 0, MAX_ROWS),
+  });
+  return { statusCode: 200, body: { ok: true } };
 }
 
 function toWorkspaceState(run, client, company, rows, employees, approvalSummary) {
@@ -2180,6 +2659,9 @@ function toWorkspaceState(run, client, company, rows, employees, approvalSummary
   var workspaceEmployees = (Array.isArray(employees) ? employees : []).map(toWorkspaceEmployee);
   var clientSettings = safeJson(client && client.settings, {});
   var companySettings = safeJson(company && company.payroll_settings, {});
+  var engineSnapshot = safeJson(run && run.engine_snapshot, {});
+  var recurring = safeJson(engineSnapshot.recurring, {});
+  var previousSnapshot = safeJson(recurring.previous_snapshot, null);
   var clientMeta = normalizeClientMeta({
     id: run.client_id,
     companyId: run.company_id,
@@ -2190,6 +2672,12 @@ function toWorkspaceState(run, client, company, rows, employees, approvalSummary
     payrollContact: clientSettings.payroll_contact || client && client.billing_email,
     reviewerEmail: clientSettings.reviewer_email,
     defaultPayDay: clientSettings.default_pay_day || companySettings.default_pay_day,
+    payFrequency: clientSettings.pay_frequency || companySettings.pay_frequency,
+    defaultDepartment: clientSettings.default_department || companySettings.default_department,
+    workingDaysPerMonth: clientSettings.working_days_per_month || companySettings.working_days_per_month,
+    employerContributionAssumption: clientSettings.employer_contribution_assumption || companySettings.employer_contribution_assumption,
+    setupSavedAt: clientSettings.setup_saved_at || companySettings.setup_saved_at,
+    setupSavedMode: clientSettings.setup_saved_mode || companySettings.setup_saved_mode,
     status: client && client.status,
   }, {});
   return {
@@ -2218,6 +2706,14 @@ function toWorkspaceState(run, client, company, rows, employees, approvalSummary
       lastApprovalAt: approvalSummary && approvalSummary.lastApprovalAt || '',
       lastApprovalNote: approvalSummary && approvalSummary.lastApprovalNote || '',
       approvalSummary: approvalSummary || buildApprovalSummary(run, [], []),
+      clonedFromRunId: recurring.cloned_from_run_id || '',
+      clonedFromSource: recurring.cloned_from_source || '',
+      clonedFromPeriod: recurring.cloned_from_period || '',
+      clonedFromStatus: recurring.cloned_from_status || '',
+      varianceReviewAcknowledged: recurring.variance_review_acknowledged === true,
+      varianceReviewedAt: recurring.variance_reviewed_at || '',
+      varianceReviewedBy: recurring.variance_reviewed_by || '',
+      previousRunSnapshot: previousSnapshot,
     },
     employees: workspaceEmployees,
     rows: rows.map(function (row) {
@@ -2314,6 +2810,187 @@ async function handleSaveClient(user, body) {
       ok: true,
       client: workspaceClientFromRecords(client, company, access && access.role || 'owner', []),
       company: company,
+    },
+  };
+}
+
+function varianceKeyForDbRow(row) {
+  return sanitizeText(row && row.line_payload && row.line_payload.local_employee_id || row && row.employee_id || row && row.employee_name && row.country_code ? row.employee_name + '|' + row.country_code : '', 220).toLowerCase();
+}
+
+function dbRowsToVarianceSnapshot(sourceRun, rows) {
+  return {
+    sourceRunId: sourceRun.id,
+    sourcePeriod: periodLabel(sourceRun),
+    sourceStatus: canonicalRunState(sourceRun.status),
+    rows: (Array.isArray(rows) ? rows : []).map(function (row) {
+      return {
+        key: varianceKeyForDbRow(row),
+        name: sanitizeText(row.employee_name, 180),
+        employeeRecordId: sanitizeText(row.line_payload && row.line_payload.local_employee_id, 120),
+        cloudEmployeeId: row.employee_id || '',
+        country: row.country_code || '',
+        currency: row.currency_code || '',
+        gross: money(row.gross_pay),
+        netPay: money(row.net_pay),
+        customDeductions: money(row.custom_deductions),
+        allowances: money(row.allowances),
+        overtime: money(row.overtime_pay),
+        unpaidAmount: money(row.unpaid_amount),
+        paymentReady: true,
+      };
+    }).filter(function (row) { return row.key; }),
+  };
+}
+
+async function handleCloneRun(user, body) {
+  var sourceRunId = sanitizeText(body && (body.source_run_id || body.sourceRunId || body.run_id || body.runId), 80);
+  var targetPeriod = normalizeMonth(body && (body.pay_period || body.payPeriod));
+  var targetPayDate = normalizeDate(body && (body.pay_date || body.payDate)) || periodEnd(targetPeriod);
+  var allowSamePeriod = body && (body.allow_same_period === true || body.allowSamePeriod === true);
+  if (!targetPeriod) return { statusCode: 400, body: { error: 'Valid target pay period is required' } };
+
+  var accessResult = await getRunWithAccess(user, sourceRunId, EDIT_PAYROLL_ROLES);
+  if (!accessResult) return { statusCode: 404, body: { error: 'Source run not found' } };
+  if (accessResult.denied) return { statusCode: 403, body: { error: 'Not allowed to clone this payroll run' } };
+  var sourceRun = accessResult.run;
+  var sourcePeriod = periodLabel(sourceRun);
+  var sourceState = canonicalRunState(sourceRun.status);
+  if (sourcePeriod === targetPeriod && sourceState === 'exported' && !allowSamePeriod) {
+    return { statusCode: 409, body: { error: 'Confirm before cloning an exported run into the same pay period' } };
+  }
+
+  var clientResult = await supabaseRequest('/rest/v1/payroll_clients?' + qs({
+    id: 'eq.' + sourceRun.client_id,
+    select: CLIENT_SELECT,
+    limit: '1',
+  }));
+  if (!clientResult.ok) throw new Error('Client load failed: ' + clientResult.text);
+  var companyResult = await supabaseRequest('/rest/v1/payroll_companies?' + qs({
+    id: 'eq.' + sourceRun.company_id,
+    select: COMPANY_SELECT,
+    limit: '1',
+  }));
+  if (!companyResult.ok) throw new Error('Company load failed: ' + companyResult.text);
+  var rows = await listRunRows(sourceRun.id);
+  if (!rows.length) return { statusCode: 400, body: { error: 'Source run has no payroll rows to clone' } };
+  var employeesResult = await supabaseRequest('/rest/v1/payroll_employees?' + qs({
+    company_id: 'eq.' + sourceRun.company_id,
+    select: EMPLOYEE_SELECT,
+    order: 'full_name.asc',
+    limit: String(MAX_EMPLOYEES),
+  }));
+  if (!employeesResult.ok) throw new Error('Employee records load failed: ' + employeesResult.text);
+
+  var client = Array.isArray(clientResult.data) ? clientResult.data[0] : null;
+  var company = Array.isArray(companyResult.data) ? companyResult.data[0] : null;
+  var employees = Array.isArray(employeesResult.data) ? employeesResult.data : [];
+  var companyName = company && company.legal_name || sourceRun.title || 'Payroll run';
+  var targetRunKey = [slugify(companyName), targetPeriod || 'period', slugify(user.id).slice(0, 12)].join('-');
+  var existingTarget = await supabaseRequest('/rest/v1/payroll_runs?' + qs({
+    company_id: 'eq.' + sourceRun.company_id,
+    run_key: 'eq.' + targetRunKey,
+    select: 'id,status,run_key',
+    limit: '1',
+  }));
+  if (!existingTarget.ok) throw new Error('Target run lookup failed: ' + existingTarget.text);
+  if (Array.isArray(existingTarget.data) && existingTarget.data[0]) {
+    return {
+      statusCode: 409,
+      body: { error: 'A saved payroll run already exists for this company and pay period', existing_run_id: existingTarget.data[0].id },
+    };
+  }
+
+  var sourceWorkspace = toWorkspaceState(sourceRun, client, company, rows, employees, await loadApprovalSummary(sourceRun));
+  var previousSnapshot = dbRowsToVarianceSnapshot(sourceRun, rows);
+  var clonedRows = sourceWorkspace.rows.map(function (row, index) {
+    return Object.assign({}, row, {
+      id: 'clone-row-' + Date.now() + '-' + index,
+      cloudRowId: '',
+      accountRowId: '',
+    });
+  });
+  var cloneRun = Object.assign({}, sourceWorkspace, {
+    id: '',
+    cloudRunId: '',
+    payPeriod: targetPeriod,
+    payDate: targetPayDate,
+    runStatus: 'draft',
+    lastCalculatedAt: '',
+    runKey: targetRunKey,
+    workflow: {
+      approvalStatus: 'not_requested',
+      approvalState: 'draft',
+      exportedCount: 0,
+      payslipCount: 0,
+      statutoryPackCount: 0,
+      clonedFromRunId: sourceRun.id,
+      clonedFromSource: 'account',
+      clonedFromPeriod: sourcePeriod,
+      clonedFromStatus: sourceState,
+      varianceReviewAcknowledged: false,
+      varianceReviewedAt: '',
+      varianceReviewedBy: '',
+      previousRunSnapshot: previousSnapshot,
+    },
+    rows: clonedRows,
+  });
+  var saved = await handleSave(user, { run: cloneRun });
+  if (saved.statusCode !== 200) return saved;
+  await audit(sourceRun.client_id, user, 'clone_run', 'payroll_runs', saved.body && saved.body.run && saved.body.run.id, 'Started payroll run from previous month', {
+    source_run_id: sourceRun.id,
+    source_period: sourcePeriod,
+    target_period: targetPeriod,
+    target_pay_date: targetPayDate,
+    row_count: clonedRows.length,
+  });
+  return {
+    statusCode: 200,
+    body: Object.assign({}, saved.body, {
+      cloned: true,
+      source_run_id: sourceRun.id,
+      source_period: sourcePeriod,
+    }),
+  };
+}
+
+async function handleAcknowledgeVariance(user, body) {
+  var runId = normalizeRunId(body);
+  var checked = await requireRunAccess(user, runId, EDIT_PAYROLL_ROLES, 'Not allowed to acknowledge payroll variance');
+  if (checked.statusCode !== 200) return checked;
+  var run = checked.accessResult.run;
+  var snapshot = safeJson(run.engine_snapshot, {});
+  var recurring = safeJson(snapshot.recurring, {});
+  if (!recurring.cloned_from_run_id) {
+    return { statusCode: 400, body: { error: 'This payroll run was not started from a previous run' } };
+  }
+  var now = new Date().toISOString();
+  recurring.variance_review_acknowledged = true;
+  recurring.variance_reviewed_at = now;
+  recurring.variance_reviewed_by = user.id;
+  recurring.variance_summary = safeJson(body && (body.variance_summary || body.varianceSummary), {});
+  snapshot.recurring = recurring;
+  var updateResult = await supabaseRequest('/rest/v1/payroll_runs?id=eq.' + encodeURIComponent(run.id), {
+    method: 'PATCH',
+    headers: { Prefer: 'return=representation' },
+    body: {
+      engine_snapshot: snapshot,
+      updated_by: user.id,
+    },
+  });
+  if (!updateResult.ok) throw new Error('Variance acknowledgement failed: ' + updateResult.text);
+  var updatedRun = Array.isArray(updateResult.data) ? updateResult.data[0] : updateResult.data;
+  await audit(run.client_id, user, 'acknowledge_variance', 'payroll_runs', run.id, 'Acknowledged previous-vs-current payroll variance review', {
+    run_id: run.id,
+    source_run_id: recurring.cloned_from_run_id,
+    variance_summary: recurring.variance_summary,
+  });
+  return {
+    statusCode: 200,
+    body: {
+      ok: true,
+      run: updatedRun,
+      variance_review_acknowledged: true,
     },
   };
 }
@@ -2492,6 +3169,10 @@ exports.handler = async function (event) {
         var confirmed = await handleEmployeeProfileConfirm(parsedBody);
         return jsonResponse(confirmed.statusCode, confirmed.body);
       }
+      if (sanitizeText(parsedBody.action, 80) === 'employee_portal_audit') {
+        var portalAudit = await handleEmployeePortalAudit(parsedBody);
+        return jsonResponse(portalAudit.statusCode, portalAudit.body);
+      }
     }
 
     auth = await requireUser(event);
@@ -2508,9 +3189,17 @@ exports.handler = async function (event) {
         var clients = await handleClients(auth.user, params);
         return jsonResponse(200, clients, auth.sessionResponse);
       }
+      if (params.action === 'list_employees') {
+        var employeeList = await handleListEmployees(auth.user, params);
+        return jsonResponse(employeeList.statusCode, employeeList.body, auth.sessionResponse);
+      }
       if (params.action === 'audit') {
         var auditTrail = await handleAudit(auth.user, params.run_id);
         return jsonResponse(auditTrail.statusCode, auditTrail.body, auth.sessionResponse);
+      }
+      if (params.action === 'close_room') {
+        var closeRoom = await handleCloseRoom(auth.user, params.run_id);
+        return jsonResponse(closeRoom.statusCode, closeRoom.body, auth.sessionResponse);
       }
       if (params.action === 'roles') {
         var roles = await handleRoles(auth.user, params.run_id);
@@ -2530,13 +3219,18 @@ exports.handler = async function (event) {
       var result;
       if (action === 'save_run') result = await handleSave(auth.user, body);
       else if (action === 'save_client') result = await handleSaveClient(auth.user, body);
+      else if (action === 'clone_run') result = await handleCloneRun(auth.user, body);
+      else if (action === 'acknowledge_variance') result = await handleAcknowledgeVariance(auth.user, body);
+      else if (action === 'save_employee') result = await handleSaveEmployee(auth.user, body);
+      else if (action === 'record_employee_event') result = await handleRecordEmployeeEvent(auth.user, body);
       else if (action === 'submit_run') result = await handleWorkflowTransition(auth.user, body, 'review', EDIT_PAYROLL_ROLES, 'Not allowed to submit this payroll run for approval');
       else if (action === 'request_approval') result = await handleApprovalRequest(auth.user, body);
-      else if (action === 'request_changes') result = await handleWorkflowTransition(auth.user, body, 'review', APPROVE_PAYROLL_ROLES, 'Not allowed to request changes for this payroll run');
+      else if (action === 'request_changes') result = await handleApprovalDecision(auth.user, body, 'rejected');
       else if (action === 'approve_run') result = await handleApprovalDecision(auth.user, body, 'approved');
       else if (action === 'reject_run') result = await handleApprovalDecision(auth.user, body, 'rejected');
       else if (action === 'finalize_run') result = await handleWorkflowTransition(auth.user, body, 'finalized', APPROVE_PAYROLL_ROLES, 'Not allowed to finalize this payroll run');
       else if (action === 'reopen_run') result = await handleWorkflowTransition(auth.user, body, 'reopened', APPROVE_PAYROLL_ROLES, 'Not allowed to reopen this payroll run');
+      else if (action === 'add_comment') result = await handleAddComment(auth.user, body);
       else if (action === 'generate_payslips') result = await handleGeneratePayslips(auth.user, body);
       else if (action === 'generate_statutory_packs') result = await handleGenerateStatutoryPacks(auth.user, body);
       else if (action === 'record_export') result = await handleRecordExport(auth.user, body);

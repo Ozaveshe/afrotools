@@ -29,6 +29,7 @@ const CSS_PAIRS = [
   ['assets/css/global.css',        'assets/css/global.min.css'],
   ['assets/css/calculator.css',    'assets/css/calculator.min.css'],
   ['assets/css/design-system.css', 'assets/css/design-system.min.css'],
+  ['assets/css/theme-dark.css',    'assets/css/theme-dark.min.css'],
   ['assets/css/dashboard.css',     'assets/css/dashboard.min.css'],
   ['assets/css/tool-landing.css',  'assets/css/tool-landing.min.css'],
   ['assets/css/animations.css',    'assets/css/animations.min.css'],

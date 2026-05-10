@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=abfab4a3">
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 :root{--calc-accent:#007AFF;--calc-accent-rgb:0,122,255;--calc-accent-dark:#0063D1;--calc-accent-light:#E8F2FF;--calc-accent-pale:#EBF4FF}
@@ -143,9 +143,9 @@
       <div class="card-head"><span class="card-title">&#128200; Matokeo ya Mavuno</span></div>
       <div class="card-body">
         <div class="stat-grid">
-          <div class="stat-card"><div class="stat-val" id="rYieldLow">--</div><div class="stat-label">t/ha (chini)</div></div>
-          <div class="stat-card"><div class="stat-val" id="rYieldBase">--</div><div class="stat-label">t/ha (wastani)</div></div>
-          <div class="stat-card"><div class="stat-val" id="rYieldHigh">--</div><div class="stat-label">t/ha (juu)</div></div>
+          <div class="stat-card"><div class="stat-val" id="rMavunoLow">--</div><div class="stat-label">t/ha (chini)</div></div>
+          <div class="stat-card"><div class="stat-val" id="rMavunoBase">--</div><div class="stat-label">t/ha (wastani)</div></div>
+          <div class="stat-card"><div class="stat-val" id="rMavunoHigh">--</div><div class="stat-label">t/ha (juu)</div></div>
           <div class="stat-card"><div class="stat-val" id="rTotalLow">--</div><div class="stat-label">Jumla (chini)</div></div>
           <div class="stat-card"><div class="stat-val" id="rTotalBase">--</div><div class="stat-label">Jumla (wastani)</div></div>
           <div class="stat-card"><div class="stat-val" id="rTotalHigh">--</div><div class="stat-label">Jumla (juu)</div></div>
@@ -174,9 +174,9 @@
   <div class="related-tools">
     <a href="/sw/kilimo/mbolea/uganda/" class="related-tool-link">&#129514; Kikokotoo cha Mbolea</a>
     <a href="/sw/kilimo/umwagiliaji/uganda/" class="related-tool-link">&#128166; Kikokotoo cha Umwagiliaji</a>
-    <a href="/agriculture/seed-rate/uganda" class="related-tool-link">&#127807; Kikokotoo cha Mbegu</a>
-    <a href="/agriculture/farm-profit/uganda" class="related-tool-link">&#128176; Faida ya Shamba</a>
-    <a href="/agriculture/crop-yield/uganda/" class="related-tool-link">&#127468;&#127463; Toleo la Kiingereza</a>
+    <a href="/sw/zana/kikokotoo-idadi-ya-mbegu/" class="related-tool-link">Kikokotoo cha mbegu</a>
+    <a href="/sw/zana/faida-na-hasara-ya-shamba/" class="related-tool-link">Faida na hasara ya shamba</a>
+    <a href="/sw/uganda/" class="related-tool-link">Kitovu cha Uganda</a>
   </div>
 </section>
 <afro-footer></afro-footer>
@@ -186,7 +186,7 @@
 <script>
 (function(){
   'use strict';
-  var CD=window.AfroTools.countryData,CDB=window.AfroTools.cropDatabase,ENG=window.AfroTools.CropYieldEngine;
+  var CD=window.AfroTools.countryData,CDB=window.AfroTools.cropDatabase,ENG=window.AfroTools.CropMavunoEngine;
   function $(id){return document.getElementById(id)}
   function fmtN(n){return typeof n==='number'?n.toLocaleString('sw',{maximumFractionDigits:1}):'0'}
   function fmtC(n){return CD.currencySymbol+fmtN(n)}
@@ -198,8 +198,8 @@
     var r=ENG.calculate({cropId:$('selCrop').value,regionId:$('selRegion').value,farmSizeHa:parseFloat($('inpFarm').value)||1,soilType:$('selSoil').value,irrigationLevel:$('selIrrigation').value,fertilizerLevel:$('selFertilizer').value,seedType:$('selSeed').value,season:$('selSeason').value},CD,CDB);
     if(r.error){alert(r.message);return}
     var p=$('resultsPanel');p.classList.add('on');p.scrollIntoView({behavior:'smooth',block:'start'});
-    $('rYieldLow').textContent=fmtN(r.yieldEstimate.low);$('rYieldBase').textContent=fmtN(r.yieldEstimate.base);$('rYieldHigh').textContent=fmtN(r.yieldEstimate.high);
-    $('rTotalLow').textContent=fmtN(r.yieldEstimate.low*r.farmSizeHa);$('rTotalBase').textContent=fmtN(r.yieldEstimate.base*r.farmSizeHa);$('rTotalHigh').textContent=fmtN(r.yieldEstimate.high*r.farmSizeHa);
+    $('rMavunoLow').textContent=fmtN(r.mavunoEstimate.low);$('rMavunoBase').textContent=fmtN(r.mavunoEstimate.base);$('rMavunoHigh').textContent=fmtN(r.mavunoEstimate.high);
+    $('rTotalLow').textContent=fmtN(r.mavunoEstimate.low*r.farmSizeHa);$('rTotalBase').textContent=fmtN(r.mavunoEstimate.base*r.farmSizeHa);$('rTotalHigh').textContent=fmtN(r.mavunoEstimate.high*r.farmSizeHa);
     $('rRevLow').textContent=fmtC(r.revenueEstimate.low);$('rRevHigh').textContent=fmtC(r.revenueEstimate.high);$('rCurrency').textContent=r.revenueEstimate.currency;
     var lbl={region:'Kanda',soil:'Udongo',irrigation:'Umwagiliaji',fertilizer:'Mbolea',seed:'Mbegu',season:'Msimu'};var m=r.multipliers;
     $('multGrid').innerHTML=Object.keys(m).map(function(k){var v=m[k],clr=v>=1?'var(--calc-accent)':'#ef4444';return'<div class="mult-item"><div class="mult-val" style="color:'+clr+'">&times;'+v+'</div><div class="mult-label">'+(lbl[k]||k)+'</div></div>'}).join('');

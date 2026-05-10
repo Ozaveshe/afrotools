@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Plan na Abincin Afirka a Hausa | AfroTools</title>
+  <meta name="description" content="Gina meal plan na kwanaki 7 da abincin Afirka, calories, BMR, TDEE da shopping list. Informational only, ba medical nutrition advice ba.">
+  <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/abincin-afirka/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/african-meal-plan/">
+  <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/abincin-afirka/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/african-meal-plan/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/ha/kayan-aiki/abincin-afirka/">
+  <meta property="og:title" content="Meal Plan na Abincin Afirka a Hausa | AfroTools">
+  <meta property="og:description" content="Hausa meal planner da source BMR/TDEE formula da African foods data.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/african-meal-plan.webp">
+  <meta property="og:locale" content="ha_NG">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Meal Plan na Abincin Afirka a Hausa | AfroTools">
+  <meta name="twitter:description" content="Gina meal plan na kwanaki 7. Ba diagnosis ko treatment plan ba.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/african-meal-plan.webp">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Meal Plan na Abincin Afirka","url":"https://afrotools.com/ha/kayan-aiki/abincin-afirka/","inLanguage":"ha","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/ha/assets/health-ha.css">
+  <script src="/assets/js/components/tool-registry.min.js?v=fe62d0e9" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=81565a85" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+</head>
+<body>
+<afro-navbar theme="dark" active="health"></afro-navbar>
+<div class="ha-health">
+  <section class="ha-health-hero">
+    <div class="ha-health-wrap">
+      <nav class="ha-health-breadcrumb" aria-label="Breadcrumb"><a href="/ha/">Gida</a><span>/</span><a href="/ha/lafiya/">Lafiya</a><span>/</span><span>Abincin Afirka</span></nav>
+      <span class="ha-health-eyebrow">Nutrition planning - informational only</span>
+      <h1>Gina meal plan na kwanaki 7 da abincin Afirka.</h1>
+      <p>Shigar da age, weight, height, activity da goal domin lissafa BMR/TDEE da meal plan. Idan kana da diabetes, pregnancy, kidney disease, ulcer, allergy ko wani condition, tattauna da doctor ko dietitian.</p>
+    </div>
+  </section>
+  <main class="ha-health-main">
+    <section class="ha-tool-grid two">
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">Calculator</span>
+        <h2>Bayanan jiki da goal</h2>
+        <div class="ha-tabs"><button class="ha-tab active" type="button" onclick="setGender('male',this)">Male</button><button class="ha-tab" type="button" onclick="setGender('female',this)">Female</button></div>
+        <div class="ha-form-grid">
+          <div class="ha-field"><label for="mp-age">Age</label><input id="mp-age" type="number" value="30"></div>
+          <div class="ha-field"><label for="mp-weight">Weight (kg)</label><input id="mp-weight" type="number" value="70"></div>
+          <div class="ha-field"><label for="mp-height">Height (cm)</label><input id="mp-height" type="number" value="170"></div>
+          <div class="ha-field"><label for="mp-activity">Activity</label><select id="mp-activity"><option value="1.2">Low activity</option><option value="1.375">Light activity</option><option value="1.55" selected>Moderate activity</option><option value="1.725">High activity</option></select></div>
+          <div class="ha-field"><label for="mp-goal">Goal</label><select id="mp-goal"><option value="balanced">Balanced</option><option value="loss">Weight loss</option><option value="gain">Muscle gain</option><option value="diabetes">Diabetes-aware planning</option></select></div>
+          <div class="ha-field"><label for="mp-country">Food lane</label><select id="mp-country"><option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="GH">Ghana</option><option value="ZA">South Africa</option><option value="ET">Ethiopia</option><option value="EG">Egypt</option></select></div>
+          <div class="ha-field full"><button class="ha-calc-btn" type="button" onclick="generateMealPlan()">Gina meal plan</button></div>
+        </div>
+      </div>
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">Safety</span>
+        <h2>Ba medical diet ba ne</h2>
+        <p>Meal plan na taimakawa wajen tunani da shopping list. Ba ya maye gurbin dietitian ko medical nutrition therapy.</p>
+        <div class="ha-safety-box" style="margin-top:14px">Informational only. Idan kana da condition, pregnancy, breastfeeding, diabetes, high blood pressure, kidney disease ko food allergy, nemi qualified health professional kafin bin plan.</div>
+      </div>
+    </section>
+    <section class="ha-tool-card ha-results" id="mp-results">
+      <span class="ha-tool-kicker">Sakamako</span>
+      <h2>Daily targets</h2>
+      <div class="ha-metric-grid">
+        <div class="ha-metric"><div class="ha-metric-value" id="res-tdee">-</div><div class="ha-metric-label">Target calories</div></div>
+        <div class="ha-metric"><div class="ha-metric-value" id="res-bmr">-</div><div class="ha-metric-label">BMR</div></div>
+        <div class="ha-metric"><div class="ha-metric-value" id="res-bmi">-</div><div class="ha-metric-label">BMI reference</div></div>
+      </div>
+      <div class="ha-metric-grid" style="margin-top:12px">
+        <div class="ha-metric"><div class="ha-metric-value" id="res-carb-g">-</div><div class="ha-metric-label">Carbs</div></div>
+        <div class="ha-metric"><div class="ha-metric-value" id="res-prot-g">-</div><div class="ha-metric-label">Protein</div></div>
+        <div class="ha-metric"><div class="ha-metric-value" id="res-fat-g">-</div><div class="ha-metric-label">Fat</div></div>
+      </div>
+      <div class="ha-note-box" id="res-goal-note" style="margin-top:14px"></div>
+      <h3>7-day plan</h3>
+      <div class="ha-tabs" id="day-tabs"></div>
+      <div id="day-meals"></div>
+      <h3>Shopping list</h3>
+      <div id="shop-list"></div>
+      <button class="ha-secondary-btn" type="button" onclick="printShoppingList()" style="margin-top:14px">Print shopping list</button>
+      <div class="ha-safety-box" style="margin-top:14px">Calories da macros estimates ne. Food portions, recipe oil, sugar, salt da cooking method na iya sauya sakamako.</div>
+    </section>
+  </main>
+</div>
+<afro-footer></afro-footer>
+<script>
+var selectedGender='male';var currentDay=0;var currentPlan=[];
+function setGender(val,btn){selectedGender=val;btn.parentNode.querySelectorAll('.ha-tab').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');}
+var AFRICAN_FOODS = {
+  NG: [
+    {name:'Jollof Rice', cat:'Grains', cal:206, prot:4, carb:44, fat:2, portion:'200g serving'},
+    {name:'Egusi Soup', cat:'Soups', cal:160, prot:8, carb:6, fat:12, portion:'150g bowl'},
+    {name:'Suya (Skewered Beef)', cat:'Protein', cal:220, prot:26, carb:2, fat:12, portion:'100g skewer'},
+    {name:'Moin Moin (Bean Pudding)', cat:'Protein', cal:130, prot:9, carb:14, fat:4, portion:'150g wrap'},
+    {name:'Ogi / Akamu (Pap)', cat:'Grains', cal:65, prot:2, carb:14, fat:0.5, portion:'250ml bowl'},
+    {name:'Boiled Yam', cat:'Grains', cal:118, prot:1.5, carb:28, fat:0.1, portion:'200g slice'},
+    {name:'Fried Plantain (Dodo)', cat:'Grains', cal:237, prot:1, carb:38, fat:10, portion:'150g plate'},
+    {name:'Ofada Rice & Ayamase', cat:'Grains', cal:230, prot:5, carb:43, fat:5, portion:'200g'},
+    {name:'Efo Riro (Spinach Stew)', cat:'Vegetables', cal:90, prot:5, carb:8, fat:5, portion:'150g bowl'},
+    {name:'Banga Soup (Palm Nut)', cat:'Soups', cal:180, prot:10, carb:8, fat:14, portion:'150g bowl'},
+    {name:'Akara (Bean Cakes)', cat:'Protein', cal:170, prot:8, carb:18, fat:7, portion:'3 pieces'},
+    {name:'Ogbono Soup', cat:'Soups', cal:155, prot:9, carb:5, fat:12, portion:'150g bowl'},
+    {name:'Eba (Garri Swallow)', cat:'Grains', cal:195, prot:2, carb:46, fat:0.3, portion:'200g ball'},
+    {name:'Catfish Pepper Soup', cat:'Protein', cal:120, prot:22, carb:3, fat:4, portion:'200g bowl'},
+    {name:'African Salad (Abacha)', cat:'Vegetables', cal:140, prot:4, carb:25, fat:5, portion:'150g plate'},
+    {name:'Zobo Drink (Hibiscus)', cat:'Drinks', cal:30, prot:0.2, carb:7, fat:0, portion:'300ml cup'}
+  ],
+  KE: [
+    {name:'Ugali (Maize Porridge)', cat:'Grains', cal:160, prot:2, carb:36, fat:0.5, portion:'200g'},
+    {name:'Nyama Choma (Roast Meat)', cat:'Protein', cal:250, prot:28, carb:0, fat:15, portion:'150g'},
+    {name:'Sukuma Wiki (Kale)', cat:'Vegetables', cal:30, prot:2, carb:5, fat:0.5, portion:'100g'},
+    {name:'Githeri (Maize & Beans)', cat:'Grains', cal:140, prot:8, carb:26, fat:1, portion:'200g'},
+    {name:'Pilau (Spiced Rice)', cat:'Grains', cal:190, prot:12, carb:28, fat:4, portion:'200g'},
+    {name:'Mukimo (Mashed Greens)', cat:'Vegetables', cal:110, prot:3, carb:22, fat:1.5, portion:'200g'},
+    {name:'Irio (Peas & Potato Mash)', cat:'Vegetables', cal:130, prot:4, carb:26, fat:1, portion:'200g'},
+    {name:'Mandazi (Fried Bread)', cat:'Grains', cal:280, prot:5, carb:42, fat:10, portion:'2 pieces'},
+    {name:'Matumbo (Tripe Stew)', cat:'Protein', cal:180, prot:20, carb:5, fat:9, portion:'150g'},
+    {name:'Tilapia Fish (Grilled)', cat:'Protein', cal:128, prot:26, carb:0, fat:3, portion:'150g'},
+    {name:'Maharagwe (Kidney Beans)', cat:'Protein', cal:127, prot:9, carb:22, fat:0.5, portion:'150g'},
+    {name:'Chapati', cat:'Grains', cal:220, prot:5, carb:36, fat:7, portion:'1 piece'},
+    {name:'Wali wa Nazi (Coconut Rice)', cat:'Grains', cal:230, prot:3, carb:44, fat:5, portion:'200g'},
+    {name:'Kunde (Black-eyed Peas)', cat:'Protein', cal:115, prot:8, carb:20, fat:0.5, portion:'150g'},
+    {name:'Mutura (Blood Sausage)', cat:'Protein', cal:210, prot:16, carb:4, fat:15, portion:'100g'}
+  ],
+  GH: [
+    {name:'Jollof Rice (Ghana style)', cat:'Grains', cal:210, prot:4, carb:45, fat:2.5, portion:'200g'},
+    {name:'Banku with Tilapia', cat:'Grains', cal:180, prot:15, carb:32, fat:3, portion:'200g'},
+    {name:'Fufu with Light Soup', cat:'Grains', cal:220, prot:5, carb:48, fat:2, portion:'200g ball'},
+    {name:'Kenkey (Fermented Corn)', cat:'Grains', cal:175, prot:3, carb:38, fat:1.5, portion:'200g'},
+    {name:'Groundnut Soup', cat:'Soups', cal:200, prot:10, carb:8, fat:16, portion:'150g bowl'},
+    {name:'Kontomire Stew (Cocoyam Leaves)', cat:'Vegetables', cal:80, prot:4, carb:8, fat:4, portion:'150g'},
+    {name:'Waakye (Rice & Beans)', cat:'Grains', cal:175, prot:7, carb:33, fat:2, portion:'200g'},
+    {name:'Kelewele (Spiced Plantain)', cat:'Grains', cal:200, prot:1.5, carb:35, fat:8, portion:'150g'},
+    {name:'Red Red (Bean Stew)', cat:'Protein', cal:160, prot:8, carb:22, fat:5, portion:'200g'},
+    {name:'Grilled Tilapia', cat:'Protein', cal:128, prot:26, carb:0, fat:3, portion:'150g'},
+    {name:'Omo Tuo (Rice Balls)', cat:'Grains', cal:190, prot:3, carb:42, fat:0.8, portion:'200g'},
+    {name:'Palava Sauce (Cocoyam Leaves)', cat:'Vegetables', cal:90, prot:5, carb:7, fat:5, portion:'150g'},
+    {name:'Tom Brown (Roasted Corn Porridge)', cat:'Grains', cal:140, prot:4, carb:28, fat:2, portion:'250ml bowl'},
+    {name:'Abenkwan (Palm Nut Soup)', cat:'Soups', cal:185, prot:11, carb:7, fat:15, portion:'150g'},
+    {name:'Kaklo (Fried Plantain Balls)', cat:'Grains', cal:220, prot:1.5, carb:36, fat:9, portion:'3 pieces'}
+  ],
+  ZA: [
+    {name:'Pap (Maize Meal Porridge)', cat:'Grains', cal:160, prot:2.5, carb:35, fat:0.8, portion:'200g'},
+    {name:'Chakalaka (Spiced Vegetable Relish)', cat:'Vegetables', cal:60, prot:2, carb:10, fat:2, portion:'100g'},
+    {name:'Braai (BBQ Mixed Meat)', cat:'Protein', cal:260, prot:27, carb:0, fat:17, portion:'150g'},
+    {name:'Boerewors (Beef Sausage)', cat:'Protein', cal:300, prot:18, carb:2, fat:24, portion:'100g'},
+    {name:'Umngqusho (Samp & Beans)', cat:'Grains', cal:180, prot:8, carb:32, fat:2, portion:'200g'},
+    {name:'Morogo (Wild Spinach)', cat:'Vegetables', cal:25, prot:2.5, carb:3, fat:0.3, portion:'100g'},
+    {name:'Amadumbe (Taro Root)', cat:'Grains', cal:112, prot:1.5, carb:26, fat:0.2, portion:'150g'},
+    {name:'Bobotie (Spiced Mince)', cat:'Protein', cal:230, prot:20, carb:12, fat:12, portion:'150g'},
+    {name:'Vetkoek (Fried Bread)', cat:'Grains', cal:290, prot:6, carb:44, fat:10, portion:'1 piece'},
+    {name:'Umleqwa (Free-range Chicken)', cat:'Protein', cal:165, prot:25, carb:0, fat:7, portion:'150g'},
+    {name:'Isophi (Vegetable Soup)', cat:'Soups', cal:70, prot:3, carb:12, fat:1, portion:'250ml'},
+    {name:'Inkobe (Boiled Corn & Beans)', cat:'Grains', cal:155, prot:7, carb:28, fat:1.5, portion:'200g'},
+    {name:'Potjie (Slow-cooked Stew)', cat:'Protein', cal:200, prot:18, carb:15, fat:8, portion:'200g'},
+    {name:'Melktert (Milk Tart)', cat:'Treats', cal:260, prot:5, carb:36, fat:11, portion:'1 slice'},
+    {name:'Masonja (Mopane Worms)', cat:'Protein', cal:165, prot:22, carb:5, fat:7, portion:'50g dry'}
+  ],
+  ET: [
+    {name:'Injera (Sourdough Flatbread)', cat:'Grains', cal:90, prot:3, carb:18, fat:0.8, portion:'1 large piece'},
+    {name:'Doro Wat (Chicken Stew)', cat:'Protein', cal:210, prot:22, carb:8, fat:11, portion:'150g'},
+    {name:'Misir Wat (Red Lentil Stew)', cat:'Protein', cal:130, prot:9, carb:20, fat:3, portion:'150g'},
+    {name:'Tibs (Sautéed Meat)', cat:'Protein', cal:220, prot:25, carb:3, fat:12, portion:'150g'},
+    {name:'Shiro (Chickpea Powder Stew)', cat:'Protein', cal:140, prot:8, carb:18, fat:4, portion:'150g'},
+    {name:'Gomen (Collard Greens)', cat:'Vegetables', cal:35, prot:2.5, carb:5, fat:1, portion:'100g'},
+    {name:'Kitfo (Minced Raw Beef)', cat:'Protein', cal:200, prot:24, carb:0, fat:12, portion:'100g'},
+    {name:'Atakilt Wat (Potato & Carrot)', cat:'Vegetables', cal:90, prot:2, carb:18, fat:2, portion:'150g'},
+    {name:'Firfir (Torn Injera in Sauce)', cat:'Grains', cal:120, prot:4, carb:22, fat:3, portion:'200g'},
+    {name:'Azifa (Green Lentil Salad)', cat:'Protein', cal:110, prot:8, carb:17, fat:1.5, portion:'150g'},
+    {name:'Genfo (Barley Porridge)', cat:'Grains', cal:155, prot:5, carb:32, fat:1.5, portion:'200g'},
+    {name:'Tej (Honey Wine)', cat:'Drinks', cal:100, prot:0.2, carb:18, fat:0, portion:'150ml'},
+    {name:'Quanta Firfir (Dried Beef)', cat:'Protein', cal:180, prot:22, carb:5, fat:8, portion:'100g'},
+    {name:'Kategna (Toasted Injera with Butter)', cat:'Grains', cal:140, prot:3, carb:24, fat:5, portion:'2 pieces'},
+    {name:'Fossolia (Green Bean Stew)', cat:'Vegetables', cal:65, prot:2, carb:11, fat:2, portion:'150g'}
+  ],
+  EG: [
+    {name:'Koshari (Rice, Lentil & Pasta)', cat:'Grains', cal:210, prot:8, carb:42, fat:2, portion:'250g'},
+    {name:'Ful Medames (Fava Beans)', cat:'Protein', cal:150, prot:10, carb:25, fat:2, portion:'200g'},
+    {name:'Ta\'meya (Egyptian Falafel)', cat:'Protein', cal:200, prot:8, carb:22, fat:10, portion:'4 pieces'},
+    {name:'Molokhia (Jute Leaf Soup)', cat:'Vegetables', cal:45, prot:3, carb:7, fat:0.8, portion:'200ml'},
+    {name:'Kofta (Grilled Mince)', cat:'Protein', cal:230, prot:22, carb:5, fat:14, portion:'150g'},
+    {name:'Om Ali (Bread Pudding)', cat:'Treats', cal:350, prot:8, carb:48, fat:14, portion:'150g'},
+    {name:'Shakshuka (Eggs in Tomato)', cat:'Protein', cal:160, prot:12, carb:10, fat:9, portion:'200g'},
+    {name:'Feteer Meshaltet (Layered Bread)', cat:'Grains', cal:320, prot:7, carb:44, fat:13, portion:'2 pieces'},
+    {name:'Grilled Hamour (Fish)', cat:'Protein', cal:110, prot:23, carb:0, fat:2, portion:'150g'},
+    {name:'Bamia (Okra Stew)', cat:'Vegetables', cal:80, prot:4, carb:12, fat:2, portion:'150g'},
+    {name:'Macarona Bechamel (Pasta Bake)', cat:'Grains', cal:280, prot:14, carb:36, fat:9, portion:'200g'},
+    {name:'Hawawshi (Spiced Meat Bread)', cat:'Protein', cal:290, prot:18, carb:30, fat:11, portion:'1 piece'},
+    {name:'Rice with Butter & Vermicelli', cat:'Grains', cal:195, prot:3, carb:40, fat:4, portion:'200g'},
+    {name:'Salata Baladi (Tomato Salad)', cat:'Vegetables', cal:35, prot:1, carb:7, fat:0.5, portion:'150g'},
+    {name:'Baba Ghanoush', cat:'Vegetables', cal:90, prot:2, carb:12, fat:4, portion:'100g'}
+  ]
+};
+var GOAL_MACROS={balanced:{carb:.5,prot:.25,fat:.25,calAdj:0,note:'Balanced plan: 50/25/25 carb/protein/fat split da abincin gida.'},loss:{carb:.4,prot:.35,fat:.25,calAdj:-500,note:'Weight loss estimate: daily calories reduced by 500kcal. Tabbatar da professional idan kana da condition.'},gain:{carb:.45,prot:.35,fat:.2,calAdj:300,note:'Muscle gain estimate: 300kcal above maintenance da higher protein.'},diabetes:{carb:.35,prot:.35,fat:.3,calAdj:-200,note:'Diabetes-aware estimate: lower carbohydrate split. Wannan ba diabetes treatment plan ba ne; tuntuɓi clinician/dietitian.'}};
+var DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];var MEALS=['Breakfast','Mid-morning snack','Lunch','Afternoon snack','Dinner'];
+function generateMealPlan(){var age=parseInt(document.getElementById('mp-age').value)||30;var weight=parseFloat(document.getElementById('mp-weight').value)||70;var height=parseFloat(document.getElementById('mp-height').value)||170;var activity=parseFloat(document.getElementById('mp-activity').value)||1.55;var goal=document.getElementById('mp-goal').value;var country=document.getElementById('mp-country').value;var bmr;if(selectedGender==='male'){bmr=10*weight+6.25*height-5*age+5;}else{bmr=10*weight+6.25*height-5*age-161;}var tdee=Math.round(bmr*activity);var bmi=(weight/((height/100)*(height/100))).toFixed(1);var gm=GOAL_MACROS[goal];var targetCal=Math.max(1200,tdee+gm.calAdj);var carbG=Math.round((targetCal*gm.carb)/4);var protG=Math.round((targetCal*gm.prot)/4);var fatG=Math.round((targetCal*gm.fat)/9);document.getElementById('res-tdee').textContent=targetCal+' kcal';document.getElementById('res-bmr').textContent=Math.round(bmr)+' kcal';document.getElementById('res-bmi').textContent=bmi;document.getElementById('res-carb-g').textContent=carbG+'g';document.getElementById('res-prot-g').textContent=protG+'g';document.getElementById('res-fat-g').textContent=fatG+'g';document.getElementById('res-goal-note').innerHTML='<strong>Plan note:</strong> '+gm.note;var foods=AFRICAN_FOODS[country];currentPlan=[];for(var d=0;d<7;d++){var dayMeals=[];var usedIdxs=[];var mealCals=[Math.round(targetCal*.25),Math.round(targetCal*.1),Math.round(targetCal*.35),Math.round(targetCal*.1),Math.round(targetCal*.2)];for(var m=0;m<5;m++){var best=null,bestDiff=99999;for(var f=0;f<foods.length;f++){if(usedIdxs.indexOf(f)!==-1)continue;var diff=Math.abs(foods[f].cal-mealCals[m]/2);if(diff<bestDiff){bestDiff=diff;best=f;}}if(best===null)best=d%foods.length;usedIdxs.push(best);dayMeals.push({meal:MEALS[m],food:foods[best]});}currentPlan.push(dayMeals);}var tabsEl=document.getElementById('day-tabs');tabsEl.innerHTML='';for(var i=0;i<7;i++){(function(idx){var btn=document.createElement('button');btn.className='ha-tab'+(idx===0?' active':'');btn.textContent=DAYS[idx].substring(0,3);btn.onclick=function(){currentDay=idx;document.querySelectorAll('#day-tabs .ha-tab').forEach(function(b,j){b.classList.toggle('active',j===idx);});renderDayMeals(idx);};tabsEl.appendChild(btn);})(i);}currentDay=0;renderDayMeals(0);buildShoppingList(country);document.getElementById('mp-results').classList.add('on');document.getElementById('mp-results').scrollIntoView({behavior:'smooth',block:'start'});}
+function renderDayMeals(dayIdx){var el=document.getElementById('day-meals');var meals=currentPlan[dayIdx];var html='';for(var i=0;i<meals.length;i++){var m=meals[i];var f=m.food;html+='<div class="ha-meal-card"><div class="ha-tool-kicker">'+m.meal+'</div><div class="ha-meal-name">'+f.name+'</div><div class="ha-meal-meta">'+f.portion+' - '+f.cal+' kcal - '+f.prot+'g protein - '+f.carb+'g carbs - '+f.fat+'g fat</div></div>';}el.innerHTML=html;}
+function buildShoppingList(){var allFoods={};for(var d=0;d<currentPlan.length;d++){for(var m=0;m<currentPlan[d].length;m++){var f=currentPlan[d][m].food;if(!allFoods[f.name])allFoods[f.name]={count:0,cat:f.cat};allFoods[f.name].count++;}}var cats={};for(var name in allFoods){var cat=allFoods[name].cat;if(!cats[cat])cats[cat]=[];cats[cat].push(name);}var html='';for(var cat in cats){html+='<div class="ha-shop-category"><strong>'+cat+'</strong><div class="ha-shop-items">'+cats[cat].join(', ')+'</div></div>';}document.getElementById('shop-list').innerHTML=html;}
+function printShoppingList(){var content=document.getElementById('shop-list').innerText;var win=window.open('','_blank');win.document.write('<html><head><title>AfroTools Shopping List</title><style>body{font-family:sans-serif;padding:20px}h1{font-size:18px}pre{white-space:pre-wrap}</style></head><body><h1>AfroTools Weekly Shopping List</h1><pre>'+content+'</pre></body></html>');win.print();}
+</script>
+</body>
+</html>

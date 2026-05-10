@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
   <script src="/assets/js/afro-auth.js?v=3978e101"></script>
   <script src="/assets/js/pro-gate.js?v=3c7ae705"></script>
+  <script src="/assets/js/lib/afrohr-sync.js"></script>
   <style>
     :root{
       --hr-bg:var(--color-bg,#F8FAFD);
@@ -47,8 +48,8 @@
     button,a,input,select{font:inherit}
     button{cursor:pointer}
     a{color:inherit}
-    .hr-shell h1,.hr-shell h2,.hr-shell h3,.hr-shell h4{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
-    .hr-shell{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr);background:var(--hr-bg)}
+    .hr-workspace h1,.hr-workspace h2,.hr-workspace h3,.hr-workspace h4{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
+    .hr-workspace{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr);background:var(--hr-bg)}
     .hr-side{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--hr-line);padding:16px 12px;display:flex;flex-direction:column;gap:16px;z-index:10}
     .hr-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 12px;border-bottom:1px solid var(--hr-line)}
     .hr-brand-mark{width:34px;height:34px;border-radius:var(--hr-radius);display:flex;align-items:center;justify-content:center;background:var(--hr-blue);color:#fff;font-size:12px;font-weight:900}
@@ -88,7 +89,7 @@
     .hr-pill.open,.hr-pill.progress{background:var(--hr-blue-soft);border-color:#BFDBFE;color:#1E40AF}
     .hr-pill.review,.hr-pill.leave{background:var(--hr-amber-soft);border-color:#FDE68A;color:#92400E}
     .hr-pill.missing,.hr-pill.blocked{background:var(--hr-red-soft);border-color:#FECACA;color:#991B1B}
-    .hr-pill.shell{background:var(--hr-purple-soft);border-color:#DDD6FE;color:#5B21B6}
+    .hr-pill.workspace{background:var(--hr-purple-soft);border-color:#DDD6FE;color:#5B21B6}
     .hr-snapshot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
     .hr-snap{border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:var(--hr-soft);padding:10px;min-height:80px}
     .hr-snap strong{display:block;font-size:20px;line-height:1;font-weight:900}
@@ -102,15 +103,24 @@
     .hr-metric span{display:block;font-size:11px;color:var(--hr-muted);font-weight:900;margin-top:7px}
     .hr-metric small{display:block;font-size:11px;color:var(--hr-subtle);line-height:1.35;margin-top:4px}
     .hr-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
-    .hr-panel{overflow:hidden;margin-bottom:12px}
+    .hr-panel{overflow:hidden;margin-bottom:12px;min-width:0}
     .hr-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--hr-line);background:#fff}
     .hr-panel-body{padding:12px 13px}
     .hr-h2{font-size:17px;font-weight:900;line-height:1.2;margin:0}
     .hr-note{font-size:12px;line-height:1.45;color:var(--hr-muted);margin:3px 0 0;max-width:780px}
-    .hr-workflows{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .hr-workflows{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
     .hr-workflow{padding:12px;display:grid;gap:8px;min-height:168px}
     .hr-workflow h3{font-size:14px;line-height:1.2;margin:0;font-weight:900}
     .hr-workflow p{font-size:11px;line-height:1.42;color:var(--hr-muted);margin:0}
+    .hr-setup-grid{display:grid;grid-template-columns:minmax(0,1.35fr) 360px;gap:12px;align-items:start}
+    .hr-setup-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .hr-setup-form .wide{grid-column:1/-1}
+    .hr-input{height:36px;border:1px solid var(--hr-line-strong);border-radius:var(--hr-radius);background:#fff;color:var(--hr-ink);padding:0 10px;font-size:13px;font-weight:800;min-width:0;width:100%}
+    .hr-score{display:grid;gap:10px;border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:var(--hr-soft);padding:12px}
+    .hr-score strong{font-size:30px;line-height:1;font-weight:900}
+    .hr-score span{font-size:11px;font-weight:900;color:var(--hr-muted)}
+    .hr-score-bar{height:8px;border-radius:999px;background:#E2E8F0;overflow:hidden}
+    .hr-score-bar span{display:block;height:100%;background:var(--hr-blue);width:0}
     .hr-list{display:grid;gap:8px}
     .hr-row,.hr-doc,.hr-letter,.hr-note-card{padding:10px 11px}
     .hr-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
@@ -124,35 +134,88 @@
     .hr-table tr:last-child td{border-bottom:0}
     .hr-table strong{font-weight:900}
     .hr-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .hr-layout>*,.hr-command-grid>*{min-width:0}
     .hr-doc h3,.hr-letter h3,.hr-note-card h3{font-size:13px;font-weight:900;line-height:1.25;margin:0}
     .hr-doc p,.hr-letter p,.hr-note-card p{font-size:11px;line-height:1.42;color:var(--hr-muted);margin:4px 0 0}
+    .hr-task-card{border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:#fff;padding:10px 11px;display:grid;gap:9px}
+    .hr-task-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .hr-task-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .hr-task-item{border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:var(--hr-soft);padding:8px;display:grid;gap:6px}
+    .hr-task-item strong{font-size:12px;line-height:1.25}
+    .hr-task-item small{font-size:10px;line-height:1.35;color:var(--hr-muted)}
+    .hr-status-select{height:30px;border:1px solid var(--hr-line-strong);border-radius:var(--hr-radius);background:#fff;color:var(--hr-ink);font-size:11px;font-weight:800;padding:0 7px;width:100%}
+    .hr-warning-list{display:flex;gap:5px;flex-wrap:wrap}
+    .hr-mini-dashboard{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:10px}
+    .hr-mini-stat{border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:#fff;padding:9px;display:grid;gap:3px;min-height:68px}
+    .hr-mini-stat strong{font-size:18px;line-height:1;font-weight:900}
+    .hr-mini-stat span{font-size:10px;line-height:1.25;color:var(--hr-muted);font-weight:900}
+    .hr-record-card{border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:#fff;padding:10px 11px;display:grid;gap:8px}
+    .hr-record-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .hr-record-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+    .hr-record-meta span{border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:var(--hr-soft);padding:6px 7px;font-size:10px;line-height:1.35;color:var(--hr-muted)}
+    .hr-record-meta strong{display:block;color:var(--hr-ink);font-size:11px}
+    .hr-check-row{display:flex;align-items:flex-start;gap:9px;font-size:12px;line-height:1.35;color:var(--hr-ink)}
+    .hr-check-row input{margin-top:2px}
+    .hr-check-row strong{font-size:12px}
+    .hr-check-row small{display:block;color:var(--hr-muted);font-size:11px}
     .hr-empty{border:1px dashed var(--hr-line-strong);border-radius:var(--hr-radius);padding:14px;background:#fff;color:var(--hr-muted);font-size:12px;line-height:1.5;text-align:center}
     .hr-note-box{border:1px solid #FDE68A;background:var(--hr-amber-soft);color:#78350F;border-radius:var(--hr-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    .hr-account-grid{display:grid;grid-template-columns:minmax(220px,1fr) auto auto auto auto;gap:8px;align-items:end}
+    .hr-account-status{display:grid;gap:5px;border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:#fff;padding:10px;color:var(--hr-ink)}
+    .hr-account-status strong{font-size:12px;font-weight:900}
+    .hr-account-status span{font-size:11px;color:var(--hr-muted);line-height:1.4}
+    .hr-review-note{border:1px solid #FDE68A;background:var(--hr-amber-soft);color:#78350F;border-radius:var(--hr-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    .hr-hidden{display:none!important}
+    .hr-compact-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .hr-icon-btn{display:inline-flex;align-items:center;justify-content:center;min-width:30px;min-height:30px;border:1px solid var(--hr-line-strong);border-radius:var(--hr-radius);background:#fff;color:var(--hr-ink);font-size:12px;font-weight:900}
+    .hr-icon-btn:hover{border-color:var(--hr-blue);color:var(--hr-blue);background:var(--hr-blue-soft)}
+    .hr-badge-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+    .hr-mini{font-size:10px;line-height:1.1}
+    .hr-drawer-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.34);z-index:50;display:none}
+    .hr-drawer-backdrop.open{display:block}
+    .hr-drawer{position:fixed;top:0;right:0;bottom:0;width:min(680px,100vw);background:#fff;border-left:1px solid var(--hr-line);box-shadow:-22px 0 44px rgba(15,23,42,.18);z-index:60;display:none;grid-template-rows:auto minmax(0,1fr) auto}
+    .hr-drawer.open{display:grid}
+    .hr-drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px;border-bottom:1px solid var(--hr-line)}
+    .hr-drawer-title{font-size:19px;font-weight:900;line-height:1.2;margin:0}
+    .hr-drawer-body{overflow:auto;padding:14px 16px;display:grid;gap:14px}
+    .hr-drawer-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid var(--hr-line);background:var(--hr-soft)}
+    .hr-form-section{display:grid;gap:10px;border:1px solid var(--hr-line);border-radius:var(--hr-radius);padding:12px;background:#fff}
+    .hr-form-section h3{font-size:13px;font-weight:900;margin:0}
+    .hr-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .hr-form-grid .wide{grid-column:1/-1}
+    .hr-textarea{min-height:72px;border:1px solid var(--hr-line-strong);border-radius:var(--hr-radius);background:#fff;color:var(--hr-ink);padding:8px 10px;font-size:13px;font-weight:700;resize:vertical;width:100%}
+    .hr-sensitive-note{font-size:11px;line-height:1.45;color:#78350F;background:var(--hr-amber-soft);border:1px solid #FDE68A;border-radius:var(--hr-radius);padding:8px}
     .hr-spaced{margin-top:10px}
     @media(max-width:1280px){
       .hr-workflows{grid-template-columns:repeat(3,minmax(0,1fr))}
       .hr-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .hr-setup-grid{grid-template-columns:1fr}
     }
     @media(max-width:1040px){
-      .hr-shell{grid-template-columns:1fr}
+      .hr-workspace{grid-template-columns:1fr}
       .hr-side{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--hr-line)}
       .hr-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
       .hr-layout,.hr-command-grid{grid-template-columns:1fr}
+      .hr-account-grid{grid-template-columns:1fr 1fr}
       .hr-topbar{position:relative;align-items:flex-start;flex-direction:column}
       .hr-actions{justify-content:flex-start}
     }
     @media(max-width:760px){
       .hr-content{padding:12px}
       .hr-title{font-size:24px}
-      .hr-nav,.hr-workflows,.hr-metrics,.hr-snapshot,.hr-grid-2{grid-template-columns:1fr}
+      .hr-nav,.hr-workflows,.hr-metrics,.hr-snapshot,.hr-grid-2,.hr-setup-form,.hr-account-grid{grid-template-columns:1fr}
+      .hr-mini-dashboard,.hr-record-meta{grid-template-columns:1fr}
       .hr-field{min-width:0;width:100%}
       .hr-row{grid-template-columns:1fr}
       .hr-row-actions{justify-content:flex-start}
+      .hr-task-grid{grid-template-columns:1fr}
+      .hr-drawer{width:100vw}
+      .hr-form-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
-  <main class="hr-shell pro-gated-content">
+  <main class="hr-workspace pro-gated-content">
     <aside class="hr-side" aria-label="AfroHR navigation">
       <div class="hr-brand">
         <div class="hr-brand-mark" aria-hidden="true">HR</div>
@@ -163,17 +226,19 @@
       </div>
       <nav class="hr-nav" aria-label="People OS sections">
         <a href="#overview">Overview <span>00</span></a>
-        <a href="#workflows">Workflows <span>05</span></a>
+        <a href="#setup">Setup <span id="navSetupScore">0%</span></a>
+        <a href="#workflows">Workflows <span>07</span></a>
         <a href="#employees">Employees <span id="navEmployeeCount">0</span></a>
         <a href="#missing-details">Missing details <span id="navMissingCount">0</span></a>
-        <a href="#documents">Vault <span id="navDocCount">0</span></a>
+        <a href="#documents">Documents <span id="navDocCount">0</span></a>
+        <a href="#reports">People reports <span>Live</span></a>
         <a href="/pro/workspace/">Pro control <span>Back</span></a>
         <a href="/pro/apps/">Browse apps <span>Index</span></a>
         <a href="/dashboard/">Account <span>Acct</span></a>
       </nav>
       <div class="hr-side-box">
-        <strong>Payroll companion</strong>
-        <p>AfroHR reads Payroll employee-master data when present, but this workspace does not write back into payroll storage automatically.</p>
+        <strong>Payroll readiness</strong>
+        <p>AfroHR can read Payroll employee records when present and prepare a Payroll handoff draft. Payroll records are not changed automatically.</p>
       </div>
       <div class="hr-side-foot">
         <a class="hr-btn" href="/pro/apps/">Browse Pro Apps</a>
@@ -187,13 +252,15 @@
       <header class="hr-topbar">
         <div class="hr-context">
           <div class="hr-field">
-            <label class="hr-label" for="orgSelect">Organisation or client</label>
+            <label class="hr-label" for="orgSelect">Organization type</label>
             <select class="hr-select" id="orgSelect">
-              <option value="sme">SME team</option>
-              <option value="school">School staff book</option>
-              <option value="clinic">Clinic roster</option>
+              <option value="small-employer">Small employer</option>
+              <option value="school">School</option>
+              <option value="clinic">Clinic</option>
               <option value="ngo">NGO field team</option>
-              <option value="accountant">Accountant client book</option>
+              <option value="freelancer-team">Freelancer team</option>
+              <option value="agency">Agency</option>
+              <option value="accountant-client">Accountant-managed client</option>
             </select>
           </div>
           <div class="hr-field">
@@ -210,7 +277,7 @@
             </select>
           </div>
           <div class="hr-field">
-            <label class="hr-label" for="periodSelect">People period</label>
+            <label class="hr-label" for="periodSelect">Review month</label>
             <select class="hr-select" id="periodSelect">
               <option value="2026-05">May 2026</option>
               <option value="2026-06">June 2026</option>
@@ -224,8 +291,8 @@
           <a class="hr-btn" href="/pro/apps/">Browse apps</a>
           <a class="hr-btn" href="/dashboard/">Account</a>
           <button class="hr-btn" type="button" id="refreshBtn">Refresh</button>
-          <button class="hr-btn warn" type="button" id="resetBtn">Reset sample data</button>
-          <button class="hr-btn primary" type="button" id="sendPayrollTopBtn">Send to payroll</button>
+          <button class="hr-btn warn" type="button" id="resetBtn">Reset device data</button>
+          <button class="hr-btn primary" type="button" id="sendPayrollTopBtn">Payroll handoff draft</button>
         </div>
       </header>
 
@@ -236,36 +303,183 @@
               <div>
                 <div class="hr-kicker">Payroll readiness</div>
                 <h1 class="hr-title">AfroHR People OS</h1>
-                <p class="hr-subtitle">A Pro HR companion to AfroPayroll for employee records, onboarding, contracts, leave, document vaults, payroll readiness, and missing employee details. Sensitive HR data stays on this device unless an account-backed API is explicitly added.</p>
+                <p class="hr-subtitle">A Pro people workspace for small employers, schools, clinics, NGOs, agencies, freelancer teams, and accountant-managed clients that need employee records, onboarding, documents, leave, payroll readiness, and people reports.</p>
               </div>
-              <span class="hr-pill shell" id="modePill">Saved on this device</span>
+              <span class="hr-pill workspace" id="modePill">Saved on this device</span>
             </div>
             <div class="hr-snapshot">
               <div class="hr-snap"><strong id="snapEmployees">0</strong><span>Total employee records</span></div>
               <div class="hr-snap"><strong id="snapPayrollReadiness">0%</strong><span>Payroll readiness</span></div>
               <div class="hr-snap"><strong id="snapMissing">0</strong><span>Missing details</span></div>
-              <div class="hr-snap"><strong id="snapPayrollSource">Not read</strong><span>Payroll master source</span></div>
+              <div class="hr-snap"><strong id="snapSetupScore">0%</strong><span>Setup completion</span></div>
             </div>
           </article>
           <article class="hr-boundary">
             <div>
-              <div class="hr-kicker">Sensitive data boundary</div>
+              <div class="hr-kicker">People data boundary</div>
               <h2>HR data is saved on this device</h2>
             </div>
-            <p>AfroHR stores sample onboarding, letters, leave, vault, and handoff state in localStorage. It reads Payroll employee-master records if present, but does not mutate Payroll storage automatically.</p>
+            <p>Employee records, onboarding, leave, document checklist items, letters, and Payroll handoff drafts stay on this device. Signed-in users can choose Save to account when account saving is available. Payroll records are not changed automatically.</p>
             <div class="hr-actions">
-              <a class="hr-btn" href="/tools/afropayroll-os/workspace">AfroPayroll</a>
+              <a class="hr-btn" href="/tools/afropayroll-os/workspace">Open AfroPayroll</a>
               <a class="hr-btn" href="/tools/leave-calculator/">Leave calculator</a>
             </div>
           </article>
         </section>
 
+        <section class="hr-panel" id="account-save" aria-labelledby="accountSaveTitle">
+          <div class="hr-panel-head">
+            <div>
+              <div class="hr-kicker">Save to account</div>
+              <h2 class="hr-h2" id="accountSaveTitle">Save and load people records</h2>
+              <p class="hr-note">Keep working when signed out. When signed in, AfroHR asks you to review before replacing either copy.</p>
+            </div>
+          </div>
+          <div class="hr-panel-body">
+            <div class="hr-account-grid">
+              <div class="hr-field">
+                <label class="hr-label" for="accountOrganizationSelect">Choose saved organization</label>
+                <select class="hr-select" id="accountOrganizationSelect">
+                  <option value="">Sign in to choose a saved organization</option>
+                </select>
+              </div>
+              <button class="hr-btn" type="button" id="createAccountOrganizationBtn">Create account organization</button>
+              <button class="hr-btn primary" type="button" id="saveAccountBtn">Save to account</button>
+              <button class="hr-btn" type="button" id="pullAccountBtn">Pull from account</button>
+              <button class="hr-btn" type="button" id="downloadBackupBtn">Download backup</button>
+              <div class="hr-account-status">
+                <strong id="accountStatusText">Saved on this device</strong>
+                <span id="accountReviewText">Account actions are manual. AfroHR will ask you to review before replacing data.</span>
+              </div>
+              <div class="hr-account-status">
+                <strong>Last saved</strong>
+                <span id="accountLastSaved">No account save recorded yet</span>
+              </div>
+            </div>
+            <div class="hr-review-note hr-spaced hr-hidden" id="accountConflictNote">Review before replacing.</div>
+          </div>
+        </section>
+
+        <section class="hr-panel" id="setup" aria-labelledby="setupTitle">
+          <div class="hr-panel-head">
+            <div>
+              <div class="hr-kicker">First-run setup</div>
+              <h2 class="hr-h2" id="setupTitle">Set up the organization</h2>
+              <p class="hr-note">Choose the basics your people team needs before adding employee records, Leave, Documents, and Payroll readiness work.</p>
+            </div>
+            <div class="hr-actions">
+              <button class="hr-btn" type="button" id="saveSetupBtn">Save setup</button>
+              <button class="hr-btn primary" type="button" id="setupBtn">Set up organization</button>
+            </div>
+          </div>
+          <div class="hr-panel-body">
+            <div class="hr-setup-grid">
+              <div class="hr-setup-form">
+                <div class="hr-field wide">
+                  <label class="hr-label" for="organizationName">Organization name</label>
+                  <input class="hr-input" id="organizationName" type="text" autocomplete="organization" placeholder="Example: Lagos Sunrise Clinic">
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="organizationType">Organization type</label>
+                  <select class="hr-select" id="organizationType">
+                    <option value="small-employer">Small employer</option>
+                    <option value="school">School</option>
+                    <option value="clinic">Clinic</option>
+                    <option value="ngo">NGO</option>
+                    <option value="freelancer-team">Freelancer team</option>
+                    <option value="agency">Agency</option>
+                    <option value="accountant-client">Accountant-managed client</option>
+                  </select>
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="setupCountry">Country</label>
+                  <select class="hr-select" id="setupCountry">
+                    <option value="NG">Nigeria</option>
+                    <option value="KE">Kenya</option>
+                    <option value="GH">Ghana</option>
+                    <option value="ZA">South Africa</option>
+                    <option value="RW">Rwanda</option>
+                    <option value="SN">Senegal</option>
+                    <option value="CM">Cameroon</option>
+                    <option value="EG">Egypt</option>
+                  </select>
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="currencySelect">Default currency</label>
+                  <select class="hr-select" id="currencySelect">
+                    <option value="NGN">NGN</option>
+                    <option value="KES">KES</option>
+                    <option value="GHS">GHS</option>
+                    <option value="ZAR">ZAR</option>
+                    <option value="RWF">RWF</option>
+                    <option value="XOF">XOF</option>
+                    <option value="XAF">XAF</option>
+                    <option value="EGP">EGP</option>
+                    <option value="USD">USD</option>
+                  </select>
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="hrContact">HR contact</label>
+                  <input class="hr-input" id="hrContact" type="email" autocomplete="email" placeholder="hr@example.com">
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="payrollContact">Payroll contact</label>
+                  <input class="hr-input" id="payrollContact" type="email" autocomplete="email" placeholder="payroll@example.com">
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="leaveYearStart">Leave year start</label>
+                  <input class="hr-input" id="leaveYearStart" type="date">
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="workWeekSelect">Default work week</label>
+                  <select class="hr-select" id="workWeekSelect">
+                    <option value="mon-fri">Monday to Friday</option>
+                    <option value="mon-sat">Monday to Saturday</option>
+                    <option value="shift">Shift roster</option>
+                    <option value="field">Field schedule</option>
+                  </select>
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="reviewMonthSelect">Review month</label>
+                  <select class="hr-select" id="reviewMonthSelect">
+                    <option value="2026-05">May 2026</option>
+                    <option value="2026-06">June 2026</option>
+                    <option value="2026-Q2">Q2 2026</option>
+                    <option value="2026-YTD">2026 year to date</option>
+                  </select>
+                </div>
+                <div class="hr-field">
+                  <label class="hr-label" for="handoffPreference">Payroll handoff preference</label>
+                  <select class="hr-select" id="handoffPreference">
+                    <option value="review-only">Review in AfroHR first</option>
+                    <option value="csv-draft">Prepare CSV draft</option>
+                    <option value="payroll-workspace">Open AfroPayroll manually</option>
+                    <option value="accountant-review">Send to accountant review</option>
+                  </select>
+                </div>
+              </div>
+              <aside class="hr-score" aria-label="Setup completion">
+                <div>
+                  <div class="hr-kicker">Setup completion</div>
+                  <strong id="setupScore">0%</strong>
+                  <span id="setupScoreNote">Review needed</span>
+                </div>
+                <div class="hr-score-bar" aria-hidden="true"><span id="setupScoreBar"></span></div>
+                <div class="hr-list" id="setupChecklist"></div>
+                <div class="hr-actions">
+                  <button class="hr-btn" type="button" id="quickSaveAccountBtn">Save to account</button>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
         <section class="hr-metrics" aria-label="People metrics">
-          <div class="hr-metric"><strong id="metricLocalEmployees">0</strong><span>HR local records</span><small>AfroHR sample workspace</small></div>
-          <div class="hr-metric"><strong id="metricPayrollEmployees">0</strong><span>Payroll records read</span><small>Read-only employee master</small></div>
-          <div class="hr-metric"><strong id="metricLetters">0</strong><span>Contracts and letters</span><small>Local draft letters</small></div>
-          <div class="hr-metric"><strong id="metricLeave">0</strong><span>Leave items</span><small>Local attendance log</small></div>
-          <div class="hr-metric"><strong id="metricDocs">0</strong><span>Vault records</span><small>Metadata only</small></div>
+          <div class="hr-metric"><strong id="metricLocalEmployees">0</strong><span>Employee records</span><small>Saved on this device</small></div>
+          <div class="hr-metric"><strong id="metricPayrollEmployees">0</strong><span>Payroll records read</span><small>Read-only Payroll view</small></div>
+          <div class="hr-metric"><strong id="metricLetters">0</strong><span>Letters and contracts</span><small>Review needed</small></div>
+          <div class="hr-metric"><strong id="metricLeave">0</strong><span>Leave items</span><small>Leave and attendance</small></div>
+          <div class="hr-metric"><strong id="metricDocs">0</strong><span>Documents</span><small>Checklist only</small></div>
         </section>
 
         <section class="hr-panel" id="workflows" aria-labelledby="workflowTitle">
@@ -273,40 +487,52 @@
             <div>
               <div class="hr-kicker">Workflow cards</div>
               <h2 class="hr-h2" id="workflowTitle">People operations launcher</h2>
-              <p class="hr-note">Actions write only to AfroHR local sample workspace. Payroll employee-master data stays read-only unless a future user-approved sync flow is built.</p>
+              <p class="hr-note">Move from setup to employee records, Onboarding, Leave, Documents, Payroll readiness, and a people packet without changing Payroll records automatically.</p>
             </div>
           </div>
           <div class="hr-panel-body">
             <div class="hr-workflows">
               <article class="hr-workflow">
-                <span class="hr-pill progress">Onboarding</span>
-                <h3>Onboard employee</h3>
-                <p>Create a local HR employee record with onboarding tasks and missing payroll fields.</p>
-                <button class="hr-btn primary" type="button" id="onboardBtn">Onboard employee</button>
+                <span class="hr-pill workspace">Setup</span>
+                <h3>Set up organization</h3>
+                <p>Save the organization profile, contacts, Leave year, work week, review month, and Payroll handoff preference.</p>
+                <button class="hr-btn primary" type="button" id="setupWorkflowBtn">Set up organization</button>
               </article>
               <article class="hr-workflow">
-                <span class="hr-pill missing">Payroll details</span>
-                <h3>Request missing payroll details</h3>
-                <p>Queue a local request for tax ID, social security, bank or mobile-money route, and emergency contact.</p>
-                <button class="hr-btn" type="button" id="requestDetailsBtn">Request details</button>
+                <span class="hr-pill progress">Employee records</span>
+                <h3>Add employee</h3>
+                <p>Add the first worker record with role, department, country, contact, and Payroll readiness fields.</p>
+                <button class="hr-btn" type="button" id="onboardBtn">Add employee</button>
               </article>
               <article class="hr-workflow">
-                <span class="hr-pill open">Letter</span>
-                <h3>Generate employment letter</h3>
-                <p>Create a local employment-letter draft manifest for review before sending.</p>
-                <button class="hr-btn" type="button" id="letterBtn">Generate letter</button>
+                <span class="hr-pill open">Onboarding</span>
+                <h3>Complete onboarding</h3>
+                <p>Mark identity, contact, appointment letter, payroll details, payment route, and policy tasks for review.</p>
+                <button class="hr-btn" type="button" id="completeOnboardingBtn">Complete onboarding</button>
               </article>
               <article class="hr-workflow">
                 <span class="hr-pill leave">Leave</span>
                 <h3>Track leave</h3>
-                <p>Add leave or attendance item and link out to the leave calculator for deeper estimates.</p>
-                <button class="hr-btn" type="button" id="leaveBtn">Track leave</button>
+                <p>Add Leave or attendance items for the selected review month.</p>
+                <button class="hr-btn" type="button" id="leaveWorkflowBtn">Track leave</button>
               </article>
               <article class="hr-workflow">
-                <span class="hr-pill shell">Payroll handoff</span>
-                <h3>Send to payroll</h3>
-                <p>Create a local payroll-readiness handoff note. This does not write to Payroll storage.</p>
-                <button class="hr-btn" type="button" id="sendPayrollBtn">Send to payroll</button>
+                <span class="hr-pill progress">Documents</span>
+                <h3>Prepare documents</h3>
+                <p>Create a document checklist item for identity, appointment, emergency contact, or payroll details.</p>
+                <button class="hr-btn" type="button" id="addDocBtn">Prepare documents</button>
+              </article>
+              <article class="hr-workflow">
+                <span class="hr-pill review">Payroll readiness</span>
+                <h3>Review payroll readiness</h3>
+                <p>Create a Payroll handoff draft for review. Payroll records are not changed.</p>
+                <button class="hr-btn" type="button" id="sendPayrollBtn">Payroll handoff draft</button>
+              </article>
+              <article class="hr-workflow">
+                <span class="hr-pill ready">People reports</span>
+                <h3>Export people packet</h3>
+                <p>Download a people packet with setup, employee, Leave, Documents, and Payroll readiness summaries.</p>
+                <button class="hr-btn" type="button" id="exportPacketBtn">Export packet</button>
               </article>
             </div>
           </div>
@@ -319,14 +545,20 @@
                 <div>
                   <div class="hr-kicker">Employee records</div>
                   <h2 class="hr-h2" id="employeeTitle">People records and payroll profile</h2>
-                  <p class="hr-note">Combines HR saved workspace records with read-only Payroll employee-master records when available.</p>
+                  <p class="hr-note">Combines employee records saved on this device with read-only Payroll employee records when available.</p>
+                </div>
+                <div class="hr-actions">
+                  <button class="hr-btn primary" type="button" id="addEmployeeBtn">Add employee</button>
+                  <button class="hr-btn" type="button" id="exportRegisterBtn">Employee register CSV</button>
+                  <button class="hr-btn" type="button" id="exportReadinessBtn">Payroll readiness CSV</button>
+                  <button class="hr-btn" type="button" id="exportMissingBtn">Missing details CSV</button>
                 </div>
               </div>
               <div class="hr-panel-body">
                 <div class="hr-table-wrap">
                   <table class="hr-table" aria-label="Employee records">
                     <thead>
-                      <tr><th>Employee</th><th>Country</th><th>Role</th><th>Source</th><th>Payroll readiness</th><th>Status</th></tr>
+                      <tr><th>Employee</th><th>Role</th><th>Contact</th><th>Payroll readiness</th><th>Status</th><th>Actions</th></tr>
                     </thead>
                     <tbody id="employeeBody"></tbody>
                   </table>
@@ -338,8 +570,8 @@
               <div class="hr-panel-head">
                 <div>
                   <div class="hr-kicker">Missing employee details</div>
-                  <h2 class="hr-h2" id="missingTitle">Payroll blockers and people data gaps</h2>
-                  <p class="hr-note">Missing fields are computed from local HR records and read-only Payroll employee-master records.</p>
+                  <h2 class="hr-h2" id="missingTitle">Payroll readiness gaps</h2>
+                  <p class="hr-note">Missing fields are computed from employee records saved on this device and read-only Payroll employee records.</p>
                 </div>
               </div>
               <div class="hr-panel-body">
@@ -350,13 +582,47 @@
             <section class="hr-panel" id="letters" aria-labelledby="letterTitle">
               <div class="hr-panel-head">
                 <div>
-                  <div class="hr-kicker">Contracts and letters</div>
-                  <h2 class="hr-h2" id="letterTitle">Employment letter drafts</h2>
-                  <p class="hr-note">Draft manifests only. Final legal review and signature flow are not active yet.</p>
+                  <div class="hr-kicker">Letters and contracts</div>
+                  <h2 class="hr-h2" id="letterTitle">Letter drafts for review</h2>
+                  <p class="hr-note">Draft records only. Final legal review and signature collection are not active here.</p>
+                </div>
+                <div class="hr-actions">
+                  <button class="hr-btn" type="button" id="letterBtn">Create letter draft</button>
+                  <button class="hr-btn" type="button" id="exportLetterMarkdownBtn">Employment letter Markdown</button>
+                  <button class="hr-btn" type="button" id="exportOnboardingPacketBtn">Onboarding packet Markdown</button>
                 </div>
               </div>
               <div class="hr-panel-body">
                 <div class="hr-grid-2" id="letterGrid"></div>
+              </div>
+            </section>
+
+            <section class="hr-panel" id="handoff" aria-labelledby="handoffTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">Payroll readiness</div>
+                  <h2 class="hr-h2" id="handoffTitle">Payroll handoff drafts</h2>
+                  <p class="hr-note">Build a payroll handoff draft, download handoff files, then review before import in AfroPayroll. Payroll records are not changed here.</p>
+                </div>
+                <div class="hr-actions">
+                  <button class="hr-btn" type="button" id="requestDetailsBtn">Request missing details</button>
+                  <button class="hr-btn primary" type="button" id="buildHandoffBtn">Payroll handoff draft</button>
+                  <a class="hr-btn" href="/tools/afropayroll-os/workspace">Open AfroPayroll</a>
+                </div>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-mini-dashboard" id="handoffDashboard"></div>
+                <label class="hr-label" for="handoffReviewerNote">Reviewer note</label>
+                <textarea class="hr-input" id="handoffReviewerNote" rows="3" placeholder="Add notes for payroll review before import."></textarea>
+                <div class="hr-actions hr-spaced">
+                  <button class="hr-btn" type="button" id="exportHandoffReadyBtn">Payroll-ready CSV</button>
+                  <button class="hr-btn" type="button" id="exportHandoffMissingBtn">Missing-detail CSV</button>
+                  <button class="hr-btn" type="button" id="exportHandoffImpactBtn">Payroll impact CSV</button>
+                  <button class="hr-btn primary" type="button" id="downloadHandoffBtn">Download handoff</button>
+                </div>
+                <div class="hr-list" id="handoffEmployeeList"></div>
+                <div class="hr-list" id="handoffList"></div>
+                <div class="hr-note-box hr-spaced">Review before import. AfroHR prepares handoff files only; it does not pay salaries, file payroll returns, certify compliance, or write Payroll records automatically.</div>
               </div>
             </section>
           </div>
@@ -367,11 +633,21 @@
                 <div>
                   <div class="hr-kicker">Leave and attendance</div>
                   <h2 class="hr-h2" id="leaveTitle">Leave tracker</h2>
-                  <p class="hr-note">Local leave log with a link to the public leave calculator.</p>
+                  <p class="hr-note">Leave tracker and attendance record items for review. Use the public calculator for estimates before approving.</p>
                 </div>
-                <a class="hr-btn" href="/tools/leave-calculator/">Open calculator</a>
+                <div class="hr-actions">
+                  <button class="hr-btn" type="button" id="leaveBtn">Add leave request</button>
+                  <button class="hr-btn" type="button" id="attendanceBtn">Add attendance record</button>
+                  <a class="hr-btn" href="/tools/leave-calculator/">Leave calculator</a>
+                </div>
               </div>
               <div class="hr-panel-body">
+                <div class="hr-mini-dashboard" id="leaveDashboard"></div>
+                <div class="hr-actions hr-spaced">
+                  <button class="hr-btn" type="button" id="exportLeaveRegisterBtn">Leave register CSV</button>
+                  <button class="hr-btn" type="button" id="exportAttendanceBtn">Attendance CSV</button>
+                  <button class="hr-btn" type="button" id="exportPayrollImpactBtn">Payroll impact CSV</button>
+                </div>
                 <div class="hr-list" id="leaveList"></div>
               </div>
             </section>
@@ -380,9 +656,10 @@
               <div class="hr-panel-head">
                 <div>
                   <div class="hr-kicker">Onboarding checklist</div>
-                  <h2 class="hr-h2" id="onboardingTitle">Starter tasks</h2>
-                  <p class="hr-note">Checklist status is saved in AfroHR local sample workspace.</p>
+                  <h2 class="hr-h2" id="onboardingTitle">Employee onboarding</h2>
+                  <p class="hr-note">Per-employee tasks for profile, emergency contact, Payroll readiness, Documents, drafts, policy acknowledgement, manager intro, and first-day work.</p>
                 </div>
+                <button class="hr-btn" type="button" id="exportOnboardingCsvBtn">Onboarding checklist CSV</button>
               </div>
               <div class="hr-panel-body">
                 <div class="hr-list" id="onboardingList"></div>
@@ -392,28 +669,55 @@
             <section class="hr-panel" id="documents" aria-labelledby="docTitle">
               <div class="hr-panel-head">
                 <div>
-                  <div class="hr-kicker">Document vault</div>
-                  <h2 class="hr-h2" id="docTitle">Vault metadata</h2>
-                  <p class="hr-note">Metadata only. No files are uploaded or stored by this workspace.</p>
+                  <div class="hr-kicker">Documents</div>
+                  <h2 class="hr-h2" id="docTitle">Document metadata vault</h2>
+                  <p class="hr-note">Records document metadata only. No file is uploaded from this workspace yet. Use review status and expiry reminder queues for sensitive HR document records.</p>
                 </div>
-                <button class="hr-btn" type="button" id="addDocBtn">Add vault note</button>
+                <div class="hr-actions">
+                  <button class="hr-btn" type="button" id="addDocumentRecordBtn">Add document record</button>
+                  <button class="hr-btn" type="button" id="prepareContractChecklistBtn">Prepare checklist</button>
+                  <button class="hr-btn" type="button" id="exportDocumentRegisterBtn">Document register CSV</button>
+                  <button class="hr-btn" type="button" id="exportExpiringDocumentsBtn">Expiring documents CSV</button>
+                  <a class="hr-btn" href="/tools/employment-contract/">Contract tool</a>
+                  <a class="hr-btn" href="/document-pdf/">Document tools</a>
+                </div>
               </div>
               <div class="hr-panel-body">
+                <div class="hr-mini-dashboard" id="docDashboard"></div>
+                <div class="hr-list" id="docReminderList"></div>
                 <div class="hr-grid-2" id="docGrid"></div>
+                <div class="hr-note-box hr-spaced">Records document metadata only. No file is uploaded from this workspace yet. AfroHR does not prove document authenticity, collect e-signatures, or certify legal compliance.</div>
+              </div>
+            </section>
+
+            <section class="hr-panel" id="reports" aria-labelledby="reportsTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">People reports</div>
+                  <h2 class="hr-h2" id="reportsTitle">Readiness summary</h2>
+                  <p class="hr-note">Simple people operations summary for the selected review month.</p>
+                </div>
+                <div class="hr-actions">
+                  <button class="hr-btn" type="button" id="exportPeopleSummaryBtn">People summary CSV</button>
+                  <button class="hr-btn primary" type="button" id="exportHrReviewPacketBtn">HR review packet Markdown</button>
+                </div>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-list" id="peopleReportList"></div>
               </div>
             </section>
 
             <section class="hr-panel" id="compliance" aria-labelledby="complianceTitle">
               <div class="hr-panel-head">
                 <div>
-                  <div class="hr-kicker">HR compliance notes</div>
+                  <div class="hr-kicker">People review notes</div>
                   <h2 class="hr-h2" id="complianceTitle">Review notes</h2>
-                  <p class="hr-note">Country and role notes are prompts for professional review, not compliance guarantees.</p>
+                  <p class="hr-note">Country, role, and document notes are prompts for professional review, not guarantees.</p>
                 </div>
               </div>
               <div class="hr-panel-body">
                 <div class="hr-list" id="complianceList"></div>
-                <div class="hr-note-box hr-spaced">AfroHR does not certify contracts, immigration status, labor-law compliance, payroll filing, or employee data consent. This workspace is local workflow scaffolding.</div>
+                <div class="hr-note-box hr-spaced">AfroHR does not certify contracts, immigration status, labor-law compliance, payroll filing, employee consent proof, or document signatures.</div>
               </div>
             </section>
           </aside>
@@ -422,20 +726,255 @@
     </section>
   </main>
 
+  <div class="hr-drawer-backdrop" id="employeeDrawerBackdrop"></div>
+  <aside class="hr-drawer" id="employeeDrawer" aria-label="Employee detail editor" aria-hidden="true">
+    <div class="hr-drawer-head">
+      <div>
+        <div class="hr-kicker">Employee records</div>
+        <h2 class="hr-drawer-title" id="employeeDrawerTitle">Add employee</h2>
+        <p class="hr-note">Identity, contact, emergency contact, status, and Payroll readiness details are saved for HR and payroll operations.</p>
+      </div>
+      <button class="hr-icon-btn" type="button" id="closeEmployeeDrawerBtn" aria-label="Close employee details">X</button>
+    </div>
+    <div class="hr-drawer-body">
+      <input type="hidden" id="employeeEditId">
+      <section class="hr-form-section">
+        <h3>Identity and role</h3>
+        <div class="hr-form-grid">
+          <div class="hr-field">
+            <label class="hr-label" for="employeeCodeInput">Employee code</label>
+            <input class="hr-input" id="employeeCodeInput" type="text" autocomplete="off">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeStatusInput">Status</label>
+            <select class="hr-select" id="employeeStatusInput">
+              <option value="onboarding">Onboarding</option>
+              <option value="active">Active</option>
+              <option value="on_leave">On Leave</option>
+              <option value="inactive">Inactive</option>
+              <option value="terminated">Terminated</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeFullNameInput">Full name</label>
+            <input class="hr-input" id="employeeFullNameInput" type="text" autocomplete="name">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeePreferredNameInput">Preferred name</label>
+            <input class="hr-input" id="employeePreferredNameInput" type="text" autocomplete="given-name">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeCountryInput">Country</label>
+            <select class="hr-select" id="employeeCountryInput">
+              <option value="NG">Nigeria</option>
+              <option value="KE">Kenya</option>
+              <option value="GH">Ghana</option>
+              <option value="ZA">South Africa</option>
+              <option value="RW">Rwanda</option>
+              <option value="SN">Senegal</option>
+              <option value="CM">Cameroon</option>
+              <option value="EG">Egypt</option>
+            </select>
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeDepartmentInput">Department</label>
+            <input class="hr-input" id="employeeDepartmentInput" type="text" autocomplete="organization-title">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeRoleInput">Role/title</label>
+            <input class="hr-input" id="employeeRoleInput" type="text">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeManagerInput">Manager</label>
+            <input class="hr-input" id="employeeManagerInput" type="text">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeTypeInput">Employment type</label>
+            <select class="hr-select" id="employeeTypeInput">
+              <option value="employee">Employee</option>
+              <option value="contractor">Contractor</option>
+              <option value="casual">Casual</option>
+              <option value="intern">Intern</option>
+              <option value="director">Director</option>
+              <option value="volunteer">Volunteer</option>
+              <option value="freelancer">Freelancer</option>
+              <option value="consultant">Consultant</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeStartDateInput">Start date</label>
+            <input class="hr-input" id="employeeStartDateInput" type="date">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeProbationInput">Probation end date</label>
+            <input class="hr-input" id="employeeProbationInput" type="date">
+          </div>
+        </div>
+      </section>
+      <section class="hr-form-section">
+        <h3>Contact and emergency contact</h3>
+        <div class="hr-form-grid">
+          <div class="hr-field">
+            <label class="hr-label" for="employeeEmailInput">Email</label>
+            <input class="hr-input" id="employeeEmailInput" type="email" autocomplete="email">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeePhoneInput">Phone</label>
+            <input class="hr-input" id="employeePhoneInput" type="tel" autocomplete="tel">
+          </div>
+          <div class="hr-field wide">
+            <label class="hr-label" for="employeeAddressInput">Address/location</label>
+            <textarea class="hr-textarea" id="employeeAddressInput"></textarea>
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="emergencyNameInput">Emergency contact name</label>
+            <input class="hr-input" id="emergencyNameInput" type="text">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="emergencyPhoneInput">Emergency contact phone</label>
+            <input class="hr-input" id="emergencyPhoneInput" type="tel">
+          </div>
+          <div class="hr-field wide">
+            <label class="hr-label" for="nextOfKinInput">Next of kin note</label>
+            <textarea class="hr-textarea" id="nextOfKinInput"></textarea>
+          </div>
+        </div>
+      </section>
+      <section class="hr-form-section">
+        <h3>Payroll readiness</h3>
+        <div class="hr-sensitive-note">Tax ID, pension/social security ID, and payment-route details are HR and payroll operations data. They do not prove employee consent, statutory compliance, or Payroll filing.</div>
+        <div class="hr-form-grid">
+          <div class="hr-field">
+            <label class="hr-label" for="employeeTaxIdInput">Tax ID</label>
+            <input class="hr-input" id="employeeTaxIdInput" type="text" autocomplete="off">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeSocialIdInput">Pension/social security ID</label>
+            <input class="hr-input" id="employeeSocialIdInput" type="text" autocomplete="off">
+          </div>
+          <div class="hr-field wide">
+            <label class="hr-label" for="employeePaymentRouteInput">Bank/mobile-money route</label>
+            <input class="hr-input" id="employeePaymentRouteInput" type="text" autocomplete="off">
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeePayScheduleInput">Pay schedule</label>
+            <select class="hr-select" id="employeePayScheduleInput">
+              <option value="monthly">Monthly</option>
+              <option value="semi_monthly">Semi-monthly</option>
+              <option value="biweekly">Biweekly</option>
+              <option value="weekly">Weekly</option>
+              <option value="daily">Daily</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="employeeCurrencyInput">Default currency</label>
+            <select class="hr-select" id="employeeCurrencyInput">
+              <option value="NGN">NGN</option>
+              <option value="KES">KES</option>
+              <option value="GHS">GHS</option>
+              <option value="ZAR">ZAR</option>
+              <option value="RWF">RWF</option>
+              <option value="XOF">XOF</option>
+              <option value="XAF">XAF</option>
+              <option value="EGP">EGP</option>
+              <option value="USD">USD</option>
+            </select>
+          </div>
+          <div class="hr-field wide">
+            <label class="hr-label" for="employeePayNoteInput">Salary/pay note optional</label>
+            <textarea class="hr-textarea" id="employeePayNoteInput" placeholder="Example: monthly gross pay to be reviewed by payroll"></textarea>
+          </div>
+          <div class="hr-field wide">
+            <label class="hr-label" for="linkedPayrollEmployeeInput">Linked Payroll employee ID optional</label>
+            <input class="hr-input" id="linkedPayrollEmployeeInput" type="text" autocomplete="off">
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="hr-drawer-foot">
+      <div class="hr-actions">
+        <button class="hr-btn primary" type="button" id="saveEmployeeBtn">Save employee</button>
+        <button class="hr-btn" type="button" id="markInactiveBtn">Mark inactive</button>
+      </div>
+      <div class="hr-actions">
+        <button class="hr-btn" type="button" id="requestEmployeeDetailsBtn">Request missing details</button>
+        <button class="hr-btn" type="button" id="employeeHandoffBtn">Add to payroll handoff</button>
+      </div>
+    </div>
+  </aside>
+
   <script>
   (function () {
     "use strict";
 
     var STORAGE_KEY = "afrohr_people_os_demo_v1";
     var PAYROLL_EMPLOYEE_KEY = "afropayroll_pro_employee_master";
-    var REQUIRED_FIELDS = ["name", "email", "phone", "taxId", "socialSecurityId", "bankAccountOrMobile", "employmentType"];
-    var ONBOARDING_TASKS = [
-      ["identity", "Identity and contact captured"],
-      ["contract", "Contract or appointment letter prepared"],
-      ["payroll", "Payroll statutory details collected"],
-      ["payment", "Bank or mobile-money route confirmed"],
-      ["policy", "Policy acknowledgement recorded"]
+    var REQUIRED_FIELDS = [
+      "employeeCode", "name", "email", "phone", "country", "role", "employmentType",
+      "startDate", "status", "taxId", "socialSecurityId", "bankAccountOrMobile",
+      "emergencyContactName", "emergencyContactPhone"
     ];
+    var FIELD_LABELS = {
+      employeeCode: "employee code",
+      name: "name",
+      email: "email",
+      phone: "phone",
+      country: "country",
+      role: "role/title",
+      taxId: "tax ID",
+      socialSecurityId: "pension or social security ID",
+      bankAccountOrMobile: "bank or mobile-money route",
+      employmentType: "employment type",
+      startDate: "start date",
+      status: "employment status",
+      emergencyContactName: "emergency contact name",
+      emergencyContactPhone: "emergency contact phone"
+    };
+    var COUNTRY_CURRENCY = {
+      NG: "NGN",
+      KE: "KES",
+      GH: "GHS",
+      ZA: "ZAR",
+      RW: "RWF",
+      SN: "XOF",
+      CM: "XAF",
+      EG: "EGP"
+    };
+    var ONBOARDING_TASKS = [
+      ["profile", "Profile details", "Employee code, role, country, status, and start date are captured."],
+      ["emergency", "Emergency contact", "Emergency contact name and phone are ready for review."],
+      ["payroll", "Payroll details", "Tax, pension/social security, pay schedule, and payment route are prepared."],
+      ["document", "ID/document metadata", "Identity and work document checklist metadata is prepared."],
+      ["contract", "Contract/letter prepared", "Employment letter or contract draft is prepared for review."],
+      ["policy", "Policy acknowledgement", "Policy acknowledgement is noted for review."],
+      ["managerIntro", "Manager intro", "Manager intro or reporting handover is prepared."],
+      ["firstDay", "First-day tasks", "First-day access, equipment, and orientation tasks are prepared."]
+    ];
+    var ONBOARDING_STATUSES = [
+      ["not-started", "not started"],
+      ["in-progress", "in progress"],
+      ["waiting-on-employee", "waiting on employee"],
+      ["ready-for-review", "ready for review"],
+      ["completed", "completed"]
+    ];
+    var LEAVE_TYPES = ["annual leave", "sick leave", "family leave", "unpaid leave", "study leave", "other"];
+    var LEAVE_STATUSES = ["requested", "approved", "rejected", "cancelled", "payroll review"];
+    var ATTENDANCE_EVENT_TYPES = ["present", "absent", "late", "remote", "overtime", "unpaid absence"];
+    var DOCUMENT_TYPES = ["ID", "contract", "appointment letter", "policy acknowledgement", "certificate", "work permit", "payroll detail proof", "medical/admin note", "other"];
+    var REQUIRED_DOCUMENT_TYPES = ["ID", "contract", "payroll detail proof"];
+    var DOCUMENT_STATUSES = ["received", "needs review", "missing", "expires soon", "expired", "archived"];
+    var SETUP_LABELS = {
+      "small-employer": "Small employer",
+      school: "School",
+      clinic: "Clinic",
+      ngo: "NGO",
+      "freelancer-team": "Freelancer team",
+      agency: "Agency",
+      "accountant-client": "Accountant-managed client"
+    };
 
     var els = {};
 
@@ -464,7 +1003,8 @@
       }
     }
 
-    function saveState() {
+    function saveState(options) {
+      if (!options || !options.preserveUpdatedAt) state.updatedAt = new Date().toISOString();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
@@ -499,50 +1039,146 @@
       return create("span", "hr-pill " + (tone || ""), label);
     }
 
-    function defaultState() {
+    function slug(value, fallback) {
+      value = text(value, fallback || "afrohr").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      return value || fallback || "afrohr";
+    }
+
+    function downloadText(filename, content, mimeType) {
+      var blob = new Blob([content], { type: mimeType || "text/plain;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      window.setTimeout(function () {
+        URL.revokeObjectURL(url);
+        link.remove();
+      }, 800);
+    }
+
+    function csvCell(value) {
+      value = value === undefined || value === null ? "" : String(value);
+      if (/[",\r\n]/.test(value)) return '"' + value.replace(/"/g, '""') + '"';
+      return value;
+    }
+
+    function downloadCsv(filename, headers, rows) {
+      var csv = [headers].concat(rows || []).map(function (row) {
+        return row.map(csvCell).join(",");
+      }).join("\r\n");
+      var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      window.setTimeout(function () {
+        URL.revokeObjectURL(url);
+        link.remove();
+      }, 800);
+    }
+
+    function defaultSetup() {
       return {
-        org: "sme",
+        organizationName: "",
+        organizationType: "small-employer",
         country: "NG",
-        period: "2026-05",
-        employees: [],
-        letters: [],
-        leave: [],
-        documents: [
-          { id: "id-proof", title: "Identity proof", status: "missing", note: "Collect national ID, passport, or business-approved identity proof." },
-          { id: "contract", title: "Contract folder", status: "open", note: "Employment letter, contract, role note, and policy acknowledgement." },
-          { id: "payroll-details", title: "Payroll details", status: "missing", note: "Tax ID, pension/social security, bank or mobile-money route." }
-        ],
-        onboarding: {},
-        requests: [],
-        handoffs: []
+        currency: "NGN",
+        hrContact: "",
+        payrollContact: "",
+        leaveYearStart: "2026-01-01",
+        workWeek: "mon-fri",
+        reviewMonth: "2026-05",
+        handoffPreference: "review-only",
+        savedAt: ""
       };
     }
 
-    var state = Object.assign(defaultState(), readJson(STORAGE_KEY, {}));
-    state.employees = asArray(state.employees);
-    state.letters = asArray(state.letters);
-    state.leave = asArray(state.leave);
-    state.documents = asArray(state.documents).length ? state.documents : defaultState().documents;
-    state.requests = asArray(state.requests);
-    state.handoffs = asArray(state.handoffs);
-    state.onboarding = Object.assign({}, state.onboarding || {});
+    function defaultState() {
+      return {
+        org: "small-employer",
+        country: "NG",
+        period: "2026-05",
+        setup: defaultSetup(),
+        employees: [],
+        contacts: [],
+        payrollProfiles: [],
+        letters: [],
+        leave: [],
+        attendance: [],
+        documents: [],
+        onboarding: {},
+        onboardingTasks: [],
+        requests: [],
+        handoffs: [],
+        handoffSelection: [],
+        reports: [],
+        packetExports: []
+      };
+    }
+
+    function normalizeStateShape(value) {
+      var next = Object.assign(defaultState(), value || {});
+      next.setup = Object.assign(defaultSetup(), next.setup || {});
+      next.setup.organizationType = next.setup.organizationType || next.org || "small-employer";
+      next.setup.country = next.setup.country || next.country || "NG";
+      next.setup.currency = next.setup.currency || COUNTRY_CURRENCY[next.setup.country] || "NGN";
+      next.setup.reviewMonth = next.setup.reviewMonth || next.period || "2026-05";
+      next.org = next.setup.organizationType;
+      next.country = next.setup.country;
+      next.period = next.setup.reviewMonth;
+      next.employees = asArray(next.employees);
+      next.contacts = asArray(next.contacts);
+      next.payrollProfiles = asArray(next.payrollProfiles);
+      next.letters = asArray(next.letters);
+      next.leave = asArray(next.leave);
+      next.attendance = asArray(next.attendance);
+      next.documents = asArray(next.documents);
+      next.requests = asArray(next.requests);
+      next.handoffs = asArray(next.handoffs);
+      next.handoffSelection = asArray(next.handoffSelection);
+      next.reports = asArray(next.reports);
+      next.packetExports = asArray(next.packetExports);
+      next.onboarding = Object.assign({}, next.onboarding || {});
+      next.onboardingTasks = asArray(next.onboardingTasks);
+      return next;
+    }
+
+    var state = normalizeStateShape(readJson(STORAGE_KEY, {}));
+    var pendingAccountSave = false;
+    var pendingAccountPull = null;
 
     function normalizePayrollEmployee(raw, index) {
       raw = raw || {};
       return {
         id: text(raw.id || raw.employeeRecordId || raw.employeeId || raw.employeeCode, "payroll-" + index),
+        employeeCode: text(raw.employeeCode || raw.employee_code || raw.code, "PAY-" + String(index + 1).padStart(3, "0")),
         name: text(raw.name || raw.fullName || raw.full_name, "Payroll employee " + (index + 1)),
+        preferredName: text(raw.preferredName || raw.preferred_name, ""),
         email: text(raw.email, ""),
         phone: text(raw.phone, ""),
         country: text(raw.country || raw.countryCode || raw.country_code, ""),
         role: text(raw.role || raw.roleTitle || raw.jobTitle || raw.role_title, ""),
         department: text(raw.department, ""),
+        manager: text(raw.manager || raw.managerName || raw.manager_name, ""),
         taxId: text(raw.taxId || raw.taxID || raw.tax_id, ""),
         socialSecurityId: text(raw.socialSecurityId || raw.pensionSocialSecurityId || raw.pensionId || raw.social_id, ""),
         bankAccountOrMobile: text(raw.bankAccountOrMobile || raw.bankAccount || raw.accountNumber || raw.mobileMoney || raw.account_or_mobile, ""),
+        paySchedule: text(raw.paySchedule || raw.pay_schedule, "monthly"),
+        defaultCurrency: text(raw.defaultCurrency || raw.currency || raw.currencyCode || raw.currency_code, state.setup.currency || "NGN"),
+        linkedPayrollEmployeeId: text(raw.id || raw.employeeId || raw.employee_id, ""),
         employmentType: text(raw.employmentType || raw.type, ""),
+        startDate: text(raw.startDate || raw.hireDate || raw.hire_date, ""),
+        probationEndDate: text(raw.probationEndDate || raw.probation_end_date, ""),
+        emergencyContactName: text(raw.emergencyContactName || raw.emergency_name, ""),
+        emergencyContactPhone: text(raw.emergencyContactPhone || raw.emergency_phone, ""),
+        addressLocation: text(raw.addressLocation || raw.address || raw.location, ""),
+        nextOfKinNote: text(raw.nextOfKinNote || raw.next_of_kin_note, ""),
         status: text(raw.status, "active"),
-        source: "Payroll employee master"
+        source: "Payroll records"
       };
     }
 
@@ -559,24 +1195,66 @@
       return [];
     }
 
+    function setupItems() {
+      var setup = state.setup || defaultSetup();
+      return [
+        ["organization profile", !!(text(setup.organizationName, "") && setup.organizationType && setup.country && setup.currency)],
+        ["first employee", allEmployees().length > 0],
+        ["HR contact", !!text(setup.hrContact, "")],
+        ["payroll contact", !!text(setup.payrollContact, "")],
+        ["leave settings", !!(setup.leaveYearStart && setup.workWeek)],
+        ["document checklist", state.documents.length > 0]
+      ];
+    }
+
+    function setupScore() {
+      var items = setupItems();
+      var done = items.filter(function (item) { return item[1]; }).length;
+      return Math.round((done / items.length) * 100);
+    }
+
+    function setupTone(score) {
+      if (score >= 80) return "ready";
+      if (score >= 45) return "review";
+      return "missing";
+    }
+
+    function setupLabel() {
+      return SETUP_LABELS[state.setup.organizationType] || "Organization";
+    }
+
     function hrEmployee(index) {
       var names = ["Amina Okafor", "Brian Otieno", "Nandi Mensah", "Musa Diallo", "Lerato Mokoena"];
       var roles = ["Operations assistant", "Payroll clerk", "Clinic administrator", "Teacher", "Field officer"];
       var name = names[index % names.length];
+      var code = "HR-" + String(index + 1).padStart(3, "0");
       return {
         id: "hr-" + Date.now(),
+        employeeCode: code,
         name: name,
+        preferredName: name.split(" ")[0],
         email: index % 2 ? "" : name.toLowerCase().replace(/\s+/g, ".") + "@example.com",
         phone: "",
         country: state.country,
         role: roles[index % roles.length],
         department: index % 2 ? "Operations" : "Admin",
+        manager: "",
+        addressLocation: "",
+        emergencyContactName: "",
+        emergencyContactPhone: "",
+        nextOfKinNote: "",
         taxId: "",
         socialSecurityId: "",
         bankAccountOrMobile: "",
+        salaryPayNote: "",
+        paySchedule: "monthly",
+        defaultCurrency: state.setup.currency || COUNTRY_CURRENCY[state.country] || "NGN",
+        linkedPayrollEmployeeId: "",
         employmentType: "employee",
+        startDate: todayIso(),
+        probationEndDate: "",
         status: "onboarding",
-        source: "AfroHR local"
+        source: "Saved on this device"
       };
     }
 
@@ -595,6 +1273,132 @@
       return Math.round(((REQUIRED_FIELDS.length - missing) / REQUIRED_FIELDS.length) * 100);
     }
 
+    function onboardingTaskDefinition(key) {
+      return ONBOARDING_TASKS.find(function (task) { return task[0] === key; }) || [key, key, ""];
+    }
+
+    function normalizeOnboardingStatus(value) {
+      value = text(value, "not-started").replace(/_/g, "-").toLowerCase();
+      return ONBOARDING_STATUSES.some(function (item) { return item[0] === value; }) ? value : "not-started";
+    }
+
+    function onboardingStatusLabel(value) {
+      value = normalizeOnboardingStatus(value);
+      var match = ONBOARDING_STATUSES.find(function (item) { return item[0] === value; });
+      return match ? match[1] : "not started";
+    }
+
+    function onboardingStatusTone(value) {
+      value = normalizeOnboardingStatus(value);
+      if (value === "completed") return "ready";
+      if (value === "ready-for-review") return "review";
+      if (value === "waiting-on-employee") return "missing";
+      if (value === "in-progress") return "open";
+      return "missing";
+    }
+
+    function onboardingAutoStatus(employee, key) {
+      if (state.onboarding[key]) return "completed";
+      if (key === "profile") return ["employeeCode", "name", "country", "role", "employmentType", "startDate", "status"].every(function (field) { return text(employee[field], ""); }) ? "ready-for-review" : "in-progress";
+      if (key === "emergency") return employee.emergencyContactName && employee.emergencyContactPhone ? "ready-for-review" : "waiting-on-employee";
+      if (key === "payroll") return employee.taxId && employee.socialSecurityId && employee.bankAccountOrMobile ? "ready-for-review" : "waiting-on-employee";
+      if (key === "document") return state.documents.some(function (doc) { return doc.employeeId === employee.id || !doc.employeeId; }) ? "ready-for-review" : "not-started";
+      if (key === "contract") return state.letters.some(function (letter) { return letter.employeeId === employee.id; }) ? "ready-for-review" : "not-started";
+      if (key === "managerIntro") return employee.manager ? "in-progress" : "not-started";
+      return "not-started";
+    }
+
+    function onboardingTaskNote(employee, key) {
+      if (key === "profile") return missingFields(employee).filter(function (field) {
+        return ["employeeCode", "name", "country", "role", "employmentType", "startDate", "status"].indexOf(field) >= 0;
+      }).length ? "Profile details need review." : "Profile details prepared.";
+      if (key === "emergency") return employee.emergencyContactName && employee.emergencyContactPhone ? "Emergency contact prepared." : "Emergency contact needs review.";
+      if (key === "payroll") return employee.taxId && employee.socialSecurityId && employee.bankAccountOrMobile ? "Payroll readiness details prepared." : "Payroll readiness details need review.";
+      if (key === "document") return "Document metadata only. No file upload is active.";
+      if (key === "contract") return "Draft only. Legal review is needed before use.";
+      if (key === "policy") return "Policy acknowledgement note prepared for review.";
+      if (key === "managerIntro") return employee.manager ? "Manager intro prepared for " + employee.manager + "." : "Manager intro needs review.";
+      return "First-day task note prepared for review.";
+    }
+
+    function employeeOnboardingTasks(employee) {
+      return ONBOARDING_TASKS.map(function (definition) {
+        var key = definition[0];
+        var existing = state.onboardingTasks.find(function (task) {
+          return task.employeeId === employee.id && task.taskKey === key;
+        });
+        return Object.assign({
+          id: "task-" + employee.id + "-" + key,
+          employeeId: employee.id,
+          employee: employee.name,
+          taskKey: key,
+          title: definition[1],
+          note: onboardingTaskNote(employee, key),
+          status: onboardingAutoStatus(employee, key),
+          reviewer: state.setup.hrContact || "HR reviewer",
+          updatedAt: ""
+        }, existing || {});
+      });
+    }
+
+    function upsertOnboardingTask(employee, key, patch) {
+      var existingIndex = state.onboardingTasks.findIndex(function (task) {
+        return task.employeeId === employee.id && task.taskKey === key;
+      });
+      var definition = onboardingTaskDefinition(key);
+      var record = Object.assign({
+        id: "task-" + employee.id + "-" + key,
+        employeeId: employee.id,
+        employee: employee.name,
+        taskKey: key,
+        title: definition[1],
+        note: onboardingTaskNote(employee, key),
+        status: onboardingAutoStatus(employee, key),
+        reviewer: state.setup.hrContact || "HR reviewer"
+      }, existingIndex >= 0 ? state.onboardingTasks[existingIndex] : {}, patch || {}, {
+        updatedAt: new Date().toISOString()
+      });
+      if (existingIndex >= 0) state.onboardingTasks[existingIndex] = record;
+      else state.onboardingTasks.push(record);
+      state.onboarding[key] = employeeOnboardingTasks(employee).every(function (task) {
+        return task.taskKey === key ? normalizeOnboardingStatus(record.status) === "completed" : true;
+      }) && normalizeOnboardingStatus(record.status) === "completed";
+      return record;
+    }
+
+    function ensureOnboardingRecords(employee) {
+      employeeOnboardingTasks(employee).forEach(function (task) {
+        upsertOnboardingTask(employee, task.taskKey, task);
+      });
+    }
+
+    function onboardingComplete(employee) {
+      if (!employee) return state.employees.length > 0 && state.employees.every(onboardingComplete);
+      return employeeOnboardingTasks(employee).every(function (task) {
+        return normalizeOnboardingStatus(task.status) === "completed";
+      });
+    }
+
+    function employeeStatusLabel(value) {
+      value = text(value, "onboarding").replace(/_/g, " ");
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    function readinessBadges(employee) {
+      var badges = [];
+      var identityMissing = missingFields(employee).some(function (field) {
+        return ["employeeCode", "name", "email", "phone", "country", "role", "employmentType", "startDate", "status"].indexOf(field) >= 0;
+      });
+      if (identityMissing) badges.push(["Review needed", "review"]);
+      if (!text(employee.taxId, "")) badges.push(["Missing tax ID", "missing"]);
+      if (!text(employee.socialSecurityId, "")) badges.push(["Missing social/security ID", "missing"]);
+      if (!text(employee.bankAccountOrMobile, "")) badges.push(["Missing payment route", "missing"]);
+      if (!text(employee.emergencyContactName, "") || !text(employee.emergencyContactPhone, "")) badges.push(["Missing emergency contact", "missing"]);
+      if (!onboardingComplete(employee)) badges.push(["Onboarding incomplete", "review"]);
+      if (!badges.length) badges.push(["Ready for payroll", "ready"]);
+      return badges;
+    }
+
     function overallReadiness() {
       var employees = allEmployees();
       if (!employees.length) return 0;
@@ -610,41 +1414,728 @@
       }).length;
     }
 
+    function normalizeLeaveStatus(value) {
+      value = text(value, "requested").toLowerCase().replace(/_/g, " ");
+      return LEAVE_STATUSES.indexOf(value) >= 0 ? value : "requested";
+    }
+
+    function leaveStatusTone(value) {
+      value = normalizeLeaveStatus(value);
+      if (value === "approved") return "ready";
+      if (value === "rejected" || value === "cancelled") return "missing";
+      if (value === "payroll review") return "review";
+      return "open";
+    }
+
+    function normalizeAttendanceType(value) {
+      value = text(value, "present").toLowerCase().replace(/_/g, " ");
+      return ATTENDANCE_EVENT_TYPES.indexOf(value) >= 0 ? value : "present";
+    }
+
+    function employeeNameById(id) {
+      var employee = localEmployeeById(id);
+      return employee ? employee.name : "";
+    }
+
+    function inclusiveDays(startDate, endDate) {
+      var start = new Date((startDate || todayIso()) + "T00:00:00");
+      var end = new Date((endDate || startDate || todayIso()) + "T00:00:00");
+      if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 1;
+      return Math.max(1, Math.round((end.getTime() - start.getTime()) / 86400000) + 1);
+    }
+
+    function firstWorkEmployee() {
+      if (!state.employees.length) {
+        var employee = hrEmployee(0);
+        state.employees.push(employee);
+        ensureOnboardingRecords(employee);
+      }
+      return state.employees[0];
+    }
+
+    function buildLeaveRequest(overrides) {
+      overrides = overrides || {};
+      var employee = overrides.employeeId ? localEmployeeById(overrides.employeeId) : firstWorkEmployee();
+      var start = overrides.startDate || todayIso();
+      var end = overrides.endDate || start;
+      var type = text(overrides.leaveType || overrides.type, state.leave.length % 3 === 2 ? "unpaid leave" : "annual leave");
+      var status = normalizeLeaveStatus(overrides.status || (type === "unpaid leave" ? "payroll review" : "requested"));
+      return {
+        id: overrides.id || "LEAVE-" + String(state.leave.length + 1).padStart(3, "0"),
+        employeeId: employee ? employee.id : "",
+        employee: employee ? employee.name : "Missing employee",
+        leaveType: type,
+        type: type,
+        startDate: start,
+        endDate: end,
+        date: start,
+        days: Number(overrides.days) || inclusiveDays(start, end),
+        status: status,
+        approver: text(overrides.approver, state.setup.hrContact || "Manager review"),
+        note: text(overrides.note, "Leave request prepared for review."),
+        payrollImpactNote: text(overrides.payrollImpactNote, type === "unpaid leave" || status === "payroll review" ? "Payroll review note: check whether this affects pay before payroll is prepared." : "")
+      };
+    }
+
+    function buildAttendanceEvent(overrides) {
+      overrides = overrides || {};
+      var employee = overrides.employeeId ? localEmployeeById(overrides.employeeId) : firstWorkEmployee();
+      var eventType = normalizeAttendanceType(overrides.eventType || overrides.type || (state.attendance.length % 3 === 1 ? "overtime" : state.attendance.length % 3 === 2 ? "unpaid absence" : "present"));
+      var hours = Number(overrides.hours);
+      if (!Number.isFinite(hours) || hours <= 0) hours = eventType === "overtime" ? 2 : eventType === "unpaid absence" || eventType === "absent" ? 0 : 8;
+      return {
+        id: overrides.id || "ATTEND-" + String(state.attendance.length + 1).padStart(3, "0"),
+        employeeId: employee ? employee.id : "",
+        employee: employee ? employee.name : "Missing employee",
+        date: overrides.date || todayIso(),
+        eventType: eventType,
+        type: eventType,
+        hours: hours,
+        status: eventType === "unpaid absence" || eventType === "overtime" ? "payroll review" : "approved",
+        note: text(overrides.note, eventType === "overtime" ? "Overtime attendance record prepared for approval." : eventType === "unpaid absence" ? "Unpaid absence needs payroll review." : "Attendance record prepared."),
+        payrollImpactNote: text(overrides.payrollImpactNote, eventType === "unpaid absence" ? "Payroll review note: unpaid absence may affect payroll after approval." : eventType === "overtime" ? "Payroll review note: overtime needs approval before payroll." : "")
+      };
+    }
+
+    function leaveDatesOverlap(a, b) {
+      var aStart = new Date((a.startDate || a.date || todayIso()) + "T00:00:00").getTime();
+      var aEnd = new Date((a.endDate || a.startDate || a.date || todayIso()) + "T00:00:00").getTime();
+      var bStart = new Date((b.startDate || b.date || todayIso()) + "T00:00:00").getTime();
+      var bEnd = new Date((b.endDate || b.startDate || b.date || todayIso()) + "T00:00:00").getTime();
+      if (![aStart, aEnd, bStart, bEnd].every(Number.isFinite)) return false;
+      return aStart <= bEnd && bStart <= aEnd;
+    }
+
+    function leaveWarnings(item) {
+      var warnings = [];
+      if (!item.employeeId || !localEmployeeById(item.employeeId)) warnings.push("missing employee");
+      var status = normalizeLeaveStatus(item.status);
+      if (text(item.leaveType || item.type, "").toLowerCase().indexOf("unpaid") >= 0 || status === "payroll review") warnings.push("unpaid absence needs payroll review");
+      var overlaps = state.leave.some(function (other) {
+        if (other.id === item.id) return false;
+        if (normalizeLeaveStatus(other.status) === "cancelled" || normalizeLeaveStatus(other.status) === "rejected") return false;
+        return other.employeeId === item.employeeId && leaveDatesOverlap(item, other);
+      });
+      if (overlaps) warnings.push("overlapping leave");
+      return warnings;
+    }
+
+    function attendanceWarnings(item) {
+      var warnings = [];
+      if (!item.employeeId || !localEmployeeById(item.employeeId)) warnings.push("missing employee");
+      var type = normalizeAttendanceType(item.eventType || item.type);
+      if (type === "unpaid absence") warnings.push("unpaid absence needs payroll review");
+      if (type === "overtime") warnings.push("overtime needs approval");
+      return warnings;
+    }
+
+    function hasPayrollImpact(item, kind) {
+      if (text(item.payrollImpactNote, "")) return true;
+      if (kind === "leave") return normalizeLeaveStatus(item.status) === "payroll review" || text(item.leaveType || item.type, "").toLowerCase().indexOf("unpaid") >= 0;
+      return ["unpaid absence", "overtime"].indexOf(normalizeAttendanceType(item.eventType || item.type)) >= 0;
+    }
+
+    function leaveDashboardCounts() {
+      var leavePending = state.leave.filter(function (item) { return normalizeLeaveStatus(item.status) === "requested"; }).length;
+      var approvedLeave = state.leave.filter(function (item) { return normalizeLeaveStatus(item.status) === "approved"; }).length;
+      var unpaidAbsence = state.attendance.filter(function (item) { return normalizeAttendanceType(item.eventType || item.type) === "unpaid absence"; }).length + state.leave.filter(function (item) { return text(item.leaveType || item.type, "").toLowerCase().indexOf("unpaid") >= 0; }).length;
+      var overtime = state.attendance.filter(function (item) { return normalizeAttendanceType(item.eventType || item.type) === "overtime"; }).length;
+      var payrollImpact = state.leave.filter(function (item) { return hasPayrollImpact(item, "leave"); }).length + state.attendance.filter(function (item) { return hasPayrollImpact(item, "attendance"); }).length;
+      return { leavePending: leavePending, approvedLeave: approvedLeave, unpaidAbsence: unpaidAbsence, overtime: overtime, payrollImpact: payrollImpact };
+    }
+
+    function normalizeDocumentType(value) {
+      value = text(value, "other").toLowerCase().replace(/_/g, " ").replace(/-/g, " ");
+      if (/^id$|identity/.test(value)) return "ID";
+      if (/appointment/.test(value)) return "appointment letter";
+      if (/policy/.test(value)) return "policy acknowledgement";
+      if (/cert/.test(value)) return "certificate";
+      if (/permit/.test(value)) return "work permit";
+      if (/payroll|payment|bank|tax|pension|social/.test(value)) return "payroll detail proof";
+      if (/medical|admin/.test(value)) return "medical/admin note";
+      if (/contract/.test(value)) return "contract";
+      return DOCUMENT_TYPES.indexOf(value) >= 0 ? value : "other";
+    }
+
+    function normalizeDocumentStatus(value) {
+      value = text(value, "needs review").toLowerCase().replace(/_/g, " ").replace(/-/g, " ");
+      if (/ready|verified|received/.test(value)) return "received";
+      if (/expire soon/.test(value)) return "expires soon";
+      if (/expired/.test(value)) return "expired";
+      if (/missing|request/.test(value)) return "missing";
+      if (/archiv/.test(value)) return "archived";
+      return DOCUMENT_STATUSES.indexOf(value) >= 0 ? value : "needs review";
+    }
+
+    function documentStatusTone(value) {
+      value = normalizeDocumentStatus(value);
+      if (value === "received") return "ready";
+      if (value === "expired" || value === "missing") return "missing";
+      if (value === "expires soon" || value === "needs review") return "review";
+      return "open";
+    }
+
+    function addDaysIso(days) {
+      var date = new Date(todayIso() + "T00:00:00");
+      date.setDate(date.getDate() + days);
+      return date.toISOString().slice(0, 10);
+    }
+
+    function daysUntil(value) {
+      if (!value) return null;
+      var target = new Date(value + "T00:00:00");
+      var today = new Date(todayIso() + "T00:00:00");
+      if (Number.isNaN(target.getTime())) return null;
+      return Math.round((target.getTime() - today.getTime()) / 86400000);
+    }
+
+    function documentEmployeeName(doc) {
+      return text(doc.employee, "") || employeeNameById(doc.employeeId) || "Unassigned";
+    }
+
+    function documentFileReference(doc) {
+      return text(doc.fileReferencePlaceholder || doc.fileReference || doc.fileName, "No file uploaded from this workspace yet");
+    }
+
+    function documentReminderStatus(doc) {
+      var status = normalizeDocumentStatus(doc.status || doc.documentStatus);
+      var days = daysUntil(doc.expiryDate);
+      if (status === "missing") return "missing";
+      if (status === "expired" || (days !== null && days < 0)) return "expired";
+      if (days !== null && days <= 30) return "expires soon";
+      if (status === "needs review") return "needs review";
+      return "";
+    }
+
+    function documentReminderCounts() {
+      var counts = { "expires soon": 0, expired: 0, missing: 0, "needs review": 0 };
+      documentReminderItems().forEach(function (item) {
+        if (counts[item.reminderStatus] !== undefined) counts[item.reminderStatus] += 1;
+      });
+      return counts;
+    }
+
+    function documentRecordsForEmployee(employee) {
+      return state.documents.filter(function (doc) {
+        return String(doc.employeeId || "") === String(employee.id || "");
+      });
+    }
+
+    function missingDocumentItems() {
+      var rows = [];
+      state.employees.forEach(function (employee) {
+        var records = documentRecordsForEmployee(employee);
+        REQUIRED_DOCUMENT_TYPES.forEach(function (type) {
+          var hasType = records.some(function (doc) {
+            return normalizeDocumentType(doc.documentType || doc.document_type || doc.title) === type && ["missing", "archived"].indexOf(normalizeDocumentStatus(doc.status || doc.documentStatus)) < 0;
+          });
+          if (!hasType) {
+            rows.push({
+              id: "missing-" + employee.id + "-" + slug(type),
+              employeeId: employee.id,
+              employee: employee.name,
+              documentType: type,
+              title: type + " document record",
+              status: "missing",
+              reminderStatus: "missing",
+              reviewer: state.setup.hrContact || "HR reviewer",
+              note: "Missing document record metadata. No file is uploaded from this workspace yet.",
+              fileReferencePlaceholder: "No file uploaded from this workspace yet"
+            });
+          }
+        });
+      });
+      return rows;
+    }
+
+    function documentReminderItems() {
+      var actual = state.documents.map(function (doc) {
+        var reminder = documentReminderStatus(doc);
+        return Object.assign({ reminderStatus: reminder }, doc);
+      }).filter(function (doc) { return !!doc.reminderStatus; });
+      return actual.concat(missingDocumentItems());
+    }
+
+    function buildDocumentRecord(overrides) {
+      overrides = overrides || {};
+      var employee = overrides.employeeId ? localEmployeeById(overrides.employeeId) : firstLocalEmployee();
+      var type = normalizeDocumentType(overrides.documentType || DOCUMENT_TYPES[state.documents.length % DOCUMENT_TYPES.length]);
+      var status = normalizeDocumentStatus(overrides.status || "needs review");
+      return {
+        id: overrides.id || "DOC-" + String(state.documents.length + 1).padStart(3, "0"),
+        employeeId: overrides.employeeId || employee.id,
+        employee: overrides.employee || employee.name,
+        documentType: type,
+        title: text(overrides.title, type + " document record - " + employee.name),
+        status: status,
+        issueDate: text(overrides.issueDate, todayIso()),
+        expiryDate: text(overrides.expiryDate, type === "work permit" || type === "certificate" ? addDaysIso(30) : ""),
+        reviewer: text(overrides.reviewer, state.setup.hrContact || "HR reviewer"),
+        note: text(overrides.note, "Document record metadata prepared for review. No file is uploaded from this workspace yet."),
+        fileReferencePlaceholder: text(overrides.fileReferencePlaceholder || overrides.fileReference, "No file uploaded from this workspace yet")
+      };
+    }
+
+    function handoffCandidateEmployees() {
+      return state.employees.filter(function (employee) {
+        var status = text(employee.status, "").toLowerCase();
+        return status !== "inactive" && status !== "terminated";
+      });
+    }
+
+    function selectedHandoffIds() {
+      var candidates = handoffCandidateEmployees().map(function (employee) { return String(employee.id); });
+      var selected = state.handoffSelection.filter(function (id) {
+        return candidates.indexOf(String(id)) >= 0;
+      });
+      return selected.length ? selected : candidates;
+    }
+
+    function selectedHandoffEmployees(employeeIds) {
+      var ids = (employeeIds || selectedHandoffIds()).map(String);
+      return state.employees.filter(function (employee) {
+        return ids.indexOf(String(employee.id)) >= 0;
+      });
+    }
+
+    function isPayrollReadyEmployee(employee) {
+      return readinessBadges(employee).some(function (badge) {
+        return badge[0] === "Ready for payroll";
+      });
+    }
+
+    function payrollImpactRecords(employeeIds) {
+      var ids = (employeeIds || selectedHandoffIds()).map(String);
+      var rows = [];
+      state.leave.forEach(function (item) {
+        if (item.employeeId && ids.indexOf(String(item.employeeId)) < 0) return;
+        var warnings = leaveWarnings(item);
+        if (!hasPayrollImpact(item, "leave") && !warnings.length) return;
+        rows.push({
+          source: "leave tracker",
+          recordId: item.id || "",
+          employeeId: item.employeeId || "",
+          employee: item.employee || employeeNameById(item.employeeId) || "Review needed",
+          type: item.leaveType || item.type || "leave request",
+          date: item.startDate || item.date || "",
+          amount: item.days || "",
+          status: normalizeLeaveStatus(item.status),
+          payrollReviewNote: item.payrollImpactNote || item.note || "",
+          warnings: warnings
+        });
+      });
+      state.attendance.forEach(function (item) {
+        if (item.employeeId && ids.indexOf(String(item.employeeId)) < 0) return;
+        var warnings = attendanceWarnings(item);
+        if (!hasPayrollImpact(item, "attendance") && !warnings.length) return;
+        rows.push({
+          source: "attendance record",
+          recordId: item.id || "",
+          employeeId: item.employeeId || "",
+          employee: item.employee || employeeNameById(item.employeeId) || "Review needed",
+          type: normalizeAttendanceType(item.eventType || item.type),
+          date: item.date || "",
+          amount: item.hours || 0,
+          status: item.status || "payroll review",
+          payrollReviewNote: item.payrollImpactNote || item.note || "",
+          warnings: warnings
+        });
+      });
+      return rows;
+    }
+
+    function payrollImpactNotesForEmployee(employee) {
+      return payrollImpactRecords([employee.id]).map(function (item) {
+        return item.source + ": " + item.type + " " + item.date + " - " + (item.payrollReviewNote || item.warnings.join("; ") || "Review needed");
+      }).join("; ");
+    }
+
+    function payrollHandoffEmployeeRow(employee) {
+      return {
+        employeeCode: employee.employeeCode || "",
+        name: employee.name || "",
+        email: employee.email || "",
+        phone: employee.phone || "",
+        country: employee.country || "",
+        department: employee.department || "",
+        role: employee.role || "",
+        taxId: employee.taxId || "",
+        socialSecurityId: employee.socialSecurityId || "",
+        bankAccountOrMobile: employee.bankAccountOrMobile || "",
+        paySchedule: employee.paySchedule || "monthly",
+        payrollImpactNotes: payrollImpactNotesForEmployee(employee)
+      };
+    }
+
+    function payrollHandoffHeaders() {
+      return [
+        "employee code", "name", "email", "phone", "country", "department", "role",
+        "tax ID", "social/security ID", "bank/mobile-money route", "pay schedule",
+        "payroll impact notes"
+      ];
+    }
+
+    function payrollHandoffRowValues(row) {
+      return [
+        row.employeeCode, row.name, row.email, row.phone, row.country, row.department,
+        row.role, row.taxId, row.socialSecurityId, row.bankAccountOrMobile,
+        row.paySchedule, row.payrollImpactNotes
+      ];
+    }
+
+    function buildPayrollHandoffSnapshot(employeeIds) {
+      var employees = selectedHandoffEmployees(employeeIds);
+      var ready = employees.filter(isPayrollReadyEmployee);
+      var missing = employees.filter(function (employee) { return !isPayrollReadyEmployee(employee); });
+      var impact = payrollImpactRecords(employees.map(function (employee) { return employee.id; }));
+      var reviewerNote = text(els.handoffReviewerNote && els.handoffReviewerNote.value, "Review before import in AfroPayroll.");
+      return {
+        organization: state.setup.organizationName || setupLabel() + " People workspace",
+        period: state.period || state.setup.reviewMonth,
+        preference: state.setup.handoffPreference,
+        reviewer: state.setup.payrollContact || state.setup.hrContact || "Payroll reviewer",
+        reviewerNote: reviewerNote,
+        employeeIds: employees.map(function (employee) { return employee.id; }),
+        selectedEmployees: employees.map(payrollHandoffEmployeeRow),
+        payrollReadyEmployees: ready.map(payrollHandoffEmployeeRow),
+        missingDetailEmployees: missing.map(function (employee) {
+          var row = payrollHandoffEmployeeRow(employee);
+          row.missingFields = missingFields(employee).map(function (field) { return FIELD_LABELS[field] || field; }).join("; ");
+          row.readinessBadges = readinessBadges(employee).map(function (badge) { return badge[0]; }).join("; ");
+          return row;
+        }),
+        payrollImpactItems: impact
+      };
+    }
+
+    function handoffSignature(snapshot) {
+      return [
+        snapshot.employeeIds.join("|"),
+        snapshot.reviewerNote,
+        snapshot.payrollReadyEmployees.length,
+        snapshot.missingDetailEmployees.length,
+        snapshot.payrollImpactItems.map(function (item) { return item.source + ":" + item.recordId; }).join("|")
+      ].join("::");
+    }
+
+    function savePayrollHandoffDraft(employeeIds, options) {
+      var snapshot = buildPayrollHandoffSnapshot(employeeIds);
+      var signature = handoffSignature(snapshot);
+      var reusable = !options || options.reuse !== false;
+      if (reusable) {
+        var existing = state.handoffs.slice().reverse().find(function (handoff) {
+          return handoff.signature === signature;
+        });
+        if (existing) return existing;
+      }
+      var handoff = Object.assign({
+        id: "PAY-HANDOFF-" + String(state.handoffs.length + 1).padStart(3, "0"),
+        createdAt: new Date().toISOString(),
+        employees: snapshot.selectedEmployees.length,
+        ready: snapshot.payrollReadyEmployees.length,
+        missing: snapshot.missingDetailEmployees.length,
+        payrollImpact: snapshot.payrollImpactItems.length,
+        status: "Review needed",
+        signature: signature,
+        note: "Payroll handoff draft prepared for " + snapshot.selectedEmployees.length + " selected employee record(s). Download handoff and review before import. No Payroll records were changed."
+      }, snapshot);
+      state.handoffs.push(handoff);
+      saveState();
+      recordHandoffHistory(handoff, "handoff");
+      return handoff;
+    }
+
+    function recordHandoffHistory(handoff, action) {
+      var bridge = accountBridge();
+      if (!bridge || typeof bridge.recordAuditEvent !== "function" || !handoff) return;
+      bridge.recordAuditEvent({
+        eventType: "payroll_handoff",
+        action: action || "handoff",
+        tableName: "hr_payroll_handoffs",
+        recordId: handoff.id,
+        note: "Payroll handoff draft recorded for review before import.",
+        metadata: {
+          source: "Saved on this device",
+          selectedEmployees: handoff.employees || 0,
+          payrollReadyEmployees: handoff.ready || 0,
+          missingDetailEmployees: handoff.missing || 0,
+          payrollImpactItems: handoff.payrollImpact || 0
+        }
+      }).catch(function () {});
+    }
+
+    function accountBridge() {
+      return window.AfroHRSync || null;
+    }
+
+    function accountMessage(error) {
+      var bridge = accountBridge();
+      if (bridge && typeof bridge.friendlyError === "function") return bridge.friendlyError(error);
+      return error && error.message ? error.message : "Account save is not available right now.";
+    }
+
+    function setAccountStatus(title, message, tone) {
+      if (els.accountStatusText) els.accountStatusText.textContent = title || "Saved on this device";
+      if (els.accountReviewText) els.accountReviewText.textContent = message || "Account actions are manual.";
+      if (els.modePill) {
+        els.modePill.textContent = tone === "account" ? "Save to account ready" : tone === "review" ? "Review before replacing" : "Saved on this device";
+        els.modePill.className = "hr-pill " + (tone === "account" ? "ready" : tone === "review" ? "review" : "workspace");
+      }
+    }
+
+    function showAccountConflict(lines) {
+      if (!els.accountConflictNote) return;
+      var conflicts = asArray(lines);
+      if (!conflicts.length) {
+        els.accountConflictNote.classList.add("hr-hidden");
+        els.accountConflictNote.textContent = "Review before replacing.";
+        return;
+      }
+      els.accountConflictNote.textContent = "Review before replacing: " + conflicts.join("; ") + ".";
+      els.accountConflictNote.classList.remove("hr-hidden");
+      setAccountStatus("Review before replacing", "Choose the same action again only after checking the warning.", "review");
+    }
+
+    function renderAccountMeta() {
+      var bridge = accountBridge();
+      var meta = bridge && typeof bridge.getAccountMeta === "function" ? bridge.getAccountMeta() : {};
+      var last = meta.lastSavedAt || meta.lastAccountSavedAt || meta.lastPulledAt || "";
+      if (els.accountLastSaved) els.accountLastSaved.textContent = last ? stampLabel(last) : "No account save recorded yet";
+      if (!pendingAccountSave && !pendingAccountPull) showAccountConflict([]);
+      if (meta.organizationName && !pendingAccountSave && !pendingAccountPull) {
+        setAccountStatus("Saved on this device", "Selected organization: " + meta.organizationName + ". Account actions run only when you click them.", "account");
+      }
+    }
+
+    function selectAccountOrganization(id) {
+      var bridge = accountBridge();
+      if (bridge && typeof bridge.setAccountMeta === "function" && id) {
+        bridge.setAccountMeta({ organizationId: id });
+      }
+    }
+
+    async function refreshAccountOrganizations() {
+      var bridge = accountBridge();
+      if (!bridge || !els.accountOrganizationSelect) {
+        setAccountStatus("Saved on this device", "Account save is not available in this browser session.", "workspace");
+        return;
+      }
+      try {
+        var available = await bridge.isCloudAvailable();
+        clear(els.accountOrganizationSelect);
+        if (!available) {
+          els.accountOrganizationSelect.appendChild(new Option("Sign in to choose a saved organization", ""));
+          setAccountStatus("Saved on this device", "Sign in to use Save to account. You can keep working here without signing in.", "workspace");
+          renderAccountMeta();
+          return;
+        }
+        var organizations = await bridge.loadOrganizations();
+        var meta = bridge.getAccountMeta ? bridge.getAccountMeta() : {};
+        els.accountOrganizationSelect.appendChild(new Option(organizations.length ? "Choose saved organization" : "No saved organization yet", ""));
+        organizations.forEach(function (item) {
+          var option = new Option((item.name || "Saved organization") + " - " + (item.currency_code || state.setup.currency || "NGN"), item.id);
+          els.accountOrganizationSelect.appendChild(option);
+        });
+        if (meta.organizationId) els.accountOrganizationSelect.value = meta.organizationId;
+        setAccountStatus(
+          organizations.length ? "Save to account ready" : "Create account organization",
+          organizations.length ? "Choose a saved organization, then Save to account or Pull from account." : "Create an account organization when you are ready.",
+          "account"
+        );
+        renderAccountMeta();
+      } catch (err) {
+        clear(els.accountOrganizationSelect);
+        els.accountOrganizationSelect.appendChild(new Option("Account save not available", ""));
+        setAccountStatus("Saved on this device", accountMessage(err), "workspace");
+      }
+    }
+
+    function downloadDeviceBackup(reason) {
+      var payload = {
+        createdAt: new Date().toISOString(),
+        reason: reason || "Device backup",
+        organization: state.setup,
+        workspace: state
+      };
+      var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = "afrohr-device-backup-" + todayIso() + ".json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(function () {
+        URL.revokeObjectURL(url);
+      }, 500);
+    }
+
+    async function createAccountOrganization() {
+      var bridge = accountBridge();
+      if (!bridge) return;
+      try {
+        readSetupFromFields();
+        saveState();
+        setAccountStatus("Creating account organization", "Please wait while AfroHR prepares account saving.", "review");
+        var result = await bridge.createOrganizationFromLocalSnapshot(state);
+        pendingAccountSave = false;
+        pendingAccountPull = null;
+        els.saveAccountBtn.textContent = "Save to account";
+        els.pullAccountBtn.textContent = "Pull from account";
+        setAccountStatus("Save to account ready", "Created account organization for these people records.", "account");
+        await refreshAccountOrganizations();
+        if (result.organizationId) els.accountOrganizationSelect.value = result.organizationId;
+      } catch (err) {
+        setAccountStatus("Saved on this device", accountMessage(err), "workspace");
+      }
+    }
+
+    async function saveToAccount() {
+      var bridge = accountBridge();
+      if (!bridge) return;
+      try {
+        readSetupFromFields();
+        saveState();
+        var organizationId = els.accountOrganizationSelect && els.accountOrganizationSelect.value ? els.accountOrganizationSelect.value : "";
+        if (organizationId) selectAccountOrganization(organizationId);
+        setAccountStatus("Saving to account", "Reviewing the device copy before account save.", "review");
+        var result = await bridge.saveLocalSnapshot(state, { organizationId: organizationId, force: pendingAccountSave });
+        if (result && result.needsReview) {
+          pendingAccountSave = true;
+          els.saveAccountBtn.textContent = "Review before replacing";
+          showAccountConflict(result.conflicts);
+          return;
+        }
+        pendingAccountSave = false;
+        els.saveAccountBtn.textContent = "Save to account";
+        showAccountConflict([]);
+        setAccountStatus("Saved to account", "Your latest device copy was saved to the selected organization.", "account");
+        await refreshAccountOrganizations();
+      } catch (err) {
+        setAccountStatus("Saved on this device", accountMessage(err), "workspace");
+      }
+    }
+
+    async function pullFromAccount() {
+      var bridge = accountBridge();
+      if (!bridge) return;
+      try {
+        var organizationId = els.accountOrganizationSelect && els.accountOrganizationSelect.value ? els.accountOrganizationSelect.value : "";
+        if (!organizationId) {
+          setAccountStatus("Choose saved organization", "Select a saved organization before pulling from account.", "review");
+          return;
+        }
+        selectAccountOrganization(organizationId);
+        var result = pendingAccountPull || await bridge.loadOrganizationSnapshot(organizationId, { compareSnapshot: state });
+        if (!pendingAccountPull && result.conflicts && result.conflicts.length) {
+          pendingAccountPull = result;
+          els.pullAccountBtn.textContent = "Review before replacing";
+          showAccountConflict(result.conflicts);
+          return;
+        }
+        downloadDeviceBackup("Backup before Pull from account");
+        state = normalizeStateShape(result.snapshot || {});
+        saveState({ preserveUpdatedAt: true });
+        pendingAccountPull = null;
+        els.pullAccountBtn.textContent = "Pull from account";
+        showAccountConflict([]);
+        renderAll();
+        setAccountStatus("Pulled from account", "A backup was downloaded before replacing the device copy.", "account");
+      } catch (err) {
+        setAccountStatus("Saved on this device", accountMessage(err), "workspace");
+      }
+    }
+
     function bindElements() {
       [
         "orgSelect", "countrySelect", "periodSelect", "refreshBtn", "resetBtn", "sendPayrollTopBtn",
-        "onboardBtn", "requestDetailsBtn", "letterBtn", "leaveBtn", "sendPayrollBtn", "addDocBtn",
-        "snapEmployees", "snapPayrollReadiness", "snapMissing", "snapPayrollSource", "metricLocalEmployees",
+        "organizationName", "organizationType", "setupCountry", "currencySelect", "hrContact",
+        "payrollContact", "leaveYearStart", "workWeekSelect", "reviewMonthSelect", "handoffPreference",
+        "setupBtn", "setupWorkflowBtn", "saveSetupBtn", "quickSaveAccountBtn", "setupScore", "setupScoreNote",
+        "setupScoreBar", "setupChecklist", "completeOnboardingBtn", "exportPacketBtn",
+        "onboardBtn", "requestDetailsBtn", "letterBtn", "exportLetterMarkdownBtn",
+        "exportOnboardingPacketBtn", "exportOnboardingCsvBtn", "leaveWorkflowBtn", "leaveBtn",
+        "attendanceBtn", "exportLeaveRegisterBtn", "exportAttendanceBtn", "exportPayrollImpactBtn",
+        "buildHandoffBtn", "handoffReviewerNote", "exportHandoffReadyBtn", "exportHandoffMissingBtn",
+        "exportHandoffImpactBtn", "downloadHandoffBtn", "handoffDashboard", "handoffEmployeeList",
+        "sendPayrollBtn", "addDocBtn",
+        "addDocumentRecordBtn", "prepareContractChecklistBtn", "exportDocumentRegisterBtn",
+        "exportExpiringDocumentsBtn", "exportPeopleSummaryBtn", "exportHrReviewPacketBtn",
+        "snapEmployees", "snapPayrollReadiness", "snapMissing", "snapSetupScore", "metricLocalEmployees",
         "metricPayrollEmployees", "metricLetters", "metricLeave", "metricDocs", "navEmployeeCount",
-        "navMissingCount", "navDocCount", "employeeBody", "missingList", "letterGrid", "leaveList",
-        "onboardingList", "docGrid", "complianceList"
+        "navMissingCount", "navDocCount", "navSetupScore", "employeeBody", "missingList", "letterGrid", "leaveDashboard", "leaveList",
+        "onboardingList", "docDashboard", "docReminderList", "docGrid", "handoffList", "peopleReportList", "complianceList",
+        "modePill", "accountOrganizationSelect", "createAccountOrganizationBtn", "saveAccountBtn",
+        "pullAccountBtn", "downloadBackupBtn", "accountStatusText", "accountReviewText",
+        "accountLastSaved", "accountConflictNote", "addEmployeeBtn", "exportRegisterBtn",
+        "exportReadinessBtn", "exportMissingBtn", "employeeDrawerBackdrop", "employeeDrawer",
+        "employeeDrawerTitle", "closeEmployeeDrawerBtn", "employeeEditId", "employeeCodeInput",
+        "employeeStatusInput", "employeeFullNameInput", "employeePreferredNameInput",
+        "employeeCountryInput", "employeeDepartmentInput", "employeeRoleInput", "employeeManagerInput",
+        "employeeTypeInput", "employeeStartDateInput", "employeeProbationInput", "employeeEmailInput",
+        "employeePhoneInput", "employeeAddressInput", "emergencyNameInput", "emergencyPhoneInput",
+        "nextOfKinInput", "employeeTaxIdInput", "employeeSocialIdInput", "employeePaymentRouteInput",
+        "employeePayScheduleInput", "employeeCurrencyInput", "employeePayNoteInput", "linkedPayrollEmployeeInput",
+        "saveEmployeeBtn", "markInactiveBtn", "requestEmployeeDetailsBtn", "employeeHandoffBtn"
       ].forEach(function (id) {
         els[id] = byId(id);
       });
     }
 
     function renderSelectors() {
-      els.orgSelect.value = state.org || "sme";
-      els.countrySelect.value = state.country || "NG";
-      els.periodSelect.value = state.period || "2026-05";
+      var setup = state.setup || defaultSetup();
+      els.orgSelect.value = setup.organizationType || "small-employer";
+      els.countrySelect.value = setup.country || "NG";
+      els.periodSelect.value = setup.reviewMonth || "2026-05";
+      els.organizationName.value = setup.organizationName || "";
+      els.organizationType.value = setup.organizationType || "small-employer";
+      els.setupCountry.value = setup.country || "NG";
+      els.currencySelect.value = setup.currency || COUNTRY_CURRENCY[setup.country] || "NGN";
+      els.hrContact.value = setup.hrContact || "";
+      els.payrollContact.value = setup.payrollContact || "";
+      els.leaveYearStart.value = setup.leaveYearStart || "2026-01-01";
+      els.workWeekSelect.value = setup.workWeek || "mon-fri";
+      els.reviewMonthSelect.value = setup.reviewMonth || "2026-05";
+      els.handoffPreference.value = setup.handoffPreference || "review-only";
     }
 
     function renderMetrics() {
       var payroll = payrollEmployees();
       var employees = allEmployees();
       var missing = missingEmployeeCount();
+      var score = setupScore();
       els.snapEmployees.textContent = String(employees.length);
       els.snapPayrollReadiness.textContent = String(overallReadiness()) + "%";
       els.snapMissing.textContent = String(missing);
-      els.snapPayrollSource.textContent = payroll.length ? "Read" : "Not found";
+      els.snapSetupScore.textContent = String(score) + "%";
       els.metricLocalEmployees.textContent = String(state.employees.length);
       els.metricPayrollEmployees.textContent = String(payroll.length);
       els.metricLetters.textContent = String(state.letters.length);
-      els.metricLeave.textContent = String(state.leave.length);
+      els.metricLeave.textContent = String(state.leave.length + state.attendance.length);
       els.metricDocs.textContent = String(state.documents.length);
       els.navEmployeeCount.textContent = String(employees.length);
       els.navMissingCount.textContent = String(missing);
       els.navDocCount.textContent = String(state.documents.length);
+      els.navSetupScore.textContent = String(score) + "%";
+    }
+
+    function renderSetup() {
+      var score = setupScore();
+      clear(els.setupChecklist);
+      els.setupScore.textContent = String(score) + "%";
+      els.setupScoreNote.textContent = score >= 80 ? "Ready for people operations" : "Review needed";
+      els.setupScoreBar.style.width = String(score) + "%";
+      setupItems().forEach(function (item) {
+        var row = create("article", "hr-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "hr-row-title", item[0]));
+        copy.appendChild(create("div", "hr-row-meta", item[1] ? "Complete" : "Review needed"));
+        row.appendChild(copy);
+        var actions = create("div", "hr-row-actions");
+        actions.appendChild(pill(item[1] ? "complete" : "Review needed", item[1] ? "complete" : "review"));
+        row.appendChild(actions);
+        els.setupChecklist.appendChild(row);
+      });
     }
 
     function tableEmpty(tbody, cols, message) {
@@ -660,27 +2151,74 @@
       clear(els.employeeBody);
       var employees = allEmployees();
       if (!employees.length) {
-        tableEmpty(els.employeeBody, 6, "No HR local records and no Payroll employee-master records found in this browser.");
+        tableEmpty(els.employeeBody, 6, "No employee records yet. Add the first employee to start Onboarding, Leave, Documents, and Payroll readiness.");
         return;
       }
-      employees.forEach(function (employee) {
+      employees.forEach(function (employee, index) {
         var tr = document.createElement("tr");
-        [
-          employee.name,
-          employee.country || state.country,
-          employee.role || employee.department || "-",
-          employee.source,
-          readiness(employee) + "%",
-          employee.status || "active"
-        ].forEach(function (value, index) {
-          var td = document.createElement("td");
-          if (index === 0) td.appendChild(create("strong", "", value));
-          else if (index === 4) td.appendChild(pill(value, Number.parseInt(value, 10) >= 80 ? "ready" : "review"));
-          else if (index === 5) td.appendChild(pill(value, value === "active" ? "active" : "progress"));
-          else td.textContent = value;
-          tr.appendChild(td);
+        var nameTd = document.createElement("td");
+        nameTd.appendChild(create("strong", "", employee.name));
+        nameTd.appendChild(create("div", "hr-row-meta", [employee.employeeCode || employee.id, employee.preferredName ? "Preferred: " + employee.preferredName : "", employee.country || state.country].filter(Boolean).join(" - ")));
+        tr.appendChild(nameTd);
+
+        var roleTd = document.createElement("td");
+        roleTd.textContent = [employee.role || "-", employee.department || "", employee.manager ? "Manager: " + employee.manager : ""].filter(Boolean).join(" - ");
+        tr.appendChild(roleTd);
+
+        var contactTd = document.createElement("td");
+        contactTd.textContent = [employee.email || "No email", employee.phone || "No phone"].join(" - ");
+        tr.appendChild(contactTd);
+
+        var readyTd = document.createElement("td");
+        readyTd.appendChild(pill(readiness(employee) + "%", readiness(employee) >= 85 ? "ready" : readiness(employee) >= 55 ? "review" : "missing"));
+        var badgeRow = create("div", "hr-badge-row");
+        readinessBadges(employee).slice(0, 3).forEach(function (badge) {
+          badgeRow.appendChild(pill(badge[0], badge[1] + " hr-mini"));
         });
+        readyTd.appendChild(badgeRow);
+        tr.appendChild(readyTd);
+
+        var statusTd = document.createElement("td");
+        statusTd.appendChild(pill(employeeStatusLabel(employee.status), employee.status === "active" ? "active" : employee.status === "inactive" || employee.status === "terminated" ? "missing" : "progress"));
+        statusTd.appendChild(create("div", "hr-row-meta", employee.source || "Saved on this device"));
+        tr.appendChild(statusTd);
+
+        var actionsTd = document.createElement("td");
+        var actions = create("div", "hr-compact-actions");
+        if (employee.source !== "Payroll records") {
+          var editButton = create("button", "hr-icon-btn", "Edit");
+          editButton.type = "button";
+          editButton.setAttribute("data-edit-employee", employee.id);
+          actions.appendChild(editButton);
+          var inactiveButton = create("button", "hr-icon-btn", "Inactive");
+          inactiveButton.type = "button";
+          inactiveButton.setAttribute("data-inactive-employee", employee.id);
+          actions.appendChild(inactiveButton);
+          var handoffButton = create("button", "hr-icon-btn", "Handoff");
+          handoffButton.type = "button";
+          handoffButton.setAttribute("data-handoff-employee", employee.id);
+          actions.appendChild(handoffButton);
+        } else {
+          actions.appendChild(pill("Read-only", "workspace"));
+        }
+        actionsTd.appendChild(actions);
+        tr.appendChild(actionsTd);
         els.employeeBody.appendChild(tr);
+      });
+      document.querySelectorAll("[data-edit-employee]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          openEmployeeDrawer(button.getAttribute("data-edit-employee"));
+        });
+      });
+      document.querySelectorAll("[data-inactive-employee]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          markEmployeeInactive(button.getAttribute("data-inactive-employee"));
+        });
+      });
+      document.querySelectorAll("[data-handoff-employee]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          addEmployeeToHandoff(button.getAttribute("data-handoff-employee"));
+        });
       });
     }
 
@@ -690,14 +2228,14 @@
         return missingFields(employee).length > 0;
       });
       if (!employees.length) {
-        els.missingList.appendChild(create("div", "hr-empty", "No missing employee-detail warnings in the current local view."));
+        els.missingList.appendChild(create("div", "hr-empty", "No Payroll readiness gaps yet. Add employee records to review contact, tax, pension, social security, and payment-route details."));
         return;
       }
       employees.slice(0, 10).forEach(function (employee) {
         var row = create("article", "hr-row");
         var copy = create("div", "");
         copy.appendChild(create("h3", "hr-row-title", employee.name));
-        copy.appendChild(create("div", "hr-row-meta", "Missing: " + missingFields(employee).join(", ") + ". Source: " + employee.source + "."));
+        copy.appendChild(create("div", "hr-row-meta", "Missing: " + missingFields(employee).map(function (field) { return FIELD_LABELS[field] || field; }).join(", ") + ". Source: " + employee.source + "."));
         row.appendChild(copy);
         var actions = create("div", "hr-row-actions");
         actions.appendChild(pill(String(missingFields(employee).length) + " fields", "missing"));
@@ -706,64 +2244,225 @@
       });
     }
 
+    function reviewWarnings(employee) {
+      var warnings = [];
+      if (!text(employee.role, "")) warnings.push("missing role");
+      if (!text(employee.startDate, "")) warnings.push("missing start date");
+      if (!text(employee.salaryPayNote, "")) warnings.push("missing pay details");
+      warnings.push("legal review needed");
+      return warnings;
+    }
+
+    function buildLetterRecord(employee) {
+      var warnings = reviewWarnings(employee);
+      var generatedAt = new Date().toISOString();
+      return {
+        id: "LETTER-" + String(state.letters.length + 1).padStart(3, "0"),
+        employeeId: employee.id,
+        employee: employee.name,
+        role: employee.role || "",
+        startDate: employee.startDate || "",
+        salaryPayNote: employee.salaryPayNote || "",
+        probation: employee.probationEndDate || "",
+        reviewer: state.setup.hrContact || "HR reviewer",
+        status: warnings.length > 1 ? "needs review" : "draft",
+        generatedAt: generatedAt,
+        createdAt: generatedAt,
+        title: "Employment letter draft - " + employee.name,
+        warnings: warnings,
+        note: "Draft prepared for review. No legal certification or e-signature is included.",
+        markdown: employmentLetterMarkdown(employee, warnings, generatedAt)
+      };
+    }
+
+    function employmentLetterMarkdown(employee, warnings, generatedAt) {
+      warnings = warnings || reviewWarnings(employee);
+      generatedAt = generatedAt || new Date().toISOString();
+      return [
+        "# Employment Letter Draft",
+        "",
+        "Status: draft for review",
+        "Generated at: " + stampLabel(generatedAt),
+        "Reviewer: " + (state.setup.hrContact || "HR reviewer"),
+        "",
+        "## Employee",
+        "",
+        "- Name: " + (employee.name || "needs review"),
+        "- Employee code: " + (employee.employeeCode || "needs review"),
+        "- Role/title: " + (employee.role || "needs review"),
+        "- Department: " + (employee.department || "needs review"),
+        "- Manager: " + (employee.manager || "needs review"),
+        "- Employment type: " + (employee.employmentType || "needs review"),
+        "- Start date: " + (employee.startDate || "needs review"),
+        "- Probation end date: " + (employee.probationEndDate || "needs review"),
+        "- Salary/pay note: " + (employee.salaryPayNote || "needs review"),
+        "",
+        "## Draft Note",
+        "",
+        "This employment letter draft has been prepared from Employee records saved on this device. Review role, pay basis, probation, working location, reporting line, and country-specific terms before use.",
+        "",
+        "## Review Warnings",
+        "",
+        warnings.map(function (warning) { return "- " + warning; }).join("\n"),
+        "",
+        "## Limitations",
+        "",
+        "- Draft only.",
+        "- Needs review before use.",
+        "- No legal certification.",
+        "- No e-signature.",
+        "- No labor-law compliance guarantee.",
+        "- No file upload or document storage."
+      ].join("\n");
+    }
+
     function renderLetters() {
       clear(els.letterGrid);
       if (!state.letters.length) {
-        els.letterGrid.appendChild(create("div", "hr-empty", "No contract or employment-letter drafts yet."));
+        els.letterGrid.appendChild(create("div", "hr-empty", "No letter drafts yet. Create a draft when an appointment, contract note, confirmation, or role change needs review."));
         return;
       }
       state.letters.slice().reverse().forEach(function (letter) {
         var card = create("article", "hr-letter");
         var top = create("div", "hr-title-row");
         top.appendChild(create("h3", "", letter.title));
-        top.appendChild(pill(letter.status, letter.status));
+        top.appendChild(pill(letter.status || "draft", letter.status === "draft" ? "open" : "review"));
         card.appendChild(top);
-        card.appendChild(create("p", "", letter.note + " Created " + stampLabel(letter.createdAt) + "."));
+        card.appendChild(create("p", "", (letter.employee || "Employee") + " - " + (letter.role || "missing role") + " - start " + (letter.startDate || "needs review") + "."));
+        card.appendChild(create("p", "", (letter.note || "Draft prepared for review.") + " Generated " + stampLabel(letter.generatedAt || letter.createdAt) + "."));
+        if (letter.warnings && letter.warnings.length) {
+          var warnings = create("div", "hr-warning-list");
+          letter.warnings.forEach(function (warning) {
+            warnings.appendChild(pill(warning, warning.indexOf("missing") >= 0 ? "missing" : "review"));
+          });
+          card.appendChild(warnings);
+        }
+        var actions = create("div", "hr-row-actions hr-spaced");
+        var button = create("button", "hr-btn", "Markdown");
+        button.type = "button";
+        button.setAttribute("data-letter-markdown", letter.id);
+        actions.appendChild(button);
+        card.appendChild(actions);
         els.letterGrid.appendChild(card);
+      });
+      document.querySelectorAll("[data-letter-markdown]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var letter = state.letters.find(function (item) { return item.id === button.getAttribute("data-letter-markdown"); });
+          if (!letter) return;
+          downloadText("afrohr-employment-letter-" + slug(letter.employee || letter.id) + "-" + todayIso() + ".md", letter.markdown || employmentLetterMarkdown(localEmployeeById(letter.employeeId) || {}, letter.warnings, letter.generatedAt), "text/markdown;charset=utf-8");
+        });
       });
     }
 
     function renderLeave() {
+      clear(els.leaveDashboard);
       clear(els.leaveList);
-      if (!state.leave.length) {
-        els.leaveList.appendChild(create("div", "hr-empty", "No local leave or attendance items yet. Use Track leave or open the leave calculator."));
+      var counts = leaveDashboardCounts();
+      [
+        ["Leave pending", counts.leavePending],
+        ["Approved leave", counts.approvedLeave],
+        ["Unpaid absence", counts.unpaidAbsence],
+        ["Overtime", counts.overtime],
+        ["Payroll-impact items", counts.payrollImpact]
+      ].forEach(function (item) {
+        var stat = create("div", "hr-mini-stat");
+        stat.appendChild(create("strong", "", item[1]));
+        stat.appendChild(create("span", "", item[0]));
+        els.leaveDashboard.appendChild(stat);
+      });
+      var items = state.leave.map(function (item) {
+        return Object.assign({ recordKind: "leave" }, item);
+      }).concat(state.attendance.map(function (item) {
+        return Object.assign({ recordKind: "attendance" }, item);
+      }));
+      if (!items.length) {
+        els.leaveList.appendChild(create("div", "hr-empty", "No leave tracker or attendance record items yet. Add a leave request or attendance record, then use the public leave calculator for estimates."));
         return;
       }
-      state.leave.slice().reverse().forEach(function (item) {
-        var row = create("article", "hr-row");
+      items.slice().reverse().forEach(function (item) {
+        var warnings = item.recordKind === "leave" ? leaveWarnings(item) : attendanceWarnings(item);
+        var card = create("article", "hr-record-card");
+        var head = create("div", "hr-record-head");
         var copy = create("div", "");
-        copy.appendChild(create("h3", "hr-row-title", item.employee));
-        copy.appendChild(create("div", "hr-row-meta", item.type + " - " + item.days + " days - " + dateLabel(item.date)));
-        row.appendChild(copy);
-        var actions = create("div", "hr-row-actions");
-        actions.appendChild(pill(item.status, "leave"));
-        row.appendChild(actions);
-        els.leaveList.appendChild(row);
+        copy.appendChild(create("h3", "hr-row-title", item.employee || "Missing employee"));
+        copy.appendChild(create("div", "hr-row-meta", item.recordKind === "leave" ? "leave tracker - " + (item.leaveType || item.type || "leave request") : "attendance record - " + normalizeAttendanceType(item.eventType || item.type)));
+        head.appendChild(copy);
+        head.appendChild(pill(item.recordKind === "leave" ? normalizeLeaveStatus(item.status) : normalizeAttendanceType(item.eventType || item.type), item.recordKind === "leave" ? leaveStatusTone(item.status) : attendanceWarnings(item).length ? "review" : "ready"));
+        card.appendChild(head);
+        var meta = create("div", "hr-record-meta");
+        function metaCell(label, value) {
+          var cell = create("span", "");
+          cell.appendChild(create("strong", "", label));
+          cell.appendChild(document.createTextNode(String(value || "")));
+          return cell;
+        }
+        if (item.recordKind === "leave") {
+          meta.appendChild(metaCell("Start", dateLabel(item.startDate || item.date)));
+          meta.appendChild(metaCell("End", dateLabel(item.endDate || item.startDate || item.date)));
+          meta.appendChild(metaCell("Days", item.days || 1));
+        } else {
+          meta.appendChild(metaCell("Date", dateLabel(item.date)));
+          meta.appendChild(metaCell("Hours", item.hours || 0));
+          meta.appendChild(metaCell("Status", item.status || "payroll review"));
+        }
+        card.appendChild(meta);
+        card.appendChild(create("p", "hr-row-meta", item.note || "Prepared for review."));
+        if (item.payrollImpactNote) card.appendChild(create("p", "hr-row-meta", item.payrollImpactNote));
+        if (warnings.length) {
+          var warningRow = create("div", "hr-warning-list");
+          warnings.forEach(function (warning) {
+            warningRow.appendChild(pill(warning, "review"));
+          });
+          card.appendChild(warningRow);
+        }
+        els.leaveList.appendChild(card);
       });
     }
 
     function renderOnboarding() {
       clear(els.onboardingList);
-      ONBOARDING_TASKS.forEach(function (task) {
-        var done = !!state.onboarding[task[0]];
-        var row = create("article", "hr-row");
+      if (!state.employees.length) {
+        els.onboardingList.appendChild(create("div", "hr-empty", "No Onboarding tasks yet. Add an employee record first, then prepare profile, emergency contact, Payroll readiness, Documents, drafts, policy, manager intro, and first-day tasks."));
+        return;
+      }
+      state.employees.forEach(function (employee) {
+        var tasks = employeeOnboardingTasks(employee);
+        var completed = tasks.filter(function (task) { return normalizeOnboardingStatus(task.status) === "completed"; }).length;
+        var card = create("article", "hr-task-card");
+        var head = create("div", "hr-task-head");
         var copy = create("div", "");
-        copy.appendChild(create("h3", "hr-row-title", task[1]));
-        copy.appendChild(create("div", "hr-row-meta", done ? "Marked complete in local HR shell." : "Open local onboarding task."));
-        row.appendChild(copy);
-        var actions = create("div", "hr-row-actions");
-        var button = create("button", "hr-btn", done ? "Reopen" : "Complete");
-        button.type = "button";
-        button.setAttribute("data-task", task[0]);
-        actions.appendChild(pill(done ? "done" : "open", done ? "complete" : "open"));
-        actions.appendChild(button);
-        row.appendChild(actions);
-        els.onboardingList.appendChild(row);
+        copy.appendChild(create("h3", "hr-row-title", employee.name));
+        copy.appendChild(create("div", "hr-row-meta", completed + " of " + tasks.length + " onboarding task(s) completed. Reviewer: " + (state.setup.hrContact || "HR reviewer") + "."));
+        head.appendChild(copy);
+        head.appendChild(pill(completed === tasks.length ? "completed" : "needs review", completed === tasks.length ? "ready" : "review"));
+        card.appendChild(head);
+        var grid = create("div", "hr-task-grid");
+        tasks.forEach(function (task) {
+          var item = create("div", "hr-task-item");
+          item.appendChild(create("strong", "", task.title));
+          item.appendChild(create("small", "", task.note || onboardingTaskDefinition(task.taskKey)[2] || "Prepared for review."));
+          var select = document.createElement("select");
+          select.className = "hr-status-select";
+          select.setAttribute("data-onboarding-status", employee.id + "::" + task.taskKey);
+          ONBOARDING_STATUSES.forEach(function (status) {
+            var option = document.createElement("option");
+            option.value = status[0];
+            option.textContent = status[1];
+            select.appendChild(option);
+          });
+          select.value = normalizeOnboardingStatus(task.status);
+          item.appendChild(select);
+          grid.appendChild(item);
+        });
+        card.appendChild(grid);
+        els.onboardingList.appendChild(card);
       });
-      document.querySelectorAll("[data-task]").forEach(function (button) {
-        button.addEventListener("click", function () {
-          var key = button.getAttribute("data-task");
-          state.onboarding[key] = !state.onboarding[key];
+      document.querySelectorAll("[data-onboarding-status]").forEach(function (select) {
+        select.addEventListener("change", function () {
+          var parts = select.getAttribute("data-onboarding-status").split("::");
+          var employee = localEmployeeById(parts[0]);
+          if (!employee) return;
+          upsertOnboardingTask(employee, parts[1], { status: select.value, note: onboardingTaskNote(employee, parts[1]) });
           saveState();
           renderAll();
         });
@@ -771,24 +2470,208 @@
     }
 
     function renderDocs() {
+      clear(els.docDashboard);
+      clear(els.docReminderList);
       clear(els.docGrid);
+      var counts = documentReminderCounts();
+      [
+        ["Expires soon", counts["expires soon"]],
+        ["Expired", counts.expired],
+        ["Missing", counts.missing],
+        ["Needs review", counts["needs review"]]
+      ].forEach(function (item) {
+        var stat = create("div", "hr-mini-stat");
+        stat.appendChild(create("strong", "", item[1]));
+        stat.appendChild(create("span", "", item[0]));
+        els.docDashboard.appendChild(stat);
+      });
+      var reminders = documentReminderItems();
+      if (!reminders.length) {
+        els.docReminderList.appendChild(create("div", "hr-empty", "No expiry reminder or review status items yet."));
+      } else {
+        reminders.slice(0, 8).forEach(function (item) {
+          var row = create("article", "hr-row");
+          var copy = create("div", "");
+          copy.appendChild(create("h3", "hr-row-title", documentEmployeeName(item) + " - " + normalizeDocumentType(item.documentType || item.title)));
+          copy.appendChild(create("div", "hr-row-meta", (item.expiryDate ? "Expiry reminder: " + dateLabel(item.expiryDate) + ". " : "") + (item.note || "Review document record metadata.")));
+          row.appendChild(copy);
+          var actions = create("div", "hr-row-actions");
+          actions.appendChild(pill(item.reminderStatus, documentStatusTone(item.reminderStatus)));
+          row.appendChild(actions);
+          els.docReminderList.appendChild(row);
+        });
+      }
+      if (!state.documents.length) {
+        els.docGrid.appendChild(create("div", "hr-empty", "No document record metadata yet. Add identity, contract, policy acknowledgement, payroll detail proof, certificate, work permit, or medical/admin note records for review."));
+        return;
+      }
       state.documents.forEach(function (doc) {
-        var card = create("article", "hr-doc");
+        var card = create("article", "hr-record-card");
         var top = create("div", "hr-title-row");
         top.appendChild(create("h3", "", doc.title));
-        top.appendChild(pill(doc.status, doc.status === "ready" ? "ready" : doc.status === "missing" ? "missing" : "open"));
+        top.appendChild(pill(normalizeDocumentStatus(doc.status || doc.documentStatus), documentStatusTone(doc.status || doc.documentStatus)));
         card.appendChild(top);
-        card.appendChild(create("p", "", doc.note));
+        var meta = create("div", "hr-record-meta");
+        [
+          ["Employee", documentEmployeeName(doc)],
+          ["Document type", normalizeDocumentType(doc.documentType || doc.document_type || doc.title)],
+          ["Review status", normalizeDocumentStatus(doc.status || doc.documentStatus)],
+          ["Issue date", doc.issueDate ? dateLabel(doc.issueDate) : "Review needed"],
+          ["Expiry date", doc.expiryDate ? dateLabel(doc.expiryDate) : "No expiry date"],
+          ["Reviewer", doc.reviewer || "HR reviewer"]
+        ].forEach(function (item) {
+          var cell = create("span", "");
+          cell.appendChild(create("strong", "", item[0]));
+          cell.appendChild(document.createTextNode(item[1]));
+          meta.appendChild(cell);
+        });
+        card.appendChild(meta);
+        card.appendChild(create("p", "", "File reference placeholder: " + documentFileReference(doc) + "."));
+        card.appendChild(create("p", "", doc.note || "Records document metadata only. No file is uploaded from this workspace yet."));
         els.docGrid.appendChild(card);
+      });
+    }
+
+    function countBy(items, getter) {
+      return items.reduce(function (map, item) {
+        var key = text(getter(item), "Not set");
+        map[key] = (map[key] || 0) + 1;
+        return map;
+      }, {});
+    }
+
+    function compactCounts(map) {
+      var keys = Object.keys(map);
+      if (!keys.length) return "No records";
+      return keys.sort().map(function (key) { return key + ": " + map[key]; }).join("; ");
+    }
+
+    function peopleReportRows() {
+      var employees = allEmployees();
+      var localEmployees = state.employees;
+      var leaveCounts = leaveDashboardCounts();
+      var docCounts = documentReminderCounts();
+      var rows = [];
+      var countryCounts = countBy(employees, function (employee) { return employee.country; });
+      var departmentCounts = countBy(employees, function (employee) { return employee.department; });
+      Object.keys(countryCounts).sort().forEach(function (country) {
+        rows.push(["Headcount by country", country, countryCounts[country], countryCounts[country] ? "ready" : "review"]);
+      });
+      Object.keys(departmentCounts).sort().forEach(function (department) {
+        rows.push(["Headcount by department", department, departmentCounts[department], departmentCounts[department] ? "ready" : "review"]);
+      });
+      rows.push(["Onboarding status", "completed", localEmployees.filter(onboardingComplete).length, localEmployees.length && localEmployees.every(onboardingComplete) ? "ready" : "review"]);
+      rows.push(["Onboarding status", "needs review", Math.max(0, localEmployees.length - localEmployees.filter(onboardingComplete).length), localEmployees.length && localEmployees.every(onboardingComplete) ? "ready" : "review"]);
+      rows.push(["Payroll readiness", "average readiness", overallReadiness() + "%", overallReadiness() >= 80 ? "ready" : "review"]);
+      rows.push(["Payroll readiness", "ready employees", employees.filter(isPayrollReadyEmployee).length, employees.filter(isPayrollReadyEmployee).length ? "ready" : "review"]);
+      rows.push(["Leave and attendance summary", "leave pending", leaveCounts.leavePending, leaveCounts.leavePending ? "review" : "ready"]);
+      rows.push(["Leave and attendance summary", "approved leave", leaveCounts.approvedLeave, "ready"]);
+      rows.push(["Leave and attendance summary", "unpaid absence", leaveCounts.unpaidAbsence, leaveCounts.unpaidAbsence ? "review" : "ready"]);
+      rows.push(["Leave and attendance summary", "overtime", leaveCounts.overtime, leaveCounts.overtime ? "review" : "ready"]);
+      rows.push(["Missing documents", "required document records", docCounts.missing, docCounts.missing ? "missing" : "ready"]);
+      rows.push(["Expiring documents", "expires soon", docCounts["expires soon"], docCounts["expires soon"] ? "review" : "ready"]);
+      rows.push(["Expiring documents", "expired", docCounts.expired, docCounts.expired ? "missing" : "ready"]);
+      return rows;
+    }
+
+    function renderHandoffs() {
+      clear(els.handoffDashboard);
+      clear(els.handoffEmployeeList);
+      clear(els.handoffList);
+      var snapshot = buildPayrollHandoffSnapshot();
+      [
+        ["Selected employees", snapshot.selectedEmployees.length],
+        ["Payroll-ready employees", snapshot.payrollReadyEmployees.length],
+        ["Missing-detail employees", snapshot.missingDetailEmployees.length],
+        ["Leave/payroll-impact items", snapshot.payrollImpactItems.length]
+      ].forEach(function (item) {
+        var stat = create("div", "hr-mini-stat");
+        stat.appendChild(create("strong", "", item[1]));
+        stat.appendChild(create("span", "", item[0]));
+        els.handoffDashboard.appendChild(stat);
+      });
+      var selectedIds = selectedHandoffIds();
+      var candidates = handoffCandidateEmployees();
+      if (!candidates.length) {
+        els.handoffEmployeeList.appendChild(create("div", "hr-empty", "No employee records ready for handoff selection yet. Add employee records, then build a payroll handoff draft."));
+      } else {
+        candidates.forEach(function (employee) {
+          var row = create("article", "hr-row");
+          var label = create("label", "hr-check-row");
+          var input = create("input", "");
+          input.type = "checkbox";
+          input.checked = selectedIds.indexOf(String(employee.id)) >= 0;
+          input.setAttribute("data-handoff-select", employee.id);
+          label.appendChild(input);
+          var copy = create("span", "");
+          copy.appendChild(create("strong", "", employee.name || "Employee"));
+          copy.appendChild(create("small", "", " " + (employee.employeeCode || "") + " - " + (employee.role || "role needs review")));
+          label.appendChild(copy);
+          row.appendChild(label);
+          var actions = create("div", "hr-row-actions");
+          readinessBadges(employee).slice(0, 2).forEach(function (badge) {
+            actions.appendChild(pill(badge[0], badge[1]));
+          });
+          row.appendChild(actions);
+          els.handoffEmployeeList.appendChild(row);
+        });
+      }
+      document.querySelectorAll("[data-handoff-select]").forEach(function (input) {
+        input.addEventListener("change", function () {
+          var defaults = selectedHandoffIds();
+          var id = String(input.getAttribute("data-handoff-select"));
+          state.handoffSelection = defaults.filter(function (item) { return String(item) !== id; });
+          if (input.checked) state.handoffSelection.push(id);
+          saveState();
+          renderAll();
+        });
+      });
+      if (!state.handoffs.length) {
+        els.handoffList.appendChild(create("div", "hr-empty", "No payroll handoff draft yet. Select employee records, add a reviewer note, then build a payroll handoff draft."));
+        return;
+      }
+      state.handoffs.slice().reverse().forEach(function (handoff) {
+        var row = create("article", "hr-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "hr-row-title", handoff.id || "Payroll handoff draft"));
+        copy.appendChild(create("div", "hr-row-meta", handoff.note + " Created " + stampLabel(handoff.createdAt) + "."));
+        copy.appendChild(create("div", "hr-row-meta", (handoff.ready || 0) + " payroll-ready, " + (handoff.missing || 0) + " missing-detail, " + (handoff.payrollImpact || 0) + " payroll-impact item(s)."));
+        if (handoff.reviewerNote) copy.appendChild(create("div", "hr-row-meta", "Reviewer note: " + handoff.reviewerNote));
+        row.appendChild(copy);
+        var actions = create("div", "hr-row-actions");
+        actions.appendChild(pill("payroll handoff draft", handoff.missing || handoff.payrollImpact ? "review" : "ready"));
+        row.appendChild(actions);
+        els.handoffList.appendChild(row);
+      });
+    }
+
+    function renderPeopleReports() {
+      clear(els.peopleReportList);
+      var overview = [
+        ["Setup completion", "profile", setupScore() + "% complete", setupTone(setupScore())],
+        ["Employee records", "total", allEmployees().length + " record(s)", allEmployees().length ? "ready" : "review"],
+        ["Documents", "document records", state.documents.length + " document record(s)", state.documents.length ? "review" : "missing"],
+        ["Payroll handoff draft", "drafts", state.handoffs.length + " draft(s)", state.handoffs.length ? "review" : "missing"]
+      ];
+      overview.concat(peopleReportRows()).forEach(function (item) {
+        var row = create("article", "hr-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "hr-row-title", item[0]));
+        copy.appendChild(create("div", "hr-row-meta", item[1] + ": " + item[2]));
+        row.appendChild(copy);
+        var actions = create("div", "hr-row-actions");
+        actions.appendChild(pill(item[3] === "ready" ? "ready" : "Review needed", item[3]));
+        row.appendChild(actions);
+        els.peopleReportList.appendChild(row);
       });
     }
 
     function renderCompliance() {
       clear(els.complianceList);
       [
-        ["Employment terms", "Confirm contract terms, probation, hours, and notice rules with local counsel.", "review"],
-        ["Leave policy", "Use the leave calculator for estimates, then review country-specific policy before issuing.", "leave"],
-        ["Payroll data consent", "Collect only needed payroll and HR fields, and document staff consent outside this workspace.", "missing"],
+        ["Employment terms", "Review role, pay basis, probation, hours, and notice rules before sending documents.", "review"],
+        ["Leave policy", "Use the Leave year and work week setup before tracking requests.", "leave"],
+        ["Employee permission records", "Keep employee permission and privacy records outside AfroHR until a verified consent flow exists.", "missing"],
         ["Cross-border teams", "Remote work, contractor status, and benefits may need country-specific review.", "review"]
       ].forEach(function (item) {
         var row = create("article", "hr-row");
@@ -803,9 +2686,253 @@
       });
     }
 
+    function employeeIndexById(id) {
+      return state.employees.findIndex(function (employee) {
+        return String(employee.id) === String(id);
+      });
+    }
+
+    function localEmployeeById(id) {
+      var index = employeeIndexById(id);
+      return index >= 0 ? state.employees[index] : null;
+    }
+
+    function selectedEmployee() {
+      return localEmployeeById(els.employeeEditId.value);
+    }
+
+    function openEmployeeDrawer(employeeId) {
+      var employee = employeeId ? localEmployeeById(employeeId) : null;
+      if (!employee) employee = hrEmployee(state.employees.length);
+      els.employeeDrawerTitle.textContent = employeeId ? "Edit employee" : "Add employee";
+      els.employeeEditId.value = employeeId || "";
+      els.employeeCodeInput.value = employee.employeeCode || "";
+      els.employeeStatusInput.value = employee.status || "onboarding";
+      els.employeeFullNameInput.value = employee.name || "";
+      els.employeePreferredNameInput.value = employee.preferredName || "";
+      els.employeeCountryInput.value = employee.country || state.country || "NG";
+      els.employeeDepartmentInput.value = employee.department || "";
+      els.employeeRoleInput.value = employee.role || "";
+      els.employeeManagerInput.value = employee.manager || "";
+      els.employeeTypeInput.value = employee.employmentType || "employee";
+      els.employeeStartDateInput.value = employee.startDate || todayIso();
+      els.employeeProbationInput.value = employee.probationEndDate || "";
+      els.employeeEmailInput.value = employee.email || "";
+      els.employeePhoneInput.value = employee.phone || "";
+      els.employeeAddressInput.value = employee.addressLocation || "";
+      els.emergencyNameInput.value = employee.emergencyContactName || "";
+      els.emergencyPhoneInput.value = employee.emergencyContactPhone || "";
+      els.nextOfKinInput.value = employee.nextOfKinNote || "";
+      els.employeeTaxIdInput.value = employee.taxId || "";
+      els.employeeSocialIdInput.value = employee.socialSecurityId || "";
+      els.employeePaymentRouteInput.value = employee.bankAccountOrMobile || "";
+      els.employeePayScheduleInput.value = employee.paySchedule || "monthly";
+      els.employeeCurrencyInput.value = employee.defaultCurrency || state.setup.currency || COUNTRY_CURRENCY[state.country] || "NGN";
+      els.employeePayNoteInput.value = employee.salaryPayNote || "";
+      els.linkedPayrollEmployeeInput.value = employee.linkedPayrollEmployeeId || "";
+      els.employeeDrawer.classList.add("open");
+      els.employeeDrawerBackdrop.classList.add("open");
+      els.employeeDrawer.setAttribute("aria-hidden", "false");
+      els.employeeFullNameInput.focus();
+    }
+
+    function closeEmployeeDrawer() {
+      els.employeeDrawer.classList.remove("open");
+      els.employeeDrawerBackdrop.classList.remove("open");
+      els.employeeDrawer.setAttribute("aria-hidden", "true");
+    }
+
+    function employeeFromDrawer(existing) {
+      existing = existing || {};
+      var fullName = text(els.employeeFullNameInput.value, "New employee");
+      return Object.assign({}, existing, {
+        id: existing.id || "hr-" + Date.now(),
+        employeeCode: text(els.employeeCodeInput.value, "HR-" + String(state.employees.length + 1).padStart(3, "0")),
+        name: fullName,
+        preferredName: text(els.employeePreferredNameInput.value, fullName.split(" ")[0] || ""),
+        email: text(els.employeeEmailInput.value, ""),
+        phone: text(els.employeePhoneInput.value, ""),
+        country: els.employeeCountryInput.value || state.country || "NG",
+        department: text(els.employeeDepartmentInput.value, ""),
+        role: text(els.employeeRoleInput.value, ""),
+        manager: text(els.employeeManagerInput.value, ""),
+        employmentType: els.employeeTypeInput.value || "employee",
+        startDate: els.employeeStartDateInput.value || "",
+        probationEndDate: els.employeeProbationInput.value || "",
+        status: els.employeeStatusInput.value || "onboarding",
+        addressLocation: text(els.employeeAddressInput.value, ""),
+        emergencyContactName: text(els.emergencyNameInput.value, ""),
+        emergencyContactPhone: text(els.emergencyPhoneInput.value, ""),
+        nextOfKinNote: text(els.nextOfKinInput.value, ""),
+        taxId: text(els.employeeTaxIdInput.value, ""),
+        socialSecurityId: text(els.employeeSocialIdInput.value, ""),
+        bankAccountOrMobile: text(els.employeePaymentRouteInput.value, ""),
+        paySchedule: els.employeePayScheduleInput.value || "monthly",
+        defaultCurrency: els.employeeCurrencyInput.value || state.setup.currency || "NGN",
+        salaryPayNote: text(els.employeePayNoteInput.value, ""),
+        linkedPayrollEmployeeId: text(els.linkedPayrollEmployeeInput.value, ""),
+        source: existing.source && existing.source !== "Payroll records" ? existing.source : "Saved on this device",
+        updatedAt: new Date().toISOString()
+      });
+    }
+
+    function upsertEmployeeAuxiliary(employee) {
+      state.contacts = state.contacts.filter(function (contact) {
+        return contact.employeeId !== employee.id;
+      });
+      if (employee.email || employee.phone) {
+        state.contacts.push({
+          id: "contact-work-" + employee.id,
+          employeeId: employee.id,
+          contactType: "work",
+          name: employee.name,
+          email: employee.email,
+          phone: employee.phone,
+          addressLocation: employee.addressLocation,
+          status: "Review needed"
+        });
+      }
+      if (employee.emergencyContactName || employee.emergencyContactPhone) {
+        state.contacts.push({
+          id: "contact-emergency-" + employee.id,
+          employeeId: employee.id,
+          contactType: "emergency",
+          name: employee.emergencyContactName || "Emergency contact",
+          relationship: "Emergency contact",
+          phone: employee.emergencyContactPhone,
+          email: "",
+          addressLocation: employee.addressLocation,
+          nextOfKinNote: employee.nextOfKinNote,
+          status: "Review needed"
+        });
+      }
+      state.payrollProfiles = state.payrollProfiles.filter(function (profile) {
+        return profile.employeeId !== employee.id;
+      });
+      state.payrollProfiles.push({
+        id: "payroll-profile-" + employee.id,
+        employeeId: employee.id,
+        payrollReadinessScore: readiness(employee),
+        taxIdStatus: employee.taxId ? "Ready" : "Missing",
+        socialSecurityStatus: employee.socialSecurityId ? "Ready" : "Missing",
+        paymentRouteStatus: employee.bankAccountOrMobile ? "Ready" : "Missing",
+        paySchedule: employee.paySchedule,
+        defaultCurrency: employee.defaultCurrency,
+        salaryPayNote: employee.salaryPayNote,
+        linkedPayrollEmployeeId: employee.linkedPayrollEmployeeId,
+        status: readinessBadges(employee)[0][0] === "Ready for payroll" ? "Ready" : "Review needed"
+      });
+    }
+
+    function saveEmployeeFromDrawer() {
+      var existing = selectedEmployee();
+      var employee = employeeFromDrawer(existing);
+      var index = existing ? employeeIndexById(existing.id) : -1;
+      if (index >= 0) state.employees[index] = employee;
+      else state.employees.push(employee);
+      upsertEmployeeAuxiliary(employee);
+      ensureOnboardingRecords(employee);
+      saveState();
+      closeEmployeeDrawer();
+      renderAll();
+    }
+
+    function markEmployeeInactive(employeeId) {
+      var employee = employeeId ? localEmployeeById(employeeId) : selectedEmployee();
+      if (!employee) return;
+      employee.status = "inactive";
+      employee.updatedAt = new Date().toISOString();
+      upsertEmployeeAuxiliary(employee);
+      saveState();
+      closeEmployeeDrawer();
+      renderAll();
+    }
+
+    function requestMissingDetailsForEmployee(employeeId) {
+      var employee = employeeId ? localEmployeeById(employeeId) : selectedEmployee();
+      if (!employee) return;
+      var fields = missingFields(employee);
+      state.requests.push({
+        id: "REQ-" + String(state.requests.length + 1).padStart(3, "0"),
+        employeeId: employee.id,
+        employee: employee.name,
+        createdAt: new Date().toISOString(),
+        requestedFields: fields,
+        count: 1,
+        note: "Missing-detail request prepared for " + employee.name + ". No message or Payroll update occurred."
+      });
+      saveState();
+      closeEmployeeDrawer();
+      renderAll();
+    }
+
+    function addEmployeeToHandoff(employeeId) {
+      var employee = employeeId ? localEmployeeById(employeeId) : selectedEmployee();
+      if (!employee) return;
+      savePayrollHandoffDraft([employee.id], { reuse: false });
+      closeEmployeeDrawer();
+      renderAll();
+    }
+
+    function readSetupFromFields() {
+      state.setup.organizationName = text(els.organizationName.value, "");
+      state.setup.organizationType = els.organizationType.value || "small-employer";
+      state.setup.country = els.setupCountry.value || "NG";
+      state.setup.currency = els.currencySelect.value || COUNTRY_CURRENCY[state.setup.country] || "NGN";
+      state.setup.hrContact = text(els.hrContact.value, "");
+      state.setup.payrollContact = text(els.payrollContact.value, "");
+      state.setup.leaveYearStart = els.leaveYearStart.value || "2026-01-01";
+      state.setup.workWeek = els.workWeekSelect.value || "mon-fri";
+      state.setup.reviewMonth = els.reviewMonthSelect.value || "2026-05";
+      state.setup.handoffPreference = els.handoffPreference.value || "review-only";
+      state.org = state.setup.organizationType;
+      state.country = state.setup.country;
+      state.period = state.setup.reviewMonth;
+    }
+
+    function saveSetup(options) {
+      readSetupFromFields();
+      if (options && options.fillDefaults && !state.setup.organizationName) {
+        state.setup.organizationName = setupLabel() + " People workspace";
+      }
+      state.setup.savedAt = new Date().toISOString();
+      saveState();
+      renderAll();
+    }
+
+    function syncSetupValue(key, value) {
+      var previousCountry = state.setup.country;
+      state.setup[key] = value;
+      if (key === "country" && (!state.setup.currency || COUNTRY_CURRENCY[previousCountry] === state.setup.currency)) {
+        state.setup.currency = COUNTRY_CURRENCY[value] || state.setup.currency || "NGN";
+      }
+      state.org = state.setup.organizationType;
+      state.country = state.setup.country;
+      state.period = state.setup.reviewMonth;
+      saveState();
+      renderAll();
+    }
+
     function onboardEmployee() {
-      state.employees.push(hrEmployee(state.employees.length));
-      state.onboarding.identity = true;
+      var employee = hrEmployee(state.employees.length);
+      state.employees.push(employee);
+      ensureOnboardingRecords(employee);
+      saveState();
+      renderAll();
+    }
+
+    function completeOnboarding() {
+      if (!state.employees.length) {
+        onboardEmployee();
+      }
+      state.employees.forEach(function (employee) {
+        ONBOARDING_TASKS.forEach(function (task) {
+          upsertOnboardingTask(employee, task[0], {
+            status: "completed",
+            note: task[1] + " prepared and marked completed for review."
+          });
+        });
+      });
       saveState();
       renderAll();
     }
@@ -818,85 +2945,572 @@
         id: "REQ-" + String(state.requests.length + 1).padStart(3, "0"),
         createdAt: new Date().toISOString(),
         count: employees.length,
-        note: "Local request queued for missing payroll details. No email, SMS, or Payroll write occurred."
+        requestedFields: Array.from(new Set(employees.reduce(function (fields, employee) {
+          return fields.concat(missingFields(employee));
+        }, []))),
+        note: "Missing-detail request prepared for review. No email, SMS, or Payroll update occurred."
       });
       state.documents.push({
         id: "request-" + Date.now(),
         title: "Missing payroll details request",
-        status: employees.length ? "open" : "ready",
-        note: employees.length + " employees need detail follow-up. Stored as HR local metadata only."
+        status: employees.length ? "Review needed" : "ready",
+        note: employees.length + " employee record(s) need detail follow-up. Checklist item saved on this device."
       });
       saveState();
       renderAll();
     }
 
     function generateLetter() {
-      var employee = allEmployees()[0] || hrEmployee(0);
-      state.letters.push({
-        id: "LETTER-" + String(state.letters.length + 1).padStart(3, "0"),
-        title: "Employment letter - " + employee.name,
-        status: "open",
-        createdAt: new Date().toISOString(),
-        note: "Draft manifest for " + (employee.role || "employee") + ". Requires human legal and HR review."
-      });
-      state.onboarding.contract = true;
+      var employee = firstLocalEmployee();
+      var letter = buildLetterRecord(employee);
+      state.letters.push(letter);
+      upsertOnboardingTask(employee, "contract", { status: "ready-for-review", note: "Employment letter draft prepared. Legal review needed before use." });
+      saveState();
+      renderAll();
+      return letter;
+    }
+
+    function trackLeave() {
+      var base = buildLeaveRequest();
+      state.leave.push(base);
       saveState();
       renderAll();
     }
 
-    function trackLeave() {
-      var employee = allEmployees()[0] || hrEmployee(0);
-      state.leave.push({
-        id: "LEAVE-" + String(state.leave.length + 1).padStart(3, "0"),
-        employee: employee.name,
-        type: state.leave.length % 2 ? "attendance note" : "annual leave",
-        days: state.leave.length % 2 ? 1 : 3,
-        date: todayIso(),
-        status: "review"
-      });
+    function addAttendanceRecord() {
+      state.attendance.push(buildAttendanceEvent());
       saveState();
       renderAll();
     }
 
     function sendToPayroll() {
-      var employees = allEmployees();
-      state.handoffs.push({
-        id: "PAY-HANDOFF-" + String(state.handoffs.length + 1).padStart(3, "0"),
-        createdAt: new Date().toISOString(),
-        employees: employees.length,
-        missing: missingEmployeeCount(),
-        note: "Local payroll-readiness handoff created. AfroHR did not write to " + PAYROLL_EMPLOYEE_KEY + "."
+      savePayrollHandoffDraft();
+      renderAll();
+    }
+
+    function exportEmployeeRegisterCsv() {
+      var rows = state.employees.map(function (employee) {
+        return [
+          employee.employeeCode || "",
+          employee.name || "",
+          employee.preferredName || "",
+          employee.email || "",
+          employee.phone || "",
+          employee.country || "",
+          employee.department || "",
+          employee.role || "",
+          employee.manager || "",
+          employee.employmentType || "",
+          employee.startDate || "",
+          employee.probationEndDate || "",
+          employee.status || "",
+          employee.addressLocation || "",
+          employee.emergencyContactName || "",
+          employee.emergencyContactPhone || "",
+          employee.nextOfKinNote || ""
+        ];
       });
-      state.documents.push({
-        id: "handoff-" + Date.now(),
-        title: "Payroll readiness handoff",
-        status: missingEmployeeCount() ? "open" : "ready",
-        note: employees.length + " employee records reviewed, " + missingEmployeeCount() + " records still missing details."
+      downloadCsv("afrohr-employee-register-" + todayIso() + ".csv", [
+        "employee code", "full name", "preferred name", "email", "phone", "country",
+        "department", "role/title", "manager", "employment type", "start date",
+        "probation end date", "status", "address/location", "emergency contact name",
+        "emergency contact phone", "next of kin note"
+      ], rows);
+    }
+
+    function exportPayrollReadinessCsv() {
+      var rows = state.employees.map(function (employee) {
+        return [
+          employee.employeeCode || "",
+          employee.name || "",
+          employee.paySchedule || "",
+          employee.defaultCurrency || state.setup.currency || "",
+          employee.taxId ? "Ready" : "Missing tax ID",
+          employee.socialSecurityId ? "Ready" : "Missing social/security ID",
+          employee.bankAccountOrMobile ? "Ready" : "Missing payment route",
+          employee.linkedPayrollEmployeeId || "",
+          readiness(employee) + "%",
+          readinessBadges(employee).map(function (badge) { return badge[0]; }).join("; ")
+        ];
       });
+      downloadCsv("afrohr-payroll-readiness-" + todayIso() + ".csv", [
+        "employee code", "full name", "pay schedule", "default currency",
+        "tax ID status", "pension/social security status", "payment route status",
+        "linked Payroll employee ID optional", "readiness score", "readiness badges"
+      ], rows);
+    }
+
+    function exportMissingDetailsCsv() {
+      var rows = state.employees.filter(function (employee) {
+        return missingFields(employee).length > 0 || readinessBadges(employee).some(function (badge) { return badge[1] !== "ready"; });
+      }).map(function (employee) {
+        return [
+          employee.employeeCode || "",
+          employee.name || "",
+          employee.email || "",
+          employee.phone || "",
+          missingFields(employee).map(function (field) { return FIELD_LABELS[field] || field; }).join("; "),
+          readinessBadges(employee).map(function (badge) { return badge[0]; }).join("; "),
+          "Review needed"
+        ];
+      });
+      downloadCsv("afrohr-missing-details-" + todayIso() + ".csv", [
+        "employee code", "full name", "email", "phone", "missing fields", "readiness badges", "status"
+      ], rows);
+    }
+
+    function documentRegisterRow(doc) {
+      return [
+        doc.id || "",
+        documentEmployeeName(doc),
+        normalizeDocumentType(doc.documentType || doc.document_type || doc.title),
+        doc.title || "",
+        normalizeDocumentStatus(doc.status || doc.documentStatus),
+        doc.issueDate || "",
+        doc.expiryDate || "",
+        doc.reviewer || "HR reviewer",
+        doc.note || "",
+        documentFileReference(doc),
+        documentReminderStatus(doc) || "ok"
+      ];
+    }
+
+    function exportDocumentRegisterCsv() {
+      downloadCsv("afrohr-document-register-" + todayIso() + ".csv", [
+        "record id", "employee", "document type", "title", "review status", "issue date",
+        "expiry date", "reviewer", "note", "file reference placeholder", "expiry reminder"
+      ], state.documents.map(documentRegisterRow));
+    }
+
+    function exportExpiringDocumentsCsv() {
+      var rows = documentReminderItems().map(documentRegisterRow);
+      downloadCsv("afrohr-expiring-documents-" + todayIso() + ".csv", [
+        "record id", "employee", "document type", "title", "review status", "issue date",
+        "expiry date", "reviewer", "note", "file reference placeholder", "expiry reminder"
+      ], rows);
+    }
+
+    function exportPeopleSummaryCsv() {
+      var rows = peopleReportRows().map(function (row) {
+        return [row[0], row[1], row[2], row[3]];
+      });
+      downloadCsv("afrohr-people-summary-" + todayIso() + ".csv", [
+        "report", "group", "value", "review status"
+      ], rows);
+    }
+
+    function hrReviewPacketMarkdown() {
+      var docCounts = documentReminderCounts();
+      var lines = [
+        "# AfroHR Review Packet",
+        "",
+        "Status: Review needed",
+        "Generated at: " + stampLabel(new Date().toISOString()),
+        "Organization: " + (state.setup.organizationName || "People workspace"),
+        "",
+        "## Storage Limitations",
+        "",
+        "- Records document metadata only.",
+        "- No file is uploaded from this workspace yet.",
+        "- No document authenticity claim.",
+        "- No e-signature claim.",
+        "- No legal compliance guarantee.",
+        "- Sensitive document metadata should be handled as HR operations data.",
+        "",
+        "## People Reports",
+        ""
+      ];
+      peopleReportRows().forEach(function (row) {
+        lines.push("- " + row[0] + " - " + row[1] + ": " + row[2] + " (" + row[3] + ")");
+      });
+      lines.push("", "## Document Reminder Queue", "");
+      lines.push("- Expires soon: " + docCounts["expires soon"]);
+      lines.push("- Expired: " + docCounts.expired);
+      lines.push("- Missing: " + docCounts.missing);
+      lines.push("- Needs review: " + docCounts["needs review"]);
+      documentReminderItems().forEach(function (doc) {
+        lines.push("- " + documentEmployeeName(doc) + " - " + normalizeDocumentType(doc.documentType || doc.title) + " - " + doc.reminderStatus + " - " + (doc.expiryDate || "no expiry date"));
+      });
+      lines.push("", "## Document Records", "");
+      if (!state.documents.length) lines.push("- No document record metadata yet.");
+      state.documents.forEach(function (doc) {
+        lines.push("- " + documentEmployeeName(doc) + " - " + normalizeDocumentType(doc.documentType || doc.title) + " - " + (doc.title || "document record") + " - " + normalizeDocumentStatus(doc.status));
+      });
+      return lines.join("\n");
+    }
+
+    function exportHrReviewPacketMarkdown() {
+      state.reports.unshift({
+        id: "HR-REVIEW-" + Date.now(),
+        title: "HR review packet",
+        status: "Review needed",
+        generatedAt: new Date().toISOString(),
+        snapshot: { reports: peopleReportRows(), documentReminders: documentReminderItems().length }
+      });
+      saveState();
+      downloadText("afrohr-review-packet-" + todayIso() + ".md", hrReviewPacketMarkdown(), "text/markdown;charset=utf-8");
+      renderAll();
+    }
+
+    function exportLeaveRegisterCsv() {
+      var rows = state.leave.map(function (item) {
+        return [
+          item.id || "",
+          item.employee || employeeNameById(item.employeeId) || "",
+          item.leaveType || item.type || "",
+          item.startDate || item.date || "",
+          item.endDate || item.startDate || item.date || "",
+          item.days || "",
+          normalizeLeaveStatus(item.status),
+          item.approver || "",
+          item.note || "",
+          item.payrollImpactNote || "",
+          leaveWarnings(item).join("; ")
+        ];
+      });
+      downloadCsv("afrohr-leave-register-" + todayIso() + ".csv", [
+        "record id", "employee", "leave type", "start date", "end date", "days",
+        "status", "approver", "note", "payroll review note", "warnings"
+      ], rows);
+    }
+
+    function exportAttendanceCsv() {
+      var rows = state.attendance.map(function (item) {
+        return [
+          item.id || "",
+          item.employee || employeeNameById(item.employeeId) || "",
+          item.date || "",
+          normalizeAttendanceType(item.eventType || item.type),
+          item.hours || 0,
+          item.status || "approved",
+          item.note || "",
+          attendanceWarnings(item).join("; ")
+        ];
+      });
+      downloadCsv("afrohr-attendance-" + todayIso() + ".csv", [
+        "record id", "employee", "date", "event type", "hours", "status", "note", "warnings"
+      ], rows);
+    }
+
+    function exportPayrollImpactCsv() {
+      var rows = [];
+      state.leave.forEach(function (item) {
+        if (!hasPayrollImpact(item, "leave") && !leaveWarnings(item).length) return;
+        rows.push([
+          "leave tracker",
+          item.id || "",
+          item.employee || employeeNameById(item.employeeId) || "",
+          item.leaveType || item.type || "",
+          item.startDate || item.date || "",
+          item.days || "",
+          normalizeLeaveStatus(item.status),
+          item.payrollImpactNote || "",
+          leaveWarnings(item).join("; ")
+        ]);
+      });
+      state.attendance.forEach(function (item) {
+        if (!hasPayrollImpact(item, "attendance") && !attendanceWarnings(item).length) return;
+        rows.push([
+          "attendance record",
+          item.id || "",
+          item.employee || employeeNameById(item.employeeId) || "",
+          normalizeAttendanceType(item.eventType || item.type),
+          item.date || "",
+          item.hours || 0,
+          item.status || "payroll review",
+          item.payrollImpactNote || "",
+          attendanceWarnings(item).join("; ")
+        ]);
+      });
+      downloadCsv("afrohr-payroll-impact-" + todayIso() + ".csv", [
+        "source", "record id", "employee", "type", "date", "days or hours", "status",
+        "payroll review note", "warnings"
+      ], rows);
+    }
+
+    function exportHandoffReadyCsv() {
+      var handoff = savePayrollHandoffDraft();
+      var rows = handoff.payrollReadyEmployees.map(payrollHandoffRowValues);
+      downloadCsv("afrohr-payroll-ready-handoff-" + todayIso() + ".csv", payrollHandoffHeaders(), rows);
+      recordHandoffHistory(handoff, "export");
+      renderAll();
+    }
+
+    function exportHandoffMissingCsv() {
+      var handoff = savePayrollHandoffDraft();
+      var rows = handoff.missingDetailEmployees.map(function (row) {
+        return payrollHandoffRowValues(row).concat([row.missingFields || "", row.readinessBadges || "", handoff.reviewerNote || ""]);
+      });
+      downloadCsv("afrohr-missing-detail-handoff-" + todayIso() + ".csv", payrollHandoffHeaders().concat([
+        "missing fields", "readiness badges", "reviewer note"
+      ]), rows);
+      recordHandoffHistory(handoff, "export");
+      renderAll();
+    }
+
+    function exportHandoffImpactCsv() {
+      var handoff = savePayrollHandoffDraft();
+      var rows = handoff.payrollImpactItems.map(function (item) {
+        return [
+          item.source,
+          item.recordId,
+          item.employee,
+          item.type,
+          item.date,
+          item.amount,
+          item.status,
+          item.payrollReviewNote,
+          item.warnings.join("; "),
+          handoff.reviewerNote || ""
+        ];
+      });
+      downloadCsv("afrohr-payroll-impact-handoff-" + todayIso() + ".csv", [
+        "source", "record id", "employee", "type", "date", "days or hours", "status",
+        "payroll review note", "warnings", "reviewer note"
+      ], rows);
+      recordHandoffHistory(handoff, "export");
+      renderAll();
+    }
+
+    function payrollHandoffMarkdown(handoff) {
+      var lines = [
+        "# AfroHR Payroll Handoff Draft",
+        "",
+        "Status: Review needed",
+        "Organization: " + handoff.organization,
+        "Review month: " + (handoff.period || "Review needed"),
+        "Reviewer: " + (handoff.reviewer || "Payroll reviewer"),
+        "Reviewer note: " + (handoff.reviewerNote || "Review before import in AfroPayroll."),
+        "",
+        "## Counts",
+        "",
+        "- Selected employees: " + handoff.selectedEmployees.length,
+        "- Payroll-ready employees: " + handoff.payrollReadyEmployees.length,
+        "- Missing-detail employees: " + handoff.missingDetailEmployees.length,
+        "- Leave/payroll-impact items: " + handoff.payrollImpactItems.length,
+        "",
+        "## Manual Next Step",
+        "",
+        "Download handoff files, open AfroPayroll, choose Import file, map the fields, and review before import. AfroHR does not change Payroll records automatically.",
+        "",
+        "## Payroll-Ready Employees",
+        ""
+      ];
+      if (!handoff.payrollReadyEmployees.length) lines.push("- None ready for import review.");
+      handoff.payrollReadyEmployees.forEach(function (row) {
+        lines.push("- " + row.employeeCode + " - " + row.name + " - " + row.country + " - " + (row.role || "role needs review"));
+      });
+      lines.push("", "## Missing-Detail Employees", "");
+      if (!handoff.missingDetailEmployees.length) lines.push("- None.");
+      handoff.missingDetailEmployees.forEach(function (row) {
+        lines.push("- " + row.employeeCode + " - " + row.name + " - " + (row.missingFields || row.readinessBadges || "Review needed"));
+      });
+      lines.push("", "## Payroll Impact Notes", "");
+      if (!handoff.payrollImpactItems.length) lines.push("- None.");
+      handoff.payrollImpactItems.forEach(function (item) {
+        lines.push("- " + item.source + " - " + item.employee + " - " + item.type + " - " + item.date + " - " + (item.payrollReviewNote || item.warnings.join("; ") || "Review needed"));
+      });
+      lines.push("", "## Import Contract", "");
+      payrollHandoffHeaders().forEach(function (header) {
+        lines.push("- " + header);
+      });
+      lines.push("", "## Limitations", "");
+      lines.push("- payroll handoff draft only.");
+      lines.push("- download handoff files and review before import.");
+      lines.push("- no salary payment, payroll filing, compliance guarantee, or automatic Payroll writeback.");
+      return lines.join("\n");
+    }
+
+    function downloadHandoffMarkdown() {
+      var handoff = savePayrollHandoffDraft();
+      downloadText("afrohr-payroll-handoff-" + todayIso() + ".md", payrollHandoffMarkdown(handoff), "text/markdown;charset=utf-8");
+      recordHandoffHistory(handoff, "export");
+      renderAll();
+    }
+
+    function exportOnboardingChecklistCsv() {
+      var rows = [];
+      state.employees.forEach(function (employee) {
+        employeeOnboardingTasks(employee).forEach(function (task) {
+          rows.push([
+            employee.employeeCode || "",
+            employee.name || "",
+            task.title,
+            onboardingStatusLabel(task.status),
+            task.reviewer || state.setup.hrContact || "HR reviewer",
+            task.note || "",
+            task.updatedAt ? stampLabel(task.updatedAt) : ""
+          ]);
+        });
+      });
+      downloadCsv("afrohr-onboarding-checklist-" + todayIso() + ".csv", [
+        "employee code", "full name", "task", "status", "reviewer", "review note", "updated"
+      ], rows);
+    }
+
+    function onboardingPacketMarkdown() {
+      var lines = [
+        "# AfroHR Onboarding Packet",
+        "",
+        "Status: prepared for review",
+        "Generated at: " + stampLabel(new Date().toISOString()),
+        "Organization: " + (state.setup.organizationName || "People workspace"),
+        "",
+        "## Limitations",
+        "",
+        "- Draft and review workflow only.",
+        "- No legal certification.",
+        "- No e-signature.",
+        "- No labor-law compliance guarantee.",
+        "- No file upload or document storage.",
+        "- No automatic Payroll record changes.",
+        ""
+      ];
+      state.employees.forEach(function (employee) {
+        lines.push("## " + employee.name);
+        lines.push("");
+        lines.push("- Employee code: " + (employee.employeeCode || "needs review"));
+        lines.push("- Role/title: " + (employee.role || "needs review"));
+        lines.push("- Start date: " + (employee.startDate || "needs review"));
+        lines.push("- Manager: " + (employee.manager || "needs review"));
+        lines.push("- Payroll readiness: " + readiness(employee) + "%");
+        lines.push("");
+        lines.push("### Onboarding Checklist");
+        employeeOnboardingTasks(employee).forEach(function (task) {
+          lines.push("- " + task.title + ": " + onboardingStatusLabel(task.status) + " - " + (task.note || "needs review"));
+        });
+        lines.push("");
+        lines.push("### Review Warnings");
+        reviewWarnings(employee).forEach(function (warning) {
+          lines.push("- " + warning);
+        });
+        lines.push("");
+      });
+      if (state.letters.length) {
+        lines.push("## Letter and Contract Drafts");
+        state.letters.forEach(function (letter) {
+          lines.push("- " + letter.title + ": " + (letter.status || "draft") + ", reviewer " + (letter.reviewer || "HR reviewer"));
+        });
+        lines.push("");
+      }
+      if (state.documents.length) {
+        lines.push("## Document Checklist");
+        state.documents.forEach(function (doc) {
+          lines.push("- " + doc.title + ": " + (doc.status || "needs review") + ". " + (doc.note || "Metadata only."));
+        });
+        lines.push("");
+      }
+      return lines.join("\n");
+    }
+
+    function exportOnboardingPacketMarkdown() {
+      downloadText("afrohr-onboarding-packet-" + todayIso() + ".md", onboardingPacketMarkdown(), "text/markdown;charset=utf-8");
+    }
+
+    function exportEmploymentLetterMarkdown() {
+      if (!state.letters.length) generateLetter();
+      var letter = state.letters[state.letters.length - 1];
+      downloadText("afrohr-employment-letter-" + slug(letter.employee || letter.id) + "-" + todayIso() + ".md", letter.markdown || "", "text/markdown;charset=utf-8");
+    }
+
+    function firstLocalEmployee() {
+      if (!state.employees.length) {
+        var employee = hrEmployee(0);
+        state.employees.push(employee);
+        ensureOnboardingRecords(employee);
+      }
+      return state.employees[0];
+    }
+
+    function prepareContractChecklist() {
+      var employee = firstLocalEmployee();
+      [
+        ["ID", "ID/document metadata", "received", addDaysIso(365), "Confirm name, ID reference, address/location, and emergency contact metadata."],
+        ["contract", "Contract checklist", "needs review", "", "Review role, start date, probation, pay note, working location, notice, and country-specific terms."],
+        ["appointment letter", "Appointment letter record", "needs review", "", "Prepare appointment letter metadata for review."],
+        ["policy acknowledgement", "Policy acknowledgement", "needs review", "", "Prepare policy acknowledgement note for review. No e-signature is active."],
+        ["payroll detail proof", "Payroll detail proof", "needs review", "", "Track payroll detail proof metadata only."],
+        ["work permit", "Work permit reminder", "received", addDaysIso(25), "Expiry reminder for review. Confirm current work permission outside AfroHR."]
+      ].forEach(function (item) {
+        state.documents.push(buildDocumentRecord({
+          id: "doc-" + slug(item[0]) + "-" + Date.now() + "-" + state.documents.length,
+          employeeId: employee.id,
+          employee: employee.name,
+          documentType: item[0],
+          title: item[1] + " - " + employee.name,
+          status: item[2],
+          issueDate: todayIso(),
+          expiryDate: item[3],
+          note: item[4]
+        }));
+      });
+      upsertOnboardingTask(employee, "document", { status: "ready-for-review", note: "Document metadata checklist prepared. No files uploaded." });
+      upsertOnboardingTask(employee, "policy", { status: "ready-for-review", note: "Policy acknowledgement prepared for review. No e-signature active." });
+      saveState();
+      renderAll();
+    }
+
+    function addDocumentRecord() {
+      state.documents.push(buildDocumentRecord());
       saveState();
       renderAll();
     }
 
     function addDocNote() {
-      state.documents.push({
-        id: "doc-" + Date.now(),
-        title: "Vault review note " + (state.documents.length + 1),
-        status: "open",
-        note: "Local metadata record. No document file was uploaded or stored."
-      });
+      addDocumentRecord();
+    }
+
+    function exportPeoplePacket() {
+      var packet = {
+        exportedAt: new Date().toISOString(),
+        organization: state.setup,
+        setupScore: setupScore(),
+        employeeRecords: state.employees,
+        contacts: state.contacts,
+        payrollProfiles: state.payrollProfiles,
+        payrollRecordsRead: payrollEmployees().length,
+        onboarding: state.onboarding,
+        onboardingTasks: state.onboardingTasks,
+        leave: state.leave,
+        attendance: state.attendance,
+        leaveAttendanceSummary: leaveDashboardCounts(),
+        documents: state.documents,
+        letters: state.letters,
+        handoffs: state.handoffs,
+        reports: state.reports,
+        limits: [
+          "Saved on this device",
+          "No automatic Payroll record changes",
+          "No file upload or e-signature",
+          "No labor-law compliance guarantee"
+        ]
+      };
+      state.packetExports.unshift({ id: "PEOPLE-PACKET-" + Date.now(), exportedAt: packet.exportedAt, status: "Review needed" });
       saveState();
+      var blob = new Blob([JSON.stringify(packet, null, 2)], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = "afrohr-people-packet-" + todayIso() + ".json";
+      document.body.appendChild(link);
+      link.click();
+      window.setTimeout(function () {
+        URL.revokeObjectURL(url);
+        link.remove();
+      }, 1000);
       renderAll();
     }
 
     function resetLocalDemo() {
       localStorage.removeItem(STORAGE_KEY);
-      state = defaultState();
+      state = normalizeStateShape(defaultState());
       saveState();
       renderAll();
     }
 
     function renderAll() {
       renderSelectors();
+      renderSetup();
       renderMetrics();
       renderEmployees();
       renderMissing();
@@ -904,34 +3518,116 @@
       renderLeave();
       renderOnboarding();
       renderDocs();
+      renderHandoffs();
+      renderPeopleReports();
       renderCompliance();
+      renderAccountMeta();
     }
 
     function boot() {
       bindElements();
       renderAll();
       els.orgSelect.addEventListener("change", function () {
-        state.org = els.orgSelect.value;
-        saveState();
+        syncSetupValue("organizationType", els.orgSelect.value);
       });
       els.countrySelect.addEventListener("change", function () {
-        state.country = els.countrySelect.value;
-        saveState();
-        renderAll();
+        syncSetupValue("country", els.countrySelect.value);
       });
       els.periodSelect.addEventListener("change", function () {
-        state.period = els.periodSelect.value;
-        saveState();
+        syncSetupValue("reviewMonth", els.periodSelect.value);
       });
-      els.refreshBtn.addEventListener("click", renderAll);
+      [
+        ["organizationName", null],
+        ["organizationType", "organizationType"],
+        ["setupCountry", "country"],
+        ["currencySelect", "currency"],
+        ["hrContact", null],
+        ["payrollContact", null],
+        ["leaveYearStart", null],
+        ["workWeekSelect", "workWeek"],
+        ["reviewMonthSelect", "reviewMonth"],
+        ["handoffPreference", "handoffPreference"]
+      ].forEach(function (item) {
+        var id = item[0];
+        var setupKey = item[1];
+        els[id].addEventListener("change", function () {
+          if (setupKey) syncSetupValue(setupKey, els[id].value);
+          else saveSetup();
+        });
+        if (id === "organizationName" || id === "hrContact" || id === "payrollContact") {
+          els[id].addEventListener("input", function () {
+            readSetupFromFields();
+            saveState();
+            renderSetup();
+            renderMetrics();
+            renderPeopleReports();
+          });
+        }
+      });
+      els.setupBtn.addEventListener("click", function () { saveSetup({ fillDefaults: true }); });
+      els.setupWorkflowBtn.addEventListener("click", function () { saveSetup({ fillDefaults: true }); });
+      els.saveSetupBtn.addEventListener("click", saveSetup);
+      els.refreshBtn.addEventListener("click", function () {
+        renderAll();
+        refreshAccountOrganizations();
+      });
       els.resetBtn.addEventListener("click", resetLocalDemo);
-      els.onboardBtn.addEventListener("click", onboardEmployee);
+      els.addEmployeeBtn.addEventListener("click", function () { openEmployeeDrawer(); });
+      els.onboardBtn.addEventListener("click", function () { openEmployeeDrawer(); });
+      els.completeOnboardingBtn.addEventListener("click", completeOnboarding);
       els.requestDetailsBtn.addEventListener("click", requestMissingDetails);
       els.letterBtn.addEventListener("click", generateLetter);
+      els.exportLetterMarkdownBtn.addEventListener("click", exportEmploymentLetterMarkdown);
+      els.exportOnboardingPacketBtn.addEventListener("click", exportOnboardingPacketMarkdown);
+      els.exportOnboardingCsvBtn.addEventListener("click", exportOnboardingChecklistCsv);
+      els.leaveWorkflowBtn.addEventListener("click", trackLeave);
       els.leaveBtn.addEventListener("click", trackLeave);
+      els.attendanceBtn.addEventListener("click", addAttendanceRecord);
+      els.exportLeaveRegisterBtn.addEventListener("click", exportLeaveRegisterCsv);
+      els.exportAttendanceBtn.addEventListener("click", exportAttendanceCsv);
+      els.exportPayrollImpactBtn.addEventListener("click", exportPayrollImpactCsv);
+      els.buildHandoffBtn.addEventListener("click", sendToPayroll);
+      els.exportHandoffReadyBtn.addEventListener("click", exportHandoffReadyCsv);
+      els.exportHandoffMissingBtn.addEventListener("click", exportHandoffMissingCsv);
+      els.exportHandoffImpactBtn.addEventListener("click", exportHandoffImpactCsv);
+      els.downloadHandoffBtn.addEventListener("click", downloadHandoffMarkdown);
       els.sendPayrollBtn.addEventListener("click", sendToPayroll);
       els.sendPayrollTopBtn.addEventListener("click", sendToPayroll);
       els.addDocBtn.addEventListener("click", addDocNote);
+      els.addDocumentRecordBtn.addEventListener("click", addDocumentRecord);
+      els.prepareContractChecklistBtn.addEventListener("click", prepareContractChecklist);
+      els.exportDocumentRegisterBtn.addEventListener("click", exportDocumentRegisterCsv);
+      els.exportExpiringDocumentsBtn.addEventListener("click", exportExpiringDocumentsCsv);
+      els.exportPeopleSummaryBtn.addEventListener("click", exportPeopleSummaryCsv);
+      els.exportHrReviewPacketBtn.addEventListener("click", exportHrReviewPacketMarkdown);
+      els.exportPacketBtn.addEventListener("click", exportPeoplePacket);
+      els.exportRegisterBtn.addEventListener("click", exportEmployeeRegisterCsv);
+      els.exportReadinessBtn.addEventListener("click", exportPayrollReadinessCsv);
+      els.exportMissingBtn.addEventListener("click", exportMissingDetailsCsv);
+      els.closeEmployeeDrawerBtn.addEventListener("click", closeEmployeeDrawer);
+      els.employeeDrawerBackdrop.addEventListener("click", closeEmployeeDrawer);
+      els.saveEmployeeBtn.addEventListener("click", saveEmployeeFromDrawer);
+      els.markInactiveBtn.addEventListener("click", function () { markEmployeeInactive(); });
+      els.requestEmployeeDetailsBtn.addEventListener("click", function () { requestMissingDetailsForEmployee(); });
+      els.employeeHandoffBtn.addEventListener("click", function () { addEmployeeToHandoff(); });
+      els.createAccountOrganizationBtn.addEventListener("click", createAccountOrganization);
+      els.saveAccountBtn.addEventListener("click", saveToAccount);
+      els.quickSaveAccountBtn.addEventListener("click", saveToAccount);
+      els.pullAccountBtn.addEventListener("click", pullFromAccount);
+      els.downloadBackupBtn.addEventListener("click", function () {
+        downloadDeviceBackup("Manual device backup");
+        setAccountStatus("Saved on this device", "Backup downloaded. No account data was replaced.", "workspace");
+      });
+      els.accountOrganizationSelect.addEventListener("change", function () {
+        selectAccountOrganization(els.accountOrganizationSelect.value);
+        pendingAccountSave = false;
+        pendingAccountPull = null;
+        els.saveAccountBtn.textContent = "Save to account";
+        els.pullAccountBtn.textContent = "Pull from account";
+        showAccountConflict([]);
+        renderAccountMeta();
+      });
+      refreshAccountOrganizations();
     }
 
     if (document.readyState === "loading") {

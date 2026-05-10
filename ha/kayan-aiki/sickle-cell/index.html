@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sickle Cell Genotype Advisor a Hausa | AfroTools</title>
+  <meta name="description" content="Duba sickle cell genotype inheritance probabilities a Hausa: AA, AS, SS, AC, SC, CC. Informational only, ba diagnosis ba.">
+  <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/sickle-cell/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/sickle-cell/">
+  <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/sickle-cell/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sickle-cell/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/ha/kayan-aiki/sickle-cell/">
+  <meta property="og:title" content="Sickle Cell Genotype Advisor a Hausa | AfroTools">
+  <meta property="og:description" content="Hausa sickle cell genotype probability checker tare da Punnett square da safety disclaimer.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/sickle-cell.svg">
+  <meta property="og:locale" content="ha_NG">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sickle Cell Genotype Advisor a Hausa | AfroTools">
+  <meta name="twitter:description" content="Duba inheritance probabilities. Ba medical diagnosis ba.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/sickle-cell.svg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Sickle Cell Genotype Advisor a Hausa","url":"https://afrotools.com/ha/kayan-aiki/sickle-cell/","inLanguage":"ha","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/ha/assets/health-ha.css">
+  <script src="/assets/js/components/tool-registry.min.js?v=fe62d0e9" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=81565a85" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+</head>
+<body>
+<afro-navbar theme="dark" active="health"></afro-navbar>
+<div class="ha-health">
+  <section class="ha-health-hero">
+    <div class="ha-health-wrap">
+      <nav class="ha-health-breadcrumb" aria-label="Breadcrumb"><a href="/ha/">Gida</a><span>/</span><a href="/ha/lafiya/">Lafiya</a><span>/</span><span>Sickle cell</span></nav>
+      <span class="ha-health-eyebrow">Sickle cell education - not diagnosis</span>
+      <h1>Fahimci genotype probabilities kafin tattaunawa da counsellor.</h1>
+      <p>Ka zabi genotype biyu domin ganin Punnett square da outcome percentages. Wannan ba lab result ba ne, ba diagnosis ba ne, kuma ba ya maye gurbin genetic counselling.</p>
+    </div>
+  </section>
+  <main class="ha-health-main">
+    <section class="ha-tool-grid two">
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">Calculator</span>
+        <h2>Zabi genotype</h2>
+        <div class="ha-form-grid">
+          <div class="ha-field"><label for="parent1">Parent / partner 1</label><select id="parent1"><option>AA</option><option>AS</option><option>SS</option><option>AC</option><option>SC</option><option>CC</option></select></div>
+          <div class="ha-field"><label for="parent2">Parent / partner 2</label><select id="parent2"><option>AA</option><option>AS</option><option>SS</option><option>AC</option><option>SC</option><option>CC</option></select></div>
+          <div class="ha-field full"><button class="ha-calc-btn" type="button" onclick="calculate()">Duba sickle cell probability</button></div>
+        </div>
+      </div>
+      <div class="ha-tool-card">
+        <span class="ha-tool-kicker">Safety</span>
+        <h2>Yi amfani da shi don tambayoyi</h2>
+        <p>Idan genotype ya hada da S ko C, yi magana da genetic counsellor, doctor ko sickle cell clinic. Kada a dauki sakamakon nan a matsayin hukunci na medical.</p>
+        <div class="ha-safety-box" style="margin-top:14px">Informational only. Ba diagnosis ba ne, ba treatment promise ba ne. Tabbatar da lab test da qualified health professional.</div>
+      </div>
+    </section>
+    <section class="ha-tool-card ha-results" id="results">
+      <span class="ha-tool-kicker">Sakamako</span>
+      <div id="compatResult"></div>
+      <div id="punnettSquare"></div>
+      <h3>Outcome percentages</h3>
+      <div class="ha-outcome-grid" id="outcomes"></div>
+      <div class="ha-note-box" id="advice" style="margin-top:14px"></div>
+      <div class="ha-safety-box" style="margin-top:14px">Percentages suna nuna yiwuwar inheritance pattern a kowace pregnancy. Ba tabbacin abin da zai faru ba ne. Lab da counselling suna da muhimmanci.</div>
+    </section>
+    <section class="ha-tool-card ha-faq">
+      <span class="ha-tool-kicker">FAQ</span>
+      <h2>Tambayoyi</h2>
+      <details><summary>Me yasa ake bukatar counselling?</summary><p>Genotype probabilities na iya shafar family planning. Counsellor ko doctor zai iya bayyana options, testing, antenatal follow-up da support ba tare da judgement ba.</p></details>
+      <details><summary>Shin wannan tool yana bada treatment?</summary><p>A'a. Yana nuna educational probabilities ne kawai. Duk treatment ko care plan ya fito daga qualified health professional.</p></details>
+    </section>
+  </main>
+</div>
+<afro-footer></afro-footer>
+<script>
+const GENOTYPE_DATA={
+  'AA+AA':{outcomes:{AA:100},compat:'safe',msg:'Chart din yana nuna karamin hadarin sickle cell disease pattern. Har yanzu lab confirmation na da muhimmanci.'},
+  'AA+AS':{outcomes:{AA:50,AS:50},compat:'safe',msg:'Yara na iya zama AA ko AS carrier. A sanar da yara carrier status idan an tabbatar da lab.'},
+  'AA+SS':{outcomes:{AS:100},compat:'caution',msg:'Duk yara na iya zama AS carriers. Wannan ba disease diagnosis ba ne, amma carrier awareness yana da muhimmanci.'},
+  'AA+AC':{outcomes:{AA:50,AC:50},compat:'safe',msg:'Yara na iya zama AA ko AC carrier. Tabbatar da genotype da lab.'},
+  'AA+SC':{outcomes:{AS:50,AC:50},compat:'caution',msg:'Yara na iya zama AS ko AC carriers. A tattauna carrier awareness da counsellor.'},
+  'AA+CC':{outcomes:{AC:100},compat:'safe',msg:'Duk yara na iya zama AC carriers bisa wannan chart.'},
+  'AS+AS':{outcomes:{AA:25,AS:50,SS:25},compat:'danger',msg:'Chart din yana nuna 25% yiwuwar SS pattern a kowace pregnancy. Genetic counselling yana da muhimmanci.'},
+  'AS+SS':{outcomes:{AS:50,SS:50},compat:'danger',msg:'Chart din yana nuna 50% yiwuwar SS pattern a kowace pregnancy. A nemi genetic counselling.'},
+  'AS+AC':{outcomes:{AA:25,AS:25,AC:25,SC:25},compat:'danger',msg:'Chart din yana nuna 25% yiwuwar SC pattern. A tattauna da genetic counsellor ko doctor.'},
+  'AS+SC':{outcomes:{AS:25,SS:25,AC:25,SC:25},compat:'danger',msg:'Chart din yana nuna yiwuwar SS da SC patterns. A nemi counselling kafin yanke hukunci.'},
+  'AS+CC':{outcomes:{AC:50,SC:50},compat:'danger',msg:'Chart din yana nuna yiwuwar SC pattern. A nemi genetic counselling.'},
+  'SS+SS':{outcomes:{SS:100},compat:'danger',msg:'Chart din yana nuna duk yara na iya samun SS pattern. Wannan na bukatar counselling da medical guidance.'},
+  'SS+AC':{outcomes:{AS:50,SC:50},compat:'danger',msg:'Chart din yana nuna yiwuwar SC pattern. A nemi counselling.'},
+  'SS+SC':{outcomes:{SS:50,SC:50},compat:'danger',msg:'Chart din yana nuna yiwuwar SS ko SC patterns. A nemi genetic counselling.'},
+  'SS+CC':{outcomes:{SC:100},compat:'danger',msg:'Chart din yana nuna duk yara na iya samun SC pattern. A nemi counselling.'},
+  'AC+AC':{outcomes:{AA:25,AC:50,CC:25},compat:'caution',msg:'Chart din yana nuna yiwuwar CC pattern. A tattauna da counsellor idan ana planning.'},
+  'AC+SC':{outcomes:{AS:25,AC:25,SC:25,CC:25},compat:'danger',msg:'Chart din yana nuna yiwuwar SC da CC patterns. A nemi counselling.'},
+  'AC+CC':{outcomes:{AC:50,CC:50},compat:'caution',msg:'Chart din yana nuna yiwuwar CC pattern. A tabbatar da lab da counselling.'},
+  'SC+SC':{outcomes:{SS:25,SC:50,CC:25},compat:'danger',msg:'Chart din yana nuna yiwuwar SS, SC da CC patterns. Counselling yana da muhimmanci.'},
+  'SC+CC':{outcomes:{SC:50,CC:50},compat:'danger',msg:'Chart din yana nuna yiwuwar SC ko CC patterns. A nemi counselling.'},
+  'CC+CC':{outcomes:{CC:100},compat:'caution',msg:'Chart din yana nuna duk yara na iya samun CC pattern. A nemi medical interpretation.'}
+};
+const COLORS={AA:'#16a34a',AS:'#d97706',SS:'#dc2626',AC:'#2563eb',SC:'#9333ea',CC:'#64748b'};
+const LABELS={AA:'AA pattern',AS:'AS carrier pattern',SS:'SS pattern',AC:'AC carrier pattern',SC:'SC pattern',CC:'CC pattern'};
+const BG={AA:'#f0fdf4',AS:'#fffbeb',SS:'#fef2f2',AC:'#eff6ff',SC:'#faf5ff',CC:'#f8fafc'};
+function calculate(){let p1=document.getElementById('parent1').value;let p2=document.getElementById('parent2').value;let key=p1+'+'+p2;if(!GENOTYPE_DATA[key])key=p2+'+'+p1;const data=GENOTYPE_DATA[key];if(!data){alert('Ba a samu wannan combination ba.');return;}const compatLabels={safe:'Karamin hadari a chart',caution:'A yi hankali',danger:'A nemi counselling'};const compatClasses={safe:'safe',caution:'caution',danger:''};document.getElementById('compatResult').innerHTML='<div class="ha-result-hero '+compatClasses[data.compat]+'"><div class="ha-result-value">'+p1+' + '+p2+'</div><div class="ha-result-label">'+compatLabels[data.compat]+'</div></div>';const alleles1=[p1[0],p1[1]];const alleles2=[p2[0],p2[1]];let cells=[];for(let i=0;i<2;i++){for(let j=0;j<2;j++){cells.push([alleles1[i],alleles2[j]].sort().join(''));}}let pHtml='<h3>Punnett square</h3><div class="ha-punnett"><div class="ha-punnett-cell head"></div><div class="ha-punnett-cell head">'+alleles2[0]+'</div><div class="ha-punnett-cell head">'+alleles2[1]+'</div><div class="ha-punnett-cell head">'+alleles1[0]+'</div>';const cellClass=g=>g==='SS'||g==='SC'?'danger':g==='AS'||g==='AC'||g==='CC'?'caution':'safe';pHtml+='<div class="ha-punnett-cell '+cellClass(cells[0])+'">'+cells[0]+'</div><div class="ha-punnett-cell '+cellClass(cells[1])+'">'+cells[1]+'</div><div class="ha-punnett-cell head">'+alleles1[1]+'</div><div class="ha-punnett-cell '+cellClass(cells[2])+'">'+cells[2]+'</div><div class="ha-punnett-cell '+cellClass(cells[3])+'">'+cells[3]+'</div></div>';document.getElementById('punnettSquare').innerHTML=pHtml;const outHtml=Object.entries(data.outcomes).map(([g,pct])=>'<div class="ha-outcome" style="background:'+BG[g]+';border:1px solid '+COLORS[g]+'30"><div style="color:'+COLORS[g]+';font-size:1.4rem">'+g+'</div><div style="color:'+COLORS[g]+'">'+pct+'%</div><div style="color:#64748b">'+LABELS[g]+'</div></div>').join('');document.getElementById('outcomes').innerHTML=outHtml;const adv=document.getElementById('advice');adv.textContent=data.msg;document.getElementById('results').classList.add('on');document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});}
+</script>
+</body>
+</html>

@@ -9,13 +9,9 @@
  */
 const { getStore } = require('@netlify/blobs');
 const { checkRateLimit, getRemaining } = require('../_shared/rate-limit');
+const { API_PLAN_LIMITS, getApiPlanLimit, normalizeApiTier } = require('../_shared/api-plans');
 
-const LIMITS = {
-  free:       { day: 100,    month: 3000 },
-  starter:    { day: 10000,  month: 300000 },
-  pro:        { day: 100000, month: 3000000 },
-  enterprise: { day: -1,     month: -1 }
-};
+const LIMITS = API_PLAN_LIMITS;
 
 async function validateApiKey(event) {
   var headers = event.headers || {};
@@ -40,8 +36,9 @@ async function validateApiKey(event) {
 
   // Sandbox keys use deterministic data and their own free-tier limits.
   if (apiKey.startsWith('afro_test_')) {
+    var freeLimits = getApiPlanLimit('free');
     var sandboxKey = 'sandbox:' + apiKey + ':' + clientIp;
-    if (!checkRateLimit(sandboxKey, LIMITS.free.day)) {
+    if (!checkRateLimit(sandboxKey, freeLimits.day)) {
       return {
         valid: false,
         status: 429,
@@ -49,15 +46,15 @@ async function validateApiKey(event) {
         tier: 'sandbox',
         sandbox: true,
         remaining: 0,
-        limit: LIMITS.free.day
+        limit: freeLimits.day
       };
     }
     return {
       valid: true,
       tier: 'sandbox',
       sandbox: true,
-      remaining: getRemaining(sandboxKey, LIMITS.free.day),
-      limit: LIMITS.free.day
+      remaining: getRemaining(sandboxKey, freeLimits.day),
+      limit: freeLimits.day
     };
   }
 
@@ -68,8 +65,8 @@ async function validateApiKey(event) {
       return { valid: false, status: 403, error: 'Invalid API key. Get one at https://afrotools.com/dashboard/api/' };
     }
 
-    var tier = data.tier || 'free';
-    var limits = LIMITS[tier] || LIMITS.free;
+    var tier = normalizeApiTier(data.tier || 'free');
+    var limits = getApiPlanLimit(tier);
     var today = new Date().toISOString().split('T')[0];
     var month = today.slice(0, 7);
 

@@ -11,8 +11,26 @@ const IGNORE_DIRS = new Set([
   ".git",
   ".github",
   ".netlify",
+  "admin",
+  "afrotools-sentinel",
+  "artifacts",
   "dist",
+  "docs",
+  "netlify",
   "node_modules",
+  "prompts",
+  "reports",
+  "scripts",
+  "supabase",
+  "tests",
+]);
+
+const INTERNAL_HTML_FILES = new Set([
+  "afrotools-mission-control.html",
+  "fr/widgets/iframe/template.html",
+  "mc-7a2f9x.html",
+  "tools/afrostream/admin.html",
+  "widgets/iframe/template.html",
 ]);
 
 function walkHtmlFiles(dir, out = []) {
@@ -125,6 +143,8 @@ function buildCanonicalAliasMap() {
   const aliases = [];
 
   for (const filePath of walkHtmlFiles(ROOT)) {
+    if (INTERNAL_HTML_FILES.has(relativeHtmlPath(filePath))) continue;
+
     const source = fileToSourceHtmlRoute(filePath);
     if (!source) continue;
 

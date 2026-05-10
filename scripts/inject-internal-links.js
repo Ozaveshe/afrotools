@@ -66,6 +66,10 @@ const CATEGORY_CHILD_LINK_EXCLUSIONS = {
   health: new Set(['medical-aid', 'nhif'])
 };
 
+const TOOL_SUBPAGE_EXCLUSIONS = new Set([
+  'admin.html'
+]);
+
 function injectLinks(indexPath, links, sectionTitle) {
   let html = fs.readFileSync(indexPath, 'utf8');
 
@@ -198,6 +202,7 @@ function processToolSubPages() {
     // Find country-named .html files
     const subFiles = fs.readdirSync(toolDir)
       .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template'))
+      .filter(f => !TOOL_SUBPAGE_EXCLUSIONS.has(f))
       .filter(f => !(tool.name === 'africa-conflict' && f === 'detail.html'))
       .sort();
 

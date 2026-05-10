@@ -23,6 +23,9 @@ const BLOCKED_TOP_LEVEL_DIRS = new Set([
   '.playwright',
   '.playwright-cli',
   '.tmp-validation',
+  'admin',
+  'afrotools-sentinel',
+  'artifacts',
   'dist',
   'docs',
   'netlify',
@@ -46,6 +49,7 @@ const BLOCKED_ROOT_FILES = new Set([
   '_audit_inventory.txt',
   '_serve.js',
   'AGENTS.md',
+  'afrotools-mission-control.html',
   'AUDIT-FIX-PROMPT.md',
   'AFROCONFLICT_BUILD_PROMPT.md',
   'AFROSTREAM-SESSION-PROMPT.md',
@@ -61,6 +65,7 @@ const BLOCKED_ROOT_FILES = new Set([
   'deploy.bat',
   'inject-ga4.ps1',
   'inject-og-tags.js',
+  'mc-7a2f9x.html',
   'netlify.toml',
   'package-lock.json',
   'package.json',
@@ -84,17 +89,25 @@ const BLOCKED_ROOT_EXTENSIONS = new Set([
   '.yml'
 ]);
 
+const BLOCKED_RELATIVE_FILES = new Set([
+  'fr/widgets/iframe/template.html',
+  'tools/afrostream/admin.html',
+  'widgets/iframe/template.html'
+]);
+
+const BLOCKED_RELATIVE_DIRS = new Set([
+  'fr/docs'
+]);
+
 const ALLOWED_ROOT_FILES = new Set([
   '404.html',
   '_headers',
   '_redirects',
-  'afrotools-mission-control.html',
   'favicon.ico',
   'index.html',
   'llms-full.txt',
   'llms.txt',
   'manifest.json',
-  'mc-7a2f9x.html',
   'offline.html',
   'privacy-policy.html',
   'robots.txt',
@@ -125,11 +138,17 @@ function isBlockedRootFile(fileName) {
 
 function shouldSkipDir(dirName, relativeFromRoot) {
   if (dirName.startsWith('.')) return true;
+  const normalizedRelative = relativeFromRoot.replace(/\\/g, '/');
+  if (BLOCKED_RELATIVE_DIRS.has(normalizedRelative)) return true;
+
   const parts = relativeFromRoot.split(path.sep).filter(Boolean);
   return parts.length === 1 && BLOCKED_TOP_LEVEL_DIRS.has(parts[0]);
 }
 
 function shouldSkipFile(fileName, relativeFromRoot) {
+  const normalizedRelative = relativeFromRoot.replace(/\\/g, '/');
+  if (BLOCKED_RELATIVE_FILES.has(normalizedRelative)) return true;
+
   const parts = relativeFromRoot.split(path.sep).filter(Boolean);
   if (parts.some((part) => part.startsWith('.'))) return true;
   if (parts.length === 1 && isBlockedRootFile(fileName)) return true;
@@ -179,10 +198,19 @@ function verifyDist() {
     'AGENTS.md',
     '.env.example',
     '.mcp.json',
+    'admin',
+    'afrotools-mission-control.html',
+    'afrotools-sentinel',
+    'artifacts',
+    'fr/docs',
+    'fr/widgets/iframe/template.html',
+    'mc-7a2f9x.html',
     'netlify/functions/api-scholarships.js',
     'scripts/check-links.js',
     'supabase/migrations/022-scholarship-platform.sql',
-    'docs/ARCHITECTURE.md'
+    'docs/ARCHITECTURE.md',
+    'tools/afrostream/admin.html',
+    'widgets/iframe/template.html'
   ];
 
   for (const relative of forbidden) {

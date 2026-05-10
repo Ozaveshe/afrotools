@@ -15,7 +15,7 @@ const PRECACHE = [
   '/assets/css/tokens.min.css',
   '/assets/css/skeleton.css',
   '/assets/js/components/tool-registry.js',
-  '/assets/js/components/navbar.min.js',
+  '/assets/js/components/navbar.min.js?v=e84bb500',
   '/assets/js/components/footer.min.js',
   '/assets/js/utils.js',
   '/assets/js/lib/error-boundary.js',

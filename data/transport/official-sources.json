@@ -1,0 +1,598 @@
+{
+  "version": 1,
+  "category": "transport",
+  "name": "Transport and logistics official-source ledger",
+  "reviewCadenceDays": 30,
+  "highRiskCadenceDays": 7,
+  "notes": [
+    "Use official transport authorities, customs agencies, fuel regulators, ports, road agencies, aviation regulators, city authorities, and direct operator pages before changing public transport facts.",
+    "This ledger detects source availability and content changes. Human review is required before changing tariffs, duties, route rules, registration requirements, inspection requirements, fares, or fuel-price assumptions.",
+    "Some authority portals and operator pages block automated probes. Treat blocked and manual sources as a review queue, not as proof that a rule or price is unchanged."
+  ],
+  "tools": [
+    {
+      "id": "fuel-cost",
+      "route": "/tools/fuel-cost/",
+      "lane": "vehicle-money",
+      "priority": "high",
+      "sourceIds": ["ng-nmdpra", "ke-epra-pump-prices", "gh-npa-indicative-prices", "za-dmre-fuel"]
+    },
+    {
+      "id": "vehicle-operating-cost",
+      "route": "/tools/vehicle-operating-cost/",
+      "lane": "vehicle-money",
+      "priority": "high",
+      "sourceIds": ["ng-nmdpra", "ke-epra-pump-prices", "gh-npa-indicative-prices", "za-dmre-fuel", "ng-frsc", "ke-ntsa", "za-sanral"]
+    },
+    {
+      "id": "ride-fare",
+      "route": "/tools/ride-fare/",
+      "lane": "city-travel",
+      "priority": "medium",
+      "sourceIds": ["uber-price-estimate", "bolt-cities", "ng-lamata", "ke-nairobi-city"]
+    },
+    {
+      "id": "vehicle-import-duty",
+      "route": "/tools/vehicle-import-duty/",
+      "lane": "vehicle-money",
+      "priority": "high",
+      "sourceIds": ["ng-customs", "ke-kra-importing", "gh-gra-customs", "za-sars-customs"]
+    },
+    {
+      "id": "car-price-intelligence",
+      "route": "/cars/",
+      "lane": "vehicle-money",
+      "priority": "high",
+      "sourceIds": ["ng-customs", "ke-kra-importing", "gh-gra-customs", "ng-npa", "ke-kpa", "gh-gpha"]
+    },
+    {
+      "id": "car-import-cost",
+      "route": "/tools/car-import-cost/",
+      "lane": "vehicle-money",
+      "priority": "high",
+      "sourceIds": ["ng-customs", "ke-kra-importing", "gh-gra-customs", "za-sars-customs", "ng-npa", "ke-kpa", "ke-trade-portal"]
+    },
+    {
+      "id": "car-loan-vs-cash",
+      "route": "/tools/car-loan-vs-cash/",
+      "lane": "vehicle-money",
+      "priority": "medium",
+      "sourceIds": ["ng-customs", "ke-kra-importing", "gh-gra-customs", "za-sars-customs"]
+    },
+    {
+      "id": "vehicle-depreciation",
+      "route": "/tools/vehicle-depreciation/",
+      "lane": "vehicle-money",
+      "priority": "medium",
+      "sourceIds": ["ng-customs", "ke-kra-importing", "gh-dvla", "za-rtmc"]
+    },
+    {
+      "id": "fleet-fuel",
+      "route": "/tools/fleet-fuel/",
+      "lane": "fleet-road",
+      "priority": "high",
+      "sourceIds": ["ng-nmdpra", "ke-epra-pump-prices", "gh-npa-indicative-prices", "za-dmre-fuel", "za-sanral", "ke-kenha"]
+    },
+    {
+      "id": "truck-load",
+      "route": "/tools/truck-load/",
+      "lane": "fleet-road",
+      "priority": "medium",
+      "sourceIds": ["ke-kenha", "za-sanral", "ng-npa", "ke-kpa", "za-tnpa"]
+    },
+    {
+      "id": "boda-income",
+      "route": "/tools/boda-income/",
+      "lane": "fleet-road",
+      "priority": "medium",
+      "sourceIds": ["ng-nmdpra", "ke-epra-pump-prices", "ng-frsc", "ke-ntsa", "ke-nairobi-city"]
+    },
+    {
+      "id": "route-cost",
+      "route": "/tools/route-cost/",
+      "lane": "logistics-freight",
+      "priority": "high",
+      "sourceIds": ["ke-kenha", "za-sanral", "ng-npa", "ke-kpa", "gh-gpha", "ke-trade-portal", "rw-trade-portal"]
+    },
+    {
+      "id": "delivery-cost",
+      "route": "/tools/delivery-cost/",
+      "lane": "logistics-freight",
+      "priority": "medium",
+      "sourceIds": ["ng-nmdpra", "ke-epra-pump-prices", "dhl-global", "fedex-global", "bolt-cities"]
+    },
+    {
+      "id": "shipping-weight",
+      "route": "/tools/shipping-weight/",
+      "lane": "logistics-freight",
+      "priority": "medium",
+      "sourceIds": ["dhl-global", "fedex-global", "ng-npa", "ke-kpa", "gh-gpha"]
+    },
+    {
+      "id": "customs-time",
+      "route": "/tools/customs-time/",
+      "lane": "logistics-freight",
+      "priority": "high",
+      "sourceIds": ["ng-customs", "ke-kra-importing", "gh-gra-customs", "za-sars-customs", "ke-trade-portal", "rw-trade-portal", "ng-npa", "ke-kpa"]
+    },
+    {
+      "id": "vehicle-registration",
+      "route": "/tools/vehicle-registration/",
+      "lane": "fleet-road",
+      "priority": "high",
+      "sourceIds": ["ng-frsc", "ke-ntsa", "za-enatis", "gh-dvla", "rw-irembo"]
+    },
+    {
+      "id": "roadworthiness",
+      "route": "/tools/roadworthiness/",
+      "lane": "fleet-road",
+      "priority": "high",
+      "sourceIds": ["ng-frsc", "ke-ntsa", "za-rtmc", "gh-dvla"]
+    },
+    {
+      "id": "last-mile-delivery",
+      "route": "/tools/last-mile-delivery/",
+      "lane": "logistics-freight",
+      "priority": "medium",
+      "sourceIds": ["ng-nmdpra", "ke-epra-pump-prices", "dhl-global", "fedex-global", "ng-lamata", "ke-nairobi-city"]
+    },
+    {
+      "id": "vehicle-tracker-roi",
+      "route": "/tools/vehicle-tracker-roi/",
+      "lane": "vehicle-money",
+      "priority": "medium",
+      "sourceIds": ["ng-frsc", "ke-ntsa", "za-rtmc"]
+    },
+    {
+      "id": "parking-fee",
+      "route": "/tools/parking-fee/",
+      "lane": "fleet-road",
+      "priority": "medium",
+      "sourceIds": ["ng-laspa", "ke-nairobi-city", "za-cape-town", "gh-ama"]
+    },
+    {
+      "id": "toll-calc",
+      "route": "/tools/toll-calc/",
+      "lane": "fleet-road",
+      "priority": "high",
+      "sourceIds": ["za-sanral", "ke-kenha", "ng-lcc", "ke-nairobi-expressway", "gh-highways"]
+    },
+    {
+      "id": "matatu-fare",
+      "route": "/tools/matatu-fare/",
+      "lane": "city-travel",
+      "priority": "medium",
+      "sourceIds": ["ng-lamata", "ke-nairobi-city", "gh-highways", "ng-nmdpra", "ke-epra-pump-prices"]
+    },
+    {
+      "id": "africa-flight",
+      "route": "/tools/africa-flight/",
+      "lane": "city-travel",
+      "priority": "medium",
+      "sourceIds": ["ng-ncaa", "ke-kcaa", "za-sacaa", "gh-gcaa", "ethiopian-airlines", "kenya-airways", "flysafair"]
+    }
+  ],
+  "sources": [
+    {
+      "id": "ng-nmdpra",
+      "country": "NG",
+      "authority": "Nigerian Midstream and Downstream Petroleum Regulatory Authority",
+      "title": "NMDPRA petroleum regulation",
+      "url": "https://nmdpra.gov.ng/",
+      "sourceType": "fuel-regulator",
+      "watch": "availability-and-content",
+      "fields": ["fuel-price-policy", "petroleum-regulation", "consumer-advisories"]
+    },
+    {
+      "id": "ke-epra-pump-prices",
+      "country": "KE",
+      "authority": "Energy and Petroleum Regulatory Authority",
+      "title": "EPRA pump prices",
+      "url": "https://www.epra.go.ke/pump-prices",
+      "sourceType": "fuel-regulator",
+      "watch": "fuel-price-table",
+      "trackBody": true,
+      "fields": ["petrol", "diesel", "kerosene", "validity-period", "town"]
+    },
+    {
+      "id": "gh-npa-indicative-prices",
+      "country": "GH",
+      "authority": "National Petroleum Authority",
+      "title": "NPA indicative prices",
+      "url": "https://npa.gov.gh/indicative-prices/",
+      "sourceType": "fuel-regulator",
+      "watch": "download-list",
+      "trackBody": true,
+      "fields": ["petrol", "diesel", "pricing-window"]
+    },
+    {
+      "id": "za-dmre-fuel",
+      "country": "ZA",
+      "authority": "Department of Mineral Resources and Energy",
+      "title": "DMRE fuel price announcements",
+      "url": "https://www.dmre.gov.za/",
+      "sourceType": "government-department",
+      "watch": "fuel-price-announcements",
+      "fields": ["petrol", "diesel", "levies", "effective-date"]
+    },
+    {
+      "id": "ng-customs",
+      "country": "NG",
+      "authority": "Nigeria Customs Service",
+      "title": "Nigeria Customs Service",
+      "url": "https://customs.gov.ng/",
+      "sourceType": "customs-agency",
+      "watch": "tariff-and-service-updates",
+      "fields": ["import-duty", "tariff", "valuation", "clearing"]
+    },
+    {
+      "id": "ke-kra-importing",
+      "country": "KE",
+      "authority": "Kenya Revenue Authority",
+      "title": "KRA importing guidance",
+      "url": "https://www.kra.go.ke/individual/importing",
+      "sourceType": "revenue-authority",
+      "watch": "import-guidance",
+      "fields": ["import-duty", "vat", "excise", "vehicle-import"]
+    },
+    {
+      "id": "gh-gra-customs",
+      "country": "GH",
+      "authority": "Ghana Revenue Authority",
+      "title": "GRA customs",
+      "url": "https://gra.gov.gh/customs/",
+      "sourceType": "revenue-authority",
+      "watch": "customs-guidance",
+      "fields": ["import-duty", "valuation", "customs-procedure"]
+    },
+    {
+      "id": "za-sars-customs",
+      "country": "ZA",
+      "authority": "South African Revenue Service",
+      "title": "SARS customs duties and taxes",
+      "url": "https://www.sars.gov.za/customs-and-excise/duties-and-taxes/",
+      "sourceType": "revenue-authority",
+      "watch": "customs-duties",
+      "fields": ["customs-duty", "vat", "excise", "import-procedure"]
+    },
+    {
+      "id": "ng-frsc",
+      "country": "NG",
+      "authority": "Federal Road Safety Corps",
+      "title": "FRSC road safety and vehicle services",
+      "url": "https://frsc.gov.ng/",
+      "sourceType": "road-safety-authority",
+      "watch": "vehicle-and-safety-updates",
+      "fields": ["vehicle-registration", "driver-safety", "inspection", "roadworthiness"]
+    },
+    {
+      "id": "ke-ntsa",
+      "country": "KE",
+      "authority": "National Transport and Safety Authority",
+      "title": "NTSA vehicle services",
+      "url": "https://www.ntsa.go.ke/",
+      "sourceType": "transport-authority",
+      "watch": "vehicle-and-safety-updates",
+      "fields": ["registration", "inspection", "roadworthiness", "licensing"]
+    },
+    {
+      "id": "za-enatis",
+      "country": "ZA",
+      "authority": "eNaTIS",
+      "title": "eNaTIS online services",
+      "url": "https://online.natis.gov.za/",
+      "sourceType": "vehicle-registration-portal",
+      "watch": "portal-availability",
+      "fields": ["vehicle-registration", "renewal", "licensing"]
+    },
+    {
+      "id": "za-rtmc",
+      "country": "ZA",
+      "authority": "Road Traffic Management Corporation",
+      "title": "RTMC road traffic services",
+      "url": "https://www.rtmc.co.za/",
+      "sourceType": "road-safety-authority",
+      "watch": "road-safety-updates",
+      "fields": ["roadworthiness", "vehicle-safety", "traffic-services"]
+    },
+    {
+      "id": "gh-dvla",
+      "country": "GH",
+      "authority": "Driver and Vehicle Licensing Authority",
+      "title": "DVLA Ghana",
+      "url": "https://dvla.gov.gh/",
+      "sourceType": "vehicle-registration-authority",
+      "watch": "vehicle-services",
+      "fields": ["vehicle-registration", "roadworthiness", "inspection"]
+    },
+    {
+      "id": "rw-irembo",
+      "country": "RW",
+      "authority": "Irembo",
+      "title": "Irembo public service portal",
+      "url": "https://irembo.gov.rw/",
+      "sourceType": "public-service-portal",
+      "watch": "portal-availability",
+      "fields": ["vehicle-services", "public-service-fees", "applications"]
+    },
+    {
+      "id": "ng-npa",
+      "country": "NG",
+      "authority": "Nigerian Ports Authority",
+      "title": "Nigerian Ports Authority",
+      "url": "https://nigerianports.gov.ng/",
+      "sourceType": "port-authority",
+      "watch": "port-service-updates",
+      "fields": ["port-tariffs", "terminal", "marine-services", "clearing"]
+    },
+    {
+      "id": "ke-kpa",
+      "country": "KE",
+      "authority": "Kenya Ports Authority",
+      "title": "Kenya Ports Authority",
+      "url": "https://www.kpa.co.ke/",
+      "sourceType": "port-authority",
+      "watch": "port-service-updates",
+      "fields": ["port-tariffs", "container-handling", "port-notices"]
+    },
+    {
+      "id": "gh-gpha",
+      "country": "GH",
+      "authority": "Ghana Ports and Harbours Authority",
+      "title": "Ghana Ports and Harbours Authority",
+      "url": "https://ghanaports.gov.gh/",
+      "sourceType": "port-authority",
+      "watch": "port-service-updates",
+      "fields": ["port-tariffs", "terminal", "shipping-notices"]
+    },
+    {
+      "id": "za-tnpa",
+      "country": "ZA",
+      "authority": "Transnet National Ports Authority",
+      "title": "Transnet National Ports Authority",
+      "url": "https://www.transnetnationalportsauthority.net/",
+      "sourceType": "port-authority",
+      "watch": "port-service-updates",
+      "fields": ["port-tariffs", "marine-services", "port-notices"]
+    },
+    {
+      "id": "ke-trade-portal",
+      "country": "KE",
+      "authority": "Kenya Trade Portal",
+      "title": "Kenya Trade Portal",
+      "url": "https://infotradekenya.go.ke/",
+      "sourceType": "trade-portal",
+      "watch": "procedure-and-document-updates",
+      "fields": ["import-procedure", "documents", "clearance-time"]
+    },
+    {
+      "id": "rw-trade-portal",
+      "country": "RW",
+      "authority": "Rwanda Trade Portal",
+      "title": "Rwanda Trade Portal",
+      "url": "https://rwandatrade.rw/",
+      "sourceType": "trade-portal",
+      "watch": "procedure-and-document-updates",
+      "fields": ["import-procedure", "documents", "clearance-time"]
+    },
+    {
+      "id": "za-sanral",
+      "country": "ZA",
+      "authority": "South African National Roads Agency",
+      "title": "SANRAL",
+      "url": "https://www.nra.co.za/",
+      "sourceType": "road-agency",
+      "watch": "toll-and-road-updates",
+      "fields": ["tolls", "road-conditions", "corridors"]
+    },
+    {
+      "id": "ke-kenha",
+      "country": "KE",
+      "authority": "Kenya National Highways Authority",
+      "title": "KeNHA",
+      "url": "https://kenha.co.ke/",
+      "sourceType": "road-agency",
+      "watch": "road-and-toll-updates",
+      "fields": ["roads", "tolls", "corridor-notices"]
+    },
+    {
+      "id": "ng-lcc",
+      "country": "NG",
+      "authority": "Lekki Concession Company",
+      "title": "Lekki Concession Company",
+      "url": "https://lcc.com.ng/",
+      "sourceType": "road-operator",
+      "watch": "toll-operator-updates",
+      "fields": ["tolls", "payment", "route"]
+    },
+    {
+      "id": "ng-lamata",
+      "country": "NG",
+      "authority": "Lagos Metropolitan Area Transport Authority",
+      "title": "LAMATA",
+      "url": "https://lamata.lagosstate.gov.ng/",
+      "sourceType": "urban-transport-authority",
+      "watch": "city-transport-updates",
+      "fields": ["routes", "fare-policy", "city-transport"]
+    },
+    {
+      "id": "gh-highways",
+      "country": "GH",
+      "authority": "Ghana Highway Authority",
+      "title": "Ghana Highway Authority",
+      "url": "https://www.highways.gov.gh/",
+      "sourceType": "road-agency",
+      "watch": "road-and-toll-updates",
+      "fields": ["roads", "tolls", "corridor-notices"]
+    },
+    {
+      "id": "ke-nairobi-expressway",
+      "country": "KE",
+      "authority": "Nairobi Expressway",
+      "title": "Nairobi Expressway",
+      "url": "https://nairobiexpressway.ke/",
+      "sourceType": "road-operator",
+      "watch": "toll-operator-updates",
+      "fields": ["tolls", "payment", "route"]
+    },
+    {
+      "id": "ng-laspa",
+      "country": "NG",
+      "authority": "Lagos State Parking Authority",
+      "title": "Lagos State Parking Authority",
+      "url": "https://laspa.lagosstate.gov.ng/",
+      "sourceType": "city-parking-authority",
+      "watch": "parking-policy-updates",
+      "fields": ["parking", "permits", "fees"]
+    },
+    {
+      "id": "ke-nairobi-city",
+      "country": "KE",
+      "authority": "Nairobi City County",
+      "title": "Nairobi City County",
+      "url": "https://www.nairobi.go.ke/",
+      "sourceType": "city-authority",
+      "watch": "city-service-updates",
+      "fields": ["parking", "city-routes", "fees"]
+    },
+    {
+      "id": "za-cape-town",
+      "country": "ZA",
+      "authority": "City of Cape Town",
+      "title": "City of Cape Town",
+      "url": "https://www.capetown.gov.za/",
+      "sourceType": "city-authority",
+      "watch": "city-service-updates",
+      "fields": ["parking", "traffic", "city-services"]
+    },
+    {
+      "id": "gh-ama",
+      "country": "GH",
+      "authority": "Accra Metropolitan Assembly",
+      "title": "Accra Metropolitan Assembly",
+      "url": "https://ama.gov.gh/",
+      "sourceType": "city-authority",
+      "watch": "city-service-updates",
+      "fields": ["parking", "transport", "local-fees"]
+    },
+    {
+      "id": "ng-ncaa",
+      "country": "NG",
+      "authority": "Nigeria Civil Aviation Authority",
+      "title": "NCAA Nigeria",
+      "url": "https://ncaa.gov.ng/",
+      "sourceType": "aviation-regulator",
+      "watch": "aviation-notices",
+      "fields": ["airline-licensing", "consumer-protection", "notices"]
+    },
+    {
+      "id": "ke-kcaa",
+      "country": "KE",
+      "authority": "Kenya Civil Aviation Authority",
+      "title": "KCAA",
+      "url": "https://www.kcaa.or.ke/",
+      "sourceType": "aviation-regulator",
+      "watch": "aviation-notices",
+      "fields": ["airline-licensing", "consumer-protection", "notices"]
+    },
+    {
+      "id": "za-sacaa",
+      "country": "ZA",
+      "authority": "South African Civil Aviation Authority",
+      "title": "SACAA",
+      "url": "https://www.caa.co.za/",
+      "sourceType": "aviation-regulator",
+      "watch": "aviation-notices",
+      "fields": ["airline-licensing", "consumer-protection", "notices"]
+    },
+    {
+      "id": "gh-gcaa",
+      "country": "GH",
+      "authority": "Ghana Civil Aviation Authority",
+      "title": "GCAA",
+      "url": "https://www.gcaa.com.gh/",
+      "sourceType": "aviation-regulator",
+      "watch": "aviation-notices",
+      "fields": ["airline-licensing", "consumer-protection", "notices"]
+    },
+    {
+      "id": "uber-price-estimate",
+      "country": "GLOBAL",
+      "authority": "Uber",
+      "title": "Uber price estimate",
+      "url": "https://www.uber.com/global/en/price-estimate/",
+      "sourceType": "operator-page",
+      "watch": "manual-fare-model-review",
+      "probe": false,
+      "required": false,
+      "fields": ["fare-estimate", "operator-availability"]
+    },
+    {
+      "id": "bolt-cities",
+      "country": "GLOBAL",
+      "authority": "Bolt",
+      "title": "Bolt cities",
+      "url": "https://bolt.eu/en/cities/",
+      "sourceType": "operator-page",
+      "watch": "operator-city-availability",
+      "fields": ["cities", "ride-hailing", "delivery"]
+    },
+    {
+      "id": "dhl-global",
+      "country": "GLOBAL",
+      "authority": "DHL",
+      "title": "DHL global shipping",
+      "url": "https://www.dhl.com/",
+      "sourceType": "operator-page",
+      "watch": "shipping-and-rate-rule-review",
+      "fields": ["shipping", "volumetric-weight", "service-availability"]
+    },
+    {
+      "id": "fedex-global",
+      "country": "GLOBAL",
+      "authority": "FedEx",
+      "title": "FedEx global shipping",
+      "url": "https://www.fedex.com/",
+      "sourceType": "operator-page",
+      "watch": "shipping-and-rate-rule-review",
+      "fields": ["shipping", "dimensional-weight", "service-availability"]
+    },
+    {
+      "id": "ethiopian-airlines",
+      "country": "ET",
+      "authority": "Ethiopian Airlines",
+      "title": "Ethiopian Airlines",
+      "url": "https://www.ethiopianairlines.com/",
+      "sourceType": "airline-operator",
+      "watch": "route-and-fare-review",
+      "fields": ["routes", "fares", "baggage"]
+    },
+    {
+      "id": "kenya-airways",
+      "country": "KE",
+      "authority": "Kenya Airways",
+      "title": "Kenya Airways",
+      "url": "https://www.kenya-airways.com/",
+      "sourceType": "airline-operator",
+      "watch": "route-and-fare-review",
+      "fields": ["routes", "fares", "baggage"]
+    },
+    {
+      "id": "flysafair",
+      "country": "ZA",
+      "authority": "FlySafair",
+      "title": "FlySafair",
+      "url": "https://www.flysafair.co.za/",
+      "sourceType": "airline-operator",
+      "watch": "route-and-fare-review",
+      "fields": ["routes", "fares", "baggage"]
+    }
+  ],
+  "manualReviewRules": [
+    "Do not update duties, tariffs, tolls, vehicle-registration steps, inspection requirements, airport fees, or fuel-price assumptions from a changed hash alone.",
+    "When an authority portal is blocked, rate-limited, or login-gated, mark the affected tools for manual review and inspect the source in a browser.",
+    "Prefer official government or regulator pages for legal requirements. Use direct operator pages only for operator availability, fare models, route availability, or shipping rules.",
+    "Keep the hub count aligned across visible cards, metadata, JSON-LD `numberOfItems`, and this manifest.",
+    "Run `npm run check-links` after changing transport hub routes, schema, or public source links."
+  ]
+}

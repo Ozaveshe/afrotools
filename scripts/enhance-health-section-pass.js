@@ -503,7 +503,7 @@ function buildGeneratedPage(tool, profile, app, registryById) {
     '<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">',
     '<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">',
     '<link rel="stylesheet" href="/assets/css/health-enhancements.css">',
-    '<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>',
+    '<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>',
     '<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>',
     `<meta property="og:title" content="${htmlEscape(tool.name)} | AfroTools">`,
     `<meta property="og:description" content="${htmlEscape(tool.desc)}">`,

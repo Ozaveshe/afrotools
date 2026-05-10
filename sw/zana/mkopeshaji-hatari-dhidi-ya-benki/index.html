@@ -32,7 +32,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <style>
@@ -74,7 +74,7 @@
 <div class="swm-card">
 <div class="swm-eyebrow">Mwongozo mfupi</div>
 <h2>Jinsi ya kutumia matokeo</h2>
-<p>Tumia matokeo haya kama sehemu ya kupanga fedha, si kama quote ya mwisho. Linganisha kiwango, ada, muda, masharti ya kuchelewa na gharama ya kutoa au kufunga mapema kabla ya kufanya uamuzi.</p>
+<p>Tumia matokeo haya kama sehemu ya kupanga fedha, si kama bei ya mwisho ya mwisho. Linganisha kiwango, ada, muda, masharti ya kuchelewa na gharama ya kutoa au kufunga mapema kabla ya kufanya uamuzi.</p>
 </div>
 <div class="swm-card swm-faq">
 <div class="swm-eyebrow">Maswali</div>
@@ -229,13 +229,13 @@ function calc(){
     case 'tradeCredit':{
       var invoice=n('invoice'),disc=n('discountPct')/100,discDays=n('discountDays'),netDays=n('netDays'),borrow=n('borrowRate')/100,vol=n('monthlyVolume'),daysDef=Math.max(1,netDays-discDays),discAmt=invoice*disc,creditAPR=(disc/(1-disc))*(365/daysDef)*100,borrowCost=invoice*borrow/365*daysDef,annual=(vol*12*disc)-(vol*12*borrow/365*daysDef);
       primary=pct(creditAPR); sub='Gharama ya kukosa punguzo la malipo mapema'; metrics=[['Punguzo kwa invoice',money(discAmt)],['Gharama ya kutumia pesa zako',money(borrowCost)],['Siku za kuahirisha',daysDef],['Akiba ya mwaka kwa volume ulioweka',money(annual)]];
-      note=creditAPR>borrow*100?'Punguzo linaonekana lenye thamani kuliko gharama ya pesa.':'Kagua cash flow; punguzo linaweza lisiwe bora kuliko kuhifadhi cash.';
+      note=creditAPR>borrow*100?'Punguzo linaonekana lenye thamani kuliko gharama ya pesa.':'Kagua mtiririko wa fedha; punguzo linaweza lisiwe bora kuliko kuhifadhi cash.';
       break;
     }
     case 'bankCharges':{
       var total=n('maint')+n('transfers')*n('transferFee')+n('sms')*n('smsFee')+n('cardFee')+n('intlAmount')*n('intlPct')/100;
       primary=money(total); sub='Ada za makadirio kwa mwezi'; metrics=[['Gharama ya mwaka',money(total*12)],['Transfer fees',money(n('transfers')*n('transferFee'))],['SMS/alerts',money(n('sms')*n('smsFee'))],['Ada ya kimataifa',money(n('intlAmount')*n('intlPct')/100)]];
-      note='Weka tariff halisi ya benki yako kwa matokeo bora.';
+      note='Weka viwango halisi ya benki yako kwa matokeo bora.';
       break;
     }
     case 'ajoChama':{

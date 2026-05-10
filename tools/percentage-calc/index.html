@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
 <meta name="tool-id" content="percentage-calc">
 <script src="/assets/js/components/related-tools-data.min.js?v=4300960a" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=9b02f2cc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <style>
@@ -135,6 +135,7 @@
 </script>
 <script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/percentage-calc/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-pourcentage/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/percentage-calc/" />
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -508,13 +509,13 @@
   function calc3() {
     const o = parseFloat(document.getElementById('p3_orig').value) || 0;
     const n = parseFloat(document.getElementById('p3_new').value) || 0;
-    if (o === 0) { document.getElementById('r3').textContent = '—'; document.getElementById('r3_sub').textContent = 'Original value cannot be zero'; return; }
+    if (o === 0) { document.getElementById('r3').textContent = '�'; document.getElementById('r3_sub').textContent = 'Original value cannot be zero'; return; }
     const diff = n - o;
     const pct = (diff / o * 100);
     const sign = pct >= 0 ? '+' : '';
     document.getElementById('r3').textContent = sign + pct.toFixed(2) + '%';
     document.getElementById('r3_sub').textContent = `${pct >= 0 ? 'Increased' : 'Decreased'} by ${fmt(Math.abs(diff))} (${Math.abs(pct).toFixed(2)}%)`;
-    addHist(`${fmt(o)} → ${fmt(n)}`, sign + pct.toFixed(2) + '%');
+    addHist(`${fmt(o)} ? ${fmt(n)}`, sign + pct.toFixed(2) + '%');
   }
 
   function calc4() {
@@ -552,7 +553,7 @@
     document.getElementById('r6_markup').textContent = markup.toFixed(2) + '%';
     document.getElementById('r6_profit').textContent = fmt(profit);
     document.getElementById('r6_gm').textContent = gm.toFixed(4);
-    addHist(`Cost ${fmt(cost)} → Sell ${fmt(sell)}`, margin.toFixed(2) + '% margin');
+    addHist(`Cost ${fmt(cost)} ? Sell ${fmt(sell)}`, margin.toFixed(2) + '% margin');
   }
 
   // Bind inputs

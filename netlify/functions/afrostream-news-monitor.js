@@ -52,6 +52,15 @@ async function sb(method, path, body, upsert) {
   return parsed;
 }
 
+async function updateSourceHealth(source, fields, dryRun) {
+  if (dryRun || !source || !source.id) return;
+  try {
+    await sb('PATCH', 'as_news_sources?id=eq.' + source.id, fields);
+  } catch (e) {
+    console.error('AfroStream news source health update failed for', source.id, e.message);
+  }
+}
+
 function decodeXml(value) {
   return String(value || '')
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
@@ -218,7 +227,7 @@ exports.handler = async function(event) {
   };
 
   try {
-    var dbSources = await sb('GET', 'as_news_sources?is_active=eq.true&select=name,feed_url,category');
+    var dbSources = await sb('GET', 'as_news_sources?is_active=eq.true&select=id,name,feed_url,category');
     var envSources = parseFeedsFromEnv();
     var sources = []
       .concat(Array.isArray(dbSources) ? dbSources : [])
@@ -237,6 +246,9 @@ exports.handler = async function(event) {
 
     for (var s = 0; s < sources.length; s++) {
       var source = sources[s];
+      var checkedAt = new Date().toISOString();
+      var fetchedItemCount = 0;
+      var fetchStatusCode = null;
       try {
         var res = await fetch(source.feed_url, {
           headers: {
@@ -244,12 +256,20 @@ exports.handler = async function(event) {
             'User-Agent': 'AfroStreamMentionMonitor/1.0'
           }
         });
+        fetchStatusCode = res.status;
         if (!res.ok) {
+          await updateSourceHealth(source, {
+            last_checked_at: checkedAt,
+            last_status_code: res.status,
+            last_item_count: 0,
+            last_error: 'HTTP ' + res.status
+          }, dryRun);
           summary.errors.push(source.name + ': HTTP ' + res.status);
           continue;
         }
         var xml = await res.text();
         var items = parseFeed(xml).slice(0, 30);
+        fetchedItemCount = items.length;
         summary.items_seen += items.length;
 
         for (var i = 0; i < items.length; i++) {
@@ -322,7 +342,21 @@ exports.handler = async function(event) {
             summary.mentions++;
           }
         }
+
+        await updateSourceHealth(source, {
+          last_checked_at: checkedAt,
+          last_success_at: checkedAt,
+          last_status_code: fetchStatusCode || 200,
+          last_item_count: fetchedItemCount,
+          last_error: null
+        }, dryRun);
       } catch (e) {
+        await updateSourceHealth(source, {
+          last_checked_at: checkedAt,
+          last_status_code: fetchStatusCode,
+          last_item_count: fetchedItemCount,
+          last_error: e.message
+        }, dryRun);
         summary.errors.push((source.name || source.feed_url) + ': ' + e.message);
       }
     }

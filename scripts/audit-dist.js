@@ -30,7 +30,14 @@ const FORBIDDEN_PATHS = [
   '.agents',
   '.github',
   '.claude',
+  'admin',
+  'afrotools-mission-control.html',
+  'afrotools-sentinel',
+  'artifacts',
   'docs',
+  'fr/docs',
+  'fr/widgets/iframe/template.html',
+  'mc-7a2f9x.html',
   'netlify',
   'node_modules',
   'ops',
@@ -39,10 +46,14 @@ const FORBIDDEN_PATHS = [
   'scripts',
   'supabase',
   'test-results',
-  'tests'
+  'tests',
+  'tools/afrostream/admin.html',
+  'widgets/iframe/template.html'
 ];
 
 const FORBIDDEN_FILE_PATTERNS = [
+  /(^|\/)package(?:-lock)?\.json$/i,
+  /^.*\.(?:pid|exit)$/i,
   /^.*\.md$/i,
   /^.*\.ps1$/i,
   /^.*\.py$/i,

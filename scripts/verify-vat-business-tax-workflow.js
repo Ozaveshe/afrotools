@@ -35,16 +35,19 @@ function routeExists(route) {
 function parseEcommerceTools() {
   const registry = read('assets/js/components/tool-registry.js');
   const tools = [];
-  registry.split(/\r?\n/).forEach((line, index) => {
-    if (!line.includes("category: 'ecommerce'")) return;
-    const id = /id: '([^']+)'/.exec(line)?.[1];
-    const href = /href: '([^']+)'/.exec(line)?.[1];
+  const objectPattern = /\{\s*id:\s*'[^']+'[\s\S]*?\},/g;
+  for (const match of registry.matchAll(objectPattern)) {
+    const entry = match[0];
+    if (!entry.includes("category: 'ecommerce'")) continue;
+    const id = /id:\s*'([^']+)'/.exec(entry)?.[1];
+    const href = /href:\s*'([^']+)'/.exec(entry)?.[1];
     if (!id || !href) {
-      failures.push(`Could not parse ecommerce registry entry on tool-registry.js:${index + 1}`);
-      return;
+      const line = registry.slice(0, match.index).split(/\r?\n/).length;
+      failures.push(`Could not parse ecommerce registry entry on tool-registry.js:${line}`);
+      continue;
     }
     tools.push({ id, href });
-  });
+  }
   return tools;
 }
 
@@ -103,7 +106,7 @@ function main() {
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'checkPlanGate', 'VAT free/pro gate checks');
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'vatbiz-plan-gates', 'VAT visible plan gate meter');
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'vatbiz-upgrade-overlay', 'VAT upgrade modal');
-  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'Smart workflow profile', 'VAT smart workflow profile');
+  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'Route profile', 'VAT user-facing route profile');
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'vat-business-tax-filing-pack', 'VAT filing pack workspace item type');
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'createFilingPack', 'VAT filing pack save API');
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'getWorkflowProfile', 'VAT workflow profile API');
@@ -112,10 +115,10 @@ function main() {
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'vat-business-tax-readiness', 'VAT readiness workspace item type');
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'vat-business-tax-audit-packet', 'VAT audit workspace item type');
   assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'guardPromise', 'gated metadata packet export');
-  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'Exception queue', 'VAT exception queue UI');
-  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'Document & PDF', 'inter-category document handoff');
-  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'Salary & PAYE', 'inter-category salary handoff');
-  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'AfroPayroll workspace', 'inter-category payroll handoff');
+  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'Open items', 'VAT open-items UI');
+  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'Document & PDF', 'inter-category document route');
+  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'Salary & PAYE', 'inter-category salary route');
+  assertIncludes('assets/js/lib/vat-business-tax-workflow.js', 'AfroPayroll workspace', 'inter-category payroll route');
 
   assertIncludes('assets/css/vat-business-tax-workflow.css', '.vatbiz-flow-lab', 'VAT workflow lab styles');
   assertIncludes('assets/css/vat-business-tax-workflow.css', '.vatbiz-flow-checklist', 'VAT checklist styles');

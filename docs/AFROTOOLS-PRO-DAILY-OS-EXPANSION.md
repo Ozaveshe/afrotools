@@ -63,14 +63,44 @@ Keep the UI mobile-first, Africa-first, WhatsApp-friendly, local/export-ready, a
 Validation: node --check assets/js/lib/pro-daily-os-registry.js assets/js/lib/pro-daily-os-shell.js; parse inline scripts for pro/apps/seller/index.html; npm run audit; npm run check-links.
 ```
 
-Current implementation note (2026-05-05):
+Current implementation note (2026-05-09):
 
-- `/pro/apps/seller/` is now a local-only Pro workspace, not just the shared Daily OS shell.
-- The workspace covers business setup, product catalog with SKU/variant/supplier/location/photo placeholders, order book, payment and proof notes, delivery tracker, stock movement ledger, customer labels, daily close panel, dashboard metrics, CSV exports, branded Markdown receipt, and WhatsApp copy plus wa.me deep links.
-- Browser persistence uses localStorage key `afroseller_social_commerce_os_v1`.
-- `assets/js/lib/afroseller-sync.js` adds the first schema-aware bridge for signed-in Pro users. It uses the browser Supabase anon/RLS session from `AfroAuth`, can import the local snapshot to one account-backed seller business, and can pull an account snapshot back into localStorage.
-- The localStorage flow remains the fallback. Import/pull are manual actions, not automatic sync.
-- Still deliberately absent: Supabase storage for photos/proofs, connected payments, storefront publishing, delivery integrations, WhatsApp API sending, background sync, conflict resolution, and automatic cloud history.
+- `/pro/apps/seller/` is now a paid shop workspace for WhatsApp sellers, Instagram sellers, market traders, boutiques, cosmetics sellers, home bakers, phone shops, and small retailers.
+- The first-run path starts with Shop setup: business name, country, currency, seller phone/WhatsApp, business category, default delivery area, receipt name/color, and accepted payment methods.
+- The setup score tracks six practical steps: shop profile, first product, first customer, first order, payment method, and delivery option.
+- The selling workflow is explicit: Add product, Add customer, Create order, Record payment, Prepare delivery, and Share receipt.
+- The workspace covers Products, Orders, Customers, Payment records, Delivery notes, Receipts, Daily close, stock movements, dashboard metrics, CSV downloads, branded Markdown receipt, WhatsApp copy, and wa.me deep links.
+- Products must feel like a paid catalog/inventory workflow: product name, category, SKU, variant, selling price, cost price, stock quantity, reorder level, supplier note, location/bin, status, and a product photo placeholder. Do not imply supplier integration, storage upload, or barcode scanning until those are built.
+- Inventory actions use customer-facing labels: Stock in, Stock out, Adjustment, Damaged/lost, Return to stock, and Cancel/restock. The stock movement ledger should show date, product/variant, movement type, quantity, reason, linked order when available, and balance after movement.
+- Inventory alerts should include out of stock, low stock, negative stock, no cost price, no selling price, and margin warning. Margin/profit copy must stay a preview from saved cost and selling prices.
+- Export coverage should include product catalog CSV, inventory valuation CSV, stock movement CSV, reorder list CSV, order summary CSV, customer balances CSV, daily close CSV, and branded receipt Markdown.
+- Catalog preview should let sellers prepare a customer-facing catalog from saved products without claiming live ecommerce publishing. Use labels such as "catalog preview", "shareable catalog draft", and "customer catalog export".
+- Catalog preview settings should cover shop name, shop phone/WhatsApp, country/currency, brand color, show/hide prices, show/hide stock, and categories to include.
+- Customer catalog exports should include catalog Markdown, customer catalog CSV, printable catalog HTML, and a WhatsApp catalog message for manual copy. Product cards should show product image placeholder, name, category, variant, price when enabled, availability, and an inquiry CTA.
+- Catalog warnings should flag products without price, out-of-stock products, missing WhatsApp/contact, and missing shop name.
+- Daily close should be valuable at end of day: sales today, payments received, unpaid balances, delivery fees, discounts, refunds/cancellations, stock sold, low stock, and estimated gross margin.
+- Payment method summary should separate cash, mobile money, bank transfer, card/POS, credit/unpaid, and other payment records. These are review records only; do not describe them as verified settlement or bank reconciliation.
+- Daily close checklist should cover: all order statuses reviewed, payment references added, deliveries updated, stock exceptions reviewed, unpaid balances noted, and exports downloaded.
+- Finance handoff should include accountant summary note, cash count, cash difference note, owner review note, saved local close history, and draft export records when the seller downloads handoff files. If an account save exists, the local close history may include the account business id and last account-save timestamp, but do not claim remote accountant filing or verified settlement.
+- Daily close reports should include daily close CSV, daily close Markdown, sales by product CSV, sales by customer CSV, unpaid balances CSV, and inventory movement CSV.
+- Pro dashboard metrics for Seller should stay operational: today sales, orders needing action, unpaid balance, low stock, and close status.
+- Delivery and fulfillment should feel like a real seller board for local courier, rider, pickup, bus park, market pickup, and customer collection. Use fulfillment statuses: not packed, packed, ready for pickup, assigned to rider, out for delivery, delivered, failed delivery, and returned.
+- Delivery fields should use customer-facing labels: delivery method, rider/courier name, rider phone, delivery area, delivery address/note, delivery fee, expected date, dispatch checklist, rider handoff, and proof note.
+- Fulfillment warnings should flag paid but not fulfilled, fulfilled but unpaid, missing address, missing rider contact, and failed delivery needs follow-up.
+- Fulfillment exports should include packing list CSV, rider handoff CSV, delivery note Markdown, and failed delivery report CSV. These are local seller records, not courier booking or tracking records.
+- Browser persistence still uses `afroseller_social_commerce_os_v1` as the technical storage key, but customer-facing UI must say "Saved on this device".
+- `assets/js/lib/afroseller-sync.js` remains the account-save bridge for signed-in Pro users. Customer-facing UI must say "Save to account" and "Load from account".
+- Manual account save/load remains intentional. Do not describe it as automatic backup, automatic sync, or cloud history. The current account bridge preserves the existing delivery fields and contact summary; new fulfillment labels remain local-first until the account delivery enum and mapping are expanded.
+- Still deliberately absent: storage upload for photos/proofs, hosted public storefront, checkout, payment collection, delivery quote engine, delivery integrations, WhatsApp API sending, background sync, conflict resolution, and automatic cloud history.
+
+Customer-facing wording rules:
+
+- Use shop-owner language: Shop setup, Products, Orders, Customers, Payments, Delivery, Receipts, Daily close, Saved on this device, Save to account, Copy WhatsApp message, Payment record, Delivery note.
+- Do not expose implementation language in visible UI: localStorage, Supabase, schema, sync helper, shell, debug, internal, or local-only app.
+- Keep limits clear without sounding broken: "AfroSeller records payments; it does not collect money", "Copy WhatsApp message", "Delivery note", and "Receipts and downloads".
+- Never imply connected payments, live storefront publishing, WhatsApp API sending, delivery-provider booking, GPS tracking, or automatic SMS/WhatsApp sending until those integrations are actually built and verified.
+- Never imply that a catalog preview is live ecommerce hosting. It is a shareable catalog draft and customer catalog export until a real hosted storefront, checkout, payment collection, and safe order intake are built.
+- Never claim bank reconciliation, verified payment settlement, or tax compliance from daily close outputs. Use "daily close", "cash count", "payment record", and "finance handoff"; keep every finance output framed as a draft/review record.
 
 ### Agent 2: AfroEvents & Ceremony OS
 
