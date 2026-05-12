@@ -18,10 +18,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -200,10 +200,10 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Rule of 72 and how does it relate to inflation?","acceptedAnswer":{"@type":"Answer","text":"The Rule of 72 is a quick estimation tool: divide 72 by the annual inflation rate to approximate how many years it takes for prices to double. For example, at Nigeria's 33% inflation, prices double in roughly 2.2 years. At South Africa's 5.4%, they double in about 13.3 years."}},{"@type":"Question","name":"Why is inflation so high in many African countries?","acceptedAnswer":{"@type":"Answer","text":"High inflation in Africa is driven by multiple factors: currency depreciation reducing import purchasing power, food supply shocks from climate events, energy cost volatility, fiscal deficits and government borrowing, structural economic challenges, and dependence on imported goods. Countries with weaker currencies and high import dependence tend to experience the highest rates."}},{"@type":"Question","name":"How can I protect my savings from inflation in Africa?","acceptedAnswer":{"@type":"Answer","text":"Key strategies include investing in Treasury bills and government bonds that offer rates above inflation, diversifying into real estate and equities, holding some savings in stable foreign currencies or dollar-denominated instruments, and using money market funds. Avoid keeping large amounts in low-interest savings accounts where real returns are negative."}},{"@type":"Question","name":"Is food inflation different from headline inflation in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, food inflation in Africa is often significantly higher than headline inflation because food constitutes 40-60% of household spending compared to 10-15% in developed economies. This means the real impact on ordinary families is typically worse than official inflation numbers suggest."}},{"@type":"Question","name":"How does inflation affect remittances to Africa?","acceptedAnswer":{"@type":"Answer","text":"Inflation erodes the purchasing power of remittances over time. A fixed USD amount sent to a high-inflation country buys progressively less each year. For example, $200 sent to Nigeria may have covered monthly rent in 2020, but the same amount in local currency terms may not cover it today due to both currency depreciation and local inflation."}},{"@type":"Question","name":"Which African countries have the lowest inflation rates?","acceptedAnswer":{"@type":"Answer","text":"As of 2024, the lowest inflation rates in Africa are found in the CFA franc zone countries like Cabo Verde (1.8%), Comoros (2.0%), Benin (2.1%), and Mali (2.5%). The CFA franc's peg to the Euro provides currency stability that helps keep inflation low. Morocco (3.0%) and Seychelles (3.0%) also maintain relatively stable price levels."}}]}
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/inflation-calc/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-inflation/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/inflation-calc/" />
@@ -247,10 +247,10 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 <!-- MODE TABS -->
 <div class="mode-tabs">
-<button class="mode-tab active" onclick="setMode('future')" data-mode="future">Future Cost</button>
-<button class="mode-tab" onclick="setMode('past')" data-mode="past">Past Value</button>
-<button class="mode-tab" onclick="setMode('salary')" data-mode="salary">Salary Check</button>
-<button class="mode-tab" onclick="setMode('remittance')" data-mode="remittance">Remittance</button>
+<button type="button" class="mode-tab active" onclick="setMode('future')" data-mode="future">Future Cost</button>
+<button type="button" class="mode-tab" onclick="setMode('past')" data-mode="past">Past Value</button>
+<button type="button" class="mode-tab" onclick="setMode('salary')" data-mode="salary">Salary Check</button>
+<button type="button" class="mode-tab" onclick="setMode('remittance')" data-mode="remittance">Remittance</button>
 </div>
 
 <!-- SHARED: Country Selector -->
@@ -263,16 +263,16 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div id="panelFuturePast" class="tab-panel active">
 <div class="field">
 <label class="f-label" id="amtLabel">Amount Today</label>
-<input type="text" id="amount" class="f-input" placeholder="e.g. 1,000,000" inputmode="numeric">
+<input aria-label="E.g. 1,000,000" type="text" id="amount" class="f-input" placeholder="e.g. 1,000,000" inputmode="numeric">
 </div>
 <div class="field-row">
 <div class="field">
 <label class="f-label">Annual Inflation Rate (%)</label>
-<input type="number" id="rate" class="f-input" step="0.1" min="0" max="500">
+<input aria-label="Rate" type="number" id="rate" class="f-input" step="0.1" min="0" max="500">
 </div>
 <div class="field">
 <label class="f-label">Number of Years</label>
-<input type="number" id="years" class="f-input" value="10" min="1" max="100">
+<input aria-label="Years" type="number" id="years" class="f-input" value="10" min="1" max="100">
 </div>
 </div>
 </div>
@@ -282,21 +282,21 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="field-row">
 <div class="field">
 <label class="f-label">Old Salary (per month)</label>
-<input type="text" id="oldSalary" class="f-input" placeholder="e.g. 150,000" inputmode="numeric">
+<input aria-label="E.g. 150,000" type="text" id="oldSalary" class="f-input" placeholder="e.g. 150,000" inputmode="numeric">
 </div>
 <div class="field">
 <label class="f-label">Current Salary (per month)</label>
-<input type="text" id="newSalary" class="f-input" placeholder="e.g. 250,000" inputmode="numeric">
+<input aria-label="E.g. 250,000" type="text" id="newSalary" class="f-input" placeholder="e.g. 250,000" inputmode="numeric">
 </div>
 </div>
 <div class="field-row">
 <div class="field">
 <label class="f-label">Annual Inflation Rate (%)</label>
-<input type="number" id="salaryRate" class="f-input" step="0.1" min="0" max="500">
+<input aria-label="SalaryRate" type="number" id="salaryRate" class="f-input" step="0.1" min="0" max="500">
 </div>
 <div class="field">
 <label class="f-label">Years Between</label>
-<input type="number" id="salaryYears" class="f-input" value="5" min="1" max="50">
+<input aria-label="SalaryYears" type="number" id="salaryYears" class="f-input" value="5" min="1" max="50">
 </div>
 </div>
 </div>
@@ -305,7 +305,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div id="panelRemittance" class="tab-panel">
 <div class="field">
 <label class="f-label">USD Amount Sent</label>
-<input type="text" id="remitAmount" class="f-input" placeholder="e.g. 500" inputmode="numeric">
+<input aria-label="E.g. 500" type="text" id="remitAmount" class="f-input" placeholder="e.g. 500" inputmode="numeric">
 </div>
 <div class="field">
 <label class="f-label">Destination Country</label>
@@ -314,18 +314,18 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="field-row">
 <div class="field">
 <label class="f-label">Year Sent</label>
-<input type="number" id="remitYear" class="f-input" value="2020" min="2000" max="2026">
+<input aria-label="RemitYear" type="number" id="remitYear" class="f-input" value="2020" min="2000" max="2026">
 </div>
 <div class="field">
 <label class="f-label">Destination Inflation (%)</label>
-<input type="number" id="remitRate" class="f-input" step="0.1" min="0" max="500">
+<input aria-label="RemitRate" type="number" id="remitRate" class="f-input" step="0.1" min="0" max="500">
 </div>
 </div>
 </div>
 
 <div style="display:flex;gap:8px;margin-top:4px">
-<button class="calc-btn" onclick="calculate()" style="flex:1">Calculate Impact</button>
-<button class="calc-btn calc-btn-sm calc-btn-outline" onclick="fetchLiveRates()" id="fetchBtn" title="Fetch live World Bank inflation data" style="width:auto;padding:10px 14px;font-size:.72rem">Fetch Live Rates</button>
+<button type="button" class="calc-btn" onclick="calculate()" style="flex:1">Calculate Impact</button>
+<button type="button" class="calc-btn calc-btn-sm calc-btn-outline" onclick="fetchLiveRates()" id="fetchBtn" title="Fetch live World Bank inflation data" style="width:auto;padding:10px 14px;font-size:.72rem">Fetch Live Rates</button>
 </div>
 </div>
 </div>
@@ -351,7 +351,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="card-head">
 <span class="card-title" id="chartTitle">Purchasing Power Over Time</span>
 <div style="margin-left:auto;display:flex;gap:6px">
-<button class="calc-btn calc-btn-sm calc-btn-outline" onclick="toggleChartType()" id="chartToggle" style="font-size:.68rem;padding:5px 10px">Show Trend</button>
+<button type="button" class="calc-btn calc-btn-sm calc-btn-outline" onclick="toggleChartType()" id="chartToggle" style="font-size:.68rem;padding:5px 10px">Show Trend</button>
 </div>
 </div>
 <div class="card-body" style="padding:12px 16px">
@@ -396,8 +396,8 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="ai-msg bot">Ask me anything about inflation strategies, hedging options, or country-specific economic trends.</div>
 </div>
 <div style="display:flex;gap:8px">
-<input type="text" id="aiInput" class="f-input" placeholder="Ask about inflation strategies..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
-<button class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Ask</button>
+<input aria-label="Ask about inflation strategies" type="text" id="aiInput" class="f-input" placeholder="Ask about inflation strategies..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
+<button type="button" class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Ask</button>
 </div>
 <div style="font-size:.7rem;color:#94a3b8;margin-top:6px">Powered by AfroTools AI <span id="aiRemaining"></span></div>
 </div>
@@ -423,7 +423,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="card-body">
 <p style="font-size:.78rem;color:#64748b;margin-bottom:10px">How fast do prices double at a given inflation rate?</p>
 <div class="field">
-<input type="number" id="r72input" class="f-input" value="10" step="0.1" min="0.1" max="200" oninput="calcR72()" style="font-size:1.1rem;text-align:center">
+<input aria-label="R72input" type="number" id="r72input" class="f-input" value="10" step="0.1" min="0.1" max="200" oninput="calcR72()" style="font-size:1.1rem;text-align:center">
 </div>
 <div class="r72-result">
 <div class="r72-value" id="r72value">7.2</div>

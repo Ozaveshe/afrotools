@@ -17,7 +17,7 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <style>
 :root{--color-brand:var(--color-primary)}
 .t-hero{background:var(--color-bg-dark);padding:40px 0 28px}
@@ -92,9 +92,9 @@
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <meta property="og:title" content="Exchange Rate Impact Calculator — Import Cost Sensitivity | AfroTools">
 <meta property="og:description" content="See how exchange rate changes affect your import costs in African currencies. Model FX scenarios, find breakeven rates, and track currency impact on trade.">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/fx-import-impact.webp">
@@ -137,7 +137,7 @@
           <select class="f-select" id="countrySelect" onchange="onCountryChange()"></select>
         </div>
         <div style="display:flex;align-items:flex-end">
-          <button class="btn-primary" onclick="calculate()" style="margin-bottom:14px">Calculate Impact</button>
+          <button type="button" class="btn-primary" onclick="calculate()" style="margin-bottom:14px">Calculate Impact</button>
         </div>
       </div>
     </div>
@@ -153,9 +153,9 @@
 
     <!-- Tabs -->
     <div class="tabs" role="tablist">
-      <button class="tab on" onclick="setTab('history',this)">📈 Cost History</button>
-      <button class="tab" onclick="setTab('scenario',this)">🎚️ FX Scenarios</button>
-      <button class="tab" onclick="setTab('breakeven',this)">⚖️ Breakeven</button>
+      <button type="button" class="tab on" onclick="setTab('history',this)">📈 Cost History</button>
+      <button type="button" class="tab" onclick="setTab('scenario',this)">🎚️ FX Scenarios</button>
+      <button type="button" class="tab" onclick="setTab('breakeven',this)">⚖️ Breakeven</button>
     </div>
 
     <!-- HISTORY -->
@@ -174,7 +174,7 @@
         <div class="card-head"><span class="card-title">FX Scenario Modeler</span><span style="font-size:.7rem;color:#94A3B8">Drag slider to model impact</span></div>
         <div class="card-body">
           <div class="slider-wrap">
-            <input type="range" class="slider" id="fxSlider" min="-20" max="20" value="0" step="5" oninput="updateSlider(this.value)">
+            <input aria-label="FxSlider" type="range" class="slider" id="fxSlider" min="-20" max="20" value="0" step="5" oninput="updateSlider(this.value)">
             <div class="slider-val" id="sliderVal">0% change</div>
           </div>
           <table class="sc-table" id="scTable">
@@ -201,7 +201,7 @@
               <input type="number" class="f-input" id="otherCosts" placeholder="e.g. 500000" value="0">
             </div>
           </div>
-          <button class="btn-primary" onclick="calcBreakeven()">Calculate Breakeven Rate</button>
+          <button type="button" class="btn-primary" onclick="calcBreakeven()">Calculate Breakeven Rate</button>
           <div class="be-result" id="beResult">
             <div class="be-label">Maximum FX Rate (Breakeven)</div>
             <div class="be-rate" id="beRate">—</div>

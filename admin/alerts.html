@@ -79,6 +79,9 @@
 <meta property="article:modified_time" content="2026-03-28">
 <link rel="canonical" href="https://afrotools.com/admin/alerts">
 <meta property="og:url" content="https://afrotools.com/admin/alerts">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <div class="dash">
@@ -129,8 +132,8 @@
       </div>
       <div></div>
     </div>
-    <button class="btn btn-primary" id="saveAlertBtn" onclick="saveAlert()">Create Alert</button>
-    <button class="btn btn-sm" id="cancelEditBtn" style="display:none;margin-left:8px;" onclick="cancelEdit()">Cancel</button>
+    <button type="button" class="btn btn-primary" id="saveAlertBtn" onclick="saveAlert()">Create Alert</button>
+    <button type="button" class="btn btn-sm" id="cancelEditBtn" style="display:none;margin-left:8px;" onclick="cancelEdit()">Cancel</button>
   </div>
 
   <!-- Existing Alerts -->
@@ -256,8 +259,8 @@ async function loadAlerts() {
         '<td class="' + sevClass + '">' + escapeHtml(String(a.severity || '').toUpperCase()) + '</td>' +
         '<td>' + escapeHtml(a.effective_date || '-') + '</td>' +
         '<td>' + escapeHtml(a.expires_at || 'Never') + '</td>' +
-        '<td><button class="btn btn-sm btn-primary" onclick="editAlert(\'' + escapeHtml(a.id) + '\')">Edit</button> ' +
-        '<button class="btn btn-sm btn-danger" onclick="deleteAlert(\'' + escapeHtml(a.id) + '\')">Delete</button></td>' +
+        '<td><button type="button" class="btn btn-sm btn-primary" onclick="editAlert(\'' + escapeHtml(a.id) + '\')">Edit</button> ' +
+        '<button type="button" class="btn btn-sm btn-danger" onclick="deleteAlert(\'' + escapeHtml(a.id) + '\')">Delete</button></td>' +
       '</tr>';
     }).join('');
 

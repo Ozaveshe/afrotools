@@ -45,9 +45,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
@@ -176,8 +176,8 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
       <div class="card-head"><div class="card-title">Monthly Revenue Input</div></div>
       <div class="card-body">
         <div class="toggle-row">
-          <button class="toggle-btn active" id="mode-growth-btn" onclick="setRevMode('growth')">Use Growth Rate</button>
-          <button class="toggle-btn" id="mode-manual-btn" onclick="setRevMode('manual')">Enter Each Month Manually</button>
+          <button type="button" class="toggle-btn active" id="mode-growth-btn" onclick="setRevMode('growth')">Use Growth Rate</button>
+          <button type="button" class="toggle-btn" id="mode-manual-btn" onclick="setRevMode('manual')">Enter Each Month Manually</button>
         </div>
 
         <div id="growth-mode">
@@ -207,23 +207,23 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
           <div class="row" style="margin-bottom:10px">
             <div class="field" style="margin:0">
               <label>Month #</label>
-              <input type="number" class="ot-month" placeholder="e.g. 3" min="1" max="12">
+              <input aria-label="E.g. 3" type="number" class="ot-month" placeholder="e.g. 3" min="1" max="12">
             </div>
             <div class="field" style="margin:0">
               <label>Amount</label>
-              <input type="number" class="ot-amount" placeholder="e.g. 2000000" min="0">
+              <input aria-label="E.g. 2000000" type="number" class="ot-amount" placeholder="e.g. 2000000" min="0">
             </div>
           </div>
           <div class="row" style="margin-bottom:10px">
-            <div class="field" style="margin:0"><input type="number" class="ot-month" placeholder="Month #" min="1" max="12"></div>
-            <div class="field" style="margin:0"><input type="number" class="ot-amount" placeholder="Amount" min="0"></div>
+            <div class="field" style="margin:0"><input aria-label="Month #" type="number" class="ot-month" placeholder="Month #" min="1" max="12"></div>
+            <div class="field" style="margin:0"><input aria-label="Amount" type="number" class="ot-amount" placeholder="Amount" min="0"></div>
           </div>
           <div class="row">
-            <div class="field" style="margin:0"><input type="number" class="ot-month" placeholder="Month #" min="1" max="12"></div>
-            <div class="field" style="margin:0"><input type="number" class="ot-amount" placeholder="Amount" min="0"></div>
+            <div class="field" style="margin:0"><input aria-label="Month #" type="number" class="ot-month" placeholder="Month #" min="1" max="12"></div>
+            <div class="field" style="margin:0"><input aria-label="Amount" type="number" class="ot-amount" placeholder="Amount" min="0"></div>
           </div>
         </div>
-        <button class="btn btn-primary" onclick="calculate()">Generate 12-Month Forecast</button>
+        <button type="button" class="btn btn-primary" onclick="calculate()">Generate 12-Month Forecast</button>
       </div>
     </div>
 
@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function() {
   MONTH_NAMES.forEach(function(m) {
     var wrap = document.createElement('div');
     wrap.className = 'month-input-wrap';
-    wrap.innerHTML = '<label>' + m + '</label><input type="number" placeholder="0" min="0">';
+    wrap.innerHTML = '<label>' + m + '</label><input aria-label="Line item amount" type="number" placeholder="0" min="0">';
     grid.appendChild(wrap);
   });
 });

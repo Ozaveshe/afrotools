@@ -28,7 +28,7 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <style>
 :root { --color-brand: var(--color-primary); }
 /* ── Hero ── */
@@ -198,9 +198,9 @@
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"HS Code Lookup","item":"https://afrotools.com/tools/hs-code-lookup/"}]}</script>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -234,10 +234,10 @@
 
     <!-- TABS -->
     <div class="hs-tabs" role="tablist">
-      <button class="hs-tab on" role="tab" aria-selected="true" onclick="setTab('search',this)">&#128269; Search</button>
-      <button class="hs-tab" role="tab" aria-selected="false" onclick="setTab('browse',this)">&#128218; Browse Chapters</button>
-      <button class="hs-tab" role="tab" aria-selected="false" onclick="setTab('compare',this)">&#9878; Compare Countries</button>
-      <button class="hs-tab" role="tab" aria-selected="false" onclick="setTab('saved',this)">&#9733; Saved (<span id="savedCount">0</span>)</button>
+      <button type="button" class="hs-tab on" role="tab" aria-selected="true" onclick="setTab('search',this)">&#128269; Search</button>
+      <button type="button" class="hs-tab" role="tab" aria-selected="false" onclick="setTab('browse',this)">&#128218; Browse Chapters</button>
+      <button type="button" class="hs-tab" role="tab" aria-selected="false" onclick="setTab('compare',this)">&#9878; Compare Countries</button>
+      <button type="button" class="hs-tab" role="tab" aria-selected="false" onclick="setTab('saved',this)">&#9733; Saved (<span id="savedCount">0</span>)</button>
     </div>
 
     <!-- TAB: SEARCH -->
@@ -250,7 +250,7 @@
         <div class="card-body">
           <div class="search-wrap">
             <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" id="searchInput" class="search-input" placeholder="Search product name or HS code..." autocomplete="off" oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
+            <input aria-label="Search product name or HS code" type="text" id="searchInput" class="search-input" placeholder="Search product name or HS code..." autocomplete="off" oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
             <div class="autocomplete-list" id="acList"></div>
           </div>
           <div id="searchHint" style="font-size:0.8rem;color:#94A3B8;margin-top:4px">Try: rice, smartphone, palm oil, vehicle, cement, fertiliser, laptop, clothing</div>
@@ -266,8 +266,8 @@
             <div class="rh-chapter" id="rhChapter">—</div>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-            <button class="btn-primary" onclick="saveCurrentCode()" style="font-size:0.75rem;padding:7px 14px;">&#9733; Save</button>
-            <button class="btn-primary" onclick="copyCode()" style="font-size:0.75rem;padding:7px 14px;background:#1E2D40;">&#128203; Copy Code</button>
+            <button type="button" class="btn-primary" onclick="saveCurrentCode()" style="font-size:0.75rem;padding:7px 14px;">&#9733; Save</button>
+            <button type="button" class="btn-primary" onclick="copyCode()" style="font-size:0.75rem;padding:7px 14px;background:#1E2D40;">&#128203; Copy Code</button>
           </div>
         </div>
       </div>
@@ -339,7 +339,7 @@
               <input type="text" id="cmpCode" class="f-input" placeholder="e.g. 8703.23 or 1006.30">
             </div>
             <div style="display:flex;align-items:flex-end;">
-              <button class="btn-primary" onclick="doCompare()">Compare Countries</button>
+              <button type="button" class="btn-primary" onclick="doCompare()">Compare Countries</button>
             </div>
           </div>
           <div style="margin-bottom:10px;">
@@ -380,7 +380,7 @@
       <div class="card">
         <div class="card-head">
           <span class="card-title">Saved HS Codes</span>
-          <button onclick="clearAllSaved()" style="font-size:0.72rem;color:#ef4444;background:none;border:none;cursor:pointer;font-family:var(--font-body);">Clear all</button>
+          <button type="button" onclick="clearAllSaved()" style="font-size:0.72rem;color:#ef4444;background:none;border:none;cursor:pointer;font-family:var(--font-body);">Clear all</button>
         </div>
         <div class="card-body" id="savedBody">
           <div class="saved-empty">No saved codes yet. Search and save HS codes for quick access.</div>
@@ -720,8 +720,8 @@ function renderSaved() {
   saved.forEach(function(s, i) {
     html += '<div class="saved-card"><div><div class="sc-code">' + s.code + '</div><div class="sc-desc">' + s.description + '</div></div>' +
       '<div style="display:flex;gap:8px;">' +
-      '<button class="btn-primary" onclick="loadSaved(' + i + ')" style="font-size:0.72rem;padding:6px 12px;">Lookup</button>' +
-      '<button class="sc-del" onclick="deleteSaved(' + i + ')" title="Remove">&#10005;</button>' +
+      '<button type="button" class="btn-primary" onclick="loadSaved(' + i + ')" style="font-size:0.72rem;padding:6px 12px;">Lookup</button>' +
+      '<button type="button" class="sc-del" onclick="deleteSaved(' + i + ')" title="Remove">&#10005;</button>' +
       '</div></div>';
   });
   html += '</div>';

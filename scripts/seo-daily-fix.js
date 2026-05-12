@@ -278,7 +278,7 @@ walk(ROOT, (fp, fname) => {
   }
 });
 
-// â”€â”€â”€ Step 3: Fix hreflang trailing slashes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// -€-€-€ Step 3: Fix hreflang trailing slashes -€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€-€
 
 let hreflangFilesFixed = 0;
 let hreflangAttrsFixed = 0;

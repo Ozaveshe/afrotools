@@ -24,10 +24,10 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
   <meta name="tool-id" content="fuel-cost">
   <script src="/assets/js/favorites.js?v=163519f9" defer></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Fuel Cost Calculator","description":"Calculate fuel costs for trips and generators across African countries with pre-filled local fuel prices.","url":"https://afrotools.com/tools/fuel-cost/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/fuel-cost.webp"}</script>
@@ -169,7 +169,7 @@
 /* AI Advisor floating section */
 .ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fuel-cost/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fuel-cost/" />
@@ -220,8 +220,8 @@
 <div class="container">
 
   <div class="tabs">
-    <button class="tab active" onclick="switchMode('trip')">Trip Calculator</button>
-    <button class="tab" onclick="switchMode('generator')">Generator Mode</button>
+    <button type="button" class="tab active" onclick="switchMode('trip')">Trip Calculator</button>
+    <button type="button" class="tab" onclick="switchMode('generator')">Generator Mode</button>
   </div>
 
   <!-- Popular Routes -->
@@ -258,7 +258,7 @@
     <div class="input-row">
       <div class="input-group">
         <label>Distance</label>
-        <input type="number" id="distance" placeholder="e.g. 350" min="0" step="any">
+        <input aria-label="E.g. 350" type="number" id="distance" placeholder="e.g. 350" min="0" step="any">
       </div>
       <div class="input-group">
         <label>Unit</label>
@@ -272,7 +272,7 @@
     <div class="input-row">
       <div class="input-group">
         <label>Fuel Consumption</label>
-        <input type="number" id="consumption" placeholder="e.g. 12" min="0" step="any">
+        <input aria-label="E.g. 12" type="number" id="consumption" placeholder="e.g. 12" min="0" step="any">
       </div>
       <div class="input-group">
         <label>Unit</label>
@@ -287,11 +287,11 @@
     <div class="input-row">
       <div class="input-group">
         <label>Fuel Price (per litre)</label>
-        <input type="number" id="fuelPrice" placeholder="e.g. 710" min="0" step="any">
+        <input aria-label="E.g. 710" type="number" id="fuelPrice" placeholder="e.g. 710" min="0" step="any">
       </div>
       <div class="input-group">
         <label>Currency</label>
-        <input type="text" id="currLabel" value="NGN" readonly style="background:var(--light-bg);">
+        <input aria-label="CurrLabel" type="text" id="currLabel" value="NGN" readonly style="background:var(--light-bg);">
       </div>
     </div>
 
@@ -314,16 +314,16 @@
         </div>
         <div class="input-group">
           <label>People Sharing Cost</label>
-          <input type="number" id="passengers" min="1" step="1" value="1">
+          <input aria-label="Passengers" type="number" id="passengers" min="1" step="1" value="1">
         </div>
         <div class="input-group">
           <label>Contingency Fuel %</label>
-          <input type="number" id="reservePct" min="0" max="50" step="1" value="10">
+          <input aria-label="ReservePct" type="number" id="reservePct" min="0" max="50" step="1" value="10">
         </div>
       </div>
     </div>
 
-    <button class="btn btn-primary" onclick="calcTrip()">Calculate Cost</button>
+    <button type="button" class="btn btn-primary" onclick="calcTrip()">Calculate Cost</button>
   </div>
 
   <!-- Generator Mode -->
@@ -352,24 +352,24 @@
     <div class="input-row">
       <div class="input-group">
         <label>Generator Rating (kVA)</label>
-        <input type="number" id="genKva" placeholder="e.g. 3.5" min="0" step="any">
+        <input aria-label="E.g. 3.5" type="number" id="genKva" placeholder="e.g. 3.5" min="0" step="any">
         <div class="help-text">Common: 2.5, 3.5, 5, 7.5, 10, 20 kVA</div>
       </div>
       <div class="input-group">
         <label>Hours of Use</label>
-        <input type="number" id="genHours" placeholder="e.g. 8" min="0" step="any">
+        <input aria-label="E.g. 8" type="number" id="genHours" placeholder="e.g. 8" min="0" step="any">
       </div>
     </div>
 
     <div class="input-row">
       <div class="input-group">
         <label>Burn Rate (L/hr)</label>
-        <input type="number" id="burnRate" placeholder="Auto-estimated" min="0" step="any">
+        <input aria-label="Auto estimated" type="number" id="burnRate" placeholder="Auto-estimated" min="0" step="any">
         <div class="help-text">Leave blank for auto estimate based on kVA</div>
       </div>
       <div class="input-group">
         <label>Fuel Price (per litre)</label>
-        <input type="number" id="genFuelPrice" placeholder="e.g. 710" min="0" step="any">
+        <input aria-label="E.g. 710" type="number" id="genFuelPrice" placeholder="e.g. 710" min="0" step="any">
       </div>
     </div>
 
@@ -380,10 +380,10 @@
     <div id="monthlyRow" style="display:none;margin-bottom:1rem;">
       <div class="input-group">
         <label>Days per month generator runs</label>
-        <input type="number" id="genDays" placeholder="e.g. 25" min="1" max="31" step="1" value="25">
+        <input aria-label="E.g. 25" type="number" id="genDays" placeholder="e.g. 25" min="1" max="31" step="1" value="25">
       </div>
     </div>
-    <button class="btn btn-primary" onclick="calcGen()">Calculate Cost</button>
+    <button type="button" class="btn btn-primary" onclick="calcGen()">Calculate Cost</button>
   </div>
 
   <!-- Results -->
@@ -442,8 +442,8 @@
       <div class="ai-chat" id="aiChat">
         <div class="ai-msgs" id="aiMsgs"></div>
         <div class="ai-input-row">
-          <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
-          <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+          <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
         </div>
       </div>
     </div>
@@ -475,7 +475,7 @@ var ROUTES = [
 function initRoutes() {
   var el = document.getElementById('routeBtns');
   el.innerHTML = ROUTES.map(function(r) {
-    return '<button class="btn btn-outline" style="font-size:.8rem;padding:.45rem .9rem;" onclick="fillRoute('+JSON.stringify(r.km)+',\''+r.country+'\')">'
+    return '<button type="button" class="btn btn-outline" style="font-size:.8rem;padding:.45rem .9rem;" onclick="fillRoute('+JSON.stringify(r.km)+',\''+r.country+'\')">'
       + r.flag + ' ' + r.label + ' <span style="color:#888;font-weight:400;">(' + r.km + 'km)</span></button>';
   }).join('');
 }
@@ -661,7 +661,7 @@ function renderFuelTripPlan(data) {
     'Condition: ' + data.condition + ' | Passenger split: ' + data.sym + data.perPerson.toLocaleString('en', {maximumFractionDigits:0}) + ' each.',
     actions.join(' ')
   ].join('\n');
-  document.getElementById('fuelPlan').innerHTML = '<div class="fuel-plan"><div class="fuel-plan-head"><div class="fuel-plan-title">Route budget decision plan</div><button class="fuel-plan-copy" onclick="copyFuelPlan(this)">Copy plan</button></div><div class="fuel-plan-body"><ul class="fuel-plan-list">' + actions.map(function(a){ return '<li>' + escFuel(a) + '</li>'; }).join('') + '</ul></div></div>';
+  document.getElementById('fuelPlan').innerHTML = '<div class="fuel-plan"><div class="fuel-plan-head"><div class="fuel-plan-title">Route budget decision plan</div><button type="button" class="fuel-plan-copy" onclick="copyFuelPlan(this)">Copy plan</button></div><div class="fuel-plan-body"><ul class="fuel-plan-list">' + actions.map(function(a){ return '<li>' + escFuel(a) + '</li>'; }).join('') + '</ul></div></div>';
 }
 
 function renderGeneratorFuelPlan(data) {
@@ -674,7 +674,7 @@ function renderGeneratorFuelPlan(data) {
     'Add oil, servicing, transport to station, and noise restrictions before comparing with inverter or solar.'
   ];
   LAST_FUEL_PLAN = ['Generator fuel budget', actions.join(' ')].join('\n');
-  document.getElementById('fuelPlan').innerHTML = '<div class="fuel-plan"><div class="fuel-plan-head"><div class="fuel-plan-title">Generator operating plan</div><button class="fuel-plan-copy" onclick="copyFuelPlan(this)">Copy plan</button></div><div class="fuel-plan-body"><ul class="fuel-plan-list">' + actions.map(function(a){ return '<li>' + escFuel(a) + '</li>'; }).join('') + '</ul></div></div>';
+  document.getElementById('fuelPlan').innerHTML = '<div class="fuel-plan"><div class="fuel-plan-head"><div class="fuel-plan-title">Generator operating plan</div><button type="button" class="fuel-plan-copy" onclick="copyFuelPlan(this)">Copy plan</button></div><div class="fuel-plan-body"><ul class="fuel-plan-list">' + actions.map(function(a){ return '<li>' + escFuel(a) + '</li>'; }).join('') + '</ul></div></div>';
 }
 
 function copyFuelPlan(btn) {

@@ -7,10 +7,10 @@
   <meta name="description" content="Calculate your market rate as an African creative professional. Photography, videography, design, music, writing and development rates across 15+ countries.">
   <meta name="robots" content="noindex, follow">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=84db4066">
-  <script src="/assets/js/components/navbar.js?v=af1ede16" defer></script>
-  <script src="/assets/js/components/footer.js?v=7cf41589" defer></script>
+  <script src="/assets/js/components/navbar.js?v=3af89576" defer></script>
+  <script src="/assets/js/components/footer.js?v=625b18a7" defer></script>
   <script src="/engines/creator-pricing-engine.js?v=3e547543"></script>
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
@@ -44,7 +44,7 @@
         <h1 class="cp-step-title">What's your specialty?</h1>
         <p class="cp-step-sub">Select one or more areas you focus on</p>
         <div class="cp-chips" id="specialty-chips"></div>
-        <button class="cp-chip" id="all-rounder-chip" style="margin-top:12px;opacity:.7">I do a bit of everything</button>
+        <button type="button" class="cp-chip" id="all-rounder-chip" style="margin-top:12px;opacity:.7">I do a bit of everything</button>
       </div>
 
       <!-- STEP 3: DETAILS -->
@@ -66,7 +66,7 @@
         <div class="cp-field">
           <label class="cp-label">Experience Level</label>
           <div class="cp-slider-wrap">
-            <input type="range" class="cp-slider" id="cp-experience" min="0" max="4" step="1" value="2">
+            <input aria-label="Cp experience" type="range" class="cp-slider" id="cp-experience" min="0" max="4" step="1" value="2">
             <div class="cp-slider-val" id="cp-exp-label">Established (3–5 years)</div>
             <div class="cp-slider-labels">
               <span>Beginner</span><span>Developing</span><span>Established</span><span>Expert</span><span>Master</span>
@@ -87,8 +87,8 @@
 
     <!-- BOTTOM BAR -->
     <div class="cp-bottom-bar" id="bottom-bar">
-      <button class="cp-btn cp-btn-secondary" id="btn-back" style="display:none">Back</button>
-      <button class="cp-btn cp-btn-primary" id="btn-next" disabled>Next →</button>
+      <button type="button" class="cp-btn cp-btn-secondary" id="btn-back" style="display:none">Back</button>
+      <button type="button" class="cp-btn cp-btn-primary" id="btn-next" disabled>Next →</button>
     </div>
   </div>
 
@@ -306,9 +306,9 @@
         '<div class="cp-rate-range" id="rate-display">' + CP.formatRange(rate.daily.min, rate.daily.max, rate.currency) + '</div>' +
         '<div style="font-size:.85rem;color:rgba(255,255,255,.5)">per day</div>' +
         '<div class="cp-rate-type-tabs">' +
-          '<button class="cp-rate-tab active" data-type="daily">Per Day</button>' +
-          '<button class="cp-rate-tab" data-type="hourly">Per Hour</button>' +
-          '<button class="cp-rate-tab" data-type="project">Per Project</button>' +
+          '<button type="button" class="cp-rate-tab active" data-type="daily">Per Day</button>' +
+          '<button type="button" class="cp-rate-tab" data-type="hourly">Per Hour</button>' +
+          '<button type="button" class="cp-rate-tab" data-type="project">Per Project</button>' +
         '</div></div>';
 
       // ── Section B: Market Comparison ──
@@ -335,15 +335,15 @@
       var aiHTML = '<div class="cp-section cp-ai-section">' +
         '<div class="cp-section-title">AI Pricing Advisor</div>' +
         '<div class="cp-ai-presets">' +
-          '<button class="cp-ai-preset" data-q="Based on my profile, what should I charge and why?">What should I charge?</button>' +
-          '<button class="cp-ai-preset" data-q="A client says my rate is too high. How do I respond?">Negotiation tactics</button>' +
-          '<button class="cp-ai-preset" data-q="What should I start charging for that I probably am not?">Hidden charges</button>' +
-          '<button class="cp-ai-preset" data-q="Should I offer packages or charge per project?">Packaging advice</button>' +
+          '<button type="button" class="cp-ai-preset" data-q="Based on my profile, what should I charge and why?">What should I charge?</button>' +
+          '<button type="button" class="cp-ai-preset" data-q="A client says my rate is too high. How do I respond?">Negotiation tactics</button>' +
+          '<button type="button" class="cp-ai-preset" data-q="What should I start charging for that I probably am not?">Hidden charges</button>' +
+          '<button type="button" class="cp-ai-preset" data-q="Should I offer packages or charge per project?">Packaging advice</button>' +
         '</div>' +
         '<div class="cp-ai-chat" id="ai-chat"></div>' +
         '<div class="cp-ai-input-row">' +
-          '<input class="cp-ai-input" id="ai-input" placeholder="Ask about pricing, negotiation, packages...">' +
-          '<button class="cp-ai-send" id="ai-send">Send</button>' +
+          '<input aria-label="Ask about pricing, negotiation, packages" class="cp-ai-input" id="ai-input" placeholder="Ask about pricing, negotiation, packages...">' +
+          '<button type="button" class="cp-ai-send" id="ai-send">Send</button>' +
         '</div></div>';
 
       // ── Section E: Shareable Rate Card ──
@@ -358,13 +358,13 @@
       });
       cardHTML += '</div><div class="cp-ratecard-powered">Powered by AfroTools CreatorPricing</div></div>' +
         '<div class="cp-share-btns">' +
-          '<button class="cp-share-btn cp-share-wa" id="share-wa">Share to WhatsApp</button>' +
-          '<button class="cp-share-btn cp-share-copy" id="share-copy">Copy Link</button>' +
+          '<button type="button" class="cp-share-btn cp-share-wa" id="share-wa">Share to WhatsApp</button>' +
+          '<button type="button" class="cp-share-btn cp-share-copy" id="share-copy">Copy Link</button>' +
         '</div></div>';
 
       // Navigation
       var navHTML = '<div style="display:flex;gap:10px;margin-top:24px">' +
-        '<button class="cp-btn cp-btn-secondary" id="results-back" style="flex:1">← Recalculate</button>' +
+        '<button type="button" class="cp-btn cp-btn-secondary" id="results-back" style="flex:1">← Recalculate</button>' +
         '<a href="quote.html" class="cp-btn cp-btn-primary" style="flex:1;text-align:center;text-decoration:none">Quote a Project →</a></div>';
 
       container.innerHTML = heroHTML + compHTML + breakdownHTML + aiHTML + cardHTML + navHTML;

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=421ee208">
   <style>
     .cbk-loading-status { text-align:center; font-size:.85rem; color:#64748b; margin-top:8px; opacity:0; transition:opacity .3s; }
@@ -26,6 +26,9 @@
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-brand/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-brand/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cbk-app">
 
@@ -34,8 +37,8 @@
     <a href="index.html" class="cbk-topbar-back">&larr;</a>
     <a href="index.html" class="cbk-topbar-brand">&#127912; CreatorBrand</a>
     <div class="cbk-topbar-actions">
-      <button class="cbk-topbar-btn" id="importBtn">Import</button>
-      <button class="cbk-topbar-btn primary" id="exportJsonBtn">Export JSON</button>
+      <button type="button" class="cbk-topbar-btn" id="importBtn">Import</button>
+      <button type="button" class="cbk-topbar-btn primary" id="exportJsonBtn">Export JSON</button>
     </div>
   </div>
 
@@ -45,14 +48,14 @@
     <!-- SIDEBAR -->
     <nav class="cbk-sidebar">
       <div class="cbk-sidebar-label">Brand Kit</div>
-      <button class="cbk-nav-item active" data-section="profile"><span class="cbk-nav-icon">&#128100;</span>Profile</button>
-      <button class="cbk-nav-item" data-section="logos"><span class="cbk-nav-icon">&#127912;</span>Logos</button>
-      <button class="cbk-nav-item" data-section="colors"><span class="cbk-nav-icon">&#127752;</span>Colors</button>
-      <button class="cbk-nav-item" data-section="typography"><span class="cbk-nav-icon">&#128288;</span>Typography</button>
-      <button class="cbk-nav-item" data-section="voice"><span class="cbk-nav-icon">&#128227;</span>Voice</button>
+      <button type="button" class="cbk-nav-item active" data-section="profile"><span class="cbk-nav-icon">&#128100;</span>Profile</button>
+      <button type="button" class="cbk-nav-item" data-section="logos"><span class="cbk-nav-icon">&#127912;</span>Logos</button>
+      <button type="button" class="cbk-nav-item" data-section="colors"><span class="cbk-nav-icon">&#127752;</span>Colors</button>
+      <button type="button" class="cbk-nav-item" data-section="typography"><span class="cbk-nav-icon">&#128288;</span>Typography</button>
+      <button type="button" class="cbk-nav-item" data-section="voice"><span class="cbk-nav-icon">&#128227;</span>Voice</button>
       <div class="cbk-sidebar-label">Output</div>
-      <button class="cbk-nav-item" data-section="guide"><span class="cbk-nav-icon">&#128214;</span>Brand Guide</button>
-      <button class="cbk-nav-item" data-section="export"><span class="cbk-nav-icon">&#128230;</span>Export</button>
+      <button type="button" class="cbk-nav-item" data-section="guide"><span class="cbk-nav-icon">&#128214;</span>Brand Guide</button>
+      <button type="button" class="cbk-nav-item" data-section="export"><span class="cbk-nav-icon">&#128230;</span>Export</button>
     </nav>
 
     <!-- WORKSPACE -->
@@ -67,11 +70,11 @@
           <div class="cbk-form-row">
             <div class="cbk-form-group">
               <label class="cbk-form-label">Brand Name</label>
-              <input type="text" class="cbk-form-input" id="brandName" placeholder="e.g. Nkem Studios" data-field="name">
+              <input aria-label="E.g. Nkem Studios" type="text" class="cbk-form-input" id="brandName" placeholder="e.g. Nkem Studios" data-field="name">
             </div>
             <div class="cbk-form-group">
               <label class="cbk-form-label">Tagline</label>
-              <input type="text" class="cbk-form-input" id="brandTagline" placeholder="e.g. Create without limits" data-field="tagline">
+              <input aria-label="E.g. Create without limits" type="text" class="cbk-form-input" id="brandTagline" placeholder="e.g. Create without limits" data-field="tagline">
             </div>
           </div>
           <div class="cbk-form-group">
@@ -108,7 +111,7 @@
               <textarea class="cbk-form-textarea" id="brandAudience" rows="2" placeholder="Who is your brand for?" data-field="audience" style="min-height:44px"></textarea>
             </div>
           </div>
-          <button class="cbk-btn" id="saveProfileBtn">Save Profile</button>
+          <button type="button" class="cbk-btn" id="saveProfileBtn">Save Profile</button>
         </div>
       </div>
 
@@ -119,7 +122,7 @@
 
         <div class="cbk-logo-grid" id="logoGrid"></div>
         <div style="margin-top:16px;">
-          <button class="cbk-btn secondary small" id="downloadAllLogosBtn">&#128230; Download All (concept)</button>
+          <button type="button" class="cbk-btn secondary small" id="downloadAllLogosBtn">&#128230; Download All (concept)</button>
         </div>
       </div>
 
@@ -138,12 +141,12 @@
         <div class="cbk-card" style="margin-top:16px;">
           <div class="cbk-card-title">&#128203; Export Palette</div>
           <div class="cbk-export-tabs" id="colorExportTabs">
-            <button class="cbk-export-tab active" data-fmt="css">CSS Variables</button>
-            <button class="cbk-export-tab" data-fmt="tailwind">Tailwind</button>
-            <button class="cbk-export-tab" data-fmt="figma">Figma JSON</button>
+            <button type="button" class="cbk-export-tab active" data-fmt="css">CSS Variables</button>
+            <button type="button" class="cbk-export-tab" data-fmt="tailwind">Tailwind</button>
+            <button type="button" class="cbk-export-tab" data-fmt="figma">Figma JSON</button>
           </div>
           <div class="cbk-export-code" id="colorExportCode" style="position:relative;">
-            <button class="cbk-copy-btn" id="copyColorExport">Copy</button>
+            <button type="button" class="cbk-copy-btn" id="copyColorExport">Copy</button>
             <pre id="colorExportPre" style="margin:0;white-space:pre-wrap;font:inherit;color:inherit;"></pre>
           </div>
         </div>
@@ -169,7 +172,7 @@
         <div class="cbk-card" style="margin-top:16px;">
           <div class="cbk-card-title">&#128279; Google Fonts Link</div>
           <div class="cbk-export-code" style="position:relative;">
-            <button class="cbk-copy-btn" id="copyFontLink">Copy</button>
+            <button type="button" class="cbk-copy-btn" id="copyFontLink">Copy</button>
             <pre id="fontLinkPre" style="margin:0;white-space:pre-wrap;font:inherit;color:inherit;"></pre>
           </div>
         </div>
@@ -187,16 +190,16 @@
             <div class="cbk-tags-label positive">&#9989; We are...</div>
             <div class="cbk-tags-wrap" id="weAreWrap"></div>
             <div class="cbk-tag-add-row">
-              <input type="text" class="cbk-tag-add-input" id="weAreInput" placeholder="Add attribute...">
-              <button class="cbk-btn small" id="weAreAddBtn">Add</button>
+              <input aria-label="Add attribute" type="text" class="cbk-tag-add-input" id="weAreInput" placeholder="Add attribute...">
+              <button type="button" class="cbk-btn small" id="weAreAddBtn">Add</button>
             </div>
           </div>
           <div class="cbk-tags-section">
             <div class="cbk-tags-label negative">&#10060; We are not...</div>
             <div class="cbk-tags-wrap" id="weAreNotWrap"></div>
             <div class="cbk-tag-add-row">
-              <input type="text" class="cbk-tag-add-input" id="weAreNotInput" placeholder="Add attribute...">
-              <button class="cbk-btn small secondary" id="weAreNotAddBtn">Add</button>
+              <input aria-label="Add attribute" type="text" class="cbk-tag-add-input" id="weAreNotInput" placeholder="Add attribute...">
+              <button type="button" class="cbk-btn small secondary" id="weAreNotAddBtn">Add</button>
             </div>
           </div>
         </div>
@@ -204,7 +207,7 @@
         <div class="cbk-card">
           <div class="cbk-card-title">&#10024; AI Sample Posts</div>
           <p style="font-size:13px;margin-bottom:14px;">Generate 3 sample social posts that match your tone of voice.</p>
-          <button class="cbk-btn" id="generateVoiceBtn"><span class="cbk-spinner"></span>Generate Samples</button>
+          <button type="button" class="cbk-btn" id="generateVoiceBtn"><span class="cbk-spinner"></span>Generate Samples</button>
           <div class="cbk-loading-status" id="loadingStatus"></div>
           <div class="cbk-ai-samples" id="aiSamples"></div>
         </div>
@@ -216,9 +219,9 @@
         <p class="cbk-section-desc">Auto-generated from your kit. Print or export as a standalone HTML page.</p>
 
         <div style="margin-bottom:16px;display:flex;gap:12px;">
-          <button class="cbk-btn" id="generateGuideBtn">Generate Brand Guide</button>
-          <button class="cbk-btn secondary" id="printGuideBtn">&#128424; Print</button>
-          <button class="cbk-btn secondary" id="exportGuideBtn">&#128230; Export HTML</button>
+          <button type="button" class="cbk-btn" id="generateGuideBtn">Generate Brand Guide</button>
+          <button type="button" class="cbk-btn secondary" id="printGuideBtn">&#128424; Print</button>
+          <button type="button" class="cbk-btn secondary" id="exportGuideBtn">&#128230; Export HTML</button>
         </div>
 
         <div id="guidePreview"></div>
@@ -238,8 +241,8 @@
         <div class="cbk-card">
           <div class="cbk-card-title">&#128230; Full Kit Export</div>
           <div class="cbk-export-actions">
-            <button class="cbk-btn" id="exportFullJsonBtn">Download JSON</button>
-            <button class="cbk-btn secondary" id="copyFullJsonBtn">Copy to Clipboard</button>
+            <button type="button" class="cbk-btn" id="exportFullJsonBtn">Download JSON</button>
+            <button type="button" class="cbk-btn secondary" id="copyFullJsonBtn">Copy to Clipboard</button>
           </div>
         </div>
 
@@ -247,7 +250,7 @@
           <div class="cbk-card-title">&#128229; Import Kit</div>
           <p style="font-size:13px;margin-bottom:12px;">Paste a previously exported JSON to restore your brand kit.</p>
           <textarea class="cbk-form-textarea" id="importTextarea" rows="4" placeholder="Paste JSON here..."></textarea>
-          <button class="cbk-btn secondary small" id="importApplyBtn" style="margin-top:8px;">Apply Import</button>
+          <button type="button" class="cbk-btn secondary small" id="importApplyBtn" style="margin-top:8px;">Apply Import</button>
         </div>
       </div>
 
@@ -256,12 +259,12 @@
 
   <!-- BOTTOM NAV (mobile) -->
   <nav class="cbk-bottom-nav">
-    <button data-section="profile" class="active"><span class="cbk-bnav-icon">&#128100;</span>Profile</button>
-    <button data-section="logos"><span class="cbk-bnav-icon">&#127912;</span>Logos</button>
-    <button data-section="colors"><span class="cbk-bnav-icon">&#127752;</span>Colors</button>
-    <button data-section="typography"><span class="cbk-bnav-icon">&#128288;</span>Type</button>
-    <button data-section="voice"><span class="cbk-bnav-icon">&#128227;</span>Voice</button>
-    <button data-section="guide"><span class="cbk-bnav-icon">&#128214;</span>Guide</button>
+    <button type="button" data-section="profile" class="active"><span class="cbk-bnav-icon">&#128100;</span>Profile</button>
+    <button type="button" data-section="logos"><span class="cbk-bnav-icon">&#127912;</span>Logos</button>
+    <button type="button" data-section="colors"><span class="cbk-bnav-icon">&#127752;</span>Colors</button>
+    <button type="button" data-section="typography"><span class="cbk-bnav-icon">&#128288;</span>Type</button>
+    <button type="button" data-section="voice"><span class="cbk-bnav-icon">&#128227;</span>Voice</button>
+    <button type="button" data-section="guide"><span class="cbk-bnav-icon">&#128214;</span>Guide</button>
   </nav>
 
   <!-- TOAST -->
@@ -533,15 +536,15 @@
     kit.logos.forEach(function(logo, i) {
       html += '<div class="cbk-logo-slot">';
       html += '<div class="cbk-logo-slot-header"><span>' + escapeHtml(logo.slot) + '</span>';
-      if (logo.url) html += '<button class="cbk-btn small secondary" data-logo-dl="' + i + '" style="padding:4px 8px;font-size:10px;">&#11015; Save</button>';
+      if (logo.url) html += '<button type="button" class="cbk-btn small secondary" data-logo-dl="' + i + '" style="padding:4px 8px;font-size:10px;">&#11015; Save</button>';
       html += '</div>';
       html += '<div class="cbk-logo-previews">';
       html += '<div class="cbk-logo-preview light">' + (logo.url ? '<img src="' + escapeHtml(logo.url) + '" alt="' + escapeHtml(logo.slot) + '">' : 'Light') + '</div>';
       html += '<div class="cbk-logo-preview dark">' + (logo.url ? '<img src="' + escapeHtml(logo.url) + '" alt="' + escapeHtml(logo.slot) + '">' : 'Dark') + '</div>';
       html += '</div>';
       html += '<div class="cbk-logo-url-row">';
-      html += '<input type="text" class="cbk-logo-url-input" placeholder="Image URL..." value="' + escapeHtml(logo.url) + '" data-logo-idx="' + i + '">';
-      html += '<button class="cbk-btn small" data-logo-set="' + i + '" style="padding:8px 12px;">Set</button>';
+      html += '<input aria-label="Image URL" type="text" class="cbk-logo-url-input" placeholder="Image URL..." value="' + escapeHtml(logo.url) + '" data-logo-idx="' + i + '">';
+      html += '<button type="button" class="cbk-btn small" data-logo-set="' + i + '" style="padding:8px 12px;">Set</button>';
       html += '</div>';
       html += '</div>';
     });
@@ -588,7 +591,7 @@
       html += '<div class="cbk-color-swatch" style="background:' + c.hex + '"><input type="color" value="' + c.hex + '" data-color-pick="' + i + '"></div>';
       html += '<div class="cbk-color-body">';
       html += '<div class="cbk-color-name">' + escapeHtml(c.name) + '</div>';
-      html += '<div class="cbk-color-hex-row"><input type="text" class="cbk-color-hex-input" value="' + c.hex + '" data-color-hex="' + i + '"><button class="cbk-btn small secondary" data-color-apply="' + i + '" style="padding:6px 10px;font-size:11px;">Set</button></div>';
+      html += '<div class="cbk-color-hex-row"><input aria-label="Cbk color hex input" type="text" class="cbk-color-hex-input" value="' + c.hex + '" data-color-hex="' + i + '"><button type="button" class="cbk-btn small secondary" data-color-apply="' + i + '" style="padding:6px 10px;font-size:11px;">Set</button></div>';
       html += '<div class="cbk-color-tints" title="Tints: 10%, 20%, 30% | Shades: 10%, 20%, 30%">';
       tints.forEach(function(t) { html += '<div class="cbk-color-tint" style="background:' + t + '"></div>'; });
       shades.forEach(function(s) { html += '<div class="cbk-color-tint" style="background:' + s + '"></div>'; });
@@ -793,7 +796,7 @@
       var val = kit.voice.scales[scale.key] || 50;
       html += '<div class="cbk-voice-scale">';
       html += '<div class="cbk-voice-scale-labels"><span>' + scale.left + '</span><span>' + scale.right + '</span></div>';
-      html += '<input type="range" class="cbk-voice-range" min="0" max="100" value="' + val + '" data-voice-scale="' + scale.key + '">';
+      html += '<input aria-label="Cbk voice range" type="range" class="cbk-voice-range" min="0" max="100" value="' + val + '" data-voice-scale="' + scale.key + '">';
       html += '<div class="cbk-voice-value" id="voiceVal-' + scale.key + '">' + val + '</div>';
       html += '</div>';
     });
@@ -816,7 +819,7 @@
     var wrap = document.getElementById(type + 'Wrap');
     var html = '';
     list.forEach(function(item, i) {
-      html += '<span class="cbk-tag ' + cls + '">' + escapeHtml(item) + '<button class="cbk-tag-remove" data-tag-type="' + type + '" data-tag-idx="' + i + '">&times;</button></span>';
+      html += '<span class="cbk-tag ' + cls + '">' + escapeHtml(item) + '<button type="button" class="cbk-tag-remove" data-tag-type="' + type + '" data-tag-idx="' + i + '">&times;</button></span>';
     });
     wrap.innerHTML = html;
 

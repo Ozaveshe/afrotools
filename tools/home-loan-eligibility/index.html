@@ -23,9 +23,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -120,10 +120,10 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 .ai-send{padding:9px 14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
 .ai-send:disabled{opacity:.5;cursor:not-allowed}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/home-loan-eligibility/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/eligibilite-pret-immobilier/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/home-loan-eligibility/" />
@@ -200,7 +200,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         </div>
         <div class="field">
           <label>Your Age</label>
-          <input type="number" id="age" placeholder="e.g. 32" min="18" max="75">
+          <input aria-label="E.g. 32" type="number" id="age" placeholder="e.g. 32" min="18" max="75">
           <div class="hint">Most banks: min 21, max 65 at loan end</div>
         </div>
       </div>
@@ -233,11 +233,11 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <div class="grid-2">
         <div class="field">
           <label>Gross Monthly Income</label>
-          <input type="number" id="grossIncome" placeholder="e.g. 85000" min="0">
+          <input aria-label="E.g. 85000" type="number" id="grossIncome" placeholder="e.g. 85000" min="0">
         </div>
         <div class="field">
           <label>Total Monthly Existing Debts</label>
-          <input type="number" id="totalDebts" placeholder="0" min="0">
+          <input aria-label="TotalDebts" type="number" id="totalDebts" placeholder="0" min="0">
           <div class="hint">Car, personal loan, credit cards (monthly payments)</div>
         </div>
       </div>
@@ -268,11 +268,11 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <div class="grid-2">
         <div class="field">
           <label>Down Payment Available</label>
-          <input type="number" id="downPayment" placeholder="0" min="0">
+          <input aria-label="DownPayment" type="number" id="downPayment" placeholder="0" min="0">
         </div>
         <div class="field">
           <label>Home Purchase Price</label>
-          <input type="number" id="homePrice" placeholder="0" min="0">
+          <input aria-label="HomePrice" type="number" id="homePrice" placeholder="0" min="0">
         </div>
       </div>
       <div class="grid-2">
@@ -296,7 +296,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         </div>
       </div>
 
-      <button class="calc-btn" onclick="checkEligibility()">Check My Eligibility →</button>
+      <button type="button" class="calc-btn" onclick="checkEligibility()">Check My Eligibility →</button>
     </div>
 
     <!-- Results -->
@@ -348,8 +348,8 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         <div class="ai-chat" id="aiChat">
           <div class="ai-msgs" id="aiMsgs"></div>
           <div class="ai-input-row">
-            <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
-            <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+            <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+            <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
           </div>
         </div>
       </div>

@@ -18,12 +18,12 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="flashcard-maker.css?v=2c4e03b8">
 <meta name="tool-id" content="flashcard-maker">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Flashcard Study Tool | AfroTools">
 <meta name="twitter:description" content="Free flashcard maker with pre-made JAMB, WAEC, KCSE and Matric exam packs. Flip, quiz, match modes with spaced repetition.">
@@ -31,7 +31,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Flashcard Study Tool","url":"https://afrotools.com/tools/flashcard-maker/","description":"Free flashcard maker with pre-made exam packs, flip/quiz/match modes, and spaced repetition.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/flashcard-maker.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education/"},{"@type":"ListItem","position":3,"name":"Flashcard Study Tool","item":"https://afrotools.com/tools/flashcard-maker/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does spaced repetition work?","acceptedAnswer":{"@type":"Answer","text":"Cards you mark as Review Again appear more frequently in study sessions. Cards you mark as Got It are shown less often, focusing study time on challenging material."}},{"@type":"Question","name":"How do I import cards in bulk?","acceptedAnswer":{"@type":"Answer","text":"Click Bulk Import and paste your data with one card per line. Use a tab character or comma to separate the front (term) from the back (definition). You can also export from spreadsheet apps as CSV."}},{"@type":"Question","name":"Is my data saved?","acceptedAnswer":{"@type":"Answer","text":"Yes, all decks and cards are saved to your browser's local storage. Your data stays on your device and persists between sessions."}}]}</script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/afro-auth.js?v=3978e101" defer></script>
 <script src="/assets/js/edu-cloud-sync.js?v=b14c95ce" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/flashcard-maker/" />
@@ -81,9 +81,9 @@
 
 <!-- Tabs -->
 <div class="fc-tabs">
-  <button class="fc-tab active" data-tab="decks" onclick="switchTab('decks')">Decks</button>
-  <button class="fc-tab" data-tab="study" onclick="switchTab('study')">Study</button>
-  <button class="fc-tab" data-tab="progress" onclick="switchTab('progress')">Progress</button>
+  <button type="button" class="fc-tab active" data-tab="decks" onclick="switchTab('decks')">Decks</button>
+  <button type="button" class="fc-tab" data-tab="study" onclick="switchTab('study')">Study</button>
+  <button type="button" class="fc-tab" data-tab="progress" onclick="switchTab('progress')">Progress</button>
 </div>
 
 <!-- ==================== DECKS PANEL ==================== -->
@@ -110,7 +110,7 @@
     <div class="fc-deck-list" id="deckList"></div>
     <div class="fc-create-row">
       <div class="fc-field"><label for="newDeckName">New deck name</label><input type="text" id="newDeckName" placeholder="e.g. Biology Chapter 3" onkeydown="if(event.key==='Enter')createDeck()"></div>
-      <button class="fc-btn primary sm" onclick="createDeck()">+ Create</button>
+      <button type="button" class="fc-btn primary sm" onclick="createDeck()">+ Create</button>
     </div>
   </div>
 </div>
@@ -126,16 +126,16 @@
       <div class="fc-field"><label for="cardBack">Back (answer / definition)</label><input type="text" id="cardBack" placeholder="e.g. Process by which plants convert light to energy" onkeydown="if(event.key==='Enter')addCard()"></div>
     </div>
     <div class="fc-btn-group">
-      <button class="fc-btn primary sm" onclick="addCard()">Add Card</button>
-      <button class="fc-btn sm" onclick="toggleBulk()">Bulk Import</button>
-      <button class="fc-btn sm" onclick="exportDeck()">Export CSV</button>
+      <button type="button" class="fc-btn primary sm" onclick="addCard()">Add Card</button>
+      <button type="button" class="fc-btn sm" onclick="toggleBulk()">Bulk Import</button>
+      <button type="button" class="fc-btn sm" onclick="exportDeck()">Export CSV</button>
     </div>
     <div class="fc-bulk" id="bulkSection">
       <div class="fc-field">
         <label for="bulkInput">Paste tab-separated or CSV data (one card per line)</label>
         <textarea id="bulkInput" rows="5" placeholder="Photosynthesis&#9;Process by which plants convert light to energy&#10;Mitosis&#9;Cell division producing two identical daughter cells"></textarea>
       </div>
-      <button class="fc-btn primary sm" style="margin-top:8px" onclick="bulkImport()">Import Cards</button>
+      <button type="button" class="fc-btn primary sm" style="margin-top:8px" onclick="bulkImport()">Import Cards</button>
     </div>
     <div class="fc-card-scroll" id="cardsList"></div>
   </div>
@@ -154,9 +154,9 @@
   <div class="fc-card-body">
     <!-- Mode selector -->
     <div class="fc-study-modes" id="modeTabs">
-      <button class="fc-mode-btn active" data-mode="flip" onclick="setMode('flip')">&#128195; Flip</button>
-      <button class="fc-mode-btn" data-mode="quiz" onclick="setMode('quiz')">&#9999;&#65039; Quiz</button>
-      <button class="fc-mode-btn" data-mode="match" onclick="setMode('match')">&#129518; Match</button>
+      <button type="button" class="fc-mode-btn active" data-mode="flip" onclick="setMode('flip')">&#128195; Flip</button>
+      <button type="button" class="fc-mode-btn" data-mode="quiz" onclick="setMode('quiz')">&#9999;&#65039; Quiz</button>
+      <button type="button" class="fc-mode-btn" data-mode="match" onclick="setMode('match')">&#129518; Match</button>
     </div>
 
     <!-- Study content area -->
@@ -165,7 +165,7 @@
         <div class="fc-study-empty-icon">&#128218;</div>
         <div class="fc-study-empty-title">No deck selected</div>
         <div class="fc-study-empty-desc">Select a deck from the Decks tab to start studying</div>
-        <button class="fc-btn primary" onclick="switchTab('decks')">Go to Decks</button>
+        <button type="button" class="fc-btn primary" onclick="switchTab('decks')">Go to Decks</button>
       </div>
     </div>
 
@@ -224,9 +224,9 @@
   <div class="fc-card-head">
     <span class="fc-card-label"><span class="icon">&#128203;</span> Card Breakdown</span>
     <div style="display:flex;gap:6px">
-      <button class="fc-btn sm fc-filter-btn active" data-filter="all" onclick="filterCards('all',this)">All</button>
-      <button class="fc-btn sm fc-filter-btn" data-filter="mastered" onclick="filterCards('mastered',this)">&#9989; Mastered</button>
-      <button class="fc-btn sm fc-filter-btn" data-filter="review" onclick="filterCards('review',this)">&#128260; Needs Review</button>
+      <button type="button" class="fc-btn sm fc-filter-btn active" data-filter="all" onclick="filterCards('all',this)">All</button>
+      <button type="button" class="fc-btn sm fc-filter-btn" data-filter="mastered" onclick="filterCards('mastered',this)">&#9989; Mastered</button>
+      <button type="button" class="fc-btn sm fc-filter-btn" data-filter="review" onclick="filterCards('review',this)">&#128260; Needs Review</button>
     </div>
   </div>
   <div class="fc-card-body">
@@ -568,8 +568,8 @@ function renderCards() {
       '<span class="fc-card-item-front">' + escHtml(c.front) + '</span>' +
       '<span class="fc-card-item-sep">&rarr;</span>' +
       '<span class="fc-card-item-back">' + escHtml(c.back) + '</span>' +
-      '<button class="fc-card-item-edit" onclick="editCard(' + i + ')" title="Edit">&#9998;</button>' +
-      '<button class="fc-card-item-del" onclick="deleteCard(' + i + ')" title="Delete">&times;</button></div>';
+      '<button type="button" class="fc-card-item-edit" onclick="editCard(' + i + ')" title="Edit">&#9998;</button>' +
+      '<button type="button" class="fc-card-item-del" onclick="deleteCard(' + i + ')" title="Delete">&times;</button></div>';
   }).join('');
 }
 
@@ -597,7 +597,7 @@ function selectDeck(i) {
     prompt.style.cssText = 'display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--brand-pale,#E8F2FF);border:1px solid rgba(0,122,255,.15);border-radius:10px;margin-top:12px';
     prompt.innerHTML = '<span style="font-size:1.2rem">&#128218;</span>' +
       '<span style="flex:1;font-size:.85rem;font-weight:600;color:var(--text)">' + escHtml(deck.name) + ' &mdash; ' + deck.cards.length + ' cards ready</span>' +
-      '<button class="fc-btn primary sm" onclick="switchTab(\'study\')" style="white-space:nowrap">Study Now &rarr;</button>';
+      '<button type="button" class="fc-btn primary sm" onclick="switchTab(\'study\')" style="white-space:nowrap">Study Now &rarr;</button>';
     document.getElementById('deckList').parentNode.appendChild(prompt);
   }
 }
@@ -636,13 +636,13 @@ function editCard(i) {
   el.innerHTML =
     '<div class="fc-card-edit-form">' +
     '<div class="fc-card-edit-fields">' +
-    '<input type="text" id="editFront' + i + '" class="fc-card-edit-input" value="' + escHtml(c.front).replace(/"/g, '&quot;') + '" placeholder="Front">' +
+    '<input aria-label="Front" type="text" id="editFront' + i + '" class="fc-card-edit-input" value="' + escHtml(c.front).replace(/"/g, '&quot;') + '" placeholder="Front">' +
     '<span class="fc-card-item-sep">&rarr;</span>' +
-    '<input type="text" id="editBack' + i + '" class="fc-card-edit-input" value="' + escHtml(c.back).replace(/"/g, '&quot;') + '" placeholder="Back">' +
+    '<input aria-label="Back" type="text" id="editBack' + i + '" class="fc-card-edit-input" value="' + escHtml(c.back).replace(/"/g, '&quot;') + '" placeholder="Back">' +
     '</div>' +
     '<div class="fc-card-edit-actions">' +
-    '<button class="fc-btn sm primary" onclick="saveCardEdit(' + i + ')">Save</button>' +
-    '<button class="fc-btn sm" onclick="cancelCardEdit()">Cancel</button>' +
+    '<button type="button" class="fc-btn sm primary" onclick="saveCardEdit(' + i + ')">Save</button>' +
+    '<button type="button" class="fc-btn sm" onclick="cancelCardEdit()">Cancel</button>' +
     '</div></div>';
   document.getElementById('editFront' + i).focus();
 }
@@ -707,7 +707,7 @@ function renderPresets() {
   keys.forEach(function(key) {
     var p = PRESET_DECKS[key];
     var exists = state.decks.some(function(d) { return d.name === p.name; });
-    html += '<button class="fc-preset' + (exists ? ' selected' : '') + '" onclick="loadPreset(\'' + key + '\')">' +
+    html += '<button type="button" class="fc-preset' + (exists ? ' selected' : '') + '" onclick="loadPreset(\'' + key + '\')">' +
       '<div class="fc-preset-emoji">' + p.emoji + '</div>' +
       '<div class="fc-preset-name">' + p.name + '</div>' +
       '<div class="fc-preset-desc">' + p.desc + '</div>' +
@@ -767,7 +767,7 @@ function renderStudyEmpty() {
     '<div class="fc-study-empty-icon">&#128218;</div>' +
     '<div class="fc-study-empty-title">No deck selected</div>' +
     '<div class="fc-study-empty-desc">Select a deck from the Decks tab to start studying</div>' +
-    '<button class="fc-btn primary" onclick="switchTab(\'decks\')">Go to Decks</button></div>';
+    '<button type="button" class="fc-btn primary" onclick="switchTab(\'decks\')">Go to Decks</button></div>';
   document.getElementById('studyControls').innerHTML = '';
   document.getElementById('activeDeckName').textContent = '';
 }
@@ -818,8 +818,8 @@ function renderFlip(area, controls, deck) {
     '<div class="fc-flashcard-text">' + escHtml(card.back) + '</div></div>' +
     '</div></div>';
   controls.innerHTML =
-    '<button class="fc-btn danger" onclick="markCard(false)">&#128260; Review Again</button>' +
-    '<button class="fc-btn primary" onclick="markCard(true)">&#9989; Got It</button>';
+    '<button type="button" class="fc-btn danger" onclick="markCard(false)">&#128260; Review Again</button>' +
+    '<button type="button" class="fc-btn primary" onclick="markCard(true)">&#9989; Got It</button>';
 }
 
 function markCard(gotIt) {
@@ -843,7 +843,7 @@ function renderQuiz(area, controls, deck) {
     '<div class="fc-card-counter">' + pos + ' / ' + total + '</div>' +
     '<div class="fc-card-progress"><div class="fc-card-progress-fill" style="width:' + pct + '%"></div></div>' +
     '<div class="fc-quiz-prompt"><div class="fc-flashcard-label">What is the answer?</div><div class="fc-quiz-prompt-text">' + escHtml(card.front) + '</div></div>' +
-    '<div class="fc-quiz-input"><input type="text" id="quizAnswer" placeholder="Type your answer..." onkeydown="if(event.key===\'Enter\')checkQuiz()"><button class="fc-btn primary" onclick="checkQuiz()">Check</button></div>' +
+    '<div class="fc-quiz-input"><input aria-label="Type your answer" type="text" id="quizAnswer" placeholder="Type your answer..." onkeydown="if(event.key===\'Enter\')checkQuiz()"><button type="button" class="fc-btn primary" onclick="checkQuiz()">Check</button></div>' +
     '<div id="quizFeedback"></div>';
   controls.innerHTML = '';
   setTimeout(function() { var el = document.getElementById('quizAnswer'); if (el) el.focus(); }, 100);
@@ -901,7 +901,7 @@ function renderMatch(area, controls, deck) {
   pairOptions.forEach(function(n) {
     var active = state.matchPairCount === n ? ' active' : '';
     var disabled = n > deck.cards.length ? ' disabled' : '';
-    pairBtns += '<button class="fc-match-pair-btn' + active + '"' + disabled + ' onclick="setMatchPairCount(' + n + ')">' + n + '</button>';
+    pairBtns += '<button type="button" class="fc-match-pair-btn' + active + '"' + disabled + ' onclick="setMatchPairCount(' + n + ')">' + n + '</button>';
   });
   pairBtns += '</div>';
   area.innerHTML = pairBtns +
@@ -912,7 +912,7 @@ function renderMatch(area, controls, deck) {
     '</div><div class="fc-match-col"><div class="fc-match-col-label">Definitions</div>' +
     defs.map(function(d) { return '<div class="fc-match-item" data-id="' + d.id + '" data-type="def" onclick="matchClick(this)">' + escHtml(d.text) + '</div>'; }).join('') +
     '</div></div>';
-  controls.innerHTML = '<button class="fc-btn" onclick="startStudy()">&#128260; Shuffle &amp; Restart</button>';
+  controls.innerHTML = '<button type="button" class="fc-btn" onclick="startStudy()">&#128260; Shuffle &amp; Restart</button>';
 }
 
 function matchClick(el) {
@@ -940,8 +940,8 @@ function matchClick(el) {
         recordStreak();
         setTimeout(function() {
           document.getElementById('studyControls').innerHTML =
-            '<button class="fc-btn primary" onclick="startStudy()">&#127881; Play Again</button>' +
-            '<button class="fc-btn" onclick="switchTab(\'progress\')">View Progress</button>';
+            '<button type="button" class="fc-btn primary" onclick="startStudy()">&#127881; Play Again</button>' +
+            '<button type="button" class="fc-btn" onclick="switchTab(\'progress\')">View Progress</button>';
         }, 400);
       }
     } else {
@@ -1059,7 +1059,7 @@ function renderBreakdown() {
       '<span class="back">' + escHtml(c.back) + '</span>' +
       badge + '</div>';
   }).join('') +
-  '<button class="fc-reset-btn" onclick="resetDeckProgress()">Reset all progress for this deck</button>';
+  '<button type="button" class="fc-reset-btn" onclick="resetDeckProgress()">Reset all progress for this deck</button>';
 }
 
 function filterCards(filter, btn) {

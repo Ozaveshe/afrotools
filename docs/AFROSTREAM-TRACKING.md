@@ -9,6 +9,8 @@ It updates creator platform counts, recomputes AfroScore, and writes daily rows 
 
 Scheduled invocations use the database-side `public.refresh_afrostream_creator_snapshots()` RPC so the daily snapshot set can be refreshed inside Netlify's scheduled-function execution window. Manual admin sync can still run the platform API refresh first, then call the same RPC. If the RPC is changed, keep `supabase/migrations/040-afrostream-snapshot-refresh-rpc.sql` and the public snapshot endpoint validation in sync.
 
+Manual `POST /api/afrostream/sync` requests now return `202 Accepted` and hand the heavy Twitch, Kick, and YouTube refresh work to `netlify/functions/afrostream-sync-background.js`. This keeps manual admin runs from timing out at the browser or CDN layer while preserving the existing scheduled snapshot refresh path. Use `?mode=inline` only when you explicitly want the request to wait for the full sync result for debugging.
+
 The YouTube lane now uses cached `yt_channel_id` values and defaults to `200` creators per run. Override with:
 
 ```text

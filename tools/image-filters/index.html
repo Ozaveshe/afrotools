@@ -31,15 +31,15 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
 <link rel="stylesheet" href="/assets/css/image-filters-studio.css?v=98a90869">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Photo Filter Studio","description":"Apply local photo filter presets, fine-tune brightness, contrast, saturation, warmth, hue, grain, vignette, sharpen, compare before and after, and export images or batch zip packs.","url":"https://afrotools.com/tools/image-filters/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript, Canvas, and browser image decoding support","image":"https://afrotools.com/assets/img/tools/image-filters.svg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Photo Filter Studio","url":"https://afrotools.com/tools/image-filters/","description":"Edit photos locally with presets, adjustment sliders, before-after compare, local recipe history, and batch exports.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/image-filters.svg"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Photo Filter Studio","item":"https://afrotools.com/tools/image-filters/"}]}</script>
@@ -82,7 +82,7 @@
             <span><strong>Choose photos</strong><span>Drag files here, paste from clipboard, or click to browse.</span></span>
           </div>
           <div class="filters-drop-side">Local only<br>Batch friendly</div>
-          <input type="file" id="filtersInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
+          <input aria-label="FiltersInput" type="file" id="filtersInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
         </div>
         <div class="filters-queue" id="filtersQueue"></div>
       </article>
@@ -119,47 +119,47 @@
         <div class="filters-control-grid">
           <label class="filters-field">
             <span class="filters-label">Brightness</span>
-            <span class="filters-range"><input class="filters-input" id="filtersBrightness" data-filter-control="brightness" type="range" min="-60" max="60" value="10"><span class="filters-range-value" id="filtersBrightnessValue">+10</span></span>
+            <span class="filters-range"><input aria-label="FiltersBrightness" class="filters-input" id="filtersBrightness" data-filter-control="brightness" type="range" min="-60" max="60" value="10"><span class="filters-range-value" id="filtersBrightnessValue">+10</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Contrast</span>
-            <span class="filters-range"><input class="filters-input" id="filtersContrast" data-filter-control="contrast" type="range" min="-60" max="90" value="18"><span class="filters-range-value" id="filtersContrastValue">+18</span></span>
+            <span class="filters-range"><input aria-label="FiltersContrast" class="filters-input" id="filtersContrast" data-filter-control="contrast" type="range" min="-60" max="90" value="18"><span class="filters-range-value" id="filtersContrastValue">+18</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Saturation</span>
-            <span class="filters-range"><input class="filters-input" id="filtersSaturation" data-filter-control="saturation" type="range" min="-100" max="140" value="12"><span class="filters-range-value" id="filtersSaturationValue">+12</span></span>
+            <span class="filters-range"><input aria-label="FiltersSaturation" class="filters-input" id="filtersSaturation" data-filter-control="saturation" type="range" min="-100" max="140" value="12"><span class="filters-range-value" id="filtersSaturationValue">+12</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Warmth</span>
-            <span class="filters-range"><input class="filters-input" id="filtersWarmth" data-filter-control="warmth" type="range" min="-50" max="50" value="3"><span class="filters-range-value" id="filtersWarmthValue">+3</span></span>
+            <span class="filters-range"><input aria-label="FiltersWarmth" class="filters-input" id="filtersWarmth" data-filter-control="warmth" type="range" min="-50" max="50" value="3"><span class="filters-range-value" id="filtersWarmthValue">+3</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Hue</span>
-            <span class="filters-range"><input class="filters-input" id="filtersHue" data-filter-control="hue" type="range" min="-180" max="180" value="0"><span class="filters-range-value" id="filtersHueValue">0 deg</span></span>
+            <span class="filters-range"><input aria-label="FiltersHue" class="filters-input" id="filtersHue" data-filter-control="hue" type="range" min="-180" max="180" value="0"><span class="filters-range-value" id="filtersHueValue">0 deg</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Grayscale</span>
-            <span class="filters-range"><input class="filters-input" id="filtersGrayscale" data-filter-control="grayscale" type="range" min="0" max="100" value="0"><span class="filters-range-value" id="filtersGrayscaleValue">0</span></span>
+            <span class="filters-range"><input aria-label="FiltersGrayscale" class="filters-input" id="filtersGrayscale" data-filter-control="grayscale" type="range" min="0" max="100" value="0"><span class="filters-range-value" id="filtersGrayscaleValue">0</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Sepia</span>
-            <span class="filters-range"><input class="filters-input" id="filtersSepia" data-filter-control="sepia" type="range" min="0" max="100" value="0"><span class="filters-range-value" id="filtersSepiaValue">0</span></span>
+            <span class="filters-range"><input aria-label="FiltersSepia" class="filters-input" id="filtersSepia" data-filter-control="sepia" type="range" min="0" max="100" value="0"><span class="filters-range-value" id="filtersSepiaValue">0</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Blur</span>
-            <span class="filters-range"><input class="filters-input" id="filtersBlur" data-filter-control="blur" type="range" min="0" max="8" step="0.1" value="0"><span class="filters-range-value" id="filtersBlurValue">0 px</span></span>
+            <span class="filters-range"><input aria-label="FiltersBlur" class="filters-input" id="filtersBlur" data-filter-control="blur" type="range" min="0" max="8" step="0.1" value="0"><span class="filters-range-value" id="filtersBlurValue">0 px</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Sharpen</span>
-            <span class="filters-range"><input class="filters-input" id="filtersSharpen" data-filter-control="sharpen" type="range" min="0" max="80" value="28"><span class="filters-range-value" id="filtersSharpenValue">+28</span></span>
+            <span class="filters-range"><input aria-label="FiltersSharpen" class="filters-input" id="filtersSharpen" data-filter-control="sharpen" type="range" min="0" max="80" value="28"><span class="filters-range-value" id="filtersSharpenValue">+28</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Vignette</span>
-            <span class="filters-range"><input class="filters-input" id="filtersVignette" data-filter-control="vignette" type="range" min="0" max="80" value="0"><span class="filters-range-value" id="filtersVignetteValue">0</span></span>
+            <span class="filters-range"><input aria-label="FiltersVignette" class="filters-input" id="filtersVignette" data-filter-control="vignette" type="range" min="0" max="80" value="0"><span class="filters-range-value" id="filtersVignetteValue">0</span></span>
           </label>
           <label class="filters-field">
             <span class="filters-label">Grain</span>
-            <span class="filters-range"><input class="filters-input" id="filtersGrain" data-filter-control="grain" type="range" min="0" max="40" value="0"><span class="filters-range-value" id="filtersGrainValue">0</span></span>
+            <span class="filters-range"><input aria-label="FiltersGrain" class="filters-input" id="filtersGrain" data-filter-control="grain" type="range" min="0" max="40" value="0"><span class="filters-range-value" id="filtersGrainValue">0</span></span>
           </label>
           <div class="filters-field">
             <span class="filters-label">Recipe control</span>
@@ -201,24 +201,24 @@
             </label>
             <label class="filters-field">
               <span class="filters-label">Quality</span>
-              <span class="filters-range"><input class="filters-input" id="filtersQuality" type="range" min="35" max="100" value="86"><span class="filters-range-value" id="filtersQualityValue">86%</span></span>
+              <span class="filters-range"><input aria-label="FiltersQuality" class="filters-input" id="filtersQuality" type="range" min="35" max="100" value="86"><span class="filters-range-value" id="filtersQualityValue">86%</span></span>
             </label>
             <label class="filters-field">
               <span class="filters-label">JPG background</span>
-              <input class="filters-input" id="filtersBackground" type="color" value="#ffffff">
+              <input aria-label="FiltersBackground" class="filters-input" id="filtersBackground" type="color" value="#ffffff">
             </label>
           </div>
           <label class="filters-field">
             <span class="filters-label">Max width</span>
-            <input class="filters-input" id="filtersMaxWidth" type="number" min="1" max="12000" inputmode="numeric" placeholder="No limit">
+            <input aria-label="No limit" class="filters-input" id="filtersMaxWidth" type="number" min="1" max="12000" inputmode="numeric" placeholder="No limit">
           </label>
           <label class="filters-field">
             <span class="filters-label">Max height</span>
-            <input class="filters-input" id="filtersMaxHeight" type="number" min="1" max="12000" inputmode="numeric" placeholder="No limit">
+            <input aria-label="No limit" class="filters-input" id="filtersMaxHeight" type="number" min="1" max="12000" inputmode="numeric" placeholder="No limit">
           </label>
           <label class="filters-field">
             <span class="filters-label">File suffix</span>
-            <input class="filters-input" id="filtersSuffix" type="text" value="filtered" maxlength="42">
+            <input aria-label="FiltersSuffix" class="filters-input" id="filtersSuffix" type="text" value="filtered" maxlength="42">
           </label>
         </div>
         <div class="filters-actions">

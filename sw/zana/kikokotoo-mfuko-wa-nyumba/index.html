@@ -19,10 +19,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -168,10 +168,10 @@ label{display:block;font-size:.72rem;font-weight:700;color:var(--afro-dark);lett
 @media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.sidebar{order:-1}}
 @media(max-width:600px){.row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}.result-box.highlight{grid-column:auto}.cmp-table{font-size:.68rem}.tab-btn{padding:8px 10px;font-size:.7rem}.country-pills{gap:4px}.country-pill{padding:5px 10px;font-size:.66rem}}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-mfuko-wa-nyumba/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ng-nhf/" />
 <meta property="og:locale" content="sw_TZ">
@@ -218,7 +218,7 @@ label{display:block;font-size:.72rem;font-weight:700;color:var(--afro-dark);lett
 </div>
 <div id="programBanner"></div>
 <div id="dynamicInputs"></div>
-<button class="calc-btn" id="calcBtn" onclick="calculate()" disabled>Chagua nchi ili kuanza</button>
+<button type="button" class="calc-btn" id="calcBtn" onclick="calculate()" disabled>Chagua nchi ili kuanza</button>
 </div>
 </div>
 
@@ -243,10 +243,10 @@ label{display:block;font-size:.72rem;font-weight:700;color:var(--afro-dark);lett
 <div class="card" style="margin-top:18px">
 <div class="card-body" style="padding:0">
 <div class="tab-bar">
-<button class="tab-btn active" onclick="switchTab('afford')">Uwezo wa Kumudu</button>
-<button class="tab-btn" onclick="switchTab('compare')">Linganisha Nchi</button>
-<button class="tab-btn" onclick="switchTab('amort')">Marejesho</button>
-<button class="tab-btn" onclick="switchTab('charts')">Chati</button>
+<button type="button" class="tab-btn active" onclick="switchTab('afford')">Uwezo wa Kumudu</button>
+<button type="button" class="tab-btn" onclick="switchTab('compare')">Linganisha Nchi</button>
+<button type="button" class="tab-btn" onclick="switchTab('amort')">Marejesho</button>
+<button type="button" class="tab-btn" onclick="switchTab('charts')">Chati</button>
 </div>
 <div style="padding:22px">
 
@@ -254,10 +254,10 @@ label{display:block;font-size:.72rem;font-weight:700;color:var(--afro-dark);lett
 <div class="tab-content active" id="tab-afford">
 <h3 style="font-size:.88rem;font-weight:800;margin:0 0 14px">Je, ninaweza kumudu nyumba?</h3>
 <div class="row field">
-<div><label>Mapato ya kila mwezi</label><input type="number" class="f-input" id="affordIncome" value="500000" min="0"></div>
+<div><label>Mapato ya kila mwezi</label><input aria-label="AffordIncome" type="number" class="f-input" id="affordIncome" value="500000" min="0"></div>
 <div><label>Nchi</label><select class="f-select" id="affordCountry" onchange="calcAffordability()"></select></div>
 </div>
-<button class="calc-btn" onclick="calcAffordability()" style="margin-bottom:14px">Hakiki uwezo wa kumudu</button>
+<button type="button" class="calc-btn" onclick="calcAffordability()" style="margin-bottom:14px">Hakiki uwezo wa kumudu</button>
 <div id="affordResult" style="display:none">
 <div class="gauge-wrap"><svg class="gauge" viewBox="0 0 200 110">
 <path class="gauge-bg" d="M20 100 A80 80 0 0 1 180 100"/>
@@ -284,14 +284,14 @@ label{display:block;font-size:.72rem;font-weight:700;color:var(--afro-dark);lett
 <div class="tab-content" id="tab-amort">
 <h3 style="font-size:.88rem;font-weight:800;margin:0 0 14px">Ratiba ya Marejesho ya Mkopo</h3>
 <div class="row field">
-<div><label>Kiasi cha mkopo</label><input type="number" class="f-input" id="amortLoan" value="15000000" min="0"></div>
-<div><label>Kiwango cha riba (%)</label><input type="number" class="f-input" id="amortRate" value="6" min="0" max="50" step="0.1"></div>
+<div><label>Kiasi cha mkopo</label><input aria-label="AmortLoan" type="number" class="f-input" id="amortLoan" value="15000000" min="0"></div>
+<div><label>Kiwango cha riba (%)</label><input aria-label="AmortRate" type="number" class="f-input" id="amortRate" value="6" min="0" max="50" step="0.1"></div>
 </div>
 <div class="row field">
 <div><label>Muda (miaka)</label><select class="f-select" id="amortTenure"><option value="5">5</option><option value="10">10</option><option value="15" selected>15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option></select></div>
-<div><label>Sarafu</label><input type="text" class="f-input" id="amortCurrency" value="₦" readonly></div>
+<div><label>Sarafu</label><input aria-label="AmortCurrency" type="text" class="f-input" id="amortCurrency" value="₦" readonly></div>
 </div>
-<button class="calc-btn" onclick="calcAmortization()">Tengeneza ratiba</button>
+<button type="button" class="calc-btn" onclick="calcAmortization()">Tengeneza ratiba</button>
 <div id="amortResult" style="display:none;margin-top:14px">
 <div class="result-grid" id="amortSummary"></div>
 <div class="table-wrap" style="margin-top:14px;max-height:400px;overflow-y:auto">
@@ -318,8 +318,8 @@ label{display:block;font-size:.72rem;font-weight:700;color:var(--afro-dark);lett
 <div class="card-body">
 <div id="aiMessages" style="max-height:300px;overflow-y:auto;margin-bottom:12px"></div>
 <div style="display:flex;gap:8px">
-<input type="text" id="aiInput" class="f-input" placeholder="Uliza kuhusu mifuko ya nyumba..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
-<button class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Uliza</button>
+<input aria-label="Uliza kuhusu mifuko ya nyumba" type="text" id="aiInput" class="f-input" placeholder="Uliza kuhusu mifuko ya nyumba..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
+<button type="button" class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Uliza</button>
 </div>
 <div style="font-size:.7rem;color:#94a3b8;margin-top:6px">Inaendeshwa na AfroTools AI &bull; <span id="aiRemaining"></span></div>
 </div>
@@ -857,73 +857,73 @@ function buildInputs(code) {
   switch(code) {
     case 'NG':
       return '<div class="row field">' +
-        '<div><label>Mshahara wa msingi wa kila mwezi (' + sym + ')</label><input type="number" class="f-input" id="inBasic" value="350000" min="0" step="10000"></div>' +
-        '<div><label>Miaka ya mchango wa NHF</label><input type="number" class="f-input" id="inYears" value="5" min="0" max="35"></div>' +
+        '<div><label>Mshahara wa msingi wa kila mwezi (' + sym + ')</label><input aria-label="InBasic" type="number" class="f-input" id="inBasic" value="350000" min="0" step="10000"></div>' +
+        '<div><label>Miaka ya mchango wa NHF</label><input aria-label="InYears" type="number" class="f-input" id="inYears" value="5" min="0" max="35"></div>' +
         '</div>' +
         '<div class="row field">' +
-        '<div><label>Kiasi cha mkopo unachotaka (' + sym + ')</label><input type="number" class="f-input" id="inLoan" value="15000000" min="0" step="500000"></div>' +
+        '<div><label>Kiasi cha mkopo unachotaka (' + sym + ')</label><input aria-label="InLoan" type="number" class="f-input" id="inLoan" value="15000000" min="0" step="500000"></div>' +
         '<div><label>Muda wa mkopo (miaka)</label><select class="f-select" id="inTenure">' +
         '<option value="10">Miaka 10</option><option value="15" selected>Miaka 15</option><option value="20">Miaka 20</option><option value="25">Miaka 25</option><option value="30">Miaka 30</option></select></div>' +
         '</div>' +
-        '<div class="field"><label>Mshahara ghafi wa kila mwezi (' + sym + ')</label><input type="number" class="f-input" id="inGross" value="500000" min="0" step="10000"><div class="hint">Kwa tathmini ya uwezo wa kumudu (kiwango cha juu 33% ya mshahara ghafi kwa marejesho)</div></div>';
+        '<div class="field"><label>Mshahara ghafi wa kila mwezi (' + sym + ')</label><input aria-label="InGross" type="number" class="f-input" id="inGross" value="500000" min="0" step="10000"><div class="hint">Kwa tathmini ya uwezo wa kumudu (kiwango cha juu 33% ya mshahara ghafi kwa marejesho)</div></div>';
 
     case 'KE':
       return '<div class="row field">' +
-        '<div><label>Mshahara ghafi wa kila mwezi (KSh)</label><input type="number" class="f-input" id="inGross" value="150000" min="0" step="5000"></div>' +
-        '<div><label>Miezi ya ajira</label><input type="number" class="f-input" id="inMonths" value="12" min="1" max="600"></div>' +
+        '<div><label>Mshahara ghafi wa kila mwezi (KSh)</label><input aria-label="InGross" type="number" class="f-input" id="inGross" value="150000" min="0" step="5000"></div>' +
+        '<div><label>Miezi ya ajira</label><input aria-label="InMonths" type="number" class="f-input" id="inMonths" value="12" min="1" max="600"></div>' +
         '</div>';
 
     case 'ZA':
       return '<div class="row field">' +
-        '<div><label>Mapato ghafi ya kaya kwa mwezi (R)</label><input type="number" class="f-input" id="inIncome" value="12000" min="0" step="500"></div>' +
-        '<div><label>Bei ya nyumba (R)</label><input type="number" class="f-input" id="inPrice" value="500000" min="0" step="10000"></div>' +
+        '<div><label>Mapato ghafi ya kaya kwa mwezi (R)</label><input aria-label="InIncome" type="number" class="f-input" id="inIncome" value="12000" min="0" step="500"></div>' +
+        '<div><label>Bei ya nyumba (R)</label><input aria-label="InPrice" type="number" class="f-input" id="inPrice" value="500000" min="0" step="10000"></div>' +
         '</div>';
 
     case 'GH':
       return '<div class="row field">' +
-        '<div><label>Mshahara wa kila mwezi (GH\u20B5)</label><input type="number" class="f-input" id="inSalary" value="5000" min="0" step="100"></div>' +
+        '<div><label>Mshahara wa kila mwezi (GH\u20B5)</label><input aria-label="InSalary" type="number" class="f-input" id="inSalary" value="5000" min="0" step="100"></div>' +
         '<div><label>Sekta</label><select class="f-select" id="inSector"><option value="public">Sekta ya umma (11.9%)</option><option value="private">Sekta binafsi (~25%)</option></select></div>' +
         '</div>' +
         '<div class="row field">' +
-        '<div><label>Bei ya nyumba (GH\u20B5)</label><input type="number" class="f-input" id="inPrice" value="250000" min="0" step="5000"></div>' +
+        '<div><label>Bei ya nyumba (GH\u20B5)</label><input aria-label="InPrice" type="number" class="f-input" id="inPrice" value="250000" min="0" step="5000"></div>' +
         '<div><label>Muda wa mkopo (miaka)</label><select class="f-select" id="inTenure"><option value="5">5</option><option value="10">10</option><option value="15" selected>15</option><option value="20">20</option></select></div>' +
         '</div>';
 
     case 'ET':
       return '<div class="row field">' +
-        '<div><label>Mapato ya kila mwezi (Br)</label><input type="number" class="f-input" id="inIncome" value="15000" min="0" step="1000"></div>' +
+        '<div><label>Mapato ya kila mwezi (Br)</label><input aria-label="InIncome" type="number" class="f-input" id="inIncome" value="15000" min="0" step="1000"></div>' +
         '<div><label>Ngazi ya kondominiamu</label><select class="f-select" id="inTier"><option value="10/90">10/90 — Studio/1-bed (10% savings)</option><option value="20/80" selected>20/80 — 2-bed (20% savings)</option><option value="40/60">40/60 — 3-bed (40% savings)</option></select></div>' +
         '</div>' +
-        '<div class="field"><label>Estimated Unit Price (Br)</label><input type="number" class="f-input" id="inPrice" value="800000" min="0" step="50000"></div>';
+        '<div class="field"><label>Estimated Unit Price (Br)</label><input aria-label="InPrice" type="number" class="f-input" id="inPrice" value="800000" min="0" step="50000"></div>';
 
     case 'TZ':
       return '<div class="row field">' +
-        '<div><label>Mapato ya kila mwezi (TSh)</label><input type="number" class="f-input" id="inIncome" value="1500000" min="0" step="100000"></div>' +
-        '<div><label>Bei ya nyumba (TSh)</label><input type="number" class="f-input" id="inPrice" value="80000000" min="0" step="5000000"></div>' +
+        '<div><label>Mapato ya kila mwezi (TSh)</label><input aria-label="InIncome" type="number" class="f-input" id="inIncome" value="1500000" min="0" step="100000"></div>' +
+        '<div><label>Bei ya nyumba (TSh)</label><input aria-label="InPrice" type="number" class="f-input" id="inPrice" value="80000000" min="0" step="5000000"></div>' +
         '</div>' +
         '<div class="field"><label>Muda wa mkopo (miaka)</label><select class="f-select" id="inTenure"><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25" selected>25</option></select></div>';
 
     case 'RW':
       return '<div class="row field">' +
-        '<div><label>Mapato ya kila mwezi (FRw)</label><input type="number" class="f-input" id="inIncome" value="500000" min="0" step="50000"></div>' +
-        '<div><label>Bei ya nyumba (FRw)</label><input type="number" class="f-input" id="inPrice" value="30000000" min="0" step="1000000"></div>' +
+        '<div><label>Mapato ya kila mwezi (FRw)</label><input aria-label="InIncome" type="number" class="f-input" id="inIncome" value="500000" min="0" step="50000"></div>' +
+        '<div><label>Bei ya nyumba (FRw)</label><input aria-label="InPrice" type="number" class="f-input" id="inPrice" value="30000000" min="0" step="1000000"></div>' +
         '</div>' +
         '<div class="field"><label>Muda wa mkopo (miaka)</label><select class="f-select" id="inTenure"><option value="10">10</option><option value="15">15</option><option value="20" selected>20</option></select></div>';
 
     case 'EG':
       return '<div class="row field">' +
-        '<div><label>Mapato ya kila mwezi (E\u00A3)</label><input type="number" class="f-input" id="inIncome" value="8000" min="0" step="500"></div>' +
+        '<div><label>Mapato ya kila mwezi (E\u00A3)</label><input aria-label="InIncome" type="number" class="f-input" id="inIncome" value="8000" min="0" step="500"></div>' +
         '<div><label>Kundi la Mapato</label><select class="f-select" id="inCategory"><option value="low">Mapato ya chini (3%)</option><option value="middle">Mapato ya kati (8%)</option></select></div>' +
         '</div>' +
         '<div class="row field">' +
-        '<div><label>Bei ya nyumba (E\u00A3)</label><input type="number" class="f-input" id="inPrice" value="500000" min="0" step="50000"></div>' +
+        '<div><label>Bei ya nyumba (E\u00A3)</label><input aria-label="InPrice" type="number" class="f-input" id="inPrice" value="500000" min="0" step="50000"></div>' +
         '<div><label>Muda wa mkopo (miaka)</label><select class="f-select" id="inTenure"><option value="10">10</option><option value="15">15</option><option value="20" selected>20</option><option value="25">25</option><option value="30">30</option></select></div>' +
         '</div>';
 
     case 'MA':
       return '<div class="row field">' +
-        '<div><label>Mapato ya kila mwezi (MAD)</label><input type="number" class="f-input" id="inIncome" value="6000" min="0" step="500"></div>' +
-        '<div><label>Bei ya nyumba (MAD)</label><input type="number" class="f-input" id="inPrice" value="400000" min="0" step="10000"></div>' +
+        '<div><label>Mapato ya kila mwezi (MAD)</label><input aria-label="InIncome" type="number" class="f-input" id="inIncome" value="6000" min="0" step="500"></div>' +
+        '<div><label>Bei ya nyumba (MAD)</label><input aria-label="InPrice" type="number" class="f-input" id="inPrice" value="400000" min="0" step="10000"></div>' +
         '</div>' +
         '<div class="field"><label>Muda wa mkopo (miaka)</label><select class="f-select" id="inTenure"><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25" selected>25</option></select></div>';
 

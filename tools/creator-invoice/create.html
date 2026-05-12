@@ -12,10 +12,13 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="style.css?v=a40ada5e">
 <link rel="canonical" href="https://afrotools.com/tools/creator-invoice/create">
 <meta property="og:url" content="https://afrotools.com/tools/creator-invoice/create">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <div class="ci-app">
@@ -52,12 +55,12 @@
           <div class="ci-selected-client-name" id="sel-client-name"></div>
           <div class="ci-selected-client-detail" id="sel-client-detail"></div>
         </div>
-        <button class="ci-selected-client-change" onclick="changeClient()">Change</button>
+        <button type="button" class="ci-selected-client-change" onclick="changeClient()">Change</button>
       </div>
 
       <div id="client-selector">
         <div class="ci-client-search">
-          <input type="text" class="ci-input" id="client-search" placeholder="Search clients or type a new name..." autocomplete="off">
+          <input aria-label="Search clients or type a new name" type="text" class="ci-input" id="client-search" placeholder="Search clients or type a new name..." autocomplete="off">
           <div class="ci-client-results" id="client-results"></div>
         </div>
 
@@ -65,22 +68,22 @@
           <div class="ci-step-label" style="margin-bottom:16px">NEW CLIENT</div>
           <div class="ci-field">
             <label class="ci-label">Name *</label>
-            <input type="text" class="ci-input" id="client-name" placeholder="Client full name">
+            <input aria-label="Client full name" type="text" class="ci-input" id="client-name" placeholder="Client full name">
           </div>
           <div class="ci-field-row">
             <div class="ci-field">
               <label class="ci-label">Company</label>
-              <input type="text" class="ci-input" id="client-company" placeholder="Optional">
+              <input aria-label="Optional" type="text" class="ci-input" id="client-company" placeholder="Optional">
             </div>
             <div class="ci-field">
               <label class="ci-label">Email</label>
-              <input type="email" class="ci-input" id="client-email" placeholder="client@email.com">
+              <input aria-label="Client@email.com" type="email" class="ci-input" id="client-email" placeholder="client@email.com">
             </div>
           </div>
           <div class="ci-field-row">
             <div class="ci-field">
               <label class="ci-label">Phone / WhatsApp</label>
-              <input type="tel" class="ci-input" id="client-phone" placeholder="+234 801 234 5678">
+              <input aria-label="Client phone" type="tel" class="ci-input" id="client-phone" placeholder="+234 801 234 5678">
             </div>
             <div class="ci-field">
               <label class="ci-label">Country</label>
@@ -105,7 +108,7 @@
           </div>
           <div class="ci-field">
             <label class="ci-label">Billing Address</label>
-            <input type="text" class="ci-input" id="client-address" placeholder="Optional">
+            <input aria-label="Optional" type="text" class="ci-input" id="client-address" placeholder="Optional">
           </div>
           <div class="ci-toggle-row">
             <div class="ci-toggle-label">Save client for future invoices</div>
@@ -125,8 +128,8 @@
       <div class="ci-ai-assist">
         <div class="ci-ai-assist-title">🤖 AI Line Item Generator</div>
         <div class="ci-ai-input-row">
-          <input type="text" class="ci-ai-input" id="ai-describe" placeholder="e.g. Shot a 2-day wedding, delivered 300 edited photos, 1 highlight reel">
-          <button class="ci-ai-send" id="ai-generate" onclick="generateLineItems()">Generate</button>
+          <input aria-label="E.g. Shot a 2 day wedding, delivered 300 edited photos, 1 highlight reel" type="text" class="ci-ai-input" id="ai-describe" placeholder="e.g. Shot a 2-day wedding, delivered 300 edited photos, 1 highlight reel">
+          <button type="button" class="ci-ai-send" id="ai-generate" onclick="generateLineItems()">Generate</button>
         </div>
       </div>
 
@@ -141,7 +144,7 @@
       <div class="ci-line-items" id="line-items">
         <!-- Items added dynamically -->
       </div>
-      <button class="ci-add-line" onclick="addLineItem()">+ Add Line Item</button>
+      <button type="button" class="ci-add-line" onclick="addLineItem()">+ Add Line Item</button>
 
       <div class="ci-subtotal-row">
         <span class="ci-subtotal-label">Subtotal</span>
@@ -158,7 +161,7 @@
       <div class="ci-field-row">
         <div class="ci-field">
           <label class="ci-label">Invoice Number</label>
-          <input type="text" class="ci-input" id="invoice-number" placeholder="INV-001">
+          <input aria-label="INV 001" type="text" class="ci-input" id="invoice-number" placeholder="INV-001">
         </div>
         <div class="ci-field">
           <label class="ci-label">Currency</label>
@@ -185,7 +188,7 @@
       <div class="ci-field-row">
         <div class="ci-field">
           <label class="ci-label">Invoice Date</label>
-          <input type="date" class="ci-input" id="invoice-date">
+          <input aria-label="Invoice date" type="date" class="ci-input" id="invoice-date">
         </div>
         <div class="ci-field">
           <label class="ci-label">Due Date</label>
@@ -200,7 +203,7 @@
       </div>
       <div class="ci-field" id="custom-due-wrap" style="display:none">
         <label class="ci-label">Custom Due Date</label>
-        <input type="date" class="ci-input" id="custom-due-date">
+        <input aria-label="Custom due date" type="date" class="ci-input" id="custom-due-date">
       </div>
 
       <!-- VAT -->
@@ -212,11 +215,11 @@
         <div class="ci-field-row">
           <div class="ci-field">
             <label class="ci-label">Tax Rate (%)</label>
-            <input type="number" class="ci-input" id="tax-rate" placeholder="7.5" step="0.1">
+            <input aria-label="Tax rate" type="number" class="ci-input" id="tax-rate" placeholder="7.5" step="0.1">
           </div>
           <div class="ci-field">
             <label class="ci-label">VAT Registration #</label>
-            <input type="text" class="ci-input" id="tax-number" placeholder="Optional">
+            <input aria-label="Optional" type="text" class="ci-input" id="tax-number" placeholder="Optional">
           </div>
         </div>
       </div>
@@ -237,7 +240,7 @@
           </div>
           <div class="ci-field">
             <label class="ci-label">Discount Value</label>
-            <input type="number" class="ci-input" id="discount-value" placeholder="0" step="0.01">
+            <input aria-label="Discount value" type="number" class="ci-input" id="discount-value" placeholder="0" step="0.01">
           </div>
         </div>
       </div>
@@ -264,8 +267,8 @@
 
   <!-- BOTTOM BAR -->
   <div class="ci-bottom-bar" id="bottom-bar">
-    <button class="ci-btn ci-btn-secondary" id="btn-back" onclick="prevStep()" style="display:none">Back</button>
-    <button class="ci-btn ci-btn-primary" id="btn-next" onclick="nextStep()">Next →</button>
+    <button type="button" class="ci-btn ci-btn-secondary" id="btn-back" onclick="prevStep()" style="display:none">Back</button>
+    <button type="button" class="ci-btn ci-btn-primary" id="btn-next" onclick="nextStep()">Next →</button>
   </div>
 </div>
 
@@ -513,11 +516,11 @@
     div.className = 'ci-line-item';
     div.dataset.idx = idx;
     div.innerHTML =
-      '<input type="text" class="ci-input" placeholder="Description" value="' + escAttr(desc || '') + '" oninput="updateLineItem(' + idx + ',\'description\',this.value)">' +
-      '<input type="number" class="ci-input" placeholder="1" value="' + (qty || 1) + '" min="0" step="0.5" oninput="updateLineItem(' + idx + ',\'quantity\',this.value)">' +
-      '<input type="number" class="ci-input" placeholder="0" value="' + (price || '') + '" min="0" step="100" oninput="updateLineItem(' + idx + ',\'unitPrice\',this.value)">' +
+      '<input aria-label="Description" type="text" class="ci-input" placeholder="Description" value="' + escAttr(desc || '') + '" oninput="updateLineItem(' + idx + ',\'description\',this.value)">' +
+      '<input aria-label="Ci input" type="number" class="ci-input" placeholder="1" value="' + (qty || 1) + '" min="0" step="0.5" oninput="updateLineItem(' + idx + ',\'quantity\',this.value)">' +
+      '<input aria-label="Ci input" type="number" class="ci-input" placeholder="0" value="' + (price || '') + '" min="0" step="100" oninput="updateLineItem(' + idx + ',\'unitPrice\',this.value)">' +
       '<div class="ci-line-total-cell" id="line-total-' + idx + '">0</div>' +
-      '<button class="ci-line-delete" onclick="removeLineItem(' + idx + ')">×</button>';
+      '<button type="button" class="ci-line-delete" onclick="removeLineItem(' + idx + ')">×</button>';
     container.appendChild(div);
     updateSubtotal();
   };
@@ -643,11 +646,11 @@
       nextBtn.innerHTML = '💾 Save Invoice';
       // Replace with action buttons
       document.getElementById('bottom-bar').innerHTML =
-        '<button class="ci-btn ci-btn-secondary" onclick="prevStep()">Back</button>' +
-        '<button class="ci-btn ci-btn-secondary" onclick="saveDraft()">Save Draft</button>' +
-        '<button class="ci-btn ci-btn-outline" onclick="downloadPDF()">📄 PDF</button>' +
-        '<button class="ci-btn ci-btn-whatsapp" onclick="shareWhatsApp()">📱 WhatsApp</button>' +
-        '<button class="ci-btn ci-btn-primary" onclick="saveInvoice(\'sent\')">Send →</button>';
+        '<button type="button" class="ci-btn ci-btn-secondary" onclick="prevStep()">Back</button>' +
+        '<button type="button" class="ci-btn ci-btn-secondary" onclick="saveDraft()">Save Draft</button>' +
+        '<button type="button" class="ci-btn ci-btn-outline" onclick="downloadPDF()">📄 PDF</button>' +
+        '<button type="button" class="ci-btn ci-btn-whatsapp" onclick="shareWhatsApp()">📱 WhatsApp</button>' +
+        '<button type="button" class="ci-btn ci-btn-primary" onclick="saveInvoice(\'sent\')">Send →</button>';
     }
   }
 

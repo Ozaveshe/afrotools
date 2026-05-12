@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=3f07db22">
   <style>
     .csc-loading-status{text-align:center;padding:18px 0 0;min-height:32px;font-size:1.05rem;color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;letter-spacing:.01em;opacity:0;transition:opacity .3s}
@@ -21,6 +21,9 @@
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-scripts/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-scripts/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="csc-app">
 
@@ -30,8 +33,8 @@
     <a href="index.html" class="csc-topbar-brand">&#128396; ScriptPad</a>
     <span class="csc-topbar-title" id="scriptTitle"></span>
     <div class="csc-topbar-actions">
-      <button class="csc-topbar-btn" id="btnTeleprompter" style="display:none" onclick="window._cscTeleprompter()">&#128250; Teleprompter</button>
-      <button class="csc-topbar-btn" id="btnExport" style="display:none" onclick="window._cscExport()">&#8595; Export</button>
+      <button type="button" class="csc-topbar-btn" id="btnTeleprompter" style="display:none" onclick="window._cscTeleprompter()">&#128250; Teleprompter</button>
+      <button type="button" class="csc-topbar-btn" id="btnExport" style="display:none" onclick="window._cscExport()">&#8595; Export</button>
     </div>
   </div>
 
@@ -66,7 +69,7 @@
         <textarea class="csc-form-textarea" id="keyPointsInput" placeholder="e.g. Price comparison, local alternatives, ingredient quality..." rows="2"></textarea>
       </div>
 
-      <button class="csc-generate-btn" id="generateBtn" onclick="window._cscGenerate()">
+      <button type="button" class="csc-generate-btn" id="generateBtn" onclick="window._cscGenerate()">
         <span class="csc-spinner"></span>Write My Script &#9998;
       </button>
       <div class="csc-loading-status" id="loadingStatus"><span id="loadingVerb"></span><span class="csc-loading-dots"></span></div>
@@ -86,12 +89,12 @@
   <!-- TELEPROMPTER (hidden) -->
   <div class="csc-teleprompter" id="teleprompter" style="display:none">
     <div class="csc-tp-toolbar">
-      <button onclick="window._cscCloseTeleprompter()">&#10005; Close</button>
-      <button id="tpPlayBtn" onclick="window._cscToggleTeleprompter()">&#9654; Start</button>
-      <button onclick="window._cscMirror()">&#8596; Mirror</button>
+      <button type="button" onclick="window._cscCloseTeleprompter()">&#10005; Close</button>
+      <button type="button" id="tpPlayBtn" onclick="window._cscToggleTeleprompter()">&#9654; Start</button>
+      <button type="button" onclick="window._cscMirror()">&#8596; Mirror</button>
       <div class="csc-tp-speed">
         <span>Speed</span>
-        <input type="range" id="tpSpeed" min="80" max="200" value="130" oninput="window._cscUpdateSpeed(this.value)">
+        <input aria-label="TpSpeed" type="range" id="tpSpeed" min="80" max="200" value="130" oninput="window._cscUpdateSpeed(this.value)">
         <span id="tpSpeedLabel">130 WPM</span>
       </div>
     </div>
@@ -301,8 +304,8 @@
     html += '<div class="csc-script-meta-item"><strong>' + script.sections.length + '</strong> sections</div>';
     html += '</div>';
     html += '<div class="csc-script-actions">';
-    html += '<button class="csc-section-btn" onclick="window._cscCopyAll()">&#128203; Copy All</button>';
-    html += '<button class="csc-section-btn" onclick="window._cscTeleprompter()">&#128250; Teleprompter</button>';
+    html += '<button type="button" class="csc-section-btn" onclick="window._cscCopyAll()">&#128203; Copy All</button>';
+    html += '<button type="button" class="csc-section-btn" onclick="window._cscTeleprompter()">&#128250; Teleprompter</button>';
     html += '</div>';
     html += '</div>';
 
@@ -338,9 +341,9 @@
 
       // Section actions
       html += '<div class="csc-section-actions">';
-      html += '<button class="csc-section-btn" onclick="window._cscCopySection(' + i + ')">&#128203; Copy</button>';
-      html += '<button class="csc-section-btn" onclick="window._cscRegenSection(' + i + ')">&#128260; Regenerate</button>';
-      html += '<button class="csc-section-btn" onclick="window._cscDeleteSection(' + i + ')">&#128465; Delete</button>';
+      html += '<button type="button" class="csc-section-btn" onclick="window._cscCopySection(' + i + ')">&#128203; Copy</button>';
+      html += '<button type="button" class="csc-section-btn" onclick="window._cscRegenSection(' + i + ')">&#128260; Regenerate</button>';
+      html += '<button type="button" class="csc-section-btn" onclick="window._cscDeleteSection(' + i + ')">&#128465; Delete</button>';
       html += '</div>';
 
       html += '</div>'; // end body

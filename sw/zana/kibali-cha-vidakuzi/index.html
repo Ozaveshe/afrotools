@@ -29,11 +29,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/legal.css?v=af6e9e60">
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/data/legal/country-legal-index.js?v=02e28276" defer></script>
 <script src="/engines/legal-engine.js?v=cade292f" defer></script>
 <style>
@@ -89,12 +89,12 @@ function copyFrom(id,btn){var el=q(id);var txt=el ? (el.value || el.textContent 
 
 function updateCookiePreview(){
  var site=value('ckSite','Tovuti yako');var law=value('ckLaw','GDPR');var color=value('ckColor','#1d4ed8');var privacy=value('ckPrivacy','/privacy/');
- q('cookiePreview').innerHTML='<div class="cookie-banner"><p><strong>'+site+'</strong> hutumia cookies za lazima na, kwa ridhaa yako, cookies za analytics au marketing. Unaweza kukubali au kubadilisha chaguo zako chini ya '+law+'. <a style="color:#bfdbfe;font-weight:900" href="'+privacy+'">Soma sera ya faragha</a>.</p><div class="cookie-actions"><button class="btn secondary" style="margin:0">Kataa zisizo lazima</button><button class="btn" style="margin:0;background:'+color+'">Kubali</button></div></div>';
+ q('cookiePreview').innerHTML='<div class="cookie-banner"><p><strong>'+site+'</strong> hutumia cookies za lazima na, kwa ridhaa yako, cookies za analytics au marketing. Unaweza kukubali au kubadilisha chaguo zako chini ya '+law+'. <a style="color:#bfdbfe;font-weight:900" href="'+privacy+'">Soma sera ya faragha</a>.</p><div class="cookie-actions"><button type="button" class="btn secondary" style="margin:0">Kataa zisizo lazima</button><button type="button" class="btn" style="margin:0;background:'+color+'">Kubali</button></div></div>';
 }
 function generateCookieCode(){
  updateCookiePreview();
  var site=value('ckSite','Tovuti yako');var law=value('ckLaw','GDPR');var color=value('ckColor','#1d4ed8');var privacy=value('ckPrivacy','/privacy/');var pos=value('ckPos','bottom');
- var code='<!-- Cookie consent banner - rasimu ya AfroTools -->\\n<div id="cookie-consent" data-position="'+pos+'">\\n  <p><strong>'+site+'</strong> hutumia cookies. Chagua ridhaa yako chini ya '+law+'. <a href="'+privacy+'">Sera ya faragha</a></p>\\n  <button data-cookie-decline>Kataa zisizo lazima</button>\\n  <button data-cookie-accept>Kubali</button>\\n</div>\\n<style>#cookie-consent{position:fixed;left:16px;right:16px;bottom:16px;background:#0f172a;color:#fff;padding:16px;border-radius:12px;z-index:9999}#cookie-consent button{margin:4px;padding:9px 12px;border:0;border-radius:8px}#cookie-consent [data-cookie-accept]{background:'+color+';color:#fff}</style>\\n'+'<scr'+'ipt>document.querySelector("[data-cookie-accept]").onclick=function(){localStorage.setItem("cookieConsent","accepted");document.getElementById("cookie-consent").remove();};document.querySelector("[data-cookie-decline]").onclick=function(){localStorage.setItem("cookieConsent","declined");document.getElementById("cookie-consent").remove();};</scr'+'ipt>';
+ var code='<!-- Cookie consent banner - rasimu ya AfroTools -->\\n<div id="cookie-consent" data-position="'+pos+'">\\n  <p><strong>'+site+'</strong> hutumia cookies. Chagua ridhaa yako chini ya '+law+'. <a href="'+privacy+'">Sera ya faragha</a></p>\\n  <button type="button" data-cookie-decline>Kataa zisizo lazima</button>\\n  <button type="button" data-cookie-accept>Kubali</button>\\n</div>\\n<style>#cookie-consent{position:fixed;left:16px;right:16px;bottom:16px;background:#0f172a;color:#fff;padding:16px;border-radius:12px;z-index:9999}#cookie-consent button{margin:4px;padding:9px 12px;border:0;border-radius:8px}#cookie-consent [data-cookie-accept]{background:'+color+';color:#fff}</style>\\n'+'<scr'+'ipt>document.querySelector("[data-cookie-accept]").onclick=function(){localStorage.setItem("cookieConsent","accepted");document.getElementById("cookie-consent").remove();};document.querySelector("[data-cookie-decline]").onclick=function(){localStorage.setItem("cookieConsent","declined");document.getElementById("cookie-consent").remove();};</scr'+'ipt>';
  q('cookieCode').textContent=code;show('cookieCodeBox');
 }
 updateCookiePreview();

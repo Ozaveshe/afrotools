@@ -7,7 +7,7 @@
 <meta name="description" content="Internal AfroPoints review queue for submissions, payout approvals, and buyer leads.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/market-data.css?v=82be8cb4">
 <style>
 body{background:#f6f8fb}
@@ -80,8 +80,8 @@ body{background:#f6f8fb}
 </div>
 <div class="mr-toast" id="reviewToast"></div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=3978e101"></script>
 <script>
@@ -149,9 +149,9 @@ body{background:#f6f8fb}
         '<div class="mr-meta">' + toPills([item.country_code || 'XX', item.source_type || 'source', item.review_reason || 'review']) + '</div>' +
         '<p><strong>User:</strong> ' + (item.user_id || 'unknown') + '<br><strong>Payload:</strong> ' + JSON.stringify(item.payload || {}) + '</p>' +
         '<div class="mr-actions">' +
-        '<button class="mr-btn primary" data-review="approve" data-id="' + item.id + '">Approve</button>' +
-        '<button class="mr-btn danger" data-review="reject" data-id="' + item.id + '">Reject</button>' +
-        '<button class="mr-btn warn" data-review="hold" data-id="' + item.id + '">Hold</button>' +
+        '<button type="button" class="mr-btn primary" data-review="approve" data-id="' + item.id + '">Approve</button>' +
+        '<button type="button" class="mr-btn danger" data-review="reject" data-id="' + item.id + '">Reject</button>' +
+        '<button type="button" class="mr-btn warn" data-review="hold" data-id="' + item.id + '">Hold</button>' +
         '</div></article>';
     }).join('');
   }
@@ -180,9 +180,9 @@ body{background:#f6f8fb}
         '<div class="mr-meta">' + toPills([item.status || 'pending', item.user_id || 'unknown']) + '</div>' +
         '<p><strong>Destination:</strong> ' + JSON.stringify(item.payout_details || {}) + '</p>' +
         '<div class="mr-actions">' +
-        '<button class="mr-btn primary" data-payout="approved" data-id="' + item.id + '">Approve</button>' +
-        '<button class="mr-btn warn" data-payout="hold" data-id="' + item.id + '">Hold</button>' +
-        '<button class="mr-btn danger" data-payout="rejected" data-id="' + item.id + '">Reject</button>' +
+        '<button type="button" class="mr-btn primary" data-payout="approved" data-id="' + item.id + '">Approve</button>' +
+        '<button type="button" class="mr-btn warn" data-payout="hold" data-id="' + item.id + '">Hold</button>' +
+        '<button type="button" class="mr-btn danger" data-payout="rejected" data-id="' + item.id + '">Reject</button>' +
         '</div></article>';
     }).join('');
   }
@@ -198,9 +198,9 @@ body{background:#f6f8fb}
         '<div class="mr-meta">' + toPills([item.review_status || 'new'].concat(item.verticals || [])) + '</div>' +
         '<p><strong>Use case:</strong> ' + (item.use_case || 'n/a') + '<br><strong>Contact:</strong> ' + (item.contact_email || 'n/a') + '</p>' +
         '<div class="mr-actions">' +
-        '<button class="mr-btn primary" data-lead="qualified" data-id="' + item.id + '">Qualify</button>' +
-        '<button class="mr-btn warn" data-lead="needs_context" data-id="' + item.id + '">Needs context</button>' +
-        '<button class="mr-btn danger" data-lead="rejected" data-id="' + item.id + '">Reject</button>' +
+        '<button type="button" class="mr-btn primary" data-lead="qualified" data-id="' + item.id + '">Qualify</button>' +
+        '<button type="button" class="mr-btn warn" data-lead="needs_context" data-id="' + item.id + '">Needs context</button>' +
+        '<button type="button" class="mr-btn danger" data-lead="rejected" data-id="' + item.id + '">Reject</button>' +
         '</div></article>';
     }).join('');
   }

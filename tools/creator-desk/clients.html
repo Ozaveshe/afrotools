@@ -13,6 +13,9 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-desk/clients">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-desk/clients">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
@@ -20,15 +23,15 @@
   <div class="cd-topbar">
     <a href="index.html" class="cd-topbar-back">&larr; Back</a>
     <a href="index.html" class="cd-topbar-brand"><span>👥</span> Clients</a>
-    <input type="text" class="cd-topbar-search" placeholder="Search clients..." oninput="filterClients(this.value)">
-    <button class="cd-btn cd-btn-primary" onclick="openNewClient()">+ Add Client</button>
+    <input aria-label="Search clients" type="text" class="cd-topbar-search" placeholder="Search clients..." oninput="filterClients(this.value)">
+    <button type="button" class="cd-btn cd-btn-primary" onclick="openNewClient()">+ Add Client</button>
   </div>
 
   <div id="clientsArea" style="padding:20px">
     <div class="cd-clients-grid" id="clientsGrid"></div>
   </div>
 
-  <button class="cd-fab" onclick="openNewClient()">+</button>
+  <button type="button" class="cd-fab" onclick="openNewClient()">+</button>
 
   <div class="cd-bottom-nav">
     <div class="cd-bottom-nav-inner">
@@ -43,16 +46,16 @@
 <div class="cd-modal-overlay" id="clientModal" onclick="if(event.target===this)closeClientModal()">
   <div class="cd-modal">
     <h3>Add Client</h3>
-    <div class="cd-field"><label>Name *</label><input type="text" id="ncName" placeholder="e.g. Tola Bakare"></div>
-    <div class="cd-field"><label>Company</label><input type="text" id="ncCompany" placeholder="e.g. Bakare Studios"></div>
-    <div class="cd-field"><label>Email</label><input type="email" id="ncEmail" placeholder="tola@example.com"></div>
-    <div class="cd-field"><label>Phone</label><input type="tel" id="ncPhone" placeholder="+234 812 345 6789"></div>
-    <div class="cd-field"><label>WhatsApp</label><input type="tel" id="ncWhatsapp" placeholder="+234 812 345 6789"></div>
-    <div class="cd-field"><label>Country</label><input type="text" id="ncCountry" placeholder="e.g. Nigeria"></div>
+    <div class="cd-field"><label>Name *</label><input aria-label="E.g. Tola Bakare" type="text" id="ncName" placeholder="e.g. Tola Bakare"></div>
+    <div class="cd-field"><label>Company</label><input aria-label="E.g. Bakare Studios" type="text" id="ncCompany" placeholder="e.g. Bakare Studios"></div>
+    <div class="cd-field"><label>Email</label><input aria-label="Tola@example.com" type="email" id="ncEmail" placeholder="tola@example.com"></div>
+    <div class="cd-field"><label>Phone</label><input aria-label="NcPhone" type="tel" id="ncPhone" placeholder="+234 812 345 6789"></div>
+    <div class="cd-field"><label>WhatsApp</label><input aria-label="NcWhatsapp" type="tel" id="ncWhatsapp" placeholder="+234 812 345 6789"></div>
+    <div class="cd-field"><label>Country</label><input aria-label="E.g. Nigeria" type="text" id="ncCountry" placeholder="e.g. Nigeria"></div>
     <div class="cd-field"><label>Notes</label><textarea id="ncNotes" rows="3" placeholder="How did you meet? What are they interested in?"></textarea></div>
     <div style="display:flex;gap:10px;margin-top:16px">
-      <button class="cd-btn cd-btn-primary" onclick="createClient()" style="flex:1">Add Client</button>
-      <button class="cd-btn cd-btn-ghost" onclick="closeClientModal()">Cancel</button>
+      <button type="button" class="cd-btn cd-btn-primary" onclick="createClient()" style="flex:1">Add Client</button>
+      <button type="button" class="cd-btn cd-btn-ghost" onclick="closeClientModal()">Cancel</button>
     </div>
   </div>
 </div>
@@ -89,7 +92,7 @@ function renderClients() {
     grid.innerHTML = '<div class="cd-empty" style="grid-column:1/-1"><div class="cd-empty-icon">👥</div>' +
       '<div class="cd-empty-title">Your first client is waiting</div>' +
       '<div class="cd-empty-desc">Add a client to start tracking your projects and relationships.</div>' +
-      '<button class="cd-btn cd-btn-primary" onclick="openNewClient()">+ Add First Client</button></div>';
+      '<button type="button" class="cd-btn cd-btn-primary" onclick="openNewClient()">+ Add First Client</button></div>';
     return;
   }
 
@@ -169,8 +172,8 @@ function openClientDetail(id) {
   if (c.country) html += '<div style="font-size:.85rem;margin-bottom:6px">📍 ' + escHtml(c.country) + '</div>';
   if (c.notes) html += '<div style="font-size:.85rem;margin-top:12px;padding:12px;background:#f8fafc;border-radius:8px;color:#374151">' + escHtml(c.notes) + '</div>';
 
-  html += '<div style="margin-top:16px"><button class="cd-ai-btn" onclick="aiCheckin(\'' + id + '\')">✨ Draft a check-in message</button></div>';
-  html += '<button class="cd-btn cd-btn-ghost" onclick="closeDetailModal()" style="margin-top:12px;width:100%">Close</button>';
+  html += '<div style="margin-top:16px"><button type="button" class="cd-ai-btn" onclick="aiCheckin(\'' + id + '\')">✨ Draft a check-in message</button></div>';
+  html += '<button type="button" class="cd-btn cd-btn-ghost" onclick="closeDetailModal()" style="margin-top:12px;width:100%">Close</button>';
 
   content.innerHTML = html;
   document.getElementById('detailModal').classList.add('open');

@@ -23,10 +23,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
 .en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
@@ -103,15 +103,15 @@
       <div class="en-form-grid en-form-grid-2">
         <div class="en-field">
           <label class="en-label">Scope <span class="en-label-hint">(optional)</span></label>
-          <input class="en-input" id="scope" placeholder="e.g. auth, api, ui, navbar…" oninput="generate()">
+          <input aria-label="E.g. auth, api, ui, navbar" class="en-input" id="scope" placeholder="e.g. auth, api, ui, navbar…" oninput="generate()">
         </div>
         <div class="en-field">
           <label class="en-label">Issue / Ticket Reference <span class="en-label-hint">(optional)</span></label>
-          <input class="en-input" id="issue-ref" placeholder="e.g. #42, JIRA-123…" oninput="generate()">
+          <input aria-label="E.g. #42, JIRA 123" class="en-input" id="issue-ref" placeholder="e.g. #42, JIRA-123…" oninput="generate()">
         </div>
         <div class="en-field en-field-full">
           <label class="en-label">Short Description <span class="en-label-hint">(imperative, present tense)</span></label>
-          <input class="en-input" id="description" placeholder="e.g. add user authentication endpoint" oninput="generate()" style="font-size:1rem">
+          <input aria-label="E.g. add user authentication endpoint" class="en-input" id="description" placeholder="e.g. add user authentication endpoint" oninput="generate()" style="font-size:1rem">
         </div>
         <div class="en-field en-field-full">
           <label class="en-label">Body <span class="en-label-hint">(optional — what and why)</span></label>
@@ -128,11 +128,11 @@
         </div>
         <div class="en-field en-field-full" id="breaking-desc-field" style="display:none">
           <label class="en-label">Breaking Change Description</label>
-          <input class="en-input" id="breaking-desc" placeholder="Describe what breaks and migration steps" oninput="generate()">
+          <input aria-label="Describe what breaks and migration steps" class="en-input" id="breaking-desc" placeholder="Describe what breaks and migration steps" oninput="generate()">
         </div>
         <div class="en-field en-field-full">
           <label class="en-label" style="display:flex;align-items:center;gap:8px">
-            <input type="checkbox" id="gitmoji-toggle" onchange="generate()" style="width:16px;height:16px;accent-color:var(--en-accent)">
+            <input aria-label="Gitmoji toggle" type="checkbox" id="gitmoji-toggle" onchange="generate()" style="width:16px;height:16px;accent-color:var(--en-accent)">
             Include Gitmoji emoji
           </label>
         </div>
@@ -149,8 +149,8 @@
       </div>
       <div class="char-count" id="char-count"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="copy-btn" onclick="copyMsg('oneline')">📋 Nakili (one line)</button>
-        <button class="copy-btn copy-btn-sec" onclick="copyMsg('full')">📄 Nakili (full)</button>
+        <button type="button" class="copy-btn" onclick="copyMsg('oneline')">📋 Nakili (one line)</button>
+        <button type="button" class="copy-btn copy-btn-sec" onclick="copyMsg('full')">📄 Nakili (full)</button>
       </div>
     </div>
 

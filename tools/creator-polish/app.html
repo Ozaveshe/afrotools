@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=ac5d210e">
   <style>
     .cpl-loading-status{display:none;align-items:center;gap:8px;padding:10px 16px;margin:0 0 4px;font-size:14px;font-weight:600;color:var(--brand,#007AFF);}
@@ -24,6 +24,9 @@
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-polish/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-polish/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cpl-app">
 
@@ -33,22 +36,22 @@
       <span>&#9998;</span> CreatorPolish
     </a>
     <div class="cpl-header-actions">
-      <button class="cpl-btn-icon" id="historyBtn" title="History">&#128338;</button>
-      <button class="cpl-btn-icon" id="exportBtn" title="Export">&#128229;</button>
+      <button type="button" class="cpl-btn-icon" id="historyBtn" title="History">&#128338;</button>
+      <button type="button" class="cpl-btn-icon" id="exportBtn" title="Export">&#128229;</button>
     </div>
   </header>
 
   <!-- MODE TABS -->
   <div class="cpl-mode-tabs" id="modeTabs">
-    <button class="cpl-mode-tab active" data-mode="grammar">Fix Grammar</button>
-    <button class="cpl-mode-tab" data-mode="clarity">Improve Clarity</button>
-    <button class="cpl-mode-tab" data-mode="tone">Change Tone</button>
-    <button class="cpl-mode-tab" data-mode="shorten">Shorten</button>
-    <button class="cpl-mode-tab" data-mode="expand">Expand</button>
-    <button class="cpl-mode-tab" data-mode="localize">Localize</button>
-    <button class="cpl-mode-tab" data-mode="summarize">Summarize</button>
-    <button class="cpl-mode-tab" data-mode="translate">Translate</button>
-    <button class="cpl-mode-tab" data-mode="paraphrase">Paraphrase</button>
+    <button type="button" class="cpl-mode-tab active" data-mode="grammar">Fix Grammar</button>
+    <button type="button" class="cpl-mode-tab" data-mode="clarity">Improve Clarity</button>
+    <button type="button" class="cpl-mode-tab" data-mode="tone">Change Tone</button>
+    <button type="button" class="cpl-mode-tab" data-mode="shorten">Shorten</button>
+    <button type="button" class="cpl-mode-tab" data-mode="expand">Expand</button>
+    <button type="button" class="cpl-mode-tab" data-mode="localize">Localize</button>
+    <button type="button" class="cpl-mode-tab" data-mode="summarize">Summarize</button>
+    <button type="button" class="cpl-mode-tab" data-mode="translate">Translate</button>
+    <button type="button" class="cpl-mode-tab" data-mode="paraphrase">Paraphrase</button>
   </div>
 
   <!-- WORKSPACE -->
@@ -112,7 +115,7 @@
       </div>
 
       <!-- Generate button -->
-      <button class="cpl-generate-btn" id="polishBtn">
+      <button type="button" class="cpl-generate-btn" id="polishBtn">
         <span class="cpl-spinner"></span>Polish &#10024;
       </button>
     </div>
@@ -135,9 +138,9 @@
         </div>
         <textarea class="cpl-textarea" id="inputText" placeholder="Paste or type your text here...&#10;&#10;Tip: Write naturally. CreatorPolish will fix errors without changing your voice."></textarea>
         <div class="cpl-panel-footer">
-          <button class="cpl-action-btn" id="clearBtn">&#128465; Clear</button>
-          <button class="cpl-action-btn" id="pasteBtn">&#128203; Paste</button>
-          <button class="cpl-action-btn" id="sampleBtn">&#128161; Try Sample</button>
+          <button type="button" class="cpl-action-btn" id="clearBtn">&#128465; Clear</button>
+          <button type="button" class="cpl-action-btn" id="pasteBtn">&#128203; Paste</button>
+          <button type="button" class="cpl-action-btn" id="sampleBtn">&#128161; Try Sample</button>
         </div>
       </div>
 
@@ -156,12 +159,12 @@
           </div>
         </div>
         <div class="cpl-accept-all-bar" id="acceptBar" style="display:none;">
-          <button class="cpl-accept-all-btn" id="acceptAllBtn">&#10003; Accept All Changes</button>
+          <button type="button" class="cpl-accept-all-btn" id="acceptAllBtn">&#10003; Accept All Changes</button>
           <span class="cpl-suggestion-count" id="suggestionCount"></span>
         </div>
         <div class="cpl-panel-footer" id="outputActions" style="display:none;">
-          <button class="cpl-action-btn" id="copyBtn">&#128203; Copy</button>
-          <button class="cpl-action-btn" id="downloadBtn">&#128229; Download .txt</button>
+          <button type="button" class="cpl-action-btn" id="copyBtn">&#128203; Copy</button>
+          <button type="button" class="cpl-action-btn" id="downloadBtn">&#128229; Download .txt</button>
         </div>
       </div>
 

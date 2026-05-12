@@ -23,10 +23,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -938,8 +938,8 @@
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-find-replace/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-find-replace/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rechercher-remplacer-pdf/" />
@@ -1012,7 +1012,7 @@
               <p>Drop a PDF here or click to browse</p>
               <span class="hint">Supports any PDF file</span>
             </div>
-            <input type="file" id="fileInput" accept=".pdf,application/pdf" hidden>
+            <input aria-label="FileInput" type="file" id="fileInput" accept=".pdf,application/pdf" hidden>
           </div>
         </div>
 
@@ -1038,19 +1038,19 @@
 
             <div class="toggle-row">
               <label class="toggle-item">
-                <input type="checkbox" id="caseSensitive">
+                <input aria-label="CaseSensitive" type="checkbox" id="caseSensitive">
                 Case sensitive
               </label>
               <label class="toggle-item">
-                <input type="checkbox" id="wholeWord">
+                <input aria-label="WholeWord" type="checkbox" id="wholeWord">
                 Whole word
               </label>
               <label class="toggle-item">
-                <input type="checkbox" id="regexMode">
+                <input aria-label="RegexMode" type="checkbox" id="regexMode">
                 Regex
               </label>
               <label class="toggle-item">
-                <input type="checkbox" id="fitToBox" checked>
+                <input aria-label="FitToBox" type="checkbox" id="fitToBox" checked>
                 Fit replacement
               </label>
             </div>
@@ -1103,7 +1103,7 @@
               </div>
             </div>
 
-            <button class="action-btn" id="findBtn" disabled>
+            <button type="button" class="action-btn" id="findBtn" disabled>
               <span class="spinner" id="findSpinner"></span>
               Find Matches
             </button>
@@ -1114,13 +1114,13 @@
                 <button class="mini-btn" id="nextMatchBtn" type="button" disabled>Next match</button>
               </div>
               <div class="btn-row">
-                <button class="action-btn secondary-btn" id="replaceSelectedBtn">Replace Selected</button>
-                <button class="action-btn replace-btn" id="replaceAllBtn">Replace All</button>
+                <button type="button" class="action-btn secondary-btn" id="replaceSelectedBtn">Replace Selected</button>
+                <button type="button" class="action-btn replace-btn" id="replaceAllBtn">Replace All</button>
               </div>
               <div class="btn-row">
-                <button class="action-btn light-btn" id="undoBtn" style="display:none">Undo Output</button>
-                <button class="action-btn dl-btn" id="downloadBtn" style="display:none">Download PDF</button>
-                <button class="action-btn dl-btn" id="downloadReportBtn" style="display:none">Download CSV</button>
+                <button type="button" class="action-btn light-btn" id="undoBtn" style="display:none">Undo Output</button>
+                <button type="button" class="action-btn dl-btn" id="downloadBtn" style="display:none">Download PDF</button>
+                <button type="button" class="action-btn dl-btn" id="downloadReportBtn" style="display:none">Download CSV</button>
               </div>
             </div>
             <div class="result-box" id="replacementSummary">Upload a PDF and run a search to see replacement details.</div>
@@ -1138,9 +1138,9 @@
               <canvas id="pdfCanvas"></canvas>
             </div>
             <div class="page-nav" id="pageNav">
-              <button id="prevPage" disabled>&larr; Prev</button>
+              <button type="button" id="prevPage" disabled>&larr; Prev</button>
               <span id="pageLabel">Page 1 of 1</span>
-              <button id="nextPage" disabled>Next &rarr;</button>
+              <button type="button" id="nextPage" disabled>Next &rarr;</button>
             </div>
           </div>
         </div>
@@ -1339,7 +1339,7 @@
     uploadZone.innerHTML = '<div class="file-info">' +
       '<div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="' + 'var(--afro-green)' + '" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>' +
       '<div><div class="name">' + file.name + '</div><div class="meta">' + formatSize(file.size) + '</div></div>' +
-      '<button class="remove-btn" id="removeFile">Remove</button>' +
+      '<button type="button" class="remove-btn" id="removeFile">Remove</button>' +
       '</div>';
 
     document.getElementById('removeFile').addEventListener('click', function(e) {

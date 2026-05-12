@@ -31,11 +31,11 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-  <script src="/assets/js/components/tool-registry.min.js?v=12ef6a56" defer></script>
-  <script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-  <script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+  <script src="/assets/js/components/tool-registry.min.js?v=99d9d3db" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+  <script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
   <!-- Twemoji: consistent flag rendering on Windows -->
   <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 
@@ -937,7 +937,7 @@
         <span>⭐</span> Mes outils
         <span style="font-size:.72rem;font-weight:400;color:#6b7280" id="myToolsCount"></span>
       </div>
-      <button class="my-tools-clear" onclick="clearAllFavs()">Tout effacer</button>
+      <button type="button" class="my-tools-clear" onclick="clearAllFavs()">Tout effacer</button>
     </div>
     <div class="my-tools-grid" id="myToolsGrid"></div>
   </div>
@@ -1021,9 +1021,9 @@
         <p class="sec-sub">Impots sur le revenu, salaires et references fiscales par pays, avec une couverture francaise verifiee progressivement. Certains outils incluent un conseiller IA.</p>
 
     <div class="filter-row">
-      <button class="f-btn on" data-f="all">Tous les pays</button>
-      <button class="f-btn" data-f="live">Disponible maintenant</button>
-      <button class="f-btn" data-f="tier1">Conseiller IA inclus</button>
+      <button type="button" class="f-btn on" data-f="all">Tous les pays</button>
+      <button type="button" class="f-btn" data-f="live">Disponible maintenant</button>
+      <button type="button" class="f-btn" data-f="tier1">Conseiller IA inclus</button>
     </div>
 
 
@@ -1885,7 +1885,7 @@ POURQUOI AFROTOOLS
       <div>
         <form class="nl-form" name="newsletter" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/" id="nl-form">
           <input type="hidden" name="form-name" value="newsletter">
-          <p style="display:none"><input name="bot-field"></p>
+          <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
           <input type="hidden" name="source" value="homepage">
           <div class="nl-row">
             <input class="nl-inp" type="email" name="email" placeholder="vous@exemple.fr" required aria-label="Adresse e-mail">
@@ -2330,7 +2330,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return '<a href="' + t.href + '" class="my-tool-card">'
         + '<div class="my-tool-icon"><img src="' + img + '" alt="" width="24" height="24" style="width:24px;height:24px;object-fit:contain;border-radius:5px;" onerror="this.onerror=function(){this.outerHTML=\'' + t.icon.replace(/'/g, "\\'") + '\'};this.src=\'' + imgFb + '\'"></div>'
         + '<div class="my-tool-name">' + t.name + '</div>'
-        + '<button class="my-tool-unfav" onclick="unfavTool(event,\'' + t.id + '\')" title="Retirer">\u2715</button>'
+        + '<button type="button" class="my-tool-unfav" onclick="unfavTool(event,\'' + t.id + '\')" title="Retirer">\u2715</button>'
         + '</a>';
     }).join('');
   }

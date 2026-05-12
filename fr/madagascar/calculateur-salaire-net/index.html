@@ -34,10 +34,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -83,7 +83,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="og:locale:alternate" content="en_US">
 <meta property="article:modified_time" content="2026-03-28">
 </head>
@@ -134,7 +134,7 @@
               <span class="slider-label">Salaire brut annuel</span>
               <span class="slider-val" id="sliderVal">10 000 000 Ar</span>
             </div>
-            <input type="range" id="salarySlider" min="500000" max="100000000" step="250000" value="10000000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="500000" max="100000000" step="250000" value="10000000" oninput="onSlider(this)">
             <div class="slider-limits"><span>500 000 Ar</span><span>100 000 000 Ar</span></div>
           </div>
 
@@ -143,16 +143,16 @@
             <div class="f-label"><span class="f-label-text">Ou saisissez le montant annuel exact</span><span class="f-hint">Avant toute d&#233;duction</span></div>
             <div class="f-wrap">
               <span class="f-prefix">Ar</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="10 000 000" min="0" step="250000" value="10000000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="10 000 000" min="0" step="250000" value="10000000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(2000000, this)">2M Ar</button>
-            <button class="preset-btn" onclick="setPreset(10000000, this)">10M Ar</button>
-            <button class="preset-btn" onclick="setPreset(20000000, this)">20M Ar</button>
-            <button class="preset-btn" onclick="setPreset(50000000, this)">50M Ar</button>
-            <button class="preset-btn" onclick="setPreset(100000000, this)">100M Ar</button>
+            <button type="button" class="preset-btn" onclick="setPreset(2000000, this)">2M Ar</button>
+            <button type="button" class="preset-btn" onclick="setPreset(10000000, this)">10M Ar</button>
+            <button type="button" class="preset-btn" onclick="setPreset(20000000, this)">20M Ar</button>
+            <button type="button" class="preset-btn" onclick="setPreset(50000000, this)">50M Ar</button>
+            <button type="button" class="preset-btn" onclick="setPreset(100000000, this)">100M Ar</button>
           </div>
 
 
@@ -172,7 +172,7 @@
             <p class="f-note">Les cotisations salariales CNaPS (1 %) et OSIE (1 %) sont déductibles du salaire brut avant le calcul du revenu imposable.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net &#8594;</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculer mon salaire net &#8594;</button>
         </div>
       </div>
 
@@ -197,18 +197,18 @@
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">R&#233;partition</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Bar&#232;me fiscal</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">R&#233;partition</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Bar&#232;me fiscal</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             T&#233;l&#233;charger le PDF
           </button>
-          <button class="act-btn act-share" id="mgShareBtn" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" id="mgShareBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager
           </button>
@@ -245,12 +245,12 @@
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculez d’abord votre salaire — je vais analyser votre situation IRPS, expliquer la déductibilité CNaPS/OSIE et donner des conseils d’optimisation spécifiques à Madagascar.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d&#8217;abord pour d&#233;bloquer &#8594;</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d&#8217;abord pour d&#233;bloquer &#8594;</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Posez une question sur votre IRPS à Madagascar…" onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">&#8594;</button>
+              <input aria-label="Posez une question sur votre IRPS à Madagascar" class="chat-in" id="chatIn" placeholder="Posez une question sur votre IRPS à Madagascar…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">&#8594;</button>
             </div>
           </div>
 
@@ -293,7 +293,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/mg-paye.webp" alt="Calculateur Salaire Net Madagascar" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/mg-paye.webp" alt="Calculateur Salaire Net Madagascar" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur Salaire Net Madagascar</div>
             <div class="tool-info-cat">Paie &amp; fiscalit&eacute;</div>
@@ -316,7 +316,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mis &#224; jour : mars 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/madagascar/">Outils Madagascar</a>
           </div>
         </div>
@@ -368,25 +368,25 @@
       <p>Entrez votre e-mail pour obtenir un PDF d&#233;taill&#233; &#8212; nous vous informerons des changements de barème à Madagascar.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input name="bot-field"></p>
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country"      value="Madagascar">
         <input type="hidden" name="country_code" value="MG">
         <input type="hidden" name="tool"         value="paye">
         <input type="hidden" name="tool_id"      value="mg-paye-fr">
         <input type="hidden" name="currency"     value="MGA">
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
+        <input aria-label="Votre nom (facultatif)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
+        <input aria-label="Votre adresse e mail" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
         <button class="modal-submit" type="submit">Obtenir mon PDF &#8594;</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">Non merci</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">Non merci</button>
     </div>
     <div class="modal-success" id="modalSuccess">
-      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
       <div class="big-check">&#9989;</div>
       <h4>PDF en cours d&#8217;ouverture</h4>
       <p>Cliquez sur <strong>Enregistrer en PDF</strong> dans la bo&#238;te de dialogue d&#8217;impression.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Termin&#233; &#8594;</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Termin&#233; &#8594;</button>
     </div>
   </div>
 </div>
@@ -652,7 +652,6 @@ function generatePdf() {
   var html = '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">' +
 '<title>Calculateur salaire net Madagascar 2026 | IRPS, CNaPS, OSIE | AfroTools</title>' +
 '<style>body{font-family:Arial,sans-serif;background:#fff;color:#111827;font-size:9pt}.cover{background:linear-gradient(135deg,#0a1929,#0d2040);padding:28px 36px;color:#fff}.brand{font-size:13pt;font-weight:800}.brand b{color:#007AFF}.doc-title{font-size:18pt;font-weight:800}.doc-title span{color:#007AFF}.doc-meta{margin-top:8px;font-size:7.5pt;opacity:.5}.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;text-transform:uppercase;background:rgba(0,122,255,.22);color:#93C5FD;border:1px solid rgba(0,122,255,.4)}.body{padding:24px 36px}.sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}.sh-val{font-size:13pt;font-weight:800}.sh-val.gold{color:#9a7a00}.sh-val.red{color:#c0392b}.sh-div{width:1px;height:40px;background:#e5e7eb}.sec-head{font-size:6.5pt;font-weight:700;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt}td.num{text-align:right;font-weight:600;white-space:nowrap}.red{color:#c0392b}.green{color:#007AFF}.muted{color:#9ca3af}tr.total td{border-top:1.5px solid #d1d5db;font-weight:800;font-size:9.5pt}</style>' +
-<meta property="article:modified_time" content="2026-03-28">
 '</head><body>' +
 '<div class="cover">' +
 '<div class="brand">AFRO<b>TOOLS</b></div>' +
@@ -699,8 +698,7 @@ function generatePdf() {
 '  </table>' +
 '</div>' +
 '<div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px;font-size:7pt;color:#9ca3af">À titre informatif uniquement. Vérifiez auprès de la DGI (mf.gov.mg).</div>' +
-'<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-</body></html>';
+'</body></html>';
 
   var blob = new Blob([html],{type:'text/html;charset=utf-8'});
   var url  = URL.createObjectURL(blob);

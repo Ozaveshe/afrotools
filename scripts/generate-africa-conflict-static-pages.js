@@ -452,7 +452,7 @@ function buildDossierPageHtml(conflict, manifest) {
   </section>
 </main>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=ad90a313" defer></script>
+<script src="/assets/js/components/navbar.js?v=8486e8e9" defer></script>
 <script src="/assets/js/components/footer.js?v=b612b5b2" defer></script>
 </body>
 </html>
@@ -597,7 +597,7 @@ function buildConflictHubIndexHtml(manifest) {
   </section>
 </main>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=ad90a313" defer></script>
+<script src="/assets/js/components/navbar.js?v=8486e8e9" defer></script>
 <script src="/assets/js/components/footer.js?v=b612b5b2" defer></script>
 </body>
 </html>

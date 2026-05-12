@@ -67,10 +67,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
   :root {
     --calc-accent: #007FFF;
@@ -145,14 +145,14 @@
         <div class="card-body">
 
           <div class="mode-toggle">
-            <button class="mode-btn active" onclick="setMode('add',this)">Ajouter la TVA (HT&#8594;TTC)</button>
-            <button class="mode-btn" onclick="setMode('remove',this)">Retirer la TVA (TTC&#8594;HT)</button>
+            <button type="button" class="mode-btn active" onclick="setMode('add',this)">Ajouter la TVA (HT&#8594;TTC)</button>
+            <button type="button" class="mode-btn" onclick="setMode('remove',this)">Retirer la TVA (TTC&#8594;HT)</button>
           </div>
 
           <div class="field">
             <div class="f-label"><span class="f-label-text">Taux de TVA</span></div>
             <div class="rate-options">
-              <button class="rate-opt active" onclick="setRate(0.16,this)">16% Standard</button>
+              <button type="button" class="rate-opt active" onclick="setRate(0.16,this)">16% Standard</button>
             </div>
           </div>
 
@@ -160,19 +160,19 @@
             <div class="f-label"><span class="f-label-text" id="amountLabel">Montant Hors Taxe (HT)</span><span class="f-hint">En Franc Congolais</span></div>
             <div class="f-wrap">
               <span class="f-prefix">FC</span>
-              <input type="number" class="f-input" id="tvaAmount" placeholder="1 000 000" min="0" step="1000" value="1000000">
+              <input aria-label="TvaAmount" type="number" class="f-input" id="tvaAmount" placeholder="1 000 000" min="0" step="1000" value="1000000">
             </div>
           </div>
 
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(500000)">500K</button>
-            <button class="preset-btn" onclick="setPreset(1000000)">1M</button>
-            <button class="preset-btn" onclick="setPreset(5000000)">5M</button>
-            <button class="preset-btn" onclick="setPreset(10000000)">10M</button>
-            <button class="preset-btn" onclick="setPreset(50000000)">50M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(500000)">500K</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1000000)">1M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(5000000)">5M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(10000000)">10M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(50000000)">50M</button>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculer la TVA &#8594;</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculer la TVA &#8594;</button>
         </div>
       </div>
 
@@ -192,11 +192,11 @@
         </div>
 
         <div class="action-row">
-          <afro-email-gate tool-name="TVA Calculator"><button class="act-btn act-pdf" onclick="exportPdf()">
+          <afro-email-gate tool-name="TVA Calculator"><button type="button" class="act-btn act-pdf" onclick="exportPdf()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             T&#233;l&#233;charger le PDF
           </button></afro-email-gate>
-          <button class="act-btn act-share" onclick="if(navigator.share)navigator.share({title:document.title,url:location.href}).catch(function(){});else{navigator.clipboard.writeText(location.href);alert('Lien copi\u00e9 !');}">
+          <button type="button" class="act-btn act-share" onclick="if(navigator.share)navigator.share({title:document.title,url:location.href}).catch(function(){});else{navigator.clipboard.writeText(location.href);alert('Lien copi\u00e9 !');}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager
           </button>
@@ -265,25 +265,25 @@
       <p>Entrez votre e-mail pour obtenir un PDF d&#233;taill&#233; de votre calcul TVA.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-        <p style="display:none"><input name="bot-field"></p>
+        <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country"      value="RDC">
         <input type="hidden" name="country_code" value="CD">
         <input type="hidden" name="tool"         value="tva">
         <input type="hidden" name="tool_id"      value="cd-tva-fr">
         <input type="hidden" name="currency"     value="CDF">
         <input type="hidden" name="amount" id="hiddenAmount" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
+        <input aria-label="Votre nom (facultatif)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
+        <input aria-label="Votre adresse e mail" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
         <button class="modal-submit" type="submit">Obtenir mon PDF &#8594;</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">Non merci</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">Non merci</button>
     </div>
     <div class="modal-success" id="modalSuccess">
-      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
       <div class="big-check">&#9989;</div>
       <h4>PDF en cours d&#8217;ouverture</h4>
       <p>Cliquez sur <strong>Enregistrer en PDF</strong> dans la bo&#238;te de dialogue d&#8217;impression.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Termin&#233; &#8594;</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Termin&#233; &#8594;</button>
     </div>
   </div>
 </div>

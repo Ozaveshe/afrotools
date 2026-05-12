@@ -29,9 +29,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -317,7 +317,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/egypt/eg-vat" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/egypt/kikokotoo-vat/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/egypt/eg-vat" />
@@ -387,7 +387,7 @@
               <span class="slider-label">Amount (EGP)</span>
               <span class="slider-val" id="sliderVal">E£1,000</span>
             </div>
-            <input type="range" id="amountSlider" min="100" max="500000" step="100" value="1000" oninput="onSlider(this)">
+            <input aria-label="AmountSlider" type="range" id="amountSlider" min="100" max="500000" step="100" value="1000" oninput="onSlider(this)">
             <div class="slider-limits"><span>E£100</span><span>E£500,000</span></div>
           </div>
 
@@ -396,7 +396,7 @@
             <div class="f-label"><span class="f-label-text">Amount</span><span class="f-hint">Enter exact value</span></div>
             <div class="f-wrap">
               <span class="f-prefix">E£</span>
-              <input type="number" class="f-input" id="amount" placeholder="1,000" min="0" step="100" value="1000" oninput="onInput(this)">
+              <input aria-label="Amount" type="number" class="f-input" id="amount" placeholder="1,000" min="0" step="100" value="1000" oninput="onInput(this)">
             </div>
           </div>
 
@@ -404,31 +404,31 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">VAT Rate</span><span class="f-hint">Select applicable rate</span></div>
             <div class="rate-selector">
-              <button class="rate-btn on" id="rateStd" onclick="setRate(0.14,'Standard',this)">Standard<br>14%</button>
-              <button class="rate-btn" id="rateReduced" onclick="setRate(0.05,'Reduced',this)">Reduced<br>5%</button>
-              <button class="rate-btn" id="rateZero" onclick="setRate(0,'Zero-Rated',this)" style="grid-column:1 / -1">Zero-Rated (Exports)<br>0%</button>
+              <button type="button" class="rate-btn on" id="rateStd" onclick="setRate(0.14,'Standard',this)">Standard<br>14%</button>
+              <button type="button" class="rate-btn" id="rateReduced" onclick="setRate(0.05,'Reduced',this)">Reduced<br>5%</button>
+              <button type="button" class="rate-btn" id="rateZero" onclick="setRate(0,'Zero-Rated',this)" style="grid-column:1 / -1">Zero-Rated (Exports)<br>0%</button>
             </div>
           </div>
 
           
           <!-- CUSTOM VAT RATE -->
           <div class="custom-rate-wrap">
-            <label><input type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Use custom rate</label>
-            <input type="text" class="custom-rate-input" id="customRateInput" placeholder="e.g. 12" style="display:none" oninput="onCustomRate()">
+            <label><input aria-label="CustomRateToggle" type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Use custom rate</label>
+            <input aria-label="E.g. 12" type="text" class="custom-rate-input" id="customRateInput" placeholder="e.g. 12" style="display:none" oninput="onCustomRate()">
             <span id="customRateHint" style="font-size:.7rem;color:#6B8CAE;display:none">%</span>
           </div>
 
           <!-- QUICK AMOUNT CHIPS -->
           <div class="quick-chips" id="quickChips">
-            <button class="q-chip" onclick="setChip(1000,this)">1K</button>
-            <button class="q-chip" onclick="setChip(5000,this)">5K</button>
-            <button class="q-chip" onclick="setChip(10000,this)">10K</button>
-            <button class="q-chip" onclick="setChip(50000,this)">50K</button>
-            <button class="q-chip" onclick="setChip(100000,this)">100K</button>
-            <button class="q-chip" onclick="setChip(1000000,this)">1M</button>
+            <button type="button" class="q-chip" onclick="setChip(1000,this)">1K</button>
+            <button type="button" class="q-chip" onclick="setChip(5000,this)">5K</button>
+            <button type="button" class="q-chip" onclick="setChip(10000,this)">10K</button>
+            <button type="button" class="q-chip" onclick="setChip(50000,this)">50K</button>
+            <button type="button" class="q-chip" onclick="setChip(100000,this)">100K</button>
+            <button type="button" class="q-chip" onclick="setChip(1000000,this)">1M</button>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculate VAT →</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculate VAT →</button>
         </div>
       </div>
 
@@ -451,19 +451,19 @@
           </div>
           <div class="chart-section">
             <div class="chart-tabs">
-              <button class="chart-tab on" onclick="setChart('pie',this)">Pie Chart</button>
-              <button class="chart-tab" onclick="setChart('bar',this)">Bar Chart</button>
+              <button type="button" class="chart-tab on" onclick="setChart('pie',this)">Pie Chart</button>
+              <button type="button" class="chart-tab" onclick="setChart('bar',this)">Bar Chart</button>
             </div>
             <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
           </div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="printResult()">
+          <button type="button" class="act-btn act-pdf" onclick="printResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Download PDF
           </button>
-          <button class="act-btn act-share" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share Result
           </button>
@@ -485,17 +485,17 @@
 
         <!-- VAT WITHHOLDING -->
         <div class="wh-section" style="padding:0 22px 22px">
-          <button class="wh-toggle" onclick="toggleWh(this)">
+          <button type="button" class="wh-toggle" onclick="toggleWh(this)">
             <span class="wh-toggle-label">🏢 VAT Withholding (B2B)</span>
             <span class="wh-toggle-arrow">▾</span>
           </button>
           <div class="wh-body" id="whBody">
             <p style="font-size:.76rem;color:#6B8CAE;margin-bottom:10px;line-height:1.5">Calculate how much VAT the buyer withholds and remits to the tax authority on this transaction.</p>
             <div class="wh-rate-row">
-              <button class="wh-rate-btn on" onclick="setWhRate(50,this)">50%</button>
-              <button class="wh-rate-btn" onclick="setWhRate(100,this)">100%</button>
-              <button class="wh-rate-btn" onclick="setWhRate(33.33,this)">33.3%</button>
-              <input type="text" class="wh-custom-input" id="whCustom" placeholder="%" oninput="calcWh()">
+              <button type="button" class="wh-rate-btn on" onclick="setWhRate(50,this)">50%</button>
+              <button type="button" class="wh-rate-btn" onclick="setWhRate(100,this)">100%</button>
+              <button type="button" class="wh-rate-btn" onclick="setWhRate(33.33,this)">33.3%</button>
+              <input aria-label="WhCustom" type="text" class="wh-custom-input" id="whCustom" placeholder="%" oninput="calcWh()">
             </div>
             <div class="wh-results" id="whResults"></div>
           </div>
@@ -519,8 +519,8 @@
     <div class="ai-chat" id="aiChat">
       <div class="ai-msgs" id="aiMsgs"></div>
       <div class="ai-input-row">
-        <input type="text" class="ai-input" id="aiInput" placeholder="Ask about VAT…" maxlength="300">
-        <button class="ai-send" id="aiSend" onclick="sendAI()">→</button>
+        <input aria-label="Ask about VAT" type="text" class="ai-input" id="aiInput" placeholder="Ask about VAT…" maxlength="300">
+        <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">→</button>
       </div>
     </div>
   </div>
@@ -561,7 +561,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/eg-vat.webp" alt="Egypt VAT Calculator" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/eg-vat.webp" alt="Egypt VAT Calculator" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Egypt VAT Calculator</div>
             <div class="tool-info-cat">Tax &amp; Finance</div>
@@ -584,7 +584,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
             <a class="tool-info-action" href="/tools/vat-calculator/">All Countries</a>
           </div>
         </div>

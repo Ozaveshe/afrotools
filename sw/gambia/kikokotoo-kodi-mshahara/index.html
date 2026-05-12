@@ -44,10 +44,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script>
@@ -98,24 +98,24 @@
       </div>
       <div class="calc-body">
         <div class="period-row">
-          <button class="period-btn active" onclick="setPeriod('monthly',this)">Kila Mwezi</button>
-          <button class="period-btn" onclick="setPeriod('annual',this)">Kila Mwaka</button>
+          <button type="button" class="period-btn active" onclick="setPeriod('monthly',this)">Kila Mwezi</button>
+          <button type="button" class="period-btn" onclick="setPeriod('annual',this)">Kila Mwaka</button>
         </div>
         <div class="salary-field">
           <label class="salary-label">Mshahara Ghafi (GMD)</label>
           <div class="salary-input-wrap">
             <span class="salary-prefix">GMD</span>
-            <input type="number" id="salaryInput" class="salary-input" value="15000" min="0" max="200000" step="500" oninput="syncSlider(this.value);calculate()">
+            <input aria-label="SalaryInput" type="number" id="salaryInput" class="salary-input" value="15000" min="0" max="200000" step="500" oninput="syncSlider(this.value);calculate()">
           </div>
-          <input type="range" id="salarySlider" class="salary-slider" min="0" max="200000" step="500" value="15000" oninput="syncInput(this.value);calculate()">
+          <input aria-label="SalarySlider" type="range" id="salarySlider" class="salary-slider" min="0" max="200000" step="500" value="15000" oninput="syncInput(this.value);calculate()">
           <div class="slider-labels"><span>GMD 0</span><span>GMD 200k</span></div>
         </div>
         <div class="preset-row">
-          <button class="preset-btn" onclick="setPreset(5000,this)">5k</button>
-          <button class="preset-btn active" onclick="setPreset(15000,this)">15k</button>
-          <button class="preset-btn" onclick="setPreset(30000,this)">30k</button>
-          <button class="preset-btn" onclick="setPreset(60000,this)">60k</button>
-          <button class="preset-btn" onclick="setPreset(100000,this)">100k</button>
+          <button type="button" class="preset-btn" onclick="setPreset(5000,this)">5k</button>
+          <button type="button" class="preset-btn active" onclick="setPreset(15000,this)">15k</button>
+          <button type="button" class="preset-btn" onclick="setPreset(30000,this)">30k</button>
+          <button type="button" class="preset-btn" onclick="setPreset(60000,this)">60k</button>
+          <button type="button" class="preset-btn" onclick="setPreset(100000,this)">100k</button>
         </div>
         <div class="deduct-section">
           <div class="deduct-title">Makato ya Lazima</div>
@@ -123,7 +123,7 @@
             <span class="toggle-chip active" id="tog-sshfc" onclick="togItem(this)" data-key="sshfc"><span class="dot"></span>SSHFC 5%</span>
           </div>
         </div>
-        <button class="calc-btn" onclick="calculate()">Kokotoa Kodi</button>
+        <button type="button" class="calc-btn" onclick="calculate()">Kokotoa Kodi</button>
       </div>
     </div>
 
@@ -146,14 +146,14 @@
         </div>
         <div class="chart-section">
           <div class="chart-toggle">
-            <button class="chart-btn active" onclick="setChart('donut',this)">Donut</button>
-            <button class="chart-btn" onclick="setChart('bar',this)">Mstari</button>
+            <button type="button" class="chart-btn active" onclick="setChart('donut',this)">Donut</button>
+            <button type="button" class="chart-btn" onclick="setChart('bar',this)">Mstari</button>
           </div>
           <div class="chart-wrap"><canvas id="payChart" width="260" height="260"></canvas></div>
         </div>
         <div class="result-actions">
-          <button class="action-btn" onclick="openPdfModal()">⬇ Pakua PDF</button>
-          <button class="action-btn secondary" onclick="shareCalc()">↗ Shiriki</button>
+          <button type="button" class="action-btn" onclick="openPdfModal()">⬇ Pakua PDF</button>
+          <button type="button" class="action-btn secondary" onclick="shareCalc()">↗ Shiriki</button>
         </div>
       </div>
     </div>
@@ -171,10 +171,10 @@
           <div class="ai-msg ai">Habari! Mimi ni mshauri wako wa fedha wa AI. Je, una swali kuhusu kodi ya mshahara Gambia? Ninaweza kukusaidia kuelewa mabanda ya GRA, makato ya SSHFC, au jinsi ya kupanga fedha zako.</div>
         </div>
         <div class="ai-input-row">
-          <input type="text" id="aiInput" class="ai-input" placeholder="Uliza swali lolote..." onkeydown="if(event.key==='Enter')sendChat()">
-          <button class="ai-send" onclick="sendChat()">➤</button>
+          <input aria-label="Uliza swali lolote" type="text" id="aiInput" class="ai-input" placeholder="Uliza swali lolote..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button type="button" class="ai-send" onclick="sendChat()">➤</button>
         </div>
-        <button class="ai-prompt-btn" onclick="getAI()">✨ Niambie jinsi ya kupunguza kodi yangu</button>
+        <button type="button" class="ai-prompt-btn" onclick="getAI()">✨ Niambie jinsi ya kupunguza kodi yangu</button>
       </div>
     </div>
 

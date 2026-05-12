@@ -46,10 +46,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -200,11 +200,11 @@ table.mp-table input[type=number]::-webkit-inner-spin-button{-webkit-appearance:
       </div>
       <div class="mp-field">
         <label>Currency Symbol</label>
-        <input type="text" id="currency-display" value="₦" readonly style="background:#f9fafb;color:#6b7280">
+        <input aria-label="Currency display" type="text" id="currency-display" value="₦" readonly style="background:#f9fafb;color:#6b7280">
       </div>
       <div class="mp-field">
         <label>Working Days / Month</label>
-        <input type="number" id="working-days" value="26" min="1" max="31">
+        <input aria-label="Working days" type="number" id="working-days" value="26" min="1" max="31">
       </div>
     </div>
   </div>
@@ -228,7 +228,7 @@ table.mp-table input[type=number]::-webkit-inner-spin-button{-webkit-appearance:
         </tbody>
       </table>
     </div>
-    <button class="mp-add-btn" onclick="addMenuRow()">+ Add Dish</button>
+    <button type="button" class="mp-add-btn" onclick="addMenuRow()">+ Add Dish</button>
   </div>
 
   <!-- Daily Costs -->
@@ -237,22 +237,22 @@ table.mp-table input[type=number]::-webkit-inner-spin-button{-webkit-appearance:
     <div class="mp-costs-grid">
       <div class="mp-field">
         <label id="rent-lbl">Rent / Day (₦)</label>
-        <input type="number" id="cost-rent" value="3000" min="0">
+        <input aria-label="Cost rent" type="number" id="cost-rent" value="3000" min="0">
       </div>
       <div class="mp-field">
         <label>Staff Wages / Day</label>
-        <input type="number" id="cost-staff" value="2000" min="0">
+        <input aria-label="Cost staff" type="number" id="cost-staff" value="2000" min="0">
       </div>
       <div class="mp-field">
         <label>Utilities / Day (gas, water, power)</label>
-        <input type="number" id="cost-utils" value="800" min="0">
+        <input aria-label="Cost utils" type="number" id="cost-utils" value="800" min="0">
       </div>
       <div class="mp-field">
         <label>Other Costs / Day</label>
-        <input type="number" id="cost-other" value="500" min="0">
+        <input aria-label="Cost other" type="number" id="cost-other" value="500" min="0">
       </div>
     </div>
-    <button class="mp-calc-btn" onclick="calculate()">Calculate My Profit →</button>
+    <button type="button" class="mp-calc-btn" onclick="calculate()">Calculate My Profit →</button>
   </div>
 
   <!-- Results -->
@@ -418,11 +418,11 @@ function addMenuRow(data) {
   var tbody = document.getElementById('menu-body');
   var tr = document.createElement('tr');
   tr.innerHTML =
-    '<td><input type="text" placeholder="Dish name" value="' + (data.name || '') + '"></td>' +
-    '<td><input type="number" min="0" placeholder="0" value="' + (data.price || '') + '"></td>' +
-    '<td><input type="number" min="0" placeholder="0" value="' + (data.portions || '') + '"></td>' +
-    '<td><input type="number" min="0" placeholder="0" value="' + (data.ingred || '') + '"></td>' +
-    '<td><button class="mp-del-btn" onclick="delRow(this)" title="Remove row">&#10005;</button></td>';
+    '<td><input aria-label="Dish name" type="text" placeholder="Dish name" value="' + (data.name || '') + '"></td>' +
+    '<td><input aria-label="Line item amount" type="number" min="0" placeholder="0" value="' + (data.price || '') + '"></td>' +
+    '<td><input aria-label="Line item amount" type="number" min="0" placeholder="0" value="' + (data.portions || '') + '"></td>' +
+    '<td><input aria-label="Line item amount" type="number" min="0" placeholder="0" value="' + (data.ingred || '') + '"></td>' +
+    '<td><button type="button" class="mp-del-btn" onclick="delRow(this)" title="Remove row">&#10005;</button></td>';
   tbody.appendChild(tr);
 }
 

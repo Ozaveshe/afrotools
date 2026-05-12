@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=bc1cebe6">
   <style>
     .cht-loading-status { text-align:center; font-size:.85rem; color:#64748b; margin-top:8px; opacity:0; transition:opacity .3s; }
@@ -23,6 +23,9 @@
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-hashtags/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-hashtags/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cht-app">
 
@@ -32,7 +35,7 @@
       <span>#</span> TagWave
     </a>
     <div class="cht-header-actions">
-      <button class="cht-btn-icon" id="historyBtn" title="History">&#128197;</button>
+      <button type="button" class="cht-btn-icon" id="historyBtn" title="History">&#128197;</button>
     </div>
   </header>
 
@@ -47,7 +50,7 @@
       <label class="cht-input-label" style="margin-top:16px">Platform</label>
       <div class="cht-platforms" id="platformPills"></div>
 
-      <button class="cht-generate-btn" id="generateBtn" onclick="window._chtGenerate()">
+      <button type="button" class="cht-generate-btn" id="generateBtn" onclick="window._chtGenerate()">
         <span class="cht-spinner"></span>Generate Tags &#127991;&#65039;
       </button>
       <div class="cht-loading-status" id="loadingStatus"></div>
@@ -75,8 +78,8 @@
       </div>
       <div class="cht-mix-warn" id="mixWarn">&#9888;&#65039; You've exceeded the recommended tag count for this platform</div>
       <div class="cht-mix-actions">
-        <button class="cht-action-btn" onclick="window._chtCopyMix()">&#128203; Copy Mix</button>
-        <button class="cht-action-btn" onclick="window._chtClearMix()">&#128465; Clear</button>
+        <button type="button" class="cht-action-btn" onclick="window._chtCopyMix()">&#128203; Copy Mix</button>
+        <button type="button" class="cht-action-btn" onclick="window._chtClearMix()">&#128465; Clear</button>
       </div>
     </div>
 
@@ -87,7 +90,7 @@
     <div class="cht-history-panel">
       <div class="cht-history-header">
         <h3>History</h3>
-        <button class="cht-btn-icon" onclick="document.getElementById('historyPanel').style.display='none'">&times;</button>
+        <button type="button" class="cht-btn-icon" onclick="document.getElementById('historyPanel').style.display='none'">&times;</button>
       </div>
       <div id="historyList"></div>
     </div>
@@ -181,7 +184,7 @@
     Object.keys(E.PLATFORMS).forEach(function(key) {
       var p = E.PLATFORMS[key];
       var cls = key === activePlatform ? ' active' : '';
-      html += '<button class="cht-platform-pill' + cls + '" data-platform="' + key + '">' + p.icon + ' ' + p.label + '</button>';
+      html += '<button type="button" class="cht-platform-pill' + cls + '" data-platform="' + key + '">' + p.icon + ' ' + p.label + '</button>';
     });
     container.innerHTML = html;
     container.querySelectorAll('.cht-platform-pill').forEach(function(pill) {
@@ -251,7 +254,7 @@
     data.sets.forEach(function(set, si) {
       html += '<div class="cht-set-card">';
       html += '<div class="cht-set-header"><div class="cht-set-name">' + escapeHtml(set.name) + '</div>';
-      html += '<button class="cht-action-btn" onclick="window._chtCopySet(' + si + ')">&#128203; Copy Set</button></div>';
+      html += '<button type="button" class="cht-action-btn" onclick="window._chtCopySet(' + si + ')">&#128203; Copy Set</button></div>';
       if (set.strategy) html += '<div class="cht-set-strategy">' + escapeHtml(set.strategy) + '</div>';
       html += '<div class="cht-tags" style="margin-top:12px">';
       set.tags.forEach(function(tag) {

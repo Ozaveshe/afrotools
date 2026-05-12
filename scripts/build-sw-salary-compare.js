@@ -240,11 +240,11 @@ html = replaceAll(html, '<option value="manufacturing">Manufacturing</option>', 
 html = replaceAll(html, '<option value="consulting">Consulting</option>', '<option value="consulting">Ushauri</option>');
 html = replaceAll(html, '<option value="">-- Select --</option>', '<option value="">-- Chagua --</option>');
 html = replaceAll(html, '<option value="">-- All cities --</option>', '<option value="">-- Miji yote --</option>');
-html = replaceAll(html, '<option value="us">ðŸ‡ºðŸ‡¸ US Company</option>', '<option value="us">ðŸ‡ºðŸ‡¸ Kampuni ya Marekani</option>');
-html = replaceAll(html, '<option value="uk">ðŸ‡¬ðŸ‡§ UK Company</option>', '<option value="uk">ðŸ‡¬ðŸ‡§ Kampuni ya Uingereza</option>');
-html = replaceAll(html, '<option value="eu">ðŸ‡ªðŸ‡º EU Company</option>', '<option value="eu">ðŸ‡ªðŸ‡º Kampuni ya Ulaya</option>');
-html = replaceAll(html, '<option value="canada">ðŸ‡¨ðŸ‡¦ Canadian Company</option>', '<option value="canada">ðŸ‡¨ðŸ‡¦ Kampuni ya Kanada</option>');
-html = replaceAll(html, '<option value="aus">ðŸ‡¦ðŸ‡º Australian Company</option>', '<option value="aus">ðŸ‡¦ðŸ‡º Kampuni ya Australia</option>');
+html = replaceAll(html, '<option value="us">Ÿ‡¸ US Company</option>', '<option value="us">Ÿ‡¸ Kampuni ya Marekani</option>');
+html = replaceAll(html, '<option value="uk">Ÿ‡§ UK Company</option>', '<option value="uk">Ÿ‡§ Kampuni ya Uingereza</option>');
+html = replaceAll(html, '<option value="eu">Ÿ‡º EU Company</option>', '<option value="eu">Ÿ‡º Kampuni ya Ulaya</option>');
+html = replaceAll(html, '<option value="canada">Ÿ‡¦ Canadian Company</option>', '<option value="canada">Ÿ‡¦ Kampuni ya Kanada</option>');
+html = replaceAll(html, '<option value="aus">Ÿ‡º Australian Company</option>', '<option value="aus">Ÿ‡º Kampuni ya Australia</option>');
 html = replaceAll(html, 'placeholder="e.g. 25000"', 'placeholder="mf. 25000"');
 html = replaceAll(html, 'placeholder="e.g. 35000"', 'placeholder="mf. 35000"');
 html = replaceAll(html, 'Monthly (Local)', 'Kila mwezi (Sarafu ya Ndani)');
@@ -266,7 +266,7 @@ html = replaceAll(html, 'What is PPP-adjusted salary?', 'Mshahara uliorekebishwa
 html = replaceAll(html, 'Benchmark: The median ', 'Kigezo: Muda wa wastani wa ');
 html = replaceAll(html, 'Career timeline data not available for this role.', 'Data ya ratiba ya kazi haipatikani kwa nafasi hii.');
 html = replaceAll(html, 'Mfumuko wa Bei-Adjusted Salary Trend \u2014 ', 'Mwelekeo wa Mshahara Uliorekebishwa kwa Mfumuko wa Bei \u2014 ');
-html = replaceAll(html, 'Mfumuko wa Bei-Adjusted Salary Trend â€” ', 'Mwelekeo wa Mshahara Uliorekebishwa kwa Mfumuko wa Bei — ');
+html = replaceAll(html, 'Mfumuko wa Bei-Adjusted Salary Trend - ', 'Mwelekeo wa Mshahara Uliorekebishwa kwa Mfumuko wa Bei — ');
 html = replaceAll(html, 'Median months to wa kupandishwa cheo kwa ', 'Wastani wa miezi hadi kupandishwa cheo kwa ');
 
 html = replaceAll(html, "body:JSON.stringify({tool:'salary-compare',messages:AI_MSGS.slice(-6),context:''})", "body:JSON.stringify({tool:'salary-compare',messages:AI_MSGS.slice(-6),context:'Jibu kwa Kiswahili na eleza matokeo ya zana ya kulinganisha mishahara.'})");

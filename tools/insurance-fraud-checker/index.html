@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
 <link rel="stylesheet" href="/assets/css/insurance.css?v=8d691b26">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -85,11 +85,11 @@ a{text-decoration:none;color:inherit}
       </div>
       <div class="en-field">
         <label class="en-label">Claim Amount (local currency)</label>
-        <input type="number" id="claimAmount" class="en-input" value="5000000" min="0">
+        <input aria-label="ClaimAmount" type="number" id="claimAmount" class="en-input" value="5000000" min="0">
       </div>
       <div class="en-field">
         <label class="en-label">Policy Premium Paid (annual)</label>
-        <input type="number" id="premiumPaid" class="en-input" value="200000" min="0">
+        <input aria-label="PremiumPaid" type="number" id="premiumPaid" class="en-input" value="200000" min="0">
       </div>
     </div>
   </div>
@@ -100,9 +100,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Incident occurred within 3 months of policy start date</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f1_yes"><input type="radio" name="f1" value="yes" onclick="selectFlag('f1','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f1_no"><input type="radio" name="f1" value="no" onclick="selectFlag('f1','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f1_unk"><input type="radio" name="f1" value="unk" checked onclick="selectFlag('f1','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f1_yes"><input aria-label="F1" type="radio" name="f1" value="yes" onclick="selectFlag('f1','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f1_no"><input aria-label="F1" type="radio" name="f1" value="no" onclick="selectFlag('f1','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f1_unk"><input aria-label="F1" type="radio" name="f1" value="unk" checked onclick="selectFlag('f1','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -110,9 +110,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Incident occurred on weekend, public holiday, or at unusual hours (midnight–5am)</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f2_yes"><input type="radio" name="f2" value="yes" onclick="selectFlag('f2','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f2_no"><input type="radio" name="f2" value="no" onclick="selectFlag('f2','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f2_unk"><input type="radio" name="f2" value="unk" checked onclick="selectFlag('f2','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f2_yes"><input aria-label="F2" type="radio" name="f2" value="yes" onclick="selectFlag('f2','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f2_no"><input aria-label="F2" type="radio" name="f2" value="no" onclick="selectFlag('f2','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f2_unk"><input aria-label="F2" type="radio" name="f2" value="unk" checked onclick="selectFlag('f2','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -120,9 +120,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Claimant experienced recent financial hardship (job loss, business failure, bankruptcy)</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f3_yes"><input type="radio" name="f3" value="yes" onclick="selectFlag('f3','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f3_no"><input type="radio" name="f3" value="no" onclick="selectFlag('f3','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f3_unk"><input type="radio" name="f3" value="unk" checked onclick="selectFlag('f3','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f3_yes"><input aria-label="F3" type="radio" name="f3" value="yes" onclick="selectFlag('f3','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f3_no"><input aria-label="F3" type="radio" name="f3" value="no" onclick="selectFlag('f3','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f3_unk"><input aria-label="F3" type="radio" name="f3" value="unk" checked onclick="selectFlag('f3','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -130,9 +130,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Claimant delayed reporting incident to police/insurer by 48+ hours</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f4_yes"><input type="radio" name="f4" value="yes" onclick="selectFlag('f4','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f4_no"><input type="radio" name="f4" value="no" onclick="selectFlag('f4','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f4_unk"><input type="radio" name="f4" value="unk" checked onclick="selectFlag('f4','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f4_yes"><input aria-label="F4" type="radio" name="f4" value="yes" onclick="selectFlag('f4','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f4_no"><input aria-label="F4" type="radio" name="f4" value="no" onclick="selectFlag('f4','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f4_unk"><input aria-label="F4" type="radio" name="f4" value="unk" checked onclick="selectFlag('f4','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -143,9 +143,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Claim amount exceeds 75% of policy limit (possible sum-insured inflation)</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f5_yes"><input type="radio" name="f5" value="yes" onclick="selectFlag('f5','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f5_no"><input type="radio" name="f5" value="no" onclick="selectFlag('f5','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f5_unk"><input type="radio" name="f5" value="unk" checked onclick="selectFlag('f5','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f5_yes"><input aria-label="F5" type="radio" name="f5" value="yes" onclick="selectFlag('f5','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f5_no"><input aria-label="F5" type="radio" name="f5" value="no" onclick="selectFlag('f5','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f5_unk"><input aria-label="F5" type="radio" name="f5" value="unk" checked onclick="selectFlag('f5','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -153,9 +153,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Claim-to-premium ratio is >10:1 (e.g., claim ₦5M on ₦200k annual premium in year 1)</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f6_yes"><input type="radio" name="f6" value="yes" onclick="selectFlag('f6','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f6_no"><input type="radio" name="f6" value="no" onclick="selectFlag('f6','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f6_unk"><input type="radio" name="f6" value="unk" checked onclick="selectFlag('f6','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f6_yes"><input aria-label="F6" type="radio" name="f6" value="yes" onclick="selectFlag('f6','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f6_no"><input aria-label="F6" type="radio" name="f6" value="no" onclick="selectFlag('f6','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f6_unk"><input aria-label="F6" type="radio" name="f6" value="unk" checked onclick="selectFlag('f6','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -163,9 +163,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Supporting documents (receipts, valuations) appear altered, printed recently, or are inconsistent</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f7_yes"><input type="radio" name="f7" value="yes" onclick="selectFlag('f7','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f7_no"><input type="radio" name="f7" value="no" onclick="selectFlag('f7','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f7_unk"><input type="radio" name="f7" value="unk" checked onclick="selectFlag('f7','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f7_yes"><input aria-label="F7" type="radio" name="f7" value="yes" onclick="selectFlag('f7','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f7_no"><input aria-label="F7" type="radio" name="f7" value="no" onclick="selectFlag('f7','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f7_unk"><input aria-label="F7" type="radio" name="f7" value="unk" checked onclick="selectFlag('f7','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -176,9 +176,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Claimant has made 2 or more claims in the past 3 years (same or different insurer)</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f8_yes"><input type="radio" name="f8" value="yes" onclick="selectFlag('f8','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f8_no"><input type="radio" name="f8" value="no" onclick="selectFlag('f8','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f8_unk"><input type="radio" name="f8" value="unk" checked onclick="selectFlag('f8','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f8_yes"><input aria-label="F8" type="radio" name="f8" value="yes" onclick="selectFlag('f8','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f8_no"><input aria-label="F8" type="radio" name="f8" value="no" onclick="selectFlag('f8','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f8_unk"><input aria-label="F8" type="radio" name="f8" value="unk" checked onclick="selectFlag('f8','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -186,9 +186,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Claimant is unusually knowledgeable about claims process / uses legal jargon unprompted</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f9_yes"><input type="radio" name="f9" value="yes" onclick="selectFlag('f9','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f9_no"><input type="radio" name="f9" value="no" onclick="selectFlag('f9','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f9_unk"><input type="radio" name="f9" value="unk" checked onclick="selectFlag('f9','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f9_yes"><input aria-label="F9" type="radio" name="f9" value="yes" onclick="selectFlag('f9','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f9_no"><input aria-label="F9" type="radio" name="f9" value="no" onclick="selectFlag('f9','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f9_unk"><input aria-label="F9" type="radio" name="f9" value="unk" checked onclick="selectFlag('f9','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -196,9 +196,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Claimant resists independent assessment / wants to settle without inspection / pressures for speed</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f10_yes"><input type="radio" name="f10" value="yes" onclick="selectFlag('f10','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f10_no"><input type="radio" name="f10" value="no" onclick="selectFlag('f10','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f10_unk"><input type="radio" name="f10" value="unk" checked onclick="selectFlag('f10','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f10_yes"><input aria-label="F10" type="radio" name="f10" value="yes" onclick="selectFlag('f10','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f10_no"><input aria-label="F10" type="radio" name="f10" value="no" onclick="selectFlag('f10','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f10_unk"><input aria-label="F10" type="radio" name="f10" value="unk" checked onclick="selectFlag('f10','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -209,9 +209,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">No independent witnesses to the incident (or witness is a family member / close associate)</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f11_yes"><input type="radio" name="f11" value="yes" onclick="selectFlag('f11','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f11_no"><input type="radio" name="f11" value="no" onclick="selectFlag('f11','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f11_unk"><input type="radio" name="f11" value="unk" checked onclick="selectFlag('f11','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f11_yes"><input aria-label="F11" type="radio" name="f11" value="yes" onclick="selectFlag('f11','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f11_no"><input aria-label="F11" type="radio" name="f11" value="no" onclick="selectFlag('f11','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f11_unk"><input aria-label="F11" type="radio" name="f11" value="unk" checked onclick="selectFlag('f11','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -219,9 +219,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">No CCTV footage available despite incident occurring in a monitored area</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f12_yes"><input type="radio" name="f12" value="yes" onclick="selectFlag('f12','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f12_no"><input type="radio" name="f12" value="no" onclick="selectFlag('f12','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f12_unk"><input type="radio" name="f12" value="unk" checked onclick="selectFlag('f12','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f12_yes"><input aria-label="F12" type="radio" name="f12" value="yes" onclick="selectFlag('f12','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f12_no"><input aria-label="F12" type="radio" name="f12" value="no" onclick="selectFlag('f12','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f12_unk"><input aria-label="F12" type="radio" name="f12" value="unk" checked onclick="selectFlag('f12','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -229,9 +229,9 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Police report obtained on same day of claim submission (possible pre-arrangement)</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f13_yes"><input type="radio" name="f13" value="yes" onclick="selectFlag('f13','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f13_no"><input type="radio" name="f13" value="no" onclick="selectFlag('f13','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f13_unk"><input type="radio" name="f13" value="unk" checked onclick="selectFlag('f13','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f13_yes"><input aria-label="F13" type="radio" name="f13" value="yes" onclick="selectFlag('f13','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f13_no"><input aria-label="F13" type="radio" name="f13" value="no" onclick="selectFlag('f13','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f13_unk"><input aria-label="F13" type="radio" name="f13" value="unk" checked onclick="selectFlag('f13','unk')"> Unknown</label>
           </div>
         </div>
       </div>
@@ -239,16 +239,16 @@ a{text-decoration:none;color:inherit}
         <div class="flag-row">
           <span style="flex:1">Third party involved is known to, related to, or referred by claimant (staged accident pattern)</span>
           <div class="flag-radio-group">
-            <label class="flag-radio" id="lb_f14_yes"><input type="radio" name="f14" value="yes" onclick="selectFlag('f14','yes')"> Yes</label>
-            <label class="flag-radio" id="lb_f14_no"><input type="radio" name="f14" value="no" onclick="selectFlag('f14','no')"> No</label>
-            <label class="flag-radio selected-unk" id="lb_f14_unk"><input type="radio" name="f14" value="unk" checked onclick="selectFlag('f14','unk')"> Unknown</label>
+            <label class="flag-radio" id="lb_f14_yes"><input aria-label="F14" type="radio" name="f14" value="yes" onclick="selectFlag('f14','yes')"> Yes</label>
+            <label class="flag-radio" id="lb_f14_no"><input aria-label="F14" type="radio" name="f14" value="no" onclick="selectFlag('f14','no')"> No</label>
+            <label class="flag-radio selected-unk" id="lb_f14_unk"><input aria-label="F14" type="radio" name="f14" value="unk" checked onclick="selectFlag('f14','unk')"> Unknown</label>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="en-form-actions">
-    <button class="en-btn en-btn-full" onclick="calculate()">Score Fraud Risk</button>
+    <button type="button" class="en-btn en-btn-full" onclick="calculate()">Score Fraud Risk</button>
   </div>
   <div class="en-results" id="results">
     <div class="en-results-hero">

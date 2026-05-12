@@ -29,12 +29,12 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
   <link rel="stylesheet" href="/assets/css/paye-calculation-sync.css?v=9b62cabb">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -145,8 +145,8 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Determines social security fund</span></div>
             <div class="sector-row">
-              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (NSSF)</button>
-              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public Sector (PSSSF)</button>
+              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (NSSF)</button>
+              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public Sector (PSSSF)</button>
             </div>
           </div>
 
@@ -156,7 +156,7 @@
               <span class="slider-label">Monthly Gross Salary</span>
               <span class="slider-val" id="sliderVal">TZS 1,500,000</span>
             </div>
-            <input type="range" id="salarySlider" min="100000" max="20000000" step="50000" value="1500000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="100000" max="20000000" step="50000" value="1500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>TZS 100,000</span><span>TZS 20,000,000</span></div>
           </div>
 
@@ -165,16 +165,16 @@
             <div class="f-label"><span class="f-label-text">Or type exact monthly amount</span><span class="f-hint">Before any deductions</span></div>
             <div class="f-wrap">
               <span class="f-prefix">TZS</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(500000, this)">TZS 500k</button>
-            <button class="preset-btn" onclick="setPreset(1500000, this)">TZS 1.5M</button>
-            <button class="preset-btn" onclick="setPreset(3000000, this)">TZS 3M</button>
-            <button class="preset-btn" onclick="setPreset(6000000, this)">TZS 6M</button>
-            <button class="preset-btn" onclick="setPreset(12000000, this)">TZS 12M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(500000, this)">TZS 500k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1500000, this)">TZS 1.5M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(3000000, this)">TZS 3M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(6000000, this)">TZS 6M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(12000000, this)">TZS 12M</button>
           </div>
 
           <!-- CONTRIBUTION TOGGLES -->
@@ -193,7 +193,7 @@
             <p class="f-note">NSSF employee contribution (10%) is fully deductible from taxable income before PAYE is calculated. Employer NSSF (10%) is an additional cost shown in employer chart. No NSSF cap — applies to full gross salary.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
         </div>
       </div>
 
@@ -207,8 +207,8 @@
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-            <button class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
@@ -223,23 +223,23 @@
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
-            <button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
+            <button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Download PDF
           </button>
-          <button class="act-btn" onclick="whatsappShare()" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
+          <button type="button" class="act-btn" onclick="whatsappShare()" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.618-1.462A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.171 0-4.2-.695-5.856-1.873l-.42-.277-2.735.867.87-2.664-.305-.44A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
             WhatsApp
           </button>
-          <button class="act-btn act-share" id="tzShareBtn" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" id="tzShareBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share Result
           </button>
@@ -253,7 +253,7 @@
             <a href="/dashboard/#myWorkspace">Open dashboard</a>
           </div>
           <div class="calc-save-form">
-            <input class="calc-save-input" id="calcSaveName" type="text" maxlength="120" placeholder="Example: Dar payroll or secondary job check">
+            <input aria-label="Example: Dar payroll or secondary job check" class="calc-save-input" id="calcSaveName" type="text" maxlength="120" placeholder="Example: Dar payroll or secondary job check">
             <button class="calc-save-button" id="calcSaveBtn" type="button" disabled>Run a Calculation First</button>
           </div>
           <div class="calc-save-status" id="calcSaveStatus" data-tone="muted"></div>
@@ -275,12 +275,12 @@
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your TRA PAYE position, explain NSSF deductibility, SDL implications, and give specific optimisation tips for Tanzania.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">→</button>
+              <input aria-label="Ask a follow up" class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
 
@@ -326,7 +326,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/tz-paye.webp" alt="Tanzania PAYE Calculator" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/tz-paye.webp" alt="Tanzania PAYE Calculator" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Tanzania PAYE Calculator</div>
             <div class="tool-info-cat">Tax &amp; Finance</div>
@@ -347,7 +347,7 @@
           </div>
         </div>
         <div class="tool-info-save">
-          <button class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
+          <button type="button" class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             <span id="sidebarSaveLabel">Save to My Tools</span>
           </button>
@@ -355,7 +355,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
             <a class="tool-info-action" href="/salary-tax/">All Countries</a>
           </div>
         </div>
@@ -375,25 +375,25 @@
       <p>Enter your email to get a detailed PDF — we'll notify you when Tanzania tax rates change.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input name="bot-field"></p>
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country"      value="Tanzania">
         <input type="hidden" name="country_code" value="TZ">
         <input type="hidden" name="tool"         value="paye">
         <input type="hidden" name="tool_id"      value="tz-paye">
         <input type="hidden" name="currency"     value="TZS">
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
+        <input aria-label="Your name (optional)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
+        <input aria-label="Your email address" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
         <button class="modal-submit" type="submit">Get My PDF →</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">No thanks</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">No thanks</button>
     </div>
     <div class="modal-success" id="modalSuccess">
-      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
       <div class="big-check">✅</div>
       <h4>PDF opening now</h4>
       <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
     </div>
   </div>
 </div>
@@ -414,11 +414,11 @@
         </div>
       </div>
       <div class="ng-save-actions">
-        <button class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
+        <button type="button" class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
           Save to My Tools
         </button>
-        <button class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
+        <button type="button" class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Share
         </button>

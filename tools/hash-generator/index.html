@@ -28,10 +28,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -837,8 +837,8 @@
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -895,10 +895,10 @@
     <div>
       <!-- Tabs -->
       <div class="tabs">
-        <button class="tab-btn active" data-tab="text-tab">Text</button>
-        <button class="tab-btn" data-tab="file-tab">File</button>
-        <button class="tab-btn" data-tab="verify-tab">Verify</button>
-        <button class="tab-btn" data-tab="compare-tab">Compare</button>
+        <button type="button" class="tab-btn active" data-tab="text-tab">Text</button>
+        <button type="button" class="tab-btn" data-tab="file-tab">File</button>
+        <button type="button" class="tab-btn" data-tab="verify-tab">Verify</button>
+        <button type="button" class="tab-btn" data-tab="compare-tab">Compare</button>
       </div>
 
       <!-- TEXT TAB -->
@@ -907,9 +907,9 @@
           <div class="card-head">
             <span class="card-title">Text Hash Generator</span>
             <div class="encoding-row">
-              <button class="enc-btn active" data-enc="hex">Hex</button>
-              <button class="enc-btn" data-enc="base64">Base64</button>
-              <button class="enc-btn" data-enc="binary">Binary</button>
+              <button type="button" class="enc-btn active" data-enc="hex">Hex</button>
+              <button type="button" class="enc-btn" data-enc="base64">Base64</button>
+              <button type="button" class="enc-btn" data-enc="binary">Binary</button>
             </div>
           </div>
           <div class="card-body">
@@ -919,20 +919,20 @@
             </div>
             <div class="field">
               <label class="hmac-toggle">
-                <input type="checkbox" id="hmacToggle"> Enable HMAC (secret key)
+                <input aria-label="HmacToggle" type="checkbox" id="hmacToggle"> Enable HMAC (secret key)
               </label>
               <div class="hmac-row" id="hmacRow">
-                <input type="password" class="f-input" id="hmacKey" placeholder="Enter HMAC secret key" style="margin-top:8px">
+                <input aria-label="Enter HMAC secret key" type="password" class="f-input" id="hmacKey" placeholder="Enter HMAC secret key" style="margin-top:8px">
                 <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">Used for HMAC-SHA256 calculation</div>
               </div>
               <label class="hmac-toggle" style="margin-top:10px">
-                <input type="checkbox" id="pbkdf2Toggle"> Enable PBKDF2 key derivation
+                <input aria-label="Pbkdf2Toggle" type="checkbox" id="pbkdf2Toggle"> Enable PBKDF2 key derivation
               </label>
               <div class="hmac-row" id="pbkdf2Row" style="display:none">
-                <input type="text" class="f-input" id="pbkdf2Salt" placeholder="Salt (or leave blank for random)" style="margin-top:8px">
+                <input aria-label="Salt (or leave blank for random)" type="text" class="f-input" id="pbkdf2Salt" placeholder="Salt (or leave blank for random)" style="margin-top:8px">
                 <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
                   <label style="font-size:0.68rem;font-weight:600;color:#0d2813;white-space:nowrap">Iterations:</label>
-                  <input type="number" class="f-input" id="pbkdf2Iters" value="100000" min="1000" max="1000000" style="max-width:140px">
+                  <input aria-label="Pbkdf2Iters" type="number" class="f-input" id="pbkdf2Iters" value="100000" min="1000" max="1000000" style="max-width:140px">
                   <label style="font-size:0.68rem;font-weight:600;color:#0d2813;white-space:nowrap">Key size:</label>
                   <select class="f-select" id="pbkdf2KeySize" style="max-width:100px">
                     <option value="256">256-bit</option>
@@ -961,7 +961,7 @@
               <div class="drop-zone-text">Drop a file here or click to upload</div>
               <div class="drop-zone-sub">Any file type supported</div>
             </div>
-            <input type="file" id="fileInput" style="display:none">
+            <input aria-label="FileInput" type="file" id="fileInput" style="display:none">
             <div class="file-info" id="fileInfo"></div>
             <div class="progress-bar" id="progressBar">
               <div class="progress-fill" id="progressFill"></div>
@@ -981,14 +981,14 @@
           <div class="card-body">
             <div class="field">
               <label class="f-label"><span class="f-label-text">Known Hash / Checksum</span></label>
-              <input type="text" class="f-input" id="verifyHash" placeholder="Paste the expected hash here...">
+              <input aria-label="Paste the expected hash here" type="text" class="f-input" id="verifyHash" placeholder="Paste the expected hash here...">
               <div class="algo-detected" id="algoDetected"></div>
             </div>
             <div class="field">
               <label class="f-label"><span class="f-label-text">Text to Verify</span></label>
               <textarea class="f-textarea" id="verifyText" placeholder="Enter the text to check against the hash..." style="min-height:80px"></textarea>
             </div>
-            <button class="calc-btn" id="verifyBtn">Verify Checksum</button>
+            <button type="button" class="calc-btn" id="verifyBtn">Verify Checksum</button>
             <div class="verify-result" id="verifyResult"></div>
           </div>
         </div>
@@ -1017,18 +1017,18 @@
       </div>
 
       <!-- AI Panel -->
-      <button class="ai-toggle-btn" id="aiToggleBtn">✦ Ask AI about Hashing</button>
+      <button type="button" class="ai-toggle-btn" id="aiToggleBtn">✦ Ask AI about Hashing</button>
       <div class="ai-panel" id="aiPanel">
         <div class="card-body">
           <div class="ai-suggestions" id="aiSuggestions">
-            <button class="ai-suggest-btn" data-q="Which hash algorithm should I use for password storage?">Best for passwords?</button>
-            <button class="ai-suggest-btn" data-q="Is MD5 still safe for file checksums?">Is MD5 safe?</button>
-            <button class="ai-suggest-btn" data-q="What is the difference between SHA-256 and SHA-3?">SHA-256 vs SHA-3?</button>
+            <button type="button" class="ai-suggest-btn" data-q="Which hash algorithm should I use for password storage?">Best for passwords?</button>
+            <button type="button" class="ai-suggest-btn" data-q="Is MD5 still safe for file checksums?">Is MD5 safe?</button>
+            <button type="button" class="ai-suggest-btn" data-q="What is the difference between SHA-256 and SHA-3?">SHA-256 vs SHA-3?</button>
           </div>
           <div class="ai-messages" id="aiMessages"></div>
           <div class="ai-input-row">
-            <input type="text" class="ai-input" id="aiInput" placeholder="Ask about hashing..." maxlength="300">
-            <button class="ai-send-btn" id="aiSendBtn">Send</button>
+            <input aria-label="Ask about hashing" type="text" class="ai-input" id="aiInput" placeholder="Ask about hashing..." maxlength="300">
+            <button type="button" class="ai-send-btn" id="aiSendBtn">Send</button>
           </div>
           <div class="ai-powered">Powered by Claude</div>
         </div>
@@ -1256,13 +1256,13 @@
       html += '<div class="hash-item">';
       html += '<div class="hash-item-head"><span class="hash-algo">' + algo + '</span><span class="hash-meta">' + charCount + ' chars</span></div>';
       html += '<div class="hash-value" data-hex="' + hexVal + '">' + display + '</div>';
-      html += '<button class="copy-btn" data-val="' + display.replace(/"/g, '&quot;') + '">Copy</button>';
+      html += '<button type="button" class="copy-btn" data-val="' + display.replace(/"/g, '&quot;') + '">Copy</button>';
       html += '</div>';
       allText += algo + ': ' + display + '\n';
     });
     html += '</div>';
     if (allText) {
-      html += '<button class="copy-all-btn" id="copyAll_' + containerId + '">Copy All Hashes</button>';
+      html += '<button type="button" class="copy-all-btn" id="copyAll_' + containerId + '">Copy All Hashes</button>';
     }
     container.innerHTML = html;
 

@@ -3,7 +3,7 @@ const path = require('path');
 
 const root = process.cwd();
 const dir = path.join(root, 'fr', 'agriculture');
-const mojibakeTokens = ['Ã', 'Â', '�', 'â€™', 'â€œ', 'â€', 'â€“', 'â€”'];
+const mojibakeTokens = ['Ã', 'Â', '-', ''', '"', 'â€', '-', '-'];
 
 function walk(current) {
   const out = [];

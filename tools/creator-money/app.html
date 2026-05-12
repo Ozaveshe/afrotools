@@ -7,10 +7,10 @@
   <meta name="description" content="Track your creative income and expenses. See your real profitability at a glance.">
   <meta name="robots" content="noindex, follow">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=c677f6b2">
-  <script src="/assets/js/components/navbar.js?v=af1ede16" defer></script>
-  <script src="/assets/js/components/footer.js?v=7cf41589" defer></script>
+  <script src="/assets/js/components/navbar.js?v=3af89576" defer></script>
+  <script src="/assets/js/components/footer.js?v=625b18a7" defer></script>
   <script src="/engines/creator-money-engine.js?v=a7ac9402"></script>
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
@@ -32,9 +32,9 @@
 
       <!-- MONTH NAV -->
       <div class="cm-month-nav">
-        <button class="cm-month-btn" id="prev-month">‹</button>
+        <button type="button" class="cm-month-btn" id="prev-month">‹</button>
         <div class="cm-month-label" id="month-label">March 2026</div>
-        <button class="cm-month-btn" id="next-month">›</button>
+        <button type="button" class="cm-month-btn" id="next-month">›</button>
       </div>
 
       <!-- OVERVIEW CARD -->
@@ -76,14 +76,14 @@
         <div class="cm-section-title">AI Financial Insight</div>
         <div class="cm-ai-narrative" id="ai-narrative">Loading your financial insight...</div>
         <div class="cm-ai-presets">
-          <button class="cm-ai-preset" data-q="How am I doing this month? Give me the real talk.">How am I doing?</button>
-          <button class="cm-ai-preset" data-q="Where can I cut expenses without hurting my business?">Where can I save?</button>
-          <button class="cm-ai-preset" data-q="Based on my income, how much should I set aside for taxes?">Tax estimate</button>
+          <button type="button" class="cm-ai-preset" data-q="How am I doing this month? Give me the real talk.">How am I doing?</button>
+          <button type="button" class="cm-ai-preset" data-q="Where can I cut expenses without hurting my business?">Where can I save?</button>
+          <button type="button" class="cm-ai-preset" data-q="Based on my income, how much should I set aside for taxes?">Tax estimate</button>
         </div>
         <div class="cm-ai-chat" id="ai-chat"></div>
         <div class="cm-ai-input-row" style="margin-top:10px">
-          <input class="cm-ai-input" id="ai-input" placeholder="Ask about your finances...">
-          <button class="cm-ai-send" id="ai-send">Send</button>
+          <input aria-label="Ask about your finances" class="cm-ai-input" id="ai-input" placeholder="Ask about your finances...">
+          <button type="button" class="cm-ai-send" id="ai-send">Send</button>
         </div>
       </div>
 
@@ -110,7 +110,7 @@
       <a href="#" class="cm-fab-option" id="fab-income">💰 Add Income</a>
       <a href="#" class="cm-fab-option" id="fab-expense">📋 Add Expense</a>
     </div>
-    <button class="cm-fab" id="fab-btn">+</button>
+    <button type="button" class="cm-fab" id="fab-btn">+</button>
 
     <!-- BOTTOM NAV -->
     <div class="cm-bottom-nav">
@@ -123,42 +123,42 @@
       <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0A1628,#111827);border-radius:20px 20px 0 0;padding:24px 20px 40px;max-height:85vh;overflow-y:auto">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
           <div style="font-size:1rem;font-weight:900" id="modal-title">Add Transaction</div>
-          <button id="modal-close" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer">✕</button>
+          <button type="button" id="modal-close" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer">✕</button>
         </div>
 
         <!-- Mode toggle -->
         <div class="cm-mode-toggle">
-          <button class="cm-mode-btn income-mode active" id="mode-income">Income</button>
-          <button class="cm-mode-btn expense-mode" id="mode-expense">Expense</button>
+          <button type="button" class="cm-mode-btn income-mode active" id="mode-income">Income</button>
+          <button type="button" class="cm-mode-btn expense-mode" id="mode-expense">Expense</button>
         </div>
 
         <!-- Amount -->
         <div class="cm-amount-field">
           <div class="cm-amount-currency" id="modal-currency">NGN</div>
-          <input type="number" class="cm-amount-input" id="modal-amount" placeholder="0" inputmode="numeric">
+          <input aria-label="Modal amount" type="number" class="cm-amount-input" id="modal-amount" placeholder="0" inputmode="numeric">
         </div>
 
         <!-- Income sources (shown when income mode) -->
         <div id="income-fields">
           <div class="cm-field"><label class="cm-label">Source</label>
           <div class="cm-source-chips" id="source-chips"></div></div>
-          <div class="cm-field"><label class="cm-label">Description</label><input class="cm-input" id="modal-desc-income" placeholder="e.g., Wedding shoot — Adeyemi"></div>
+          <div class="cm-field"><label class="cm-label">Description</label><input aria-label="E.g., Wedding shoot — Adeyemi" class="cm-input" id="modal-desc-income" placeholder="e.g., Wedding shoot — Adeyemi"></div>
         </div>
 
         <!-- Expense categories (shown when expense mode) -->
         <div id="expense-fields" style="display:none">
           <div class="cm-field"><label class="cm-label">Category</label>
           <div class="cm-cat-grid" id="cat-grid"></div></div>
-          <div class="cm-field"><label class="cm-label">Description</label><input class="cm-input" id="modal-desc-expense" placeholder="e.g., Bolt ride to shoot"></div>
-          <div class="cm-field"><label class="cm-label">Vendor</label><input class="cm-input" id="modal-vendor" placeholder="e.g., Bolt, MTN, Adobe"></div>
+          <div class="cm-field"><label class="cm-label">Description</label><input aria-label="E.g., Bolt ride to shoot" class="cm-input" id="modal-desc-expense" placeholder="e.g., Bolt ride to shoot"></div>
+          <div class="cm-field"><label class="cm-label">Vendor</label><input aria-label="E.g., Bolt, MTN, Adobe" class="cm-input" id="modal-vendor" placeholder="e.g., Bolt, MTN, Adobe"></div>
           <div class="cm-toggle-row"><span class="cm-toggle-label">Business expense?</span><div class="cm-toggle on" id="modal-business"></div></div>
         </div>
 
         <!-- Shared fields -->
-        <div class="cm-field"><label class="cm-label">Date</label><input type="date" class="cm-input" id="modal-date"></div>
-        <div class="cm-field"><label class="cm-label">Notes (optional)</label><input class="cm-input" id="modal-notes" placeholder="Optional notes"></div>
+        <div class="cm-field"><label class="cm-label">Date</label><input aria-label="Modal date" type="date" class="cm-input" id="modal-date"></div>
+        <div class="cm-field"><label class="cm-label">Notes (optional)</label><input aria-label="Optional notes" class="cm-input" id="modal-notes" placeholder="Optional notes"></div>
 
-        <button class="cm-btn cm-btn-primary" id="modal-save" style="margin-top:8px">Save Transaction</button>
+        <button type="button" class="cm-btn cm-btn-primary" id="modal-save" style="margin-top:8px">Save Transaction</button>
       </div>
     </div>
 
@@ -167,13 +167,13 @@
       <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(135deg,#0A1628,#111827);border-radius:20px 20px 0 0;padding:24px 20px 40px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
           <div style="font-size:1rem;font-weight:900">New Financial Goal</div>
-          <button id="goal-modal-close" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer">✕</button>
+          <button type="button" id="goal-modal-close" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer">✕</button>
         </div>
-        <div class="cm-field"><label class="cm-label">Goal Name</label><input class="cm-input" id="goal-name" placeholder="e.g., New camera body"></div>
-        <div class="cm-field"><label class="cm-label">Target Amount</label><input type="number" class="cm-input" id="goal-target" placeholder="500000" inputmode="numeric"></div>
-        <div class="cm-field"><label class="cm-label">Already Saved</label><input type="number" class="cm-input" id="goal-current" placeholder="0" inputmode="numeric"></div>
-        <div class="cm-field"><label class="cm-label">Deadline</label><input type="date" class="cm-input" id="goal-deadline"></div>
-        <button class="cm-btn cm-btn-primary" id="goal-save" style="margin-top:8px">Add Goal</button>
+        <div class="cm-field"><label class="cm-label">Goal Name</label><input aria-label="E.g., New camera body" class="cm-input" id="goal-name" placeholder="e.g., New camera body"></div>
+        <div class="cm-field"><label class="cm-label">Target Amount</label><input aria-label="Goal target" type="number" class="cm-input" id="goal-target" placeholder="500000" inputmode="numeric"></div>
+        <div class="cm-field"><label class="cm-label">Already Saved</label><input aria-label="Goal current" type="number" class="cm-input" id="goal-current" placeholder="0" inputmode="numeric"></div>
+        <div class="cm-field"><label class="cm-label">Deadline</label><input aria-label="Goal deadline" type="date" class="cm-input" id="goal-deadline"></div>
+        <button type="button" class="cm-btn cm-btn-primary" id="goal-save" style="margin-top:8px">Add Goal</button>
       </div>
     </div>
   </div>

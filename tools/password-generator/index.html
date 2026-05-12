@@ -23,9 +23,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -101,8 +101,8 @@ details summary::-webkit-details-marker{display:none}
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -162,7 +162,7 @@ details summary::-webkit-details-marker{display:none}
         <div class="card-body">
           <div class="pw-display">
             <span class="pw-text" id="pwOutput">Click Generate</span>
-            <button class="pw-copy" id="copyBtn" onclick="copyPw()">Copy</button>
+            <button type="button" class="pw-copy" id="copyBtn" onclick="copyPw()">Copy</button>
           </div>
 
           <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
@@ -170,31 +170,31 @@ details summary::-webkit-details-marker{display:none}
 
           <div class="field" style="margin-top:18px">
             <div class="f-label"><span>Password Length</span><span class="f-value" id="lenVal">16</span></div>
-            <input type="range" class="slider" id="pwLen" min="4" max="128" value="16">
+            <input aria-label="PwLen" type="range" class="slider" id="pwLen" min="4" max="128" value="16">
           </div>
 
           <div class="toggle-row">
             <span class="toggle-label">Uppercase (A-Z)</span>
-            <label class="toggle"><input type="checkbox" id="useUpper" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="UseUpper" type="checkbox" id="useUpper" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
           <div class="toggle-row">
             <span class="toggle-label">Lowercase (a-z)</span>
-            <label class="toggle"><input type="checkbox" id="useLower" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="UseLower" type="checkbox" id="useLower" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
           <div class="toggle-row">
             <span class="toggle-label">Numbers (0-9)</span>
-            <label class="toggle"><input type="checkbox" id="useNumbers" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="UseNumbers" type="checkbox" id="useNumbers" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
           <div class="toggle-row">
             <span class="toggle-label">Symbols (!@#$%^&*)</span>
-            <label class="toggle"><input type="checkbox" id="useSymbols" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="UseSymbols" type="checkbox" id="useSymbols" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
           <div class="toggle-row">
             <span class="toggle-label">Exclude Ambiguous (0OIl1)</span>
-            <label class="toggle"><input type="checkbox" id="excludeAmbig"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="ExcludeAmbig" type="checkbox" id="excludeAmbig"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
 
-          <button class="gen-btn" onclick="generate()">Generate Password</button>
+          <button type="button" class="gen-btn" onclick="generate()">Generate Password</button>
         </div>
       </div>
 
@@ -203,11 +203,11 @@ details summary::-webkit-details-marker{display:none}
         <div class="card-body">
           <div class="field">
             <div class="f-label"><span>Number of Passwords</span><span class="f-value" id="bulkVal">5</span></div>
-            <input type="range" class="slider" id="bulkCount" min="1" max="50" value="5">
+            <input aria-label="BulkCount" type="range" class="slider" id="bulkCount" min="1" max="50" value="5">
           </div>
-          <button class="gen-btn" onclick="bulkGenerate()" style="margin-bottom:12px">Generate Bulk</button>
+          <button type="button" class="gen-btn" onclick="bulkGenerate()" style="margin-bottom:12px">Generate Bulk</button>
           <textarea class="bulk-area" id="bulkArea" readonly placeholder="Bulk passwords will appear here..."></textarea>
-          <button class="pw-copy" onclick="copyBulk()" style="margin-top:8px;width:100%;text-align:center;padding:10px">Copy All</button>
+          <button type="button" class="pw-copy" onclick="copyBulk()" style="margin-top:8px;width:100%;text-align:center;padding:10px">Copy All</button>
         </div>
       </div>
 
@@ -428,7 +428,7 @@ document.getElementById('bulkCount').addEventListener('input',function(){
 // Auto-generate on load
 generate();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>

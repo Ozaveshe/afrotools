@@ -14,9 +14,9 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, workspace items, and AfroPoints contribution status across Africa.">
     <title>My Dashboard | AfroTools</title>
-    <link rel="stylesheet" href="/assets/css/design-system.css?v=0d17fc50">
+    <link rel="stylesheet" href="/assets/css/design-system.css?v=ebd59ad2">
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-    <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="/assets/css/dashboard.css?v=42eaebcc">
     <script src="/assets/js/components/country-selector.js?v=a44c3b9a" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2754,11 +2754,11 @@
             <!-- Profile Editor (inline, expands below header) -->
             <div class="profile-editor" id="profileEditor">
                 <div class="editor-tabs">
-                    <button class="editor-tab active" data-tab="personal">Personal Info</button>
-                    <button class="editor-tab" data-tab="professional">Professional</button>
-                    <button class="editor-tab" data-tab="interests">Interests</button>
-                    <button class="editor-tab" data-tab="notifications">Notifications</button>
-                    <button class="editor-tab" data-tab="security" id="securityTab">Security</button>
+                    <button type="button" class="editor-tab active" data-tab="personal">Personal Info</button>
+                    <button type="button" class="editor-tab" data-tab="professional">Professional</button>
+                    <button type="button" class="editor-tab" data-tab="interests">Interests</button>
+                    <button type="button" class="editor-tab" data-tab="notifications">Notifications</button>
+                    <button type="button" class="editor-tab" data-tab="security" id="securityTab">Security</button>
                 </div>
 
                 <!-- Tab 1: Personal Info -->
@@ -2883,7 +2883,7 @@
                 <div class="editor-panel" data-panel="notifications">
                     <h3 style="font-size:1rem;font-weight:600;margin-bottom:16px;">Email Notifications</h3>
                     <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid #E2E8F0;border-radius:10px;cursor:pointer;">
-                        <input type="checkbox" id="editEmailDigest" style="accent-color:#007AFF;width:18px;height:18px;margin-top:2px;flex-shrink:0;">
+                        <input aria-label="EditEmailDigest" type="checkbox" id="editEmailDigest" style="accent-color:#007AFF;width:18px;height:18px;margin-top:2px;flex-shrink:0;">
                         <span>
                             <span style="font-size:0.92rem;font-weight:500;color:#1e293b;display:block;">Monthly financial digest</span>
                             <span style="font-size:0.82rem;color:#64748b;">Your take-home, FX rates, salary benchmarks, and tool recommendations — sent on the 1st of each month.</span>
@@ -3065,7 +3065,7 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
-    <script src="/assets/js/components/tool-registry.min.js?v=12ef6a56" defer></script>
+    <script src="/assets/js/components/tool-registry.min.js?v=99d9d3db" defer></script>
     <script src="/assets/js/afro-auth.js?v=3978e101"></script>
     <script src="/assets/js/components/auth-modal.js?v=3f65305a"></script>
     <script src="/assets/js/auth-cookie-upgrade.js?v=14c038dc"></script>
@@ -3078,8 +3078,8 @@
     <script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
     <script src="/dashboard/dashboard-app.js?v=bac4c024"></script>
     <script src="/dashboard/afropoints-lane-account.js?v=401e149a"></script>
-    <script src="/assets/js/components/navbar.min.js?v=ca6bb4e6"></script>
-    <script src="/assets/js/components/footer.min.js?v=0c96f8e4"></script>
+    <script src="/assets/js/components/navbar.min.js?v=01d16ada"></script>
+    <script src="/assets/js/components/footer.min.js?v=d60a94ba"></script>
 
     <script>
         let currentUser = null;
@@ -5478,8 +5478,8 @@
                     '</div>' +
                 '</div>' +
                 '<div class="nudge-actions">' +
-                    '<button class="nudge-btn" onclick="openProfileEditor()">' + nudgeBtnText + '</button>' +
-                    '<button class="nudge-dismiss" onclick="this.closest(\'#profileNudge\').style.display=\'none\';localStorage.setItem(\'afro_nudge_dismissed\',\'1\')">Dismiss</button>' +
+                    '<button type="button" class="nudge-btn" onclick="openProfileEditor()">' + nudgeBtnText + '</button>' +
+                    '<button type="button" class="nudge-dismiss" onclick="this.closest(\'#profileNudge\').style.display=\'none\';localStorage.setItem(\'afro_nudge_dismissed\',\'1\')">Dismiss</button>' +
                 '</div>' +
             '</div>';
         }
@@ -6985,7 +6985,7 @@
             }
 
             var html = '<div class="ws-tabs">' + tabs.map(function(t, i) {
-                return '<button class="ws-tab' + (i === 0 ? ' active' : '') + '" data-ws="' + t.id + '">' + t.icon + ' ' + t.label + '</button>';
+                return '<button type="button" class="ws-tab' + (i === 0 ? ' active' : '') + '" data-ws="' + t.id + '">' + t.icon + ' ' + t.label + '</button>';
             }).join('') + '</div>';
 
             html += '<div class="ws-panels">';
@@ -7159,7 +7159,7 @@
                 var formatted = new Date(data.latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                 var displayValue = data.count + ' saved item' + (data.count !== 1 ? 's' : '');
                 var href = dashSafeHref('/tools/' + String(toolId || '').replace(/[^a-z0-9-]/gi, '') + '/');
-                return '<div class="saved-item"><div class="saved-content"><h3>' + dashEscapeHtml(meta.name || toolId || 'Tool') + '</h3><div class="saved-value">' + dashEscapeHtml(displayValue) + '</div><div class="saved-meta">Last used: ' + dashEscapeHtml(formatted) + '</div></div><div class="saved-actions"><a href="' + dashEscapeHtml(href) + '" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">View</a><button class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;" onclick="clearSaved(\'' + dashEscapeJsString(toolId) + '\')">Clear</button></div></div>';
+                return '<div class="saved-item"><div class="saved-content"><h3>' + dashEscapeHtml(meta.name || toolId || 'Tool') + '</h3><div class="saved-value">' + dashEscapeHtml(displayValue) + '</div><div class="saved-meta">Last used: ' + dashEscapeHtml(formatted) + '</div></div><div class="saved-actions"><a href="' + dashEscapeHtml(href) + '" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">View</a><button type="button" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;" onclick="clearSaved(\'' + dashEscapeJsString(toolId) + '\')">Clear</button></div></div>';
             }).join('');
         }
 
@@ -7426,8 +7426,8 @@
                     '<div class="cv-card-meta">' + dashEscapeHtml(person) + ' &middot; ' + dashEscapeHtml(tmpl) + ' &middot; ' + dashEscapeHtml(time) + '</div>' +
                     '<div class="cv-card-actions">' +
                         '<a class="cv-card-edit" href="' + dashEscapeHtml(href) + '">Edit</a>' +
-                        '<button class="cv-card-dup" onclick="duplicateDashboardCV(\'' + jsId + '\')">Duplicate</button>' +
-                        '<button class="cv-card-del" onclick="deleteDashboardCV(\'' + jsId + '\')">Delete</button>' +
+                        '<button type="button" class="cv-card-dup" onclick="duplicateDashboardCV(\'' + jsId + '\')">Duplicate</button>' +
+                        '<button type="button" class="cv-card-del" onclick="deleteDashboardCV(\'' + jsId + '\')">Delete</button>' +
                     '</div>' +
                 '</div>';
             }).join('') + '</div>';
@@ -7494,8 +7494,8 @@
                     '<div class="cv-card-meta">' + dashEscapeHtml(p.rooms || 0) + ' rooms &middot; ' + dashEscapeHtml(areaText) + ' &middot; ' + dashEscapeHtml(time) + '</div>' +
                     '<div class="cv-card-actions">' +
                         '<a class="cv-card-edit" href="' + dashEscapeHtml(href) + '">Edit</a>' +
-                        '<button class="cv-card-dup" onclick="duplicateDashboardFP(\'' + jsId + '\')">Duplicate</button>' +
-                        '<button class="cv-card-del" onclick="deleteDashboardFP(\'' + jsId + '\')">Delete</button>' +
+                        '<button type="button" class="cv-card-dup" onclick="duplicateDashboardFP(\'' + jsId + '\')">Duplicate</button>' +
+                        '<button type="button" class="cv-card-del" onclick="deleteDashboardFP(\'' + jsId + '\')">Delete</button>' +
                     '</div>' +
                 '</div>';
             }).join('') + '</div>';
@@ -7655,7 +7655,7 @@
 .ai-panel-footer { padding: 6px 14px 10px; text-align: center; font-size: 0.68rem; color: #94A3B8; }
 </style>
 
-<button class="ai-fab" id="aiFab" onclick="toggleAiPanel()" title="Ask AI">
+<button type="button" class="ai-fab" id="aiFab" onclick="toggleAiPanel()" title="Ask AI">
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
 </button>
 
@@ -7664,14 +7664,14 @@
     <div class="ai-dot"></div>
     <span>AI Assistant</span>
     <small style="font-size:0.65rem;color:rgba(255,255,255,0.4);margin-left:4px;">Powered by Claude</small>
-    <button class="close-btn" onclick="toggleAiPanel()">&times;</button>
+    <button type="button" class="close-btn" onclick="toggleAiPanel()">&times;</button>
   </div>
   <div class="ai-panel-msgs" id="aiPanelMsgs">
     <div class="ai-msg bot">Hi! I'm your AfroTools assistant. Ask me about AfroTools, tax, finance, or finding the right tool.</div>
   </div>
   <div class="ai-panel-input">
-    <input id="aiPanelIn" placeholder="Ask a question..." onkeydown="if(event.key==='Enter')sendAiChat()">
-    <button id="aiPanelSend" onclick="sendAiChat()">Send</button>
+    <input aria-label="Ask a question" id="aiPanelIn" placeholder="Ask a question..." onkeydown="if(event.key==='Enter')sendAiChat()">
+    <button type="button" id="aiPanelSend" onclick="sendAiChat()">Send</button>
   </div>
   <div class="ai-panel-footer" id="aiPanelFooter"></div>
 </div>

@@ -29,11 +29,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/legal.css?v=af6e9e60">
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/data/legal/country-legal-index.js?v=02e28276" defer></script>
 <script src="/engines/legal-engine.js?v=cade292f" defer></script>
 <style>
@@ -81,7 +81,7 @@ function copyFrom(id,btn){var el=q(id);var txt=el ? (el.value || el.textContent 
 
 
 var CHECKER={"title":"Kenya DPA self-assessment","items":["ODPC registration status imekaguliwa","Privacy notice iko wazi","Lawful basis kwa kila processing activity ipo","Data minimisation imepangwa","Data subject rights process ipo","DPO au privacy lead ameteuliwa pale inahitajika","Processor contracts zipo","Cross-border transfer basis imekaguliwa","Breach notification process ipo","Retention schedule ipo","Security safeguards zimeandikwa","Consent records zinahifadhiwa","Sensitive data controls zipo","Children data controls zipo","DPIA kwa high-risk processing imefanywa","Staff training imefanyika","Evidence folder iko tayari","Management review imefanyika"]};
-function renderChecker(){q('checkerList').innerHTML=CHECKER.items.map(function(item,i){return '<label class="check"><input type="checkbox" id="chk'+i+'" onchange="updateChecker()"> '+item+'</label>';}).join('');updateChecker();}
+function renderChecker(){q('checkerList').innerHTML=CHECKER.items.map(function(item,i){return '<label class="check"><input aria-label="Chk'+i+'" type="checkbox" id="chk'+i+'" onchange="updateChecker()"> '+item+'</label>';}).join('');updateChecker();}
 function updateChecker(){var yes=0;for(var i=0;i<CHECKER.items.length;i++){var el=q('chk'+i);if(el&&el.checked)yes++;}var pct=Math.round(yes/CHECKER.items.length*100);q('scorePct').textContent=pct+'%';q('scoreCount').textContent=yes+'/'+CHECKER.items.length;q('scoreLabel').textContent=pct>=80?'Utayari mzuri':pct>=50?'Mapengo ya kati':'Mapengo makubwa';}
 function showCheckerReport(){var done=[];var todo=[];for(var i=0;i<CHECKER.items.length;i++){var el=q('chk'+i);(el&&el.checked?done:todo).push(CHECKER.items[i]);}var pct=Math.round(done.length/CHECKER.items.length*100);var out=CHECKER.title+'\\nScore: '+pct+'% ('+done.length+'/'+CHECKER.items.length+')\\n\\nVimekamilika:\\n- '+(done.length?done.join('\\n- '):'Hakuna kipengele kilichochaguliwa')+'\\n\\nGaps za kufuatilia:\\n- '+(todo.length?todo.join('\\n- '):'Hakuna gap kubwa kwenye checklist hii')+'\\n\\nHatua inayofuata: tengeneza evidence folder, privacy notice, DPA, breach plan na records zinazohitajika, kisha thibitisha na regulator, DPO, lawyer au privacy professional.\\n\\nKanusho: Score hii si uthibitisho rasmi wa compliance au kuepuka faini.';q('checkerText').textContent=out;show('checkerResult');}
 renderChecker();

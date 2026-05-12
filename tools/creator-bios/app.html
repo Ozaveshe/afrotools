@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=694eaa11">
   <style>
     /* ── BioForge SaaS Dashboard ── */
@@ -423,6 +423,9 @@
   </style>
 <link rel="canonical" href="https://afrotools.com/tools/creator-bios/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-bios/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cb-app">
 
@@ -454,17 +457,17 @@
         <a href="index.html" class="bf-topbar-logo">&#127807; BioForge</a>
       </div>
       <div class="bf-tabs" id="bfTabs">
-        <button class="bf-tab active" data-tab="generate">Generate</button>
-        <button class="bf-tab" data-tab="biosheet">Bio Sheet</button>
-        <button class="bf-tab" data-tab="history">History</button>
-        <button class="bf-tab" data-tab="compare">Compare</button>
+        <button type="button" class="bf-tab active" data-tab="generate">Generate</button>
+        <button type="button" class="bf-tab" data-tab="biosheet">Bio Sheet</button>
+        <button type="button" class="bf-tab" data-tab="history">History</button>
+        <button type="button" class="bf-tab" data-tab="compare">Compare</button>
       </div>
       <div class="bf-topbar-right">
         <div class="bf-user-pill" id="bfUserPill">
           <div class="bf-user-avatar" id="bfUserAvatar">?</div>
           <span class="bf-user-name" id="bfUserName"></span>
         </div>
-        <button class="bf-signout-btn" id="bfSignOut">Sign Out</button>
+        <button type="button" class="bf-signout-btn" id="bfSignOut">Sign Out</button>
       </div>
     </div>
 
@@ -496,12 +499,12 @@
 
             <div class="bf-field">
               <label class="bf-label">Key Achievement</label>
-              <input class="bf-input" id="bfAchievement" placeholder="e.g. Shot campaigns for 50+ African brands" />
+              <input aria-label="E.g. Shot campaigns for 50+ African brands" class="bf-input" id="bfAchievement" placeholder="e.g. Shot campaigns for 50+ African brands" />
             </div>
 
             <div class="bf-field">
               <label class="bf-label">Location</label>
-              <input class="bf-input" id="bfLocation" placeholder="e.g. Lagos, Nigeria" />
+              <input aria-label="E.g. Lagos, Nigeria" class="bf-input" id="bfLocation" placeholder="e.g. Lagos, Nigeria" />
             </div>
 
             <div class="bf-field">
@@ -587,7 +590,7 @@
         <div class="bf-tab-panel" id="panelHistory">
           <div class="bf-sheet-header">
             <div class="bf-sheet-title">Generation History</div>
-            <button class="bf-action-btn" id="bfClearHistory">Clear All</button>
+            <button type="button" class="bf-action-btn" id="bfClearHistory">Clear All</button>
           </div>
           <div id="bfHistoryList">
             <div class="bf-empty">
@@ -621,7 +624,7 @@
     <div class="bf-preview-modal">
       <div class="bf-preview-head">
         <h3 id="bfPreviewTitle">Bio Preview</h3>
-        <button class="bf-preview-close" id="bfPreviewClose">&times;</button>
+        <button type="button" class="bf-preview-close" id="bfPreviewClose">&times;</button>
       </div>
       <div class="bf-preview-body" id="bfPreviewBody"></div>
     </div>
@@ -973,9 +976,9 @@
     html += '<div class="bf-sheet-header">';
     html += '<div class="bf-sheet-title">Your Bio Sheet</div>';
     html += '<div class="bf-sheet-actions">';
-    html += '<button class="bf-action-btn" onclick="window._bfCopyAll()">&#128203; Copy All</button>';
-    html += '<button class="bf-action-btn" onclick="window._bfExport()">&#128229; Export</button>';
-    html += '<button class="bf-action-btn primary" onclick="window._bfRefresh()">&#8635; Refresh All</button>';
+    html += '<button type="button" class="bf-action-btn" onclick="window._bfCopyAll()">&#128203; Copy All</button>';
+    html += '<button type="button" class="bf-action-btn" onclick="window._bfExport()">&#128229; Export</button>';
+    html += '<button type="button" class="bf-action-btn primary" onclick="window._bfRefresh()">&#8635; Refresh All</button>';
     html += '</div></div>';
     html += '<div class="bf-bio-grid">';
 
@@ -992,10 +995,10 @@
       html += '<div class="bf-bio-card-head">';
       html += '<div class="bf-platform-badge"><span class="bf-platform-icon">' + pInfo.icon + '</span> ' + pInfo.label + '</div>';
       html += '<div class="bf-card-actions">';
-      html += '<button class="bf-card-btn' + (isFav ? ' fav-active' : '') + '" onclick="window._bfToggleFav(\'' + bio.platform + '\')" title="Favorite">&#9733;</button>';
-      html += '<button class="bf-card-btn" onclick="window._bfPreview(\'' + bio.platform + '\')" title="Preview">&#128065;</button>';
-      html += '<button class="bf-card-btn" onclick="window._bfCopySingle(\'' + bio.platform + '\')" title="Copy">&#128203;</button>';
-      html += '<button class="bf-card-btn" onclick="window._bfRegenSingle(\'' + bio.platform + '\')" title="Redo">&#8635;</button>';
+      html += '<button type="button" class="bf-card-btn' + (isFav ? ' fav-active' : '') + '" onclick="window._bfToggleFav(\'' + bio.platform + '\')" title="Favorite">&#9733;</button>';
+      html += '<button type="button" class="bf-card-btn" onclick="window._bfPreview(\'' + bio.platform + '\')" title="Preview">&#128065;</button>';
+      html += '<button type="button" class="bf-card-btn" onclick="window._bfCopySingle(\'' + bio.platform + '\')" title="Copy">&#128203;</button>';
+      html += '<button type="button" class="bf-card-btn" onclick="window._bfRegenSingle(\'' + bio.platform + '\')" title="Redo">&#8635;</button>';
       html += '</div></div>';
       html += '<div class="bf-bio-text" contenteditable="true" data-platform="' + bio.platform + '" data-limit="' + limit + '">' + escapeHtml(bio.text || '') + '</div>';
       html += '<div class="bf-char-bar"><div class="bf-char-fill ' + cls + '" style="width:' + widthPct + '%"></div></div>';
@@ -1054,8 +1057,8 @@
     // Reuse same render
     var bios = currentBios.bios;
     var html = '<div class="bf-sheet-header"><div class="bf-sheet-title">Complete Bio Sheet</div>';
-    html += '<div class="bf-sheet-actions"><button class="bf-action-btn" onclick="window._bfCopyAll()">&#128203; Copy All</button>';
-    html += '<button class="bf-action-btn" onclick="window._bfExport()">&#128229; Export</button></div></div>';
+    html += '<div class="bf-sheet-actions"><button type="button" class="bf-action-btn" onclick="window._bfCopyAll()">&#128203; Copy All</button>';
+    html += '<button type="button" class="bf-action-btn" onclick="window._bfExport()">&#128229; Export</button></div></div>';
     html += '<div style="display:flex;flex-direction:column;gap:12px;">';
 
     bios.forEach(function(bio) {
@@ -1114,8 +1117,8 @@
       html += '<div class="bf-history-meta">' + dateStr + ' ' + timeStr + ' &middot; ' + bioCount + ' bios &middot; ' + (item.vibe || 'professional') + '</div>';
       html += '</div>';
       html += '<div class="bf-history-actions">';
-      html += '<button class="bf-action-btn" onclick="window._bfRestoreHistory(' + idx + ')">Restore</button>';
-      html += '<button class="bf-action-btn" onclick="window._bfCompareHistory(' + idx + ')">Compare</button>';
+      html += '<button type="button" class="bf-action-btn" onclick="window._bfRestoreHistory(' + idx + ')">Restore</button>';
+      html += '<button type="button" class="bf-action-btn" onclick="window._bfCompareHistory(' + idx + ')">Compare</button>';
       html += '</div></div>';
     });
     html += '</div>';

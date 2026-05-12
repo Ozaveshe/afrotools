@@ -7,10 +7,13 @@
   <meta name="robots" content="noindex, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=82766a6e">
 <link rel="canonical" href="https://afrotools.com/tools/creator-mind/history">
 <meta property="og:url" content="https://afrotools.com/tools/creator-mind/history">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cmn-app">
 
@@ -23,7 +26,7 @@
 
   <div class="cmn-history-page">
     <div class="cmn-history-header">
-      <input class="cmn-history-search" id="searchInput" placeholder="Search generations...">
+      <input aria-label="Search generations" class="cmn-history-search" id="searchInput" placeholder="Search generations...">
     </div>
 
     <div class="cmn-history-filters" id="filterBar"></div>
@@ -43,14 +46,14 @@
     <div style="max-width:600px;margin:40px auto;background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <span id="detailType" style="font-size:12px;font-weight:700;text-transform:uppercase;color:#D946EF;letter-spacing:.5px;"></span>
-        <button onclick="document.getElementById('detailModal').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;">&times;</button>
+        <button type="button" onclick="document.getElementById('detailModal').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;">&times;</button>
       </div>
       <div id="detailContent" class="cmn-output-text" style="margin-bottom:16px;"></div>
       <div style="display:flex;gap:8px;">
-        <button class="cmn-output-btn" onclick="window._histCopy()">&#128203; Copy</button>
-        <button class="cmn-output-btn" onclick="window._histWhatsApp()">&#128172; WhatsApp</button>
-        <button class="cmn-output-btn" id="detailFavBtn" onclick="window._histToggleFav()">&#11088; Favorite</button>
-        <button class="cmn-output-btn" style="margin-left:auto;color:#ef4444;" onclick="window._histDelete()">&#128465; Delete</button>
+        <button type="button" class="cmn-output-btn" onclick="window._histCopy()">&#128203; Copy</button>
+        <button type="button" class="cmn-output-btn" onclick="window._histWhatsApp()">&#128172; WhatsApp</button>
+        <button type="button" class="cmn-output-btn" id="detailFavBtn" onclick="window._histToggleFav()">&#11088; Favorite</button>
+        <button type="button" class="cmn-output-btn" style="margin-left:auto;color:#ef4444;" onclick="window._histDelete()">&#128465; Delete</button>
       </div>
     </div>
   </div>
@@ -138,7 +141,7 @@
           '<div class="cmn-history-card-meta"><span>' + timeStr + '</span></div>' +
         '</div>' +
         '<div class="cmn-history-card-actions">' +
-          '<button class="cmn-history-star' + (item.isFavorite ? ' active' : '') + '" data-id="' + item.id + '">&#11088;</button>' +
+          '<button type="button" class="cmn-history-star' + (item.isFavorite ? ' active' : '') + '" data-id="' + item.id + '">&#11088;</button>' +
         '</div>' +
       '</div>';
     }).join('');

@@ -27,10 +27,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="../../assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="../../assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="../../assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=5ea7102b">
-<script src="../../assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="../../assets/js/components/footer.js?v=7cf41589" defer></script>
+<script src="../../assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="../../assets/js/components/footer.js?v=625b18a7" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;line-height:1.6}
@@ -159,14 +159,14 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
     <!-- ── FORM PANEL ── -->
     <div class="form-panel">
       <div class="action-bar">
-        <button class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
-        <button class="btn-secondary" onclick="resetForm()">Reset Form</button>
+        <button type="button" class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
+        <button type="button" class="btn-secondary" onclick="resetForm()">Reset Form</button>
       </div>
 
       <!-- Shipper -->
       <div class="form-section">
         <div class="section-title">Shipper / Exporter</div>
-        <div class="form-row"><div class="fg"><label>Name</label><input type="text" id="shipperName" oninput="renderDoc()" placeholder="Exporting company name"></div></div>
+        <div class="form-row"><div class="fg"><label>Name</label><input aria-label="Exporting company name" type="text" id="shipperName" oninput="renderDoc()" placeholder="Exporting company name"></div></div>
         <div class="form-row"><div class="fg"><label>Address</label><textarea id="shipperAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, State/Province"></textarea></div></div>
         <div class="form-row"><div class="fg"><label>Country</label><select id="shipperCountry" onchange="renderDoc()"></select></div></div>
       </div>
@@ -174,7 +174,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <!-- Consignee -->
       <div class="form-section">
         <div class="section-title">Consignee</div>
-        <div class="form-row"><div class="fg"><label>Name</label><input type="text" id="consigneeName" oninput="renderDoc()" placeholder="Importing company / recipient"></div></div>
+        <div class="form-row"><div class="fg"><label>Name</label><input aria-label="Importing company / recipient" type="text" id="consigneeName" oninput="renderDoc()" placeholder="Importing company / recipient"></div></div>
         <div class="form-row"><div class="fg"><label>Address</label><textarea id="consigneeAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, Country"></textarea></div></div>
         <div class="form-row"><div class="fg"><label>Country</label><select id="consigneeCountry" onchange="renderDoc()"></select></div></div>
       </div>
@@ -183,8 +183,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">Notify Party</div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Name</label><input type="text" id="notifyName" oninput="renderDoc()" placeholder="Freight agent / broker"></div>
-          <div class="fg"><label>Address</label><input type="text" id="notifyAddr" oninput="renderDoc()" placeholder="City, Country"></div>
+          <div class="fg"><label>Name</label><input aria-label="Freight agent / broker" type="text" id="notifyName" oninput="renderDoc()" placeholder="Freight agent / broker"></div>
+          <div class="fg"><label>Address</label><input aria-label="City, Country" type="text" id="notifyAddr" oninput="renderDoc()" placeholder="City, Country"></div>
         </div>
       </div>
 
@@ -192,16 +192,16 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">Document Information</div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>PL Number</label><input type="text" id="plNumber" oninput="renderDoc()"></div>
-          <div class="fg"><label>Date</label><input type="date" id="plDate" onchange="renderDoc()"></div>
+          <div class="fg"><label>PL Number</label><input aria-label="PlNumber" type="text" id="plNumber" oninput="renderDoc()"></div>
+          <div class="fg"><label>Date</label><input aria-label="PlDate" type="date" id="plDate" onchange="renderDoc()"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Invoice Reference</label><input type="text" id="plInvRef" oninput="renderDoc()" placeholder="INV-2024-001"></div>
-          <div class="fg"><label>Vessel / Voyage</label><input type="text" id="plVessel" oninput="renderDoc()" placeholder="MV Ocean Star / 142N"></div>
+          <div class="fg"><label>Invoice Reference</label><input aria-label="INV 2024 001" type="text" id="plInvRef" oninput="renderDoc()" placeholder="INV-2024-001"></div>
+          <div class="fg"><label>Vessel / Voyage</label><input aria-label="MV Ocean Star / 142N" type="text" id="plVessel" oninput="renderDoc()" placeholder="MV Ocean Star / 142N"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Port of Loading</label><input type="text" id="plPOL" oninput="renderDoc()" placeholder="Tema, Ghana"></div>
-          <div class="fg"><label>Port of Discharge</label><input type="text" id="plPOD" oninput="renderDoc()" placeholder="Durban, South Africa"></div>
+          <div class="fg"><label>Port of Loading</label><input aria-label="Tema, Ghana" type="text" id="plPOL" oninput="renderDoc()" placeholder="Tema, Ghana"></div>
+          <div class="fg"><label>Port of Discharge</label><input aria-label="Durban, South Africa" type="text" id="plPOD" oninput="renderDoc()" placeholder="Durban, South Africa"></div>
         </div>
         <div class="form-row">
           <div class="fg"><label>Country of Origin</label><select id="plOrigin" onchange="renderDoc()"></select></div>
@@ -230,7 +230,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
             <tbody id="pkgBody"></tbody>
           </table>
         </div>
-        <button class="btn-add" onclick="addPackage()">+ Add Package</button>
+        <button type="button" class="btn-add" onclick="addPackage()">+ Add Package</button>
         <div class="totals-summary" id="totalsSummary">
           <div class="totals-row"><span>Total Packages</span><span id="tPkgs">0</span></div>
           <div class="totals-row"><span>Total Net Weight</span><span id="tNetWt">0.000 kg</span></div>
@@ -314,25 +314,25 @@ function addPackage(){
   tr.id = `pkg-row-${id}`;
   const total = document.querySelectorAll('#pkgBody tr').length + 1;
   tr.innerHTML = `
-    <td><input type="text" placeholder="MARK-01" oninput="calcPkg()"></td>
-    <td><input type="text" placeholder="${total} of ?" style="width:56px" oninput="calcPkg()"></td>
+    <td><input aria-label="MARK 01" type="text" placeholder="MARK-01" oninput="calcPkg()"></td>
+    <td><input aria-label="$ total of ?" type="text" placeholder="${total} of ?" style="width:56px" oninput="calcPkg()"></td>
     <td><select onchange="calcPkg()">
       <option>Carton</option><option>Pallet</option><option>Crate</option>
       <option>Bundle</option><option>Drum</option><option>Bag</option>
     </select></td>
-    <td><input type="text" placeholder="Description of goods" oninput="calcPkg()"></td>
+    <td><input aria-label="Description of goods" type="text" placeholder="Description of goods" oninput="calcPkg()"></td>
     <td><input type="number" placeholder="1" min="0" step="any" style="width:48px" value="1" oninput="calcPkg()"></td>
-    <td><input type="number" placeholder="0" min="0" step="any" style="width:60px" value="0" id="net-${id}" oninput="calcPkg()"></td>
-    <td><input type="number" placeholder="0" min="0" step="any" style="width:60px" value="0" oninput="calcPkg()"></td>
+    <td><input aria-label="Net $ id" type="number" placeholder="0" min="0" step="any" style="width:60px" value="0" id="net-${id}" oninput="calcPkg()"></td>
+    <td><input aria-label="Line item amount" type="number" placeholder="0" min="0" step="any" style="width:60px" value="0" oninput="calcPkg()"></td>
     <td>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px">
-        <input type="number" placeholder="L" min="0" step="any" id="dim-l-${id}" value="0" oninput="calcCBM(${id})">
-        <input type="number" placeholder="W" min="0" step="any" id="dim-w-${id}" value="0" oninput="calcCBM(${id})">
-        <input type="number" placeholder="H" min="0" step="any" id="dim-h-${id}" value="0" oninput="calcCBM(${id})">
+        <input aria-label="L" type="number" placeholder="L" min="0" step="any" id="dim-l-${id}" value="0" oninput="calcCBM(${id})">
+        <input aria-label="W" type="number" placeholder="W" min="0" step="any" id="dim-w-${id}" value="0" oninput="calcCBM(${id})">
+        <input aria-label="H" type="number" placeholder="H" min="0" step="any" id="dim-h-${id}" value="0" oninput="calcCBM(${id})">
       </div>
     </td>
     <td class="td-auto" id="cbm-${id}">0.000</td>
-    <td><button class="btn-remove" onclick="removePkg(${id})">&#10005;</button></td>
+    <td><button type="button" class="btn-remove" onclick="removePkg(${id})">&#10005;</button></td>
   `;
   tbody.appendChild(tr);
   calcPkg();

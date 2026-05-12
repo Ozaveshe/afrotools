@@ -16,11 +16,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/jamb.css?v=ad1858eb">
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <!-- afro-edu-bridge -->
 <script src="/assets/js/afro-auth.js?v=3978e101" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
@@ -52,7 +52,7 @@ if (typeof window.fbq === "function") {
 <meta property="og:url" content="https://afrotools.com/jamb/past-questions/">
 </head>
 <body class="jamb-page">
-<noscript><img height="1" width="1" style="display:none"
+<noscript><img aria-hidden="true" alt="" height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 /></noscript>
 <a href="#main" class="jb-skip">Skip to main content</a>
@@ -97,11 +97,11 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
       </div>
       <div style="flex:2;min-width:200px;">
         <label style="display:block;font-size:.7rem;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Search</label>
-        <input id="f-search" type="search" placeholder="e.g. photosynthesis, quadratic" style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-family:inherit;font-size:.85rem;">
+        <input aria-label="E.g. photosynthesis, quadratic" id="f-search" type="search" placeholder="e.g. photosynthesis, quadratic" style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-family:inherit;font-size:.85rem;">
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <label style="font-size:.78rem;color:#64748b;display:flex;align-items:center;gap:6px;cursor:pointer;">
-          <input id="f-answered" type="checkbox" checked> only answered
+          <input aria-label="F answered" id="f-answered" type="checkbox" checked> only answered
         </label>
       </div>
     </div>
@@ -111,7 +111,7 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
     <div id="q-list" style="display:flex;flex-direction:column;gap:14px;"></div>
 
     <div id="load-more-wrap" style="text-align:center;margin-top:24px;" hidden>
-      <button id="load-more" class="jb-btn" style="background:#fff;border:1.5px solid #007AFF;color:#007AFF;">Load more →</button>
+      <button type="button" id="load-more" class="jb-btn" style="background:#fff;border:1.5px solid #007AFF;color:#007AFF;">Load more →</button>
     </div>
 
   </div>
@@ -334,8 +334,8 @@ function renderQCard(q) {
     + '<div class="qcard-text">' + escapeHtml(q.question) + '</div>'
     + '<div class="qcard-opts">' + optsHtml + '</div>'
     + '<div class="qcard-actions">'
-    + (q.answer ? '<button class="reveal-btn primary">Reveal answer</button>' : '<button class="reveal-btn" disabled style="opacity:.5;cursor:not-allowed;">No answer key</button>')
-    + '<button class="explain-btn">🤖 Explain with AI</button>'
+    + (q.answer ? '<button type="button" class="reveal-btn primary">Reveal answer</button>' : '<button type="button" class="reveal-btn" disabled style="opacity:.5;cursor:not-allowed;">No answer key</button>')
+    + '<button type="button" class="explain-btn">🤖 Explain with AI</button>'
     + '</div>';
 
   // Reveal interaction

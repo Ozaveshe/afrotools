@@ -83,8 +83,8 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -106,7 +106,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 <div class="card">
 <div class="tone-guide"><strong>Mwongozo wa tone marks za Kiyoruba:</strong> Yoruba is a tonal language with 3 tones: High (marked with acute accent: a), Mid (unmarked: a), and Low (marked with grave accent: a). The tone changes the meaning kati ya words completely.</div>
 <h2>Tafuta misemo <span class="count-badge" id="countBadge">0 misemo</span></h2>
-<div class="search-box"><input type="text" id="search" placeholder="Tafuta kwa Kiingereza au Kiyoruba..." oninput="filter()"></div>
+<div class="search-box"><input aria-label="Tafuta kwa Kiingereza au Kiyoruba" type="text" id="search" placeholder="Tafuta kwa Kiingereza au Kiyoruba..." oninput="filter()"></div>
 <div class="cats" id="cats"></div>
 </div>
 <div class="card"><div class="phrase-list" id="phrases"></div></div>
@@ -135,9 +135,9 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 <strong>Angalizo:</strong> Mtafsiri wa Kiyoruba ni zana ya kujifunza, kupanga na kuelewa maana ya awali. Si certified translation, ushauri wa kisheria/kitabibu, uthibitisho wa uhamiaji, au mamlaka ya mwisho ya utamaduni. Hakiki matamshi, tone marks, script, istilahi rasmi na maana za majina na mzungumzaji, mtafsiri, familia, shule, ofisi rasmi au mtaalamu anayefaa.
 </section>
 </main>
-<afro-related-tools category="language"></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<afro-related-tools category="language"></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.js?v=af1ede16" defer></script><script src="/assets/js/components/footer.js?v=7cf41589" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
+<script src="/assets/js/components/navbar.js?v=3af89576" defer></script><script src="/assets/js/components/footer.js?v=625b18a7" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
 <script>
 const PHRASES=[
 {en:'Hello',lang:'Bawo ni',pron:'BAH-woh nee',cat:'Salamu'},
@@ -327,7 +327,7 @@ const PHRASES=[
 let activeCat='Zote';
 function init(){
   const cats=[...new Set(PHRASES.map(p=>p.cat))];
-  document.getElementById('cats').innerHTML='<button class="cat-btn active" onclick="setCat(\'Zote\')">Zote</button>'+cats.map(c=>`<button class="cat-btn" onclick="setCat('${c}')">${c}</button>`).join('');
+  document.getElementById('cats').innerHTML='<button type="button" class="cat-btn active" onclick="setCat(\'Zote\')">Zote</button>'+cats.map(c=>`<button type="button" class="cat-btn" onclick="setCat('${c}')">${c}</button>`).join('');
   filter();
 }
 function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));filter();}
@@ -339,7 +339,7 @@ function filter(){
     return p.en.toLowerCase().includes(q)||p.lang.toLowerCase().includes(q);
   });
   document.getElementById('countBadge').textContent=list.length+' misemo';
-  document.getElementById('phrases').innerHTML=list.map(p=>`<div class="phrase"><span class="en">${p.en}</span><span><span class="lang">${p.lang}</span><br><span class="pron">${p.pron}</span></span><button class="speak-btn" onclick="speak('${p.lang.replace(/'/g,"\\'")}')" title="Sikiliza">&#128266;</button></div>`).join('');
+  document.getElementById('phrases').innerHTML=list.map(p=>`<div class="phrase"><span class="en">${p.en}</span><span><span class="lang">${p.lang}</span><br><span class="pron">${p.pron}</span></span><button type="button" class="speak-btn" onclick="speak('${p.lang.replace(/'/g,"\\'")}')" title="Sikiliza">&#128266;</button></div>`).join('');
 }
 function speak(t){const u=new SpeechSynthesisUtterance(t);u.lang='yo';u.rate=0.8;speechSynthesis.speak(u);}
 init();
@@ -383,7 +383,7 @@ function loadQuizQ(){
   qEl.innerHTML='<div class="quiz-q">Unasemaje: "'+correct.en+'"?</div>'+
     '<div class="quiz-opts">'+opts.map(function(o,i){
       var oLang=o.lang||o.sw||'';
-      return '<button class="quiz-opt" onclick="checkQuiz(this,'+String(o===correct)+')">'+oLang+'</button>';
+      return '<button type="button" class="quiz-opt" onclick="checkQuiz(this,'+String(o===correct)+')">'+oLang+'</button>';
     }).join('')+'</div>'+
     '<div class="quiz-score" id="quizScoreEl">Alama: '+quizScore+'/'+quizTotal+'</div>';
 }

@@ -7,12 +7,15 @@
   <meta name="robots" content="noindex, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=82766a6e">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-mind/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-mind/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cmn-app">
 
@@ -21,15 +24,15 @@
     <a href="index.html" class="cmn-topbar-back">&larr; Back</a>
     <a href="index.html" class="cmn-topbar-brand">&#10024; CreatorMind</a>
     <div class="cmn-topbar-actions">
-      <button class="cmn-topbar-btn" onclick="location.href='voice.html'">Voice</button>
-      <button class="cmn-topbar-btn" onclick="location.href='history.html'">History</button>
+      <button type="button" class="cmn-topbar-btn" onclick="location.href='voice.html'">Voice</button>
+      <button type="button" class="cmn-topbar-btn" onclick="location.href='history.html'">History</button>
     </div>
   </div>
 
   <!-- MODE TABS -->
   <div class="cmn-mode-tabs">
-    <button class="cmn-mode-tab active" data-mode="quick">Quick Actions</button>
-    <button class="cmn-mode-tab" data-mode="chat">Chat Mode</button>
+    <button type="button" class="cmn-mode-tab active" data-mode="quick">Quick Actions</button>
+    <button type="button" class="cmn-mode-tab" data-mode="chat">Chat Mode</button>
   </div>
 
   <!-- QUICK ACTIONS VIEW -->
@@ -56,7 +59,7 @@
     </div>
     <div class="cmn-chat-input-bar">
       <textarea class="cmn-chat-input" id="chatInput" placeholder="Write a caption about..." rows="1"></textarea>
-      <button class="cmn-chat-send" id="chatSend">&#10148;</button>
+      <button type="button" class="cmn-chat-send" id="chatSend">&#10148;</button>
     </div>
   </div>
 
@@ -309,7 +312,7 @@
 
   function inputField(name, label, placeholder) {
     return '<div class="cmn-form-group"><label class="cmn-form-label">' + label + '</label>' +
-      '<input class="cmn-form-input" data-field="' + name + '" placeholder="' + placeholder + '"></div>';
+      '<input aria-label="' + placeholder + '" class="cmn-form-input" data-field="' + name + '" placeholder="' + placeholder + '"></div>';
   }
 
   function textareaField(name, label, placeholder, rows) {
@@ -329,11 +332,11 @@
 
   function toggleField(name, label) {
     return '<div class="cmn-form-group"><div class="cmn-toggle-row"><label class="cmn-form-label" style="margin-bottom:0">' + label + '</label>' +
-      '<button class="cmn-toggle" data-field="' + name + '"></button></div></div>';
+      '<button type="button" class="cmn-toggle" data-field="' + name + '"></button></div></div>';
   }
 
   function genButton(label) {
-    return '<button class="cmn-generate-btn" onclick="window._cmnGenerate()"><span class="cmn-spinner"></span>' + label + '</button>';
+    return '<button type="button" class="cmn-generate-btn" onclick="window._cmnGenerate()"><span class="cmn-spinner"></span>' + label + '</button>';
   }
 
   // ── COLLECT FORM DATA ──
@@ -408,11 +411,11 @@
     html += '<div class="cmn-output-label">&#10024; ' + (E.GENERATION_TYPES[type] ? E.GENERATION_TYPES[type].label : 'Output') + '</div>';
     html += '<div class="cmn-output-text">' + escapeHtml(text) + '</div>';
     html += '<div class="cmn-output-actions">';
-    html += '<button class="cmn-output-btn" onclick="window._cmnCopy(this)">&#128203; Copy</button>';
-    html += '<button class="cmn-output-btn" onclick="window._cmnWhatsApp(this)">&#128172; WhatsApp</button>';
-    html += '<button class="cmn-output-btn" onclick="window._cmnRegenerate()">&#128260; Regenerate</button>';
+    html += '<button type="button" class="cmn-output-btn" onclick="window._cmnCopy(this)">&#128203; Copy</button>';
+    html += '<button type="button" class="cmn-output-btn" onclick="window._cmnWhatsApp(this)">&#128172; WhatsApp</button>';
+    html += '<button type="button" class="cmn-output-btn" onclick="window._cmnRegenerate()">&#128260; Regenerate</button>';
     html += '</div>';
-    html += '<div class="cmn-refine"><input placeholder="Not quite right? Tell me what to change..." id="refineInput"><button onclick="window._cmnRefine()">Refine</button></div>';
+    html += '<div class="cmn-refine"><input aria-label="Not quite right? Tell me what to change" placeholder="Not quite right? Tell me what to change..." id="refineInput"><button type="button" onclick="window._cmnRefine()">Refine</button></div>';
     html += '</div></div>';
     outputArea.innerHTML = html;
   }
@@ -548,8 +551,8 @@
     if (role === 'ai' && withActions) {
       div.innerHTML = escapeHtml(text) +
         '<div class="cmn-output-actions" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)">' +
-        '<button class="cmn-output-btn" onclick="window._cmnCopy(this)">&#128203; Copy</button>' +
-        '<button class="cmn-output-btn" onclick="window._cmnWhatsApp(this)">&#128172; WhatsApp</button>' +
+        '<button type="button" class="cmn-output-btn" onclick="window._cmnCopy(this)">&#128203; Copy</button>' +
+        '<button type="button" class="cmn-output-btn" onclick="window._cmnWhatsApp(this)">&#128172; WhatsApp</button>' +
         '</div>';
     } else {
       div.innerHTML = role === 'ai' ? text : escapeHtml(text);

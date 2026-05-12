@@ -21,9 +21,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -151,10 +151,10 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     <div class="card-head"><span class="card-title">Pick Something Random</span><span class="count-badge" id="countBadge">0 items</span></div>
     <div class="card-body">
       <div class="tabs">
-        <button class="tab-btn active" data-tab="names">Names</button>
-        <button class="tab-btn" data-tab="numbers">Numbers</button>
-        <button class="tab-btn" data-tab="coin">Coin Flip</button>
-        <button class="tab-btn" data-tab="teams">Teams</button>
+        <button type="button" class="tab-btn active" data-tab="names">Names</button>
+        <button type="button" class="tab-btn" data-tab="numbers">Numbers</button>
+        <button type="button" class="tab-btn" data-tab="coin">Coin Flip</button>
+        <button type="button" class="tab-btn" data-tab="teams">Teams</button>
       </div>
 
       <!-- Name Picker -->
@@ -171,28 +171,28 @@ Sipho
 Ngozi</textarea>
         </div>
         <div class="field-row">
-          <div class="field"><label class="f-label">How many to pick?</label><input type="number" class="f-input" id="pickCount" value="1" min="1" max="100"></div>
+          <div class="field"><label class="f-label">How many to pick?</label><input aria-label="PickCount" type="number" class="f-input" id="pickCount" value="1" min="1" max="100"></div>
           <div class="field">
             <label class="f-label">Options</label>
-            <label class="opt-toggle" style="margin-top:8px"><input type="checkbox" id="removePicked"> Remove picked items from list</label>
+            <label class="opt-toggle" style="margin-top:8px"><input aria-label="RemovePicked" type="checkbox" id="removePicked"> Remove picked items from list</label>
           </div>
         </div>
-        <button class="pick-btn" id="namePickBtn" onclick="pickNames()">Pick Random Name(s)</button>
+        <button type="button" class="pick-btn" id="namePickBtn" onclick="pickNames()">Pick Random Name(s)</button>
       </div>
 
       <!-- Number Generator -->
       <div class="tab-content" id="numbers">
         <div class="field-row">
-          <div class="field"><label class="f-label">Minimum</label><input type="number" class="f-input" id="numMin" value="1"></div>
-          <div class="field"><label class="f-label">Maximum</label><input type="number" class="f-input" id="numMax" value="100"></div>
+          <div class="field"><label class="f-label">Minimum</label><input aria-label="NumMin" type="number" class="f-input" id="numMin" value="1"></div>
+          <div class="field"><label class="f-label">Maximum</label><input aria-label="NumMax" type="number" class="f-input" id="numMax" value="100"></div>
         </div>
         <div class="field-row">
-          <div class="field"><label class="f-label">How many numbers?</label><input type="number" class="f-input" id="numCount" value="1" min="1" max="100"></div>
+          <div class="field"><label class="f-label">How many numbers?</label><input aria-label="NumCount" type="number" class="f-input" id="numCount" value="1" min="1" max="100"></div>
           <div class="field"><label class="f-label">Allow duplicates?</label>
-            <label class="opt-toggle" style="margin-top:8px"><input type="checkbox" id="allowDupes"> Yes, allow repeats</label>
+            <label class="opt-toggle" style="margin-top:8px"><input aria-label="AllowDupes" type="checkbox" id="allowDupes"> Yes, allow repeats</label>
           </div>
         </div>
-        <button class="pick-btn" onclick="pickNumbers()">Generate Random Number(s)</button>
+        <button type="button" class="pick-btn" onclick="pickNumbers()">Generate Random Number(s)</button>
       </div>
 
       <!-- Coin Flip -->
@@ -202,7 +202,7 @@ Ngozi</textarea>
           <div class="coin-face coin-tails">T</div>
         </div></div>
         <p style="font-size:.88rem;color:#475569;margin-bottom:16px;line-height:1.6;text-align:center">Flip a fair coin. 50/50 chance. Uses cryptographic randomness.</p>
-        <button class="pick-btn" onclick="flipCoin()">Flip Coin</button>
+        <button type="button" class="pick-btn" onclick="flipCoin()">Flip Coin</button>
       </div>
 
       <!-- Team Assigner -->
@@ -211,8 +211,8 @@ Ngozi</textarea>
           <label class="f-label">Enter names (one per line)</label>
           <textarea class="f-textarea" id="teamList" placeholder="Chinedu&#10;Amina&#10;Thabo&#10;Ama&#10;Kwame&#10;Fatima&#10;Sipho&#10;Ngozi"></textarea>
         </div>
-        <div class="field"><label class="f-label">Number of teams</label><input type="number" class="f-input" id="teamCount" value="2" min="2" max="20"></div>
-        <button class="pick-btn" onclick="assignTeams()">Assign Teams Randomly</button>
+        <div class="field"><label class="f-label">Number of teams</label><input aria-label="TeamCount" type="number" class="f-input" id="teamCount" value="2" min="2" max="20"></div>
+        <button type="button" class="pick-btn" onclick="assignTeams()">Assign Teams Randomly</button>
       </div>
 
       <div class="result-display" id="resultDisplay">
@@ -223,7 +223,7 @@ Ngozi</textarea>
       <div class="history" id="historySection" style="display:none">
         <div class="hist-header">
           <span class="hist-title">History</span>
-          <button class="hist-clear" onclick="clearHistory()">Clear</button>
+          <button type="button" class="hist-clear" onclick="clearHistory()">Clear</button>
         </div>
         <div id="history"></div>
       </div>
@@ -524,7 +524,7 @@ document.getElementById('nameList').addEventListener('input', function() {
   document.getElementById('countBadge').textContent = names.length + ' items';
 });
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">

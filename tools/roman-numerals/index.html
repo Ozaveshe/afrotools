@@ -21,10 +21,10 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
   <meta name="tool-id" content="roman-numerals">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Roman Numeral Converter","description":"Bidirectional Roman numeral and decimal number converter with quiz mode and batch conversion.","url":"https://afrotools.com/tools/roman-numerals/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Roman Numeral Converter","url":"https://afrotools.com/tools/roman-numerals/","description":"Bidirectional Roman numeral and decimal number converter with quiz mode and batch conversion.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -88,7 +88,7 @@
       .container { padding: 1rem; }
     }
   </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><link rel="alternate" hreflang="en" href="https://afrotools.com/tools/roman-numerals/" />
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><link rel="alternate" hreflang="en" href="https://afrotools.com/tools/roman-numerals/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/roman-numerals/" />
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -137,23 +137,23 @@
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('convert')">Converter</button>
-    <button class="tab" onclick="switchTab('batch')">Batch</button>
-    <button class="tab" onclick="switchTab('quiz')">Quiz</button>
+    <button type="button" class="tab active" onclick="switchTab('convert')">Converter</button>
+    <button type="button" class="tab" onclick="switchTab('batch')">Batch</button>
+    <button type="button" class="tab" onclick="switchTab('quiz')">Quiz</button>
   </div>
 
   <!-- Converter -->
   <div id="convertTab" class="card">
     <h2>Enter a Number or Roman Numeral</h2>
     <div id="detectLabel" class="detect-label" style="display:none;"></div>
-    <input type="text" id="input" placeholder="e.g. 2024 or MMXXIV" oninput="autoConvert()">
+    <input aria-label="E.g. 2024 or MMXXIV" type="text" id="input" placeholder="e.g. 2024 or MMXXIV" oninput="autoConvert()">
     <div id="resultBox" class="result-box" style="display:none;">
       <div class="big" id="resultValue"></div>
       <div class="sub" id="resultSub"></div>
     </div>
     <div class="actions-row">
-      <button class="btn btn-outline btn-sm" onclick="copyResult()">Copy Result</button>
-      <button class="btn btn-outline btn-sm" onclick="swapResult()">Swap</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="copyResult()">Copy Result</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="swapResult()">Swap</button>
     </div>
   </div>
 
@@ -163,8 +163,8 @@
     <label>Enter numbers or Roman numerals (one per line)</label>
     <textarea id="batchInput" placeholder="1&#10;42&#10;MCMXCIX&#10;2024"></textarea>
     <div class="actions-row">
-      <button class="btn btn-primary" onclick="batchConvert()">Convert All</button>
-      <button class="btn btn-outline btn-sm" onclick="copyBatch()">Copy Results</button>
+      <button type="button" class="btn btn-primary" onclick="batchConvert()">Convert All</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="copyBatch()">Copy Results</button>
     </div>
     <div id="batchResults" class="batch-results" style="margin-top:1rem;"></div>
   </div>
@@ -184,10 +184,10 @@
     <div class="quiz-box">
       <div id="quizDirection" class="detect-label">Convert to Roman</div>
       <div class="prompt" id="quizPrompt">42</div>
-      <input type="text" id="quizAnswer" placeholder="Your answer" onkeydown="if(event.key==='Enter')checkQuiz()">
+      <input aria-label="Your answer" type="text" id="quizAnswer" placeholder="Your answer" onkeydown="if(event.key==='Enter')checkQuiz()">
       <br>
-      <button class="btn btn-primary" onclick="checkQuiz()">Check Answer</button>
-      <button class="btn btn-outline btn-sm" onclick="newQuiz()">Skip</button>
+      <button type="button" class="btn btn-primary" onclick="checkQuiz()">Check Answer</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="newQuiz()">Skip</button>
       <div class="quiz-feedback" id="quizFeedback"></div>
       <div id="quizFact" style="margin-top:.5rem;font-size:.8rem;color:#64748b;min-height:1em"></div>
       <div class="quiz-stats">

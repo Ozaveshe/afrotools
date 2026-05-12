@@ -22,7 +22,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/legal.css?v=af6e9e60">
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
 <style>
@@ -101,15 +101,15 @@
         </div>
         <div class="leg-field">
           <label class="leg-f-label">Your Organisation Name</label>
-          <input class="leg-f-input" type="text" id="bOrgName" placeholder="e.g. Acme Financial Services Ltd">
+          <input aria-label="E.g. Acme Financial Services Ltd" class="leg-f-input" type="text" id="bOrgName" placeholder="e.g. Acme Financial Services Ltd">
         </div>
         <div class="leg-field">
           <label class="leg-f-label">Date Breach Discovered</label>
-          <input class="leg-f-input" type="date" id="bDate">
+          <input aria-label="BDate" class="leg-f-input" type="date" id="bDate">
         </div>
         <div class="leg-field">
           <label class="leg-f-label">Number of Affected Individuals (approximate)</label>
-          <input class="leg-f-input" type="text" id="bCount" placeholder="e.g. approximately 1,200 customers">
+          <input aria-label="E.g. approximately 1,200 customers" class="leg-f-input" type="text" id="bCount" placeholder="e.g. approximately 1,200 customers">
         </div>
         <div class="leg-field full">
           <label class="leg-f-label">Nature of Breach</label>
@@ -143,7 +143,7 @@
           <textarea class="leg-f-textarea" id="bActions" rows="3" placeholder="e.g. Isolated affected systems, reset compromised credentials, engaged cybersecurity firm, notified law enforcement..."></textarea>
         </div>
       </div>
-      <button class="leg-calc-btn" onclick="generateNotices()">Generate Notification Letters →</button>
+      <button type="button" class="leg-calc-btn" onclick="generateNotices()">Generate Notification Letters →</button>
     </div>
   </div>
 
@@ -163,8 +163,8 @@
         <div id="tmplPanel0"><div class="tmpl-out" id="tmpl0"></div></div>
         <div id="tmplPanel1" style="display:none"><div class="tmpl-out" id="tmpl1"></div></div>
         <div class="out-toolbar">
-          <button class="leg-copy-btn" onclick="copyLetter()">Copy Current Letter</button>
-          <button class="leg-print-btn" onclick="window.print()">Print / Save PDF</button>
+          <button type="button" class="leg-copy-btn" onclick="copyLetter()">Copy Current Letter</button>
+          <button type="button" class="leg-print-btn" onclick="window.print()">Print / Save PDF</button>
         </div>
       </div>
     </div>
@@ -179,9 +179,9 @@
     <p>This workspace turns the incident notice readiness result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
   </div>
   <div class="leg-workflow-grid">
-    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
-    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
-    <label class="leg-field"><span class="leg-f-label">Target date</span><input class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
     <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
   </div>
   <div class="leg-workflow-columns">
@@ -209,7 +209,7 @@
       <h3>Email the checklist and unlock print/PDF</h3>
       <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
     </div>
-    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
     <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
     <div class="leg-workflow-actions compact">
       <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
@@ -351,8 +351,8 @@ Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal a
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <afro-footer></afro-footer>
-<script defer src="/assets/js/components/navbar.min.js?v=ca6bb4e6"></script>
-<script defer src="/assets/js/components/footer.min.js?v=0c96f8e4"></script>
+<script defer src="/assets/js/components/navbar.min.js?v=01d16ada"></script>
+<script defer src="/assets/js/components/footer.min.js?v=d60a94ba"></script>
 <script src="/data/legal/country-legal-index.js?v=02e28276"></script>
 <script src="/engines/legal-engine.js?v=cade292f"></script>
 <script>

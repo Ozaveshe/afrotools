@@ -28,14 +28,14 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/convertisseur-parcelle/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/plot-converter/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
@@ -47,7 +47,7 @@
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Quelle est la taille d'un plot au Nigeria ?","acceptedAnswer":{"@type":"Answer","text":"Un plot standard nigérian mesure généralement 60 x 120 pieds, soit environ 669 m². Selon le quartier ou le programme, la surface réelle peut toutefois varier. Vérifiez toujours le plan d'arpentage."}},
+{"@type":"Question","name":"Quelle est la taille d'un plot au Nigeria ?","acceptedAnswer":{"@type":"Answer","text":"Un plot standard nigérian mesure généralement 60 x 120 pieds, soit environ 669 m². Selon le quartier ou le programme, la surface réelle peut toutefois varier. Vérifiez toujours le plan d\'arpentage."}},
 {"@type":"Question","name":"Comment convertir des hectares en acres ?","acceptedAnswer":{"@type":"Answer","text":"1 hectare = 10 000 m² = environ 2,47 acres. Le convertisseur fait ce calcul automatiquement et montre aussi l'équivalence en parcelles locales quand c'est pertinent."}},
 {"@type":"Question","name":"Les tailles de parcelles sont-elles standardisées en Afrique ?","acceptedAnswer":{"@type":"Answer","text":"Non. Les unités varient souvent selon le pays, la ville et même le lotissement. C'est précisément pour cela qu'un convertisseur foncier clair est utile avant d'acheter."}},
 {"@type":"Question","name":"Quelles unités ce convertisseur prend-il en charge ?","acceptedAnswer":{"@type":"Answer","text":"L'outil couvre les mètres carrés, les pieds carrés, les acres, les hectares, la parcelle nigériane standard, les demi et quarts de parcelle, le morgen sud-africain, le feddan égyptien, le qirat, le rood et l'are."}}
@@ -438,7 +438,7 @@ body{background:var(--pc-bg);color:var(--pc-ink)}
     if (isNaN(val) || val < 0) {
       grid.innerHTML = '';
       summary.innerHTML = '<span class="pc-chip">Entrez une valeur valide</span>';
-      aiObs.innerHTML = '<p>Renseignez une surface pour afficher les équivalences et les signaux d'alerte utiles.</p>';
+      aiObs.innerHTML = '<p>Renseignez une surface pour afficher les équivalences et les signaux d\'alerte utiles.</p>';
       return;
     }
 
@@ -467,11 +467,11 @@ body{background:var(--pc-bg);color:var(--pc-ink)}
     lines.push('<p><strong>' + selected.label + ' :</strong> ' + selected.desc + '</p>');
 
     if (unitKey === 'plot_ng_standard') {
-      lines.push('<p>Un lot annoncé comme "1 parcelle" peut cacher une surface plus petite. Demandez toujours le plan d'arpentage et la dimension exacte en pieds ou en mètres.</p>');
+      lines.push('<p>Un lot annoncé comme "1 parcelle" peut cacher une surface plus petite. Demandez toujours le plan d\'arpentage et la dimension exacte en pieds ou en mètres.</p>');
     } else if (unitKey === 'acre') {
       lines.push('<p>' + formatNumber(val) + ' acre(s) = ' + formatNumber(sqm) + ' m², soit environ ' + formatNumber(sqm / 669.0932) + ' parcelles nigérianes standard.</p>');
     } else if (unitKey === 'hectare') {
-      lines.push('<p>Pour les terrains agricoles ou les grands lots, l'hectare reste la référence la plus lisible. Vérifiez toujours si l'annonce parle d'hectares légaux ou de surface commerciale.</p>');
+      lines.push('<p>Pour les terrains agricoles ou les grands lots, l\'hectare reste la référence la plus lisible. Vérifiez toujours si l\'annonce parle d\'hectares légaux ou de surface commerciale.</p>');
     } else if (unitKey === 'feddan' || unitKey === 'qirat') {
       lines.push('<p>Le feddan et le qirat sont courants dans les contextes agricoles. Convertissez-les avant de comparer avec une annonce exprimée en mètres carrés.</p>');
     } else if (unitKey === 'morgen') {
@@ -479,9 +479,9 @@ body{background:var(--pc-bg);color:var(--pc-ink)}
     }
 
     if (sqm > 0 && sqm < 200) {
-      lines.push('<p>Attention : il s'agit d'une petite parcelle. Dans plusieurs villes, cette surface peut limiter le type de projet autorisé ou la marge de recul disponible.</p>');
+      lines.push('<p>Attention : il s\'agit d\'une petite parcelle. Dans plusieurs villes, cette surface peut limiter le type de projet autorisé ou la marge de recul disponible.</p>');
     } else if (sqm >= 5000) {
-      lines.push('<p>Surface importante détectée. C'est utile pour un projet mixte, un lot agricole ou une acquisition patrimoniale à long terme.</p>');
+      lines.push('<p>Surface importante détectée. C\'est utile pour un projet mixte, un lot agricole ou une acquisition patrimoniale à long terme.</p>');
     }
 
     lines.push('<p>Pour sécuriser un achat, combinez ce convertisseur avec la vérification du titre foncier et les frais de transfert.</p>');

@@ -50,10 +50,10 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=abfab4a3">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--ca:#007AFF;--ca-d:#0063D1;--ca-l:#E8F2FF;--ca-p:#EBF4FF;}
 *,*::before,*::after{box-sizing:border-box;}
@@ -195,7 +195,7 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#1A1A2E;margin:0;
       </div>
       <div class="field">
         <label class="f-label-text" for="inpNum">Number of Animals</label>
-        <input class="f-input" id="inpNum" type="number" min="1" step="1" value="1">
+        <input aria-label="Line item quantity" class="f-input" id="inpNum" type="number" min="1" step="1" value="1">
       </div>
       <div class="field" style="display:flex;align-items:flex-end;">
         <div class="dmi-hint" id="dmiHintBox"></div>
@@ -207,7 +207,7 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#1A1A2E;margin:0;
 <div class="card">
   <div class="card-head">
     <span class="card-title">&#127806; Section 2 &mdash; Feed Ingredients</span>
-    <button class="card-toggle" onclick="toggleSec('feedBody',this)">Collapse</button>
+    <button type="button" class="card-toggle" onclick="toggleSec('feedBody',this)">Collapse</button>
   </div>
   <div class="card-body section-body" id="feedBody">
     <p class="feed-intro">Locally available Nigerian feeds are pre-checked. Uncheck feeds you cannot source, or add others.</p>
@@ -218,7 +218,7 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#1A1A2E;margin:0;
 <div class="card">
   <div class="card-head">
     <span class="card-title">&#x1F4B0; Section 3 &mdash; Budget (Optional)</span>
-    <button class="card-toggle" onclick="toggleSec('budgetBody',this)">Collapse</button>
+    <button type="button" class="card-toggle" onclick="toggleSec('budgetBody',this)">Collapse</button>
   </div>
   <div class="card-body section-body" id="budgetBody">
     <div class="form-grid">
@@ -230,7 +230,7 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#1A1A2E;margin:0;
   </div>
 </div>
 
-<button class="calc-btn" id="btnCalc" onclick="doCalc()">&#x1F4CA; Formulate Ration</button>
+<button type="button" class="calc-btn" id="btnCalc" onclick="doCalc()">&#x1F4CA; Formulate Ration</button>
 <div class="results-wrap" id="resultsWrap"></div>
 
 <div class="card">
@@ -308,7 +308,7 @@ function buildFeeds(){
     feeds.forEach(function(id){
       var f=ing[id],p=prices[id],av=p!==undefined,ps=av?(p===0?'Free':sym+' '+p+'/kg'):'Unavailable';
       var lbl=document.createElement('label');lbl.className='feed-check-label';
-      lbl.innerHTML='<input type="checkbox" class="feed-cb" value="'+id+'"'+(av?' checked':'')+'><span class="fcb-name">'+f.name+'</span><span class="fcb-price">'+ps+'</span>';
+      lbl.innerHTML='<input aria-label="Feed cb" type="checkbox" class="feed-cb" value="'+id+'"'+(av?' checked':'')+'><span class="fcb-name">'+f.name+'</span><span class="fcb-price">'+ps+'</span>';
       fd.appendChild(lbl);
     });
   });

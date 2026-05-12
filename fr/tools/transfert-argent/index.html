@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="Comparateur de Transferts Pro | AfroTools">
 <meta name="twitter:description" content="Comparez plus de 10 prestataires de transfert pour 20+ corridors africains. Frais, taux, rapidité, mobile money.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Comparateur de Transferts d'Argent Pro","description":"Comparez les coûts de transfert chez plus de 10 prestataires pour 20+ corridors africains. Trouvez le moyen le moins cher d'envoyer de l'argent en Afrique.","url":"https://afrotools.com/fr/tools/transfert-argent/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"JavaScript requis","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Comparateur de Transferts d'Argent Pro","url":"https://afrotools.com/fr/tools/transfert-argent/","description":"Comparez les coûts de transfert chez plus de 10 prestataires pour 20+ corridors africains. Trouvez le moyen le moins cher d'envoyer de l'argent en Afrique.","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools Francais","url":"https://afrotools.com/fr/"}}</script>
 <script type="application/ld+json">
@@ -76,10 +76,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq details[open] summary::after{content:'-'}
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/remittance-compare/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/transfert-argent/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/remittance-compare/" />
@@ -162,8 +162,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <option value="MW">Malawi (MWK)</option>
 <option value="MZ">Mozambique (MZN)</option>
 </select></div>
-<div class="form-group"><label>Montant</label><input type="number" id="amount" value="500" min="1"></div>
-<div class="form-group"><label>&nbsp;</label><button class="btn" onclick="compare()">Comparer</button></div>
+<div class="form-group"><label>Montant</label><input aria-label="Amount" type="number" id="amount" value="500" min="1"></div>
+<div class="form-group"><label>&nbsp;</label><button type="button" class="btn" onclick="compare()">Comparer</button></div>
 </div>
 </div>
 <div id="results" style="display:none">
@@ -202,8 +202,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
   </div>
   <div id="aiChat" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth"></div>
   <div style="display:flex;gap:8px">
-<input type="text" id="aiQ" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:16px;min-height:44px;outline:none">
-<button id="aiBtn" onclick="askAI()" style="padding:11px 20px;background:var(--color-primary);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:16px;min-height:44px;font-weight:700;cursor:pointer;white-space:nowrap">Envoyer →</button>
+<input aria-label="Posez votre question" type="text" id="aiQ" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:16px;min-height:44px;outline:none">
+<button type="button" id="aiBtn" onclick="askAI()" style="padding:11px 20px;background:var(--color-primary);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:16px;min-height:44px;font-weight:700;cursor:pointer;white-space:nowrap">Envoyer →</button>
   </div>
 </div>
 </section>
@@ -239,8 +239,8 @@ async function askAI(preset){
 </script>
 
 <afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=af1ede16" defer></script><script src="/assets/js/components/footer.js?v=7cf41589" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/navbar.js?v=3af89576" defer></script><script src="/assets/js/components/footer.js?v=625b18a7" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script>
 // Exchange rates vs USD (updated 2026)
 const RATES={NG:1650,KE:129,GH:15.5,ZA:18.2,TZ:2720,UG:3750,SN:610,ET:135,CM:610,CI:610,MA:9.9,RW:1380,ZM:27.5,MW:1740,MZ:63.9};

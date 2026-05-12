@@ -9,13 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=76969147">
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-analytics/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-analytics/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cay-app">
 
@@ -24,18 +27,18 @@
     <a href="index.html" class="cay-topbar-back">&larr;</a>
     <a href="index.html" class="cay-topbar-brand">&#128202; CreatorAnalytics</a>
     <div class="cay-topbar-actions">
-      <button class="cay-topbar-btn" id="exportBtn">Export CSV</button>
-      <button class="cay-topbar-btn" id="clearBtn">Clear All</button>
+      <button type="button" class="cay-topbar-btn" id="exportBtn">Export CSV</button>
+      <button type="button" class="cay-topbar-btn" id="clearBtn">Clear All</button>
     </div>
   </div>
 
   <!-- VIEW TABS -->
   <div class="cay-view-tabs">
-    <button class="cay-view-tab active" data-view="dashboard">Dashboard</button>
-    <button class="cay-view-tab" data-view="log">Log Post</button>
-    <button class="cay-view-tab" data-view="posts">Posts</button>
-    <button class="cay-view-tab" data-view="analytics">Analytics</button>
-    <button class="cay-view-tab" data-view="goals">Goals</button>
+    <button type="button" class="cay-view-tab active" data-view="dashboard">Dashboard</button>
+    <button type="button" class="cay-view-tab" data-view="log">Log Post</button>
+    <button type="button" class="cay-view-tab" data-view="posts">Posts</button>
+    <button type="button" class="cay-view-tab" data-view="analytics">Analytics</button>
+    <button type="button" class="cay-view-tab" data-view="goals">Goals</button>
   </div>
 
   <!-- WORKSPACE -->
@@ -77,7 +80,7 @@
         <div class="cay-report-title">&#128240; Weekly Report</div>
         <div class="cay-report-text" id="reportText">Log at least 3 posts to generate a weekly report.</div>
         <div class="cay-report-actions">
-          <button class="cay-btn-secondary" id="copyReportBtn">Copy Report</button>
+          <button type="button" class="cay-btn-secondary" id="copyReportBtn">Copy Report</button>
         </div>
       </div>
     </div>
@@ -89,7 +92,7 @@
       <!-- Quick-log toggle -->
       <div class="cay-quicklog-toggle" id="quicklogToggle">&#9889; Quick-log mode (paste numbers)</div>
       <div id="quicklogArea" style="display:none;margin-bottom:20px;">
-        <input class="cay-quicklog-input" id="quicklogInput" placeholder="impressions, reach, likes, comments, shares, saves, followers_gained">
+        <input aria-label="Impressions, reach, likes, comments, shares, saves, followers gained" class="cay-quicklog-input" id="quicklogInput" placeholder="impressions, reach, likes, comments, shares, saves, followers_gained">
         <div class="cay-quicklog-hint">Comma-separated: impressions, reach, likes, comments, shares, saves, followers gained</div>
       </div>
 
@@ -121,45 +124,45 @@
 
         <div class="cay-form-group">
           <label class="cay-form-label">Date Posted</label>
-          <input type="date" class="cay-form-input" id="logDate">
+          <input aria-label="LogDate" type="date" class="cay-form-input" id="logDate">
         </div>
 
         <div class="cay-form-group">
           <label class="cay-form-label">URL (optional)</label>
-          <input type="url" class="cay-form-input" id="logUrl" placeholder="https://...">
+          <input aria-label="Https://" type="url" class="cay-form-input" id="logUrl" placeholder="https://...">
         </div>
 
         <div class="cay-form-group">
           <label class="cay-form-label">Impressions</label>
-          <input type="number" class="cay-form-input" id="logImpressions" placeholder="0" min="0">
+          <input aria-label="LogImpressions" type="number" class="cay-form-input" id="logImpressions" placeholder="0" min="0">
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Reach</label>
-          <input type="number" class="cay-form-input" id="logReach" placeholder="0" min="0">
+          <input aria-label="LogReach" type="number" class="cay-form-input" id="logReach" placeholder="0" min="0">
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Likes</label>
-          <input type="number" class="cay-form-input" id="logLikes" placeholder="0" min="0">
+          <input aria-label="LogLikes" type="number" class="cay-form-input" id="logLikes" placeholder="0" min="0">
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Comments</label>
-          <input type="number" class="cay-form-input" id="logComments" placeholder="0" min="0">
+          <input aria-label="LogComments" type="number" class="cay-form-input" id="logComments" placeholder="0" min="0">
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Shares</label>
-          <input type="number" class="cay-form-input" id="logShares" placeholder="0" min="0">
+          <input aria-label="LogShares" type="number" class="cay-form-input" id="logShares" placeholder="0" min="0">
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Saves</label>
-          <input type="number" class="cay-form-input" id="logSaves" placeholder="0" min="0">
+          <input aria-label="LogSaves" type="number" class="cay-form-input" id="logSaves" placeholder="0" min="0">
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Followers Gained</label>
-          <input type="number" class="cay-form-input" id="logFollowers" placeholder="0">
+          <input aria-label="LogFollowers" type="number" class="cay-form-input" id="logFollowers" placeholder="0">
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Hour Posted (0-23)</label>
-          <input type="number" class="cay-form-input" id="logHour" placeholder="14" min="0" max="23">
+          <input aria-label="LogHour" type="number" class="cay-form-input" id="logHour" placeholder="14" min="0" max="23">
         </div>
 
         <div class="cay-form-group cay-form-full">
@@ -168,7 +171,7 @@
         </div>
 
         <div class="cay-form-full">
-          <button class="cay-btn-primary" id="savePostBtn">Save Post &#10003;</button>
+          <button type="button" class="cay-btn-primary" id="savePostBtn">Save Post &#10003;</button>
         </div>
       </div>
     </div>
@@ -197,13 +200,13 @@
             <option value="long-form">Long-form</option>
           </select>
           <div style="flex:1;"></div>
-          <button class="cay-btn-secondary" id="bulkDeleteBtn" style="display:none;">Delete Selected</button>
+          <button type="button" class="cay-btn-secondary" id="bulkDeleteBtn" style="display:none;">Delete Selected</button>
         </div>
         <div class="cay-table-scroll">
           <table class="cay-table">
             <thead>
               <tr>
-                <th style="width:30px;"><input type="checkbox" class="cay-checkbox" id="selectAll"></th>
+                <th style="width:30px;"><input aria-label="SelectAll" type="checkbox" class="cay-checkbox" id="selectAll"></th>
                 <th data-sort="date">Date <span class="cay-sort-arrow">&#9650;</span></th>
                 <th data-sort="platform">Platform <span class="cay-sort-arrow">&#9650;</span></th>
                 <th data-sort="type">Type <span class="cay-sort-arrow">&#9650;</span></th>
@@ -221,11 +224,11 @@
     <!-- ==================== ANALYTICS ==================== -->
     <div class="cay-view" id="analyticsView">
       <div class="cay-sub-tabs">
-        <button class="cay-sub-tab active" data-sub="trends">Engagement Trends</button>
-        <button class="cay-sub-tab" data-sub="heatmap">Best Time to Post</button>
-        <button class="cay-sub-tab" data-sub="types">Content Types</button>
-        <button class="cay-sub-tab" data-sub="platforms">Platform Comparison</button>
-        <button class="cay-sub-tab" data-sub="growth">Growth Velocity</button>
+        <button type="button" class="cay-sub-tab active" data-sub="trends">Engagement Trends</button>
+        <button type="button" class="cay-sub-tab" data-sub="heatmap">Best Time to Post</button>
+        <button type="button" class="cay-sub-tab" data-sub="types">Content Types</button>
+        <button type="button" class="cay-sub-tab" data-sub="platforms">Platform Comparison</button>
+        <button type="button" class="cay-sub-tab" data-sub="growth">Growth Velocity</button>
       </div>
 
       <!-- Engagement Trends -->
@@ -283,14 +286,14 @@
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Target Value</label>
-          <input type="number" class="cay-form-input" id="goalValue" placeholder="100" min="1">
+          <input aria-label="GoalValue" type="number" class="cay-form-input" id="goalValue" placeholder="100" min="1">
         </div>
         <div class="cay-form-group">
           <label class="cay-form-label">Deadline</label>
-          <input type="date" class="cay-form-input" id="goalDeadline">
+          <input aria-label="GoalDeadline" type="date" class="cay-form-input" id="goalDeadline">
         </div>
         <div>
-          <button class="cay-btn-primary" id="addGoalBtn" style="margin-top:22px;padding:10px 18px;">Add Goal</button>
+          <button type="button" class="cay-btn-primary" id="addGoalBtn" style="margin-top:22px;padding:10px 18px;">Add Goal</button>
         </div>
       </div>
       <div id="goalsContainer"></div>
@@ -566,7 +569,7 @@
       var tm = topMetric(p);
       var abbr = PLATFORM_ABBR[p.platform] || '';
       html += '<tr data-id="' + p.id + '">';
-      html += '<td><input type="checkbox" class="cay-checkbox cay-row-check" data-id="' + p.id + '"></td>';
+      html += '<td><input aria-label="Cay checkbox cay row check" type="checkbox" class="cay-checkbox cay-row-check" data-id="' + p.id + '"></td>';
       html += '<td>' + p.date + '</td>';
       html += '<td><span class="cay-platform-badge ' + abbr + '">' + (PLATFORM_LABELS[p.platform]||p.platform) + '</span></td>';
       html += '<td>' + (p.type||'-') + '</td>';
@@ -1028,7 +1031,7 @@
       html += '<div class="cay-goal-title">' + (isComplete ? '&#9989; ' : '') + metricLabel + '</div>';
       html += '<div style="display:flex;gap:8px;align-items:center;">';
       html += '<div class="cay-goal-deadline">Due: ' + (g.deadline||'No deadline') + '</div>';
-      html += '<button class="cay-btn-secondary" style="padding:4px 10px;font-size:11px;" onclick="window._cayDeleteGoal(' + i + ')">&#128465;</button>';
+      html += '<button type="button" class="cay-btn-secondary" style="padding:4px 10px;font-size:11px;" onclick="window._cayDeleteGoal(' + i + ')">&#128465;</button>';
       html += '</div></div>';
       html += '<div class="cay-goal-progress-track"><div class="cay-goal-progress-fill" style="width:' + pct.toFixed(0) + '%;"></div></div>';
       html += '<div class="cay-goal-numbers"><span>' + current.toFixed(g.metric === 'engagement' ? 1 : 0) + ' current</span><span>' + g.target + ' target</span></div>';

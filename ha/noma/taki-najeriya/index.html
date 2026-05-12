@@ -4,15 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalkuletan Taki Najeriya | NPK da Urea | AfroTools Hausa</title>
-  <meta name="description" content="Kalkuletan taki a Hausa don Najeriya: NPK, Urea, buhuna, kudin kasuwa, subsidy, jadawalin amfani da organic alternatives.">
+  <meta name="description" content="Kalkuletan taki a Hausa don Najeriya: NPK, Urea, buhuna, kudin kasuwa, tallafi, jadawalin amfani da madadin takin gargajiya.">
   <link rel="canonical" href="https://afrotools.com/ha/noma/taki-najeriya/">
+  <meta name="content-language" content="ha">
   <link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/fertilizer/nigeria">
   <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/noma/taki-najeriya/">
   <link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/fertilizer/nigeria">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://afrotools.com/ha/noma/taki-najeriya/">
   <meta property="og:title" content="Kalkuletan Taki Najeriya">
-  <meta property="og:description" content="Hausa UI don kiyasta taki da NPK a Najeriya da source data da engine na AfroTools.">
+  <meta property="og:description" content="Fuskar Hausa don kiyasta taki da NPK a Najeriya da bayanan tushe da engine na AfroTools.">
   <meta property="og:image" content="https://afrotools.com/assets/img/tools/fertilizer-nigeria.webp">
   <meta property="og:locale" content="ha_NG">
   <meta name="twitter:card" content="summary_large_image">
@@ -23,10 +24,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="/ha/assets/agriculture-ha.css?v=54052f28">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 </head>
 <body>
 <afro-navbar theme="dark" active="tools"></afro-navbar>
@@ -38,7 +39,7 @@
       </nav>
       <span class="ha-agri-eyebrow">Kalkuletan NPK na Najeriya</span>
       <h1>Kiyasta buhunan taki da kudin da za su shiga gona.</h1>
-      <p>Shigar da crop, yanki, girman gona, target yield da soil test idan kana da shi. Formula da fertilizer data suna zuwa daga FertilizerEngine da Nigeria source data na AfroTools.</p>
+      <p>Shigar da crop, yanki, girman gona, yield da kake so da soil test idan kana da shi. Ka'idojin lissafi da bayanan taki suna zuwa daga FertilizerEngine da bayanan Najeriya na AfroTools.</p>
       <div class="ha-pill-row" id="statsBar"></div>
     </div>
   </section>
@@ -50,20 +51,20 @@
         <div class="ha-field"><label for="selCrop">Amfanin gona</label><select id="selCrop"></select></div>
         <div class="ha-field"><label for="selRegion">Yanki</label><select id="selRegion"></select></div>
         <div class="ha-field"><label for="inpFarm">Girman gona (hectare)</label><input id="inpFarm" type="number" min="0.1" step="0.1" value="1"></div>
-        <div class="ha-field"><label for="inpTarget">Target yield (tonnes/ha)</label><input id="inpTarget" type="number" min="0.1" step="0.1" placeholder="Auto"></div>
+        <div class="ha-field"><label for="inpTarget">Yield da ake so (tonnes/ha)</label><input id="inpTarget" type="number" min="0.1" step="0.1" placeholder="Auto"></div>
         <div class="ha-field"><label for="selSoil">Nau'in ƙasa</label><select id="selSoil"></select></div>
         <div class="ha-field"><label for="selPrevCrop">Crop da ya gabata (N credit)</label><select id="selPrevCrop"><option value="none">Babu / cereal / wani crop</option><option value="cowpea">Wake / cowpea</option><option value="groundnut">Gyada</option><option value="soybean">Soya</option><option value="common_bean">Beans</option><option value="pigeon_pea">Pigeon pea</option><option value="chickpea">Chickpea</option><option value="lentils">Lentils</option><option value="fallow_grass">Fallow / grass</option></select></div>
-        <div class="ha-field full"><button class="ha-secondary-btn" type="button" onclick="toggleSoilTest()">Ina da soil test results</button></div>
+        <div class="ha-field full"><button class="ha-secondary-btn" type="button" onclick="toggleSoilTest()">Ina da sakamakon soil test</button></div>
       </div>
       <div class="ha-tool-card" id="soilTestPanel" style="display:none;margin-top:14px;">
         <span class="ha-tool-kicker">Soil test na zabi</span>
-        <p class="ha-muted">Ka bar blank idan ba ka da sakamakon soil test.</p>
+        <p class="ha-muted">Ka bar fili idan ba ka da sakamakon soil test.</p>
         <div class="ha-form-grid">
           <div class="ha-field"><label for="inpPH">Soil pH</label><input id="inpPH" type="number" step="0.1" placeholder="misali 6.5"></div>
           <div class="ha-field"><label for="inpOM">Organic matter (%)</label><input id="inpOM" type="number" step="0.1" placeholder="misali 2.5"></div>
-          <div class="ha-field"><label for="inpN">Available N (ppm)</label><input id="inpN" type="number" step="1" placeholder="misali 20"></div>
+          <div class="ha-field"><label for="inpN">N da ke samuwa (ppm)</label><input id="inpN" type="number" step="1" placeholder="misali 20"></div>
           <div class="ha-field"><label for="inpP">Olsen P (ppm)</label><input id="inpP" type="number" step="1" placeholder="misali 15"></div>
-          <div class="ha-field"><label for="inpK">Available K (ppm)</label><input id="inpK" type="number" step="1" placeholder="misali 100"></div>
+          <div class="ha-field"><label for="inpK">K da ke samuwa (ppm)</label><input id="inpK" type="number" step="1" placeholder="misali 100"></div>
         </div>
       </div>
       <button class="ha-calc-btn" type="button" onclick="calculate()">Kiyasta taki</button>
@@ -76,22 +77,22 @@
           <div class="ha-metric"><div class="ha-metric-value" id="rP">--</div><div class="ha-metric-label">Phosphorus (P2O5) kg/ha</div></div>
           <div class="ha-metric"><div class="ha-metric-value" id="rK">--</div><div class="ha-metric-label">Potassium (K2O) kg/ha</div></div>
         </div>
-        <p class="ha-muted">Don <span id="rCrop">--</span>, target <span id="rTarget">--</span> t/ha, girman gona <span id="rFarm">--</span> ha.</p>
+        <p class="ha-muted">Don <span id="rCrop">--</span>, burin yield <span id="rTarget">--</span> t/ha, girman gona <span id="rFarm">--</span> ha.</p>
       </div>
       <div class="ha-tool-card">
         <span class="ha-tool-kicker">Jerin sayen taki</span>
-        <div class="ha-table-wrap"><table class="ha-table" id="shopTable"><thead><tr><th>Product</th><th>Buhuna</th><th>Farashi/buhu</th><th>Jimilla</th></tr></thead><tbody></tbody></table></div>
+        <div class="ha-table-wrap"><table class="ha-table" id="shopTable"><thead><tr><th>Samfurin taki</th><th>Buhuna</th><th>Farashi/buhu</th><th>Jimilla</th></tr></thead><tbody></tbody></table></div>
         <div class="ha-metric-grid" style="margin-top:14px;">
           <div class="ha-metric"><div class="ha-metric-value" id="rCostMarket">--</div><div class="ha-metric-label">Farashin kasuwa</div></div>
-          <div class="ha-metric" id="costSubsidyCard" style="display:none;"><div class="ha-metric-value" id="rCostSubsidy">--</div><div class="ha-metric-label">Da subsidy</div></div>
+          <div class="ha-metric" id="costSubsidyCard" style="display:none;"><div class="ha-metric-value" id="rCostSubsidy">--</div><div class="ha-metric-label">Da tallafi</div></div>
         </div>
         <p class="ha-muted" id="rCostPerHa"></p>
       </div>
       <div class="ha-tool-grid">
         <div class="ha-tool-card"><span class="ha-tool-kicker">Jadawalin amfani</span><div id="scheduleContainer"></div></div>
-        <div class="ha-tool-card"><span class="ha-tool-kicker">Madadin organic</span><p class="ha-muted">Equivalent inputs don samar da nitrogen iri ɗaya. Organic sources na kuma taimaka wa tsarin ƙasa.</p><div class="ha-metric-grid" id="organicGrid"></div></div>
+        <div class="ha-tool-card"><span class="ha-tool-kicker">Madadin takin gargajiya</span><p class="ha-muted">Abubuwan da za su samar da nitrogen kusan iri ɗaya. Takin gargajiya na kuma taimaka wa tsarin ƙasa.</p><div class="ha-metric-grid" id="organicGrid"></div></div>
       </div>
-      <div class="ha-tool-card" id="subsidyCard" style="display:none;"><span class="ha-tool-kicker">Bayanin subsidy</span><div class="ha-note-box" id="subsidyBanner"></div></div>
+      <div class="ha-tool-card" id="subsidyCard" style="display:none;"><span class="ha-tool-kicker">Bayanin tallafi</span><div class="ha-note-box" id="subsidyBanner"></div></div>
     </section>
     <section class="ha-tool-card">
       <span class="ha-tool-kicker">Gargaɗi</span>
@@ -104,7 +105,7 @@
       </ul>
     </section>
     <section class="ha-note-box">
-      Tushen data: FAOSTAT, Nigeria National Bureau of Statistics, World Bank, CGIAR. Fertilizer recommendation kiyasi ne; tabbatar da shi da extension officer, ADP ko qualified agronomist. Sabuntawa ta karshe: 2026.
+      Tushen bayanai: FAOSTAT, Nigeria National Bureau of Statistics, World Bank, CGIAR. Shawarar taki kiyasi ce; tabbatar da ita da extension officer, ADP ko agronomist mai kwarewa. Sabuntawa ta karshe: 2026.
     </section>
   </main>
 </div>
@@ -113,5 +114,6 @@
 <script src="/data/agriculture/ng-agri-data.js?v=27133035"></script>
 <script src="/engines/fertilizer-engine.js?v=ba115ded"></script>
 <script src="/ha/noma/taki-najeriya/app.js?v=5d70fb10"></script>
+<script src="/ha/assets/agriculture-ha-localizer.js?v=f84e3f36"></script>
 </body>
 </html>

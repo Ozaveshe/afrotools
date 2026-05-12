@@ -27,9 +27,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 
 <style>
 :root{
@@ -127,17 +127,17 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 <header class="hero">
   <div class="hero-inner">
     <nav class="breadcrumb">
-      <a href="/">AfroTools</a><span>/</span>
-      <a href="/developer-tools/">Zana za Developer</a><span>/</span>
-      <span>Afrikan API Directory</span>
+      <a href="/sw/">AfroTools</a><span>/</span>
+      <a href="/sw/zana-za-developer/">Zana za Developer</a><span>/</span>
+      <span>Saraka ya API Afrika</span>
     </nav>
-    <h1>Find Afrikan APIs with enough context to actually start building.</h1>
-    <p class="hero-copy">A curated developer directory for payments, mobile money, USSD, SMS, identity, open banking and maps. Each entry shows official docs, auth model, sandbox notes, last docs check and a starter request you can hand off to API Tester.</p>
+    <h1>Tafuta API za Afrika ukiwa na muktadha wa kuanza kujenga.</h1>
+    <p class="hero-copy">Saraka iliyochaguliwa kwa payments, mobile money, USSD, SMS, utambulisho, open banking na ramani. Kila entry inaonyesha docs rasmi za Kiingereza, auth model, maelezo ya sandbox, tarehe ya ukaguzi wa docs na starter request ya kupeleka kwenye Kijaribu API.</p>
     <div class="hero-grid">
-      <div class="hero-stat"><strong id="stat-apis">0</strong><span>curated APIs</span></div>
-      <div class="hero-stat"><strong id="stat-countries">0</strong><span>markets covered</span></div>
-      <div class="hero-stat"><strong>2026-04-27</strong><span>latest docs check in this pass</span></div>
-      <div class="hero-stat"><strong>No uptime claims</strong><span>docs-first trust model</span></div>
+      <div class="hero-stat"><strong id="stat-apis">0</strong><span>API zilizochaguliwa</span></div>
+      <div class="hero-stat"><strong id="stat-countries">0</strong><span>masoko yaliyofunikwa</span></div>
+      <div class="hero-stat"><strong>2026-04-27</strong><span>ukaguzi wa docs wa karibuni kwenye pass hii</span></div>
+      <div class="hero-stat"><strong>Hakuna madai ya uptime</strong><span>trust model inayotegemea docs</span></div>
     </div>
   </div>
 </header>
@@ -147,50 +147,50 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
   <section class="layout">
     <div class="left">
       <section class="card">
-        <div class="card-head"><span class="card-title">Filter APIs</span><button class="btn small" id="reset-filters" type="button">Reset</button></div>
+        <div class="card-head"><span class="card-title">Chuja API</span><button class="btn small" id="reset-filters" type="button">Weka upya</button></div>
         <div class="card-body">
           <div class="filters">
             <div><label for="search">Tafuta</label><input id="search" placeholder="Paystack, KYC, USSD, mobile money"></div>
-            <div><label for="category">Category</label><select id="category"></select></div>
+            <div><label for="category">Kategoria</label><select id="category"></select></div>
             <div><label for="country">Nchi</label><select id="country"></select></div>
             <div><label for="auth">Auth</label><select id="auth"></select></div>
             <div><label for="sandbox">Sandbox</label><select id="sandbox"></select></div>
           </div>
-          <p class="hint">Scores are editorial fit scores, not uptime measurements. Verify pricing, certification and compliance directly with each provider before production.</p>
+          <p class="hint">Scores ni tathmini ya editorial fit, si kipimo cha uptime. Hakiki bei, certification na compliance moja kwa moja na provider kabla ya production.</p>
         </div>
       </section>
 
       <section class="card">
-        <div class="card-head"><span class="card-title">Directory</span><span id="result-count" class="badge green">0 shown</span></div>
+        <div class="card-head"><span class="card-title">Saraka</span><span id="result-count" class="badge green">0 zinaonekana</span></div>
         <div class="card-body"><div class="directory-grid" id="api-grid"></div></div>
       </section>
     </div>
 
     <aside class="right">
       <section class="card">
-        <div class="card-head"><span class="card-title">Compare Shortlist</span><button class="btn small" id="clear-compare" type="button">Futa</button></div>
+        <div class="card-head"><span class="card-title">Orodha ya kulinganisha</span><button class="btn small" id="clear-compare" type="button">Futa</button></div>
         <div class="card-body">
           <div class="compare-list" id="compare-list"></div>
-          <p class="hint">Use this to shortlist APIs before you open docs or save starter calls into API Tester.</p>
+          <p class="hint">Tumia hapa kuchuja API kabla ya kufungua docs za Kiingereza au kuhifadhi starter calls kwenye Kijaribu API.</p>
         </div>
       </section>
 
       <section class="card">
-        <div class="card-head"><span class="card-title">Trust Rules</span></div>
+        <div class="card-head"><span class="card-title">Kanuni za uaminifu</span></div>
         <div class="card-body">
-          <div class="notice ok">This page now avoids vague "always updated" and uptime claims. Each API shows a docs check date and a verification state.</div>
-          <p class="hint">Production readiness still depends on merchant onboarding, compliance approval, sandbox access, country availability and provider-side rate limits.</p>
+          <div class="notice ok">Ukurasa huu huepuka madai ya jumla kama "husasishwa kila wakati" au uptime. Kila API inaonyesha tarehe ya ukaguzi wa docs na hali ya uthibitishaji.</div>
+          <p class="hint">Utayari wa production bado hutegemea merchant onboarding, approval ya compliance, sandbox access, upatikanaji wa nchi na rate limits za provider.</p>
         </div>
       </section>
 
       <section class="card">
-        <div class="card-head"><span class="card-title">Primary Sources</span></div>
+        <div class="card-head"><span class="card-title">Vyanzo rasmi vya Kiingereza</span></div>
         <div class="card-body source-list">
-          <a href="https://paystack.com/docs" target="_blank" rel="noopener">Paystack docs</a>
-          <a href="https://developer.flutterwave.com" target="_blank" rel="noopener">Flutterwave developer docs</a>
-          <a href="https://developer.safaricom.co.ke" target="_blank" rel="noopener">Safaricom Daraja portal</a>
-          <a href="https://momodeveloper.mtn.com" target="_blank" rel="noopener">MTN MoMo developer portal</a>
-          <a href="https://developers.africastalking.com" target="_blank" rel="noopener">Afrika's Talking docs</a>
+          <a href="https://paystack.com/docs" target="_blank" rel="noopener">Paystack docs (Kiingereza)</a>
+          <a href="https://developer.flutterwave.com" target="_blank" rel="noopener">Flutterwave developer docs (Kiingereza)</a>
+          <a href="https://developer.safaricom.co.ke" target="_blank" rel="noopener">Safaricom Daraja portal (Kiingereza)</a>
+          <a href="https://momodeveloper.mtn.com" target="_blank" rel="noopener">MTN MoMo developer portal (Kiingereza)</a>
+          <a href="https://developers.africastalking.com" target="_blank" rel="noopener">Africa's Talking docs (Kiingereza)</a>
         </div>
       </section>
     </aside>
@@ -312,13 +312,13 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
         '<div class="meta-grid">'+
           '<div class="meta"><span>Markets</span><strong>'+esc(api.countries.join(', '))+'</strong></div>'+
           '<div class="meta"><span>Auth</span><strong>'+esc(api.auth)+'</strong></div>'+
-          '<div class="meta"><span>Docs checked</span><strong>'+esc(api.checked)+'</strong></div>'+
+          '<div class="meta"><span>Docs zimekaguliwa</span><strong>'+esc(api.checked)+'</strong></div>'+
           '<div class="meta"><span>Verification</span><strong>'+esc(api.verification)+'</strong></div>'+
         '</div>'+
         '<div class="notice">'+esc(api.risk)+'</div>'+
         '<div class="code">'+esc(api.base)+'</div>'+
         '<div class="toolbar">'+
-          '<a class="btn primary" href="'+esc(api.docs)+'" target="_blank" rel="noopener">Open docs</a>'+
+          '<a class="btn primary" href="'+esc(api.docs)+'" target="_blank" rel="noopener">Fungua docs za Kiingereza</a>'+
           '<button class="btn" data-action="curl" data-id="'+esc(api.id)+'" type="button">Copy cURL</button>'+
           '<button class="btn" data-action="tester" data-id="'+esc(api.id)+'" type="button">Save to API Tester</button>'+
           '<button class="btn" data-action="compare" data-id="'+esc(api.id)+'" type="button">Compare</button>'+
@@ -374,6 +374,34 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script class="sw-dev-runtime-localizer">
 (function(){
+
+  const hrefMap = new Map([
+    ["/", "/sw/"],
+    ["/tools/", "/sw/zana-za-developer/"],
+    ["/developer-tools/", "/sw/zana-za-developer/"],
+    ["/tools/dev-tools/", "/sw/zana/kituo-cha-developer/"],
+    ["/contact/", "/sw/wasiliana/"],
+    ["/tools/api-tester/", "/sw/zana/kijaribu-api/"],
+    ["/tools/african-api-directory/", "/sw/zana/saraka-ya-api-afrika/"],
+    ["/telecom/ussd-directory/", "/sw/zana/saraka-ya-misimbo-ussd/"],
+    ["/tools/regex-tester/", "/sw/zana/kijaribu-regex/"],
+    ["/tools/json-formatter/", "/sw/zana/kirekebisha-json/"],
+    ["/tools/sql-formatter/", "/sw/zana/kirekebisha-sql/"],
+    ["/tools/sql-playground/", "/sw/zana/uwanja-wa-sql/"],
+    ["/tools/base64/", "/sw/zana/base64/"],
+    ["/tools/jwt-decoder/", "/sw/zana/kisimbuzi-jwt/"],
+    ["/tools/docker-compose-gen/", "/sw/zana/kizalishaji-docker-compose/"],
+    ["/tools/htaccess-gen/", "/sw/zana/kizalishaji-htaccess/"],
+    ["/tools/pwa-manifest/", "/sw/zana/kizalishaji-pwa-manifest/"],
+    ["/tools/robots-txt/", "/sw/zana/kizalishaji-robots-txt/"],
+    ["/tools/sitemap-gen/", "/sw/zana/kizalishaji-sitemap/"]
+  ]);
+  function localizeHref(el){
+    const href = el.getAttribute && el.getAttribute('href');
+    if (!href) return;
+    const clean = href.split(/[?#]/)[0];
+    if (hrefMap.has(clean)) el.setAttribute('href', hrefMap.get(clean) + href.slice(clean.length));
+  }
   const textMap = new Map([["Developer Tools for African Builders","Zana za Developer kwa Afrika"],["Developer Tools for Africa","Zana za Developer kwa Afrika"],["Developer Tools","Zana za Developer"],["Tools for builders who ship in","Zana kwa builders wanaoship"],["Africa","Afrika"],["Private, browser-based developer tools for African builders: API testing, USSD flows, JSON, JWT, regex, SQL, Docker, PWA, hosting, domains, SEO and launch utilities.","Zana za developer zinazofanya kazi kwenye browser kwa builders wa Afrika: API testing, USSD flows, JSON, JWT, Regex, SQL, Docker, PWA, hosting, domains, SEO na launch utilities."],["API testing, USSD flow design, data cleanup, SQL practice, Docker, PWA, hosting, domains and launch checks. Fast browser utilities with a practical bias toward African developer workflows.","API testing, design ya USSD flow, data cleanup, mazoezi ya SQL, Docker, PWA, hosting, domains na launch checks. Utilities za browser kwa workflows za developer Afrika."],["Open API Tester","Fungua Kijaribu API"],["Build a USSD flow","Jenga USSD flow"],["Live tools","Zana hai"],["Flagship apps","Apps kuu"],["Server uploads","Upakiaji wa server"],["No signup core","Core bila signup"],["Product thesis","Mwelekeo wa bidhaa"],["Not just another pile of formatters.","Si mkusanyiko wa formatters pekee."],["The small tools stay fast, but the section now points users toward the work that AfroTools can uniquely own: African APIs, USSD, local hosting decisions, offline-friendly data work, and web launch readiness.","Zana ndogo zinabaki haraka, lakini sehemu hii inaelekeza kwenye kazi ambazo AfroTools inaweza kumiliki vizuri: APIs za Afrika, USSD, maamuzi ya hosting ya ndani, data work inayofaa offline na maandalizi ya web launch."],["Africa API aware","Inajali APIs za Afrika"],["Presets and links for payment, telecom, identity and mobile money work.","Presets na links kwa payment, telecom, identity na mobile money work."],["Privacy first","Faragha kwanza"],["Formatting, encoding, hashing and editing happen in the browser where practical.","Formatting, encoding, hashing na editing hufanyika kwenye browser inapowezekana."],["Workflow based","Inaangalia workflow"],["Flagship apps should save requests, export code, validate output and teach next steps.","Apps kuu zinapaswa kuhifadhi requests, export code, validate output na kuelekeza hatua inayofuata."],["Low bandwidth","Bandwidth ndogo"],["Useful on older devices and unstable connections, with no account required for core use.","Inafaa kwenye vifaa vya zamani na connection zisizo thabiti, bila account kwa matumizi ya msingi."],["Search JSON, API, USSD, JWT, regex, Docker, PWA...","Tafuta JSON, API, USSD, JWT, Regex, Docker, PWA..."],["All","Zote"],["Flagship","Kuu"],["Data","Data"],["Launch","Launch"],["Utility","Utility"],["Developer Tools FAQ","Maswali ya Zana za Developer"],["Are these tools free?","Je, zana hizi ni bure?"],["Yes. The core developer utilities are free and do not require an account.","Ndiyo. Utilities za msingi ni bure na hazihitaji account."],["Is my data sent to AfroTools?","Je, data yangu hutumwa AfroTools?"],["Most utilities process data in your browser. API Tester sends the request directly from your browser to the URL you choose, so production secrets should still be handled carefully.","Utilities nyingi huchakata data kwenye browser. Kijaribu API hutuma request moja kwa moja kutoka browser yako kwenda URL unayochagua, hivyo secrets za production zinahitaji tahadhari."],["Why are African APIs and USSD highlighted?","Kwa nini APIs za Afrika na USSD zimepewa kipaumbele?"],["Those are the workflows where AfroTools can be more useful than generic global utilities: mobile money, telecom, identity, USSD menus, local payment constraints and deployment choices.","Hizo ndizo workflows ambazo AfroTools inaweza kuwa muhimu zaidi kuliko utilities za jumla: mobile money, telecom, identity, USSD menus, payment constraints za ndani na deployment choices."],["Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.","Zana za developer: JSON/CSV/XML converter, hash generator, Base64 encoder, Regex tester, JWT decoder, UUID generator, diff checker, Markdown editor na Cron builder. Zote client-side."],["Free forever","Bure daima"],["All Developer Tools","Zana zote za Developer"],["Live tools you can use now, plus what's coming next in this category.","Zana hai unazoweza kutumia sasa, pamoja na zinazokuja kwenye category hii."],["Search tools — e.g. JSON, regex, JWT, UUID…","Tafuta zana, mfano JSON, Regex, JWT, UUID..."],["Available Now","Zinapatikana sasa"],["Coming Soon","Zinakuja"],["Browse","Vinjari"],["All Categories","Categories zote"],["Explore other tool categories across AfroTools.","Vinjari categories nyingine za AfroTools."],["Can't find what you need?","Hujapata unachohitaji?"],["Tell us what tool to build next. We ship new tools every week.","Tuambie zana gani tujenge ijayo. Tunaongeza zana mpya mara kwa mara."],["Request a Tool →","Omba zana ->"],["Format","Format"],["Validate","Validate"],["Repair","Repair"],["Generate","Tengeneza"],["Encode","Encode"],["Decode","Decode"],["Copy","Nakili"],["Clear","Futa"],["Reset","Reset"],["Download","Pakua"],["Upload","Pakia"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Load","Pakia"],["Run","Run"],["Test","Test"],["Send","Tuma"],["Search","Tafuta"],["Filter","Filter"],["Preview","Preview"],["Input","Input"],["Output","Output"],["Result","Matokeo"],["Results","Matokeo"],["Settings","Mipangilio"],["Options","Options"],["Example","Mfano"],["Examples","Mifano"],["Error","Hitilafu"],["Warning","Onyo"],["Valid","Valid"],["Invalid","Invalid"],["Line","Mstari"],["Lines","Mistari"],["Text","Maandishi"],["File","Faili"],["Files","Faili"],["Password","Nenosiri"],["Length","Urefu"],["Uppercase","Herufi kubwa"],["Lowercase","Herufi ndogo"],["Numbers","Namba"],["Symbols","Alama"],["Secret","Secret"],["Key","Key"],["Algorithm","Algorithm"],["Header","Header"],["Payload","Payload"],["Signature","Signature"],["Claims","Claims"],["Token","Token"],["Expired","Ime-expire"],["Method","Method"],["Headers","Headers"],["Body","Body"],["Response","Response"],["Authorization","Authorization"],["Environment","Environment"],["Query","Query"],["Parameters","Parameters"],["Country","Nchi"],["Provider","Provider"],["Price","Bei"],["Monthly","Kila mwezi"],["Annual","Kila mwaka"],["Notes","Notes"],["Checklist","Checklist"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["How it works","Jinsi inavyofanya kazi"],["How It Works","Jinsi inavyofanya kazi"],["Privacy","Faragha"],["Local processing","Uchakataji wa ndani"],["No upload","Hakuna upload"],["No Upload","Hakuna upload"],["Client-side","Client-side"],["Browser-based","Browser-based"],["Free online tool","Zana ya bure mtandaoni"],["Click","Bofya"],["Drag","Buruta"],["Drop","Dondosha"],["Choose","Chagua"],["Submit","Wasilisha"],["Enter","Weka"],["Yes.","Ndiyo."],["No.","Hapana."],["Editor","Kihariri"],["Live Preview","Preview hai"],["Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.","Andika Markdown ukiwa na preview ya moja kwa moja. Kuna toolbar ya formatting, hesabu ya maneno, makisio ya muda wa kusoma, export kwenda HTML au download ya .md/.html. Auto-save hufanyika kwenye kifaa, na draft sync hutegemea hali ya akaunti."],["This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.","Kihariri hiki cha Markdown kinatoa sehemu mbili: upande wa kuandika na upande wa preview. Unaweza kuandika Markdown, kuona matokeo yaliyopangwa, kutumia tables, task lists, code blocks na picha zilizowekwa kwenye maandishi. Unaweza kupakua Markdown, ku-export HTML au kunakili output iliyopangwa. Ni msaada kwa docs, posts, notes na kazi za plain text, huku ukihakiki export kabla ya kuchapisha."],["Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","Je, kihariri cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Does the AfroTools Kihariri Markdown support GitHub Flavored Markdown?","Je, Kihariri Markdown cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.","Ndiyo. Kihariri kinatumia marked.js na GFM mode kwa tables, fenced code blocks, strikethrough, task lists na autolinks."],["Can I export my markdown to HTML?","Naweza ku-export Markdown kwenda HTML?"],["Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Yes. AfroTools Kihariri Markdown offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Does the markdown editor work offline?","Je, kihariri cha Markdown hufanya kazi offline?"],["How do I create a markdown table quickly?","Nitatengeneza jedwali la Markdown haraka vipi?"],["Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.","Bofya kitufe cha \"Table+\" kwenye toolbar kufungua generator ya jedwali. Weka idadi ya rows na columns, kisha template ya Markdown itawekwa kwenye cursor. Unaweza pia kutumia mshauri wa AI kugeuza data kuwa jedwali la Markdown."],["Fix formatting","Rekebisha formatting"],["Convert to markdown","Geuza kuwa Markdown"],["Generate table","Tengeneza jedwali"],["Tengeneza table","Tengeneza jedwali"],["Improve readability","Boresha usomekaji"],["Generate Markdown Table","Tengeneza Jedwali la Markdown"],["Rows (excluding header)","Rows bila header"],["Columns","Columns"],["Ask about your markdown...","Uliza kuhusu Markdown yako..."],["Markdown file downloaded","Faili ya Markdown imepakuliwa"],["HTML copied to clipboard","HTML imenakiliwa kwenye clipboard"],["Generator","Kizalishaji"],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side - nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Cryptographically Secure","Randomness ya Web Crypto"],["Bulk passwords will appear here...","Passwords nyingi zitaonekana hapa..."],["How the Password Generator Works","Jinsi Kizalishaji Nenosiri kinavyofanya kazi"],["The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["The AfroTools Kizalishaji Nenosiri creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["How to Use","Jinsi ya kutumia"],["Adjust the password length using the slider (recommended: 16+ characters)","Badilisha urefu wa password kwa slider; kwa akaunti muhimu, 16+ characters ni mwanzo mzuri"],["Toggle character types on/off - uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Toggle character types on/off — uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Click \"Generate Password\" to create a new password","Bofya \"Tengeneza Nenosiri\" kutengeneza password mpya"],["Click \"Copy\" to copy it to your clipboard","Bofya \"Nakili\" kuiweka kwenye clipboard"],["Use \"Bulk Generate\" to create multiple passwords at once","Tumia \"Tengeneza Bulk\" kutengeneza passwords nyingi kwa pamoja"],["Why Strong Passwords Matter","Kwa nini passwords zenye nguvu ni muhimu"],["Why Strong Nenosiris Matter","Kwa nini passwords zenye nguvu ni muhimu"],["In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like \"password123\" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a 16-character password with all character types would take billions of years to brute-force.","Mwaka 2026, data breaches bado zinaathiri watumiaji wengi Afrika na duniani. Password rahisi kama \"password123\" inaweza kubashiriwa haraka kwa vifaa vya kisasa. Password ndefu yenye mchanganyiko wa characters huongeza ugumu wa brute-force, lakini usiichukulie kama dhamana ya usalama wa mfumo mzima."],["The NIST Digital Identity Guidelines recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.","Mwongozo wa NIST Digital Identity Guidelines unapendekeza password za angalau characters 8, na wataalamu wengi hupendekeza 14-16+ kwa akaunti muhimu. Default ya generator ni 16 kama hatua ya tahadhari."],["This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.","Kizalishaji hiki hutengeneza passwords random kwa Web Crypto API, huku kikikuruhusu kuchagua length, uppercase, lowercase, numbers na symbols. Pia kinaonyesha makadirio ya nguvu ya password ili uone kama inafaa kwa matumizi yako. Tumia matokeo kama msaada wa planning, kisha hifadhi passwords kwenye password manager na fuata sera za usalama za shirika lako."],["How does the password generator work?","Kizalishaji cha password hufanya kazi vipi?"],["Are the generated passwords stored anywhere?","Passwords zinazotengenezwa huhifadhiwa mahali popote?"],["No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["Hapana. Nenosiris are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["What makes a strong password?","Password yenye nguvu ina nini?"],["A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.","Password yenye nguvu huwa ndefu, random na ina mchanganyiko wa uppercase, lowercase, numbers na symbols. Epuka maneno ya kamusi, taarifa binafsi na kutumia password ileile kwenye sites nyingi."],["Can I generate multiple passwords at once?","Naweza kutengeneza passwords nyingi kwa pamoja?"],["Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Ndiyo. Use the Bulk Tengeneza feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Password Tips","Vidokezo vya Password"],["Use at least 16 characters for important accounts (banking, email)","Tumia angalau characters 16 kwa akaunti muhimu kama benki na email"],["Never reuse passwords across different websites","Usitumie password ileile kwenye websites tofauti"],["Use a password manager (Bitwarden, 1Password) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Use a password manager (Bitwarden, 1Nenosiri) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Enable two-factor authentication (2FA) wherever possible","Washa two-factor authentication (2FA) inapowezekana"],["Change passwords immediately if a service reports a data breach","Badilisha passwords mara moja kama service imetangaza data breach"],["6 chars (letters):","Characters 6 (herufi):"],["8 chars (mixed):","Characters 8 (mchanganyiko):"],["10 chars (mixed):","Characters 10 (mchanganyiko):"],["12 chars (mixed):","Characters 12 (mchanganyiko):"],["16 chars (all types):","Characters 16 (aina zote):"],["~5 seconds","~sekunde 5"],["~5 minutes","~dakika 5"],["~2 weeks","~wiki 2"],["~200 years","~miaka 200"],["~billions of years","~mabilioni ya miaka"],["Source: Hive Systems, 2025 estimates with modern GPUs","Chanzo: Hive Systems, makadirio ya 2025 kwa GPUs za kisasa"],["Free","Bure"],["Copy to Clipboard","Nakili kwenye clipboard"],["Copied!","Imenakiliwa!"],["Download File","Pakua faili"],["Choose file","Chagua faili"],["Drop file here","Buruta faili hapa"],["Drag and drop","Buruta na udondoshe"],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Loading...","Inapakia..."],["Ready","Tayari"],["Try sample","Jaribu sample"],["Use sample","Tumia sample"],["Copied to clipboard","Imenakiliwa kwenye clipboard"],["Request failed","Request imeshindikana"],["Invalid JSON","JSON si valid"],["Valid JSON","JSON iko valid"]]);
   function localizeText(node){
     const raw = node.textContent || '';
@@ -392,8 +420,10 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach(localizeText);
+    if (root.nodeType === Node.ELEMENT_NODE && root.matches && root.matches('a[href]')) localizeHref(root);
     if (root.querySelectorAll) {
-      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"],a[href]').forEach(el => {
+        if (el.tagName === 'A') localizeHref(el);
         ['placeholder','aria-label','title','value'].forEach(attr => {
           const value = el.getAttribute(attr);
           if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));

@@ -146,7 +146,7 @@ ${buildAlternateLinks(country)}
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
 ${toolGridScript}
-<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}

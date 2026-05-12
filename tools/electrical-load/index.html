@@ -22,9 +22,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--accent:#007AFF;--accent-dark:#0059B3;--green:#008751;--dark:#0f1419;--bg:#f8fafc;--border:#e2e8f0;--muted:#64748b}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1e3a5f 100%);padding:44px 0 36px}
@@ -117,10 +117,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Electrical Load Calculator","description":"Calculate electrical load, cable sizes, breaker ratings, generator sizing for African homes and offices.","url":"https://afrotools.com/tools/electrical-load/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Electrical Load Calculator","url":"https://afrotools.com/tools/electrical-load/","description":"Calculate electrical load, cable sizes, breaker ratings, generator sizing for African homes and offices.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Electrical Load Calculator","item":"https://afrotools.com/tools/electrical-load/"}]}</script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/electrical-load/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/electrical-load/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-mzigo-wa-umeme/" />
@@ -179,12 +179,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="app-header"><span>Appliance</span><span>Watts</span><span>Qty</span><span>Hrs/Day</span><span></span></div>
 <div id="applianceList"></div>
 <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-<button class="btn-sm" onclick="addCustomRow()">+ Add Custom Appliance</button>
-<button class="btn-sm" onclick="loadHomePreset()">Load Typical Home</button>
-<button class="btn-sm" onclick="loadOfficePreset()">Load Typical Office</button>
+<button type="button" class="btn-sm" onclick="addCustomRow()">+ Add Custom Appliance</button>
+<button type="button" class="btn-sm" onclick="loadHomePreset()">Load Typical Home</button>
+<button type="button" class="btn-sm" onclick="loadOfficePreset()">Load Typical Office</button>
 </div>
-<button class="btn btn-primary" onclick="calculate()">Calculate Load</button>
-<button class="btn btn-reset" onclick="resetAll()">Reset All</button>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Load</button>
+<button type="button" class="btn btn-reset" onclick="resetAll()">Reset All</button>
 </div></div>
 
 <!-- Results -->
@@ -198,8 +198,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div id="costSection"></div>
 <div id="warnings"></div>
 <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-<button onclick="window.print()" class="btn-sm">Print</button>
-<button onclick="shareResult()" class="btn-sm">Share</button>
+<button type="button" onclick="window.print()" class="btn-sm">Print</button>
+<button type="button" onclick="shareResult()" class="btn-sm">Share</button>
 </div>
 </div></div>
 </div>
@@ -324,11 +324,11 @@ function addRow(name, watts, qty, hrs) {
   var div = document.createElement('div');
   div.className = 'app-row';
   div.id = 'row-' + id;
-  div.innerHTML = '<input type="text" value="' + (name||'') + '" placeholder="Appliance" style="font-weight:600">' +
-    '<input type="number" value="' + (watts||'') + '" min="1" placeholder="W">' +
+  div.innerHTML = '<input aria-label="Appliance" type="text" value="' + (name||'') + '" placeholder="Appliance" style="font-weight:600">' +
+    '<input aria-label="W" type="number" value="' + (watts||'') + '" min="1" placeholder="W">' +
     '<input type="number" value="' + (qty||1) + '" min="1" max="50">' +
     '<input type="number" value="' + (hrs||8) + '" min="0.5" max="24" step="0.5">' +
-    '<button class="remove-btn" onclick="this.parentElement.remove()">X</button>';
+    '<button type="button" class="remove-btn" onclick="this.parentElement.remove()">X</button>';
   appList.appendChild(div);
 }
 

@@ -21,11 +21,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{--afro-dark:#0f1419;--accent:#059669;--accent-dark:#047857;--accent-darker:#064e3b;--accent-light:#a7f3d0;--accent-bg:#ecfdf5;--accent-glow:rgba(5,150,105,.15)}
@@ -239,10 +239,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 {"@type":"Question","name":"When do I need to make provisional or quarterly tax payments?","acceptedAnswer":{"@type":"Answer","text":"Requirements vary by country. In South Africa, provisional taxpayers must pay in August and February. In Nigeria, self-employed individuals typically pay in advance. Kenya requires installment payments for self-employment income. Check with your local tax authority for specific due dates and thresholds."}}
 ]}
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/side-hustle-tax/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/impot-activite-secondaire/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/side-hustle-tax/" />
@@ -297,10 +297,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <!-- Tabs -->
 <div class="tabs">
-<button class="tab-btn active" onclick="switchTab('quick')">Quick Calc</button>
-<button class="tab-btn" onclick="switchTab('detailed')">Detailed</button>
-<button class="tab-btn" onclick="switchTab('presets')">Platform Presets</button>
-<button class="tab-btn" onclick="switchTab('compare')">Compare Regimes</button>
+<button type="button" class="tab-btn active" onclick="switchTab('quick')">Quick Calc</button>
+<button type="button" class="tab-btn" onclick="switchTab('detailed')">Detailed</button>
+<button type="button" class="tab-btn" onclick="switchTab('presets')">Platform Presets</button>
+<button type="button" class="tab-btn" onclick="switchTab('compare')">Compare Regimes</button>
 </div>
 
 <!-- ═══ QUICK CALC TAB ═══ -->
@@ -333,8 +333,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </select></div>
 </div>
 <div class="row field">
-<div><label>Annual Side Hustle Revenue</label><input type="number" id="revenue" value="2000000" min="0" step="100000"></div>
-<div><label>Annual Expenses / Costs</label><input type="number" id="expenses" value="500000" min="0" step="50000"></div>
+<div><label>Annual Side Hustle Revenue</label><input aria-label="Revenue" type="number" id="revenue" value="2000000" min="0" step="100000"></div>
+<div><label>Annual Expenses / Costs</label><input aria-label="Expenses" type="number" id="expenses" value="500000" min="0" step="50000"></div>
 </div>
 <div class="row field">
 <div><label>Do you have a primary job?</label>
@@ -342,13 +342,13 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="yes">Yes, employed full-time</option>
 <option value="no">No, side hustle is only income</option>
 </select></div>
-<div id="salaryField"><label>Annual Salary (if employed)</label><input type="number" id="salary" value="3000000" min="0" step="100000"></div>
+<div id="salaryField"><label>Annual Salary (if employed)</label><input aria-label="Salary" type="number" id="salary" value="3000000" min="0" step="100000"></div>
 </div>
 <div class="row field" id="rentField" style="display:none">
-<div><label>Annual Rent Paid (Nigeria only)</label><input type="number" id="rentPaid" value="0" min="0" step="50000"></div>
+<div><label>Annual Rent Paid (Nigeria only)</label><input aria-label="RentPaid" type="number" id="rentPaid" value="0" min="0" step="50000"></div>
 <div style="display:flex;align-items:end;font-size:.74rem;color:#64748b;line-height:1.5">Used for Nigeria's optional 20% rent relief, capped at ₦500,000 under the current tax law.</div>
 </div>
-<button class="btn btn-primary" onclick="calculate()">Calculate Tax</button>
+<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Tax</button>
 </div></div>
 </div>
 
@@ -378,11 +378,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </select></div>
 </div>
 <div class="row field">
-<div id="salaryField2"><label>Annual Salary (gross)</label><input type="number" id="salary2" value="3000000" min="0" step="100000" onchange="syncVal('salary',this.value)"></div>
-<div><label>Annual Side Hustle Revenue</label><input type="number" id="revenue2" value="2000000" min="0" step="100000" onchange="syncVal('revenue',this.value)"></div>
+<div id="salaryField2"><label>Annual Salary (gross)</label><input aria-label="Salary2" type="number" id="salary2" value="3000000" min="0" step="100000" onchange="syncVal('salary',this.value)"></div>
+<div><label>Annual Side Hustle Revenue</label><input aria-label="Revenue2" type="number" id="revenue2" value="2000000" min="0" step="100000" onchange="syncVal('revenue',this.value)"></div>
 </div>
 <div class="row field" id="rentField2" style="display:none">
-<div><label>Annual Rent Paid (Nigeria only)</label><input type="number" id="rentPaid2" value="0" min="0" step="50000" onchange="syncVal('rent',this.value)"></div>
+<div><label>Annual Rent Paid (Nigeria only)</label><input aria-label="RentPaid2" type="number" id="rentPaid2" value="0" min="0" step="50000" onchange="syncVal('rent',this.value)"></div>
 <div style="display:flex;align-items:end;font-size:.74rem;color:#64748b;line-height:1.5">Optional rent relief input for Nigeria.</div>
 </div>
 </div></div>
@@ -402,7 +402,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 </div></div>
 
-<button class="btn btn-primary" onclick="calculateDetailed()" style="margin-top:14px">Calculate with Deductions</button>
+<button type="button" class="btn btn-primary" onclick="calculateDetailed()" style="margin-top:14px">Calculate with Deductions</button>
 </div>
 
 <!-- ═══ PLATFORM PRESETS TAB ═══ -->
@@ -427,7 +427,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="SN">Senegal</option>
 </select></div>
 <div><label>Annual Revenue from this Platform</label>
-<input type="number" id="presetRevenue" value="2000000" min="0" step="100000"></div>
+<input aria-label="PresetRevenue" type="number" id="presetRevenue" value="2000000" min="0" step="100000"></div>
 </div>
 <div class="row field">
 <div><label>Employment Status</label>
@@ -435,14 +435,14 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="yes">Employed + Side Hustle</option>
 <option value="no">Side Hustle Only</option>
 </select></div>
-<div id="salaryField3"><label>Annual Salary</label><input type="number" id="salary3" value="3000000" min="0" step="100000"></div>
+<div id="salaryField3"><label>Annual Salary</label><input aria-label="Salary3" type="number" id="salary3" value="3000000" min="0" step="100000"></div>
 </div>
 <div class="row field" id="rentField3" style="display:none">
-<div><label>Annual Rent Paid (Nigeria only)</label><input type="number" id="rentPaid3" value="0" min="0" step="50000"></div>
+<div><label>Annual Rent Paid (Nigeria only)</label><input aria-label="RentPaid3" type="number" id="rentPaid3" value="0" min="0" step="50000"></div>
 <div style="display:flex;align-items:end;font-size:.74rem;color:#64748b;line-height:1.5">Optional rent relief input for Nigeria.</div>
 </div>
 <div id="presetDeductions" style="margin-top:14px"></div>
-<button class="btn btn-primary" onclick="calculatePreset()" style="margin-top:14px">Calculate Tax</button>
+<button type="button" class="btn btn-primary" onclick="calculatePreset()" style="margin-top:14px">Calculate Tax</button>
 </div></div>
 </div>
 
@@ -461,11 +461,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="GH">Ghana</option>
 </select></div>
 <div><label>Annual Gross Revenue</label>
-<input type="number" id="compareRevenue" value="2000000" min="0" step="100000"></div>
+<input aria-label="CompareRevenue" type="number" id="compareRevenue" value="2000000" min="0" step="100000"></div>
 </div>
 <div class="row field">
 <div><label>Annual Expenses / Costs</label>
-<input type="number" id="compareExpenses" value="500000" min="0" step="50000"></div>
+<input aria-label="CompareExpenses" type="number" id="compareExpenses" value="500000" min="0" step="50000"></div>
 <div><label>Employment Status</label>
 <select id="hasJob4">
 <option value="no">Side Hustle Only</option>
@@ -474,10 +474,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 <div class="row field" id="rentField4" style="display:none">
 <div><label>Annual Rent Paid (Nigeria only)</label>
-<input type="number" id="compareRentPaid" value="0" min="0" step="50000"></div>
+<input aria-label="CompareRentPaid" type="number" id="compareRentPaid" value="0" min="0" step="50000"></div>
 <div style="display:flex;align-items:end;font-size:.74rem;color:#64748b;line-height:1.5">Optional rent relief input for Nigeria.</div>
 </div>
-<button class="btn btn-primary" onclick="calculateRegimes()">Compare Regimes</button>
+<button type="button" class="btn btn-primary" onclick="calculateRegimes()">Compare Regimes</button>
 <div id="regimeResults"></div>
 </div></div>
 </div>
@@ -529,8 +529,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
         <div class="ai-chat" id="aiChat">
           <div class="ai-msgs" id="aiMsgs"></div>
           <div class="ai-input-row">
-            <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
-            <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+            <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+            <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
           </div>
         </div>
       </div>
@@ -1092,7 +1092,7 @@ function renderKeepSummary(sym, revenue, expenses, profit, tax, takeHome) {
   h += '<div class="kf-arrow">\u2192</div>';
   h += '<div class="kf-item kf-highlight">' + fmt(takeHome, sym) + '<br><small>Take-Home</small></div>';
   h += '</div>';
-  h += '<div class="keep-toggle"><button class="active" onclick="this.classList.add(\'active\');this.nextElementSibling.classList.remove(\'active\')">Annual</button><button onclick="this.classList.add(\'active\');this.previousElementSibling.classList.remove(\'active\')">' + fmt(takeHome / 12, sym) + '/mo</button></div>';
+  h += '<div class="keep-toggle"><button type="button" class="active" onclick="this.classList.add(\'active\');this.nextElementSibling.classList.remove(\'active\')">Annual</button><button type="button" onclick="this.classList.add(\'active\');this.previousElementSibling.classList.remove(\'active\')">' + fmt(takeHome / 12, sym) + '/mo</button></div>';
   h += '</div>';
   el.innerHTML = h;
   el.style.display = 'block';
@@ -1242,7 +1242,7 @@ function buildDeductionsList() {
     html += '<div class="deduction-row">';
     html += '<input type="checkbox" id="ded-' + d.id + '" onchange="updateDeductionTotals()">';
     html += '<label class="deduction-label" for="ded-' + d.id + '">' + d.label + '<span class="deduction-hint">' + d.hint + '</span></label>';
-    html += '<input type="number" class="deduction-amount" id="ded-amt-' + d.id + '" placeholder="Amount" min="0" step="10000" value="0" onchange="updateDeductionTotals()" onfocus="autoCheckDed(\'' + d.id + '\')">';
+    html += '<input aria-label="Amount" type="number" class="deduction-amount" id="ded-amt-' + d.id + '" placeholder="Amount" min="0" step="10000" value="0" onchange="updateDeductionTotals()" onfocus="autoCheckDed(\'' + d.id + '\')">';
     html += '<span class="deduction-saving" id="ded-save-' + d.id + '">--</span>';
     html += '</div>';
   });
@@ -1324,7 +1324,7 @@ function selectPreset(id) {
     html += '<div class="deduction-row">';
     html += '<input type="checkbox" checked>';
     html += '<label class="deduction-label">' + ded.label + '<span class="deduction-hint">' + ded.hint + '</span></label>';
-    html += '<input type="number" class="deduction-amount" value="' + defaultVal + '" min="0" step="10000">';
+    html += '<input aria-label="Deduction amount" type="number" class="deduction-amount" value="' + defaultVal + '" min="0" step="10000">';
     html += '</div>';
   });
 

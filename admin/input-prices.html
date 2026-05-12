@@ -65,6 +65,9 @@
 <meta property="article:modified_time" content="2026-03-28">
 <link rel="canonical" href="https://afrotools.com/admin/input-prices">
 <meta property="og:url" content="https://afrotools.com/admin/input-prices">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <div class="dash">
@@ -81,20 +84,20 @@
       <option value="">— Select country —</option>
     </select>
     <div class="type-tabs" id="typeTabs" style="margin-bottom:0">
-      <button class="tab-btn active" onclick="selectType('fertilizer',this)">🌿 Fertilizer</button>
-      <button class="tab-btn" onclick="selectType('seed',this)">🌾 Seeds</button>
-      <button class="tab-btn" onclick="selectType('pesticide',this)">🧪 Pesticides</button>
+      <button type="button" class="tab-btn active" onclick="selectType('fertilizer',this)">🌿 Fertilizer</button>
+      <button type="button" class="tab-btn" onclick="selectType('seed',this)">🌾 Seeds</button>
+      <button type="button" class="tab-btn" onclick="selectType('pesticide',this)">🧪 Pesticides</button>
     </div>
   </div>
 
   <div class="add-row-bar" id="addRow" style="display:none">
     <strong style="font-size:.8rem">+ Add Input:</strong>
-    <span><label>Name</label><input type="text" id="new-name" placeholder="e.g. NPK 20-10-10"></span>
-    <span><label>Unit</label><input type="text" id="new-unit" placeholder="per 50kg bag" style="width:120px"></span>
-    <span><label>Price</label><input type="number" id="new-price" step="0.01" placeholder="0.00" style="width:100px"></span>
-    <span><label>Currency</label><input type="text" id="new-currency" placeholder="NGN" style="width:65px"></span>
-    <span><label>Notes</label><input type="text" id="new-notes" placeholder="Subsidies, availability…" style="width:160px"></span>
-    <button class="btn btn-primary" onclick="addInput()">Add Row</button>
+    <span><label>Name</label><input aria-label="E.g. NPK 20 10 10" type="text" id="new-name" placeholder="e.g. NPK 20-10-10"></span>
+    <span><label>Unit</label><input aria-label="Per 50kg bag" type="text" id="new-unit" placeholder="per 50kg bag" style="width:120px"></span>
+    <span><label>Price</label><input aria-label="New price" type="number" id="new-price" step="0.01" placeholder="0.00" style="width:100px"></span>
+    <span><label>Currency</label><input aria-label="NGN" type="text" id="new-currency" placeholder="NGN" style="width:65px"></span>
+    <span><label>Notes</label><input aria-label="Subsidies, availability" type="text" id="new-notes" placeholder="Subsidies, availability…" style="width:160px"></span>
+    <button type="button" class="btn btn-primary" onclick="addInput()">Add Row</button>
   </div>
 
   <div class="section">
@@ -213,13 +216,13 @@ function renderTable() {
     var stale = isStale(r.updated_at);
     return '<tr class="' + (stale ? 'stale' : '') + '" data-idx="' + i + '">' +
       '<td><strong>' + r.input_name + '</strong></td>' +
-      '<td><input type="text" value="' + n(r.unit) + '" data-field="unit" placeholder="per 50kg bag"></td>' +
-      '<td><input type="number" step="0.01" value="' + n(r.price) + '" data-field="price"></td>' +
-      '<td><input type="text" value="' + n(r.currency) + '" data-field="currency" style="width:65px"></td>' +
-      '<td><input type="text" class="wide" value="' + (r.notes||'').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Subsidy notes…"></td>' +
+      '<td><input aria-label="Per 50kg bag" type="text" value="' + n(r.unit) + '" data-field="unit" placeholder="per 50kg bag"></td>' +
+      '<td><input aria-label="Price" type="number" step="0.01" value="' + n(r.price) + '" data-field="price"></td>' +
+      '<td><input aria-label="Currency" type="text" value="' + n(r.currency) + '" data-field="currency" style="width:65px"></td>' +
+      '<td><input aria-label="Subsidy notes" type="text" class="wide" value="' + (r.notes||'').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Subsidy notes…"></td>' +
       '<td style="font-size:.72rem;color:#94a3b8;white-space:nowrap">' + timeAgo(r.updated_at) + '</td>' +
       '<td>' + (stale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>') + '</td>' +
-      '<td><button class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
+      '<td><button type="button" class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
     '</tr>';
   }).join('');
 }

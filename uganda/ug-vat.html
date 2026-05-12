@@ -31,9 +31,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root { --ug-black: #000000; --ug-yellow: #FFB81C; --ug-red: #CE1126; --ug-dark: #0a1a1e; }
 .tool-hero { background: var(--ug-dark); padding: 44px 0 36px; position: relative; overflow: hidden; }
@@ -291,7 +291,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/uganda/ug-vat" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/uganda/kikokotoo-vat/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/uganda/ug-vat" />
@@ -303,11 +303,11 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 <afro-navbar active="tools"></afro-navbar>
 <section class="tool-hero">
   <div class="tool-hero-inner">
-    <nav class="breadcrumb"><a href="/">Home</a> / <a href="/uganda/">???? Uganda</a> / <span>VAT Calculator</span></nav>
+    <nav class="breadcrumb"><a href="/">Home</a> / <a href="/uganda/">Uganda</a> / <span>VAT Calculator</span></nav>
     <h1>Uganda VAT<br><em>Calculator 2026</em></h1>
     <p class="hero-sub">Standard 18%, zero-rated exports and water supplies. Exempt: unprocessed food, education, health services. Calculate VAT-inclusive, VAT-exclusive, reverse VAT extraction.</p>
-    <div class="hero-badges"><span class="badge b-red">Standard 18%</span><span class="badge b-yellow">UGX � Uganda Shilling</span><span class="badge b-blue">Zero-Rated: Exports, Water</span><span class="badge b-grey">Exempt: Food, Education, Health</span></div>
-    <p class="hero-meta">Last verified: March 2026 � Source: Uganda Revenue Authority (URA) � VAT Act</p>
+    <div class="hero-badges"><span class="badge b-red">Standard 18%</span><span class="badge b-yellow">UGX - Uganda Shilling</span><span class="badge b-blue">Zero-Rated: Exports, Water</span><span class="badge b-grey">Exempt: Food, Education, Health</span></div>
+    <p class="hero-meta">Last verified: March 2026 - Source: Uganda Revenue Authority (URA) - VAT Act</p>
   </div>
 </section>
 <div class="update-bar">
@@ -319,7 +319,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
   <div class="tool-main-inner">
     <div>
       <div class="card">
-        <div class="card-head"><span class="card-title">Enter Amount</span><span class="card-sub">Uganda Shilling � USh</span></div>
+        <div class="card-head"><span class="card-title">Enter Amount</span><span class="card-sub">Uganda Shilling - USh</span></div>
         <div class="card-body">
           <div class="field">
             <div class="f-label"><span class="f-label-text">Calculation Mode</span></div>
@@ -330,36 +330,36 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
           </div>
           <div class="slider-wrap">
             <div class="slider-row"><span class="slider-label">Amount (UGX)</span><span class="slider-val" id="sliderVal">USh100,000</span></div>
-            <input type="range" id="amountSlider" min="10000" max="100000000" step="10000" value="100000" oninput="onSlider(this)">
+            <input aria-label="AmountSlider" type="range" id="amountSlider" min="10000" max="100000000" step="10000" value="100000" oninput="onSlider(this)">
             <div class="slider-limits"><span>USh10,000</span><span>USh100,000,000</span></div>
           </div>
-          <div class="field"><div class="f-label"><span class="f-label-text">Amount</span></div><div class="f-wrap"><span class="f-prefix">USh</span><input type="number" class="f-input" id="amount" placeholder="100,000" min="0" step="10000" value="100000" oninput="onInput(this)"></div></div>
+          <div class="field"><div class="f-label"><span class="f-label-text">Amount</span></div><div class="f-wrap"><span class="f-prefix">USh</span><input aria-label="Amount" type="number" class="f-input" id="amount" placeholder="100,000" min="0" step="10000" value="100000" oninput="onInput(this)"></div></div>
           <div class="field">
             <div class="f-label"><span class="f-label-text">VAT Rate</span></div>
             <div class="rate-selector">
-              <button class="rate-btn on" id="rateStd" onclick="setRate(0.18,'Standard',this)">Standard<br>18%</button>
-              <button class="rate-btn" id="rateZero" onclick="setRate(0,'Zero-Rated',this)" style="grid-column:1 / -1">Zero-Rated (Exports/Water)<br>0%</button>
+              <button type="button" class="rate-btn on" id="rateStd" onclick="setRate(0.18,'Standard',this)">Standard<br>18%</button>
+              <button type="button" class="rate-btn" id="rateZero" onclick="setRate(0,'Zero-Rated',this)" style="grid-column:1 / -1">Zero-Rated (Exports/Water)<br>0%</button>
             </div>
           </div>
           
           <!-- CUSTOM VAT RATE -->
           <div class="custom-rate-wrap">
-            <label><input type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Use custom rate</label>
-            <input type="text" class="custom-rate-input" id="customRateInput" placeholder="e.g. 12" style="display:none" oninput="onCustomRate()">
+            <label><input aria-label="CustomRateToggle" type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Use custom rate</label>
+            <input aria-label="E.g. 12" type="text" class="custom-rate-input" id="customRateInput" placeholder="e.g. 12" style="display:none" oninput="onCustomRate()">
             <span id="customRateHint" style="font-size:.7rem;color:#6B8CAE;display:none">%</span>
           </div>
 
           <!-- QUICK AMOUNT CHIPS -->
           <div class="quick-chips" id="quickChips">
-            <button class="q-chip" onclick="setChip(1000,this)">1K</button>
-            <button class="q-chip" onclick="setChip(5000,this)">5K</button>
-            <button class="q-chip" onclick="setChip(10000,this)">10K</button>
-            <button class="q-chip" onclick="setChip(50000,this)">50K</button>
-            <button class="q-chip" onclick="setChip(100000,this)">100K</button>
-            <button class="q-chip" onclick="setChip(1000000,this)">1M</button>
+            <button type="button" class="q-chip" onclick="setChip(1000,this)">1K</button>
+            <button type="button" class="q-chip" onclick="setChip(5000,this)">5K</button>
+            <button type="button" class="q-chip" onclick="setChip(10000,this)">10K</button>
+            <button type="button" class="q-chip" onclick="setChip(50000,this)">50K</button>
+            <button type="button" class="q-chip" onclick="setChip(100000,this)">100K</button>
+            <button type="button" class="q-chip" onclick="setChip(1000000,this)">1M</button>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculate VAT ?</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculate VAT ?</button>
         </div>
       </div>
       <div class="card results-card" id="resultsCard">
@@ -374,15 +374,15 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
           </div>
           <div class="chart-section">
             <div class="chart-tabs">
-              <button class="chart-tab on" onclick="setChart('pie',this)">Pie Chart</button>
-              <button class="chart-tab" onclick="setChart('bar',this)">Bar Chart</button>
+              <button type="button" class="chart-tab on" onclick="setChart('pie',this)">Pie Chart</button>
+              <button type="button" class="chart-tab" onclick="setChart('bar',this)">Bar Chart</button>
             </div>
             <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
           </div>
         </div>
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="printResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
-          <button class="act-btn act-share" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Result</button>
+          <button type="button" class="act-btn act-pdf" onclick="printResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
+          <button type="button" class="act-btn act-share" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Result</button>
         </div>
 
         <div class="result-actions" style="display:flex;gap:8px;margin:0 22px 22px;flex-wrap:wrap">
@@ -395,23 +395,23 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
           <share-result-button
             tool-name="Uganda VAT Calculator"
             tool-slug="ug-vat"
-            country-flag="????">
+            country-flag="">
           </share-result-button>
         </div>
 
         <!-- VAT WITHHOLDING -->
         <div class="wh-section" style="padding:0 22px 22px">
-          <button class="wh-toggle" onclick="toggleWh(this)">
+          <button type="button" class="wh-toggle" onclick="toggleWh(this)">
             <span class="wh-toggle-label">?? VAT Withholding (B2B)</span>
             <span class="wh-toggle-arrow">?</span>
           </button>
           <div class="wh-body" id="whBody">
             <p style="font-size:.76rem;color:#6B8CAE;margin-bottom:10px;line-height:1.5">Calculate how much VAT the buyer withholds and remits to the tax authority on this transaction.</p>
             <div class="wh-rate-row">
-              <button class="wh-rate-btn on" onclick="setWhRate(50,this)">50%</button>
-              <button class="wh-rate-btn" onclick="setWhRate(100,this)">100%</button>
-              <button class="wh-rate-btn" onclick="setWhRate(33.33,this)">33.3%</button>
-              <input type="text" class="wh-custom-input" id="whCustom" placeholder="%" oninput="calcWh()">
+              <button type="button" class="wh-rate-btn on" onclick="setWhRate(50,this)">50%</button>
+              <button type="button" class="wh-rate-btn" onclick="setWhRate(100,this)">100%</button>
+              <button type="button" class="wh-rate-btn" onclick="setWhRate(33.33,this)">33.3%</button>
+              <input aria-label="WhCustom" type="text" class="wh-custom-input" id="whCustom" placeholder="%" oninput="calcWh()">
             </div>
             <div class="wh-results" id="whResults"></div>
           </div>
@@ -432,8 +432,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
     <div class="ai-chat" id="aiChat">
       <div class="ai-msgs" id="aiMsgs"></div>
       <div class="ai-input-row">
-        <input type="text" class="ai-input" id="aiInput" placeholder="Ask about VAT�" maxlength="300">
-        <button class="ai-send" id="aiSend" onclick="sendAI()">?</button>
+        <input aria-label="Ask about VAT..." type="text" class="ai-input" id="aiInput" placeholder="Ask about VAT..." maxlength="300">
+        <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">?</button>
       </div>
     </div>
 
@@ -461,7 +461,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/ug-vat.webp" alt="Uganda VAT Calculator" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/ug-vat.webp" alt="Uganda VAT Calculator" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Uganda VAT Calculator</div>
             <div class="tool-info-cat">Tax &amp; Finance</div>
@@ -484,7 +484,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
             <a class="tool-info-action" href="/tools/vat-calculator/">All Countries</a>
           </div>
         </div>
@@ -510,14 +510,14 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
   <div class="more-tools-inner">
     <h2 class="more-tools-title">More African Tax Tools</h2>
     <div class="more-tools-grid">
-      <a href="/nigeria/ng-vat" class="more-tool-link">???? Nigeria VAT Calculator</a>
-      <a href="/kenya/ke-vat" class="more-tool-link">???? Kenya VAT Calculator</a>
-      <a href="/south-africa/za-vat" class="more-tool-link">???? South Africa VAT Calculator</a>
-      <a href="/ghana/gh-vat" class="more-tool-link">???? Ghana VAT Calculator</a>
-      <a href="/egypt/eg-vat" class="more-tool-link">???? Egypt VAT Calculator</a>
-      <a href="/ethiopia/et-vat" class="more-tool-link">???? Ethiopia VAT Calculator</a>
-      <a href="/tanzania/tz-vat" class="more-tool-link">???? Tanzania VAT Calculator</a>
-      <a href="/rwanda/rw-vat" class="more-tool-link">???? Rwanda VAT Calculator</a>
+      <a href="/nigeria/ng-vat" class="more-tool-link">Nigeria VAT Calculator</a>
+      <a href="/kenya/ke-vat" class="more-tool-link">Kenya VAT Calculator</a>
+      <a href="/south-africa/za-vat" class="more-tool-link">South Africa VAT Calculator</a>
+      <a href="/ghana/gh-vat" class="more-tool-link">Ghana VAT Calculator</a>
+      <a href="/egypt/eg-vat" class="more-tool-link">Egypt VAT Calculator</a>
+      <a href="/ethiopia/et-vat" class="more-tool-link">Ethiopia VAT Calculator</a>
+      <a href="/tanzania/tz-vat" class="more-tool-link">Tanzania VAT Calculator</a>
+      <a href="/rwanda/rw-vat" class="more-tool-link">Rwanda VAT Calculator</a>
       <a href="/tools/vat-calculator/" class="more-tool-link">?? Pan-African VAT Calculator</a>
       <a href="/tools/currency-converter/" class="more-tool-link">?? African Currency Converter</a>
     </div>
@@ -548,7 +548,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
         </div>
         <div class="tool-verification-block">
           <h3>Law, regulation, or version</h3>
-          <p class="tool-verification-meta">Last verified: March 2026 � Source: Uganda Revenue Authority (URA) � VAT Act 2026 Key Facts: Uganda's standard VAT rate is 18%</p>
+          <p class="tool-verification-meta">Last verified: March 2026 - Source: Uganda Revenue Authority (URA) - VAT Act 2026 Key Facts: Uganda's standard VAT rate is 18%</p>
         </div>
         <div class="tool-verification-block">
           <h3>Calculation methodology</h3>
@@ -611,9 +611,9 @@ function calculate() {
   const rPct = (effectiveRate * 100);
   const rPctStr = rPct % 1 === 0 ? rPct.toFixed(0) : rPct.toFixed(2);
   if (MODE === 'add-vat') {
-    document.getElementById('formulaText').textContent = 'VAT = ' + fmtC(netAmount) + ' � ' + rPctStr + '% = ' + fmtC(vatAmount) + '  |  Total = ' + fmtC(netAmount) + ' + ' + fmtC(vatAmount) + ' = ' + fmtC(totalInclusive);
+    document.getElementById('formulaText').textContent = 'VAT = ' + fmtC(netAmount) + ' - ' + rPctStr + '% = ' + fmtC(vatAmount) + '  |  Total = ' + fmtC(netAmount) + ' + ' + fmtC(vatAmount) + ' = ' + fmtC(totalInclusive);
   } else {
-    document.getElementById('formulaText').textContent = 'Net = ' + fmtC(totalInclusive) + ' � (1 + ' + rPctStr + '%) = ' + fmtC(netAmount) + '  |  VAT = ' + fmtC(totalInclusive) + ' - ' + fmtC(netAmount) + ' = ' + fmtC(vatAmount);
+    document.getElementById('formulaText').textContent = 'Net = ' + fmtC(totalInclusive) + ' - (1 + ' + rPctStr + '%) = ' + fmtC(netAmount) + '  |  VAT = ' + fmtC(totalInclusive) + ' - ' + fmtC(netAmount) + ' = ' + fmtC(vatAmount);
   }
   document.getElementById('formulaBox').classList.add('on');
   if (document.getElementById('whBody')?.classList.contains('open')) calcWh();
@@ -697,7 +697,7 @@ async function sendAI() {
   // Show thinking
   const thinkEl = document.createElement('div');
   thinkEl.className = 'ai-thinking';
-  thinkEl.textContent = 'Thinking�';
+  thinkEl.textContent = 'Thinking...';
   msgsEl.appendChild(thinkEl);
   msgsEl.scrollTop = msgsEl.scrollHeight;
   

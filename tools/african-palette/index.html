@@ -17,10 +17,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
 .en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
@@ -99,16 +99,16 @@
   <div class="en-card" style="margin-top:0">
     <div class="en-card-title"><span class="en-card-title-icon">📝</span> Export</div>
     <div class="tab-bar">
-      <button class="tab-btn active" onclick="showTab('css',this)">CSS Variables</button>
-      <button class="tab-btn" onclick="showTab('tailwind',this)">Tailwind Config</button>
-      <button class="tab-btn" onclick="showTab('contrast',this)">Contrast Check</button>
+      <button type="button" class="tab-btn active" onclick="showTab('css',this)">CSS Variables</button>
+      <button type="button" class="tab-btn" onclick="showTab('tailwind',this)">Tailwind Config</button>
+      <button type="button" class="tab-btn" onclick="showTab('contrast',this)">Contrast Check</button>
     </div>
     <div class="tab-pane active" id="tab-css">
-      <button class="copy-btn" onclick="copyTabCode('css-code')" style="margin-bottom:10px">📋 Copy CSS</button>
+      <button type="button" class="copy-btn" onclick="copyTabCode('css-code')" style="margin-bottom:10px">📋 Copy CSS</button>
       <div class="code-block" id="css-code"></div>
     </div>
     <div class="tab-pane" id="tab-tailwind">
-      <button class="copy-btn" onclick="copyTabCode('tw-code')" style="margin-bottom:10px">📋 Copy Config</button>
+      <button type="button" class="copy-btn" onclick="copyTabCode('tw-code')" style="margin-bottom:10px">📋 Copy Config</button>
       <div class="code-block" id="tw-code"></div>
     </div>
     <div class="tab-pane" id="tab-contrast">
@@ -219,7 +219,7 @@ function renderPalette(){
   var disp=document.getElementById('palette-display');
   disp.innerHTML=p.colors.map(function(c){
     return '<div class="palette-swatch" style="background:'+c.hex+'" title="'+c.name+'">'+
-      '<button class="palette-swatch-copy" onclick="copyHex(\''+c.hex+'\',event)">Copy</button>'+
+      '<button type="button" class="palette-swatch-copy" onclick="copyHex(\''+c.hex+'\',event)">Copy</button>'+
       '<span class="palette-swatch-hex">'+c.hex+'</span>'+
     '</div>';
   }).join('');

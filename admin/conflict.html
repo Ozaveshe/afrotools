@@ -106,6 +106,9 @@
 <meta property="article:modified_time" content="2026-03-28">
 <link rel="canonical" href="https://afrotools.com/admin/conflict">
 <meta property="og:url" content="https://afrotools.com/admin/conflict">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
@@ -113,8 +116,8 @@
   <div style="font-size:2rem;margin-bottom:12px">⚔️</div>
   <h2>AfroConflict Admin</h2>
   <p>Enter your admin token to access conflict management.</p>
-  <input type="password" id="token-input" placeholder="Admin token..." autocomplete="off">
-  <button class="btn btn-primary" style="width:100%" onclick="doAuth()">Access Admin Panel</button>
+  <input aria-label="Admin token" type="password" id="token-input" placeholder="Admin token..." autocomplete="off">
+  <button type="button" class="btn btn-primary" style="width:100%" onclick="doAuth()">Access Admin Panel</button>
   <div id="auth-error" style="color:#dc2626;font-size:.78rem;margin-top:8px"></div>
 </div>
 
@@ -139,12 +142,12 @@
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('conflicts')">📋 Conflicts List</button>
-    <button class="tab-btn" onclick="switchTab('add-conflict')">➕ Add / Edit Conflict</button>
-    <button class="tab-btn" onclick="switchTab('timeline')">📅 Add Timeline Event</button>
-    <button class="tab-btn" onclick="switchTab('economy-actor')">💰 Add Economy Actor</button>
-    <button class="tab-btn" onclick="switchTab('forecast')">🔮 Add Forecast</button>
-    <button class="tab-btn" onclick="switchTab('sync')">🔄 Sync</button>
+    <button type="button" class="tab-btn active" onclick="switchTab('conflicts')">📋 Conflicts List</button>
+    <button type="button" class="tab-btn" onclick="switchTab('add-conflict')">➕ Add / Edit Conflict</button>
+    <button type="button" class="tab-btn" onclick="switchTab('timeline')">📅 Add Timeline Event</button>
+    <button type="button" class="tab-btn" onclick="switchTab('economy-actor')">💰 Add Economy Actor</button>
+    <button type="button" class="tab-btn" onclick="switchTab('forecast')">🔮 Add Forecast</button>
+    <button type="button" class="tab-btn" onclick="switchTab('sync')">🔄 Sync</button>
   </div>
 
   <!-- Tab: Conflicts List -->
@@ -153,7 +156,7 @@
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
         <h2 style="margin:0">All Conflicts</h2>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <input id="list-search" type="text" placeholder="Search conflicts..." style="padding:6px 12px;width:200px" oninput="filterList()">
+          <input aria-label="Search conflicts" id="list-search" type="text" placeholder="Search conflicts..." style="padding:6px 12px;width:200px" oninput="filterList()">
           <select id="list-filter-risk" onchange="filterList()" style="padding:6px 10px">
             <option value="">All Risk Levels</option>
             <option value="critical">Critical</option>
@@ -203,21 +206,21 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Conflict Name *</label>
-          <input type="text" id="cf-name" placeholder="e.g. Sudan Civil War 2023–">
+          <input aria-label="E.g. Sudan Civil War 2023–" type="text" id="cf-name" placeholder="e.g. Sudan Civil War 2023–">
           <span class="hint">Full descriptive name</span>
         </div>
         <div class="form-group">
           <label>Short Name</label>
-          <input type="text" id="cf-short-name" placeholder="e.g. Sudan Civil War">
+          <input aria-label="E.g. Sudan Civil War" type="text" id="cf-short-name" placeholder="e.g. Sudan Civil War">
           <span class="hint">For cards and tables</span>
         </div>
         <div class="form-group">
           <label>Slug (auto-generated)</label>
-          <input type="text" id="cf-slug" placeholder="e.g. sudan-civil-war-2023" readonly style="background:#F5F9FF">
+          <input aria-label="E.g. sudan civil war 2023" type="text" id="cf-slug" placeholder="e.g. sudan-civil-war-2023" readonly style="background:#F5F9FF">
         </div>
         <div class="form-group">
           <label>Primary Country (ISO2) *</label>
-          <input type="text" id="cf-primary-country" placeholder="e.g. SD, NG, ET" maxlength="2">
+          <input aria-label="E.g. SD, NG, ET" type="text" id="cf-primary-country" placeholder="e.g. SD, NG, ET" maxlength="2">
         </div>
         <div class="form-group">
           <label>Conflict Type *</label>
@@ -268,19 +271,19 @@
         </div>
         <div class="form-group">
           <label>Start Date *</label>
-          <input type="date" id="cf-start-date">
+          <input aria-label="Cf start date" type="date" id="cf-start-date">
         </div>
         <div class="form-group">
           <label>End Date (leave blank if ongoing)</label>
-          <input type="date" id="cf-end-date">
+          <input aria-label="Cf end date" type="date" id="cf-end-date">
         </div>
         <div class="form-group">
           <label>Coordinates — Latitude</label>
-          <input type="number" id="cf-lat" placeholder="e.g. 15.5518" step="0.0001">
+          <input aria-label="E.g. 15.5518" type="number" id="cf-lat" placeholder="e.g. 15.5518" step="0.0001">
         </div>
         <div class="form-group">
           <label>Coordinates — Longitude</label>
-          <input type="number" id="cf-lng" placeholder="e.g. 32.5324" step="0.0001">
+          <input aria-label="E.g. 32.5324" type="number" id="cf-lng" placeholder="e.g. 32.5324" step="0.0001">
         </div>
       </div>
 
@@ -288,11 +291,11 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Primary Parties (comma-separated)</label>
-          <input type="text" id="cf-parties" placeholder="e.g. SAF, RSF, SPLM-N">
+          <input aria-label="E.g. SAF, RSF, SPLM N" type="text" id="cf-parties" placeholder="e.g. SAF, RSF, SPLM-N">
         </div>
         <div class="form-group">
           <label>Countries Involved (ISO2, comma-separated)</label>
-          <input type="text" id="cf-countries-involved" placeholder="e.g. SD,SS,ET,AE,RU">
+          <input aria-label="E.g. SD,SS,ET,AE,RU" type="text" id="cf-countries-involved" placeholder="e.g. SD,SS,ET,AE,RU">
         </div>
         <div class="form-group">
           <label>African Region</label>
@@ -318,35 +321,35 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Fatalities Min</label>
-          <input type="number" id="cf-fat-min" placeholder="e.g. 5000">
+          <input aria-label="E.g. 5000" type="number" id="cf-fat-min" placeholder="e.g. 5000">
         </div>
         <div class="form-group">
           <label>Fatalities Max</label>
-          <input type="number" id="cf-fat-max" placeholder="e.g. 15000">
+          <input aria-label="E.g. 15000" type="number" id="cf-fat-max" placeholder="e.g. 15000">
         </div>
         <div class="form-group">
           <label>Fatalities Source</label>
-          <input type="text" id="cf-fat-source" placeholder="e.g. ACLED/UN OCHA">
+          <input aria-label="E.g. ACLED/UN OCHA" type="text" id="cf-fat-source" placeholder="e.g. ACLED/UN OCHA">
         </div>
         <div class="form-group">
           <label>Civilians Killed (estimated)</label>
-          <input type="number" id="cf-civilians-killed" placeholder="e.g. 3000">
+          <input aria-label="E.g. 3000" type="number" id="cf-civilians-killed" placeholder="e.g. 3000">
         </div>
         <div class="form-group">
           <label>IDPs Count</label>
-          <input type="number" id="cf-idps" placeholder="e.g. 1500000">
+          <input aria-label="E.g. 1500000" type="number" id="cf-idps" placeholder="e.g. 1500000">
         </div>
         <div class="form-group">
           <label>Refugees Count</label>
-          <input type="number" id="cf-refugees" placeholder="e.g. 800000">
+          <input aria-label="E.g. 800000" type="number" id="cf-refugees" placeholder="e.g. 800000">
         </div>
         <div class="form-group">
           <label>Returnees Count</label>
-          <input type="number" id="cf-returnees" placeholder="e.g. 50000">
+          <input aria-label="E.g. 50000" type="number" id="cf-returnees" placeholder="e.g. 50000">
         </div>
         <div class="form-group">
           <label>Displacement Source</label>
-          <input type="text" id="cf-disp-source" placeholder="e.g. UNHCR/IDMC">
+          <input aria-label="E.g. UNHCR/IDMC" type="text" id="cf-disp-source" placeholder="e.g. UNHCR/IDMC">
         </div>
         <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:10px;padding-top:22px">
           <input type="checkbox" id="cf-food-insecurity" style="width:18px;height:18px">
@@ -358,23 +361,23 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Economic Loss Min (USD Billions)</label>
-          <input type="number" id="cf-econ-min" placeholder="e.g. 5.2" step="0.1">
+          <input aria-label="E.g. 5.2" type="number" id="cf-econ-min" placeholder="e.g. 5.2" step="0.1">
         </div>
         <div class="form-group">
           <label>Economic Loss Max (USD Billions)</label>
-          <input type="number" id="cf-econ-max" placeholder="e.g. 18.0" step="0.1">
+          <input aria-label="E.g. 18.0" type="number" id="cf-econ-max" placeholder="e.g. 18.0" step="0.1">
         </div>
         <div class="form-group">
           <label>Military Spend / yr (USD Millions)</label>
-          <input type="number" id="cf-mil-spend" placeholder="e.g. 2500" step="1">
+          <input aria-label="E.g. 2500" type="number" id="cf-mil-spend" placeholder="e.g. 2500" step="1">
         </div>
         <div class="form-group">
           <label>GDP Drag %</label>
-          <input type="number" id="cf-gdp-drag" placeholder="e.g. 3.5" step="0.1">
+          <input aria-label="E.g. 3.5" type="number" id="cf-gdp-drag" placeholder="e.g. 3.5" step="0.1">
         </div>
         <div class="form-group">
           <label>Resource Links (comma-separated)</label>
-          <input type="text" id="cf-resource-links" placeholder="e.g. oil,gold,timber,coltan">
+          <input aria-label="E.g. oil,gold,timber,coltan" type="text" id="cf-resource-links" placeholder="e.g. oil,gold,timber,coltan">
           <span class="hint">oil, gas, gold, diamonds, coltan, timber, cocoa, cotton, wheat, water</span>
         </div>
         <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:10px;padding-top:22px">
@@ -411,11 +414,11 @@
         </div>
         <div class="form-group">
           <label>Featured Image URL</label>
-          <input type="url" id="cf-image" placeholder="https://...">
+          <input aria-label="Https://" type="url" id="cf-image" placeholder="https://...">
         </div>
         <div class="form-group">
           <label>Image Credit</label>
-          <input type="text" id="cf-image-credit" placeholder="e.g. Reuters / Fadel Senna">
+          <input aria-label="E.g. Reuters / Fadel Senna" type="text" id="cf-image-credit" placeholder="e.g. Reuters / Fadel Senna">
         </div>
       </div>
 
@@ -436,8 +439,8 @@
       </div>
 
       <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="saveConflict()">💾 Save Conflict</button>
-        <button class="btn btn-outline" onclick="clearConflictForm()">✕ Clear Form</button>
+        <button type="button" class="btn btn-primary" onclick="saveConflict()">💾 Save Conflict</button>
+        <button type="button" class="btn btn-outline" onclick="clearConflictForm()">✕ Clear Form</button>
         <div id="cf-status-msg" style="font-size:.78rem;color:#6B7F99;align-self:center"></div>
       </div>
     </div>
@@ -456,11 +459,11 @@
         </div>
         <div class="form-group">
           <label>Event Date *</label>
-          <input type="date" id="tl-date">
+          <input aria-label="Tl date" type="date" id="tl-date">
         </div>
         <div class="form-group">
           <label>Event Title *</label>
-          <input type="text" id="tl-title" placeholder="e.g. SAF captures Khartoum North">
+          <input aria-label="E.g. SAF captures Khartoum North" type="text" id="tl-title" placeholder="e.g. SAF captures Khartoum North">
         </div>
         <div class="form-group">
           <label>Event Type</label>
@@ -483,7 +486,7 @@
         </div>
         <div class="form-group">
           <label>Source</label>
-          <input type="text" id="tl-source" placeholder="e.g. Reuters, UN OCHA">
+          <input aria-label="E.g. Reuters, UN OCHA" type="text" id="tl-source" placeholder="e.g. Reuters, UN OCHA">
         </div>
         <div class="form-group full">
           <label>Description *</label>
@@ -491,8 +494,8 @@
         </div>
       </div>
       <div style="margin-top:16px;display:flex;gap:10px">
-        <button class="btn btn-primary" onclick="saveTimeline()">💾 Save Event</button>
-        <button class="btn btn-outline" onclick="clearTimelineForm()">✕ Clear</button>
+        <button type="button" class="btn btn-primary" onclick="saveTimeline()">💾 Save Event</button>
+        <button type="button" class="btn btn-outline" onclick="clearTimelineForm()">✕ Clear</button>
         <div id="tl-status-msg" style="font-size:.78rem;color:#6B7F99;align-self:center"></div>
       </div>
     </div>
@@ -514,7 +517,7 @@
         </div>
         <div class="form-group">
           <label>Actor Name *</label>
-          <input type="text" id="ea-name" placeholder="e.g. Wagner Group, XYZ Mining Co.">
+          <input aria-label="E.g. Wagner Group, XYZ Mining Co." type="text" id="ea-name" placeholder="e.g. Wagner Group, XYZ Mining Co.">
         </div>
         <div class="form-group">
           <label>Actor Type *</label>
@@ -532,7 +535,7 @@
         </div>
         <div class="form-group">
           <label>Country (ISO2 or name)</label>
-          <input type="text" id="ea-country" placeholder="e.g. RU, UAE, France">
+          <input aria-label="E.g. RU, UAE, France" type="text" id="ea-country" placeholder="e.g. RU, UAE, France">
         </div>
         <div class="form-group">
           <label>Evidence Level *</label>
@@ -545,7 +548,7 @@
         </div>
         <div class="form-group">
           <label>Est. Annual Revenue (USD M)</label>
-          <input type="number" id="ea-revenue" placeholder="e.g. 250" step="1">
+          <input aria-label="E.g. 250" type="number" id="ea-revenue" placeholder="e.g. 250" step="1">
           <span class="hint">Leave blank if unknown</span>
         </div>
         <div class="form-group">
@@ -557,7 +560,7 @@
         </div>
         <div class="form-group">
           <label>Sanction Details</label>
-          <input type="text" id="ea-sanction-details" placeholder="e.g. OFAC SDN, EU sanctions 2023">
+          <input aria-label="E.g. OFAC SDN, EU sanctions 2023" type="text" id="ea-sanction-details" placeholder="e.g. OFAC SDN, EU sanctions 2023">
         </div>
         <div class="form-group full">
           <label>Description / Role in Conflict Economy *</label>
@@ -569,8 +572,8 @@
         </div>
       </div>
       <div style="margin-top:16px;display:flex;gap:10px">
-        <button class="btn btn-primary" onclick="saveEconomyActor()">💾 Save Actor</button>
-        <button class="btn btn-outline" onclick="clearEconomyForm()">✕ Clear</button>
+        <button type="button" class="btn btn-primary" onclick="saveEconomyActor()">💾 Save Actor</button>
+        <button type="button" class="btn btn-outline" onclick="clearEconomyForm()">✕ Clear</button>
         <div id="ea-status-msg" style="font-size:.78rem;color:#6B7F99;align-self:center"></div>
       </div>
     </div>
@@ -589,11 +592,11 @@
         </div>
         <div class="form-group">
           <label>Forecast Date</label>
-          <input type="date" id="fc-date">
+          <input aria-label="Fc date" type="date" id="fc-date">
         </div>
         <div class="form-group">
           <label>Model Version</label>
-          <input type="text" id="fc-model" value="manual-v1">
+          <input aria-label="Fc model" type="text" id="fc-model" value="manual-v1">
         </div>
       </div>
 
@@ -601,15 +604,15 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Duration Estimate (months)</label>
-          <input type="number" id="fc-opt-duration" placeholder="e.g. 6">
+          <input aria-label="E.g. 6" type="number" id="fc-opt-duration" placeholder="e.g. 6">
         </div>
         <div class="form-group">
           <label>Confidence (%)</label>
-          <input type="number" id="fc-opt-confidence" placeholder="e.g. 20" min="0" max="100">
+          <input aria-label="E.g. 20" type="number" id="fc-opt-confidence" placeholder="e.g. 20" min="0" max="100">
         </div>
         <div class="form-group">
           <label>Trigger Condition</label>
-          <input type="text" id="fc-opt-trigger" placeholder="e.g. SAF-RSF ceasefire agreement">
+          <input aria-label="E.g. SAF RSF ceasefire agreement" type="text" id="fc-opt-trigger" placeholder="e.g. SAF-RSF ceasefire agreement">
         </div>
         <div class="form-group full">
           <label>Outcome Description</label>
@@ -621,11 +624,11 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Duration Estimate (months)</label>
-          <input type="number" id="fc-base-duration" placeholder="e.g. 24">
+          <input aria-label="E.g. 24" type="number" id="fc-base-duration" placeholder="e.g. 24">
         </div>
         <div class="form-group">
           <label>Confidence (%)</label>
-          <input type="number" id="fc-base-confidence" placeholder="e.g. 60" min="0" max="100">
+          <input aria-label="E.g. 60" type="number" id="fc-base-confidence" placeholder="e.g. 60" min="0" max="100">
         </div>
         <div class="form-group full">
           <label>Outcome Description</label>
@@ -637,15 +640,15 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Duration Estimate (months)</label>
-          <input type="number" id="fc-worst-duration" placeholder="e.g. 60">
+          <input aria-label="E.g. 60" type="number" id="fc-worst-duration" placeholder="e.g. 60">
         </div>
         <div class="form-group">
           <label>Confidence (%)</label>
-          <input type="number" id="fc-worst-confidence" placeholder="e.g. 20" min="0" max="100">
+          <input aria-label="E.g. 20" type="number" id="fc-worst-confidence" placeholder="e.g. 20" min="0" max="100">
         </div>
         <div class="form-group">
           <label>Escalation Trigger</label>
-          <input type="text" id="fc-worst-trigger" placeholder="e.g. Regional spillover into Chad/Egypt">
+          <input aria-label="E.g. Regional spillover into Chad/Egypt" type="text" id="fc-worst-trigger" placeholder="e.g. Regional spillover into Chad/Egypt">
         </div>
         <div class="form-group full">
           <label>Outcome Description</label>
@@ -660,8 +663,8 @@
       </div>
 
       <div style="margin-top:20px;display:flex;gap:10px">
-        <button class="btn btn-primary" onclick="saveForecast()">💾 Save Forecast</button>
-        <button class="btn btn-outline" onclick="clearForecastForm()">✕ Clear</button>
+        <button type="button" class="btn btn-primary" onclick="saveForecast()">💾 Save Forecast</button>
+        <button type="button" class="btn btn-outline" onclick="clearForecastForm()">✕ Clear</button>
         <div id="fc-status-msg" style="font-size:.78rem;color:#6B7F99;align-self:center"></div>
       </div>
     </div>
@@ -677,22 +680,22 @@
         <div style="background:#F5F9FF;border-radius:10px;padding:16px;border:1px solid #E8F0FE">
           <div style="font-weight:700;font-size:.9rem;margin-bottom:6px">🗡️ ACLED Events Sync</div>
           <p style="font-size:.75rem;color:#6B7F99;margin-bottom:12px">Fetch latest conflict events from ACLED API. Requires ACLED_API_KEY env var to be set.</p>
-          <button class="btn btn-primary btn-sm" onclick="triggerSync('acled')">Trigger ACLED Sync</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="triggerSync('acled')">Trigger ACLED Sync</button>
         </div>
         <div style="background:#F5F9FF;border-radius:10px;padding:16px;border:1px solid #E8F0FE">
           <div style="font-weight:700;font-size:.9rem;margin-bottom:6px">🌍 UNHCR Displacement Sync</div>
           <p style="font-size:.75rem;color:#6B7F99;margin-bottom:12px">Update displacement figures from UNHCR Data Finder and IDMC.</p>
-          <button class="btn btn-primary btn-sm" onclick="triggerSync('unhcr')">Trigger UNHCR Sync</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="triggerSync('unhcr')">Trigger UNHCR Sync</button>
         </div>
         <div style="background:#F5F9FF;border-radius:10px;padding:16px;border:1px solid #E8F0FE">
           <div style="font-weight:700;font-size:.9rem;margin-bottom:6px">📊 World Bank GDP Sync</div>
           <p style="font-size:.75rem;color:#6B7F99;margin-bottom:12px">Update GDP growth and economic indicators for conflict countries.</p>
-          <button class="btn btn-primary btn-sm" onclick="triggerSync('worldbank')">Trigger WB Sync</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="triggerSync('worldbank')">Trigger WB Sync</button>
         </div>
         <div style="background:#F5F9FF;border-radius:10px;padding:16px;border:1px solid #E8F0FE">
           <div style="font-weight:700;font-size:.9rem;margin-bottom:6px">🔄 Full Daily Sync</div>
           <p style="font-size:.75rem;color:#6B7F99;margin-bottom:12px">Run all sync steps: ACLED → UNHCR → World Bank → Monthly stats recalculation.</p>
-          <button class="btn btn-success btn-sm" onclick="triggerSync('all')">Trigger Full Sync</button>
+          <button type="button" class="btn btn-success btn-sm" onclick="triggerSync('all')">Trigger Full Sync</button>
         </div>
       </div>
 
@@ -703,8 +706,8 @@
       <h2>⚠️ Danger Zone</h2>
       <p style="font-size:.82rem;color:#6B7F99;margin-bottom:16px">Destructive operations. Confirm before proceeding.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete a Conflict</button>
-        <button class="btn btn-outline btn-sm" onclick="unpublishAll()">Unpublish All</button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete a Conflict</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="unpublishAll()">Unpublish All</button>
       </div>
       <div id="danger-zone-msg" style="font-size:.78rem;color:#dc2626;margin-top:8px"></div>
     </div>
@@ -853,7 +856,7 @@
           '<td style="font-size:.7rem;color:#94a3b8">'+sync+'</td>'+
           '<td>'+
             '<div class="conflict-row-actions">'+
-              '<button class="btn btn-outline btn-sm" onclick="editConflict(\''+c.slug+'\')">Edit</button>'+
+              '<button type="button" class="btn btn-outline btn-sm" onclick="editConflict(\''+c.slug+'\')">Edit</button>'+
               '<a href="/tools/africa-conflict/detail.html?id='+c.slug+'" target="_blank" class="btn btn-outline btn-sm">View</a>'+
             '</div>'+
           '</td>'+

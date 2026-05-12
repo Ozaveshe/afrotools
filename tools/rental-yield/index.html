@@ -61,10 +61,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -278,10 +278,10 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 .ai-send{padding:9px 14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
 .ai-send:disabled{opacity:.5;cursor:not-allowed}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/rental-yield/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rendement-locatif/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/rental-yield/" />
@@ -351,9 +351,9 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
     <div class="card" style="padding:20px 32px">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <div class="prop-tabs" id="prop-tabs">
-          <button class="prop-tab active" data-idx="0" onclick="switchProperty(0)">Property 1</button>
+          <button type="button" class="prop-tab active" data-idx="0" onclick="switchProperty(0)">Property 1</button>
         </div>
-        <button class="add-prop-btn" id="add-prop-btn" onclick="addProperty()">+ Add Property</button>
+        <button type="button" class="add-prop-btn" id="add-prop-btn" onclick="addProperty()">+ Add Property</button>
       </div>
     </div>
 
@@ -398,19 +398,19 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         </div>
         <div class="field">
           <label>Property Purchase Price</label>
-          <input type="number" id="propValue" placeholder="e.g. 1500000" min="0">
+          <input aria-label="E.g. 1500000" type="number" id="propValue" placeholder="e.g. 1500000" min="0">
           <div class="hint" id="hint-value"></div>
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:16px">
         <div class="field">
           <label>Monthly Rental Income</label>
-          <input type="number" id="monthlyRent" placeholder="e.g. 12000" min="0">
+          <input aria-label="E.g. 12000" type="number" id="monthlyRent" placeholder="e.g. 12000" min="0">
           <div class="hint" id="hint-rent"></div>
         </div>
         <div class="field">
           <label>Purchase Costs (Transfer, Legal)</label>
-          <input type="number" id="purchaseCosts" placeholder="0" min="0">
+          <input aria-label="PurchaseCosts" type="number" id="purchaseCosts" placeholder="0" min="0">
           <div class="hint">Stamp duty, legal fees, agent commission</div>
         </div>
       </div>
@@ -420,31 +420,31 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <div class="grid-2" style="margin-bottom:16px">
         <div class="field">
           <label>Property Rates / Taxes (Annual)</label>
-          <input type="number" id="propTax" placeholder="0" min="0">
+          <input aria-label="PropTax" type="number" id="propTax" placeholder="0" min="0">
           <div class="hint">Council rates, land tax, etc.</div>
         </div>
         <div class="field">
           <label>Insurance (Annual)</label>
-          <input type="number" id="insurance" placeholder="0" min="0">
+          <input aria-label="Insurance" type="number" id="insurance" placeholder="0" min="0">
           <div class="hint" id="hint-insurance">~0.5% of property value</div>
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:16px">
         <div class="field">
           <label>Maintenance &amp; Repairs (Annual)</label>
-          <input type="number" id="maintenance" placeholder="0" min="0">
+          <input aria-label="Maintenance" type="number" id="maintenance" placeholder="0" min="0">
           <div class="hint" id="hint-maint">Budget ~1-2% of property value</div>
         </div>
         <div class="field">
           <label>Management Fee (Annual)</label>
-          <input type="number" id="managementFee" placeholder="0" min="0">
+          <input aria-label="ManagementFee" type="number" id="managementFee" placeholder="0" min="0">
           <div class="hint">Agent fees, typically 8-10% of rent</div>
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:16px">
         <div class="field">
           <label>Other Expenses (Annual)</label>
-          <input type="number" id="otherExp" placeholder="0" min="0">
+          <input aria-label="OtherExp" type="number" id="otherExp" placeholder="0" min="0">
           <div class="hint">Utilities, levies, admin, etc.</div>
         </div>
         <div class="field" style="display:flex;flex-direction:column;justify-content:center">
@@ -455,14 +455,14 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 
       <div class="range-field">
         <label>Vacancy Rate <span id="vacancy-val">5%</span></label>
-        <input type="range" id="vacancyRate" min="0" max="30" value="5" oninput="document.getElementById('vacancy-val').textContent=this.value+'%'">
+        <input aria-label="VacancyRate" type="range" id="vacancyRate" min="0" max="30" value="5" oninput="document.getElementById('vacancy-val').textContent=this.value+'%'">
       </div>
 
       <div class="section-divider"></div>
       <div class="card-title" style="margin-bottom:16px"><span>🏦</span> Financing</div>
       <div class="toggle-row">
         <label class="toggle-switch">
-          <input type="checkbox" id="mortgageToggle" onchange="toggleMortgage()">
+          <input aria-label="MortgageToggle" type="checkbox" id="mortgageToggle" onchange="toggleMortgage()">
           <span class="toggle-slider"></span>
         </label>
         <span class="toggle-label">I'm using a mortgage / home loan</span>
@@ -471,22 +471,22 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         <div class="grid-2" style="margin-bottom:16px">
           <div class="field">
             <label>Down Payment</label>
-            <input type="number" id="downPayment" placeholder="0" min="0">
+            <input aria-label="DownPayment" type="number" id="downPayment" placeholder="0" min="0">
             <div class="hint" id="hint-dp">% of purchase price</div>
           </div>
           <div class="field">
             <label>Loan Amount</label>
-            <input type="number" id="loanAmount" placeholder="Auto-calculated" min="0" readonly style="background:#f0f0f5">
+            <input aria-label="Auto calculated" type="number" id="loanAmount" placeholder="Auto-calculated" min="0" readonly style="background:#f0f0f5">
           </div>
         </div>
         <div class="grid-2" style="margin-bottom:16px">
           <div class="field">
             <label>Interest Rate (% p.a.)</label>
-            <input type="number" id="interestRate" placeholder="11.5" min="0" max="50" step="0.1">
+            <input aria-label="InterestRate" type="number" id="interestRate" placeholder="11.5" min="0" max="50" step="0.1">
           </div>
           <div class="field">
             <label>Loan Term (Years)</label>
-            <input type="number" id="loanTerm" placeholder="20" min="1" max="30" value="20">
+            <input aria-label="LoanTerm" type="number" id="loanTerm" placeholder="20" min="1" max="30" value="20">
           </div>
         </div>
         <div style="background:#f8f9fa;border-radius:10px;padding:12px 14px;font-size:0.82rem;color:#374151;display:flex;justify-content:space-between;align-items:center">
@@ -499,14 +499,14 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <div class="card-title" style="margin-bottom:16px"><span>📈</span> Projection Assumptions</div>
       <div class="range-field">
         <label>Annual Rent Escalation <span id="escalation-val">5%</span></label>
-        <input type="range" id="rentEscalation" min="0" max="20" value="5" step="0.5" oninput="document.getElementById('escalation-val').textContent=this.value+'%'">
+        <input aria-label="RentEscalation" type="range" id="rentEscalation" min="0" max="20" value="5" step="0.5" oninput="document.getElementById('escalation-val').textContent=this.value+'%'">
       </div>
       <div class="range-field">
         <label>Property Appreciation <span id="appreciation-val">3%</span></label>
-        <input type="range" id="propAppreciation" min="-5" max="20" value="3" step="0.5" oninput="document.getElementById('appreciation-val').textContent=this.value+'%'">
+        <input aria-label="PropAppreciation" type="range" id="propAppreciation" min="-5" max="20" value="3" step="0.5" oninput="document.getElementById('appreciation-val').textContent=this.value+'%'">
       </div>
 
-      <button class="calc-btn" onclick="calculate()">Calculate Rental Yield &rarr;</button>
+      <button type="button" class="calc-btn" onclick="calculate()">Calculate Rental Yield &rarr;</button>
     </div>
 
     <!-- Results -->
@@ -651,8 +651,8 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         <div class="ai-chat" id="aiChat">
           <div class="ai-msgs" id="aiMsgs"></div>
           <div class="ai-input-row">
-            <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
-            <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+            <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+            <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
           </div>
         </div>
       </div>
@@ -762,9 +762,9 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
     <p>This workspace turns the yield after legal and operating costs result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
   </div>
   <div class="leg-workflow-grid">
-    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
-    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
-    <label class="leg-field"><span class="leg-f-label">Target date</span><input class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
     <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
   </div>
   <div class="leg-workflow-columns">
@@ -792,7 +792,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <h3>Email the checklist and unlock print/PDF</h3>
       <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
     </div>
-    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
     <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
     <div class="leg-workflow-actions compact">
       <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
@@ -961,7 +961,7 @@ function renderTabs() {
   cont.innerHTML = properties.map((p,i) => {
     const active = i === activeIdx ? ' active' : '';
     const removeBtn = properties.length > 1 ? `<span class="tab-remove" onclick="event.stopPropagation();removeProperty(${i})">&times;</span>` : '';
-    return `<button class="prop-tab${active}" data-idx="${i}" onclick="switchProperty(${i})">Property ${i+1}${removeBtn}</button>`;
+    return `<button type="button" class="prop-tab${active}" data-idx="${i}" onclick="switchProperty(${i})">Property ${i+1}${removeBtn}</button>`;
   }).join('');
   document.getElementById('add-prop-btn').style.display = properties.length >= 3 ? 'none' : '';
 }

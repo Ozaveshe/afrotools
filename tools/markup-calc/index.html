@@ -20,10 +20,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -482,10 +482,10 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/markup-calc/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-marge/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/markup-calc/" />
@@ -549,10 +549,10 @@
       <div class="card">
         <div class="card-body" style="padding: 16px;">
           <div class="tabs">
-            <button class="tab-btn active" data-tab="simple">Simple</button>
-            <button class="tab-btn" data-tab="table">Markup Table</button>
-            <button class="tab-btn" data-tab="batch">Batch Upload</button>
-            <button class="tab-btn" data-tab="dynamic">Dynamic</button>
+            <button type="button" class="tab-btn active" data-tab="simple">Simple</button>
+            <button type="button" class="tab-btn" data-tab="table">Markup Table</button>
+            <button type="button" class="tab-btn" data-tab="batch">Batch Upload</button>
+            <button type="button" class="tab-btn" data-tab="dynamic">Dynamic</button>
           </div>
         </div>
       </div>
@@ -565,7 +565,7 @@
             <div class="field-row">
               <div class="field">
                 <label class="f-label">Cost Price</label>
-                <input type="number" class="f-input" id="simpleCost" value="100" step="0.01">
+                <input aria-label="SimpleCost" type="number" class="f-input" id="simpleCost" value="100" step="0.01">
               </div>
               <div class="field">
                 <label class="f-label">Currency</label>
@@ -575,8 +575,8 @@
                   <option value="KSh">KES (KSh)</option>
                   <option value="R">ZAR (R)</option>
                   <option value="GH?">GHS (GH?)</option>
-                  <option value="�">GBP (�)</option>
-                  <option value="�">EUR (�)</option>
+                  <option value="-">GBP (-)</option>
+                  <option value="-">EUR (-)</option>
                 </select>
               </div>
             </div>
@@ -584,15 +584,15 @@
             <div class="field-row">
               <div class="field">
                 <label class="f-label">Markup %</label>
-                <input type="number" class="f-input" id="simpleMarkup" value="50" step="0.1">
+                <input aria-label="SimpleMarkup" type="number" class="f-input" id="simpleMarkup" value="50" step="0.1">
               </div>
               <div class="field">
                 <label class="f-label">OR Margin %</label>
-                <input type="number" class="f-input" id="simpleMargin" placeholder="Alternative" step="0.1">
+                <input aria-label="Alternative" type="number" class="f-input" id="simpleMargin" placeholder="Alternative" step="0.1">
               </div>
             </div>
 
-            <button class="calc-btn" onclick="calculateSimple()">Calculate</button>
+            <button type="button" class="calc-btn" onclick="calculateSimple()">Calculate</button>
 
             <div class="result-box" id="simpleResults" style="display: none;">
               <div class="result-row">
@@ -627,7 +627,7 @@
           <div class="card-body">
             <div class="field">
               <label class="f-label">Cost Price</label>
-              <input type="number" class="f-input" id="tableCost" value="100" step="0.01">
+              <input aria-label="TableCost" type="number" class="f-input" id="tableCost" value="100" step="0.01">
             </div>
 
             <div class="field">
@@ -638,12 +638,12 @@
                 <option value="KSh">KES (KSh)</option>
                 <option value="R">ZAR (R)</option>
                 <option value="GH?">GHS (GH?)</option>
-                <option value="�">GBP (�)</option>
-                <option value="�">EUR (�)</option>
+                <option value="-">GBP (-)</option>
+                <option value="-">EUR (-)</option>
               </select>
             </div>
 
-            <button class="calc-btn" onclick="generateMarkupTable()">Generate Table</button>
+            <button type="button" class="calc-btn" onclick="generateMarkupTable()">Generate Table</button>
 
             <div id="tableResults" style="display: none; margin-top: 12px;">
               <table class="markup-table">
@@ -671,15 +671,15 @@
             <div class="csv-upload">
               <div style="margin-bottom: 12px;">
                 <div style="font-size: 0.75rem; font-weight: 700; color: var(--afro-dark); margin-bottom: 6px;">Upload CSV (Name, Cost):</div>
-                <input type="file" id="csvFile" accept=".csv">
-                <button class="upload-btn" onclick="document.getElementById('csvFile').click()">?? Choose File</button>
+                <input aria-label="CsvFile" type="file" id="csvFile" accept=".csv">
+                <button type="button" class="upload-btn" onclick="document.getElementById('csvFile').click()">?? Choose File</button>
               </div>
             </div>
 
             <div class="field-row">
               <div class="field">
                 <label class="f-label">Markup %</label>
-                <input type="number" class="f-input" id="batchMarkup" value="50" step="0.1">
+                <input aria-label="BatchMarkup" type="number" class="f-input" id="batchMarkup" value="50" step="0.1">
               </div>
               <div class="field">
                 <label class="f-label">Currency</label>
@@ -689,13 +689,13 @@
                   <option value="KSh">KES (KSh)</option>
                   <option value="R">ZAR (R)</option>
                   <option value="GH?">GHS (GH?)</option>
-                  <option value="�">GBP (�)</option>
-                  <option value="�">EUR (�)</option>
+                  <option value="-">GBP (-)</option>
+                  <option value="-">EUR (-)</option>
                 </select>
               </div>
             </div>
 
-            <button class="calc-btn" onclick="processBatchCSV()">Process CSV</button>
+            <button type="button" class="calc-btn" onclick="processBatchCSV()">Process CSV</button>
 
             <div id="batchResults" style="display: none; margin-top: 12px;">
               <table class="markup-table">
@@ -710,7 +710,7 @@
                 <tbody id="batchBody">
                 </tbody>
               </table>
-              <button class="download-btn" onclick="downloadBatchCSV()">? Download CSV</button>
+              <button type="button" class="download-btn" onclick="downloadBatchCSV()">? Download CSV</button>
             </div>
           </div>
         </div>
@@ -723,13 +723,13 @@
           <div class="card-body">
             <div class="field">
               <label class="f-label">Product Name</label>
-              <input type="text" class="f-input" id="dynamicProduct" placeholder="e.g., Imported Fabric">
+              <input aria-label="E.g., Imported Fabric" type="text" class="f-input" id="dynamicProduct" placeholder="e.g., Imported Fabric">
             </div>
 
             <div class="field-row">
               <div class="field">
                 <label class="f-label">Cost Price</label>
-                <input type="number" class="f-input" id="dynamicCost" value="100" step="0.01">
+                <input aria-label="DynamicCost" type="number" class="f-input" id="dynamicCost" value="100" step="0.01">
               </div>
               <div class="field">
                 <label class="f-label">Currency</label>
@@ -745,7 +745,7 @@
 
             <div class="field">
               <label class="f-label">Base Overhead % (rent, utilities, labor)</label>
-              <input type="number" class="f-input" id="dynamicOverhead" value="15" step="0.1">
+              <input aria-label="DynamicOverhead" type="number" class="f-input" id="dynamicOverhead" value="15" step="0.1">
             </div>
 
             <div style="border-top: 2px solid #e2e8f0; padding-top: 14px; margin-top: 14px;">
@@ -754,24 +754,24 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                 <div>
                   <label class="f-label">Retail Price Markup %</label>
-                  <input type="number" class="f-input" id="retailMarkup" value="100" step="1">
+                  <input aria-label="RetailMarkup" type="number" class="f-input" id="retailMarkup" value="100" step="1">
                 </div>
                 <div>
                   <label class="f-label">Wholesale Price Markup % (10+ units)</label>
-                  <input type="number" class="f-input" id="wholesaleMarkup" value="40" step="1">
+                  <input aria-label="WholesaleMarkup" type="number" class="f-input" id="wholesaleMarkup" value="40" step="1">
                 </div>
                 <div>
                   <label class="f-label">Credit Price Markup % (payment later)</label>
-                  <input type="number" class="f-input" id="creditMarkup" value="120" step="1">
+                  <input aria-label="CreditMarkup" type="number" class="f-input" id="creditMarkup" value="120" step="1">
                 </div>
                 <div>
                   <label class="f-label">Seasonal Markup % (peak)</label>
-                  <input type="number" class="f-input" id="seasonalMarkup" value="150" step="1">
+                  <input aria-label="SeasonalMarkup" type="number" class="f-input" id="seasonalMarkup" value="150" step="1">
                 </div>
               </div>
             </div>
 
-            <button class="calc-btn" style="margin-top: 14px;" onclick="calculateDynamicPricing()">Calculate All Prices</button>
+            <button type="button" class="calc-btn" style="margin-top: 14px;" onclick="calculateDynamicPricing()">Calculate All Prices</button>
 
             <div id="dynamicResults" style="display: none; margin-top: 16px;">
               <div class="price-grid">
@@ -816,10 +816,10 @@
       <div class="info-card">
         <div class="info-title">Markup vs Margin</div>
         <div class="info-text">
-          <strong>Markup:</strong> Profit � Cost � 100<br>
-          <code>Price = Cost � (1 + Markup%)</code><br><br>
-          <strong>Margin:</strong> Profit � Price � 100<br>
-          <code>Price = Cost � (1 - Margin%)</code><br><br>
+          <strong>Markup:</strong> Profit - Cost - 100<br>
+          <code>Price = Cost - (1 + Markup%)</code><br><br>
+          <strong>Margin:</strong> Profit - Price - 100<br>
+          <code>Price = Cost - (1 - Margin%)</code><br><br>
           <em>50% markup ? 50% margin!</em>
         </div>
       </div>
@@ -871,7 +871,7 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Markup Calculator: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Markup Calculator helps business owners and traders determine the right selling price for their products. Enter your cost price and desired markup percentage, and the tool instantly calculates your selling price and profit per unit. Beyond simple calculations, this tool includes a markup table generator that shows prices across multiple markup levels so you can compare pricing strategies side by side. The dynamic pricing feature accounts for African market realities including wholesale versus retail pricing tiers, credit sale markups for instalment customers, and seasonal adjustment factors. Whether you are a market trader setting prices for the day, a wholesaler preparing price lists for retailers, or an e-commerce seller optimising margins, this calculator streamlines the process. It also shows the relationship between markup and margin � two commonly confused terms � so you understand exactly what percentage of your selling price is profit. Designed for entrepreneurs across Africa, it supports multiple currencies and pricing scenarios commonly encountered in Nigerian, Kenyan, South African, and Ghanaian markets.</p>
+    <p>The AfroTools Markup Calculator helps business owners and traders determine the right selling price for their products. Enter your cost price and desired markup percentage, and the tool instantly calculates your selling price and profit per unit. Beyond simple calculations, this tool includes a markup table generator that shows prices across multiple markup levels so you can compare pricing strategies side by side. The dynamic pricing feature accounts for African market realities including wholesale versus retail pricing tiers, credit sale markups for instalment customers, and seasonal adjustment factors. Whether you are a market trader setting prices for the day, a wholesaler preparing price lists for retailers, or an e-commerce seller optimising margins, this calculator streamlines the process. It also shows the relationship between markup and margin - two commonly confused terms - so you understand exactly what percentage of your selling price is profit. Designed for entrepreneurs across Africa, it supports multiple currencies and pricing scenarios commonly encountered in Nigerian, Kenyan, South African, and Ghanaian markets.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 

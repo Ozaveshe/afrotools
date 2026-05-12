@@ -101,6 +101,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <meta property="og:url" content="https://afrotools.com/tools/ajo-tracker/app">
 <link rel="stylesheet" href="/assets/css/african-workflow.css?v=b5a0b1a7">
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">Ajo / Chama Savings Tracker</h1>
@@ -108,8 +111,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <a href="index.html">&#8592; Ajo Tracker</a>
   <div class="topbar-title">Ajo/Chama Savings Tracker</div>
   <div class="topbar-actions">
-    <button class="btn" onclick="saveGroup()">Save</button>
-    <button class="btn btn-pri" onclick="exportPDF()">Export PDF</button>
+    <button type="button" class="btn" onclick="saveGroup()">Save</button>
+    <button type="button" class="btn btn-pri" onclick="exportPDF()">Export PDF</button>
   </div>
 </div>
 
@@ -118,7 +121,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div class="card" id="setup-card">
     <h2>Group Setup</h2>
     <div class="form-row">
-      <div class="form-group"><label>Group Name</label><input type="text" id="groupName" placeholder="e.g. Office Ajo Circle" oninput="updateSummary()"></div>
+      <div class="form-group"><label>Group Name</label><input aria-label="E.g. Office Ajo Circle" type="text" id="groupName" placeholder="e.g. Office Ajo Circle" oninput="updateSummary()"></div>
       <div class="form-group"><label>Currency</label>
         <select id="currency" onchange="updateSummary()">
           <option value="NGN">NGN - Nigerian Naira</option>
@@ -132,7 +135,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Contribution Amount</label><input type="number" id="amount" placeholder="e.g. 50000" min="0" oninput="updateSummary()"></div>
+      <div class="form-group"><label>Contribution Amount</label><input aria-label="E.g. 50000" type="number" id="amount" placeholder="e.g. 50000" min="0" oninput="updateSummary()"></div>
       <div class="form-group"><label>Frequency</label>
         <select id="frequency" onchange="updateSummary()">
           <option value="weekly">Weekly</option>
@@ -141,11 +144,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
         </select>
       </div>
     </div>
-    <div class="form-group"><label>Start Date</label><input type="date" id="startDate" oninput="updateSummary()"></div>
+    <div class="form-group"><label>Start Date</label><input aria-label="StartDate" type="date" id="startDate" oninput="updateSummary()"></div>
     <div class="rules-grid">
-      <div class="form-group"><label>Grace Days</label><input type="number" id="graceDays" min="0" value="3" oninput="updateSummary()"></div>
-      <div class="form-group"><label>Late Penalty</label><input type="number" id="latePenalty" min="0" placeholder="Optional" oninput="updateSummary()"></div>
-      <div class="form-group"><label>Reserve %</label><input type="number" id="reservePct" min="0" max="50" value="0" oninput="updateSummary()"></div>
+      <div class="form-group"><label>Grace Days</label><input aria-label="GraceDays" type="number" id="graceDays" min="0" value="3" oninput="updateSummary()"></div>
+      <div class="form-group"><label>Late Penalty</label><input aria-label="Optional" type="number" id="latePenalty" min="0" placeholder="Optional" oninput="updateSummary()"></div>
+      <div class="form-group"><label>Reserve %</label><input aria-label="ReservePct" type="number" id="reservePct" min="0" max="50" value="0" oninput="updateSummary()"></div>
       <div class="form-group"><label>Default Rule</label>
         <select id="defaultRule" onchange="updateSummary()">
           <option value="hold">Hold payout until settled</option>
@@ -169,7 +172,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <h2>Cycle Readiness</h2>
     <div class="readiness" id="readiness"></div>
     <div class="brief-list" id="meeting-brief"></div>
-    <div class="brief-actions"><button class="btn btn-small" onclick="copyMeetingBrief(this)">Copy Meeting Brief</button></div>
+    <div class="brief-actions"><button type="button" class="btn btn-small" onclick="copyMeetingBrief(this)">Copy Meeting Brief</button></div>
   </div>
 
   <!-- Members -->
@@ -177,9 +180,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
     <h2>Members (Payout Order)</h2>
     <div id="members-list"></div>
     <div class="add-member-row">
-      <input type="text" id="newMemberName" placeholder="Member name">
-      <input type="tel" id="newMemberPhone" placeholder="Phone (optional)">
-      <button class="btn btn-pri" onclick="addMember()">Add</button>
+      <input aria-label="Member name" type="text" id="newMemberName" placeholder="Member name">
+      <input aria-label="Phone (optional)" type="tel" id="newMemberPhone" placeholder="Phone (optional)">
+      <button type="button" class="btn btn-pri" onclick="addMember()">Add</button>
     </div>
   </div>
 
@@ -261,9 +264,9 @@ function renderMembers() {
         ${m.phone ? `<div class="member-phone">${esc(m.phone)}</div>` : ''}
       </div>
       <div class="member-actions">
-        ${i > 0 ? `<button onclick="moveMember(${i},-1)" title="Move up">&uarr;</button>` : ''}
-        ${i < members.length - 1 ? `<button onclick="moveMember(${i},1)" title="Move down">&darr;</button>` : ''}
-        <button onclick="removeMember(${i})" title="Remove">&times;</button>
+        ${i > 0 ? `<button type="button" onclick="moveMember(${i},-1)" title="Move up">&uarr;</button>` : ''}
+        ${i < members.length - 1 ? `<button type="button" onclick="moveMember(${i},1)" title="Move down">&darr;</button>` : ''}
+        <button type="button" onclick="removeMember(${i})" title="Remove">&times;</button>
       </div>
     </div>
   `).join('');
@@ -456,7 +459,7 @@ function renderSchedule() {
       <td>${date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
       <td>${amount > 0 ? fmt(pool) : '--'}</td>
       <td><span class="badge ${badgeClass}">${badgeText}</span></td>
-      <td><button class="pay-toggle" onclick="togglePayment(${i})">${payments[i] === 'paid' ? 'Undo' : 'Mark Paid'}</button></td>
+      <td><button type="button" class="pay-toggle" onclick="togglePayment(${i})">${payments[i] === 'paid' ? 'Undo' : 'Mark Paid'}</button></td>
     </tr>`;
   }).join('');
 }

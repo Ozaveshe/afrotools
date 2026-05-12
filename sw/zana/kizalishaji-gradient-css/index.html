@@ -22,9 +22,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -70,8 +70,8 @@ h1 em{color:var(--afro-blue);font-style:normal}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.presets{grid-template-columns:repeat(4,1fr)}}
 details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -101,7 +101,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
       <div class="card-body">
         <div class="preview-box" id="preview"></div>
         <div class="code-box">
-          <button class="copy-btn" id="copyBtn" onclick="copyCSS()">Nakili CSS</button>
+          <button type="button" class="copy-btn" id="copyBtn" onclick="copyCSS()">Nakili CSS</button>
           <div class="code-text" id="codeOutput"></div>
         </div>
       </div>
@@ -156,7 +156,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
         </div>
         <div class="field" id="angleField">
           <label class="f-label">Angle: <span id="angleVal">135</span>deg</label>
-          <input type="range" class="slider" id="angle" min="0" max="360" value="135" oninput="document.getElementById('angleVal').textContent=this.value;update()">
+          <input aria-label="Angle" type="range" class="slider" id="angle" min="0" max="360" value="135" oninput="document.getElementById('angleVal').textContent=this.value;update()">
         </div>
         <div class="field" id="shapeField" style="display:none">
           <label class="f-label">Shape</label>
@@ -168,7 +168,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 
         <div class="f-label">Color Stops</div>
         <div id="stopsContainer"></div>
-        <button class="add-btn" onclick="addStop()">+ Add Color Stop</button>
+        <button type="button" class="add-btn" onclick="addStop()">+ Add Color Stop</button>
       </div>
     </div>
 
@@ -206,10 +206,10 @@ function renderStops(){
   const c=document.getElementById('stopsContainer');
   c.innerHTML=stops.map((s,i)=>`
     <div class="color-stop">
-      <input type="color" class="color-input" value="${s.color}" onchange="stops[${i}].color=this.value;update()">
-      <input type="number" class="f-input stop-pos" value="${s.pos}" min="0" max="100" onchange="stops[${i}].pos=parseInt(this.value)||0;update()">
+      <input aria-label="Color input" type="color" class="color-input" value="${s.color}" onchange="stops[${i}].color=this.value;update()">
+      <input aria-label="F input stop pos" type="number" class="f-input stop-pos" value="${s.pos}" min="0" max="100" onchange="stops[${i}].pos=parseInt(this.value)||0;update()">
       <span style="font-size:.7rem;color:#94a3b8">%</span>
-      ${stops.length>2?`<button class="del-stop" onclick="stops.splice(${i},1);renderStops();update()">X</button>`:''}
+      ${stops.length>2?`<button type="button" class="del-stop" onclick="stops.splice(${i},1);renderStops();update()">X</button>`:''}
     </div>
   `).join('');
 }
@@ -263,7 +263,7 @@ document.getElementById('presets').innerHTML=PRESETS.map((p,i)=>{
 renderStops();
 update();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 

@@ -132,16 +132,16 @@ function countMatches(text, phraseList) {
 function countBadEncoding(raw) {
   const badPatterns = [
     /Ã./g,
-    /Â£/g,
-    /â€”/g,
-    /â€“/g,
-    /â€™/g,
-    /â€œ/g,
+    /£/g,
+    /-/g,
+    /-/g,
+    /'/g,
+    /"/g,
     /â€\x9d/g,
     /â€¦/g,
-    /â‚¬/g,
-    /â‚¦/g,
-    /�/g
+    /-/g,
+    /-/g,
+    /-/g
   ];
 
   return badPatterns.reduce((count, pattern) => count + ((raw.match(pattern) || []).length), 0);

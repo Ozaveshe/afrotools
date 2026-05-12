@@ -120,6 +120,9 @@ button{cursor:pointer}
 @media(max-width:1220px){.workspace{grid-template-columns:minmax(310px,430px) minmax(440px,1fr)}.insights-card{grid-column:1/-1;position:static}.minutes-editor{grid-template-columns:1fr}}
 @media(max-width:780px){.topbar{align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workspace{grid-template-columns:1fr}.panel{max-height:none}.form-grid,.row-builder .form-grid{grid-template-columns:1fr}.minutes-editor{min-height:auto}.minutes-text-wrap{border-right:0;border-bottom:1px solid #e5e7eb}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}}
 </style>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <h1 class="sr-only">Meeting Minutes Generator for professional meeting follow-up</h1>
@@ -163,24 +166,24 @@ button{cursor:pointer}
       <div class="form-grid">
         <label class="field"><span>Template</span><select id="templateId"></select></label>
         <label class="field"><span>Minutes style</span><select id="styleId"></select></label>
-        <label class="field"><span>Meeting title</span><input id="meetingTitle" placeholder="Q2 Expansion Review"></label>
-        <label class="field"><span>Organization</span><input id="organization" placeholder="Afro Foods Ltd"></label>
-        <label class="field"><span>Date</span><input id="meetingDate" type="date"></label>
-        <label class="field"><span>Start time</span><input id="startTime" type="time"></label>
-        <label class="field"><span>End time</span><input id="endTime" type="time"></label>
-        <label class="field"><span>Location or platform</span><input id="location" placeholder="Boardroom, Zoom, Teams"></label>
-        <label class="field"><span>Chair</span><input id="chair" placeholder="Aisha Bello"></label>
-        <label class="field"><span>Minute taker</span><input id="minuteTaker" placeholder="Kofi Mensah"></label>
+        <label class="field"><span>Meeting title</span><input aria-label="Q2 Expansion Review" id="meetingTitle" placeholder="Q2 Expansion Review"></label>
+        <label class="field"><span>Organization</span><input aria-label="Afro Foods Ltd" id="organization" placeholder="Afro Foods Ltd"></label>
+        <label class="field"><span>Date</span><input aria-label="MeetingDate" id="meetingDate" type="date"></label>
+        <label class="field"><span>Start time</span><input aria-label="StartTime" id="startTime" type="time"></label>
+        <label class="field"><span>End time</span><input aria-label="EndTime" id="endTime" type="time"></label>
+        <label class="field"><span>Location or platform</span><input aria-label="Boardroom, Zoom, Teams" id="location" placeholder="Boardroom, Zoom, Teams"></label>
+        <label class="field"><span>Chair</span><input aria-label="Aisha Bello" id="chair" placeholder="Aisha Bello"></label>
+        <label class="field"><span>Minute taker</span><input aria-label="Kofi Mensah" id="minuteTaker" placeholder="Kofi Mensah"></label>
       </div>
 
       <h3>Attendees</h3>
       <div class="list" id="attendeeList"></div>
       <div class="row-builder">
         <div class="form-grid">
-          <label class="field"><span>Name</span><input id="attendeeName" placeholder="Name"></label>
-          <label class="field"><span>Role</span><input id="attendeeRole" placeholder="Finance lead"></label>
+          <label class="field"><span>Name</span><input aria-label="Name" id="attendeeName" placeholder="Name"></label>
+          <label class="field"><span>Role</span><input aria-label="Finance lead" id="attendeeRole" placeholder="Finance lead"></label>
           <label class="field"><span>Status</span><select id="attendeeStatus"><option value="present">Present</option><option value="remote">Remote</option><option value="apology">Apology</option><option value="absent">Absent</option></select></label>
-          <label class="field"><span>Email optional</span><input id="attendeeEmail" type="email" placeholder="name@example.com"></label>
+          <label class="field"><span>Email optional</span><input aria-label="Name@example.com" id="attendeeEmail" type="email" placeholder="name@example.com"></label>
         </div>
         <button class="btn btn-soft" type="button" data-action="add-attendee">Add attendee</button>
       </div>
@@ -189,9 +192,9 @@ button{cursor:pointer}
       <div id="agendaList"></div>
       <div class="row-builder">
         <div class="form-grid">
-          <label class="field full"><span>Agenda title</span><input id="agendaTitle" placeholder="Budget approval"></label>
+          <label class="field full"><span>Agenda title</span><input aria-label="Budget approval" id="agendaTitle" placeholder="Budget approval"></label>
           <label class="field full"><span>Discussion notes</span><textarea id="agendaDiscussion" placeholder="Key points, objections, updates, or context."></textarea></label>
-          <label class="field full"><span>Decision or outcome</span><input id="agendaDecision" placeholder="Budget approved with revised supplier cap."></label>
+          <label class="field full"><span>Decision or outcome</span><input aria-label="Budget approved with revised supplier cap." id="agendaDecision" placeholder="Budget approved with revised supplier cap."></label>
         </div>
         <button class="btn btn-soft" type="button" data-action="add-agenda">Add agenda item</button>
       </div>
@@ -200,8 +203,8 @@ button{cursor:pointer}
       <div class="list" id="decisionList"></div>
       <div class="row-builder">
         <div class="form-grid">
-          <label class="field full"><span>Decision</span><input id="decisionText" placeholder="Approved hiring two regional coordinators."></label>
-          <label class="field"><span>Owner</span><input id="decisionOwner" placeholder="Managing Director"></label>
+          <label class="field full"><span>Decision</span><input aria-label="Approved hiring two regional coordinators." id="decisionText" placeholder="Approved hiring two regional coordinators."></label>
+          <label class="field"><span>Owner</span><input aria-label="Managing Director" id="decisionOwner" placeholder="Managing Director"></label>
           <label class="field"><span>Status</span><select id="decisionStatus"><option value="approved">Approved</option><option value="deferred">Deferred</option><option value="rejected">Rejected</option><option value="noted">Noted</option></select></label>
         </div>
         <button class="btn btn-soft" type="button" data-action="add-decision">Add decision</button>
@@ -211,12 +214,12 @@ button{cursor:pointer}
       <div class="list" id="actionList"></div>
       <div class="row-builder">
         <div class="form-grid">
-          <label class="field full"><span>Action</span><input id="actionText" placeholder="Send revised procurement schedule."></label>
-          <label class="field"><span>Owner</span><input id="actionOwner" placeholder="Njeri"></label>
-          <label class="field"><span>Due date</span><input id="actionDue" type="date"></label>
+          <label class="field full"><span>Action</span><input aria-label="Send revised procurement schedule." id="actionText" placeholder="Send revised procurement schedule."></label>
+          <label class="field"><span>Owner</span><input aria-label="Njeri" id="actionOwner" placeholder="Njeri"></label>
+          <label class="field"><span>Due date</span><input aria-label="ActionDue" id="actionDue" type="date"></label>
           <label class="field"><span>Priority</span><select id="actionPriority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></label>
           <label class="field"><span>Status</span><select id="actionStatus"><option value="open">Open</option><option value="progress">In progress</option><option value="done">Done</option></select></label>
-          <label class="field"><span>Source</span><input id="actionSource" placeholder="Agenda item or decision"></label>
+          <label class="field"><span>Source</span><input aria-label="Agenda item or decision" id="actionSource" placeholder="Agenda item or decision"></label>
         </div>
         <button class="btn btn-soft" type="button" data-action="add-action">Add action</button>
       </div>
@@ -225,8 +228,8 @@ button{cursor:pointer}
       <div class="form-grid">
         <label class="field full"><span>Risks or blockers</span><textarea id="risks" placeholder="Risks, blockers, dependencies, compliance concerns."></textarea></label>
         <label class="field full"><span>Parking lot</span><textarea id="parkingLot" placeholder="Useful topics that were not resolved in this meeting."></textarea></label>
-        <label class="field"><span>Next date</span><input id="nextDate" type="date"></label>
-        <label class="field"><span>Next time</span><input id="nextTime" type="time"></label>
+        <label class="field"><span>Next date</span><input aria-label="NextDate" id="nextDate" type="date"></label>
+        <label class="field"><span>Next time</span><input aria-label="NextTime" id="nextTime" type="time"></label>
         <label class="field full"><span>Next agenda</span><textarea id="nextAgenda" placeholder="Topics proposed for the next meeting."></textarea></label>
       </div>
     </section>
@@ -245,7 +248,7 @@ button{cursor:pointer}
           <button class="btn" type="button" data-action="json">JSON</button>
           <button class="btn" type="button" data-action="import">Import</button>
           <button class="btn" type="button" data-action="print">Print</button>
-          <input class="import-input" id="importInput" type="file" accept="application/json,.json">
+          <input aria-label="ImportInput" class="import-input" id="importInput" type="file" accept="application/json,.json">
         </div>
       </div>
       <div class="minutes-editor">

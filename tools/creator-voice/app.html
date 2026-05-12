@@ -9,13 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=fe5e4b7b">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-voice/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-voice/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cvo-app">
 
@@ -25,19 +28,19 @@
       <span>&#127897;</span> CreatorVoice
     </a>
     <div class="cvo-header-center">
-      <input type="text" class="cvo-project-input" id="projectName" value="Untitled Project" spellcheck="false">
+      <input aria-label="ProjectName" type="text" class="cvo-project-input" id="projectName" value="Untitled Project" spellcheck="false">
     </div>
     <div class="cvo-header-actions">
-      <button class="cvo-btn-icon" id="projectsBtn" title="Projects">&#128193;</button>
-      <button class="cvo-btn-primary" id="saveBtn">&#128190; Save</button>
+      <button type="button" class="cvo-btn-icon" id="projectsBtn" title="Projects">&#128193;</button>
+      <button type="button" class="cvo-btn-primary" id="saveBtn">&#128190; Save</button>
     </div>
   </header>
 
   <!-- MODE TABS -->
   <div class="cvo-mode-tabs">
-    <button class="cvo-mode-tab active" data-view="record">Record</button>
-    <button class="cvo-mode-tab" data-view="edit">Edit</button>
-    <button class="cvo-mode-tab" data-view="library">Library</button>
+    <button type="button" class="cvo-mode-tab active" data-view="record">Record</button>
+    <button type="button" class="cvo-mode-tab" data-view="edit">Edit</button>
+    <button type="button" class="cvo-mode-tab" data-view="library">Library</button>
   </div>
 
   <!-- WORKSPACE -->
@@ -52,10 +55,10 @@
 
         <div class="cvo-record-area">
           <div class="cvo-timer" id="timer">00:00</div>
-          <button class="cvo-record-btn" id="recordBtn">&#9679;</button>
+          <button type="button" class="cvo-record-btn" id="recordBtn">&#9679;</button>
           <div class="cvo-record-controls">
-            <button class="cvo-ctrl-btn" id="pauseBtn" disabled>&#9646;&#9646; Pause</button>
-            <button class="cvo-ctrl-btn" id="stopBtn" disabled>&#9632; Stop</button>
+            <button type="button" class="cvo-ctrl-btn" id="pauseBtn" disabled>&#9646;&#9646; Pause</button>
+            <button type="button" class="cvo-ctrl-btn" id="stopBtn" disabled>&#9632; Stop</button>
           </div>
         </div>
 
@@ -72,7 +75,7 @@
 
         <!-- Upload area (shown when no audio loaded) -->
         <div class="cvo-upload-area" id="uploadArea">
-          <input type="file" id="fileInput" accept="audio/*">
+          <input aria-label="FileInput" type="file" id="fileInput" accept="audio/*">
           <div class="cvo-upload-icon">&#128193;</div>
           <div class="cvo-upload-text">Drag & drop audio here or <strong>click to browse</strong></div>
           <div style="font-size:12px;color:rgba(255,255,255,.3);margin-top:8px;">MP3, WAV, OGG, M4A supported</div>
@@ -83,9 +86,9 @@
 
           <!-- Zoom bar -->
           <div class="cvo-zoom-bar">
-            <button class="cvo-zoom-btn" id="zoomOutBtn">-</button>
+            <button type="button" class="cvo-zoom-btn" id="zoomOutBtn">-</button>
             <span class="cvo-zoom-label" id="zoomLabel">1.0x</span>
-            <button class="cvo-zoom-btn" id="zoomInBtn">+</button>
+            <button type="button" class="cvo-zoom-btn" id="zoomInBtn">+</button>
             <span style="flex:1"></span>
             <span class="cvo-zoom-label" id="selectionInfo"></span>
           </div>
@@ -102,30 +105,30 @@
 
           <!-- Playback -->
           <div class="cvo-playback">
-            <button class="cvo-ctrl-btn" id="skipStartBtn">&#9198;</button>
-            <button class="cvo-play-btn" id="playBtn">&#9654;</button>
-            <button class="cvo-ctrl-btn" id="stopPlayBtn">&#9632;</button>
-            <button class="cvo-ctrl-btn" id="skipEndBtn">&#9197;</button>
+            <button type="button" class="cvo-ctrl-btn" id="skipStartBtn">&#9198;</button>
+            <button type="button" class="cvo-play-btn" id="playBtn">&#9654;</button>
+            <button type="button" class="cvo-ctrl-btn" id="stopPlayBtn">&#9632;</button>
+            <button type="button" class="cvo-ctrl-btn" id="skipEndBtn">&#9197;</button>
           </div>
 
           <!-- Editing toolbar -->
           <div class="cvo-edit-toolbar">
-            <button class="cvo-tool-btn" id="trimBtn" disabled>&#9986; Trim</button>
-            <button class="cvo-tool-btn" id="cutBtn" disabled>&#128465; Cut</button>
-            <button class="cvo-tool-btn" id="splitBtn">&#8967; Split</button>
+            <button type="button" class="cvo-tool-btn" id="trimBtn" disabled>&#9986; Trim</button>
+            <button type="button" class="cvo-tool-btn" id="cutBtn" disabled>&#128465; Cut</button>
+            <button type="button" class="cvo-tool-btn" id="splitBtn">&#8967; Split</button>
             <div class="cvo-tool-sep"></div>
-            <button class="cvo-tool-btn" id="fadeInBtn">&#8599; Fade In</button>
-            <button class="cvo-tool-btn" id="fadeOutBtn">&#8600; Fade Out</button>
-            <button class="cvo-tool-btn" id="normalizeBtn">&#128200; Normalize</button>
+            <button type="button" class="cvo-tool-btn" id="fadeInBtn">&#8599; Fade In</button>
+            <button type="button" class="cvo-tool-btn" id="fadeOutBtn">&#8600; Fade Out</button>
+            <button type="button" class="cvo-tool-btn" id="normalizeBtn">&#128200; Normalize</button>
             <div class="cvo-tool-sep"></div>
-            <button class="cvo-tool-btn" id="noiseBtn">&#128263; Noise Reduce</button>
-            <button class="cvo-tool-btn" id="reverseBtn">&#128260; Reverse</button>
-            <button class="cvo-tool-btn" id="silenceBtn">&#9723; Insert Silence</button>
+            <button type="button" class="cvo-tool-btn" id="noiseBtn">&#128263; Noise Reduce</button>
+            <button type="button" class="cvo-tool-btn" id="reverseBtn">&#128260; Reverse</button>
+            <button type="button" class="cvo-tool-btn" id="silenceBtn">&#9723; Insert Silence</button>
             <div class="cvo-tool-sep"></div>
-            <button class="cvo-tool-btn" id="reverbBtn">&#127748; Reverb</button>
-            <button class="cvo-tool-btn" id="eqBtn">&#127926; EQ</button>
-            <button class="cvo-tool-btn" id="compressorBtn">&#128296; Compressor</button>
-            <button class="cvo-tool-btn" id="pitchBtn">&#127925; Pitch Shift</button>
+            <button type="button" class="cvo-tool-btn" id="reverbBtn">&#127748; Reverb</button>
+            <button type="button" class="cvo-tool-btn" id="eqBtn">&#127926; EQ</button>
+            <button type="button" class="cvo-tool-btn" id="compressorBtn">&#128296; Compressor</button>
+            <button type="button" class="cvo-tool-btn" id="pitchBtn">&#127925; Pitch Shift</button>
             <div class="cvo-tool-sep"></div>
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.5);">Speed
               <select class="cvo-speed-select" id="speedSelect">
@@ -138,8 +141,8 @@
               </select>
             </label>
             <div class="cvo-tool-sep"></div>
-            <button class="cvo-tool-btn" id="undoBtn">&#8630; Undo</button>
-            <button class="cvo-tool-btn" id="redoBtn">&#8631; Redo</button>
+            <button type="button" class="cvo-tool-btn" id="undoBtn">&#8630; Undo</button>
+            <button type="button" class="cvo-tool-btn" id="redoBtn">&#8631; Redo</button>
           </div>
 
           <!-- Multi-Track Panel -->
@@ -150,35 +153,35 @@
             <div class="cvo-track-lane" data-track="0">
               <div class="cvo-track-info"><div class="cvo-track-name">Track 1</div><div class="cvo-track-type">Voice</div></div>
               <div class="cvo-track-controls">
-                <button class="cvo-track-btn" data-action="mute" title="Mute">M</button>
-                <button class="cvo-track-btn" data-action="solo" title="Solo">S</button>
-                <input type="range" class="cvo-track-volume" min="0" max="100" value="100" title="Volume">
-                <input type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
+                <button type="button" class="cvo-track-btn" data-action="mute" title="Mute">M</button>
+                <button type="button" class="cvo-track-btn" data-action="solo" title="Solo">S</button>
+                <input aria-label="Cvo track volume" type="range" class="cvo-track-volume" min="0" max="100" value="100" title="Volume">
+                <input aria-label="Cvo track pan" type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
               </div>
               <div class="cvo-track-wave" id="trackWave0">Main recording</div>
             </div>
             <div class="cvo-track-lane" data-track="1">
               <div class="cvo-track-info"><div class="cvo-track-name">Track 2</div><div class="cvo-track-type">Music</div></div>
               <div class="cvo-track-controls">
-                <button class="cvo-track-btn" data-action="mute" title="Mute">M</button>
-                <button class="cvo-track-btn" data-action="solo" title="Solo">S</button>
-                <input type="range" class="cvo-track-volume" min="0" max="100" value="80" title="Volume">
-                <input type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
+                <button type="button" class="cvo-track-btn" data-action="mute" title="Mute">M</button>
+                <button type="button" class="cvo-track-btn" data-action="solo" title="Solo">S</button>
+                <input aria-label="Cvo track volume" type="range" class="cvo-track-volume" min="0" max="100" value="80" title="Volume">
+                <input aria-label="Cvo track pan" type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
               </div>
               <div class="cvo-track-wave" id="trackWave1">
-                <button class="cvo-track-upload-btn" data-track="1">+ Upload Music</button>
+                <button type="button" class="cvo-track-upload-btn" data-track="1">+ Upload Music</button>
               </div>
             </div>
             <div class="cvo-track-lane" data-track="2">
               <div class="cvo-track-info"><div class="cvo-track-name">Track 3</div><div class="cvo-track-type">SFX</div></div>
               <div class="cvo-track-controls">
-                <button class="cvo-track-btn" data-action="mute" title="Mute">M</button>
-                <button class="cvo-track-btn" data-action="solo" title="Solo">S</button>
-                <input type="range" class="cvo-track-volume" min="0" max="100" value="70" title="Volume">
-                <input type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
+                <button type="button" class="cvo-track-btn" data-action="mute" title="Mute">M</button>
+                <button type="button" class="cvo-track-btn" data-action="solo" title="Solo">S</button>
+                <input aria-label="Cvo track volume" type="range" class="cvo-track-volume" min="0" max="100" value="70" title="Volume">
+                <input aria-label="Cvo track pan" type="range" class="cvo-track-pan" min="-100" max="100" value="0" title="Pan">
               </div>
               <div class="cvo-track-wave" id="trackWave2">
-                <button class="cvo-track-upload-btn" data-track="2">+ Upload SFX</button>
+                <button type="button" class="cvo-track-upload-btn" data-track="2">+ Upload SFX</button>
               </div>
             </div>
           </div>
@@ -206,14 +209,14 @@
               </div>
               <div class="cvo-form-group">
                 <label class="cvo-form-label">Title</label>
-                <input type="text" class="cvo-form-input" id="exportTitle" placeholder="Episode title...">
+                <input aria-label="Episode title" type="text" class="cvo-form-input" id="exportTitle" placeholder="Episode title...">
               </div>
               <div class="cvo-form-group">
                 <label class="cvo-form-label">Artist</label>
-                <input type="text" class="cvo-form-input" id="exportArtist" placeholder="Your name...">
+                <input aria-label="Your name" type="text" class="cvo-form-input" id="exportArtist" placeholder="Your name...">
               </div>
             </div>
-            <button class="cvo-export-btn" id="exportBtn">Export &amp; Download</button>
+            <button type="button" class="cvo-export-btn" id="exportBtn">Export &amp; Download</button>
           </div>
         </div>
 
@@ -1595,7 +1598,7 @@
           html += '<div class="cvo-project-item-icon">&#127897;</div>';
           html += '<div class="cvo-project-item-info"><div class="cvo-project-item-name">' + p.name + '</div>';
           html += '<div class="cvo-project-item-meta">' + dur + ' &bull; ' + new Date(p.createdAt).toLocaleDateString() + '</div></div>';
-          html += '<button class="cvo-project-item-del" data-del="' + p.id + '">&times;</button>';
+          html += '<button type="button" class="cvo-project-item-del" data-del="' + p.id + '">&times;</button>';
           html += '</div>';
         });
         list.innerHTML = html;

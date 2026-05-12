@@ -24,13 +24,13 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/afro-auth.js?v=3978e101" defer></script>
 <script src="/assets/js/edu-cloud-sync.js?v=b14c95ce" defer></script>
 <style>
@@ -258,9 +258,9 @@
 
 <!-- Tabs -->
 <div class="sp-tabs">
-  <button class="sp-tab active" data-tab="setup" onclick="switchTab('setup')">Setup</button>
-  <button class="sp-tab" data-tab="timetable" onclick="switchTab('timetable')">Timetable</button>
-  <button class="sp-tab" data-tab="tips" onclick="switchTab('tips')">Study Tips</button>
+  <button type="button" class="sp-tab active" data-tab="setup" onclick="switchTab('setup')">Setup</button>
+  <button type="button" class="sp-tab" data-tab="timetable" onclick="switchTab('timetable')">Timetable</button>
+  <button type="button" class="sp-tab" data-tab="tips" onclick="switchTab('tips')">Study Tips</button>
 </div>
 
 <!-- Setup Panel -->
@@ -268,23 +268,23 @@
 
 <!-- Presets -->
 <div class="sp-presets">
-  <button class="sp-preset selected" data-key="waec" onclick="loadPreset('waec',this)">
+  <button type="button" class="sp-preset selected" data-key="waec" onclick="loadPreset('waec',this)">
     <div class="sp-preset-name">WAEC / SSCE</div>
     <div class="sp-preset-desc">7 core subjects</div>
   </button>
-  <button class="sp-preset" data-key="jamb" onclick="loadPreset('jamb',this)">
+  <button type="button" class="sp-preset" data-key="jamb" onclick="loadPreset('jamb',this)">
     <div class="sp-preset-name">JAMB UTME</div>
     <div class="sp-preset-desc">4 subjects</div>
   </button>
-  <button class="sp-preset" data-key="kcse" onclick="loadPreset('kcse',this)">
+  <button type="button" class="sp-preset" data-key="kcse" onclick="loadPreset('kcse',this)">
     <div class="sp-preset-name">Kenya KCSE</div>
     <div class="sp-preset-desc">7 subjects</div>
   </button>
-  <button class="sp-preset" data-key="uni" onclick="loadPreset('uni',this)">
+  <button type="button" class="sp-preset" data-key="uni" onclick="loadPreset('uni',this)">
     <div class="sp-preset-name">University</div>
     <div class="sp-preset-desc">5 courses</div>
   </button>
-  <button class="sp-preset" data-key="custom" onclick="loadPreset('custom',this)">
+  <button type="button" class="sp-preset" data-key="custom" onclick="loadPreset('custom',this)">
     <div class="sp-preset-name">Custom</div>
     <div class="sp-preset-desc">Start blank</div>
   </button>
@@ -298,7 +298,7 @@
   </div>
   <div class="sp-card-body">
     <div class="sp-subjects" id="subjectList"></div>
-    <button class="sp-add-btn" onclick="addSubject('','medium','')">+ Add subject</button>
+    <button type="button" class="sp-add-btn" onclick="addSubject('','medium','')">+ Add subject</button>
   </div>
 </div>
 
@@ -311,7 +311,7 @@
     <div class="sp-prefs">
       <div class="sp-field">
         <label>Hours per day</label>
-        <input type="number" id="hoursPerDay" value="4" min="1" max="12" step="0.5">
+        <input aria-label="HoursPerDay" type="number" id="hoursPerDay" value="4" min="1" max="12" step="0.5">
       </div>
       <div class="sp-field">
         <label>Days per week</label>
@@ -332,13 +332,13 @@
       </div>
       <div class="sp-field">
         <label>Start time</label>
-        <input type="time" id="startTime" value="08:00">
+        <input aria-label="StartTime" type="time" id="startTime" value="08:00">
       </div>
     </div>
   </div>
 </div>
 
-<button class="sp-generate" onclick="generate()">Generate Timetable &rarr;</button>
+<button type="button" class="sp-generate" onclick="generate()">Generate Timetable &rarr;</button>
 </div>
 
 <!-- Timetable Panel -->
@@ -348,10 +348,10 @@
     <div class="sp-breakdown" id="breakdown"></div>
     <div class="sp-table-wrap"><table class="sp-table" id="timetable"></table></div>
     <div class="sp-actions">
-      <button class="sp-action-btn primary" onclick="printTable()">&#128424; Print / PDF</button>
-      <button class="sp-action-btn" onclick="switchTab('setup')">&#9998; Edit subjects</button>
-      <button class="sp-action-btn" onclick="regenerate()">&#8635; Shuffle</button>
-      <button class="sp-action-btn" onclick="showPomodoro()">&#127813; Start Pomodoro</button>
+      <button type="button" class="sp-action-btn primary" onclick="printTable()">&#128424; Print / PDF</button>
+      <button type="button" class="sp-action-btn" onclick="switchTab('setup')">&#9998; Edit subjects</button>
+      <button type="button" class="sp-action-btn" onclick="regenerate()">&#8635; Shuffle</button>
+      <button type="button" class="sp-action-btn" onclick="showPomodoro()">&#127813; Start Pomodoro</button>
     </div>
     <!-- Pomodoro Timer -->
     <div class="sp-pomodoro" id="pomodoroTimer" style="display:none">
@@ -364,9 +364,9 @@
         <div class="sp-pomo-status" id="pomoStatus">Ready to focus</div>
         <div class="sp-pomo-progress"><div class="sp-pomo-bar" id="pomoBar" style="width:100%"></div></div>
         <div class="sp-pomo-controls">
-          <button class="sp-pomo-btn primary" id="pomoStartBtn" onclick="pomoStartPause()">&#9654; Start</button>
-          <button class="sp-pomo-btn" id="pomoResetBtn" onclick="pomoReset()">&#8635; Reset</button>
-          <button class="sp-pomo-btn" id="pomoSkipBtn" onclick="pomoSkip()">&#9197; Skip</button>
+          <button type="button" class="sp-pomo-btn primary" id="pomoStartBtn" onclick="pomoStartPause()">&#9654; Start</button>
+          <button type="button" class="sp-pomo-btn" id="pomoResetBtn" onclick="pomoReset()">&#8635; Reset</button>
+          <button type="button" class="sp-pomo-btn" id="pomoSkipBtn" onclick="pomoSkip()">&#9197; Skip</button>
         </div>
         <div class="sp-pomo-rounds" id="pomoRounds">
           <span class="sp-pomo-dot active"></span>
@@ -381,7 +381,7 @@
     <div style="font-size:2.5rem;margin-bottom:12px">&#128197;</div>
     <p style="font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:6px">No timetable yet</p>
     <p style="font-size:.82rem;color:var(--muted);margin-bottom:20px">Add your subjects and hit generate</p>
-    <button class="sp-action-btn primary" onclick="switchTab('setup')">Go to Setup</button>
+    <button type="button" class="sp-action-btn primary" onclick="switchTab('setup')">Go to Setup</button>
   </div>
 </div>
 
@@ -467,13 +467,13 @@ function addSubject(name, difficulty, examDate) {
   div.className = 'sp-subject';
   div.id = 'sub-' + id;
   div.innerHTML =
-    '<input type="text" value="' + name + '" placeholder="Subject name">' +
+    '<input aria-label="Subject name" type="text" value="' + name + '" placeholder="Subject name">' +
     '<div class="sp-diff-toggle">' +
       '<button type="button" class="sp-diff-btn' + (difficulty === 'easy' ? ' active' : '') + '" data-d="easy" onclick="setDiff(this)">Easy</button>' +
       '<button type="button" class="sp-diff-btn' + (difficulty === 'medium' ? ' active' : '') + '" data-d="medium" onclick="setDiff(this)">Med</button>' +
       '<button type="button" class="sp-diff-btn' + (difficulty === 'hard' ? ' active' : '') + '" data-d="hard" onclick="setDiff(this)">Hard</button>' +
     '</div>' +
-    '<input type="date" class="sp-exam-date" value="' + examDate + '">' +
+    '<input aria-label="Sp exam date" type="date" class="sp-exam-date" value="' + examDate + '">' +
     '<button type="button" class="sp-remove" onclick="removeSub(this)" title="Remove">&times;</button>';
   subjectList.appendChild(div);
   updateCount();

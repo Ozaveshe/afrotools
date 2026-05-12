@@ -19,7 +19,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"AfroWork Suite","item":"https://afrotools.com/afrowork/"},{"@type":"ListItem","position":3,"name":"Payroll API","item":"https://afrotools.com/afrowork/api/"}]}</script>
 <style>
 /* ── Design tokens ── */
@@ -203,8 +203,8 @@ pre,code{font-family:'Fira Code','Cascadia Code',Consolas,monospace}
   .papi-stats-inner{flex-wrap:wrap;gap:12px;padding:12px 24px}
 }
 </style>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
 <body>
@@ -219,7 +219,7 @@ pre,code{font-family:'Fira Code','Cascadia Code',Consolas,monospace}
       <h1 class="papi-h1">African payroll compliance<br><em>as an API.</em></h1>
       <p class="papi-sub">PAYE, pension, social security, minimum wage — for all 54 African countries. Integrate in minutes. 100 free calls/month, no credit card.</p>
       <div class="papi-hero-actions">
-        <button class="papi-btn-primary" onclick="document.getElementById('get-key').scrollIntoView({behavior:'smooth'})">Get API Key Free →</button>
+        <button type="button" class="papi-btn-primary" onclick="document.getElementById('get-key').scrollIntoView({behavior:'smooth'})">Get API Key Free →</button>
         <a href="#endpoints" class="papi-btn-ghost">View Endpoints</a>
       </div>
     </div>
@@ -842,15 +842,15 @@ X-RateLimit-Remaining: 97</div>
       <div class="papi-get-key">
         <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:6px">Email address</label>
         <div class="papi-form-row">
-          <input type="email" id="papi-email" class="papi-input" placeholder="you@company.com">
-          <button class="papi-btn-primary" onclick="requestApiKey()">Generate Key</button>
+          <input aria-label="You@company.com" type="email" id="papi-email" class="papi-input" placeholder="you@company.com">
+          <button type="button" class="papi-btn-primary" onclick="requestApiKey()">Generate Key</button>
         </div>
         <p id="papi-key-msg" style="font-size:.8rem;color:var(--m);margin:8px 0 0" aria-live="polite"></p>
         <div class="papi-key-result" id="papi-key-result">
           <div style="font-size:.72rem;color:#94a3b8;margin-bottom:4px">YOUR API KEY — copy it now, it won't be shown again</div>
           <div class="papi-key-display" id="papi-key-display"></div>
           <div class="papi-key-warning">⚠ Store this securely. Treat it like a password — never commit to git or expose client-side.</div>
-          <button onclick="copyKey()" style="margin-top:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#f1f5f9;padding:7px 14px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer" id="papi-copy-btn">Copy key</button>
+          <button type="button" onclick="copyKey()" style="margin-top:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#f1f5f9;padding:7px 14px;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer" id="papi-copy-btn">Copy key</button>
         </div>
       </div>
     </section>
@@ -863,8 +863,8 @@ X-RateLimit-Remaining: 97</div>
       <p class="papi-p">Enter your API key to check your current month's usage.</p>
       <div class="papi-dash">
         <div class="papi-lookup-form">
-          <input type="text" id="papi-dash-key" class="papi-input" placeholder="afro_...">
-          <button class="papi-btn-primary" onclick="checkUsage()">Check Usage</button>
+          <input aria-label="Afro" type="text" id="papi-dash-key" class="papi-input" placeholder="afro_...">
+          <button type="button" class="papi-btn-primary" onclick="checkUsage()">Check Usage</button>
         </div>
         <div id="papi-dash-result" style="margin-top:20px;display:none">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">

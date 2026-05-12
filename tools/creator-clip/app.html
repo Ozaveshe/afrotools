@@ -9,12 +9,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=b26d717c">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-clip/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-clip/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="ccl-app">
 
@@ -24,9 +27,9 @@
       <span>&#127916;</span> CreatorClip
     </a>
     <div class="ccl-header-actions">
-      <button class="ccl-btn-icon" id="saveProjectBtn" title="Save Project">&#128190;</button>
-      <button class="ccl-btn-icon" id="loadProjectBtn" title="Load Project">&#128194;</button>
-      <button class="ccl-btn-primary" id="newVideoBtn">+ New Video</button>
+      <button type="button" class="ccl-btn-icon" id="saveProjectBtn" title="Save Project">&#128190;</button>
+      <button type="button" class="ccl-btn-icon" id="loadProjectBtn" title="Load Project">&#128194;</button>
+      <button type="button" class="ccl-btn-primary" id="newVideoBtn">+ New Video</button>
     </div>
   </header>
 
@@ -40,7 +43,7 @@
       <div class="ccl-dropzone-desc">or click to browse files</div>
       <button class="ccl-dropzone-btn" type="button">Choose Video</button>
       <div class="ccl-dropzone-formats">MP4, WebM, MOV &mdash; up to 500MB</div>
-      <input type="file" id="fileInput" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov">
+      <input aria-label="FileInput" type="file" id="fileInput" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov">
     </div>
 
     <!-- EDITOR (hidden until upload) -->
@@ -54,12 +57,12 @@
 
       <!-- TRANSPORT -->
       <div class="ccl-transport">
-        <button class="ccl-transport-btn" id="skipBackBtn" title="Back 5s">&#9198;</button>
-        <button class="ccl-transport-btn play" id="playBtn" title="Play/Pause (K)">&#9654;&#65039;</button>
-        <button class="ccl-transport-btn" id="skipFwdBtn" title="Forward 5s">&#9197;</button>
+        <button type="button" class="ccl-transport-btn" id="skipBackBtn" title="Back 5s">&#9198;</button>
+        <button type="button" class="ccl-transport-btn play" id="playBtn" title="Play/Pause (K)">&#9654;&#65039;</button>
+        <button type="button" class="ccl-transport-btn" id="skipFwdBtn" title="Forward 5s">&#9197;</button>
         <span class="ccl-transport-time" id="timeDisplay">0:00 / 0:00</span>
-        <input type="range" class="ccl-transport-vol" id="volumeSlider" min="0" max="1" step="0.05" value="1" title="Volume">
-        <button class="ccl-transport-btn" id="fullscreenBtn" title="Fullscreen">&#9974;</button>
+        <input aria-label="VolumeSlider" type="range" class="ccl-transport-vol" id="volumeSlider" min="0" max="1" step="0.05" value="1" title="Volume">
+        <button type="button" class="ccl-transport-btn" id="fullscreenBtn" title="Fullscreen">&#9974;</button>
       </div>
 
       <!-- TIMELINE -->
@@ -84,24 +87,24 @@
 
       <!-- TABS -->
       <div class="ccl-tabs">
-        <button class="ccl-tab active" data-tab="captions">Captions</button>
-        <button class="ccl-tab" data-tab="styles">Styles</button>
-        <button class="ccl-tab" data-tab="resize">Resize</button>
-        <button class="ccl-tab" data-tab="overlays">Text</button>
-        <button class="ccl-tab" data-tab="export">Export</button>
-        <button class="ccl-tab" data-tab="filters">Filters</button>
-        <button class="ccl-tab" data-tab="speed">Speed</button>
-        <button class="ccl-tab" data-tab="audio">Audio</button>
+        <button type="button" class="ccl-tab active" data-tab="captions">Captions</button>
+        <button type="button" class="ccl-tab" data-tab="styles">Styles</button>
+        <button type="button" class="ccl-tab" data-tab="resize">Resize</button>
+        <button type="button" class="ccl-tab" data-tab="overlays">Text</button>
+        <button type="button" class="ccl-tab" data-tab="export">Export</button>
+        <button type="button" class="ccl-tab" data-tab="filters">Filters</button>
+        <button type="button" class="ccl-tab" data-tab="speed">Speed</button>
+        <button type="button" class="ccl-tab" data-tab="audio">Audio</button>
       </div>
 
       <!-- TAB: CAPTIONS -->
       <div class="ccl-tab-panel active" id="panel-captions">
         <div class="ccl-caption-actions-bar">
-          <button class="ccl-generate-captions-btn" id="genCaptionsBtn">
+          <button type="button" class="ccl-generate-captions-btn" id="genCaptionsBtn">
             <span class="ccl-spinner"></span>Auto-Generate Captions
           </button>
-          <button class="ccl-topbar-btn" id="addCaptionBtn">+ Add Caption</button>
-          <button class="ccl-topbar-btn" id="clearCaptionsBtn">Clear All</button>
+          <button type="button" class="ccl-topbar-btn" id="addCaptionBtn">+ Add Caption</button>
+          <button type="button" class="ccl-topbar-btn" id="clearCaptionsBtn">Clear All</button>
         </div>
         <div class="ccl-caption-list" id="captionList">
           <div class="ccl-empty" id="captionEmpty">
@@ -164,17 +167,17 @@
           </div>
           <div class="ccl-control-row">
             <span class="ccl-control-label">Size</span>
-            <input type="range" class="ccl-control-input" id="customSize" min="14" max="48" value="24" style="flex:1">
+            <input aria-label="CustomSize" type="range" class="ccl-control-input" id="customSize" min="14" max="48" value="24" style="flex:1">
             <span id="customSizeVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:30px">24px</span>
           </div>
           <div class="ccl-control-row">
             <span class="ccl-control-label">Color</span>
-            <input type="color" class="ccl-color-input" id="customColor" value="#ffffff">
+            <input aria-label="CustomColor" type="color" class="ccl-color-input" id="customColor" value="#ffffff">
           </div>
           <div class="ccl-control-row">
             <span class="ccl-control-label">BG Color</span>
-            <input type="color" class="ccl-color-input" id="customBg" value="#000000">
-            <label style="font-size:12px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px"><input type="checkbox" id="customBgOn"> Enable BG</label>
+            <input aria-label="CustomBg" type="color" class="ccl-color-input" id="customBg" value="#000000">
+            <label style="font-size:12px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px"><input aria-label="CustomBgOn" type="checkbox" id="customBgOn"> Enable BG</label>
           </div>
           <div class="ccl-control-row">
             <span class="ccl-control-label">Position</span>
@@ -232,7 +235,7 @@
             <div class="ccl-empty-text">No text overlays yet. Add text that appears at specific points in your video.</div>
           </div>
         </div>
-        <button class="ccl-add-overlay-btn" id="addOverlayBtn">+ Add Text Overlay</button>
+        <button type="button" class="ccl-add-overlay-btn" id="addOverlayBtn">+ Add Text Overlay</button>
       </div>
 
       <!-- TAB: EXPORT -->
@@ -253,7 +256,7 @@
               <span class="ccl-pill active">WebM</span>
             </div>
           </div>
-          <button class="ccl-export-btn" id="exportBtn">Export Video</button>
+          <button type="button" class="ccl-export-btn" id="exportBtn">Export Video</button>
           <div class="ccl-progress-wrap" id="exportProgress">
             <div class="ccl-progress-bar"><div class="ccl-progress-fill" id="progressFill"></div></div>
             <div class="ccl-progress-text" id="progressText">Preparing...</div>
@@ -302,17 +305,17 @@
           <div class="ccl-section-title">Adjustments</div>
           <div class="ccl-control-row" style="margin-bottom:8px">
             <span class="ccl-control-label">Brightness</span>
-            <input type="range" class="ccl-control-input" id="brightnessSlider" min="50" max="200" value="100" style="flex:1">
+            <input aria-label="BrightnessSlider" type="range" class="ccl-control-input" id="brightnessSlider" min="50" max="200" value="100" style="flex:1">
             <span id="brightnessVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
           </div>
           <div class="ccl-control-row" style="margin-bottom:8px">
             <span class="ccl-control-label">Contrast</span>
-            <input type="range" class="ccl-control-input" id="contrastSlider" min="50" max="200" value="100" style="flex:1">
+            <input aria-label="ContrastSlider" type="range" class="ccl-control-input" id="contrastSlider" min="50" max="200" value="100" style="flex:1">
             <span id="contrastVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
           </div>
           <div class="ccl-control-row">
             <span class="ccl-control-label">Saturation</span>
-            <input type="range" class="ccl-control-input" id="saturationSlider" min="0" max="200" value="100" style="flex:1">
+            <input aria-label="SaturationSlider" type="range" class="ccl-control-input" id="saturationSlider" min="0" max="200" value="100" style="flex:1">
             <span id="saturationVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
           </div>
         </div>
@@ -338,7 +341,7 @@
         <div class="ccl-section-title">&#127925; Audio Controls</div>
         <div class="ccl-control-row" style="margin-bottom:12px">
           <span class="ccl-control-label">Volume</span>
-          <input type="range" class="ccl-control-input" id="audioVolume" min="0" max="200" value="100" style="flex:1">
+          <input aria-label="AudioVolume" type="range" class="ccl-control-input" id="audioVolume" min="0" max="200" value="100" style="flex:1">
           <span id="audioVolumeVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
         </div>
         <div class="ccl-pills" style="margin-bottom:16px">

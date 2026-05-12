@@ -83,7 +83,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq details[open] summary::after{content:'-'}
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -126,14 +126,14 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-group">
 <label>CGPA ya awali (hiari)</label>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
-<input type="number" id="prevGpa" placeholder="CGPA" step="0.01" min="0" max="5">
-<input type="number" id="prevCredits" placeholder="Total credits" step="1" min="0">
+<input aria-label="CGPA" type="number" id="prevGpa" placeholder="CGPA" step="0.01" min="0" max="5">
+<input aria-label="Total credits" type="number" id="prevCredits" placeholder="Total credits" step="1" min="0">
 </div>
 </div>
 <div class="form-group" style="grid-column:1/-1">
 <label>Mgawanyo wa CA / Mtihani <span style="font-weight:400;color:#94a3b8;font-size:.78rem">(Mfano wa Nigeria: 40% CA + 60% mtihani)</span></label>
 <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
-<label style="font-weight:400;font-size:.9rem"><input type="checkbox" id="caSplitMode" onchange="toggleCASplit()" style="width:auto;margin-right:.3rem"> Washa entry ya CA/Exam split</label>
+<label style="font-weight:400;font-size:.9rem"><input aria-label="CaSplitMode" type="checkbox" id="caSplitMode" onchange="toggleCASplit()" style="width:auto;margin-right:.3rem"> Washa entry ya CA/Exam split</label>
 </div>
 </div>
 </div>
@@ -142,13 +142,13 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="card">
 <div class="semester-header">
 <h2>Courses za semester hii</h2>
-<button class="btn btn-outline" onclick="addCourse()" style="font-size:.85rem;padding:.4rem .75rem">+ Ongeza course</button>
+<button type="button" class="btn btn-outline" onclick="addCourse()" style="font-size:.85rem;padding:.4rem .75rem">+ Ongeza course</button>
 </div>
 <div id="coursesContainer"></div>
 </div>
 
 <div class="card" style="text-align:center">
-<button class="btn btn-primary" onclick="calculate()" style="font-size:1.05rem;padding:.75rem 2.5rem">Hesabu GPA</button>
+<button type="button" class="btn btn-primary" onclick="calculate()" style="font-size:1.05rem;padding:.75rem 2.5rem">Hesabu GPA</button>
 </div>
 
 <div id="results" style="display:none">
@@ -169,8 +169,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <h2>Ninahitaji GPA gani?</h2>
 <p style="font-size:.82rem;color:#64748b;margin-bottom:12px">Jua GPA unayohitaji semester ijayo kufikia target CGPA.</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-<div><label style="font-size:.72rem;font-weight:700;color:#334155;display:block;margin-bottom:4px">Target CGPA</label><input type="number" class="f-input" id="targetGpa" value="3.5" step="0.1" min="0" max="5" onchange="calculate()"></div>
-<div><label style="font-size:.72rem;font-weight:700;color:#334155;display:block;margin-bottom:4px">Credits zijazo</label><input type="number" class="f-input" id="futureCredits" value="18" min="1" onchange="calculate()"></div>
+<div><label style="font-size:.72rem;font-weight:700;color:#334155;display:block;margin-bottom:4px">Target CGPA</label><input aria-label="TargetGpa" type="number" class="f-input" id="targetGpa" value="3.5" step="0.1" min="0" max="5" onchange="calculate()"></div>
+<div><label style="font-size:.72rem;font-weight:700;color:#334155;display:block;margin-bottom:4px">Credits zijazo</label><input aria-label="FutureCredits" type="number" class="f-input" id="futureCredits" value="18" min="1" onchange="calculate()"></div>
 </div>
 <div id="whatIfResult" style="font-size:.85rem;color:#475569;line-height:1.7;padding:12px;background:#f8fafc;border-radius:8px"></div>
 </div>
@@ -200,10 +200,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <afro-related-tools></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <section class="sw-data-productivity-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kifuatiliaji Alama kwa Kiswahili.</strong> Hesabu GPA na CGPA kwa planning ya masomo. Hakiki formula na ofisi ya chuo kabla ya kutumia kwa maamuzi rasmi. <span>Matokeo ya zana za muda, likizo, bajeti, alama au gharama ni makadirio. Hakiki official dates, policies, receipts, grades au records kabla ya uamuzi muhimu.</span><div class="sw-data-inline-links" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;"><a href="/sw/data-na-tija/">Data na Tija</a><a href="/sw/zana/pomodoro/">Pomodoro</a><a href="/sw/zana/kubadilisha-vipimo/">Vipimo</a><a href="/sw/zana/mpango-bajeti/">Bajeti</a><a href="/sw/zana/hesabu-siku-za-tukio/">Countdown</a><a href="/sw/zana/kalenda-likizo-za-umma/">Likizo</a><a href="/sw/zana/siku-za-kazi/">Siku za kazi</a><a href="/sw/zana/kifuatiliaji-alama/">Alama/GPA</a><a href="/sw/zana/kigawanya-bili-na-tip/">Bili na tip</a></div></div></section><style>.sw-data-inline-links a{background:#fff;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:999px;padding:7px 10px;font-weight:800;font-size:.82rem;text-decoration:none}</style>
-<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.js?v=af1ede16" defer></script>
-<script src="/assets/js/components/footer.js?v=7cf41589" defer></script>
+<script src="/assets/js/components/navbar.js?v=3af89576" defer></script>
+<script src="/assets/js/components/footer.js?v=625b18a7" defer></script>
 <script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script>
 <script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
 <script>
@@ -249,20 +249,20 @@ function addCourse(data){
   div.id=`course-${id}`;
   if(caMode){
     div.innerHTML=`
-      <div><label>Course Name</label><input type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
+      <div><label>Course Name</label><input aria-label="E.g. MTH 101" type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
       <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
       <div class="ca-split-fields" style="display:contents">
-        <div><label>CA Score (40%)</label><input type="number" class="ca-score" min="0" max="40" step="0.5" placeholder="0-40"></div>
-        <div><label>Exam Score (60%)</label><input type="number" class="exam-score" min="0" max="60" step="0.5" placeholder="0-60"></div>
+        <div><label>CA Score (40%)</label><input aria-label="Ca score" type="number" class="ca-score" min="0" max="40" step="0.5" placeholder="0-40"></div>
+        <div><label>Exam Score (60%)</label><input aria-label="Exam score" type="number" class="exam-score" min="0" max="60" step="0.5" placeholder="0-60"></div>
       </div>
-      <div><label>&nbsp;</label><button class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
+      <div><label>&nbsp;</label><button type="button" class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
     `;
   } else {
     div.innerHTML=`
-      <div><label>Course Name</label><input type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
+      <div><label>Course Name</label><input aria-label="E.g. MTH 101" type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
       <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
       <div><label>Grade</label><select class="grade-select">${sys.grades.map(g=>`<option value="${g.gp}"${g.gp==d.grade?' selected':''}>${g.label}</option>`).join('')}</select></div>
-      <div><label>&nbsp;</label><button class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
+      <div><label>&nbsp;</label><button type="button" class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
     `;
   }
   document.getElementById('coursesContainer').appendChild(div);

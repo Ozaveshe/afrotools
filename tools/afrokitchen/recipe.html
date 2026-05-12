@@ -16,7 +16,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="style.css?v=32f6a027">
 <link rel="stylesheet" href="responsive-fixes.css?v=5b092a80">
 <script type="application/ld+json" id="recipe-schema"></script>
@@ -65,12 +65,12 @@
     <div class="ak-container">
       <!-- ACTION BAR -->
       <div class="ak-action-bar">
-        <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.print()">Print recipe</button>
-        <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.share()">Share recipe</button>
-        <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.copyLink()">Copy link</button>
-        <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.copyShoppingList()">Copy shopping list</button>
-        <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.shareIngredients()">Share ingredients</button>
-        <button class="ak-btn ak-btn-sm ak-btn-primary" onclick="AKPage.startCookingMode()">Start cooking mode</button>
+        <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.print()">Print recipe</button>
+        <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.share()">Share recipe</button>
+        <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.copyLink()">Copy link</button>
+        <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.copyShoppingList()">Copy shopping list</button>
+        <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.shareIngredients()">Share ingredients</button>
+        <button type="button" class="ak-btn ak-btn-sm ak-btn-primary" onclick="AKPage.startCookingMode()">Start cooking mode</button>
       </div>
       <div class="ak-utility-feedback" id="utility-feedback" aria-live="polite"></div>
 
@@ -88,9 +88,9 @@
       <!-- SERVING ADJUSTER -->
       <div class="ak-servings">
         <span class="ak-servings-label">Servings:</span>
-        <button class="ak-servings-btn" onclick="AKPage.adjustServings(-1)">-</button>
+        <button type="button" class="ak-servings-btn" onclick="AKPage.adjustServings(-1)">-</button>
         <span class="ak-servings-val" id="servings-val"></span>
-        <button class="ak-servings-btn" onclick="AKPage.adjustServings(1)">+</button>
+        <button type="button" class="ak-servings-btn" onclick="AKPage.adjustServings(1)">+</button>
       </div>
 
       <!-- TWO-COLUMN LAYOUT -->
@@ -144,8 +144,8 @@
           </div>
           <div class="ak-advisor-suggestions" id="advisor-suggestions"></div>
           <div class="ak-advisor-input-wrap">
-            <input class="ak-advisor-input" id="advisor-input" placeholder="Ask about substitutions, technique, scaling...">
-            <button class="ak-advisor-send" onclick="AKPage.askAdvisor()">Ask</button>
+            <input aria-label="Ask about substitutions, technique, scaling" class="ak-advisor-input" id="advisor-input" placeholder="Ask about substitutions, technique, scaling...">
+            <button type="button" class="ak-advisor-send" onclick="AKPage.askAdvisor()">Ask</button>
           </div>
           <div class="ak-advisor-messages" id="advisor-messages"></div>
         </div>
@@ -181,11 +181,11 @@
             <p class="ak-form-helper">Tell the next cook how it turned out and what you changed.</p>
             <div class="ak-review-stars" id="review-stars"></div>
             <textarea class="ak-review-textarea" id="review-comment" placeholder="How did it taste? What should the next person know?"></textarea>
-            <input class="ak-form-input" id="review-modifications" placeholder="What did you change? e.g. used smoked paprika, reduced chili">
+            <input aria-label="What did you change? e.g. used smoked paprika, reduced chili" class="ak-form-input" id="review-modifications" placeholder="What did you change? e.g. used smoked paprika, reduced chili">
             <div class="ak-review-form-row">
-              <input class="ak-form-input" id="review-name" placeholder="Your name">
+              <input aria-label="Your name" class="ak-form-input" id="review-name" placeholder="Your name">
               <select class="ak-form-select" id="review-country"></select>
-              <button class="ak-btn ak-btn-sm ak-btn-primary" id="review-submit-btn" onclick="AKPage.submitReview()">Submit review</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-primary" id="review-submit-btn" onclick="AKPage.submitReview()">Submit review</button>
             </div>
             <div class="ak-form-feedback" id="review-feedback" aria-live="polite"></div>
           </div>
@@ -194,13 +194,13 @@
             <h3 class="ak-panel-title">Share your cook</h3>
             <p class="ak-form-helper">Upload the plated version you made. We compress it before upload so it stays fast.</p>
             <textarea class="ak-review-textarea" id="cook-note" placeholder="Caption your cook. What worked well, what did you pair it with, or what would you do next time?"></textarea>
-            <input class="ak-file-input" type="file" accept="image/*" id="cook-photo">
+            <input aria-label="Cook photo" class="ak-file-input" type="file" accept="image/*" id="cook-photo">
             <div class="ak-file-hint">Best results: a bright, natural photo of the finished dish.</div>
             <div class="ak-cooksnap-preview" id="cook-photo-preview" style="display:none"></div>
             <div class="ak-review-form-row">
-              <input class="ak-form-input" id="cook-name" placeholder="Your name">
+              <input aria-label="Your name" class="ak-form-input" id="cook-name" placeholder="Your name">
               <select class="ak-form-select" id="cook-country"></select>
-              <button class="ak-btn ak-btn-sm ak-btn-primary" id="cook-submit-btn" onclick="AKPage.submitCooksnap()">Share my cook</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-primary" id="cook-submit-btn" onclick="AKPage.submitCooksnap()">Share my cook</button>
             </div>
             <div class="ak-form-feedback" id="cook-feedback" aria-live="polite"></div>
           </div>
@@ -228,19 +228,19 @@
 <div class="ak-cooking-mode" id="cooking-mode">
   <div class="ak-cooking-header">
     <span id="cooking-recipe-name"></span>
-    <button class="ak-cooking-close" onclick="AKPage.exitCookingMode()">Exit</button>
+    <button type="button" class="ak-cooking-close" onclick="AKPage.exitCookingMode()">Exit</button>
   </div>
   <div class="ak-cooking-body" id="cooking-body"></div>
   <div class="ak-cooking-nav">
-    <button onclick="AKPage.cookingPrev()">Previous</button>
-    <button class="primary" onclick="AKPage.cookingNext()">Next step</button>
+    <button type="button" onclick="AKPage.cookingPrev()">Previous</button>
+    <button type="button" class="primary" onclick="AKPage.cookingNext()">Next step</button>
   </div>
 </div>
 
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=3978e101"></script>
 <script src="/engines/afrokitchen-engine.js?v=b9ee3f19"></script>

@@ -43,7 +43,7 @@ for(const cc in B){
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/multi-country.css?v=1">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2"><link rel="stylesheet" href="/assets/css/legal.css?v=af6e9e60">
-<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer><\/script><script src="/assets/js/components/footer.min.js?v=0f040e13" defer><\/script>
+<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer><\/script><script src="/assets/js/components/footer.min.js?v=0f040e13" defer><\/script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 </head>
 <body>

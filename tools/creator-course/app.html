@@ -9,13 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=7a792a8a">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-course/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-course/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cco-app">
 
@@ -24,8 +27,8 @@
     <a href="index.html" class="cco-topbar-back">&larr;</a>
     <a href="index.html" class="cco-topbar-brand">&#127891; CreatorCourse</a>
     <div class="cco-topbar-actions">
-      <button class="cco-topbar-btn" id="exportBtn">Export</button>
-      <button class="cco-topbar-btn primary" id="saveBtn">Save</button>
+      <button type="button" class="cco-topbar-btn" id="exportBtn">Export</button>
+      <button type="button" class="cco-topbar-btn primary" id="saveBtn">Save</button>
     </div>
   </div>
 
@@ -54,14 +57,14 @@
             <h1 class="cco-section-title">My Courses</h1>
             <p class="cco-section-desc">All your courses in one place.</p>
           </div>
-          <button class="cco-btn" id="newCourseBtn">+ New Course</button>
+          <button type="button" class="cco-btn" id="newCourseBtn">+ New Course</button>
         </div>
         <div class="cco-cards" id="coursesList"></div>
         <div class="cco-empty" id="coursesEmpty">
           <div class="cco-empty-icon">&#127891;</div>
           <div class="cco-empty-title">No courses yet</div>
           <div class="cco-empty-desc">Create your first course and start teaching what you know.</div>
-          <button class="cco-btn" onclick="document.getElementById('newCourseBtn').click()">+ Create Course</button>
+          <button type="button" class="cco-btn" onclick="document.getElementById('newCourseBtn').click()">+ Create Course</button>
         </div>
       </section>
 
@@ -72,7 +75,7 @@
             <h1 class="cco-section-title">Course Builder</h1>
             <p class="cco-section-desc">Edit course details, modules, and lessons.</p>
           </div>
-          <button class="cco-btn secondary" id="backToCoursesBtn">&larr; All Courses</button>
+          <button type="button" class="cco-btn secondary" id="backToCoursesBtn">&larr; All Courses</button>
         </div>
 
         <!-- Course Details -->
@@ -80,7 +83,7 @@
           <div class="cco-lesson-editor-title">&#128203; Course Details</div>
           <div class="cco-form-group">
             <label class="cco-form-label">Course Title</label>
-            <input class="cco-form-input" id="courseTitle" placeholder="e.g., Mobile Photography Masterclass">
+            <input aria-label="E.g., Mobile Photography Masterclass" class="cco-form-input" id="courseTitle" placeholder="e.g., Mobile Photography Masterclass">
           </div>
           <div class="cco-form-group">
             <label class="cco-form-label">Description</label>
@@ -88,7 +91,7 @@
           </div>
           <div class="cco-form-group">
             <label class="cco-form-label">Cover Image URL</label>
-            <input class="cco-form-input" id="courseCover" placeholder="https://example.com/cover.jpg">
+            <input aria-label="Https://example.com/cover.jpg" class="cco-form-input" id="courseCover" placeholder="https://example.com/cover.jpg">
           </div>
           <div class="cco-form-row">
             <div class="cco-form-group">
@@ -116,7 +119,7 @@
           <div class="cco-form-row">
             <div class="cco-form-group">
               <label class="cco-form-label">Price</label>
-              <input class="cco-form-input" id="coursePrice" type="number" min="0" step="100" placeholder="0 = Free">
+              <input aria-label="0 = Free" class="cco-form-input" id="coursePrice" type="number" min="0" step="100" placeholder="0 = Free">
             </div>
             <div class="cco-form-group">
               <label class="cco-form-label">Currency</label>
@@ -134,7 +137,7 @@
         <!-- Modules -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
           <h2 style="font-size:16px;font-weight:700;">Modules &amp; Lessons</h2>
-          <button class="cco-btn sm" id="addModuleBtn">+ Add Module</button>
+          <button type="button" class="cco-btn sm" id="addModuleBtn">+ Add Module</button>
         </div>
         <div class="cco-module-list" id="moduleList"></div>
         <div class="cco-empty" id="modulesEmpty" style="padding:30px;">
@@ -146,7 +149,7 @@
           <div class="cco-lesson-editor-title" id="lessonEditorTitle">Edit Lesson</div>
           <div class="cco-form-group">
             <label class="cco-form-label">Lesson Title</label>
-            <input class="cco-form-input" id="lessonTitle" placeholder="Lesson title">
+            <input aria-label="Lesson title" class="cco-form-input" id="lessonTitle" placeholder="Lesson title">
           </div>
           <div class="cco-form-row">
             <div class="cco-form-group">
@@ -161,7 +164,7 @@
             </div>
             <div class="cco-form-group">
               <label class="cco-form-label">Drip Day</label>
-              <input class="cco-form-input" id="lessonDrip" type="number" min="0" placeholder="0 = Available immediately">
+              <input aria-label="0 = Available immediately" class="cco-form-input" id="lessonDrip" type="number" min="0" placeholder="0 = Available immediately">
               <div class="cco-form-hint">Available from Day X after enrollment</div>
             </div>
           </div>
@@ -170,7 +173,7 @@
           <div id="lessonVideoFields" style="display:none;">
             <div class="cco-form-group">
               <label class="cco-form-label">Video URL (YouTube or Vimeo)</label>
-              <input class="cco-form-input" id="lessonVideoUrl" placeholder="https://youtube.com/watch?v=...">
+              <input aria-label="Https://youtube.com/watch?v=" class="cco-form-input" id="lessonVideoUrl" placeholder="https://youtube.com/watch?v=...">
             </div>
             <div id="videoPreview" style="margin-top:10px;"></div>
           </div>
@@ -178,13 +181,13 @@
           <div id="lessonTextFields" style="display:none;">
             <label class="cco-form-label">Content</label>
             <div class="cco-rte-toolbar">
-              <button class="cco-rte-btn" data-cmd="bold"><b>B</b></button>
-              <button class="cco-rte-btn" data-cmd="italic"><i>I</i></button>
-              <button class="cco-rte-btn" data-cmd="insertUnorderedList">&#8226; List</button>
-              <button class="cco-rte-btn" data-cmd="insertOrderedList">1. List</button>
-              <button class="cco-rte-btn" data-cmd="formatBlock" data-val="h2">H2</button>
-              <button class="cco-rte-btn" data-cmd="formatBlock" data-val="h3">H3</button>
-              <button class="cco-rte-btn" data-cmd="createLink">Link</button>
+              <button type="button" class="cco-rte-btn" data-cmd="bold"><b>B</b></button>
+              <button type="button" class="cco-rte-btn" data-cmd="italic"><i>I</i></button>
+              <button type="button" class="cco-rte-btn" data-cmd="insertUnorderedList">&#8226; List</button>
+              <button type="button" class="cco-rte-btn" data-cmd="insertOrderedList">1. List</button>
+              <button type="button" class="cco-rte-btn" data-cmd="formatBlock" data-val="h2">H2</button>
+              <button type="button" class="cco-rte-btn" data-cmd="formatBlock" data-val="h3">H3</button>
+              <button type="button" class="cco-rte-btn" data-cmd="createLink">Link</button>
             </div>
             <div class="cco-rte-editor" id="lessonTextEditor" contenteditable="true"></div>
           </div>
@@ -192,21 +195,21 @@
           <div id="lessonPdfFields" style="display:none;">
             <div class="cco-form-group">
               <label class="cco-form-label">PDF URL</label>
-              <input class="cco-form-input" id="lessonPdfUrl" placeholder="https://example.com/document.pdf">
+              <input aria-label="Https://example.com/document.pdf" class="cco-form-input" id="lessonPdfUrl" placeholder="https://example.com/document.pdf">
             </div>
           </div>
 
           <div id="lessonQuizFields" style="display:none;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
               <label class="cco-form-label" style="margin:0">Questions</label>
-              <button class="cco-btn sm" id="addQuestionBtn">+ Add Question</button>
+              <button type="button" class="cco-btn sm" id="addQuestionBtn">+ Add Question</button>
             </div>
             <div class="cco-quiz-questions" id="quizQuestions"></div>
             <div class="cco-quiz-pass-row">
               <label class="cco-form-label" style="margin:0;white-space:nowrap;">Pass Mark (%)</label>
-              <input class="cco-form-input" id="quizPassMark" type="number" min="0" max="100" value="70" style="width:80px;">
+              <input aria-label="QuizPassMark" class="cco-form-input" id="quizPassMark" type="number" min="0" max="100" value="70" style="width:80px;">
               <label class="cco-form-label" style="margin:0;white-space:nowrap;">Show Answers</label>
-              <button class="cco-topbar-btn" id="quizShowAnswers" style="min-width:50px;">Yes</button>
+              <button type="button" class="cco-topbar-btn" id="quizShowAnswers" style="min-width:50px;">Yes</button>
             </div>
           </div>
 
@@ -218,8 +221,8 @@
           </div>
 
           <div style="display:flex;gap:8px;margin-top:18px;">
-            <button class="cco-btn" id="saveLessonBtn">Save Lesson</button>
-            <button class="cco-btn secondary" id="cancelLessonBtn">Cancel</button>
+            <button type="button" class="cco-btn" id="saveLessonBtn">Save Lesson</button>
+            <button type="button" class="cco-btn secondary" id="cancelLessonBtn">Cancel</button>
           </div>
         </div>
 
@@ -230,7 +233,7 @@
           <div class="cco-discount-form" id="discountForm">
             <div class="cco-form-group" style="margin:0;">
               <label class="cco-form-label">Code</label>
-              <input class="cco-form-input" id="discountCode" placeholder="LAUNCH20">
+              <input aria-label="LAUNCH20" class="cco-form-input" id="discountCode" placeholder="LAUNCH20">
             </div>
             <div class="cco-form-group" style="margin:0;">
               <label class="cco-form-label">Type</label>
@@ -241,13 +244,13 @@
             </div>
             <div class="cco-form-group" style="margin:0;">
               <label class="cco-form-label">Value</label>
-              <input class="cco-form-input" id="discountValue" type="number" min="0" placeholder="20">
+              <input aria-label="DiscountValue" class="cco-form-input" id="discountValue" type="number" min="0" placeholder="20">
             </div>
             <div class="cco-form-group" style="margin:0;">
               <label class="cco-form-label">Expiry</label>
-              <input class="cco-form-input" id="discountExpiry" type="date">
+              <input aria-label="DiscountExpiry" class="cco-form-input" id="discountExpiry" type="date">
             </div>
-            <button class="cco-btn sm" id="addDiscountBtn" style="align-self:end;margin-bottom:0;">Add</button>
+            <button type="button" class="cco-btn sm" id="addDiscountBtn" style="align-self:end;margin-bottom:0;">Add</button>
           </div>
         </div>
       </section>
@@ -260,8 +263,8 @@
             <p class="cco-section-desc">Auto-generated from your course. Customize additional sections below.</p>
           </div>
           <div style="display:flex;gap:8px;">
-            <button class="cco-btn secondary" id="salesEditBtn">Edit Sections</button>
-            <button class="cco-btn" id="salesPreviewBtn">Preview</button>
+            <button type="button" class="cco-btn secondary" id="salesEditBtn">Edit Sections</button>
+            <button type="button" class="cco-btn" id="salesPreviewBtn">Preview</button>
           </div>
         </div>
 
@@ -271,7 +274,7 @@
             <h3>&#128100; Instructor Bio</h3>
             <div class="cco-form-group">
               <label class="cco-form-label">Your Name</label>
-              <input class="cco-form-input" id="spInstructorName" placeholder="Your full name">
+              <input aria-label="Your full name" class="cco-form-input" id="spInstructorName" placeholder="Your full name">
             </div>
             <div class="cco-form-group">
               <label class="cco-form-label">Bio</label>
@@ -291,10 +294,10 @@
             <div id="spTestimonialsList"></div>
             <div class="cco-sp-testimonial-form">
               <div>
-                <input class="cco-form-input" id="spTestQuote" placeholder="&quot;This course changed my content game...&quot;" style="margin-bottom:6px;">
-                <input class="cco-form-input" id="spTestAuthor" placeholder="Student Name, Location">
+                <input aria-label="&amp;quot;This course changed my content game &amp;quot;" class="cco-form-input" id="spTestQuote" placeholder="&quot;This course changed my content game...&quot;" style="margin-bottom:6px;">
+                <input aria-label="Student Name, Location" class="cco-form-input" id="spTestAuthor" placeholder="Student Name, Location">
               </div>
-              <button class="cco-btn sm" id="addTestimonialBtn">Add</button>
+              <button type="button" class="cco-btn sm" id="addTestimonialBtn">Add</button>
             </div>
           </div>
 
@@ -303,12 +306,12 @@
             <div id="spFaqList"></div>
             <div class="cco-sp-faq-form">
               <div class="cco-form-group" style="margin:0;">
-                <input class="cco-form-input" id="spFaqQ" placeholder="Question">
+                <input aria-label="Question" class="cco-form-input" id="spFaqQ" placeholder="Question">
               </div>
               <div class="cco-form-group" style="margin:0;">
-                <input class="cco-form-input" id="spFaqA" placeholder="Answer">
+                <input aria-label="Answer" class="cco-form-input" id="spFaqA" placeholder="Answer">
               </div>
-              <button class="cco-btn sm" id="addFaqBtn">Add</button>
+              <button type="button" class="cco-btn sm" id="addFaqBtn">Add</button>
             </div>
           </div>
         </div>
@@ -334,7 +337,7 @@
             <h1 class="cco-section-title">Students</h1>
             <p class="cco-section-desc">Everyone enrolled in your course.</p>
           </div>
-          <button class="cco-btn sm secondary" id="addDemoStudentsBtn">+ Add Demo Students</button>
+          <button type="button" class="cco-btn sm secondary" id="addDemoStudentsBtn">+ Add Demo Students</button>
         </div>
         <div class="cco-table-wrap">
           <table class="cco-table" id="studentsTable">
@@ -356,7 +359,7 @@
               <h3 id="studentDetailName" style="font-size:16px;"></h3>
               <p id="studentDetailEmail" style="font-size:13px;"></p>
             </div>
-            <button class="cco-btn sm secondary" style="margin-left:auto;" onclick="document.getElementById('studentDetail').style.display='none'">Close</button>
+            <button type="button" class="cco-btn sm secondary" style="margin-left:auto;" onclick="document.getElementById('studentDetail').style.display='none'">Close</button>
           </div>
           <div class="cco-student-lessons" id="studentDetailLessons"></div>
         </div>
@@ -403,13 +406,13 @@
     <div style="max-width:660px;margin:40px auto;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <h2 style="font-size:18px;font-weight:700;color:#fff;">Certificate Preview</h2>
-        <button class="cco-btn sm secondary" onclick="document.getElementById('certModal').style.display='none'">Close</button>
+        <button type="button" class="cco-btn sm secondary" onclick="document.getElementById('certModal').style.display='none'">Close</button>
       </div>
       <div style="margin-bottom:14px;display:flex;gap:8px;">
-        <button class="cco-btn sm" data-border="classic" onclick="setCertBorder('classic')">Classic</button>
-        <button class="cco-btn sm secondary" data-border="modern" onclick="setCertBorder('modern')">Modern</button>
-        <button class="cco-btn sm secondary" data-border="elegant" onclick="setCertBorder('elegant')">Elegant</button>
-        <button class="cco-btn sm" id="downloadCertBtn" style="margin-left:auto;">Download PDF</button>
+        <button type="button" class="cco-btn sm" data-border="classic" onclick="setCertBorder('classic')">Classic</button>
+        <button type="button" class="cco-btn sm secondary" data-border="modern" onclick="setCertBorder('modern')">Modern</button>
+        <button type="button" class="cco-btn sm secondary" data-border="elegant" onclick="setCertBorder('elegant')">Elegant</button>
+        <button type="button" class="cco-btn sm" id="downloadCertBtn" style="margin-left:auto;">Download PDF</button>
       </div>
       <div id="certPreviewArea"></div>
     </div>
@@ -622,8 +625,8 @@
       html += '<span class="cco-module-title">' + escHtml(mod.title || 'Module ' + (mi + 1)) + '</span>';
       html += '<span class="cco-module-count">' + mod.lessons.length + ' lessons</span>';
       html += '<div class="cco-module-actions">';
-      html += '<button title="Rename" data-action="rename" data-mi="' + mi + '">&#9998;</button>';
-      html += '<button title="Delete" data-action="delete-module" data-mi="' + mi + '">&#128465;</button>';
+      html += '<button type="button" title="Rename" data-action="rename" data-mi="' + mi + '">&#9998;</button>';
+      html += '<button type="button" title="Delete" data-action="delete-module" data-mi="' + mi + '">&#128465;</button>';
       html += '</div>';
       html += '</div>';
       html += '<div class="cco-module-body">';
@@ -636,11 +639,11 @@
         html += '<span class="cco-lesson-type-icon ' + les.type + '">' + (typeIcons[les.type] || '&#128196;') + '</span>';
         html += '<span class="cco-lesson-title">' + escHtml(les.title || 'Untitled') + '</span>';
         if (les.dripDay > 0) html += '<span class="cco-lesson-drip">Day ' + les.dripDay + '</span>';
-        html += '<button class="cco-lesson-del" data-mi="' + mi + '" data-li="' + li + '">&#10005;</button>';
+        html += '<button type="button" class="cco-lesson-del" data-mi="' + mi + '" data-li="' + li + '">&#10005;</button>';
         html += '</div>';
       });
       html += '</div>';
-      html += '<button class="cco-btn sm secondary" data-action="add-lesson" data-mi="' + mi + '">+ Add Lesson</button>';
+      html += '<button type="button" class="cco-btn sm secondary" data-action="add-lesson" data-mi="' + mi + '">+ Add Lesson</button>';
       html += '</div>';
       html += '</div>';
     });
@@ -858,15 +861,15 @@
       html += '<div class="cco-quiz-card">';
       html += '<div class="cco-quiz-card-header">';
       html += '<span class="cco-quiz-q-num">Q' + (qi + 1) + '</span>';
-      html += '<input class="cco-form-input cco-quiz-q-input" data-qi="' + qi + '" value="' + escAttr(q.question || '') + '" placeholder="Question text">';
-      html += '<button class="cco-quiz-del" data-qi="' + qi + '">&#10005;</button>';
+      html += '<input aria-label="Question text" class="cco-form-input cco-quiz-q-input" data-qi="' + qi + '" value="' + escAttr(q.question || '') + '" placeholder="Question text">';
+      html += '<button type="button" class="cco-quiz-del" data-qi="' + qi + '">&#10005;</button>';
       html += '</div>';
       html += '<div class="cco-quiz-options">';
       for (var oi = 0; oi < 4; oi++) {
         var isCorrect = q.correct === oi;
         html += '<div class="cco-quiz-option">';
-        html += '<button class="cco-quiz-option-radio' + (isCorrect ? ' correct' : '') + '" data-qi="' + qi + '" data-oi="' + oi + '"></button>';
-        html += '<input class="cco-form-input" data-qi="' + qi + '" data-oi="' + oi + '" value="' + escAttr((q.options && q.options[oi]) || '') + '" placeholder="Option ' + String.fromCharCode(65 + oi) + '">';
+        html += '<button type="button" class="cco-quiz-option-radio' + (isCorrect ? ' correct' : '') + '" data-qi="' + qi + '" data-oi="' + oi + '"></button>';
+        html += '<input aria-label="Option ' + String.fromCharCode(65 + oi) + '" class="cco-form-input" data-qi="' + qi + '" data-oi="' + oi + '" value="' + escAttr((q.options && q.options[oi]) || '') + '" placeholder="Option ' + String.fromCharCode(65 + oi) + '">';
         html += '</div>';
       }
       html += '</div>';
@@ -972,7 +975,7 @@
       html += '<span class="cco-discount-code">' + escHtml(d.code) + '</span>';
       html += '<span class="cco-discount-val">' + (d.type === 'percentage' ? d.value + '%' : formatCurrency(d.value, course.currency)) + ' off</span>';
       html += '<span class="cco-discount-exp">' + (d.expiry ? 'Expires ' + d.expiry : 'No expiry') + '</span>';
-      html += '<button class="cco-discount-del" data-di="' + i + '">&#10005;</button>';
+      html += '<button type="button" class="cco-discount-del" data-di="' + i + '">&#10005;</button>';
       html += '</div>';
     });
     list.innerHTML = html;
@@ -1046,7 +1049,7 @@
     testimonials.forEach(function(t, i) {
       html += '<div class="cco-sp-testimonial" style="margin-bottom:8px;display:flex;align-items:start;gap:10px;">';
       html += '<div style="flex:1;"><p>"' + escHtml(t.quote) + '"</p><cite>- ' + escHtml(t.author) + '</cite></div>';
-      html += '<button class="cco-lesson-del" data-ti="' + i + '">&#10005;</button>';
+      html += '<button type="button" class="cco-lesson-del" data-ti="' + i + '">&#10005;</button>';
       html += '</div>';
     });
     list.innerHTML = html;
@@ -1082,7 +1085,7 @@
       html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;">';
       html += '<strong style="flex:1;color:rgba(255,255,255,.7);">' + escHtml(f.q) + '</strong>';
       html += '<span style="color:rgba(255,255,255,.35);flex:1;">' + escHtml(f.a) + '</span>';
-      html += '<button class="cco-lesson-del" data-fi="' + i + '">&#10005;</button>';
+      html += '<button type="button" class="cco-lesson-del" data-fi="' + i + '">&#10005;</button>';
       html += '</div>';
     });
     list.innerHTML = html;
@@ -1179,7 +1182,7 @@
     } else {
       html += '<div class="cco-sp-price-amount">FREE</div>';
     }
-    html += '<button class="cco-sp-cta">Enroll Now</button>';
+    html += '<button type="button" class="cco-sp-cta">Enroll Now</button>';
     html += '</div></div>';
 
     // Testimonials

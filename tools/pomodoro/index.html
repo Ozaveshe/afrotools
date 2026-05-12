@@ -28,10 +28,10 @@
 
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-    <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-    <script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+    <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 
     <style>
         *, *::before, *::after { box-sizing: border-box; }
@@ -493,18 +493,18 @@
             </svg>
 
             <div class="pom-session-buttons">
-                <button class="pom-session-btn work active" onclick="setSessionType('work')">Work (25m)</button>
-                <button class="pom-session-btn break" onclick="setSessionType('break')">Break (5m)</button>
-                <button class="pom-session-btn long" onclick="setSessionType('long')">Long (15m)</button>
+                <button type="button" class="pom-session-btn work active" onclick="setSessionType('work')">Work (25m)</button>
+                <button type="button" class="pom-session-btn break" onclick="setSessionType('break')">Break (5m)</button>
+                <button type="button" class="pom-session-btn long" onclick="setSessionType('long')">Long (15m)</button>
             </div>
 
             <div class="pom-controls">
-                <button class="pom-btn pom-btn-primary" id="startBtn" onclick="toggleTimer()">Start</button>
-                <button class="pom-btn pom-btn-secondary" onclick="resetTimer()">Reset</button>
+                <button type="button" class="pom-btn pom-btn-primary" id="startBtn" onclick="toggleTimer()">Start</button>
+                <button type="button" class="pom-btn pom-btn-secondary" onclick="resetTimer()">Reset</button>
             </div>
         </div>
 
-        <input type="text" class="pom-task-input" id="taskInput" placeholder="What are you working on?">
+        <input aria-label="What are you working on?" type="text" class="pom-task-input" id="taskInput" placeholder="What are you working on?">
         <div style="font-size:.68rem;color:var(--color-text-muted);text-align:center;margin:-12px 0 16px;opacity:.6">Keyboard: Space = start/pause, R = reset, 1/2/3 = work/break/long</div>
 
         <div class="pom-toggle">
@@ -515,26 +515,26 @@
         <div class="pom-settings">
             <div class="pom-setting">
                 <label class="pom-setting-label">Work (minutes)</label>
-                <input type="number" class="pom-setting-input" id="workDuration" value="25" min="15" max="60" onchange="updateSettings()">
+                <input aria-label="WorkDuration" type="number" class="pom-setting-input" id="workDuration" value="25" min="15" max="60" onchange="updateSettings()">
             </div>
             <div class="pom-setting">
                 <label class="pom-setting-label">Break (minutes)</label>
-                <input type="number" class="pom-setting-input" id="breakDuration" value="5" min="3" max="15" onchange="updateSettings()">
+                <input aria-label="BreakDuration" type="number" class="pom-setting-input" id="breakDuration" value="5" min="3" max="15" onchange="updateSettings()">
             </div>
             <div class="pom-setting">
                 <label class="pom-setting-label">Long Break (min)</label>
-                <input type="number" class="pom-setting-input" id="longDuration" value="15" min="10" max="30" onchange="updateSettings()">
+                <input aria-label="LongDuration" type="number" class="pom-setting-input" id="longDuration" value="15" min="10" max="30" onchange="updateSettings()">
             </div>
             <div class="pom-setting">
                 <label class="pom-setting-label">Sessions/Long</label>
-                <input type="number" class="pom-setting-input" id="sessionsUntilLong" value="4" min="2" max="6" onchange="updateSettings()">
+                <input aria-label="SessionsUntilLong" type="number" class="pom-setting-input" id="sessionsUntilLong" value="4" min="2" max="6" onchange="updateSettings()">
             </div>
         </div>
 
         <div class="pom-daily-goal">
             <div class="pom-goal-label">Daily Goal</div>
             <div class="pom-goal-controls">
-                <input type="number" id="dailyGoal" value="8" min="1" max="20" onchange="updateGoal()">
+                <input aria-label="DailyGoal" type="number" id="dailyGoal" value="8" min="1" max="20" onchange="updateGoal()">
                 <span style="color: var(--color-text-muted);">pomodoros/day</span>
             </div>
             <div class="pom-goal-progress">

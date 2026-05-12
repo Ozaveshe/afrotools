@@ -17,9 +17,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -97,32 +97,32 @@ details[open] summary::after{content:'\2212'}
       <div class="loan-entry">
         <h4>Loan 1</h4>
         <div class="loan-entry-grid">
-          <div class="form-group"><label>Balance</label><input type="number" class="lc-balance" value="500000"></div>
-          <div class="form-group"><label>Monthly Payment</label><input type="number" class="lc-payment" value="25000"></div>
-          <div class="form-group"><label>Annual Rate (%)</label><input type="number" class="lc-rate" value="28"></div>
+          <div class="form-group"><label>Balance</label><input aria-label="Lc balance" type="number" class="lc-balance" value="500000"></div>
+          <div class="form-group"><label>Monthly Payment</label><input aria-label="Lc payment" type="number" class="lc-payment" value="25000"></div>
+          <div class="form-group"><label>Annual Rate (%)</label><input aria-label="Lc rate" type="number" class="lc-rate" value="28"></div>
         </div>
-        <button class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
+        <button type="button" class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
       </div>
       <div class="loan-entry">
         <h4>Loan 2</h4>
         <div class="loan-entry-grid">
-          <div class="form-group"><label>Balance</label><input type="number" class="lc-balance" value="300000"></div>
-          <div class="form-group"><label>Monthly Payment</label><input type="number" class="lc-payment" value="18000"></div>
-          <div class="form-group"><label>Annual Rate (%)</label><input type="number" class="lc-rate" value="36"></div>
+          <div class="form-group"><label>Balance</label><input aria-label="Lc balance" type="number" class="lc-balance" value="300000"></div>
+          <div class="form-group"><label>Monthly Payment</label><input aria-label="Lc payment" type="number" class="lc-payment" value="18000"></div>
+          <div class="form-group"><label>Annual Rate (%)</label><input aria-label="Lc rate" type="number" class="lc-rate" value="36"></div>
         </div>
-        <button class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
+        <button type="button" class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
       </div>
       <div class="loan-entry">
         <h4>Loan 3</h4>
         <div class="loan-entry-grid">
-          <div class="form-group"><label>Balance</label><input type="number" class="lc-balance" value="200000"></div>
-          <div class="form-group"><label>Monthly Payment</label><input type="number" class="lc-payment" value="12000"></div>
-          <div class="form-group"><label>Annual Rate (%)</label><input type="number" class="lc-rate" value="18"></div>
+          <div class="form-group"><label>Balance</label><input aria-label="Lc balance" type="number" class="lc-balance" value="200000"></div>
+          <div class="form-group"><label>Monthly Payment</label><input aria-label="Lc payment" type="number" class="lc-payment" value="12000"></div>
+          <div class="form-group"><label>Annual Rate (%)</label><input aria-label="Lc rate" type="number" class="lc-rate" value="18"></div>
         </div>
-        <button class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
+        <button type="button" class="btn-del" onclick="this.closest('.loan-entry').remove()">&#x2715;</button>
       </div>
     </div>
-    <button class="btn-add" onclick="addLoan()">+ Add Loan</button>
+    <button type="button" class="btn-add" onclick="addLoan()">+ Add Loan</button>
     <div class="section-divider">
       <h3>Consolidation Loan Terms</h3>
       <div class="form-grid">
@@ -139,7 +139,7 @@ details[open] summary::after{content:'\2212'}
         <div class="form-group"><label for="lc-origination">Origination / Processing Fee (%)</label><input type="number" id="lc-origination" value="2" step="0.5"></div>
       </div>
     </div>
-    <button class="btn-calc" onclick="calcConsolidation()">Compare Options</button>
+    <button type="button" class="btn-calc" onclick="calcConsolidation()">Compare Options</button>
     <div class="results" id="lc-results">
       <div class="verdict" id="lc-verdict-box">
         <div class="verdict-label">Recommendation</div>
@@ -175,7 +175,7 @@ function addLoan(){
   loanCount++;
   var div=document.createElement('div');
   div.className='loan-entry';
-  div.innerHTML='<h4>Loan '+loanCount+'</h4><div class="loan-entry-grid"><div class="form-group"><label>Balance</label><input type="number" class="lc-balance" value="0"></div><div class="form-group"><label>Monthly Payment</label><input type="number" class="lc-payment" value="0"></div><div class="form-group"><label>Annual Rate (%)</label><input type="number" class="lc-rate" value="24"></div></div><button class="btn-del" onclick="this.closest(\'.loan-entry\').remove()">&#x2715;</button>';
+  div.innerHTML='<h4>Loan '+loanCount+'</h4><div class="loan-entry-grid"><div class="form-group"><label>Balance</label><input aria-label="Lc balance" type="number" class="lc-balance" value="0"></div><div class="form-group"><label>Monthly Payment</label><input aria-label="Lc payment" type="number" class="lc-payment" value="0"></div><div class="form-group"><label>Annual Rate (%)</label><input aria-label="Lc rate" type="number" class="lc-rate" value="24"></div></div><button type="button" class="btn-del" onclick="this.closest(\'.loan-entry\').remove()">&#x2715;</button>';
   document.getElementById('loans-list').appendChild(div);
 }
 function calcConsolidation(){

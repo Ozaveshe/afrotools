@@ -9,13 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=e8f53793">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-club/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-club/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="ccb-app">
 
@@ -24,8 +27,8 @@
     <a href="index.html" class="ccb-topbar-back">&larr;</a>
     <a href="index.html" class="ccb-topbar-brand">&#127775; CreatorClub</a>
     <div class="ccb-topbar-actions">
-      <button class="ccb-topbar-btn" id="previewPageBtn">Preview Page</button>
-      <button class="ccb-topbar-btn primary" id="shareBtn">Share Link</button>
+      <button type="button" class="ccb-topbar-btn" id="previewPageBtn">Preview Page</button>
+      <button type="button" class="ccb-topbar-btn primary" id="shareBtn">Share Link</button>
     </div>
   </div>
 
@@ -35,34 +38,34 @@
     <!-- SIDEBAR -->
     <nav class="ccb-sidebar" id="sidebar">
       <span class="ccb-sidebar-label">Manage</span>
-      <button class="ccb-sidebar-item active" data-view="dashboard">
+      <button type="button" class="ccb-sidebar-item active" data-view="dashboard">
         <span class="ccb-nav-icon">&#128202;</span> Dashboard
       </button>
-      <button class="ccb-sidebar-item" data-view="page-builder">
+      <button type="button" class="ccb-sidebar-item" data-view="page-builder">
         <span class="ccb-nav-icon">&#128196;</span> Page Builder
       </button>
-      <button class="ccb-sidebar-item" data-view="tiers">
+      <button type="button" class="ccb-sidebar-item" data-view="tiers">
         <span class="ccb-nav-icon">&#127969;</span> Tiers
         <span class="ccb-nav-badge" id="tierCount">0</span>
       </button>
-      <button class="ccb-sidebar-item" data-view="content">
+      <button type="button" class="ccb-sidebar-item" data-view="content">
         <span class="ccb-nav-icon">&#128274;</span> Content
       </button>
-      <button class="ccb-sidebar-item" data-view="members">
+      <button type="button" class="ccb-sidebar-item" data-view="members">
         <span class="ccb-nav-icon">&#128101;</span> Members
       </button>
       <span class="ccb-sidebar-label">Grow</span>
-      <button class="ccb-sidebar-item" data-view="community">
+      <button type="button" class="ccb-sidebar-item" data-view="community">
         <span class="ccb-nav-icon">&#128172;</span> Community
       </button>
-      <button class="ccb-sidebar-item" data-view="analytics">
+      <button type="button" class="ccb-sidebar-item" data-view="analytics">
         <span class="ccb-nav-icon">&#128200;</span> Analytics
       </button>
       <span class="ccb-sidebar-label">Configure</span>
-      <button class="ccb-sidebar-item" data-view="payments">
+      <button type="button" class="ccb-sidebar-item" data-view="payments">
         <span class="ccb-nav-icon">&#128179;</span> Payments
       </button>
-      <button class="ccb-sidebar-item" data-view="settings">
+      <button type="button" class="ccb-sidebar-item" data-view="settings">
         <span class="ccb-nav-icon">&#9881;&#65039;</span> Settings
       </button>
     </nav>
@@ -106,15 +109,15 @@
                   <div class="ccb-builder-section-title">Hero Section</div>
                   <div class="ccb-form-group">
                     <label class="ccb-form-label">Creator Name</label>
-                    <input class="ccb-form-input" id="pbName" placeholder="Your name or brand">
+                    <input aria-label="Your name or brand" class="ccb-form-input" id="pbName" placeholder="Your name or brand">
                   </div>
                   <div class="ccb-form-group">
                     <label class="ccb-form-label">Tagline</label>
-                    <input class="ccb-form-input" id="pbTagline" placeholder="A short tagline for your page">
+                    <input aria-label="A short tagline for your page" class="ccb-form-input" id="pbTagline" placeholder="A short tagline for your page">
                   </div>
                   <div class="ccb-form-group">
                     <label class="ccb-form-label">Profile Photo URL</label>
-                    <input class="ccb-form-input" id="pbPhoto" placeholder="https://...">
+                    <input aria-label="Https://" class="ccb-form-input" id="pbPhoto" placeholder="https://...">
                   </div>
                 </div>
                 <div class="ccb-builder-section">
@@ -127,14 +130,14 @@
                 <div class="ccb-builder-section">
                   <div class="ccb-builder-section-title">FAQ (Optional)</div>
                   <div id="pbFaqList"></div>
-                  <button class="ccb-btn sm" id="addPbFaq">+ Add FAQ</button>
+                  <button type="button" class="ccb-btn sm" id="addPbFaq">+ Add FAQ</button>
                 </div>
                 <div class="ccb-builder-section">
                   <div class="ccb-builder-section-title">Testimonials (Optional)</div>
                   <div id="pbTestimonialList"></div>
-                  <button class="ccb-btn sm" id="addPbTestimonial">+ Add Testimonial</button>
+                  <button type="button" class="ccb-btn sm" id="addPbTestimonial">+ Add Testimonial</button>
                 </div>
-                <button class="ccb-btn primary" id="savePage" style="width:100%;margin-top:8px;">Save Page</button>
+                <button type="button" class="ccb-btn primary" id="savePage" style="width:100%;margin-top:8px;">Save Page</button>
               </div>
             </div>
             <div class="ccb-builder-preview">
@@ -159,7 +162,7 @@
           </div>
           <div class="ccb-tier-list" id="tierList"></div>
           <div style="margin-top:16px;">
-            <button class="ccb-btn primary" id="addTierBtn">+ Add Tier</button>
+            <button type="button" class="ccb-btn primary" id="addTierBtn">+ Add Tier</button>
           </div>
         </div>
 
@@ -170,7 +173,7 @@
             <p>Gate exclusive content behind tiers.</p>
           </div>
           <div style="margin-bottom:16px;">
-            <button class="ccb-btn primary" id="addContentBtn">+ Add Content</button>
+            <button type="button" class="ccb-btn primary" id="addContentBtn">+ Add Content</button>
           </div>
           <div class="ccb-content-list" id="contentList"></div>
         </div>
@@ -192,7 +195,7 @@
                 <option value="churned">Churned</option>
               </select>
               <div style="flex:1"></div>
-              <button class="ccb-btn sm" id="exportCsvBtn">Export CSV</button>
+              <button type="button" class="ccb-btn sm" id="exportCsvBtn">Export CSV</button>
             </div>
             <table class="ccb-table">
               <thead><tr><th>Name</th><th>Email</th><th>Tier</th><th>Joined</th><th>Status</th></tr></thead>
@@ -214,7 +217,7 @@
             <div class="ccb-form-row" style="margin-bottom:12px;">
               <div class="ccb-form-group" style="margin-bottom:0;">
                 <label class="ccb-form-label">Image URL (optional)</label>
-                <input class="ccb-form-input" id="newPostImage" placeholder="https://...">
+                <input aria-label="Https://" class="ccb-form-input" id="newPostImage" placeholder="https://...">
               </div>
               <div class="ccb-form-group" style="margin-bottom:0;">
                 <label class="ccb-form-label">Tier Access</label>
@@ -223,7 +226,7 @@
                 </select>
               </div>
             </div>
-            <button class="ccb-btn primary" id="publishPostBtn">Publish Post</button>
+            <button type="button" class="ccb-btn primary" id="publishPostBtn">Publish Post</button>
           </div>
           <div class="ccb-community-feed" id="communityFeed"></div>
           <h3 style="font-size:15px;margin-top:24px;margin-bottom:12px;">Community Links</h3>
@@ -234,7 +237,7 @@
                 <div class="ccb-community-link-name">WhatsApp Group</div>
                 <div class="ccb-community-link-desc">Invite link for members</div>
               </div>
-              <input class="ccb-form-input" id="whatsappLink" placeholder="https://chat.whatsapp.com/..." style="width:180px;">
+              <input aria-label="Https://chat.whatsapp.com/" class="ccb-form-input" id="whatsappLink" placeholder="https://chat.whatsapp.com/..." style="width:180px;">
             </div>
             <div class="ccb-community-link-card">
               <div class="ccb-community-link-icon">&#9992;&#65039;</div>
@@ -242,7 +245,7 @@
                 <div class="ccb-community-link-name">Telegram Group</div>
                 <div class="ccb-community-link-desc">Invite link for members</div>
               </div>
-              <input class="ccb-form-input" id="telegramLink" placeholder="https://t.me/..." style="width:180px;">
+              <input aria-label="Https://t.me/" class="ccb-form-input" id="telegramLink" placeholder="https://t.me/..." style="width:180px;">
             </div>
           </div>
         </div>
@@ -275,7 +278,7 @@
           <div class="ccb-form-group">
             <div class="ccb-toggle-row">
               <label class="ccb-form-label" style="margin-bottom:0;text-transform:none;font-size:14px;color:rgba(255,255,255,.8);">&#9888;&#65039; Test Mode</label>
-              <button class="ccb-toggle on" id="testModeToggle"></button>
+              <button type="button" class="ccb-toggle on" id="testModeToggle"></button>
             </div>
           </div>
           <div class="ccb-payment-grid">
@@ -287,9 +290,9 @@
               </div>
               <div class="ccb-form-group">
                 <label class="ccb-form-label">Public Key</label>
-                <input class="ccb-form-input" id="paystackKey" placeholder="pk_test_...">
+                <input aria-label="Pk test" class="ccb-form-input" id="paystackKey" placeholder="pk_test_...">
               </div>
-              <button class="ccb-btn sm" onclick="CCB.savePayment('paystack')">Save</button>
+              <button type="button" class="ccb-btn sm" onclick="CCB.savePayment('paystack')">Save</button>
             </div>
             <div class="ccb-payment-card">
               <div class="ccb-payment-card-header">
@@ -299,9 +302,9 @@
               </div>
               <div class="ccb-form-group">
                 <label class="ccb-form-label">Public Key</label>
-                <input class="ccb-form-input" id="flutterwaveKey" placeholder="FLWPUBK_TEST-...">
+                <input aria-label="FLWPUBK TEST" class="ccb-form-input" id="flutterwaveKey" placeholder="FLWPUBK_TEST-...">
               </div>
-              <button class="ccb-btn sm" onclick="CCB.savePayment('flutterwave')">Save</button>
+              <button type="button" class="ccb-btn sm" onclick="CCB.savePayment('flutterwave')">Save</button>
             </div>
             <div class="ccb-payment-card">
               <div class="ccb-payment-card-header">
@@ -311,9 +314,9 @@
               </div>
               <div class="ccb-form-group">
                 <label class="ccb-form-label">Till Number</label>
-                <input class="ccb-form-input" id="mpesaTill" placeholder="123456">
+                <input aria-label="MpesaTill" class="ccb-form-input" id="mpesaTill" placeholder="123456">
               </div>
-              <button class="ccb-btn sm" onclick="CCB.savePayment('mpesa')">Save</button>
+              <button type="button" class="ccb-btn sm" onclick="CCB.savePayment('mpesa')">Save</button>
             </div>
           </div>
           <div style="margin-top:20px;">
@@ -336,7 +339,7 @@
             <div class="ccb-form-row">
               <div class="ccb-form-group" style="margin-bottom:0;">
                 <label class="ccb-form-label">Slug</label>
-                <input class="ccb-form-input" id="clubSlug" placeholder="my-club">
+                <input aria-label="My club" class="ccb-form-input" id="clubSlug" placeholder="my-club">
               </div>
               <div style="display:flex;align-items:flex-end;padding-bottom:2px;">
                 <span style="font-size:13px;color:rgba(255,255,255,.4);font-family:monospace;">afrotools.com/club/<span id="slugPreview" style="color:var(--ccb-primary);">my-club</span></span>
@@ -347,7 +350,7 @@
             <div class="ccb-chart-title">&#9993;&#65039; Welcome Email Template</div>
             <div class="ccb-form-group">
               <label class="ccb-form-label">Subject</label>
-              <input class="ccb-form-input" id="emailSubject" value="Welcome to the club, {{name}}!">
+              <input aria-label="EmailSubject" class="ccb-form-input" id="emailSubject" value="Welcome to the club, {{name}}!">
             </div>
             <div class="ccb-form-group">
               <label class="ccb-form-label">Body</label>
@@ -361,8 +364,8 @@ Thanks for joining. Let's build something great together.</textarea>
             </div>
             <p style="font-size:12px;margin-top:8px;">Merge tags: <span class="ccb-email-merge-tag">{{name}}</span> <span class="ccb-email-merge-tag">{{tier}}</span> <span class="ccb-email-merge-tag">{{benefits}}</span></p>
             <div style="margin-top:16px;">
-              <button class="ccb-btn sm" id="previewEmailBtn">Preview Email</button>
-              <button class="ccb-btn primary sm" id="saveSettingsBtn" style="margin-left:8px;">Save Settings</button>
+              <button type="button" class="ccb-btn sm" id="previewEmailBtn">Preview Email</button>
+              <button type="button" class="ccb-btn primary sm" id="saveSettingsBtn" style="margin-left:8px;">Save Settings</button>
             </div>
             <div class="ccb-email-preview" id="emailPreview" style="display:none;margin-top:16px;"></div>
           </div>
@@ -390,11 +393,11 @@ Thanks for joining. Let's build something great together.</textarea>
 
   <!-- BOTTOM NAV (mobile) -->
   <div class="ccb-bottom-nav" id="bottomNav">
-    <button class="active" data-view="dashboard"><span class="ccb-bnav-icon">&#128202;</span>Dashboard</button>
-    <button data-view="tiers"><span class="ccb-bnav-icon">&#127969;</span>Tiers</button>
-    <button data-view="content"><span class="ccb-bnav-icon">&#128274;</span>Content</button>
-    <button data-view="members"><span class="ccb-bnav-icon">&#128101;</span>Members</button>
-    <button data-view="analytics"><span class="ccb-bnav-icon">&#128200;</span>Analytics</button>
+    <button type="button" class="active" data-view="dashboard"><span class="ccb-bnav-icon">&#128202;</span>Dashboard</button>
+    <button type="button" data-view="tiers"><span class="ccb-bnav-icon">&#127969;</span>Tiers</button>
+    <button type="button" data-view="content"><span class="ccb-bnav-icon">&#128274;</span>Content</button>
+    <button type="button" data-view="members"><span class="ccb-bnav-icon">&#128101;</span>Members</button>
+    <button type="button" data-view="analytics"><span class="ccb-bnav-icon">&#128200;</span>Analytics</button>
   </div>
 
   <!-- TOAST -->
@@ -405,16 +408,16 @@ Thanks for joining. Let's build something great together.</textarea>
     <div class="ccb-modal">
       <div class="ccb-modal-header">
         <h3 id="tierModalTitle">Add Tier</h3>
-        <button class="ccb-modal-close" onclick="CCB.closeTierModal()">&times;</button>
+        <button type="button" class="ccb-modal-close" onclick="CCB.closeTierModal()">&times;</button>
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Tier Name</label>
-        <input class="ccb-form-input" id="tierNameInput" placeholder="e.g. Inner Circle">
+        <input aria-label="E.g. Inner Circle" class="ccb-form-input" id="tierNameInput" placeholder="e.g. Inner Circle">
       </div>
       <div class="ccb-form-row">
         <div class="ccb-form-group">
           <label class="ccb-form-label">Price</label>
-          <input class="ccb-form-input" id="tierPriceInput" type="number" placeholder="0" min="0">
+          <input aria-label="TierPriceInput" class="ccb-form-input" id="tierPriceInput" type="number" placeholder="0" min="0">
         </div>
         <div class="ccb-form-group">
           <label class="ccb-form-label">Currency</label>
@@ -437,23 +440,23 @@ Thanks for joining. Let's build something great together.</textarea>
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Tier Color</label>
-        <input type="color" id="tierColorInput" value="#F59E0B" style="width:48px;height:36px;border:none;background:none;cursor:pointer;">
+        <input aria-label="TierColorInput" type="color" id="tierColorInput" value="#F59E0B" style="width:48px;height:36px;border:none;background:none;cursor:pointer;">
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Benefits</label>
         <div id="tierBenefitsEditor"></div>
-        <button class="ccb-btn sm" id="addBenefitBtn" style="margin-top:8px;">+ Add Benefit</button>
+        <button type="button" class="ccb-btn sm" id="addBenefitBtn" style="margin-top:8px;">+ Add Benefit</button>
       </div>
       <div class="ccb-form-group">
         <div class="ccb-toggle-row">
           <label class="ccb-form-label" style="margin-bottom:0;text-transform:none;font-size:13px;color:rgba(255,255,255,.7);">Member Limit</label>
-          <button class="ccb-toggle" id="tierLimitToggle"></button>
+          <button type="button" class="ccb-toggle" id="tierLimitToggle"></button>
         </div>
-        <input class="ccb-form-input" id="tierLimitInput" type="number" placeholder="Max members" min="1" style="margin-top:8px;display:none;">
+        <input aria-label="Max members" class="ccb-form-input" id="tierLimitInput" type="number" placeholder="Max members" min="1" style="margin-top:8px;display:none;">
       </div>
       <div style="display:flex;gap:8px;margin-top:16px;">
-        <button class="ccb-btn" onclick="CCB.closeTierModal()">Cancel</button>
-        <button class="ccb-btn primary" id="saveTierBtn" style="flex:1;">Save Tier</button>
+        <button type="button" class="ccb-btn" onclick="CCB.closeTierModal()">Cancel</button>
+        <button type="button" class="ccb-btn primary" id="saveTierBtn" style="flex:1;">Save Tier</button>
       </div>
     </div>
   </div>
@@ -463,7 +466,7 @@ Thanks for joining. Let's build something great together.</textarea>
     <div class="ccb-modal">
       <div class="ccb-modal-header">
         <h3 id="contentModalTitle">Add Content</h3>
-        <button class="ccb-modal-close" onclick="CCB.closeContentModal()">&times;</button>
+        <button type="button" class="ccb-modal-close" onclick="CCB.closeContentModal()">&times;</button>
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Content Type</label>
@@ -477,7 +480,7 @@ Thanks for joining. Let's build something great together.</textarea>
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Title</label>
-        <input class="ccb-form-input" id="contentTitleInput" placeholder="Content title">
+        <input aria-label="Content title" class="ccb-form-input" id="contentTitleInput" placeholder="Content title">
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Description</label>
@@ -485,7 +488,7 @@ Thanks for joining. Let's build something great together.</textarea>
       </div>
       <div class="ccb-form-group" id="contentUrlGroup">
         <label class="ccb-form-label">URL</label>
-        <input class="ccb-form-input" id="contentUrlInput" placeholder="https://...">
+        <input aria-label="Https://" class="ccb-form-input" id="contentUrlInput" placeholder="https://...">
       </div>
       <div class="ccb-form-group" id="contentBodyGroup" style="display:none">
         <label class="ccb-form-label">Content Body</label>
@@ -498,12 +501,12 @@ Thanks for joining. Let's build something great together.</textarea>
         </div>
         <div class="ccb-form-group">
           <label class="ccb-form-label">Drip Date (optional)</label>
-          <input class="ccb-form-input" id="contentDripInput" type="date">
+          <input aria-label="ContentDripInput" class="ccb-form-input" id="contentDripInput" type="date">
         </div>
       </div>
       <div style="display:flex;gap:8px;margin-top:16px;">
-        <button class="ccb-btn" onclick="CCB.closeContentModal()">Cancel</button>
-        <button class="ccb-btn primary" id="saveContentBtn" style="flex:1;">Save Content</button>
+        <button type="button" class="ccb-btn" onclick="CCB.closeContentModal()">Cancel</button>
+        <button type="button" class="ccb-btn primary" id="saveContentBtn" style="flex:1;">Save Content</button>
       </div>
     </div>
   </div>
@@ -696,7 +699,7 @@ var CCB = (function() {
   function renderPbFaqs() {
     var html = '';
     (state.page.faqs || []).forEach(function(f, i) {
-      html += '<div style="margin-bottom:10px;display:flex;gap:8px;align-items:start;"><div style="flex:1;"><input class="ccb-form-input pb-faq-q" data-idx="' + i + '" placeholder="Question" value="' + escHtml(f.q) + '" style="margin-bottom:4px;"><input class="ccb-form-input pb-faq-a" data-idx="' + i + '" placeholder="Answer" value="' + escHtml(f.a) + '"></div><button class="ccb-btn sm danger" onclick="CCB.removePbFaq(' + i + ')">&#128465;</button></div>';
+      html += '<div style="margin-bottom:10px;display:flex;gap:8px;align-items:start;"><div style="flex:1;"><input aria-label="Question" class="ccb-form-input pb-faq-q" data-idx="' + i + '" placeholder="Question" value="' + escHtml(f.q) + '" style="margin-bottom:4px;"><input aria-label="Answer" class="ccb-form-input pb-faq-a" data-idx="' + i + '" placeholder="Answer" value="' + escHtml(f.a) + '"></div><button type="button" class="ccb-btn sm danger" onclick="CCB.removePbFaq(' + i + ')">&#128465;</button></div>';
     });
     document.getElementById('pbFaqList').innerHTML = html;
   }
@@ -704,7 +707,7 @@ var CCB = (function() {
   function renderPbTestimonials() {
     var html = '';
     (state.page.testimonials || []).forEach(function(t, i) {
-      html += '<div style="margin-bottom:10px;display:flex;gap:8px;align-items:start;"><div style="flex:1;"><input class="ccb-form-input pb-test-name" data-idx="' + i + '" placeholder="Name" value="' + escHtml(t.name) + '" style="margin-bottom:4px;"><input class="ccb-form-input pb-test-text" data-idx="' + i + '" placeholder="What they said..." value="' + escHtml(t.text) + '"></div><button class="ccb-btn sm danger" onclick="CCB.removePbTestimonial(' + i + ')">&#128465;</button></div>';
+      html += '<div style="margin-bottom:10px;display:flex;gap:8px;align-items:start;"><div style="flex:1;"><input aria-label="Name" class="ccb-form-input pb-test-name" data-idx="' + i + '" placeholder="Name" value="' + escHtml(t.name) + '" style="margin-bottom:4px;"><input aria-label="What they said" class="ccb-form-input pb-test-text" data-idx="' + i + '" placeholder="What they said..." value="' + escHtml(t.text) + '"></div><button type="button" class="ccb-btn sm danger" onclick="CCB.removePbTestimonial(' + i + ')">&#128465;</button></div>';
     });
     document.getElementById('pbTestimonialList').innerHTML = html;
   }
@@ -801,7 +804,7 @@ var CCB = (function() {
           html += '</div>';
         }
         if (t.limit) html += '<div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:6px;">Limit: ' + t.limit + ' members</div>';
-        html += '<div class="ccb-tier-actions"><button class="ccb-btn sm" onclick="CCB.editTier(' + i + ')">Edit</button><button class="ccb-btn sm danger" onclick="CCB.deleteTier(' + i + ')">Delete</button></div>';
+        html += '<div class="ccb-tier-actions"><button type="button" class="ccb-btn sm" onclick="CCB.editTier(' + i + ')">Edit</button><button type="button" class="ccb-btn sm danger" onclick="CCB.deleteTier(' + i + ')">Delete</button></div>';
         html += '</div></div>';
       });
     }
@@ -857,7 +860,7 @@ var CCB = (function() {
   function renderBenefitsEditor(benefits) {
     var html = '';
     benefits.forEach(function(b, i) {
-      html += '<div style="display:flex;gap:6px;margin-bottom:6px;"><input class="ccb-form-input tier-benefit-input" value="' + escHtml(b) + '" placeholder="Benefit"><button class="ccb-btn sm danger" onclick="this.parentElement.remove()">&#128465;</button></div>';
+      html += '<div style="display:flex;gap:6px;margin-bottom:6px;"><input aria-label="Benefit" class="ccb-form-input tier-benefit-input" value="' + escHtml(b) + '" placeholder="Benefit"><button type="button" class="ccb-btn sm danger" onclick="this.parentElement.remove()">&#128465;</button></div>';
     });
     document.getElementById('tierBenefitsEditor').innerHTML = html;
   }
@@ -932,7 +935,7 @@ var CCB = (function() {
         html += '<div class="ccb-content-type-icon">' + (icons[c.type] || '&#128196;') + '</div>';
         html += '<div class="ccb-content-info"><div class="ccb-content-title">' + escHtml(c.title) + '</div><div class="ccb-content-meta">' + c.type.toUpperCase() + (c.drip ? ' &middot; Drips ' + c.drip : '') + '</div></div>';
         html += '<span class="ccb-tier-badge">' + escHtml(c.tier) + '</span>';
-        html += '<div class="ccb-content-actions"><button class="ccb-btn sm" onclick="CCB.editContent(' + i + ')">Edit</button><button class="ccb-btn sm danger" onclick="CCB.deleteContent(' + i + ')">&#128465;</button></div>';
+        html += '<div class="ccb-content-actions"><button type="button" class="ccb-btn sm" onclick="CCB.editContent(' + i + ')">Edit</button><button type="button" class="ccb-btn sm danger" onclick="CCB.deleteContent(' + i + ')">&#128465;</button></div>';
         html += '</div>';
       });
     }
@@ -1043,7 +1046,7 @@ var CCB = (function() {
         html += '<div class="ccb-post-header"><div class="ccb-post-avatar">&#127775;</div><div class="ccb-post-author">You</div><span class="ccb-tier-badge" style="margin-right:8px;">' + escHtml(p.tier) + '</span><div class="ccb-post-time">' + p.date + '</div></div>';
         if (p.image) html += '<div class="ccb-post-image"><img src="' + escHtml(p.image) + '" style="width:100%;border-radius:10px;" onerror="this.parentElement.innerHTML=\'&#128247; Image\'"></div>';
         html += '<div class="ccb-post-body">' + escHtml(p.text) + '</div>';
-        html += '<div class="ccb-post-footer"><button class="ccb-btn sm danger" onclick="CCB.deletePost(' + i + ')">Delete</button></div>';
+        html += '<div class="ccb-post-footer"><button type="button" class="ccb-btn sm danger" onclick="CCB.deletePost(' + i + ')">Delete</button></div>';
         html += '</div>';
       });
     }
@@ -1245,7 +1248,7 @@ var CCB = (function() {
       var wrap = document.getElementById('tierBenefitsEditor');
       var div = document.createElement('div');
       div.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;';
-      div.innerHTML = '<input class="ccb-form-input tier-benefit-input" placeholder="Benefit"><button class="ccb-btn sm danger" onclick="this.parentElement.remove()">&#128465;</button>';
+      div.innerHTML = '<input aria-label="Benefit" class="ccb-form-input tier-benefit-input" placeholder="Benefit"><button type="button" class="ccb-btn sm danger" onclick="this.parentElement.remove()">&#128465;</button>';
       wrap.appendChild(div);
     });
     document.getElementById('tierLimitToggle').addEventListener('click', function() {

@@ -31,9 +31,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -289,7 +289,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/chad/td-vat" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tchad/calculateur-tva" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/chad/td-vat" />
@@ -334,8 +334,8 @@
 
           <!-- MODE TABS -->
           <div class="mode-tabs">
-            <button class="mode-tab on" onclick="setMode('single',this)">Montant unique</button>
-            <button class="mode-tab" onclick="setMode('multi',this)">Facture / multi-lignes</button>
+            <button type="button" class="mode-tab on" onclick="setMode('single',this)">Montant unique</button>
+            <button type="button" class="mode-tab" onclick="setMode('multi',this)">Facture / multi-lignes</button>
           </div>
 
           <!-- SINGLE MODE -->
@@ -344,8 +344,8 @@
             <div class="field">
               <div class="f-label"><span class="f-label-text">Sens du calcul</span><span class="f-hint">Quel montant avez-vous ?</span></div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0">
-                <button class="rate-btn on" id="btnAdd" onclick="setDir('add',this)">Ajouter la TVA<br><span style="font-size:.65rem;opacity:.7">HT → TTC</span></button>
-                <button class="rate-btn" id="btnRem" onclick="setDir('remove',this)">Retirer la TVA<br><span style="font-size:.65rem;opacity:.7">TTC → HT</span></button>
+                <button type="button" class="rate-btn on" id="btnAdd" onclick="setDir('add',this)">Ajouter la TVA<br><span style="font-size:.65rem;opacity:.7">HT → TTC</span></button>
+                <button type="button" class="rate-btn" id="btnRem" onclick="setDir('remove',this)">Retirer la TVA<br><span style="font-size:.65rem;opacity:.7">TTC → HT</span></button>
               </div>
             </div>
 
@@ -355,7 +355,7 @@
                 <span class="slider-label" id="sliderLbl">Montant HT (XAF)</span>
                 <span class="slider-val" id="sliderVal">FCFA10,000</span>
               </div>
-              <input type="range" id="amountSlider" min="100" max="10000000" step="100" value="10000" oninput="onSlider(this)">
+              <input aria-label="AmountSlider" type="range" id="amountSlider" min="100" max="10000000" step="100" value="10000" oninput="onSlider(this)">
               <div class="slider-limits"><span>FCFA100</span><span>FCFA10M</span></div>
             </div>
 
@@ -364,7 +364,7 @@
               <div class="f-label"><span class="f-label-text">Montant</span><span class="f-hint">Ou saisissez un montant précis</span></div>
               <div class="f-wrap">
                 <span class="f-prefix">FCFA</span>
-                <input type="number" class="f-input" id="amount" placeholder="10,000" min="0" step="100" value="10000" oninput="onInput(this)">
+                <input aria-label="Amount" type="number" class="f-input" id="amount" placeholder="10,000" min="0" step="100" value="10000" oninput="onInput(this)">
               </div>
             </div>
 
@@ -372,26 +372,26 @@
             <div class="field">
               <div class="f-label"><span class="f-label-text">Taux de TVA</span><span class="f-hint">Choisissez le taux applicable</span></div>
               <div class="rate-selector">
-                <button class="rate-btn on" onclick="setRate(0.18,'Taux normal 18%',this)">Normal<br>18%</button>
-              <button class="rate-btn" onclick="setRate(0,'Taux zéro 0%',this)" style="grid-column:1 / -1">Taux zéro / export<br>0%</button>
+                <button type="button" class="rate-btn on" onclick="setRate(0.18,'Taux normal 18%',this)">Normal<br>18%</button>
+              <button type="button" class="rate-btn" onclick="setRate(0,'Taux zéro 0%',this)" style="grid-column:1 / -1">Taux zéro / export<br>0%</button>
               </div>
             </div>
 
             <!-- CUSTOM VAT RATE -->
             <div class="custom-rate-wrap">
-              <label><input type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Utiliser un taux personnalisé</label>
-              <input type="text" class="custom-rate-input" id="customRateInput" placeholder="ex. 12" style="display:none" oninput="onCustomRate()">
+              <label><input aria-label="CustomRateToggle" type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Utiliser un taux personnalisé</label>
+              <input aria-label="Ex. 12" type="text" class="custom-rate-input" id="customRateInput" placeholder="ex. 12" style="display:none" oninput="onCustomRate()">
               <span id="customRateHint" style="font-size:.7rem;color:#6B8CAE;display:none">%</span>
             </div>
 
             <!-- QUICK AMOUNT CHIPS -->
             <div class="quick-chips" id="quickChips">
-              <button class="q-chip" onclick="setChip(1000,this)">1K</button>
-              <button class="q-chip" onclick="setChip(5000,this)">5K</button>
-              <button class="q-chip" onclick="setChip(10000,this)">10K</button>
-              <button class="q-chip" onclick="setChip(50000,this)">50K</button>
-              <button class="q-chip" onclick="setChip(100000,this)">100K</button>
-              <button class="q-chip" onclick="setChip(1000000,this)">1M</button>
+              <button type="button" class="q-chip" onclick="setChip(1000,this)">1K</button>
+              <button type="button" class="q-chip" onclick="setChip(5000,this)">5K</button>
+              <button type="button" class="q-chip" onclick="setChip(10000,this)">10K</button>
+              <button type="button" class="q-chip" onclick="setChip(50000,this)">50K</button>
+              <button type="button" class="q-chip" onclick="setChip(100000,this)">100K</button>
+              <button type="button" class="q-chip" onclick="setChip(1000000,this)">1M</button>
             </div>
           </div><!-- end #singleMode -->
 
@@ -403,7 +403,7 @@
                 <thead><tr><th>Désignation</th><th style="width:90px">Prix (FCFA)</th><th style="width:50px">Qté</th><th style="width:70px">Taux %</th><th style="width:30px"></th></tr></thead>
                 <tbody id="itemsBody"></tbody>
               </table>
-              <button class="add-item-btn" onclick="addItem()">+ Ajouter une ligne</button>
+              <button type="button" class="add-item-btn" onclick="addItem()">+ Ajouter une ligne</button>
               <div class="items-total" id="itemsTotal" style="display:none">
                 <div class="items-total-row"><span>Sous-total HT</span><span id="multiSub">—</span></div>
                 <div class="items-total-row"><span>TVA totale</span><span id="multiVat">—</span></div>
@@ -422,17 +422,17 @@
               <div class="res-hero-label" id="resLabel">Total TTC</div>
               <div class="res-hero-amount">
                 <span id="resAmount">FCFA0</span>
-                <button class="res-copy-btn" onclick="copyVal('resAmount')">Copier</button>
+                <button type="button" class="res-copy-btn" onclick="copyVal('resAmount')">Copier</button>
               </div>
             </div>
             <div class="res-body">
               <div class="res-row">
                 <span class="res-row-lbl" id="pretaxLbl">Montant HT</span>
-                <span class="res-row-val"><span id="resPretax">—</span><button onclick="copyVal('resPretax')">Copier</button></span>
+                <span class="res-row-val"><span id="resPretax">—</span><button type="button" onclick="copyVal('resPretax')">Copier</button></span>
               </div>
               <div class="res-row">
                 <span class="res-row-lbl">Montant de TVA</span>
-                <span class="res-row-val"><span id="resVat">—</span><button onclick="copyVal('resVat')">Copier</button></span>
+                <span class="res-row-val"><span id="resVat">—</span><button type="button" onclick="copyVal('resVat')">Copier</button></span>
               </div>
               <div class="res-row highlight">
                 <span class="res-row-lbl">Taux appliqué</span>
@@ -463,17 +463,17 @@
           <!-- CHART -->
           <div class="chart-section" id="chartSection" style="display:none;padding:16px 22px">
             <div class="chart-tabs">
-              <button class="chart-tab on" onclick="setChart('pie',this)">Camembert</button>
-              <button class="chart-tab" onclick="setChart('bar',this)">Histogramme</button>
+              <button type="button" class="chart-tab on" onclick="setChart('pie',this)">Camembert</button>
+              <button type="button" class="chart-tab" onclick="setChart('bar',this)">Histogramme</button>
             </div>
             <div class="chart-canvas-wrap" style="position:relative;height:200px"><canvas id="mainChart"></canvas></div>
           </div>
           <div class="action-row">
-            <button class="act-btn act-pdf" onclick="printResult()">
+            <button type="button" class="act-btn act-pdf" onclick="printResult()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Imprimer / PDF
             </button>
-            <button class="act-btn act-share" onclick="shareResult()">
+            <button type="button" class="act-btn act-share" onclick="shareResult()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
               Partager le résultat
             </button>
@@ -495,17 +495,17 @@
 
         <!-- VAT WITHHOLDING -->
         <div class="wh-section" style="padding:0 22px 22px">
-          <button class="wh-toggle" onclick="toggleWh(this)">
+          <button type="button" class="wh-toggle" onclick="toggleWh(this)">
             <span class="wh-toggle-label">🏢 Retenue TVA (B2B)</span>
             <span class="wh-toggle-arrow">▾</span>
           </button>
           <div class="wh-body" id="whBody">
             <p style="font-size:.76rem;color:#6B8CAE;margin-bottom:10px;line-height:1.5">Estimez la part de TVA retenue par l’acheteur puis reversée directement à l’administration fiscale sur cette opération.</p>
             <div class="wh-rate-row">
-              <button class="wh-rate-btn on" onclick="setWhRate(50,this)">50%</button>
-              <button class="wh-rate-btn" onclick="setWhRate(100,this)">100%</button>
-              <button class="wh-rate-btn" onclick="setWhRate(33.33,this)">33.3%</button>
-              <input type="text" class="wh-custom-input" id="whCustom" placeholder="%" oninput="calcWh()">
+              <button type="button" class="wh-rate-btn on" onclick="setWhRate(50,this)">50%</button>
+              <button type="button" class="wh-rate-btn" onclick="setWhRate(100,this)">100%</button>
+              <button type="button" class="wh-rate-btn" onclick="setWhRate(33.33,this)">33.3%</button>
+              <input aria-label="WhCustom" type="text" class="wh-custom-input" id="whCustom" placeholder="%" oninput="calcWh()">
             </div>
             <div class="wh-results" id="whResults"></div>
           </div>
@@ -530,8 +530,8 @@
     <div class="ai-chat" id="aiChat">
       <div class="ai-msgs" id="aiMsgs"></div>
       <div class="ai-input-row">
-        <input type="text" class="ai-input" id="aiInput" placeholder="Posez votre question TVA…" maxlength="300">
-        <button class="ai-send" id="aiSend" onclick="sendAI()">→</button>
+        <input aria-label="Posez votre question TVA" type="text" class="ai-input" id="aiInput" placeholder="Posez votre question TVA…" maxlength="300">
+        <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">→</button>
       </div>
     </div>
 
@@ -583,7 +583,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/td-vat.webp" alt="Calculateur TVA Tchad" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/td-vat.webp" alt="Calculateur TVA Tchad" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur TVA Tchad</div>
             <div class="tool-info-cat">Fiscalité &amp; entreprise</div>
@@ -606,7 +606,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mise à jour : avril 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/tools/calculateur-tva/">Tous les pays</a>
           </div>
         </div>
@@ -774,11 +774,11 @@ function getEffectiveRate() {
     const tr = document.createElement('tr');
     tr.id = 'item-' + itemCount;
     tr.innerHTML = `
-      <td><input type="text" placeholder="Désignation" oninput="calcMulti()"></td>
-      <td><input type="number" placeholder="0" min="0" step="0.01" oninput="calcMulti()" style="text-align:right"></td>
-      <td><input type="number" value="1" min="1" step="1" oninput="calcMulti()" style="text-align:right"></td>
-      <td><input type="number" value="${(DEFAULT_RATE * 100).toFixed(1)}" min="0" max="100" step="0.5" oninput="calcMulti()" style="text-align:right"></td>
-      <td><button class="item-del" onclick="removeItem('item-${itemCount}')">✕</button></td>`;
+      <td><input aria-label="Désignation" type="text" placeholder="Désignation" oninput="calcMulti()"></td>
+      <td><input aria-label="Line item amount" type="number" placeholder="0" min="0" step="0.01" oninput="calcMulti()" style="text-align:right"></td>
+      <td><input aria-label="Line item quantity" type="number" value="1" min="1" step="1" oninput="calcMulti()" style="text-align:right"></td>
+      <td><input aria-label="Line item VAT rate" type="number" value="${(DEFAULT_RATE * 100).toFixed(1)}" min="0" max="100" step="0.5" oninput="calcMulti()" style="text-align:right"></td>
+      <td><button type="button" class="item-del" onclick="removeItem('item-${itemCount}')">✕</button></td>`;
     tbody.appendChild(tr);
     calcMulti();
   }

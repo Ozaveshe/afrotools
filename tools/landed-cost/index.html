@@ -18,7 +18,7 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <style>
 :root{--color-brand:var(--color-primary)}
 .t-hero{background:var(--color-bg-dark);padding:40px 0 28px}
@@ -109,9 +109,9 @@
 </style>
 <meta property="og:title" content="Landed Cost Calculator for Africa 2026 — Full Import Cost Breakdown | AfroTools">
 <meta property="og:description" content="Calculate your total landed cost for imports into any African country. FOB to warehouse — customs duty, VAT, levies, port charges, clearing fees. AI-powered advisor for 54 countries.">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
@@ -143,10 +143,10 @@
 <div class="t-main">
   <div class="container">
     <div class="tabs" role="tablist">
-      <button class="tab on" onclick="setTab('calc',this)">🧮 Calculate</button>
-      <button class="tab" onclick="setTab('compare',this)">↔️ Compare Scenarios</button>
-      <button class="tab" onclick="setTab('pnl',this)">💹 P&L View</button>
-      <button class="tab" onclick="setTab('chat',this)">🤖 AI Advisor</button>
+      <button type="button" class="tab on" onclick="setTab('calc',this)">🧮 Calculate</button>
+      <button type="button" class="tab" onclick="setTab('compare',this)">↔️ Compare Scenarios</button>
+      <button type="button" class="tab" onclick="setTab('pnl',this)">💹 P&L View</button>
+      <button type="button" class="tab" onclick="setTab('chat',this)">🤖 AI Advisor</button>
     </div>
 
     <!-- CALCULATE -->
@@ -208,7 +208,7 @@
                   <input type="number" class="f-input" id="handlingFee" placeholder="e.g. 75000" value="">
                 </div>
               </div>
-              <button class="btn-primary" onclick="doCalculate()">📦 Calculate Landed Cost</button>
+              <button type="button" class="btn-primary" onclick="doCalculate()">📦 Calculate Landed Cost</button>
             </div>
           </div>
         </div>
@@ -276,7 +276,7 @@
             <label class="f-label" for="cmpFOB">FOB Value (USD) — same for both</label>
             <input type="number" class="f-input" id="cmpFOB" value="10000" style="max-width:240px">
           </div>
-          <button class="btn-primary" onclick="doCompare()">Compare Scenarios</button>
+          <button type="button" class="btn-primary" onclick="doCompare()">Compare Scenarios</button>
         </div>
       </div>
       <div id="cmpResults" style="display:none">
@@ -304,7 +304,7 @@
               <input type="number" class="f-input" id="sellPriceLocal" placeholder="e.g. 3000000">
             </div>
             <div style="display:flex;align-items:flex-end">
-              <button class="btn-primary" style="margin-top:0" onclick="doPnl()">Calculate P&L</button>
+              <button type="button" class="btn-primary" style="margin-top:0" onclick="doPnl()">Calculate P&L</button>
             </div>
           </div>
           <div class="pnl-result" id="pnlResult">
@@ -350,8 +350,8 @@
             <div class="chat-sug" onclick="sendSug(this)">Compare landed cost: Nigeria vs Ghana for electronics</div>
           </div>
           <div class="chat-input-row">
-            <input type="text" class="chat-input" id="chatInput" placeholder="Ask about import costs, duty rates, ports..." onkeydown="if(event.key==='Enter')sendChat()">
-            <button class="chat-send" onclick="sendChat()">Send</button>
+            <input aria-label="Ask about import costs, duty rates, ports" type="text" class="chat-input" id="chatInput" placeholder="Ask about import costs, duty rates, ports..." onkeydown="if(event.key==='Enter')sendChat()">
+            <button type="button" class="chat-send" onclick="sendChat()">Send</button>
           </div>
         </div>
       </div>

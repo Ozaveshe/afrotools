@@ -57,32 +57,32 @@
       { en: 'PDF Workspace',       fr: 'Espace PDF',       sw: 'Eneo la PDF',     yo: 'Ibùdó PDF',          ha: 'Takardu da PDF', href: '/tools/pdf-workspace/', hrefHa: '/ha/takardu-da-pdf/' },
       { en: 'Education',           ha: 'Ilimi',             href: '/education/', hrefHa: '/ha/ilimi/', haOnly: true },
       { en: 'Language & Translation', ha: 'Harshe da Fassara', href: '/language/', hrefHa: '/ha/harshe-da-fassara/', haOnly: true },
-      { en: 'CV Builder',          fr: 'Créer un CV',      sw: 'Tengeneza CV',     yo: 'Kọ CV',             ha: 'CV Builder',      href: '/tools/cv-builder/' },
-      { en: 'Invoice Generator',   fr: 'Facture',          sw: 'Ankara',           yo: 'Iṣẹ́ Ìwé-Owó',      ha: 'Invoice Generator', href: '/tools/invoice-generator/' },
-      { en: 'VAT Calculator',      fr: 'Calculateur TVA',  sw: 'Kikokotoo VAT',    yo: 'Àṣeàṣe VAT',       ha: 'VAT Calculator',  href: '/tools/vat-calculator/' },
-      { en: 'Currency Converter',  fr: 'Convertisseur',    sw: 'Kubadili Sarafu',  yo: 'Iyípadà Owó',       ha: 'Canjin kudi',     href: '/tools/currency-converter/' },
+      { en: 'CV Builder',          fr: 'Créer un CV',      sw: 'Tengeneza CV',     yo: 'Kọ CV',             ha: 'CV Builder (Turanci)',      href: '/tools/cv-builder/' },
+      { en: 'Invoice Generator',   fr: 'Facture',          sw: 'Ankara',           yo: 'Iṣẹ́ Ìwé-Owó',      ha: 'Kirkiro Invoice', href: '/tools/invoice-generator/', hrefHa: '/ha/kayan-aiki/kirkiro-invoice/' },
+      { en: 'VAT Calculator',      fr: 'Calculateur TVA',  sw: 'Kikokotoo VAT',    yo: 'Àṣeàṣe VAT',       ha: 'Kalkuletan VAT',  href: '/tools/vat-calculator/', hrefHa: '/ha/kayan-aiki/kalkuletan-vat/' },
+      { en: 'Currency Converter',  fr: 'Convertisseur',    sw: 'Kubadili Sarafu',  yo: 'Iyípadà Owó',       ha: 'Canjin kudi (Turanci)',     href: '/tools/currency-converter/' },
     ],
     countries: [
-      { en: 'All countries', ha: 'Duk kasashe', href: '/countries/', hrefHa: '/ha/kasashe/', haOnly: true },
+      { en: 'All countries', ha: 'Duk kasashe (Turanci)', href: '/countries/', hrefHa: '/countries/', haOnly: true },
       { en: 'Nigeria',      ha: 'Najeriya',       href: '/nigeria/', hrefHa: '/ha/najeriya/' },
-      { en: 'Kenya',        ha: 'Kenya',           href: '/kenya/' },
-      { en: 'Ghana',        ha: 'Ghana',           href: '/ghana/' },
-      { en: 'South Africa', ha: 'Afirka ta Kudu',  href: '/south-africa/' },
-      { en: 'Egypt',        ha: 'Masar',           href: '/egypt/' },
-      { en: 'Tanzania',     ha: 'Tanzania',        href: '/tanzania/' },
+      { en: 'Kenya',        ha: 'Kenya (Turanci)',           href: '/kenya/' },
+      { en: 'Ghana',        ha: 'Ghana (Turanci)',           href: '/ghana/' },
+      { en: 'South Africa', ha: 'Afirka ta Kudu (Turanci)',  href: '/south-africa/' },
+      { en: 'Egypt',        ha: 'Masar (Turanci)',           href: '/egypt/' },
+      { en: 'Tanzania',     ha: 'Tanzania (Turanci)',        href: '/tanzania/' },
     ],
     company: [
-      { en: 'About',       fr: 'À propos',        sw: 'Kuhusu',        yo: 'Nípa Wa',          ha: 'Game da Mu',    href: '/about/' },
-      { en: 'Blog',        fr: 'Blog',             sw: 'Blogu',         yo: 'Blọ́ọ̀gì',          ha: 'Blog',          href: '/blog/' },
-      { en: 'Contact',     fr: 'Contact',          sw: 'Wasiliana',     yo: 'Kan Sí Wa',        ha: 'Tuntube Mu',    href: '/contact/' },
-      { en: 'Changelog',   fr: 'Mises à jour',     sw: 'Mabadiliko',    yo: 'Àwọn Àyípadà',    ha: 'Canje-canje',   href: '/changelog/' },
+      { en: 'About',       fr: 'À propos',        sw: 'Kuhusu',        yo: 'Nípa Wa',          ha: 'Game da Mu (Turanci)',    href: '/about/' },
+      { en: 'Blog',        fr: 'Blog',             sw: 'Blogu',         yo: 'Blọ́ọ̀gì',          ha: 'Blog (Turanci)',          href: '/blog/' },
+      { en: 'Contact',     fr: 'Contact',          sw: 'Wasiliana',     yo: 'Kan Sí Wa',        ha: 'Tuntube Mu (Turanci)',    href: '/contact/' },
+      { en: 'Changelog',   fr: 'Mises à jour',     sw: 'Mabadiliko',    yo: 'Àwọn Àyípadà',    ha: 'Canje-canje (Turanci)',   href: '/changelog/' },
       { en: 'All Tools',   fr: 'Tous les outils',  sw: 'Zana Zote',     yo: 'Gbogbo Iṣẹ́',      ha: 'Duk kayan aiki',href: '/all-tools/', hrefHa: '/ha/kayan-aiki/' },
-      { en: 'API Docs',    fr: 'API Docs',         sw: 'API Docs',      yo: 'API Docs',         ha: 'API Docs',      href: '/api/' },
-      { en: 'Embed Tools', fr: 'Intégrer',         sw: 'Chomeka Zana',  yo: 'Fi Iṣẹ́ Sínú',     ha: 'Saka Kayan Aiki', href: '/widgets/demo/' },
+      { en: 'API Docs',    fr: 'API Docs',         sw: 'API Docs',      yo: 'API Docs',         ha: 'API Docs (Turanci)',      href: '/api/' },
+      { en: 'Embed Tools', fr: 'Intégrer',         sw: 'Chomeka Zana',  yo: 'Fi Iṣẹ́ Sínú',     ha: 'Saka Kayan Aiki (Turanci)', href: '/widgets/demo/' },
     ],
     legal: [
-      { en: 'Privacy Policy', fr: 'Confidentialité', sw: 'Sera ya Faragha', yo: 'Ìlànà Aṣírí',  ha: 'Manufar sirri', href: '/privacy/' },
-      { en: 'Terms of Use',   fr: 'Conditions',      sw: 'Masharti',        yo: 'Òfin Lílò',     ha: 'Sharuddan amfani', href: '/terms/' },
+      { en: 'Privacy Policy', fr: 'Confidentialité', sw: 'Sera ya Faragha', yo: 'Ìlànà Aṣírí',  ha: 'Manufar sirri (Turanci)', href: '/privacy/' },
+      { en: 'Terms of Use',   fr: 'Conditions',      sw: 'Masharti',        yo: 'Òfin Lílò',     ha: 'Sharuddan amfani (Turanci)', href: '/terms/' },
       { en: 'Sitemap',        fr: 'Plan du site',    sw: 'Ramani',          yo: 'Àtòjọ Ojú-ìwé', ha: 'Taswirar shafi',href: '/sitemap.xml' },
     ],
   };
@@ -395,7 +395,7 @@
 
             <div class="top">
               <div>
-                <a href="${this._footerHref('/', '/ha/')}" class="logo-row" aria-label="AfroTools home">
+                <a href="${this._footerHref('/', '/ha/')}" class="logo-row">
                   ${MARK}
                   <div>
                     <span class="logo-name">AFRO<b>TOOLS</b></span>
@@ -404,7 +404,7 @@
                 </a>
                 <p class="tagline">${tagline}</p>
                 <div class="social">
-                  <a href="https://x.com/afrotoolsHQ" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">&#120143;</a>
+                  <a href="https://x.com/afrotoolsHQ" target="_blank" rel="noopener noreferrer" aria-label="&#120143; X (Twitter)">&#120143;</a>
                   <a href="https://www.linkedin.com/company/afrotools/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>
                   <a href="https://www.facebook.com/afrotoolsHQ" target="_blank" rel="noopener noreferrer" aria-label="Facebook">f</a>
                 </div>
@@ -490,14 +490,23 @@
   /* ── Auto-load site-wide AI advisor (deferred until idle) ── */
   /* Uses chat bundle if available (from manifest), falls back to individual file */
   var _idle = window.requestIdleCallback || function(cb) { setTimeout(cb, 2000); };
-  _idle(function() {
+  var _assistantLoaded = false;
+  function _loadAssistant() {
+    if (_assistantLoaded) return;
     if (document.querySelector('script[src*="site-assistant"]') || document.querySelector('script[src*="chat."]')) return;
+    _assistantLoaded = true;
     const s = document.createElement('script');
     // Try chat bundle first, fall back to individual file
     var bundlePath = document.documentElement.getAttribute('data-chat-bundle');
     s.src = bundlePath || '/assets/js/components/site-assistant.min.js';
     s.defer = true;
     document.head.appendChild(s);
+  }
+  ['pointerdown','keydown'].forEach(function(eventName) {
+    window.addEventListener(eventName, _loadAssistant, { once: true, passive: true });
   });
+  window.addEventListener('load', function() {
+    setTimeout(function() { _idle(_loadAssistant); }, 12000);
+  }, { once: true });
 
 })();

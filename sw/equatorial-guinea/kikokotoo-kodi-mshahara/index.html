@@ -22,7 +22,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
@@ -32,7 +32,7 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
 <style>
@@ -44,7 +44,10 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Mabanda ya kodi Guinea ya Ikweta ni yapi?","acceptedAnswer":{"@type":"Answer","text":"Guinea ya Ikweta inatumia mabanda ya IRPF: 0% hadi XAF 1,000,000/mwaka; 10% kwa XAF 1,000,001-3,000,000; 15% kwa XAF 3,000,001-7,000,000; 20% kwa XAF 7,000,001-14,000,000; 25% zaidi ya XAF 14,000,000 kwa mwaka."}},{"@type":"Question","name":"INSESO ni nini?","acceptedAnswer":{"@type":"Answer","text":"INSESO (Instituto Nacional de Seguridad Social) ni shirika la mafao ya kijamii Guinea ya Ikweta. Mfanyakazi analipa 4.5% na mwajiri analipa 21.5% ya mshahara ghafi."}},{"@type":"Question","name":"Guinea ya Ikweta inatumia lugha gani?","acceptedAnswer":{"@type":"Answer","text":"Guinea ya Ikweta ni nchi pekee ya Afrika inayotumia Kihispania kama lugha rasmi. Pia inatumia Kifaransa na Kiportugali. Ni nchi ndogo kabisa inayozungumza Kihispania barani Afrika."}}]}
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="tool-page">
 <a href="#main-content" class="skip-link">Ruka hadi maudhui makuu</a>
@@ -88,7 +91,7 @@
               <span style="font-size:.75rem;font-weight:700;color:#333">Mshahara Ghafi wa Mwezi</span>
               <span style="font-size:.92rem;font-weight:800;color:var(--primary)" id="sliderVal">XAF 300,000</span>
             </div>
-            <input type="range" id="salarySlider" min="50000" max="8000000" step="50000" value="300000" oninput="onSlider(this)" style="width:100%;height:5px;border-radius:3px;cursor:pointer">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="8000000" step="50000" value="300000" oninput="onSlider(this)" style="width:100%;height:5px;border-radius:3px;cursor:pointer">
             <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:.65rem;color:#666">
               <span>XAF 50,000</span><span>XAF 8,000,000</span>
             </div>
@@ -100,16 +103,16 @@
             </div>
             <div style="position:relative">
               <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.78rem;font-weight:700;color:#666;pointer-events:none">XAF</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" value="300000" oninput="onInput(this)" style="width:100%;padding:11px 13px 11px 60px;background:#f5f5f5;border:1.5px solid #ddd;border-radius:7px;font-size:1rem;font-weight:600;outline:none;-moz-appearance:textfield">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" value="300000" oninput="onInput(this)" style="width:100%;padding:11px 13px 11px 60px;background:#f5f5f5;border:1.5px solid #ddd;border-radius:7px;font-size:1rem;font-weight:600;outline:none;-moz-appearance:textfield">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(300000, this)">XAF 300k</button>
-            <button class="preset-btn" onclick="setPreset(1000000, this)">XAF 1M</button>
-            <button class="preset-btn" onclick="setPreset(2000000, this)">XAF 2M</button>
-            <button class="preset-btn" onclick="setPreset(4000000, this)">XAF 4M</button>
-            <button class="preset-btn" onclick="setPreset(7000000, this)">XAF 7M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(300000, this)">XAF 300k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">XAF 1M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(2000000, this)">XAF 2M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(4000000, this)">XAF 4M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(7000000, this)">XAF 7M</button>
           </div>
 
 
@@ -126,7 +129,7 @@
             <p style="font-size:.7rem;color:#666;margin-top:5px">Hifadhi ya jamii ya mfanyakazi (4.5%) inakubaliwa kikamilifu kama punguzo kutoka mapato yanayotozwa kodi kabla ya kodi ya IRPF.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()" style="width:100%;margin-top:8px">Kokotoa Mshahara Halisi &rarr;</button>
+          <button type="button" class="calc-btn" onclick="calculate()" style="width:100%;margin-top:8px">Kokotoa Mshahara Halisi &rarr;</button>
         </div>
       </div>
 
@@ -139,8 +142,8 @@
         </div>
         <div style="padding:20px">
           <div style="display:flex;gap:4px;background:#f5f5f5;padding:4px;border-radius:7px;margin-bottom:18px">
-            <button class="per-btn on" onclick="setPeriod('monthly',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:#fff;border-radius:5px;cursor:pointer;color:var(--primary);box-shadow:0 1px 5px rgba(0,0,0,.09)">Kwa Mwezi</button>
-            <button class="per-btn" onclick="setPeriod('annual',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:transparent;border-radius:5px;cursor:pointer;color:#666">Kwa Mwaka</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:#fff;border-radius:5px;cursor:pointer;color:var(--primary);box-shadow:0 1px 5px rgba(0,0,0,.09)">Kwa Mwezi</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:transparent;border-radius:5px;cursor:pointer;color:#666">Kwa Mwaka</button>
           </div>
           <div id="resContent"></div>
           <div style="margin:16px 0">
@@ -157,16 +160,16 @@
 
         <div style="padding:0 22px 22px">
           <div style="display:flex;gap:6px;margin-bottom:14px">
-            <button class="chart-tab on" onclick="setChart('donut',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Muhtasari</button>
-            <button class="chart-tab" onclick="setChart('bar',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Mabanda ya Kodi</button>
-            <button class="chart-tab" onclick="setChart('employer',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Gharama ya Mwajiri</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Muhtasari</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Mabanda ya Kodi</button>
+            <button type="button" class="chart-tab" onclick="setChart('employer',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Gharama ya Mwajiri</button>
           </div>
           <div style="position:relative;height:200px"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 22px 22px">
-          <button onclick="openPdfModal()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,215,0,.1);border:1.5px solid rgba(255,215,0,.35);color:#7a6200">📄 Pakua PDF</button>
-          <button id="gqShareBtn" onclick="shareResult()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:#f5f5f5;border:1.5px solid #ddd;color:#333">Shiriki Matokeo</button>
+          <button type="button" onclick="openPdfModal()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,215,0,.1);border:1.5px solid rgba(255,215,0,.35);color:#7a6200">📄 Pakua PDF</button>
+          <button type="button" id="gqShareBtn" onclick="shareResult()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:#f5f5f5;border:1.5px solid #ddd;color:#333">Shiriki Matokeo</button>
         </div>
 
           <!-- Save & Share -->
@@ -197,12 +200,12 @@
         <div style="padding:16px 18px">
           <p class="ai-status" id="aiStatus" style="font-size:.8rem;color:rgba(255,255,255,.48);line-height:1.65;margin-bottom:12px">Kokotoa mshahara wako kwanza — nitachambua hali yako ya IRPF.</p>
           <div class="ai-response" id="aiResp" style="font-size:.82rem;color:rgba(255,255,255,.78);line-height:1.7;display:none"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled style="width:100%;padding:11px;border-radius:6px;color:#93C5FD;font-size:.72rem;font-weight:700;cursor:pointer;margin-top:12px">Kokotoa kwanza →</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled style="width:100%;padding:11px;border-radius:6px;color:#93C5FD;font-size:.72rem;font-weight:700;cursor:pointer;margin-top:12px">Kokotoa kwanza →</button>
           <div class="ai-chat" id="aiChat" style="display:none;margin-top:12px;border-top:1px solid rgba(255,255,255,.07);padding-top:12px">
             <div id="chatMsgs" style="max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:9px"></div>
             <div style="display:flex;gap:6px">
-              <input class="chat-in" id="chatIn" placeholder="Uliza swali la kufuatilia..." onkeydown="if(event.key==='Enter')sendChat()" style="flex:1;padding:8px 11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:5px;font-size:.78rem;color:#fff;outline:none">
-              <button class="chat-send" onclick="sendChat()" style="padding:8px 13px;background:var(--primary);border:none;border-radius:5px;color:#fff;cursor:pointer;font-weight:700">→</button>
+              <input aria-label="Uliza swali la kufuatilia" class="chat-in" id="chatIn" placeholder="Uliza swali la kufuatilia..." onkeydown="if(event.key==='Enter')sendChat()" style="flex:1;padding:8px 11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:5px;font-size:.78rem;color:#fff;outline:none">
+              <button type="button" class="chat-send" onclick="sendChat()" style="padding:8px 13px;background:var(--primary);border:none;border-radius:5px;color:#fff;cursor:pointer;font-weight:700">→</button>
             </div>
           </div>
         </div>
@@ -226,7 +229,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/gq-paye.webp" alt="Equatorial Guinea Kikokotoo cha PAYE" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/gq-paye.webp" alt="Equatorial Guinea Kikokotoo cha PAYE" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Equatorial Guinea Kikokotoo cha PAYE</div>
             <div class="tool-info-cat">Kodi na Fedha</div>
@@ -247,7 +250,7 @@
           </div>
         </div>
         <div class="tool-info-save">
-          <button class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
+          <button type="button" class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             <span id="sidebarSaveLabel">Hifadhi kwenye Zana Zangu</span>
           </button>
@@ -255,7 +258,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Imesasishwa: Machi 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Shiriki</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Shiriki</button>
             <a class="tool-info-action" href="/sw/mshahara-na-kodi/paye/">Nchi Zote</a>
           </div>
         </div>
@@ -275,18 +278,18 @@
     <p style="font-size:.83rem;color:#555;line-height:1.6;margin-bottom:20px">Weka barua pepe yako upate PDF yenye maelezo ya kina.</p>
     <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
       <input type="hidden" name="form-name" value="pdf-leads">
-        <p style="display:none"><input name="bot-field"></p>
+        <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
       <input type="hidden" name="country" value="Equatorial Guinea">
       <input type="hidden" name="country_code" value="GQ">
       <input type="hidden" name="tool" value="paye">
       <input type="hidden" name="tool_id" value="gq-paye">
       <input type="hidden" name="currency" value="XAF">
       <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-      <input class="modal-input" type="text" name="name" id="pdfName" placeholder="Jina lako (hiari)" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
-      <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" required style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
+      <input aria-label="Jina lako (hiari)" class="modal-input" type="text" name="name" id="pdfName" placeholder="Jina lako (hiari)" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
+      <input aria-label="Barua pepe yako" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" required style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
       <button class="modal-submit" type="submit" style="width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:7px;font-size:.88rem;font-weight:700;cursor:pointer">Pata PDF Yangu →</button>
     </form>
-    <button class="modal-cancel" onclick="closePdfModal()" style="width:100%;padding:10px;background:transparent;border:none;font-size:.78rem;color:#666;cursor:pointer;margin-top:6px">Hapana, asante</button>
+    <button type="button" class="modal-cancel" onclick="closePdfModal()" style="width:100%;padding:10px;background:transparent;border:none;font-size:.78rem;color:#666;cursor:pointer;margin-top:6px">Hapana, asante</button>
   </div>
 </div>
 
@@ -304,11 +307,11 @@
         </div>
       </div>
       <div class="ng-save-actions">
-        <button class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
+        <button type="button" class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
           Hifadhi kwenye Zana Zangu
         </button>
-        <button class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
+        <button type="button" class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Shiriki
         </button>

@@ -7,7 +7,7 @@
 <title>Trade Finance Comparator — LC vs T/T vs CAD for African Trade | AfroTools</title>
 <meta name="description" content="Compare trade finance options for African imports and exports. Letter of Credit, T/T, Cash Against Documents, Open Account — costs, risks, and when to use each.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
 <style>
 /* ── Tool Shell, Hero & Navigation ──────────────── */
@@ -94,8 +94,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 </head>
 <body>
@@ -107,10 +107,10 @@
     <h1 class="tool-hero-title">Trade Finance Comparator</h1>
     <p class="tool-hero-desc">Compare 6 trade finance instruments for African importers &amp; exporters — costs, risks, speed, and when to use each.</p>
     <div class="tool-tabs" id="tabs">
-      <button class="tool-tab on" onclick="setTab('compare',this)">Compare All</button>
-      <button class="tool-tab" onclick="setTab('advisor',this)">Smart Advisor</button>
-      <button class="tool-tab" onclick="setTab('calculator',this)">Cost Calculator</button>
-      <button class="tool-tab" onclick="setTab('guide',this)">Africa Guide</button>
+      <button type="button" class="tool-tab on" onclick="setTab('compare',this)">Compare All</button>
+      <button type="button" class="tool-tab" onclick="setTab('advisor',this)">Smart Advisor</button>
+      <button type="button" class="tool-tab" onclick="setTab('calculator',this)">Cost Calculator</button>
+      <button type="button" class="tool-tab" onclick="setTab('guide',this)">Africa Guide</button>
     </div>
   </div>
 
@@ -133,7 +133,7 @@
       <h2 class="section-title">Smart Finance Advisor</h2>
       <p class="section-desc">Answer a few questions and get a personalised recommendation.</p>
       <div id="advisorQuestions"></div>
-      <button class="pill-btn" onclick="runAdvisor()" style="margin-top:16px;background:var(--brand);color:#fff">Get Recommendation →</button>
+      <button type="button" class="pill-btn" onclick="runAdvisor()" style="margin-top:16px;background:var(--brand);color:#fff">Get Recommendation →</button>
       <div class="rec-card" id="recCard">
         <div id="recContent"></div>
       </div>
@@ -147,7 +147,7 @@
       <div class="calc-row">
         <div class="field-group">
           <label class="field-label">Trade Value (USD)</label>
-          <input class="field-input" type="number" id="calcValue" value="50000" min="1000" onchange="runCalc()">
+          <input aria-label="CalcValue" class="field-input" type="number" id="calcValue" value="50000" min="1000" onchange="runCalc()">
         </div>
         <div class="field-group">
           <label class="field-label">Your Country</label>
@@ -173,7 +173,7 @@
         </div>
         <div class="field-group" id="tenorGroup">
           <label class="field-label">Tenor (days, for Usance)</label>
-          <input class="field-input" type="number" id="calcTenor" value="90" min="30" max="180" onchange="runCalc()">
+          <input aria-label="CalcTenor" class="field-input" type="number" id="calcTenor" value="90" min="30" max="180" onchange="runCalc()">
         </div>
       </div>
       <div id="calcResult" style="margin-top:20px"></div>
@@ -201,7 +201,7 @@
 </main>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script>
 <script src="/data/trade/trade-finance-data.js?v=986f72b4"></script>
 <script src="/engines/trade-finance-engine.js?v=3dd293e3"></script>
@@ -267,7 +267,7 @@ function buildAdvisor() {
     { id: 'regular',      label: 'Is this a regular monthly supplier relationship?' }
   ];
   document.getElementById('advisorQuestions').innerHTML = questions.map(function(q) {
-    return '<div class="advisor-q"><label><input type="checkbox" id="aq-' + q.id + '"> ' + q.label + '</label></div>';
+    return '<div class="advisor-q"><label><input aria-label="Aq ' + q.id + '" type="checkbox" id="aq-' + q.id + '"> ' + q.label + '</label></div>';
   }).join('');
 }
 
@@ -286,7 +286,7 @@ function runAdvisor() {
     '<div class="obs-box">' + rec.reason + '</div>' +
     '<div style="margin-top:12px;font-size:13px"><strong>Cost range:</strong> ' + inst.costRange.min + '–' + inst.costRange.max + ' ' + inst.costRange.unit + '</div>' +
     '<div style="font-size:13px"><strong>Speed:</strong> ' + inst.processingTime.min + '–' + inst.processingTime.max + ' ' + inst.processingTime.unit + '</div>' +
-    '<button class="pill-btn" onclick="setTab(\'calculator\',document.querySelectorAll(\'.tool-tab\')[2]);document.getElementById(\'calcInstrument\').value=\'' + rec.recommended + '\';runCalc();" style="margin-top:14px;background:var(--brand);color:#fff">Calculate Cost →</button>';
+    '<button type="button" class="pill-btn" onclick="setTab(\'calculator\',document.querySelectorAll(\'.tool-tab\')[2]);document.getElementById(\'calcInstrument\').value=\'' + rec.recommended + '\';runCalc();" style="margin-top:14px;background:var(--brand);color:#fff">Calculate Cost →</button>';
   card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 

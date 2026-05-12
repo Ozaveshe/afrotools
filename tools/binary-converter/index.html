@@ -23,10 +23,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <style>
@@ -611,7 +611,7 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><link rel="alternate" hreflang="en" href="https://afrotools.com/tools/binary-converter/" />
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><link rel="alternate" hreflang="en" href="https://afrotools.com/tools/binary-converter/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/binary-converter/" />
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -683,25 +683,25 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
                 <option value="8">Octal (8)</option>
                 <option value="custom">Custom...</option>
               </select>
-              <input type="text" class="f-input" id="inputValue" placeholder="Enter a number..." oninput="liveConvert()" autocomplete="off" spellcheck="false">
+              <input aria-label="Enter a number" type="text" class="f-input" id="inputValue" placeholder="Enter a number..." oninput="liveConvert()" autocomplete="off" spellcheck="false">
             </div>
             <div class="custom-base-row" id="customBaseRow">
               <label class="f-label"><span class="f-label-text">Custom Base (2-36)</span></label>
-              <input type="number" class="custom-base-input" id="customBaseInput" min="2" max="36" value="5" oninput="liveConvert()">
+              <input aria-label="CustomBaseInput" type="number" class="custom-base-input" id="customBaseInput" min="2" max="36" value="5" oninput="liveConvert()">
             </div>
           </div>
 
           <div class="action-row">
-            <button class="btn-action" onclick="swapBases()" title="Swap input base with binary">
+            <button type="button" class="btn-action" onclick="swapBases()" title="Swap input base with binary">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
               Swap
             </button>
-            <button class="btn-action" onclick="clearAll()" title="Clear all fields">
+            <button type="button" class="btn-action" onclick="clearAll()" title="Clear all fields">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
               Clear
             </button>
             <label class="group-toggle">
-              <input type="checkbox" id="digitGroup" onchange="liveConvert()" checked>
+              <input aria-label="DigitGroup" type="checkbox" id="digitGroup" onchange="liveConvert()" checked>
               Group digits
             </label>
           </div>
@@ -744,7 +744,7 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
         <div class="card-body">
           <div class="field">
             <label class="f-label"><span class="f-label-text">Decimal value</span></label>
-            <input type="text" class="f-input" id="ieeeInput" placeholder="e.g. 3.14, -0.5, 255" oninput="updateIEEE()" autocomplete="off" spellcheck="false">
+            <input aria-label="E.g. 3.14, 0.5, 255" type="text" class="f-input" id="ieeeInput" placeholder="e.g. 3.14, -0.5, 255" oninput="updateIEEE()" autocomplete="off" spellcheck="false">
           </div>
           <div id="ieeeOutput" style="display:none"></div>
         </div>
@@ -756,11 +756,11 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
         <div class="card-body">
           <div class="field">
             <label class="f-label"><span class="f-label-text">Operand A (decimal)</span></label>
-            <input type="text" class="f-input" id="bitA" placeholder="e.g. 42" oninput="updateBitwise()" autocomplete="off">
+            <input aria-label="E.g. 42" type="text" class="f-input" id="bitA" placeholder="e.g. 42" oninput="updateBitwise()" autocomplete="off">
           </div>
           <div class="field">
             <label class="f-label"><span class="f-label-text">Operand B (decimal)</span></label>
-            <input type="text" class="f-input" id="bitB" placeholder="e.g. 27" oninput="updateBitwise()" autocomplete="off">
+            <input aria-label="E.g. 27" type="text" class="f-input" id="bitB" placeholder="e.g. 27" oninput="updateBitwise()" autocomplete="off">
           </div>
           <div id="bitwiseOutput" style="display:none"></div>
         </div>
@@ -771,18 +771,18 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
         <div class="card-head">
           <span class="card-title">Binary Arithmetic</span>
           <div>
-            <button class="tab-btn active" onclick="setArithOp('add',this)">Add</button>
-            <button class="tab-btn" onclick="setArithOp('sub',this)">Subtract</button>
+            <button type="button" class="tab-btn active" onclick="setArithOp('add',this)">Add</button>
+            <button type="button" class="tab-btn" onclick="setArithOp('sub',this)">Subtract</button>
           </div>
         </div>
         <div class="card-body">
           <div class="field">
             <label class="f-label"><span class="f-label-text">Binary A</span></label>
-            <input type="text" class="f-input" id="arithA" placeholder="e.g. 1010" oninput="updateArith()" autocomplete="off">
+            <input aria-label="E.g. 1010" type="text" class="f-input" id="arithA" placeholder="e.g. 1010" oninput="updateArith()" autocomplete="off">
           </div>
           <div class="field">
             <label class="f-label"><span class="f-label-text">Binary B</span></label>
-            <input type="text" class="f-input" id="arithB" placeholder="e.g. 0110" oninput="updateArith()" autocomplete="off">
+            <input aria-label="E.g. 0110" type="text" class="f-input" id="arithB" placeholder="e.g. 0110" oninput="updateArith()" autocomplete="off">
           </div>
           <div id="arithOutput" style="display:none"></div>
         </div>
@@ -1095,7 +1095,7 @@ function liveConvert() {
     var activeClass = b === base ? ' active' : '';
     var id = 'val-' + b;
     gridHTML += '<div class="output-box' + activeClass + '">' +
-      '<button class="copy-btn" onclick="copyText(\'' + rawVal.replace(/'/g, "\\'") + '\', this)">Copy</button>' +
+      '<button type="button" class="copy-btn" onclick="copyText(\'' + rawVal.replace(/'/g, "\\'") + '\', this)">Copy</button>' +
       '<div class="base-label">' + label + ' (Base ' + b + ')</div>' +
       '<div class="base-value" id="' + id + '">' + displayVal + '</div>' +
       '</div>';
@@ -1204,7 +1204,7 @@ function showTwosComplement(absVal) {
         grouped += binStr[i];
         if ((i + 1) % 4 === 0 && i + 1 < binStr.length) grouped += ' ';
       }
-      html += '<div class="twos-item"><button class="copy-btn" onclick="copyText(\'' + binStr + '\', this)">Copy</button><div class="twos-label">' + bits + '-bit</div><div class="twos-val">' + grouped + '</div></div>';
+      html += '<div class="twos-item"><button type="button" class="copy-btn" onclick="copyText(\'' + binStr + '\', this)">Copy</button><div class="twos-label">' + bits + '-bit</div><div class="twos-val">' + grouped + '</div></div>';
     }
   });
   grid.innerHTML = html;
@@ -1238,14 +1238,14 @@ function updateIEEE() {
   html += '<span class="ieee-sign" title="Sign">' + bits32[0] + '</span>';
   for (var k = 1; k <= 8; k++) html += '<span class="ieee-exp" title="Exponent">' + bits32[k] + '</span>';
   for (var k2 = 9; k2 < 32; k2++) html += '<span class="ieee-man" title="Mantissa">' + bits32[k2] + '</span>';
-  html += '</div><button class="copy-btn" style="position:static;margin-top:6px" onclick="copyText(\'' + bits32 + '\', this)">Copy</button></div>';
+  html += '</div><button type="button" class="copy-btn" style="position:static;margin-top:6px" onclick="copyText(\'' + bits32 + '\', this)">Copy</button></div>';
 
   // 64-bit display
   html += '<div class="ieee-row"><div class="ieee-label">64-bit Double (Double Precision)</div><div class="ieee-bits">';
   html += '<span class="ieee-sign" title="Sign">' + bits64[0] + '</span>';
   for (var m = 1; m <= 11; m++) html += '<span class="ieee-exp" title="Exponent">' + bits64[m] + '</span>';
   for (var m2 = 12; m2 < 64; m2++) html += '<span class="ieee-man" title="Mantissa">' + bits64[m2] + '</span>';
-  html += '</div><button class="copy-btn" style="position:static;margin-top:6px" onclick="copyText(\'' + bits64 + '\', this)">Copy</button></div>';
+  html += '</div><button type="button" class="copy-btn" style="position:static;margin-top:6px" onclick="copyText(\'' + bits64 + '\', this)">Copy</button></div>';
 
   // Legend
   html += '<div class="ieee-legend">' +
@@ -1281,7 +1281,7 @@ function updateBitwise() {
   ops.forEach(function(op) {
     var binStr = (op.val >>> 0).toString(2);
     html += '<div class="bitwise-result">' +
-      '<button class="copy-btn" onclick="copyText(\'' + op.val + '\', this)">Copy</button>' +
+      '<button type="button" class="copy-btn" onclick="copyText(\'' + op.val + '\', this)">Copy</button>' +
       '<div class="bitwise-op">' + op.name + '</div>' +
       '<div class="bitwise-dec">' + op.val + '</div>' +
       '<div class="bitwise-bin">' + binStr + '</div>' +
@@ -1359,7 +1359,7 @@ function updateArith() {
     '<div class="arith-result" style="text-align:right;letter-spacing:2px">&nbsp;&nbsp;' + resultPad + '</div>' +
     '<div style="margin-top:8px;font-size:0.78rem;color:var(--bc-text-muted)">Decimal: ' + aVal + ' ' + opSymbol + ' ' + bVal + ' = ' + resultVal + '</div>' +
     '</div>' +
-    '<button class="copy-btn" style="position:static;margin-top:8px" onclick="copyText(\'' + resultBin + '\', this)">Copy Result</button>';
+    '<button type="button" class="copy-btn" style="position:static;margin-top:8px" onclick="copyText(\'' + resultBin + '\', this)">Copy Result</button>';
 
   output.innerHTML = html;
   output.style.display = '';

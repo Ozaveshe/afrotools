@@ -23,10 +23,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--green:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 100%);padding:44px 0 36px;overflow:hidden}
@@ -109,7 +109,7 @@ h1 em{color:#93c5fd;font-style:normal}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does an Ajo or Esusu rotating savings group work?","acceptedAnswer":{"@type":"Answer","text":"Members contribute a fixed amount at regular intervals (daily, weekly, or monthly). Each cycle, one member receives the entire pool. The rotation continues until everyone has received their payout. It is essentially a zero-interest rotating credit facility built on trust and social accountability."}},{"@type":"Question","name":"Is it better to receive your Ajo payout first or last?","acceptedAnswer":{"@type":"Answer","text":"Receiving first is like getting an interest-free loan — you get the full pool after just one contribution. Receiving last is like saving without interest — you pay everything before your payout. First position is financially more valuable but may come with higher scrutiny or obligations."}},{"@type":"Question","name":"What happens if a member defaults on their Ajo contributions?","acceptedAnswer":{"@type":"Answer","text":"Defaults are the biggest risk in rotating savings groups. If a member receives their payout and stops contributing, remaining members lose money. Mitigation strategies include joining only trusted groups, requiring guarantors, keeping groups small, collecting post-dated cheques, and having written agreements with penalty clauses."}},{"@type":"Question","name":"How much does the Ajo collector or admin typically charge?","acceptedAnswer":{"@type":"Answer","text":"Fees vary by region and type. In traditional Susu (Ghana), the collector keeps one cycle's contribution as their fee. In a 30-day daily collection, you contribute 30 times but receive 29 contributions worth. Modern groups often have no fee or charge 2-5% for administration."}}]}
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ajo-interest/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ajo-interest/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/riba-ya-ajo-esusu-stokvel/" />
@@ -182,11 +182,11 @@ h1 em{color:#93c5fd;font-style:normal}
 <option value="USD">USD - US Dollar</option>
 </select></div>
 <div class="field-row">
-<div class="field"><label class="f-label">Number of Members</label><input type="number" id="members" class="f-input" value="10" min="2" max="100"></div>
-<div class="field"><label class="f-label">Your Position in Rotation</label><input type="number" id="position" class="f-input" value="3" min="1" max="100"></div>
+<div class="field"><label class="f-label">Number of Members</label><input aria-label="Members" type="number" id="members" class="f-input" value="10" min="2" max="100"></div>
+<div class="field"><label class="f-label">Your Position in Rotation</label><input aria-label="Position" type="number" id="position" class="f-input" value="3" min="1" max="100"></div>
 </div>
 <div class="field-row">
-<div class="field"><label class="f-label">Contribution per Person</label><input type="text" id="contribution" class="f-input" placeholder="e.g. 50,000" inputmode="numeric"></div>
+<div class="field"><label class="f-label">Contribution per Person</label><input aria-label="E.g. 50,000" type="text" id="contribution" class="f-input" placeholder="e.g. 50,000" inputmode="numeric"></div>
 <div class="field"><label class="f-label">Frequency</label>
 <select id="frequency" class="f-select">
 <option value="daily">Daily</option>
@@ -194,14 +194,14 @@ h1 em{color:#93c5fd;font-style:normal}
 <option value="monthly" selected>Monthly</option>
 </select></div>
 </div>
-<div class="field"><label class="f-label">Collector/Admin Fee (%)</label><input type="number" id="fee" class="f-input" value="0" min="0" max="20" step="0.5">
+<div class="field"><label class="f-label">Collector/Admin Fee (%)</label><input aria-label="Fee" type="number" id="fee" class="f-input" value="0" min="0" max="20" step="0.5">
 <p style="font-size:.7rem;color:#94a3b8;margin-top:2px">Some Ajo collectors charge 1 contribution cycle or 2-5% fee</p></div>
 <div class="field-row">
-<div class="field"><label class="f-label">Expected Late/Missed Members</label><input type="number" id="lateMembers" class="f-input" value="0" min="0" max="100"></div>
-<div class="field"><label class="f-label">Emergency Reserve (% of Pool)</label><input type="number" id="reservePct" class="f-input" value="5" min="0" max="50" step="0.5"></div>
+<div class="field"><label class="f-label">Expected Late/Missed Members</label><input aria-label="LateMembers" type="number" id="lateMembers" class="f-input" value="0" min="0" max="100"></div>
+<div class="field"><label class="f-label">Emergency Reserve (% of Pool)</label><input aria-label="ReservePct" type="number" id="reservePct" class="f-input" value="5" min="0" max="50" step="0.5"></div>
 </div>
-<div class="field"><label class="f-label">Start Date</label><input type="date" id="startDate" class="f-input"></div>
-<button class="calc-btn" onclick="calculate()">Calculate Rotation</button>
+<div class="field"><label class="f-label">Start Date</label><input aria-label="StartDate" type="date" id="startDate" class="f-input"></div>
+<button type="button" class="calc-btn" onclick="calculate()">Calculate Rotation</button>
 </div></div>
 
 <div class="card" id="results">

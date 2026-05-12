@@ -30,10 +30,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -166,7 +166,7 @@ window.addEventListener('load', function() {
               <span class="slider-label">Salaire Brut Mensuel</span>
               <span class="slider-val" id="sliderVal">RWF 500,000</span>
             </div>
-            <input type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>RWF 50,000</span><span>RWF 5,000,000</span></div>
           </div>
 
@@ -175,16 +175,16 @@ window.addEventListener('load', function() {
             <div class="f-label"><span class="f-label-text">Ou entrez le montant mensuel exact</span><span class="f-hint">Avant toute déduction</span></div>
             <div class="f-wrap">
               <span class="f-prefix">RWF</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="500,000" min="0" step="10000" value="500000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="500,000" min="0" step="10000" value="500000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(200000, this)">RWF 200k</button>
-            <button class="preset-btn" onclick="setPreset(500000, this)">RWF 500k</button>
-            <button class="preset-btn" onclick="setPreset(1000000, this)">RWF 1M</button>
-            <button class="preset-btn" onclick="setPreset(2000000, this)">RWF 2M</button>
-            <button class="preset-btn" onclick="setPreset(4000000, this)">RWF 4M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(200000, this)">RWF 200k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(500000, this)">RWF 500k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">RWF 1M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(2000000, this)">RWF 2M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(4000000, this)">RWF 4M</button>
           </div>
 
 
@@ -204,7 +204,7 @@ window.addEventListener('load', function() {
             <p class="f-note">La cotisation RSSB du salarié (6 %) est entièrement déductible du revenu imposable avant le calcul du PAYE. La RSSB employeur (6 %) et la part employeur de la cotisation maternité apparaissent dans le coût employeur. Aucun plafond RSSB n'est appliqué ici.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net →</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculer mon salaire net →</button>
         </div>
       </div>
 
@@ -218,8 +218,8 @@ window.addEventListener('load', function() {
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button class="per-btn on" onclick="setPeriod('monthly',this)">Mensuel</button>
-            <button class="per-btn" onclick="setPeriod('annual',this)">Annuel</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Mensuel</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annuel</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
@@ -234,23 +234,23 @@ window.addEventListener('load', function() {
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">Répartition</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Tranches d'imposition</button>
-            <button class="chart-tab" onclick="setChart('employer',this)">Coût employeur</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Répartition</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Tranches d'imposition</button>
+            <button type="button" class="chart-tab" onclick="setChart('employer',this)">Coût employeur</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Télécharger le PDF
           </button>
-          <button class="act-btn" onclick="whatsappShare()" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
+          <button type="button" class="act-btn" onclick="whatsappShare()" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.618-1.462A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.171 0-4.2-.695-5.856-1.873l-.42-.277-2.735.867.87-2.664-.305-.44A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
             WhatsApp
           </button>
-          <button class="act-btn act-share" id="rwShareBtn" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" id="rwShareBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager le résultat
           </button>
@@ -271,12 +271,12 @@ window.addEventListener('load', function() {
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculez d'abord votre salaire. J'analyserai votre position PAYE auprès de la RRA, la déductibilité RSSB, l'impact de la cotisation maternité et les points d'optimisation utiles au Rwanda.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord pour débloquer →</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord pour débloquer →</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Posez une question complémentaire…" onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">→</button>
+              <input aria-label="Posez une question complémentaire" class="chat-in" id="chatIn" placeholder="Posez une question complémentaire…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
 
@@ -319,7 +319,7 @@ window.addEventListener('load', function() {
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/rw-vat.webp" alt="Calculateur PAYE Rwanda" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/rw-vat.webp" alt="Calculateur PAYE Rwanda" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur PAYE Rwanda</div>
             <div class="tool-info-cat">Fiscalité &amp; finance</div>
@@ -342,7 +342,7 @@ window.addEventListener('load', function() {
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mis à jour : mars 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/tools/calculateur-paye/">Tous les pays</a>
           </div>
         </div>
@@ -394,25 +394,25 @@ window.addEventListener('load', function() {
       <p>Entrez votre email pour obtenir un PDF détaillé. Nous pourrons aussi vous prévenir si les règles PAYE du Rwanda changent.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input name="bot-field"></p>
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country"      value="Rwanda">
         <input type="hidden" name="country_code" value="RW">
         <input type="hidden" name="tool"         value="paye">
         <input type="hidden" name="tool_id"      value="rw-paye">
         <input type="hidden" name="currency"     value="RWF">
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse courriel" autocomplete="email" required>
+        <input aria-label="Votre nom (facultatif)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
+        <input aria-label="Votre adresse courriel" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse courriel" autocomplete="email" required>
         <button class="modal-submit" type="submit">Recevoir mon PDF →</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">Non merci</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">Non merci</button>
     </div>
     <div class="modal-success" id="modalSuccess">
-      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">✕</button>
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">✕</button>
       <div class="big-check">✅</div>
       <h4>Le PDF s'ouvre maintenant</h4>
       <p>Cliquez sur <strong>Enregistrer en PDF</strong> dans la fenêtre d'impression.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Terminer →</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Terminer →</button>
     </div>
   </div>
 </div>

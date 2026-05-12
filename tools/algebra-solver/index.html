@@ -17,10 +17,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;600;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <style>
@@ -223,7 +223,7 @@ h1 em{color:#a5b4fc;font-style:normal}
   .answer-val{font-size:1.1rem}
 }
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/algebra-solver/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/algebra-solver/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kisuluhishi-algebra/">
@@ -290,8 +290,8 @@ h1 em{color:#a5b4fc;font-style:normal}
 
   <!-- Mode tabs -->
   <div class="mode-tabs">
-    <button class="mode-tab active" onclick="setMode('solve')">Solve</button>
-    <button class="mode-tab" onclick="setMode('practice')">Practice</button>
+    <button type="button" class="mode-tab active" onclick="setMode('solve')">Solve</button>
+    <button type="button" class="mode-tab" onclick="setMode('practice')">Practice</button>
   </div>
 
   <!-- ── Solve Mode ── -->
@@ -300,41 +300,41 @@ h1 em{color:#a5b4fc;font-style:normal}
       <div class="input-header">
         <span class="input-title">Enter Equation</span>
         <div class="type-pills">
-          <button class="type-pill active" data-type="linear" onclick="setType('linear')">Linear</button>
-          <button class="type-pill" data-type="quadratic" onclick="setType('quadratic')">Quadratic</button>
-          <button class="type-pill" data-type="simultaneous" onclick="setType('simultaneous')">System</button>
-          <button class="type-pill" data-type="inequality" onclick="setType('inequality')">Inequality</button>
+          <button type="button" class="type-pill active" data-type="linear" onclick="setType('linear')">Linear</button>
+          <button type="button" class="type-pill" data-type="quadratic" onclick="setType('quadratic')">Quadratic</button>
+          <button type="button" class="type-pill" data-type="simultaneous" onclick="setType('simultaneous')">System</button>
+          <button type="button" class="type-pill" data-type="inequality" onclick="setType('inequality')">Inequality</button>
         </div>
       </div>
       <div class="input-body">
         <div class="equation-input-wrap">
-          <input type="text" class="equation-input" id="eqInput" placeholder="e.g. 2x + 5 = 13" autocomplete="off" spellcheck="false">
-          <button class="solve-btn" onclick="solveEquation()">Solve</button>
+          <input aria-label="E.g. 2x + 5 = 13" type="text" class="equation-input" id="eqInput" placeholder="e.g. 2x + 5 = 13" autocomplete="off" spellcheck="false">
+          <button type="button" class="solve-btn" onclick="solveEquation()">Solve</button>
         </div>
         <div class="eq2-row" id="eq2Row">
           <label class="eq2-label">Equation 2</label>
-          <input type="text" class="eq2-input" id="eq2Input" placeholder="e.g. 4x - y = 5" autocomplete="off" spellcheck="false">
+          <input aria-label="E.g. 4x y = 5" type="text" class="eq2-input" id="eq2Input" placeholder="e.g. 4x - y = 5" autocomplete="off" spellcheck="false">
         </div>
         <div class="examples" id="examplesRow">
           <span class="examples-label">Try:</span>
         </div>
         <div class="math-kb">
-          <button class="kb-btn" onclick="insertChar('x')">x</button>
-          <button class="kb-btn" onclick="insertChar('y')">y</button>
-          <button class="kb-btn" onclick="insertChar('^2')">x&sup2;</button>
-          <button class="kb-btn" onclick="insertChar('^3')">x&sup3;</button>
-          <button class="kb-btn" onclick="insertChar('^')">^</button>
-          <button class="kb-btn" onclick="insertChar('√')">&#8730;</button>
-          <button class="kb-btn" onclick="insertChar('(')">(</button>
-          <button class="kb-btn" onclick="insertChar(')')">)</button>
-          <button class="kb-btn" onclick="insertChar('+')" style="font-size:1rem">+</button>
-          <button class="kb-btn" onclick="insertChar('-')" style="font-size:1rem">-</button>
-          <button class="kb-btn" onclick="insertChar('=')">=</button>
-          <button class="kb-btn" onclick="insertChar('>')">&gt;</button>
-          <button class="kb-btn" onclick="insertChar('<')">&lt;</button>
-          <button class="kb-btn" onclick="insertChar('>=')">&ge;</button>
-          <button class="kb-btn" onclick="insertChar('<=')">&le;</button>
-          <button class="kb-btn wide" onclick="clearInput()">Clear</button>
+          <button type="button" class="kb-btn" onclick="insertChar('x')">x</button>
+          <button type="button" class="kb-btn" onclick="insertChar('y')">y</button>
+          <button type="button" class="kb-btn" onclick="insertChar('^2')">x&sup2;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('^3')">x&sup3;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('^')">^</button>
+          <button type="button" class="kb-btn" onclick="insertChar('√')">&#8730;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('(')">(</button>
+          <button type="button" class="kb-btn" onclick="insertChar(')')">)</button>
+          <button type="button" class="kb-btn" onclick="insertChar('+')" style="font-size:1rem">+</button>
+          <button type="button" class="kb-btn" onclick="insertChar('-')" style="font-size:1rem">-</button>
+          <button type="button" class="kb-btn" onclick="insertChar('=')">=</button>
+          <button type="button" class="kb-btn" onclick="insertChar('>')">&gt;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('<')">&lt;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('>=')">&ge;</button>
+          <button type="button" class="kb-btn" onclick="insertChar('<=')">&le;</button>
+          <button type="button" class="kb-btn wide" onclick="clearInput()">Clear</button>
         </div>
       </div>
     </div>
@@ -348,8 +348,8 @@ h1 em{color:#a5b4fc;font-style:normal}
       <div class="sol-body">
         <ol class="steps" id="stepsContainer"></ol>
         <div class="next-step-row" id="nextStepRow">
-          <button class="next-step-btn" id="nextStepBtn" onclick="showNextStep()">Next Step</button>
-          <button class="show-all-btn" onclick="showAllSteps()">Show All</button>
+          <button type="button" class="next-step-btn" id="nextStepBtn" onclick="showNextStep()">Next Step</button>
+          <button type="button" class="show-all-btn" onclick="showAllSteps()">Show All</button>
         </div>
         <div id="answerContainer"></div>
       </div>
@@ -370,21 +370,21 @@ h1 em{color:#a5b4fc;font-style:normal}
       <div class="practice-header">
         <span class="practice-title">Practice Problem</span>
         <div class="diff-pills">
-          <button class="diff-pill active" onclick="setDifficulty('easy',this)">Easy</button>
-          <button class="diff-pill" onclick="setDifficulty('medium',this)">Medium</button>
-          <button class="diff-pill" onclick="setDifficulty('hard',this)">Hard</button>
+          <button type="button" class="diff-pill active" onclick="setDifficulty('easy',this)">Easy</button>
+          <button type="button" class="diff-pill" onclick="setDifficulty('medium',this)">Medium</button>
+          <button type="button" class="diff-pill" onclick="setDifficulty('hard',this)">Hard</button>
         </div>
       </div>
       <div class="practice-body">
         <div class="practice-problem" id="practiceQ">Click "New Problem" to start</div>
         <div class="practice-input-row">
-          <input type="text" class="practice-input" id="practiceAnswer" placeholder="Your answer (e.g. x = 5)">
-          <button class="check-btn" onclick="checkPractice()">Check</button>
+          <input aria-label="Your answer (e.g. x = 5)" type="text" class="practice-input" id="practiceAnswer" placeholder="Your answer (e.g. x = 5)">
+          <button type="button" class="check-btn" onclick="checkPractice()">Check</button>
         </div>
         <div class="practice-btns">
-          <button class="p-btn" onclick="newPractice()">New Problem</button>
-          <button class="p-btn" onclick="showPracticeHint()">Hint</button>
-          <button class="p-btn green" onclick="solvePractice()">Show Solution</button>
+          <button type="button" class="p-btn" onclick="newPractice()">New Problem</button>
+          <button type="button" class="p-btn" onclick="showPracticeHint()">Hint</button>
+          <button type="button" class="p-btn green" onclick="solvePractice()">Show Solution</button>
         </div>
         <div class="practice-feedback" id="practiceFeedback"></div>
         <div class="practice-score" id="practiceScore">
@@ -1031,7 +1031,7 @@ function showSolution(steps, answer, method, isError, isComplex) {
           '<div class="step-text">' + escHtml(s.title) + '</div>' +
           '<div class="step-math">' + mathLines + '</div>' +
           '<div class="step-why">' +
-            '<button class="step-why-toggle" onclick="toggleWhy(this)">Why?</button>' +
+            '<button type="button" class="step-why-toggle" onclick="toggleWhy(this)">Why?</button>' +
             '<div class="step-why-content">' + escHtml(s.why) + '</div>' +
           '</div>' +
         '</div>' +

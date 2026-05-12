@@ -24,9 +24,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased}
@@ -160,12 +160,12 @@ a{text-decoration:none;color:inherit}
     <input type="text" id="food-search" placeholder="Search foods — e.g. jollof, ugali, injera..." aria-label="Search African foods">
   </div>
   <div class="filters" id="region-filters">
-    <button class="filter-btn active" data-region="all">All</button>
-    <button class="filter-btn" data-region="West Africa">West Africa</button>
-    <button class="filter-btn" data-region="East Africa">East Africa</button>
-    <button class="filter-btn" data-region="Southern Africa">Southern Africa</button>
-    <button class="filter-btn" data-region="North Africa">North Africa</button>
-    <button class="filter-btn" data-region="Pan-African">Pan-African</button>
+    <button type="button" class="filter-btn active" data-region="all">All</button>
+    <button type="button" class="filter-btn" data-region="West Africa">West Africa</button>
+    <button type="button" class="filter-btn" data-region="East Africa">East Africa</button>
+    <button type="button" class="filter-btn" data-region="Southern Africa">Southern Africa</button>
+    <button type="button" class="filter-btn" data-region="North Africa">North Africa</button>
+    <button type="button" class="filter-btn" data-region="Pan-African">Pan-African</button>
   </div>
   <div class="food-grid" id="food-grid" role="list" aria-label="Food items"></div>
   <div class="food-count" id="food-count"></div>
@@ -467,7 +467,7 @@ a{text-decoration:none;color:inherit}
         '<div class="meal-name">' + f.icon + ' ' + f.name + '</div>' +
         '<div class="meal-serving"><input type="number" min="0.25" max="10" step="0.25" value="' + item.servings + '" data-mi="' + mi + '" aria-label="Servings"><span>' + f.serving.split('(')[0].trim() + '</span></div>' +
         '<div class="meal-kcal">' + servingCal + '</div>' +
-        '<button class="meal-remove" data-mi="' + mi + '" aria-label="Remove ' + f.name + '">&times;</button></div>';
+        '<button type="button" class="meal-remove" data-mi="' + mi + '" aria-label="Remove ' + f.name + '">&times;</button></div>';
     }).join('');
 
     // Calculate totals

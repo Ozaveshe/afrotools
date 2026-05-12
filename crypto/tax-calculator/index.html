@@ -28,15 +28,15 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap"></noscript>
 
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/crypto.css?v=cfeafdf7">
 
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/lib/crypto-data.js?v=b7faee1b"></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 
 <style>
@@ -555,9 +555,9 @@
       </div>
     </div>
     <div class="trade-buttons">
-      <button class="btn-add-trade" id="btn-add-trade">Add Trade</button>
-      <button class="btn-csv" id="btn-csv">Import from Binance / Luno / Quidax</button>
-      <input type="file" class="csv-input" id="csv-input" accept=".csv">
+      <button type="button" class="btn-add-trade" id="btn-add-trade">Add Trade</button>
+      <button type="button" class="btn-csv" id="btn-csv">Import from Binance / Luno / Quidax</button>
+      <input aria-label="Csv input" type="file" class="csv-input" id="csv-input" accept=".csv">
     </div>
   </div>
 
@@ -628,7 +628,7 @@
   </div>
 
   <!-- Export button -->
-  <button class="btn-export" id="btn-export">
+  <button type="button" class="btn-export" id="btn-export">
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Download Tax Report PDF
   </button>
@@ -641,11 +641,11 @@
     <span class="coming-soon-badge">Coming Soon</span>
     <h3>Download Tax Report PDF</h3>
     <p>We are building a comprehensive PDF tax report with trade-by-trade breakdown, tax summary, and country-specific guidance. Enter your email to be notified when it is ready.</p>
-    <input type="email" id="modal-email" placeholder="you@email.com">
+    <input aria-label="You@email.com" type="email" id="modal-email" placeholder="you@email.com">
     <br>
-    <button class="btn-add-trade" id="btn-notify" style="width:100%;">Notify Me</button>
+    <button type="button" class="btn-add-trade" id="btn-notify" style="width:100%;">Notify Me</button>
     <br>
-    <button class="btn-modal-close" id="btn-modal-close">Close</button>
+    <button type="button" class="btn-modal-close" id="btn-modal-close">Close</button>
   </div>
 </div>
 
@@ -944,8 +944,8 @@
       html += '<td>' + r.symbol + formatNum(t.fees) + '</td>';
       html += '<td class="' + glClass + '">' + glPrefix + r.symbol + formatNum(Math.abs(gainLoss)) + '</td>';
       html += '<td>';
-      html += '<button class="action-btn edit" onclick="window._editTrade(' + idx + ')" title="Edit">Edit</button> ';
-      html += '<button class="action-btn delete" onclick="window._deleteTrade(' + idx + ')" title="Delete">Delete</button>';
+      html += '<button type="button" class="action-btn edit" onclick="window._editTrade(' + idx + ')" title="Edit">Edit</button> ';
+      html += '<button type="button" class="action-btn delete" onclick="window._deleteTrade(' + idx + ')" title="Delete">Delete</button>';
       html += '</td>';
       html += '</tr>';
     });

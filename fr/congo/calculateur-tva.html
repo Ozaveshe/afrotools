@@ -20,10 +20,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
   :root {
     --calc-accent: #009543;
@@ -86,32 +86,32 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Mode de calcul</span></div>
             <div class="toggles" style="display:flex;gap:8px">
-              <button class="preset-btn active" id="modeAdd" onclick="setMode('add')">Ajouter la TVA (HT → TTC)</button>
-              <button class="preset-btn" id="modeRemove" onclick="setMode('remove')">Retirer la TVA (TTC → HT)</button>
+              <button type="button" class="preset-btn active" id="modeAdd" onclick="setMode('add')">Ajouter la TVA (HT → TTC)</button>
+              <button type="button" class="preset-btn" id="modeRemove" onclick="setMode('remove')">Retirer la TVA (TTC → HT)</button>
             </div>
           </div>
           <div class="field">
             <div class="f-label"><span class="f-label-text" id="amountLabel">Montant Hors Taxes (HT)</span><span class="f-hint">En Franc CFA</span></div>
             <div class="f-wrap">
               <span class="f-prefix">FCFA</span>
-              <input type="number" class="f-input" id="amount" placeholder="1 000 000" min="0" step="1000" oninput="calculate()">
+              <input aria-label="Amount" type="number" class="f-input" id="amount" placeholder="1 000 000" min="0" step="1000" oninput="calculate()">
             </div>
           </div>
           <div class="presets">
-            <button class="preset-btn" onclick="setAmount(50000)">50K</button>
-            <button class="preset-btn" onclick="setAmount(100000)">100K</button>
-            <button class="preset-btn" onclick="setAmount(500000)">500K</button>
-            <button class="preset-btn" onclick="setAmount(1000000)">1M</button>
-            <button class="preset-btn" onclick="setAmount(5000000)">5M</button>
+            <button type="button" class="preset-btn" onclick="setAmount(50000)">50K</button>
+            <button type="button" class="preset-btn" onclick="setAmount(100000)">100K</button>
+            <button type="button" class="preset-btn" onclick="setAmount(500000)">500K</button>
+            <button type="button" class="preset-btn" onclick="setAmount(1000000)">1M</button>
+            <button type="button" class="preset-btn" onclick="setAmount(5000000)">5M</button>
           </div>
           <div class="field">
             <div class="f-label"><span class="f-label-text">Taux de TVA</span></div>
             <div class="toggles" style="display:flex;gap:8px">
-              <button class="preset-btn active" id="rate18" onclick="setRate(18)">18% — Standard</button>
-              <button class="preset-btn" id="rate5" onclick="setRate(5)">5% — Réduit</button>
+              <button type="button" class="preset-btn active" id="rate18" onclick="setRate(18)">18% — Standard</button>
+              <button type="button" class="preset-btn" id="rate5" onclick="setRate(5)">5% — Réduit</button>
             </div>
           </div>
-          <button class="calc-btn" onclick="calculate()">Calculer la TVA →</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculer la TVA →</button>
         </div>
       </div>
       <div class="card results-card" id="resultsCard">
@@ -124,11 +124,11 @@
           <div id="resContent"></div>
         </div>
         <div class="action-row">
-          <afro-email-gate tool-name="Calculateur TVA Congo-Brazzaville"><button class="act-btn act-pdf" onclick="exportPdf()">
+          <afro-email-gate tool-name="Calculateur TVA Congo-Brazzaville"><button type="button" class="act-btn act-pdf" onclick="exportPdf()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             T&#233;l&#233;charger le PDF
           </button></afro-email-gate>
-          <button class="act-btn act-share" onclick="if(navigator.share)navigator.share({title:document.title,url:location.href}).catch(function(){});else{navigator.clipboard.writeText(location.href);alert('Lien copi\u00e9 !');}">
+          <button type="button" class="act-btn act-share" onclick="if(navigator.share)navigator.share({title:document.title,url:location.href}).catch(function(){});else{navigator.clipboard.writeText(location.href);alert('Lien copi\u00e9 !');}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager
           </button>

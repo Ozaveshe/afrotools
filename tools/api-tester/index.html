@@ -30,13 +30,13 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"API Tester for African Developers","applicationCategory":"DeveloperApplication","operatingSystem":"Web","url":"https://afrotools.com/tools/api-tester/","description":"Browser-based REST API tester with environments, cURL import, saved requests, assertions, response headers, code export and African API presets.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
 </script>
@@ -113,7 +113,7 @@
   <div class="workspace">
     <div class="stack">
       <section class="card">
-        <div class="card-head"><span class="card-title">Environment</span><button class="mini" id="save-env">Save variables</button></div>
+        <div class="card-head"><span class="card-title">Environment</span><button type="button" class="mini" id="save-env">Save variables</button></div>
         <div class="card-body">
           <div class="grid-3">
             <div><label for="env-name">Environment</label><select id="env-name"><option value="none">No environment</option><option value="local">Local API</option><option value="sandbox">Sandbox</option><option value="staging">Staging</option><option value="production">Production</option></select></div>
@@ -135,12 +135,12 @@
       </section>
 
       <section class="card">
-        <div class="card-head"><span class="card-title">Request</span><input id="request-name" style="max-width:260px" placeholder="Request name"></div>
+        <div class="card-head"><span class="card-title">Request</span><input aria-label="Request name" id="request-name" style="max-width:260px" placeholder="Request name"></div>
         <div class="card-body">
           <div class="request-line">
             <select id="method" class="method"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option></select>
-            <input type="url" id="url" value="https://jsonplaceholder.typicode.com/posts/1" placeholder="{{baseUrl}}/v1/endpoint">
-            <button class="send" id="send-request">Send</button>
+            <input aria-label="BaseUrl /v1/endpoint" type="url" id="url" value="https://jsonplaceholder.typicode.com/posts/1" placeholder="{{baseUrl}}/v1/endpoint">
+            <button type="button" class="send" id="send-request">Send</button>
           </div>
 
           <div class="tabs" role="tablist">
@@ -382,7 +382,7 @@
   }
 
   function rowHtml(key, value){
-    return '<div class="kv"><input class="kv-key" placeholder="Key" value="'+esc(key || '')+'"><input class="kv-value" placeholder="Value" value="'+esc(value || '')+'"><button class="remove" type="button" aria-label="Remove row">x</button></div>';
+    return '<div class="kv"><input aria-label="Key" class="kv-key" placeholder="Key" value="'+esc(key || '')+'"><input aria-label="Value" class="kv-value" placeholder="Value" value="'+esc(value || '')+'"><button class="remove" type="button" aria-label="Remove row">x</button></div>';
   }
 
   function addRow(target, key, value){

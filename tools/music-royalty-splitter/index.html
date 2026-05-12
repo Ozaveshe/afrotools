@@ -10,10 +10,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -66,7 +66,7 @@ a{text-decoration:none;color:inherit}
     <div class="en-form-grid">
       <div class="en-field">
         <label class="en-label">Song Title</label>
-        <input type="text" id="songTitle" class="en-input" placeholder="e.g. Afrobeats Anthem">
+        <input aria-label="E.g. Afrobeats Anthem" type="text" id="songTitle" class="en-input" placeholder="e.g. Afrobeats Anthem">
       </div>
       <div class="en-field">
         <label class="en-label">Country</label>
@@ -90,7 +90,7 @@ a{text-decoration:none;color:inherit}
       </div>
       <div class="en-field">
         <label class="en-label">Total Royalties (USD)</label>
-        <input type="number" id="totalRoyalties" class="en-input" placeholder="5000" min="0" step="0.01">
+        <input aria-label="TotalRoyalties" type="number" id="totalRoyalties" class="en-input" placeholder="5000" min="0" step="0.01">
       </div>
       <div class="en-field">
         <label class="en-label">Royalty Period</label>
@@ -108,13 +108,13 @@ a{text-decoration:none;color:inherit}
     <p style="font-size:.85rem;color:#64748b;margin-bottom:16px">Add each collaborator with their role and percentage split. All splits must total exactly 100%.</p>
 
     <div id="collabList"></div>
-    <button class="add-collab-btn" onclick="addCollab()">+ Add Collaborator</button>
+    <button type="button" class="add-collab-btn" onclick="addCollab()">+ Add Collaborator</button>
 
     <div id="splitValidation" class="split-validation" style="display:none"></div>
   </div>
 
   <div class="en-form-actions">
-    <button class="en-btn en-btn-full" onclick="calculate()">Calculate Royalty Splits</button>
+    <button type="button" class="en-btn en-btn-full" onclick="calculate()">Calculate Royalty Splits</button>
   </div>
 
   <div class="en-results" id="results">
@@ -180,10 +180,10 @@ function addCollab(name,role,pct){
   var div=document.createElement('div');
   div.className='collab-row';
   div.id='cr'+id;
-  div.innerHTML='<div class="en-field"><label class="en-label">Name</label><input type="text" id="cn'+id+'" class="en-input" placeholder="e.g. Davido" value="'+(name||'')+'"></div>'+
+  div.innerHTML='<div class="en-field"><label class="en-label">Name</label><input aria-label="E.g. Davido" type="text" id="cn'+id+'" class="en-input" placeholder="e.g. Davido" value="'+(name||'')+'"></div>'+
     '<div class="en-field"><label class="en-label">Role</label><select id="cr_role'+id+'" class="en-select">'+ROLES.map(function(r){return '<option'+(r==role?' selected':'')+'>'+r+'</option>'}).join('')+'</select></div>'+
-    '<div class="en-field"><label class="en-label">Split %</label><input type="number" id="cp'+id+'" class="en-input" placeholder="25" min="0" max="100" value="'+(pct||'')+'" oninput="validateSplits()"></div>'+
-    '<button class="remove-btn" onclick="removeCollab('+id+')" title="Remove">&times;</button>';
+    '<div class="en-field"><label class="en-label">Split %</label><input aria-label="Cp'+id+'" type="number" id="cp'+id+'" class="en-input" placeholder="25" min="0" max="100" value="'+(pct||'')+'" oninput="validateSplits()"></div>'+
+    '<button type="button" class="remove-btn" onclick="removeCollab('+id+')" title="Remove">&times;</button>';
   document.getElementById('collabList').appendChild(div);
   validateSplits();
 }

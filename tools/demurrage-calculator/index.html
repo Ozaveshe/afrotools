@@ -7,7 +7,7 @@
 <title>Port Demurrage Calculator for Africa 2026 — Container Charges | AfroTools</title>
 <meta name="description" content="Calculate demurrage and detention charges at African ports. Lagos, Mombasa, Durban, Tema, Dar es Salaam and more. Know your container storage costs before they escalate.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
 <style>
 :root{--dm-blue:#007AFF;--dm-dark:#0A1628;--dm-amber:#F59E0B;--dm-red:#EF4444;}
@@ -92,8 +92,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 </head>
 <body>
@@ -117,9 +117,9 @@
 
 <div class="dm-body">
   <div class="dm-tabs" role="tablist">
-    <button class="dm-tab on" onclick="setTab('calc',this)">🏗️ Calculate</button>
-    <button class="dm-tab" onclick="setTab('rates',this)">📋 Port Rates</button>
-    <button class="dm-tab" onclick="setTab('project',this)">📈 Cost Projection</button>
+    <button type="button" class="dm-tab on" onclick="setTab('calc',this)">🏗️ Calculate</button>
+    <button type="button" class="dm-tab" onclick="setTab('rates',this)">📋 Port Rates</button>
+    <button type="button" class="dm-tab" onclick="setTab('project',this)">📈 Cost Projection</button>
   </div>
 
   <!-- TAB 1: Calculate -->
@@ -133,20 +133,20 @@
         </div>
         <div>
           <div class="f-label">Days at Port</div>
-          <input type="number" id="daysAtPort" class="f-input" min="1" value="15" placeholder="Days since vessel arrival">
+          <input aria-label="Days since vessel arrival" type="number" id="daysAtPort" class="f-input" min="1" value="15" placeholder="Days since vessel arrival">
         </div>
         <div>
           <div class="f-label">FX Rate (local per USD)</div>
-          <input type="number" id="fxRate" class="f-input" value="1" placeholder="1 if port charges USD">
+          <input aria-label="1 if port charges USD" type="number" id="fxRate" class="f-input" value="1" placeholder="1 if port charges USD">
         </div>
       </div>
       <div class="f-label">Container Type</div>
       <div class="ct-pills" id="ctPills">
-        <button class="ct-pill on" onclick="setCT('20ft',this)">20ft Standard</button>
-        <button class="ct-pill" onclick="setCT('40ft',this)">40ft Standard</button>
+        <button type="button" class="ct-pill on" onclick="setCT('20ft',this)">20ft Standard</button>
+        <button type="button" class="ct-pill" onclick="setCT('40ft',this)">40ft Standard</button>
       </div>
       <div id="freeDaysNote" style="font-size:.85rem;color:#64748B;margin-bottom:1rem;"></div>
-      <button class="calc-btn" onclick="calcDemurrage()">📦 Calculate Demurrage</button>
+      <button type="button" class="calc-btn" onclick="calcDemurrage()">📦 Calculate Demurrage</button>
     </div>
 
     <!-- Result Hero -->
@@ -207,7 +207,7 @@
           </select>
         </div>
         <div style="display:flex;align-items:flex-end;">
-          <button class="calc-btn" style="margin:0;" onclick="runProjection()">Project Costs</button>
+          <button type="button" class="calc-btn" style="margin:0;" onclick="runProjection()">Project Costs</button>
         </div>
       </div>
       <div id="projChart" class="accrual-bar-wrap"></div>
@@ -220,7 +220,7 @@
   <wise-cta context="general"></wise-cta>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script>
 <script src="/data/trade/port-demurrage.js?v=065b3c7e"></script>
 <script src="/engines/demurrage-engine.js?v=6884451a"></script>

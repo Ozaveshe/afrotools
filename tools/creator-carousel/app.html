@@ -12,7 +12,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Bebas+Neue&family=Black+Ops+One&family=Bungee&family=DM+Sans:wght@400;500;700;800&family=Luckiest+Guy&family=Montserrat:wght@700;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Press+Start+2P&family=Righteous&family=Russo+One&family=Space+Grotesk:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Bebas+Neue&family=Black+Ops+One&family=Bungee&family=DM+Sans:wght@400;500;700;800&family=Luckiest+Guy&family=Montserrat:wght@700;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Press+Start+2P&family=Righteous&family=Russo+One&family=Space+Grotesk:wght@400;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="style.css?v=f6611d75">
 <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <style>
@@ -26,6 +26,9 @@
 </style>
 <link rel="canonical" href="https://afrotools.com/tools/creator-carousel/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-carousel/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <div class="car-app">
@@ -36,12 +39,12 @@
       <span>CS</span> CarouselStudio
     </a>
     <div class="car-header-actions">
-      <button class="car-btn-icon" id="btn-files" title="My Files">📁</button>
-      <button class="car-btn-icon" id="btn-save" title="Save">💾</button>
-      <button class="car-btn-icon" id="btn-undo" title="Undo">↩</button>
-      <button class="car-btn-icon" id="btn-redo" title="Redo">↪</button>
-      <button class="car-btn-icon" id="btn-preview" title="Swipe Preview">👁</button>
-      <button class="car-btn car-btn-primary" id="btn-export">↓ Export All</button>
+      <button type="button" class="car-btn-icon" id="btn-files" title="My Files">📁</button>
+      <button type="button" class="car-btn-icon" id="btn-save" title="Save">💾</button>
+      <button type="button" class="car-btn-icon" id="btn-undo" title="Undo">↩</button>
+      <button type="button" class="car-btn-icon" id="btn-redo" title="Redo">↪</button>
+      <button type="button" class="car-btn-icon" id="btn-preview" title="Swipe Preview">👁</button>
+      <button type="button" class="car-btn car-btn-primary" id="btn-export">↓ Export All</button>
     </div>
   </header>
 
@@ -57,53 +60,53 @@
     <aside class="car-sidebar" id="sidebar">
       <!-- Tool Tabs -->
       <div class="car-tool-tabs">
-        <button class="car-tool-tab active" data-panel="text">Text</button>
-        <button class="car-tool-tab" data-panel="bg">BG</button>
-        <button class="car-tool-tab" data-panel="image">Image</button>
-        <button class="car-tool-tab" data-panel="assets">Assets</button>
-        <button class="car-tool-tab" data-panel="brand">Brand</button>
-        <button class="car-tool-tab" data-panel="layout">Layout</button>
+        <button type="button" class="car-tool-tab active" data-panel="text">Text</button>
+        <button type="button" class="car-tool-tab" data-panel="bg">BG</button>
+        <button type="button" class="car-tool-tab" data-panel="image">Image</button>
+        <button type="button" class="car-tool-tab" data-panel="assets">Assets</button>
+        <button type="button" class="car-tool-tab" data-panel="brand">Brand</button>
+        <button type="button" class="car-tool-tab" data-panel="layout">Layout</button>
       </div>
 
       <!-- TEXT PANEL -->
       <div class="car-tool-panel active" id="panel-text">
         <div class="car-sidebar-section">
-          <button class="car-btn car-btn-secondary" style="width:100%;margin-bottom:12px" id="btn-add-text">+ Add Text</button>
+          <button type="button" class="car-btn car-btn-secondary" style="width:100%;margin-bottom:12px" id="btn-add-text">+ Add Text</button>
           <div class="car-sidebar-title">Font</div>
           <div class="car-font-list" id="font-list"></div>
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Size</div>
           <div class="car-slider-row">
-            <input type="range" class="car-slider" id="text-size" min="16" max="200" value="48">
+            <input aria-label="Text size" type="range" class="car-slider" id="text-size" min="16" max="200" value="48">
             <span class="car-slider-val" id="text-size-val">48</span>
           </div>
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Color</div>
           <div class="car-color-swatches" id="text-colors"></div>
-          <input type="color" id="text-color-custom" value="#ffffff" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+          <input aria-label="Text color custom" type="color" id="text-color-custom" value="#ffffff" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
           <div class="car-sidebar-title" style="margin-top:12px">Afro Palettes</div>
           <div class="car-palette-list" id="text-palettes"></div>
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Rotation</div>
           <div class="car-slider-row">
-            <input type="range" class="car-slider" id="text-rotation" min="0" max="360" value="0">
+            <input aria-label="Text rotation" type="range" class="car-slider" id="text-rotation" min="0" max="360" value="0">
             <span class="car-slider-val" id="text-rotation-val">0</span>
           </div>
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Opacity</div>
           <div class="car-slider-row">
-            <input type="range" class="car-slider" id="text-opacity" min="10" max="100" value="100">
+            <input aria-label="Text opacity" type="range" class="car-slider" id="text-opacity" min="10" max="100" value="100">
             <span class="car-slider-val" id="text-opacity-val">100</span>
           </div>
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Letter Spacing</div>
           <div class="car-slider-row">
-            <input type="range" class="car-slider" id="text-letter-spacing" min="0" max="20" value="0">
+            <input aria-label="Text letter spacing" type="range" class="car-slider" id="text-letter-spacing" min="0" max="20" value="0">
             <span class="car-slider-val" id="text-letter-spacing-val">0</span>
           </div>
         </div>
@@ -118,12 +121,12 @@
             <div class="car-toggle" id="text-bold"></div>
           </div>
           <div style="display:flex;gap:4px;margin-top:8px">
-            <button class="car-btn car-btn-secondary car-btn-sm" data-align="left">L</button>
-            <button class="car-btn car-btn-secondary car-btn-sm" data-align="center">C</button>
-            <button class="car-btn car-btn-secondary car-btn-sm" data-align="right">R</button>
+            <button type="button" class="car-btn car-btn-secondary car-btn-sm" data-align="left">L</button>
+            <button type="button" class="car-btn car-btn-secondary car-btn-sm" data-align="center">C</button>
+            <button type="button" class="car-btn car-btn-secondary car-btn-sm" data-align="right">R</button>
           </div>
           <div class="car-extra-controls">
-            <button class="car-btn car-btn-secondary car-btn-sm" id="btn-center-layer" style="width:100%;margin-top:6px">Center on Slide</button>
+            <button type="button" class="car-btn car-btn-secondary car-btn-sm" id="btn-center-layer" style="width:100%;margin-top:6px">Center on Slide</button>
           </div>
         </div>
       </div>
@@ -133,7 +136,7 @@
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Background Color</div>
           <div class="car-color-swatches" id="bg-colors"></div>
-          <input type="color" id="bg-color-custom" value="#1a1a1a" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+          <input aria-label="Bg color custom" type="color" id="bg-color-custom" value="#1a1a1a" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Gradient</div>
@@ -144,7 +147,7 @@
             <div class="car-upload-icon">🖼</div>
             <div class="car-upload-text">Upload Background Image</div>
           </div>
-          <input type="file" id="bg-upload" accept="image/*" style="display:none">
+          <input aria-label="Bg upload" type="file" id="bg-upload" accept="image/*" style="display:none">
         </div>
       </div>
 
@@ -155,12 +158,12 @@
             <div class="car-upload-icon">📷</div>
             <div class="car-upload-text">Upload Image to Slide</div>
           </div>
-          <input type="file" id="img-upload" accept="image/*" style="display:none">
+          <input aria-label="Img upload" type="file" id="img-upload" accept="image/*" style="display:none">
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Opacity</div>
           <div class="car-slider-row">
-            <input type="range" class="car-slider" id="img-opacity" min="10" max="100" value="100">
+            <input aria-label="Img opacity" type="range" class="car-slider" id="img-opacity" min="10" max="100" value="100">
             <span class="car-slider-val" id="img-opacity-val">100</span>
           </div>
         </div>
@@ -187,11 +190,11 @@
       <div class="car-tool-panel" id="panel-brand">
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Brand Color</div>
-          <input type="color" id="brand-color" value="#AF52DE" style="width:100%;height:36px;border:none;border-radius:8px;cursor:pointer;background:transparent;margin-bottom:8px">
+          <input aria-label="Brand color" type="color" id="brand-color" value="#AF52DE" style="width:100%;height:36px;border:none;border-radius:8px;cursor:pointer;background:transparent;margin-bottom:8px">
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Handle / Username</div>
-          <input class="car-brand-input" id="brand-handle" type="text" placeholder="@yourhandle">
+          <input aria-label="@yourhandle" class="car-brand-input" id="brand-handle" type="text" placeholder="@yourhandle">
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Font</div>
@@ -212,8 +215,8 @@
           <div class="car-layer-list" id="layer-list"></div>
         </div>
         <div class="car-sidebar-section">
-          <button class="car-btn car-btn-secondary car-btn-sm" id="btn-duplicate-slide" style="width:100%;margin-bottom:6px">Duplicate Slide</button>
-          <button class="car-btn car-btn-secondary car-btn-sm" id="btn-delete-layer" style="width:100%">Delete Selected Layer</button>
+          <button type="button" class="car-btn car-btn-secondary car-btn-sm" id="btn-duplicate-slide" style="width:100%;margin-bottom:6px">Duplicate Slide</button>
+          <button type="button" class="car-btn car-btn-secondary car-btn-sm" id="btn-delete-layer" style="width:100%">Delete Selected Layer</button>
         </div>
       </div>
     </aside>
@@ -237,15 +240,15 @@
   <!-- TEMPLATE STRIP -->
   <div class="car-template-strip-wrapper">
     <div class="car-filter-bar" id="template-filter">
-      <button class="car-filter-btn active" data-cat="all">All</button>
-      <button class="car-filter-btn" data-cat="afrocentric">Afrocentric</button>
-      <button class="car-filter-btn" data-cat="educational">Educational</button>
-      <button class="car-filter-btn" data-cat="storytelling">Story</button>
-      <button class="car-filter-btn" data-cat="quote">Quote</button>
-      <button class="car-filter-btn" data-cat="brand">Brand</button>
-      <button class="car-filter-btn" data-cat="product">Product</button>
-      <button class="car-filter-btn" data-cat="data">Data</button>
-      <button class="car-filter-btn" data-cat="food">Food</button>
+      <button type="button" class="car-filter-btn active" data-cat="all">All</button>
+      <button type="button" class="car-filter-btn" data-cat="afrocentric">Afrocentric</button>
+      <button type="button" class="car-filter-btn" data-cat="educational">Educational</button>
+      <button type="button" class="car-filter-btn" data-cat="storytelling">Story</button>
+      <button type="button" class="car-filter-btn" data-cat="quote">Quote</button>
+      <button type="button" class="car-filter-btn" data-cat="brand">Brand</button>
+      <button type="button" class="car-filter-btn" data-cat="product">Product</button>
+      <button type="button" class="car-filter-btn" data-cat="data">Data</button>
+      <button type="button" class="car-filter-btn" data-cat="food">Food</button>
     </div>
     <div class="car-template-strip" id="template-strip">
       <!-- Populated by JS -->
@@ -254,27 +257,27 @@
 
   <!-- MOBILE TOOLBAR -->
   <div class="car-mobile-toolbar">
-    <button class="car-mobile-btn active" data-mobile-panel="text">
+    <button type="button" class="car-mobile-btn active" data-mobile-panel="text">
       <span class="car-mobile-icon">T</span>
       <span class="car-mobile-label">Text</span>
     </button>
-    <button class="car-mobile-btn" data-mobile-panel="bg">
+    <button type="button" class="car-mobile-btn" data-mobile-panel="bg">
       <span class="car-mobile-icon">🎨</span>
       <span class="car-mobile-label">BG</span>
     </button>
-    <button class="car-mobile-btn" data-mobile-panel="image">
+    <button type="button" class="car-mobile-btn" data-mobile-panel="image">
       <span class="car-mobile-icon">📷</span>
       <span class="car-mobile-label">Image</span>
     </button>
-    <button class="car-mobile-btn" data-mobile-panel="assets">
+    <button type="button" class="car-mobile-btn" data-mobile-panel="assets">
       <span class="car-mobile-icon">🌍</span>
       <span class="car-mobile-label">Afro</span>
     </button>
-    <button class="car-mobile-btn" data-mobile-panel="brand">
+    <button type="button" class="car-mobile-btn" data-mobile-panel="brand">
       <span class="car-mobile-icon">✦</span>
       <span class="car-mobile-label">Brand</span>
     </button>
-    <button class="car-mobile-btn" data-mobile-panel="layout">
+    <button type="button" class="car-mobile-btn" data-mobile-panel="layout">
       <span class="car-mobile-icon">☰</span>
       <span class="car-mobile-label">Layout</span>
     </button>
@@ -293,10 +296,10 @@
   <div class="car-sheet-content">
     <div class="car-sheet-title">EXPORT CAROUSEL</div>
     <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button class="car-btn car-btn-primary" id="export-all-png" style="flex:1">All Slides (PNG)</button>
-      <button class="car-btn car-btn-secondary" id="export-all-jpg" style="flex:1">All Slides (JPEG)</button>
+      <button type="button" class="car-btn car-btn-primary" id="export-all-png" style="flex:1">All Slides (PNG)</button>
+      <button type="button" class="car-btn car-btn-secondary" id="export-all-jpg" style="flex:1">All Slides (JPEG)</button>
     </div>
-    <button class="car-btn car-btn-secondary" id="export-single" style="width:100%;margin-bottom:12px">Export Current Slide Only</button>
+    <button type="button" class="car-btn car-btn-secondary" id="export-single" style="width:100%;margin-bottom:12px">Export Current Slide Only</button>
     <div style="font-size:.65rem;color:rgba(255,255,255,.3);text-align:center;margin-top:8px" id="export-resolution-label">1080 × 1350 px — IG Portrait</div>
   </div>
 </div>
@@ -306,13 +309,13 @@
   <div class="car-modal">
     <div class="car-modal-header">
       <div class="car-sheet-title">MY CAROUSEL FILES</div>
-      <button class="car-modal-close" id="files-close">✕</button>
+      <button type="button" class="car-modal-close" id="files-close">✕</button>
     </div>
     <div class="car-files-grid" id="files-grid">
       <!-- Populated by JS -->
     </div>
     <div style="margin-top:16px">
-      <button class="car-btn car-btn-primary" id="btn-new-design" style="width:100%">+ New Carousel</button>
+      <button type="button" class="car-btn car-btn-primary" id="btn-new-design" style="width:100%">+ New Carousel</button>
     </div>
   </div>
 </div>
@@ -322,14 +325,14 @@
   <div class="car-modal" style="max-width:400px">
     <div class="car-modal-header">
       <div class="car-sheet-title">SAVE CAROUSEL</div>
-      <button class="car-modal-close" id="save-close">✕</button>
+      <button type="button" class="car-modal-close" id="save-close">✕</button>
     </div>
     <div>
       <label style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:6px;display:block">Carousel Name</label>
-      <input class="car-input" id="save-name" type="text" placeholder="My Carousel" value="">
+      <input aria-label="My Carousel" class="car-input" id="save-name" type="text" placeholder="My Carousel" value="">
       <div style="display:flex;gap:8px;margin-top:16px">
-        <button class="car-btn car-btn-primary" id="btn-save-new" style="flex:1">Save as New</button>
-        <button class="car-btn car-btn-secondary" id="btn-save-update" style="flex:1">Update Current</button>
+        <button type="button" class="car-btn car-btn-primary" id="btn-save-new" style="flex:1">Save as New</button>
+        <button type="button" class="car-btn car-btn-secondary" id="btn-save-update" style="flex:1">Update Current</button>
       </div>
     </div>
   </div>
@@ -337,7 +340,7 @@
 
 <!-- SWIPE PREVIEW OVERLAY -->
 <div class="car-preview-overlay" id="preview-overlay">
-  <button class="car-preview-close" id="preview-close">✕</button>
+  <button type="button" class="car-preview-close" id="preview-close">✕</button>
   <div class="car-preview-slide-area" id="preview-slide-area">
     <canvas id="preview-canvas" style="max-width:100%;max-height:80vh;border-radius:8px"></canvas>
   </div>
@@ -1157,7 +1160,7 @@
 
       var actions = document.createElement('div');
       actions.className = 'car-file-actions';
-      actions.innerHTML = '<button class="car-file-action" data-act="load" title="Open">📂</button><button class="car-file-action" data-act="dup" title="Duplicate">📋</button><button class="car-file-action car-btn-danger" data-act="del" title="Delete">🗑</button>';
+      actions.innerHTML = '<button type="button" class="car-file-action" data-act="load" title="Open">📂</button><button type="button" class="car-file-action" data-act="dup" title="Duplicate">📋</button><button type="button" class="car-file-action car-btn-danger" data-act="del" title="Delete">🗑</button>';
 
       actions.querySelector('[data-act="load"]').addEventListener('click', function(e) {
         e.stopPropagation();

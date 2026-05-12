@@ -29,15 +29,15 @@
 
 <!-- Design System -->
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=0d17fc50">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=ebd59ad2">
 
 <!-- Chart.js -->
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
-<!-- Web Components --><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<!-- Web Components --><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.js?v=af1ede16" defer></script>
-<script src="/assets/js/components/footer.js?v=7cf41589" defer></script>
+<script src="/assets/js/components/navbar.js?v=3af89576" defer></script>
+<script src="/assets/js/components/footer.js?v=625b18a7" defer></script>
 <script src="/assets/js/components/rate-ticker.js?v=e193f1c9" defer></script>
 <script src="/assets/js/components/api-cta.js?v=fa76abe4" defer></script>
 <script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script>
@@ -785,11 +785,11 @@ body {
         <div class="chart-header">
           <span class="chart-pair-label" id="chartPairLabel">USD / NGN</span>
           <div class="chart-tabs" id="chartTabs">
-            <button data-tf="24h">24h</button>
-            <button data-tf="7d">7d</button>
-            <button data-tf="30d" class="active">30d</button>
-            <button data-tf="90d">90d</button>
-            <button data-tf="1yr">1yr</button>
+            <button type="button" data-tf="24h">24h</button>
+            <button type="button" data-tf="7d">7d</button>
+            <button type="button" data-tf="30d" class="active">30d</button>
+            <button type="button" data-tf="90d">90d</button>
+            <button type="button" data-tf="1yr">1yr</button>
           </div>
         </div>
         <div class="chart-canvas-wrap">
@@ -1326,12 +1326,12 @@ body {
 
     let html = favorites.map(pair => {
       const isActive = pair === currentPair;
-      return '<button class="fav-chip' + (isActive ? ' active' : '') + '" data-pair="' + pair + '">' + pair + '</button>';
+      return '<button type="button" class="fav-chip' + (isActive ? ' active' : '') + '" data-pair="' + pair + '">' + pair + '</button>';
     }).join('');
 
     // Add a "+" button to save current pair
     if (!favorites.includes(currentPair) && from && to) {
-      html += '<button class="fav-chip" data-action="add" title="Enregistrer cette paire">\u2795 Enregistrer</button>';
+      html += '<button type="button" class="fav-chip" data-action="add" title="Enregistrer cette paire">\u2795 Enregistrer</button>';
     }
 
     bar.innerHTML = html;

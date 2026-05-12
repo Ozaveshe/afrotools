@@ -25,6 +25,9 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-kit/app">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-kit/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
@@ -34,9 +37,9 @@
     <a href="index.html" class="ck-topbar-back">&larr; Back</a>
     <a href="index.html" class="ck-topbar-brand"><span>✨</span> CreatorKit</a>
     <span class="ck-topbar-title" id="kitTitle">Untitled Media Kit</span>
-    <button class="ck-btn ck-btn-ghost" onclick="saveKit()">Save</button>
-    <button class="ck-btn ck-btn-ghost" onclick="openShare()">Share</button>
-    <button class="ck-btn ck-btn-primary" onclick="previewKit()">Preview</button>
+    <button type="button" class="ck-btn ck-btn-ghost" onclick="saveKit()">Save</button>
+    <button type="button" class="ck-btn ck-btn-ghost" onclick="openShare()">Share</button>
+    <button type="button" class="ck-btn ck-btn-primary" onclick="previewKit()">Preview</button>
   </div>
 
   <div class="ck-app-inner">
@@ -77,7 +80,7 @@
         </div>
       </div>
       <div style="text-align:center;margin-top:20px">
-        <button class="ck-ai-btn" onclick="surpriseTemplate()">🎲 Surprise Me — AI picks a template</button>
+        <button type="button" class="ck-ai-btn" onclick="surpriseTemplate()">🎲 Surprise Me — AI picks a template</button>
       </div>
     </div>
 
@@ -85,15 +88,15 @@
     <div id="editor" style="display:none">
       <!-- Section Nav -->
       <div class="ck-section-nav" id="sectionNav">
-        <button class="ck-section-tab active" onclick="showSection('hero')">Hero</button>
-        <button class="ck-section-tab" onclick="showSection('about')">About</button>
-        <button class="ck-section-tab" onclick="showSection('portfolio')">Portfolio</button>
-        <button class="ck-section-tab" onclick="showSection('stats')">Stats</button>
-        <button class="ck-section-tab" onclick="showSection('services')">Services</button>
-        <button class="ck-section-tab" onclick="showSection('clients')">Clients</button>
-        <button class="ck-section-tab" onclick="showSection('testimonials')">Testimonials</button>
-        <button class="ck-section-tab" onclick="showSection('contact')">Contact</button>
-        <button class="ck-section-tab" onclick="showSection('settings')">Settings</button>
+        <button type="button" class="ck-section-tab active" onclick="showSection('hero')">Hero</button>
+        <button type="button" class="ck-section-tab" onclick="showSection('about')">About</button>
+        <button type="button" class="ck-section-tab" onclick="showSection('portfolio')">Portfolio</button>
+        <button type="button" class="ck-section-tab" onclick="showSection('stats')">Stats</button>
+        <button type="button" class="ck-section-tab" onclick="showSection('services')">Services</button>
+        <button type="button" class="ck-section-tab" onclick="showSection('clients')">Clients</button>
+        <button type="button" class="ck-section-tab" onclick="showSection('testimonials')">Testimonials</button>
+        <button type="button" class="ck-section-tab" onclick="showSection('contact')">Contact</button>
+        <button type="button" class="ck-section-tab" onclick="showSection('settings')">Settings</button>
       </div>
 
       <!-- SECTION: HERO -->
@@ -103,29 +106,29 @@
           <div class="ck-hint">Your first impression. Make it count — this is what brands see first.</div>
           <div class="ck-field">
             <label>Creator Name</label>
-            <input type="text" id="creatorName" placeholder="e.g. Amara Okafor" oninput="updateData('name', this.value)">
+            <input aria-label="E.g. Amara Okafor" type="text" id="creatorName" placeholder="e.g. Amara Okafor" oninput="updateData('name', this.value)">
           </div>
           <div class="ck-field">
             <label>Tagline / One-liner</label>
-            <input type="text" id="tagline" placeholder="e.g. Lagos-based wedding photographer capturing love stories across West Africa" oninput="updateData('tagline', this.value)">
-            <button class="ck-ai-btn" onclick="aiGenerate('tagline')">✨ Write my tagline</button>
+            <input aria-label="E.g. Lagos based wedding photographer capturing love stories across West Africa" type="text" id="tagline" placeholder="e.g. Lagos-based wedding photographer capturing love stories across West Africa" oninput="updateData('tagline', this.value)">
+            <button type="button" class="ck-ai-btn" onclick="aiGenerate('tagline')">✨ Write my tagline</button>
           </div>
           <div class="ck-field">
             <label>Hero Image</label>
             <div class="ck-upload-zone" onclick="document.getElementById('heroImgInput').click()">
               <div class="ck-upload-icon">📷</div>
               <div class="ck-upload-text">Tap to upload your best photo</div>
-              <input type="file" id="heroImgInput" accept="image/*" style="display:none" onchange="handleHeroImage(this)">
+              <input aria-label="HeroImgInput" type="file" id="heroImgInput" accept="image/*" style="display:none" onchange="handleHeroImage(this)">
             </div>
             <div id="heroImgPreview" style="margin-top:12px"></div>
           </div>
           <div class="ck-field">
             <label>Social Handles</label>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <input type="text" placeholder="@instagram" oninput="updateSocial('instagram', this.value)">
-              <input type="text" placeholder="@twitter / X" oninput="updateSocial('twitter', this.value)">
-              <input type="text" placeholder="@tiktok" oninput="updateSocial('tiktok', this.value)">
-              <input type="text" placeholder="YouTube channel" oninput="updateSocial('youtube', this.value)">
+              <input aria-label="@instagram" type="text" placeholder="@instagram" oninput="updateSocial('instagram', this.value)">
+              <input aria-label="@twitter / X" type="text" placeholder="@twitter / X" oninput="updateSocial('twitter', this.value)">
+              <input aria-label="@tiktok" type="text" placeholder="@tiktok" oninput="updateSocial('tiktok', this.value)">
+              <input aria-label="YouTube channel" type="text" placeholder="YouTube channel" oninput="updateSocial('youtube', this.value)">
             </div>
           </div>
         </div>
@@ -157,7 +160,7 @@
             <label>Long Bio (200 words)</label>
             <textarea id="bioLong" placeholder="For press pages and detailed about sections..." oninput="updateData('bioLong', this.value)" rows="8"></textarea>
           </div>
-          <button class="ck-ai-btn" onclick="aiGenerate('bio')">✨ Write all 3 bios</button>
+          <button type="button" class="ck-ai-btn" onclick="aiGenerate('bio')">✨ Write all 3 bios</button>
         </div>
       </div>
 
@@ -177,7 +180,7 @@
           <div class="ck-upload-zone" onclick="document.getElementById('portfolioInput').click()">
             <div class="ck-upload-icon">🖼️</div>
             <div class="ck-upload-text">Upload up to 12 images (tap to select)</div>
-            <input type="file" id="portfolioInput" accept="image/*" multiple style="display:none" onchange="handlePortfolioImages(this)">
+            <input aria-label="PortfolioInput" type="file" id="portfolioInput" accept="image/*" multiple style="display:none" onchange="handlePortfolioImages(this)">
           </div>
           <div class="ck-image-grid" id="portfolioGrid"></div>
         </div>
@@ -191,7 +194,7 @@
           <div class="ck-stat-grid">
             <div class="ck-stat-input-card">
               <label>Total Followers</label>
-              <input type="text" inputmode="numeric" placeholder="e.g. 52000" oninput="updateStat('totalFollowers', this.value)">
+              <input aria-label="E.g. 52000" type="text" inputmode="numeric" placeholder="e.g. 52000" oninput="updateStat('totalFollowers', this.value)">
             </div>
             <div class="ck-stat-input-card">
               <label>Primary Platform</label>
@@ -207,31 +210,31 @@
             </div>
             <div class="ck-stat-input-card">
               <label>Engagement Rate</label>
-              <input type="text" placeholder="e.g. 4.2%" oninput="updateStat('engagementRate', this.value)">
+              <input aria-label="E.g. 4.2%" type="text" placeholder="e.g. 4.2%" oninput="updateStat('engagementRate', this.value)">
             </div>
             <div class="ck-stat-input-card">
               <label>Monthly Reach</label>
-              <input type="text" inputmode="numeric" placeholder="e.g. 150000" oninput="updateStat('monthlyReach', this.value)">
+              <input aria-label="E.g. 150000" type="text" inputmode="numeric" placeholder="e.g. 150000" oninput="updateStat('monthlyReach', this.value)">
             </div>
             <div class="ck-stat-input-card">
               <label>Top Audience Age</label>
-              <input type="text" placeholder="e.g. 22-34" oninput="updateStat('audienceAge', this.value)">
+              <input aria-label="E.g. 22 34" type="text" placeholder="e.g. 22-34" oninput="updateStat('audienceAge', this.value)">
             </div>
             <div class="ck-stat-input-card">
               <label>Audience Gender Split</label>
-              <input type="text" placeholder="e.g. 70% women" oninput="updateStat('audienceGender', this.value)">
+              <input aria-label="E.g. 70% women" type="text" placeholder="e.g. 70% women" oninput="updateStat('audienceGender', this.value)">
             </div>
             <div class="ck-stat-input-card">
               <label>Top Cities</label>
-              <input type="text" placeholder="e.g. Lagos, London, Accra" oninput="updateStat('topCities', this.value)">
+              <input aria-label="E.g. Lagos, London, Accra" type="text" placeholder="e.g. Lagos, London, Accra" oninput="updateStat('topCities', this.value)">
             </div>
             <div class="ck-stat-input-card">
               <label>Projects Completed</label>
-              <input type="text" inputmode="numeric" placeholder="e.g. 200" oninput="updateStat('projectsCompleted', this.value)">
+              <input aria-label="E.g. 200" type="text" inputmode="numeric" placeholder="e.g. 200" oninput="updateStat('projectsCompleted', this.value)">
             </div>
           </div>
           <div style="margin-top:16px">
-            <button class="ck-ai-btn" onclick="aiGenerate('stats')">✨ Turn stats into brand-friendly insights</button>
+            <button type="button" class="ck-ai-btn" onclick="aiGenerate('stats')">✨ Turn stats into brand-friendly insights</button>
           </div>
           <div id="statsInsight" style="margin-top:16px;display:none">
             <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">AI-Generated Insight</label>
@@ -271,33 +274,33 @@
           <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:10px">Service List</label>
           <div id="servicesList">
             <div class="ck-service-row">
-              <input type="text" class="ck-service-name" placeholder="Service name" oninput="updateServices()">
-              <input type="text" class="ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateServices()">
-              <button class="ck-service-remove" onclick="removeService(this)">×</button>
+              <input aria-label="Service name" type="text" class="ck-service-name" placeholder="Service name" oninput="updateServices()">
+              <input aria-label="Price" type="text" class="ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateServices()">
+              <button type="button" class="ck-service-remove" onclick="removeService(this)">×</button>
             </div>
           </div>
-          <button class="ck-add-row" onclick="addService()">+ Add Service</button>
+          <button type="button" class="ck-add-row" onclick="addService()">+ Add Service</button>
 
           <div style="margin-top:32px">
             <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:10px">Packages (Optional)</label>
             <div class="ck-packages-grid" id="packagesGrid">
               <div class="ck-package-card" data-tier="bronze">
                 <div class="ck-field"><label>Package Name</label><input type="text" value="Starter" oninput="updatePackage(0,'name',this.value)"></div>
-                <div class="ck-field"><label>Price</label><input type="text" inputmode="numeric" placeholder="e.g. 100000" oninput="updatePackage(0,'price',this.value)"></div>
+                <div class="ck-field"><label>Price</label><input aria-label="E.g. 100000" type="text" inputmode="numeric" placeholder="e.g. 100000" oninput="updatePackage(0,'price',this.value)"></div>
                 <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="2 hours shoot&#10;10 edited photos&#10;1 location" oninput="updatePackage(0,'includes',this.value)"></textarea></div>
               </div>
               <div class="ck-package-card featured" data-tier="silver">
                 <div class="ck-field"><label>Package Name</label><input type="text" value="Standard" oninput="updatePackage(1,'name',this.value)"></div>
-                <div class="ck-field"><label>Price</label><input type="text" inputmode="numeric" placeholder="e.g. 250000" oninput="updatePackage(1,'price',this.value)"></div>
+                <div class="ck-field"><label>Price</label><input aria-label="E.g. 250000" type="text" inputmode="numeric" placeholder="e.g. 250000" oninput="updatePackage(1,'price',this.value)"></div>
                 <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="4 hours shoot&#10;30 edited photos&#10;2 locations&#10;1 outfit change" oninput="updatePackage(1,'includes',this.value)"></textarea></div>
               </div>
               <div class="ck-package-card" data-tier="gold">
                 <div class="ck-field"><label>Package Name</label><input type="text" value="Premium" oninput="updatePackage(2,'name',this.value)"></div>
-                <div class="ck-field"><label>Price</label><input type="text" inputmode="numeric" placeholder="e.g. 500000" oninput="updatePackage(2,'price',this.value)"></div>
+                <div class="ck-field"><label>Price</label><input aria-label="E.g. 500000" type="text" inputmode="numeric" placeholder="e.g. 500000" oninput="updatePackage(2,'price',this.value)"></div>
                 <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="Full day shoot&#10;All edited photos&#10;Unlimited locations&#10;Video highlights&#10;Rush delivery" oninput="updatePackage(2,'includes',this.value)"></textarea></div>
               </div>
             </div>
-            <button class="ck-ai-btn" onclick="aiGenerate('packages')" style="margin-top:12px">✨ Suggest packages for my craft</button>
+            <button type="button" class="ck-ai-btn" onclick="aiGenerate('packages')" style="margin-top:12px">✨ Suggest packages for my craft</button>
           </div>
         </div>
       </div>
@@ -322,11 +325,11 @@
           <div id="testimonialsList">
             <div class="ck-testimonial-card">
               <div class="ck-field"><label>Client Quote (paste raw feedback)</label><textarea class="ck-testi-quote" rows="3" placeholder='e.g. "Bro the photos were fire 🔥🔥 my wife loved them"' oninput="updateTestimonials()"></textarea></div>
-              <div class="ck-field"><label>Client Name & Role</label><input type="text" class="ck-testi-name" placeholder="e.g. Tunde Bakare, CEO, BakeHouse" oninput="updateTestimonials()"></div>
-              <button class="ck-ai-btn" onclick="aiPolishTestimonial(this)">✨ Polish this testimonial</button>
+              <div class="ck-field"><label>Client Name & Role</label><input aria-label="E.g. Tunde Bakare, CEO, BakeHouse" type="text" class="ck-testi-name" placeholder="e.g. Tunde Bakare, CEO, BakeHouse" oninput="updateTestimonials()"></div>
+              <button type="button" class="ck-ai-btn" onclick="aiPolishTestimonial(this)">✨ Polish this testimonial</button>
             </div>
           </div>
-          <button class="ck-add-row" onclick="addTestimonial()" style="margin-top:12px">+ Add Testimonial</button>
+          <button type="button" class="ck-add-row" onclick="addTestimonial()" style="margin-top:12px">+ Add Testimonial</button>
         </div>
       </div>
 
@@ -337,23 +340,23 @@
           <div class="ck-hint">How brands should reach you. WhatsApp is king in Africa — make it easy.</div>
           <div class="ck-field">
             <label>Email</label>
-            <input type="email" id="contactEmail" placeholder="hello@amara.com" oninput="updateData('contactEmail', this.value)">
+            <input aria-label="Hello@amara.com" type="email" id="contactEmail" placeholder="hello@amara.com" oninput="updateData('contactEmail', this.value)">
           </div>
           <div class="ck-field">
             <label>Phone</label>
-            <input type="tel" id="contactPhone" placeholder="+234 812 345 6789" oninput="updateData('contactPhone', this.value)">
+            <input aria-label="ContactPhone" type="tel" id="contactPhone" placeholder="+234 812 345 6789" oninput="updateData('contactPhone', this.value)">
           </div>
           <div class="ck-field">
             <label>WhatsApp Number</label>
-            <input type="tel" id="contactWhatsapp" placeholder="+234 812 345 6789" oninput="updateData('contactWhatsapp', this.value)">
+            <input aria-label="ContactWhatsapp" type="tel" id="contactWhatsapp" placeholder="+234 812 345 6789" oninput="updateData('contactWhatsapp', this.value)">
           </div>
           <div class="ck-field">
             <label>Booking Link (optional)</label>
-            <input type="url" id="bookingUrl" placeholder="https://calendly.com/amara" oninput="updateData('bookingUrl', this.value)">
+            <input aria-label="Https://calendly.com/amara" type="url" id="bookingUrl" placeholder="https://calendly.com/amara" oninput="updateData('bookingUrl', this.value)">
           </div>
           <div class="ck-field">
             <label>CTA Button Text</label>
-            <input type="text" id="ctaText" value="Let's Work Together" oninput="updateData('ctaText', this.value)">
+            <input aria-label="CtaText" type="text" id="ctaText" value="Let's Work Together" oninput="updateData('ctaText', this.value)">
           </div>
         </div>
       </div>
@@ -367,9 +370,9 @@
             <label>Accent Color</label>
             <div class="ck-color-row">
               <div class="ck-color-swatch">
-                <input type="color" id="accentColor" value="#F5A623" onchange="updateData('accentColor', this.value)">
+                <input aria-label="AccentColor" type="color" id="accentColor" value="#F5A623" onchange="updateData('accentColor', this.value)">
               </div>
-              <input type="text" id="accentColorHex" value="#F5A623" style="max-width:120px" oninput="updateAccentFromHex(this.value)">
+              <input aria-label="AccentColorHex" type="text" id="accentColorHex" value="#F5A623" style="max-width:120px" oninput="updateAccentFromHex(this.value)">
             </div>
           </div>
           <div class="ck-field">
@@ -402,8 +405,8 @@
 
       <!-- Nav Buttons -->
       <div class="ck-nav-btns">
-        <button class="ck-btn ck-btn-ghost" id="prevBtn" onclick="prevSection()" style="display:none">&larr; Previous</button>
-        <button class="ck-btn ck-btn-primary" id="nextBtn" onclick="nextSection()">Next &rarr;</button>
+        <button type="button" class="ck-btn ck-btn-ghost" id="prevBtn" onclick="prevSection()" style="display:none">&larr; Previous</button>
+        <button type="button" class="ck-btn ck-btn-primary" id="nextBtn" onclick="nextSection()">Next &rarr;</button>
       </div>
     </div>
   </div>
@@ -429,15 +432,15 @@
         <div><div class="ck-share-label">Download PNG</div><div class="ck-share-sub">Perfect for Instagram stories</div></div>
       </div>
       <div style="text-align:center;margin-top:16px">
-        <button class="ck-btn ck-btn-ghost" onclick="closeShare()">Close</button>
+        <button type="button" class="ck-btn ck-btn-ghost" onclick="closeShare()">Close</button>
       </div>
     </div>
   </div>
 
   <!-- MOBILE MODE TOGGLE -->
   <div class="ck-mode-toggle" id="modeToggle">
-    <button class="ck-mode-btn active" onclick="setMode('edit')">Edit</button>
-    <button class="ck-mode-btn" onclick="setMode('preview')">Preview</button>
+    <button type="button" class="ck-mode-btn active" onclick="setMode('edit')">Edit</button>
+    <button type="button" class="ck-mode-btn" onclick="setMode('preview')">Preview</button>
   </div>
 </div>
 
@@ -528,9 +531,9 @@ function addService() {
   var list = document.getElementById('servicesList');
   var row = document.createElement('div');
   row.className = 'ck-service-row';
-  row.innerHTML = '<input type="text" class="ck-service-name" placeholder="Service name" oninput="updateServices()">' +
-    '<input type="text" class="ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateServices()">' +
-    '<button class="ck-service-remove" onclick="removeService(this)">×</button>';
+  row.innerHTML = '<input aria-label="Service name" type="text" class="ck-service-name" placeholder="Service name" oninput="updateServices()">' +
+    '<input aria-label="Price" type="text" class="ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateServices()">' +
+    '<button type="button" class="ck-service-remove" onclick="removeService(this)">×</button>';
   list.appendChild(row);
 }
 
@@ -562,8 +565,8 @@ function addTestimonial() {
   var card = document.createElement('div');
   card.className = 'ck-testimonial-card';
   card.innerHTML = '<div class="ck-field"><label>Client Quote</label><textarea class="ck-testi-quote" rows="3" placeholder="Paste raw feedback..." oninput="updateTestimonials()"></textarea></div>' +
-    '<div class="ck-field"><label>Client Name & Role</label><input type="text" class="ck-testi-name" placeholder="e.g. Jane Doe, Marketing Dir" oninput="updateTestimonials()"></div>' +
-    '<button class="ck-ai-btn" onclick="aiPolishTestimonial(this)">✨ Polish this testimonial</button>';
+    '<div class="ck-field"><label>Client Name & Role</label><input aria-label="E.g. Jane Doe, Marketing Dir" type="text" class="ck-testi-name" placeholder="e.g. Jane Doe, Marketing Dir" oninput="updateTestimonials()"></div>' +
+    '<button type="button" class="ck-ai-btn" onclick="aiPolishTestimonial(this)">✨ Polish this testimonial</button>';
   list.appendChild(card);
 }
 
@@ -628,7 +631,7 @@ function renderPortfolioGrid() {
     var thumb = document.createElement('div');
     thumb.className = 'ck-image-thumb';
     thumb.innerHTML = '<img src="' + img.src + '" alt="Portfolio ' + (i+1) + '">' +
-      '<button class="ck-img-remove" onclick="removePortfolioImage(' + i + ')">×</button>';
+      '<button type="button" class="ck-img-remove" onclick="removePortfolioImage(' + i + ')">×</button>';
     grid.appendChild(thumb);
   });
 }
@@ -864,9 +867,9 @@ function populateFields() {
     DATA.services.forEach(function(svc) {
       var row = document.createElement('div');
       row.className = 'ck-service-row';
-      row.innerHTML = '<input type="text" class="ck-service-name" value="' + (svc.name||'').replace(/"/g,'&quot;') + '" placeholder="Service name" oninput="updateServices()">' +
-        '<input type="text" class="ck-service-price" value="' + (svc.price||'').replace(/"/g,'&quot;') + '" placeholder="Price" inputmode="numeric" oninput="updateServices()">' +
-        '<button class="ck-service-remove" onclick="removeService(this)">×</button>';
+      row.innerHTML = '<input aria-label="Service name" type="text" class="ck-service-name" value="' + (svc.name||'').replace(/"/g,'&quot;') + '" placeholder="Service name" oninput="updateServices()">' +
+        '<input aria-label="Price" type="text" class="ck-service-price" value="' + (svc.price||'').replace(/"/g,'&quot;') + '" placeholder="Price" inputmode="numeric" oninput="updateServices()">' +
+        '<button type="button" class="ck-service-remove" onclick="removeService(this)">×</button>';
       sl.appendChild(row);
     });
   }

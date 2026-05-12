@@ -22,11 +22,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <meta name="tool-id" content="electricity-estimator">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Electricity Bill Estimator","description":"Estimate monthly electricity bills for 10 African countries with real tariff data, appliance calculator, solar savings and generator comparison.","url":"https://afrotools.com/tools/electricity-estimator/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -242,10 +242,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
     <div class="eb-card-body">
       <!-- Quick Presets -->
       <div class="eb-presets" id="presetRow">
-        <button class="eb-preset" onclick="loadPreset('apartment')">🏠 Small Apartment</button>
-        <button class="eb-preset" onclick="loadPreset('family')">👨‍👩‍👧‍👦 Family Home</button>
-        <button class="eb-preset" onclick="loadPreset('office')">🏢 Office Setup</button>
-        <button class="eb-preset" onclick="loadPreset('student')">🎓 Student Room</button>
+        <button type="button" class="eb-preset" onclick="loadPreset('apartment')">🏠 Small Apartment</button>
+        <button type="button" class="eb-preset" onclick="loadPreset('family')">👨‍👩‍👧‍👦 Family Home</button>
+        <button type="button" class="eb-preset" onclick="loadPreset('office')">🏢 Office Setup</button>
+        <button type="button" class="eb-preset" onclick="loadPreset('student')">🎓 Student Room</button>
       </div>
 
       <!-- Category Tabs -->
@@ -254,10 +254,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
       <!-- Appliance Select -->
       <div class="eb-add-row">
         <select class="eb-select eb-add-sel" id="addAppSelect"><option value="">Add appliance...</option></select>
-        <input type="number" class="eb-input" id="addWatts" placeholder="W" style="max-width:65px" min="1">
-        <input type="number" class="eb-input" id="addHrs" placeholder="Hrs" style="max-width:55px" min="0" max="24" step="0.5">
-        <input type="number" class="eb-input" id="addQty" placeholder="Qty" style="max-width:48px" min="1" value="1">
-        <button class="eb-add-btn" onclick="addAppliance()">+ Add</button>
+        <input aria-label="W" type="number" class="eb-input" id="addWatts" placeholder="W" style="max-width:65px" min="1">
+        <input aria-label="Hrs" type="number" class="eb-input" id="addHrs" placeholder="Hrs" style="max-width:55px" min="0" max="24" step="0.5">
+        <input aria-label="Qty" type="number" class="eb-input" id="addQty" placeholder="Qty" style="max-width:48px" min="1" value="1">
+        <button type="button" class="eb-add-btn" onclick="addAppliance()">+ Add</button>
       </div>
 
       <!-- Added Appliances -->
@@ -268,11 +268,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
         <div class="eb-reliability-grid">
           <div class="eb-field" style="margin-bottom:0">
             <label class="eb-label">Outage Hours / Day</label>
-            <input type="number" class="eb-input" id="outageHours" min="0" max="24" step="0.5" value="4">
+            <input aria-label="OutageHours" type="number" class="eb-input" id="outageHours" min="0" max="24" step="0.5" value="4">
           </div>
           <div class="eb-field" style="margin-bottom:0">
             <label class="eb-label">Token / Bill Budget</label>
-            <input type="number" class="eb-input" id="tokenBudget" min="0" placeholder="Optional">
+            <input aria-label="Optional" type="number" class="eb-input" id="tokenBudget" min="0" placeholder="Optional">
           </div>
           <div class="eb-field" style="margin-bottom:0">
             <label class="eb-label">Backup Mode</label>
@@ -286,7 +286,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
         </div>
       </div>
 
-      <button class="eb-calc-btn" onclick="calculate()">⚡ Calculate Bill</button>
+      <button type="button" class="eb-calc-btn" onclick="calculate()">⚡ Calculate Bill</button>
 
       <!-- Results -->
       <div class="eb-result" id="resultSection">
@@ -317,7 +317,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
               <div style="display:flex;justify-content:space-between;font-size:.68rem;font-weight:600;color:#92400e;margin-bottom:4px">
                 <span>Coverage</span><span id="solarPctLabel">80%</span>
               </div>
-              <input type="range" class="eb-solar-range" id="solarSlider" min="20" max="100" value="80" step="5" oninput="updateSolar()">
+              <input aria-label="SolarSlider" type="range" class="eb-solar-range" id="solarSlider" min="20" max="100" value="80" step="5" oninput="updateSolar()">
             </div>
           </div>
           <div class="eb-compare-card gen">
@@ -534,9 +534,9 @@ function selectCountry(code) {
 /* ═══════ CATEGORY TABS ═══════ */
 function renderCatTabs() {
   var el = document.getElementById('catTabs');
-  var html = '<button class="eb-cat-tab active" onclick="filterCat(\'all\',this)">All</button>';
+  var html = '<button type="button" class="eb-cat-tab active" onclick="filterCat(\'all\',this)">All</button>';
   Object.keys(CAT_LABELS).forEach(function(k) {
-    html += '<button class="eb-cat-tab" onclick="filterCat(\'' + k + '\',this)">' + CAT_LABELS[k] + '</button>';
+    html += '<button type="button" class="eb-cat-tab" onclick="filterCat(\'' + k + '\',this)">' + CAT_LABELS[k] + '</button>';
   });
   el.innerHTML = html;
 }
@@ -617,11 +617,11 @@ function renderApps() {
       '<span class="eb-app-name">' + esc(a.name) + '</span>' +
       '<span class="eb-app-watts">' + a.watts + 'W</span>' +
       '<div class="eb-app-hrs-wrap">' +
-        '<input type="range" class="eb-app-slider" min="0" max="24" step="0.5" value="' + a.hrs + '" oninput="updateAppHrs(' + i + ',this.value)">' +
+        '<input aria-label="Eb app slider" type="range" class="eb-app-slider" min="0" max="24" step="0.5" value="' + a.hrs + '" oninput="updateAppHrs(' + i + ',this.value)">' +
         '<span class="eb-app-hrs-val" id="hrsLabel' + i + '">' + a.hrs + 'h</span>' +
       '</div>' +
-      '<input type="number" class="eb-app-qty" value="' + a.qty + '" min="1" max="20" onchange="updateAppQty(' + i + ',this.value)">' +
-      '<button class="eb-app-del" onclick="removeApp(' + i + ')" title="Remove">&times;</button>' +
+      '<input aria-label="Eb app qty" type="number" class="eb-app-qty" value="' + a.qty + '" min="1" max="20" onchange="updateAppQty(' + i + ',this.value)">' +
+      '<button type="button" class="eb-app-del" onclick="removeApp(' + i + ')" title="Remove">&times;</button>' +
     '</div>';
   }).join('');
 }

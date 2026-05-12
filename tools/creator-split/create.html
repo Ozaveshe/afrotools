@@ -6,10 +6,10 @@
   <title>Create Split — CreatorSplit | AfroTools</title>
   <meta name="robots" content="noindex, follow">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=6be58c61">
-  <script src="/assets/js/components/navbar.js?v=af1ede16" defer></script>
-  <script src="/assets/js/components/footer.js?v=7cf41589" defer></script>
+  <script src="/assets/js/components/navbar.js?v=3af89576" defer></script>
+  <script src="/assets/js/components/footer.js?v=625b18a7" defer></script>
   <script src="/engines/creator-split-engine.js?v=37c4a0c3"></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-split/create">
 <meta property="og:url" content="https://afrotools.com/tools/creator-split/create">
@@ -38,8 +38,8 @@
 
     <!-- BOTTOM BAR -->
     <div class="cs-bottom-bar">
-      <button class="cs-btn cs-btn-secondary" id="btn-back" style="display:none">Back</button>
-      <button class="cs-btn cs-btn-primary" id="btn-next">Next</button>
+      <button type="button" class="cs-btn cs-btn-secondary" id="btn-back" style="display:none">Back</button>
+      <button type="button" class="cs-btn cs-btn-primary" id="btn-next">Next</button>
     </div>
   </div>
 
@@ -113,12 +113,12 @@
       html += '<div class="cs-type-grid">';
       CS.PROJECT_TYPES.forEach(function(t) {
         var sel = splitData.project_type === t.id ? ' selected' : '';
-        html += '<button class="cs-type-card' + sel + '" data-type="' + t.id + '"><div class="cs-type-icon">' + t.icon + '</div><div class="cs-type-label">' + t.label + '</div></button>';
+        html += '<button type="button" class="cs-type-card' + sel + '" data-type="' + t.id + '"><div class="cs-type-icon">' + t.icon + '</div><div class="cs-type-label">' + t.label + '</div></button>';
       });
       html += '</div>';
 
-      html += '<div class="cs-field"><label class="cs-label">Project Name</label><input type="text" class="cs-input" id="project-name" placeholder="e.g. Lagos Nights (Single)" value="' + (splitData.name || '') + '"></div>';
-      html += '<div class="cs-field"><label class="cs-label">Link to the work (optional)</label><input type="text" class="cs-input" id="project-url" placeholder="YouTube, Spotify, portfolio link..." value="' + (splitData.work_url || '') + '"></div>';
+      html += '<div class="cs-field"><label class="cs-label">Project Name</label><input aria-label="E.g. Lagos Nights (Single)" type="text" class="cs-input" id="project-name" placeholder="e.g. Lagos Nights (Single)" value="' + (splitData.name || '') + '"></div>';
+      html += '<div class="cs-field"><label class="cs-label">Link to the work (optional)</label><input aria-label="YouTube, Spotify, portfolio link" type="text" class="cs-input" id="project-url" placeholder="YouTube, Spotify, portfolio link..." value="' + (splitData.work_url || '') + '"></div>';
 
       container.innerHTML = html;
 
@@ -142,18 +142,18 @@
         html += '<div class="cs-collab-card" data-index="' + i + '">' +
           '<div class="cs-collab-avatar" style="background:' + c.color + '">' + initials + '</div>' +
           '<div class="cs-collab-info">' +
-            (c.is_self ? '<div class="cs-collab-name">You</div>' : '<input type="text" class="cs-input" style="padding:6px 10px;font-size:.8rem;margin-bottom:4px" placeholder="Name" value="' + c.name + '" data-field="name" data-idx="' + i + '">') +
+            (c.is_self ? '<div class="cs-collab-name">You</div>' : '<input aria-label="Name" type="text" class="cs-input" style="padding:6px 10px;font-size:.8rem;margin-bottom:4px" placeholder="Name" value="' + c.name + '" data-field="name" data-idx="' + i + '">') +
             '<select class="cs-select" style="padding:6px 10px;font-size:.72rem" data-field="role" data-idx="' + i + '">';
         roles.forEach(function(r) {
           html += '<option value="' + r + '"' + (c.role === r ? ' selected' : '') + '>' + r + '</option>';
         });
         html += '</select></div>';
-        if (!c.is_self) html += '<button class="cs-collab-remove" data-remove="' + i + '">&times;</button>';
+        if (!c.is_self) html += '<button type="button" class="cs-collab-remove" data-remove="' + i + '">&times;</button>';
         html += '</div>';
       });
       html += '</div>';
 
-      html += '<button class="cs-add-collab" id="add-collab-btn">+ Add Collaborator</button>';
+      html += '<button type="button" class="cs-add-collab" id="add-collab-btn">+ Add Collaborator</button>';
 
       container.innerHTML = html;
 
@@ -204,7 +204,7 @@
         html += '<div class="cs-slider-row">' +
           '<div class="cs-slider-color" style="background:' + c.color + '"></div>' +
           '<div class="cs-slider-name">' + c.name + '</div>' +
-          '<input type="range" class="cs-slider-input" min="0" max="100" value="' + c.percentage + '" data-slider="' + i + '">' +
+          '<input aria-label="Cs slider input" type="range" class="cs-slider-input" min="0" max="100" value="' + c.percentage + '" data-slider="' + i + '">' +
           '<div class="cs-slider-val" id="slider-val-' + i + '">' + c.percentage + '%</div>' +
         '</div>';
       });
@@ -316,8 +316,8 @@
 
       // Share buttons
       html += '<div class="cs-share-btns">';
-      html += '<button class="cs-share-btn whatsapp" id="share-wa">WhatsApp</button>';
-      html += '<button class="cs-share-btn copy" id="share-copy">Copy Agreement</button>';
+      html += '<button type="button" class="cs-share-btn whatsapp" id="share-wa">WhatsApp</button>';
+      html += '<button type="button" class="cs-share-btn copy" id="share-copy">Copy Agreement</button>';
       html += '</div>';
 
       container.innerHTML = html;

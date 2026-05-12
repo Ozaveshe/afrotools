@@ -28,15 +28,15 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-japa/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/japa-calculator/" />
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/japa-calculator.css?v=be3d44a4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur de coût d'expatriation Japa","description":"Calculez le coût total de la relocalisation depuis n'importe quel pays africain. 36 origines, 21 destinations, 55+ parcours visa, 100+ postes de coûts.","url":"https://afrotools.com/fr/tools/calculateur-japa/","inLanguage":"https://afrotools.com/fr/","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -164,8 +164,8 @@
       <div class="jfl"><label>Ville de départ</label><select id="oCity"></select></div>
     </div>
     <div class="jr">
-      <div class="jfl"><label>Revenu mensuel (équiv. USD)</label><input type="number" id="monthlyIncome" placeholder="ex. 2000" min="0"><span class="ht">Utilisé pour calculer le délai d'épargne</span></div>
-      <div class="jfl"><label>Taux d'épargne (%)</label><input type="number" id="savingsRate" value="25" min="5" max="80"><span class="ht">% du revenu mis de côté chaque mois</span></div>
+      <div class="jfl"><label>Revenu mensuel (équiv. USD)</label><input aria-label="Ex. 2000" type="number" id="monthlyIncome" placeholder="ex. 2000" min="0"><span class="ht">Utilisé pour calculer le délai d'épargne</span></div>
+      <div class="jfl"><label>Taux d'épargne (%)</label><input aria-label="SavingsRate" type="number" id="savingsRate" value="25" min="5" max="80"><span class="ht">% du revenu mis de côté chaque mois</span></div>
     </div>
   </div>
   <div class="jf">
@@ -222,7 +222,7 @@
       </div>
       <div class="dep-row" id="kidsRow">
         <label>Nombre d'enfants :</label>
-        <input type="number" id="nKids" value="1" min="1" max="6">
+        <input aria-label="NKids" type="number" id="nKids" value="1" min="1" max="6">
         <span class="dep-hint">Ajoute frais de visa, vols et ajustements de coût de vie par enfant</span>
       </div>
     </div>
@@ -242,10 +242,10 @@
       </div>
     </div>
     <div class="extra-grid">
-      <div><span class="fi-label">Déjà épargné (USD)</span><input class="fi-inp" type="number" id="alreadySaved" placeholder="0" min="0"></div>
-      <div><span class="fi-label">Mois de départ visé</span><input class="fi-inp" type="month" id="targetDate"></div>
+      <div><span class="fi-label">Déjà épargné (USD)</span><input aria-label="AlreadySaved" class="fi-inp" type="number" id="alreadySaved" placeholder="0" min="0"></div>
+      <div><span class="fi-label">Mois de départ visé</span><input aria-label="TargetDate" class="fi-inp" type="month" id="targetDate"></div>
     </div>
-    <button class="jgo" onclick="calculate()">Calculer le coût total</button>
+    <button type="button" class="jgo" onclick="calculate()">Calculer le coût total</button>
   </div>
 
   <div class="res" id="results">
@@ -313,7 +313,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
-<script src="/engines/japa-engine.js" defer></script>
+<script src="/engines/japa-engine.js?v=d5ae4356" defer></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 

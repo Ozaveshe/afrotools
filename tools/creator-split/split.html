@@ -6,10 +6,10 @@
   <title>Split Detail — CreatorSplit | AfroTools</title>
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=6be58c61">
-  <script src="/assets/js/components/navbar.js?v=af1ede16" defer></script>
-  <script src="/assets/js/components/footer.js?v=7cf41589" defer></script>
+  <script src="/assets/js/components/navbar.js?v=3af89576" defer></script>
+  <script src="/assets/js/components/footer.js?v=625b18a7" defer></script>
   <script src="/engines/creator-split-engine.js?v=37c4a0c3"></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-split/split">
 <meta property="og:url" content="https://afrotools.com/tools/creator-split/split">
@@ -37,27 +37,27 @@
   <!-- ADD EARNING MODAL -->
   <div class="cs-modal-overlay" id="earning-modal">
     <div class="cs-modal" style="position:relative">
-      <button class="cs-modal-close" id="close-earning">&times;</button>
+      <button type="button" class="cs-modal-close" id="close-earning">&times;</button>
       <div class="cs-modal-title">Log Earning</div>
-      <div class="cs-field"><label class="cs-label">Amount</label><input type="number" class="cs-input" id="earn-amount" placeholder="0"></div>
+      <div class="cs-field"><label class="cs-label">Amount</label><input aria-label="Earn amount" type="number" class="cs-input" id="earn-amount" placeholder="0"></div>
       <div class="cs-field"><label class="cs-label">Source</label><select class="cs-select" id="earn-source"></select></div>
-      <div class="cs-field"><label class="cs-label">Description</label><input type="text" class="cs-input" id="earn-desc" placeholder="e.g. Spotify January payout"></div>
-      <div class="cs-field"><label class="cs-label">Date</label><input type="date" class="cs-input" id="earn-date"></div>
-      <button class="cs-btn cs-btn-primary" id="save-earning">Save Earning</button>
+      <div class="cs-field"><label class="cs-label">Description</label><input aria-label="E.g. Spotify January payout" type="text" class="cs-input" id="earn-desc" placeholder="e.g. Spotify January payout"></div>
+      <div class="cs-field"><label class="cs-label">Date</label><input aria-label="Earn date" type="date" class="cs-input" id="earn-date"></div>
+      <button type="button" class="cs-btn cs-btn-primary" id="save-earning">Save Earning</button>
     </div>
   </div>
 
   <!-- ADD PAYOUT MODAL -->
   <div class="cs-modal-overlay" id="payout-modal">
     <div class="cs-modal" style="position:relative">
-      <button class="cs-modal-close" id="close-payout">&times;</button>
+      <button type="button" class="cs-modal-close" id="close-payout">&times;</button>
       <div class="cs-modal-title">Log Payout</div>
       <div class="cs-field"><label class="cs-label">To</label><select class="cs-select" id="pay-member"></select></div>
-      <div class="cs-field"><label class="cs-label">Amount</label><input type="number" class="cs-input" id="pay-amount" placeholder="0"></div>
+      <div class="cs-field"><label class="cs-label">Amount</label><input aria-label="Pay amount" type="number" class="cs-input" id="pay-amount" placeholder="0"></div>
       <div class="cs-field"><label class="cs-label">Method</label><select class="cs-select" id="pay-method"></select></div>
-      <div class="cs-field"><label class="cs-label">Date</label><input type="date" class="cs-input" id="pay-date"></div>
-      <div class="cs-field"><label class="cs-label">Notes</label><input type="text" class="cs-input" id="pay-notes" placeholder="Optional notes"></div>
-      <button class="cs-btn cs-btn-primary" id="save-payout">Save Payout</button>
+      <div class="cs-field"><label class="cs-label">Date</label><input aria-label="Pay date" type="date" class="cs-input" id="pay-date"></div>
+      <div class="cs-field"><label class="cs-label">Notes</label><input aria-label="Optional notes" type="text" class="cs-input" id="pay-notes" placeholder="Optional notes"></div>
+      <button type="button" class="cs-btn cs-btn-primary" id="save-payout">Save Payout</button>
     </div>
   </div>
 
@@ -110,7 +110,7 @@
       html += '</div>';
 
       // Earnings section
-      html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Earnings</div><button class="cs-section-action" id="add-earning-btn">+ Log Earning</button></div>';
+      html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Earnings</div><button type="button" class="cs-section-action" id="add-earning-btn">+ Log Earning</button></div>';
       html += '<div style="font-size:1.3rem;font-weight:900;color:#22C55E;margin-bottom:16px">' + CS.formatMoney(totalEarned, currency) + ' <span style="font-size:.7rem;color:rgba(255,255,255,.4);font-weight:600">total earned</span></div>';
 
       if (earnings.length > 0) {
@@ -124,7 +124,7 @@
       html += '</div>';
 
       // Balances
-      html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Balances</div><button class="cs-section-action" id="add-payout-btn">+ Log Payout</button></div>';
+      html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Balances</div><button type="button" class="cs-section-action" id="add-payout-btn">+ Log Payout</button></div>';
       html += '<div class="cs-balance-list">';
       memberEarnings.forEach(function(me) {
         var initials = me.member.name.split(' ').map(function(w) { return w.charAt(0); }).join('').slice(0, 2);
@@ -147,14 +147,14 @@
       // Projection calculator
       html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Projection Calculator</div></div>';
       html += '<div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:12px">See what each person earns for a hypothetical amount</div>';
-      html += '<div class="cs-proj-input-row"><input type="number" class="cs-proj-input" id="proj-amount" placeholder="Enter amount e.g. 1000000"><button class="cs-proj-btn" id="proj-calc">Calculate</button></div>';
+      html += '<div class="cs-proj-input-row"><input aria-label="Enter amount e.g. 1000000" type="number" class="cs-proj-input" id="proj-amount" placeholder="Enter amount e.g. 1000000"><button type="button" class="cs-proj-btn" id="proj-calc">Calculate</button></div>';
       html += '<div id="proj-result"></div>';
       html += '</div>';
 
       // Share buttons
       html += '<div class="cs-share-btns" style="margin-bottom:20px">';
-      html += '<button class="cs-share-btn whatsapp" id="share-wa">Share via WhatsApp</button>';
-      html += '<button class="cs-share-btn copy" id="copy-agreement">Copy Agreement</button>';
+      html += '<button type="button" class="cs-share-btn whatsapp" id="share-wa">Share via WhatsApp</button>';
+      html += '<button type="button" class="cs-share-btn copy" id="copy-agreement">Copy Agreement</button>';
       html += '</div>';
 
       el.innerHTML = html;

@@ -16,9 +16,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <style>
 :root{--accent:#10b981;--accent-light:#34d399;--accent-dark:#059669;--afro-dark:#0f1419;--sg-bg:#f8fafc;--sg-border:#e2e8f0;--sg-muted:#64748b;--sg-radius:10px}
@@ -239,10 +239,10 @@ h1 em{color:var(--accent-light);font-style:normal}
 {"@type":"Question","name":"How much should I save for an emergency fund in Africa?","acceptedAnswer":{"@type":"Answer","text":"Financial advisors recommend 3-6 months of essential expenses. In high-inflation countries like Nigeria or Ghana, aim for 6 months as costs rise quickly. Keep emergency funds in liquid instruments like money market funds."}},
 {"@type":"Question","name":"Can I increase my monthly savings over time?","acceptedAnswer":{"@type":"Answer","text":"Yes! This calculator supports annual contribution increases. Many savers increase deposits by 5-10% yearly as incomes grow. Even small annual increases can dramatically shorten your timeline to reaching your savings goal."}}
 ]}</script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/savings-goal/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/objectif-epargne/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/savings-goal/" />
@@ -281,9 +281,9 @@ h1 em{color:var(--accent-light);font-style:normal}
       <div class="card-body">
         <!-- Mode Tabs -->
         <div class="mode-tabs">
-          <button class="mode-tab active" data-mode="time" onclick="switchMode('time')">Time to Goal</button>
-          <button class="mode-tab" data-mode="monthly" onclick="switchMode('monthly')">Monthly Needed</button>
-          <button class="mode-tab" data-mode="balance" onclick="switchMode('balance')">Final Balance</button>
+          <button type="button" class="mode-tab active" data-mode="time" onclick="switchMode('time')">Time to Goal</button>
+          <button type="button" class="mode-tab" data-mode="monthly" onclick="switchMode('monthly')">Monthly Needed</button>
+          <button type="button" class="mode-tab" data-mode="balance" onclick="switchMode('balance')">Final Balance</button>
         </div>
 
         <!-- Country & Currency -->
@@ -314,12 +314,12 @@ h1 em{color:var(--accent-light);font-style:normal}
         <div class="field-row">
           <div class="field">
             <label class="f-label">Savings Goal (<span id="curSymLabel"></span>)</label>
-            <input type="text" class="f-input" id="goal" value="5,000,000" oninput="fmtInput(this)" inputmode="numeric">
+            <input aria-label="Goal" type="text" class="f-input" id="goal" value="5,000,000" oninput="fmtInput(this)" inputmode="numeric">
             <div class="f-hint" id="goalHint"></div>
           </div>
           <div class="field">
             <label class="f-label">Current Savings (<span id="curSymLabel2"></span>)</label>
-            <input type="text" class="f-input" id="current" value="500,000" oninput="fmtInput(this)" inputmode="numeric">
+            <input aria-label="Current" type="text" class="f-input" id="current" value="500,000" oninput="fmtInput(this)" inputmode="numeric">
           </div>
         </div>
 
@@ -327,7 +327,7 @@ h1 em{color:var(--accent-light);font-style:normal}
         <div class="field-row" id="depositRow">
           <div class="field">
             <label class="f-label" id="depositLabel">Monthly Deposit</label>
-            <input type="text" class="f-input" id="deposit" value="100,000" oninput="fmtInput(this)" inputmode="numeric">
+            <input aria-label="Deposit" type="text" class="f-input" id="deposit" value="100,000" oninput="fmtInput(this)" inputmode="numeric">
           </div>
           <div class="field">
             <label class="f-label">Frequency</label>
@@ -342,19 +342,19 @@ h1 em{color:var(--accent-light);font-style:normal}
         <!-- Timeline (for monthly-needed mode) -->
         <div class="field" id="timelineField" style="display:none">
           <label class="f-label">Timeline (months)</label>
-          <input type="number" class="f-input" id="timeline" value="24" min="1" max="600" step="1">
+          <input aria-label="Timeline" type="number" class="f-input" id="timeline" value="24" min="1" max="600" step="1">
         </div>
 
         <!-- Rates -->
         <div class="field-row">
           <div class="field">
             <label class="f-label">Annual Interest Rate (%)</label>
-            <input type="number" class="f-input" id="rate" value="7" step="0.1" min="0" max="100">
+            <input aria-label="Rate" type="number" class="f-input" id="rate" value="7" step="0.1" min="0" max="100">
             <div class="f-hint" id="rateHint">Typical savings rate for your country</div>
           </div>
           <div class="field">
             <label class="f-label">Annual Inflation (%)</label>
-            <input type="number" class="f-input" id="inflation" value="0" step="0.1" min="0" max="200">
+            <input aria-label="Inflation" type="number" class="f-input" id="inflation" value="0" step="0.1" min="0" max="200">
             <div class="f-hint" id="inflationHint">Set to 0 to ignore inflation</div>
           </div>
         </div>
@@ -366,7 +366,7 @@ h1 em{color:var(--accent-light);font-style:normal}
         </div>
         <div class="field" id="increaseField" style="display:none">
           <label class="f-label">Annual Increase (%)</label>
-          <input type="number" class="f-input" id="increaseRate" value="5" step="1" min="0" max="100">
+          <input aria-label="IncreaseRate" type="number" class="f-input" id="increaseRate" value="5" step="1" min="0" max="100">
         </div>
 
         <div class="check-row">
@@ -374,7 +374,7 @@ h1 em{color:var(--accent-light);font-style:normal}
           <label for="showReal">Show inflation-adjusted (real) values</label>
         </div>
 
-        <button class="calc-btn" onclick="calculate()">Calculate Savings Plan</button>
+        <button type="button" class="calc-btn" onclick="calculate()">Calculate Savings Plan</button>
 
         <!-- RESULTS -->
         <div id="results" style="display:none">
@@ -429,8 +429,8 @@ h1 em{color:var(--accent-light);font-style:normal}
       <div class="card-body">
         <div id="aiMessages" style="max-height:300px;overflow-y:auto;margin-bottom:12px"></div>
         <div style="display:flex;gap:8px">
-          <input type="text" id="aiInput" class="f-input" placeholder="Ask about savings strategies..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
-          <button class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Ask</button>
+          <input aria-label="Ask about savings strategies" type="text" id="aiInput" class="f-input" placeholder="Ask about savings strategies..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
+          <button type="button" class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Ask</button>
         </div>
         <div style="font-size:.7rem;color:#94a3b8;margin-top:6px">Powered by AfroTools AI &bull; <span id="aiRemaining"></span></div>
       </div>
@@ -1058,7 +1058,7 @@ function escapeHtml(s){var d=document.createElement('div');d.textContent=s;retur
    ═══════════════════════════════════════════════════════ */
 window.addEventListener('load',function(){setTimeout(calculate,300);});
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 

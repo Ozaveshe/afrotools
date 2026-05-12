@@ -16,9 +16,9 @@
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Remittance Cost Tracker | AfroTools"><meta name="twitter:description" content="Compare money transfer costs to Africa."><meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script><script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 50%,#0063D1 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -86,7 +86,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the cheapest way to send money to Nigeria?","acceptedAnswer":{"@type":"Answer","text":"For the US to Nigeria corridor, fintech apps like Wise, Remitly, or Sendwave typically offer the lowest total cost at 1-3%. Send via mobile app, receive via bank transfer or mobile money. Avoid bank wires which can cost 8-12% in total fees and FX margin."}},{"@type":"Question","name":"Why is sending money within Africa so expensive?","acceptedAnswer":{"@type":"Answer","text":"Intra-African remittances average around 12% in costs due to small market sizes with low competition, multiple currency conversions, limited mobile money interoperability, heavy regulation, and correspondent banking fees. The AfCFTA and PAPSS aim to reduce these costs."}},{"@type":"Question","name":"What is hawala and is it legal?","acceptedAnswer":{"@type":"Answer","text":"Hawala is an informal value transfer system used widely in the Horn of Africa and beyond. Money is transferred through a network of agents without physically moving it. While illegal or unregulated in many jurisdictions, it persists because it is often cheaper, faster, and more accessible than formal channels. It carries risks including no consumer protection."}},{"@type":"Question","name":"Is using crypto to send remittances legal in Africa?","acceptedAnswer":{"@type":"Answer","text":"Legality varies by country. Nigeria restricts banks from facilitating crypto but peer-to-peer trading is common. Kenya, South Africa, and Ghana have more permissive frameworks. Crypto remittances carry volatility risk and require the recipient to convert to local currency, adding cost."}}]}
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/hawala-tracker/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/hawala-tracker/" />
 <meta property="og:locale" content="en_US">
@@ -163,7 +163,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="eg">Egypt</option>
 </select></div>
 </div>
-<div class="field"><label>Amount to Send (in sending currency)</label><input type="number" id="amount" value="500" min="10" step="50"></div>
+<div class="field"><label>Amount to Send (in sending currency)</label><input aria-label="Amount" type="number" id="amount" value="500" min="10" step="50"></div>
 <div class="row field">
 <div><label>Recipient Access</label>
 <select id="recipientAccess">
@@ -179,8 +179,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="standard">1-3 days is fine</option>
 </select></div>
 </div>
-<div class="field"><label>Repeat Transfers Per Year</label><input type="number" id="repeatTransfers" value="12" min="1" max="52" step="1"></div>
-<button class="btn btn-primary" onclick="compare()">Compare Channels</button>
+<div class="field"><label>Repeat Transfers Per Year</label><input aria-label="RepeatTransfers" type="number" id="repeatTransfers" value="12" min="1" max="52" step="1"></div>
+<button type="button" class="btn btn-primary" onclick="compare()">Compare Channels</button>
 </div></div>
 
 <div class="card" id="resultCard" style="display:none">
@@ -203,7 +203,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card">
 <div class="card-head"><span class="card-title">Africa Remittance Facts</span></div>
 <div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p><strong>$100 billion+</strong> sent to Africa annually in remittances � exceeding foreign aid.</p>
+<p><strong>$100 billion+</strong> sent to Africa annually in remittances - exceeding foreign aid.</p>
 <p style="margin-top:6px"><strong>Average cost:</strong> 7.8% for Sub-Saharan Africa (vs 6.2% global average). SDG target is under 3%.</p>
 <p style="margin-top:6px"><strong>Cheapest corridors:</strong> UK?Nigeria (~3%), US?Kenya (~4%). Most expensive: within Africa (~12%).</p>
 <p style="margin-top:6px"><strong>Informal channels</strong> (hawala) estimated at 30-50% of official remittance flows.</p>
@@ -224,10 +224,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <section class="seo-section">
 <h2>The True Cost of Sending Money to Africa</h2>
-<p>Africa receives over $100 billion in remittances annually, making diaspora transfers one of the continent's largest sources of foreign income � exceeding both foreign direct investment and official development assistance. Yet Sub-Saharan Africa remains the most expensive region in the world to send money to, with average costs of 7.8% compared to the global average of 6.2% and the UN Sustainable Development Goal target of under 3% by 2030.</p>
-<p>The true cost of a remittance has two components that many senders overlook. The explicit fee � the flat charge or percentage the provider takes � is usually visible and ranges from $0 to $15 per transaction. But the hidden cost lies in the exchange rate margin: the difference between the mid-market exchange rate and the rate the provider actually gives you. Many providers advertise "zero fees" while making their profit from a 2-5% exchange rate markup. On a $500 transfer, a 3% FX margin means you're losing $15 � even if the stated fee is zero.</p>
+<p>Africa receives over $100 billion in remittances annually, making diaspora transfers one of the continent's largest sources of foreign income - exceeding both foreign direct investment and official development assistance. Yet Sub-Saharan Africa remains the most expensive region in the world to send money to, with average costs of 7.8% compared to the global average of 6.2% and the UN Sustainable Development Goal target of under 3% by 2030.</p>
+<p>The true cost of a remittance has two components that many senders overlook. The explicit fee - the flat charge or percentage the provider takes - is usually visible and ranges from $0 to $15 per transaction. But the hidden cost lies in the exchange rate margin: the difference between the mid-market exchange rate and the rate the provider actually gives you. Many providers advertise "zero fees" while making their profit from a 2-5% exchange rate markup. On a $500 transfer, a 3% FX margin means you're losing $15 - even if the stated fee is zero.</p>
 <p>Traditional bank wires remain the most expensive channel, with combined costs (fees + FX margin) of 8-12%. Mobile money operators like M-Pesa have reduced costs for some corridors, particularly within East Africa. Fintech providers (Wise, Remitly, WorldRemit, Sendwave) typically offer the best combination of speed, transparency, and cost at 1-4% total. Cryptocurrency-based transfers are growing, particularly in Nigeria where the parallel market rate makes crypto attractive, though they require technical knowledge and carry volatility risk.</p>
-<p>Informal channels � known as hawala (East Africa/Horn), hundi, or informal value transfer systems � remain significant, carrying an estimated 30-50% of actual remittance flows to Africa. While illegal in many jurisdictions and carrying risks (no consumer protection, potential for fraud, money laundering concerns), they persist because they're often cheaper, faster, more accessible, and reach areas without formal banking infrastructure.</p>
+<p>Informal channels - known as hawala (East Africa/Horn), hundi, or informal value transfer systems - remain significant, carrying an estimated 30-50% of actual remittance flows to Africa. While illegal in many jurisdictions and carrying risks (no consumer protection, potential for fraud, money laundering concerns), they persist because they're often cheaper, faster, more accessible, and reach areas without formal banking infrastructure.</p>
 
 </section>
 
@@ -290,7 +290,7 @@ function compare(){
   const corridor=from+'-'+to;
   const adj=CORRIDOR_ADJ[corridor]||1.0;
 
-  const curSymbols={us:'$',uk:'�',eu:'�',ae:'AED ',ca:'CA$',ng:'?',ke:'KSh ',za:'R '};
+  const curSymbols={us:'$',uk:'-',eu:'-',ae:'AED ',ca:'CA$',ng:'?',ke:'KSh ',za:'R '};
   const cur=curSymbols[from]||'$';
 
   let results=[];

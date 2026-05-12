@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <style>
     /* ── APP SHELL ── */
     .cts-app {
@@ -534,6 +534,9 @@
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-titles/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-titles/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cts-app">
 
@@ -542,7 +545,7 @@
     <a href="index.html" class="cts-topbar-back">&larr; Back</a>
     <a href="index.html" class="cts-topbar-brand">&#9889; TitleSmith</a>
     <div class="cts-topbar-actions">
-      <button class="cts-topbar-btn" id="historyBtn" onclick="window._ctsToggleHistory()">&#128214; History</button>
+      <button type="button" class="cts-topbar-btn" id="historyBtn" onclick="window._ctsToggleHistory()">&#128214; History</button>
     </div>
   </div>
 
@@ -568,7 +571,7 @@
     <div class="cts-platforms" id="platformPills"></div>
 
     <!-- Generate Button -->
-    <button class="cts-generate-btn" id="generateBtn" onclick="window._ctsGenerate()">
+    <button type="button" class="cts-generate-btn" id="generateBtn" onclick="window._ctsGenerate()">
       <span class="cts-spinner"></span><span id="generateBtnText">Generate Titles</span>
     </button>
 
@@ -584,7 +587,7 @@
   <div class="cts-history-panel" id="historyPanel">
     <div class="cts-history-header">
       <h3>&#128214; History</h3>
-      <button class="cts-history-close" onclick="window._ctsToggleHistory()">&times;</button>
+      <button type="button" class="cts-history-close" onclick="window._ctsToggleHistory()">&times;</button>
     </div>
     <div class="cts-history-list" id="historyList"></div>
   </div>
@@ -690,7 +693,7 @@
     var container = document.getElementById('platformPills');
     var html = '';
     E.PLATFORMS.forEach(function(p) {
-      html += '<button class="cts-platform' + (p.id === currentPlatform ? ' active' : '') + '" data-platform="' + p.id + '">' + p.label + '</button>';
+      html += '<button type="button" class="cts-platform' + (p.id === currentPlatform ? ' active' : '') + '" data-platform="' + p.id + '">' + p.label + '</button>';
     });
     container.innerHTML = html;
 
@@ -785,9 +788,9 @@
         html += '<div class="cts-card-why">' + escapeHtml(t.whyItWorks) + '</div>';
       }
       html += '<div class="cts-card-actions">';
-      html += '<button class="cts-card-btn" onclick="window._ctsCopy(this, ' + idx + ')">&#128203; Copy</button>';
-      html += '<button class="cts-card-btn' + (isFav ? ' favorited' : '') + '" onclick="window._ctsFavorite(this, ' + idx + ')">&#9734; Fave</button>';
-      html += '<button class="cts-card-btn" onclick="window._ctsMore(\'' + t.style + '\')">&#128260; More</button>';
+      html += '<button type="button" class="cts-card-btn" onclick="window._ctsCopy(this, ' + idx + ')">&#128203; Copy</button>';
+      html += '<button type="button" class="cts-card-btn' + (isFav ? ' favorited' : '') + '" onclick="window._ctsFavorite(this, ' + idx + ')">&#9734; Fave</button>';
+      html += '<button type="button" class="cts-card-btn" onclick="window._ctsMore(\'' + t.style + '\')">&#128260; More</button>';
       html += '</div></div>';
     });
 
@@ -882,8 +885,8 @@
             '<div class="cts-card-meta"><span class="' + statusClass + '">' + charCount + ' chars ' + statusIcon + '</span></div>' +
             (t.whyItWorks ? '<div class="cts-card-why">' + escapeHtml(t.whyItWorks) + '</div>' : '') +
             '<div class="cts-card-actions">' +
-            '<button class="cts-card-btn" onclick="window._ctsCopyText(this)">&#128203; Copy</button>' +
-            '<button class="cts-card-btn" onclick="window._ctsFavText(this)">&#9734; Fave</button>' +
+            '<button type="button" class="cts-card-btn" onclick="window._ctsCopyText(this)">&#128203; Copy</button>' +
+            '<button type="button" class="cts-card-btn" onclick="window._ctsFavText(this)">&#9734; Fave</button>' +
             '</div>';
 
           // Insert before the A/B card if it exists, else append

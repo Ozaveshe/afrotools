@@ -27,10 +27,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="../../assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="../../assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="../../assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=5ea7102b">
-<script src="../../assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="../../assets/js/components/footer.js?v=7cf41589" defer></script>
+<script src="../../assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="../../assets/js/components/footer.js?v=625b18a7" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;line-height:1.6}
@@ -199,9 +199,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 
 <!-- Tabs bar -->
 <div class="bol-tabs-bar">
-  <button class="tab-btn active" onclick="switchTab('generate',this)">Generate Draft B/L</button>
-  <button class="tab-btn" onclick="switchTab('types',this)">B/L Types Guide</button>
-  <button class="tab-btn" onclick="switchTab('explainer',this)">Field Explainer</button>
+  <button type="button" class="tab-btn active" onclick="switchTab('generate',this)">Generate Draft B/L</button>
+  <button type="button" class="tab-btn" onclick="switchTab('types',this)">B/L Types Guide</button>
+  <button type="button" class="tab-btn" onclick="switchTab('explainer',this)">Field Explainer</button>
 </div>
 
 <!-- ── TAB 1: Generate ── -->
@@ -212,8 +212,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
     <!-- FORM -->
     <div class="form-panel">
       <div class="action-bar">
-        <button class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
-        <button class="btn-secondary" onclick="resetBLForm()">Reset</button>
+        <button type="button" class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
+        <button type="button" class="btn-secondary" onclick="resetBLForm()">Reset</button>
       </div>
 
       <!-- B/L Type -->
@@ -221,37 +221,37 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
         <div class="section-title">B/L Type</div>
         <div class="bl-type-grid" id="blTypeGrid">
           <label class="bl-type-card selected" onclick="selectBLType('original',this)">
-            <input type="radio" name="blType" value="original" checked>
+            <input aria-label="BlType" type="radio" name="blType" value="original" checked>
             <span class="bl-type-name">Original B/L</span>
             <span class="bl-type-desc">3 originals, carrier signs</span>
             <span class="bl-neg-badge neg-yes">Negotiable</span>
           </label>
           <label class="bl-type-card" onclick="selectBLType('seawaybill',this)">
-            <input type="radio" name="blType" value="seawaybill">
+            <input aria-label="BlType" type="radio" name="blType" value="seawaybill">
             <span class="bl-type-name">Seawaybill</span>
             <span class="bl-type-desc">No original required</span>
             <span class="bl-neg-badge neg-no">Non-negotiable</span>
           </label>
           <label class="bl-type-card" onclick="selectBLType('combined',this)">
-            <input type="radio" name="blType" value="combined">
+            <input aria-label="BlType" type="radio" name="blType" value="combined">
             <span class="bl-type-name">Combined Transport</span>
             <span class="bl-type-desc">Multi-modal, landlocked routes</span>
             <span class="bl-neg-badge neg-yes">Negotiable</span>
           </label>
           <label class="bl-type-card" onclick="selectBLType('multimodal',this)">
-            <input type="radio" name="blType" value="multimodal">
+            <input aria-label="BlType" type="radio" name="blType" value="multimodal">
             <span class="bl-type-name">Multimodal B/L</span>
             <span class="bl-type-desc">Door-to-door with inland leg</span>
             <span class="bl-neg-badge neg-yes">Negotiable</span>
           </label>
           <label class="bl-type-card" onclick="selectBLType('straight',this)">
-            <input type="radio" name="blType" value="straight">
+            <input aria-label="BlType" type="radio" name="blType" value="straight">
             <span class="bl-type-name">Straight B/L</span>
             <span class="bl-type-desc">Named consignee, simpler</span>
             <span class="bl-neg-badge neg-no">Non-negotiable</span>
           </label>
           <label class="bl-type-card" onclick="selectBLType('order',this)">
-            <input type="radio" name="blType" value="order">
+            <input aria-label="BlType" type="radio" name="blType" value="order">
             <span class="bl-type-name">Order B/L</span>
             <span class="bl-type-desc">To order of shipper, endorsed</span>
             <span class="bl-neg-badge neg-yes">Negotiable</span>
@@ -263,44 +263,44 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">References</div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>B/L Number</label><input type="text" id="blNumber" oninput="renderBL()" placeholder="BL-XXXXXXXX-001"></div>
-          <div class="fg"><label>Booking Reference</label><input type="text" id="blBookRef" oninput="renderBL()" placeholder="BOOK-12345"></div>
+          <div class="fg"><label>B/L Number</label><input aria-label="BL XXXXXXXX 001" type="text" id="blNumber" oninput="renderBL()" placeholder="BL-XXXXXXXX-001"></div>
+          <div class="fg"><label>Booking Reference</label><input aria-label="BOOK 12345" type="text" id="blBookRef" oninput="renderBL()" placeholder="BOOK-12345"></div>
         </div>
       </div>
 
       <!-- Parties -->
       <div class="form-section">
         <div class="section-title">Parties</div>
-        <div class="form-row"><div class="fg"><label>Shipper Name</label><input type="text" id="blShipperName" oninput="renderBL()" placeholder="Exporting company"></div></div>
+        <div class="form-row"><div class="fg"><label>Shipper Name</label><input aria-label="Exporting company" type="text" id="blShipperName" oninput="renderBL()" placeholder="Exporting company"></div></div>
         <div class="form-row form-row-2">
           <div class="fg"><label>Shipper Address</label><textarea id="blShipperAddr" rows="2" oninput="renderBL()" placeholder="Street, City, Country"></textarea></div>
           <div class="fg"><label>Shipper Country</label><select id="blShipperCountry" onchange="renderBL()"></select></div>
         </div>
-        <div class="form-row"><div class="fg"><label>Consignee</label><input type="text" id="blConsigneeName" oninput="renderBL()" placeholder="Company name or TO ORDER"></div><span class="hint" style="font-size:.72rem;color:#94a3b8">Use "TO ORDER" or "TO ORDER OF [BANK]" for negotiable B/L</span></div>
+        <div class="form-row"><div class="fg"><label>Consignee</label><input aria-label="Company name or TO ORDER" type="text" id="blConsigneeName" oninput="renderBL()" placeholder="Company name or TO ORDER"></div><span class="hint" style="font-size:.72rem;color:#94a3b8">Use "TO ORDER" or "TO ORDER OF [BANK]" for negotiable B/L</span></div>
         <div class="form-row"><div class="fg"><label>Consignee Address</label><textarea id="blConsigneeAddr" rows="2" oninput="renderBL()" placeholder="Street, City, Country"></textarea></div></div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Notify Party Name</label><input type="text" id="blNotifyName" oninput="renderBL()" placeholder="Buyer's freight agent"></div>
-          <div class="fg"><label>Notify Party Phone</label><input type="text" id="blNotifyPhone" oninput="renderBL()" placeholder="+254 700 000 000"></div>
+          <div class="fg"><label>Notify Party Name</label><input aria-label="Buyer's freight agent" type="text" id="blNotifyName" oninput="renderBL()" placeholder="Buyer's freight agent"></div>
+          <div class="fg"><label>Notify Party Phone</label><input aria-label="BlNotifyPhone" type="text" id="blNotifyPhone" oninput="renderBL()" placeholder="+254 700 000 000"></div>
         </div>
-        <div class="form-row"><div class="fg"><label>Notify Party Address</label><input type="text" id="blNotifyAddr" oninput="renderBL()" placeholder="City, Country"></div></div>
+        <div class="form-row"><div class="fg"><label>Notify Party Address</label><input aria-label="City, Country" type="text" id="blNotifyAddr" oninput="renderBL()" placeholder="City, Country"></div></div>
       </div>
 
       <!-- Shipment -->
       <div class="form-section">
         <div class="section-title">Shipment Details</div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Vessel Name</label><input type="text" id="blVessel" oninput="renderBL()" placeholder="MV African Star"></div>
-          <div class="fg"><label>Voyage Number</label><input type="text" id="blVoyage" oninput="renderBL()" placeholder="142N"></div>
+          <div class="fg"><label>Vessel Name</label><input aria-label="MV African Star" type="text" id="blVessel" oninput="renderBL()" placeholder="MV African Star"></div>
+          <div class="fg"><label>Voyage Number</label><input aria-label="142N" type="text" id="blVoyage" oninput="renderBL()" placeholder="142N"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Port of Loading</label><input type="text" id="blPOL" oninput="renderBL()" placeholder="Apapa, Lagos"></div>
-          <div class="fg"><label>Port of Discharge</label><input type="text" id="blPOD" oninput="renderBL()" placeholder="Mombasa, Kenya"></div>
+          <div class="fg"><label>Port of Loading</label><input aria-label="Apapa, Lagos" type="text" id="blPOL" oninput="renderBL()" placeholder="Apapa, Lagos"></div>
+          <div class="fg"><label>Port of Discharge</label><input aria-label="Mombasa, Kenya" type="text" id="blPOD" oninput="renderBL()" placeholder="Mombasa, Kenya"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Place of Receipt</label><input type="text" id="blPOR" oninput="renderBL()" placeholder="Kano, Nigeria (if inland)"></div>
-          <div class="fg"><label>Place of Delivery</label><input type="text" id="blPlaceDelivery" oninput="renderBL()" placeholder="Nairobi, Kenya (if inland)"></div>
+          <div class="fg"><label>Place of Receipt</label><input aria-label="Kano, Nigeria (if inland)" type="text" id="blPOR" oninput="renderBL()" placeholder="Kano, Nigeria (if inland)"></div>
+          <div class="fg"><label>Place of Delivery</label><input aria-label="Nairobi, Kenya (if inland)" type="text" id="blPlaceDelivery" oninput="renderBL()" placeholder="Nairobi, Kenya (if inland)"></div>
         </div>
-        <div class="form-row"><div class="fg"><label>On Board Date</label><input type="date" id="blOnBoardDate" onchange="renderBL()"><span class="hint" style="font-size:.72rem;color:#94a3b8">Critical for LC compliance. Must be on or before LC expiry.</span></div></div>
+        <div class="form-row"><div class="fg"><label>On Board Date</label><input aria-label="BlOnBoardDate" type="date" id="blOnBoardDate" onchange="renderBL()"><span class="hint" style="font-size:.72rem;color:#94a3b8">Critical for LC compliance. Must be on or before LC expiry.</span></div></div>
       </div>
 
       <!-- Cargo -->
@@ -324,7 +324,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
             <tbody id="blCargoBody"></tbody>
           </table>
         </div>
-        <button class="btn-add" onclick="addCargo()">+ Add Cargo</button>
+        <button type="button" class="btn-add" onclick="addCargo()">+ Add Cargo</button>
       </div>
 
       <!-- Freight -->
@@ -337,7 +337,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
               <option value="Collect">Collect</option>
             </select>
           </div>
-          <div class="fg"><label>Freight Amount</label><input type="number" id="blFreightAmt" oninput="renderBL()" placeholder="0.00" min="0"></div>
+          <div class="fg"><label>Freight Amount</label><input aria-label="BlFreightAmt" type="number" id="blFreightAmt" oninput="renderBL()" placeholder="0.00" min="0"></div>
           <div class="fg"><label>Currency</label>
             <select id="blFreightCur" onchange="renderBL()">
               <option>USD</option><option>EUR</option><option>GBP</option><option>KES</option><option>NGN</option><option>ZAR</option>
@@ -350,7 +350,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
               <option>1</option><option value="2">2</option><option value="3" selected>3</option>
             </select>
           </div>
-          <div class="fg"><label>Jurisdiction / Governing Law</label><input type="text" id="blJurisdiction" oninput="renderBL()" placeholder="English Law"></div>
+          <div class="fg"><label>Jurisdiction / Governing Law</label><input aria-label="English Law" type="text" id="blJurisdiction" oninput="renderBL()" placeholder="English Law"></div>
         </div>
       </div>
     </div><!-- /form-panel -->
@@ -555,15 +555,15 @@ function addCargo(){
   const tr = document.createElement('tr');
   tr.id = `bl-cargo-${id}`;
   tr.innerHTML = `
-    <td><input type="text" placeholder="TCKU1234567" oninput="renderBL()"></td>
-    <td><input type="text" placeholder="SL123456" oninput="renderBL()"></td>
-    <td><input type="text" placeholder="MARK-01" oninput="renderBL()"></td>
+    <td><input aria-label="TCKU1234567" type="text" placeholder="TCKU1234567" oninput="renderBL()"></td>
+    <td><input aria-label="SL123456" type="text" placeholder="SL123456" oninput="renderBL()"></td>
+    <td><input aria-label="MARK 01" type="text" placeholder="MARK-01" oninput="renderBL()"></td>
     <td><input type="number" placeholder="1" min="0" value="1" style="width:48px" oninput="renderBL()"></td>
     <td><select onchange="renderBL()"><option>x20GP</option><option>x40GP</option><option>x40HC</option><option>Cartons</option><option>Pallets</option><option>Bags</option></select></td>
-    <td><input type="text" placeholder="Description of goods" oninput="renderBL()"></td>
-    <td><input type="number" placeholder="0" min="0" step="any" value="0" style="width:72px" oninput="renderBL()"></td>
+    <td><input aria-label="Description of goods" type="text" placeholder="Description of goods" oninput="renderBL()"></td>
+    <td><input aria-label="Line item amount" type="number" placeholder="0" min="0" step="any" value="0" style="width:72px" oninput="renderBL()"></td>
     <td><input type="number" placeholder="0.000" min="0" step="any" value="0" style="width:64px" oninput="renderBL()"></td>
-    <td><button class="btn-remove" onclick="removeCargo(${id})">&#10005;</button></td>
+    <td><button type="button" class="btn-remove" onclick="removeCargo(${id})">&#10005;</button></td>
   `;
   tbody.appendChild(tr);
   renderBL();

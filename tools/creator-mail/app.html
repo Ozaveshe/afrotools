@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=6e6398a3">
   <style>
     .cml-loading-status{display:none;align-items:center;gap:10px;padding:12px 16px;margin-top:8px;background:linear-gradient(135deg,#f0f4ff 0%,#e8f2ff 100%);border:1px solid #c7d8f4;border-radius:10px;font-size:.85rem;color:#0A1628;}
@@ -25,6 +25,9 @@
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-mail/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-mail/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="cml-app">
 
@@ -33,9 +36,9 @@
     <a href="index.html" class="cml-topbar-back">&larr;</a>
     <a href="index.html" class="cml-topbar-brand">&#9993;&#65039; CreatorMail</a>
     <div class="cml-topbar-actions">
-      <button class="cml-topbar-btn" id="savedBtn">Saved</button>
-      <button class="cml-topbar-btn" id="spamBtn">Spam Score</button>
-      <button class="cml-topbar-btn primary" id="exportBtn">Export</button>
+      <button type="button" class="cml-topbar-btn" id="savedBtn">Saved</button>
+      <button type="button" class="cml-topbar-btn" id="spamBtn">Spam Score</button>
+      <button type="button" class="cml-topbar-btn primary" id="exportBtn">Export</button>
     </div>
   </div>
 
@@ -43,7 +46,7 @@
   <div class="cml-gallery" id="galleryView">
     <div class="cml-gallery-header">
       <div class="cml-gallery-title">&#127912; Pick a Template</div>
-      <button class="cml-topbar-btn" id="blankBtn">Start Blank</button>
+      <button type="button" class="cml-topbar-btn" id="blankBtn">Start Blank</button>
     </div>
     <div class="cml-gallery-grid" id="templateGrid"></div>
   </div>
@@ -72,11 +75,11 @@
         <div class="cml-global-title">Global Styles</div>
         <div class="cml-global-row">
           <span class="cml-global-label">Email BG</span>
-          <div class="cml-color-swatch"><input type="color" id="globalBg" value="#ffffff"></div>
+          <div class="cml-color-swatch"><input aria-label="GlobalBg" type="color" id="globalBg" value="#ffffff"></div>
         </div>
         <div class="cml-global-row">
           <span class="cml-global-label">Width</span>
-          <input class="cml-global-input" type="number" id="globalWidth" value="600" min="320" max="800" step="10">
+          <input aria-label="GlobalWidth" class="cml-global-input" type="number" id="globalWidth" value="600" min="320" max="800" step="10">
         </div>
         <div class="cml-global-row">
           <span class="cml-global-label">Font</span>
@@ -90,15 +93,15 @@
         </div>
         <div class="cml-global-row">
           <span class="cml-global-label">Brand Color</span>
-          <div class="cml-color-swatch"><input type="color" id="globalBrand" value="#6366F1"></div>
+          <div class="cml-color-swatch"><input aria-label="GlobalBrand" type="color" id="globalBrand" value="#6366F1"></div>
         </div>
         <div class="cml-global-row">
           <span class="cml-global-label">Radius</span>
-          <input class="cml-global-input" type="number" id="globalRadius" value="8" min="0" max="24" step="2">
+          <input aria-label="GlobalRadius" class="cml-global-input" type="number" id="globalRadius" value="8" min="0" max="24" step="2">
         </div>
         <div class="cml-global-row">
           <span class="cml-global-label">Logo URL</span>
-          <input class="cml-global-input" type="text" id="globalLogo" placeholder="https://..." style="width:140px;text-align:left;">
+          <input aria-label="Https://" class="cml-global-input" type="text" id="globalLogo" placeholder="https://..." style="width:140px;text-align:left;">
         </div>
       </div>
     </div>
@@ -106,12 +109,12 @@
     <!-- CENTER: CANVAS -->
     <div class="cml-canvas-wrap">
       <div class="cml-canvas-toolbar">
-        <button class="cml-canvas-toolbar-btn active" data-view="desktop" id="viewDesktop">&#128421; Desktop</button>
-        <button class="cml-canvas-toolbar-btn" data-view="mobile" id="viewMobile">&#128241; Mobile</button>
+        <button type="button" class="cml-canvas-toolbar-btn active" data-view="desktop" id="viewDesktop">&#128421; Desktop</button>
+        <button type="button" class="cml-canvas-toolbar-btn" data-view="mobile" id="viewMobile">&#128241; Mobile</button>
         <div class="cml-canvas-toolbar-sep"></div>
-        <button class="cml-canvas-toolbar-btn" id="darkToggle">&#127761; Dark Mode</button>
+        <button type="button" class="cml-canvas-toolbar-btn" id="darkToggle">&#127761; Dark Mode</button>
         <div class="cml-canvas-toolbar-sep"></div>
-        <button class="cml-canvas-toolbar-btn" id="undoBtn">&#8617; Undo</button>
+        <button type="button" class="cml-canvas-toolbar-btn" id="undoBtn">&#8617; Undo</button>
       </div>
       <div class="cml-canvas" id="emailCanvas">
         <div class="cml-canvas-empty" id="canvasEmpty">
@@ -137,19 +140,19 @@
     <div class="cml-export-modal">
       <div class="cml-export-title">Export Newsletter</div>
       <div class="cml-export-desc">Your email HTML is ready. Choose an export method.</div>
-      <button class="cml-export-btn" id="exportCopyHtml">
+      <button type="button" class="cml-export-btn" id="exportCopyHtml">
         <span class="cml-export-btn-icon">&#128203;</span>
         <span class="cml-export-btn-text">Copy HTML<span class="cml-export-btn-sub">Inline-styled, table-based for email</span></span>
       </button>
-      <button class="cml-export-btn" id="exportDownload">
+      <button type="button" class="cml-export-btn" id="exportDownload">
         <span class="cml-export-btn-icon">&#128229;</span>
         <span class="cml-export-btn-text">Download .html<span class="cml-export-btn-sub">Save file to your computer</span></span>
       </button>
-      <button class="cml-export-btn" id="exportPlainText">
+      <button type="button" class="cml-export-btn" id="exportPlainText">
         <span class="cml-export-btn-icon">&#128221;</span>
         <span class="cml-export-btn-text">Copy Plain Text<span class="cml-export-btn-sub">Text-only version for fallback</span></span>
       </button>
-      <button class="cml-export-close" id="exportClose">Close</button>
+      <button type="button" class="cml-export-close" id="exportClose">Close</button>
     </div>
   </div>
 
@@ -160,8 +163,8 @@
       <div class="cml-export-desc" id="savedDesc">Your newsletters are saved in this browser.</div>
       <div id="savedList"></div>
       <div style="display:flex;gap:8px;margin-top:16px;">
-        <button class="cml-topbar-btn primary" id="saveCurrentBtn" style="flex:1;">Save Current</button>
-        <button class="cml-export-close" id="savedClose" style="margin:0;flex:1;">Close</button>
+        <button type="button" class="cml-topbar-btn primary" id="saveCurrentBtn" style="flex:1;">Save Current</button>
+        <button type="button" class="cml-export-close" id="savedClose" style="margin:0;flex:1;">Close</button>
       </div>
     </div>
   </div>
@@ -172,7 +175,7 @@
       <div class="cml-export-title">Spam Score Check</div>
       <div class="cml-export-desc">Analyzing your newsletter for spam triggers...</div>
       <div id="spamResults"></div>
-      <button class="cml-export-close" id="spamClose">Close</button>
+      <button type="button" class="cml-export-close" id="spamClose">Close</button>
     </div>
   </div>
 
@@ -536,7 +539,7 @@
     var radius = state.globalRadius;
     var html = '<div class="cml-block' + sel + '" data-idx="' + idx + '">';
     html += '<div class="cml-block-handle">&#8942;</div>';
-    html += '<button class="cml-block-delete">&times;</button>';
+    html += '<button type="button" class="cml-block-delete">&times;</button>';
 
     switch (block.type) {
       case 'header':
@@ -658,10 +661,10 @@
       case 'text':
         html += '<div class="cml-setting-group"><label class="cml-setting-label">Content</label>';
         html += '<div class="cml-format-bar">';
-        html += '<button class="cml-format-btn" data-cmd="bold"><b>B</b></button>';
-        html += '<button class="cml-format-btn" data-cmd="italic"><i>I</i></button>';
-        html += '<button class="cml-format-btn" data-cmd="link">&#128279;</button>';
-        html += '<button class="cml-format-btn" data-cmd="ul">&#8226; List</button>';
+        html += '<button type="button" class="cml-format-btn" data-cmd="bold"><b>B</b></button>';
+        html += '<button type="button" class="cml-format-btn" data-cmd="italic"><i>I</i></button>';
+        html += '<button type="button" class="cml-format-btn" data-cmd="link">&#128279;</button>';
+        html += '<button type="button" class="cml-format-btn" data-cmd="ul">&#8226; List</button>';
         html += '</div>';
         html += '<textarea class="cml-setting-input" id="settHtml" rows="8" style="min-height:120px;resize:vertical;">' + escHtml(d.html || '') + '</textarea></div>';
         html += settingColor('Text Color', 'settTextColor', d.textColor || '');
@@ -711,14 +714,14 @@
     // Merge tags
     html += '<div class="cml-setting-group" style="margin-top:16px;"><label class="cml-setting-label">Insert Merge Tag</label>';
     html += '<div class="cml-merge-tags">';
-    html += '<button class="cml-merge-tag-btn" data-tag="{{first_name}}">{{first_name}}</button>';
-    html += '<button class="cml-merge-tag-btn" data-tag="{{subscriber_count}}">{{subscriber_count}}</button>';
-    html += '<button class="cml-merge-tag-btn" data-tag="{{date}}">{{date}}</button>';
+    html += '<button type="button" class="cml-merge-tag-btn" data-tag="{{first_name}}">{{first_name}}</button>';
+    html += '<button type="button" class="cml-merge-tag-btn" data-tag="{{subscriber_count}}">{{subscriber_count}}</button>';
+    html += '<button type="button" class="cml-merge-tag-btn" data-tag="{{date}}">{{date}}</button>';
     html += '</div></div>';
 
     // Common: padding, bg color
     html += '<div class="cml-setting-group" style="margin-top:12px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;"><label class="cml-setting-label">Block Padding</label>';
-    html += '<input class="cml-setting-input" type="number" id="settPadding" value="' + (d.padding || 16) + '" min="0" max="60" step="4" style="width:80px;"></div>';
+    html += '<input aria-label="SettPadding" class="cml-setting-input" type="number" id="settPadding" value="' + (d.padding || 16) + '" min="0" max="60" step="4" style="width:80px;"></div>';
     html += settingColor('Block BG', 'settBlockBg', d.bgColor2 || '');
 
     content.innerHTML = html;
@@ -726,7 +729,7 @@
   }
 
   function settingInput(label, id, value, type) {
-    return '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><input class="cml-setting-input" type="' + (type || 'text') + '" id="' + id + '" value="' + escHtml(value) + '"></div>';
+    return '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><input aria-label="' + id + '" class="cml-setting-input" type="' + (type || 'text') + '" id="' + id + '" value="' + escHtml(value) + '"></div>';
   }
 
   function settingSelect(label, id, value, options) {
@@ -739,11 +742,11 @@
   }
 
   function settingColor(label, id, value) {
-    return '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><div class="cml-setting-row"><div class="cml-setting-color"><input type="color" id="' + id + '" value="' + (value || '#333333') + '"></div><input class="cml-setting-input" type="text" id="' + id + 'Hex" value="' + (value || '') + '" placeholder="inherit" style="flex:1;"></div></div>';
+    return '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><div class="cml-setting-row"><div class="cml-setting-color"><input aria-label="' + id + '" type="color" id="' + id + '" value="' + (value || '#333333') + '"></div><input aria-label="Inherit" class="cml-setting-input" type="text" id="' + id + 'Hex" value="' + (value || '') + '" placeholder="inherit" style="flex:1;"></div></div>';
   }
 
   function aiWriteButton() {
-    return '<button class="cml-ai-btn" id="aiWriteBtn"><span class="cml-ai-spinner"></span>&#10024; Write This For Me</button>' +
+    return '<button type="button" class="cml-ai-btn" id="aiWriteBtn"><span class="cml-ai-spinner"></span>&#10024; Write This For Me</button>' +
       '<div class="cml-loading-status" id="aiLoadingStatus"><span class="cml-loading-verb" id="aiLoadingVerb">Drafting your email</span><span class="cml-loading-dots"><span></span><span></span><span></span></span></div>';
   }
 
@@ -1232,9 +1235,9 @@
         '<div class="cml-saved-item-date">' + new Date(item.date).toLocaleDateString() + '</div>' +
         '<div class="cml-saved-item-blocks">' + item.blocks.length + ' blocks</div></div>' +
         '<div class="cml-saved-item-actions">' +
-        '<button class="cml-saved-action" data-action="load" data-idx="' + i + '">Load</button>' +
-        '<button class="cml-saved-action" data-action="dupe" data-idx="' + i + '">Dupe</button>' +
-        '<button class="cml-saved-action delete" data-action="delete" data-idx="' + i + '">Del</button></div>';
+        '<button type="button" class="cml-saved-action" data-action="load" data-idx="' + i + '">Load</button>' +
+        '<button type="button" class="cml-saved-action" data-action="dupe" data-idx="' + i + '">Dupe</button>' +
+        '<button type="button" class="cml-saved-action delete" data-action="delete" data-idx="' + i + '">Del</button></div>';
       list.appendChild(el);
     });
 

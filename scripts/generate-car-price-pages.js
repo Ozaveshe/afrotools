@@ -101,9 +101,9 @@ function html(routePath, meta) {
 </head>
 <body class="cars-page">
   <afro-navbar theme="dark" active="transport"></afro-navbar>
-  <main class="cars-shell"><div id="carsApp"></div></main>
+  <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript><div id="carsApp"></div></main>
   <afro-footer></afro-footer>
-  <script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
   <script src="/assets/js/lib/analytics.js" defer></script>
   <script src="/assets/js/afro-history.js" defer></script>

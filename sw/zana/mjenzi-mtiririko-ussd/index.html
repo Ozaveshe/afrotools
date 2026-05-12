@@ -27,9 +27,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 
 <style>
 :root{
@@ -164,7 +164,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
       <button class="btn primary" id="save-flow" type="button">Hifadhi flow</button>
       <button class="btn" id="export-flow" type="button">Export JSON</button>
       <button class="btn" id="import-flow" type="button">Import JSON</button>
-      <input id="import-file" type="file" accept="application/json" hidden>
+      <input aria-label="Import file" id="import-file" type="file" accept="application/json" hidden>
     </div>
     <div class="toolbar">
       <select id="template-select" aria-label="Load template">
@@ -255,7 +255,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
             <div class="screen">
               <div class="ussd-text" id="phone-text"></div>
               <div class="ussd-entry">
-                <input id="phone-input" inputmode="numeric" placeholder="1">
+                <input aria-label="Phone input" id="phone-input" inputmode="numeric" placeholder="1">
                 <button class="btn small primary" id="send-input" type="button">Tuma</button>
               </div>
             </div>
@@ -519,8 +519,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
     var options = screen.options || [];
     $('option-list').innerHTML = options.map(function(opt, index){
       return '<div class="option-row" data-index="'+index+'">'+
-        '<div class="field"><label>Key</label><input class="opt-key" value="'+esc(opt.key || String(index + 1))+'"></div>'+
-        '<div class="field"><label>Label</label><input class="opt-label" value="'+esc(opt.label || '')+'"></div>'+
+        '<div class="field"><label>Key</label><input aria-label="Opt key" class="opt-key" value="'+esc(opt.key || String(index + 1))+'"></div>'+
+        '<div class="field"><label>Label</label><input aria-label="Opt label" class="opt-label" value="'+esc(opt.label || '')+'"></div>'+
         '<div class="field"><label>Next</label><select class="opt-next">'+optionTargetOptions(opt.next || '')+'</select></div>'+
         '<div class="field remove-cell"><label>&nbsp;</label><button class="btn small danger opt-remove" type="button">Remove</button></div>'+
       '</div>';
@@ -996,8 +996,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
     var count = document.querySelectorAll('.option-row').length + 1;
     var holder = document.createElement('div');
     holder.innerHTML = '<div class="option-row" data-index="'+(count - 1)+'">'+
-      '<div class="field"><label>Key</label><input class="opt-key" value="'+count+'"></div>'+
-      '<div class="field"><label>Label</label><input class="opt-label" value="New option"></div>'+
+      '<div class="field"><label>Key</label><input aria-label="Opt key" class="opt-key" value="'+count+'"></div>'+
+      '<div class="field"><label>Label</label><input aria-label="Opt label" class="opt-label" value="New option"></div>'+
       '<div class="field"><label>Next</label><select class="opt-next">'+optionTargetOptions(flow.home)+'</select></div>'+
       '<div class="field remove-cell"><label>&nbsp;</label><button class="btn small danger opt-remove" type="button">Remove</button></div>'+
       '</div>';

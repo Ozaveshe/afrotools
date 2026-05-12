@@ -20,9 +20,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--accent:#007AFF;--accent-dark:#0059B3;--green:#008751;--dark:#0f1419;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--muted:#64748b}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#374151 100%);padding:44px 0 36px}
@@ -181,7 +181,7 @@ h1 em{color:#4DA3FF;font-style:normal}
 <span>Bar Size</span><span>Description</span><span>Length (m)</span><span>Quantity</span><span></span>
 </div>
 <div id="barList"></div>
-<button class="btn-add" onclick="addBar()">+ Add Bar</button>
+<button type="button" class="btn-add" onclick="addBar()">+ Add Bar</button>
 </div></div>
 
 <!-- Cost Country -->
@@ -202,7 +202,7 @@ h1 em{color:#4DA3FF;font-style:normal}
 <option value="15">15% (Complex shapes)</option>
 </select></div>
 </div>
-<button class="calc-btn" onclick="calculate()">Calculate Weight & Cost</button>
+<button type="button" class="calc-btn" onclick="calculate()">Calculate Weight & Cost</button>
 </div></div>
 
 <!-- Results -->
@@ -223,8 +223,8 @@ h1 em{color:#4DA3FF;font-style:normal}
 <div class="cost-section" id="costSection"></div>
 
 <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap">
-<button onclick="exportPDF()" class="calc-btn" style="width:auto;padding:12px 28px">Download PDF BBS</button>
-<button onclick="shareResult()" class="calc-btn" style="width:auto;padding:12px 28px;background:transparent;color:var(--accent);border:1.5px solid var(--accent)">Share</button>
+<button type="button" onclick="exportPDF()" class="calc-btn" style="width:auto;padding:12px 28px">Download PDF BBS</button>
+<button type="button" onclick="shareResult()" class="calc-btn" style="width:auto;padding:12px 28px;background:transparent;color:var(--accent);border:1.5px solid var(--accent)">Share</button>
 </div>
 </div>
 
@@ -302,10 +302,10 @@ function addBar(data) {
   div.id = 'bar-' + id;
   div.innerHTML =
     '<div><label>Bar</label><select data-f="size">' + sizeOpts + '</select></div>' +
-    '<div><label>Description</label><input type="text" data-f="desc" value="' + (d.desc||'') + '" placeholder="e.g. Bottom bars in slab"></div>' +
+    '<div><label>Description</label><input aria-label="E.g. Bottom bars in slab" type="text" data-f="desc" value="' + (d.desc||'') + '" placeholder="e.g. Bottom bars in slab"></div>' +
     '<div><label>Length (m)</label><input type="number" data-f="length" value="' + d.length + '" step="0.01" min="0.1"></div>' +
     '<div><label>Quantity</label><input type="number" data-f="qty" value="' + d.qty + '" min="1"></div>' +
-    '<div><label>&nbsp;</label><button class="btn-remove" onclick="removeBar(' + id + ')">X</button></div>';
+    '<div><label>&nbsp;</label><button type="button" class="btn-remove" onclick="removeBar(' + id + ')">X</button></div>';
   barList.appendChild(div);
 }
 

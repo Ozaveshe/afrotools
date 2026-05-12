@@ -110,10 +110,10 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=abfab4a3">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 
 <style>
 :root {
@@ -571,14 +571,14 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
         <div class="card-title"><span class="step-badge">2</span> Product Selection</div>
 
         <div class="type-tabs" id="type-tabs">
-          <button class="type-tab active" data-type="herbicide">🌿 Herbicide</button>
-          <button class="type-tab" data-type="insecticide">🐛 Insecticide</button>
-          <button class="type-tab" data-type="fungicide">🍄 Fungicide</button>
-          <button class="type-tab" data-type="seed_treatment">🌱 Seed Treatment</button>
+          <button type="button" class="type-tab active" data-type="herbicide">🌿 Herbicide</button>
+          <button type="button" class="type-tab" data-type="insecticide">🐛 Insecticide</button>
+          <button type="button" class="type-tab" data-type="fungicide">🍄 Fungicide</button>
+          <button type="button" class="type-tab" data-type="seed_treatment">🌱 Seed Treatment</button>
         </div>
 
         <div class="toggle-row">
-          <label class="toggle"><input type="checkbox" id="tog-manual"><span class="toggle-slider"></span></label>
+          <label class="toggle"><input aria-label="Tog manual" type="checkbox" id="tog-manual"><span class="toggle-slider"></span></label>
           <span>Enter product manually (not in list)</span>
         </div>
 
@@ -598,12 +598,12 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
         <div class="manual-entry" id="manual-entry">
           <div class="field">
             <label>Product Name <span class="hint">(optional)</span></label>
-            <input type="text" id="man-name" placeholder="e.g. My Local Herbicide 500 EC">
+            <input aria-label="E.g. My Local Herbicide 500 EC" type="text" id="man-name" placeholder="e.g. My Local Herbicide 500 EC">
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
             <div class="field">
               <label>Recommended Rate</label>
-              <input type="number" id="man-rate" placeholder="e.g. 2.5" min="0.01" step="0.1">
+              <input aria-label="E.g. 2.5" type="number" id="man-rate" placeholder="e.g. 2.5" min="0.01" step="0.1">
               <div class="error-msg" id="err-rate">Required</div>
             </div>
             <div class="field">
@@ -621,11 +621,11 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
             <div class="field">
               <label>Re-entry Period <span class="hint">(hours)</span></label>
-              <input type="number" id="man-reentry" placeholder="e.g. 24" min="0" step="1" value="24">
+              <input aria-label="E.g. 24" type="number" id="man-reentry" placeholder="e.g. 24" min="0" step="1" value="24">
             </div>
             <div class="field">
               <label>Pre-harvest Interval <span class="hint">(days)</span></label>
-              <input type="number" id="man-phi" placeholder="e.g. 7" min="0" step="1" value="7">
+              <input aria-label="E.g. 7" type="number" id="man-phi" placeholder="e.g. 7" min="0" step="1" value="7">
             </div>
           </div>
         </div>
@@ -639,7 +639,7 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
             <div class="field">
               <label>Farm Size <span class="hint">(hectares)</span></label>
-              <input type="number" id="farm-size" placeholder="e.g. 2" min="0.1" step="0.1">
+              <input aria-label="E.g. 2" type="number" id="farm-size" placeholder="e.g. 2" min="0.1" step="0.1">
               <div class="error-msg" id="err-farm">Required</div>
             </div>
             <div class="field">
@@ -653,7 +653,7 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
           </div>
           <div class="field">
             <label>Water Volume <span class="hint">(litres per hectare — auto-filled, can edit)</span></label>
-            <input type="number" id="water-vol" placeholder="e.g. 250" min="50" step="10">
+            <input aria-label="E.g. 250" type="number" id="water-vol" placeholder="e.g. 250" min="50" step="10">
             <div id="water-hint" style="font-size:.78rem;color:var(--text-muted);margin-top:.3rem;padding-left:.5rem"></div>
           </div>
         </div>
@@ -663,12 +663,12 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
             <div class="field">
               <label>Total Seed Quantity <span class="hint">(kg)</span></label>
-              <input type="number" id="seed-qty" placeholder="e.g. 25" min="0.1" step="0.5">
+              <input aria-label="E.g. 25" type="number" id="seed-qty" placeholder="e.g. 25" min="0.1" step="0.5">
               <div class="error-msg" id="err-seed">Required</div>
             </div>
             <div class="field">
               <label>Or: Farm Size <span class="hint">(ha — to estimate seed needed)</span></label>
-              <input type="number" id="seed-farm-size" placeholder="e.g. 1" min="0.1" step="0.1">
+              <input aria-label="E.g. 1" type="number" id="seed-farm-size" placeholder="e.g. 1" min="0.1" step="0.1">
             </div>
           </div>
           <div style="font-size:.82rem;color:var(--text-muted);padding:.5rem .5rem;background:var(--acc-pale);border-radius:10px;line-height:1.5">
@@ -683,16 +683,16 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
           <div class="field">
             <label>Product Price <span class="hint">(per litre/kg)</span></label>
-            <input type="number" id="prod-price" placeholder="e.g. 1500" min="0" step="1">
+            <input aria-label="E.g. 1500" type="number" id="prod-price" placeholder="e.g. 1500" min="0" step="1">
           </div>
           <div class="field">
             <label>Currency</label>
-            <input type="text" id="prod-currency" placeholder="e.g. NGN, KES, ZAR" maxlength="5" value="USD" style="text-transform:uppercase">
+            <input aria-label="E.g. NGN, KES, ZAR" type="text" id="prod-currency" placeholder="e.g. NGN, KES, ZAR" maxlength="5" value="USD" style="text-transform:uppercase">
           </div>
         </div>
       </div>
 
-      <button class="btn-calc" id="btn-calc" onclick="calcPesticide()">Calculate Dosage →</button>
+      <button type="button" class="btn-calc" id="btn-calc" onclick="calcPesticide()">Calculate Dosage →</button>
 
       <!-- ── Results ──────────────────────────────────────────── -->
       <div class="results" id="results" style="margin-top:1.5rem">

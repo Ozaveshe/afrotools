@@ -7,7 +7,7 @@
 <title>SADC Rules of Origin Checker — Preferential Trade for Southern Africa | AfroTools</title>
 <meta name="description" content="Check if your product qualifies for SADC preferential tariffs. Rules of origin criteria, value-added requirements, and Certificate of Origin guide for all 16 SADC member states.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
 <style>
 /* ── Tool Shell, Hero & Navigation ──────────────── */
@@ -83,8 +83,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 </head>
 <body>
@@ -96,10 +96,10 @@
     <h1 class="tool-hero-title">SADC Rules of Origin Checker</h1>
     <p class="tool-hero-desc">Check if your product qualifies for SADC preferential tariff treatment. Covers all 16 member states and product-specific rules.</p>
     <div class="tool-tabs" id="tabs">
-      <button class="tool-tab on" onclick="setTab('checker',this)">Origin Checker</button>
-      <button class="tool-tab" onclick="setTab('rules',this)">Product Rules</button>
-      <button class="tool-tab" onclick="setTab('docs',this)">Documentation</button>
-      <button class="tool-tab" onclick="setTab('members',this)">Member States</button>
+      <button type="button" class="tool-tab on" onclick="setTab('checker',this)">Origin Checker</button>
+      <button type="button" class="tool-tab" onclick="setTab('rules',this)">Product Rules</button>
+      <button type="button" class="tool-tab" onclick="setTab('docs',this)">Documentation</button>
+      <button type="button" class="tool-tab" onclick="setTab('members',this)">Member States</button>
     </div>
   </div>
 
@@ -120,7 +120,7 @@
       <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div class="field-group">
           <label class="field-label">HS Chapter (2-digit, e.g. 09 for coffee)</label>
-          <input class="field-input" type="number" id="hsChapter" value="09" min="1" max="99" onchange="detectRule()">
+          <input aria-label="HsChapter" class="field-input" type="number" id="hsChapter" value="09" min="1" max="99" onchange="detectRule()">
         </div>
         <div class="field-group" id="detectedRule" style="display:flex;flex-direction:column;justify-content:flex-end">
           <div id="detectedRuleText" style="padding:8px 12px;background:#E8F2FF;border-radius:10px;font-size:13px"></div>
@@ -129,11 +129,11 @@
       <div class="va-input-group" id="vaGroup">
         <div class="field-group">
           <label class="field-label">Ex-Works Price (USD)</label>
-          <input class="field-input" type="number" id="exWorks" value="10000" min="1" onchange="updateVA()">
+          <input aria-label="ExWorks" class="field-input" type="number" id="exWorks" value="10000" min="1" onchange="updateVA()">
         </div>
         <div class="field-group">
           <label class="field-label">Non-SADC Material Cost (USD)</label>
-          <input class="field-input" type="number" id="nonSadc" value="5000" min="0" onchange="updateVA()">
+          <input aria-label="NonSadc" class="field-input" type="number" id="nonSadc" value="5000" min="0" onchange="updateVA()">
         </div>
         <div class="field-group">
           <label class="field-label">SADC Value Added</label>
@@ -142,16 +142,16 @@
       </div>
       <div id="ruleOptions" style="display:flex;flex-wrap:wrap;gap:12px;margin:12px 0">
         <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer">
-          <input type="checkbox" id="chkWO" style="accent-color:var(--brand);width:16px;height:16px"> Wholly obtained in SADC
+          <input aria-label="ChkWO" type="checkbox" id="chkWO" style="accent-color:var(--brand);width:16px;height:16px"> Wholly obtained in SADC
         </label>
         <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer">
-          <input type="checkbox" id="chkCTH" style="accent-color:var(--brand);width:16px;height:16px"> CTH achieved (non-SADC inputs changed heading)
+          <input aria-label="ChkCTH" type="checkbox" id="chkCTH" style="accent-color:var(--brand);width:16px;height:16px"> CTH achieved (non-SADC inputs changed heading)
         </label>
         <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer" id="fabricFwdLabel">
-          <input type="checkbox" id="chkFabric" style="accent-color:var(--brand);width:16px;height:16px"> Fabric forward (for textiles only)
+          <input aria-label="ChkFabric" type="checkbox" id="chkFabric" style="accent-color:var(--brand);width:16px;height:16px"> Fabric forward (for textiles only)
         </label>
       </div>
-      <button class="pill-btn" onclick="runCheck()" style="background:var(--brand);color:#fff">Check Origin Rules →</button>
+      <button type="button" class="pill-btn" onclick="runCheck()" style="background:var(--brand);color:#fff">Check Origin Rules →</button>
       <div id="checkerResult" style="margin-top:20px"></div>
     </div>
   </div>
@@ -192,7 +192,7 @@
 </main>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script>
 <script src="/engines/sadc-roo-engine.js?v=82658247"></script>
 <script>

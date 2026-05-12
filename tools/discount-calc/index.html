@@ -18,9 +18,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--afro-red:#ef4444}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -70,10 +70,10 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 {"@type":"Question","name":"What is the difference between discount and markup?","acceptedAnswer":{"@type":"Answer","text":"A discount reduces a selling price (e.g., 20% off ₦10,000 = ₦8,000). Markup increases a cost price to get a selling price (e.g., 50% markup on ₦6,000 cost = ₦9,000 selling price)."}},
 {"@type":"Question","name":"Can I calculate reverse discount (original price)?","acceptedAnswer":{"@type":"Answer","text":"Yes. If you know the final price after discount, enter it and use the tool to work backwards to find the original price before discount was applied."}}
 ]}</script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/discount-calc/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-remise/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/discount-calc/" />
@@ -129,7 +129,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     <div class="card-head"><span class="card-title">Discount Calculator</span></div>
     <div class="card-body">
       <div class="field-row">
-        <div class="field"><label class="f-label">Original Price</label><input type="number" class="f-input" id="price" value="10000" step="1" min="0"></div>
+        <div class="field"><label class="f-label">Original Price</label><input aria-label="Price" type="number" class="f-input" id="price" value="10000" step="1" min="0"></div>
         <div class="field"><label class="f-label">Currency</label>
           <select class="f-select" id="currency"><option value="₦">NGN (₦)</option><option value="KSh">KES (KSh)</option><option value="R">ZAR (R)</option><option value="GH₵">GHS (GH₵)</option><option value="$">USD ($)</option><option value="£">GBP (£)</option></select>
         </div>
@@ -139,15 +139,15 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
       <div id="discountsList">
         <div class="discount-row">
           <span class="disc-badge">1st</span>
-          <input type="number" class="f-input" data-disc value="20" step="0.5" min="0" max="100">
+          <input aria-label="F input" type="number" class="f-input" data-disc value="20" step="0.5" min="0" max="100">
           <span style="font-size:.82rem;font-weight:700;color:#64748b">%</span>
         </div>
       </div>
-      <button class="add-disc" onclick="addDiscount()">+ Add Another Discount</button>
+      <button type="button" class="add-disc" onclick="addDiscount()">+ Add Another Discount</button>
 
       <div class="field" style="margin-top:16px">
         <label class="f-label">Tax Rate (applied after discount, optional)</label>
-        <input type="number" class="f-input" id="tax" value="0" step="0.5" min="0" max="100">
+        <input aria-label="Tax" type="number" class="f-input" id="tax" value="0" step="0.5" min="0" max="100">
       </div>
 
       <div class="result-display">
@@ -210,9 +210,9 @@ function addDiscount(){
   row.className='discount-row';
   row.innerHTML=`
     <span class="disc-badge">${ordinals[count]||count+1}</span>
-    <input type="number" class="f-input" data-disc value="10" step="0.5" min="0" max="100">
+    <input aria-label="F input" type="number" class="f-input" data-disc value="10" step="0.5" min="0" max="100">
     <span style="font-size:.82rem;font-weight:700;color:#64748b">%</span>
-    <button class="del-disc" onclick="this.parentElement.remove();calc()">×</button>
+    <button type="button" class="del-disc" onclick="this.parentElement.remove();calc()">×</button>
   `;
   row.querySelector('input').addEventListener('input',calc);
   list.appendChild(row);
@@ -278,7 +278,7 @@ document.getElementById('currency').addEventListener('change',calc);
 
 calc();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 

@@ -21,11 +21,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <script src="/assets/js/afro-auth.js?v=3978e101"></script>
 <script src="/engines/afroideas-engine.js?v=d856fa9b"></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 *{box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--color-bg,#F8FAFD);color:var(--color-text,#0f172a);margin:0;-webkit-font-smoothing:antialiased}
@@ -276,8 +276,8 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
     <p class="hero-sub">Real costs. Real breakeven timelines. Real data for all 54 African countries and 20 sectors. Submit your own ideas and vote on the best ones.</p>
     <div class="hero-form">
       <select id="country-select"></select>
-      <input type="number" id="budget-input" placeholder="Available capital (optional)">
-      <button class="btn-primary" id="btn-find">Find Ideas for Me</button>
+      <input aria-label="Available capital (optional)" type="number" id="budget-input" placeholder="Available capital (optional)">
+      <button type="button" class="btn-primary" id="btn-find">Find Ideas for Me</button>
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><strong id="stat-ideas">11,016</strong>Business Ideas</div>
@@ -290,9 +290,9 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
 <!-- TABS: Browse / Community / Saved -->
 <div class="wrap" style="padding-top:8px">
   <div class="tabs" id="main-tabs">
-    <button class="tab-btn active" data-tab="browse">Browse Ideas</button>
-    <button class="tab-btn" data-tab="community">Community Ideas</button>
-    <button class="tab-btn" data-tab="saved">My Saved</button>
+    <button type="button" class="tab-btn active" data-tab="browse">Browse Ideas</button>
+    <button type="button" class="tab-btn" data-tab="community">Community Ideas</button>
+    <button type="button" class="tab-btn" data-tab="saved">My Saved</button>
   </div>
 </div>
 
@@ -316,11 +316,11 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
       <option value="newest">Newest</option>
     </select>
     <label style="margin-left:10px">Risk:</label>
-    <button class="filter-pill active" data-risk="all">All</button>
-    <button class="filter-pill" data-risk="low">Low</button>
-    <button class="filter-pill" data-risk="medium">Medium</button>
-    <button class="filter-pill" data-risk="high">High</button>
-    <input class="filter-search" id="search-input" placeholder="Search ideas..." style="margin-left:auto">
+    <button type="button" class="filter-pill active" data-risk="all">All</button>
+    <button type="button" class="filter-pill" data-risk="low">Low</button>
+    <button type="button" class="filter-pill" data-risk="medium">Medium</button>
+    <button type="button" class="filter-pill" data-risk="high">High</button>
+    <input aria-label="Search ideas" class="filter-search" id="search-input" placeholder="Search ideas..." style="margin-left:auto">
   </div>
   <div id="results-count" style="font-size:.78rem;font-weight:600;color:#64748b;margin-bottom:12px"></div>
   <div class="ideas-grid" id="ideas-grid"></div>
@@ -346,14 +346,14 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
         <div class="chat-msg assistant"><div class="bubble">Hi! I'm the AfroIdeas AI Advisor. Tell me your country, available capital, and interests — I'll recommend the best business ideas for you.</div></div>
       </div>
       <div class="suggested-qs" id="suggested-qs">
-        <button class="sq">What can I start with $500 in Lagos?</button>
-        <button class="sq">Compare poultry vs fish farming in Kenya</button>
-        <button class="sq">Best low-risk businesses in South Africa</button>
-        <button class="sq">What licenses do I need for a restaurant in Nairobi?</button>
+        <button type="button" class="sq">What can I start with $500 in Lagos?</button>
+        <button type="button" class="sq">Compare poultry vs fish farming in Kenya</button>
+        <button type="button" class="sq">Best low-risk businesses in South Africa</button>
+        <button type="button" class="sq">What licenses do I need for a restaurant in Nairobi?</button>
       </div>
       <div class="chat-input">
-        <input type="text" id="chat-input" placeholder="Ask about any business idea...">
-        <button id="btn-send"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button>
+        <input aria-label="Ask about any business idea" type="text" id="chat-input" placeholder="Ask about any business idea...">
+        <button type="button" id="btn-send"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button>
       </div>
     </div>
   </div>
@@ -383,7 +383,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
 <!-- DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
-    <button class="modal-close" id="modal-close">&times;</button>
+    <button type="button" class="modal-close" id="modal-close">&times;</button>
     <div class="modal-header" id="modal-header"></div>
     <div class="modal-body" id="modal-body"></div>
   </div>
@@ -425,9 +425,9 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
   });
 
   // Render sectors
-  var allBtn = '<button class="sector-btn active" data-sector="all"><div class="sector-icon">&#127758;</div><div class="sector-name">All</div></button>';
+  var allBtn = '<button type="button" class="sector-btn active" data-sector="all"><div class="sector-icon">&#127758;</div><div class="sector-name">All</div></button>';
   sectorGrid.innerHTML = allBtn + sectors.map(function(s){
-    return '<button class="sector-btn" data-sector="'+s.id+'"><div class="sector-icon">'+s.icon+'</div><div class="sector-name">'+s.name.split(' ')[0]+'</div></button>';
+    return '<button type="button" class="sector-btn" data-sector="'+s.id+'"><div class="sector-icon">'+s.icon+'</div><div class="sector-name">'+s.name.split(' ')[0]+'</div></button>';
   }).join('');
 
   // Sector click
@@ -583,9 +583,9 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
           fitHtml +
         '</div>' +
         '<div class="idea-card-footer">' +
-          '<button class="btn-vote'+(userVote==='up'?' voted':'')+'" data-vote="'+idea.id+'" data-community="'+(isCommunity?1:0)+'" onclick="event.stopPropagation();doVote(this)">&#9650; '+(idea.vote_count||0)+'</button>' +
-          '<button class="btn-save'+(isSaved?' saved':'')+'" data-save="'+idea.id+'" data-community="'+(isCommunity?1:0)+'" onclick="event.stopPropagation();doSave(this)" title="Save idea">&#9733;</button>' +
-          '<button class="btn-details" onclick="event.stopPropagation();openDetail(\''+idea.id+'\')">Details</button>' +
+          '<button type="button" class="btn-vote'+(userVote==='up'?' voted':'')+'" data-vote="'+idea.id+'" data-community="'+(isCommunity?1:0)+'" onclick="event.stopPropagation();doVote(this)">&#9650; '+(idea.vote_count||0)+'</button>' +
+          '<button type="button" class="btn-save'+(isSaved?' saved':'')+'" data-save="'+idea.id+'" data-community="'+(isCommunity?1:0)+'" onclick="event.stopPropagation();doSave(this)" title="Save idea">&#9733;</button>' +
+          '<button type="button" class="btn-details" onclick="event.stopPropagation();openDetail(\''+idea.id+'\')">Details</button>' +
           '<a href="/tools/business-planner/?country='+countrySelect.value+'&industry='+idea.sector+'" class="btn-start" onclick="event.stopPropagation()">Start</a>' +
         '</div>' +
       '</div>';
@@ -594,13 +594,13 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
 
   function renderPagination(result){
     if(result.pages <= 1){ paginationEl.innerHTML = ''; return; }
-    var html = '<button class="page-btn" onclick="goPage('+(currentPage-1)+')" '+(currentPage<=1?'disabled':'')+'>&#8249;</button>';
+    var html = '<button type="button" class="page-btn" onclick="goPage('+(currentPage-1)+')" '+(currentPage<=1?'disabled':'')+'>&#8249;</button>';
     var start = Math.max(1, currentPage - 3);
     var end = Math.min(result.pages, currentPage + 3);
     for(var i=start;i<=end;i++){
-      html += '<button class="page-btn'+(i===currentPage?' active':'')+'" onclick="goPage('+i+')">'+i+'</button>';
+      html += '<button type="button" class="page-btn'+(i===currentPage?' active':'')+'" onclick="goPage('+i+')">'+i+'</button>';
     }
-    html += '<button class="page-btn" onclick="goPage('+(currentPage+1)+')" '+(currentPage>=result.pages?'disabled':'')+'>&#8250;</button>';
+    html += '<button type="button" class="page-btn" onclick="goPage('+(currentPage+1)+')" '+(currentPage>=result.pages?'disabled':'')+'>&#8250;</button>';
     html += '<span class="page-info">Page '+currentPage+' of '+result.pages+' ('+result.total+' ideas)</span>';
     paginationEl.innerHTML = html;
   }
@@ -727,7 +727,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
     }
 
     wrap.innerHTML =
-      '<div class="form-row"><label>Business Name</label><input type="text" id="sf-name" placeholder="e.g. Mobile Phone Repair Shop" maxlength="120"></div>' +
+      '<div class="form-row"><label>Business Name</label><input aria-label="E.g. Mobile Phone Repair Shop" type="text" id="sf-name" placeholder="e.g. Mobile Phone Repair Shop" maxlength="120"></div>' +
       '<div class="form-grid">' +
         '<div class="form-row"><label>Sector</label><select id="sf-sector">' + sectors.map(function(s){ return '<option value="'+s.id+'">'+s.name+'</option>'; }).join('') + '</select></div>' +
         '<div class="form-row"><label>Country</label><select id="sf-country">' + countries.map(function(c){ return '<option value="'+c.code+'" data-currency="'+c.currency+'">'+c.name+'</option>'; }).join('') + '</select></div>' +
@@ -739,20 +739,20 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
         '<div class="form-row"><label>Risk Level</label><select id="sf-risk"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>' +
       '</div>' +
       '<div class="form-grid">' +
-        '<div class="form-row"><label>Startup Cost (Min, local currency)</label><input type="number" id="sf-cost-min" placeholder="e.g. 500000"></div>' +
-        '<div class="form-row"><label>Startup Cost (Max, local currency)</label><input type="number" id="sf-cost-max" placeholder="e.g. 2000000"></div>' +
+        '<div class="form-row"><label>Startup Cost (Min, local currency)</label><input aria-label="E.g. 500000" type="number" id="sf-cost-min" placeholder="e.g. 500000"></div>' +
+        '<div class="form-row"><label>Startup Cost (Max, local currency)</label><input aria-label="E.g. 2000000" type="number" id="sf-cost-max" placeholder="e.g. 2000000"></div>' +
       '</div>' +
       '<div class="form-grid">' +
-        '<div class="form-row"><label>Monthly Revenue (Min)</label><input type="number" id="sf-rev-min" placeholder="e.g. 100000"></div>' +
-        '<div class="form-row"><label>Monthly Revenue (Max)</label><input type="number" id="sf-rev-max" placeholder="e.g. 500000"></div>' +
+        '<div class="form-row"><label>Monthly Revenue (Min)</label><input aria-label="E.g. 100000" type="number" id="sf-rev-min" placeholder="e.g. 100000"></div>' +
+        '<div class="form-row"><label>Monthly Revenue (Max)</label><input aria-label="E.g. 500000" type="number" id="sf-rev-max" placeholder="e.g. 500000"></div>' +
       '</div>' +
       '<div class="form-grid">' +
-        '<div class="form-row"><label>Breakeven (Min Months)</label><input type="number" id="sf-be-min" placeholder="e.g. 3"></div>' +
-        '<div class="form-row"><label>Breakeven (Max Months)</label><input type="number" id="sf-be-max" placeholder="e.g. 8"></div>' +
+        '<div class="form-row"><label>Breakeven (Min Months)</label><input aria-label="E.g. 3" type="number" id="sf-be-min" placeholder="e.g. 3"></div>' +
+        '<div class="form-row"><label>Breakeven (Max Months)</label><input aria-label="E.g. 8" type="number" id="sf-be-max" placeholder="e.g. 8"></div>' +
       '</div>' +
-      '<div class="form-row"><label>Revenue Model</label><input type="text" id="sf-rev-model" placeholder="How does the business make money?" maxlength="300"></div>' +
-      '<div class="form-row"><label>Best Cities (comma separated)</label><input type="text" id="sf-cities" placeholder="e.g. Lagos, Abuja, Ibadan" maxlength="200"></div>' +
-      '<div class="form-row" style="margin-top:20px"><button class="btn-primary" id="btn-submit-idea">Submit Idea</button></div>' +
+      '<div class="form-row"><label>Revenue Model</label><input aria-label="How does the business make money?" type="text" id="sf-rev-model" placeholder="How does the business make money?" maxlength="300"></div>' +
+      '<div class="form-row"><label>Best Cities (comma separated)</label><input aria-label="E.g. Lagos, Abuja, Ibadan" type="text" id="sf-cities" placeholder="e.g. Lagos, Abuja, Ibadan" maxlength="200"></div>' +
+      '<div class="form-row" style="margin-top:20px"><button type="button" class="btn-primary" id="btn-submit-idea">Submit Idea</button></div>' +
       '<div id="sf-status" style="text-align:center;margin-top:12px;font-size:.85rem;font-weight:600"></div>';
 
     document.getElementById('btn-submit-idea').addEventListener('click', submitIdea);

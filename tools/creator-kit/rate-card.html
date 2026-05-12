@@ -14,6 +14,9 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-kit/rate-card">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-kit/rate-card">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
@@ -23,8 +26,8 @@
     <a href="index.html" class="ck-topbar-back">&larr; Back</a>
     <a href="index.html" class="ck-topbar-brand"><span>💰</span> Rate Card</a>
     <span class="ck-topbar-title">Quick Rate Card Generator</span>
-    <button class="ck-btn ck-btn-ghost" onclick="exportWhatsApp()">WhatsApp</button>
-    <button class="ck-btn ck-btn-primary" onclick="exportRateCard()">Export</button>
+    <button type="button" class="ck-btn ck-btn-ghost" onclick="exportWhatsApp()">WhatsApp</button>
+    <button type="button" class="ck-btn ck-btn-primary" onclick="exportRateCard()">Export</button>
   </div>
 
   <div class="ck-rate-card-inner">
@@ -34,11 +37,11 @@
       <div class="ck-hint">Basic info that appears at the top of your rate card.</div>
       <div class="ck-field">
         <label>Name</label>
-        <input type="text" id="rcName" placeholder="e.g. Amara Okafor" oninput="updateRC()">
+        <input aria-label="E.g. Amara Okafor" type="text" id="rcName" placeholder="e.g. Amara Okafor" oninput="updateRC()">
       </div>
       <div class="ck-field">
         <label>Craft / Title</label>
-        <input type="text" id="rcCraft" placeholder="e.g. Wedding Photographer — Lagos" oninput="updateRC()">
+        <input aria-label="E.g. Wedding Photographer — Lagos" type="text" id="rcCraft" placeholder="e.g. Wedding Photographer — Lagos" oninput="updateRC()">
       </div>
       <div class="ck-field">
         <label>Currency</label>
@@ -61,7 +64,7 @@
       </div>
       <div class="ck-field">
         <label>Contact (Email or WhatsApp)</label>
-        <input type="text" id="rcContact" placeholder="hello@amara.com or +234..." oninput="updateRC()">
+        <input aria-label="Hello@amara.com or +234" type="text" id="rcContact" placeholder="hello@amara.com or +234..." oninput="updateRC()">
       </div>
     </div>
 
@@ -71,22 +74,22 @@
       <div class="ck-hint">Add your services with prices. Keep it concise — a rate card should be scannable.</div>
       <div id="rcServicesList">
         <div class="ck-service-row">
-          <input type="text" class="rc-svc-name" placeholder="Service" oninput="updateRC()">
-          <input type="text" class="rc-svc-price ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateRC()">
-          <button class="ck-service-remove" onclick="removeRCService(this)">×</button>
+          <input aria-label="Service" type="text" class="rc-svc-name" placeholder="Service" oninput="updateRC()">
+          <input aria-label="Price" type="text" class="rc-svc-price ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateRC()">
+          <button type="button" class="ck-service-remove" onclick="removeRCService(this)">×</button>
         </div>
         <div class="ck-service-row">
-          <input type="text" class="rc-svc-name" placeholder="Service" oninput="updateRC()">
-          <input type="text" class="rc-svc-price ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateRC()">
-          <button class="ck-service-remove" onclick="removeRCService(this)">×</button>
+          <input aria-label="Service" type="text" class="rc-svc-name" placeholder="Service" oninput="updateRC()">
+          <input aria-label="Price" type="text" class="rc-svc-price ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateRC()">
+          <button type="button" class="ck-service-remove" onclick="removeRCService(this)">×</button>
         </div>
         <div class="ck-service-row">
-          <input type="text" class="rc-svc-name" placeholder="Service" oninput="updateRC()">
-          <input type="text" class="rc-svc-price ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateRC()">
-          <button class="ck-service-remove" onclick="removeRCService(this)">×</button>
+          <input aria-label="Service" type="text" class="rc-svc-name" placeholder="Service" oninput="updateRC()">
+          <input aria-label="Price" type="text" class="rc-svc-price ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateRC()">
+          <button type="button" class="ck-service-remove" onclick="removeRCService(this)">×</button>
         </div>
       </div>
-      <button class="ck-add-row" onclick="addRCService()">+ Add Service</button>
+      <button type="button" class="ck-add-row" onclick="addRCService()">+ Add Service</button>
     </div>
 
     <!-- Packages (Optional) -->
@@ -95,22 +98,22 @@
       <div class="ck-hint">Group services into tiers to upsell. Leave blank to skip.</div>
       <div class="ck-packages-grid" id="rcPackages">
         <div class="ck-package-card" data-tier="starter">
-          <div class="ck-field"><label>Package Name</label><input type="text" class="rc-pkg-name" value="Starter" oninput="updateRC()"></div>
-          <div class="ck-field"><label>Price</label><input type="text" class="rc-pkg-price" inputmode="numeric" placeholder="e.g. 100000" oninput="updateRC()"></div>
+          <div class="ck-field"><label>Package Name</label><input aria-label="Rc pkg name" type="text" class="rc-pkg-name" value="Starter" oninput="updateRC()"></div>
+          <div class="ck-field"><label>Price</label><input aria-label="E.g. 100000" type="text" class="rc-pkg-price" inputmode="numeric" placeholder="e.g. 100000" oninput="updateRC()"></div>
           <div class="ck-field"><label>Includes (one per line)</label><textarea class="rc-pkg-includes" rows="3" placeholder="2 hours&#10;10 photos" oninput="updateRC()"></textarea></div>
         </div>
         <div class="ck-package-card featured" data-tier="standard">
-          <div class="ck-field"><label>Package Name</label><input type="text" class="rc-pkg-name" value="Standard" oninput="updateRC()"></div>
-          <div class="ck-field"><label>Price</label><input type="text" class="rc-pkg-price" inputmode="numeric" placeholder="e.g. 250000" oninput="updateRC()"></div>
+          <div class="ck-field"><label>Package Name</label><input aria-label="Rc pkg name" type="text" class="rc-pkg-name" value="Standard" oninput="updateRC()"></div>
+          <div class="ck-field"><label>Price</label><input aria-label="E.g. 250000" type="text" class="rc-pkg-price" inputmode="numeric" placeholder="e.g. 250000" oninput="updateRC()"></div>
           <div class="ck-field"><label>Includes (one per line)</label><textarea class="rc-pkg-includes" rows="3" placeholder="4 hours&#10;30 photos&#10;2 locations" oninput="updateRC()"></textarea></div>
         </div>
         <div class="ck-package-card" data-tier="premium">
-          <div class="ck-field"><label>Package Name</label><input type="text" class="rc-pkg-name" value="Premium" oninput="updateRC()"></div>
-          <div class="ck-field"><label>Price</label><input type="text" class="rc-pkg-price" inputmode="numeric" placeholder="e.g. 500000" oninput="updateRC()"></div>
+          <div class="ck-field"><label>Package Name</label><input aria-label="Rc pkg name" type="text" class="rc-pkg-name" value="Premium" oninput="updateRC()"></div>
+          <div class="ck-field"><label>Price</label><input aria-label="E.g. 500000" type="text" class="rc-pkg-price" inputmode="numeric" placeholder="e.g. 500000" oninput="updateRC()"></div>
           <div class="ck-field"><label>Includes (one per line)</label><textarea class="rc-pkg-includes" rows="3" placeholder="Full day&#10;All photos&#10;Unlimited locations&#10;Video" oninput="updateRC()"></textarea></div>
         </div>
       </div>
-      <button class="ck-ai-btn" onclick="aiSuggestRates()" style="margin-top:12px">✨ AI suggest rates for my craft</button>
+      <button type="button" class="ck-ai-btn" onclick="aiSuggestRates()" style="margin-top:12px">✨ AI suggest rates for my craft</button>
     </div>
 
     <!-- Preview -->
@@ -138,9 +141,9 @@ function addRCService() {
   var list = document.getElementById('rcServicesList');
   var row = document.createElement('div');
   row.className = 'ck-service-row';
-  row.innerHTML = '<input type="text" class="rc-svc-name" placeholder="Service" oninput="updateRC()">' +
-    '<input type="text" class="rc-svc-price ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateRC()">' +
-    '<button class="ck-service-remove" onclick="removeRCService(this)">×</button>';
+  row.innerHTML = '<input aria-label="Service" type="text" class="rc-svc-name" placeholder="Service" oninput="updateRC()">' +
+    '<input aria-label="Price" type="text" class="rc-svc-price ck-service-price" placeholder="Price" inputmode="numeric" oninput="updateRC()">' +
+    '<button type="button" class="ck-service-remove" onclick="removeRCService(this)">×</button>';
   list.appendChild(row);
 }
 
@@ -293,9 +296,9 @@ function aiSuggestRates() {
         rc.services.forEach(function(s) {
           var row = document.createElement('div');
           row.className = 'ck-service-row';
-          row.innerHTML = '<input type="text" class="rc-svc-name" value="' + (s.name||'').replace(/"/g,'&quot;') + '" placeholder="Service" oninput="updateRC()">' +
-            '<input type="text" class="rc-svc-price ck-service-price" value="' + (s.price||'').replace(/"/g,'&quot;') + '" placeholder="Price" inputmode="numeric" oninput="updateRC()">' +
-            '<button class="ck-service-remove" onclick="removeRCService(this)">×</button>';
+          row.innerHTML = '<input aria-label="Service" type="text" class="rc-svc-name" value="' + (s.name||'').replace(/"/g,'&quot;') + '" placeholder="Service" oninput="updateRC()">' +
+            '<input aria-label="Price" type="text" class="rc-svc-price ck-service-price" value="' + (s.price||'').replace(/"/g,'&quot;') + '" placeholder="Price" inputmode="numeric" oninput="updateRC()">' +
+            '<button type="button" class="ck-service-remove" onclick="removeRCService(this)">×</button>';
           list.appendChild(row);
         });
       }

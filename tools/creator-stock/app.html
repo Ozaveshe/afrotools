@@ -10,12 +10,15 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=d15fd5c8">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-stock/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-stock/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="csk-app">
 
@@ -25,9 +28,9 @@
       <span>&#128247;</span> CreatorStock
     </a>
     <div class="csk-header-actions">
-      <button class="csk-btn-icon" id="uploadBtn" title="Upload Image">&#128228;</button>
-      <button class="csk-btn-icon" id="collectionsBtn" title="Collections">&#128194;</button>
-      <button class="csk-btn-icon" id="dlCounterBtn" title="Downloads">&#11015;&#65039; <span class="csk-dl-count" id="dlCount">0</span></button>
+      <button type="button" class="csk-btn-icon" id="uploadBtn" title="Upload Image">&#128228;</button>
+      <button type="button" class="csk-btn-icon" id="collectionsBtn" title="Collections">&#128194;</button>
+      <button type="button" class="csk-btn-icon" id="dlCounterBtn" title="Downloads">&#11015;&#65039; <span class="csk-dl-count" id="dlCount">0</span></button>
     </div>
   </header>
 
@@ -35,8 +38,8 @@
   <div class="csk-search-wrap">
     <div class="csk-search-bar">
       <span class="csk-search-icon">&#128269;</span>
-      <input type="text" class="csk-search-input" id="searchInput" placeholder="Search free photos, videos, music..." autocomplete="off">
-      <button class="csk-search-clear" id="searchClear">&times;</button>
+      <input aria-label="Search free photos, videos, music" type="text" class="csk-search-input" id="searchInput" placeholder="Search free photos, videos, music..." autocomplete="off">
+      <button type="button" class="csk-search-clear" id="searchClear">&times;</button>
     </div>
   </div>
 
@@ -45,32 +48,32 @@
 
   <!-- SOURCE TABS -->
   <div class="csk-source-tabs" id="sourceTabs">
-    <button class="csk-source-tab active" data-source="all">All <span class="csk-source-count" id="countAll"></span></button>
-    <button class="csk-source-tab" data-source="unsplash">Unsplash <span class="csk-source-count" id="countUnsplash"></span></button>
-    <button class="csk-source-tab" data-source="pexels">Pexels <span class="csk-source-count" id="countPexels"></span></button>
-    <button class="csk-source-tab" data-source="pixabay">Pixabay <span class="csk-source-count" id="countPixabay"></span></button>
+    <button type="button" class="csk-source-tab active" data-source="all">All <span class="csk-source-count" id="countAll"></span></button>
+    <button type="button" class="csk-source-tab" data-source="unsplash">Unsplash <span class="csk-source-count" id="countUnsplash"></span></button>
+    <button type="button" class="csk-source-tab" data-source="pexels">Pexels <span class="csk-source-count" id="countPexels"></span></button>
+    <button type="button" class="csk-source-tab" data-source="pixabay">Pixabay <span class="csk-source-count" id="countPixabay"></span></button>
   </div>
 
   <!-- FILTER BAR -->
   <div class="csk-filter-bar">
     <div class="csk-filter-pills" id="mediaTypePills">
-      <button class="csk-filter-pill active" data-media="photo">&#128247; Photos</button>
-      <button class="csk-filter-pill" data-media="video">&#127909; Videos</button>
+      <button type="button" class="csk-filter-pill active" data-media="photo">&#128247; Photos</button>
+      <button type="button" class="csk-filter-pill" data-media="video">&#127909; Videos</button>
     </div>
     <div class="csk-filter-sep"></div>
     <div class="csk-filter-pills" id="orientationPills">
-      <button class="csk-filter-pill active" data-orient="all">All</button>
-      <button class="csk-filter-pill" data-orient="landscape">Landscape</button>
-      <button class="csk-filter-pill" data-orient="portrait">Portrait</button>
-      <button class="csk-filter-pill" data-orient="squarish">Square</button>
+      <button type="button" class="csk-filter-pill active" data-orient="all">All</button>
+      <button type="button" class="csk-filter-pill" data-orient="landscape">Landscape</button>
+      <button type="button" class="csk-filter-pill" data-orient="portrait">Portrait</button>
+      <button type="button" class="csk-filter-pill" data-orient="squarish">Square</button>
     </div>
     <div class="csk-filter-sep"></div>
     <div class="csk-color-picker-wrap">
-      <input type="color" class="csk-color-input" id="colorPicker" value="#F43F5E" title="Filter by color">
+      <input aria-label="ColorPicker" type="color" class="csk-color-input" id="colorPicker" value="#F43F5E" title="Filter by color">
     </div>
     <div class="csk-safe-toggle">
       <span>Safe</span>
-      <button class="csk-toggle on" id="safeToggle"></button>
+      <button type="button" class="csk-toggle on" id="safeToggle"></button>
     </div>
   </div>
 
@@ -88,13 +91,13 @@
       <div class="csk-upload-drop" id="uploadDrop">
         <span>&#128247;</span>
         <div>Drop image here or click to browse</div>
-        <input type="file" id="uploadFileInput" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer">
+        <input aria-label="UploadFileInput" type="file" id="uploadFileInput" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer">
       </div>
       <div class="csk-upload-form" id="uploadForm" style="display:none">
         <img id="uploadPreview" class="csk-upload-preview" alt="Preview">
-        <input type="text" class="csk-control-input" id="uploadTitle" placeholder="Image title..." style="margin-bottom:8px">
-        <input type="text" class="csk-control-input" id="uploadTags" placeholder="Tags (comma separated)..." style="margin-bottom:8px">
-        <button class="csk-upload-submit-btn" id="uploadSubmitBtn">&#128228; Upload to Community</button>
+        <input aria-label="Image title" type="text" class="csk-control-input" id="uploadTitle" placeholder="Image title..." style="margin-bottom:8px">
+        <input aria-label="Tags (comma separated)" type="text" class="csk-control-input" id="uploadTags" placeholder="Tags (comma separated)..." style="margin-bottom:8px">
+        <button type="button" class="csk-upload-submit-btn" id="uploadSubmitBtn">&#128228; Upload to Community</button>
       </div>
     </div>
   </div>
@@ -109,7 +112,7 @@
   <!-- PHOTO DETAIL MODAL -->
   <div class="csk-modal-overlay" id="modalOverlay">
     <div class="csk-modal" id="modalContent">
-      <button class="csk-modal-close" id="modalClose">&times;</button>
+      <button type="button" class="csk-modal-close" id="modalClose">&times;</button>
       <div class="csk-modal-img-wrap" id="modalImgWrap"></div>
       <div class="csk-modal-body" id="modalBody"></div>
     </div>
@@ -120,11 +123,11 @@
   <div class="csk-collections-panel" id="collectionsPanel">
     <div class="csk-collections-header">
       <div class="csk-collections-title">&#128194; Collections</div>
-      <button class="csk-collections-close" id="collectionsClose">&times;</button>
+      <button type="button" class="csk-collections-close" id="collectionsClose">&times;</button>
     </div>
     <div class="csk-new-collection">
-      <input type="text" id="newCollectionInput" placeholder="New collection name...">
-      <button id="newCollectionBtn">Create</button>
+      <input aria-label="New collection name" type="text" id="newCollectionInput" placeholder="New collection name...">
+      <button type="button" id="newCollectionBtn">Create</button>
     </div>
     <div id="collectionsBody"></div>
   </div>
@@ -547,7 +550,7 @@
     return '<div class="csk-grid-item" data-id="' + photo.id + '">' +
       '<img src="' + photo.thumbUrl + '" alt="' + escapeHtml(photo.title || 'Stock photo') + '" loading="lazy" width="' + (photo.width || 640) + '" height="' + (photo.height || 427) + '">' +
       '<span class="csk-source-badge">' + escapeHtml(photo.source) + '</span>' +
-      '<button class="csk-add-btn" data-id="' + photo.id + '" title="Add to collection">+</button>' +
+      '<button type="button" class="csk-add-btn" data-id="' + photo.id + '" title="Add to collection">+</button>' +
       (photo.mediaType === 'video' ? '<div class="csk-video-badge">&#9654;</div>' : '') +
       '<div class="csk-grid-overlay">' +
         '<span class="csk-grid-photographer">' +
@@ -641,13 +644,13 @@
       colorsHtml +
       '<div class="csk-attr-row">' +
         '<div class="csk-attr-text">' + escapeHtml(attrText) + '</div>' +
-        '<button class="csk-attr-copy" id="copyAttrBtn">Copy Attribution</button>' +
+        '<button type="button" class="csk-attr-copy" id="copyAttrBtn">Copy Attribution</button>' +
       '</div>' +
       '<div class="csk-modal-downloads">' +
-        '<button class="csk-dl-btn" data-size="small">&#11015;&#65039; Small</button>' +
-        '<button class="csk-dl-btn" data-size="medium">&#11015;&#65039; Medium</button>' +
-        '<button class="csk-dl-btn" data-size="large">&#11015;&#65039; Large</button>' +
-        '<button class="csk-dl-btn outline" id="addToCollBtn">&#128194; Add to Collection</button>' +
+        '<button type="button" class="csk-dl-btn" data-size="small">&#11015;&#65039; Small</button>' +
+        '<button type="button" class="csk-dl-btn" data-size="medium">&#11015;&#65039; Medium</button>' +
+        '<button type="button" class="csk-dl-btn" data-size="large">&#11015;&#65039; Large</button>' +
+        '<button type="button" class="csk-dl-btn outline" id="addToCollBtn">&#128194; Add to Collection</button>' +
       '</div>';
 
     overlay.classList.add('open');
@@ -759,7 +762,7 @@
       if (!col) { state.collectionsView = 'list'; renderCollections(); return; }
 
       var html = '<div class="csk-collection-detail-header">' +
-        '<button class="csk-collection-back" id="collBack">&larr;</button>' +
+        '<button type="button" class="csk-collection-back" id="collBack">&larr;</button>' +
         '<div class="csk-collection-name">' + escapeHtml(col.name) + '</div>' +
         '</div>';
 
@@ -768,7 +771,7 @@
         col.photos.forEach(function(p, pi) {
           html += '<div style="position:relative;display:inline-block;">' +
             '<img class="csk-collection-item-thumb" src="' + p.thumbUrl + '" alt="">' +
-            '<button class="csk-collection-remove" data-pi="' + pi + '">&times;</button>' +
+            '<button type="button" class="csk-collection-remove" data-pi="' + pi + '">&times;</button>' +
             '</div>';
         });
         html += '</div>';
@@ -776,8 +779,8 @@
         html += '<div style="text-align:center;padding:20px 0;color:rgba(255,255,255,.3);font-size:13px;">Empty collection. Add photos from the grid.</div>';
       }
 
-      html += '<button class="csk-export-btn" id="exportCollBtn">&#128230; Export Collection (requires JSZip)</button>';
-      html += '<button class="csk-export-btn" style="margin-top:8px;color:#ef4444;border-color:rgba(239,68,68,.25);" id="deleteCollBtn">&#128465; Delete Collection</button>';
+      html += '<button type="button" class="csk-export-btn" id="exportCollBtn">&#128230; Export Collection (requires JSZip)</button>';
+      html += '<button type="button" class="csk-export-btn" style="margin-top:8px;color:#ef4444;border-color:rgba(239,68,68,.25);" id="deleteCollBtn">&#128465; Delete Collection</button>';
 
       body.innerHTML = html;
 

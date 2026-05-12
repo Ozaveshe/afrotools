@@ -8,6 +8,7 @@
   <meta name="description" content="Generate WhatsApp wa.me links with pre-filled messages. QR code generation, bulk mode, country code picker for African countries. Free online tool.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://afrotools.com/tools/whatsapp-link/">
+  <meta name="content-language" content="en">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://afrotools.com/tools/whatsapp-link/">
   <meta property="og:title" content="WhatsApp Link Generator | AfroTools">
@@ -26,10 +27,10 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
   <meta name="tool-id" content="whatsapp-link">
   <script src="/assets/js/favorites.js?v=163519f9" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
@@ -139,7 +140,7 @@
       .template-grid, .link-score { grid-template-columns: 1fr; }
     }
   </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/whatsapp-link/" />
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/whatsapp-link/" />
@@ -190,8 +191,8 @@
 <div class="container">
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('single')">Single Link</button>
-    <button class="tab" onclick="switchTab('bulk')">Bulk Mode</button>
+    <button type="button" class="tab active" onclick="switchTab('single')">Single Link</button>
+    <button type="button" class="tab" onclick="switchTab('bulk')">Bulk Mode</button>
   </div>
 
   <!-- Single Mode -->
@@ -227,7 +228,7 @@
         <option value="49">Germany (+49)</option>
         <option value="33">France (+33)</option>
       </select>
-      <input type="text" id="phoneNumber" placeholder="e.g. 8012345678" inputmode="tel">
+      <input aria-label="E.g. 8012345678" type="text" id="phoneNumber" placeholder="e.g. 8012345678" inputmode="tel">
     </div>
     <label for="message">Pre-filled Message (optional)</label>
     <textarea id="message" placeholder="Hello! I'm reaching out about..."></textarea>
@@ -237,9 +238,9 @@
       <div><label for="messageTemplate">Message Template</label><select id="messageTemplate"><option value="order">Order request</option><option value="support">Customer support</option><option value="booking">Appointment booking</option><option value="payment">Payment confirmation</option><option value="delivery">Delivery update</option></select></div>
     </div>
     <div class="actions-row">
-      <button class="btn btn-outline" onclick="applyTemplate()">Apply Template</button>
-      <button class="btn btn-primary" onclick="generateLink()">Generate Link</button>
-      <button class="btn btn-outline" onclick="clearForm()">Clear</button>
+      <button type="button" class="btn btn-outline" onclick="applyTemplate()">Apply Template</button>
+      <button type="button" class="btn btn-primary" onclick="generateLink()">Generate Link</button>
+      <button type="button" class="btn btn-outline" onclick="clearForm()">Clear</button>
     </div>
     <div class="link-coach" id="linkCoach"><strong>Link readiness</strong>WhatsApp click-to-chat links should use the full international number without a plus sign, brackets, or spaces.</div>
   </div>
@@ -262,8 +263,8 @@
     <label for="bulkMessage" style="margin-top:1rem;">Pre-filled Message (optional)</label>
     <textarea id="bulkMessage" placeholder="Hello! I'm reaching out about..."></textarea>
     <div class="actions-row">
-      <button class="btn btn-primary" onclick="generateBulk()">Generate All Links</button>
-      <button class="btn btn-outline" onclick="copyAllBulk()">Copy All</button>
+      <button type="button" class="btn btn-primary" onclick="generateBulk()">Generate All Links</button>
+      <button type="button" class="btn btn-outline" onclick="copyAllBulk()">Copy All</button>
     </div>
     <div id="bulkResults" class="bulk-results" style="margin-top:1rem;"></div>
   </div>
@@ -276,9 +277,9 @@
         <div class="link-display" id="linkDisplay"></div>
         <div class="link-coach" id="resultCoach"></div>
         <div class="actions-row">
-          <button class="btn btn-primary btn-sm" onclick="copyLink()">Copy Link</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="copyLink()">Copy Link</button>
           <a id="openLink" href="#" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open in WhatsApp</a>
-          <button class="btn btn-outline btn-sm" onclick="downloadQR()">Download QR</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="downloadQR()">Download QR</button>
         </div>
       </div>
       <div class="qr-box">
@@ -436,7 +437,7 @@ function generateBulk() {
     generated += 1;
     const div = document.createElement('div');
     div.className = 'bulk-item';
-    div.innerHTML = '<a href="' + link + '" target="_blank" rel="noopener">' + link + '</a><button class="btn btn-outline btn-sm" onclick="copySingle(this,\'' + link.replace(/'/g, "\\'") + '\')">Copy</button>';
+    div.innerHTML = '<a href="' + link + '" target="_blank" rel="noopener">' + link + '</a><button type="button" class="btn btn-outline btn-sm" onclick="copySingle(this,\'' + link.replace(/'/g, "\\'") + '\')">Copy</button>';
     container.appendChild(div);
   });
   if (!generated) showToast('No valid numbers found');

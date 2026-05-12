@@ -18,8 +18,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/multi-country.css?v=57434195">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script><script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--blue:#1d4ed8;--blue-light:#eff6ff;--blue-dark:#1e40af}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -104,9 +104,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f8fafc;color:#1e293b
 
 <div class="card"><h2>Lease Terms</h2>
 <div class="form-grid">
-<div class="form-group"><label for="rent">Rent Amount (د.ج)</label><input type="number" id="rent" placeholder="0" inputmode="numeric"></div>
+<div class="form-group"><label for="rent">Rent Amount (د.ج)</label><input aria-label="Line item amount" type="number" id="rent" placeholder="0" inputmode="numeric"></div>
 <div class="form-group"><label for="payFreq">Payment Frequency</label><select id="payFreq"><option value="month">Monthly</option><option value="quarter">Quarterly</option><option value="year">Annually</option></select></div>
-<div class="form-group"><label for="deposit">Security Deposit (د.ج)</label><input type="number" id="deposit" placeholder="0" inputmode="numeric"></div>
+<div class="form-group"><label for="deposit">Security Deposit (د.ج)</label><input aria-label="Line item amount" type="number" id="deposit" placeholder="0" inputmode="numeric"></div>
 <div class="form-group"><label for="startDate">Lease Start Date</label><input type="date" id="startDate"></div>
 <div class="form-group"><label for="duration">Lease Duration</label><select id="duration"><option value="6 months">6 months</option><option value="12 months" selected>12 months</option><option value="24 months">2 years</option><option value="36 months">3 years</option></select></div>
 <div class="form-group"><label for="rentReview">Annual Rent Increase (%)</label><input type="number" id="rentReview" placeholder="e.g. 10" inputmode="numeric"></div>
@@ -122,16 +122,16 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f8fafc;color:#1e293b
 
 <div class="card"><h2>Optional Clauses</h2>
 <div class="checkbox-group">
-<label><input type="checkbox" id="clSublet"> Subletting allowed</label>
-<label><input type="checkbox" id="clPets"> Pets allowed</label>
-<label><input type="checkbox" id="clRenovation"> Renovation consent clause</label>
-<label><input type="checkbox" id="clFirstRefusal"> Right of first refusal</label>
-<label><input type="checkbox" id="clDiplomatic"> Diplomatic / break clause</label>
+<label><input aria-label="ClSublet" type="checkbox" id="clSublet"> Subletting allowed</label>
+<label><input aria-label="ClPets" type="checkbox" id="clPets"> Pets allowed</label>
+<label><input aria-label="ClRenovation" type="checkbox" id="clRenovation"> Renovation consent clause</label>
+<label><input aria-label="ClFirstRefusal" type="checkbox" id="clFirstRefusal"> Right of first refusal</label>
+<label><input aria-label="ClDiplomatic" type="checkbox" id="clDiplomatic"> Diplomatic / break clause</label>
 </div></div>
 
-<div style="text-align:center;margin:1.5rem 0"><button class="btn btn-primary" id="generateBtn" style="font-size:1.05rem;padding:.75rem 2.5rem">Generate Agreement</button></div>
+<div style="text-align:center;margin:1.5rem 0"><button type="button" class="btn btn-primary" id="generateBtn" style="font-size:1.05rem;padding:.75rem 2.5rem">Generate Agreement</button></div>
 <div id="output" style="display:none"><div class="agreement-preview" id="agreementContent"></div>
-<div class="actions"><button class="btn btn-primary" onclick="window.print()">Print Agreement</button><button class="btn btn-outline" id="downloadBtn">Download as Text</button></div></div>
+<div class="actions"><button type="button" class="btn btn-primary" onclick="window.print()">Print Agreement</button><button type="button" class="btn btn-outline" id="downloadBtn">Download as Text</button></div></div>
 </div>
 
 <section class="seo-section">

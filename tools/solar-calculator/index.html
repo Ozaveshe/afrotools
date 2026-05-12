@@ -11,10 +11,10 @@
 <meta property="og:image:height" content="630">
 <link rel="icon" href="/assets/img/favicon.ico">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 /* ── PAGE SHELL ── */
 .solar-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
@@ -151,10 +151,10 @@ select.field-input{cursor:pointer;}
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/solar-calculator/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/solar-calculator/" />
 <meta property="og:locale" content="en_US">
@@ -249,7 +249,7 @@ select.field-input{cursor:pointer;}
           </div>
           <div class="field-group">
             <div class="field-label">Panel Efficiency Loss <span class="hint">%/year</span></div>
-            <input type="number" class="field-input" id="degradation" value="0.5" min="0.3" max="1" step="0.1">
+            <input aria-label="Degradation" type="number" class="field-input" id="degradation" value="0.5" min="0.3" max="1" step="0.1">
           </div>
         </div>
         <div class="field-row">
@@ -285,13 +285,13 @@ select.field-input{cursor:pointer;}
           </div>
           <div class="field-group">
             <div class="field-label">Usable Roof Area <span class="hint">optional m2</span></div>
-            <input type="number" class="field-input" id="roofArea" placeholder="e.g. 45" min="0" step="1">
+            <input aria-label="E.g. 45" type="number" class="field-input" id="roofArea" placeholder="e.g. 45" min="0" step="1">
           </div>
         </div>
         <div class="field-group">
           <div class="field-label">Generator (Comparison) <span class="hint">monthly fuel cost</span></div>
           <div style="display:flex;gap:10px;align-items:center;">
-            <input type="number" class="field-input" id="genCost" placeholder="e.g. 50000" style="flex:1;">
+            <input aria-label="E.g. 50000" type="number" class="field-input" id="genCost" placeholder="e.g. 50000" style="flex:1;">
             <select class="field-input" id="currency" style="width:90px;">
               <option value="NGN">NGN ₦</option>
               <option value="KES">KES KSh</option>
@@ -325,7 +325,7 @@ select.field-input{cursor:pointer;}
         </thead>
         <tbody id="applianceBody"></tbody>
       </table>
-      <button class="add-appliance-btn" onclick="addAppliance()">+ Add Appliance</button>
+      <button type="button" class="add-appliance-btn" onclick="addAppliance()">+ Add Appliance</button>
 
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;">
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
@@ -342,7 +342,7 @@ select.field-input{cursor:pointer;}
         </div>
       </div>
 
-      <button class="calc-btn" onclick="calculate()">☀️ Calculate My Solar System</button>
+      <button type="button" class="calc-btn" onclick="calculate()">☀️ Calculate My Solar System</button>
     </div>
   </div>
 
@@ -422,10 +422,10 @@ select.field-input{cursor:pointer;}
     <!-- Tabs -->
     <div style="margin-top:24px;">
       <div class="result-tabs">
-        <button class="result-tab active" onclick="showTab('roi')">💰 ROI vs Generator</button>
-        <button class="result-tab" onclick="showTab('specs')">🔧 Specifications</button>
-        <button class="result-tab" onclick="showTab('tips')">💡 Tips</button>
-        <button class="result-tab" onclick="showTab('site')">Site QA</button>
+        <button type="button" class="result-tab active" onclick="showTab('roi')">💰 ROI vs Generator</button>
+        <button type="button" class="result-tab" onclick="showTab('specs')">🔧 Specifications</button>
+        <button type="button" class="result-tab" onclick="showTab('tips')">💡 Tips</button>
+        <button type="button" class="result-tab" onclick="showTab('site')">Site QA</button>
       </div>
 
       <!-- ROI Tab -->
@@ -494,8 +494,8 @@ select.field-input{cursor:pointer;}
       <div class="ai-chat" id="aiChat">
         <div class="ai-msgs" id="aiMsgs"></div>
         <div class="ai-input-row">
-          <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
-          <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+          <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
         </div>
       </div>
     </div>
@@ -729,10 +729,10 @@ function renderAppliances(){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><input type="text" value="${app.name}" onchange="appliances[${i}].name=this.value" style="width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;background:#fafafa;"></td>
-      <td><input type="number" class="appliance-qty" value="${app.watts}" onchange="appliances[${i}].watts=+this.value;updateTotals()"></td>
-      <td><input type="number" class="appliance-qty" value="${app.qty}" onchange="appliances[${i}].qty=+this.value;updateTotals()"></td>
-      <td><input type="number" class="appliance-qty" value="${app.hrs}" onchange="appliances[${i}].hrs=+this.value;updateTotals()"></td>
-      <td><button class="appliance-del" onclick="removeAppliance(${i})">✕</button></td>
+      <td><input aria-label="Appliance qty" type="number" class="appliance-qty" value="${app.watts}" onchange="appliances[${i}].watts=+this.value;updateTotals()"></td>
+      <td><input aria-label="Appliance qty" type="number" class="appliance-qty" value="${app.qty}" onchange="appliances[${i}].qty=+this.value;updateTotals()"></td>
+      <td><input aria-label="Appliance qty" type="number" class="appliance-qty" value="${app.hrs}" onchange="appliances[${i}].hrs=+this.value;updateTotals()"></td>
+      <td><button type="button" class="appliance-del" onclick="removeAppliance(${i})">✕</button></td>
     `;
     tbody.appendChild(tr);
   });

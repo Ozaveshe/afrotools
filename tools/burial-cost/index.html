@@ -20,11 +20,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <meta name="tool-id" content="burial-cost">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Funeral Cost Estimator","description":"Estimate funeral and burial costs across African countries with real cost data.","url":"https://afrotools.com/tools/burial-cost/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/burial-cost.webp"}</script>
@@ -255,27 +255,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
           <label class="fc-label" style="margin:0">Expected Guests</label>
           <span class="fc-slider-val" id="guestLabel">200</span>
         </div>
-        <input type="range" class="fc-slider" id="guestSlider" min="20" max="2000" step="10" value="200" oninput="document.getElementById('guestLabel').textContent=this.value">
+        <input aria-label="GuestSlider" type="range" class="fc-slider" id="guestSlider" min="20" max="2000" step="10" value="200" oninput="document.getElementById('guestLabel').textContent=this.value">
         <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--fc-muted)"><span>20</span><span>500</span><span>1,000</span><span>2,000</span></div>
       </div>
       <div class="fc-row">
         <div class="fc-field">
           <label class="fc-label">Available Family Fund</label>
-          <input type="number" class="fc-input" id="availableFund" min="0" value="0">
+          <input aria-label="AvailableFund" type="number" class="fc-input" id="availableFund" min="0" value="0">
         </div>
         <div class="fc-field">
           <label class="fc-label">Expected Insurance / Benefit</label>
-          <input type="number" class="fc-input" id="insurancePayout" min="0" value="0">
+          <input aria-label="InsurancePayout" type="number" class="fc-input" id="insurancePayout" min="0" value="0">
         </div>
       </div>
       <div class="fc-row">
         <div class="fc-field">
           <label class="fc-label">Contributing Households</label>
-          <input type="number" class="fc-input" id="contributors" min="1" value="10">
+          <input aria-label="Contributors" type="number" class="fc-input" id="contributors" min="1" value="10">
         </div>
         <div class="fc-field">
           <label class="fc-label">Days Until Funeral</label>
-          <input type="number" class="fc-input" id="deadlineDays" min="1" value="7">
+          <input aria-label="DeadlineDays" type="number" class="fc-input" id="deadlineDays" min="1" value="7">
         </div>
       </div>
     </div>
@@ -286,7 +286,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
     <div class="fc-card-head"><span class="fc-card-title">3. Include in Estimate</span></div>
     <div class="fc-card-body">
       <div class="fc-items" id="itemGrid"></div>
-      <button class="fc-calc-btn" onclick="calculate()">🕊️ Estimate Costs</button>
+      <button type="button" class="fc-calc-btn" onclick="calculate()">🕊️ Estimate Costs</button>
 
       <!-- Results -->
       <div class="fc-result" id="resultSection">

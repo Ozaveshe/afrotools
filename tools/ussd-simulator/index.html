@@ -19,9 +19,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea"><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script><script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#0ea5e9}
 .tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -115,14 +115,14 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <div class="card-head"><span class="card-title">Preset USSD Services</span></div>
 <div class="card-body">
 <div class="presets" id="presets"></div>
-<div class="field"><label>Or Enter Custom USSD Code</label><input type="text" id="ussdCode" placeholder="*123#" value="*182#"></div>
+<div class="field"><label>Or Enter Custom USSD Code</label><input aria-label="*123#" type="text" id="ussdCode" placeholder="*123#" value="*182#"></div>
 </div></div>
 
 <div class="card">
 <div class="card-head"><span class="card-title">Custom Flow Editor (JSON)</span></div>
 <div class="card-body">
 <textarea id="flowEditor"></textarea>
-<button class="btn btn-primary btn-block" onclick="loadCustomFlow()">Load Custom Flow</button>
+<button type="button" class="btn btn-primary btn-block" onclick="loadCustomFlow()">Load Custom Flow</button>
 </div></div>
 </div>
 
@@ -133,9 +133,9 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <div class="ussd-display">
 <div class="ussd-text" id="ussdText">Dial a USSD code to begin...</div>
 <div class="ussd-input-area">
-<input type="text" id="ussdInput" placeholder="Enter response" onkeydown="if(event.key==='Enter')sendResponse()">
-<button onclick="sendResponse()">Send</button>
-<button class="cancel" onclick="cancelSession()">Cancel</button>
+<input aria-label="Enter response" type="text" id="ussdInput" placeholder="Enter response" onkeydown="if(event.key==='Enter')sendResponse()">
+<button type="button" onclick="sendResponse()">Send</button>
+<button type="button" class="cancel" onclick="cancelSession()">Cancel</button>
 </div>
 </div>
 <div class="phone-nav"><span>&#9664;</span><span>&#9679;</span><span>&#9632;</span></div>
@@ -254,7 +254,7 @@ function initPresets(){
   const el=document.getElementById('presets');
   let html='';
   Object.entries(PRESETS).forEach(([key,p])=>{
-    html+=`<button class="preset-btn" data-key="${key}" onclick="loadPreset('${key}')">${p.name} (${p.code})</button>`;
+    html+=`<button type="button" class="preset-btn" data-key="${key}" onclick="loadPreset('${key}')">${p.name} (${p.code})</button>`;
   });
   el.innerHTML=html;
 }

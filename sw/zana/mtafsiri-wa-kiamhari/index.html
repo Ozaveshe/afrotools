@@ -47,8 +47,8 @@
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -69,7 +69,7 @@
 <div class="wotd" id="wotd"></div>
 <div class="card">
 <h2>Tafuta misemo <span class="count-badge" id="countBadge">0 misemo</span></h2>
-<div class="search-box"><input type="text" id="search" placeholder="Tafuta kwa Kiingereza au Kiamhari..." oninput="filter()"></div>
+<div class="search-box"><input aria-label="Tafuta kwa Kiingereza au Kiamhari" type="text" id="search" placeholder="Tafuta kwa Kiingereza au Kiamhari..." oninput="filter()"></div>
 <div class="cats" id="cats"></div>
 </div>
 <div class="card"><div class="phrase-list" id="phrases"></div></div>
@@ -98,9 +98,9 @@
 <strong>Angalizo:</strong> Mtafsiri wa Kiamhari ni zana ya kujifunza, kupanga na kuelewa maana ya awali. Si certified translation, ushauri wa kisheria/kitabibu, uthibitisho wa uhamiaji, au mamlaka ya mwisho ya utamaduni. Hakiki matamshi, tone marks, script, istilahi rasmi na maana za majina na mzungumzaji, mtafsiri, familia, shule, ofisi rasmi au mtaalamu anayefaa.
 </section>
 </main>
-<afro-related-tools category="language"></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<afro-related-tools category="language"></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script><script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script><script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script><script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script><script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script><script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script>
 var PHRASES=[
 {en:'Hello',lang:'\u1230\u120b\u121d',roman:'Selam',pron:'seh-LAHM',cat:'Salamu'},
@@ -215,8 +215,8 @@ function init(){
   var catSet={};
   PHRASES.forEach(function(p){catSet[p.cat]=true;});
   var cats=Object.keys(catSet);
-  var html='<button class="cat-btn active" onclick="setCat(\'Zote\')">Zote</button>';
-  cats.forEach(function(c){html+='<button class="cat-btn" onclick="setCat(\''+c+'\')">'+c+'</button>';});
+  var html='<button type="button" class="cat-btn active" onclick="setCat(\'Zote\')">Zote</button>';
+  cats.forEach(function(c){html+='<button type="button" class="cat-btn" onclick="setCat(\''+c+'\')">'+c+'</button>';});
   document.getElementById('cats').innerHTML=html;
   filter();
 }
@@ -236,7 +236,7 @@ function filter(){
   var html='';
   list.forEach(function(p){
     var safeRoman=p.roman.replace(/'/g,"\\'");
-    html+='<div class="phrase"><span class="en">'+p.en+'</span><span><span class="lang">'+p.lang+'</span><br><span class="roman">'+p.roman+'</span> &mdash; <span class="pron">'+p.pron+'</span></span><button class="speak-btn" onclick="speak(\''+safeRoman+'\')" title="Sikiliza">&#9654;</button></div>';
+    html+='<div class="phrase"><span class="en">'+p.en+'</span><span><span class="lang">'+p.lang+'</span><br><span class="roman">'+p.roman+'</span> &mdash; <span class="pron">'+p.pron+'</span></span><button type="button" class="speak-btn" onclick="speak(\''+safeRoman+'\')" title="Sikiliza">&#9654;</button></div>';
   });
   document.getElementById('phrases').innerHTML=html;
 }
@@ -282,7 +282,7 @@ function loadQuizQ(){
   qEl.innerHTML='<div class="quiz-q">Unasemaje: "'+correct.en+'"?</div>'+
     '<div class="quiz-opts">'+opts.map(function(o,i){
       var oLang=o.lang||o.sw||'';
-      return '<button class="quiz-opt" onclick="checkQuiz(this,'+String(o===correct)+')">'+oLang+'</button>';
+      return '<button type="button" class="quiz-opt" onclick="checkQuiz(this,'+String(o===correct)+')">'+oLang+'</button>';
     }).join('')+'</div>'+
     '<div class="quiz-score" id="quizScoreEl">Alama: '+quizScore+'/'+quizTotal+'</div>';
 }

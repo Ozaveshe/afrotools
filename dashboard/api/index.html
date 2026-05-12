@@ -8,9 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>API Keys | Developer Dashboard | AfroTools</title>
-    <link rel="stylesheet" href="/assets/css/design-system.css?v=0d17fc50">
+    <link rel="stylesheet" href="/assets/css/design-system.css?v=ebd59ad2">
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-    <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
     <link rel="stylesheet" href="/assets/css/dashboard.css?v=42eaebcc">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -223,7 +223,7 @@
         <div id="dashboardSection" hidden>
             <div class="page-header">
                 <h1>API Keys</h1>
-                <button class="btn-primary" onclick="openCreateKeyModal()">+ Create New Key</button>
+                <button type="button" class="btn-primary" onclick="openCreateKeyModal()">+ Create New Key</button>
             </div>
 
             <!-- Plan & Usage -->
@@ -252,7 +252,7 @@
                 <div id="keysEmpty" class="empty-state" style="display:none;">
                     <div class="icon">🔑</div>
                     <p>You have not created any API keys yet.</p>
-                    <button class="btn-primary" onclick="openCreateKeyModal()">Create Your First Key</button>
+                    <button type="button" class="btn-primary" onclick="openCreateKeyModal()">Create Your First Key</button>
                 </div>
                 <table class="keys-table" id="keysTable" style="display:none;">
                     <thead>
@@ -294,8 +294,8 @@
                     Save this key now. You will not be able to see it again.
                 </div>
                 <div class="modal-actions">
-                    <button class="btn-secondary" onclick="closeCreateKeyModal()">Cancel</button>
-                    <button class="btn-primary" id="createKeyBtn" onclick="createKey()">Generate Key</button>
+                    <button type="button" class="btn-secondary" onclick="closeCreateKeyModal()">Cancel</button>
+                    <button type="button" class="btn-primary" id="createKeyBtn" onclick="createKey()">Generate Key</button>
                 </div>
             </div>
         </div>
@@ -311,8 +311,8 @@
             </div>
             <input type="hidden" id="renameKeyId">
             <div class="modal-actions">
-                <button class="btn-secondary" onclick="closeRenameModal()">Cancel</button>
-                <button class="btn-primary" onclick="renameKey()">Save</button>
+                <button type="button" class="btn-secondary" onclick="closeRenameModal()">Cancel</button>
+                <button type="button" class="btn-primary" onclick="renameKey()">Save</button>
             </div>
         </div>
     </div>
@@ -325,8 +325,8 @@
             <p style="font-weight:600;" id="revokeKeyName"></p>
             <input type="hidden" id="revokeKeyId">
             <div class="modal-actions">
-                <button class="btn-secondary" onclick="closeRevokeModal()">Cancel</button>
-                <button class="btn-danger" onclick="revokeKey()">Revoke Key</button>
+                <button type="button" class="btn-secondary" onclick="closeRevokeModal()">Cancel</button>
+                <button type="button" class="btn-danger" onclick="revokeKey()">Revoke Key</button>
             </div>
         </div>
     </div>
@@ -338,8 +338,8 @@
 
     <script src="/assets/js/afro-auth.js?v=3978e101"></script>
     <script src="/assets/js/auth-cookie-upgrade.js?v=14c038dc"></script>
-    <script src="/assets/js/components/navbar.min.js?v=ca6bb4e6"></script>
-    <script src="/assets/js/components/footer.min.js?v=0c96f8e4"></script>
+    <script src="/assets/js/components/navbar.min.js?v=01d16ada"></script>
+    <script src="/assets/js/components/footer.min.js?v=d60a94ba"></script>
 
     <script>
         const API_BASE = '/.netlify/functions/api-keys';
@@ -496,6 +496,9 @@
                 var created = new Date(key.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                 var lastUsed = key.last_used_at ? new Date(key.last_used_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Never';
                 var prefix = key.key_prefix || 'afro_****';
+                var keyIdArg = escapeInlineJsString(key.id);
+                var keyNameArg = escapeInlineJsString(key.name);
+                var prefixArg = escapeInlineJsString(prefix);
                 return '<tr>' +
                     '<td class="key-name">' + escapeHtml(key.name) + '</td>' +
                     '<td class="key-prefix">' + escapeHtml(prefix) + '...</td>' +
@@ -504,9 +507,9 @@
                     '<td>' + created + '</td>' +
                     '<td>' + lastUsed + '</td>' +
                     '<td class="key-actions">' +
-                        '<button class="btn-secondary" onclick="copyKeyPrefix(\'' + escapeHtml(prefix) + '\')">Copy</button>' +
-                        '<button class="btn-secondary" onclick="openRenameModal(\'' + key.id + '\',\'' + escapeHtml(key.name) + '\')">Rename</button>' +
-                        '<button class="btn-danger" onclick="openRevokeModal(\'' + key.id + '\',\'' + escapeHtml(key.name) + '\')">Revoke</button>' +
+                        '<button type="button" class="btn-secondary" onclick="copyKeyPrefix(\'' + prefixArg + '\')">Copy</button>' +
+                        '<button type="button" class="btn-secondary" onclick="openRenameModal(\'' + keyIdArg + '\',\'' + keyNameArg + '\')">Rename</button>' +
+                        '<button type="button" class="btn-danger" onclick="openRevokeModal(\'' + keyIdArg + '\',\'' + keyNameArg + '\')">Revoke</button>' +
                     '</td>' +
                     '</tr>';
             }).join('');
@@ -719,6 +722,20 @@
             var div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
+        }
+
+        function escapeInlineJsString(str) {
+            return String(str == null ? '' : str)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, '\\\'')
+                .replace(/"/g, '\\x22')
+                .replace(/&/g, '\\x26')
+                .replace(/</g, '\\x3C')
+                .replace(/>/g, '\\x3E')
+                .replace(/\r/g, '\\r')
+                .replace(/\n/g, '\\n')
+                .replace(/\u2028/g, '\\u2028')
+                .replace(/\u2029/g, '\\u2029');
         }
 
         function showToast(msg) {

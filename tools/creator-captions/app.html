@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=9083b950">
   <style>
     /* ===== AUTH GATE ===== */
@@ -213,6 +213,9 @@
   </style>
 <link rel="canonical" href="https://afrotools.com/tools/creator-captions/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-captions/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="ccr-app" style="display:flex;flex-direction:column;min-height:100vh">
 
@@ -234,15 +237,15 @@
       <div class="ccr-topbar-v2-brand-text">CaptionCraft</div>
     </a>
     <div class="ccr-topbar-v2-nav" id="desktopNav">
-      <button class="ccr-topbar-v2-tab active" data-tab="write">Write New</button>
-      <button class="ccr-topbar-v2-tab" data-tab="rewrite">Rewrite</button>
-      <button class="ccr-topbar-v2-tab" data-tab="history">History</button>
-      <button class="ccr-topbar-v2-tab" data-tab="favorites">Favorites</button>
+      <button type="button" class="ccr-topbar-v2-tab active" data-tab="write">Write New</button>
+      <button type="button" class="ccr-topbar-v2-tab" data-tab="rewrite">Rewrite</button>
+      <button type="button" class="ccr-topbar-v2-tab" data-tab="history">History</button>
+      <button type="button" class="ccr-topbar-v2-tab" data-tab="favorites">Favorites</button>
     </div>
     <div class="ccr-topbar-v2-user">
       <div class="ccr-topbar-v2-avatar" id="userAvatar"></div>
       <div class="ccr-topbar-v2-email" id="userEmail"></div>
-      <button class="ccr-topbar-v2-signout" id="signOutBtn">Sign Out</button>
+      <button type="button" class="ccr-topbar-v2-signout" id="signOutBtn">Sign Out</button>
     </div>
   </div>
 
@@ -292,7 +295,7 @@
           <div class="ccr-sidebar-section">
             <div class="ccr-sidebar-section-title">Caption Length</div>
             <div class="ccr-slider-wrap">
-              <input type="range" class="ccr-slider" id="lengthSlider" min="0" max="2" step="1" value="1">
+              <input aria-label="LengthSlider" type="range" class="ccr-slider" id="lengthSlider" min="0" max="2" step="1" value="1">
               <div class="ccr-slider-val" id="lengthLabel">Medium</div>
             </div>
           </div>
@@ -312,27 +315,27 @@
             <div class="ccr-sidebar-section-title">Include</div>
             <div class="ccr-toggle-v2-row">
               <span class="ccr-toggle-v2-label">&#128227; Call to Action</span>
-              <button class="ccr-toggle-v2 on" data-field="cta"></button>
+              <button type="button" class="ccr-toggle-v2 on" data-field="cta"></button>
             </div>
             <div class="ccr-toggle-v2-row">
               <span class="ccr-toggle-v2-label">#&#65039;&#8419; Hashtags</span>
-              <button class="ccr-toggle-v2 on" data-field="hashtags"></button>
+              <button type="button" class="ccr-toggle-v2 on" data-field="hashtags"></button>
             </div>
             <div class="ccr-toggle-v2-row">
               <span class="ccr-toggle-v2-label">&#128522; Emoji</span>
-              <button class="ccr-toggle-v2 on" data-field="emoji"></button>
+              <button type="button" class="ccr-toggle-v2 on" data-field="emoji"></button>
             </div>
             <div class="ccr-toggle-v2-row">
               <span class="ccr-toggle-v2-label">&#10067; Question</span>
-              <button class="ccr-toggle-v2" data-field="question"></button>
+              <button type="button" class="ccr-toggle-v2" data-field="question"></button>
             </div>
             <div class="ccr-toggle-v2-row">
               <span class="ccr-toggle-v2-label">&#127907; Hook First Line</span>
-              <button class="ccr-toggle-v2 on" data-field="hook"></button>
+              <button type="button" class="ccr-toggle-v2 on" data-field="hook"></button>
             </div>
           </div>
 
-          <button class="ccr-generate-v2" id="generateBtn">
+          <button type="button" class="ccr-generate-v2" id="generateBtn">
             <span class="ccr-gen-spinner"></span>
             <span class="ccr-gen-label">Generate Captions</span>
           </button>
@@ -367,7 +370,7 @@
               <span class="ccr-pill-v2" data-val="facebook">&#128077; Facebook</span>
             </div>
           </div>
-          <button class="ccr-generate-v2" id="rewriteBtn">
+          <button type="button" class="ccr-generate-v2" id="rewriteBtn">
             <span class="ccr-gen-spinner"></span>
             <span class="ccr-gen-label">Rewrite Caption</span>
           </button>
@@ -397,8 +400,8 @@
   <!-- COMPARE BAR (hidden by default) -->
   <div class="ccr-compare-bar" id="compareBar" style="display:none">
     <div class="ccr-compare-bar-text"><strong>A/B Compare</strong> &mdash; <span id="compareCount">0</span>/2 selected</div>
-    <button class="ccr-act-btn" id="compareRunBtn" style="display:none">Compare Side-by-Side</button>
-    <button class="ccr-act-btn" id="compareClearBtn">Clear</button>
+    <button type="button" class="ccr-act-btn" id="compareRunBtn" style="display:none">Compare Side-by-Side</button>
+    <button type="button" class="ccr-act-btn" id="compareClearBtn">Clear</button>
   </div>
 
   <!-- COMPARE VIEW -->
@@ -409,10 +412,10 @@
   <!-- MOBILE BOTTOM NAV -->
   <nav class="ccr-bottom-nav-v2" id="mobileNav">
     <div class="ccr-bottom-nav-v2-inner">
-      <button class="ccr-bnav2-item active" data-tab="write"><span class="ccr-bnav2-icon">&#9997;&#65039;</span>Write</button>
-      <button class="ccr-bnav2-item" data-tab="rewrite"><span class="ccr-bnav2-icon">&#9851;&#65039;</span>Rewrite</button>
-      <button class="ccr-bnav2-item" data-tab="history"><span class="ccr-bnav2-icon">&#128336;</span>History</button>
-      <button class="ccr-bnav2-item" data-tab="favorites"><span class="ccr-bnav2-icon">&#11088;</span>Favorites</button>
+      <button type="button" class="ccr-bnav2-item active" data-tab="write"><span class="ccr-bnav2-icon">&#9997;&#65039;</span>Write</button>
+      <button type="button" class="ccr-bnav2-item" data-tab="rewrite"><span class="ccr-bnav2-icon">&#9851;&#65039;</span>Rewrite</button>
+      <button type="button" class="ccr-bnav2-item" data-tab="history"><span class="ccr-bnav2-icon">&#128336;</span>History</button>
+      <button type="button" class="ccr-bnav2-item" data-tab="favorites"><span class="ccr-bnav2-icon">&#11088;</span>Favorites</button>
     </div>
   </nav>
 
@@ -720,7 +723,7 @@
     // Export button
     if (captions.length) {
       html += '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
-      html += '<button class="ccr-export-btn" id="exportAllBtn">&#128229; Export All as .txt</button>';
+      html += '<button type="button" class="ccr-export-btn" id="exportAllBtn">&#128229; Export All as .txt</button>';
       html += '</div>';
     }
 
@@ -751,14 +754,14 @@
 
       // Actions
       html += '<div class="ccr-output-card-actions">';
-      html += '<button class="ccr-act-btn" data-action="copy" data-idx="' + i + '">&#128203; Copy</button>';
-      html += '<button class="ccr-act-btn" data-action="copy-no-tags" data-idx="' + i + '">&#128203; No Tags</button>';
+      html += '<button type="button" class="ccr-act-btn" data-action="copy" data-idx="' + i + '">&#128203; Copy</button>';
+      html += '<button type="button" class="ccr-act-btn" data-action="copy-no-tags" data-idx="' + i + '">&#128203; No Tags</button>';
       if (cap.hashtags && cap.hashtags.length) {
-        html += '<button class="ccr-act-btn" data-action="copy-tags" data-idx="' + i + '"># Tags Only</button>';
+        html += '<button type="button" class="ccr-act-btn" data-action="copy-tags" data-idx="' + i + '"># Tags Only</button>';
       }
-      html += '<button class="ccr-act-btn" data-action="share" data-idx="' + i + '">&#128172; Share</button>';
-      html += '<button class="ccr-act-btn' + (isFav ? ' fav-active' : '') + '" data-action="favorite" data-idx="' + i + '">&#11088; ' + (isFav ? 'Saved' : 'Save') + '</button>';
-      html += '<button class="ccr-act-btn" data-action="compare" data-idx="' + i + '">&#9878;&#65039; Compare</button>';
+      html += '<button type="button" class="ccr-act-btn" data-action="share" data-idx="' + i + '">&#128172; Share</button>';
+      html += '<button type="button" class="ccr-act-btn' + (isFav ? ' fav-active' : '') + '" data-action="favorite" data-idx="' + i + '">&#11088; ' + (isFav ? 'Saved' : 'Save') + '</button>';
+      html += '<button type="button" class="ccr-act-btn" data-action="compare" data-idx="' + i + '">&#9878;&#65039; Compare</button>';
       html += '</div>';
 
       html += '</div>';
@@ -1138,20 +1141,20 @@
       return;
     }
 
-    var html = '<input type="text" class="ccr-fav-search" id="favSearchInput" placeholder="Search favorites...">';
+    var html = '<input aria-label="Search favorites" type="text" class="ccr-fav-search" id="favSearchInput" placeholder="Search favorites...">';
 
     favs.forEach(function(fav, i) {
       var platformLabel = E.PLATFORMS[fav.platform] ? E.PLATFORMS[fav.platform].label : (fav.platform || '');
       html += '<div class="ccr-fav-card" data-idx="' + i + '">';
-      html += '<button class="ccr-fav-remove" data-remove="' + i + '">&times;</button>';
+      html += '<button type="button" class="ccr-fav-remove" data-remove="' + i + '">&times;</button>';
       html += '<div class="ccr-fav-card-platform">' + escapeHtml(platformLabel) + '</div>';
       html += '<div class="ccr-fav-card-text">' + escapeHtml(fav.text || '') + '</div>';
       if (fav.hashtags && fav.hashtags.length) {
         html += '<div style="font-size:12px;color:var(--ccr-primary);margin-bottom:10px">' + escapeHtml(fav.hashtags.join(' ')) + '</div>';
       }
       html += '<div class="ccr-fav-card-actions">';
-      html += '<button class="ccr-act-btn" data-action="fav-copy" data-idx="' + i + '">&#128203; Copy</button>';
-      html += '<button class="ccr-act-btn" data-action="fav-share" data-idx="' + i + '">&#128172; Share</button>';
+      html += '<button type="button" class="ccr-act-btn" data-action="fav-copy" data-idx="' + i + '">&#128203; Copy</button>';
+      html += '<button type="button" class="ccr-act-btn" data-action="fav-share" data-idx="' + i + '">&#128172; Share</button>';
       html += '</div>';
       html += '</div>';
     });

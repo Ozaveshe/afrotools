@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="style.css?v=83c9b5fa">
 <style>
   .aa-brief-section{background:#fff;padding-top:0}
@@ -92,7 +92,7 @@
       <div class="aa-search-wrap">
         <div class="aa-search-bar">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="search" id="aa-search" placeholder="Search countries, resources, or type 'Nigeria vs Kenya'..." autocomplete="off">
+          <input aria-label="Search countries, resources, or type 'Nigeria vs Kenya'" type="search" id="aa-search" placeholder="Search countries, resources, or type 'Nigeria vs Kenya'..." autocomplete="off">
         </div>
         <div class="aa-compare-hint" id="aa-compare-hint"></div>
       </div>
@@ -155,7 +155,7 @@
         <select id="aa-compare-b" class="aa-compare-select" aria-label="Second country"></select>
       </div>
       <div style="text-align:center">
-        <button class="aa-btn aa-btn--primary" id="aa-compare-go">Compare &rarr;</button>
+        <button type="button" class="aa-btn aa-btn--primary" id="aa-compare-go">Compare &rarr;</button>
       </div>
     </div>
   </section>
@@ -203,8 +203,8 @@
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
 <script>
@@ -318,10 +318,10 @@
     /* ── 2. Region Tabs ── */
     var regionTabsEl = $('aa-region-tabs');
     if (regionTabsEl && regions) {
-      var thtml = '<button class="aa-tab aa-tab-active" data-region="all">All</button>';
+      var thtml = '<button type="button" class="aa-tab aa-tab-active" data-region="all">All</button>';
       var rKeys = Object.keys(regions);
       for (var ri = 0; ri < rKeys.length; ri++) {
-        thtml += '<button class="aa-tab" data-region="' + rKeys[ri] + '">' + esc(regions[rKeys[ri]].name) + '</button>';
+        thtml += '<button type="button" class="aa-tab" data-region="' + rKeys[ri] + '">' + esc(regions[rKeys[ri]].name) + '</button>';
       }
       regionTabsEl.innerHTML = thtml;
       regionTabsEl.addEventListener('click', function(e) {
@@ -594,7 +594,7 @@
         var rType = resTypes[topResources[rti]];
         if (!rType) continue;
         var isActive = topResources[rti] === activeRes ? ' aa-restab-active' : '';
-        resTabHTML += '<button class="aa-restab' + isActive + '" data-res="' + topResources[rti] + '">' +
+        resTabHTML += '<button type="button" class="aa-restab' + isActive + '" data-res="' + topResources[rti] + '">' +
           rType.emoji + ' ' + esc(rType.label) + '</button>';
       }
       resTabsEl.innerHTML = resTabHTML;

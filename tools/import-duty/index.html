@@ -25,7 +25,7 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/import-duty.css?v=fcc07e24">
 
 <style>:root { --color-brand: var(--color-primary); }</style>
@@ -38,13 +38,13 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is import duty calculated in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Nigeria NCS calculates duty on CIF value. Rates vary 5-50% by product. Additional levies: VAT 7.5%, CISS 1% on FOB, ETLS 0.5% on CIF. Surcharge 7% on duty for some items."}},{"@type":"Question","name":"What are Kenya import duty rates?","acceptedAnswer":{"@type":"Answer","text":"Kenya KRA applies EAC CET rates on CIF value. Additional: IDF 3.5% (Import Declaration Fee), RDL 2.5% (Railway Development Levy), VAT 16% on duty-inclusive value. Excise duty applies on select goods like vehicles."}},{"@type":"Question","name":"Which African country has the lowest import duties?","acceptedAnswer":{"@type":"Answer","text":"South Africa has 0% duty on electronics and machinery. Botswana and Namibia (SACU members) also have competitive rates. Total landed cost depends on VAT, levies, and exchange rates."}},{"@type":"Question","name":"What is the difference between FOB and CIF?","acceptedAnswer":{"@type":"Answer","text":"FOB (Free On Board) is the goods value at the port of origin. CIF (Cost, Insurance, Freight) includes goods value plus shipping and insurance. Import duties are calculated on CIF value, so shipping costs directly affect your total import cost."}},{"@type":"Question","name":"Does AfCFTA reduce import duties between African countries?","acceptedAnswer":{"@type":"Answer","text":"The African Continental Free Trade Area (AfCFTA) aims to eliminate tariffs on 90% of goods traded between member states. Implementation is phased and varies by country and product category. Check specific corridors for current AfCFTA preferences."}},{"@type":"Question","name":"How do I use an HS code?","acceptedAnswer":{"@type":"Answer","text":"HS codes are 6-10 digit numbers classifying products for customs. Example: 8517.13 = Smartphones. Include the full code on your commercial invoice and customs declaration. Use the HS Code Lookup tab to find codes by product name."}}]}
 </script>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script><script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script><script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script src="/assets/js/lib/import-duty-rules.js?v=43982455" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/import-duty/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/droits-douane/" />
@@ -85,10 +85,10 @@
 
     <!-- TABS -->
     <div class="duty-tabs">
-      <button class="duty-tab on" onclick="setTab('calc',this)">Calculate Duties</button>
-      <button class="duty-tab" onclick="setTab('compare',this)">Compare Countries</button>
-      <button class="duty-tab" onclick="setTab('hs',this)">HS Code Lookup</button>
-      <button class="duty-tab" onclick="setTab('saved',this)">Saved (<span id="savedCount">0</span>)</button>
+      <button type="button" class="duty-tab on" onclick="setTab('calc',this)">Calculate Duties</button>
+      <button type="button" class="duty-tab" onclick="setTab('compare',this)">Compare Countries</button>
+      <button type="button" class="duty-tab" onclick="setTab('hs',this)">HS Code Lookup</button>
+      <button type="button" class="duty-tab" onclick="setTab('saved',this)">Saved (<span id="savedCount">0</span>)</button>
     </div>
 
     <!-- TAB: CALCULATE -->
@@ -226,8 +226,8 @@
               <input type="number" class="f-input" id="quantity" value="1" min="1">
             </div>
 
-            <button class="calc-btn" onclick="calculateDuties()">Calculate Total Landed Cost &rarr;</button>
-            <button class="calc-btn secondary" onclick="saveCalc()" style="margin-top:8px;">Save This Calculation</button>
+            <button type="button" class="calc-btn" onclick="calculateDuties()">Calculate Total Landed Cost &rarr;</button>
+            <button type="button" class="calc-btn secondary" onclick="saveCalc()" style="margin-top:8px;">Save This Calculation</button>
           </div>
         </div>
 
@@ -244,15 +244,15 @@
               <div class="chart-canvas-wrap"><canvas id="dutyChart" aria-label="Duty breakdown chart"></canvas></div>
             </div>
             <div class="action-row">
-              <button class="act-btn" onclick="downloadPdf()">
+              <button type="button" class="act-btn" onclick="downloadPdf()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 PDF
               </button>
-              <button class="act-btn" onclick="shareResult()">
+              <button type="button" class="act-btn" onclick="shareResult()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                 Share
               </button>
-              <button class="act-btn" onclick="window.print()">Print</button>
+              <button type="button" class="act-btn" onclick="window.print()">Print</button>
             </div>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
   <save-result-button
@@ -271,11 +271,11 @@
             <div class="helper-card">
               <h3>Freight Estimator</h3>
               <div class="field" style="margin-bottom:8px;">
-                <input type="number" class="f-input" id="freightWeight" placeholder="Weight (kg)" min="0">
+                <input aria-label="Weight (kg)" type="number" class="f-input" id="freightWeight" placeholder="Weight (kg)" min="0">
               </div>
               <div style="display:flex;gap:6px;">
-                <button class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('sea')">Sea</button>
-                <button class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('air')">Air</button>
+                <button type="button" class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('sea')">Sea</button>
+                <button type="button" class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('air')">Air</button>
               </div>
               <div class="helper-result" id="freightResult"></div>
             </div>
@@ -314,7 +314,7 @@
         <div class="card-body">
           <div class="field">
             <div class="f-wrap">
-              <input type="text" class="f-input" id="hsSearch" placeholder="Search: iPhone, cement, rice, clothing..." autocomplete="off">
+              <input aria-label="Search: iPhone, cement, rice, clothing" type="text" class="f-input" id="hsSearch" placeholder="Search: iPhone, cement, rice, clothing..." autocomplete="off">
             </div>
           </div>
           <table class="hs-table" id="hsTableEl">
@@ -960,7 +960,7 @@ function renderSaved() {
   const el = document.getElementById('savedList');
   if (!saved.length) { el.innerHTML = '<p style="color:#93A3B8;text-align:center;padding:20px;">No saved calculations yet.</p>'; return; }
   el.innerHTML = saved.map((s, i) =>
-    '<div class="saved-item" onclick="loadSaved(' + i + ')"><div class="saved-item-info">' + s.flag + ' ' + s.dest + ' &mdash; ' + s.cat + ' &mdash; ' + fmtUSD(s.fob) + ' FOB</div><div class="saved-item-total">' + fmtLocal(s.totalLocal, s.symbol) + '</div><button class="saved-item-del" onclick="event.stopPropagation();delSaved(' + i + ')">&times;</button></div>'
+    '<div class="saved-item" onclick="loadSaved(' + i + ')"><div class="saved-item-info">' + s.flag + ' ' + s.dest + ' &mdash; ' + s.cat + ' &mdash; ' + fmtUSD(s.fob) + ' FOB</div><div class="saved-item-total">' + fmtLocal(s.totalLocal, s.symbol) + '</div><button type="button" class="saved-item-del" onclick="event.stopPropagation();delSaved(' + i + ')">&times;</button></div>'
   ).join('');
 }
 

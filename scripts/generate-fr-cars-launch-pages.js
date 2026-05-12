@@ -202,18 +202,18 @@ function normalizeFrenchText(value) {
   return String(value == null ? "" : value)
     .replace(/Ã€|Ã/g, "\u00c0")
     .replace(/Ã‰/g, "\u00c9")
-    .replace(/Ã¢/g, "\u00e2")
-    .replace(/Ã /g, "\u00e0")
-    .replace(/Ã§/g, "\u00e7")
-    .replace(/Ã©/g, "\u00e9")
-    .replace(/Ã¨/g, "\u00e8")
-    .replace(/Ãª/g, "\u00ea")
-    .replace(/Ã«/g, "\u00eb")
+    .replace(/a/g, "\u00e2")
+    .replace(/a/g, "\u00e0")
+    .replace(/c/g, "\u00e7")
+    .replace(/e/g, "\u00e9")
+    .replace(/e/g, "\u00e8")
+    .replace(/e/g, "\u00ea")
+    .replace(/e/g, "\u00eb")
     .replace(/Ã®/g, "\u00ee")
-    .replace(/Ã¯/g, "\u00ef")
-    .replace(/Ã´/g, "\u00f4")
+    .replace(/i/g, "\u00ef")
+    .replace(/o/g, "\u00f4")
     .replace(/Ã¹/g, "\u00f9")
-    .replace(/Ã»/g, "\u00fb");
+    .replace(/u/g, "\u00fb");
 }
 
 function escapeHtml(value) {
@@ -392,7 +392,7 @@ function layout({ title, description, canonical, enUrl, schema, body }) {
   <afro-navbar theme="dark" active="transport"></afro-navbar>
   ${pageBody}
   <afro-footer></afro-footer>
-  <script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
 </body>
 </html>

@@ -28,7 +28,7 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/import-duty.css?v=fcc07e24">
 
 <style>:root { --color-brand: var(--color-primary); }</style>
@@ -39,13 +39,13 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Calculateur de Droits de Douane","item":"https://afrotools.com/fr/tools/droits-douane/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment les droits a l importation sont-ils calcules ?","acceptedAnswer":{"@type":"Answer","text":"Le calcul utilise generalement la valeur CIF, ajoute le droit de douane applicable, les prelevements locaux et la TVA selon les donnees disponibles."}},{"@type":"Question","name":"Les taux sont-ils definitifs ?","acceptedAnswer":{"@type":"Answer","text":"Non. Les taux sont indicatifs. La classification SH, les exemptions, les accords commerciaux et la valorisation douaniere peuvent modifier le montant final."}}]}</script>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script><script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script><script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/import-duty/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/droits-douane/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/import-duty/" />
@@ -88,10 +88,10 @@
 
     <!-- TABS -->
     <div class="duty-tabs">
-      <button class="duty-tab on" onclick="setTab('calc',this)">Calculer les droits</button>
-      <button class="duty-tab" onclick="setTab('compare',this)">Comparer les pays</button>
-      <button class="duty-tab" onclick="setTab('hs',this)">Recherche code SH</button>
-      <button class="duty-tab" onclick="setTab('saved',this)">Sauvegardé (<span id="savedCount">0</span>)</button>
+      <button type="button" class="duty-tab on" onclick="setTab('calc',this)">Calculer les droits</button>
+      <button type="button" class="duty-tab" onclick="setTab('compare',this)">Comparer les pays</button>
+      <button type="button" class="duty-tab" onclick="setTab('hs',this)">Recherche code SH</button>
+      <button type="button" class="duty-tab" onclick="setTab('saved',this)">Sauvegardé (<span id="savedCount">0</span>)</button>
     </div>
 
     <!-- TAB: CALCULATE -->
@@ -209,8 +209,8 @@
               <input type="number" class="f-input" id="quantity" value="1" min="1">
             </div>
 
-            <button class="calc-btn" onclick="calculateDuties()">Calculer le coût total rendu &rarr;</button>
-            <button class="calc-btn secondary" onclick="saveCalc()" style="margin-top:8px;">Enregistrer ce calcul</button>
+            <button type="button" class="calc-btn" onclick="calculateDuties()">Calculer le coût total rendu &rarr;</button>
+            <button type="button" class="calc-btn secondary" onclick="saveCalc()" style="margin-top:8px;">Enregistrer ce calcul</button>
           </div>
         </div>
 
@@ -227,15 +227,15 @@
               <div class="chart-canvas-wrap"><canvas id="dutyChart" aria-label="Graphique de decomposition des droits"></canvas></div>
             </div>
             <div class="action-row">
-              <button class="act-btn" onclick="downloadPdf()">
+              <button type="button" class="act-btn" onclick="downloadPdf()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 PDF
               </button>
-              <button class="act-btn" onclick="shareResult()">
+              <button type="button" class="act-btn" onclick="shareResult()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                 Partager
               </button>
-              <button class="act-btn" onclick="window.print()">Imprimer</button>
+              <button type="button" class="act-btn" onclick="window.print()">Imprimer</button>
             </div>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
   <save-result-button
@@ -254,11 +254,11 @@
             <div class="helper-card">
               <h3>Estimateur de fret</h3>
               <div class="field" style="margin-bottom:8px;">
-                <input type="number" class="f-input" id="freightWeight" placeholder="Poids (kg)" min="0">
+                <input aria-label="Poids (kg)" type="number" class="f-input" id="freightWeight" placeholder="Poids (kg)" min="0">
               </div>
               <div style="display:flex;gap:6px;">
-                <button class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('sea')">Mer</button>
-                <button class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('air')">Air</button>
+                <button type="button" class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('sea')">Mer</button>
+                <button type="button" class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('air')">Air</button>
               </div>
               <div class="helper-result" id="freightResult"></div>
             </div>
@@ -297,7 +297,7 @@
         <div class="card-body">
           <div class="field">
             <div class="f-wrap">
-              <input type="text" class="f-input" id="hsSearch" placeholder="Rechercher : iPhone, ciment, riz, v?tements..." autocomplete="off">
+              <input aria-label="Rechercher : iPhone, ciment, riz, v?tements" type="text" class="f-input" id="hsSearch" placeholder="Rechercher : iPhone, ciment, riz, v?tements..." autocomplete="off">
             </div>
           </div>
           <table class="hs-table" id="hsTableEl">
@@ -674,7 +674,7 @@ function buildCompare() {
   if (!cat || fob <= 0) { document.getElementById('compareBody').innerHTML = '<p style="color:#93A3B8;text-align:center;padding:20px;">Renseignez le produit dans l?onglet Calculer avant de comparer.</p>'; return; }
 
   let rows = [];
-  pour (const name of Object.keys(COUNTRIES)) {
+  for (const name of Object.keys(COUNTRIES)) {
     const r = computeLandedCost(name, cat, fob, ship);
     if (r) rows.push(r);
   }
@@ -733,7 +733,7 @@ function renderSaved() {
   const el = document.getElementById('savedList');
   if (!saved.length) { el.innerHTML = '<p style="color:#93A3B8;text-align:center;padding:20px;">Aucun calcul sauvegard\u00e9 pour l\u2019instant.</p>'; return; }
   el.innerHTML = saved.map((s, i) =>
-    '<div class="saved-item" onclick="loadSaved(' + i + ')"><div class="saved-item-info">' + s.flag + ' ' + s.dest + ' &mdash; ' + s.cat + ' &mdash; ' + fmtUSD(s.fob) + ' FOB</div><div class="saved-item-total">' + fmtLocal(s.totalLocal, s.symbol) + '</div><button class="saved-item-del" onclick="event.stopPropagation();delSaved(' + i + ')">&times;</button></div>'
+    '<div class="saved-item" onclick="loadSaved(' + i + ')"><div class="saved-item-info">' + s.flag + ' ' + s.dest + ' &mdash; ' + s.cat + ' &mdash; ' + fmtUSD(s.fob) + ' FOB</div><div class="saved-item-total">' + fmtLocal(s.totalLocal, s.symbol) + '</div><button type="button" class="saved-item-del" onclick="event.stopPropagation();delSaved(' + i + ')">&times;</button></div>'
   ).join('');
 }
 

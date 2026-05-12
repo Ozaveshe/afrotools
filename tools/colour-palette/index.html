@@ -46,10 +46,10 @@
 .random-bar{display:flex;gap:.75rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
 .seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}.seo-section p{color:#475569;margin-bottom:1rem}.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}.faq details[open] summary::after{content:'-'}.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/colour-palette/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/colour-palette/" />
 <meta property="og:locale" content="en_US">
@@ -90,9 +90,9 @@
 <div class="card">
 <h2>Browse Palettes</h2>
 <div class="random-bar">
-  <button class="btn" onclick="randomPalette()">🎲 Random Palette</button>
-  <button class="btn" style="background:#1e293b" onclick="exportAllCSS()">Export All as CSS</button>
-  <button class="btn" style="background:#166534" onclick="exportAllJSON()">Export as JSON</button>
+  <button type="button" class="btn" onclick="randomPalette()">🎲 Random Palette</button>
+  <button type="button" class="btn" style="background:#1e293b" onclick="exportAllCSS()">Export All as CSS</button>
+  <button type="button" class="btn" style="background:#166534" onclick="exportAllJSON()">Export as JSON</button>
   <span style="font-size:.85rem;color:#94a3b8">Click hex code to copy • Click Export on a palette to download</span>
 </div>
 <div class="cats" id="cats"></div>
@@ -126,9 +126,9 @@
 <a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
 </div>
 </div></section>
-<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.js?v=af1ede16" defer></script><script src="/assets/js/components/footer.js?v=7cf41589" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
+<script src="/assets/js/components/navbar.js?v=3af89576" defer></script><script src="/assets/js/components/footer.js?v=625b18a7" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
 <script>
 const PALETTES=[
 {name:'Kente Gold',origin:'Ghana — Ashanti Kente Cloth',cat:'Textiles',colors:['#D4A017','#8B6914','#2E8B57','#1C1C1C','#FFFDD0']},
@@ -183,7 +183,7 @@ const PALETTES=[
 let activeCat='All';
 function init(){
   const cats=[...new Set(PALETTES.map(p=>p.cat))];
-  document.getElementById('cats').innerHTML='<button class="cat-btn active" onclick="setCat(\'All\')">All</button>'+cats.map(c=>`<button class="cat-btn" onclick="setCat('${c}')">${c}</button>`).join('');
+  document.getElementById('cats').innerHTML='<button type="button" class="cat-btn active" onclick="setCat(\'All\')">All</button>'+cats.map(c=>`<button type="button" class="cat-btn" onclick="setCat('${c}')">${c}</button>`).join('');
   render();
 }
 function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));render();}
@@ -199,8 +199,8 @@ function render(){
         <div class="origin">${p.origin}</div>
         <div class="codes">${p.colors.map(c=>`<span class="hex-tag" onclick="copyHex('${c}')" title="Click to copy">${c}</span>`).join('')}</div>
         <div style="display:flex;gap:.4rem;margin-top:.6rem">
-          <button onclick="exportPaletteCSS(${idx})" style="padding:.2rem .5rem;border:1px solid #e2e8f0;border-radius:4px;font-size:.7rem;cursor:pointer;background:#f8fafc">CSS vars</button>
-          <button onclick="copyAllHex(${idx})" style="padding:.2rem .5rem;border:1px solid #e2e8f0;border-radius:4px;font-size:.7rem;cursor:pointer;background:#f8fafc">Copy all</button>
+          <button type="button" onclick="exportPaletteCSS(${idx})" style="padding:.2rem .5rem;border:1px solid #e2e8f0;border-radius:4px;font-size:.7rem;cursor:pointer;background:#f8fafc">CSS vars</button>
+          <button type="button" onclick="copyAllHex(${idx})" style="padding:.2rem .5rem;border:1px solid #e2e8f0;border-radius:4px;font-size:.7rem;cursor:pointer;background:#f8fafc">Copy all</button>
         </div>
       </div>
     </div>`).join('');

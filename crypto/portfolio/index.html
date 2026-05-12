@@ -18,12 +18,12 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/crypto.css?v=cfeafdf7">
 <script src="/assets/js/afro-auth.js?v=3978e101" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@nicedoc/twemoji@14/dist/twemoji.min.js" crossorigin="anonymous" defer></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
@@ -431,7 +431,7 @@
         <label for="currencySelect">Currency</label>
         <select id="currencySelect"></select>
       </div>
-      <button class="btn-add-coin" id="btnAdd" disabled>Add to Portfolio</button>
+      <button type="button" class="btn-add-coin" id="btnAdd" disabled>Add to Portfolio</button>
     </div>
   </div>
 </section>
@@ -470,8 +470,8 @@
   <div class="portfolio-table-header">
     <h2>Your Holdings</h2>
     <div class="portfolio-actions">
-      <button class="btn-export" id="btnExport">Export CSV</button>
-      <button class="btn-clear" id="btnClear">Clear All</button>
+      <button type="button" class="btn-export" id="btnExport">Export CSV</button>
+      <button type="button" class="btn-clear" id="btnClear">Clear All</button>
     </div>
   </div>
 
@@ -509,9 +509,9 @@
     <div class="chart-card">
       <h3>Portfolio Value Over Time</h3>
       <div class="time-range-toggle" id="timeToggle">
-        <button data-days="7" class="active">7D</button>
-        <button data-days="30">30D</button>
-        <button data-days="90">90D</button>
+        <button type="button" data-days="7" class="active">7D</button>
+        <button type="button" data-days="30">30D</button>
+        <button type="button" data-days="90">90D</button>
       </div>
       <div class="chart-container">
         <canvas id="historyChart"></canvas>
@@ -544,7 +544,7 @@
         <p style="color:var(--color-text-muted);">Click the button below to get personalized portfolio analysis.</p>
       </div>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-        <button id="btnAdvisor" style="background:var(--color-primary);color:#fff;border:none;padding:10px 24px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:var(--text-sm);font-weight:700;cursor:pointer;transition:opacity .2s;">Get AI Advice</button>
+        <button type="button" id="btnAdvisor" style="background:var(--color-primary);color:#fff;border:none;padding:10px 24px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:var(--text-sm);font-weight:700;cursor:pointer;transition:opacity .2s;">Get AI Advice</button>
         <span id="advisorLoginCta" style="display:none;font-size:var(--text-sm);color:var(--color-text-muted);">Sign in to use the AI advisor</span>
       </div>
     </div>
@@ -556,10 +556,10 @@
   <div class="modal-box">
     <h3>Export Coming Soon</h3>
     <p>We are building CSV and PDF export. Enter your email and we will notify you when it is ready.</p>
-    <input type="email" id="exportEmail" placeholder="you@example.com">
-    <button class="btn-primary" id="btnModalSubmit">Notify Me</button>
+    <input aria-label="You@example.com" type="email" id="exportEmail" placeholder="you@example.com">
+    <button type="button" class="btn-primary" id="btnModalSubmit">Notify Me</button>
     <br>
-    <button class="btn-close-modal" id="btnModalClose">Close</button>
+    <button type="button" class="btn-close-modal" id="btnModalClose">Close</button>
   </div>
 </div>
 
@@ -1251,7 +1251,7 @@
           (row.pnl !== null ? pnlSign + CryptoData.formatPrice(Math.abs(row.pnl), currency) : '--') +
         '</span></td>' +
         '<td class="col-alloc">' + alloc.toFixed(1) + '%</td>' +
-        '<td><button class="btn-remove" data-id="' + row.p.id + '" title="Remove">&times;</button></td>' +
+        '<td><button type="button" class="btn-remove" data-id="' + row.p.id + '" title="Remove">&times;</button></td>' +
       '</tr>';
     }
     $tbody.innerHTML = html;

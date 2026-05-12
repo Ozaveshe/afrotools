@@ -34,10 +34,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -83,7 +83,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="og:locale:alternate" content="en_US">
 <meta property="article:modified_time" content="2026-03-28">
 </head>
@@ -134,7 +134,7 @@
               <span class="slider-label">Salaire brut annuel</span>
               <span class="slider-val" id="sliderVal">400 000 UM</span>
             </div>
-            <input type="range" id="salarySlider" min="50000" max="2000000" step="5000" value="400000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="2000000" step="5000" value="400000" oninput="onSlider(this)">
             <div class="slider-limits"><span>50 000 UM</span><span>2 000 000 UM</span></div>
           </div>
 
@@ -143,12 +143,12 @@
             <div class="f-label"><span class="f-label-text">Ou saisissez le montant annuel exact</span><span class="f-hint">Avant toute d&#233;duction</span></div>
             <div class="f-wrap">
               <span class="f-prefix">UM</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="400 000" min="0" step="5000" value="400000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="400 000" min="0" step="5000" value="400000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(150000)">150K UM</button><button class="preset-btn" onclick="setPreset(400000)">400K UM</button><button class="preset-btn" onclick="setPreset(800000)">800K UM</button><button class="preset-btn" onclick="setPreset(1500000)">1,5M UM</button><button class="preset-btn" onclick="setPreset(3000000)">3M UM</button>
+            <button type="button" class="preset-btn" onclick="setPreset(150000)">150K UM</button><button type="button" class="preset-btn" onclick="setPreset(400000)">400K UM</button><button type="button" class="preset-btn" onclick="setPreset(800000)">800K UM</button><button type="button" class="preset-btn" onclick="setPreset(1500000)">1,5M UM</button><button type="button" class="preset-btn" onclick="setPreset(3000000)">3M UM</button>
           </div>
 
 
@@ -157,13 +157,13 @@
             <div class="f-label"><span class="f-label-text">D&#233;ductions actives</span><span class="f-hint">Activer / d&#233;sactiver</span></div>
             <div class="toggles">
             <label class="tog">
-              <input type="checkbox" id="togCNSS" checked> CNSS (Caisse Nationale de Sécurité Sociale)
+              <input aria-label="TogCNSS" type="checkbox" id="togCNSS" checked> CNSS (Caisse Nationale de Sécurité Sociale)
             </label>
           </div>
           <p class="f-note">Cotisations salariales incluses par défaut.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net &#8594;</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculer mon salaire net &#8594;</button>
         </div>
       </div>
 
@@ -188,18 +188,18 @@
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">R&#233;partition</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Bar&#232;me fiscal</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">R&#233;partition</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Bar&#232;me fiscal</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             T&#233;l&#233;charger le PDF
           </button>
-          <button class="act-btn act-share" id="mrShareBtn" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" id="mrShareBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager
           </button>
@@ -236,12 +236,12 @@
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Analyse IA pour Mauritanie</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d&#8217;abord pour d&#233;bloquer &#8594;</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d&#8217;abord pour d&#233;bloquer &#8594;</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Posez une question&#8230;" onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">&#8594;</button>
+              <input aria-label="Posez une question&amp;#8230;" class="chat-in" id="chatIn" placeholder="Posez une question&#8230;" onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">&#8594;</button>
             </div>
           </div>
 
@@ -275,7 +275,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/mr-paye.webp" alt="Calculateur salaire net Mauritanie" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/mr-paye.webp" alt="Calculateur salaire net Mauritanie" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Salaire net Mauritanie</div>
             <div class="tool-info-cat">Paie locale &#8226; ITS, CNSS, co&#251;t employeur</div>
@@ -298,7 +298,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mis &#224; jour : mars 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/salary-tax/">Hub salaire &amp; fiscalit&#233;</a>
           </div>
         </div>
@@ -346,25 +346,25 @@
       <p>Recevez un PDF clair avec le brut, les retenues, le net &#224; payer et le co&#251;t employeur pour votre simulation Mauritanie.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input name="bot-field"></p>
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country"      value="Mauritanie">
         <input type="hidden" name="country_code" value="MR">
         <input type="hidden" name="tool"         value="paye">
         <input type="hidden" name="tool_id"      value="mr-paye-fr">
         <input type="hidden" name="currency"     value="MRU">
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
+        <input aria-label="Votre nom (facultatif)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
+        <input aria-label="Votre adresse e mail" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
         <button class="modal-submit" type="submit">Recevoir le PDF &#8594;</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">Continuer sans PDF</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">Continuer sans PDF</button>
     </div>
     <div class="modal-success" id="modalSuccess">
-      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
       <div class="big-check">&#9989;</div>
       <h4>PDF pr&#234;t &#224; imprimer</h4>
       <p>Cliquez sur <strong>Enregistrer en PDF</strong> dans la bo&#238;te de dialogue d&#8217;impression.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">J&#8217;ai compris &#8594;</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">J&#8217;ai compris &#8594;</button>
     </div>
   </div>
 </div>

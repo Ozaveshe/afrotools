@@ -8,13 +8,16 @@
   <meta name="description" content="Build a simple creator landing page with bio, links, offers, and contact details.">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=c4d698d2">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-page/app">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-page/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
   <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">
@@ -28,13 +31,13 @@
         <a href="index.html" class="cpg-topbar-back">← CreatorPage</a>
         <div class="cpg-topbar-title">Page Builder</div>
         <div class="cpg-mode-toggle">
-          <button class="cpg-mode-btn active" data-mode="edit" onclick="setMode('edit')">Edit</button>
-          <button class="cpg-mode-btn" data-mode="preview" onclick="setMode('preview')">Preview</button>
+          <button type="button" class="cpg-mode-btn active" data-mode="edit" onclick="setMode('edit')">Edit</button>
+          <button type="button" class="cpg-mode-btn" data-mode="preview" onclick="setMode('preview')">Preview</button>
         </div>
         <div class="cpg-topbar-actions">
-          <button class="cpg-btn" onclick="openPanel('analytics')">Analytics</button>
-          <button class="cpg-btn" onclick="openPanel('settings')">Settings</button>
-          <button class="cpg-btn cpg-btn-pri" onclick="sharePage()">Share</button>
+          <button type="button" class="cpg-btn" onclick="openPanel('analytics')">Analytics</button>
+          <button type="button" class="cpg-btn" onclick="openPanel('settings')">Settings</button>
+          <button type="button" class="cpg-btn cpg-btn-pri" onclick="sharePage()">Share</button>
         </div>
       </div>
     </div>
@@ -56,7 +59,7 @@
     </div>
 
     <!-- FLOATING ADD BUTTON -->
-    <button class="cpg-fab" onclick="openAddBlockSheet()" title="Add Block">+</button>
+    <button type="button" class="cpg-fab" onclick="openAddBlockSheet()" title="Add Block">+</button>
   </div>
 
   <!-- OVERLAY + BOTTOM SHEET -->
@@ -65,7 +68,7 @@
     <div class="cpg-sheet-handle"></div>
     <div class="cpg-sheet-header">
       <div class="cpg-sheet-title" id="sheetTitle">Add Block</div>
-      <button class="cpg-sheet-close" onclick="closeSheet()">×</button>
+      <button type="button" class="cpg-sheet-close" onclick="closeSheet()">×</button>
     </div>
     <div class="cpg-sheet-body" id="sheetBody"></div>
   </div>
@@ -122,7 +125,7 @@
     function renderProfileBlock() {
       var h = '<div class="cpg-block cpg-profile" data-block="profile">';
       if (editMode) {
-        h += '<div class="cpg-block-actions"><button class="cpg-block-action-btn" onclick="editProfile()">✎</button></div>';
+        h += '<div class="cpg-block-actions"><button type="button" class="cpg-block-action-btn" onclick="editProfile()">✎</button></div>';
       }
       if (page.avatar_url) {
         h += '<img class="cpg-avatar" src="' + esc(page.avatar_url) + '" alt="">';
@@ -156,10 +159,10 @@
 
       if (editMode) {
         h += '<div class="cpg-block-actions">' +
-          '<button class="cpg-block-action-btn" onclick="moveBlockUp(\'' + block.id + '\')">↑</button>' +
-          '<button class="cpg-block-action-btn" onclick="moveBlockDown(\'' + block.id + '\')">↓</button>' +
-          '<button class="cpg-block-action-btn" onclick="editBlock(\'' + block.id + '\')">✎</button>' +
-          '<button class="cpg-block-action-btn delete" onclick="removeBlock(\'' + block.id + '\')">×</button>' +
+          '<button type="button" class="cpg-block-action-btn" onclick="moveBlockUp(\'' + block.id + '\')">↑</button>' +
+          '<button type="button" class="cpg-block-action-btn" onclick="moveBlockDown(\'' + block.id + '\')">↓</button>' +
+          '<button type="button" class="cpg-block-action-btn" onclick="editBlock(\'' + block.id + '\')">✎</button>' +
+          '<button type="button" class="cpg-block-action-btn delete" onclick="removeBlock(\'' + block.id + '\')">×</button>' +
           '</div>';
       }
 
@@ -187,7 +190,7 @@
             h += '<div class="cpg-product-body">';
             h += '<div class="cpg-product-name">' + esc(p.name || 'Product') + '</div>';
             h += '<div class="cpg-product-price">' + E.formatPrice(p.price || 0, p.currency) + '</div>';
-            h += '<button class="cpg-product-buy" onclick="buyProduct(\'' + (p.id || '') + '\')">Buy Now</button>';
+            h += '<button type="button" class="cpg-product-buy" onclick="buyProduct(\'' + (p.id || '') + '\')">Buy Now</button>';
             h += '</div></div>';
           });
           h += '</div>';
@@ -198,11 +201,11 @@
           h += '<div class="cpg-tip-title">' + esc(c.title || 'Support My Work') + '</div>';
           h += '<div class="cpg-tip-amounts">';
           (c.amounts || [1000, 2000, 5000]).forEach(function (amt) {
-            h += '<button class="cpg-tip-amount" onclick="this.classList.toggle(\'selected\')">' + E.formatPrice(amt, c.currency) + '</button>';
+            h += '<button type="button" class="cpg-tip-amount" onclick="this.classList.toggle(\'selected\')">' + E.formatPrice(amt, c.currency) + '</button>';
           });
-          h += '<button class="cpg-tip-amount" onclick="this.classList.toggle(\'selected\')">Custom</button>';
+          h += '<button type="button" class="cpg-tip-amount" onclick="this.classList.toggle(\'selected\')">Custom</button>';
           h += '</div>';
-          h += '<button class="cpg-tip-send">Send Tip 💝</button>';
+          h += '<button type="button" class="cpg-tip-send">Send Tip 💝</button>';
           h += '</div>';
           break;
 
@@ -211,8 +214,8 @@
           h += '<div class="cpg-email-title">' + esc(c.title || 'Join My Newsletter') + '</div>';
           if (c.subtitle) h += '<div class="cpg-email-sub">' + esc(c.subtitle) + '</div>';
           h += '<div class="cpg-email-form">';
-          h += '<input class="cpg-email-input" type="email" placeholder="your@email.com">';
-          h += '<button class="cpg-email-submit">Subscribe</button>';
+          h += '<input aria-label="Your@email.com" class="cpg-email-input" type="email" placeholder="your@email.com">';
+          h += '<button type="button" class="cpg-email-submit">Subscribe</button>';
           h += '</div></div>';
           break;
 
@@ -284,18 +287,18 @@
 
     // ─── EDIT PROFILE ───
     window.editProfile = function () {
-      openSheet('Edit Profile', '<div class="cpg-field"><div class="cpg-field-label">Display Name</div><input class="cpg-field-input" id="edName" value="' + esc(page.display_name) + '"></div>' +
+      openSheet('Edit Profile', '<div class="cpg-field"><div class="cpg-field-label">Display Name</div><input aria-label="EdName" class="cpg-field-input" id="edName" value="' + esc(page.display_name) + '"></div>' +
         '<div class="cpg-field"><div class="cpg-field-label">Bio</div><textarea class="cpg-field-textarea" id="edBio">' + esc(page.bio) + '</textarea></div>' +
-        '<div class="cpg-field"><div class="cpg-field-label">Location</div><input class="cpg-field-input" id="edLoc" value="' + esc(page.location || '') + '" placeholder="Lagos, Nigeria"></div>' +
-        '<div class="cpg-field"><div class="cpg-field-label">Avatar URL</div><input class="cpg-field-input" id="edAvatar" value="' + esc(page.avatar_url || '') + '" placeholder="https://..."></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">Location</div><input aria-label="Lagos, Nigeria" class="cpg-field-input" id="edLoc" value="' + esc(page.location || '') + '" placeholder="Lagos, Nigeria"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">Avatar URL</div><input aria-label="Https://" class="cpg-field-input" id="edAvatar" value="' + esc(page.avatar_url || '') + '" placeholder="https://..."></div>' +
         '<div style="font-size:.72rem;font-weight:800;color:var(--cpg-muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.1em">Social Links</div>' +
-        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">Instagram</div><input class="cpg-field-input" id="edIG" value="' + esc((page.social_links||{}).instagram || '') + '"></div>' +
-        '<div class="cpg-field"><div class="cpg-field-label">TikTok</div><input class="cpg-field-input" id="edTT" value="' + esc((page.social_links||{}).tiktok || '') + '"></div></div>' +
-        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">YouTube</div><input class="cpg-field-input" id="edYT" value="' + esc((page.social_links||{}).youtube || '') + '"></div>' +
-        '<div class="cpg-field"><div class="cpg-field-label">X / Twitter</div><input class="cpg-field-input" id="edX" value="' + esc((page.social_links||{}).twitter || '') + '"></div></div>' +
-        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">LinkedIn</div><input class="cpg-field-input" id="edLI" value="' + esc((page.social_links||{}).linkedin || '') + '"></div>' +
-        '<div class="cpg-field"><div class="cpg-field-label">Email</div><input class="cpg-field-input" id="edEmail" value="' + esc((page.social_links||{}).email || '') + '"></div></div>' +
-        '<button class="cpg-btn cpg-btn-pri" style="width:100%;margin-top:12px;padding:12px" onclick="saveProfile()">Save Profile</button>');
+        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">Instagram</div><input aria-label="EdIG" class="cpg-field-input" id="edIG" value="' + esc((page.social_links||{}).instagram || '') + '"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">TikTok</div><input aria-label="EdTT" class="cpg-field-input" id="edTT" value="' + esc((page.social_links||{}).tiktok || '') + '"></div></div>' +
+        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">YouTube</div><input aria-label="EdYT" class="cpg-field-input" id="edYT" value="' + esc((page.social_links||{}).youtube || '') + '"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">X / Twitter</div><input aria-label="EdX" class="cpg-field-input" id="edX" value="' + esc((page.social_links||{}).twitter || '') + '"></div></div>' +
+        '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">LinkedIn</div><input aria-label="EdLI" class="cpg-field-input" id="edLI" value="' + esc((page.social_links||{}).linkedin || '') + '"></div>' +
+        '<div class="cpg-field"><div class="cpg-field-label">Email</div><input aria-label="EdEmail" class="cpg-field-input" id="edEmail" value="' + esc((page.social_links||{}).email || '') + '"></div></div>' +
+        '<button type="button" class="cpg-btn cpg-btn-pri" style="width:100%;margin-top:12px;padding:12px" onclick="saveProfile()">Save Profile</button>');
     };
 
     window.saveProfile = function () {
@@ -325,34 +328,34 @@
       var html = '';
 
       if (type === 'link') {
-        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
-          '<div class="cpg-field"><div class="cpg-field-label">URL</div><input class="cpg-field-input" id="blkUrl" value="' + esc(c.url || '') + '"></div>' +
-          '<div class="cpg-field"><div class="cpg-field-label">Icon (emoji)</div><input class="cpg-field-input" id="blkIcon" value="' + esc(c.icon || '') + '"></div>' +
-          '<div class="cpg-field"><label style="display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600"><input type="checkbox" id="blkFeatured"' + (c.featured ? ' checked' : '') + '> Featured (highlighted)</label></div>';
+        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input aria-label="BlkTitle" class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">URL</div><input aria-label="BlkUrl" class="cpg-field-input" id="blkUrl" value="' + esc(c.url || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Icon (emoji)</div><input aria-label="BlkIcon" class="cpg-field-input" id="blkIcon" value="' + esc(c.icon || '') + '"></div>' +
+          '<div class="cpg-field"><label style="display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600"><input aria-label="BlkFeatured" type="checkbox" id="blkFeatured"' + (c.featured ? ' checked' : '') + '> Featured (highlighted)</label></div>';
       } else if (type === 'testimonial') {
         html = '<div class="cpg-field"><div class="cpg-field-label">Quote</div><textarea class="cpg-field-textarea" id="blkQuote">' + esc(c.quote || '') + '</textarea></div>' +
-          '<div class="cpg-field"><div class="cpg-field-label">Author</div><input class="cpg-field-input" id="blkAuthor" value="' + esc(c.author || '') + '"></div>';
+          '<div class="cpg-field"><div class="cpg-field-label">Author</div><input aria-label="BlkAuthor" class="cpg-field-input" id="blkAuthor" value="' + esc(c.author || '') + '"></div>';
       } else if (type === 'text') {
-        html = '<div class="cpg-field"><div class="cpg-field-label">Heading</div><input class="cpg-field-input" id="blkHeading" value="' + esc(c.heading || '') + '"></div>' +
+        html = '<div class="cpg-field"><div class="cpg-field-label">Heading</div><input aria-label="BlkHeading" class="cpg-field-input" id="blkHeading" value="' + esc(c.heading || '') + '"></div>' +
           '<div class="cpg-field"><div class="cpg-field-label">Body</div><textarea class="cpg-field-textarea" id="blkBody">' + esc(c.body || '') + '</textarea></div>' +
-          '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">CTA Text</div><input class="cpg-field-input" id="blkCtaText" value="' + esc(c.cta_text || '') + '"></div>' +
-          '<div class="cpg-field"><div class="cpg-field-label">CTA URL</div><input class="cpg-field-input" id="blkCtaUrl" value="' + esc(c.cta_url || '') + '"></div></div>';
+          '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">CTA Text</div><input aria-label="BlkCtaText" class="cpg-field-input" id="blkCtaText" value="' + esc(c.cta_text || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">CTA URL</div><input aria-label="BlkCtaUrl" class="cpg-field-input" id="blkCtaUrl" value="' + esc(c.cta_url || '') + '"></div></div>';
       } else if (type === 'email_signup') {
-        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
-          '<div class="cpg-field"><div class="cpg-field-label">Subtitle</div><input class="cpg-field-input" id="blkSub" value="' + esc(c.subtitle || '') + '"></div>';
+        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input aria-label="BlkTitle" class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Subtitle</div><input aria-label="BlkSub" class="cpg-field-input" id="blkSub" value="' + esc(c.subtitle || '') + '"></div>';
       } else if (type === 'tip_jar') {
-        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
+        html = '<div class="cpg-field"><div class="cpg-field-label">Title</div><input aria-label="BlkTitle" class="cpg-field-input" id="blkTitle" value="' + esc(c.title || '') + '"></div>' +
           '<div class="cpg-field"><div class="cpg-field-label">Currency</div><select class="cpg-field-select" id="blkCurrency">';
         for (var cur in E.CURRENCIES) html += '<option value="' + cur + '"' + (c.currency === cur ? ' selected' : '') + '>' + cur + ' (' + E.CURRENCIES[cur].symbol + ')</option>';
         html += '</select></div>';
       } else if (type === 'booking') {
-        html = '<div class="cpg-field"><div class="cpg-field-label">Service Name</div><input class="cpg-field-input" id="blkService" value="' + esc(c.service || '') + '"></div>' +
+        html = '<div class="cpg-field"><div class="cpg-field-label">Service Name</div><input aria-label="BlkService" class="cpg-field-input" id="blkService" value="' + esc(c.service || '') + '"></div>' +
           '<div class="cpg-field"><div class="cpg-field-label">Description</div><textarea class="cpg-field-textarea" id="blkDesc">' + esc(c.description || '') + '</textarea></div>' +
-          '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">Price</div><input class="cpg-field-input" type="number" id="blkPrice" value="' + (c.price || 0) + '"></div>' +
-          '<div class="cpg-field"><div class="cpg-field-label">Duration</div><input class="cpg-field-input" id="blkDuration" value="' + esc(c.duration || '1 hour') + '"></div></div>';
+          '<div class="cpg-field-row"><div class="cpg-field"><div class="cpg-field-label">Price</div><input aria-label="BlkPrice" class="cpg-field-input" type="number" id="blkPrice" value="' + (c.price || 0) + '"></div>' +
+          '<div class="cpg-field"><div class="cpg-field-label">Duration</div><input aria-label="BlkDuration" class="cpg-field-input" id="blkDuration" value="' + esc(c.duration || '1 hour') + '"></div></div>';
       }
 
-      html += '<button class="cpg-btn cpg-btn-pri" style="width:100%;margin-top:12px;padding:12px" onclick="saveBlock(\'' + id + '\',\'' + type + '\')">Save</button>';
+      html += '<button type="button" class="cpg-btn cpg-btn-pri" style="width:100%;margin-top:12px;padding:12px" onclick="saveBlock(\'' + id + '\',\'' + type + '\')">Save</button>';
 
       var typeInfo = E.BLOCK_TYPES[type] || {};
       openSheet('Edit ' + (typeInfo.label || 'Block'), html);
@@ -394,7 +397,7 @@
       var html = '<div class="cpg-add-block-grid">';
       for (var key in E.BLOCK_TYPES) {
         var bt = E.BLOCK_TYPES[key];
-        html += '<button class="cpg-add-block-btn" onclick="addNewBlock(\'' + key + '\')">' +
+        html += '<button type="button" class="cpg-add-block-btn" onclick="addNewBlock(\'' + key + '\')">' +
           '<div class="cpg-add-block-icon">' + bt.icon + '</div>' +
           '<div class="cpg-add-block-label">' + bt.label + '</div>' +
           '</button>';
@@ -427,7 +430,7 @@
 
         html += '<div class="cpg-sidebar-section"><div class="cpg-sidebar-label">Accent Color</div>';
         html += '<div class="cpg-color-row"><div class="cpg-color-swatch" id="accentSwatch" style="background:' + page.accent_color + '"></div>';
-        html += '<input class="cpg-color-input" id="accentInput" value="' + page.accent_color + '" onchange="setAccent(this.value)"></div></div>';
+        html += '<input aria-label="AccentInput" class="cpg-color-input" id="accentInput" value="' + page.accent_color + '" onchange="setAccent(this.value)"></div></div>';
 
         html += '<div class="cpg-sidebar-section"><div class="cpg-sidebar-label">Button Style</div>';
         html += '<select class="cpg-sidebar-select" onchange="setBtnStyle(this.value)">';

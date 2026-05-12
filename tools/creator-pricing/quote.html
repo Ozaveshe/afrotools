@@ -7,10 +7,10 @@
   <meta name="description" content="Generate professional project quotes for your creative work. Itemized line items, suggested totals, and forgotten charges.">
   <meta name="robots" content="noindex, follow">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=84db4066">
-  <script src="/assets/js/components/navbar.js?v=af1ede16" defer></script>
-  <script src="/assets/js/components/footer.js?v=7cf41589" defer></script>
+  <script src="/assets/js/components/navbar.js?v=3af89576" defer></script>
+  <script src="/assets/js/components/footer.js?v=625b18a7" defer></script>
   <script src="/engines/creator-pricing-engine.js?v=3e547543"></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-pricing/quote">
 <meta property="og:url" content="https://afrotools.com/tools/creator-pricing/quote">
@@ -75,7 +75,7 @@
       </div>
 
       <div style="margin-top:24px">
-        <button class="cp-btn cp-btn-primary" id="generate-quote" style="width:100%;max-width:100%">Generate Quote →</button>
+        <button type="button" class="cp-btn cp-btn-primary" id="generate-quote" style="width:100%;max-width:100%">Generate Quote →</button>
       </div>
 
       <!-- QUOTE RESULT -->
@@ -213,8 +213,8 @@
 
       // Export buttons
       html += '<div class="cp-share-btns" style="margin-top:16px">' +
-        '<button class="cp-share-btn cp-share-wa" id="quote-wa">Send via WhatsApp</button>' +
-        '<button class="cp-share-btn cp-share-copy" id="quote-copy">Copy as Text</button></div>';
+        '<button type="button" class="cp-share-btn cp-share-wa" id="quote-wa">Send via WhatsApp</button>' +
+        '<button type="button" class="cp-share-btn cp-share-copy" id="quote-copy">Copy as Text</button></div>';
       html += '</div>';
 
       resultDiv.innerHTML = html;
@@ -270,8 +270,8 @@
           '<div class="cp-section-title">AI-Generated Quote</div>' +
           '<div style="font-size:.85rem;line-height:1.8;color:rgba(255,255,255,.8);white-space:pre-wrap">' + reply.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
           '<div class="cp-share-btns" style="margin-top:16px">' +
-            '<button class="cp-share-btn cp-share-wa" onclick="window.open(\'https://wa.me/?text=\'+encodeURIComponent(document.querySelector(\'.cp-quote-result div:nth-child(2)\').textContent),\'_blank\')">Send via WhatsApp</button>' +
-            '<button class="cp-share-btn cp-share-copy" onclick="navigator.clipboard.writeText(document.querySelector(\'.cp-quote-result div:nth-child(2)\').textContent).then(function(){this.textContent=\'Copied!\'}.bind(this))">Copy as Text</button>' +
+            '<button type="button" class="cp-share-btn cp-share-wa" onclick="window.open(\'https://wa.me/?text=\'+encodeURIComponent(document.querySelector(\'.cp-quote-result div:nth-child(2)\').textContent),\'_blank\')">Send via WhatsApp</button>' +
+            '<button type="button" class="cp-share-btn cp-share-copy" onclick="navigator.clipboard.writeText(document.querySelector(\'.cp-quote-result div:nth-child(2)\').textContent).then(function(){this.textContent=\'Copied!\'}.bind(this))">Copy as Text</button>' +
           '</div></div>';
       })
       .catch(function() {

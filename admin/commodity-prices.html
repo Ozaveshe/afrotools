@@ -68,6 +68,9 @@
 <meta property="article:modified_time" content="2026-03-28">
 <link rel="canonical" href="https://afrotools.com/admin/commodity-prices">
 <meta property="og:url" content="https://afrotools.com/admin/commodity-prices">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <div class="dash">
@@ -85,10 +88,10 @@
   <!-- Global benchmark editor -->
   <div class="benchmark-bar" id="benchmarkBar" style="display:none">
     <strong id="benchmarkTitle">Global Benchmark</strong>
-    <div class="bm-field"><label>Exchange</label><input type="text" id="bm-exchange" placeholder="e.g. SAFEX (JSE)"></div>
-    <div class="bm-field"><label>Price (USD)</label><input type="number" id="bm-price" step="0.01" placeholder="0.00"></div>
-    <div class="bm-field"><label>Notes</label><input type="text" id="bm-notes" placeholder="Reference notes" style="width:200px"></div>
-    <button class="btn btn-primary btn-sm" onclick="saveBenchmark()">Save Benchmark</button>
+    <div class="bm-field"><label>Exchange</label><input aria-label="E.g. SAFEX (JSE)" type="text" id="bm-exchange" placeholder="e.g. SAFEX (JSE)"></div>
+    <div class="bm-field"><label>Price (USD)</label><input aria-label="Bm price" type="number" id="bm-price" step="0.01" placeholder="0.00"></div>
+    <div class="bm-field"><label>Notes</label><input aria-label="Reference notes" type="text" id="bm-notes" placeholder="Reference notes" style="width:200px"></div>
+    <button type="button" class="btn btn-primary btn-sm" onclick="saveBenchmark()">Save Benchmark</button>
   </div>
 
   <div class="section">
@@ -256,21 +259,21 @@ function renderTable() {
     var stale = isStale(r.updated_at);
     return '<tr class="' + (stale ? 'stale' : '') + '" data-idx="' + i + '">' +
       '<td><strong>' + r.country_code + '</strong> ' + r.country_name + '</td>' +
-      '<td><input type="text" value="' + (r.market || '') + '" data-field="market" placeholder="Market name"></td>' +
-      '<td><input type="text" value="' + (r.currency || '') + '" data-field="currency" style="width:60px"></td>' +
-      '<td><input type="number" step="1" value="' + (r.price || '') + '" data-field="price"></td>' +
-      '<td><input type="number" step="1" value="' + (r.month_ago || '') + '" data-field="month_ago"></td>' +
-      '<td><input type="number" step="1" value="' + (r.year_ago || '') + '" data-field="year_ago"></td>' +
+      '<td><input aria-label="Market name" type="text" value="' + (r.market || '') + '" data-field="market" placeholder="Market name"></td>' +
+      '<td><input aria-label="Currency" type="text" value="' + (r.currency || '') + '" data-field="currency" style="width:60px"></td>' +
+      '<td><input aria-label="Price" type="number" step="1" value="' + (r.price || '') + '" data-field="price"></td>' +
+      '<td><input aria-label="Month ago" type="number" step="1" value="' + (r.month_ago || '') + '" data-field="month_ago"></td>' +
+      '<td><input aria-label="Year ago" type="number" step="1" value="' + (r.year_ago || '') + '" data-field="year_ago"></td>' +
       '<td><select data-field="trend">' +
         ['stable','rising','declining','elevated'].map(function(t) {
           return '<option value="' + t + '"' + (r.trend === t ? ' selected' : '') + '>' +
             t.charAt(0).toUpperCase() + t.slice(1) + '</option>';
         }).join('') +
       '</select></td>' +
-      '<td><input type="text" class="wide" value="' + (r.notes || '').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Seasonal notes…"></td>' +
+      '<td><input aria-label="Seasonal notes" type="text" class="wide" value="' + (r.notes || '').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Seasonal notes…"></td>' +
       '<td style="white-space:nowrap;font-size:.72rem;color:#94a3b8">' + timeAgo(r.updated_at) + '</td>' +
       '<td>' + (stale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>') + '</td>' +
-      '<td><button class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
+      '<td><button type="button" class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
     '</tr>';
   }).join('');
 }

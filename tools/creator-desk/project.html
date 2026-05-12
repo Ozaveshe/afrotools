@@ -12,6 +12,9 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-desk/project">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-desk/project">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
@@ -20,7 +23,7 @@
     <a href="app.html" class="cd-topbar-back">&larr; Pipeline</a>
     <a href="index.html" class="cd-topbar-brand"><span>📋</span> CreatorDesk</a>
     <span class="cd-topbar-title" id="projectTitle">Project</span>
-    <button class="cd-btn cd-btn-ghost" onclick="deleteProject()">Delete</button>
+    <button type="button" class="cd-btn cd-btn-ghost" onclick="deleteProject()">Delete</button>
   </div>
 
   <div class="cd-detail" id="projectDetail">
@@ -93,12 +96,12 @@ function render() {
     html += '<div class="cd-task-item">';
     html += '<div class="cd-task-check' + (t.done ? ' done' : '') + '" onclick="toggleTask(' + i + ')">' + (t.done ? '✓' : '') + '</div>';
     html += '<div class="cd-task-text' + (t.done ? ' done' : '') + '">' + escHtml(t.text) + '</div>';
-    html += '<button class="cd-task-remove" onclick="removeTask(' + i + ')">×</button>';
+    html += '<button type="button" class="cd-task-remove" onclick="removeTask(' + i + ')">×</button>';
     html += '</div>';
   });
 
-  html += '<div class="cd-task-add"><input type="text" id="newTaskInput" placeholder="Add a task..." onkeydown="if(event.key===\'Enter\')addTask()"><button class="cd-btn cd-btn-primary" onclick="addTask()">Add</button></div>';
-  html += '<div style="margin-top:12px"><button class="cd-ai-btn" onclick="aiTasks()">✨ AI: Break this project into tasks</button></div>';
+  html += '<div class="cd-task-add"><input aria-label="Add a task" type="text" id="newTaskInput" placeholder="Add a task..." onkeydown="if(event.key===\'Enter\')addTask()"><button type="button" class="cd-btn cd-btn-primary" onclick="addTask()">Add</button></div>';
+  html += '<div style="margin-top:12px"><button type="button" class="cd-ai-btn" onclick="aiTasks()">✨ AI: Break this project into tasks</button></div>';
   html += '</div>';
 
   // Notes / Timeline
@@ -116,16 +119,16 @@ function render() {
     });
     html += '</div>';
   }
-  html += '<div class="cd-task-add" style="margin-top:12px"><input type="text" id="newNoteInput" placeholder="Add a note..." onkeydown="if(event.key===\'Enter\')addNote()"><button class="cd-btn cd-btn-ghost" onclick="addNote()">Add</button></div>';
+  html += '<div class="cd-task-add" style="margin-top:12px"><input aria-label="Add a note" type="text" id="newNoteInput" placeholder="Add a note..." onkeydown="if(event.key===\'Enter\')addNote()"><button type="button" class="cd-btn cd-btn-ghost" onclick="addNote()">Add</button></div>';
   html += '</div>';
 
   // AI section
   html += '<div class="cd-task-card">';
   html += '<h3>AI Assistant</h3>';
   html += '<div style="display:flex;flex-wrap:wrap;gap:8px">';
-  html += '<button class="cd-ai-btn" onclick="aiAction(\'summarize\')">✨ Summarize project</button>';
-  html += '<button class="cd-ai-btn" onclick="aiAction(\'update\')">✨ Draft progress update</button>';
-  html += '<button class="cd-ai-btn" onclick="aiAction(\'redflags\')">✨ Red flag check</button>';
+  html += '<button type="button" class="cd-ai-btn" onclick="aiAction(\'summarize\')">✨ Summarize project</button>';
+  html += '<button type="button" class="cd-ai-btn" onclick="aiAction(\'update\')">✨ Draft progress update</button>';
+  html += '<button type="button" class="cd-ai-btn" onclick="aiAction(\'redflags\')">✨ Red flag check</button>';
   html += '</div></div>';
 
   document.getElementById('projectDetail').innerHTML = html;

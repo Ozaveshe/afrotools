@@ -22,9 +22,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--accent:#007AFF;--accent-dark:#0059B3;--green:#008751;--dark:#0f1419;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--muted:#64748b}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 100%);padding:44px 0 36px}
@@ -107,8 +107,8 @@ h1 em{color:#4DA3FF;font-style:normal}
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Building Cost Estimator","description":"Estimate building construction cost per square metre by African city. Rooms, finish quality, full cost breakdown.","url":"https://afrotools.com/tools/floor-plan/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Building Cost Estimator","url":"https://afrotools.com/tools/floor-plan/","description":"Estimate building construction cost per square metre by African city. Rooms, finish quality, full cost breakdown.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Building Cost Estimator","item":"https://afrotools.com/tools/floor-plan/"}]}</script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/floor-plan/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/floor-plan/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-gharama-za-ujenzi/" />
@@ -258,15 +258,15 @@ h1 em{color:#4DA3FF;font-style:normal}
 <option value="Study,3,3">Study / Home Office (3x3m)</option>
 <option value="Corridor,6,1.5">Corridor / Passage (6x1.5m)</option>
 </select>
-<input type="number" id="addRoomW" placeholder="Width" step="0.5" min="1" style="width:100%">
-<input type="number" id="addRoomL" placeholder="Length" step="0.5" min="1" style="width:100%">
-<button onclick="addRoom()">+ Add</button>
+<input aria-label="Width" type="number" id="addRoomW" placeholder="Width" step="0.5" min="1" style="width:100%">
+<input aria-label="Length" type="number" id="addRoomL" placeholder="Length" step="0.5" min="1" style="width:100%">
+<button type="button" onclick="addRoom()">+ Add</button>
 </div>
 <div style="margin-top:12px;padding:12px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;display:flex;justify-content:space-between;align-items:center">
 <span style="font-size:.85rem;font-weight:700;color:var(--dark)">Total Floor Area</span>
 <span style="font-size:1.2rem;font-weight:900;color:var(--accent)" id="totalArea">0 m2</span>
 </div>
-<button class="calc-btn" onclick="calculate()">Estimate Construction Cost</button>
+<button type="button" class="calc-btn" onclick="calculate()">Estimate Construction Cost</button>
 </div></div>
 
 <!-- Results -->
@@ -296,8 +296,8 @@ h1 em{color:#4DA3FF;font-style:normal}
 </div></div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
-<button onclick="exportPDF()" class="calc-btn" style="width:auto;padding:12px 28px">Download PDF Report</button>
-<button onclick="shareResult()" class="calc-btn" style="width:auto;padding:12px 28px;background:transparent;color:var(--accent);border:1.5px solid var(--accent)">Share</button>
+<button type="button" onclick="exportPDF()" class="calc-btn" style="width:auto;padding:12px 28px">Download PDF Report</button>
+<button type="button" onclick="shareResult()" class="calc-btn" style="width:auto;padding:12px 28px;background:transparent;color:var(--accent);border:1.5px solid var(--accent)">Share</button>
 </div>
 
 <div style="padding:14px 18px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:8px;font-size:.85rem;color:#065F46;margin-bottom:18px">
@@ -430,7 +430,7 @@ function renderRooms() {
   grid.innerHTML = rooms.map(function(r, i) {
     var area = r.w * r.l;
     totalArea += area;
-    return '<div class="room-card"><div class="room-name">' + r.name + '</div><div class="room-dim">' + r.w + ' x ' + r.l + ' m</div><div class="room-area">' + area.toFixed(1) + ' m2</div><button onclick="removeRoom(' + i + ')" style="font-size:.68rem;color:#dc2626;border:none;background:none;cursor:pointer;margin-top:4px">Remove</button></div>';
+    return '<div class="room-card"><div class="room-name">' + r.name + '</div><div class="room-dim">' + r.w + ' x ' + r.l + ' m</div><div class="room-area">' + area.toFixed(1) + ' m2</div><button type="button" onclick="removeRoom(' + i + ')" style="font-size:.68rem;color:#dc2626;border:none;background:none;cursor:pointer;margin-top:4px">Remove</button></div>';
   }).join('');
   document.getElementById('totalArea').textContent = totalArea.toFixed(0) + ' m2';
   // Pre-fill add room inputs

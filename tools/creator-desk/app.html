@@ -23,6 +23,9 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-desk/app">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-desk/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
@@ -31,8 +34,8 @@
   <div class="cd-topbar">
     <a href="index.html" class="cd-topbar-back">&larr; Back</a>
     <a href="index.html" class="cd-topbar-brand"><span>📋</span> CreatorDesk</a>
-    <input type="text" class="cd-topbar-search" placeholder="Search projects..." oninput="filterProjects(this.value)">
-    <button class="cd-btn cd-btn-primary" onclick="openNewProject()">+ New Project</button>
+    <input aria-label="Search projects" type="text" class="cd-topbar-search" placeholder="Search projects..." oninput="filterProjects(this.value)">
+    <button type="button" class="cd-btn cd-btn-primary" onclick="openNewProject()">+ New Project</button>
   </div>
 
   <!-- QUICK STATS -->
@@ -45,17 +48,17 @@
 
   <!-- FILTER BAR -->
   <div class="cd-filter-bar">
-    <button class="cd-filter-btn active" onclick="setFilter('all', this)">All</button>
-    <button class="cd-filter-btn" onclick="setFilter('due-week', this)">Due This Week</button>
-    <button class="cd-filter-btn" onclick="setFilter('high', this)">High Priority</button>
-    <button class="cd-filter-btn" onclick="setFilter('overdue', this)">Overdue</button>
+    <button type="button" class="cd-filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button type="button" class="cd-filter-btn" onclick="setFilter('due-week', this)">Due This Week</button>
+    <button type="button" class="cd-filter-btn" onclick="setFilter('high', this)">High Priority</button>
+    <button type="button" class="cd-filter-btn" onclick="setFilter('overdue', this)">Overdue</button>
   </div>
 
   <!-- PIPELINE -->
   <div class="cd-pipeline" id="pipeline"></div>
 
   <!-- FAB (mobile) -->
-  <button class="cd-fab" onclick="openNewProject()">+</button>
+  <button type="button" class="cd-fab" onclick="openNewProject()">+</button>
 
   <!-- BOTTOM NAV (mobile) -->
   <div class="cd-bottom-nav">
@@ -76,11 +79,11 @@
     <h3>New Project</h3>
     <div class="cd-field">
       <label>Project Name *</label>
-      <input type="text" id="npName" placeholder="e.g. Wedding Photography — Tola & Mide">
+      <input aria-label="E.g. Wedding Photography — Tola &amp; Mide" type="text" id="npName" placeholder="e.g. Wedding Photography — Tola & Mide">
     </div>
     <div class="cd-field">
       <label>Client Name</label>
-      <input type="text" id="npClient" placeholder="e.g. Tola Bakare">
+      <input aria-label="E.g. Tola Bakare" type="text" id="npClient" placeholder="e.g. Tola Bakare">
     </div>
     <div class="cd-field">
       <label>Status</label>
@@ -101,11 +104,11 @@
     </div>
     <div class="cd-field">
       <label>Due Date</label>
-      <input type="date" id="npDue">
+      <input aria-label="NpDue" type="date" id="npDue">
     </div>
     <div class="cd-field">
       <label>Value (optional)</label>
-      <input type="text" id="npValue" placeholder="e.g. 250000" inputmode="numeric">
+      <input aria-label="E.g. 250000" type="text" id="npValue" placeholder="e.g. 250000" inputmode="numeric">
     </div>
     <div class="cd-field">
       <label>Currency</label>
@@ -119,11 +122,11 @@
       </select>
     </div>
     <div style="display:flex;gap:10px;margin-top:16px">
-      <button class="cd-btn cd-btn-primary" onclick="createProject()" style="flex:1">Create Project</button>
-      <button class="cd-btn cd-btn-ghost" onclick="closeModal()">Cancel</button>
+      <button type="button" class="cd-btn cd-btn-primary" onclick="createProject()" style="flex:1">Create Project</button>
+      <button type="button" class="cd-btn cd-btn-ghost" onclick="closeModal()">Cancel</button>
     </div>
     <div style="margin-top:12px">
-      <button class="cd-ai-btn" onclick="aiBreakdown()">✨ AI: Paste a client message to create a brief</button>
+      <button type="button" class="cd-ai-btn" onclick="aiBreakdown()">✨ AI: Paste a client message to create a brief</button>
     </div>
     <div class="cd-loading-status" id="cdLoadingStatus">
       <span class="cd-loading-verb">Analyzing your content</span>
@@ -137,7 +140,7 @@
   <div class="cd-modal">
     <h3>Move Project</h3>
     <div id="moveOptions" style="display:flex;flex-direction:column;gap:8px"></div>
-    <button class="cd-btn cd-btn-ghost" onclick="closeMoveModal()" style="margin-top:12px;width:100%">Cancel</button>
+    <button type="button" class="cd-btn cd-btn-ghost" onclick="closeMoveModal()" style="margin-top:12px;width:100%">Cancel</button>
   </div>
 </div>
 
@@ -414,7 +417,7 @@ function openMoveModal(id) {
   var opts = document.getElementById('moveOptions');
   opts.innerHTML = '';
   STATUSES.forEach(function(s) {
-    opts.innerHTML += '<button class="cd-btn cd-btn-ghost" style="width:100%;justify-content:flex-start" onclick="moveProject(\'' + id + '\',\'' + s.id + '\');closeMoveModal()">' +
+    opts.innerHTML += '<button type="button" class="cd-btn cd-btn-ghost" style="width:100%;justify-content:flex-start" onclick="moveProject(\'' + id + '\',\'' + s.id + '\');closeMoveModal()">' +
       '<span style="width:8px;height:8px;border-radius:50%;background:' + s.color + '"></span> ' + s.label + '</button>';
   });
   document.getElementById('moveModal').classList.add('open');

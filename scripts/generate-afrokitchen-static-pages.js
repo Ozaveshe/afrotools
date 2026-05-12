@@ -1202,7 +1202,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   </section>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 <script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = ${safeJson(recipeData)};</script>
@@ -1576,7 +1576,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
   </section>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 </body>
 </html>
@@ -1711,7 +1711,7 @@ function buildCollectionPageHtml(collection, cuisineIntelligence) {
   </section>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 </body>
 </html>

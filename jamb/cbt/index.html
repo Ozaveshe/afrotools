@@ -20,11 +20,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/jamb.css?v=ad1858eb">
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/engines/jamb-cbt-engine.js?v=44a74134" defer></script>
 <!-- afro-edu-bridge -->
 <script src="/assets/js/afro-auth.js?v=3978e101" defer></script>
@@ -56,7 +56,7 @@ if (typeof window.fbq === "function") {
 <!-- End Meta Pixel Code -->
 </head>
 <body class="jamb-page">
-<noscript><img height="1" width="1" style="display:none"
+<noscript><img aria-hidden="true" alt="" height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 /></noscript>
 
@@ -91,19 +91,19 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
 
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
           <label class="mode-card" data-mode="quick">
-            <input type="radio" name="mode" value="quick" class="jb-sr-only">
+            <input aria-label="Mode" type="radio" name="mode" value="quick" class="jb-sr-only">
             <div class="mc-emoji" aria-hidden="true">⚡</div>
             <div class="mc-name">Quick Mock</div>
             <div class="mc-meta">10 Qs × 4 subjects · 30 min</div>
           </label>
           <label class="mode-card selected" data-mode="full">
-            <input type="radio" name="mode" value="full" checked class="jb-sr-only">
+            <input aria-label="Mode" type="radio" name="mode" value="full" checked class="jb-sr-only">
             <div class="mc-emoji" aria-hidden="true">🎯</div>
             <div class="mc-name">Full Mock</div>
             <div class="mc-meta">40 Qs × 4 subjects · 2 hrs</div>
           </label>
           <label class="mode-card" data-mode="subject">
-            <input type="radio" name="mode" value="subject" class="jb-sr-only">
+            <input aria-label="Mode" type="radio" name="mode" value="subject" class="jb-sr-only">
             <div class="mc-emoji" aria-hidden="true">📚</div>
             <div class="mc-name">Single Subject</div>
             <div class="mc-meta">40 Qs · 40 min</div>
@@ -257,10 +257,10 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
         <h3 style="margin:0 0 6px;font-size:1rem;font-weight:800;color:#0f172a;">Review your answers</h3>
         <p style="font-size:.78rem;color:#64748b;margin:0 0 14px;">Walk through every wrong answer with the explanation. This is where you actually learn.</p>
         <div id="review-filters" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-          <button class="rev-filter active" data-filter="wrong">❌ Wrong (<span id="rf-wrong">0</span>)</button>
-          <button class="rev-filter" data-filter="skipped">⊘ Skipped (<span id="rf-skip">0</span>)</button>
-          <button class="rev-filter" data-filter="correct">✓ Correct (<span id="rf-right">0</span>)</button>
-          <button class="rev-filter" data-filter="all">All (<span id="rf-all">0</span>)</button>
+          <button type="button" class="rev-filter active" data-filter="wrong">❌ Wrong (<span id="rf-wrong">0</span>)</button>
+          <button type="button" class="rev-filter" data-filter="skipped">⊘ Skipped (<span id="rf-skip">0</span>)</button>
+          <button type="button" class="rev-filter" data-filter="correct">✓ Correct (<span id="rf-right">0</span>)</button>
+          <button type="button" class="rev-filter" data-filter="all">All (<span id="rf-all">0</span>)</button>
         </div>
         <div id="review-list" style="display:flex;flex-direction:column;gap:14px;"></div>
       </div>
@@ -1338,7 +1338,7 @@ function renderReviewCard(r) {
   });
 
   var actionsHtml = '<div class="rev-actions">'
-    + (r.graded ? '<button class="explain-btn primary">🤖 Why is this the answer?</button>' : '<button class="explain-btn primary">🤖 Explain this question</button>')
+    + (r.graded ? '<button type="button" class="explain-btn primary">🤖 Why is this the answer?</button>' : '<button type="button" class="explain-btn primary">🤖 Explain this question</button>')
     + '</div>';
 
   card.innerHTML = meta

@@ -31,6 +31,16 @@ function makeMeta(tool, auth, startTime) {
   };
 }
 
+function usageBuckets() {
+  const today = new Date().toISOString().split('T')[0];
+  return { today, month: today.slice(0, 7) };
+}
+
+function readUsageCount(usage, bucket) {
+  const value = usage && usage[bucket];
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+}
+
 exports.handler = async function (event) {
   CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
@@ -76,14 +86,21 @@ exports.handler = async function (event) {
   }
 
   // --- Rate limiting ---
-  const month = new Date().toISOString().slice(0, 7);
-  const usage = keyData.monthlyUsage?.[month] || 0;
+  const buckets = usageBuckets();
+  const usage = keyData.usage || keyData.monthlyUsage || {};
+  const dailyUsage = readUsageCount(usage, buckets.today);
+  const monthlyUsage = readUsageCount(usage, buckets.month);
   const tier = normalizeApiTier(keyData.tier || 'free');
   const limits = getApiPlanLimit(tier);
-  const limit = limits.month === -1 ? 999999999 : limits.month;
+  const dailyLimit = limits.day === -1 ? 999999999 : limits.day;
+  const monthlyLimit = limits.month === -1 ? 999999999 : limits.month;
 
-  if (usage >= limit) {
-    return respond(429, { error: 'Monthly rate limit exceeded', usage, limit, tier });
+  if (dailyUsage >= dailyLimit) {
+    return respond(429, { error: 'Daily rate limit exceeded', usage: dailyUsage, limit: dailyLimit, tier });
+  }
+
+  if (monthlyUsage >= monthlyLimit) {
+    return respond(429, { error: 'Monthly rate limit exceeded', usage: monthlyUsage, limit: monthlyLimit, tier });
   }
 
   // --- Parse request ---
@@ -96,12 +113,13 @@ exports.handler = async function (event) {
   // --- Increment usage ---
   try {
     const store = getStore('apikeys');
-    if (!keyData.monthlyUsage) keyData.monthlyUsage = {};
-    keyData.monthlyUsage[month] = usage + 1;
+    usage[buckets.today] = dailyUsage + 1;
+    usage[buckets.month] = monthlyUsage + 1;
+    keyData.usage = usage;
     await store.setJSON(apiKey, keyData);
   } catch {}
 
-  const authInfo = { usageCurrent: usage + 1, limit, tier };
+  const authInfo = { usageCurrent: monthlyUsage + 1, limit: monthlyLimit, tier };
   const startTime = Date.now();
   const toolLower = tool.toLowerCase();
 

@@ -15,7 +15,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <script src="/assets/js/afro-auth.js?v=3978e101"></script>
   <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
   <script src="/assets/js/lib/afroseller-sync.js?v=75c2ad51"></script>
@@ -29,6 +29,9 @@
     @media (min-width:1120px){.seller-shell{grid-template-columns:246px minmax(0,1fr)}.seller-side{position:sticky;top:0;height:100vh;border-bottom:0;border-right:1px solid var(--as-line);align-content:start}.seller-nav{display:grid;overflow:visible}.seller-grid{grid-template-columns:minmax(0,1fr) 380px}.seller-split{grid-template-columns:repeat(2,minmax(0,1fr))}.seller-content{padding:16px}}
     @media (max-width:520px){.seller-title{font-size:20px}.seller-metrics{grid-template-columns:1fr}.seller-row{grid-template-columns:1fr}.seller-panel-head{flex-direction:column}.seller-actions>.btn,.seller-actions>a,.seller-list>.btn{width:100%}.table-actions .btn{width:auto}}
   </style>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
   <main class="seller-shell pro-gated-content">
@@ -159,7 +162,7 @@
                   <form class="seller-form two" id="orderForm">
                     <div class="field"><label for="orderCustomer">Customer</label><input id="orderCustomer" name="orderCustomer" placeholder="Mariam Ade"></div>
                     <div class="field"><label for="orderProduct">Product</label><select id="orderProduct" name="orderProduct"></select></div>
-                    <div class="field"><label for="orderQuantity">Quantity</label><input id="orderQuantity" name="orderQuantity" type="number" min="1" step="1" value="1"></div>
+                    <div class="field"><label for="orderQuantity">Quantity</label><input aria-label="Line item quantity" id="orderQuantity" name="orderQuantity" type="number" min="1" step="1" value="1"></div>
                     <div class="field"><label for="orderAmount">Order amount</label><input id="orderAmount" name="orderAmount" type="number" min="0" step="0.01"></div>
                     <div class="field"><label for="discountAmount">Discount</label><input id="discountAmount" name="discountAmount" type="number" min="0" step="0.01" value="0"></div>
                     <div class="field"><label for="refundAmount">Refund/cancellation</label><input id="refundAmount" name="refundAmount" type="number" min="0" step="0.01" value="0"></div>
@@ -234,7 +237,7 @@
                 <form class="seller-form three" id="movementForm">
                   <div class="field"><label for="movementProduct">Product</label><select id="movementProduct" name="movementProduct"></select></div>
                   <div class="field"><label for="movementType">Movement type</label><select id="movementType" name="movementType"><option value="restock">Stock in</option><option value="sale">Stock out</option><option value="adjustment">Adjustment</option><option value="damage">Damaged/lost</option><option value="return">Return to stock</option></select></div>
-                  <div class="field"><label for="movementQuantity">Quantity</label><input id="movementQuantity" name="movementQuantity" type="number" step="1" value="1"><span class="field-help">Use a signed number only for adjustment rows.</span></div>
+                  <div class="field"><label for="movementQuantity">Quantity</label><input aria-label="Line item quantity" id="movementQuantity" name="movementQuantity" type="number" step="1" value="1"><span class="field-help">Use a signed number only for adjustment rows.</span></div>
                   <div class="field"><label for="movementOrder">Linked order</label><select id="movementOrder" name="movementOrder"></select><span class="field-help">Optional. Use it when a movement belongs to an order.</span></div>
                   <div class="field"><label for="movementNote">Reason</label><input id="movementNote" name="movementNote" placeholder="Supplier refill, damaged item, customer return"></div>
                   <div class="field"><label>&nbsp;</label><button class="btn primary" type="submit" id="movementSubmitBtn">Log movement</button></div>

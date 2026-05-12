@@ -30,15 +30,15 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
 <link rel="stylesheet" href="/assets/css/background-remover-studio.css?v=e91676fa">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script src="/assets/js/lib/background-remover-studio.js?v=a017d13d" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Background Remover Studio","description":"Remove and replace image backgrounds locally with AI person cutout when available, smart edge cleanup, color keying, erase and restore brushes, crop-to-subject exports, and saved session settings.","url":"https://afrotools.com/tools/background-remover/","inLanguage":"en","applicationCategory":"MultimediaApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and browser Canvas support","image":"https://afrotools.com/assets/img/tools/background-remover.svg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Background Remover Studio","url":"https://afrotools.com/tools/background-remover/","description":"Local image background remover with cutout, manual refine, background replacement, and export workflow.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/background-remover.svg"}</script>
@@ -82,7 +82,7 @@
             <span><strong>Choose images</strong><span>Drag files here, paste from clipboard, or click to browse.</span></span>
           </div>
           <div class="br-drop-side">Local only<br>JPG, PNG, WebP</div>
-          <input type="file" id="brInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
+          <input aria-label="BrInput" type="file" id="brInput" accept="image/*,.avif,.heic,.heif,.svg,.bmp" multiple>
         </div>
         <div class="br-queue" id="brQueue" aria-label="Current image queue"></div>
       </article>
@@ -114,17 +114,17 @@
           <label class="br-field">
             <span class="br-label">Background sample</span>
             <span class="br-color-row">
-              <input class="br-color-input" id="brSampleColor" type="color" value="#f3f4f6">
+              <input aria-label="BrSampleColor" class="br-color-input" id="brSampleColor" type="color" value="#f3f4f6">
               <button type="button" class="br-mini-btn" id="brPickColor">Pick from image</button>
             </span>
           </label>
           <label class="br-field">
             <span class="br-label">Tolerance</span>
-            <span class="br-range"><input class="br-input" id="brTolerance" type="range" min="8" max="160" value="42"><span class="br-range-value" id="brToleranceValue">42</span></span>
+            <span class="br-range"><input aria-label="BrTolerance" class="br-input" id="brTolerance" type="range" min="8" max="160" value="42"><span class="br-range-value" id="brToleranceValue">42</span></span>
           </label>
           <label class="br-field">
             <span class="br-label">Edge feather</span>
-            <span class="br-range"><input class="br-input" id="brFeather" type="range" min="0" max="8" value="1"><span class="br-range-value" id="brFeatherValue">1 px</span></span>
+            <span class="br-range"><input aria-label="BrFeather" class="br-input" id="brFeather" type="range" min="0" max="8" value="1"><span class="br-range-value" id="brFeatherValue">1 px</span></span>
           </label>
         </div>
         <div class="br-actions">
@@ -150,7 +150,7 @@
           </div>
           <label class="br-field compact">
             <span class="br-label">Brush</span>
-            <span class="br-range"><input class="br-input" id="brBrushSize" type="range" min="8" max="120" value="34"><span class="br-range-value" id="brBrushSizeValue">34 px</span></span>
+            <span class="br-range"><input aria-label="BrBrushSize" class="br-input" id="brBrushSize" type="range" min="8" max="120" value="34"><span class="br-range-value" id="brBrushSizeValue">34 px</span></span>
           </label>
         </div>
         <div class="br-preview-grid">
@@ -193,7 +193,7 @@
           </label>
           <label class="br-field">
             <span class="br-label">Custom color</span>
-            <input class="br-color-input wide" id="brCustomBackground" type="color" value="#ffffff">
+            <input aria-label="BrCustomBackground" class="br-color-input wide" id="brCustomBackground" type="color" value="#ffffff">
           </label>
           <label class="br-field">
             <span class="br-label">Format</span>
@@ -205,24 +205,24 @@
           </label>
           <label class="br-field">
             <span class="br-label">Quality</span>
-            <span class="br-range"><input class="br-input" id="brQuality" type="range" min="60" max="100" value="92"><span class="br-range-value" id="brQualityValue">92%</span></span>
+            <span class="br-range"><input aria-label="BrQuality" class="br-input" id="brQuality" type="range" min="60" max="100" value="92"><span class="br-range-value" id="brQualityValue">92%</span></span>
           </label>
           <label class="br-field">
             <span class="br-label">Max width</span>
-            <input class="br-input" id="brMaxWidth" type="number" min="0" max="6000" step="50" value="1600">
+            <input aria-label="BrMaxWidth" class="br-input" id="brMaxWidth" type="number" min="0" max="6000" step="50" value="1600">
             <span class="br-help">Use 0 to keep the working size.</span>
           </label>
           <label class="br-field">
             <span class="br-label">File suffix</span>
-            <input class="br-input" id="brSuffix" type="text" maxlength="36" value="cutout">
+            <input aria-label="BrSuffix" class="br-input" id="brSuffix" type="text" maxlength="36" value="cutout">
           </label>
           <label class="br-check-row">
-            <input type="checkbox" id="brCropSubject" checked>
+            <input aria-label="BrCropSubject" type="checkbox" id="brCropSubject" checked>
             <span>Crop to visible subject</span>
           </label>
           <label class="br-field">
             <span class="br-label">Crop padding</span>
-            <span class="br-range"><input class="br-input" id="brPadding" type="range" min="0" max="180" value="24"><span class="br-range-value" id="brPaddingValue">24 px</span></span>
+            <span class="br-range"><input aria-label="BrPadding" class="br-input" id="brPadding" type="range" min="0" max="180" value="24"><span class="br-range-value" id="brPaddingValue">24 px</span></span>
           </label>
         </div>
         <div class="br-actions">

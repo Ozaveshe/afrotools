@@ -12,7 +12,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@900&family=Oswald:wght@700&family=Playfair+Display:wght@400;700;900&family=Righteous&family=Permanent+Marker&family=Bangers&family=Luckiest+Guy&family=Press+Start+2P&family=Pacifico&family=Black+Ops+One&family=Russo+One&family=Bungee&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@900&family=Oswald:wght@700&family=Playfair+Display:wght@400;700;900&family=Righteous&family=Permanent+Marker&family=Bangers&family=Luckiest+Guy&family=Press+Start+2P&family=Pacifico&family=Black+Ops+One&family=Russo+One&family=Bungee&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="style.css?v=3f4c0d59">
 <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <style>
@@ -40,6 +40,9 @@
 </style>
 <link rel="canonical" href="https://afrotools.com/tools/creator-thumb/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-thumb/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <div class="ct-app">
@@ -50,11 +53,11 @@
       <span>TF</span> ThumbnailForge
     </a>
     <div class="ct-header-actions">
-      <button class="ct-btn ct-btn-secondary ct-btn-sm" id="btn-files" title="My Designs">📁 Files</button>
-      <button class="ct-btn ct-btn-secondary ct-btn-sm" id="btn-save-project" title="Save Design">💾 Save</button>
-      <button class="ct-btn-icon" id="btn-undo" title="Undo">↩</button>
-      <button class="ct-btn-icon" id="btn-redo" title="Redo">↪</button>
-      <button class="ct-btn ct-btn-primary" id="btn-export">↓ Export</button>
+      <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" id="btn-files" title="My Designs">📁 Files</button>
+      <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" id="btn-save-project" title="Save Design">💾 Save</button>
+      <button type="button" class="ct-btn-icon" id="btn-undo" title="Undo">↩</button>
+      <button type="button" class="ct-btn-icon" id="btn-redo" title="Redo">↪</button>
+      <button type="button" class="ct-btn ct-btn-primary" id="btn-export">↓ Export</button>
     </div>
   </header>
 
@@ -72,32 +75,32 @@
     <aside class="ct-sidebar" id="sidebar">
       <!-- Tool Tabs -->
       <div class="ct-tool-tabs">
-        <button class="ct-tool-tab active" data-panel="text">Text</button>
-        <button class="ct-tool-tab" data-panel="image">Image</button>
-        <button class="ct-tool-tab" data-panel="shape">Shape</button>
-        <button class="ct-tool-tab" data-panel="assets">Assets</button>
-        <button class="ct-tool-tab" data-panel="bg">BG</button>
-        <button class="ct-tool-tab" data-panel="layers">Layers</button>
+        <button type="button" class="ct-tool-tab active" data-panel="text">Text</button>
+        <button type="button" class="ct-tool-tab" data-panel="image">Image</button>
+        <button type="button" class="ct-tool-tab" data-panel="shape">Shape</button>
+        <button type="button" class="ct-tool-tab" data-panel="assets">Assets</button>
+        <button type="button" class="ct-tool-tab" data-panel="bg">BG</button>
+        <button type="button" class="ct-tool-tab" data-panel="layers">Layers</button>
       </div>
 
       <!-- TEXT PANEL -->
       <div class="ct-tool-panel active" id="panel-text">
         <div class="ct-sidebar-section">
-          <button class="ct-btn ct-btn-secondary" style="width:100%;margin-bottom:12px" onclick="addText()">+ Add Text</button>
+          <button type="button" class="ct-btn ct-btn-secondary" style="width:100%;margin-bottom:12px" onclick="addText()">+ Add Text</button>
           <div class="ct-sidebar-title">Font</div>
           <div class="ct-font-list" id="font-list"></div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Size</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="text-size" min="20" max="200" value="72">
+            <input aria-label="Text size" type="range" class="ct-slider" id="text-size" min="20" max="200" value="72">
             <span class="ct-slider-val" id="text-size-val">72</span>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Color</div>
           <div class="ct-color-swatches" id="text-colors"></div>
-          <input type="color" id="text-color-custom" value="#ffffff" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+          <input aria-label="Text color custom" type="color" id="text-color-custom" value="#ffffff" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Afro Palettes</div>
@@ -112,11 +115,11 @@
           <div class="ct-outline-extras" id="outline-extras" hidden>
             <div class="ct-sidebar-title">Outline Width</div>
             <div class="ct-slider-row">
-              <input type="range" class="ct-slider" id="text-outline-width" min="1" max="10" value="3">
+              <input aria-label="Text outline width" type="range" class="ct-slider" id="text-outline-width" min="1" max="10" value="3">
               <span class="ct-slider-val" id="text-outline-width-val">3</span>
             </div>
             <div class="ct-sidebar-title">Outline Color</div>
-            <input type="color" id="text-outline-color" value="#000000" style="width:100%;height:28px;border:none;border-radius:6px;cursor:pointer;background:transparent">
+            <input aria-label="Text outline color" type="color" id="text-outline-color" value="#000000" style="width:100%;height:28px;border:none;border-radius:6px;cursor:pointer;background:transparent">
           </div>
           <div class="ct-toggle-row">
             <span class="ct-toggle-label">Shadow</span>
@@ -125,7 +128,7 @@
           <div class="ct-shadow-extras" id="shadow-extras" hidden>
             <div class="ct-sidebar-title">Shadow Blur</div>
             <div class="ct-slider-row">
-              <input type="range" class="ct-slider" id="text-shadow-blur" min="0" max="20" value="0">
+              <input aria-label="Text shadow blur" type="range" class="ct-slider" id="text-shadow-blur" min="0" max="20" value="0">
               <span class="ct-slider-val" id="text-shadow-blur-val">0</span>
             </div>
           </div>
@@ -134,29 +137,29 @@
             <div class="ct-toggle" id="text-uppercase" onclick="toggleUppercase()"></div>
           </div>
           <div style="display:flex;gap:4px;margin-top:8px">
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('left')">←</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('center')">↔</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('right')">→</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('left')">←</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('center')">↔</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('right')">→</button>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Letter Spacing</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="text-letter-spacing" min="0" max="20" value="0">
+            <input aria-label="Text letter spacing" type="range" class="ct-slider" id="text-letter-spacing" min="0" max="20" value="0">
             <span class="ct-slider-val" id="text-letter-spacing-val">0</span>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Rotation</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="text-rotation" min="0" max="360" value="0">
+            <input aria-label="Text rotation" type="range" class="ct-slider" id="text-rotation" min="0" max="360" value="0">
             <span class="ct-slider-val" id="text-rotation-val">0</span>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Opacity</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="text-opacity" min="10" max="100" value="100">
+            <input aria-label="Text opacity" type="range" class="ct-slider" id="text-opacity" min="10" max="100" value="100">
             <span class="ct-slider-val" id="text-opacity-val">100%</span>
           </div>
         </div>
@@ -169,44 +172,44 @@
             <div class="ct-upload-icon">📷</div>
             <div class="ct-upload-text">Upload Photo</div>
           </div>
-          <input type="file" id="img-upload" accept="image/*" style="display:none">
+          <input aria-label="Img upload" type="file" id="img-upload" accept="image/*" style="display:none">
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Clip Shape</div>
           <div style="display:flex;gap:6px">
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setClip('none')">None</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setClip('circle')">Circle</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setClip('rounded')">Rounded</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setClip('none')">None</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setClip('circle')">Circle</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setClip('rounded')">Rounded</button>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Brightness</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="img-brightness" min="50" max="150" value="100">
+            <input aria-label="Img brightness" type="range" class="ct-slider" id="img-brightness" min="50" max="150" value="100">
             <span class="ct-slider-val" id="img-brightness-val">100</span>
           </div>
           <div class="ct-sidebar-title">Contrast</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="img-contrast" min="50" max="150" value="100">
+            <input aria-label="Img contrast" type="range" class="ct-slider" id="img-contrast" min="50" max="150" value="100">
             <span class="ct-slider-val" id="img-contrast-val">100</span>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Rotation</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="img-rotation" min="0" max="360" value="0">
+            <input aria-label="Img rotation" type="range" class="ct-slider" id="img-rotation" min="0" max="360" value="0">
             <span class="ct-slider-val" id="img-rotation-val">0</span>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Opacity</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="img-opacity" min="10" max="100" value="100">
+            <input aria-label="Img opacity" type="range" class="ct-slider" id="img-opacity" min="10" max="100" value="100">
             <span class="ct-slider-val" id="img-opacity-val">100%</span>
           </div>
         </div>
         <div class="ct-sidebar-section ct-fit-canvas-row">
-          <button class="ct-btn ct-btn-secondary" style="width:100%" onclick="fitImageToCanvas()">Fit to Canvas</button>
+          <button type="button" class="ct-btn ct-btn-secondary" style="width:100%" onclick="fitImageToCanvas()">Fit to Canvas</button>
         </div>
       </div>
 
@@ -215,47 +218,47 @@
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Add Shape</div>
           <div style="display:flex;flex-wrap:wrap;gap:6px">
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('rect')">▬ Rectangle</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('circle')">● Circle</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('arrow')">→ Arrow</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('line')">— Line</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('triangle')">△ Triangle</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('rect')">▬ Rectangle</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('circle')">● Circle</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('arrow')">→ Arrow</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('line')">— Line</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('triangle')">△ Triangle</button>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Fill Color</div>
           <div class="ct-color-swatches" id="shape-colors"></div>
-          <input type="color" id="shape-color-custom" value="#FF3B30" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+          <input aria-label="Shape color custom" type="color" id="shape-color-custom" value="#FF3B30" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Rotation</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="shape-rotation" min="0" max="360" value="0">
+            <input aria-label="Shape rotation" type="range" class="ct-slider" id="shape-rotation" min="0" max="360" value="0">
             <span class="ct-slider-val" id="shape-rotation-val">0</span>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Opacity</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="shape-opacity" min="10" max="100" value="100">
+            <input aria-label="Shape opacity" type="range" class="ct-slider" id="shape-opacity" min="10" max="100" value="100">
             <span class="ct-slider-val" id="shape-opacity-val">100%</span>
           </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Emoji</div>
           <div style="display:flex;flex-wrap:wrap;gap:6px">
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('😱')">😱</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('🔥')">🔥</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('😂')">😂</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('💯')">💯</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('❓')">❓</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('⚡')">⚡</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('👀')">👀</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('🚫')">🚫</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('✅')">✅</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('⭐')">⭐</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('💰')">💰</button>
-            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('🎯')">🎯</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('😱')">😱</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('🔥')">🔥</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('😂')">😂</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('💯')">💯</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('❓')">❓</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('⚡')">⚡</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('👀')">👀</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('🚫')">🚫</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('✅')">✅</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('⭐')">⭐</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('💰')">💰</button>
+            <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('🎯')">🎯</button>
           </div>
         </div>
       </div>
@@ -288,7 +291,7 @@
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Background Color</div>
           <div class="ct-color-swatches" id="bg-colors"></div>
-          <input type="color" id="bg-color-custom" value="#FF3B30" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+          <input aria-label="Bg color custom" type="color" id="bg-color-custom" value="#FF3B30" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Gradient</div>
@@ -299,12 +302,12 @@
             <div class="ct-upload-icon">🖼</div>
             <div class="ct-upload-text">Upload Background Image</div>
           </div>
-          <input type="file" id="bg-upload" accept="image/*" style="display:none">
+          <input aria-label="Bg upload" type="file" id="bg-upload" accept="image/*" style="display:none">
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Overlay Tint</div>
           <div class="ct-slider-row">
-            <input type="range" class="ct-slider" id="bg-overlay" min="0" max="80" value="0">
+            <input aria-label="Bg overlay" type="range" class="ct-slider" id="bg-overlay" min="0" max="80" value="0">
             <span class="ct-slider-val" id="bg-overlay-val">0%</span>
           </div>
         </div>
@@ -322,9 +325,9 @@
     <!-- CANVAS -->
     <div class="ct-canvas-area" id="canvas-area">
       <div class="ct-center-bar" id="center-bar">
-        <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('h')">Center H</button>
-        <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('v')">Center V</button>
-        <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('both')">Center Both</button>
+        <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('h')">Center H</button>
+        <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('v')">Center V</button>
+        <button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('both')">Center Both</button>
       </div>
       <div class="ct-canvas-container" id="canvas-container">
         <div class="ct-canvas" id="canvas" style="width:min(100%,640px);aspect-ratio:16 / 9;height:auto;background:#FF3B30">
@@ -338,13 +341,13 @@
   <!-- TEMPLATE STRIP -->
   <div class="ct-template-strip-wrapper">
     <div class="ct-template-filter" id="template-filter">
-      <button class="ct-filter-btn active" data-cat="all">All</button>
-      <button class="ct-filter-btn" data-cat="afro">Afrocentric</button>
-      <button class="ct-filter-btn" data-cat="reaction">Reaction</button>
-      <button class="ct-filter-btn" data-cat="tutorial">Tutorial</button>
-      <button class="ct-filter-btn" data-cat="vlog">Vlog</button>
-      <button class="ct-filter-btn" data-cat="podcast">Podcast</button>
-      <button class="ct-filter-btn" data-cat="gaming">Gaming</button>
+      <button type="button" class="ct-filter-btn active" data-cat="all">All</button>
+      <button type="button" class="ct-filter-btn" data-cat="afro">Afrocentric</button>
+      <button type="button" class="ct-filter-btn" data-cat="reaction">Reaction</button>
+      <button type="button" class="ct-filter-btn" data-cat="tutorial">Tutorial</button>
+      <button type="button" class="ct-filter-btn" data-cat="vlog">Vlog</button>
+      <button type="button" class="ct-filter-btn" data-cat="podcast">Podcast</button>
+      <button type="button" class="ct-filter-btn" data-cat="gaming">Gaming</button>
     </div>
     <div class="ct-template-strip" id="template-strip">
       <!-- Populated by JS -->
@@ -353,27 +356,27 @@
 
   <!-- MOBILE TOOLBAR -->
   <div class="ct-mobile-toolbar">
-    <button class="ct-mobile-btn active" onclick="openMobilePanel('text')">
+    <button type="button" class="ct-mobile-btn active" onclick="openMobilePanel('text')">
       <span class="ct-mobile-icon">T</span>
       <span class="ct-mobile-label">Text</span>
     </button>
-    <button class="ct-mobile-btn" onclick="openMobilePanel('image')">
+    <button type="button" class="ct-mobile-btn" onclick="openMobilePanel('image')">
       <span class="ct-mobile-icon">📷</span>
       <span class="ct-mobile-label">Image</span>
     </button>
-    <button class="ct-mobile-btn" onclick="openMobilePanel('shape')">
+    <button type="button" class="ct-mobile-btn" onclick="openMobilePanel('shape')">
       <span class="ct-mobile-icon">⬛</span>
       <span class="ct-mobile-label">Shape</span>
     </button>
-    <button class="ct-mobile-btn" onclick="openMobilePanel('assets')">
+    <button type="button" class="ct-mobile-btn" onclick="openMobilePanel('assets')">
       <span class="ct-mobile-icon">🌍</span>
       <span class="ct-mobile-label">Afro</span>
     </button>
-    <button class="ct-mobile-btn" onclick="openMobilePanel('bg')">
+    <button type="button" class="ct-mobile-btn" onclick="openMobilePanel('bg')">
       <span class="ct-mobile-icon">🎨</span>
       <span class="ct-mobile-label">BG</span>
     </button>
-    <button class="ct-mobile-btn" onclick="openMobilePanel('layers')">
+    <button type="button" class="ct-mobile-btn" onclick="openMobilePanel('layers')">
       <span class="ct-mobile-icon">📑</span>
       <span class="ct-mobile-label">Layers</span>
     </button>
@@ -391,18 +394,18 @@
   <div class="ct-modal">
     <div class="ct-modal-header">
       <div class="ct-sheet-title">EXPORT THUMBNAIL</div>
-      <button class="ct-btn-icon ct-modal-close" onclick="closeExport()">✕</button>
+      <button type="button" class="ct-btn-icon ct-modal-close" onclick="closeExport()">✕</button>
     </div>
     <div class="ct-modal-body">
       <div class="ct-export-size-info" id="export-size-info">1280 × 720 — YouTube Thumbnail</div>
       <div style="display:flex;gap:8px;margin-bottom:16px">
-        <button class="ct-btn ct-btn-primary" id="export-png" style="flex:1">PNG (Best Quality)</button>
-        <button class="ct-btn ct-btn-secondary" id="export-jpg" style="flex:1">JPEG (Smaller)</button>
+        <button type="button" class="ct-btn ct-btn-primary" id="export-png" style="flex:1">PNG (Best Quality)</button>
+        <button type="button" class="ct-btn ct-btn-secondary" id="export-jpg" style="flex:1">JPEG (Smaller)</button>
       </div>
       <div id="jpeg-quality-row" style="display:none">
         <div class="ct-sidebar-title">JPEG Quality</div>
         <div class="ct-slider-row">
-          <input type="range" class="ct-slider" id="jpeg-quality" min="70" max="100" value="90">
+          <input aria-label="Jpeg quality" type="range" class="ct-slider" id="jpeg-quality" min="70" max="100" value="90">
           <span class="ct-slider-val" id="jpeg-quality-val">90%</span>
         </div>
       </div>
@@ -415,11 +418,11 @@
   <div class="ct-modal ct-modal-lg">
     <div class="ct-modal-header">
       <div class="ct-sheet-title">MY DESIGNS</div>
-      <button class="ct-btn-icon ct-modal-close" onclick="closeFiles()">✕</button>
+      <button type="button" class="ct-btn-icon ct-modal-close" onclick="closeFiles()">✕</button>
     </div>
     <div class="ct-modal-body">
       <div class="ct-files-actions">
-        <button class="ct-btn ct-btn-primary ct-btn-sm" onclick="newDesign()">+ New Design</button>
+        <button type="button" class="ct-btn ct-btn-primary ct-btn-sm" onclick="newDesign()">+ New Design</button>
       </div>
       <div class="ct-files-grid" id="files-grid">
         <!-- Populated by JS -->
@@ -437,14 +440,14 @@
   <div class="ct-modal">
     <div class="ct-modal-header">
       <div class="ct-sheet-title">SAVE DESIGN</div>
-      <button class="ct-btn-icon ct-modal-close" onclick="closeSave()">✕</button>
+      <button type="button" class="ct-btn-icon ct-modal-close" onclick="closeSave()">✕</button>
     </div>
     <div class="ct-modal-body">
       <label class="ct-input-label">Design Name</label>
-      <input type="text" class="ct-input" id="save-name" placeholder="My Awesome Thumbnail" maxlength="60">
+      <input aria-label="My Awesome Thumbnail" type="text" class="ct-input" id="save-name" placeholder="My Awesome Thumbnail" maxlength="60">
       <div style="display:flex;gap:8px;margin-top:16px">
-        <button class="ct-btn ct-btn-primary" id="save-new-btn" style="flex:1" onclick="doSaveNew()">Save as New</button>
-        <button class="ct-btn ct-btn-secondary" id="save-update-btn" style="flex:1;display:none" onclick="doSaveUpdate()">Update Current</button>
+        <button type="button" class="ct-btn ct-btn-primary" id="save-new-btn" style="flex:1" onclick="doSaveNew()">Save as New</button>
+        <button type="button" class="ct-btn ct-btn-secondary" id="save-update-btn" style="flex:1;display:none" onclick="doSaveUpdate()">Update Current</button>
       </div>
     </div>
   </div>
@@ -1365,10 +1368,10 @@
         '<span class="ct-layer-icon">' + icon + '</span>' +
         '<span class="ct-layer-name">' + esc(name) + '</span>' +
         '<span class="ct-layer-actions">' +
-          '<button class="ct-layer-action" onclick="event.stopPropagation();moveLayerUp(\'' + l.id + '\')" title="Move up">↑</button>' +
-          '<button class="ct-layer-action" onclick="event.stopPropagation();moveLayerDown(\'' + l.id + '\')" title="Move down">↓</button>' +
-          '<button class="ct-layer-action ct-dup-action" onclick="event.stopPropagation();duplicateLayer(\'' + l.id + '\')" title="Duplicate">+</button>' +
-          '<button class="ct-layer-action" onclick="event.stopPropagation();deleteLayer(\'' + l.id + '\')" title="Delete">✕</button>' +
+          '<button type="button" class="ct-layer-action" onclick="event.stopPropagation();moveLayerUp(\'' + l.id + '\')" title="Move up">↑</button>' +
+          '<button type="button" class="ct-layer-action" onclick="event.stopPropagation();moveLayerDown(\'' + l.id + '\')" title="Move down">↓</button>' +
+          '<button type="button" class="ct-layer-action ct-dup-action" onclick="event.stopPropagation();duplicateLayer(\'' + l.id + '\')" title="Duplicate">+</button>' +
+          '<button type="button" class="ct-layer-action" onclick="event.stopPropagation();deleteLayer(\'' + l.id + '\')" title="Delete">✕</button>' +
         '</span>' +
       '</div>';
     }).join('');
@@ -2091,9 +2094,9 @@
           '<div class="ct-file-meta">' + sizeInfo + ' · ' + date + '</div>' +
         '</div>' +
         '<div class="ct-file-actions">' +
-          '<button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="event.stopPropagation();loadProjectFile(\'' + p.id + '\')">Open</button>' +
-          '<button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="event.stopPropagation();dupProject(\'' + p.id + '\')">Dup</button>' +
-          '<button class="ct-btn ct-btn-secondary ct-btn-sm ct-btn-danger" onclick="event.stopPropagation();delProject(\'' + p.id + '\')">✕</button>' +
+          '<button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="event.stopPropagation();loadProjectFile(\'' + p.id + '\')">Open</button>' +
+          '<button type="button" class="ct-btn ct-btn-secondary ct-btn-sm" onclick="event.stopPropagation();dupProject(\'' + p.id + '\')">Dup</button>' +
+          '<button type="button" class="ct-btn ct-btn-secondary ct-btn-sm ct-btn-danger" onclick="event.stopPropagation();delProject(\'' + p.id + '\')">✕</button>' +
         '</div>' +
       '</div>';
     }).join('');

@@ -14,6 +14,7 @@ var TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 var KICK_CLIENT_ID = process.env.KICK_CLIENT_ID;
 var KICK_CLIENT_SECRET = process.env.KICK_CLIENT_SECRET;
 var YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+var BACKGROUND_SYNC_PATH = '/.netlify/functions/afrostream-sync-background';
 
 // ── Helpers ──────────────────────────────────────────────────────
 
@@ -38,6 +39,20 @@ function isAuthorized(event) {
   if (!ADMIN_SECRET) return false;
   var auth = (event.headers && (event.headers.authorization || event.headers.Authorization)) || '';
   return auth === 'Bearer ' + ADMIN_SECRET;
+}
+
+function getSiteBaseUrl(event) {
+  var headers = event.headers || {};
+  var forwardedProto = headers['x-forwarded-proto'] || headers['X-Forwarded-Proto'];
+  var host = headers.host || headers.Host;
+  if (forwardedProto && host) return forwardedProto + '://' + host;
+  if (host) return 'https://' + host;
+  return process.env.URL || 'https://afrotools.com';
+}
+
+function getManualSyncMode(event) {
+  var params = event.queryStringParameters || {};
+  return params.mode === 'inline' ? 'inline' : 'background';
 }
 
 async function sb(method, path, body, upsert) {
@@ -66,6 +81,30 @@ async function refreshSnapshotsViaRpc(snapshotDate) {
   var body = {};
   if (snapshotDate) body.p_snapshot_date = snapshotDate;
   return sb('POST', 'rpc/refresh_afrostream_creator_snapshots', body);
+}
+
+async function triggerBackgroundSync(event) {
+  var backgroundUrl = getSiteBaseUrl(event).replace(/\/$/, '') + BACKGROUND_SYNC_PATH;
+  var res = await fetch(backgroundUrl, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + ADMIN_SECRET,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      triggered_at: new Date().toISOString(),
+      requested_by: 'manual-sync-endpoint'
+    })
+  });
+  if (res.status !== 202 && !res.ok) {
+    var text = await res.text();
+    throw new Error('Background sync trigger failed: ' + res.status + (text ? ' ' + text : ''));
+  }
+  return {
+    accepted: true,
+    trigger_status: res.status,
+    background_path: BACKGROUND_SYNC_PATH
+  };
 }
 
 // ── Twitch API ───────────────────────────────────────────────────
@@ -760,6 +799,37 @@ async function computeScores() {
 
 // ── Handler ──────────────────────────────────────────────────────
 
+async function runManualSync() {
+  var twitchResults = { creators_synced: 0, live_count: 0, errors: ['Twitch credentials not configured'] };
+  var kickResults = { creators_synced: 0, live_count: 0, errors: ['Kick credentials not configured'] };
+  var youtubeResults = { creators_synced: 0, live_count: 0, errors: ['YouTube API key not configured'] };
+
+  if (TWITCH_CLIENT_ID && TWITCH_CLIENT_SECRET) {
+    twitchResults = await syncTwitch();
+  }
+  if (KICK_CLIENT_ID && KICK_CLIENT_SECRET) {
+    kickResults = await syncKick();
+  }
+  if (YOUTUBE_API_KEY) {
+    youtubeResults = await syncYouTube();
+  }
+
+  var scoreResults;
+  try {
+    scoreResults = await refreshSnapshotsViaRpc();
+  } catch (rpcError) {
+    scoreResults = await computeScores();
+    scoreResults.rpc_error = rpcError.message;
+  }
+
+  return {
+    twitch: twitchResults,
+    kick: kickResults,
+    youtube: youtubeResults,
+    scoring: scoreResults
+  };
+}
+
 exports.handler = async function(event) {
   var cors = getCorsHeaders(event);
 
@@ -801,6 +871,31 @@ exports.handler = async function(event) {
         })
       };
     }
+
+    if (getManualSyncMode(event) !== 'inline') {
+      var backgroundTrigger = await triggerBackgroundSync(event);
+      return {
+        statusCode: 202,
+        headers: cors,
+        body: JSON.stringify({
+          success: true,
+          accepted: true,
+          message: 'AfroStream sync accepted and running in the background',
+          data: backgroundTrigger
+        })
+      };
+    }
+
+    var syncResults = await runManualSync();
+    return {
+      statusCode: 200,
+      headers: cors,
+      body: JSON.stringify({
+        success: true,
+        message: 'Sync completed',
+        data: syncResults
+      })
+    };
 
     var twitchResults = { creators_synced: 0, live_count: 0, errors: ['Twitch credentials not configured'] };
     var kickResults = { creators_synced: 0, live_count: 0, errors: ['Kick credentials not configured'] };
@@ -850,3 +945,5 @@ exports.handler = async function(event) {
     };
   }
 };
+
+exports.runManualSync = runManualSync;

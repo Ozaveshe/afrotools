@@ -13,9 +13,9 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/scholarship-finder.webp"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/scholarship-finder/">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script><script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <style>
@@ -117,7 +117,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 @media(max-width:768px){.entry-grid{grid-template-columns:1fr}.quick-check-grid{grid-template-columns:1fr}.filter-row{grid-template-columns:1fr 1fr}.summary-grid{grid-template-columns:1fr 1fr}.scholarship-grid{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr 1fr}.workflow-cta{flex-direction:column;align-items:flex-start}.workflow-cta .links{margin-left:0}}
 @media(max-width:480px){.filter-row{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}.summary-grid{grid-template-columns:1fr}}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-auth.js?v=3978e101" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-auth.js?v=3978e101" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
@@ -228,8 +228,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
         </div>
       </div>
       <div class="quick-actions">
-        <button class="btn btn-primary btn-sm" onclick="runQuickCheck()">Run Quick Check</button>
-        <button class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Use Full Match Explorer</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="runQuickCheck()">Run Quick Check</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Use Full Match Explorer</button>
       </div>
       <div class="entry-mode-note" id="quickStatus">Fast mode writes into the same Scholarship Finder profile, so you can keep refining instead of starting over.</div>
     </div>
@@ -243,7 +243,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
         <li>Open official details, then continue building your profile in Education Hub.</li>
       </ul>
       <div class="quick-actions">
-        <button class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Build Full Profile</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Build Full Profile</button>
         <a href="/tools/education-hub/" class="btn btn-outline btn-sm action-link">Open Education Hub</a>
         <a href="/tools/university-ranking/" class="btn btn-outline btn-sm action-link">University Shortlist</a>
       </div>
@@ -261,7 +261,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-body">
   <p style="font-size:.78rem;color:#64748b;margin-bottom:12px" id="profileDesc">Use the full explorer when you want deeper scholarship scoring, stronger fit explanations, and a more useful shortlist.</p>
   <div class="profile-grid">
-    <div class="field"><label>GPA / Score</label><input type="number" id="profileGPA" step="0.01" min="0" max="100" placeholder="e.g. 3.50"></div>
+    <div class="field"><label>GPA / Score</label><input aria-label="E.g. 3.50" type="number" id="profileGPA" step="0.01" min="0" max="100" placeholder="e.g. 3.50"></div>
     <div class="field"><label>GPA Scale</label>
       <select id="profileScale">
         <option value="">Select scale</option>
@@ -272,7 +272,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
         <option value="7.0">7.0 scale (Australia)</option>
       </select>
     </div>
-    <div class="field"><label>IELTS Overall</label><input type="number" id="profileIELTS" step="0.5" min="0" max="9" placeholder="e.g. 7.0"></div>
+    <div class="field"><label>IELTS Overall</label><input aria-label="E.g. 7.0" type="number" id="profileIELTS" step="0.5" min="0" max="9" placeholder="e.g. 7.0"></div>
     <div class="field"><label>Target Level</label>
       <select id="profileLevel">
         <option value="">Select level</option>
@@ -307,8 +307,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     </div>
   </div>
   <div class="profile-actions">
-    <button class="btn btn-primary btn-sm" onclick="applyProfile()">Show My Matches</button>
-    <button class="btn btn-outline btn-sm" onclick="clearProfile()">Clear</button>
+    <button type="button" class="btn btn-primary btn-sm" onclick="applyProfile()">Show My Matches</button>
+    <button type="button" class="btn btn-outline btn-sm" onclick="clearProfile()">Clear</button>
     <a class="profile-cta" href="/tools/gpa-calculator/" id="gpaLink" style="display:none">Calculate your GPA first &rarr;</a>
     <a class="profile-cta" href="/tools/ielts-calculator/" id="ieltsLink" style="display:none">Check your IELTS score &rarr;</a>
   </div>
@@ -357,7 +357,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="partial">Partial / Tuition Only</option>
 </select></div>
 </div>
-<div class="field"><label>Search by Name</label><input type="text" id="search" placeholder="e.g., Chevening, Mastercard, DAAD..." oninput="applyFilters()"></div>
+<div class="field"><label>Search by Name</label><input aria-label="E.g., Chevening, Mastercard, DAAD" type="text" id="search" placeholder="e.g., Chevening, Mastercard, DAAD..." oninput="applyFilters()"></div>
 </div></div>
 
 <!-- Sort row -->
@@ -385,8 +385,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     <div class="summary-item"><strong id="summaryShortlist">0</strong><span>Shortlist</span></div>
   </div>
   <div class="summary-actions">
-    <button class="btn btn-primary btn-sm" onclick="jumpToFullProfile()">Continue Building Profile</button>
-    <button class="btn btn-outline btn-sm" id="shortlistToggle" onclick="toggleShortlistView()">View Shortlist</button>
+    <button type="button" class="btn btn-primary btn-sm" onclick="jumpToFullProfile()">Continue Building Profile</button>
+    <button type="button" class="btn btn-outline btn-sm" id="shortlistToggle" onclick="toggleShortlistView()">View Shortlist</button>
     <a href="/tools/education-hub/" class="btn btn-outline btn-sm action-link">Back to Education Hub</a>
     <span class="shortlist-note" id="shortlistNote">No saved scholarships yet</span>
   </div>
@@ -423,14 +423,14 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="seo-section">
 <h2>Scholarships for African Students</h2>
 <p>Thousands of scholarships are available specifically for African students, covering everything from undergraduate studies to postdoctoral research. These range from fully-funded government programmes (Chevening, Fulbright, DAAD) to university-specific awards and private foundation grants. With rising tuition costs globally and limited funding for higher education within Africa, scholarships represent a critical pathway for talented African students to access world-class education.</p>
-<p>Fully-funded scholarships â€” which typically cover tuition, living expenses, flights, and health insurance â€” are the most sought-after. Top programmes include the Chevening Scholarship (UK, ~1,500 awards/year globally), Mastercard Foundation Scholars Program (covering study at leading universities worldwide), Rhodes Scholarship (Oxford), Gates Cambridge, and DAAD (Germany). Many of these specifically target or have dedicated streams for African applicants, recognizing the importance of developing African talent.</p>
+<p>Fully-funded scholarships - which typically cover tuition, living expenses, flights, and health insurance - are the most sought-after. Top programmes include the Chevening Scholarship (UK, ~1,500 awards/year globally), Mastercard Foundation Scholars Program (covering study at leading universities worldwide), Rhodes Scholarship (Oxford), Gates Cambridge, and DAAD (Germany). Many of these specifically target or have dedicated streams for African applicants, recognizing the importance of developing African talent.</p>
 <p>Within Africa, the African Union's Mwalimu Nyerere Scholarship provides funding for postgraduate study at African institutions, while the African Development Bank and various national programmes (PTDF Nigeria, Jubilee Scholarship Ghana, CDF Kenya) offer funding for both domestic and international study. University-specific scholarships at institutions like University of Cape Town, Wits, Makerere, and the University of Ghana also provide significant funding for African students.</p>
-<p>Success in scholarship applications requires preparation, authentic storytelling, and strategic timing. Start early â€” most major scholarships have deadlines 9-12 months before the start date. Focus on demonstrating leadership, community impact, and a clear plan for how you'll use your education to contribute to Africa's development. Get strong recommendation letters, write compelling personal statements, and apply to multiple scholarships to increase your chances.</p>
+<p>Success in scholarship applications requires preparation, authentic storytelling, and strategic timing. Start early - most major scholarships have deadlines 9-12 months before the start date. Focus on demonstrating leadership, community impact, and a clear plan for how you'll use your education to contribute to Africa's development. Get strong recommendation letters, write compelling personal statements, and apply to multiple scholarships to increase your chances.</p>
 
 <h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>What is the easiest fully-funded scholarship to get?</summary><p>No scholarship is "easy," but some have higher acceptance rates: DAAD (Germany) accepts ~25% of applicants, compared to Chevening (~3%) and Rhodes (~1%). Country-specific scholarships (Hungarian Government, Turkish Government, Chinese Government scholarships) tend to have higher acceptance rates and less competition. Focus on fit rather than prestige â€” apply where your profile matches the scholarship's values.</p></details>
+<details class="faq-item"><summary>What is the easiest fully-funded scholarship to get?</summary><p>No scholarship is "easy," but some have higher acceptance rates: DAAD (Germany) accepts ~25% of applicants, compared to Chevening (~3%) and Rhodes (~1%). Country-specific scholarships (Hungarian Government, Turkish Government, Chinese Government scholarships) tend to have higher acceptance rates and less competition. Focus on fit rather than prestige - apply where your profile matches the scholarship's values.</p></details>
 <details class="faq-item"><summary>Can I apply for multiple scholarships?</summary><p>Yes! In fact, you should. Apply to 5-10 scholarships that match your profile. However, be aware that some scholarships (like Chevening) require you to declare if you hold other awards. You generally cannot accept two fully-funded scholarships simultaneously, so choose the best offer if you receive multiple awards.</p></details>
-<details class="faq-item"><summary>How does the match score work?</summary><p>Our match scoring compares your academic profile (GPA, IELTS score, target field, destination, and study level) against each scholarship's requirements. It weights GPA (40%), IELTS (25%), field match (15%), destination (10%), and level (10%). A "Strong Match" means you meet or exceed most requirements. Even an "Unlikely" match doesn't mean you can't apply â€” many scholarships consider factors beyond grades.</p></details>
+<details class="faq-item"><summary>How does the match score work?</summary><p>Our match scoring compares your academic profile (GPA, IELTS score, target field, destination, and study level) against each scholarship's requirements. It weights GPA (40%), IELTS (25%), field match (15%), destination (10%), and level (10%). A "Strong Match" means you meet or exceed most requirements. Even an "Unlikely" match doesn't mean you can't apply - many scholarships consider factors beyond grades.</p></details>
 </section>
 
 
@@ -954,10 +954,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       if (savedRecord && scholarship.deadline_date) {
         if (reminder && reminder.enabled) {
           reminderSummary = '<div class="match-details"><span class="met">Reminder active:</span> ' + escapeHtml(formatReminderOffsets(reminder.offsets || [])) + '</div>';
-          reminderAction = '<button class="btn btn-outline btn-sm" onclick="toggleScholarshipReminder(\'' + encodedKey + '\')">Reminder on</button>';
+          reminderAction = '<button type="button" class="btn btn-outline btn-sm" onclick="toggleScholarshipReminder(\'' + encodedKey + '\')">Reminder on</button>';
         } else if (savedScholarshipState.isSignedIn) {
           reminderSummary = '<div class="match-details"><span class="unmet">Reminder off:</span> Turn deadline alerts on if you want email prompts.</div>';
-          reminderAction = '<button class="btn btn-outline btn-sm" onclick="toggleScholarshipReminder(\'' + encodedKey + '\')">Reminder off</button>';
+          reminderAction = '<button type="button" class="btn btn-outline btn-sm" onclick="toggleScholarshipReminder(\'' + encodedKey + '\')">Reminder off</button>';
         }
       }
 
@@ -982,10 +982,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
         reminderSummary +
         buildFitExplanation(scholarship._match) +
         '<div class="card-actions">' +
-          '<button class="btn btn-outline btn-sm shortlist-btn' + (saved ? ' is-saved' : '') + '" onclick="toggleShortlist(\'' + encodedKey + '\')">' + saveLabel + '</button>' +
+          '<button type="button" class="btn btn-outline btn-sm shortlist-btn' + (saved ? ' is-saved' : '') + '" onclick="toggleShortlist(\'' + encodedKey + '\')">' + saveLabel + '</button>' +
           '<a class="btn btn-primary btn-sm action-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener">Open Details</a>' +
           reminderAction +
-          '<button class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Continue Profile</button>' +
+          '<button type="button" class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Continue Profile</button>' +
         '</div>' +
       '</div>';
     });

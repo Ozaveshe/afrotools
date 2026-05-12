@@ -32,11 +32,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -85,7 +85,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
@@ -182,8 +182,8 @@ window.addEventListener('load', function() {
           <div class="field">
             <div class="f-label"><span class="f-label-text">Secteur</span><span class="f-hint">Détermine le régime de sécurité sociale</span></div>
             <div class="sector-row">
-              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Privé (NASSCORP)</button>
-              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public (NASSCORP)</button>
+              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Privé (NASSCORP)</button>
+              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public (NASSCORP)</button>
             </div>
           </div>
 
@@ -193,7 +193,7 @@ window.addEventListener('load', function() {
               <span class="slider-label">Salaire Brut Mensuel</span>
               <span class="slider-val" id="sliderVal">LRD 500,000</span>
             </div>
-            <input type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>LRD 50,000</span><span>LRD 5,000,000</span></div>
           </div>
 
@@ -202,16 +202,16 @@ window.addEventListener('load', function() {
             <div class="f-label"><span class="f-label-text">Ou entrez le montant mensuel exact</span><span class="f-hint">Avant toute déduction</span></div>
             <div class="f-wrap">
               <span class="f-prefix">LRD</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="100000" min="0" step="10000" value="500000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="100000" min="0" step="10000" value="500000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(200000, this)">LRD 200k</button>
-            <button class="preset-btn" onclick="setPreset(500000, this)">LRD 500k</button>
-            <button class="preset-btn" onclick="setPreset(1000000, this)">LRD 1M</button>
-            <button class="preset-btn" onclick="setPreset(2000000, this)">LRD 2M</button>
-            <button class="preset-btn" onclick="setPreset(4000000, this)">LRD 4M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(200000, this)">LRD 200k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(500000, this)">LRD 500k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">LRD 1M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(2000000, this)">LRD 2M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(4000000, this)">LRD 4M</button>
           </div>
 
           <!-- CONTRIBUTION TOGGLES -->
@@ -226,7 +226,7 @@ window.addEventListener('load', function() {
             <p class="f-note">La cotisation salariale NASSCORP est de 4 % de la rémunération brute et la part employeur de 6 %, selon le guide employeur NASSCORP actuel. Ce calculateur présente la NASSCORP séparément du PAYE LRA et annualise le salaire pour estimer la retenue mensuelle.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net →</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculer mon salaire net →</button>
         </div>
       </div>
 
@@ -240,8 +240,8 @@ window.addEventListener('load', function() {
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-            <button class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
@@ -256,19 +256,19 @@ window.addEventListener('load', function() {
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Tranches d'Imposition</button>
-            <button class="chart-tab" onclick="setChart('employer',this)">Coût Employeur</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Tranches d'Imposition</button>
+            <button type="button" class="chart-tab" onclick="setChart('employer',this)">Coût Employeur</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Télécharger le PDF
           </button>
-          <button class="act-btn act-share" id="tzPartagerBtn" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" id="tzPartagerBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager le résultat
           </button>
@@ -305,12 +305,12 @@ window.addEventListener('load', function() {
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculez d’abord votre salaire — j’analyserai ensuite votre situation PAYE auprès de la LRA, la déductibilité NASSCORP et les points d’optimisation utiles au Libéria.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord pour débloquer →</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord pour débloquer →</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Posez une question de suivi..." onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">→</button>
+              <input aria-label="Posez une question de suivi" class="chat-in" id="chatIn" placeholder="Posez une question de suivi..." onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
 
@@ -351,7 +351,7 @@ window.addEventListener('load', function() {
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/lr-vat.webp" alt="Calculateur PAYE Liberia" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/lr-vat.webp" alt="Calculateur PAYE Liberia" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur PAYE Liberia</div>
             <div class="tool-info-cat">Impôts &amp; finance</div>
@@ -372,7 +372,7 @@ window.addEventListener('load', function() {
           </div>
         </div>
         <div class="tool-info-save">
-          <button class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
+          <button type="button" class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             <span id="sidebarSaveLabel">Enregistrer dans Mes outils</span>
           </button>
@@ -380,7 +380,7 @@ window.addEventListener('load', function() {
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mis a jour : Mar 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/salary-tax/">Tous les pays</a>
           </div>
         </div>

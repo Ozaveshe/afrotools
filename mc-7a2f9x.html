@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<title>AfroTools â€” Mission Control</title>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=0d17fc50">
+<title>AfroTools - Mission Control</title>
+<link rel="stylesheet" href="/assets/css/design-system.css?v=ebd59ad2">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&display=swap"></noscript>
 <style>
@@ -25,11 +25,23 @@
   --sans:'Inter',system-ui,sans-serif;
   --r:10px;
 }
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --brand:#60A5FA;--brand-l:rgba(96,165,250,.14);--brand-m:#93C5FD;--brand-d:#BFDBFE;
+  --bg:#09111F;--card:#121F33;--card2:#101B2E;
+  --border:#26364E;--border2:#3A4C68;
+  --text:#EEF5FF;--text2:#D9E6F7;--text3:#B8C7DC;--text4:#7E8FA8;
+  --green:#34D399;--green-l:rgba(52,211,153,.14);--green-b:rgba(52,211,153,.38);
+  --red:#F87171;--red-l:rgba(248,113,113,.14);--red-b:rgba(248,113,113,.38);
+  --amber:#FBBF24;--amber-l:rgba(251,191,36,.14);--amber-b:rgba(251,191,36,.38);
+  --blue:#60A5FA;--purple:#A78BFA;
+  --shadow:none;--shadow2:0 22px 60px rgba(0,0,0,.32);
+}
 *{margin:0;padding:0;box-sizing:border-box}
 html{height:100%;overflow:hidden}
 body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;overflow:hidden}
 
-/* â”€â”€ HEADER â”€â”€ */
+/* -€-€ HEADER -€-€ */
 .hdr{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;
   background:var(--card);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;right:0;z-index:99}
 .logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:900;letter-spacing:-.02em}
@@ -42,10 +54,10 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .clock{font-family:var(--mono);font-size:11px;color:var(--text3)}
 
-/* â”€â”€ LAYOUT â”€â”€ */
+/* -€-€ LAYOUT -€-€ */
 .layout{display:flex;height:calc(100vh - 52px);margin-top:52px}
 
-/* â”€â”€ NAV RAIL â”€â”€ */
+/* -€-€ NAV RAIL -€-€ */
 .rail{width:56px;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;flex-shrink:0}
 .rail-btn{width:40px;height:40px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;
   cursor:pointer;border:none;background:transparent;font-size:18px;transition:.15s;position:relative}
@@ -55,19 +67,19 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .rail-sep{width:28px;height:1px;background:var(--border);margin:4px 0}
 .rail-bottom{margin-top:auto;display:flex;flex-direction:column;gap:4px;align-items:center}
 
-/* â”€â”€ MAIN CONTENT â”€â”€ */
+/* -€-€ MAIN CONTENT -€-€ */
 .main{flex:1;overflow-y:auto;padding:20px 24px}
 .main::-webkit-scrollbar{width:5px}
 .main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
-/* â”€â”€ PAGE HEADER â”€â”€ */
+/* -€-€ PAGE HEADER -€-€ */
 .page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .page-title{font-size:18px;font-weight:900;display:flex;align-items:center;gap:8px}
 .page-sub{font-size:12px;color:var(--text3);margin-top:2px}
 .date-badge{font-size:11px;font-weight:600;color:var(--text3);font-family:var(--mono);background:var(--card);
   border:1px solid var(--border);padding:5px 12px;border-radius:var(--r)}
 
-/* â”€â”€ STAT CARDS â”€â”€ */
+/* -€-€ STAT CARDS -€-€ */
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden}
 .stat-card::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
@@ -85,11 +97,11 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .sc-fr{background:#ede9fe;color:#7c3aed}
 .sc-sw{background:var(--green-l);color:var(--green)}
 
-/* â”€â”€ SECTION GRID â”€â”€ */
+/* -€-€ SECTION GRID -€-€ */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
 
-/* â”€â”€ PANEL â”€â”€ */
+/* -€-€ PANEL -€-€ */
 .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
 .panel-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);display:flex;align-items:center;gap:7px}
@@ -97,7 +109,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .panel-badge{font-size:10px;font-weight:700;font-family:var(--mono);color:var(--text4)}
 .panel-body{padding:12px 16px}
 
-/* â”€â”€ MORNING CHECKLIST â”€â”€ */
+/* -€-€ MORNING CHECKLIST -€-€ */
 .check-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
 .check-item:last-child{border-bottom:none}
 .check-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--border2);display:flex;align-items:center;
@@ -112,7 +124,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .check-freq{font-size:9px;color:var(--text4);font-weight:600;text-transform:uppercase;margin-top:2px}
 .check-body.done-text .check-title{text-decoration:line-through;color:var(--text4)}
 
-/* â”€â”€ DATA PIPELINE â”€â”€ */
+/* -€-€ DATA PIPELINE -€-€ */
 .pipe-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
 .pipe-row:last-child{border-bottom:none}
 .pipe-status{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -124,7 +136,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .pipe-info{font-size:10px;font-family:var(--mono);color:var(--text4);text-align:right}
 .pipe-freq{font-size:9px;color:var(--text4)}
 
-/* â”€â”€ COVERAGE BARS â”€â”€ */
+/* -€-€ COVERAGE BARS -€-€ */
 .cov-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
 .cov-row:last-child{border-bottom:none}
 .cov-label{font-size:12px;font-weight:600;width:60px;flex-shrink:0}
@@ -132,7 +144,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .cov-bar{height:100%;border-radius:4px;transition:width .6s ease}
 .cov-num{font-size:11px;font-weight:700;font-family:var(--mono);width:50px;text-align:right;flex-shrink:0}
 
-/* â”€â”€ QUICK ACTIONS â”€â”€ */
+/* -€-€ QUICK ACTIONS -€-€ */
 .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .qa-btn{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);
   border-radius:8px;cursor:pointer;transition:.12s;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text2)}
@@ -140,7 +152,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .qa-btn .qa-icon{font-size:16px}
 .qa-btn .qa-sub{font-size:9px;color:var(--text4);font-weight:400;display:block}
 
-/* â”€â”€ REGISTRY TABLE â”€â”€ */
+/* -€-€ REGISTRY TABLE -€-€ */
 .reg-table{width:100%;border-collapse:collapse;font-size:11px}
 .reg-table th{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);
   padding:8px 10px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2);position:sticky;top:0}
@@ -152,28 +164,28 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .lb-fr{background:#ede9fe;color:#7c3aed}
 .lb-sw{background:var(--green-l);color:var(--green)}
 
-/* â”€â”€ SEARCH â”€â”€ */
+/* -€-€ SEARCH -€-€ */
 .search-wrap{position:relative;margin-bottom:16px}
 .search-wrap input{width:100%;padding:10px 14px 10px 36px;border:1px solid var(--border);border-radius:var(--r);
   font-size:13px;font-family:var(--sans);background:var(--card);outline:none;transition:.15s}
 .search-wrap input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
-.search-wrap::before{content:'âŒ•';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text4);font-size:16px}
+.search-wrap::before{content:'-';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text4);font-size:16px}
 
-/* â”€â”€ SCROLLABLE PANEL â”€â”€ */
+/* -€-€ SCROLLABLE PANEL -€-€ */
 .scroll-panel{max-height:350px;overflow-y:auto}
 .scroll-panel::-webkit-scrollbar{width:3px}
 .scroll-panel::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
-/* â”€â”€ EMPTY STATE â”€â”€ */
+/* -€-€ EMPTY STATE -€-€ */
 .empty-state{text-align:center;padding:40px 20px;color:var(--text4)}
 .empty-state .icon{font-size:32px;opacity:.3;margin-bottom:8px}
 .empty-state .title{font-size:14px;font-weight:700;color:var(--text3);margin-bottom:4px}
 
-/* â”€â”€ PAGE SECTIONS (hidden by default) â”€â”€ */
+/* -€-€ PAGE SECTIONS (hidden by default) -€-€ */
 .page{display:none}
 .page.active{display:block}
 
-/* â”€â”€ AUTH GATE â”€â”€ */
+/* -€-€ AUTH GATE -€-€ */
 .auth-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column}
 .auth-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 36px;text-align:center;max-width:380px;width:90%;box-shadow:var(--shadow2)}
 .auth-box .auth-logo{font-size:22px;font-weight:900;margin-bottom:4px;letter-spacing:-.02em}
@@ -187,7 +199,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .auth-box .auth-hint{font-size:10px;color:var(--text4);margin-top:14px}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 
-/* â”€â”€ DATA MANAGEMENT CARDS â”€â”€ */
+/* -€-€ DATA MANAGEMENT CARDS -€-€ */
 .dm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .dm-card{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--card);border:1px solid var(--border);
   border-radius:var(--r);text-decoration:none;color:inherit;transition:.15s;position:relative}
@@ -202,7 +214,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .dm-ok{background:var(--green)}
 .dm-empty{background:var(--red)}
 
-/* â”€â”€ REVIEW PAGE â”€â”€ */
+/* -€-€ REVIEW PAGE -€-€ */
 .rv-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
 .rv-search{flex:1;min-width:200px;padding:9px 14px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;font-family:var(--sans);outline:none;background:var(--card)}
 .rv-search:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
@@ -328,27 +340,42 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .fk-template-card textarea{width:100%;min-height:126px;border:1px solid var(--color-border,var(--border));border-radius:8px;padding:8px;font:500 10px/1.45 var(--mono);color:var(--color-text,var(--text));background:var(--color-muted,var(--card2));resize:vertical}
 .fk-copy-status{font-size:10px;font-family:var(--mono);color:var(--color-text-muted,var(--text3));min-height:1.3em}
 
-/* â”€â”€ RESPONSIVE â”€â”€ */
+/* -€-€ RESPONSIVE -€-€ */
 @media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:1100px){.fk-hero,.fk-grid{grid-template-columns:1fr}.fk-summary,.fk-grid-3,.fk-form-grid,.fk-template-grid,.fk-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.fk-metrics,.fk-summary,.fk-grid-3,.fk-form-grid,.fk-template-grid,.fk-status-grid{grid-template-columns:1fr}.fk-ready-row{grid-template-columns:1fr}.fk-field--wide,.fk-field--full{grid-column:1}}
 </style>
 <meta property="article:modified_time" content="2026-04-16">
+<script>
+  (function(){
+    try {
+      var saved = localStorage.getItem('afrotools-theme') || localStorage.getItem('theme') || 'system';
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved === 'dark' || (saved === 'system' && prefersDark) ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('data-theme-choice', saved);
+    } catch (err) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  })();
+</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
-<!-- â”€â”€ AUTH GATE â”€â”€ -->
+<!-- -€-€ AUTH GATE -€-€ -->
 <div class="auth-gate" id="auth-gate">
   <div class="auth-box">
     <div class="auth-logo">Afro<em>Tools</em></div>
-    <div class="auth-sub">Mission Control Â· Restricted Access</div>
-    <input type="password" id="auth-input" placeholder="Enter access key" autocomplete="off" autofocus>
-    <button class="auth-btn" id="auth-btn" onclick="authenticate()">Unlock</button>
-    <div class="auth-hint" id="auth-hint">ðŸ”’ This console validates against the live admin backend</div>
+    <div class="auth-sub">Mission Control - Restricted Access</div>
+    <input aria-label="Enter access key" type="password" id="auth-input" placeholder="Enter access key" autocomplete="off" autofocus>
+    <button type="button" class="auth-btn" id="auth-btn" onclick="authenticate()">Unlock</button>
+    <div class="auth-hint" id="auth-hint">This console validates against the live admin backend</div>
   </div>
 </div>
 
-<!-- â”€â”€ HEADER â”€â”€ -->
+<!-- -€-€ HEADER -€-€ -->
 <header class="hdr" style="display:none" id="mc-header">
   <div class="logo">
     <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 12l10 10 10-10L12 2z" fill="#007AFF"/></svg>
@@ -360,40 +387,40 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
   </div>
 </header>
 
-<!-- â”€â”€ LAYOUT â”€â”€ -->
+<!-- -€-€ LAYOUT -€-€ -->
 <div class="layout">
 
-  <!-- â”€â”€ NAV RAIL â”€â”€ -->
+  <!-- -€-€ NAV RAIL -€-€ -->
   <nav class="rail">
-    <button class="rail-btn on" data-page="dashboard" onclick="showPage('dashboard', this)" title="Dashboard">ðŸ </button>
-    <button class="rail-btn" data-page="fiftyk" onclick="showPage('fiftyk', this)" title="50K Execution">50K</button>
-    <button class="rail-btn" data-page="checklist" onclick="showPage('checklist', this)" title="Morning Checklist">â˜‘ï¸</button>
-    <button class="rail-btn" data-page="pipelines" onclick="showPage('pipelines', this)" title="Data Pipelines">ðŸ”„</button>
+    <button type="button" class="rail-btn on" data-page="dashboard" onclick="showPage('dashboard', this)" title="Dashboard">/button>
+    <button type="button" class="rail-btn" data-page="fiftyk" onclick="showPage('fiftyk', this)" title="50K Execution">50K</button>
+    <button type="button" class="rail-btn" data-page="checklist" onclick="showPage('checklist', this)" title="Morning Checklist">CL</button>
+    <button type="button" class="rail-btn" data-page="pipelines" onclick="showPage('pipelines', this)" title="Data Pipelines">/button>
     <div class="rail-sep"></div>
-    <button class="rail-btn" data-page="registry" onclick="showPage('registry', this)" title="Tool Registry">ðŸ“¦</button>
-    <button class="rail-btn" data-page="inventory" onclick="showPage('inventory', this)" title="Site Inventory">ðŸ§¾</button>
-    <button class="rail-btn" data-page="seo" onclick="showPage('seo', this)" title="SEO & Sitemaps">ðŸ”</button>
-    <button class="rail-btn" data-page="i18n" onclick="showPage('i18n', this)" title="Languages">ðŸŒ</button>
-    <button class="rail-btn" data-page="livedata" onclick="showPage('livedata', this)" title="Live Data Management">ðŸ—„ï¸</button>
+    <button type="button" class="rail-btn" data-page="registry" onclick="showPage('registry', this)" title="Tool Registry">/button>
+    <button type="button" class="rail-btn" data-page="inventory" onclick="showPage('inventory', this)" title="Site Inventory">/button>
+    <button type="button" class="rail-btn" data-page="seo" onclick="showPage('seo', this)" title="SEO & Sitemaps">/button>
+    <button type="button" class="rail-btn" data-page="i18n" onclick="showPage('i18n', this)" title="Languages">/button>
+    <button type="button" class="rail-btn" data-page="livedata" onclick="showPage('livedata', this)" title="Live Data Management">/button>
     <div class="rail-sep"></div>
-    <button class="rail-btn" data-page="allpages" onclick="showPage('allpages', this)" title="All Pages Review">ðŸ“‹</button>
-    <button class="rail-btn" data-page="dailyreview" onclick="showPage('dailyreview', this)" title="Daily Review (200/day)">ðŸ”€</button>
+    <button type="button" class="rail-btn" data-page="allpages" onclick="showPage('allpages', this)" title="All Pages Review">/button>
+    <button type="button" class="rail-btn" data-page="dailyreview" onclick="showPage('dailyreview', this)" title="Daily Review (200/day)">/button>
     <div class="rail-bottom">
-      <button class="rail-btn" data-page="scripts" onclick="showPage('scripts', this)" title="Scripts & Commands">âš¡</button>
-      <a class="rail-btn" href="/" title="Back to Site" style="text-decoration:none;color:inherit">â†—</a>
+      <button type="button" class="rail-btn" data-page="scripts" onclick="showPage('scripts', this)" title="Scripts & Commands">-</button>
+      <a class="rail-btn" href="/" title="Back to Site" style="text-decoration:none;color:inherit">-</a>
     </div>
   </nav>
 
-  <!-- â”€â”€ MAIN CONTENT â”€â”€ -->
+  <!-- -€-€ MAIN CONTENT -€-€ -->
   <div class="main" id="main-content">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: DASHBOARD
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page active" id="page-dashboard">
       <div class="page-hdr">
         <div>
-          <div class="page-title">â˜€ï¸ Good Morning</div>
+          <div class="page-title">Good Morning</div>
           <div class="page-sub" id="greeting-sub">Loading platform status...</div>
         </div>
         <div class="date-badge" id="date-badge"></div>
@@ -406,53 +433,53 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
         <!-- Morning Priorities -->
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸŽ¯</span> Today's Priorities</div>
+            <div class="panel-title"><span class="icon">/span> Today's Priorities</div>
           </div>
           <div class="panel-body" id="priorities-body">
             <div class="check-item">
-              <div class="check-box" onclick="toggleCheck(this)">âœ“</div>
+              <div class="check-box" onclick="toggleCheck(this)">OK</div>
               <div class="check-body">
                 <div class="check-title">Check data pipeline health</div>
-                <div class="check-freq">Every morning â€” are FX rates & fuel prices fresh?</div>
+                <div class="check-freq">Every morning - are FX rates & fuel prices fresh?</div>
               </div>
             </div>
             <div class="check-item">
-              <div class="check-box" onclick="toggleCheck(this)">âœ“</div>
+              <div class="check-box" onclick="toggleCheck(this)">OK</div>
               <div class="check-body">
                 <div class="check-title">Run SEO daily fix</div>
                 <span class="check-cmd" onclick="copyCmd('npm run seo')">npm run seo</span>
-                <div class="check-freq">Daily â€” fixes hreflang, sitemaps, canonicals</div>
+                <div class="check-freq">Daily - fixes hreflang, sitemaps, canonicals</div>
               </div>
             </div>
             <div class="check-item">
-              <div class="check-box" onclick="toggleCheck(this)">âœ“</div>
+              <div class="check-box" onclick="toggleCheck(this)">OK</div>
               <div class="check-body">
                 <div class="check-title">Rebuild minified files if code changed</div>
                 <span class="check-cmd" onclick="copyCmd('npm run build')">npm run build</span>
-                <div class="check-freq">After code changes â€” minify, bundle, sitemap, SW</div>
+                <div class="check-freq">After code changes - minify, bundle, sitemap, SW</div>
               </div>
             </div>
             <div class="check-item">
-              <div class="check-box" onclick="toggleCheck(this)">âœ“</div>
+              <div class="check-box" onclick="toggleCheck(this)">OK</div>
               <div class="check-body">
                 <div class="check-title">Check Netlify deploy status</div>
                 <span class="check-cmd" onclick="copyCmd('netlify status')">netlify status</span>
-                <div class="check-freq">After push â€” verify build succeeded</div>
+                <div class="check-freq">After push - verify build succeeded</div>
               </div>
             </div>
             <div class="check-item">
-              <div class="check-box" onclick="toggleCheck(this)">âœ“</div>
+              <div class="check-box" onclick="toggleCheck(this)">OK</div>
               <div class="check-body">
                 <div class="check-title">Review Supabase logs for errors</div>
-                <div class="check-freq">Daily â€” check auth, fx_snapshots, scholarships</div>
+                <div class="check-freq">Daily - check auth, fx_snapshots, scholarships</div>
               </div>
             </div>
             <div class="check-item">
-              <div class="check-box" onclick="toggleCheck(this)">âœ“</div>
+              <div class="check-box" onclick="toggleCheck(this)">OK</div>
               <div class="check-body">
                 <div class="check-title">Review 200 pages (Daily Review)</div>
-                <span class="check-cmd" onclick="showPage('dailyreview')">Open Daily Review â†’</span>
-                <div class="check-freq">Daily â€” review 200 random pages, add comments, track progress</div>
+                <span class="check-cmd" onclick="showPage('dailyreview')">Open Daily Review -></span>
+                <div class="check-freq">Daily - review 200 random pages, add comments, track progress</div>
               </div>
             </div>
           </div>
@@ -461,7 +488,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
         <!-- Data Pipeline Status -->
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸ”„</span> Data Pipelines</div>
+            <div class="panel-title"><span class="icon">/span> Data Pipelines</div>
             <div class="panel-badge" id="pipe-badge">Checking...</div>
           </div>
           <div class="panel-body" id="pipe-status-body">
@@ -478,8 +505,8 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- Live Data Quick Links -->
       <div class="panel" style="margin-bottom:16px">
         <div class="panel-hdr">
-          <div class="panel-title"><span class="icon">ðŸ—„ï¸</span> Live Data Management</div>
-          <div class="panel-badge"><a href="#" onclick="event.preventDefault();showPage('livedata')" style="color:var(--brand);font-size:10px;text-decoration:none">View all â†’</a></div>
+          <div class="panel-title"><span class="icon">/span> Live Data Management</div>
+          <div class="panel-badge"><a href="#" onclick="event.preventDefault();showPage('livedata')" style="color:var(--brand);font-size:10px;text-decoration:none">View all -></a></div>
         </div>
         <div class="panel-body">
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="dash-livedata"></div>
@@ -490,7 +517,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
         <!-- Language Coverage -->
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸŒ</span> Language Coverage</div>
+            <div class="panel-title"><span class="icon">/span> Language Coverage</div>
           </div>
           <div class="panel-body" id="lang-coverage"></div>
         </div>
@@ -498,7 +525,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
         <!-- Category Breakdown -->
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸ“Š</span> Top Categories</div>
+            <div class="panel-title"><span class="icon">/span> Top Categories</div>
           </div>
           <div class="panel-body scroll-panel" id="cat-breakdown"></div>
         </div>
@@ -506,16 +533,16 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
         <!-- Quick Actions -->
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">âš¡</span> Quick Actions</div>
+            <div class="panel-title"><span class="icon">-</span> Quick Actions</div>
           </div>
           <div class="panel-body">
             <div class="qa-grid">
-              <div class="qa-btn" onclick="copyCmd('npm run build')"><span class="qa-icon">ðŸ”¨</span><div>Full Build<span class="qa-sub">minify + bundle + sitemap</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run seo')"><span class="qa-icon">ðŸ”</span><div>SEO Fix<span class="qa-sub">hreflang + canonical + meta</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run test')"><span class="qa-icon">ðŸ§ª</span><div>Run Tests<span class="qa-sub">links + audit</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run build:i18n')"><span class="qa-icon">ðŸŒ</span><div>Build i18n<span class="qa-sub">FR + SW + YO + HA</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run validate:hreflang')"><span class="qa-icon">ðŸ·ï¸</span><div>Validate Hreflang<span class="qa-sub">bidirectional check</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npx terser assets/js/components/tool-registry.js -c -m -o assets/js/components/tool-registry.min.js')"><span class="qa-icon">ðŸ“¦</span><div>Minify Registry<span class="qa-sub">rebuild .min.js</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run build')"><span class="qa-icon">/span><div>Full Build<span class="qa-sub">minify + bundle + sitemap</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run seo')"><span class="qa-icon">/span><div>SEO Fix<span class="qa-sub">hreflang + canonical + meta</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run test')"><span class="qa-icon">/span><div>Run Tests<span class="qa-sub">links + audit</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run build:i18n')"><span class="qa-icon">/span><div>Build i18n<span class="qa-sub">FR + SW + YO + HA</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run validate:hreflang')"><span class="qa-icon">/span><div>Validate Hreflang<span class="qa-sub">bidirectional check</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npx terser assets/js/components/tool-registry.js -c -m -o assets/js/components/tool-registry.min.js')"><span class="qa-icon">/span><div>Minify Registry<span class="qa-sub">rebuild .min.js</span></div></div>
             </div>
           </div>
         </div>
@@ -524,7 +551,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- External Dashboards -->
       <div class="panel" style="margin-top:16px;margin-bottom:16px">
         <div class="panel-hdr">
-          <div class="panel-title"><span class="icon">ðŸ”—</span> External Dashboards</div>
+          <div class="panel-title"><span class="icon">/span> External Dashboards</div>
           <div class="panel-badge">1-click access to all vendor consoles</div>
         </div>
         <div class="panel-body">
@@ -535,15 +562,15 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- Expansion Tracker + Cost + Health -->
       <div class="grid-3">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ“ˆ</span> 20K Expansion Tracker</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> 20K Expansion Tracker</div></div>
           <div class="panel-body" id="dash-expansion"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ’¸</span> Monthly Costs (Est.)</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Monthly Costs (Est.)</div></div>
           <div class="panel-body" id="dash-costs"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ¥</span> Health Checks</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Health Checks</div></div>
           <div class="panel-body" id="dash-health"></div>
         </div>
       </div>
@@ -551,8 +578,8 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <div class="grid-2" style="margin-top:16px">
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">âš¡</span> Backend Telemetry</div>
-            <div class="panel-badge"><a href="#" onclick="event.preventDefault();refreshAdminStatus()" style="color:var(--brand);font-size:10px;text-decoration:none">Refresh live â†’</a></div>
+            <div class="panel-title"><span class="icon">-</span> Backend Telemetry</div>
+            <div class="panel-badge"><a href="#" onclick="event.preventDefault();refreshAdminStatus()" style="color:var(--brand);font-size:10px;text-decoration:none">Refresh live -></a></div>
           </div>
           <div class="panel-body">
             <div class="stats" id="mc-backend-cards" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px">
@@ -585,8 +612,8 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸ“¡</span> API Audit & Registry Check</div>
-            <div class="panel-badge"><a href="#" onclick="event.preventDefault();runAudit()" style="color:var(--brand);font-size:10px;text-decoration:none">Run audit â†’</a></div>
+            <div class="panel-title"><span class="icon">/span> API Audit & Registry Check</div>
+            <div class="panel-badge"><a href="#" onclick="event.preventDefault();runAudit()" style="color:var(--brand);font-size:10px;text-decoration:none">Run audit -></a></div>
           </div>
           <div class="panel-body">
             <div style="font-size:10px;color:var(--text4);margin-bottom:10px">Live API checks are grouped as working, protected, degraded, or broken. Registry audit stays browser-side and checks the loaded tool registry for obvious gaps.</div>
@@ -605,16 +632,16 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- Tech Debt -->
       <div class="panel" style="margin-top:16px">
         <div class="panel-hdr">
-          <div class="panel-title"><span class="icon">âš ï¸</span> Known Issues & Tech Debt</div>
+          <div class="panel-title"><span class="icon">-</span> Known Issues & Tech Debt</div>
           <div class="panel-badge" id="debt-count"></div>
         </div>
         <div class="panel-body" id="dash-techdebt"></div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: 50K EXECUTION
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <!-- 50K EXECUTION -->
     <div class="page" id="page-fiftyk">
       <div class="page-hdr">
@@ -769,7 +796,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             </form>
             <div class="fk-toolbar">
               <div class="fk-toolbar-left">
-                <input class="fk-input-sm" id="fiftyk-prospect-filter" placeholder="Filter prospects" oninput="renderFiftyKProspects()">
+                <input aria-label="Filter prospects" class="fk-input-sm" id="fiftyk-prospect-filter" placeholder="Filter prospects" oninput="renderFiftyKProspects()">
                 <select class="fk-input-sm" id="fiftyk-prospect-status-filter" onchange="renderFiftyKProspects()"><option value="">All statuses</option><option>not contacted</option><option>contacted</option><option>replied</option><option>demo booked</option><option>proposal sent</option><option>negotiating</option><option>won</option><option>lost</option><option>paused</option></select>
               </div>
               <div class="fk-toolbar-right">
@@ -804,75 +831,75 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
     <div class="page" id="page-checklist">
       <div class="page-hdr">
         <div>
-          <div class="page-title">â˜‘ï¸ Morning Checklist</div>
+          <div class="page-title">Morning Checklist</div>
           <div class="page-sub">Run through these every day before starting work</div>
         </div>
-        <button class="qa-btn" onclick="resetChecklist()" style="font-size:12px">ðŸ”„ Reset All</button>
+        <button type="button" class="qa-btn" onclick="resetChecklist()" style="font-size:12px">Reset All</button>
       </div>
 
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ”„</span> Data & Infrastructure</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Data & Infrastructure</div></div>
           <div class="panel-body" id="checklist-data"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ”</span> SEO & Content</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> SEO & Content</div></div>
           <div class="panel-body" id="checklist-seo"></div>
         </div>
       </div>
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸš€</span> Deploy & Build</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Deploy & Build</div></div>
           <div class="panel-body" id="checklist-deploy"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ“‹</span> Weekly Tasks</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Weekly Tasks</div></div>
           <div class="panel-body" id="checklist-weekly"></div>
         </div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: DATA PIPELINES
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-pipelines">
       <div class="page-hdr">
         <div>
-          <div class="page-title">ðŸ”„ Data Pipelines</div>
+          <div class="page-title">Data Pipelines</div>
           <div class="page-sub">Scheduled functions, data freshness, and Supabase health</div>
         </div>
-        <button class="qa-btn" onclick="checkPipelines()" style="font-size:12px">ðŸ”„ Refresh Status</button>
+        <button type="button" class="qa-btn" onclick="checkPipelines()" style="font-size:12px">Refresh Status</button>
       </div>
 
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">â±ï¸</span> Scheduled Functions (Netlify)</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">-</span> Scheduled Functions (Netlify)</div></div>
           <div class="panel-body" id="scheduled-functions"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ—„ï¸</span> Supabase Instances</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Supabase Instances</div></div>
           <div class="panel-body" id="supabase-status"></div>
         </div>
       </div>
 
       <div class="panel" style="margin-bottom:16px">
-        <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ“¡</span> API Endpoints</div><div class="panel-badge" id="api-count"></div></div>
+        <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> API Endpoints</div><div class="panel-badge" id="api-count"></div></div>
         <div class="panel-body scroll-panel" id="api-endpoints"></div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: TOOL REGISTRY
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-registry">
       <div class="page-hdr">
         <div>
-          <div class="page-title">ðŸ“¦ Tool Registry</div>
+          <div class="page-title">Tool Registry</div>
           <div class="page-sub" id="reg-subtitle">Loading...</div>
         </div>
       </div>
       <div class="search-wrap">
-        <input type="text" id="reg-search" placeholder="Search tools by name, ID, category, country..." oninput="filterRegistry()">
+        <input aria-label="Search tools by name, ID, category, country" type="text" id="reg-search" placeholder="Search tools by name, ID, category, country..." oninput="filterRegistry()">
       </div>
       <div class="panel">
         <div class="scroll-panel" style="max-height:calc(100vh - 260px)">
@@ -884,13 +911,13 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: SITE INVENTORY
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-inventory">
       <div class="page-hdr">
         <div>
-          <div class="page-title">ðŸ§¾ Site Inventory</div>
+          <div class="page-title">Site Inventory</div>
           <div class="page-sub" id="inv-subtitle">Loading storekeeper snapshot...</div>
         </div>
       </div>
@@ -901,7 +928,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
         <a class="rv-export-btn" href="/admin/data/category-inventory.csv" target="_blank" rel="noopener">Category CSV</a>
         <a class="rv-export-btn" href="/admin/data/subcategory-inventory.csv" target="_blank" rel="noopener">Subcategory CSV</a>
         <a class="rv-export-btn" href="/admin/data/site-pages-export.csv" target="_blank" rel="noopener">Pages CSV</a>
-        <button class="rv-export-btn" onclick="buildInventoryPage(true)">Refresh View</button>
+        <button type="button" class="rv-export-btn" onclick="buildInventoryPage(true)">Refresh View</button>
       </div>
 
       <div class="stats" id="inv-stats"></div>
@@ -909,13 +936,13 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <div class="grid-2">
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸ“’</span> Ledger Definitions</div>
+            <div class="panel-title"><span class="icon">LD</span> Ledger Definitions</div>
           </div>
           <div class="panel-body" id="inv-ledger"></div>
         </div>
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸ§±</span> Page Ledger</div>
+            <div class="panel-title"><span class="icon">PG</span> Page Ledger</div>
           </div>
           <div class="panel-body scroll-panel" id="inv-page-ledger"></div>
         </div>
@@ -924,13 +951,13 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <div class="grid-2">
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸŒ</span> Language Coverage</div>
+            <div class="panel-title"><span class="icon">LC</span> Language Coverage</div>
           </div>
           <div class="panel-body" id="inv-language-ledger"></div>
         </div>
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">âœ…</span> Inventory Health</div>
+            <div class="panel-title"><span class="icon">Live</span> Inventory Health</div>
           </div>
           <div class="panel-body" id="inv-health-ledger"></div>
         </div>
@@ -939,26 +966,26 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <div class="grid-2">
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸ“Š</span> Category Ledger</div>
+            <div class="panel-title"><span class="icon">CT</span> Category Ledger</div>
           </div>
           <div class="panel-body scroll-panel" id="inv-category-ledger"></div>
         </div>
         <div class="panel">
           <div class="panel-hdr">
-            <div class="panel-title"><span class="icon">ðŸ—‚ï¸</span> Top Folders</div>
+            <div class="panel-title"><span class="icon">TF</span> Top Folders</div>
           </div>
           <div class="panel-body scroll-panel" id="inv-folder-ledger"></div>
         </div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: SEO & SITEMAPS
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-seo">
       <div class="page-hdr">
         <div>
-          <div class="page-title">ðŸ” SEO & Sitemaps</div>
+          <div class="page-title">SEO & Sitemaps</div>
           <div class="page-sub">Sitemap health, meta tags, hreflang validation</div>
         </div>
       </div>
@@ -967,32 +994,32 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ—ºï¸</span> Sitemaps</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Sitemaps</div></div>
           <div class="panel-body" id="sitemap-info"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ·ï¸</span> SEO Scripts</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> SEO Scripts</div></div>
           <div class="panel-body">
             <div class="qa-grid">
-              <div class="qa-btn" onclick="copyCmd('npm run seo')"><span class="qa-icon">ðŸ”§</span><div>SEO Daily Fix<span class="qa-sub">Auto-fix hreflang, canonicals, lastmod</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run seo:dry')"><span class="qa-icon">ðŸ‘ï¸</span><div>SEO Dry Run<span class="qa-sub">Preview fixes without changing files</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run validate:hreflang')"><span class="qa-icon">ðŸ·ï¸</span><div>Hreflang Validate<span class="qa-sub">Check bidirectional completeness</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run check-links')"><span class="qa-icon">ðŸ”—</span><div>Link Checker<span class="qa-sub">Scan for broken internal links</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('node scripts/generate-sitemap.js')"><span class="qa-icon">ðŸ—ºï¸</span><div>Regenerate Sitemap<span class="qa-sub">Rebuild sitemap.xml from registry</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('node scripts/indexnow.js')"><span class="qa-icon">ðŸ“£</span><div>Ping Search Engines<span class="qa-sub">IndexNow notification</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run seo')"><span class="qa-icon">/span><div>SEO Daily Fix<span class="qa-sub">Auto-fix hreflang, canonicals, lastmod</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run seo:dry')"><span class="qa-icon">/span><div>SEO Dry Run<span class="qa-sub">Preview fixes without changing files</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run validate:hreflang')"><span class="qa-icon">/span><div>Hreflang Validate<span class="qa-sub">Check bidirectional completeness</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run check-links')"><span class="qa-icon">/span><div>Link Checker<span class="qa-sub">Scan for broken internal links</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('node scripts/generate-sitemap.js')"><span class="qa-icon">/span><div>Regenerate Sitemap<span class="qa-sub">Rebuild sitemap.xml from registry</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('node scripts/indexnow.js')"><span class="qa-icon">/span><div>Ping Search Engines<span class="qa-sub">IndexNow notification</span></div></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: LANGUAGES / i18n
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-i18n">
       <div class="page-hdr">
         <div>
-          <div class="page-title">ðŸŒ Language Coverage</div>
+          <div class="page-title">Language Coverage</div>
           <div class="page-sub">Translation status across English, French, and Swahili</div>
         </div>
       </div>
@@ -1001,31 +1028,31 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ“Š</span> Coverage by Category</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Coverage by Category</div></div>
           <div class="panel-body scroll-panel" id="i18n-coverage"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">âš¡</span> i18n Commands</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">-</span> i18n Commands</div></div>
           <div class="panel-body">
             <div class="qa-grid">
-              <div class="qa-btn" onclick="copyCmd('npm run build:i18n')"><span class="qa-icon">ðŸŒ</span><div>Build All Languages<span class="qa-sub">FR + SW + YO + HA</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run build:i18n:fr')"><span class="qa-icon">ðŸ‡«ðŸ‡·</span><div>Build French Only<span class="qa-sub">Rebuild /fr/ pages</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run build:i18n:validate')"><span class="qa-icon">âœ…</span><div>Validate Translations<span class="qa-sub">Check JSON completeness</span></div></div>
-              <div class="qa-btn" onclick="copyCmd('npm run validate:hreflang')"><span class="qa-icon">ðŸ”—</span><div>Hreflang Check<span class="qa-sub">Verify ENâ†”FRâ†”SW links</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run build:i18n')"><span class="qa-icon">/span><div>Build All Languages<span class="qa-sub">FR + SW + YO + HA</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run build:i18n:fr')"><span class="qa-icon">Ÿ‡·</span><div>Build French Only<span class="qa-sub">Rebuild /fr/ pages</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run build:i18n:validate')"><span class="qa-icon">Live</span><div>Validate Translations<span class="qa-sub">Check JSON completeness</span></div></div>
+              <div class="qa-btn" onclick="copyCmd('npm run validate:hreflang')"><span class="qa-icon">/span><div>Hreflang Check<span class="qa-sub">Verify EN-FR-SW links</span></div></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: LIVE DATA MANAGEMENT (Comprehensive)
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-livedata">
       <div class="page-hdr">
         <div>
-          <div class="page-title">ðŸ—„ï¸ Platform Infrastructure</div>
-          <div class="page-sub">Everything that makes AfroTools tick â€” APIs, data, functions, engines, tables</div>
+          <div class="page-title">Platform Infrastructure</div>
+          <div class="page-sub">Everything that makes AfroTools tick - APIs, data, functions, engines, tables</div>
         </div>
       </div>
 
@@ -1035,8 +1062,8 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- Admin Data Entry Cards -->
       <div class="panel" style="margin-bottom:16px">
         <div class="panel-hdr">
-          <div class="panel-title"><span class="icon">ðŸ“</span> Admin Data Entry (Manual Update Required)</div>
-          <div class="panel-badge">8 datasets Â· Click to open admin page</div>
+          <div class="panel-title"><span class="icon">/span> Admin Data Entry (Manual Update Required)</div>
+          <div class="panel-badge">8 datasets - Click to open admin page</div>
         </div>
         <div class="panel-body">
           <div class="dm-grid" id="dm-grid"></div>
@@ -1046,7 +1073,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- External APIs -->
       <div class="panel" style="margin-bottom:16px">
         <div class="panel-hdr">
-          <div class="panel-title"><span class="icon">ðŸŒ</span> External APIs & Services</div>
+          <div class="panel-title"><span class="icon">/span> External APIs & Services</div>
           <div class="panel-badge" id="api-ext-count"></div>
         </div>
         <div class="panel-body scroll-panel" id="ld-external-apis" style="max-height:400px"></div>
@@ -1055,7 +1082,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- Netlify Functions -->
       <div class="panel" style="margin-bottom:16px">
         <div class="panel-hdr">
-          <div class="panel-title"><span class="icon">âš¡</span> Netlify Functions (Serverless APIs)</div>
+          <div class="panel-title"><span class="icon">-</span> Netlify Functions (Serverless APIs)</div>
           <div class="panel-badge" id="fn-count"></div>
         </div>
         <div class="panel-body scroll-panel" id="ld-functions" style="max-height:500px"></div>
@@ -1064,11 +1091,11 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- Scheduled Pipelines + Supabase -->
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">â±ï¸</span> Scheduled Pipelines (Cron)</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">-</span> Scheduled Pipelines (Cron)</div></div>
           <div class="panel-body" id="ld-cron"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ—ƒï¸</span> Supabase Architecture</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Supabase Architecture</div></div>
           <div class="panel-body scroll-panel" id="ld-supabase"></div>
         </div>
       </div>
@@ -1076,11 +1103,11 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- Engines + Data Files -->
       <div class="grid-2" style="margin-top:16px">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ”§</span> Calculation Engines</div><div class="panel-badge" id="engine-count"></div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Calculation Engines</div><div class="panel-badge" id="engine-count"></div></div>
           <div class="panel-body scroll-panel" id="ld-engines" style="max-height:400px"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ“</span> Static Data Files & Fallbacks</div><div class="panel-badge" id="datafile-count"></div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Static Data Files & Fallbacks</div><div class="panel-badge" id="datafile-count"></div></div>
           <div class="panel-body scroll-panel" id="ld-datafiles" style="max-height:400px"></div>
         </div>
       </div>
@@ -1088,68 +1115,68 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <!-- Env Vars + Caching -->
       <div class="grid-2" style="margin-top:16px">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ”‘</span> Environment Variables</div><div class="panel-badge" id="env-count"></div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Environment Variables</div><div class="panel-badge" id="env-count"></div></div>
           <div class="panel-body scroll-panel" id="ld-envvars"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ’¾</span> Caching & Data Flow</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Caching & Data Flow</div></div>
           <div class="panel-body" id="ld-caching"></div>
         </div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: SCRIPTS & COMMANDS
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-scripts">
       <div class="page-hdr">
         <div>
-          <div class="page-title">âš¡ Scripts & Commands Reference</div>
-          <div class="page-sub">Every npm script and manual command â€” click to copy</div>
+          <div class="page-title">- Scripts & Commands Reference</div>
+          <div class="page-sub">Every npm script and manual command - click to copy</div>
         </div>
       </div>
 
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ”¨</span> Build Pipeline</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Build Pipeline</div></div>
           <div class="panel-body" id="scripts-build"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ”</span> SEO & Auditing</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> SEO & Auditing</div></div>
           <div class="panel-body" id="scripts-seo"></div>
         </div>
       </div>
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸŒ</span> i18n & Localization</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> i18n & Localization</div></div>
           <div class="panel-body" id="scripts-i18n"></div>
         </div>
         <div class="panel">
-          <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ§ª</span> Testing & Validation</div></div>
+          <div class="panel-hdr"><div class="panel-title"><span class="icon">/span> Testing & Validation</div></div>
           <div class="panel-body" id="scripts-test"></div>
         </div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: ALL PAGES REVIEW
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-allpages">
       <div class="page-hdr">
         <div>
-          <div class="page-title">ðŸ“‹ All Pages Review</div>
+          <div class="page-title">All Pages Review</div>
           <div class="page-sub" id="rv-subtitle">Loading pages...</div>
         </div>
       </div>
 
       <div class="rv-export-bar">
-        <button class="rv-export-btn" onclick="exportComments()">ðŸ“¥ Export Comments JSON</button>
-        <button class="rv-export-btn" onclick="document.getElementById('rv-import-file').click()">ðŸ“¤ Import Comments JSON</button>
-        <input type="file" id="rv-import-file" accept=".json" style="display:none" onchange="importComments(this)">
+        <button type="button" class="rv-export-btn" onclick="exportComments()">Export Comments JSON</button>
+        <button type="button" class="rv-export-btn" onclick="document.getElementById('rv-import-file').click()">Import Comments JSON</button>
+        <input aria-label="Rv import file" type="file" id="rv-import-file" accept=".json" style="display:none" onchange="importComments(this)">
       </div>
 
       <div class="rv-toolbar">
-        <input class="rv-search" id="rv-search" placeholder="Search pages by path..." oninput="filterAllPages()">
+        <input aria-label="Search pages by path" class="rv-search" id="rv-search" placeholder="Search pages by path..." oninput="filterAllPages()">
         <select class="rv-select" id="rv-cat-filter" onchange="filterAllPages()">
           <option value="">All folders</option>
         </select>
@@ -1158,7 +1185,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
           <option value="reviewed">Reviewed</option>
           <option value="pending">Pending</option>
         </select>
-        <div class="rv-count" id="rv-showing">â€”</div>
+        <div class="rv-count" id="rv-showing">-</div>
       </div>
 
       <div style="max-height:calc(100vh - 280px);overflow-y:auto">
@@ -1169,14 +1196,14 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    <!-- ---------------------------------------------------
          PAGE: DAILY REVIEW (200/day)
-         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+         --------------------------------------------------- -->
     <div class="page" id="page-dailyreview">
       <div class="page-hdr">
         <div>
-          <div class="page-title">ðŸ”€ Daily Review</div>
-          <div class="page-sub">200 random pages per day â€” no repeats until all pages reviewed</div>
+          <div class="page-title">Daily Review</div>
+          <div class="page-sub">200 random pages per day - no repeats until all pages reviewed</div>
         </div>
         <div class="date-badge" id="dr-date"></div>
       </div>
@@ -1188,7 +1215,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       </div>
 
       <div class="rv-export-bar">
-        <button class="rv-export-btn" onclick="exportComments()">ðŸ“¥ Export Comments</button>
+        <button type="button" class="rv-export-btn" onclick="exportComments()">Export Comments</button>
         <select class="rv-select" id="dr-jump" onchange="drJumpTo(this.value)" style="min-width:120px">
           <option value="">Jump to page...</option>
         </select>
@@ -1198,23 +1225,23 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <div id="dr-cards"></div>
 
       <div class="dr-nav">
-        <button class="dr-nav-btn" id="dr-prev" onclick="drNav(-10)">â† Prev 10</button>
-        <span class="dr-page-info" id="dr-range">1â€“10 of 200</span>
-        <button class="dr-nav-btn" id="dr-next" onclick="drNav(10)">Next 10 â†’</button>
+        <button type="button" class="dr-nav-btn" id="dr-prev" onclick="drNav(-10)"><- Prev 10</button>
+        <span class="dr-page-info" id="dr-range">1-10 of 200</span>
+        <button type="button" class="dr-nav-btn" id="dr-next" onclick="drNav(10)">Next 10 -></button>
       </div>
     </div>
 
   </div><!-- /main -->
 </div><!-- /layout -->
 
-<!-- â”€â”€ TOOL REGISTRY DATA â”€â”€ -->
-<script src="/assets/js/components/tool-registry.min.js?v=12ef6a56"></script>
+<!-- -€-€ TOOL REGISTRY DATA -€-€ -->
+<script src="/assets/js/components/tool-registry.min.js?v=99d9d3db"></script>
 <script src="/admin/all-pages.js?v=e3cd8e19"></script>
 
 <script>
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  MISSION CONTROL â€” CORE ENGINE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
+//  MISSION CONTROL - CORE ENGINE
+// ----------------------------------------------------------
 
 var TOOLS = typeof AFRO_TOOLS !== 'undefined' ? AFRO_TOOLS : [];
 var inventorySnapshot = null;
@@ -1558,7 +1585,7 @@ function renderFiftyKMetricGroups(state){
           '<div class="fk-metric-label">' + escapeHtml(metric.label) + '</div>' +
           '<span class="fk-tag ' + (pending ? '' : 'local') + '">' + (pending ? 'pending' : 'manual/local') + '</span>' +
         '</div>' +
-        '<input class="fk-input" value="' + escapeHtml(value) + '" placeholder="Manual value" oninput="setFiftyKMetric(\'' + metric.key + '\', this.value)">' +
+        '<input aria-label="Manual value" class="fk-input" value="' + escapeHtml(value) + '" placeholder="Manual value" oninput="setFiftyKMetric(\'' + metric.key + '\', this.value)">' +
         '<div class="fk-source-note">' + escapeHtml(metric.source) + '</div>' +
       '</div>';
     }).join('');
@@ -2149,14 +2176,14 @@ function refreshAdminStatus(){
   return loadOpsSignals(true);
 }
 
-// â”€â”€ Clock â”€â”€
+// -€-€ Clock -€-€
 setInterval(function(){
   var d = new Date();
   document.getElementById('clk').textContent =
     [d.getUTCHours(),d.getUTCMinutes(),d.getUTCSeconds()].map(function(n){return String(n).padStart(2,'0')}).join(':') + ' UTC';
 },1000);
 
-// â”€â”€ Date badge â”€â”€
+// -€-€ Date badge -€-€
 (function(){
   var d = new Date();
   var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -2164,10 +2191,10 @@ setInterval(function(){
   document.getElementById('date-badge').textContent = days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
   var hour = d.getHours();
   var greet = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
-  document.querySelector('.page-title').textContent = (hour < 12 ? 'â˜€ï¸' : hour < 17 ? 'ðŸŒ¤ï¸' : 'ðŸŒ™') + ' ' + greet;
+  document.querySelector('.page-title').textContent = greet;
 })();
 
-// â”€â”€ Navigation â”€â”€
+// -€-€ Navigation -€-€
 function showPage(id, sourceEl){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
   document.getElementById('page-'+id).classList.add('active');
@@ -2177,7 +2204,7 @@ function showPage(id, sourceEl){
   document.querySelector('.main').scrollTop = 0;
 }
 
-// â”€â”€ Copy command â”€â”€
+// -€-€ Copy command -€-€
 function copyCmd(cmd){
   navigator.clipboard.writeText(cmd).then(function(){
     var el = event.target.closest('.check-cmd,.qa-btn');
@@ -2185,7 +2212,7 @@ function copyCmd(cmd){
   });
 }
 
-// â”€â”€ Checklist toggle â”€â”€
+// -€-€ Checklist toggle -€-€
 function toggleCheck(el){
   el.classList.toggle('done');
   var body = el.nextElementSibling;
@@ -2213,9 +2240,9 @@ function resetChecklist(){
   localStorage.removeItem('mc-checks-'+new Date().toDateString());
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  DASHBOARD â€” Stats & Metrics
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
+//  DASHBOARD - Stats & Metrics
+// ----------------------------------------------------------
 function buildDashStats(){
   var total = TOOLS.length;
   var byLang = {en:0,fr:0,sw:0};
@@ -2240,13 +2267,13 @@ function buildDashStats(){
   el.innerHTML = [
     '<div class="stat-card c-blue"><div class="sc-label">Registry Entries</div><div class="sc-value" style="color:var(--brand)">'+fmtNum(total)+'</div><div class="sc-sub">'+fmtNum(live)+' live/new entries</div><div class="sc-breakdown"><span class="sc-en">EN '+fmtNum(byLang.en)+'</span><span class="sc-fr">FR '+fmtNum(byLang.fr)+'</span><span class="sc-sw">SW '+fmtNum(byLang.sw)+'</span></div></div>',
     '<div class="stat-card c-green"><div class="sc-label">EN Tool Instances</div><div class="sc-value" style="color:var(--green)">'+fmtNum(totalInstances)+'</div><div class="sc-sub">'+fmtNum(liveInstances)+' live/new after family expansion</div></div>',
-    '<div class="stat-card c-purple"><div class="sc-label">Public Pages</div><div class="sc-value" style="color:var(--purple)">'+fmtNum(publicPages)+'</div><div class="sc-sub">FR '+fmtNum(frPages)+' Â· SW '+fmtNum(swPages)+'</div></div>',
+    '<div class="stat-card c-purple"><div class="sc-label">Public Pages</div><div class="sc-value" style="color:var(--purple)">'+fmtNum(publicPages)+'</div><div class="sc-sub">FR '+fmtNum(frPages)+' - SW '+fmtNum(swPages)+'</div></div>',
     '<div class="stat-card c-amber"><div class="sc-label">Categories</div><div class="sc-value" style="color:var(--amber)">'+Object.keys(byCat).length+'</div><div class="sc-sub">'+Object.keys(byCat).sort(function(a,b){return byCat[b]-byCat[a]}).slice(0,3).map(function(c){return c+': '+byCat[c]}).join(', ')+'</div></div>',
-    '<div class="stat-card c-blue"><div class="sc-label">Languages</div><div class="sc-value" style="color:var(--blue)">3</div><div class="sc-sub">English Â· French Â· Swahili</div></div>',
-    '<div class="stat-card c-red" id="dash-review-stat" style="cursor:pointer" onclick="showPage(\'allpages\')"><div class="sc-label">Page Review</div><div class="sc-value" style="color:var(--red)" id="rv-stat-value">â€”</div><div class="sc-sub" id="rv-stat-sub">Loading...</div></div>',
-    '<div class="stat-card c-green" style="cursor:pointer" onclick="showPage(\'livedata\')"><div class="sc-label">Backend Health</div><div class="sc-value" style="color:var(--green)" id="backend-health-value">â€”</div><div class="sc-sub" id="backend-health-sub">Loading backend checks...</div></div>',
-    '<div class="stat-card c-amber" style="cursor:pointer" onclick="window.open(\'/admin/alerts.html\', \'_blank\')"><div class="sc-label">Active Alerts</div><div class="sc-value" style="color:var(--amber)" id="alerts-live-value">â€”</div><div class="sc-sub" id="alerts-live-sub">Loading alert summary...</div></div>',
-    '<div class="stat-card c-blue" style="cursor:pointer" onclick="window.open(\'/admin/review.html\', \'_blank\')"><div class="sc-label">Review Queue</div><div class="sc-value" style="color:var(--blue)" id="review-queue-value">â€”</div><div class="sc-sub" id="review-queue-sub">Loading review queue...</div></div>',
+    '<div class="stat-card c-blue"><div class="sc-label">Languages</div><div class="sc-value" style="color:var(--blue)">3</div><div class="sc-sub">English - French - Swahili</div></div>',
+    '<div class="stat-card c-red" id="dash-review-stat" style="cursor:pointer" onclick="showPage(\'allpages\')"><div class="sc-label">Page Review</div><div class="sc-value" style="color:var(--red)" id="rv-stat-value">-</div><div class="sc-sub" id="rv-stat-sub">Loading...</div></div>',
+    '<div class="stat-card c-green" style="cursor:pointer" onclick="showPage(\'livedata\')"><div class="sc-label">Backend Health</div><div class="sc-value" style="color:var(--green)" id="backend-health-value">-</div><div class="sc-sub" id="backend-health-sub">Loading backend checks...</div></div>',
+    '<div class="stat-card c-amber" style="cursor:pointer" onclick="window.open(\'/admin/alerts.html\', \'_blank\')"><div class="sc-label">Active Alerts</div><div class="sc-value" style="color:var(--amber)" id="alerts-live-value">-</div><div class="sc-sub" id="alerts-live-sub">Loading alert summary...</div></div>',
+    '<div class="stat-card c-blue" style="cursor:pointer" onclick="window.open(\'/admin/review.html\', \'_blank\')"><div class="sc-label">Review Queue</div><div class="sc-value" style="color:var(--blue)" id="review-queue-value">-</div><div class="sc-sub" id="review-queue-sub">Loading review queue...</div></div>',
   ].join('');
 
   // Review stats
@@ -2261,15 +2288,15 @@ function buildDashStats(){
       var el = document.getElementById('rv-stat-value');
       var sub = document.getElementById('rv-stat-sub');
       if(el) el.textContent = reviewed + '/' + totalP;
-      if(sub) sub.textContent = todayDone + '/200 today Â· click to review';
+      if(sub) sub.textContent = todayDone + '/200 today - click to review';
     } catch(e){}
   }, 200);
 
-  // Greeting sub â€” include review progress
+  // Greeting sub - include review progress
   var reviewedCount = 0;
   try { reviewedCount = Object.keys(JSON.parse(localStorage.getItem(RV_COMMENTS_KEY)) || {}).length; } catch(e){}
-  var pagesLabel = typeof ALL_PAGES !== 'undefined' ? fmtNum(ALL_PAGES.length) : 'â€”';
-  document.getElementById('greeting-sub').textContent = fmtNum(total) + ' registry entries Â· ' + fmtNum(totalInstances) + ' EN tool instances Â· ' + pagesLabel + ' public pages Â· ' + fmtNum(reviewedCount) + ' reviewed';
+  var pagesLabel = typeof ALL_PAGES !== 'undefined' ? fmtNum(ALL_PAGES.length) : '-';
+  document.getElementById('greeting-sub').textContent = fmtNum(total) + ' registry entries - ' + fmtNum(totalInstances) + ' EN tool instances - ' + pagesLabel + ' public pages - ' + fmtNum(reviewedCount) + ' reviewed';
 
   // Language coverage bars
   var langEl = document.getElementById('lang-coverage');
@@ -2286,19 +2313,33 @@ function buildDashStats(){
   var dashLD = document.getElementById('dash-livedata');
   if(dashLD){
     dashLD.innerHTML = [
-      {icon:'â›½',name:'Fuel',href:'/admin/fuel.html'},
-      {icon:'ðŸŒ¾',name:'Commodities',href:'/admin/commodity-prices.html'},
-      {icon:'ðŸ«',name:'Cocoa',href:'/admin/cocoa-prices.html'},
+      {icon:'-',name:'Fuel',href:'/admin/fuel.html'},
+      /*
+      {icon:',name:'Commodities',href:'/admin/commodity-prices.html'},
+      {icon:',name:'Cocoa',href:'/admin/cocoa-prices.html'},
       {icon:'â˜•',name:'Coffee',href:'/admin/coffee-prices.html'},
-      {icon:'ðŸ§ª',name:'Inputs',href:'/admin/input-prices.html'},
-      {icon:'ðŸ’°',name:'Wages',href:'/admin/wages.html'},
-      {icon:'ðŸš—',name:'Cars',href:'/admin/car-price-intelligence.html'},
-      {icon:'âš™ï¸',name:'Car Rules',href:'/admin/car-import-cost-rules.html'},
-      {icon:'ðŸ’¸',name:'Remittance',href:'/admin/remittance.html'},
-      {icon:'ðŸš¨',name:'Alerts',href:'/admin/alerts.html'},
+      {icon:',name:'Inputs',href:'/admin/input-prices.html'},
+      {icon:',name:'Wages',href:'/admin/wages.html'},
+      {icon:',name:'Cars',href:'/admin/car-price-intelligence.html'},
+      {icon:'-™',name:'Car Rules',href:'/admin/car-import-cost-rules.html'},
+      {icon:',name:'Remittance',href:'/admin/remittance.html'},
+      {icon:',name:'Alerts',href:'/admin/alerts.html'},
       {icon:'RQ',name:'Review Queue',href:'/admin/review.html'},
-      {icon:'ðŸ“º',name:'AfroStream',href:'/tools/afrostream/admin.html'},
-      {icon:'âš”ï¸',name:'Conflict',href:'/admin/conflict.html'},
+      {icon:',name:'AfroStream',href:'/tools/afrostream/admin.html'},
+      {icon:'-',name:'Conflict',href:'/admin/conflict.html'},
+      */
+      {icon:'CP',name:'Commodities',href:'/admin/commodity-prices.html'},
+      {icon:'CC',name:'Cocoa',href:'/admin/cocoa-prices.html'},
+      {icon:'CO',name:'Coffee',href:'/admin/coffee-prices.html'},
+      {icon:'AI',name:'Inputs',href:'/admin/input-prices.html'},
+      {icon:'MW',name:'Wages',href:'/admin/wages.html'},
+      {icon:'CB',name:'Cars',href:'/admin/car-price-intelligence.html'},
+      {icon:'CR',name:'Car Rules',href:'/admin/car-import-cost-rules.html'},
+      {icon:'RM',name:'Remittance',href:'/admin/remittance.html'},
+      {icon:'AL',name:'Alerts',href:'/admin/alerts.html'},
+      {icon:'RQ',name:'Review Queue',href:'/admin/review.html'},
+      {icon:'AS',name:'AfroStream',href:'/tools/afrostream/admin.html'},
+      {icon:'CM',name:'Conflict',href:'/admin/conflict.html'},
     ].map(function(d){
       return '<a class="qa-btn" href="'+d.href+'" target="_blank" style="text-decoration:none"><span class="qa-icon">'+d.icon+'</span><div>'+d.name+'</div></a>';
     }).join('');
@@ -2314,24 +2355,31 @@ function buildDashStats(){
     return '<div class="cov-row"><div class="cov-label" style="width:90px;font-size:11px">'+c[0]+'</div><div class="cov-bar-wrap"><div class="cov-bar" style="width:'+pct+'%;background:var(--brand)"></div></div><div class="cov-num">'+c[1]+'</div></div>';
   }).join('');
 
-  // â”€â”€ External Dashboard Links â”€â”€
+  // -€-€ External Dashboard Links -€-€
   var extLinks = document.getElementById('dash-ext-links');
   if(extLinks){
     extLinks.innerHTML = [
-      {icon:'â–²',name:'Netlify',url:'https://app.netlify.com',sub:'Deploys, functions, analytics'},
-      {icon:'âš¡',name:'Supabase (Auth)',url:'https://supabase.com/dashboard/project/zpclagtgczsygrgztlts',sub:'Users, profiles'},
-      {icon:'âš¡',name:'Supabase (Data)',url:'https://supabase.com/dashboard/project/jbmhfpkzbgyeodsqhprx',sub:'Tables, edge functions'},
-      {icon:'ðŸ™',name:'GitHub',url:'https://github.com',sub:'Code, PRs, issues'},
-      {icon:'ðŸ“Š',name:'Google Search Console',url:'https://search.google.com/search-console',sub:'Indexing, performance'},
-      {icon:'ðŸ“ˆ',name:'Google Analytics',url:'https://analytics.google.com',sub:'Traffic, engagement'},
-      {icon:'ðŸ’³',name:'Paystack',url:'https://dashboard.paystack.com',sub:'Payments, subscriptions'},
-      {icon:'ðŸ“§',name:'Resend',url:'https://resend.com/emails',sub:'Email delivery, logs'},
+      {icon:'-',name:'Netlify',url:'https://app.netlify.com',sub:'Deploys, functions, analytics'},
+      {icon:'-',name:'Supabase (Auth)',url:'https://supabase.com/dashboard/project/zpclagtgczsygrgztlts',sub:'Users, profiles'},
+      {icon:'-',name:'Supabase (Data)',url:'https://supabase.com/dashboard/project/jbmhfpkzbgyeodsqhprx',sub:'Tables, edge functions'},
+      /*
+      {icon:',name:'GitHub',url:'https://github.com',sub:'Code, PRs, issues'},
+      {icon:',name:'Google Search Console',url:'https://search.google.com/search-console',sub:'Indexing, performance'},
+      {icon:',name:'Google Analytics',url:'https://analytics.google.com',sub:'Traffic, engagement'},
+      {icon:',name:'Paystack',url:'https://dashboard.paystack.com',sub:'Payments, subscriptions'},
+      {icon:',name:'Resend',url:'https://resend.com/emails',sub:'Email delivery, logs'},
+      */
+      {icon:'GH',name:'GitHub',url:'https://github.com',sub:'Code, PRs, issues'},
+      {icon:'SC',name:'Google Search Console',url:'https://search.google.com/search-console',sub:'Indexing, performance'},
+      {icon:'GA',name:'Google Analytics',url:'https://analytics.google.com',sub:'Traffic, engagement'},
+      {icon:'PS',name:'Paystack',url:'https://dashboard.paystack.com',sub:'Payments, subscriptions'},
+      {icon:'RS',name:'Resend',url:'https://resend.com/emails',sub:'Email delivery, logs'},
     ].map(function(l){
       return '<a class="qa-btn" href="'+l.url+'" target="_blank" rel="noopener" style="text-decoration:none"><span class="qa-icon">'+l.icon+'</span><div>'+l.name+'<span class="qa-sub">'+l.sub+'</span></div></a>';
     }).join('');
   }
 
-  // â”€â”€ 20K Expansion Tracker â”€â”€
+  // -€-€ 20K Expansion Tracker -€-€
   var expEl = document.getElementById('dash-expansion');
   if(expEl){
     var target = 20000;
@@ -2356,20 +2404,20 @@ function buildDashStats(){
       '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Countries with tools</div><div class="pipe-info">'+countriesWithTools.size+' / 54</div></div>',
       '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Avg tools per country</div><div class="pipe-info">~'+Math.round(current/54)+'</div></div>',
       '<div style="font-size:10px;font-weight:700;color:var(--text3);margin:8px 0 6px">GROWTH TARGETS</div>',
-      '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Health tools (need ~5000)</div><div class="pipe-info">'+(byCat.health||0)+' â†’ 5000</div></div>',
-      '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Financial tools (need ~3000)</div><div class="pipe-info">'+(byCat.financial||0)+' â†’ 3000</div></div>',
-      '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Agriculture tools (need ~2500)</div><div class="pipe-info">'+(byCat.agriculture||0)+' â†’ 2500</div></div>',
-      '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Trade tools (need ~2000)</div><div class="pipe-info">'+(byCat.trade||0)+' â†’ 2000</div></div>',
+      '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Health tools (need ~5000)</div><div class="pipe-info">'+(byCat.health||0)+' -> 5000</div></div>',
+      '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Financial tools (need ~3000)</div><div class="pipe-info">'+(byCat.financial||0)+' -> 3000</div></div>',
+      '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Agriculture tools (need ~2500)</div><div class="pipe-info">'+(byCat.agriculture||0)+' -> 2500</div></div>',
+      '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">Trade tools (need ~2000)</div><div class="pipe-info">'+(byCat.trade||0)+' -> 2000</div></div>',
     ].join('');
   }
 
-  // â”€â”€ Monthly Costs â”€â”€
+  // -€-€ Monthly Costs -€-€
   var costEl = document.getElementById('dash-costs');
   if(costEl){
     var costs = [
       {svc:'Netlify (Pro)',cost:'$19/mo',note:'Build mins, functions, bandwidth'},
-      {svc:'Supabase (Auth)',cost:'$25/mo',note:'Pro plan â€” auth, profiles'},
-      {svc:'Supabase (Data)',cost:'$25/mo',note:'Pro plan â€” tools data'},
+      {svc:'Supabase (Auth)',cost:'$25/mo',note:'Pro plan - auth, profiles'},
+      {svc:'Supabase (Data)',cost:'$25/mo',note:'Pro plan - tools data'},
       {svc:'ExchangeRate-API',cost:'$0-12/mo',note:'Free tier or Business'},
       {svc:'Anthropic Claude',cost:'~$5-20/mo',note:'Pay per token, Haiku model'},
       {svc:'CoinGecko',cost:'$0/mo',note:'Free tier (demo key)'},
@@ -2379,13 +2427,13 @@ function buildDashStats(){
       {svc:'Google Workspace',cost:'~$6/mo',note:'Email, Drive'},
     ];
     var totalMin = 75; var totalMax = 107;
-    costEl.innerHTML = '<div style="text-align:center;padding:8px;margin-bottom:8px;background:var(--card2);border-radius:var(--r);border:1px solid var(--border)"><div style="font-size:20px;font-weight:900;color:var(--brand)">$'+totalMin+' â€” $'+totalMax+'</div><div style="font-size:10px;color:var(--text3)">Estimated monthly burn</div></div>'
+    costEl.innerHTML = '<div style="text-align:center;padding:8px;margin-bottom:8px;background:var(--card2);border-radius:var(--r);border:1px solid var(--border)"><div style="font-size:20px;font-weight:900;color:var(--brand)">$'+totalMin+' - $'+totalMax+'</div><div style="font-size:10px;color:var(--text3)">Estimated monthly burn</div></div>'
       + costs.map(function(c){
         return '<div class="pipe-row"><div class="pipe-name" style="font-size:11px">'+c.svc+'</div><div style="text-align:right"><div style="font-size:11px;font-weight:700;font-family:var(--mono)">'+c.cost+'</div><div style="font-size:9px;color:var(--text4)">'+c.note+'</div></div></div>';
       }).join('');
   }
 
-  // â”€â”€ Health Checks â”€â”€
+  // -€-€ Health Checks -€-€
   var healthEl = document.getElementById('dash-health');
   if(healthEl){
     healthEl.innerHTML = '<div style="font-size:10px;color:var(--text4);margin-bottom:8px">Live pings to critical endpoints</div>';
@@ -2415,8 +2463,8 @@ function buildDashStats(){
         if(!row) return;
         var dot = row.querySelector('.pipe-status');
         var info = row.querySelector('.pipe-info');
-        if(r.ok){dot.className='pipe-status ps-ok';info.textContent=r.status+' Â· '+ms+'ms';info.style.color='var(--green)'}
-        else{dot.className='pipe-status ps-stale';info.textContent=r.status+' Â· '+ms+'ms';info.style.color='var(--amber)'}
+        if(r.ok){dot.className='pipe-status ps-ok';info.textContent=r.status+' - '+ms+'ms';info.style.color='var(--green)'}
+        else{dot.className='pipe-status ps-stale';info.textContent=r.status+' - '+ms+'ms';info.style.color='var(--amber)'}
       }).catch(function(err){
         var row = document.getElementById(rowId);
         if(!row) return;
@@ -2427,20 +2475,20 @@ function buildDashStats(){
     });
   }
 
-  // â”€â”€ Tech Debt & Known Issues â”€â”€
+  // -€-€ Tech Debt & Known Issues -€-€
   var debtEl = document.getElementById('dash-techdebt');
   if(debtEl){
     var issues = [
-      {severity:'done',title:'âœ… 3 duplicate IDs in tool registry â€” FIXED',desc:'seed-rate-calculator dupe deleted, vat-calculator â†’ vat-calc-pan-african, crypto-tax â†’ crypto-cgt. Registry rebuilt.',action:'Resolved 2026-03-27'},
-      {severity:'done',title:'âœ… 14 French pages with old English slugs â€” FIXED',desc:'94 redirect rules added to _redirects covering all old English-slug French pages with/without trailing slashes.',action:'Resolved 2026-03-27'},
-      {severity:'medium',title:'Fuel prices use seed data, not live scraping',desc:'scheduled-fetch-fuel-prices has no free API â€” GlobalPetrolPrices requires paid access. Data depends on manual admin updates.',action:'No free API available â€” maintain admin flow at /admin/fuel.html'},
+      {severity:'done',title:'Live 3 duplicate IDs in tool registry - FIXED',desc:'seed-rate-calculator dupe deleted, vat-calculator -> vat-calc-pan-african, crypto-tax -> crypto-cgt. Registry rebuilt.',action:'Resolved 2026-03-27'},
+      {severity:'done',title:'Live 14 French pages with old English slugs - FIXED',desc:'94 redirect rules added to _redirects covering all old English-slug French pages with/without trailing slashes.',action:'Resolved 2026-03-27'},
+      {severity:'medium',title:'Fuel prices use seed data, not live scraping',desc:'scheduled-fetch-fuel-prices has no free API - GlobalPetrolPrices requires paid access. Data depends on manual admin updates.',action:'No free API available - maintain admin flow at /admin/fuel.html'},
       {severity:'low',title:'tool-registry.js is 337KB (minified)',desc:'At 20K tools this will be ~7MB. Need to split registry by category or paginate loading.',action:'Design lazy-load registry architecture'},
       {severity:'low',title:'No automated backup of Supabase data',desc:'If Supabase has an incident, manual data (fuel, wages, commodities) could be lost. Need pg_dump cron or Supabase backups.',action:'Set up daily Supabase backup'},
       {severity:'low',title:'No error alerting pipeline',desc:'Function failures are silent. No Slack/email alerts when scheduled functions fail or APIs go down.',action:'Add Netlify function error notifications'},
-      {severity:'done',title:'âœ… CORS restricted on all 34 API functions â€” FIXED',desc:'Created shared utils/cors.js module. All functions now restrict origin to afrotools.com, www.afrotools.com, Netlify previews, and localhost.',action:'Resolved 2026-03-27'},
+      {severity:'done',title:'Live CORS restricted on all 34 API functions - FIXED',desc:'Created shared utils/cors.js module. All functions now restrict origin to afrotools.com, www.afrotools.com, Netlify previews, and localhost.',action:'Resolved 2026-03-27'},
       {severity:'low',title:'No rate limiting persistence across cold starts',desc:'In-memory rate limits reset on Netlify cold starts. Determined users can bypass by waiting.',action:'Move rate limits to Supabase or KV store'},
-      {severity:'done',title:'âœ… 310 redirect rules audited â€” CLEAN',desc:'All redirect rules verified. No stale or dead redirects found. 94 new French slug redirects added properly.',action:'Resolved 2026-03-27'},
-      {severity:'done',title:'âœ… Staging environment configured â€” FIXED',desc:'Added deploy-preview, branch-deploy, and staging context blocks to netlify.toml. Push to any branch â†’ auto preview URL.',action:'Resolved 2026-03-27'},
+      {severity:'done',title:'Live 310 redirect rules audited - CLEAN',desc:'All redirect rules verified. No stale or dead redirects found. 94 new French slug redirects added properly.',action:'Resolved 2026-03-27'},
+      {severity:'done',title:'Live Staging environment configured - FIXED',desc:'Added deploy-preview, branch-deploy, and staging context blocks to netlify.toml. Push to any branch -> auto preview URL.',action:'Resolved 2026-03-27'},
     ];
     document.getElementById('debt-count').textContent = issues.length+' items';
     debtEl.innerHTML = issues.map(function(issue){
@@ -2451,7 +2499,7 @@ function buildDashStats(){
         +'<span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;background:'+bg+';color:'+color+';text-transform:uppercase">'+issue.severity+'</span>'
         +'<span style="font-size:12px;font-weight:700">'+issue.title+'</span></div>'
         +'<div style="font-size:11px;color:var(--text3);margin-bottom:3px">'+issue.desc+'</div>'
-        +'<div style="font-size:10px;color:var(--brand);font-weight:600">â†’ '+issue.action+'</div></div>';
+        +'<div style="font-size:10px;color:var(--brand);font-weight:600">-> '+issue.action+'</div></div>';
     }).join('');
   }
 }
@@ -2461,7 +2509,7 @@ function runAudit(){
   if(!results) return;
 
   if(typeof AFRO_TOOLS === 'undefined' || !AFRO_TOOLS.length){
-    results.innerHTML = '<div style="color:var(--red)">âœ— AFRO_TOOLS registry is not loaded.</div>';
+    results.innerHTML = '<div style="color:var(--red)">- AFRO_TOOLS registry is not loaded.</div>';
     return;
   }
 
@@ -2485,30 +2533,30 @@ function runAudit(){
 
   var lines = [];
   if(dupes.length){
-    lines.push('<div style="color:var(--red)">âœ— Duplicate IDs: '+escapeHtml(dupes.slice(0,8).join(', '))+(dupes.length > 8 ? ' +' + fmtNum(dupes.length - 8) + ' more' : '')+'</div>');
+    lines.push('<div style="color:var(--red)">- Duplicate IDs: '+escapeHtml(dupes.slice(0,8).join(', '))+(dupes.length > 8 ? ' +' + fmtNum(dupes.length - 8) + ' more' : '')+'</div>');
   }
   if(missingHref.length){
-    lines.push('<div style="color:var(--red)">âœ— Missing href on '+fmtNum(missingHref.length)+' registry entries.</div>');
+    lines.push('<div style="color:var(--red)">- Missing href on '+fmtNum(missingHref.length)+' registry entries.</div>');
   }
   if(missingDesc.length){
-    lines.push('<div style="color:var(--amber)">âš  Missing description on '+fmtNum(missingDesc.length)+' registry entries.</div>');
+    lines.push('<div style="color:var(--amber)">- Missing description on '+fmtNum(missingDesc.length)+' registry entries.</div>');
   }
   if(missingCategory.length){
-    lines.push('<div style="color:var(--red)">âœ— Missing category on '+fmtNum(missingCategory.length)+' registry entries.</div>');
+    lines.push('<div style="color:var(--red)">- Missing category on '+fmtNum(missingCategory.length)+' registry entries.</div>');
   }
 
   lines.push('<div style="color:var(--text2)">Coverage: '+fmtNum(countryCoverage.size)+' countries referenced across '+fmtNum(AFRO_TOOLS.length)+' registry entries.</div>');
 
   if(!dupes.length && !missingHref.length && !missingDesc.length && !missingCategory.length){
-    lines.unshift('<div style="color:var(--green)">âœ“ Registry basics look clean in the loaded dataset.</div>');
+    lines.unshift('<div style="color:var(--green)">OK Registry basics look clean in the loaded dataset.</div>');
   }
 
   results.innerHTML = lines.join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  REGISTRY TABLE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 var regPage = 0;
 var REG_PAGE_SIZE = 100;
 var regFiltered = [];
@@ -2517,7 +2565,7 @@ function buildRegistry(){
   regFiltered = TOOLS.slice();
   regPage = 0;
   renderRegistry();
-  document.getElementById('reg-subtitle').textContent = TOOLS.length + ' tools Â· ' + new Set(TOOLS.map(function(t){return t.category})).size + ' categories Â· 3 languages';
+  document.getElementById('reg-subtitle').textContent = TOOLS.length + ' tools - ' + new Set(TOOLS.map(function(t){return t.category})).size + ' categories - 3 languages';
 }
 
 function filterRegistry(){
@@ -2551,15 +2599,15 @@ function renderRegistry(){
     var totalPages = Math.ceil(regFiltered.length / REG_PAGE_SIZE);
     tbody.innerHTML += '<tr><td colspan="7" style="text-align:center;padding:12px">'
       +'<span style="font-size:11px;color:var(--text3)">Page '+(regPage+1)+' of '+totalPages+' ('+regFiltered.length+' tools)</span> '
-      +(regPage>0?'<button class="qa-btn" onclick="regPage--;renderRegistry()" style="display:inline;padding:4px 10px;font-size:10px">â† Prev</button> ':'')
-      +(regPage<totalPages-1?'<button class="qa-btn" onclick="regPage++;renderRegistry()" style="display:inline;padding:4px 10px;font-size:10px">Next â†’</button>':'')
+      +(regPage>0?'<button type="button" class="qa-btn" onclick="regPage--;renderRegistry()" style="display:inline;padding:4px 10px;font-size:10px"><- Prev</button> ':'')
+      +(regPage<totalPages-1?'<button type="button" class="qa-btn" onclick="regPage++;renderRegistry()" style="display:inline;padding:4px 10px;font-size:10px">Next -></button>':'')
       +'</td></tr>';
   }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  SITE INVENTORY
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function renderInventoryError(err){
   var message = err && err.message ? err.message : 'Inventory snapshot unavailable';
   document.getElementById('inv-subtitle').textContent = 'Unable to load site-inventory.json';
@@ -2567,7 +2615,7 @@ function renderInventoryError(err){
   ['inv-ledger','inv-page-ledger','inv-language-ledger','inv-health-ledger','inv-category-ledger','inv-folder-ledger'].forEach(function(id){
     var node = document.getElementById(id);
     if(node){
-      node.innerHTML = '<div class="empty-state"><div class="icon">âš ï¸</div><div class="title">Run <span style="font-family:var(--mono);color:var(--brand)">npm run inventory:site</span></div><div style="font-size:11px;color:var(--text3);margin-top:6px">The inventory page reads the generated snapshot and CSV exports.</div></div>';
+      node.innerHTML = '<div class="empty-state"><div class="icon">-</div><div class="title">Run <span style="font-family:var(--mono);color:var(--brand)">npm run inventory:site</span></div><div style="font-size:11px;color:var(--text3);margin-top:6px">The inventory page reads the generated snapshot and CSV exports.</div></div>';
     }
   });
 }
@@ -2582,10 +2630,10 @@ function renderInventorySnapshot(snapshot){
   document.getElementById('inv-subtitle').textContent = 'Snapshot generated ' + (snapshot.generatedAtDisplay || snapshot.generatedAt || 'recently') + ' from registry + filesystem scan';
 
   document.getElementById('inv-stats').innerHTML = [
-    '<div class="stat-card c-blue"><div class="sc-label">Registry Entries</div><div class="sc-value" style="color:var(--brand)">'+fmtNum(summary.registryEntries)+'</div><div class="sc-sub">'+fmtNum(summary.registryLiveEntries)+' live/new Â· '+fmtNum(summary.registryQueuedEntries)+' queued</div></div>',
-    '<div class="stat-card c-green"><div class="sc-label">EN Tool Instances</div><div class="sc-value" style="color:var(--green)">'+fmtNum(summary.englishToolInstances)+'</div><div class="sc-sub">'+fmtNum(summary.englishUniqueToolUrls)+' unique URLs Â· '+fmtNum(summary.englishLiveToolInstances)+' live/new</div></div>',
-    '<div class="stat-card c-purple"><div class="sc-label">Total HTML Pages</div><div class="sc-value" style="color:var(--purple)">'+fmtNum(summary.totalHtmlPages)+'</div><div class="sc-sub">'+fmtNum(summary.publicHtmlPages)+' public Â· '+fmtNum(summary.internalHtmlPages)+' internal</div></div>',
-    '<div class="stat-card c-amber"><div class="sc-label">Language Pages</div><div class="sc-value" style="color:var(--amber)">'+fmtNum(summary.languageHtmlPages)+'</div><div class="sc-sub">FR '+fmtNum(summary.frenchHtmlPages)+' Â· SW '+fmtNum(summary.swahiliHtmlPages)+'</div></div>',
+    '<div class="stat-card c-blue"><div class="sc-label">Registry Entries</div><div class="sc-value" style="color:var(--brand)">'+fmtNum(summary.registryEntries)+'</div><div class="sc-sub">'+fmtNum(summary.registryLiveEntries)+' live/new - '+fmtNum(summary.registryQueuedEntries)+' queued</div></div>',
+    '<div class="stat-card c-green"><div class="sc-label">EN Tool Instances</div><div class="sc-value" style="color:var(--green)">'+fmtNum(summary.englishToolInstances)+'</div><div class="sc-sub">'+fmtNum(summary.englishUniqueToolUrls)+' unique URLs - '+fmtNum(summary.englishLiveToolInstances)+' live/new</div></div>',
+    '<div class="stat-card c-purple"><div class="sc-label">Total HTML Pages</div><div class="sc-value" style="color:var(--purple)">'+fmtNum(summary.totalHtmlPages)+'</div><div class="sc-sub">'+fmtNum(summary.publicHtmlPages)+' public - '+fmtNum(summary.internalHtmlPages)+' internal</div></div>',
+    '<div class="stat-card c-amber"><div class="sc-label">Language Pages</div><div class="sc-value" style="color:var(--amber)">'+fmtNum(summary.languageHtmlPages)+'</div><div class="sc-sub">FR '+fmtNum(summary.frenchHtmlPages)+' - SW '+fmtNum(summary.swahiliHtmlPages)+'</div></div>',
     '<div class="stat-card c-blue"><div class="sc-label">Other Public Pages</div><div class="sc-value" style="color:var(--blue)">'+fmtNum(summary.otherPublicPages)+'</div><div class="sc-sub">This is the closest bucket to "just pages"</div></div>',
     '<div class="stat-card c-red"><div class="sc-label">Categories</div><div class="sc-value" style="color:var(--red)">'+fmtNum(summary.categories)+'</div><div class="sc-sub">'+fmtNum(summary.categoryLandingPagesPresent)+' landing pages on disk</div></div>',
   ].join('');
@@ -2699,13 +2747,13 @@ function buildInventoryPage(forceRefresh){
     .catch(renderInventoryError);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  SEO PAGE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function buildSEOPage(){
   document.getElementById('seo-stats').innerHTML = [
     '<div class="stat-card c-blue"><div class="sc-label">sitemap.xml</div><div class="sc-value" style="color:var(--brand);font-size:18px">Main</div><div class="sc-sub">English pages + tools</div></div>',
-    '<div class="stat-card c-purple"><div class="sc-label">sitemap-i18n.xml</div><div class="sc-value" style="color:var(--purple);font-size:18px">Hreflang</div><div class="sc-sub">ENâ†”FRâ†”SW cross-references</div></div>',
+    '<div class="stat-card c-purple"><div class="sc-label">sitemap-i18n.xml</div><div class="sc-value" style="color:var(--purple);font-size:18px">Hreflang</div><div class="sc-sub">EN-FR-SW cross-references</div></div>',
     '<div class="stat-card c-green"><div class="sc-label">sitemap-sw.xml</div><div class="sc-value" style="color:var(--green);font-size:18px">Swahili</div><div class="sc-sub">25 URLs with hreflang</div></div>',
     '<div class="stat-card c-amber"><div class="sc-label">robots.txt</div><div class="sc-value" style="color:var(--amber);font-size:18px">3 refs</div><div class="sc-sub">All 3 sitemaps declared</div></div>',
   ].join('');
@@ -2719,9 +2767,9 @@ function buildSEOPage(){
   ].join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  i18n PAGE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function buildI18nPage(){
   var byLang = {en:0,fr:0,sw:0};
   var byCatLang = {};
@@ -2733,9 +2781,9 @@ function buildI18nPage(){
   });
 
   document.getElementById('i18n-stats').innerHTML = [
-    '<div class="stat-card c-blue"><div class="sc-label">English</div><div class="sc-value" style="color:var(--brand)">'+byLang.en+'</div><div class="sc-sub">Primary language Â· 100%</div></div>',
+    '<div class="stat-card c-blue"><div class="sc-label">English</div><div class="sc-value" style="color:var(--brand)">'+byLang.en+'</div><div class="sc-sub">Primary language - 100%</div></div>',
     '<div class="stat-card c-purple"><div class="sc-label">French</div><div class="sc-value" style="color:#7c3aed">'+byLang.fr+'</div><div class="sc-sub">'+Math.round(byLang.fr/byLang.en*100)+'% of English</div></div>',
-    '<div class="stat-card c-green"><div class="sc-label">Swahili</div><div class="sc-value" style="color:var(--green)">'+byLang.sw+'</div><div class="sc-sub">'+Math.round(byLang.sw/byLang.en*100)+'% of English Â· Newest</div></div>',
+    '<div class="stat-card c-green"><div class="sc-label">Swahili</div><div class="sc-value" style="color:var(--green)">'+byLang.sw+'</div><div class="sc-sub">'+Math.round(byLang.sw/byLang.en*100)+'% of English - Newest</div></div>',
   ].join('');
 
   var covEl = document.getElementById('i18n-coverage');
@@ -2749,9 +2797,9 @@ function buildI18nPage(){
   }).join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  PIPELINES PAGE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function buildPipelinesPage(){
   document.getElementById('scheduled-functions').innerHTML = [
     {name:'scheduled-fetch-forex-rates',schedule:'*/15 * * * *',desc:'Fetches FX rates from ExchangeRate-API',store:'Netlify Blobs: forex-latest'},
@@ -2788,13 +2836,13 @@ function buildPipelinesPage(){
   }).join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  SCRIPTS PAGE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function buildScriptsPage(){
   var sections = {
     'scripts-build': [
-      {cmd:'npm run build',desc:'Full pipeline: minify â†’ bundle â†’ update HTML â†’ sitemap â†’ stamp SW'},
+      {cmd:'npm run build',desc:'Full pipeline: minify -> bundle -> update HTML -> sitemap -> stamp SW'},
       {cmd:'npm run minify',desc:'Minify all CSS/JS source files'},
       {cmd:'npm run bundle',desc:'Create optimized JS bundles with content hashing'},
       {cmd:'npm run sitemap',desc:'Regenerate sitemap.xml from tool registry'},
@@ -2830,9 +2878,9 @@ function buildScriptsPage(){
   });
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  CHECKLIST PAGE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function buildChecklistPage(){
   var lists = {
     'checklist-data': [
@@ -2867,7 +2915,7 @@ function buildChecklistPage(){
 
   Object.keys(lists).forEach(function(id){
     document.getElementById(id).innerHTML = lists[id].map(function(item){
-      return '<div class="check-item"><div class="check-box" onclick="toggleCheck(this)">âœ“</div><div class="check-body">'
+      return '<div class="check-item"><div class="check-box" onclick="toggleCheck(this)">OK</div><div class="check-body">'
         +'<div class="check-title">'+item.title+'</div>'
         +(item.cmd?'<span class="check-cmd" onclick="copyCmd(\''+item.cmd.replace(/'/g,"\\'")+'\')">'+item.cmd+'</span>':'')
         +(item.note?'<div style="font-size:10px;color:var(--text4);margin-top:2px">'+item.note+'</div>':'')
@@ -2877,9 +2925,9 @@ function buildChecklistPage(){
   });
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  DATA PIPELINE STATUS CHECK
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function checkPipelines(){
   if(MC_ADMIN_STATUS){
     renderPipelineStatus(MC_ADMIN_STATUS);
@@ -2889,9 +2937,9 @@ function checkPipelines(){
   if(badge) badge.textContent = 'Loading...';
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  AUTH GATE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 var MC_KEY = 'mc_auth_token';
 var MC_ADMIN_STORAGE_KEY = 'admin_key';
 
@@ -2983,11 +3031,11 @@ function restoreMissionControlSession(){
 
 restoreMissionControlSession();
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  PLATFORM INFRASTRUCTURE PAGE (Comprehensive)
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function buildLiveDataPage(){
-  // â”€â”€ Helper: render a pipe row â”€â”€
+  // -€-€ Helper: render a pipe row -€-€
   function pipeRow(icon,name,info,status){
     var s = status||'ps-ok';
     var dot = '<div class="pipe-status '+s+'" style="width:8px;height:8px"></div>';
@@ -2996,7 +3044,7 @@ function buildLiveDataPage(){
   }
   function sectionHdr(title){return '<div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);padding:10px 0 6px;border-bottom:2px solid var(--border);margin-top:8px">'+title+'</div>';}
 
-  // â”€â”€ STATS â”€â”€
+  // -€-€ STATS -€-€
   document.getElementById('ld-stats').innerHTML = [
     '<div class="stat-card c-blue"><div class="sc-label">Netlify Functions</div><div class="sc-value" style="color:var(--brand)">52</div><div class="sc-sub">Serverless API endpoints</div></div>',
     '<div class="stat-card c-green"><div class="sc-label">External APIs</div><div class="sc-value" style="color:var(--green)">13</div><div class="sc-sub">Third-party services</div></div>',
@@ -3006,27 +3054,41 @@ function buildLiveDataPage(){
     '<div class="stat-card c-blue"><div class="sc-label">Env Variables</div><div class="sc-value" style="color:var(--blue)">15+</div><div class="sc-sub">API keys & secrets</div></div>',
   ].join('');
 
-  // â”€â”€ ADMIN DATA ENTRY â”€â”€
+  // -€-€ ADMIN DATA ENTRY -€-€
   var adminPages = [
-    {name:'Fuel Prices',icon:'â›½',href:'/admin/fuel.html',desc:'Petrol, Diesel, LPG â€” 54 countries',freq:'Monthly'},
-    {name:'Commodity Prices',icon:'ðŸŒ¾',href:'/admin/commodity-prices.html',desc:'11 crops Ã— 20 countries',freq:'Monthly'},
-    {name:'Cocoa Prices',icon:'ðŸ«',href:'/admin/cocoa-prices.html',desc:'ICCO benchmark + 6 producers',freq:'Weekly/Monthly'},
+    {name:'Fuel Prices',icon:'-',href:'/admin/fuel.html',desc:'Petrol, Diesel, LPG - 54 countries',freq:'Monthly'},
+    /*
+    {name:'Commodity Prices',icon:',href:'/admin/commodity-prices.html',desc:'11 crops Ã— 20 countries',freq:'Monthly'},
+    {name:'Cocoa Prices',icon:',href:'/admin/cocoa-prices.html',desc:'ICCO benchmark + 6 producers',freq:'Weekly/Monthly'},
     {name:'Coffee Prices',icon:'â˜•',href:'/admin/coffee-prices.html',desc:'8 countries Ã— grades',freq:'Monthly'},
-    {name:'Agri Inputs',icon:'ðŸ§ª',href:'/admin/input-prices.html',desc:'Fertilizer, seeds, pesticides',freq:'Quarterly'},
-    {name:'Minimum Wages',icon:'ðŸ’°',href:'/admin/wages.html',desc:'54 countries, low/mid/high',freq:'Annual'},
-    {name:'Cars Backend',icon:'ðŸš—',href:'/admin/car-price-intelligence.html',desc:'Catalog, prices, media, finance, risk, liquidity',freq:'Weekly'},
-    {name:'Car Rule Packs',icon:'âš™ï¸',href:'/admin/car-import-cost-rules.html',desc:'6 countries, rule packs, valuation uploads',freq:'As needed'},
-    {name:'Remittance',icon:'ðŸ’¸',href:'/admin/remittance.html',desc:'9 providers Ã— corridors',freq:'Monthly'},
-    {name:'Alerts',icon:'ðŸš¨',href:'/admin/alerts.html',desc:'Tax & regulatory changes',freq:'As needed'},
+    {name:'Agri Inputs',icon:',href:'/admin/input-prices.html',desc:'Fertilizer, seeds, pesticides',freq:'Quarterly'},
+    {name:'Minimum Wages',icon:',href:'/admin/wages.html',desc:'54 countries, low/mid/high',freq:'Annual'},
+    {name:'Cars Backend',icon:',href:'/admin/car-price-intelligence.html',desc:'Catalog, prices, media, finance, risk, liquidity',freq:'Weekly'},
+    {name:'Car Rule Packs',icon:'-™',href:'/admin/car-import-cost-rules.html',desc:'6 countries, rule packs, valuation uploads',freq:'As needed'},
+    {name:'Remittance',icon:',href:'/admin/remittance.html',desc:'9 providers Ã— corridors',freq:'Monthly'},
+    {name:'Alerts',icon:',href:'/admin/alerts.html',desc:'Tax & regulatory changes',freq:'As needed'},
     {name:'Review Queue',icon:'RQ',href:'/admin/review.html',desc:'Approve or reject gazette-backed changes',freq:'Daily'},
-    {name:'AfroStream',icon:'ðŸ“º',href:'/tools/afrostream/admin.html',desc:'Creators, streams, news, featured',freq:'Weekly'},
-    {name:'Conflict Monitor',icon:'âš”ï¸',href:'/admin/conflict.html',desc:'Africa conflict events admin',freq:'As needed'},
+    {name:'AfroStream',icon:',href:'/tools/afrostream/admin.html',desc:'Creators, streams, news, featured',freq:'Weekly'},
+    {name:'Conflict Monitor',icon:'-',href:'/admin/conflict.html',desc:'Africa conflict events admin',freq:'As needed'},
+    */
+    {name:'Commodity Prices',icon:'CP',href:'/admin/commodity-prices.html',desc:'11 crops x 20 countries',freq:'Monthly'},
+    {name:'Cocoa Prices',icon:'CC',href:'/admin/cocoa-prices.html',desc:'ICCO benchmark + 6 producers',freq:'Weekly/Monthly'},
+    {name:'Coffee Prices',icon:'CO',href:'/admin/coffee-prices.html',desc:'8 countries x grades',freq:'Monthly'},
+    {name:'Agri Inputs',icon:'AI',href:'/admin/input-prices.html',desc:'Fertilizer, seeds, pesticides',freq:'Quarterly'},
+    {name:'Minimum Wages',icon:'MW',href:'/admin/wages.html',desc:'54 countries, low/mid/high',freq:'Annual'},
+    {name:'Cars Backend',icon:'CB',href:'/admin/car-price-intelligence.html',desc:'Catalog, prices, media, finance, risk, liquidity',freq:'Weekly'},
+    {name:'Car Rule Packs',icon:'CR',href:'/admin/car-import-cost-rules.html',desc:'6 countries, rule packs, valuation uploads',freq:'As needed'},
+    {name:'Remittance',icon:'RM',href:'/admin/remittance.html',desc:'9 providers x corridors',freq:'Monthly'},
+    {name:'Alerts',icon:'AL',href:'/admin/alerts.html',desc:'Tax & regulatory changes',freq:'As needed'},
+    {name:'Review Queue',icon:'RQ',href:'/admin/review.html',desc:'Approve or reject gazette-backed changes',freq:'Daily'},
+    {name:'AfroStream',icon:'AS',href:'/tools/afrostream/admin.html',desc:'Creators, streams, news, featured',freq:'Weekly'},
+    {name:'Conflict Monitor',icon:'CM',href:'/admin/conflict.html',desc:'Africa conflict events admin',freq:'As needed'},
   ];
   document.getElementById('dm-grid').innerHTML = adminPages.map(function(p){
     return '<a class="dm-card" href="'+p.href+'" target="_blank"><div class="dm-icon">'+p.icon+'</div><div class="dm-body"><div class="dm-name">'+p.name+'</div><div class="dm-desc">'+p.desc+'</div><div class="dm-freq">'+p.freq+'</div></div><div class="dm-status dm-needs" title="Needs periodic update"></div></a>';
   }).join('');
 
-  // â”€â”€ EXTERNAL APIs â”€â”€
+  // -€-€ EXTERNAL APIs -€-€
   var extApis = [
     {cat:'AI / LLM',items:[
       {name:'Anthropic Claude API',url:'api.anthropic.com',key:'ANTHROPIC_API_KEY',use:'AI advisor, business plans, crypto advice',cost:'Pay per token'},
@@ -3067,7 +3129,7 @@ function buildLiveDataPage(){
   document.getElementById('ld-external-apis').innerHTML = extHtml;
   document.getElementById('api-ext-count').textContent = extCount+' services';
 
-  // â”€â”€ NETLIFY FUNCTIONS â”€â”€
+  // -€-€ NETLIFY FUNCTIONS -€-€
   var fnGroups = [
     {cat:'AI & Content',fns:['ai-advisor','ai-business-plan','translate']},
     {cat:'Scheduled / Cron',fns:['scheduled-fetch-forex-rates (*/15 * * * *)','scheduled-fetch-fuel-prices (0 */6 * * *)','scheduled-fetch-central-bank-rates (0 */12 * * *)','scrape-fx-rates (0 6 * * *)','scheduled-verify-scholarships (0 4 * * *)','send-monthly-digest (0 8 1 * *)']},
@@ -3098,26 +3160,26 @@ function buildLiveDataPage(){
   document.getElementById('ld-functions').innerHTML = fnHtml;
   document.getElementById('fn-count').textContent = fnTotal+' functions';
 
-  // â”€â”€ SCHEDULED CRON â”€â”€
+  // -€-€ SCHEDULED CRON -€-€
   document.getElementById('ld-cron').innerHTML = [
-    {name:'Forex Rates',schedule:'*/15 * * * *',desc:'ExchangeRate-API â†’ Netlify Blobs',freq:'Every 15 min'},
+    {name:'Forex Rates',schedule:'*/15 * * * *',desc:'ExchangeRate-API -> Netlify Blobs',freq:'Every 15 min'},
     {name:'Fuel Prices',schedule:'0 */6 * * *',desc:'Cached seed data refresh',freq:'Every 6 hrs'},
     {name:'Central Bank Rates',schedule:'0 */12 * * *',desc:'World Bank inflation enrichment',freq:'Every 12 hrs'},
-    {name:'FX Snapshots',schedule:'0 6 * * *',desc:'Scrape â†’ Supabase fx_snapshots',freq:'Daily 6 AM'},
+    {name:'FX Snapshots',schedule:'0 6 * * *',desc:'Scrape -> Supabase fx_snapshots',freq:'Daily 6 AM'},
     {name:'Scholarship Verify',schedule:'0 4 * * *',desc:'HEAD-check URLs, mark dead',freq:'Daily 4 AM'},
     {name:'Monthly Digest',schedule:'0 8 1 * *',desc:'Resend personalized emails',freq:'1st of month'},
   ].map(function(c){
     return '<div class="pipe-row"><div class="pipe-status ps-ok"></div><div class="pipe-name">'+c.name+'<div style="font-size:9px;color:var(--text4)">'+c.desc+'</div></div><div style="text-align:right"><div style="font-size:10px;font-family:var(--mono);color:var(--brand)">'+c.schedule+'</div><div style="font-size:9px;color:var(--text4)">'+c.freq+'</div></div></div>';
   }).join('');
 
-  // â”€â”€ SUPABASE â”€â”€
+  // -€-€ SUPABASE -€-€
   document.getElementById('ld-supabase').innerHTML =
-    sectionHdr('Auth / Profiles â€” zpclagtgczsygrgztlts.supabase.co')
+    sectionHdr('Auth / Profiles - zpclagtgczsygrgztlts.supabase.co')
     +['profiles','email_preferences','calculation_history','fx_snapshots','salary_benchmarks'].map(function(t){return pipeRow(null,t,'Auth instance');}).join('')
-    +sectionHdr('Data / Tools â€” jbmhfpkzbgyeodsqhprx.supabase.co')
+    +sectionHdr('Data / Tools - jbmhfpkzbgyeodsqhprx.supabase.co')
     +['products','price_listings','community_prices','price_history','price_alerts','recipes','recipe_ingredients','recipe_steps','recipe_reviews','p2p_rates','scholarships','email_leads','search_queries','favorites','crypto_portfolios','crypto_portfolio_snapshots','commodity_benchmarks','country_profiles'].map(function(t){return pipeRow(null,t,'Data instance');}).join('');
 
-  // â”€â”€ ENGINES â”€â”€
+  // -€-€ ENGINES -€-€
   var engines = [
     {cat:'Financial & Tax',items:['tva-engine (21 VAT countries)','francophone-paye-engine (OHADA countries)','payment-comparator-engine','farm-loan-engine','farm-payroll-engine','business-planner-engine']},
     {cat:'Trade & Logistics',items:['landed-cost-engine','lc-fee-engine (Letter of Credit)','shipping-engine','demurrage-engine','incoterms-engine','trade-finance-engine','commodity-engine','eac-cet-engine (East Africa CET)','ecowas-levy-engine','sadc-roo-engine (SADC Rules of Origin)','hs-lookup-engine','coo-engine (Certificate of Origin)','export-docs-engine','fx-impact-engine']},
@@ -3139,12 +3201,12 @@ function buildLiveDataPage(){
   document.getElementById('ld-engines').innerHTML = engHtml;
   document.getElementById('engine-count').textContent = engineTotal+' engines';
 
-  // â”€â”€ DATA FILES â”€â”€
+  // -€-€ DATA FILES -€-€
   var dataFiles = [
     {cat:'Agriculture (74 files)',items:['data/agriculture/{country}-agri-data.js Ã— 50+','data/agriculture/commodity-prices.js','data/agriculture/cocoa-data.js','data/agriculture/coffee-data.js','data/agriculture/input-prices-data.js','data/agriculture/farm-costs.js','data/agriculture/farm-payroll-data.js','data/agriculture/agri-loans-data.js','data/agriculture/crop-database.js','data/agriculture/crop-growth-data.js','data/agriculture/crop-insurance-data.js','data/agriculture/livestock-feed-data.js','data/agriculture/pesticide-data.js','data/agriculture/seed-data.js','data/agriculture/equipment-data.js','data/agriculture/greenhouse-data.js','data/agriculture/storage-data.js','data/agriculture/vaccination-data.js','data/agriculture/country-index.js']},
     {cat:'Trade (13 files)',items:['data/trade/commodity-trade-data.js','data/trade/country-duty-rates.js','data/trade/hs-codes-database.js','data/trade/incoterms-data.js','data/trade/shipping-routes.js','data/trade/port-demurrage.js','data/trade/landed-cost-data.js','data/trade/trade-finance-data.js','data/trade/b2b-payments-data.js','data/trade/coo-templates.js','data/trade/export-docs-data.js','data/trade/afcfta-schedule.js','data/trade/fx-history.js']},
     {cat:'Core (5 files)',items:['assets/js/data/african-countries.js','tools/gpa-calculator/data/scholarships.js','assets/js/components/tool-registry.js','assets/js/live-data.js','assets/js/lib/api-cache.js']},
-    {cat:'JS Libraries (31 files)',items:['assets/js/lib/currency.js â€” 43 currency formatters','assets/js/lib/formatters.js â€” Date/number/% formatting','assets/js/lib/api-cache.js â€” HTTP caching w/ dynamic TTLs','assets/js/lib/crypto-data.js â€” Crypto market data','assets/js/lib/dark-mode.js â€” Theme toggle','assets/js/lib/pdf-template.js â€” PDF export layouts','assets/js/lib/chart-config.js â€” Chart.js presets','assets/js/lib/cross-tool-nav.js â€” Related tools strip','assets/js/lib/analytics.js â€” GA integration','assets/js/lib/live-translate.js â€” i18n bridge']},
+    {cat:'JS Libraries (31 files)',items:['assets/js/lib/currency.js - 43 currency formatters','assets/js/lib/formatters.js - Date/number/% formatting','assets/js/lib/api-cache.js - HTTP caching w/ dynamic TTLs','assets/js/lib/crypto-data.js - Crypto market data','assets/js/lib/dark-mode.js - Theme toggle','assets/js/lib/pdf-template.js - PDF export layouts','assets/js/lib/chart-config.js - Chart.js presets','assets/js/lib/cross-tool-nav.js - Related tools strip','assets/js/lib/analytics.js - GA integration','assets/js/lib/live-translate.js - i18n bridge']},
   ];
   var dfTotal = 0;
   var dfHtml = '';
@@ -3152,14 +3214,14 @@ function buildLiveDataPage(){
     dfHtml += sectionHdr(g.cat);
     g.items.forEach(function(f){
       dfTotal++;
-      var parts = f.split(' â€” ');
+      var parts = f.split(' - ');
       dfHtml += '<div class="pipe-row"><div class="pipe-status ps-ok" style="width:6px;height:6px"></div><div class="pipe-name" style="font-size:10px;font-family:var(--mono)">'+parts[0]+'</div>'+(parts[1]?'<div class="pipe-info" style="font-size:9px">'+parts[1]+'</div>':'')+'</div>';
     });
   });
   document.getElementById('ld-datafiles').innerHTML = dfHtml;
   document.getElementById('datafile-count').textContent = '118+ files';
 
-  // â”€â”€ ENV VARS â”€â”€
+  // -€-€ ENV VARS -€-€
   var envVars = [
     {cat:'API Keys (Critical)',items:[
       {key:'ANTHROPIC_API_KEY',svc:'Anthropic Claude',req:'Optional (degrades gracefully)'},
@@ -3199,20 +3261,20 @@ function buildLiveDataPage(){
   document.getElementById('ld-envvars').innerHTML = envHtml;
   document.getElementById('env-count').textContent = envTotal+' vars';
 
-  // â”€â”€ CACHING & DATA FLOW â”€â”€
+  // -€-€ CACHING & DATA FLOW -€-€
   document.getElementById('ld-caching').innerHTML = [
-    '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:11px"><strong style="color:var(--brand)">Browser Cache (CDN)</strong><div style="color:var(--text3);margin-top:2px">HTML: no-cache Â· CSS/JS/IMG: 1-year immutable Â· Data API: 5-10 min SWR</div></div>',
-    '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:11px"><strong style="color:var(--purple)">localStorage (api-cache.js)</strong><div style="color:var(--text3);margin-top:2px">/api/forex: 5 min Â· /api/fuel: 1 hr Â· /api/rates: 3 hr Â· /api/countries: 12 hr Â· /api/crypto: 1 min</div></div>',
+    '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:11px"><strong style="color:var(--brand)">Browser Cache (CDN)</strong><div style="color:var(--text3);margin-top:2px">HTML: no-cache - CSS/JS/IMG: 1-year immutable - Data API: 5-10 min SWR</div></div>',
+    '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:11px"><strong style="color:var(--purple)">localStorage (api-cache.js)</strong><div style="color:var(--text3);margin-top:2px">/api/forex: 5 min - /api/fuel: 1 hr - /api/rates: 3 hr - /api/countries: 12 hr - /api/crypto: 1 min</div></div>',
     '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:11px"><strong style="color:var(--green)">localStorage (live-data.js)</strong><div style="color:var(--text3);margin-top:2px">All commodity/cocoa/coffee/input/wage data: 1 hr TTL key ld:{type}</div></div>',
     '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:11px"><strong style="color:var(--amber)">sessionStorage (afro-fx.js)</strong><div style="color:var(--text3);margin-top:2px">FX pair cache: 1 hr key afro_fx_{params}</div></div>',
-    '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:11px"><strong style="color:var(--red)">Netlify Blobs (server-side)</strong><div style="color:var(--text3);margin-top:2px">forex-latest Â· fuel-latest Â· rates-latest â€” persisted across function cold starts</div></div>',
-    '<div style="padding:8px 0;font-size:11px"><strong>Data Flow:</strong><div style="color:var(--text3);margin-top:2px;font-family:var(--mono);font-size:10px">External API â†’ Scheduled Function â†’ Netlify Blobs â†’ /api/* endpoint â†’ Browser Cache â†’ localStorage â†’ Tool UI<br>Admin Page â†’ Supabase Table â†’ /api/* endpoint â†’ live-data.js (1hr cache) â†’ Tool UI</div></div>',
+    '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:11px"><strong style="color:var(--red)">Netlify Blobs (server-side)</strong><div style="color:var(--text3);margin-top:2px">forex-latest - fuel-latest - rates-latest - persisted across function cold starts</div></div>',
+    '<div style="padding:8px 0;font-size:11px"><strong>Data Flow:</strong><div style="color:var(--text3);margin-top:2px;font-family:var(--mono);font-size:10px">External API -> Scheduled Function -> Netlify Blobs -> /api/* endpoint -> Browser Cache -> localStorage -> Tool UI<br>Admin Page -> Supabase Table -> /api/* endpoint -> live-data.js (1hr cache) -> Tool UI</div></div>',
   ].join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  ALL PAGES REVIEW
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 var RV_COMMENTS_KEY = 'mc_review_comments';
 var RV_DAILY_KEY = 'mc_review_daily';
 var rvPages = [];
@@ -3232,7 +3294,7 @@ function buildAllPagesReview(){
   rvPages = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES : [];
   loadComments();
 
-  document.getElementById('rv-subtitle').textContent = rvPages.length + ' pages across the site â€” add comments, track review status';
+  document.getElementById('rv-subtitle').textContent = rvPages.length + ' pages across the site - add comments, track review status';
 
   // Build folder filter
   var folders = {};
@@ -3288,11 +3350,11 @@ function renderAllPages(){
       + '<td><span class="rv-status" style="background:var(--card2);color:var(--text3)">'+folderName+'</span></td>'
       + '<td>' + (hasComment ? '<span class="rv-status rv-done">Reviewed</span>' : '<span class="rv-status rv-pending">Pending</span>') + '</td>'
       + '<td><textarea class="rv-comment" id="rvc-'+i+'" placeholder="Add comment...">'+(c.comment||'')+'</textarea></td>'
-      + '<td><button class="rv-save-btn" onclick="savePageComment(\''+p.replace(/'/g,"\\'")+'\','+i+')">Save</button></td>'
+      + '<td><button type="button" class="rv-save-btn" onclick="savePageComment(\''+p.replace(/'/g,"\\'")+'\','+i+')">Save</button></td>'
       + '</tr>';
   }
   if(limit < filtered.length){
-    html += '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3);font-size:11px">Showing '+limit+' of '+filtered.length+' â€” use search to narrow results</td></tr>';
+    html += '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3);font-size:11px">Showing '+limit+' of '+filtered.length+' - use search to narrow results</td></tr>';
   }
   document.getElementById('rv-tbody').innerHTML = html;
 }
@@ -3351,9 +3413,9 @@ function importComments(input){
   input.value = '';
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  DAILY REVIEW â€” 200 random pages/day, no repeats
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
+//  DAILY REVIEW - 200 random pages/day, no repeats
+// ----------------------------------------------------------
 function seededRandom(seed){
   var x = Math.sin(seed) * 10000;
   return x - Math.floor(x);
@@ -3424,7 +3486,7 @@ function buildDailyReview(){
   var totalPages = rvPages.length;
   var daysInCycle = Math.ceil(totalPages / 200);
   var cycleNum = state.cycle || 1;
-  document.getElementById('dr-cycle-info').textContent = 'Cycle ' + cycleNum + ' â€” ~' + daysInCycle + ' days to cover all ' + totalPages + ' pages';
+  document.getElementById('dr-cycle-info').textContent = 'Cycle ' + cycleNum + ' - ~' + daysInCycle + ' days to cover all ' + totalPages + ' pages';
 
   // Day info
   var reviewedInCycle = (state.reviewedInCycle || []).length;
@@ -3436,7 +3498,7 @@ function buildDailyReview(){
   for(var g = 0; g < drTodayPages.length; g += 10){
     var opt = document.createElement('option');
     opt.value = g;
-    opt.textContent = (g+1) + 'â€“' + Math.min(g+10, drTodayPages.length);
+    opt.textContent = (g+1) + '-' + Math.min(g+10, drTodayPages.length);
     jumpSel.appendChild(opt);
   }
 
@@ -3470,11 +3532,11 @@ function renderDailyCards(){
       + '<div class="dr-card-name">'+(i+1)+'. '+p.split('/').filter(Boolean).pop().replace('.html','')+'</div>'
       + '<span class="dr-card-cat">'+folderName+'</span>'
       + '</div>'
-      + '<div class="dr-card-path"><a href="'+p+'" target="_blank">'+p+' â†—</a></div>'
+      + '<div class="dr-card-path"><a href="'+p+'" target="_blank">'+p+' -</a></div>'
       + '<textarea placeholder="Add review comment..." id="drt-'+i+'">'+(c.comment||'')+'</textarea>'
       + '<div class="dr-card-actions">'
-      + '<button class="dr-mark-btn'+(isReviewed?' done':'')+'" onclick="drMarkReviewed('+i+')">'+(isReviewed?'âœ“ Reviewed':'Mark Reviewed')+'</button>'
-      + '<button class="rv-save-btn" onclick="drSaveComment('+i+')">Save Comment</button>'
+      + '<button type="button" class="dr-mark-btn'+(isReviewed?' done':'')+'" onclick="drMarkReviewed('+i+')">'+(isReviewed?'OK Reviewed':'Mark Reviewed')+'</button>'
+      + '<button type="button" class="rv-save-btn" onclick="drSaveComment('+i+')">Save Comment</button>'
       + (c.date ? '<span class="rv-saved">Last: '+c.date+'</span>' : '')
       + '</div>'
       + '</div>';
@@ -3482,7 +3544,7 @@ function renderDailyCards(){
   document.getElementById('dr-cards').innerHTML = html;
 
   // Nav
-  document.getElementById('dr-range').textContent = (start+1) + 'â€“' + end + ' of ' + total;
+  document.getElementById('dr-range').textContent = (start+1) + '-' + end + ' of ' + total;
   document.getElementById('dr-prev').disabled = start === 0;
   document.getElementById('dr-next').disabled = end >= total;
 }
@@ -3540,9 +3602,9 @@ function drMarkReviewed(idx){
   renderDailyCards();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 //  INIT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ----------------------------------------------------------
 function initAll(){
   buildDashStats();
   buildFiftyKDashboard();

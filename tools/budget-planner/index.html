@@ -22,10 +22,10 @@
     
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea"><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -187,36 +187,36 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="field">
 <label class="f-label">Quick Preset <span style="font-weight:400;color:#94a3b8">(fills sample figures)</span></label>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="preset-btn" onclick="loadPreset('lagos')">🇳🇬 Lagos</button>
-<button class="preset-btn" onclick="loadPreset('nairobi')">🇰🇪 Nairobi</button>
-<button class="preset-btn" onclick="loadPreset('joburg')">🇿🇦 Joburg</button>
-<button class="preset-btn" onclick="loadPreset('accra')">🇬🇭 Accra</button>
-<button class="preset-btn" onclick="loadPreset('kampala')">🇺🇬 Kampala</button>
+<button type="button" class="preset-btn" onclick="loadPreset('lagos')">🇳🇬 Lagos</button>
+<button type="button" class="preset-btn" onclick="loadPreset('nairobi')">🇰🇪 Nairobi</button>
+<button type="button" class="preset-btn" onclick="loadPreset('joburg')">🇿🇦 Joburg</button>
+<button type="button" class="preset-btn" onclick="loadPreset('accra')">🇬🇭 Accra</button>
+<button type="button" class="preset-btn" onclick="loadPreset('kampala')">🇺🇬 Kampala</button>
 </div>
 </div>
 <div id="incomeRows">
 <div class="expense-row">
-<input type="text" class="f-input inc-name" placeholder="Salary" value="Salary">
-<input type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric">
-<button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>
+<input aria-label="Salary" type="text" class="f-input inc-name" placeholder="Salary" value="Salary">
+<input aria-label="Amount" type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric">
+<button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>
 </div>
 </div>
-<button class="add-btn" onclick="addIncome()" style="margin-top:8px">+ Add Income Source</button>
+<button type="button" class="add-btn" onclick="addIncome()" style="margin-top:8px">+ Add Income Source</button>
 </div>
 </div>
 
 <div class="card">
 <div class="card-head">
 <span class="card-title">Expenses</span>
-<button class="add-btn" onclick="addExpense()">+ Add Expense</button>
+<button type="button" class="add-btn" onclick="addExpense()">+ Add Expense</button>
 </div>
 <div class="card-body" id="expenseArea">
 </div>
 </div>
 
 <div style="display:flex;gap:10px;margin-top:16px;align-items:center">
-<button class="calc-btn" onclick="calculate()" style="flex:1">Calculate Budget</button>
-<button class="reset-btn" onclick="resetBudget()" title="Clear all entries">Reset</button>
+<button type="button" class="calc-btn" onclick="calculate()" style="flex:1">Calculate Budget</button>
+<button type="button" class="reset-btn" onclick="resetBudget()" title="Clear all entries">Reset</button>
 </div>
 
 <div class="card" id="summaryCard" style="display:none;margin-top:18px">
@@ -401,7 +401,7 @@ function loadPreset(key){
   p.income.forEach(function(inc){
     var row=document.createElement('div');
     row.className='expense-row';
-    row.innerHTML='<input type="text" class="f-input inc-name" placeholder="Income source" value="'+inc.name+'"><input type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric" value="'+inc.amount+'"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>';
+    row.innerHTML='<input aria-label="Income source" type="text" class="f-input inc-name" placeholder="Income source" value="'+inc.name+'"><input aria-label="Amount" type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric" value="'+inc.amount+'"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>';
     incContainer.appendChild(row);
   });
   // Fill expenses
@@ -412,7 +412,7 @@ function loadPreset(key){
     p.expenses[ci].forEach(function(exp){
       var row=document.createElement('div');
       row.className='expense-row';
-      row.innerHTML='<input type="text" class="f-input exp-name" data-cat="'+ci+'" placeholder="Item name" value="'+exp.name+'"><input type="text" class="f-input exp-amt" data-cat="'+ci+'" placeholder="0" inputmode="numeric" value="'+exp.amount+'"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>';
+      row.innerHTML='<input aria-label="Item name" type="text" class="f-input exp-name" data-cat="'+ci+'" placeholder="Item name" value="'+exp.name+'"><input aria-label="F input exp amt" type="text" class="f-input exp-amt" data-cat="'+ci+'" placeholder="0" inputmode="numeric" value="'+exp.amount+'"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>';
       container.appendChild(row);
     });
   });
@@ -424,7 +424,7 @@ function resetBudget(){
   localStorage.removeItem('afro_budget');
   buildExpenseCategories();
   var incContainer=document.getElementById('incomeRows');
-  incContainer.innerHTML='<div class="expense-row"><input type="text" class="f-input inc-name" placeholder="Salary" value="Salary"><input type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button></div>';
+  incContainer.innerHTML='<div class="expense-row"><input aria-label="Salary" type="text" class="f-input inc-name" placeholder="Salary" value="Salary"><input aria-label="Amount" type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button></div>';
   document.getElementById('summaryCard').style.display='none';
 }
 
@@ -448,13 +448,13 @@ function buildExpenseCategories(){
       <div id="catRows${ci}">
         ${cat.items.map(item=>`
           <div class="expense-row">
-            <input type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name" value="${item}">
-            <input type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric">
-            <button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>
+            <input aria-label="Item name" type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name" value="${item}">
+            <input aria-label="F input exp amt" type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric">
+            <button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>
           </div>
         `).join('')}
       </div>
-      <button class="add-btn" onclick="addExpenseToCategory(${ci})" style="margin-top:4px;font-size:.65rem;padding:4px 10px">+ Add Item</button>
+      <button type="button" class="add-btn" onclick="addExpenseToCategory(${ci})" style="margin-top:4px;font-size:.65rem;padding:4px 10px">+ Add Item</button>
     `;
     area.appendChild(section);
   });
@@ -463,14 +463,14 @@ function buildExpenseCategories(){
 function addIncome(){
   const row=document.createElement('div');
   row.className='expense-row';
-  row.innerHTML=`<input type="text" class="f-input inc-name" placeholder="Income source"><input type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
+  row.innerHTML=`<input aria-label="Income source" type="text" class="f-input inc-name" placeholder="Income source"><input aria-label="Amount" type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
   document.getElementById('incomeRows').appendChild(row);
 }
 
 function addExpenseToCategory(ci){
   const row=document.createElement('div');
   row.className='expense-row';
-  row.innerHTML=`<input type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name"><input type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
+  row.innerHTML=`<input aria-label="Item name" type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name"><input aria-label="F input exp amt" type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
   document.getElementById('catRows'+ci).appendChild(row);
 }
 
@@ -596,7 +596,7 @@ function loadBudget(){
       data.income.forEach(inc=>{
         const row=document.createElement('div');
         row.className='expense-row';
-        row.innerHTML=`<input type="text" class="f-input inc-name" placeholder="Income source" value="${inc.name||''}"><input type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric" value="${inc.amount||''}"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
+        row.innerHTML=`<input aria-label="Income source" type="text" class="f-input inc-name" placeholder="Income source" value="${inc.name||''}"><input aria-label="Amount" type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric" value="${inc.amount||''}"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
         container.appendChild(row);
       });
     }
@@ -608,7 +608,7 @@ function loadBudget(){
         data.expenses[ci].forEach(exp=>{
           const row=document.createElement('div');
           row.className='expense-row';
-          row.innerHTML=`<input type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name" value="${exp.name||''}"><input type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric" value="${exp.amount||''}"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
+          row.innerHTML=`<input aria-label="Item name" type="text" class="f-input exp-name" data-cat="${ci}" placeholder="Item name" value="${exp.name||''}"><input aria-label="F input exp amt" type="text" class="f-input exp-amt" data-cat="${ci}" placeholder="0" inputmode="numeric" value="${exp.amount||''}"><button type="button" class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
           container.appendChild(row);
         });
       });

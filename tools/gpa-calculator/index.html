@@ -144,10 +144,10 @@
 
 <!-- ===== TABS ===== -->
 <nav class="gpa-tabs" role="tablist" aria-label="Calculator tabs">
-    <button class="gpa-tab active" role="tab" aria-selected="true" data-tab="tab-semester" id="tabBtn-semester">Semester GPA</button>
-    <button class="gpa-tab" role="tab" aria-selected="false" data-tab="tab-transcript" id="tabBtn-transcript">Transcript Upload</button>
-    <button class="gpa-tab" role="tab" aria-selected="false" data-tab="tab-converter" id="tabBtn-converter">GPA Converter</button>
-    <button class="gpa-tab" role="tab" aria-selected="false" data-tab="tab-whatif" id="tabBtn-whatif">What-If Calculator</button>
+    <button type="button" class="gpa-tab active" role="tab" aria-selected="true" data-tab="tab-semester" id="tabBtn-semester">Semester GPA</button>
+    <button type="button" class="gpa-tab" role="tab" aria-selected="false" data-tab="tab-transcript" id="tabBtn-transcript">Transcript Upload</button>
+    <button type="button" class="gpa-tab" role="tab" aria-selected="false" data-tab="tab-converter" id="tabBtn-converter">GPA Converter</button>
+    <button type="button" class="gpa-tab" role="tab" aria-selected="false" data-tab="tab-whatif" id="tabBtn-whatif">What-If Calculator</button>
 </nav>
 
 <!-- ===== MAIN LAYOUT ===== -->
@@ -160,8 +160,8 @@
         <div class="gpa-tab-content active" id="tab-semester" role="tabpanel" aria-labelledby="tabBtn-semester">
             <div id="semestersContainer"></div>
             <div class="gpa-semester-actions">
-                <button class="gpa-btn gpa-btn-primary" id="addSemesterBtn">+ Add Semester</button>
-                <button class="gpa-btn gpa-btn-secondary" id="clearAllBtn">Clear All</button>
+                <button type="button" class="gpa-btn gpa-btn-primary" id="addSemesterBtn">+ Add Semester</button>
+                <button type="button" class="gpa-btn gpa-btn-secondary" id="clearAllBtn">Clear All</button>
             </div>
         </div>
 
@@ -172,7 +172,7 @@
                 <p class="desc">Paste your results in any format — we'll auto-detect courses, credits, and grades.</p>
                 <textarea class="gpa-transcript-area" id="transcriptText" placeholder="ENG 101  Engineering Mathematics I  3  A&#10;PHY 101  Engineering Physics        3  B+&#10;DRW 101  Engineering Drawing        2  A&#10;&#10;Supports tab, comma, or space-separated formats." aria-label="Paste transcript text here"></textarea>
                 <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-                    <button class="gpa-btn gpa-btn-primary" id="parseTranscriptBtn">Parse Transcript</button>
+                    <button type="button" class="gpa-btn gpa-btn-primary" id="parseTranscriptBtn">Parse Transcript</button>
                 </div>
                 <div id="transcriptPreview"></div>
             </div>
@@ -188,7 +188,7 @@
                     <input type="file" id="csvFileInput" accept=".csv" style="display:none" aria-label="Upload CSV file">
                 </div>
                 <div style="margin-top:12px;">
-                    <button class="gpa-btn gpa-btn-secondary" id="downloadSampleBtn">Download Sample CSV</button>
+                    <button type="button" class="gpa-btn gpa-btn-secondary" id="downloadSampleBtn">Download Sample CSV</button>
                 </div>
                 <div id="csvPreview"></div>
             </div>
@@ -227,7 +227,7 @@
                     </div>
                 </div>
                 <div style="margin-top:16px;">
-                    <button class="gpa-btn gpa-btn-primary" id="convertBtn">Convert</button>
+                    <button type="button" class="gpa-btn gpa-btn-primary" id="convertBtn">Convert</button>
                 </div>
             </div>
 
@@ -249,9 +249,9 @@
                 <p class="desc">Plan your next semester — find out what GPA you need to reach your target.</p>
 
                 <div class="gpa-whatif-modes">
-                    <button class="gpa-whatif-mode active" data-mode="target-gpa">Target GPA</button>
-                    <button class="gpa-whatif-mode" data-mode="target-class">Target Class</button>
-                    <button class="gpa-whatif-mode" data-mode="grade-replace">Grade Replacement</button>
+                    <button type="button" class="gpa-whatif-mode active" data-mode="target-gpa">Target GPA</button>
+                    <button type="button" class="gpa-whatif-mode" data-mode="target-class">Target Class</button>
+                    <button type="button" class="gpa-whatif-mode" data-mode="grade-replace">Grade Replacement</button>
                 </div>
 
                 <!-- Mode 1: Target GPA -->
@@ -276,7 +276,7 @@
                             <input type="number" id="wfUpcomingCredits" step="1" placeholder="e.g. 18">
                         </div>
                     </div>
-                    <button class="gpa-btn gpa-btn-primary" id="calcTargetGpaBtn">Calculate Required GPA</button>
+                    <button type="button" class="gpa-btn gpa-btn-primary" id="calcTargetGpaBtn">Calculate Required GPA</button>
                 </div>
 
                 <!-- Mode 2: Target Class -->
@@ -301,7 +301,7 @@
                             <input type="number" id="wfClassUpcomingCredits" step="1" placeholder="e.g. 36">
                         </div>
                     </div>
-                    <button class="gpa-btn gpa-btn-primary" id="calcTargetClassBtn">Calculate Required GPA</button>
+                    <button type="button" class="gpa-btn gpa-btn-primary" id="calcTargetClassBtn">Calculate Required GPA</button>
                 </div>
 
                 <!-- Mode 3: Grade Replacement -->
@@ -319,7 +319,7 @@
                             <select id="wfReplaceGrade" class="gpa-select"></select>
                         </div>
                     </div>
-                    <button class="gpa-btn gpa-btn-primary" id="calcReplaceBtn">Calculate New CGPA</button>
+                    <button type="button" class="gpa-btn gpa-btn-primary" id="calcReplaceBtn">Calculate New CGPA</button>
                 </div>
 
                 <div id="whatifResult"></div>
@@ -372,10 +372,10 @@
 
             <!-- Share -->
             <div class="gpa-share-row" style="margin-top:12px;">
-                <button class="gpa-share-btn" id="shareWhatsapp">&#x1F4F1; WhatsApp</button>
-                <button class="gpa-share-btn" id="shareTwitter">&#x1D54F; Twitter/X</button>
-                <button class="gpa-share-btn" id="shareCopy">&#x1F4CB; Copy</button>
-                <button class="gpa-share-btn" id="sharePdf">&#x1F4C4; PDF</button>
+                <button type="button" class="gpa-share-btn" id="shareWhatsapp">&#x1F4F1; WhatsApp</button>
+                <button type="button" class="gpa-share-btn" id="shareTwitter">&#x1D54F; Twitter/X</button>
+                <button type="button" class="gpa-share-btn" id="shareCopy">&#x1F4CB; Copy</button>
+                <button type="button" class="gpa-share-btn" id="sharePdf">&#x1F4C4; PDF</button>
             </div>
         </div>
 
@@ -469,8 +469,8 @@
       <div class="ai-chat" id="aiChat">
         <div class="ai-msgs" id="aiMsgs"></div>
         <div class="ai-input-row">
-          <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
-          <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+          <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
         </div>
       </div>
     </div>
@@ -481,11 +481,11 @@
 <afro-footer></afro-footer>
 
 <!-- ===== SCRIPTS ===== -->
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/afro-auth.js?v=3978e101" defer></script>
 <!-- Data files -->
 <script src="/tools/gpa-calculator/data/grading-systems.js?v=2fd1e3b4"></script>

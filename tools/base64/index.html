@@ -28,10 +28,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -729,8 +729,8 @@
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -792,23 +792,23 @@
         </div>
         <div class="card-body">
           <div class="tabs">
-            <button class="tab-btn active" data-tab="text-tab">Text</button>
-            <button class="tab-btn" data-tab="file-tab">File Upload</button>
-            <button class="tab-btn" data-tab="image-tab">Image to Base64</button>
-            <button class="tab-btn" data-tab="decode-file-tab">Decode File</button>
+            <button type="button" class="tab-btn active" data-tab="text-tab">Text</button>
+            <button type="button" class="tab-btn" data-tab="file-tab">File Upload</button>
+            <button type="button" class="tab-btn" data-tab="image-tab">Image to Base64</button>
+            <button type="button" class="tab-btn" data-tab="decode-file-tab">Decode File</button>
           </div>
 
           <!-- TEXT TAB -->
           <div id="text-tab" class="tab-pane active">
             <div class="dir-row">
-              <button class="dir-btn active" id="encode-btn">Encode &rarr;</button>
-              <button class="dir-btn" id="decode-btn">&larr; Decode</button>
+              <button type="button" class="dir-btn active" id="encode-btn">Encode &rarr;</button>
+              <button type="button" class="dir-btn" id="decode-btn">&larr; Decode</button>
             </div>
 
             <div class="field">
               <label class="f-label">
                 <span class="f-label-text">Input</span>
-                <button class="copy-btn" id="text-copy-input">Copy</button>
+                <button type="button" class="copy-btn" id="text-copy-input">Copy</button>
               </label>
               <textarea class="f-textarea" id="text-input" placeholder="Enter text to encode or Base64 to decode..."></textarea>
             </div>
@@ -816,25 +816,25 @@
             <div class="field">
               <label class="f-label">
                 <span class="f-label-text">Output</span>
-                <button class="copy-btn" id="text-copy-output">Copy</button>
+                <button type="button" class="copy-btn" id="text-copy-output">Copy</button>
               </label>
               <textarea class="f-textarea" id="text-output" readonly placeholder="Output will appear here..."></textarea>
             </div>
 
             <div class="toggle-row">
               <label class="toggle-label">
-                <input type="checkbox" id="url-safe-toggle">
+                <input aria-label="Url safe toggle" type="checkbox" id="url-safe-toggle">
                 URL-safe mode
               </label>
               <label class="toggle-label">
-                <input type="checkbox" id="linebreak-toggle">
+                <input aria-label="Linebreak toggle" type="checkbox" id="linebreak-toggle">
                 MIME line breaks (76 chars)
               </label>
             </div>
 
             <div class="btn-row">
-              <button class="copy-btn" id="text-swap">Swap Input/Output</button>
-              <button class="copy-btn" id="text-clear">Clear All</button>
+              <button type="button" class="copy-btn" id="text-swap">Swap Input/Output</button>
+              <button type="button" class="copy-btn" id="text-clear">Clear All</button>
             </div>
 
             <div class="stats-bar" id="text-stats">
@@ -852,14 +852,14 @@
                 <div class="drop-zone-text">Drop a file here or click to upload</div>
                 <div class="drop-zone-sub">Supports any file type up to 10 MB</div>
               </div>
-              <input type="file" id="file-input" style="display:none">
+              <input aria-label="File input" type="file" id="file-input" style="display:none">
               <div id="file-info" class="file-info-bar" style="display:none"></div>
               <div id="file-image-preview" class="image-preview" style="display:none"></div>
             </div>
 
             <div class="toggle-row" style="margin-top:0;margin-bottom:12px">
               <label class="toggle-label">
-                <input type="checkbox" id="file-include-prefix">
+                <input aria-label="File include prefix" type="checkbox" id="file-include-prefix">
                 Include data:mime;base64, prefix
               </label>
             </div>
@@ -867,13 +867,13 @@
             <div class="field">
               <label class="f-label">
                 <span class="f-label-text">Base64 Output</span>
-                <button class="copy-btn" id="file-copy-output">Copy</button>
+                <button type="button" class="copy-btn" id="file-copy-output">Copy</button>
               </label>
               <textarea class="f-textarea" id="file-output" readonly placeholder="Base64 will appear here..."></textarea>
             </div>
 
             <div class="btn-row">
-              <button class="copy-btn" id="file-download-txt">Download as .txt</button>
+              <button type="button" class="copy-btn" id="file-download-txt">Download as .txt</button>
             </div>
           </div>
 
@@ -885,14 +885,14 @@
                 <div class="drop-zone-text">Drop an image here or click to upload</div>
                 <div class="drop-zone-sub">PNG, JPG, GIF, SVG, WebP (max 10 MB)</div>
               </div>
-              <input type="file" id="img-input" accept="image/*" style="display:none">
+              <input aria-label="Img input" type="file" id="img-input" accept="image/*" style="display:none">
               <div id="img-info" class="file-info-bar" style="display:none"></div>
               <div id="img-preview" class="image-preview" style="display:none"></div>
             </div>
 
             <div class="toggle-row" style="margin-top:0;margin-bottom:12px">
               <label class="toggle-label">
-                <input type="checkbox" id="img-include-prefix" checked>
+                <input aria-label="Img include prefix" type="checkbox" id="img-include-prefix" checked>
                 Include data:image/...;base64, prefix
               </label>
             </div>
@@ -900,7 +900,7 @@
             <div class="field">
               <label class="f-label">
                 <span class="f-label-text">Base64 Data URI</span>
-                <button class="copy-btn" id="img-copy-output">Copy</button>
+                <button type="button" class="copy-btn" id="img-copy-output">Copy</button>
               </label>
               <textarea class="f-textarea" id="img-output" readonly placeholder="Image Base64 data URI will appear here..." style="min-height:120px"></textarea>
             </div>
@@ -923,7 +923,7 @@
 
             <div class="field">
               <label class="f-label"><span class="f-label-text">Filename</span></label>
-              <input class="f-input" type="text" id="decode-filename" placeholder="output.txt" style="font-family:'DM Sans',sans-serif">
+              <input aria-label="Output.txt" class="f-input" type="text" id="decode-filename" placeholder="output.txt" style="font-family:'DM Sans',sans-serif">
             </div>
 
             <div class="field">
@@ -939,7 +939,7 @@
               </select>
             </div>
 
-            <button class="calc-btn" id="decode-download-btn">Decode &amp; Download</button>
+            <button type="button" class="calc-btn" id="decode-download-btn">Decode &amp; Download</button>
           </div>
         </div>
       </div>
@@ -947,17 +947,17 @@
       <!-- AI Advisor Card -->
       <div class="card">
         <div class="card-body">
-          <button class="ai-toggle-btn" id="ai-toggle">&#10022; Ask AI about this Base64</button>
+          <button type="button" class="ai-toggle-btn" id="ai-toggle">&#10022; Ask AI about this Base64</button>
           <div class="ai-panel" id="ai-panel">
             <div class="ai-suggestions" id="ai-suggestions">
-              <button class="ai-suggest-btn" data-q="What type of data is this Base64?">What type of data is this Base64?</button>
-              <button class="ai-suggest-btn" data-q="Is this a valid JWT token? Decode and explain the parts.">Is this a valid JWT?</button>
-              <button class="ai-suggest-btn" data-q="Decode this Base64 and explain what the content is.">Decode and explain</button>
+              <button type="button" class="ai-suggest-btn" data-q="What type of data is this Base64?">What type of data is this Base64?</button>
+              <button type="button" class="ai-suggest-btn" data-q="Is this a valid JWT token? Decode and explain the parts.">Is this a valid JWT?</button>
+              <button type="button" class="ai-suggest-btn" data-q="Decode this Base64 and explain what the content is.">Decode and explain</button>
             </div>
             <div class="ai-chat" id="ai-chat"></div>
             <div class="ai-input-row">
-              <input class="ai-input" id="ai-input" type="text" placeholder="Ask about your Base64 data...">
-              <button class="ai-send-btn" id="ai-send">Send</button>
+              <input aria-label="Ask about your Base64 data" class="ai-input" id="ai-input" type="text" placeholder="Ask about your Base64 data...">
+              <button type="button" class="ai-send-btn" id="ai-send">Send</button>
             </div>
             <div class="ai-powered">Powered by Claude &middot; Max 3 messages per session</div>
           </div>

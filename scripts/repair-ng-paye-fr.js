@@ -47,15 +47,15 @@ replaceRegex(
 
 replaceRegex(/How to Calculate PAYE in Nigeria\s*[→&rarr;]+/, 'Comment calculer le PAYE au Nigeria &rarr;', 'hero paye link');
 replaceRegex(/Nigeria Import Duty Guide\s*[→&rarr;]+/, 'Guide des droits de douane au Nigeria &rarr;', 'hero import link');
-replaceRegex(/Derni(?:è|Ã¨)re mise [àÃ ] jour : March 2026 [·Â].*?Voir les changements/, 'Derniere mise a jour : mars 2026 &middot; <a href="/fr/blog/tax-updates-2026/" style="color:var(--color-brand);">Voir les changements', 'last updated');
+replaceRegex(/Derni(?:è|e)re mise [àÃ ] jour : March 2026 [·Â].*?Voir les changements/, 'Derniere mise a jour : mars 2026 &middot; <a href="/fr/blog/tax-updates-2026/" style="color:var(--color-brand);">Voir les changements', 'last updated');
 replaceRegex(
   /<strong>PITA \(old\):<\/strong>.*?<em>If you&rsquo;re unsure, calculate both and compare &mdash; the tabs below let you switch instantly\.<\/em>/,
   '<strong>PITA (ancien) :</strong> utilisez-le pour l annee fiscale 2025 ou si votre employeur n a pas encore bascule. La CRA (Consolidated Relief Allowance) reduit votre revenu imposable. <strong>NTA 2026 (nouveau) :</strong> la Nigeria Tax Act est entree en vigueur le 1 janvier 2026. La CRA est supprimee et remplacee par un seuil exonere de &#8358;800K et l allegement de loyer. <em>En cas de doute, calculez les deux et comparez : les onglets ci-dessous permettent de basculer instantanement.</em>',
   'regime helper paragraph'
 );
 replaceRegex(/After all .*?&amp; tax/, 'Apres deductions et impot', 'results subtitle');
-replaceRegex(/Co(?:û|Ã»?)t Employeur Breakdown/, 'Detail du cout employeur', 'employer card title');
-replaceRegex(/Co(?:û|Ã»?)t Employeur/, 'Cout employeur', 'tool feat employer');
+replaceRegex(/Co(?:û|u?)t Employeur Breakdown/, 'Detail du cout employeur', 'employer card title');
+replaceRegex(/Co(?:û|u?)t Employeur/, 'Cout employeur', 'tool feat employer');
 replaceRegex(
   /This Nigeria tax calculator computes your PAYE \(Pay As You Earn\) income tax.*?when planning landed costs\./,
   'Ce calculateur fiscal Nigeria calcule votre impot PAYE (Pay As You Earn) selon l ancien systeme PITA (2025) et la nouvelle Nigeria Tax Act (NTA 2026). Entrez votre salaire pour voir votre net exact, votre taux effectif, votre taux marginal et un detail complet des deductions, y compris pension, NHF, NHIS et allegement de loyer. Il prend en charge le calcul brut-vers-net et le calcul inverse net-vers-brut. Les entreprises au Nigeria doivent aussi verifier leurs obligations de <a href="/fr/nigeria/ng-vat" style="color:var(--color-brand,#007AFF);">TVA a 7,5%</a> et utiliser notre <a href="/fr/tools/droits-douane/" style="color:var(--color-brand,#007AFF);">calculateur de droits de douane</a> pour estimer les couts d\'importation.',
@@ -75,7 +75,7 @@ const runtimeExactReplacements = [
   ['Gross Income', 'Revenu brut'],
   ['Gross Salary', 'Salaire brut'],
   ['Statutory Déductions', 'Deductions statutaires'],
-  ['Statutory DÃ©ductions', 'Deductions statutaires'],
+  ['Statutory Deductions', 'Deductions statutaires'],
   ['Life Insurance', 'Assurance vie'],
   ['Home Loan Interest', 'Interets de pret immobilier'],
   ['Total Statutory', 'Total statutaire'],
@@ -89,7 +89,7 @@ const runtimeExactReplacements = [
   ['Below tax-free threshold &mdash; no PAYE applies.', "En dessous du seuil exonere &mdash; aucun PAYE ne s'applique."],
   ['Min tax applied (1% gross)', 'Impot minimum applique (1% du brut)'],
   ['Total Déductions', 'Total des deductions'],
-  ['Total DÃ©ductions', 'Total des deductions'],
+  ['Total Deductions', 'Total des deductions'],
   ['Take-Home Pay', 'Salaire net'],
   ['<th>Band</th><th>Rate</th><th>Income</th><th>Tax</th><th class="cum">Cumulative</th>', '<th>Tranche</th><th>Taux</th><th>Revenu</th><th>Impot</th><th class="cum">Cumul</th>'],
   ['Employee Gross Salary', 'Salaire brut salarie'],
@@ -104,7 +104,7 @@ const runtimeExactReplacements = [
   ['Net monthly:', 'Net mensuel :'],
   ['Gross monthly:', 'Brut mensuel :'],
   ['Get AI Tax Analysis →', 'Obtenir l analyse fiscale IA →'],
-  ['Get AI Tax Analysis â†’', 'Obtenir l analyse fiscale IA →'],
+  ['Get AI Tax Analysis ->', 'Obtenir l analyse fiscale IA →'],
   ['Gross: ', 'Brut : '],
   ['Take-home: ', 'Net : '],
   ['Rate: ', 'Taux : '],
@@ -131,22 +131,22 @@ const runtimeExactReplacements = [
   ['CRA abolished. Rent Relief = lower of 20% rent or ₦500k. Pension on Basic+Housing+Transport only. Effective Jan 1 2026.', 'CRA supprimee. Allegement de loyer = plus faible entre 20% du loyer et ₦500k. Pension sur Basic+Housing+Transport uniquement. En vigueur le 1 janv. 2026.'],
   ["document.getElementById('bandsTitle').textContent = REGIME === 'nta' ? 'NTA 2026 Tax Bands' : 'PITA 2025 Tax Bands';", "document.getElementById('bandsTitle').textContent = REGIME === 'nta' ? 'Tranches fiscales NTA 2026' : 'Tranches fiscales PITA 2025';"],
   ["labels: ['Take-Home', 'PAYE Tax', 'Pension', 'NHF', 'NHIS', 'Other Déductions']", "labels: ['Salaire net', 'Impot PAYE', 'Pension', 'NHF', 'NHIS', 'Autres deductions']"],
-  ["labels: ['Take-Home', 'PAYE Tax', 'Pension', 'NHF', 'NHIS', 'Other DÃ©ductions']", "labels: ['Salaire net', 'Impot PAYE', 'Pension', 'NHF', 'NHIS', 'Autres deductions']"],
+  ["labels: ['Take-Home', 'PAYE Tax', 'Pension', 'NHF', 'NHIS', 'Other Deductions']", "labels: ['Salaire net', 'Impot PAYE', 'Pension', 'NHF', 'NHIS', 'Autres deductions']"],
   ["datasets: [{ label: 'Tax (₦)'", "datasets: [{ label: 'Impot (₦)'"],
   ["labels: ['Take-Home', 'Income Tax', 'Statutory']", "labels: ['Salaire net', 'Impot sur le revenu', 'Statutaire']"],
   ["labels: ['Income Distribution']", "labels: ['Repartition du revenu']"],
   ["label: pct(b.rate) + ' band'", "label: pct(b.rate) + ' tranche'"],
   ['Income & Déductions', 'Revenus et deductions'],
-  ['Income & DÃ©ductions', 'Revenus et deductions'],
+  ['Income & Deductions', 'Revenus et deductions'],
   ['Gross Annual Salary', 'Salaire brut annuel'],
   ['Total Statutory Déductions', 'Total des deductions statutaires'],
-  ['Total Statutory DÃ©ductions', 'Total des deductions statutaires'],
+  ['Total Statutory Deductions', 'Total des deductions statutaires'],
   ['Tax Relief & Taxable Income', 'Allegements fiscaux et revenu imposable'],
   ['Tax Computation', "Calcul de l'impot"],
   ['Total PAYE Tax', 'Impot PAYE total'],
   ['Net Pay Summary', 'Resume du salaire net'],
   ['Total Déductions (Statutory + Tax)', 'Total des deductions (statutaires + impot)'],
-  ['Total DÃ©ductions (Statutory + Tax)', 'Total des deductions (statutaires + impot)'],
+  ['Total Deductions (Statutory + Tax)', 'Total des deductions (statutaires + impot)'],
   ['Annual Take-Home Pay', 'Salaire net annuel'],
   ['Monthly Take-Home Pay', 'Salaire net mensuel'],
   ['Effective Tax Rate', 'Taux effectif'],

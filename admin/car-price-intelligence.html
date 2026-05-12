@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Car Backend Admin | AfroTools</title>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <style>
     body{font-family:Inter,system-ui,sans-serif;background:#f6f8fb;color:#142238;margin:0}
     .wrap{max-width:1200px;margin:0 auto;padding:28px 18px}
@@ -28,6 +28,9 @@
   </style>
 <link rel="canonical" href="https://afrotools.com/admin/car-price-intelligence">
 <meta property="og:url" content="https://afrotools.com/admin/car-price-intelligence">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
   <main class="wrap">
@@ -47,16 +50,16 @@
     <section class="grid">
       <div class="panel">
         <h2>Vehicle catalog</h2>
-        <label>Search vehicles <input id="catalogSearch" placeholder="Toyota Axio, CR-V, G-Wagon"></label>
+        <label>Search vehicles <input aria-label="Toyota Axio, CR V, G Wagon" id="catalogSearch" placeholder="Toyota Axio, CR-V, G-Wagon"></label>
         <div class="catalog"><table><thead><tr><th>Vehicle</th><th>Body</th><th>Sources</th><th>Price band</th><th>Media</th></tr></thead><tbody id="catalogRows"></tbody></table></div>
         <p class="mini">Use the dataset editor or upload flow below to add cars in bulk. The catalog table here is mainly for listing, spot checks, and previews.</p>
       </div>
       <div class="panel">
         <h2>Preview a page/result</h2>
         <label>Country <select id="previewCountry"></select></label>
-        <label>Make <input id="previewMake" value="Toyota"></label>
-        <label>Model <input id="previewModel" value="Axio"></label>
-        <label>Year <input id="previewYear" value="2018" type="number"></label>
+        <label>Make <input aria-label="PreviewMake" id="previewMake" value="Toyota"></label>
+        <label>Model <input aria-label="PreviewModel" id="previewModel" value="Axio"></label>
+        <label>Year <input aria-label="PreviewYear" id="previewYear" value="2018" type="number"></label>
         <label>Source market <select id="previewSource"><option value="japan">Japan</option><option value="uae">UAE</option><option value="uk">UK</option><option value="south-africa">South Africa</option></select></label>
         <div class="actions"><button id="previewBtn" type="button">Preview recommendation</button><button id="openPageBtn" type="button" class="secondary">Open car page</button></div>
         <pre id="previewOut" class="preview"></pre>
@@ -79,7 +82,7 @@
             <option value="destinationCities">Destination cities</option>
           </select>
         </label>
-        <label>Stale threshold days <input id="staleDays" type="number" min="1" value="120"></label>
+        <label>Stale threshold days <input aria-label="StaleDays" id="staleDays" type="number" min="1" value="120"></label>
         <textarea id="packJson" spellcheck="false"></textarea>
         <div class="actions">
           <button id="validateBtn" type="button">Validate</button>
@@ -91,7 +94,7 @@
       <div class="panel">
         <h2>Import / upload path</h2>
         <p class="note">CSV import/update path still works here, but JSON is recommended for vehicles, media, financing offers, and nested scoring config.</p>
-        <input type="file" id="importFile" accept=".json,.csv,text/csv,application/json">
+        <input aria-label="ImportFile" type="file" id="importFile" accept=".json,.csv,text/csv,application/json">
         <textarea id="importOut" spellcheck="false"></textarea>
         <div class="actions">
           <button id="useImportBtn" type="button" class="secondary">Use imported dataset</button>
@@ -103,25 +106,25 @@
     <section class="triple">
       <div class="panel">
         <h2>Quick add media</h2>
-        <label>Vehicle ID <input id="mediaVehicleId" value="toyota-axio-2018"></label>
+        <label>Vehicle ID <input aria-label="MediaVehicleId" id="mediaVehicleId" value="toyota-axio-2018"></label>
         <label>Country <select id="mediaCountry"></select></label>
-        <label>Body type <input id="mediaBodyType" placeholder="sedan"></label>
-        <label>Image URL <input id="mediaUrl" placeholder="/assets/img/tools/car-loan.webp"></label>
-        <label>Or upload image file <input id="mediaFile" type="file" accept="image/*"></label>
-        <label>Alt text <input id="mediaAlt" placeholder="Toyota Axio placeholder image"></label>
-        <label>Caption <input id="mediaCaption" placeholder="Replace with licensed model-specific upload when available."></label>
+        <label>Body type <input aria-label="Sedan" id="mediaBodyType" placeholder="sedan"></label>
+        <label>Image URL <input aria-label="/assets/img/tools/car loan.webp" id="mediaUrl" placeholder="/assets/img/tools/car-loan.webp"></label>
+        <label>Or upload image file <input aria-label="MediaFile" id="mediaFile" type="file" accept="image/*"></label>
+        <label>Alt text <input aria-label="Toyota Axio placeholder image" id="mediaAlt" placeholder="Toyota Axio placeholder image"></label>
+        <label>Caption <input aria-label="Replace with licensed model specific upload when available." id="mediaCaption" placeholder="Replace with licensed model-specific upload when available."></label>
         <div class="actions"><button id="addMediaBtn" type="button">Append media asset</button></div>
       </div>
       <div class="panel">
         <h2>Quick add financing offer</h2>
         <label>Country <select id="offerCountry"></select></label>
-        <label>Provider <input id="offerProvider" value="Country auto-finance partner"></label>
-        <label>Offer label <input id="offerLabel" value="Imported used-car finance"></label>
-        <label>APR (decimal) <input id="offerApr" type="number" step="0.01" value="0.24"></label>
-        <label>Down payment (decimal) <input id="offerDown" type="number" step="0.01" value="0.30"></label>
-        <label>Tenures (comma separated) <input id="offerTenures" value="12,24,36"></label>
-        <label>Max vehicle age years <input id="offerMaxAge" type="number" value="9"></label>
-        <label>Max amount USD <input id="offerMaxAmount" type="number" value="35000"></label>
+        <label>Provider <input aria-label="OfferProvider" id="offerProvider" value="Country auto-finance partner"></label>
+        <label>Offer label <input aria-label="OfferLabel" id="offerLabel" value="Imported used-car finance"></label>
+        <label>APR (decimal) <input aria-label="OfferApr" id="offerApr" type="number" step="0.01" value="0.24"></label>
+        <label>Down payment (decimal) <input aria-label="OfferDown" id="offerDown" type="number" step="0.01" value="0.30"></label>
+        <label>Tenures (comma separated) <input aria-label="OfferTenures" id="offerTenures" value="12,24,36"></label>
+        <label>Max vehicle age years <input aria-label="OfferMaxAge" id="offerMaxAge" type="number" value="9"></label>
+        <label>Max amount USD <input aria-label="OfferMaxAmount" id="offerMaxAmount" type="number" value="35000"></label>
         <div class="actions"><button id="addOfferBtn" type="button">Append financing offer</button></div>
       </div>
       <div class="panel">

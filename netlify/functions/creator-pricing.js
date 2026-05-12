@@ -1,7 +1,7 @@
 // netlify/functions/creator-pricing.js
 // Market data API for CreatorPricing tool
-// GET /rates — returns rate data + comparisons
-// POST /quote — AI-generated quote breakdown
+// GET /rates - returns rate data + comparisons
+// POST /quote - deterministic quote planning response
 
 exports.handler = async function(event) {
   const headers = {
@@ -17,7 +17,6 @@ exports.handler = async function(event) {
   const path = event.path.replace('/.netlify/functions/creator-pricing', '');
   const params = event.queryStringParameters || {};
 
-  // GET /rates
   if (event.httpMethod === 'GET' && (!path || path === '/rates')) {
     const { craft, specialty, country, city, experience } = params;
 
@@ -29,8 +28,6 @@ exports.handler = async function(event) {
       };
     }
 
-    // Return rate data structure (client-side engine does the actual calculation,
-    // but this endpoint can serve cached/pre-computed data for SEO & sharing)
     return {
       statusCode: 200,
       headers,
@@ -50,7 +47,6 @@ exports.handler = async function(event) {
     };
   }
 
-  // POST /quote — proxy to AI advisor for quote generation
   if (event.httpMethod === 'POST' && path === '/quote') {
     let body;
     try {
@@ -59,23 +55,48 @@ exports.handler = async function(event) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid JSON body' }) };
     }
 
-    const { craft, specialty, projectDescription, country, city } = body;
+    const { craft, specialty, projectDescription, country, city, currency, budget, timeline } = body;
     if (!projectDescription) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing projectDescription' }) };
     }
 
-    // Forward to ai-advisor function
-    // In production, this would call the Anthropic API directly
-    // For now, return a structured response indicating the client should use ai-advisor
+    const text = String(projectDescription || '').trim();
+    const complexity =
+      text.length > 900 || /\b(strategy|campaign|retainer|multi[-\s]?platform|launch|brand system|ecommerce|motion|video)\b/i.test(text)
+        ? 'high'
+        : text.length > 320 || /\b(package|series|monthly|website|shoot|editing|design|copy)\b/i.test(text)
+          ? 'medium'
+          : 'low';
+    const timelineRisk = /\b(urgent|today|tomorrow|24h|48h|same day|rush)\b/i.test(`${text} ${timeline || ''}`);
+    const revisions = complexity === 'high' ? 3 : complexity === 'medium' ? 2 : 1;
+    const depositPercent = timelineRisk ? 70 : complexity === 'high' ? 60 : 50;
+
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        message: 'Use /.netlify/functions/ai-advisor with tool="creator-pricing" for AI quote generation.',
-        craft,
-        specialty,
-        country,
-        city,
+        craft: craft || null,
+        specialty: specialty || 'General',
+        country: country || null,
+        city: city || null,
+        currency: currency || null,
+        budget: budget || null,
+        timeline: timeline || null,
+        quoteType: 'deterministic',
+        complexity,
+        depositPercent,
+        recommendedRevisions: revisions,
+        lineItems: [
+          { label: 'Discovery and brief review', weight: complexity === 'high' ? 15 : 10 },
+          { label: 'Production and delivery', weight: complexity === 'high' ? 55 : 65 },
+          { label: 'Revisions and handover', weight: complexity === 'high' ? 20 : 15 },
+          { label: 'Admin, payment, and contingency', weight: 10 }
+        ],
+        notes: [
+          timelineRisk ? 'Rush timing detected. Add a rush fee or increase the upfront deposit.' : 'Timeline appears standard. Keep delivery milestones clear.',
+          'Confirm usage rights, file formats, payment schedule, and number of revision rounds before work starts.',
+          'Use the client-side pricing engine for country and craft rate estimates, then attach this scope breakdown to the quote.'
+        ],
         projectDescription
       })
     };

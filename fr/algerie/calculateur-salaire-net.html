@@ -70,10 +70,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -120,7 +120,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="article:modified_time" content="2026-04-20">
 </head>
 <body class="tool-page">
@@ -170,7 +170,7 @@
               <span class="slider-label">Salaire brut annuel</span>
               <span class="slider-val" id="sliderVal">2 000 000 DA</span>
             </div>
-            <input type="range" id="salarySlider" min="100000" max="20000000" step="100000" value="2000000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="100000" max="20000000" step="100000" value="2000000" oninput="onSlider(this)">
             <div class="slider-limits"><span>100 000 DA</span><span>20 000 000 DA</span></div>
           </div>
 
@@ -179,16 +179,16 @@
             <div class="f-label"><span class="f-label-text">Ou saisissez le montant annuel exact</span><span class="f-hint">Avant toute d&#233;duction</span></div>
             <div class="f-wrap">
               <span class="f-prefix">DA</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="2 000 000" min="0" step="100000" value="2000000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="2 000 000" min="0" step="100000" value="2000000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(500000, this)">500K DA</button>
-            <button class="preset-btn" onclick="setPreset(1000000, this)">1M DA</button>
-            <button class="preset-btn" onclick="setPreset(3000000, this)">3M DA</button>
-            <button class="preset-btn" onclick="setPreset(6000000, this)">6M DA</button>
-            <button class="preset-btn" onclick="setPreset(12000000, this)">12M DA</button>
+            <button type="button" class="preset-btn" onclick="setPreset(500000, this)">500K DA</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">1M DA</button>
+            <button type="button" class="preset-btn" onclick="setPreset(3000000, this)">3M DA</button>
+            <button type="button" class="preset-btn" onclick="setPreset(6000000, this)">6M DA</button>
+            <button type="button" class="preset-btn" onclick="setPreset(12000000, this)">12M DA</button>
           </div>
 
 
@@ -204,7 +204,7 @@
             <p class="f-note">La cotisation salariale CNAS (9%) est enti&#232;rement d&#233;ductible du revenu imposable avant le calcul de l&#8217;IRG. Cela r&#233;duit votre revenu imposable et donc votre imp&#244;t.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net &#8594;</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculer mon salaire net &#8594;</button>
         </div>
       </div>
 
@@ -229,18 +229,18 @@
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">R&#233;partition</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Bar&#232;me fiscal</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">R&#233;partition</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Bar&#232;me fiscal</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             T&#233;l&#233;charger le PDF
           </button>
-          <button class="act-btn act-share" id="dzShareBtn" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" id="dzShareBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager
           </button>
@@ -277,12 +277,12 @@
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculez d&#8217;abord votre salaire &#8212; je vais analyser votre situation IRG, expliquer la d&#233;ductibilit&#233; CNAS et donner des conseils d&#8217;optimisation sp&#233;cifiques &#224; l&#8217;Alg&#233;rie.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d&#8217;abord pour d&#233;bloquer &#8594;</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d&#8217;abord pour d&#233;bloquer &#8594;</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Posez une question&#8230;" onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">&#8594;</button>
+              <input aria-label="Posez une question&amp;#8230;" class="chat-in" id="chatIn" placeholder="Posez une question&#8230;" onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">&#8594;</button>
             </div>
           </div>
 
@@ -326,7 +326,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/dz-paye-fr.webp" alt="Calculateur salaire net Alg&#233;rie" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/dz-paye-fr.webp" alt="Calculateur salaire net Alg&#233;rie" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Salaire net Algérie</div>
             <div class="tool-info-cat">Imp&#244;ts &amp; Finance</div>
@@ -349,7 +349,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mis &#224; jour : avril 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/salary-tax/francophone/">Hub francophone</a>
           </div>
         </div>
@@ -405,25 +405,25 @@
       <p>Entrez votre e-mail pour ouvrir un PDF clair de votre simulation Algérie et conserver le détail des retenues.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input name="bot-field"></p>
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country"      value="Alg&#233;rie">
         <input type="hidden" name="country_code" value="DZ">
         <input type="hidden" name="tool"         value="paye">
         <input type="hidden" name="tool_id"      value="dz-paye-fr">
         <input type="hidden" name="currency"     value="DZD">
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
+        <input aria-label="Votre nom (facultatif)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
+        <input aria-label="Votre adresse e mail" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
         <button class="modal-submit" type="submit">Obtenir mon PDF &#8594;</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">Non merci</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">Non merci</button>
     </div>
     <div class="modal-success" id="modalSuccess">
-      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
       <div class="big-check">&#9989;</div>
       <h4>PDF en cours d&#8217;ouverture</h4>
       <p>Cliquez sur <strong>Enregistrer en PDF</strong> dans la bo&#238;te de dialogue d&#8217;impression.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Termin&#233; &#8594;</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Termin&#233; &#8594;</button>
     </div>
   </div>
 </div>
@@ -765,7 +765,6 @@ function generatePdf() {
 '.red{color:#c0392b}.green{color:#006233}.muted{color:#9ca3af}' +
 'tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}' +
 '.src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}' +
-<meta property="article:modified_time" content="2026-04-20">
 '</style></head><body>' +
 '<div class="cover">' +
 '  <div class="cover-top">' +
@@ -833,8 +832,7 @@ function generatePdf() {
 '  </div>' +
 '</div>' +
 '<script src="/assets/js/components/salary-benchmark-widget.js?v=3048533d" defer><\/script>' +
-'<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-</body></html>';
+'</body></html>';
 
   var blob = new Blob([html],{type:'text/html;charset=utf-8'});
   var url  = URL.createObjectURL(blob);

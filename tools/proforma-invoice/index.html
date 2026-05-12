@@ -28,10 +28,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="../../assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="../../assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="../../assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=5ea7102b">
-<script src="../../assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="../../assets/js/components/footer.js?v=7cf41589" defer></script>
+<script src="../../assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="../../assets/js/components/footer.js?v=625b18a7" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;line-height:1.6}
@@ -161,39 +161,39 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
     <!-- ── FORM PANEL ── -->
     <div class="form-panel">
       <div class="action-bar" style="margin-bottom:1rem;margin-top:0">
-        <button class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
-        <button class="btn-secondary" onclick="resetForm()">Reset Form</button>
-        <button class="btn-secondary" onclick="copyLast()">Copy Last</button>
+        <button type="button" class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
+        <button type="button" class="btn-secondary" onclick="resetForm()">Reset Form</button>
+        <button type="button" class="btn-secondary" onclick="copyLast()">Copy Last</button>
       </div>
 
       <!-- Seller Details -->
       <div class="form-section">
         <div class="section-title">Seller / Exporter</div>
-        <div class="form-row"><div class="fg"><label>Company Name</label><input type="text" id="sellerName" oninput="renderDoc()" placeholder="Your company name"></div></div>
+        <div class="form-row"><div class="fg"><label>Company Name</label><input aria-label="Your company name" type="text" id="sellerName" oninput="renderDoc()" placeholder="Your company name"></div></div>
         <div class="form-row"><div class="fg"><label>Address</label><textarea id="sellerAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, State"></textarea></div></div>
         <div class="form-row form-row-2">
           <div class="fg"><label>Country</label><select id="sellerCountry" onchange="renderDoc()"><?php echo countryOptions(); ?></select></div>
-          <div class="fg"><label>Phone</label><input type="text" id="sellerPhone" oninput="renderDoc()" placeholder="+234 800 000 0000"></div>
+          <div class="fg"><label>Phone</label><input aria-label="SellerPhone" type="text" id="sellerPhone" oninput="renderDoc()" placeholder="+234 800 000 0000"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Email</label><input type="email" id="sellerEmail" oninput="renderDoc()" placeholder="exports@company.com"></div>
-          <div class="fg"><label>Reg. Number</label><input type="text" id="sellerReg" oninput="renderDoc()" placeholder="RC000000"></div>
+          <div class="fg"><label>Email</label><input aria-label="Exports@company.com" type="email" id="sellerEmail" oninput="renderDoc()" placeholder="exports@company.com"></div>
+          <div class="fg"><label>Reg. Number</label><input aria-label="RC000000" type="text" id="sellerReg" oninput="renderDoc()" placeholder="RC000000"></div>
         </div>
-        <div class="form-row"><div class="fg"><label>Export License <span class="optional">(optional)</span></label><input type="text" id="sellerExportLicense" oninput="renderDoc()" placeholder="EXL-2024-XXXX"></div></div>
+        <div class="form-row"><div class="fg"><label>Export License <span class="optional">(optional)</span></label><input aria-label="EXL 2024 XXXX" type="text" id="sellerExportLicense" oninput="renderDoc()" placeholder="EXL-2024-XXXX"></div></div>
       </div>
 
       <!-- Buyer Details -->
       <div class="form-section">
         <div class="section-title">Buyer / Importer</div>
-        <div class="form-row"><div class="fg"><label>Company Name</label><input type="text" id="buyerName" oninput="renderDoc()" placeholder="Buyer company name"></div></div>
+        <div class="form-row"><div class="fg"><label>Company Name</label><input aria-label="Buyer company name" type="text" id="buyerName" oninput="renderDoc()" placeholder="Buyer company name"></div></div>
         <div class="form-row"><div class="fg"><label>Address</label><textarea id="buyerAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, Country"></textarea></div></div>
         <div class="form-row form-row-2">
           <div class="fg"><label>Country</label><select id="buyerCountry" onchange="renderDoc()"></select></div>
-          <div class="fg"><label>Phone</label><input type="text" id="buyerPhone" oninput="renderDoc()" placeholder="+254 700 000 000"></div>
+          <div class="fg"><label>Phone</label><input aria-label="BuyerPhone" type="text" id="buyerPhone" oninput="renderDoc()" placeholder="+254 700 000 000"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Email</label><input type="email" id="buyerEmail" oninput="renderDoc()" placeholder="imports@buyer.com"></div>
-          <div class="fg"><label>Import License <span class="optional">(optional)</span></label><input type="text" id="buyerImportLicense" oninput="renderDoc()" placeholder="IMP-2024-XXXX"></div>
+          <div class="fg"><label>Email</label><input aria-label="Imports@buyer.com" type="email" id="buyerEmail" oninput="renderDoc()" placeholder="imports@buyer.com"></div>
+          <div class="fg"><label>Import License <span class="optional">(optional)</span></label><input aria-label="IMP 2024 XXXX" type="text" id="buyerImportLicense" oninput="renderDoc()" placeholder="IMP-2024-XXXX"></div>
         </div>
       </div>
 
@@ -201,11 +201,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">Document Details</div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Proforma Number</label><input type="text" id="piNumber" oninput="renderDoc()"></div>
-          <div class="fg"><label>Date</label><input type="date" id="piDate" onchange="renderDoc()"></div>
+          <div class="fg"><label>Proforma Number</label><input aria-label="PiNumber" type="text" id="piNumber" oninput="renderDoc()"></div>
+          <div class="fg"><label>Date</label><input aria-label="PiDate" type="date" id="piDate" onchange="renderDoc()"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Valid Until</label><input type="date" id="piValidUntil" onchange="renderDoc()"></div>
+          <div class="fg"><label>Valid Until</label><input aria-label="PiValidUntil" type="date" id="piValidUntil" onchange="renderDoc()"></div>
           <div class="fg"><label>Incoterm</label>
             <select id="piIncoterm" onchange="renderDoc()">
               <option>EXW</option><option>FCA</option><option>CPT</option><option>CIP</option>
@@ -215,8 +215,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
           </div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Port of Loading</label><input type="text" id="piPOL" oninput="renderDoc()" placeholder="Apapa, Lagos"></div>
-          <div class="fg"><label>Port of Discharge</label><input type="text" id="piPOD" oninput="renderDoc()" placeholder="Mombasa"></div>
+          <div class="fg"><label>Port of Loading</label><input aria-label="Apapa, Lagos" type="text" id="piPOL" oninput="renderDoc()" placeholder="Apapa, Lagos"></div>
+          <div class="fg"><label>Port of Discharge</label><input aria-label="Mombasa" type="text" id="piPOD" oninput="renderDoc()" placeholder="Mombasa"></div>
         </div>
         <div class="form-row form-row-2">
           <div class="fg"><label>Country of Origin</label><select id="piOriginCountry" onchange="renderDoc()"></select></div>
@@ -247,7 +247,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
               <option>Open Account</option>
             </select>
           </div>
-          <div class="fg"><label>Delivery Time</label><input type="text" id="piDelivery" oninput="renderDoc()" placeholder="30-45 days after LC"></div>
+          <div class="fg"><label>Delivery Time</label><input aria-label="30 45 days after LC" type="text" id="piDelivery" oninput="renderDoc()" placeholder="30-45 days after LC"></div>
         </div>
       </div>
 
@@ -270,11 +270,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
             <tbody id="itemsBody"></tbody>
           </table>
         </div>
-        <button class="btn-add" onclick="addItem()">+ Add Item</button>
+        <button type="button" class="btn-add" onclick="addItem()">+ Add Item</button>
         <div class="totals-mini" id="totalsMini">
           <div class="totals-mini-row"><span>Subtotal</span><span id="tSubtotal">0.00</span></div>
-          <div class="totals-mini-row"><span>Freight</span><input type="number" id="piFreight" value="0" min="0" oninput="calcTotals()" style="width:110px;padding:.2rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right"></div>
-          <div class="totals-mini-row"><span>Insurance</span><input type="number" id="piInsurance" value="0" min="0" oninput="calcTotals()" style="width:110px;padding:.2rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right"></div>
+          <div class="totals-mini-row"><span>Freight</span><input aria-label="PiFreight" type="number" id="piFreight" value="0" min="0" oninput="calcTotals()" style="width:110px;padding:.2rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right"></div>
+          <div class="totals-mini-row"><span>Insurance</span><input aria-label="PiInsurance" type="number" id="piInsurance" value="0" min="0" oninput="calcTotals()" style="width:110px;padding:.2rem .4rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.82rem;text-align:right"></div>
           <div class="totals-mini-row strong"><span>FOB Total</span><span id="tFOB">0.00</span></div>
           <div class="totals-mini-row strong" style="color:#0063D1"><span>CIF Total</span><span id="tCIF">0.00</span></div>
         </div>
@@ -284,12 +284,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">Terms &amp; Conditions</div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Packaging</label><input type="text" id="piPackaging" oninput="renderDoc()" placeholder="In cartons of 24 units"></div>
-          <div class="fg"><label>Inspection</label><input type="text" id="piInspection" oninput="renderDoc()" placeholder="SGS inspection at origin"></div>
+          <div class="fg"><label>Packaging</label><input aria-label="In cartons of 24 units" type="text" id="piPackaging" oninput="renderDoc()" placeholder="In cartons of 24 units"></div>
+          <div class="fg"><label>Inspection</label><input aria-label="SGS inspection at origin" type="text" id="piInspection" oninput="renderDoc()" placeholder="SGS inspection at origin"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Shipping Marks</label><input type="text" id="piMarks" oninput="renderDoc()" placeholder="BUYER REF / DEST PORT"></div>
-          <div class="fg"><label>Special Conditions</label><input type="text" id="piConditions" oninput="renderDoc()" placeholder="Subject to export permit approval"></div>
+          <div class="fg"><label>Shipping Marks</label><input aria-label="BUYER REF / DEST PORT" type="text" id="piMarks" oninput="renderDoc()" placeholder="BUYER REF / DEST PORT"></div>
+          <div class="fg"><label>Special Conditions</label><input aria-label="Subject to export permit approval" type="text" id="piConditions" oninput="renderDoc()" placeholder="Subject to export permit approval"></div>
         </div>
       </div>
     </div><!-- /form-panel -->
@@ -351,13 +351,13 @@ function addItem(){
   const tr = document.createElement('tr');
   tr.id = `item-row-${id}`;
   tr.innerHTML = `
-    <td><input type="text" placeholder="Product description" onchange="calcTotals()" oninput="calcTotals()"></td>
+    <td><input aria-label="Product description" type="text" placeholder="Product description" onchange="calcTotals()" oninput="calcTotals()"></td>
     <td><input type="text" placeholder="6309.90" style="width:80px" oninput="calcTotals()"></td>
     <td><input type="number" placeholder="1" min="0" step="any" style="width:60px" oninput="calcItemTotal(${id})" value="1"></td>
     <td><select onchange="calcTotals()"><option>pcs</option><option>kg</option><option>MT</option><option>CBM</option><option>Cartons</option></select></td>
     <td><input type="number" placeholder="0.00" min="0" step="any" style="width:80px" oninput="calcItemTotal(${id})" value="0"></td>
     <td class="td-total" id="item-total-${id}">0.00</td>
-    <td><button class="btn-remove" onclick="removeItem(${id})" title="Remove">&#10005;</button></td>
+    <td><button type="button" class="btn-remove" onclick="removeItem(${id})" title="Remove">&#10005;</button></td>
   `;
   tbody.appendChild(tr);
   calcTotals();

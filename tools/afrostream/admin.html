@@ -117,6 +117,9 @@
 </style>
 <link rel="canonical" href="https://afrotools.com/tools/afrostream/admin">
 <meta property="og:url" content="https://afrotools.com/tools/afrostream/admin">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
@@ -125,8 +128,8 @@
   <div class="gate-card">
     <h1>AfroStream Admin</h1>
     <p>Enter the admin password to continue.</p>
-    <input type="password" id="gatePassword" class="input" placeholder="Password" autofocus>
-    <button class="btn btn-primary" id="gateSubmit" style="margin-top:12px;width:100%">Unlock</button>
+    <input aria-label="Password" type="password" id="gatePassword" class="input" placeholder="Password" autofocus>
+    <button type="button" class="btn btn-primary" id="gateSubmit" style="margin-top:12px;width:100%">Unlock</button>
     <p class="gate-error" id="gateError" style="display:none">Incorrect password. Try again.</p>
   </div>
 </div>
@@ -137,19 +140,19 @@
   <div class="dash-header">
     <h1>AfroStream</h1>
     <span class="badge">Admin</span>
-    <button class="btn btn-ghost btn-sm" id="logoutBtn" style="margin-left:auto">Logout</button>
+    <button type="button" class="btn btn-ghost btn-sm" id="logoutBtn" style="margin-left:auto">Logout</button>
   </div>
 
   <!-- TABS -->
   <div class="tabs" id="adminTabs">
-    <button class="tab active" data-tab="news">News</button>
-    <button class="tab" data-tab="streams">Streams</button>
-    <button class="tab" data-tab="featured">Featured</button>
-    <button class="tab" data-tab="creators">Creators</button>
-    <button class="tab" data-tab="submissions">Submissions <span id="pendingBadge" style="background:#ef4444;color:#fff;font-size:.6rem;padding:1px 6px;border-radius:10px;margin-left:4px;display:none">0</span></button>
-    <button class="tab" data-tab="ops">Ops</button>
-    <button class="tab" data-tab="sync">Sync</button>
-    <button class="tab" data-tab="settings">Settings</button>
+    <button type="button" class="tab active" data-tab="news">News</button>
+    <button type="button" class="tab" data-tab="streams">Streams</button>
+    <button type="button" class="tab" data-tab="featured">Featured</button>
+    <button type="button" class="tab" data-tab="creators">Creators</button>
+    <button type="button" class="tab" data-tab="submissions">Submissions <span id="pendingBadge" style="background:#ef4444;color:#fff;font-size:.6rem;padding:1px 6px;border-radius:10px;margin-left:4px;display:none">0</span></button>
+    <button type="button" class="tab" data-tab="ops">Ops</button>
+    <button type="button" class="tab" data-tab="sync">Sync</button>
+    <button type="button" class="tab" data-tab="settings">Settings</button>
   </div>
 
   <!-- ═══════════════════════════════════════════════════
@@ -161,7 +164,7 @@
       <div class="form-row">
         <div class="form-group form-grow">
           <label>Title</label>
-          <input type="text" name="title" class="input" required placeholder="Article headline...">
+          <input aria-label="Article headline" type="text" name="title" class="input" required placeholder="Article headline...">
         </div>
         <div class="form-group">
           <label>Category</label>
@@ -178,16 +181,16 @@
       <div class="form-row">
         <div class="form-group form-grow">
           <label>Image URL</label>
-          <input type="url" name="imageUrl" class="input" placeholder="https://...">
+          <input aria-label="Https://" type="url" name="imageUrl" class="input" placeholder="https://...">
         </div>
         <div class="form-group">
           <label>Author</label>
-          <input type="text" name="author" class="input" value="AfroStream Team">
+          <input aria-label="Author" type="text" name="author" class="input" value="AfroStream Team">
         </div>
       </div>
       <div class="form-group">
         <label>Excerpt (1-2 sentences)</label>
-        <input type="text" name="excerpt" class="input" required placeholder="Short summary...">
+        <input aria-label="Short summary" type="text" name="excerpt" class="input" required placeholder="Short summary...">
       </div>
       <div class="form-group">
         <label>Full Body (HTML allowed)</label>
@@ -219,11 +222,11 @@
       <div class="form-row">
         <div class="form-group form-grow">
           <label>Creator Name</label>
-          <input type="text" name="creator" class="input" required placeholder="Creator name...">
+          <input aria-label="Creator name" type="text" name="creator" class="input" required placeholder="Creator name...">
         </div>
         <div class="form-group form-grow">
           <label>Stream Title</label>
-          <input type="text" name="title" class="input" required placeholder="Stream title...">
+          <input aria-label="Stream title" type="text" name="title" class="input" required placeholder="Stream title...">
         </div>
       </div>
       <div class="form-row">
@@ -269,15 +272,15 @@
       <div class="form-row">
         <div class="form-group">
           <label>Date &amp; Time</label>
-          <input type="datetime-local" name="datetime" class="input" required>
+          <input aria-label="Datetime" type="datetime-local" name="datetime" class="input" required>
         </div>
         <div class="form-group form-grow">
           <label>Stream URL</label>
-          <input type="url" name="url" class="input" placeholder="https://youtube.com/live/...">
+          <input aria-label="Https://youtube.com/live/" type="url" name="url" class="input" placeholder="https://youtube.com/live/...">
         </div>
         <div class="form-group">
           <label>Thumbnail URL</label>
-          <input type="url" name="thumbnail" class="input" placeholder="https://...">
+          <input aria-label="Https://" type="url" name="thumbnail" class="input" placeholder="https://...">
         </div>
       </div>
       <div id="streamThumbnailPreview" class="stream-thumb-preview" aria-live="polite"></div>
@@ -302,7 +305,7 @@
       <select class="input" id="creatorOfWeek">
         <option value="">-- Select --</option>
       </select>
-      <button class="btn btn-primary btn-sm" id="saveCreatorOfWeek" style="margin-top:8px">Save</button>
+      <button type="button" class="btn btn-primary btn-sm" id="saveCreatorOfWeek" style="margin-top:8px">Save</button>
     </div>
 
     <h3 style="margin-top:32px">Featured List</h3>
@@ -313,7 +316,7 @@
       <select class="input" id="addFeaturedSelect">
         <option value="">-- Select Creator --</option>
       </select>
-      <button class="btn btn-outline btn-sm" id="addFeaturedBtn" style="margin-top:8px">Add</button>
+      <button type="button" class="btn btn-outline btn-sm" id="addFeaturedBtn" style="margin-top:8px">Add</button>
     </div>
   </section>
 
@@ -330,7 +333,7 @@
       <div class="form-row">
         <div class="form-group form-grow">
           <label>Name</label>
-          <input type="text" name="name" class="input" required placeholder="Creator name...">
+          <input aria-label="Creator name" type="text" name="name" class="input" required placeholder="Creator name...">
         </div>
         <div class="form-group">
           <label>Country</label>
@@ -380,15 +383,15 @@
       <div class="form-row">
         <div class="form-group form-grow">
           <label>Categories</label>
-          <input type="text" name="categories" class="input" placeholder="gaming, tech, comedy, music">
+          <input aria-label="Gaming, tech, comedy, music" type="text" name="categories" class="input" placeholder="gaming, tech, comedy, music">
         </div>
         <div class="form-group">
           <label>Languages</label>
-          <input type="text" name="languages" class="input" placeholder="English, Yoruba, French">
+          <input aria-label="English, Yoruba, French" type="text" name="languages" class="input" placeholder="English, Yoruba, French">
         </div>
         <div class="form-group">
           <label>Tags</label>
-          <input type="text" name="tags" class="input" placeholder="IRL, Just Chatting, Afrobeats">
+          <input aria-label="IRL, Just Chatting, Afrobeats" type="text" name="tags" class="input" placeholder="IRL, Just Chatting, Afrobeats">
         </div>
       </div>
 
@@ -397,29 +400,29 @@
       <div class="form-row">
         <div class="form-group form-grow">
           <label>YouTube</label>
-          <input type="url" name="youtubeUrl" class="input" placeholder="https://youtube.com/@name">
+          <input aria-label="Https://youtube.com/@name" type="url" name="youtubeUrl" class="input" placeholder="https://youtube.com/@name">
         </div>
         <div class="form-group form-grow">
           <label>Twitch</label>
-          <input type="url" name="twitchUrl" class="input" placeholder="https://twitch.tv/name">
+          <input aria-label="Https://twitch.tv/name" type="url" name="twitchUrl" class="input" placeholder="https://twitch.tv/name">
         </div>
         <div class="form-group form-grow">
           <label>TikTok</label>
-          <input type="url" name="tiktokUrl" class="input" placeholder="https://tiktok.com/@name">
+          <input aria-label="Https://tiktok.com/@name" type="url" name="tiktokUrl" class="input" placeholder="https://tiktok.com/@name">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group form-grow">
           <label>Instagram</label>
-          <input type="url" name="instagramUrl" class="input" placeholder="https://instagram.com/name">
+          <input aria-label="Https://instagram.com/name" type="url" name="instagramUrl" class="input" placeholder="https://instagram.com/name">
         </div>
         <div class="form-group form-grow">
           <label>X / Twitter</label>
-          <input type="url" name="twitterUrl" class="input" placeholder="https://x.com/name">
+          <input aria-label="Https://x.com/name" type="url" name="twitterUrl" class="input" placeholder="https://x.com/name">
         </div>
         <div class="form-group form-grow">
           <label>Kick</label>
-          <input type="url" name="kickUrl" class="input" placeholder="https://kick.com/name">
+          <input aria-label="Https://kick.com/name" type="url" name="kickUrl" class="input" placeholder="https://kick.com/name">
         </div>
       </div>
 
@@ -428,11 +431,11 @@
       <div class="form-row">
         <div class="form-group form-grow">
           <label>Avatar URL</label>
-          <input type="url" name="avatar" class="input" placeholder="https://...">
+          <input aria-label="Https://" type="url" name="avatar" class="input" placeholder="https://...">
         </div>
         <div class="form-group form-grow">
           <label>Cover URL</label>
-          <input type="url" name="cover" class="input" placeholder="https://...">
+          <input aria-label="Https://" type="url" name="cover" class="input" placeholder="https://...">
         </div>
       </div>
 
@@ -441,21 +444,21 @@
       <div class="form-row">
         <div class="form-group">
           <label>Subscribers / Followers</label>
-          <input type="number" name="subscribers" class="input" placeholder="150000">
+          <input aria-label="Subscribers" type="number" name="subscribers" class="input" placeholder="150000">
         </div>
         <div class="form-group">
           <label>Total Views</label>
-          <input type="number" name="totalViews" class="input" placeholder="5000000">
+          <input aria-label="TotalViews" type="number" name="totalViews" class="input" placeholder="5000000">
         </div>
         <div class="form-group">
           <label>Peak Viewers</label>
-          <input type="number" name="peakViewers" class="input" placeholder="25000">
+          <input aria-label="PeakViewers" type="number" name="peakViewers" class="input" placeholder="25000">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Avg Stream Duration</label>
-          <input type="text" name="avgDuration" class="input" placeholder="2h 30m">
+          <input aria-label="2h 30m" type="text" name="avgDuration" class="input" placeholder="2h 30m">
         </div>
         <div class="form-group">
           <label>Stream Frequency</label>
@@ -472,7 +475,7 @@
         </div>
         <div class="form-group">
           <label>Growth Rate</label>
-          <input type="text" name="growthRate" class="input" placeholder="+15%">
+          <input aria-label="GrowthRate" type="text" name="growthRate" class="input" placeholder="+15%">
         </div>
       </div>
 
@@ -481,15 +484,15 @@
       <div class="form-row">
         <div class="form-group">
           <label>Est. Net Worth</label>
-          <input type="text" name="netWorth" class="input" placeholder="$50,000">
+          <input aria-label="NetWorth" type="text" name="netWorth" class="input" placeholder="$50,000">
         </div>
         <div class="form-group">
           <label>Gift Revenue (est.)</label>
-          <input type="text" name="giftRevenue" class="input" placeholder="$12,000">
+          <input aria-label="GiftRevenue" type="text" name="giftRevenue" class="input" placeholder="$12,000">
         </div>
         <div class="form-group">
           <label>Streaming Since</label>
-          <input type="text" name="streamingSince" class="input" placeholder="2021 or March 2022">
+          <input aria-label="2021 or March 2022" type="text" name="streamingSince" class="input" placeholder="2021 or March 2022">
         </div>
       </div>
 
@@ -515,9 +518,9 @@
 
     <!-- Filter pills -->
     <div style="display:flex;gap:8px;margin:16px 0;flex-wrap:wrap">
-      <button class="btn btn-sm sub-filter active" data-filter="pending" style="background:#FEF3C7;color:#92400E;border:1.5px solid #F59E0B">⏳ Pending</button>
-      <button class="btn btn-sm sub-filter" data-filter="approved" style="border:1.5px solid #E5E7EB">✅ Approved</button>
-      <button class="btn btn-sm sub-filter" data-filter="rejected" style="border:1.5px solid #E5E7EB">❌ Rejected</button>
+      <button type="button" class="btn btn-sm sub-filter active" data-filter="pending" style="background:#FEF3C7;color:#92400E;border:1.5px solid #F59E0B">⏳ Pending</button>
+      <button type="button" class="btn btn-sm sub-filter" data-filter="approved" style="border:1.5px solid #E5E7EB">✅ Approved</button>
+      <button type="button" class="btn btn-sm sub-filter" data-filter="rejected" style="border:1.5px solid #E5E7EB">❌ Rejected</button>
     </div>
 
     <!-- Submissions list -->
@@ -528,7 +531,7 @@
       <div style="background:#fff;border-radius:16px;padding:32px 28px;max-width:600px;width:92%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
           <h3 style="font-size:1.1rem;font-weight:800">Review Submission</h3>
-          <button class="btn btn-ghost btn-sm" id="closeReviewModal">&times;</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="closeReviewModal">&times;</button>
         </div>
         <div id="reviewDetails" style="margin-bottom:20px"></div>
         <div class="form-group">
@@ -536,9 +539,9 @@
           <textarea id="reviewNote" class="input" rows="3" placeholder="Reason for approve/reject..."></textarea>
         </div>
         <div class="form-actions" style="margin-top:16px">
-          <button class="btn btn-primary" id="approveSubmissionBtn">✅ Approve & Publish</button>
-          <button class="btn btn-outline btn-danger" id="rejectSubmissionBtn">❌ Reject</button>
-          <button class="btn btn-ghost btn-danger btn-sm" id="deleteSubmissionBtn">🗑 Delete</button>
+          <button type="button" class="btn btn-primary" id="approveSubmissionBtn">✅ Approve & Publish</button>
+          <button type="button" class="btn btn-outline btn-danger" id="rejectSubmissionBtn">❌ Reject</button>
+          <button type="button" class="btn btn-ghost btn-danger btn-sm" id="deleteSubmissionBtn">🗑 Delete</button>
         </div>
       </div>
     </div>
@@ -552,7 +555,7 @@
     <p class="muted">Manage verified RSS sources, attach real supporter evidence, and run the news monitor without leaving the admin panel.</p>
 
     <div class="form-actions" style="margin-bottom:24px">
-      <button class="btn btn-primary" id="runNewsMonitorBtn">Run News Monitor</button>
+      <button type="button" class="btn btn-primary" id="runNewsMonitorBtn">Run News Monitor</button>
     </div>
     <div id="opsLog" style="display:none;margin-bottom:24px">
       <pre id="opsLogContent" style="background:#0f172a;color:#e2e8f0;padding:16px;border-radius:8px;font-size:.75rem;max-height:320px;overflow-y:auto;white-space:pre-wrap;word-break:break-word"></pre>
@@ -563,20 +566,20 @@
       <div class="form-row">
         <div class="form-group">
           <label>Source Name</label>
-          <input type="text" name="name" class="input" required placeholder="TechCabal">
+          <input aria-label="TechCabal" type="text" name="name" class="input" required placeholder="TechCabal">
         </div>
         <div class="form-group form-grow">
           <label>Feed URL</label>
-          <input type="url" name="feed_url" class="input" required placeholder="https://example.com/feed/">
+          <input aria-label="Https://example.com/feed/" type="url" name="feed_url" class="input" required placeholder="https://example.com/feed/">
         </div>
         <div class="form-group">
           <label>Category</label>
-          <input type="text" name="category" class="input" value="creator-news" required>
+          <input aria-label="Category" type="text" name="category" class="input" value="creator-news" required>
         </div>
       </div>
       <div class="form-actions">
         <label class="toggle-label">
-          <input type="checkbox" name="is_active" checked>
+          <input aria-label="Is active" type="checkbox" name="is_active" checked>
           <span>Active source</span>
         </label>
         <button type="submit" class="btn btn-primary">Add Source</button>
@@ -595,44 +598,44 @@
         </div>
         <div class="form-group">
           <label>Supporter Name</label>
-          <input type="text" name="supporter_name" class="input" required placeholder="Verified supporter name">
+          <input aria-label="Verified supporter name" type="text" name="supporter_name" class="input" required placeholder="Verified supporter name">
         </div>
         <div class="form-group">
           <label>Platform</label>
-          <input type="text" name="platform" class="input" placeholder="YouTube, Twitch, TikTok">
+          <input aria-label="YouTube, Twitch, TikTok" type="text" name="platform" class="input" placeholder="YouTube, Twitch, TikTok">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Amount</label>
-          <input type="number" min="0" step="0.01" name="amount" class="input" required placeholder="250">
+          <input aria-label="Amount" type="number" min="0" step="0.01" name="amount" class="input" required placeholder="250">
         </div>
         <div class="form-group">
           <label>Currency</label>
-          <input type="text" name="currency" class="input" value="USD" required>
+          <input aria-label="Currency" type="text" name="currency" class="input" value="USD" required>
         </div>
         <div class="form-group">
           <label>Event Date</label>
-          <input type="date" name="event_date" class="input">
+          <input aria-label="Event date" type="date" name="event_date" class="input">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Source Label</label>
-          <input type="text" name="source_label" class="input" placeholder="YouTube live, article, platform post">
+          <input aria-label="YouTube live, article, platform post" type="text" name="source_label" class="input" placeholder="YouTube live, article, platform post">
         </div>
         <div class="form-group form-grow">
           <label>Source URL</label>
-          <input type="url" name="source_url" class="input" placeholder="https://...">
+          <input aria-label="Https://" type="url" name="source_url" class="input" placeholder="https://...">
         </div>
       </div>
       <div class="form-actions">
         <label class="toggle-label">
-          <input type="checkbox" name="is_verified" checked>
+          <input aria-label="Is verified" type="checkbox" name="is_verified" checked>
           <span>Verified</span>
         </label>
         <label class="toggle-label">
-          <input type="checkbox" name="is_published" checked>
+          <input aria-label="Is published" type="checkbox" name="is_published" checked>
           <span>Published</span>
         </label>
         <button type="submit" class="btn btn-primary">Add Supporter Row</button>
@@ -665,7 +668,7 @@
     </div>
 
     <div class="form-actions">
-      <button class="btn btn-primary" id="syncNowBtn" onclick="triggerSync()">Sync Now</button>
+      <button type="button" class="btn btn-primary" id="syncNowBtn" onclick="triggerSync()">Sync Now</button>
     </div>
 
     <div id="syncLog" style="margin-top:20px;display:none">
@@ -710,27 +713,27 @@
 
     <div class="form-group" style="margin-top:32px">
       <label class="toggle-label">
-        <input type="checkbox" id="afroPointsToggle">
+        <input aria-label="AfroPointsToggle" type="checkbox" id="afroPointsToggle">
         <span>Enable AfroPoints integration</span>
       </label>
     </div>
 
     <div class="form-group" style="margin-top:16px">
       <label>YouTube API Key (future)</label>
-      <input type="text" class="input" placeholder="Not configured" disabled>
+      <input aria-label="Not configured" type="text" class="input" placeholder="Not configured" disabled>
     </div>
     <div class="form-group">
       <label>Twitch Client ID (future)</label>
-      <input type="text" class="input" placeholder="Not configured" disabled>
+      <input aria-label="Not configured" type="text" class="input" placeholder="Not configured" disabled>
     </div>
     <div class="form-group">
       <label>TikTok API Key (future)</label>
-      <input type="text" class="input" placeholder="Not configured" disabled>
+      <input aria-label="Not configured" type="text" class="input" placeholder="Not configured" disabled>
     </div>
 
     <div class="form-actions" style="margin-top:24px">
-      <button class="btn btn-outline" id="exportDataBtn">Export All Data (JSON)</button>
-      <button class="btn btn-ghost" id="clearDataBtn" style="color:#ef4444">Clear All Data</button>
+      <button type="button" class="btn btn-outline" id="exportDataBtn">Export All Data (JSON)</button>
+      <button type="button" class="btn btn-ghost" id="clearDataBtn" style="color:#ef4444">Clear All Data</button>
     </div>
   </section>
 
@@ -1099,8 +1102,8 @@
           '<div class="muted" style="margin-top:6px">' + escapeHtml(source.feed_url) + '</div>' +
         '</div>' +
         '<div class="as-admin-list-actions">' +
-          '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asToggleSource(' + source.id + ',' + (source.is_active ? 'false' : 'true') + ')">' + (source.is_active ? 'Disable' : 'Enable') + '</button>' +
-          '<button class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteSource(' + source.id + ')">Delete</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asToggleSource(' + source.id + ',' + (source.is_active ? 'false' : 'true') + ')">' + (source.is_active ? 'Disable' : 'Enable') + '</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteSource(' + source.id + ')">Delete</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -1125,7 +1128,7 @@
           '<div class="muted" style="margin-top:6px">' + escapeHtml(row.source_label || 'Verified source') + (row.event_date ? ' · ' + escapeHtml(row.event_date) : '') + '</div>' +
         '</div>' +
         '<div class="as-admin-list-actions">' +
-          '<button class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteSupporter(' + row.id + ')">Delete</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteSupporter(' + row.id + ')">Delete</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -1293,9 +1296,9 @@
           (a.is_featured ? ' <span style="color:#F59E0B;margin-left:4px">&#9733;</span>' : '') +
         '</div>' +
         '<div class="as-admin-list-actions">' +
-          '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asEditNews(' + a.id + ')">Edit</button>' +
-          '<button class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteNews(' + a.id + ')">Delete</button>' +
-          '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asFeatureNews(' + a.id + ')">' + (a.is_featured ? 'Unfeature' : 'Feature') + '</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asEditNews(' + a.id + ')">Edit</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteNews(' + a.id + ')">Delete</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asFeatureNews(' + a.id + ')">' + (a.is_featured ? 'Unfeature' : 'Feature') + '</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -1430,8 +1433,8 @@
         '</div>' +
         '</div>' +
         '<div class="as-admin-list-actions">' +
-          '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asToggleLive(' + s.id + ')">' + (isLive ? 'End Live' : 'Go Live') + '</button>' +
-          '<button class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteStream(' + s.id + ')">Delete</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asToggleLive(' + s.id + ')">' + (isLive ? 'End Live' : 'Go Live') + '</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteStream(' + s.id + ')">Delete</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -1572,10 +1575,10 @@
           (c.categories ? ' <span class="muted" style="margin-left:6px;font-size:11px">' + c.categories + '</span>' : '') +
         '</div>' +
         '<div class="as-admin-list-actions">' +
-          '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asEditCreator(' + c.id + ')">Edit</button>' +
-          '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asVerifyCreator(' + c.id + ')">' + (c.verified ? 'Unverify' : 'Verify') + '</button>' +
-          '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asFlagCreator(' + c.id + ')">' + (c.flagged ? 'Unflag' : 'Flag') + '</button>' +
-          '<button class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteCreator(' + c.id + ')">Delete</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asEditCreator(' + c.id + ')">Edit</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asVerifyCreator(' + c.id + ')">' + (c.verified ? 'Unverify' : 'Verify') + '</button>' +
+          '<button type="button" class="as-btn as-btn-outline as-btn-xs" onclick="window._asFlagCreator(' + c.id + ')">' + (c.flagged ? 'Unflag' : 'Flag') + '</button>' +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asDeleteCreator(' + c.id + ')">Delete</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -1682,9 +1685,9 @@
           (f.is_cotw ? ' <span style="color:#F59E0B;margin-left:4px">&#9733; COTW</span>' : '') +
         '</div>' +
         '<div class="as-admin-list-actions">' +
-          (idx > 0 ? '<button class="as-btn as-btn-ghost as-btn-xs" onclick="window._asMoveUp(' + idx + ')">&#9650;</button>' : '') +
-          (idx < featured.length - 1 ? '<button class="as-btn as-btn-ghost as-btn-xs" onclick="window._asMoveDown(' + idx + ')">&#9660;</button>' : '') +
-          '<button class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asRemoveFeatured(' + fid + ')">Remove</button>' +
+          (idx > 0 ? '<button type="button" class="as-btn as-btn-ghost as-btn-xs" onclick="window._asMoveUp(' + idx + ')">&#9650;</button>' : '') +
+          (idx < featured.length - 1 ? '<button type="button" class="as-btn as-btn-ghost as-btn-xs" onclick="window._asMoveDown(' + idx + ')">&#9660;</button>' : '') +
+          '<button type="button" class="as-btn as-btn-ghost as-btn-xs" style="color:#ef4444" onclick="window._asRemoveFeatured(' + fid + ')">Remove</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -2044,7 +2047,11 @@ async function triggerSync() {
     logContent.textContent += JSON.stringify(json, null, 2) + '\n';
 
     var d = json.data || json;
-    if (d.twitch) {
+    if (res.status === 202 || json.accepted) {
+      document.getElementById('syncLastRun').textContent = 'Background sync started ' + new Date().toLocaleString();
+      localStorage.setItem('as_last_sync', new Date().toISOString());
+      logContent.textContent += '\n[' + new Date().toISOString() + '] Background sync accepted. Refresh this panel in a minute for updated counts.\n';
+    } else if (d.twitch) {
       document.getElementById('syncTwitchCount').textContent = (d.twitch.creators_synced || 0) + ' synced';
     }
     if (d.kick) {
@@ -2055,8 +2062,10 @@ async function triggerSync() {
     } else {
       document.getElementById('syncYtCount').textContent = 'No API key';
     }
-    document.getElementById('syncLastRun').textContent = new Date().toLocaleString();
-    localStorage.setItem('as_last_sync', new Date().toISOString());
+    if (res.status !== 202 && !json.accepted) {
+      document.getElementById('syncLastRun').textContent = new Date().toLocaleString();
+      localStorage.setItem('as_last_sync', new Date().toISOString());
+    }
 
     logContent.textContent += '\n[' + new Date().toISOString() + '] Sync complete.\n';
   } catch (e) {

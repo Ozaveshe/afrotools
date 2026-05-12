@@ -12,6 +12,7 @@ const ROOT = path.resolve(__dirname, '..');
 const SKIP_DIRS = new Set(['node_modules', '.git', '.claude', 'scripts', 'netlify', 'dist']);
 const REGISTRY_SCRIPT_RE = /\s*<script\b[^>]*src=["'][^"']*tool-registry(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>\s*/gi;
 const REGISTRY_USAGE_RE = /AFRO_TOOLS|AFRO_CATEGORIES|getTotalToolCount|onRegistryReady|afrotools:registry-ready|renderToolGrid|getToolsFor|country-tools(?:\.min)?\.js|agriculture-taxonomy-hub\.js|salary-tax-hub\.js|salary-tax-index\.js|tool-search(?:\.min)?\.js/;
+const LAZY_REGISTRY_RE = /afrotools:lazy-registry|document\.querySelector\(['"]script\[src\*=["']tool-registry["']\]/;
 const RELATED_TOOLS_RE = /related-tools(?:\.min)?\.js|<afro-related-tools\b/i;
 const REGISTRY_SCRIPT_TAG = '<script src="/assets/js/components/tool-registry.min.js" defer></script>';
 const RELATED_DATA_SCRIPT = '<script src="/assets/js/components/related-tools-data.min.js" defer></script>';
@@ -69,6 +70,7 @@ function insertBeforeNavbarOrHead(html, scriptTag) {
 for (const htmlPath of htmlFiles) {
   const original = fs.readFileSync(htmlPath, 'utf8');
   const usesRegistryDirectly = REGISTRY_USAGE_RE.test(original);
+  const hasLazyRegistryLoader = LAZY_REGISTRY_RE.test(original);
   const usesRelatedTools = RELATED_TOOLS_RE.test(original);
   const hasRegistryScript = REGISTRY_SCRIPT_RE.test(original);
   const hasRelatedDataScript = RELATED_DATA_RE.test(original);
@@ -80,7 +82,12 @@ for (const htmlPath of htmlFiles) {
   let localRestored = 0;
 
   if (usesRegistryDirectly) {
-    if (!hasRegistryScript) {
+    if (hasRegistryScript && hasLazyRegistryLoader) {
+      updated = updated.replace(REGISTRY_SCRIPT_RE, () => {
+        localRemoved += 1;
+        return '\n';
+      });
+    } else if (!hasRegistryScript && !hasLazyRegistryLoader) {
       updated = insertBeforeNavbarOrHead(updated, REGISTRY_SCRIPT_TAG);
       localRestored += 1;
     }

@@ -22,10 +22,10 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -253,8 +253,8 @@
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/medical-report/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/medical-report/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tafsiri-ya-ripoti-ya-matibabu/">
@@ -325,10 +325,10 @@
 
     <!-- Input tabs -->
     <div class="mr-tabs">
-      <button class="mr-tab on" onclick="switchInputTab('paste',this)">&#x1F4CB; Paste Text</button>
-      <button class="mr-tab" onclick="switchInputTab('image',this)">&#x1F4F7; Upload Image</button>
-      <button class="mr-tab" onclick="switchInputTab('pdf',this)">&#x1F4C4; Upload PDF</button>
-      <button class="mr-tab" onclick="switchInputTab('camera',this)">&#x1F4F1; Take Photo</button>
+      <button type="button" class="mr-tab on" onclick="switchInputTab('paste',this)">&#x1F4CB; Paste Text</button>
+      <button type="button" class="mr-tab" onclick="switchInputTab('image',this)">&#x1F4F7; Upload Image</button>
+      <button type="button" class="mr-tab" onclick="switchInputTab('pdf',this)">&#x1F4C4; Upload PDF</button>
+      <button type="button" class="mr-tab" onclick="switchInputTab('camera',this)">&#x1F4F1; Take Photo</button>
     </div>
 
     <!-- Paste text panel -->
@@ -342,7 +342,7 @@
         <span class="mr-upload-icon">&#x1F4F7;</span>
         <div class="mr-upload-text">Drop your lab report image here or click to browse</div>
         <div class="mr-upload-hint">Supports JPG, PNG (max 10MB)</div>
-        <input type="file" id="imageFileInput" accept="image/jpeg,image/png,image/webp" onchange="handleImageSelect(this)">
+        <input aria-label="ImageFileInput" type="file" id="imageFileInput" accept="image/jpeg,image/png,image/webp" onchange="handleImageSelect(this)">
         <img class="mr-upload-preview" id="imagePreview" alt="">
         <div class="mr-upload-filename" id="imageFilename"></div>
       </div>
@@ -354,7 +354,7 @@
         <span class="mr-upload-icon">&#x1F4C4;</span>
         <div class="mr-upload-text">Drop your PDF lab report here or click to browse</div>
         <div class="mr-upload-hint">Supports PDF files (max 20MB)</div>
-        <input type="file" id="pdfFileInput" accept="application/pdf" onchange="handlePdfSelect(this)">
+        <input aria-label="PdfFileInput" type="file" id="pdfFileInput" accept="application/pdf" onchange="handlePdfSelect(this)">
         <div class="mr-upload-filename" id="pdfFilename"></div>
       </div>
     </div>
@@ -365,7 +365,7 @@
         <span class="mr-upload-icon">&#x1F4F1;</span>
         <div class="mr-upload-text">Tap to take a photo of your lab report</div>
         <div class="mr-upload-hint">Opens your phone camera</div>
-        <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleImageSelect(this)">
+        <input aria-label="CameraInput" type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleImageSelect(this)">
         <img class="mr-upload-preview" id="cameraPreview" alt="">
       </div>
     </div>
@@ -374,18 +374,18 @@
     <div style="margin-top:16px">
       <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Quick-fill sample format:</div>
       <div class="mr-panels">
-        <button class="mr-panel-btn" onclick="fillSample('cbc')">&#x1FA78; CBC</button>
-        <button class="mr-panel-btn" onclick="fillSample('lipid')">&#x2764;&#xFE0F; Lipid Panel</button>
-        <button class="mr-panel-btn" onclick="fillSample('liver')">&#x1FAC0; Liver Function</button>
-        <button class="mr-panel-btn" onclick="fillSample('kidney')">&#x1FAC0; Kidney Function</button>
-        <button class="mr-panel-btn" onclick="fillSample('thyroid')">&#x1F98B; Thyroid</button>
-        <button class="mr-panel-btn" onclick="fillSample('diabetes')">&#x1F36C; Diabetes</button>
-        <button class="mr-panel-btn" onclick="fillSample('urinalysis')">&#x1F9EA; Urinalysis</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('cbc')">&#x1FA78; CBC</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('lipid')">&#x2764;&#xFE0F; Lipid Panel</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('liver')">&#x1FAC0; Liver Function</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('kidney')">&#x1FAC0; Kidney Function</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('thyroid')">&#x1F98B; Thyroid</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('diabetes')">&#x1F36C; Diabetes</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('urinalysis')">&#x1F9EA; Urinalysis</button>
       </div>
     </div>
 
     <!-- Analyze button -->
-    <button class="mr-analyze" id="analyzeBtn" onclick="analyzeResults()">
+    <button type="button" class="mr-analyze" id="analyzeBtn" onclick="analyzeResults()">
       &#x1F50D; Analyze My Results
     </button>
 
@@ -431,9 +431,9 @@
 
     <!-- Share -->
     <div class="mr-share">
-      <button class="mr-share-btn" onclick="shareWA()">&#x1F4E2; WhatsApp</button>
-      <button class="mr-share-btn" onclick="copyLink()">&#x1F517; Copy Link</button>
-      <button class="mr-share-btn" onclick="printResults()">&#x1F5A8;&#xFE0F; Print</button>
+      <button type="button" class="mr-share-btn" onclick="shareWA()">&#x1F4E2; WhatsApp</button>
+      <button type="button" class="mr-share-btn" onclick="copyLink()">&#x1F517; Copy Link</button>
+      <button type="button" class="mr-share-btn" onclick="printResults()">&#x1F5A8;&#xFE0F; Print</button>
     </div>
 
     <!-- Chat follow-up -->
@@ -441,15 +441,15 @@
       <h3>&#x1F4AC; Ask Follow-up Questions <span class="mr-ai-badge">AI Chat</span></h3>
       <div class="mr-chat-ctx">Ask anything about your results. The AI has context of all your lab values.</div>
       <div class="mr-chat-prompts" id="chatPrompts">
-        <button class="mr-chat-prompt" onclick="askChat('What should I eat to improve my results?')">What should I eat to improve?</button>
-        <button class="mr-chat-prompt" onclick="askChat('Are any of my results concerning?')">Are any results concerning?</button>
-        <button class="mr-chat-prompt" onclick="askChat('Explain my results like I am 70 years old')">Explain like I am 70</button>
-        <button class="mr-chat-prompt" onclick="askChat('What lifestyle changes would help?')">Lifestyle changes to help</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('What should I eat to improve my results?')">What should I eat to improve?</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('Are any of my results concerning?')">Are any results concerning?</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('Explain my results like I am 70 years old')">Explain like I am 70</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('What lifestyle changes would help?')">Lifestyle changes to help</button>
       </div>
       <div class="mr-chat-messages" id="chatMessages"></div>
       <div class="mr-chat-input">
-        <input type="text" id="chatInput" placeholder="Ask about your results..." onkeydown="if(event.key==='Enter')askChat()">
-        <button id="chatBtn" onclick="askChat()">Send</button>
+        <input aria-label="Ask about your results" type="text" id="chatInput" placeholder="Ask about your results..." onkeydown="if(event.key==='Enter')askChat()">
+        <button type="button" id="chatBtn" onclick="askChat()">Send</button>
       </div>
     </div>
 

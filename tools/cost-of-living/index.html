@@ -20,10 +20,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 50%,#007AFF 100%);padding:44px 0 36px}
@@ -97,7 +97,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which African city has the lowest cost of living?","acceptedAnswer":{"@type":"Answer","text":"Among major African cities, Addis Ababa, Kampala, and Dar es Salaam tend to be the most affordable for overall living costs. Cairo is also relatively affordable in USD terms, though exchange rate volatility affects real purchasing power. Costs vary significantly by neighbourhood and lifestyle."}},{"@type":"Question","name":"How much does rent cost in Lagos compared to Johannesburg?","acceptedAnswer":{"@type":"Answer","text":"A one-bedroom apartment in a central area of Lagos typically costs $300-500/month, while the same in Johannesburg runs $550-700/month. However, Lagos has extreme variation — mainland apartments can be as low as $200, while Victoria Island exceeds $1,500/month."}},{"@type":"Question","name":"What is the biggest expense when living in an African city?","acceptedAnswer":{"@type":"Answer","text":"Housing (rent) is typically the largest expense, often accounting for 30-50% of total living costs. Rent can vary by a factor of 5x between the cheapest and most expensive African cities. After rent, food and transport are usually the next largest categories."}},{"@type":"Question","name":"Are these cost of living figures accurate and up to date?","acceptedAnswer":{"@type":"Answer","text":"The figures are estimated averages based on 2024-2025 data from multiple sources. Actual costs vary based on neighbourhood, lifestyle, and exchange rates. Expat-oriented areas can cost 2-3x more than local neighbourhoods. Use these as directional guides rather than exact figures."}}]}
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cost-of-living/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-de-la-vie/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cost-of-living/" />
@@ -155,8 +155,8 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div><label>Display Currency</label><select id="curr" onchange="compare()"><option value="USD">USD ($)</option><option value="local">Local Currency</option></select></div>
 </div>
 <div class="budget-row">
-<div><label>Monthly Income (USD)</label><input id="incomeUsd" type="number" value="2000" min="0" oninput="compare()"></div>
-<div><label>Household Size</label><input id="householdSize" type="number" value="1" min="1" max="12" oninput="compare()"></div>
+<div><label>Monthly Income (USD)</label><input aria-label="IncomeUsd" id="incomeUsd" type="number" value="2000" min="0" oninput="compare()"></div>
+<div><label>Household Size</label><input aria-label="HouseholdSize" id="householdSize" type="number" value="1" min="1" max="12" oninput="compare()"></div>
 <div><label>Housing</label><select id="housingType" onchange="compare()"><option value="rent1bed">1-bedroom</option><option value="rent3bed">3-bedroom family home</option></select></div>
 <div><label>Lifestyle</label><select id="lifestyle" onchange="compare()"><option value="local">Mostly local</option><option value="mixed" selected>Mixed local/expat</option><option value="expat">Expat-heavy</option></select></div>
 </div>
@@ -336,7 +336,7 @@ function renderBudgetPlan(c1, c2, m1, m2, profile, useLocal) {
     '<div class="budget-card"><strong>$' + Math.round(cheaperCost).toLocaleString('en') + '</strong><span>Profile monthly cost</span></div>' +
     '<div class="budget-card"><strong>' + rentShare.toFixed(0) + '%</strong><span>Rent share</span></div>' +
     '<div class="budget-card"><strong>$' + Math.round(annualSavings).toLocaleString('en') + '</strong><span>Annual difference</span></div>' +
-    '</div><div class="budget-note">' + status + '. Figures are directional. Price-check rent, school, healthcare, and commute patterns before relocating. <button class="btn" style="margin-left:8px;padding:6px 10px;font-size:.78rem" onclick="copyCostBrief()">Copy Brief</button></div>';
+    '</div><div class="budget-note">' + status + '. Figures are directional. Price-check rent, school, healthcare, and commute patterns before relocating. <button type="button" class="btn" style="margin-left:8px;padding:6px 10px;font-size:.78rem" onclick="copyCostBrief()">Copy Brief</button></div>';
 }
 function copyCostBrief() {
   navigator.clipboard.writeText(lastCostBrief).catch(function () { window.prompt('Copy cost brief', lastCostBrief); });

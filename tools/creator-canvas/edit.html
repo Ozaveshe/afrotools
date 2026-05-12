@@ -9,10 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Instrument+Serif&family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@700&family=Bebas+Neue&family=Righteous&family=Poppins:wght@400;700&family=Nunito:wght@400;700&family=Inter:wght@400;700&family=Archivo+Black&family=Alfa+Slab+One&family=Caveat:wght@400;700&family=Pacifico&family=Shadows+Into+Light&family=Raleway:wght@400;700&family=Staatliches&display=swap">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="style.css?v=004f0dc5">
 <link rel="canonical" href="https://afrotools.com/tools/creator-canvas/edit">
 <meta property="og:url" content="https://afrotools.com/tools/creator-canvas/edit">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 
@@ -20,9 +23,9 @@
 
   <!-- EDITOR HEADER -->
   <header class="cv-editor-header">
-    <button class="cv-editor-back" onclick="goBack()">← Back</button>
-    <input type="text" class="cv-editor-name" id="design-name" value="Untitled Design">
-    <button class="cv-editor-export" onclick="openExportPanel()">Export</button>
+    <button type="button" class="cv-editor-back" onclick="goBack()">← Back</button>
+    <input aria-label="Design name" type="text" class="cv-editor-name" id="design-name" value="Untitled Design">
+    <button type="button" class="cv-editor-export" onclick="openExportPanel()">Export</button>
   </header>
 
   <!-- CANVAS AREA -->
@@ -36,39 +39,39 @@
 
   <!-- BOTTOM TOOLBAR -->
   <div class="cv-toolbar" id="toolbar">
-    <button class="cv-tool-btn" onclick="addText()" data-tool="text">
+    <button type="button" class="cv-tool-btn" onclick="addText()" data-tool="text">
       <div class="cv-tool-icon">T</div>
       <div class="cv-tool-label">Text</div>
     </button>
-    <button class="cv-tool-btn" onclick="addImage()" data-tool="image">
+    <button type="button" class="cv-tool-btn" onclick="addImage()" data-tool="image">
       <div class="cv-tool-icon">🖼️</div>
       <div class="cv-tool-label">Image</div>
     </button>
-    <button class="cv-tool-btn" onclick="openElements()" data-tool="elements">
+    <button type="button" class="cv-tool-btn" onclick="openElements()" data-tool="elements">
       <div class="cv-tool-icon">⬡</div>
       <div class="cv-tool-label">Elements</div>
     </button>
-    <button class="cv-tool-btn" onclick="openBackground()" data-tool="bg">
+    <button type="button" class="cv-tool-btn" onclick="openBackground()" data-tool="bg">
       <div class="cv-tool-icon">🎨</div>
       <div class="cv-tool-label">Background</div>
     </button>
-    <button class="cv-tool-btn" onclick="openAI()" data-tool="ai">
+    <button type="button" class="cv-tool-btn" onclick="openAI()" data-tool="ai">
       <div class="cv-tool-icon">✨</div>
       <div class="cv-tool-label">AI</div>
     </button>
-    <button class="cv-tool-btn" onclick="undo()">
+    <button type="button" class="cv-tool-btn" onclick="undo()">
       <div class="cv-tool-icon">↩</div>
       <div class="cv-tool-label">Undo</div>
     </button>
-    <button class="cv-tool-btn" onclick="redo()">
+    <button type="button" class="cv-tool-btn" onclick="redo()">
       <div class="cv-tool-icon">↪</div>
       <div class="cv-tool-label">Redo</div>
     </button>
-    <button class="cv-tool-btn" onclick="duplicateSelected()">
+    <button type="button" class="cv-tool-btn" onclick="duplicateSelected()">
       <div class="cv-tool-icon">📋</div>
       <div class="cv-tool-label">Copy</div>
     </button>
-    <button class="cv-tool-btn" onclick="deleteSelected()" style="color:#f87171">
+    <button type="button" class="cv-tool-btn" onclick="deleteSelected()" style="color:#f87171">
       <div class="cv-tool-icon">🗑️</div>
       <div class="cv-tool-label">Delete</div>
     </button>
@@ -83,7 +86,7 @@
 
     <div class="cv-slider-field">
       <div class="cv-slider-label"><span>Font Size</span><span id="font-size-val">48</span></div>
-      <input type="range" class="cv-slider" id="font-size" min="8" max="200" value="48" oninput="updateTextStyle('fontSize',this.value)">
+      <input aria-label="Font size" type="range" class="cv-slider" id="font-size" min="8" max="200" value="48" oninput="updateTextStyle('fontSize',this.value)">
     </div>
 
     <div style="margin-bottom:14px">
@@ -95,7 +98,7 @@
       <div style="font-size:.65rem;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:8px">COLOR</div>
       <div class="cv-color-swatches" id="text-colors"></div>
       <div class="cv-color-input-row">
-        <input type="text" class="cv-color-hex" id="text-color-hex" value="#ffffff" oninput="updateTextStyle('color',this.value)">
+        <input aria-label="Text color hex" type="text" class="cv-color-hex" id="text-color-hex" value="#ffffff" oninput="updateTextStyle('color',this.value)">
         <div class="cv-color-preview" id="text-color-preview" style="background:#fff"></div>
       </div>
     </div>
@@ -103,19 +106,19 @@
     <div style="margin-bottom:14px">
       <div style="font-size:.65rem;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:8px">ALIGNMENT</div>
       <div class="cv-align-btns">
-        <button class="cv-align-btn active" onclick="updateTextStyle('textAlign','left')">⫷</button>
-        <button class="cv-align-btn" onclick="updateTextStyle('textAlign','center')">☰</button>
-        <button class="cv-align-btn" onclick="updateTextStyle('textAlign','right')">⫸</button>
+        <button type="button" class="cv-align-btn active" onclick="updateTextStyle('textAlign','left')">⫷</button>
+        <button type="button" class="cv-align-btn" onclick="updateTextStyle('textAlign','center')">☰</button>
+        <button type="button" class="cv-align-btn" onclick="updateTextStyle('textAlign','right')">⫸</button>
       </div>
     </div>
 
     <div>
       <div style="font-size:.65rem;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:8px">STYLE</div>
       <div class="cv-style-btns">
-        <button class="cv-style-btn" onclick="toggleTextStyle('fontWeight','bold')">B</button>
-        <button class="cv-style-btn" onclick="toggleTextStyle('fontStyle','italic')" style="font-style:italic">I</button>
-        <button class="cv-style-btn" onclick="toggleTextStyle('textDecoration','underline')" style="text-decoration:underline">U</button>
-        <button class="cv-style-btn" onclick="toggleTextStyle('textTransform','uppercase')">AA</button>
+        <button type="button" class="cv-style-btn" onclick="toggleTextStyle('fontWeight','bold')">B</button>
+        <button type="button" class="cv-style-btn" onclick="toggleTextStyle('fontStyle','italic')" style="font-style:italic">I</button>
+        <button type="button" class="cv-style-btn" onclick="toggleTextStyle('textDecoration','underline')" style="text-decoration:underline">U</button>
+        <button type="button" class="cv-style-btn" onclick="toggleTextStyle('textTransform','uppercase')">AA</button>
       </div>
     </div>
   </div>
@@ -128,7 +131,7 @@
     <div class="cv-panel-sheet-title">BACKGROUND</div>
     <div class="cv-color-swatches" id="bg-colors"></div>
     <div class="cv-color-input-row" style="margin-bottom:16px">
-      <input type="text" class="cv-color-hex" id="bg-color-hex" value="#ffffff" oninput="setBackground('solid',this.value)">
+      <input aria-label="Bg color hex" type="text" class="cv-color-hex" id="bg-color-hex" value="#ffffff" oninput="setBackground('solid',this.value)">
       <div class="cv-color-preview" id="bg-color-preview" style="background:#fff"></div>
     </div>
     <div class="cv-panel-sheet-title" style="margin-top:8px">GRADIENTS</div>
@@ -152,12 +155,12 @@
     </div>
     <div class="cv-panel-sheet-title" style="margin-top:16px">DECORATIVE</div>
     <div class="cv-color-swatches" style="gap:8px">
-      <button class="cv-style-btn" onclick="addDecorativeText('★')">★</button>
-      <button class="cv-style-btn" onclick="addDecorativeText('●')">●</button>
-      <button class="cv-style-btn" onclick="addDecorativeText('▲')">▲</button>
-      <button class="cv-style-btn" onclick="addDecorativeText('◆')">◆</button>
-      <button class="cv-style-btn" onclick="addDecorativeText('═══')">Line</button>
-      <button class="cv-style-btn" onclick="addDecorativeText('〰️')">Wave</button>
+      <button type="button" class="cv-style-btn" onclick="addDecorativeText('★')">★</button>
+      <button type="button" class="cv-style-btn" onclick="addDecorativeText('●')">●</button>
+      <button type="button" class="cv-style-btn" onclick="addDecorativeText('▲')">▲</button>
+      <button type="button" class="cv-style-btn" onclick="addDecorativeText('◆')">◆</button>
+      <button type="button" class="cv-style-btn" onclick="addDecorativeText('═══')">Line</button>
+      <button type="button" class="cv-style-btn" onclick="addDecorativeText('〰️')">Wave</button>
     </div>
   </div>
 </div>
@@ -171,8 +174,8 @@
       <div class="cv-ai-msg assistant">Describe what you'd like to change or ask for design advice.</div>
     </div>
     <div class="cv-ai-input-row">
-      <input type="text" class="cv-ai-input" id="editor-ai-input" placeholder="e.g. Make the headline punchier">
-      <button class="cv-ai-send" onclick="runEditorAI()">Ask</button>
+      <input aria-label="E.g. Make the headline punchier" type="text" class="cv-ai-input" id="editor-ai-input" placeholder="e.g. Make the headline punchier">
+      <button type="button" class="cv-ai-send" onclick="runEditorAI()">Ask</button>
     </div>
   </div>
 </div>
@@ -675,7 +678,7 @@
   function setupFontList() {
     var list = document.getElementById('font-list');
     list.innerHTML = FONTS.map(function(f) {
-      return '<button class="cv-font-item" style="font-family:\'' + f + '\'" onclick="setTextFont(\'' + f + '\')">' + f + '</button>';
+      return '<button type="button" class="cv-font-item" style="font-family:\'' + f + '\'" onclick="setTextFont(\'' + f + '\')">' + f + '</button>';
     }).join('');
   }
 

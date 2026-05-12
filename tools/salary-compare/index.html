@@ -20,11 +20,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"African Salary Benchmarker","description":"Compare salaries across 15 African countries by role, industry, and experience level with PPP adjustments, skill premiums, and cost-of-living data.","url":"https://afrotools.com/tools/salary-compare/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/salary-compare.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"African Salary Benchmarker","url":"https://afrotools.com/tools/salary-compare/","description":"Compare salaries across 15 African countries by role, industry, and experience level with PPP adjustments, skill premiums, and cost-of-living data.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/salary-compare.webp"}</script>
 <style>
@@ -302,10 +302,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 /* AI Advisor floating section */
 .ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/salary-compare/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/comparateur-salaires/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kilinganisha-mishahara/" />
@@ -463,7 +463,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 </select>
 </div>
 </div>
-<button class="sb-btn sb-btn-primary" id="btnBenchmark">Compare Salaries Across Africa</button>
+<button type="button" class="sb-btn sb-btn-primary" id="btnBenchmark">Compare Salaries Across Africa</button>
 </div>
 </div>
 
@@ -474,10 +474,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 <div class="sb-card" style="margin-top:18px">
 <div class="sb-card-body" style="padding:14px 22px">
 <div class="sb-toggles">
-<label class="sb-toggle"><input type="checkbox" id="togLocal"><span class="sb-toggle-track"></span> Local Currency</label>
-<label class="sb-toggle"><input type="checkbox" id="togComp"><span class="sb-toggle-track"></span> Total Compensation</label>
-<label class="sb-toggle"><input type="checkbox" id="togRemote"><span class="sb-toggle-track"></span> Remote/Diaspora Employer</label>
-<label class="sb-toggle"><input type="checkbox" id="togPPP"><span class="sb-toggle-track"></span> PPP Adjusted</label>
+<label class="sb-toggle"><input aria-label="TogLocal" type="checkbox" id="togLocal"><span class="sb-toggle-track"></span> Local Currency</label>
+<label class="sb-toggle"><input aria-label="TogComp" type="checkbox" id="togComp"><span class="sb-toggle-track"></span> Total Compensation</label>
+<label class="sb-toggle"><input aria-label="TogRemote" type="checkbox" id="togRemote"><span class="sb-toggle-track"></span> Remote/Diaspora Employer</label>
+<label class="sb-toggle"><input aria-label="TogPPP" type="checkbox" id="togPPP"><span class="sb-toggle-track"></span> PPP Adjusted</label>
 </div>
 <div id="remoteEmployerRow" style="display:none;margin-top:12px;align-items:center;gap:10px;flex-wrap:wrap">
 <span style="font-size:.76rem;font-weight:600;color:var(--sb-muted)">Employer country:</span>
@@ -619,7 +619,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
         <div class="ai-msgs" id="aiMsgs"></div>
         <div class="ai-input-row">
           <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" aria-label="Message to AI advisor" onkeydown="if(event.key==='Enter')sendAI()">
-          <button class="ai-send" id="aiSend" aria-label="Send message" onclick="sendAI()">&#x2192;</button>
+          <button type="button" class="ai-send" id="aiSend" aria-label="Send message" onclick="sendAI()">&#x2192;</button>
         </div>
       </div>
     </div>

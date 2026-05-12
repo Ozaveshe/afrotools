@@ -34,11 +34,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -87,7 +87,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-04-06">
@@ -142,8 +142,8 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Huamua mfuko wa hifadhi ya jamii</span></div>
             <div class="sector-row">
-              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Binafsi (CNSS)</button>
-              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Sekta ya Umma (CNSS)</button>
+              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Binafsi (CNSS)</button>
+              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Sekta ya Umma (CNSS)</button>
             </div>
           </div>
 
@@ -153,7 +153,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">XAF 500,000</span>
             </div>
-            <input type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>XAF 50,000</span><span>XAF 5,000,000</span></div>
           </div>
 
@@ -162,7 +162,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwezi</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">XAF</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="100000" min="0" step="10000" value="500000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="100000" min="0" step="10000" value="500000" oninput="onInput(this)">
             </div>
           </div>
           <div class="field">
@@ -177,16 +177,16 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Watoto Wategemezi</span><span class="f-hint">Standard case only, capped at 6 children</span></div>
             <div class="f-wrap">
-              <input type="number" class="f-input" id="dependentChildren" min="0" max="6" step="1" value="0" oninput="calculate()">
+              <input aria-label="DependentChildren" type="number" class="f-input" id="dependentChildren" min="0" max="6" step="1" value="0" oninput="calculate()">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(200000, this)">XAF 200k</button>
-            <button class="preset-btn" onclick="setPreset(500000, this)">XAF 500k</button>
-            <button class="preset-btn" onclick="setPreset(1000000, this)">XAF 1M</button>
-            <button class="preset-btn" onclick="setPreset(2000000, this)">XAF 2M</button>
-            <button class="preset-btn" onclick="setPreset(4000000, this)">XAF 4M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(200000, this)">XAF 200k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(500000, this)">XAF 500k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">XAF 1M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(2000000, this)">XAF 2M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(4000000, this)">XAF 4M</button>
           </div>
 
           <!-- CONTRIBUTION TOGGLES -->
@@ -205,7 +205,7 @@
             <p class="f-note">Katika modeli hii, mchango wa CNSS wa mfanyakazi (2.5%) hukatwa kabla ya IRPP. Kikokotoo pia kinatumia mgawo wa kawaida wa familia wa Gabon kwa kaya za mtu mmoja au waliooa/kuolewa zenye hadi watoto 6 wanaotegemewa. Mwongozo wa CNSS DTS unaeleza kuwa michango hutangazwa kwa msingi wa malipo yenye kikomo (plafonnée).</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Kokotoa Mshahara Halisi &rarr;</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Kokotoa Mshahara Halisi &rarr;</button>
         </div>
       </div>
 
@@ -219,8 +219,8 @@
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button class="per-btn on" onclick="setPeriod('monthly',this)">Kwa Mwezi</button>
-            <button class="per-btn" onclick="setPeriod('annual',this)">Kwa Mwaka</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Kwa Mwezi</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Kwa Mwaka</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
@@ -235,19 +235,19 @@
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">Muhtasari</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Mabanda ya Kodi</button>
-            <button class="chart-tab" onclick="setChart('employer',this)">Gharama ya Mwajiri</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Muhtasari</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Mabanda ya Kodi</button>
+            <button type="button" class="chart-tab" onclick="setChart('employer',this)">Gharama ya Mwajiri</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Pakua PDF
           </button>
-          <button class="act-btn act-share" id="tzShareBtn" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" id="tzShareBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Shiriki Matokeo
           </button>
@@ -284,12 +284,12 @@
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Kokotoa mshahara wako kwanza — nitachambua your Gabon IRPP position, kueleza CNSS deductibility, and na kutoa vidokezo maalum vya kuboresha kodi kwa Gabon.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Kokotoa kwanza ili kufungua →</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Kokotoa kwanza ili kufungua →</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Uliza swali la kufuatilia..." onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">→</button>
+              <input aria-label="Uliza swali la kufuatilia" class="chat-in" id="chatIn" placeholder="Uliza swali la kufuatilia..." onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
 
@@ -334,7 +334,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/ga-paye.webp" alt="Gabon Kikokotoo cha PAYE" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/ga-paye.webp" alt="Gabon Kikokotoo cha PAYE" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Gabon Kikokotoo cha PAYE</div>
             <div class="tool-info-cat">Kodi na Fedha</div>
@@ -355,7 +355,7 @@
           </div>
         </div>
         <div class="tool-info-save">
-          <button class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
+          <button type="button" class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             <span id="sidebarSaveLabel">Hifadhi kwenye Zana Zangu</span>
           </button>
@@ -363,7 +363,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Imesasishwa: Machi 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Shiriki</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Shiriki</button>
             <a class="tool-info-action" href="/sw/mshahara-na-kodi/paye/">Nchi Zote</a>
           </div>
         </div>
@@ -381,25 +381,25 @@
       <p>Ingiza barua pepe yako ili upate PDF yenye maelezo — tutakujulisha viwango vya kodi vya &#127468;&#127462; Gabon vikibadilika.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input name="bot-field"></p>
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country"      value="Gabon">
         <input type="hidden" name="country_code" value="GA">
         <input type="hidden" name="tool"         value="paye">
         <input type="hidden" name="tool_id"      value="ga-paye">
         <input type="hidden" name="currency"     value="XAF">
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Jina lako (hiari)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" autocomplete="email" required>
+        <input aria-label="Jina lako (hiari)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Jina lako (hiari)" autocomplete="name">
+        <input aria-label="Barua pepe yako" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" autocomplete="email" required>
         <button class="modal-submit" type="submit">Pata PDF Yangu →</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">Hapana, asante</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">Hapana, asante</button>
     </div>
     <div class="modal-success" id="modalSuccess">
-      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Funga">✕</button>
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Funga">✕</button>
       <div class="big-check">✅</div>
       <h4>PDF inafunguliwa sasa</h4>
       <p>Bofya <strong>Hifadhi kama PDF</strong> kwenye dirisha la kuchapisha.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Sawa &rarr;</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Sawa &rarr;</button>
     </div>
   </div>
 </div>
@@ -418,11 +418,11 @@
         </div>
       </div>
       <div class="ng-save-actions">
-        <button class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
+        <button type="button" class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
           Hifadhi kwenye Zana Zangu
         </button>
-        <button class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
+        <button type="button" class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Shiriki
         </button>

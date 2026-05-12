@@ -11,10 +11,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/lib/pdf-template.js?v=61bb8821" defer></script>
 <style>
 :root{--apo:#1D4ED8;--apo-dk:#1E3A8A;--apo-lt:#3B82F6;--apo-pale:#EFF6FF;--apo-mid:#2563EB;--t:#0f172a;--m:#64748b;--bd:#e2e8f0;--bg:#f8fafc;--green:#059669;--green-pale:#F0FDF4}
@@ -209,7 +209,7 @@
         <input type="text" id="setup-role" placeholder="e.g. Software Engineer">
       </div>
     </div>
-    <button class="apo-setup-start" id="apo-start-btn">Start Journey →</button>
+    <button type="button" class="apo-setup-start" id="apo-start-btn">Start Journey →</button>
     <div class="apo-setup-meta">
       <div class="apo-setup-note">Core workflow support is available across all 54 African countries. Country-specific calculators and guidance appear automatically where AfroTools has localized coverage.</div>
       <div class="apo-sync-note" id="apo-sync-note">Progress saves in this browser. Sign in to sync your journey across devices.</div>
@@ -232,8 +232,8 @@
     <div class="apo-step-prefill" id="apo-step-prefill"></div>
     <div class="apo-step-actions">
       <a href="#" class="apo-btn-open" id="apo-btn-open" target="_blank" rel="noopener">Open Tool ↗</a>
-      <button class="apo-btn-done" id="apo-btn-done">✓ Mark as done</button>
-      <button class="apo-btn-skip" id="apo-btn-skip" style="display:none">Skip →</button>
+      <button type="button" class="apo-btn-done" id="apo-btn-done">✓ Mark as done</button>
+      <button type="button" class="apo-btn-skip" id="apo-btn-skip" style="display:none">Skip →</button>
     </div>
     <!-- Carry-forward data capture -->
     <div class="apo-carry-form" id="apo-carry-form">
@@ -250,16 +250,16 @@
     </div>
     <p class="apo-ai-panel-sub">Ask anything about this step — compliance risks, country-specific rules, what to watch out for.</p>
     <div class="apo-ai-input-row">
-      <input type="text" class="apo-ai-input" id="apo-ai-input" placeholder="e.g. What pension rate applies in Nigeria?" maxlength="300">
-      <button class="apo-ai-send" id="apo-ai-send">Ask →</button>
+      <input aria-label="E.g. What pension rate applies in Nigeria?" type="text" class="apo-ai-input" id="apo-ai-input" placeholder="e.g. What pension rate applies in Nigeria?" maxlength="300">
+      <button type="button" class="apo-ai-send" id="apo-ai-send">Ask →</button>
     </div>
     <div class="apo-ai-response" id="apo-ai-response"></div>
   </div>
 
   <!-- Navigation -->
   <div class="apo-flow-nav" style="margin-top:20px">
-    <button class="apo-nav-btn" id="apo-prev-btn">← Previous</button>
-    <button class="apo-nav-btn primary" id="apo-next-btn">Next step →</button>
+    <button type="button" class="apo-nav-btn" id="apo-prev-btn">← Previous</button>
+    <button type="button" class="apo-nav-btn primary" id="apo-next-btn">Next step →</button>
   </div>
 </div>
 
@@ -273,8 +273,8 @@
     <div id="apo-summary-rows"></div>
   </div>
   <div class="apo-complete-actions">
-    <button class="apo-complete-btn primary" id="apo-share-btn">📤 Share checklist</button>
-    <button class="apo-complete-btn secondary" id="apo-download-btn">Download summary PDF</button>
+    <button type="button" class="apo-complete-btn primary" id="apo-share-btn">📤 Share checklist</button>
+    <button type="button" class="apo-complete-btn secondary" id="apo-download-btn">Download summary PDF</button>
     <a href="index.html" class="apo-complete-btn secondary">Start another journey</a>
     <a href="/afrowork/" class="apo-complete-btn secondary">AfroWork Suite</a>
   </div>
@@ -608,7 +608,7 @@
     var carryFields = document.getElementById('apo-carry-fields');
     if (state.currentStep === 0 && !state.carryData.salary) {
       carryForm.style.display = 'block';
-      carryFields.innerHTML = '<div class="apo-carry-field"><label>Net Salary / Monthly Pay</label><input type="number" id="carry-salary" placeholder="e.g. 250000" value="' + (state.carryData.salary || '') + '"></div>';
+      carryFields.innerHTML = '<div class="apo-carry-field"><label>Net Salary / Monthly Pay</label><input aria-label="E.g. 250000" type="number" id="carry-salary" placeholder="e.g. 250000" value="' + (state.carryData.salary || '') + '"></div>';
     } else {
       carryForm.style.display = 'none';
     }

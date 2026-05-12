@@ -31,11 +31,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -83,7 +83,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/sudan/sd-paye" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/sudan/kikokotoo-kodi-mshahara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/sudan/sd-paye" />
@@ -149,7 +149,7 @@
               <span class="slider-label">Monthly Gross Salary</span>
               <span class="slider-val" id="sliderVal">SDG 300,000</span>
             </div>
-            <input type="range" id="salarySlider" min="10000" max="100000000" step="100000" value="300000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="10000" max="100000000" step="100000" value="300000" oninput="onSlider(this)">
             <div class="slider-limits"><span>SDG 10,000</span><span>SDG 100,000,000</span></div>
           </div>
 
@@ -158,16 +158,16 @@
             <div class="f-label"><span class="f-label-text">Or type exact monthly amount</span><span class="f-hint">Before any deductions</span></div>
             <div class="f-wrap">
               <span class="f-prefix">SDG</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" step="100000" value="300000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" step="100000" value="300000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(300000, this)">SDG 300k</button>
-            <button class="preset-btn" onclick="setPreset(1000000, this)">SDG 1M</button>
-            <button class="preset-btn" onclick="setPreset(5000000, this)">SDG 5M</button>
-            <button class="preset-btn" onclick="setPreset(20000000, this)">SDG 20M</button>
-            <button class="preset-btn" onclick="setPreset(50000000, this)">SDG 50M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(300000, this)">SDG 300k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">SDG 1M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(5000000, this)">SDG 5M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(20000000, this)">SDG 20M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(50000000, this)">SDG 50M</button>
           </div>
 
           <!-- CONTRIBUTION TOGGLES -->
@@ -182,7 +182,7 @@
             <p class="f-note">NSIF employee contribution (8%) is fully deductible from taxable income before PAYE is calculated. Employer NSIF (17%) is an additional cost shown in employer chart.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
         </div>
       </div>
 
@@ -196,8 +196,8 @@
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-            <button class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
@@ -212,19 +212,19 @@
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
-            <button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
+            <button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Download PDF
           </button>
-          <button class="act-btn act-share" id="sdShareBtn" onclick="shareResult()">
+          <button type="button" class="act-btn act-share" id="sdShareBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share Result
           </button>
@@ -261,12 +261,12 @@
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your Taxation Chamber PAYE position and give specific optimisation tips for Sudan.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">→</button>
+              <input aria-label="Ask a follow up" class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
 
@@ -307,7 +307,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/sd-paye.webp" alt="Sudan PAYE Calculator" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/sd-paye.webp" alt="Sudan PAYE Calculator" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Sudan PAYE Calculator</div>
             <div class="tool-info-cat">Tax &amp; Finance</div>
@@ -328,7 +328,7 @@
           </div>
         </div>
         <div class="tool-info-save">
-          <button class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
+          <button type="button" class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             <span id="sidebarSaveLabel">Save to My Tools</span>
           </button>
@@ -336,7 +336,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
             <a class="tool-info-action" href="/salary-tax/">All Countries</a>
           </div>
         </div>
@@ -356,25 +356,25 @@
       <p>Enter your email to get a detailed PDF — we'll notify you when Sudan tax rates change.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input name="bot-field"></p>
+      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country"      value="Sudan">
         <input type="hidden" name="country_code" value="SD">
         <input type="hidden" name="tool"         value="paye">
         <input type="hidden" name="tool_id"      value="sd-paye">
         <input type="hidden" name="currency"     value="SDG">
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
+        <input aria-label="Your name (optional)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
+        <input aria-label="Your email address" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
         <button class="modal-submit" type="submit">Get My PDF →</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">No thanks</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">No thanks</button>
     </div>
     <div class="modal-success" id="modalSuccess">
-      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
+      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
       <div class="big-check">✅</div>
       <h4>PDF opening now</h4>
       <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
     </div>
   </div>
 </div>
@@ -393,11 +393,11 @@
         </div>
       </div>
       <div class="ng-save-actions">
-        <button class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
+        <button type="button" class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
           Save to My Tools
         </button>
-        <button class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
+        <button type="button" class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Share
         </button>

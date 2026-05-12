@@ -7,7 +7,7 @@
 <title>Certificate of Origin Generator for Africa — AfCFTA, ECOWAS, EAC, SADC | AfroTools</title>
 <meta name="description" content="Generate Certificates of Origin for African exports. AfCFTA, ECOWAS, EAC, SADC and standard COO templates. Check if your product qualifies for preferential tariff treatment.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
 <style>
 :root{--coo-blue:#007AFF;--coo-dark:#0A1628;--coo-green:#00A651;}
@@ -85,8 +85,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 </head>
 <body>
@@ -110,10 +110,10 @@
 
 <div class="coo-body">
   <div class="coo-tabs" role="tablist">
-    <button class="coo-tab on" onclick="setTab('select',this)">📋 Select Template</button>
-    <button class="coo-tab" onclick="setTab('fill',this)">✏️ Fill Form</button>
-    <button class="coo-tab" onclick="setTab('origin',this)">🔍 Origin Checker</button>
-    <button class="coo-tab" onclick="setTab('preview',this)">👁 Preview & Print</button>
+    <button type="button" class="coo-tab on" onclick="setTab('select',this)">📋 Select Template</button>
+    <button type="button" class="coo-tab" onclick="setTab('fill',this)">✏️ Fill Form</button>
+    <button type="button" class="coo-tab" onclick="setTab('origin',this)">🔍 Origin Checker</button>
+    <button type="button" class="coo-tab" onclick="setTab('preview',this)">👁 Preview & Print</button>
   </div>
 
   <!-- TAB 1: Select Template -->
@@ -155,7 +155,7 @@
     <div class="card" id="formCard">
       <div class="card-head" id="formTitle">Fill in COO Details</div>
       <div id="formFields"></div>
-      <button class="gen-btn" onclick="generatePreview()">👁 Generate Preview</button>
+      <button type="button" class="gen-btn" onclick="generatePreview()">👁 Generate Preview</button>
     </div>
   </div>
 
@@ -167,28 +167,28 @@
       <div class="f-grid">
         <div>
           <div class="f-label">Ex-Works Price (USD)</div>
-          <input type="number" id="exWorksPrice" class="f-input" placeholder="e.g. 10000">
+          <input aria-label="E.g. 10000" type="number" id="exWorksPrice" class="f-input" placeholder="e.g. 10000">
         </div>
         <div>
           <div class="f-label">Value of Non-Originating Materials (USD)</div>
-          <input type="number" id="nonOrigMat" class="f-input" placeholder="e.g. 3000">
+          <input aria-label="E.g. 3000" type="number" id="nonOrigMat" class="f-input" placeholder="e.g. 3000">
         </div>
       </div>
       <div class="f-grid">
         <div class="toggle-row" style="margin:0;">
           <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;">
-            <input type="checkbox" id="hasWO" style="width:16px;height:16px;">
+            <input aria-label="HasWO" type="checkbox" id="hasWO" style="width:16px;height:16px;">
             <span style="font-size:.9rem;">Product is Wholly Obtained (grown/mined in exporting country)</span>
           </label>
         </div>
         <div class="toggle-row" style="margin:0;">
           <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;">
-            <input type="checkbox" id="hasCTH" style="width:16px;height:16px;">
+            <input aria-label="HasCTH" type="checkbox" id="hasCTH" style="width:16px;height:16px;">
             <span style="font-size:.9rem;">Change in Tariff Heading (HS heading changes during production)</span>
           </label>
         </div>
       </div>
-      <button class="gen-btn" style="margin-top:1rem;" onclick="checkOrigin()">🔍 Check Origin Qualification</button>
+      <button type="button" class="gen-btn" style="margin-top:1rem;" onclick="checkOrigin()">🔍 Check Origin Qualification</button>
     </div>
     <div id="originResults"></div>
   </div>
@@ -197,7 +197,7 @@
   <div id="tabPreview" class="tab-panel">
     <div class="card preview-card" style="padding:1rem;">
       <div class="card-head">Certificate of Origin Preview</div>
-      <button class="coo-print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button type="button" class="coo-print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
     </div>
     <div class="coo-preview" id="cooPreview">
       <div class="coo-title">Certificate of Origin</div>
@@ -212,7 +212,7 @@
   <wise-cta context="general"></wise-cta>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script>
 <script src="/data/trade/coo-templates.js?v=5cb54be5"></script>
 <script src="/engines/coo-engine.js?v=1c3e6d65"></script>
@@ -270,7 +270,7 @@ function buildForm(templateId) {
       var isTextarea = fid === 'goods_description' || fid === 'direct_consignment_declaration';
       html += '<div><div class="f-label">' + label + '</div>';
       if (isTextarea) html += '<textarea class="f-textarea" id="ff_' + fid + '" placeholder="' + label + '">' + (formValues[fid] || '') + '</textarea>';
-      else html += '<input type="text" class="f-input" id="ff_' + fid + '" value="' + (formValues[fid] || '') + '" placeholder="' + label + '">';
+      else html += '<input aria-label="' + label + '" type="text" class="f-input" id="ff_' + fid + '" value="' + (formValues[fid] || '') + '" placeholder="' + label + '">';
       html += '</div>';
     }
     html += '</div>';

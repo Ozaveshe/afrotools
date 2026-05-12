@@ -12,12 +12,15 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="style.css?v=a40ada5e">
 <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
 <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-invoice/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-invoice/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
 <div class="ci-app">
@@ -60,7 +63,7 @@
     <div class="ci-quick-actions">
       <a href="create.html" class="ci-btn ci-btn-primary ci-btn-sm">+ New Invoice</a>
       <a href="quote.html?new=1" class="ci-btn ci-btn-outline ci-btn-sm">+ New Quote</a>
-      <button class="ci-btn ci-btn-secondary ci-btn-sm" id="btn-send-reminders" style="display:none">
+      <button type="button" class="ci-btn ci-btn-secondary ci-btn-sm" id="btn-send-reminders" style="display:none">
         Send Reminders <span class="ci-badge ci-badge-overdue" id="overdue-count"></span>
       </button>
     </div>
@@ -69,11 +72,11 @@
     <div id="invoices-view">
       <!-- FILTER TABS -->
       <div class="ci-filter-tabs" id="filter-tabs">
-        <button class="ci-filter-tab active" data-filter="all">All</button>
-        <button class="ci-filter-tab" data-filter="draft">Draft</button>
-        <button class="ci-filter-tab" data-filter="sent">Sent</button>
-        <button class="ci-filter-tab" data-filter="paid">Paid</button>
-        <button class="ci-filter-tab" data-filter="overdue">Overdue</button>
+        <button type="button" class="ci-filter-tab active" data-filter="all">All</button>
+        <button type="button" class="ci-filter-tab" data-filter="draft">Draft</button>
+        <button type="button" class="ci-filter-tab" data-filter="sent">Sent</button>
+        <button type="button" class="ci-filter-tab" data-filter="paid">Paid</button>
+        <button type="button" class="ci-filter-tab" data-filter="overdue">Overdue</button>
       </div>
 
       <!-- INVOICE LIST -->
@@ -275,7 +278,7 @@
           '</div>' +
         '</div>' +
         '<div class="ci-invoice-amount">' + fmt + '</div>' +
-        '<button class="ci-invoice-menu" onclick="event.stopPropagation();toggleMenu(this,\'' + inv.id + '\')">&#8942;</button>' +
+        '<button type="button" class="ci-invoice-menu" onclick="event.stopPropagation();toggleMenu(this,\'' + inv.id + '\')">&#8942;</button>' +
       '</div>';
     }).join('');
   }
@@ -322,12 +325,12 @@
     var dd = document.createElement('div');
     dd.className = 'ci-dropdown open';
     dd.innerHTML =
-      '<button class="ci-dropdown-item" onclick="editInvoice(\'' + id + '\')">✏️ Edit</button>' +
-      '<button class="ci-dropdown-item" onclick="duplicateInvoice(\'' + id + '\')">📋 Duplicate</button>' +
-      (inv.status !== 'paid' ? '<button class="ci-dropdown-item" onclick="markPaid(\'' + id + '\')">✅ Mark Paid</button>' : '') +
-      (inv.status !== 'paid' ? '<button class="ci-dropdown-item" onclick="sendReminder(\'' + id + '\')">🔔 Send Reminder</button>' : '') +
+      '<button type="button" class="ci-dropdown-item" onclick="editInvoice(\'' + id + '\')">✏️ Edit</button>' +
+      '<button type="button" class="ci-dropdown-item" onclick="duplicateInvoice(\'' + id + '\')">📋 Duplicate</button>' +
+      (inv.status !== 'paid' ? '<button type="button" class="ci-dropdown-item" onclick="markPaid(\'' + id + '\')">✅ Mark Paid</button>' : '') +
+      (inv.status !== 'paid' ? '<button type="button" class="ci-dropdown-item" onclick="sendReminder(\'' + id + '\')">🔔 Send Reminder</button>' : '') +
       '<div class="ci-dropdown-divider"></div>' +
-      '<button class="ci-dropdown-item danger" onclick="deleteInvoice(\'' + id + '\')">🗑️ Delete</button>';
+      '<button type="button" class="ci-dropdown-item danger" onclick="deleteInvoice(\'' + id + '\')">🗑️ Delete</button>';
 
     btn.parentElement.style.position = 'relative';
     btn.parentElement.appendChild(dd);

@@ -112,10 +112,10 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=abfab4a3">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 
 <style>
 :root {
@@ -323,9 +323,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
     <!-- COOP TYPE TABS -->
     <div class="coop-tabs">
-      <button class="coop-tab active" onclick="setCoopType('agri', this)">🌾 Agricultural Marketing</button>
-      <button class="coop-tab" onclick="setCoopType('sacco', this)">🏦 SACCO / Savings</button>
-      <button class="coop-tab" onclick="setCoopType('multi', this)">🤝 Multi-Purpose</button>
+      <button type="button" class="coop-tab active" onclick="setCoopType('agri', this)">🌾 Agricultural Marketing</button>
+      <button type="button" class="coop-tab" onclick="setCoopType('sacco', this)">🏦 SACCO / Savings</button>
+      <button type="button" class="coop-tab" onclick="setCoopType('multi', this)">🤝 Multi-Purpose</button>
     </div>
 
     <div class="form-grid">
@@ -425,7 +425,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         <div class="alloc-sub">Legally required in most African countries</div>
       </div>
       <div class="alloc-input-wrap">
-        <input type="number" id="alloc-reserve" class="alloc-input" value="25" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <input aria-label="Alloc reserve" type="number" id="alloc-reserve" class="alloc-input" value="25" min="0" max="100" step="1" oninput="updateAllocTotal()">
         <span class="alloc-pct">%</span>
       </div>
     </div>
@@ -436,7 +436,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         <div class="alloc-sub">Member capacity building</div>
       </div>
       <div class="alloc-input-wrap">
-        <input type="number" id="alloc-edu" class="alloc-input" value="5" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <input aria-label="Alloc edu" type="number" id="alloc-edu" class="alloc-input" value="5" min="0" max="100" step="1" oninput="updateAllocTotal()">
         <span class="alloc-pct">%</span>
       </div>
     </div>
@@ -447,7 +447,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         <div class="alloc-sub">Distributed to all members</div>
       </div>
       <div class="alloc-input-wrap">
-        <input type="number" id="alloc-dividend" class="alloc-input" value="50" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <input aria-label="Alloc dividend" type="number" id="alloc-dividend" class="alloc-input" value="50" min="0" max="100" step="1" oninput="updateAllocTotal()">
         <span class="alloc-pct">%</span>
       </div>
     </div>
@@ -458,7 +458,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         <div class="alloc-sub">Community development projects</div>
       </div>
       <div class="alloc-input-wrap">
-        <input type="number" id="alloc-social" class="alloc-input" value="5" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <input aria-label="Alloc social" type="number" id="alloc-social" class="alloc-input" value="5" min="0" max="100" step="1" oninput="updateAllocTotal()">
         <span class="alloc-pct">%</span>
       </div>
     </div>
@@ -469,7 +469,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         <div class="alloc-sub">Reinvested for cooperative growth</div>
       </div>
       <div class="alloc-input-wrap">
-        <input type="number" id="alloc-retained" class="alloc-input" value="15" min="0" max="100" step="1" oninput="updateAllocTotal()">
+        <input aria-label="Alloc retained" type="number" id="alloc-retained" class="alloc-input" value="15" min="0" max="100" step="1" oninput="updateAllocTotal()">
         <span class="alloc-pct">%</span>
       </div>
     </div>
@@ -515,7 +515,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
   <div id="calc-error" class="err-msg" style="display:none;margin-bottom:1rem"></div>
 
-  <button class="btn-calc" onclick="calcDividend()">Calculate My Dividend &#x2192;</button>
+  <button type="button" class="btn-calc" onclick="calcDividend()">Calculate My Dividend &#x2192;</button>
 
   <!-- ═══════ RESULTS ═══════ -->
   <div id="results">
@@ -566,7 +566,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
     <!-- Reset -->
     <div style="text-align:center">
-      <button class="btn-recalc" onclick="resetCalc()">&#x21BA; Recalculate</button>
+      <button type="button" class="btn-recalc" onclick="resetCalc()">&#x21BA; Recalculate</button>
     </div>
 
   </div><!-- /results -->

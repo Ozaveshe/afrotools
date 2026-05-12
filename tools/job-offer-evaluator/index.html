@@ -20,10 +20,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea"><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
@@ -32,11 +32,11 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/job-offer-evaluator.webp">
 <meta property="article:modified_time" content="2026-04-04">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Job Offer Evaluator","item":"https://afrotools.com/tools/job-offer-evaluator/"}]}</script>
 <style>
@@ -356,9 +356,9 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
 
 <!-- ── Main Tabs ─────────────────────────────────────────── -->
 <div class="joe-tab-bar">
-  <button class="joe-tab-btn active" onclick="switchTab('offers')">Offers Setup</button>
-  <button class="joe-tab-btn" onclick="switchTab('culture')">Culture Score</button>
-  <button class="joe-tab-btn" onclick="switchTab('counter')">Counter-Offer</button>
+  <button type="button" class="joe-tab-btn active" onclick="switchTab('offers')">Offers Setup</button>
+  <button type="button" class="joe-tab-btn" onclick="switchTab('culture')">Culture Score</button>
+  <button type="button" class="joe-tab-btn" onclick="switchTab('counter')">Counter-Offer</button>
 </div>
 
 <!-- ── Tab: Offers ──────────────────────────────────────── -->
@@ -416,8 +416,8 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
   <div class="joe-dots" id="joe-dots"></div>
 
   <!-- Add offer / Compare -->
-  <button class="joe-add-btn" id="joe-add-btn" onclick="addOffer()">+ Add Another Offer (up to 4)</button>
-  <button class="joe-compare-btn" onclick="runCompare()">Compare All Offers →</button>
+  <button type="button" class="joe-add-btn" id="joe-add-btn" onclick="addOffer()">+ Add Another Offer (up to 4)</button>
+  <button type="button" class="joe-compare-btn" onclick="runCompare()">Compare All Offers →</button>
 </div>
 </div>
 
@@ -431,7 +431,7 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
     <div class="joe-section-title">Culture Premium Slider</div>
     <p style="font-size:.78rem;color:var(--m);margin-bottom:12px">How much monthly salary is a 10-point culture score improvement worth to you?</p>
     <div style="display:flex;align-items:center;gap:12px">
-      <input type="range" class="joe-slider" id="joe-culture-premium" min="0" max="200000" step="5000" value="30000" oninput="calcCulturePremium()">
+      <input aria-label="Joe culture premium" type="range" class="joe-slider" id="joe-culture-premium" min="0" max="200000" step="5000" value="30000" oninput="calcCulturePremium()">
       <span id="joe-culture-premium-val" style="font-size:.88rem;font-weight:800;color:var(--joe);min-width:80px"></span>
     </div>
     <div id="joe-culture-premium-result" style="margin-top:12px;font-size:.82rem;color:#475569;line-height:1.7"></div>
@@ -448,34 +448,34 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
     <div class="joe-row">
       <div class="joe-field">
         <label class="joe-label">Your Current Salary (monthly)</label>
-        <input type="number" class="joe-input" id="joe-c-current" value="400000" step="10000" placeholder="Current salary">
+        <input aria-label="Current salary" type="number" class="joe-input" id="joe-c-current" value="400000" step="10000" placeholder="Current salary">
       </div>
       <div class="joe-field">
         <label class="joe-label">Offered Amount (monthly)</label>
-        <input type="number" class="joe-input" id="joe-c-offered" value="550000" step="10000" placeholder="Offered salary">
+        <input aria-label="Offered salary" type="number" class="joe-input" id="joe-c-offered" value="550000" step="10000" placeholder="Offered salary">
       </div>
     </div>
     <div class="joe-row">
       <div class="joe-field">
         <label class="joe-label">Your Counter Amount (monthly)</label>
-        <input type="number" class="joe-input" id="joe-c-counter" value="620000" step="10000" placeholder="Your counter">
+        <input aria-label="Your counter" type="number" class="joe-input" id="joe-c-counter" value="620000" step="10000" placeholder="Your counter">
       </div>
       <div class="joe-field">
         <label class="joe-label">Your Role / Title</label>
-        <input type="text" class="joe-input" id="joe-c-role" value="Senior Software Engineer" placeholder="e.g. Senior Engineer">
+        <input aria-label="E.g. Senior Engineer" type="text" class="joe-input" id="joe-c-role" value="Senior Software Engineer" placeholder="e.g. Senior Engineer">
       </div>
     </div>
     <div class="joe-row">
       <div class="joe-field">
         <label class="joe-label">City</label>
-        <input type="text" class="joe-input" id="joe-c-city" value="Lagos" placeholder="e.g. Lagos, Nairobi">
+        <input aria-label="E.g. Lagos, Nairobi" type="text" class="joe-input" id="joe-c-city" value="Lagos" placeholder="e.g. Lagos, Nairobi">
       </div>
       <div class="joe-field">
         <label class="joe-label">Years of Experience</label>
-        <input type="number" class="joe-input" id="joe-c-years" value="5" min="0" max="40">
+        <input aria-label="Joe c years" type="number" class="joe-input" id="joe-c-years" value="5" min="0" max="40">
       </div>
     </div>
-    <button class="joe-compare-btn" style="margin-top:4px" onclick="generateCounterScript()">Generate Negotiation Script</button>
+    <button type="button" class="joe-compare-btn" style="margin-top:4px" onclick="generateCounterScript()">Generate Negotiation Script</button>
 
     <div class="joe-counter-out" id="joe-counter-out">
       <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px">
@@ -492,7 +492,7 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
 
       <div class="joe-section-title">Negotiation Script</div>
       <div class="joe-script-box" id="joe-c-script"></div>
-      <button class="joe-copy-btn" onclick="copyScript()">Copy to Clipboard</button>
+      <button type="button" class="joe-copy-btn" onclick="copyScript()">Copy to Clipboard</button>
 
       <div class="joe-section-title" style="margin-top:16px">Walk-Away Line</div>
       <div class="joe-script-box" id="joe-c-walkaway"></div>
@@ -506,10 +506,10 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
 <!-- ── Results Section ────────────────────────────────── -->
 <div id="joe-results" style="display:none">
 <div class="joe-result-bar">
-  <button class="joe-rt-btn active" onclick="switchResultTab('overview')">Overview</button>
-  <button class="joe-rt-btn" onclick="switchResultTab('fiveyear')">5-Year Projection</button>
-  <button class="joe-rt-btn" id="joe-rt-equity-btn" onclick="switchResultTab('equity')">Equity</button>
-  <button class="joe-rt-btn" onclick="switchResultTab('regret')">Regret Test</button>
+  <button type="button" class="joe-rt-btn active" onclick="switchResultTab('overview')">Overview</button>
+  <button type="button" class="joe-rt-btn" onclick="switchResultTab('fiveyear')">5-Year Projection</button>
+  <button type="button" class="joe-rt-btn" id="joe-rt-equity-btn" onclick="switchResultTab('equity')">Equity</button>
+  <button type="button" class="joe-rt-btn" onclick="switchResultTab('regret')">Regret Test</button>
 </div>
 
 <!-- Overview -->
@@ -668,63 +668,63 @@ function renderOfferCard(o, idx) {
   return '<div class="joe-offer-card joe-bd-'+idx+'" id="joe-card-'+idx+'">' +
     '<div class="joe-card-hd joe-hd-'+idx+'">' +
       '<span class="joe-card-name">Offer '+(idx+1)+'</span>' +
-      (joe.offers.length > 2 ? '<button class="joe-remove-btn" onclick="removeOffer('+idx+')" title="Remove">×</button>' : '<span></span>') +
+      (joe.offers.length > 2 ? '<button type="button" class="joe-remove-btn" onclick="removeOffer('+idx+')" title="Remove">×</button>' : '<span></span>') +
     '</div>' +
     '<div class="joe-card-bd">' +
       deadlineBadge(o.deadline) +
       '<div class="joe-field"><label class="joe-label">Company Name</label>' +
-        '<input type="text" class="joe-input" id="jn-name-'+idx+'" value="'+escHtml(o.name)+'" placeholder="Company name"></div>' +
+        '<input aria-label="Company name" type="text" class="joe-input" id="jn-name-'+idx+'" value="'+escHtml(o.name)+'" placeholder="Company name"></div>' +
       '<div class="joe-field"><label class="joe-label">Role / Position</label>' +
-        '<input type="text" class="joe-input" id="jn-role-'+idx+'" value="'+escHtml(o.role)+'" placeholder="e.g. Senior Engineer"></div>' +
+        '<input aria-label="E.g. Senior Engineer" type="text" class="joe-input" id="jn-role-'+idx+'" value="'+escHtml(o.role)+'" placeholder="e.g. Senior Engineer"></div>' +
       '<div class="joe-row">' +
         '<div class="joe-field"><label class="joe-label">Monthly Gross Salary</label>' +
-          '<input type="number" class="joe-input" id="jn-salary-'+idx+'" value="'+o.salary+'" min="0" step="10000"></div>' +
+          '<input aria-label="Jn salary '+idx+'" type="number" class="joe-input" id="jn-salary-'+idx+'" value="'+o.salary+'" min="0" step="10000"></div>' +
         '<div class="joe-field"><label class="joe-label">Annual Bonus %</label>' +
-          '<input type="number" class="joe-input" id="jn-bonus-'+idx+'" value="'+o.bonusPct+'" min="0" max="200" step="1"></div>' +
+          '<input aria-label="Jn bonus '+idx+'" type="number" class="joe-input" id="jn-bonus-'+idx+'" value="'+o.bonusPct+'" min="0" max="200" step="1"></div>' +
       '</div>' +
       '<div class="joe-field"><label class="joe-label">Company Type</label>' +
         '<select class="joe-select" id="jn-type-'+idx+'">'+typeOpts+'</select></div>' +
       '<div class="joe-section-title" style="margin-top:14px">Benefits</div>' +
       '<div class="joe-row">' +
         '<div class="joe-field"><label class="joe-label">Transport Allowance / mo</label>' +
-          '<input type="number" class="joe-input" id="jn-transport-'+idx+'" value="'+o.transport+'" min="0" step="5000"></div>' +
+          '<input aria-label="Jn transport '+idx+'" type="number" class="joe-input" id="jn-transport-'+idx+'" value="'+o.transport+'" min="0" step="5000"></div>' +
         '<div class="joe-field"><label class="joe-label">Housing Benefit / mo</label>' +
-          '<input type="number" class="joe-input" id="jn-housing-'+idx+'" value="'+o.housing+'" min="0" step="10000"></div>' +
+          '<input aria-label="Jn housing '+idx+'" type="number" class="joe-input" id="jn-housing-'+idx+'" value="'+o.housing+'" min="0" step="10000"></div>' +
       '</div>' +
       '<div class="joe-row">' +
         '<div class="joe-field"><label class="joe-label">Health Insurance / mo</label>' +
-          '<input type="number" class="joe-input" id="jn-health-'+idx+'" value="'+o.health+'" min="0" step="5000"></div>' +
+          '<input aria-label="Jn health '+idx+'" type="number" class="joe-input" id="jn-health-'+idx+'" value="'+o.health+'" min="0" step="5000"></div>' +
         '<div class="joe-field"><label class="joe-label">Pension Employer %</label>' +
-          '<input type="number" class="joe-input" id="jn-pensioner-'+idx+'" value="'+o.pensionEr+'" min="0" max="30" step="0.5"></div>' +
+          '<input aria-label="Jn pensioner '+idx+'" type="number" class="joe-input" id="jn-pensioner-'+idx+'" value="'+o.pensionEr+'" min="0" max="30" step="0.5"></div>' +
       '</div>' +
-      '<label class="joe-toggle-row"><input type="checkbox" id="jn-gym-'+idx+'"'+(o.gym?' checked':'')+' onchange="toggleGym('+idx+')"> <span class="joe-toggle-label">Gym membership included</span></label>' +
-      '<div id="jn-gymval-wrap-'+idx+'" style="'+(o.gym?'':'display:none')+'"><div class="joe-field" style="padding-left:22px"><label class="joe-label">Monthly gym value</label><input type="number" class="joe-input" id="jn-gymval-'+idx+'" value="'+o.gymValue+'" min="0" step="1000" style="max-width:180px"></div></div>' +
-      '<label class="joe-toggle-row"><input type="checkbox" id="jn-13th-'+idx+'"'+(o.bonus13th?' checked':'')+'>  <span class="joe-toggle-label">13th month / guaranteed bonus</span></label>' +
+      '<label class="joe-toggle-row"><input aria-label="Jn gym '+idx+'" type="checkbox" id="jn-gym-'+idx+'"'+(o.gym?' checked':'')+' onchange="toggleGym('+idx+')"> <span class="joe-toggle-label">Gym membership included</span></label>' +
+      '<div id="jn-gymval-wrap-'+idx+'" style="'+(o.gym?'':'display:none')+'"><div class="joe-field" style="padding-left:22px"><label class="joe-label">Monthly gym value</label><input aria-label="Jn gymval '+idx+'" type="number" class="joe-input" id="jn-gymval-'+idx+'" value="'+o.gymValue+'" min="0" step="1000" style="max-width:180px"></div></div>' +
+      '<label class="joe-toggle-row"><input aria-label="Jn 13th '+idx+'" type="checkbox" id="jn-13th-'+idx+'"'+(o.bonus13th?' checked':'')+'>  <span class="joe-toggle-label">13th month / guaranteed bonus</span></label>' +
       '<div class="joe-section-title" style="margin-top:14px">Lifestyle</div>' +
       '<div class="joe-row">' +
         '<div class="joe-field"><label class="joe-label">Leave Days / Year</label>' +
-          '<input type="number" class="joe-input" id="jn-leave-'+idx+'" value="'+o.leave+'" min="0" max="60"></div>' +
+          '<input aria-label="Jn leave '+idx+'" type="number" class="joe-input" id="jn-leave-'+idx+'" value="'+o.leave+'" min="0" max="60"></div>' +
         '<div class="joe-field"><label class="joe-label">Commute Cost / mo</label>' +
-          '<input type="number" class="joe-input" id="jn-commute-'+idx+'" value="'+o.commute+'" min="0" step="1000"></div>' +
+          '<input aria-label="Jn commute '+idx+'" type="number" class="joe-input" id="jn-commute-'+idx+'" value="'+o.commute+'" min="0" step="1000"></div>' +
       '</div>' +
       '<div class="joe-row">' +
         '<div class="joe-field"><label class="joe-label">Remote Days / Week</label>' +
-          '<input type="number" class="joe-input" id="jn-remote-'+idx+'" value="'+o.remote+'" min="0" max="5"></div>' +
+          '<input aria-label="Jn remote '+idx+'" type="number" class="joe-input" id="jn-remote-'+idx+'" value="'+o.remote+'" min="0" max="5"></div>' +
         '<div class="joe-field"><label class="joe-label">Offer Deadline</label>' +
-          '<input type="date" class="joe-input" id="jn-deadline-'+idx+'" value="'+o.deadline+'" onchange="refreshDeadline('+idx+')"></div>' +
+          '<input aria-label="Jn deadline '+idx+'" type="date" class="joe-input" id="jn-deadline-'+idx+'" value="'+o.deadline+'" onchange="refreshDeadline('+idx+')"></div>' +
       '</div>' +
 
       '<!-- Equity -->' +
-      '<label class="joe-toggle-row"><input type="checkbox" id="jn-equity-'+idx+'"'+(o.hasEquity?' checked':'')+' onchange="toggleSection('+idx+',\'equity\')"> <span class="joe-toggle-label" style="color:var(--joe);font-weight:800">This offer includes equity / ESOP</span></label>' +
+      '<label class="joe-toggle-row"><input aria-label="Jn equity '+idx+'" type="checkbox" id="jn-equity-'+idx+'"'+(o.hasEquity?' checked':'')+' onchange="toggleSection('+idx+',\'equity\')"> <span class="joe-toggle-label" style="color:var(--joe);font-weight:800">This offer includes equity / ESOP</span></label>' +
       '<div class="joe-collapsible'+(o.hasEquity?' open':'')+'" id="jn-equity-sec-'+idx+'">' +
         '<div class="joe-section-title">Equity / ESOP Details</div>' +
         '<div class="joe-row">' +
-          '<div class="joe-field"><label class="joe-label">Options / Shares Granted</label><input type="number" class="joe-input" id="jn-shares-'+idx+'" value="'+o.shares+'" min="0" step="100"></div>' +
-          '<div class="joe-field"><label class="joe-label">Fully Diluted Shares</label><input type="number" class="joe-input" id="jn-fdshares-'+idx+'" value="'+o.fullyDiluted+'" min="1" step="100000"></div>' +
+          '<div class="joe-field"><label class="joe-label">Options / Shares Granted</label><input aria-label="Jn shares '+idx+'" type="number" class="joe-input" id="jn-shares-'+idx+'" value="'+o.shares+'" min="0" step="100"></div>' +
+          '<div class="joe-field"><label class="joe-label">Fully Diluted Shares</label><input aria-label="Jn fdshares '+idx+'" type="number" class="joe-input" id="jn-fdshares-'+idx+'" value="'+o.fullyDiluted+'" min="1" step="100000"></div>' +
         '</div>' +
         '<div class="joe-row">' +
-          '<div class="joe-field"><label class="joe-label">Current Company Valuation</label><input type="number" class="joe-input" id="jn-valuation-'+idx+'" value="'+o.valuation+'" min="0" step="100000"></div>' +
-          '<div class="joe-field"><label class="joe-label">Strike / Exercise Price</label><input type="number" class="joe-input" id="jn-strike-'+idx+'" value="'+o.strikePrice+'" min="0" step="0.01"></div>' +
+          '<div class="joe-field"><label class="joe-label">Current Company Valuation</label><input aria-label="Jn valuation '+idx+'" type="number" class="joe-input" id="jn-valuation-'+idx+'" value="'+o.valuation+'" min="0" step="100000"></div>' +
+          '<div class="joe-field"><label class="joe-label">Strike / Exercise Price</label><input aria-label="Jn strike '+idx+'" type="number" class="joe-input" id="jn-strike-'+idx+'" value="'+o.strikePrice+'" min="0" step="0.01"></div>' +
         '</div>' +
         '<div class="joe-row">' +
           '<div class="joe-field"><label class="joe-label">Vesting Period (years)</label><select class="joe-select" id="jn-vesting-'+idx+'"><option value="2"'+(o.vestingYears===2?' selected':'')+'>2 years</option><option value="3"'+(o.vestingYears===3?' selected':'')+'>3 years</option><option value="4"'+(o.vestingYears===4?' selected':'')+'>4 years (standard)</option><option value="5"'+(o.vestingYears===5?' selected':'')+'>5 years</option></select></div>' +
@@ -733,7 +733,7 @@ function renderOfferCard(o, idx) {
       '</div>' +
 
       '<!-- Relocation -->' +
-      '<label class="joe-toggle-row"><input type="checkbox" id="jn-reloc-'+idx+'"'+(o.hasRelocation?' checked':'')+' onchange="toggleSection('+idx+',\'reloc\')"> <span class="joe-toggle-label" style="color:#059669;font-weight:800">This role requires relocation</span></label>' +
+      '<label class="joe-toggle-row"><input aria-label="Jn reloc '+idx+'" type="checkbox" id="jn-reloc-'+idx+'"'+(o.hasRelocation?' checked':'')+' onchange="toggleSection('+idx+',\'reloc\')"> <span class="joe-toggle-label" style="color:#059669;font-weight:800">This role requires relocation</span></label>' +
       '<div class="joe-collapsible'+(o.hasRelocation?' open':'')+'" id="jn-reloc-sec-'+idx+'">' +
         '<div class="joe-section-title" style="color:#059669">Relocation Details</div>' +
         '<div class="joe-row">' +
@@ -741,12 +741,12 @@ function renderOfferCard(o, idx) {
           '<div class="joe-field"><label class="joe-label">To City</label><select class="joe-select" id="jn-to-'+idx+'">'+cityOptions()+'</select></div>' +
         '</div>' +
         '<div class="joe-row">' +
-          '<div class="joe-field"><label class="joe-label">Moving Costs (flight + freight)</label><input type="number" class="joe-input" id="jn-moving-'+idx+'" value="'+o.movingCost+'" min="0" step="10000"></div>' +
-          '<div class="joe-field"><label class="joe-label">First Month Rent Deposit</label><input type="number" class="joe-input" id="jn-deposit-'+idx+'" value="'+o.deposit+'" min="0" step="10000"></div>' +
+          '<div class="joe-field"><label class="joe-label">Moving Costs (flight + freight)</label><input aria-label="Jn moving '+idx+'" type="number" class="joe-input" id="jn-moving-'+idx+'" value="'+o.movingCost+'" min="0" step="10000"></div>' +
+          '<div class="joe-field"><label class="joe-label">First Month Rent Deposit</label><input aria-label="Jn deposit '+idx+'" type="number" class="joe-input" id="jn-deposit-'+idx+'" value="'+o.deposit+'" min="0" step="10000"></div>' +
         '</div>' +
         '<div class="joe-row">' +
-          '<div class="joe-field"><label class="joe-label">Settling-In Costs</label><input type="number" class="joe-input" id="jn-settling-'+idx+'" value="'+o.settling+'" min="0" step="5000"></div>' +
-          '<div class="joe-field"><label class="joe-label">Relocation Allowance (deducted)</label><input type="number" class="joe-input" id="jn-relocallow-'+idx+'" value="'+o.allowance+'" min="0" step="10000"></div>' +
+          '<div class="joe-field"><label class="joe-label">Settling-In Costs</label><input aria-label="Jn settling '+idx+'" type="number" class="joe-input" id="jn-settling-'+idx+'" value="'+o.settling+'" min="0" step="5000"></div>' +
+          '<div class="joe-field"><label class="joe-label">Relocation Allowance (deducted)</label><input aria-label="Jn relocallow '+idx+'" type="number" class="joe-input" id="jn-relocallow-'+idx+'" value="'+o.allowance+'" min="0" step="10000"></div>' +
         '</div>' +
       '</div>' +
 
@@ -1238,7 +1238,7 @@ function renderCultureTab() {
       CULTURE_DIMS.map(function(d) {
         return '<div class="joe-slider-row">' +
           '<label class="joe-slider-label">' + d.label + ' <span style="font-size:.65rem;color:var(--m)">(' + d.weight + '%)</span></label>' +
-          '<input type="range" class="joe-slider" id="jc-'+d.key+'-'+idx+'" min="1" max="10" value="5" oninput="updateCultureScore('+idx+')">' +
+          '<input aria-label="Jc '+d.key+' '+idx+'" type="range" class="joe-slider" id="jc-'+d.key+'-'+idx+'" min="1" max="10" value="5" oninput="updateCultureScore('+idx+')">' +
           '<span class="joe-slider-val" id="jc-'+d.key+'-val-'+idx+'">5</span>' +
         '</div>';
       }).join('') +

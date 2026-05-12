@@ -92,10 +92,10 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=abfab4a3">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 
 <style>
 :root{
@@ -414,12 +414,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
       </div>
       <div class="field">
         <label>Area (hectares)</label>
-        <input type="number" class="crop-area" min="0.1" max="50" step="0.1" value="1" placeholder="e.g. 1.5">
+        <input aria-label="E.g. 1.5" type="number" class="crop-area" min="0.1" max="50" step="0.1" value="1" placeholder="e.g. 1.5">
       </div>
-      <button class="remove-btn" onclick="removeCrop(this)" style="display:none">Remove</button>
+      <button type="button" class="remove-btn" onclick="removeCrop(this)" style="display:none">Remove</button>
     </div>
   </div>
-  <button class="add-crop-btn" onclick="addCrop()">+ Add Another Crop</button>
+  <button type="button" class="add-crop-btn" onclick="addCrop()">+ Add Another Crop</button>
 </div>
 
 <!-- STEP 3: FARM SETUP -->
@@ -473,7 +473,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 </div>
 
 <div id="form-error" class="err-msg">Please select a country and add at least one crop with a valid area.</div>
-<button class="btn-calc" onclick="calculate()">📊 Plan My Budget</button>
+<button type="button" class="btn-calc" onclick="calculate()">📊 Plan My Budget</button>
 
 <!-- RESULTS -->
 <div id="results">
@@ -534,7 +534,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 
   <!-- PRINT -->
   <div style="display:flex;gap:.75rem;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap">
-    <button class="print-btn" onclick="window.print()">🖨️ Print Budget Sheet</button>
+    <button type="button" class="print-btn" onclick="window.print()">🖨️ Print Budget Sheet</button>
     <span style="font-size:.82rem;color:var(--muted)">Take this to your bank, cooperative, or family meeting.</span>
   </div>
 
@@ -633,8 +633,8 @@ window.addCrop = function(){
     + '<option value="sesame">🌱 Sesame</option>'
     + '</select></div>'
     + '<div class="field"><label>Area (hectares)</label>'
-    + '<input type="number" class="crop-area" min="0.1" max="50" step="0.1" value="1" placeholder="e.g. 1.5"></div>'
-    + '<button class="remove-btn" onclick="removeCrop(this)">Remove</button>';
+    + '<input aria-label="E.g. 1.5" type="number" class="crop-area" min="0.1" max="50" step="0.1" value="1" placeholder="e.g. 1.5"></div>'
+    + '<button type="button" class="remove-btn" onclick="removeCrop(this)">Remove</button>';
   wrap.appendChild(row);
   // show all remove buttons when >1 row
   updateRemoveBtns();

@@ -18,10 +18,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3" defer></script>
 <style>
@@ -63,10 +63,10 @@
 {"@type":"Question","name":"What is the Rule of 72?","acceptedAnswer":{"@type":"Answer","text":"Divide 72 by your annual return rate to estimate doubling time. At 12%, money doubles in ~6 years. At 18%, ~4 years. At 24%, ~3 years. A quick mental math shortcut for compound growth."}},
 {"@type":"Question","name":"How do I compare two investment scenarios?","acceptedAnswer":{"@type":"Answer","text":"Use the Compare mode in this calculator to run two scenarios side by side. Change the rate, period, or contribution amount to see which strategy produces better returns over time."}}
 ]}</script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/investment-return/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rendement-investissement/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/investment-return/" />
@@ -134,7 +134,7 @@
       <div class="card-body">
         <div class="field" style="display:grid;grid-template-columns:1fr 120px;gap:10px">
           <div><label class="f-label-text" style="display:block;margin-bottom:6px;font-size:.75rem;font-weight:700">Initial Investment</label>
-          <div class="f-wrap"><span class="f-prefix" id="curSymbol">&#8358;</span><input type="number" class="f-input" id="initial" value="1000000" step="10000" min="0"></div></div>
+          <div class="f-wrap"><span class="f-prefix" id="curSymbol">&#8358;</span><input aria-label="Initial" type="number" class="f-input" id="initial" value="1000000" step="10000" min="0"></div></div>
           <div><label class="f-label-text" style="display:block;margin-bottom:6px;font-size:.75rem;font-weight:700">Currency</label>
           <select class="f-input" id="currency" style="padding-left:13px" onchange="setCurrency()">
             <option value="₦" data-code="NGN">NGN (₦)</option>
@@ -156,14 +156,14 @@
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
           <div class="field"><label class="f-label-text" style="display:block;margin-bottom:6px;font-size:.75rem;font-weight:700">Monthly Contribution</label>
-          <div class="f-wrap"><span class="f-prefix" id="curSymbol2">&#8358;</span><input type="number" class="f-input" id="monthly" value="50000" step="1000" min="0"></div></div>
+          <div class="f-wrap"><span class="f-prefix" id="curSymbol2">&#8358;</span><input aria-label="Monthly" type="number" class="f-input" id="monthly" value="50000" step="1000" min="0"></div></div>
           <div class="field"><label class="f-label-text" style="display:block;margin-bottom:6px;font-size:.75rem;font-weight:700">Annual Return (%)</label>
-          <input type="number" class="f-input" id="rate" value="15" step="0.5" min="0" max="100" style="padding-left:13px"></div>
+          <input aria-label="Rate" type="number" class="f-input" id="rate" value="15" step="0.5" min="0" max="100" style="padding-left:13px"></div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
           <div class="field"><label class="f-label-text" style="display:block;margin-bottom:6px;font-size:.75rem;font-weight:700">Period (years)</label>
-          <input type="number" class="f-input" id="years" value="10" step="1" min="1" max="50" style="padding-left:13px"></div>
+          <input aria-label="Years" type="number" class="f-input" id="years" value="10" step="1" min="1" max="50" style="padding-left:13px"></div>
           <div class="field"><label class="f-label-text" style="display:block;margin-bottom:6px;font-size:.75rem;font-weight:700">Compounding</label>
           <select class="f-input" id="compound" style="padding-left:13px"><option value="12">Monthly</option><option value="4">Quarterly</option><option value="1">Annually</option></select></div>
         </div>
@@ -171,17 +171,17 @@
         <div class="inflation-row">
           <input type="checkbox" id="inflationChk" checked>
           <label for="inflationChk" style="font-weight:600;cursor:pointer">Adjust for inflation</label>
-          <input type="number" id="inflationRate" value="10" step="0.5" min="0" max="50"> <span>% / year</span>
+          <input aria-label="InflationRate" type="number" id="inflationRate" value="10" step="0.5" min="0" max="50"> <span>% / year</span>
         </div>
 
         <div class="presets" style="margin-top:14px">
-          <button class="preset-btn" onclick="setPreset(event,500000,25000,12,5)">Conservative</button>
-          <button class="preset-btn" onclick="setPreset(event,1000000,50000,15,10)">Moderate</button>
-          <button class="preset-btn" onclick="setPreset(event,2000000,100000,20,15)">Aggressive</button>
-          <button class="preset-btn" onclick="setPreset(event,5000000,200000,25,20)">High Growth</button>
+          <button type="button" class="preset-btn" onclick="setPreset(event,500000,25000,12,5)">Conservative</button>
+          <button type="button" class="preset-btn" onclick="setPreset(event,1000000,50000,15,10)">Moderate</button>
+          <button type="button" class="preset-btn" onclick="setPreset(event,2000000,100000,20,15)">Aggressive</button>
+          <button type="button" class="preset-btn" onclick="setPreset(event,5000000,200000,25,20)">High Growth</button>
         </div>
 
-        <button class="calc-btn" onclick="calculate()">Calculate Returns →</button>
+        <button type="button" class="calc-btn" onclick="calculate()">Calculate Returns →</button>
       </div>
     </div>
 
@@ -211,19 +211,19 @@
       <!-- CHARTS -->
       <div class="chart-section">
         <div class="chart-tabs">
-          <button class="chart-tab on" onclick="setChart('growth',this)">Growth</button>
-          <button class="chart-tab" onclick="setChart('breakdown',this)">Breakdown</button>
+          <button type="button" class="chart-tab on" onclick="setChart('growth',this)">Growth</button>
+          <button type="button" class="chart-tab" onclick="setChart('breakdown',this)">Breakdown</button>
         </div>
         <div class="chart-canvas-wrap" style="height:260px"><canvas id="mainChart"></canvas></div>
       </div>
 
       <!-- ACTIONS -->
       <div class="action-row">
-        <button class="act-btn act-pdf" onclick="downloadPdf()" data-no-gate="true">
+        <button type="button" class="act-btn act-pdf" onclick="downloadPdf()" data-no-gate="true">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           Download PDF
         </button>
-        <button class="act-btn act-vault" onclick="saveInvestmentToVault()" style="background:#fff;border:1.5px solid #e2e8f0">
+        <button type="button" class="act-btn act-vault" onclick="saveInvestmentToVault()" style="background:#fff;border:1.5px solid #e2e8f0">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
           Save to Vault
         </button>
@@ -264,10 +264,10 @@
       <div class="ai-body">
         <p class="ai-status" id="aiStatus">Calculate your investment first — I'll analyse your returns, suggest optimisations, and compare against African benchmarks.</p>
         <div class="ai-response" id="aiResp"></div>
-        <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
+        <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
         <div class="ai-chat" id="aiChat">
           <div class="chat-msgs" id="chatMsgs"></div>
-          <div class="chat-row"><input class="chat-in" id="chatIn" placeholder="Ask a follow-up..." onkeydown="if(event.key==='Enter')sendChat()"><button class="chat-send" onclick="sendChat()">→</button></div>
+          <div class="chat-row"><input aria-label="Ask a follow up" class="chat-in" id="chatIn" placeholder="Ask a follow-up..." onkeydown="if(event.key==='Enter')sendChat()"><button type="button" class="chat-send" onclick="sendChat()">→</button></div>
         </div>
       </div>
     </div>
@@ -275,7 +275,7 @@
     <!-- TOOL INFO CARD -->
     <div class="tool-info-card">
       <div class="tool-info-header">
-        <img class="tool-info-img" src="/assets/img/tools/investment-return.svg" alt="Investment Return Calculator" onerror="this.style.display='none'">
+        <img height="44" width="44" class="tool-info-img" src="/assets/img/tools/investment-return.svg" alt="Investment Return Calculator" onerror="this.style.display='none'">
         <div class="tool-info-meta"><div class="tool-info-name">Investment Return Calculator</div><div class="tool-info-cat">FINANCE</div></div>
       </div>
       <div class="tool-info-body">

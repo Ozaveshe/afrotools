@@ -48,10 +48,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -170,7 +170,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 /* AI Advisor floating section */
 .ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/tenant-screening/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tenant-screening/" />
@@ -251,8 +251,8 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
         </div>
 
         <div class="actions-row">
-          <button class="btn-reset" onclick="resetAll()">↺ Reset</button>
-          <button class="btn-export" onclick="exportPDF()">⬇ Export Report</button>
+          <button type="button" class="btn-reset" onclick="resetAll()">↺ Reset</button>
+          <button type="button" class="btn-export" onclick="exportPDF()">⬇ Export Report</button>
         </div>
 
       </div>
@@ -340,8 +340,8 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
       <div class="ai-chat" id="aiChat">
         <div class="ai-msgs" id="aiMsgs"></div>
         <div class="ai-input-row">
-          <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
-          <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+          <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
         </div>
       </div>
     </div>
@@ -360,9 +360,9 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
     <p>This workspace turns the tenant-risk and fairness check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
   </div>
   <div class="leg-workflow-grid">
-    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
-    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
-    <label class="leg-field"><span class="leg-f-label">Target date</span><input class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input aria-label="E.g. Supplier DPA review" class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input aria-label="E.g. Kenya, NDPA, Lagos" class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input aria-label="Leg f input" class="leg-f-input" data-workflow-field="date" type="date"></label>
     <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
   </div>
   <div class="leg-workflow-columns">
@@ -390,7 +390,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
       <h3>Email the checklist and unlock print/PDF</h3>
       <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
     </div>
-    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input aria-label="You@example.com" class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
     <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
     <div class="leg-workflow-actions compact">
       <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>

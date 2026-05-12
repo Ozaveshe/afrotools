@@ -20,7 +20,7 @@
   <meta name="twitter:title" content="Kitengeneza Logo | AfroTools">
   <meta name="twitter:description" content="Tengeneza logo ya maandishi kwa rangi, fonti, icon ya mfano na kupakua SVG.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=0d17fc50">
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=ebd59ad2">
   <style>
     body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f9fb;color:#182233}
     .wrap{max-width:1120px;margin:0 auto;padding:36px 20px 56px}.hero{display:grid;gap:14px;padding:34px 0 24px}
@@ -80,7 +80,7 @@
       <h1>Kitengeneza logo</h1>
       <p>Tengeneza logo ya maandishi kwa rangi, fonti, icon ya mfano na kupakua SVG.</p>
     </section>
-    <section class="grid"><div class="panel"><h2>Faili na mipangilio</h2><div class="form-grid"><label>Jina la logo<input id="text" type="text" value="Mwangaza" ></label><label>Tagline<input id="tagline" type="text" value="Studio ya creator" ></label><label>Rangi ya maandishi<input id="fg" type="color" value="#111827" ></label><label>Mandharinyuma<input id="bg" type="color" value="#f8fafc" ></label><label>Alama<select id="icon"><option value="circle">Duara</option><option value="spark">Mng'ao</option><option value="square">Mraba</option></select></label></div><div class="actions"><button type="button" id="calculate">Tengeneza</button><button type="button" class="secondary" id="reset">Mfano</button><button type="button" class="secondary" id="download">Pakua</button></div></div><div class="panel"><h2>Muonekano wa logo</h2><div id="results" class="results"></div><canvas id="canvas" width="1080" height="1080"></canvas><div id="detail"></div></div></section>
+    <section class="grid"><div class="panel"><h2>Faili na mipangilio</h2><div class="form-grid"><label>Jina la logo<input aria-label="Text" id="text" type="text" value="Mwangaza" ></label><label>Tagline<input aria-label="Tagline" id="tagline" type="text" value="Studio ya creator" ></label><label>Rangi ya maandishi<input aria-label="Fg" id="fg" type="color" value="#111827" ></label><label>Mandharinyuma<input aria-label="Bg" id="bg" type="color" value="#f8fafc" ></label><label>Alama<select id="icon"><option value="circle">Duara</option><option value="spark">Mng'ao</option><option value="square">Mraba</option></select></label></div><div class="actions"><button type="button" id="calculate">Tengeneza</button><button type="button" class="secondary" id="reset">Mfano</button><button type="button" class="secondary" id="download">Pakua</button></div></div><div class="panel"><h2>Muonekano wa logo</h2><div id="results" class="results"></div><canvas id="canvas" width="1080" height="1080"></canvas><div id="detail"></div></div></section>
 <section class="section panel"><h2>Angalia pia</h2><div class="link-list"><a href="/sw/ubunifu-na-watayarishi/">Ubunifu na watayarishi</a>
         <a href="/sw/zana/picha-ya-pasipoti/">Picha ya pasipoti</a>
         <a href="/sw/zana/hook-za-video/">Hook za video</a>
@@ -95,12 +95,12 @@
 <section class="section panel"><h2>Maswali ya haraka</h2><h3>Je, faili zangu zinabaki za faragha?</h3><p>Kurasa hizi hutumia browser na tabia ya chanzo kilichopo, lakini usipakie au kushiriki faili nyeti bila kuhakiki mazingira yako na sera za zana unayotumia.</p><h3>Je, matokeo yatakubaliwa na jukwaa?</h3><p>Hapana. Hakiki ukubwa, muundo, copyright, leseni na sera za TikTok, Instagram, YouTube, LinkedIn au portal husika.</p></section>
   </main>
   <afro-footer></afro-footer>
-  <script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f"></script>
-  <script src="/assets/js/components/navbar.min.js?v=ca6bb4e6"></script>
-  <script src="/assets/js/components/footer.min.js?v=0c96f8e4"></script>
-  <script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+  <script src="/assets/js/components/related-tools-data.min.js?v=a476b40c"></script>
+  <script src="/assets/js/components/navbar.min.js?v=01d16ada"></script>
+  <script src="/assets/js/components/footer.min.js?v=d60a94ba"></script>
+  <script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6"></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137"></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5"></script>
   <script>
 const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').trim();const num=id=>Number(q(id)?.value||0);function metric(l,v,h){return '<div class="metric"><span>'+l+'</span><strong>'+v+'</strong>'+(h?'<small>'+h+'</small>':'')+'</div>'}function setResults(h){q('results').innerHTML=h}function setDetail(h){q('detail').innerHTML=h}function rows(a){return '<div class="output-list">'+a.map(x=>'<div>'+x+'</div>').join('')+'</div>'}function bind(c,r){q('calculate').addEventListener('click',c);q('reset').addEventListener('click',()=>{r();c()});if(q('download'))q('download').addEventListener('click',downloadCanvas);c()}function canvas(){return q('canvas')}function ctx(){return canvas().getContext('2d')}function downloadCanvas(){const a=document.createElement('a');a.href=canvas().toDataURL('image/png');a.download='afrotools-design.png';a.click()}function drawTextBox(c,t,x,y,w,size,color){c.fillStyle=color;c.font='800 '+size+'px Inter, Arial';const words=t.split(' ');let line='',yy=y;words.forEach(word=>{const test=line+word+' ';if(c.measureText(test).width>w&&line){c.fillText(line,x,yy);line=word+' ';yy+=size*1.15}else line=test});c.fillText(line,x,yy)}function basicCanvas(title,sub,bg='#1d4ed8',fg='#fff'){const c=ctx();c.fillStyle=bg;c.fillRect(0,0,canvas().width,canvas().height);drawTextBox(c,title,70,180,920,72,fg);drawTextBox(c,sub,70,520,900,34,fg);c.fillStyle='rgba(255,255,255,.18)';c.fillRect(70,790,420,90);c.fillStyle=fg;c.font='700 28px Inter, Arial';c.fillText('Imetengenezwa na AfroTools',95,845)}function readImage(file,cb){const img=new Image();img.onload=()=>cb(img);img.src=URL.createObjectURL(file)}function money(n,c='USD'){try{return new Intl.NumberFormat('sw',{style:'currency',currency:c,maximumFractionDigits:0}).format(Number(n)||0)}catch(e){return Math.round(Number(n)||0).toLocaleString('sw')}}
 function calc(){canvas().width=1200;canvas().height=800;const c=ctx();c.fillStyle=val('bg');c.fillRect(0,0,1200,800);c.fillStyle=val('fg');if(val('icon')==='circle'){c.beginPath();c.arc(160,380,70,0,Math.PI*2);c.fill()}else c.fillRect(90,310,140,140);drawTextBox(c,val('text'),280,330,760,92,val('fg'));drawTextBox(c,val('tagline'),285,450,760,32,val('fg'));setResults(metric('Logo','SVG/PNG muonekano wa awali','Hakiki kabla ya kuchapisha'))}function reset(){q('text').value='Mwangaza';q('tagline').value='Studio ya creator';q('fg').value='#111827';q('bg').value='#f8fafc';q('icon').value='circle'}bind(calc,reset);

@@ -7,11 +7,14 @@
   <title>AI Content Planner — CreatorCalendar | AfroTools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=326a209e">
 <link rel="canonical" href="https://afrotools.com/tools/creator-calendar/plan">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-calendar/plan">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
   <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">
@@ -88,7 +91,7 @@
 
         <div class="cc-plan-field">
           <div class="cc-plan-label">How Often Do You Post?</div>
-          <input type="range" class="cc-plan-slider" id="planFreq" min="1" max="14" value="5" oninput="updateFreqLabel()">
+          <input aria-label="PlanFreq" type="range" class="cc-plan-slider" id="planFreq" min="1" max="14" value="5" oninput="updateFreqLabel()">
           <div class="cc-plan-slider-val" id="planFreqLabel">5x per week</div>
         </div>
       </div>
@@ -122,7 +125,7 @@
 
         <div class="cc-plan-field">
           <div class="cc-plan-label">Custom Events (optional)</div>
-          <input class="cc-plan-input" id="planCustomEvents" placeholder="e.g., product launch April 15, collab drop, brand anniversary..." style="background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:#fff">
+          <input aria-label="E.g., product launch April 15, collab drop, brand anniversary" class="cc-plan-input" id="planCustomEvents" placeholder="e.g., product launch April 15, collab drop, brand anniversary..." style="background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:#fff">
         </div>
       </div>
 
@@ -143,16 +146,16 @@
         <div class="cc-plan-results" id="planResults"></div>
 
         <div id="planActions" style="display:none;margin-top:20px;text-align:center">
-          <button onclick="acceptAllIdeas()" style="padding:12px 24px;background:#8B5CF6;color:#fff;border:none;border-radius:12px;font-size:.85rem;font-weight:800;cursor:pointer;font-family:inherit;margin-right:8px">Accept All & Add to Calendar</button>
-          <button onclick="regeneratePlan()" style="padding:12px 24px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12);border-radius:12px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit">Regenerate</button>
+          <button type="button" onclick="acceptAllIdeas()" style="padding:12px 24px;background:#8B5CF6;color:#fff;border:none;border-radius:12px;font-size:.85rem;font-weight:800;cursor:pointer;font-family:inherit;margin-right:8px">Accept All & Add to Calendar</button>
+          <button type="button" onclick="regeneratePlan()" style="padding:12px 24px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12);border-radius:12px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit">Regenerate</button>
         </div>
       </div>
     </div>
 
     <!-- BOTTOM BAR -->
     <div class="cc-plan-bottom">
-      <button class="cc-plan-btn cc-plan-btn-secondary" id="planBack" onclick="planPrev()" style="display:none;max-width:120px">Back</button>
-      <button class="cc-plan-btn cc-plan-btn-primary" id="planNext" onclick="planNext()">Next →</button>
+      <button type="button" class="cc-plan-btn cc-plan-btn-secondary" id="planBack" onclick="planPrev()" style="display:none;max-width:120px">Back</button>
+      <button type="button" class="cc-plan-btn cc-plan-btn-primary" id="planNext" onclick="planNext()">Next →</button>
     </div>
   </div>
 
@@ -365,9 +368,9 @@
         html += '<div class="cc-plan-idea-topic">' + (idea.topic || '') + '</div>';
         html += '<div class="cc-plan-idea-hook">"' + (idea.hook || '') + '"</div>';
         html += '<div class="cc-plan-idea-actions">';
-        html += '<button class="cc-plan-idea-btn accept" onclick="acceptIdea(' + idx + ')">Accept</button>';
-        html += '<button class="cc-plan-idea-btn" onclick="editIdea(' + idx + ')">Edit</button>';
-        html += '<button class="cc-plan-idea-btn" onclick="swapIdea(' + idx + ')">Swap</button>';
+        html += '<button type="button" class="cc-plan-idea-btn accept" onclick="acceptIdea(' + idx + ')">Accept</button>';
+        html += '<button type="button" class="cc-plan-idea-btn" onclick="editIdea(' + idx + ')">Edit</button>';
+        html += '<button type="button" class="cc-plan-idea-btn" onclick="swapIdea(' + idx + ')">Swap</button>';
         html += '</div>';
         html += '</div>';
       });

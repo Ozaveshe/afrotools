@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="Remittance Comparator Pro | AfroTools">
 <meta name="twitter:description" content="Compare 10+ remittance providers across 20+ African corridors. Fees, rates, speed, mobile money support.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Remittance Comparator Pro","description":"Compare remittance costs across 10+ providers for 20+ African corridors. Find the cheapest way to send money to Africa.","url":"https://afrotools.com/tools/remittance-v2/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Remittance Comparator Pro","url":"https://afrotools.com/tools/remittance-v2/","description":"Compare remittance costs across 10+ providers for 20+ African corridors. Find the cheapest way to send money to Africa.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">
@@ -86,10 +86,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq details[open] summary::after{content:'-'}
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/remittance-v2/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/transfert-v2/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/remittance-v2/" />
@@ -165,11 +165,11 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <option value="MW">Malawi (MWK)</option>
 <option value="MZ">Mozambique (MZN)</option>
 </select></div>
-<div class="form-group"><label>Amount</label><input type="number" id="amount" value="500" min="1"></div>
-<div class="form-group"><label>&nbsp;</label><button class="btn" onclick="compare()">Compare</button></div>
+<div class="form-group"><label>Amount</label><input aria-label="Amount" type="number" id="amount" value="500" min="1"></div>
+<div class="form-group"><label>&nbsp;</label><button type="button" class="btn" onclick="compare()">Compare</button></div>
 </div>
 <div class="pro-plan-grid">
-<div class="form-group"><label>Transfers per Year</label><input type="number" id="transferCount" value="12" min="1" max="365"></div>
+<div class="form-group"><label>Transfers per Year</label><input aria-label="TransferCount" type="number" id="transferCount" value="12" min="1" max="365"></div>
 <div class="form-group"><label>Recipient Access</label><select id="recipientMethod"><option value="any">Any method</option><option value="mobile">Mobile money</option><option value="bank">Bank transfer</option><option value="cash">Cash pickup</option></select></div>
 <div class="form-group"><label>Priority</label><select id="transferPriority"><option value="cost">Lowest annual cost</option><option value="speed">Fastest delivery</option><option value="balanced">Balanced cost and speed</option></select></div>
 </div>
@@ -214,8 +214,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
   </div>
   <div id="aiChat" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth"></div>
   <div style="display:flex;gap:8px">
-    <input type="text" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none">
-    <button id="aiBtn" onclick="askAI()" style="padding:11px 20px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap">Ask →</button>
+    <input aria-label="Ask anything" type="text" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none">
+    <button type="button" id="aiBtn" onclick="askAI()" style="padding:11px 20px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap">Ask →</button>
   </div>
 </div>
 </section>
@@ -251,8 +251,8 @@ async function askAI(preset){
 </script>
 
 <afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=af1ede16" defer></script><script src="/assets/js/components/footer.js?v=7cf41589" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/navbar.js?v=3af89576" defer></script><script src="/assets/js/components/footer.js?v=625b18a7" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script>
 /* Fallback rates (USD base) — updated Mar 2026. */
 const RATES={NG:1535,KE:129,GH:15.5,ZA:18.2,TZ:2720,UG:3750,SN:610,ET:135,CM:610,CI:610,MA:9.9,RW:1380,ZM:27.5,MW:1740,MZ:63.9};
@@ -322,7 +322,7 @@ function compare(){
       <div class="action-plan-card"><strong>${sym}${annualSaving.toFixed(0)}</strong><span>Annual upside</span></div>
     </div>
     <div style="margin-top:.75rem">${methodMatch?methodMatch.name+' matches the recipient payout preference. ':'No specific payout method was required. '}Use this as a shortlist, then confirm the live provider quote and recipient payout method before sending.</div>
-    <button class="btn" style="margin-top:.75rem;padding:.5rem 1rem;font-size:.85rem" onclick="copyDecisionPlan()">Copy Plan</button>`;
+    <button type="button" class="btn" style="margin-top:.75rem;padding:.5rem 1rem;font-size:.85rem" onclick="copyDecisionPlan()">Copy Plan</button>`;
 
   document.getElementById('providerCards').innerHTML=results.map((r,i)=>`
     <div class="provider-card ${i===0?'best':''}">

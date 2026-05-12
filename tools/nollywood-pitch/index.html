@@ -22,7 +22,7 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta name="robots" content="index, follow">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <style>
 :root{--amber:var(--color-primary);--amber-light:#E8F2FF;--amber-dark:#0063D1}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -109,7 +109,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .zfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
 @media(max-width:500px){.zfun{grid-template-columns:1fr}}
 </style>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <meta name="tool-id" content="nollywood-pitch">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Film & TV Budget Estimator Africa","description":"Estimate your African film or TV production budget with pre-loaded industry costs for Nollywood, Kenyan, Ghanaian, and South African markets.","url":"https://afrotools.com/tools/nollywood-pitch/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Film & TV Budget Estimator Africa","url":"https://afrotools.com/tools/nollywood-pitch/","description":"Estimate your African film or TV production budget with pre-loaded industry costs for Nollywood, Kenyan, Ghanaian, and South African markets.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -125,7 +125,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/nollywood-pitch/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/nollywood-pitch/" />
 <meta property="og:locale" content="en_US">
@@ -192,8 +192,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="summary-grid" id="summaryGrid"></div>
 <div class="bar-wrap" id="barChart"></div>
 <div class="actions">
-<button class="btn" onclick="downloadBudget()">Download Budget (Text)</button>
-<button class="btn btn-outline" onclick="loadPreset()">Reset to Preset</button>
+<button type="button" class="btn" onclick="downloadBudget()">Download Budget (Text)</button>
+<button type="button" class="btn btn-outline" onclick="loadPreset()">Reset to Preset</button>
 </div>
 <div id="funZone" style="margin-top:1.5rem">
   <div class="zfun" id="funCards"></div>
@@ -208,9 +208,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <h2>Pitch & Finance Readiness</h2>
 <p style="font-size:.85rem;color:#64748b;margin-bottom:.5rem">Competitor film-budget templates usually stop at a topsheet. This turns your estimate into a producer-facing note with funding gap, cash pressure, and outlet-specific next actions.</p>
 <div class="pitch-grid">
-<div class="form-group"><label>Logline</label><input id="pitchLogline" placeholder="One sentence story hook"></div>
-<div class="form-group"><label>Shoot Days</label><input id="pitchDays" type="number" value="18" min="1"></div>
-<div class="form-group"><label>Funding Secured (%)</label><input id="pitchFunded" type="number" value="30" min="0" max="100"></div>
+<div class="form-group"><label>Logline</label><input aria-label="One sentence story hook" id="pitchLogline" placeholder="One sentence story hook"></div>
+<div class="form-group"><label>Shoot Days</label><input aria-label="PitchDays" id="pitchDays" type="number" value="18" min="1"></div>
+<div class="form-group"><label>Funding Secured (%)</label><input aria-label="PitchFunded" id="pitchFunded" type="number" value="30" min="0" max="100"></div>
 <div class="form-group"><label>Target Outlet</label><select id="pitchOutlet"><option value="cinema">Cinema release</option><option value="streaming">Streaming pitch</option><option value="tv">TV / Africa Magic</option><option value="festival">Festival route</option><option value="brand">Brand funded</option></select></div>
 </div>
 <div class="pitch-output" id="pitchOutput"></div>
@@ -253,8 +253,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
   </div>
   <div id="aiChat" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth"></div>
   <div style="display:flex;gap:8px">
-    <input type="text" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none">
-    <button id="aiBtn" onclick="askAI()" style="padding:10px 20px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Ask →</button>
+    <input aria-label="Ask anything" type="text" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none">
+    <button type="button" id="aiBtn" onclick="askAI()" style="padding:10px 20px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Ask →</button>
   </div>
 </div>
 </section>
@@ -290,7 +290,7 @@ async function askAI(preset){
 </script>
 
 <afro-related-tools category="african" current="nollywood-pitch"></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=af1ede16" defer></script><script src="/assets/js/components/footer.js?v=7cf41589" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
+<script src="/assets/js/components/navbar.js?v=3af89576" defer></script><script src="/assets/js/components/footer.js?v=625b18a7" defer></script><script src="/assets/js/components/related-tools.js?v=14219ae0" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script>
 const CURRENCIES={NG:{sym:'\u20a6',name:'NGN'},KE:{sym:'KSh',name:'KES'},GH:{sym:'GH\u20b5',name:'GHS'},ZA:{sym:'R',name:'ZAR'}};

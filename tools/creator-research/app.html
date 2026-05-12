@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=c5937540">
   <style>
     .crh-loading-status{text-align:center;padding:10px 0 2px;min-height:28px}
@@ -23,6 +23,9 @@
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-research/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-research/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="crh-app">
 
@@ -32,9 +35,9 @@
       <span>&#128270;</span> CreatorResearch
     </a>
     <div class="crh-header-actions">
-      <button class="crh-btn-icon" id="newChatBtn" title="New Chat">&#10133;</button>
-      <button class="crh-btn-icon" id="libraryBtn" title="Library">&#128218;</button>
-      <button class="crh-btn-icon desktop-only" id="sidebarToggleBtn" title="Toggle Panel">&#9776;</button>
+      <button type="button" class="crh-btn-icon" id="newChatBtn" title="New Chat">&#10133;</button>
+      <button type="button" class="crh-btn-icon" id="libraryBtn" title="Library">&#128218;</button>
+      <button type="button" class="crh-btn-icon desktop-only" id="sidebarToggleBtn" title="Toggle Panel">&#9776;</button>
     </div>
   </header>
 
@@ -62,7 +65,7 @@
       <!-- CONVERSATION HISTORY -->
       <div class="crh-sidebar-section" style="flex:1;overflow-y:auto;">
         <div class="crh-sidebar-title"><span>&#128336;</span> History</div>
-        <input type="text" class="crh-history-search" id="historySearch" placeholder="Search conversations...">
+        <input aria-label="Search conversations" type="text" class="crh-history-search" id="historySearch" placeholder="Search conversations...">
         <div id="historyList"></div>
       </div>
     </aside>
@@ -72,14 +75,14 @@
 
       <!-- OUTPUT MODE BAR -->
       <div class="crh-mode-bar" id="modeBar">
-        <button class="crh-mode-pill active" data-mode="talking-points">&#127908; Talking Points</button>
-        <button class="crh-mode-pill" data-mode="content-brief">&#128203; Content Brief</button>
-        <button class="crh-mode-pill" data-mode="thread-carousel">&#128241; Thread / Carousel</button>
-        <button class="crh-mode-pill" data-mode="deep-dive">&#128214; Deep Dive</button>
-        <button class="crh-mode-pill" data-mode="fact-check">&#9989; Fact Check</button>
-        <button class="crh-mode-pill" data-mode="comparison">&#9878; Compare</button>
-        <button class="crh-mode-pill" data-mode="swot">&#128202; SWOT</button>
-        <button class="crh-mode-pill" data-mode="script">&#127908; Script</button>
+        <button type="button" class="crh-mode-pill active" data-mode="talking-points">&#127908; Talking Points</button>
+        <button type="button" class="crh-mode-pill" data-mode="content-brief">&#128203; Content Brief</button>
+        <button type="button" class="crh-mode-pill" data-mode="thread-carousel">&#128241; Thread / Carousel</button>
+        <button type="button" class="crh-mode-pill" data-mode="deep-dive">&#128214; Deep Dive</button>
+        <button type="button" class="crh-mode-pill" data-mode="fact-check">&#9989; Fact Check</button>
+        <button type="button" class="crh-mode-pill" data-mode="comparison">&#9878; Compare</button>
+        <button type="button" class="crh-mode-pill" data-mode="swot">&#128202; SWOT</button>
+        <button type="button" class="crh-mode-pill" data-mode="script">&#127908; Script</button>
       </div>
 
       <!-- CHAT AREA -->
@@ -95,7 +98,7 @@
       <div class="crh-input-bar">
         <div class="crh-input-row">
           <textarea class="crh-input" id="chatInput" placeholder="Ask a research question..." rows="1"></textarea>
-          <button class="crh-send-btn" id="sendBtn"><span class="crh-spinner"></span>Send</button>
+          <button type="button" class="crh-send-btn" id="sendBtn"><span class="crh-spinner"></span>Send</button>
         </div>
         <div class="crh-loading-status" id="loadingStatus"></div>
       </div>
@@ -112,11 +115,11 @@
     <div class="crh-library-modal">
       <div class="crh-library-header">
         <h3>&#128218; Topic Library</h3>
-        <button class="crh-library-close" id="libraryClose">&times;</button>
+        <button type="button" class="crh-library-close" id="libraryClose">&times;</button>
       </div>
       <div class="crh-library-toolbar">
-        <input type="text" class="crh-library-search" id="librarySearch" placeholder="Search saved topics...">
-        <button class="crh-library-export" id="libraryExport">&#128229; Export</button>
+        <input aria-label="Search saved topics" type="text" class="crh-library-search" id="librarySearch" placeholder="Search saved topics...">
+        <button type="button" class="crh-library-export" id="libraryExport">&#128229; Export</button>
       </div>
       <div class="crh-library-tags" id="libraryTags"></div>
       <div class="crh-library-body" id="libraryBody"></div>
@@ -588,7 +591,7 @@
       var el = document.createElement('div');
       el.className = 'crh-library-item';
       var tagsHtml = (item.tags || []).map(function(t) { return '<span class="crh-library-item-tag">' + t + '</span>'; }).join('');
-      el.innerHTML = '<button class="crh-library-item-delete" data-id="' + item.id + '">&times;</button>' +
+      el.innerHTML = '<button type="button" class="crh-library-item-delete" data-id="' + item.id + '">&times;</button>' +
         '<div class="crh-library-item-title">' + escapeHtml(item.topic) + '</div>' +
         '<div class="crh-library-item-preview">' + escapeHtml((item.content || '').slice(0, 120)) + '</div>' +
         (tagsHtml ? '<div class="crh-library-item-tags">' + tagsHtml + '</div>' : '');
@@ -753,9 +756,9 @@
 
     // Actions
     html += '<div class="crh-resp-actions">';
-    html += '<button class="crh-action-btn" data-action="copy">&#128203; Copy</button>';
-    html += '<button class="crh-action-btn" data-action="save">&#128218; Save to Library</button>';
-    html += '<button class="crh-action-btn" data-action="calendar">&#128197; Send to Calendar</button>';
+    html += '<button type="button" class="crh-action-btn" data-action="copy">&#128203; Copy</button>';
+    html += '<button type="button" class="crh-action-btn" data-action="save">&#128218; Save to Library</button>';
+    html += '<button type="button" class="crh-action-btn" data-action="calendar">&#128197; Send to Calendar</button>';
     html += '</div>';
 
     // Store plain text for copying
@@ -845,7 +848,7 @@
     if (data.sections) {
       data.sections.forEach(function(sec, i) {
         html += '<div class="crh-deep-section">';
-        html += '<button class="crh-deep-toggle' + (i === 0 ? ' open' : '') + '">' + sec.heading + '</button>';
+        html += '<button type="button" class="crh-deep-toggle' + (i === 0 ? ' open' : '') + '">' + sec.heading + '</button>';
         html += '<div class="crh-deep-content' + (i === 0 ? ' open' : '') + '">';
         html += '<p>' + sec.content + '</p>';
         if (sec.subsections) {

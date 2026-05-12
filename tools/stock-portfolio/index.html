@@ -40,9 +40,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -111,22 +111,22 @@ details[open] summary::after{content:'\2212'}
   <div class="card">
     <h2>Add Your Holdings</h2>
     <div class="exchange-tabs">
-      <button class="etab active" onclick="setExchange('NGN','&#x20A6;',this)">NSE Nigeria (NGN)</button>
-      <button class="etab" onclick="setExchange('ZAR','R',this)">JSE South Africa (ZAR)</button>
-      <button class="etab" onclick="setExchange('GHS','GH&#x20B5;',this)">GSE Ghana (GHS)</button>
-      <button class="etab" onclick="setExchange('KES','KSh',this)">NSE Kenya (KES)</button>
-      <button class="etab" onclick="setExchange('USD','$',this)">Other / USD</button>
+      <button type="button" class="etab active" onclick="setExchange('NGN','&#x20A6;',this)">NSE Nigeria (NGN)</button>
+      <button type="button" class="etab" onclick="setExchange('ZAR','R',this)">JSE South Africa (ZAR)</button>
+      <button type="button" class="etab" onclick="setExchange('GHS','GH&#x20B5;',this)">GSE Ghana (GHS)</button>
+      <button type="button" class="etab" onclick="setExchange('KES','KSh',this)">NSE Kenya (KES)</button>
+      <button type="button" class="etab" onclick="setExchange('USD','$',this)">Other / USD</button>
     </div>
     <table class="holdings-table">
       <thead><tr><th>Stock / Ticker</th><th>Shares</th><th>Buy Price</th><th>Current Price</th><th></th></tr></thead>
       <tbody id="holdings-tbody">
-        <tr><td><input type="text" placeholder="e.g. DANGCEM"></td><td><input type="number" placeholder="100" min="0"></td><td><input type="number" placeholder="250" min="0"></td><td><input type="number" placeholder="310" min="0"></td><td><button class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
-        <tr><td><input type="text" placeholder="e.g. GTCO"></td><td><input type="number" placeholder="500" min="0"></td><td><input type="number" placeholder="28" min="0"></td><td><input type="number" placeholder="35" min="0"></td><td><button class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
-        <tr><td><input type="text" placeholder="e.g. AIRTELAFRI"></td><td><input type="number" placeholder="200" min="0"></td><td><input type="number" placeholder="1200" min="0"></td><td><input type="number" placeholder="1450" min="0"></td><td><button class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+        <tr><td><input aria-label="E.g. DANGCEM" type="text" placeholder="e.g. DANGCEM"></td><td><input type="number" placeholder="100" min="0"></td><td><input type="number" placeholder="250" min="0"></td><td><input type="number" placeholder="310" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+        <tr><td><input aria-label="E.g. GTCO" type="text" placeholder="e.g. GTCO"></td><td><input type="number" placeholder="500" min="0"></td><td><input type="number" placeholder="28" min="0"></td><td><input type="number" placeholder="35" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+        <tr><td><input aria-label="E.g. AIRTELAFRI" type="text" placeholder="e.g. AIRTELAFRI"></td><td><input type="number" placeholder="200" min="0"></td><td><input type="number" placeholder="1200" min="0"></td><td><input type="number" placeholder="1450" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
       </tbody>
     </table>
-    <button class="btn-add" onclick="addRow()">+ Add Another Stock</button>
-    <button class="btn-calc" onclick="calcPortfolio()">Calculate Portfolio Value</button>
+    <button type="button" class="btn-add" onclick="addRow()">+ Add Another Stock</button>
+    <button type="button" class="btn-calc" onclick="calcPortfolio()">Calculate Portfolio Value</button>
     <div class="results" id="sp-results">
       <div class="metrics">
         <div class="metric"><div class="metric-val" id="sp-total-value"></div><div class="metric-label">Total Portfolio Value</div></div>
@@ -164,7 +164,7 @@ function setExchange(cur,sym,btn){
 function addRow(){
   var tbody=document.getElementById('holdings-tbody');
   var tr=document.createElement('tr');
-  tr.innerHTML='<td><input type="text" placeholder="Ticker"></td><td><input type="number" placeholder="100" min="0"></td><td><input type="number" placeholder="0" min="0"></td><td><input type="number" placeholder="0" min="0"></td><td><button class="btn-del" onclick="delRow(this)">&#x2715;</button></td>';
+  tr.innerHTML='<td><input aria-label="Ticker" type="text" placeholder="Ticker"></td><td><input type="number" placeholder="100" min="0"></td><td><input aria-label="Line item amount" type="number" placeholder="0" min="0"></td><td><input aria-label="Line item amount" type="number" placeholder="0" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td>';
   tbody.appendChild(tr);
 }
 function delRow(btn){btn.closest('tr').remove();}

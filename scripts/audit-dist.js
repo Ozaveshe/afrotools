@@ -78,6 +78,34 @@ function walk(dir, results = []) {
   return results;
 }
 
+function isExternalAsset(src) {
+  return /^(?:[a-z][a-z0-9+.-]*:)?\/\//i.test(src) ||
+    /^(?:data:|mailto:|tel:|#)/i.test(src);
+}
+
+function resolveAssetPath(htmlRel, src) {
+  const cleanSrc = src.split('#')[0].split('?')[0];
+  if (!cleanSrc || isExternalAsset(cleanSrc)) return null;
+  if (cleanSrc.startsWith('/')) return cleanSrc.slice(1);
+  return path.posix.normalize(path.posix.join(path.posix.dirname(htmlRel), cleanSrc));
+}
+
+function auditLocalScriptRefs(failures) {
+  for (const rel of walk(DIST)) {
+    if (!rel.endsWith('.html')) continue;
+    const full = path.join(DIST, rel);
+    const html = fs.readFileSync(full, 'utf8');
+    const matches = html.matchAll(/<script\b[^>]*\bsrc=(["'])(.*?)\1/gi);
+    for (const match of matches) {
+      const assetRel = resolveAssetPath(rel, match[2]);
+      if (!assetRel) continue;
+      if (!fs.existsSync(path.join(DIST, assetRel))) {
+        failures.push(`Missing local script referenced by ${rel}: ${match[2]} -> ${assetRel}`);
+      }
+    }
+  }
+}
+
 function main() {
   const failures = [];
 
@@ -99,6 +127,8 @@ function main() {
         failures.push(`Forbidden file type/name present in dist: ${rel}`);
       }
     }
+
+    auditLocalScriptRefs(failures);
   }
 
   if (failures.length) {

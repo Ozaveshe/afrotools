@@ -22,9 +22,9 @@
     
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -141,13 +141,13 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
       <div class="card-body">
         <div class="field">
           <label class="f-label">Event Name</label>
-          <input type="text" class="f-input" id="eventName" value="My Event" maxlength="60">
+          <input aria-label="EventName" type="text" class="f-input" id="eventName" value="My Event" maxlength="60">
         </div>
         <div class="field-row">
-          <div class="field"><label class="f-label">Event Date</label><input type="date" class="f-input" id="eventDate"></div>
-          <div class="field"><label class="f-label">Time (optional)</label><input type="time" class="f-input" id="eventTime" value="00:00"></div>
+          <div class="field"><label class="f-label">Event Date</label><input aria-label="EventDate" type="date" class="f-input" id="eventDate"></div>
+          <div class="field"><label class="f-label">Time (optional)</label><input aria-label="EventTime" type="time" class="f-input" id="eventTime" value="00:00"></div>
         </div>
-        <button class="calc-btn" onclick="startCountdown()">Start Countdown</button>
+        <button type="button" class="calc-btn" onclick="startCountdown()">Start Countdown</button>
 
         <div class="countdown-display" id="cdDisplay" style="display:none">
           <div class="cd-box"><div class="cd-num" id="cdDays">0</div><div class="cd-label">Days</div></div>
@@ -162,13 +162,13 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
         <div style="margin-top:18px">
           <div class="f-label">Quick Presets</div>
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset('New Year','NEXTYEAR-01-01')">New Year</button>
-            <button class="preset-btn" onclick="setPreset('Christmas','THISYEAR-12-25')">Christmas</button>
-            <button class="preset-btn" onclick="setPreset('Eid al-Fitr 2027','2027-03-21')">Eid al-Fitr</button>
-            <button class="preset-btn" onclick="setPreset('Africa Day','THISYEAR-05-25')">Africa Day (May 25)</button>
+            <button type="button" class="preset-btn" onclick="setPreset('New Year','NEXTYEAR-01-01')">New Year</button>
+            <button type="button" class="preset-btn" onclick="setPreset('Christmas','THISYEAR-12-25')">Christmas</button>
+            <button type="button" class="preset-btn" onclick="setPreset('Eid al-Fitr 2027','2027-03-21')">Eid al-Fitr</button>
+            <button type="button" class="preset-btn" onclick="setPreset('Africa Day','THISYEAR-05-25')">Africa Day (May 25)</button>
           </div>
         </div>
-        <button class="calc-btn" style="margin-top:12px;background:#22c55e" onclick="saveCountdown()">Save This Countdown</button>
+        <button type="button" class="calc-btn" style="margin-top:12px;background:#22c55e" onclick="saveCountdown()">Save This Countdown</button>
       </div>
     </div>
 
@@ -347,7 +347,7 @@ function renderSaved(){
   const el=document.getElementById('savedList');
   if(!saved.length){el.innerHTML='<div style="font-size:.78rem;color:#94a3b8;text-align:center;padding:12px">No saved countdowns yet</div>';return;}
   const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-  el.innerHTML=saved.map((s,i)=>`<div class="saved-item"><span class="saved-name" onclick="loadSaved(${i})">${esc(s.name)}</span><button class="del-btn" onclick="deleteSaved(${i})">Delete</button></div>`).join('');
+  el.innerHTML=saved.map((s,i)=>`<div class="saved-item"><span class="saved-name" onclick="loadSaved(${i})">${esc(s.name)}</span><button type="button" class="del-btn" onclick="deleteSaved(${i})">Delete</button></div>`).join('');
 }
 
 // Set default date to 30 days from now
@@ -356,7 +356,7 @@ document.getElementById('eventDate').value=d.toISOString().split('T')[0];
 renderSaved();
 startCountdown();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 

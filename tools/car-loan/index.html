@@ -16,10 +16,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -200,10 +200,10 @@ h1 em{color:var(--accent);font-style:normal}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is a car loan monthly payment calculated?","acceptedAnswer":{"@type":"Answer","text":"Car loan monthly payments use the amortisation formula: M = P * [r(1+r)^n] / [(1+r)^n - 1], where P is loan amount, r is monthly interest rate (annual rate divided by 12), and n is total number of monthly payments."}},{"@type":"Question","name":"What are typical car loan interest rates in Africa?","acceptedAnswer":{"@type":"Answer","text":"Rates vary widely across Africa. Nigeria: 18-28%, Kenya: 13-18%, South Africa: 10-15%, Ghana: 25-35%, Egypt: 12-20%, Morocco: 6-10%. Rates depend on the bank, credit history, vehicle type (new vs used), and loan tenure."}},{"@type":"Question","name":"What is a balloon payment on a car loan?","acceptedAnswer":{"@type":"Answer","text":"A balloon payment is a large lump sum due at the end of the loan term, popular in South Africa. It reduces monthly payments but means you owe a significant amount at the end. You can pay it, refinance it, or trade in the vehicle."}},{"@type":"Question","name":"How much deposit do I need for a car loan in Africa?","acceptedAnswer":{"@type":"Answer","text":"Most African banks require 20-30% deposit. Nigeria: 20-30%, Kenya: 20-30%, South Africa: 10-20% (can be 0% for excellent credit), Ghana: 30%, Egypt: 20-50%. A larger deposit reduces your interest and improves approval chances."}},{"@type":"Question","name":"Should I buy a new or used car on finance?","acceptedAnswer":{"@type":"Answer","text":"Used cars are cheaper upfront but often attract higher interest rates (2-5% more) and shorter loan terms. New cars depreciate faster in the first 2-3 years but may come with warranties and lower rates. Consider total cost of ownership including maintenance and fuel."}},{"@type":"Question","name":"How do I calculate the total cost of owning a car?","acceptedAnswer":{"@type":"Answer","text":"Total cost of ownership includes loan payments, fuel, insurance (typically 3-8% of vehicle value annually), maintenance, depreciation, and licensing. Our calculator estimates all these costs to give you a complete picture of what your car will really cost over the loan period."}}]}
 </script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/car-loan/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/pret-automobile/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/car-loan/" />
@@ -242,9 +242,9 @@ h1 em{color:var(--accent);font-style:normal}
 <!-- === MAIN CALCULATOR CARD === -->
 <div class="card">
 <div class="tab-bar">
-<button class="tab-btn active" onclick="switchTab('monthly')">Monthly Payment</button>
-<button class="tab-btn" onclick="switchTab('afford')">Affordability</button>
-<button class="tab-btn" onclick="switchTab('compare')">Comparison</button>
+<button type="button" class="tab-btn active" onclick="switchTab('monthly')">Monthly Payment</button>
+<button type="button" class="tab-btn" onclick="switchTab('afford')">Affordability</button>
+<button type="button" class="tab-btn" onclick="switchTab('compare')">Comparison</button>
 </div>
 
 <!-- TAB 1: MONTHLY PAYMENT -->
@@ -257,39 +257,39 @@ h1 em{color:var(--accent);font-style:normal}
 <div class="field">
 <label class="f-label">Vehicle Type</label>
 <div class="toggle-group">
-<button class="toggle-opt active" onclick="setVehicleType(this,'new')">New</button>
-<button class="toggle-opt" onclick="setVehicleType(this,'used')">Used</button>
+<button type="button" class="toggle-opt active" onclick="setVehicleType(this,'new')">New</button>
+<button type="button" class="toggle-opt" onclick="setVehicleType(this,'used')">Used</button>
 </div>
 </div>
 <div class="field">
 <label class="f-label">Down Payment Mode</label>
 <div class="toggle-group">
-<button class="toggle-opt active" onclick="setDepositMode(this,'amount')">Amount</button>
-<button class="toggle-opt" onclick="setDepositMode(this,'percent')">Percentage</button>
+<button type="button" class="toggle-opt active" onclick="setDepositMode(this,'amount')">Amount</button>
+<button type="button" class="toggle-opt" onclick="setDepositMode(this,'percent')">Percentage</button>
 </div>
 </div>
 </div>
 <div class="field">
 <label class="f-label">Vehicle Price</label>
-<input type="text" id="price" class="f-input" placeholder="e.g. 15,000,000" inputmode="numeric">
+<input aria-label="E.g. 15,000,000" type="text" id="price" class="f-input" placeholder="e.g. 15,000,000" inputmode="numeric">
 </div>
 <div class="field-row">
 <div class="field">
 <label class="f-label" id="depositLabel">Down Payment</label>
-<input type="text" id="deposit" class="f-input" placeholder="e.g. 3,000,000" inputmode="numeric">
+<input aria-label="E.g. 3,000,000" type="text" id="deposit" class="f-input" placeholder="e.g. 3,000,000" inputmode="numeric">
 </div>
 <div class="field">
 <label class="f-label">Trade-In Value</label>
-<input type="text" id="tradeIn" class="f-input" placeholder="0" inputmode="numeric">
+<input aria-label="TradeIn" type="text" id="tradeIn" class="f-input" placeholder="0" inputmode="numeric">
 </div>
 </div>
 <div class="field">
 <label class="f-label">Annual Interest Rate (%) <span class="hint" id="rateHint"></span></label>
 <div class="range-wrap">
-<input type="range" id="rateSlider" min="0" max="60" step="0.5" value="22" oninput="syncRateSlider()">
+<input aria-label="RateSlider" type="range" id="rateSlider" min="0" max="60" step="0.5" value="22" oninput="syncRateSlider()">
 <span class="range-val" id="rateSliderVal">22%</span>
 </div>
-<input type="number" id="rate" class="f-input" value="22" step="0.1" min="0" max="100" style="margin-top:8px" oninput="syncRateInput()">
+<input aria-label="Rate" type="number" id="rate" class="f-input" value="22" step="0.1" min="0" max="100" style="margin-top:8px" oninput="syncRateInput()">
 </div>
 <div class="field-row">
 <div class="field">
@@ -307,20 +307,20 @@ h1 em{color:var(--accent);font-style:normal}
 </div>
 <div class="field" id="customTermField" style="display:none">
 <label class="f-label">Custom Months</label>
-<input type="number" id="customTerm" class="f-input" placeholder="e.g. 42" min="1" max="120">
+<input aria-label="E.g. 42" type="number" id="customTerm" class="f-input" placeholder="e.g. 42" min="1" max="120">
 </div>
 </div>
 <div class="field-row">
 <div class="field">
 <label class="f-label">Balloon Payment (%) <span class="hint">Popular in SA</span></label>
-<input type="number" id="balloon" class="f-input" value="0" min="0" max="60" step="1">
+<input aria-label="Balloon" type="number" id="balloon" class="f-input" value="0" min="0" max="60" step="1">
 </div>
 <div class="field">
 <label class="f-label">Insurance & Fees (Lump Sum)</label>
-<input type="text" id="fees" class="f-input" placeholder="0" inputmode="numeric">
+<input aria-label="Fees" type="text" id="fees" class="f-input" placeholder="0" inputmode="numeric">
 </div>
 </div>
-<button class="calc-btn" onclick="calculate()">Calculate Car Loan</button>
+<button type="button" class="calc-btn" onclick="calculate()">Calculate Car Loan</button>
 </div>
 
 <!-- TAB 2: AFFORDABILITY -->
@@ -331,12 +331,12 @@ h1 em{color:var(--accent);font-style:normal}
 </div>
 <div class="field">
 <label class="f-label">Monthly Budget for Car Payment</label>
-<input type="text" id="affBudget" class="f-input" placeholder="e.g. 250,000" inputmode="numeric">
+<input aria-label="E.g. 250,000" type="text" id="affBudget" class="f-input" placeholder="e.g. 250,000" inputmode="numeric">
 </div>
 <div class="field-row">
 <div class="field">
 <label class="f-label">Annual Interest Rate (%)</label>
-<input type="number" id="affRate" class="f-input" value="22" step="0.1">
+<input aria-label="AffRate" type="number" id="affRate" class="f-input" value="22" step="0.1">
 </div>
 <div class="field">
 <label class="f-label">Loan Term</label>
@@ -354,14 +354,14 @@ h1 em{color:var(--accent);font-style:normal}
 <div class="field-row">
 <div class="field">
 <label class="f-label">Deposit You Can Pay</label>
-<input type="text" id="affDeposit" class="f-input" placeholder="e.g. 500,000" inputmode="numeric">
+<input aria-label="E.g. 500,000" type="text" id="affDeposit" class="f-input" placeholder="e.g. 500,000" inputmode="numeric">
 </div>
 <div class="field">
 <label class="f-label">Trade-In Value</label>
-<input type="text" id="affTradeIn" class="f-input" placeholder="0" inputmode="numeric">
+<input aria-label="AffTradeIn" type="text" id="affTradeIn" class="f-input" placeholder="0" inputmode="numeric">
 </div>
 </div>
-<button class="calc-btn" onclick="calcAfford()">Check Affordability</button>
+<button type="button" class="calc-btn" onclick="calcAfford()">Check Affordability</button>
 </div>
 
 <!-- TAB 3: COMPARISON -->
@@ -372,18 +372,18 @@ h1 em{color:var(--accent);font-style:normal}
 </div>
 <div class="field">
 <label class="f-label">Vehicle Price</label>
-<input type="text" id="cmpPrice" class="f-input" placeholder="e.g. 15,000,000" inputmode="numeric">
+<input aria-label="E.g. 15,000,000" type="text" id="cmpPrice" class="f-input" placeholder="e.g. 15,000,000" inputmode="numeric">
 </div>
 <div class="field">
 <label class="f-label">Deposit / Down Payment</label>
-<input type="text" id="cmpDeposit" class="f-input" placeholder="e.g. 3,000,000" inputmode="numeric">
+<input aria-label="E.g. 3,000,000" type="text" id="cmpDeposit" class="f-input" placeholder="e.g. 3,000,000" inputmode="numeric">
 </div>
 <div class="comp-row" style="margin-top:16px">
 <div class="comp-col">
 <h4>Scenario A</h4>
 <div class="field">
 <label class="f-label">Interest Rate (%)</label>
-<input type="number" id="cmpRateA" class="f-input" value="18" step="0.1">
+<input aria-label="CmpRateA" type="number" id="cmpRateA" class="f-input" value="18" step="0.1">
 </div>
 <div class="field">
 <label class="f-label">Term (Years)</label>
@@ -393,14 +393,14 @@ h1 em{color:var(--accent);font-style:normal}
 </div>
 <div class="field">
 <label class="f-label">Balloon (%)</label>
-<input type="number" id="cmpBalloonA" class="f-input" value="0" min="0" max="60">
+<input aria-label="CmpBalloonA" type="number" id="cmpBalloonA" class="f-input" value="0" min="0" max="60">
 </div>
 </div>
 <div class="comp-col">
 <h4>Scenario B</h4>
 <div class="field">
 <label class="f-label">Interest Rate (%)</label>
-<input type="number" id="cmpRateB" class="f-input" value="24" step="0.1">
+<input aria-label="CmpRateB" type="number" id="cmpRateB" class="f-input" value="24" step="0.1">
 </div>
 <div class="field">
 <label class="f-label">Term (Years)</label>
@@ -410,11 +410,11 @@ h1 em{color:var(--accent);font-style:normal}
 </div>
 <div class="field">
 <label class="f-label">Balloon (%)</label>
-<input type="number" id="cmpBalloonB" class="f-input" value="0" min="0" max="60">
+<input aria-label="CmpBalloonB" type="number" id="cmpBalloonB" class="f-input" value="0" min="0" max="60">
 </div>
 </div>
 </div>
-<button class="calc-btn" style="margin-top:16px" onclick="calcCompare()">Compare Scenarios</button>
+<button type="button" class="calc-btn" style="margin-top:16px" onclick="calcCompare()">Compare Scenarios</button>
 </div>
 </div>
 
@@ -454,13 +454,13 @@ h1 em{color:var(--accent);font-style:normal}
 <div class="card-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
 <span class="card-title">Amortisation Schedule</span>
 <div style="display:flex;gap:8px">
-<button class="btn-outline" onclick="downloadCSV()">Download CSV</button>
+<button type="button" class="btn-outline" onclick="downloadCSV()">Download CSV</button>
 </div>
 </div>
 <div class="card-body" style="padding:12px 22px 22px">
 <div class="amort-toggle">
-<button class="active" onclick="toggleAmortView(this,'monthly')">Monthly</button>
-<button onclick="toggleAmortView(this,'annual')">Annual Summary</button>
+<button type="button" class="active" onclick="toggleAmortView(this,'monthly')">Monthly</button>
+<button type="button" onclick="toggleAmortView(this,'annual')">Annual Summary</button>
 </div>
 <div class="amort-wrap">
 <table class="amort-table">
@@ -479,24 +479,24 @@ h1 em{color:var(--accent);font-style:normal}
 <div class="field-row">
 <div class="field">
 <label class="f-label">Monthly Km Driven</label>
-<input type="number" id="tcoKm" class="f-input" value="1500" min="0">
+<input aria-label="TcoKm" type="number" id="tcoKm" class="f-input" value="1500" min="0">
 </div>
 <div class="field">
 <label class="f-label">Fuel Consumption (L/100km)</label>
-<input type="number" id="tcoConsumption" class="f-input" value="8" min="1" max="30" step="0.5">
+<input aria-label="TcoConsumption" type="number" id="tcoConsumption" class="f-input" value="8" min="1" max="30" step="0.5">
 </div>
 </div>
 <div class="field-row">
 <div class="field">
 <label class="f-label">Fuel Price per Litre <span class="hint" id="fuelHint"></span></label>
-<input type="number" id="tcoFuelPrice" class="f-input" value="700" step="1">
+<input aria-label="TcoFuelPrice" type="number" id="tcoFuelPrice" class="f-input" value="700" step="1">
 </div>
 <div class="field">
 <label class="f-label">Annual Insurance (% of Value)</label>
-<input type="number" id="tcoInsurance" class="f-input" value="5" min="0" max="20" step="0.5">
+<input aria-label="TcoInsurance" type="number" id="tcoInsurance" class="f-input" value="5" min="0" max="20" step="0.5">
 </div>
 </div>
-<button class="calc-btn" onclick="calcTCO()">Calculate Ownership Cost</button>
+<button type="button" class="calc-btn" onclick="calcTCO()">Calculate Ownership Cost</button>
 <div id="tcoResults" style="display:none;margin-top:16px">
 <div class="tco-grid" id="tcoGrid"></div>
 <div class="tco-total"><span>Total Cost of Ownership</span><span id="tcoTotal">--</span></div>
@@ -533,8 +533,8 @@ h1 em{color:var(--accent);font-style:normal}
 <div class="card-body">
 <div id="aiMessages" style="max-height:300px;overflow-y:auto;margin-bottom:12px"></div>
 <div style="display:flex;gap:8px">
-<input type="text" id="aiInput" class="f-input" placeholder="Ask about car financing in Africa..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
-<button class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Ask</button>
+<input aria-label="Ask about car financing in Africa" type="text" id="aiInput" class="f-input" placeholder="Ask about car financing in Africa..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
+<button type="button" class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Ask</button>
 </div>
 <div style="font-size:.7rem;color:#94a3b8;margin-top:6px">Powered by AfroTools AI &bull; <span id="aiRemaining"></span></div>
 </div>
@@ -678,8 +678,8 @@ h1 em{color:var(--accent);font-style:normal}
 <p style="font-size:.82rem;color:var(--muted);margin-bottom:10px">Financial experts recommend car payments should not exceed 15-20% of your monthly income.</p>
 <label class="f-label">Monthly Net Income</label>
 <div class="quick-input">
-<input type="text" id="quickIncome" placeholder="e.g. 500,000" inputmode="numeric">
-<button onclick="quickAfford()">Check</button>
+<input aria-label="E.g. 500,000" type="text" id="quickIncome" placeholder="e.g. 500,000" inputmode="numeric">
+<button type="button" onclick="quickAfford()">Check</button>
 </div>
 <div id="quickResult"></div>
 </div>

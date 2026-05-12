@@ -27,9 +27,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <meta name="tool-id" content="land-size">
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Land Size Calculator","description":"Convert land sizes between square meters, hectares, acres, Nigerian plots, SA Morgen, and more. Visual preview and price calculator.","url":"https://afrotools.com/tools/land-size/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -131,7 +131,7 @@
     .tool-hero { padding: 32px 0 28px; }
   }
 </style>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/land-size/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/land-size/" />
 <meta property="og:locale" content="en_US">
@@ -165,19 +165,19 @@
         <div class="card-head"><span class="card-title">Input Mode</span></div>
         <div class="card-body">
           <div class="mode-tabs">
-            <button class="mode-tab on" onclick="setMode('dim')">Dimensions (L x W)</button>
-            <button class="mode-tab" onclick="setMode('area')">Area Directly</button>
+            <button type="button" class="mode-tab on" onclick="setMode('dim')">Dimensions (L x W)</button>
+            <button type="button" class="mode-tab" onclick="setMode('area')">Area Directly</button>
           </div>
 
           <div class="dim-section active" id="dimSection">
             <div class="row-2">
               <div class="field">
                 <label class="f-label">Length</label>
-                <input type="number" class="f-input" id="dimLength" placeholder="60" min="0" step="any" oninput="calcFromDim()">
+                <input aria-label="DimLength" type="number" class="f-input" id="dimLength" placeholder="60" min="0" step="any" oninput="calcFromDim()">
               </div>
               <div class="field">
                 <label class="f-label">Width</label>
-                <input type="number" class="f-input" id="dimWidth" placeholder="120" min="0" step="any" oninput="calcFromDim()">
+                <input aria-label="DimWidth" type="number" class="f-input" id="dimWidth" placeholder="120" min="0" step="any" oninput="calcFromDim()">
               </div>
             </div>
             <div class="field">
@@ -194,7 +194,7 @@
             <div class="row-2">
               <div class="field">
                 <label class="f-label">Area</label>
-                <input type="number" class="f-input" id="areaVal" placeholder="648" min="0" step="any" oninput="calcFromArea()">
+                <input aria-label="AreaVal" type="number" class="f-input" id="areaVal" placeholder="648" min="0" step="any" oninput="calcFromArea()">
               </div>
               <div class="field">
                 <label class="f-label">Unit</label>
@@ -233,7 +233,7 @@
             <div class="row-2">
               <div class="field">
                 <label class="f-label" style="font-size:0.68rem;color:#6B8CAE">Price per sqm</label>
-                <input type="number" class="f-input" id="pricePerUnit" placeholder="e.g. 50000" min="0" step="any" oninput="calcPrice()">
+                <input aria-label="E.g. 50000" type="number" class="f-input" id="pricePerUnit" placeholder="e.g. 50000" min="0" step="any" oninput="calcPrice()">
               </div>
               <div class="field">
                 <label class="f-label" style="font-size:0.68rem;color:#6B8CAE">Currency</label>
@@ -270,11 +270,11 @@
               </div>
               <div class="field">
                 <label class="f-label">Access/Setback Reserve %</label>
-                <input type="number" class="f-input" id="planReserve" value="15" min="0" max="70" step="1" oninput="updateLandPlan()">
+                <input aria-label="PlanReserve" type="number" class="f-input" id="planReserve" value="15" min="0" max="70" step="1" oninput="updateLandPlan()">
               </div>
               <div class="field">
                 <label class="f-label">Closing/Survey Buffer %</label>
-                <input type="number" class="f-input" id="planClosing" value="8" min="0" max="50" step="1" oninput="updateLandPlan()">
+                <input aria-label="PlanClosing" type="number" class="f-input" id="planClosing" value="8" min="0" max="50" step="1" oninput="updateLandPlan()">
               </div>
               <div class="field">
                 <label class="f-label">Intended Use</label>
@@ -624,7 +624,7 @@
   // Init
   updateConversions();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>

@@ -25,7 +25,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/vat-calculator.css?v=759f15f6">
 
 <meta name="tool-id" content="vat-calculator">
@@ -77,7 +77,7 @@
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-tva/" />
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/vat-calculator/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/vat-calculator/" />
@@ -106,12 +106,12 @@
 <!-- Quick-access strip -->
 <div class="vat-container">
   <div class="vat-quick-strip">
-    <button class="vat-quick-btn" data-quick="NG">🇳🇬 Nigéria 7,5 %</button>
-    <button class="vat-quick-btn" data-quick="KE">🇰🇪 Kenya 16 %</button>
-    <button class="vat-quick-btn" data-quick="ZA">🇿🇦 Afrique du Sud 15 %</button>
-    <button class="vat-quick-btn" data-quick="GH">🇬🇭 Ghana 21,9 %</button>
-    <button class="vat-quick-btn" data-quick="EG">🇪🇬 Égypte 14 %</button>
-    <button class="vat-quick-btn" data-quick="MA">🇲🇦 Maroc 20 %</button>
+    <button type="button" class="vat-quick-btn" data-quick="NG">🇳🇬 Nigéria 7,5 %</button>
+    <button type="button" class="vat-quick-btn" data-quick="KE">🇰🇪 Kenya 16 %</button>
+    <button type="button" class="vat-quick-btn" data-quick="ZA">🇿🇦 Afrique du Sud 15 %</button>
+    <button type="button" class="vat-quick-btn" data-quick="GH">🇬🇭 Ghana 21,9 %</button>
+    <button type="button" class="vat-quick-btn" data-quick="EG">🇪🇬 Égypte 14 %</button>
+    <button type="button" class="vat-quick-btn" data-quick="MA">🇲🇦 Maroc 20 %</button>
   </div>
 </div>
 
@@ -135,10 +135,10 @@
 
       <!-- Tabs: Single / Invoice / Compare -->
       <div class="vat-tabs" role="tablist">
-        <button class="vat-tab active" role="tab" data-tab="single">Montant unique</button>
-        <button class="vat-tab" role="tab" data-tab="invoice">Facture multi-lignes</button>
-        <button class="vat-tab" role="tab" data-tab="withholding">Retenue de TVA</button>
-        <button class="vat-tab" role="tab" data-tab="compare">Comparer les pays</button>
+        <button type="button" class="vat-tab active" role="tab" data-tab="single">Montant unique</button>
+        <button type="button" class="vat-tab" role="tab" data-tab="invoice">Facture multi-lignes</button>
+        <button type="button" class="vat-tab" role="tab" data-tab="withholding">Retenue de TVA</button>
+        <button type="button" class="vat-tab" role="tab" data-tab="compare">Comparer les pays</button>
       </div>
 
       <!-- ═══ SINGLE AMOUNT TAB ═══ -->
@@ -150,17 +150,17 @@
           </div>
 
           <div class="vat-mode-toggle">
-            <button class="vat-mode active" id="modeAdd" data-mode="add">Ajouter TVA &rarr;</button>
-            <button class="vat-mode" id="modeExtract" data-mode="extract">&larr; Extraire TVA</button>
+            <button type="button" class="vat-mode active" id="modeAdd" data-mode="add">Ajouter TVA &rarr;</button>
+            <button type="button" class="vat-mode" id="modeExtract" data-mode="extract">&larr; Extraire TVA</button>
           </div>
 
           <!-- Custom rate override -->
           <div class="vat-custom-rate" id="customRateWrap">
             <label class="vat-custom-toggle">
-              <input type="checkbox" id="customRateCheck"> Utiliser un taux personnalisé
+              <input aria-label="CustomRateCheck" type="checkbox" id="customRateCheck"> Utiliser un taux personnalisé
             </label>
             <div class="vat-custom-input" id="customRateField" style="display:none;">
-              <input type="text" inputmode="decimal" class="vat-input" id="customRateInput" placeholder="ex. 12,5" autocomplete="off" style="width:100px;text-align:center;">
+              <input aria-label="Ex. 12,5" type="text" inputmode="decimal" class="vat-input" id="customRateInput" placeholder="ex. 12,5" autocomplete="off" style="width:100px;text-align:center;">
               <span class="vat-custom-pct">%</span>
             </div>
           </div>
@@ -173,16 +173,16 @@
             </div>
             <!-- Quick amount chips -->
             <div class="vat-amount-chips">
-              <button class="vat-chip" data-amt="1000">1K</button>
-              <button class="vat-chip" data-amt="5000">5K</button>
-              <button class="vat-chip" data-amt="10000">10K</button>
-              <button class="vat-chip" data-amt="50000">50K</button>
-              <button class="vat-chip" data-amt="100000">100K</button>
-              <button class="vat-chip" data-amt="1000000">1M</button>
+              <button type="button" class="vat-chip" data-amt="1000">1K</button>
+              <button type="button" class="vat-chip" data-amt="5000">5K</button>
+              <button type="button" class="vat-chip" data-amt="10000">10K</button>
+              <button type="button" class="vat-chip" data-amt="50000">50K</button>
+              <button type="button" class="vat-chip" data-amt="100000">100K</button>
+              <button type="button" class="vat-chip" data-amt="1000000">1M</button>
             </div>
           </div>
 
-          <button class="vat-calc-btn" id="calcBtn">
+          <button type="button" class="vat-calc-btn" id="calcBtn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px;margin-right:6px;"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
             Calculer la TVA
           </button>
@@ -250,15 +250,15 @@
 
           <!-- Actions -->
           <div class="vat-actions">
-            <button class="vat-btn vat-btn--outline" id="pdfBtn">
+            <button type="button" class="vat-btn vat-btn--outline" id="pdfBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
               Exporter PDF
             </button>
-            <button class="vat-btn vat-btn--outline" id="shareBtn">
+            <button type="button" class="vat-btn vat-btn--outline" id="shareBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
               Partager
             </button>
-            <button class="vat-btn vat-btn--outline" id="copyBtn">
+            <button type="button" class="vat-btn vat-btn--outline" id="copyBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
               Copier
             </button>
@@ -278,7 +278,7 @@
           <div id="lineItems">
             <!-- Populated by JS -->
           </div>
-          <button class="vat-btn vat-btn--outline vat-btn--full" id="addLineBtn" style="margin-top:12px;">+ Ajouter une ligne</button>
+          <button type="button" class="vat-btn vat-btn--outline vat-btn--full" id="addLineBtn" style="margin-top:12px;">+ Ajouter une ligne</button>
 
           <div class="vat-invoice-totals" id="invoiceTotals" style="display:none;">
             <div class="vat-invoice-row"><span>Sous-total (HT)</span><strong id="invSubtotal">0,00</strong></div>
@@ -287,10 +287,10 @@
           </div>
 
           <div class="vat-actions" style="margin-top:16px;">
-            <button class="vat-btn vat-btn--primary vat-btn--full" id="calcInvoiceBtn">Calculer la facture</button>
+            <button type="button" class="vat-btn vat-btn--primary vat-btn--full" id="calcInvoiceBtn">Calculer la facture</button>
           </div>
           <div class="vat-actions" id="invoiceActions" style="display:none;margin-top:8px;">
-            <button class="vat-btn vat-btn--outline" id="invoicePdfBtn">
+            <button type="button" class="vat-btn vat-btn--outline" id="invoicePdfBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Exporter en PDF
             </button>
@@ -311,7 +311,7 @@
             <div class="vat-field"><label for="cmp2">Pays 2</label><select class="vat-select" id="cmp2"></select></div>
             <div class="vat-field"><label for="cmp3">Pays 3</label><select class="vat-select" id="cmp3"></select></div>
           </div>
-          <button class="vat-btn vat-btn--primary vat-btn--full" id="compareBtn" style="margin-top:12px;">Comparer</button>
+          <button type="button" class="vat-btn vat-btn--primary vat-btn--full" id="compareBtn" style="margin-top:12px;">Comparer</button>
         </div>
         <div id="compareResults" style="margin-top:20px;"></div>
       </div>
@@ -340,10 +340,10 @@
                 <option value="33.33">33,33 % de la TVA</option>
                 <option value="custom">Taux personnalisé…</option>
               </select>
-              <input type="text" inputmode="decimal" class="vat-input" id="whCustomRate" placeholder="%" autocomplete="off" style="display:none;width:80px;text-align:center;">
+              <input aria-label="WhCustomRate" type="text" inputmode="decimal" class="vat-input" id="whCustomRate" placeholder="%" autocomplete="off" style="display:none;width:80px;text-align:center;">
             </div>
           </div>
-          <button class="vat-btn vat-btn--primary vat-btn--full" id="calcWhBtn">Calculer la retenue</button>
+          <button type="button" class="vat-btn vat-btn--primary vat-btn--full" id="calcWhBtn">Calculer la retenue</button>
         </div>
         <div id="whResults" style="margin-top:20px;"></div>
       </div>
@@ -365,7 +365,7 @@
       <div class="vat-card">
         <div class="vat-card-header">
           <h3 class="vat-card-title" style="margin-bottom:0;">Calculs récents</h3>
-          <button class="vat-clear-history" id="clearHistoryBtn" title="Effacer l'historique">&times;</button>
+          <button type="button" class="vat-clear-history" id="clearHistoryBtn" title="Effacer l'historique">&times;</button>
         </div>
         <div id="historyList" class="vat-history-list">
           <p class="vat-muted" style="text-align:center;padding:12px 0;">Aucun calcul pour le moment</p>
@@ -375,13 +375,13 @@
       <!-- Rates table with search -->
       <div class="vat-card">
         <h3 class="vat-card-title">Tous les taux de TVA africains</h3>
-        <input type="text" class="vat-input vat-rates-search" id="ratesSearch" placeholder="Rechercher un pays..." style="margin-bottom:12px;padding:8px 12px;font-size:0.85rem;">
+        <input aria-label="Rechercher un pays" type="text" class="vat-input vat-rates-search" id="ratesSearch" placeholder="Rechercher un pays..." style="margin-bottom:12px;padding:8px 12px;font-size:0.85rem;">
         <div class="vat-rates-list" id="ratesTableBody"></div>
       </div>
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-        <img src="/assets/img/tools/calculateur-tva-fr.webp" alt="Calculateur de TVA panafricain" class="tool-info-img" loading="lazy" onerror="this.style.display='none'">
+        <img height="44" width="44" src="/assets/img/tools/calculateur-tva-fr.webp" alt="Calculateur de TVA panafricain" class="tool-info-img" loading="lazy" onerror="this.style.display='none'">
         <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur de TVA Panafricain</div>
             <div class="tool-info-cat">Fiscalité</div>
@@ -404,7 +404,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mis à jour : mars 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="navigator.share?.({title:document.title,url:location.href})||navigator.clipboard?.writeText(location.href)">Partager</button>
+            <button type="button" class="tool-info-action" onclick="navigator.share?.({title:document.title,url:location.href})||navigator.clipboard?.writeText(location.href)">Partager</button>
           </div>
         </div>
       </div>
@@ -447,11 +447,11 @@
 <afro-footer></afro-footer>
 
 <!-- Scripts -->
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/lib/share-state.js?v=a06e4cb8" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/lib/share-state.js?v=a06e4cb8" defer></script>
 <script src="/assets/js/lib/pdf-template.js?v=61bb8821" defer></script>
 
 <script>
@@ -940,14 +940,14 @@ MG:{name:'Madagascar',flag:'\u{1F1F2}\u{1F1EC}',currency:'Ar',rate:20,reduced:'0
     div.className = 'vat-line-item';
     div.id = 'line-' + i;
     div.innerHTML = `
-      <input type="text" class="vat-input vat-line-desc" placeholder="Description de l'article" data-field="desc">
-      <input type="text" inputmode="decimal" class="vat-input vat-line-amount" placeholder="Montant" data-field="amount">
+      <input aria-label="Description de l'article" type="text" class="vat-input vat-line-desc" placeholder="Description de l'article" data-field="desc">
+      <input aria-label="Montant" type="text" inputmode="decimal" class="vat-input vat-line-amount" placeholder="Montant" data-field="amount">
       <select class="vat-select vat-line-type" data-field="type">
         <option value="standard">TVA standard</option>
         <option value="zero">Taux zéro</option>
         <option value="exempt">Exonéré</option>
       </select>
-      <button class="vat-line-rm" onclick="this.parentElement.remove()" aria-label="Supprimer la ligne">&times;</button>
+      <button type="button" class="vat-line-rm" onclick="this.parentElement.remove()" aria-label="Supprimer la ligne">&times;</button>
     `;
     $('lineItems').appendChild(div);
   }

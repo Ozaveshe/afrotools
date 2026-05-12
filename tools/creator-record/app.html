@@ -9,12 +9,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=d52841e8">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-record/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-record/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="crd-app">
 
@@ -27,7 +30,7 @@
       <span class="crd-rec-dot"></span> REC
     </div>
     <div class="crd-header-actions">
-      <button class="crd-btn-icon" id="historyToggleBtn" title="History">&#128197;</button>
+      <button type="button" class="crd-btn-icon" id="historyToggleBtn" title="History">&#128197;</button>
     </div>
   </header>
 
@@ -60,9 +63,9 @@
 
     <!-- CONTROLS -->
     <div class="crd-controls">
-      <button class="crd-ctrl-btn" id="pauseBtn" disabled title="Pause/Resume (P)">&#9208;&#65039;</button>
-      <button class="crd-record-btn" id="recordBtn" title="Record (R)"></button>
-      <button class="crd-ctrl-btn stop" id="stopBtn" disabled title="Stop (S)">&#9632;</button>
+      <button type="button" class="crd-ctrl-btn" id="pauseBtn" disabled title="Pause/Resume (P)">&#9208;&#65039;</button>
+      <button type="button" class="crd-record-btn" id="recordBtn" title="Record (R)"></button>
+      <button type="button" class="crd-ctrl-btn stop" id="stopBtn" disabled title="Stop (S)">&#9632;</button>
       <div class="crd-timer" id="timerDisplay">00:00</div>
     </div>
 
@@ -77,16 +80,16 @@
           <div class="crd-panel-title">&#127908; Audio</div>
           <div class="crd-toggle-row">
             <span class="crd-toggle-label">System audio</span>
-            <button class="crd-toggle on" id="sysAudioToggle"></button>
+            <button type="button" class="crd-toggle on" id="sysAudioToggle"></button>
           </div>
           <div class="crd-toggle-row">
             <span class="crd-toggle-label">Microphone</span>
-            <button class="crd-toggle on" id="micToggle"></button>
+            <button type="button" class="crd-toggle on" id="micToggle"></button>
           </div>
           <div class="crd-volume-meter"><div class="crd-volume-bar" id="volumeBar"></div></div>
           <div class="crd-toggle-row" style="margin-top:10px">
             <span class="crd-toggle-label">Noise suppression</span>
-            <button class="crd-toggle" id="noiseToggle"></button>
+            <button type="button" class="crd-toggle" id="noiseToggle"></button>
           </div>
         </div>
 
@@ -98,18 +101,18 @@
 
           <div class="crd-toggle-row" style="margin-top:12px">
             <span class="crd-toggle-label">Mirror</span>
-            <button class="crd-toggle on" id="mirrorToggle"></button>
+            <button type="button" class="crd-toggle on" id="mirrorToggle"></button>
           </div>
 
           <label class="crd-toggle-label" style="margin-top:12px;margin-bottom:6px;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)">Shape</label>
           <div class="crd-shapes" id="shapeSelector">
-            <button class="crd-shape-btn active" data-shape="circle" title="Circle">
+            <button type="button" class="crd-shape-btn active" data-shape="circle" title="Circle">
               <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg>
             </button>
-            <button class="crd-shape-btn" data-shape="rounded" title="Rounded Rectangle">
+            <button type="button" class="crd-shape-btn" data-shape="rounded" title="Rounded Rectangle">
               <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="4"/></svg>
             </button>
-            <button class="crd-shape-btn" data-shape="rect" title="Rectangle">
+            <button type="button" class="crd-shape-btn" data-shape="rect" title="Rectangle">
               <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="1"/></svg>
             </button>
           </div>
@@ -128,7 +131,7 @@
           <div class="crd-panel-title">&#9881;&#65039; Options</div>
           <div class="crd-toggle-row">
             <span class="crd-toggle-label">3-2-1 countdown</span>
-            <button class="crd-toggle on" id="countdownToggle"></button>
+            <button type="button" class="crd-toggle on" id="countdownToggle"></button>
           </div>
         </div>
 
@@ -150,13 +153,13 @@
 
           <!-- ANNOTATION BAR -->
           <div class="crd-annotation-bar" id="annotationBar">
-            <button class="crd-anno-btn active" data-tool="pen" title="Pen (red)">&#9997;&#65039;</button>
-            <button class="crd-anno-btn" data-tool="highlight" title="Highlighter (yellow)">&#128221;</button>
-            <button class="crd-anno-btn" data-tool="arrow" title="Arrow">&#10145;&#65039;</button>
-            <button class="crd-anno-btn" data-tool="text" title="Text">T</button>
+            <button type="button" class="crd-anno-btn active" data-tool="pen" title="Pen (red)">&#9997;&#65039;</button>
+            <button type="button" class="crd-anno-btn" data-tool="highlight" title="Highlighter (yellow)">&#128221;</button>
+            <button type="button" class="crd-anno-btn" data-tool="arrow" title="Arrow">&#10145;&#65039;</button>
+            <button type="button" class="crd-anno-btn" data-tool="text" title="Text">T</button>
             <div class="crd-anno-sep"></div>
-            <button class="crd-anno-btn" data-tool="eraser" title="Eraser">&#128465;&#65039;</button>
-            <button class="crd-anno-btn" id="clearAnnotations" title="Clear All">&#10060;</button>
+            <button type="button" class="crd-anno-btn" data-tool="eraser" title="Eraser">&#128465;&#65039;</button>
+            <button type="button" class="crd-anno-btn" id="clearAnnotations" title="Clear All">&#10060;</button>
           </div>
         </div>
 
@@ -168,8 +171,8 @@
           </div>
           <div class="crd-trim-track">
             <div class="crd-trim-fill" id="trimFill" style="left:0%;width:100%"></div>
-            <input type="range" class="crd-trim-range" id="trimStart" min="0" max="100" value="0" step="0.1">
-            <input type="range" class="crd-trim-range" id="trimEnd" min="0" max="100" value="100" step="0.1">
+            <input aria-label="TrimStart" type="range" class="crd-trim-range" id="trimStart" min="0" max="100" value="0" step="0.1">
+            <input aria-label="TrimEnd" type="range" class="crd-trim-range" id="trimEnd" min="0" max="100" value="100" step="0.1">
           </div>
           <div class="crd-trim-times">
             <span id="trimStartTime">0:00</span>
@@ -179,7 +182,7 @@
 
         <!-- EXPORT -->
         <div class="crd-export-panel" id="exportPanel">
-          <button class="crd-export-btn" id="downloadBtn">&#11015;&#65039; Download WebM</button>
+          <button type="button" class="crd-export-btn" id="downloadBtn">&#11015;&#65039; Download WebM</button>
           <select class="crd-quality-select" id="qualitySelect">
             <option value="1080">1080p</option>
             <option value="720" selected>720p</option>
@@ -1159,9 +1162,9 @@
                 '<div class="crd-history-date">' + dateStr + ' \u00b7 ' + fmtSize(item.size) + '</div>' +
               '</div>' +
               '<div class="crd-history-actions">' +
-                '<button class="crd-history-action-btn preview-btn" data-id="' + item.id + '">Preview</button>' +
-                '<button class="crd-history-action-btn" data-id="' + item.id + '" data-action="download">Download</button>' +
-                '<button class="crd-history-action-btn del" data-id="' + item.id + '" data-action="delete">Delete</button>' +
+                '<button type="button" class="crd-history-action-btn preview-btn" data-id="' + item.id + '">Preview</button>' +
+                '<button type="button" class="crd-history-action-btn" data-id="' + item.id + '" data-action="download">Download</button>' +
+                '<button type="button" class="crd-history-action-btn del" data-id="' + item.id + '" data-action="delete">Delete</button>' +
               '</div>';
             historyList.appendChild(el);
           });

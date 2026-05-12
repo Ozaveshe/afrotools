@@ -16,6 +16,11 @@ const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
 const TODAY = new Date().toISOString().slice(0, 10);
 const EXTRA_SITEMAPS = ['sitemap-cars.xml', 'jamb/sitemap.xml'];
+const EXPLICIT_SITEMAP_HTML = [
+  'api/docs/index.html',
+  'widgets/index.html',
+  'widgets/demo/index.html'
+];
 const REFRESH_LASTMOD = process.env.AFROTOOLS_REFRESH_SITEMAP_LASTMOD === '1';
 
 // Directories to exclude entirely (non-content)
@@ -249,6 +254,10 @@ ${entries}
 // ── Main ──
 
 const allFiles = findHtmlFiles(ROOT);
+for (const rel of EXPLICIT_SITEMAP_HTML) {
+  const fullPath = path.join(ROOT, rel);
+  if (fs.existsSync(fullPath)) allFiles.push(fullPath);
+}
 
 // Filter out excluded files
 const filtered = allFiles.filter(f => {

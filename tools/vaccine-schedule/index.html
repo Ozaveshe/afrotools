@@ -19,10 +19,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea"><script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#0ea5e9}
 .tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}
@@ -127,8 +127,8 @@ input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radiu
 <div class="progress-text" id="progressText">0 of 24 vaccines completed</div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
 <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-top:14px">
-  <div><label>Child's Date of Birth (shows due dates)</label><input type="date" id="childDob" onchange="render()" style="width:auto;max-width:180px;margin-top:4px"></div>
-  <button onclick="clearTracker()" style="padding:8px 14px;border-radius:6px;border:1.5px solid #e2e8f0;background:#fff;font-size:.78rem;font-weight:600;cursor:pointer;color:#64748b;font-family:inherit">🔄 Reset Tracker</button>
+  <div><label>Child's Date of Birth (shows due dates)</label><input aria-label="ChildDob" type="date" id="childDob" onchange="render()" style="width:auto;max-width:180px;margin-top:4px"></div>
+  <button type="button" onclick="clearTracker()" style="padding:8px 14px;border-radius:6px;border:1.5px solid #e2e8f0;background:#fff;font-size:.78rem;font-weight:600;cursor:pointer;color:#64748b;font-family:inherit">🔄 Reset Tracker</button>
 </div>
 </div></div>
 
@@ -346,7 +346,7 @@ function render() {
     group.items.forEach(v => {
       const isDone = saved[v.id];
       html += `<tr class="${isDone?'done':''}">
-        <td><input type="checkbox" class="chk" ${isDone?'checked':''} onchange="toggle('${v.id}')"></td>
+        <td><input aria-label="Chk" type="checkbox" class="chk" ${isDone?'checked':''} onchange="toggle('${v.id}')"></td>
         <td><strong>${v.name}</strong></td>
         <td>${group.age}</td>
         <td class="disease">${v.disease}</td>

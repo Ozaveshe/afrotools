@@ -9,12 +9,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=a75e5ac5">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-team/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-team/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="ctm-app">
 
@@ -23,8 +26,8 @@
     <a href="index.html" class="ctm-topbar-back">&larr;</a>
     <a href="index.html" class="ctm-topbar-brand">&#128101; CreatorTeam</a>
     <div class="ctm-topbar-actions">
-      <button class="ctm-topbar-btn" id="inviteBtn" style="display:none">Invite</button>
-      <button class="ctm-topbar-btn primary" id="newCardBtnTop" style="display:none">+ Card</button>
+      <button type="button" class="ctm-topbar-btn" id="inviteBtn" style="display:none">Invite</button>
+      <button type="button" class="ctm-topbar-btn primary" id="newCardBtnTop" style="display:none">+ Card</button>
     </div>
   </div>
 
@@ -34,9 +37,9 @@
       <div style="font-size:48px;margin-bottom:16px">&#128101;</div>
       <h2>Create Your Team</h2>
       <p>Name your team to get started. You'll be the owner.</p>
-      <input type="text" class="ctm-setup-input" id="teamNameInput" placeholder="e.g. Naija Creators, Accra Content Co." maxlength="40">
-      <input type="text" class="ctm-setup-input" id="ownerNameInput" placeholder="Your name" maxlength="30">
-      <button class="ctm-btn" id="createTeamBtn">Create Team &rarr;</button>
+      <input aria-label="E.g. Naija Creators, Accra Content Co." type="text" class="ctm-setup-input" id="teamNameInput" placeholder="e.g. Naija Creators, Accra Content Co." maxlength="40">
+      <input aria-label="Your name" type="text" class="ctm-setup-input" id="ownerNameInput" placeholder="Your name" maxlength="30">
+      <button type="button" class="ctm-btn" id="createTeamBtn">Create Team &rarr;</button>
     </div>
   </div>
 
@@ -47,11 +50,11 @@
 
     <!-- VIEW TABS -->
     <div class="ctm-view-tabs" id="viewTabs">
-      <button class="ctm-view-tab active" data-view="board">&#128203; Board</button>
-      <button class="ctm-view-tab" data-view="briefs">&#128221; Briefs</button>
-      <button class="ctm-view-tab" data-view="calendar">&#128197; Calendar</button>
-      <button class="ctm-view-tab" data-view="assets">&#128194; Assets</button>
-      <button class="ctm-view-tab" data-view="activity">&#128172; Activity</button>
+      <button type="button" class="ctm-view-tab active" data-view="board">&#128203; Board</button>
+      <button type="button" class="ctm-view-tab" data-view="briefs">&#128221; Briefs</button>
+      <button type="button" class="ctm-view-tab" data-view="calendar">&#128197; Calendar</button>
+      <button type="button" class="ctm-view-tab" data-view="assets">&#128194; Assets</button>
+      <button type="button" class="ctm-view-tab" data-view="activity">&#128172; Activity</button>
     </div>
 
     <!-- WORKSPACE -->
@@ -86,7 +89,7 @@
       <div id="briefsView" style="display:none">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0 4px">
           <h3 style="font-size:16px;font-weight:700">Content Briefs</h3>
-          <button class="ctm-btn sm" id="newBriefBtn">+ New Brief</button>
+          <button type="button" class="ctm-btn sm" id="newBriefBtn">+ New Brief</button>
         </div>
         <div class="ctm-brief-template-list" id="briefTemplates"></div>
         <div class="ctm-briefs-grid" id="briefsGrid"></div>
@@ -104,7 +107,7 @@
       <!-- ===== ASSETS VIEW ===== -->
       <div id="assetsView" style="display:none">
         <div class="ctm-assets-toolbar">
-          <input type="text" class="ctm-filter-search" id="assetSearch" placeholder="Search assets...">
+          <input aria-label="Search assets" type="text" class="ctm-filter-search" id="assetSearch" placeholder="Search assets...">
           <select class="ctm-filter-select" id="assetTypeFilter">
             <option value="">All types</option>
             <option value="image">Image</option>
@@ -112,7 +115,7 @@
             <option value="doc">Document</option>
             <option value="other">Other</option>
           </select>
-          <button class="ctm-btn sm" id="addAssetBtn">+ Add Asset</button>
+          <button type="button" class="ctm-btn sm" id="addAssetBtn">+ Add Asset</button>
         </div>
         <div class="ctm-assets-grid" id="assetsGrid"></div>
         <div class="ctm-empty" id="assetsEmpty" style="display:none">
@@ -278,11 +281,11 @@
 
   function showAddMemberModal() {
     if (state.members.length >= 10) { toast('Max 10 members'); return; }
-    var html = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+    var html = '<button type="button" class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
     html += '<h3>Add Team Member</h3>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Name</label><input type="text" class="ctm-form-input" id="mName" placeholder="Team member name" maxlength="30"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Name</label><input aria-label="Team member name" type="text" class="ctm-form-input" id="mName" placeholder="Team member name" maxlength="30"></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Role</label><select class="ctm-form-select" id="mRole"><option value="editor">Editor</option><option value="viewer">Viewer</option></select></div>';
-    html += '<button class="ctm-btn" id="saveMemberBtn">Add Member</button>';
+    html += '<button type="button" class="ctm-btn" id="saveMemberBtn">Add Member</button>';
     openModal(html);
     document.getElementById('saveMemberBtn').addEventListener('click', function() {
       var n = document.getElementById('mName').value.trim();
@@ -424,7 +427,7 @@
     if (card.due) html += '<span class="ctm-card-due' + (isOverdue ? ' overdue' : '') + '">' + formatDate(card.due) + '</span>';
     if (card.platform) html += '<span class="ctm-card-platform">' + card.platform + '</span>';
     html += '</div>';
-    html += '<button class="ctm-card-wa" title="Share on WhatsApp" onclick="event.stopPropagation()">&#128172;</button>';
+    html += '<button type="button" class="ctm-card-wa" title="Share on WhatsApp" onclick="event.stopPropagation()">&#128172;</button>';
     el.innerHTML = html;
 
     el.querySelector('.ctm-card-wa').addEventListener('click', function(e) {
@@ -440,15 +443,15 @@
   function showCardModal(cardId, defaultCol) {
     var card = cardId ? state.cards.find(function(c) { return c.id === cardId; }) : null;
     var isEdit = !!card;
-    var html = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+    var html = '<button type="button" class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
     html += '<h3>' + (isEdit ? 'Edit Card' : 'New Card') + '</h3>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Title</label><input type="text" class="ctm-form-input" id="cTitle" value="' + (card ? esc(card.title) : '') + '" placeholder="Content title" maxlength="80"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Title</label><input aria-label="Content title" type="text" class="ctm-form-input" id="cTitle" value="' + (card ? esc(card.title) : '') + '" placeholder="Content title" maxlength="80"></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Description</label><textarea class="ctm-form-textarea" id="cDesc" placeholder="What is this content about?" rows="3">' + (card ? esc(card.description || '') : '') + '</textarea></div>';
     html += '<div class="ctm-form-row">';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Assignee</label><select class="ctm-form-select" id="cAssignee"><option value="">Unassigned</option>';
     state.members.forEach(function(m) { html += '<option value="' + m.id + '"' + (card && card.assignee === m.id ? ' selected' : '') + '>' + esc(m.name) + '</option>'; });
     html += '</select></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Due Date</label><input type="date" class="ctm-form-input" id="cDue" value="' + (card && card.due ? card.due : '') + '"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Due Date</label><input aria-label="CDue" type="date" class="ctm-form-input" id="cDue" value="' + (card && card.due ? card.due : '') + '"></div>';
     html += '</div>';
     html += '<div class="ctm-form-row">';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Platform</label><select class="ctm-form-select" id="cPlatform"><option value="">Select</option>';
@@ -461,10 +464,10 @@
     html += '</select></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Notes</label><textarea class="ctm-form-textarea" id="cNotes" placeholder="Additional notes, links, references..." rows="2">' + (card ? esc(card.notes || '') : '') + '</textarea></div>';
     html += '<div style="display:flex;gap:8px;margin-top:8px">';
-    html += '<button class="ctm-btn" id="saveCardBtn">' + (isEdit ? 'Save Changes' : 'Add Card') + '</button>';
+    html += '<button type="button" class="ctm-btn" id="saveCardBtn">' + (isEdit ? 'Save Changes' : 'Add Card') + '</button>';
     if (isEdit) {
-      html += '<button class="ctm-btn secondary" id="waCardBtn" style="background:#25D366;border-color:#25D366;flex-shrink:0">&#128172; WhatsApp</button>';
-      html += '<button class="ctm-btn danger" id="delCardBtn" style="flex-shrink:0;width:auto;padding:12px 18px">&times;</button>';
+      html += '<button type="button" class="ctm-btn secondary" id="waCardBtn" style="background:#25D366;border-color:#25D366;flex-shrink:0">&#128172; WhatsApp</button>';
+      html += '<button type="button" class="ctm-btn danger" id="delCardBtn" style="flex-shrink:0;width:auto;padding:12px 18px">&times;</button>';
     }
     html += '</div>';
     openModal(html);
@@ -570,9 +573,9 @@
     var brief = briefId ? state.briefs.find(function(b) { return b.id === briefId; }) : null;
     var tmpl = typeof templateIdx === 'number' ? BRIEF_TEMPLATES[templateIdx] : null;
     var isEdit = !!brief;
-    var html = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+    var html = '<button type="button" class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
     html += '<h3>' + (isEdit ? 'Edit Brief' : tmpl ? tmpl.name + ' Brief' : 'New Brief') + '</h3>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Topic</label><input type="text" class="ctm-form-input" id="bTopic" value="' + esc(brief ? brief.topic : '') + '" placeholder="What is this content about?" maxlength="100"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Topic</label><input aria-label="What is this content about?" type="text" class="ctm-form-input" id="bTopic" value="' + esc(brief ? brief.topic : '') + '" placeholder="What is this content about?" maxlength="100"></div>';
     html += '<div class="ctm-form-row">';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Platform</label><select class="ctm-form-select" id="bPlatform"><option value="">Select</option>';
     PLATFORMS.forEach(function(p) { html += '<option value="' + p + '"' + ((brief && brief.platform === p) || (tmpl && tmpl.platform === p) ? ' selected' : '') + '>' + p + '</option>'; });
@@ -580,16 +583,16 @@
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Assign to</label><select class="ctm-form-select" id="bAssignee"><option value="">Unassigned</option>';
     state.members.forEach(function(m) { html += '<option value="' + m.id + '"' + (brief && brief.assignee === m.id ? ' selected' : '') + '>' + esc(m.name) + '</option>'; });
     html += '</select></div></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Target Audience</label><input type="text" class="ctm-form-input" id="bAudience" value="' + esc(brief ? brief.audience || '' : (tmpl ? tmpl.audience : '')) + '" placeholder="Who is this for?"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Target Audience</label><input aria-label="Who is this for?" type="text" class="ctm-form-input" id="bAudience" value="' + esc(brief ? brief.audience || '' : (tmpl ? tmpl.audience : '')) + '" placeholder="Who is this for?"></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Key Points (one per line)</label><textarea class="ctm-form-textarea" id="bPoints" rows="4" placeholder="Main points to cover">' + esc(brief ? (brief.points || []).join('\n') : (tmpl ? tmpl.points.join('\n') : '')) + '</textarea></div>';
     html += '<div class="ctm-form-row">';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Tone</label><input type="text" class="ctm-form-input" id="bTone" value="' + esc(brief ? brief.tone || '' : (tmpl ? tmpl.tone : '')) + '" placeholder="Casual, bold, educational..."></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Deadline</label><input type="date" class="ctm-form-input" id="bDeadline" value="' + (brief && brief.deadline ? brief.deadline : '') + '"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Tone</label><input aria-label="Casual, bold, educational" type="text" class="ctm-form-input" id="bTone" value="' + esc(brief ? brief.tone || '' : (tmpl ? tmpl.tone : '')) + '" placeholder="Casual, bold, educational..."></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Deadline</label><input aria-label="BDeadline" type="date" class="ctm-form-input" id="bDeadline" value="' + (brief && brief.deadline ? brief.deadline : '') + '"></div>';
     html += '</div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">References (URLs, one per line)</label><textarea class="ctm-form-textarea" id="bRefs" rows="2" placeholder="https://...">' + esc(brief ? (brief.refs || []).join('\n') : '') + '</textarea></div>';
     html += '<div style="display:flex;gap:8px;margin-top:8px">';
-    html += '<button class="ctm-btn" id="saveBriefBtn">' + (isEdit ? 'Save Changes' : 'Create Brief') + '</button>';
-    if (isEdit) html += '<button class="ctm-btn danger" id="delBriefBtn" style="flex-shrink:0;width:auto;padding:12px 18px">&times;</button>';
+    html += '<button type="button" class="ctm-btn" id="saveBriefBtn">' + (isEdit ? 'Save Changes' : 'Create Brief') + '</button>';
+    if (isEdit) html += '<button type="button" class="ctm-btn danger" id="delBriefBtn" style="flex-shrink:0;width:auto;padding:12px 18px">&times;</button>';
     html += '</div>';
     openModal(html);
     document.getElementById('saveBriefBtn').addEventListener('click', function() {
@@ -638,7 +641,7 @@
     var container = document.getElementById('calendarContainer');
     var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    var html = '<div class="ctm-cal-header"><span class="ctm-cal-title">' + monthNames[calMonth] + ' ' + calYear + '</span><div class="ctm-cal-nav"><button id="calPrev">&larr;</button><button id="calNext">&rarr;</button></div></div>';
+    var html = '<div class="ctm-cal-header"><span class="ctm-cal-title">' + monthNames[calMonth] + ' ' + calYear + '</span><div class="ctm-cal-nav"><button type="button" id="calPrev">&larr;</button><button type="button" id="calNext">&rarr;</button></div></div>';
     html += '<div class="ctm-cal-grid">';
     dayNames.forEach(function(d) { html += '<div class="ctm-cal-day-label">' + d + '</div>'; });
     var first = new Date(calYear, calMonth, 1);
@@ -685,7 +688,7 @@
         var date = this.dataset.date;
         var cards = state.cards.filter(function(c) { return c.due === date; });
         if (cards.length) {
-          var mhtml = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+          var mhtml = '<button type="button" class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
           mhtml += '<h3>Due ' + formatDate(date) + '</h3>';
           cards.forEach(function(c) {
             mhtml += '<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)">';
@@ -732,15 +735,15 @@
   }
 
   function showAddAssetModal() {
-    var html = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+    var html = '<button type="button" class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
     html += '<h3>Add Shared Asset</h3>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Title</label><input type="text" class="ctm-form-input" id="aTitle" placeholder="Asset name" maxlength="60"></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">URL</label><input type="url" class="ctm-form-input" id="aUrl" placeholder="https://..."></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Title</label><input aria-label="Asset name" type="text" class="ctm-form-input" id="aTitle" placeholder="Asset name" maxlength="60"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">URL</label><input aria-label="Https://" type="url" class="ctm-form-input" id="aUrl" placeholder="https://..."></div>';
     html += '<div class="ctm-form-row">';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Type</label><select class="ctm-form-select" id="aType"><option value="image">Image</option><option value="video">Video</option><option value="doc">Document</option><option value="other">Other</option></select></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Tag</label><input type="text" class="ctm-form-input" id="aTag" placeholder="e.g. branding, ep12" maxlength="20"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Tag</label><input aria-label="E.g. branding, ep12" type="text" class="ctm-form-input" id="aTag" placeholder="e.g. branding, ep12" maxlength="20"></div>';
     html += '</div>';
-    html += '<button class="ctm-btn" id="saveAssetBtn">Add Asset</button>';
+    html += '<button type="button" class="ctm-btn" id="saveAssetBtn">Add Asset</button>';
     openModal(html);
     document.getElementById('saveAssetBtn').addEventListener('click', function() {
       var title = document.getElementById('aTitle').value.trim();

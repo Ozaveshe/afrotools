@@ -133,7 +133,7 @@ function pageHtml(c) {
 '<link rel="stylesheet" href="/assets/css/tokens.min.css">\n' +
 '<link rel="stylesheet" href="/assets/css/global.min.css">\n' +
 '\n' +
-'<script src="/assets/js/components/navbar.min.js?v=e84bb500" defer><\/script>\n' +
+'<script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer><\/script>\n' +
 '<script src="/assets/js/components/footer.min.js" defer><\/script>\n' +
 '\n' +
 '<style>\n' +

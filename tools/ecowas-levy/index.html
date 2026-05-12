@@ -7,7 +7,7 @@
 <title>ECOWAS Trade Levy Calculator 2026 — CET &amp; Customs Duties | AfroTools</title>
 <meta name="description" content="Calculate ECOWAS Common External Tariff (CET) rates and associated levies. 5-band tariff system for all 15 West African countries. ETLS duty-free trade eligibility checker.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
 <style>
 /* ── Tool Shell, Hero & Navigation ──────────────── */
@@ -74,8 +74,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 </head>
 <body>
@@ -87,10 +87,10 @@
     <h1 class="tool-hero-title">ECOWAS Trade Levy Calculator</h1>
     <p class="tool-hero-desc">Calculate Common External Tariff (CET) and all associated levies for imports into ECOWAS member states.</p>
     <div class="tool-tabs" id="tabs">
-      <button class="tool-tab on" onclick="setTab('calculator',this)">Calculate Duties</button>
-      <button class="tool-tab" onclick="setTab('etls',this)">ETLS Checker</button>
-      <button class="tool-tab" onclick="setTab('bands',this)">Tariff Bands</button>
-      <button class="tool-tab" onclick="setTab('members',this)">Member States</button>
+      <button type="button" class="tool-tab on" onclick="setTab('calculator',this)">Calculate Duties</button>
+      <button type="button" class="tool-tab" onclick="setTab('etls',this)">ETLS Checker</button>
+      <button type="button" class="tool-tab" onclick="setTab('bands',this)">Tariff Bands</button>
+      <button type="button" class="tool-tab" onclick="setTab('members',this)">Member States</button>
     </div>
   </div>
 
@@ -101,21 +101,21 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div class="field-group">
           <label class="field-label">CIF Value (USD)</label>
-          <input class="field-input" type="number" id="cifValue" value="10000" min="1" onchange="runCalc()">
+          <input aria-label="CifValue" class="field-input" type="number" id="cifValue" value="10000" min="1" onchange="runCalc()">
         </div>
         <div class="field-group">
           <label class="field-label">FOB Value (USD)</label>
-          <input class="field-input" type="number" id="fobValue" value="9500" min="1" onchange="runCalc()">
+          <input aria-label="FobValue" class="field-input" type="number" id="fobValue" value="9500" min="1" onchange="runCalc()">
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
         <div class="field-group">
           <label class="field-label">HS Code (first 4 digits, optional)</label>
-          <input class="field-input" type="text" id="hsCode" placeholder="e.g. 1006 for rice" maxlength="6" onchange="runCalc()">
+          <input aria-label="E.g. 1006 for rice" class="field-input" type="text" id="hsCode" placeholder="e.g. 1006 for rice" maxlength="6" onchange="runCalc()">
         </div>
         <div class="field-group" style="display:flex;align-items:flex-end">
           <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;padding-bottom:8px">
-            <input type="checkbox" id="isEtls" style="width:18px;height:18px;accent-color:var(--brand)" onchange="runCalc()">
+            <input aria-label="IsEtls" type="checkbox" id="isEtls" style="width:18px;height:18px;accent-color:var(--brand)" onchange="runCalc()">
             ETLS Origin (Duty-Free)
           </label>
         </div>
@@ -140,16 +140,16 @@
         </select>
       </div>
       <div class="etls-check">
-        <label><input type="checkbox" id="etlsCOO"> ECOWAS Certificate of Origin held</label>
+        <label><input aria-label="EtlsCOO" type="checkbox" id="etlsCOO"> ECOWAS Certificate of Origin held</label>
       </div>
       <div class="etls-check">
-        <label><input type="checkbox" id="etlsCTH"> Change of Tariff Heading (CTH) achieved</label>
+        <label><input aria-label="EtlsCTH" type="checkbox" id="etlsCTH"> Change of Tariff Heading (CTH) achieved</label>
       </div>
       <div class="field-group" style="margin-top:12px">
         <label class="field-label">Local Value Added in ECOWAS (%)</label>
-        <input class="field-input" type="number" id="etlsVA" value="35" min="0" max="100">
+        <input aria-label="EtlsVA" class="field-input" type="number" id="etlsVA" value="35" min="0" max="100">
       </div>
-      <button class="pill-btn" onclick="runEtls()" style="margin-top:12px;background:var(--brand);color:#fff">Check ETLS Eligibility →</button>
+      <button type="button" class="pill-btn" onclick="runEtls()" style="margin-top:12px;background:var(--brand);color:#fff">Check ETLS Eligibility →</button>
       <div id="etlsResult" style="margin-top:16px"></div>
     </div>
   </div>
@@ -177,7 +177,7 @@
 </main>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=3b1f7518" defer></script>
 <script src="/engines/ecowas-levy-engine.js?v=109880a5"></script>
 <script>

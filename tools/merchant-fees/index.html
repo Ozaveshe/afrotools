@@ -20,9 +20,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -103,19 +103,19 @@ details[open] summary::after{content:'\2212'}
       <div class="section-label">Payment Mix (must total 100%)</div>
       <div class="form-group">
         <label>Card / POS (%)</label>
-        <div class="range-row"><input type="range" id="mf-card-pct" min="0" max="100" value="30" oninput="updateRange('mf-card-pct','mf-card-val')"><span class="range-val" id="mf-card-val">30%</span></div>
+        <div class="range-row"><input aria-label="Mf card pct" type="range" id="mf-card-pct" min="0" max="100" value="30" oninput="updateRange('mf-card-pct','mf-card-val')"><span class="range-val" id="mf-card-val">30%</span></div>
       </div>
       <div class="form-group">
         <label>Mobile Money (%)</label>
-        <div class="range-row"><input type="range" id="mf-mm-pct" min="0" max="100" value="40" oninput="updateRange('mf-mm-pct','mf-mm-val')"><span class="range-val" id="mf-mm-val">40%</span></div>
+        <div class="range-row"><input aria-label="Mf mm pct" type="range" id="mf-mm-pct" min="0" max="100" value="40" oninput="updateRange('mf-mm-pct','mf-mm-val')"><span class="range-val" id="mf-mm-val">40%</span></div>
       </div>
       <div class="form-group">
         <label>Bank Transfer (%)</label>
-        <div class="range-row"><input type="range" id="mf-bank-pct" min="0" max="100" value="20" oninput="updateRange('mf-bank-pct','mf-bank-val')"><span class="range-val" id="mf-bank-val">20%</span></div>
+        <div class="range-row"><input aria-label="Mf bank pct" type="range" id="mf-bank-pct" min="0" max="100" value="20" oninput="updateRange('mf-bank-pct','mf-bank-val')"><span class="range-val" id="mf-bank-val">20%</span></div>
       </div>
       <div class="form-group">
         <label>Cash (%)</label>
-        <div class="range-row"><input type="range" id="mf-cash-pct" min="0" max="100" value="10" oninput="updateRange('mf-cash-pct','mf-cash-val')"><span class="range-val" id="mf-cash-val">10%</span></div>
+        <div class="range-row"><input aria-label="Mf cash pct" type="range" id="mf-cash-pct" min="0" max="100" value="10" oninput="updateRange('mf-cash-pct','mf-cash-val')"><span class="range-val" id="mf-cash-val">10%</span></div>
       </div>
       <div class="section-label">Fee Rates</div>
       <div class="form-group">
@@ -135,7 +135,7 @@ details[open] summary::after{content:'\2212'}
         <input type="number" id="mf-cash-rate" value="0.5" min="0" max="3" step="0.1">
       </div>
     </div>
-    <button class="btn-calc" onclick="calcMerchantFees()">Calculate Merchant Fees</button>
+    <button type="button" class="btn-calc" onclick="calcMerchantFees()">Calculate Merchant Fees</button>
     <div class="results" id="mf-results">
       <div class="res-hero">
         <div class="res-label">Total Monthly Payment Fees</div>

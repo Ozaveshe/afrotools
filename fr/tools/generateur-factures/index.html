@@ -38,7 +38,7 @@
 :root { --color-brand: var(--color-primary); }
 </style>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/invoice-generator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-factures/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-generator/" />
@@ -97,12 +97,12 @@
     </div>
     <div class="card-body">
       <div class="tpl-bar" id="tplBar" role="radiogroup" aria-label="Style du modèle de facture">
-        <button class="tpl-btn on" data-tpl="modern" role="radio" aria-checked="true">Moderne</button>
-        <button class="tpl-btn" data-tpl="classic" role="radio" aria-checked="false">Classique</button>
-        <button class="tpl-btn" data-tpl="minimal" role="radio" aria-checked="false">Minimaliste</button>
-        <button class="tpl-btn" data-tpl="corporate" role="radio" aria-checked="false">Entreprise</button>
-        <button class="tpl-btn" data-tpl="creative" role="radio" aria-checked="false">Créatif</button>
-        <button class="tpl-btn" data-tpl="dark" role="radio" aria-checked="false">Sombre</button>
+        <button type="button" class="tpl-btn on" data-tpl="modern" role="radio" aria-checked="true">Moderne</button>
+        <button type="button" class="tpl-btn" data-tpl="classic" role="radio" aria-checked="false">Classique</button>
+        <button type="button" class="tpl-btn" data-tpl="minimal" role="radio" aria-checked="false">Minimaliste</button>
+        <button type="button" class="tpl-btn" data-tpl="corporate" role="radio" aria-checked="false">Entreprise</button>
+        <button type="button" class="tpl-btn" data-tpl="creative" role="radio" aria-checked="false">Créatif</button>
+        <button type="button" class="tpl-btn" data-tpl="dark" role="radio" aria-checked="false">Sombre</button>
       </div>
     </div>
   </div>
@@ -343,7 +343,7 @@
     </div>
     <div class="card-body">
       <div id="templatesContainer">
-        <p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">Aucun modèle enregistré pour l'instant.</p>
+        <p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">Aucun modèle enregistré pour l\'instant.</p>
       </div>
     </div>
   </div>
@@ -496,9 +496,9 @@
 <afro-footer></afro-footer>
 
 <!-- Required Scripts -->
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -613,7 +613,7 @@ function renderClients() {
         <span class="client-item-name">${c.name}</span>
         ${c.company ? `<span class="client-item-co"> - ${c.company}</span>` : ''}
       </div>
-      <button class="btn-remove" style="font-size:0.6rem;padding:2px 6px;" onclick="event.stopPropagation();deleteClient(${i})">X</button>
+      <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 6px;" onclick="event.stopPropagation();deleteClient(${i})">X</button>
     </div>
   `).join('');
   list.querySelectorAll('.client-item').forEach(el => {
@@ -1089,10 +1089,10 @@ function restoreState(s) {
         const tr = document.createElement('tr');
         tr.className = 'line-item';
         tr.innerHTML = `
-          <td><input type="text" class="li-desc" value="${escapeHtml(it.d||'')}"></td>
-          <td><input type="number" class="li-qty" value="${it.q||1}" min="0" step="0.01"></td>
-          <td><input type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
-          <td><input type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
+          <td><input aria-label="Li desc" type="text" class="li-desc" value="${escapeHtml(it.d||'')}"></td>
+          <td><input aria-label="Li qty" type="number" class="li-qty" value="${it.q||1}" min="0" step="0.01"></td>
+          <td><input aria-label="Li price" type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
+          <td><input aria-label="Li tax" type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
           <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
           <td><button type="button" class="btn-remove js-remove-item" aria-label="Supprimer cet article">&times;</button></td>
         `;
@@ -1127,7 +1127,7 @@ function renderTemplates() {
   $('tplCountLabel').textContent = templates.length + ' saved';
   const container = $('templatesContainer');
   if (templates.length === 0) {
-    container.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">Aucun modèle enregistré pour l'instant.</p>';
+    container.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">Aucun modèle enregistré pour l\'instant.</p>';
     return;
   }
   container.innerHTML = templates.map(t => `
@@ -1137,8 +1137,8 @@ function renderTemplates() {
         <span style="color:#93A3B8;margin-left:8px;">${new Date(t.date).toLocaleDateString()}</span>
       </div>
       <div style="display:flex;gap:6px;">
-        <button class="btn" style="font-size:0.68rem;padding:4px 10px;" onclick="loadTemplate(${t.id})">Load</button>
-        <button class="btn-remove" style="font-size:0.6rem;padding:2px 8px;" onclick="deleteTemplate(${t.id})">X</button>
+        <button type="button" class="btn" style="font-size:0.68rem;padding:4px 10px;" onclick="loadTemplate(${t.id})">Load</button>
+        <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 8px;" onclick="deleteTemplate(${t.id})">X</button>
       </div>
     </div>
   `).join('');
@@ -1186,10 +1186,10 @@ $('btnNewInvoice').addEventListener('click', () => {
   // Reset to one empty line item
   const tbody = $('lineItemsBody');
   tbody.innerHTML = `<tr class="line-item">
-    <td><input type="text" class="li-desc" placeholder="Service or product"></td>
-    <td><input type="number" class="li-qty" value="1" min="0" step="0.01"></td>
-    <td><input type="number" class="li-price" value="0" min="0" step="0.01"></td>
-    <td><input type="number" class="li-tax" value="0" min="0" max="100" step="0.01"></td>
+    <td><input aria-label="Service or product" type="text" class="li-desc" placeholder="Service or product"></td>
+    <td><input aria-label="Li qty" type="number" class="li-qty" value="1" min="0" step="0.01"></td>
+    <td><input aria-label="Li price" type="number" class="li-price" value="0" min="0" step="0.01"></td>
+    <td><input aria-label="Li tax" type="number" class="li-tax" value="0" min="0" max="100" step="0.01"></td>
     <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
     <td><button type="button" class="btn-remove js-remove-item" aria-label="Supprimer cet article">&times;</button></td>
   </tr>`;
@@ -1262,7 +1262,7 @@ init();
         (d.total?'<div style="font-size:.78rem;font-weight:800;color:#007AFF;margin-top:4px;">'+esc(d.total)+'</div>':'')+
         '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
         '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
-        '<button onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
+        '<button type="button" onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
         '</div></div>';
     }).join('');
   }

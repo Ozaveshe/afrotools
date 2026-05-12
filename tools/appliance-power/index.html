@@ -17,8 +17,8 @@
 <meta name="twitter:description" content="Calculate electricity consumption and cost for all your appliances in Africa. Find your biggest energy consumers and see monthly bill breakdown by appliance.">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script><script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.app-row{display:grid;grid-template-columns:1fr 70px 70px 50px 70px 28px;gap:6px;align-items:end;margin-bottom:8px}.app-row input{width:100%}.rm-btn{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;cursor:pointer;font-size:14px;height:36px;padding:0 6px}.add-btn{background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;font-size:14px}.app-header{display:grid;grid-template-columns:1fr 70px 70px 50px 70px 28px;gap:6px;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px}.en-bar-wrap{background:#f3f4f6;border-radius:980px;height:8px;margin-top:4px}.en-bar-fill{height:8px;border-radius:980px;background:#F59E0B;transition:width 0.4s}@media(max-width:600px){.app-row,.app-header{grid-template-columns:1fr 60px 60px 40px 60px 24px}}</style>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/appliance-power.webp">
@@ -38,8 +38,8 @@
 </select></div>
 <div class="app-header"><span>Appliance</span><span>Watts</span><span>Hrs/Day</span><span>Qty</span><span>Standby W</span><span></span></div>
 <div id="appList"></div>
-<button class="add-btn" id="addBtn">+ Add Appliance</button>
-<button class="en-btn" id="calcBtn" style="margin-top:16px">Calculate Consumption</button>
+<button type="button" class="add-btn" id="addBtn">+ Add Appliance</button>
+<button type="button" class="en-btn" id="calcBtn" style="margin-top:16px">Calculate Consumption</button>
 </div></div>
 <div class="en-results" id="results">
 <div class="en-res-hero"><div class="en-res-label">Monthly Electricity Bill</div><div class="en-res-amount" id="rBill">—</div><div class="en-res-sub" id="rKwh">Usage: —</div></div>
@@ -100,12 +100,12 @@ function renderRows(){
   list.innerHTML="";
   rows.forEach(function(p,i){
     var d=document.createElement("div");d.className="app-row";
-    d.innerHTML='<input type="text" class="en-input" placeholder="Name" value="'+esc(p.name||"")+'" onchange="updateRow('+i+',\'name\',this.value)">'
-      +'<input type="number" class="en-input" placeholder="W" value="'+(p.watts||"")+'" min="0" inputmode="numeric" onchange="updateRow('+i+',\'watts\',this.value)">'
-      +'<input type="number" class="en-input" placeholder="Hrs" value="'+(p.hours||"")+'" min="0.1" step="0.5" inputmode="numeric" onchange="updateRow('+i+',\'hours\',this.value)">'
-      +'<input type="number" class="en-input" placeholder="Qty" value="'+(p.qty||1)+'" min="1" inputmode="numeric" onchange="updateRow('+i+',\'qty\',this.value)">'
-      +'<input type="number" class="en-input" placeholder="Stby W" value="'+(p.standbyWatts||"")+'" min="0" inputmode="numeric" onchange="updateRow('+i+',\'standbyWatts\',this.value)">'
-      +'<button class="rm-btn" onclick="removeRow('+i+')">✕</button>';
+    d.innerHTML='<input aria-label="Name" type="text" class="en-input" placeholder="Name" value="'+esc(p.name||"")+'" onchange="updateRow('+i+',\'name\',this.value)">'
+      +'<input aria-label="W" type="number" class="en-input" placeholder="W" value="'+(p.watts||"")+'" min="0" inputmode="numeric" onchange="updateRow('+i+',\'watts\',this.value)">'
+      +'<input aria-label="Hrs" type="number" class="en-input" placeholder="Hrs" value="'+(p.hours||"")+'" min="0.1" step="0.5" inputmode="numeric" onchange="updateRow('+i+',\'hours\',this.value)">'
+      +'<input aria-label="Qty" type="number" class="en-input" placeholder="Qty" value="'+(p.qty||1)+'" min="1" inputmode="numeric" onchange="updateRow('+i+',\'qty\',this.value)">'
+      +'<input aria-label="Stby W" type="number" class="en-input" placeholder="Stby W" value="'+(p.standbyWatts||"")+'" min="0" inputmode="numeric" onchange="updateRow('+i+',\'standbyWatts\',this.value)">'
+      +'<button type="button" class="rm-btn" onclick="removeRow('+i+')">✕</button>';
     list.appendChild(d);
   });
 }

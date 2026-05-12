@@ -23,6 +23,9 @@
 <meta property="article:modified_time" content="2026-04-14">
 <meta property="og:url" content="https://afrotools.com/engineering/afrodraft/app">
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body class="theme-dark">
   <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">AfroDraft CAD — Professional 2D Design for Africa</h1>
@@ -37,7 +40,7 @@
     <!-- Tab bar (open drawings) -->
     <div id="tab-bar">
       <div id="tab-list"></div>
-      <button id="tab-new" title="New Drawing (Ctrl+N)">+</button>
+      <button type="button" id="tab-new" title="New Drawing (Ctrl+N)">+</button>
     </div>
 
     <!-- Ribbon toolbar -->
@@ -58,14 +61,14 @@
         <canvas id="minimap" width="160" height="120"></canvas>
         <!-- Zoom controls -->
         <div id="zoom-controls">
-          <button id="zoom-in" title="Zoom In (+)">
+          <button type="button" id="zoom-in" title="Zoom In (+)">
             <svg width="14" height="14" viewBox="0 0 14 14"><line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.5"/></svg>
           </button>
           <span id="zoom-pct">100%</span>
-          <button id="zoom-out" title="Zoom Out (-)">
+          <button type="button" id="zoom-out" title="Zoom Out (-)">
             <svg width="14" height="14" viewBox="0 0 14 14"><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.5"/></svg>
           </button>
-          <button id="zoom-ext" title="Zoom Extents (Z+E)">
+          <button type="button" id="zoom-ext" title="Zoom Extents (Z+E)">
             <svg width="14" height="14" viewBox="0 0 14 14"><rect x="2" y="2" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="7" y1="4" x2="7" y2="10" stroke="currentColor" stroke-width="1"/><line x1="4" y1="7" x2="10" y2="7" stroke="currentColor" stroke-width="1"/></svg>
           </button>
         </div>
@@ -74,7 +77,7 @@
       <div id="properties-panel" class="panel">
         <div class="panel-header">
           <span class="panel-title">Properties</span>
-          <button class="panel-toggle" title="Collapse Panel">&rsaquo;</button>
+          <button type="button" class="panel-toggle" title="Collapse Panel">&rsaquo;</button>
         </div>
         <div class="panel-body">
           <div id="props-content"></div>
@@ -98,7 +101,7 @@
       <div id="cmd-history"></div>
       <div id="cmd-input-wrap">
         <span id="cmd-prompt">Command:</span>
-        <input id="cmd-input" type="text" placeholder="Type a command..." autocomplete="off" spellcheck="false">
+        <input aria-label="Type a command" id="cmd-input" type="text" placeholder="Type a command..." autocomplete="off" spellcheck="false">
       </div>
     </div>
   </div>
@@ -121,7 +124,7 @@
   <!-- Command palette -->
   <div id="command-palette" class="hidden">
     <div class="cp-box">
-      <input class="cp-input" id="cp-input" type="text" placeholder="Type a command name..." autocomplete="off" spellcheck="false">
+      <input aria-label="Type a command name" class="cp-input" id="cp-input" type="text" placeholder="Type a command name..." autocomplete="off" spellcheck="false">
       <div class="cp-list" id="cp-list"></div>
     </div>
   </div>

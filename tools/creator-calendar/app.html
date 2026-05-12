@@ -8,7 +8,7 @@
   <meta name="description" content="Plan upcoming content in a simple creator calendar with campaign notes, deadlines, and publishing slots.">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <link rel="stylesheet" href="style.css?v=326a209e">
   <style>
     .cc-loading-status{display:none;align-items:center;gap:8px;padding:10px 14px;margin-top:8px;border-radius:10px;background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.13);font-size:.85rem;color:var(--clr-primary,#007AFF)}
@@ -24,6 +24,9 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-calendar/app">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-calendar/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
   <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">
@@ -38,7 +41,7 @@
         <div class="cc-topbar-title">Content Calendar</div>
         <div class="cc-topbar-actions">
           <a href="plan.html" class="cc-btn">AI Planner</a>
-          <button class="cc-btn cc-btn-pri" onclick="openEditor()">+ New Post</button>
+          <button type="button" class="cc-btn cc-btn-pri" onclick="openEditor()">+ New Post</button>
         </div>
       </div>
     </div>
@@ -47,24 +50,24 @@
     <div class="cc-view-bar">
       <div class="cc-view-bar-inner">
         <div class="cc-view-tabs">
-          <button class="cc-view-tab active" data-view="feed">Feed</button>
-          <button class="cc-view-tab" data-view="week">Week</button>
-          <button class="cc-view-tab" data-view="month">Month</button>
-          <button class="cc-view-tab" data-view="pillars">Pillars</button>
+          <button type="button" class="cc-view-tab active" data-view="feed">Feed</button>
+          <button type="button" class="cc-view-tab" data-view="week">Week</button>
+          <button type="button" class="cc-view-tab" data-view="month">Month</button>
+          <button type="button" class="cc-view-tab" data-view="pillars">Pillars</button>
         </div>
         <div class="cc-platform-pills">
-          <button class="cc-plat-pill active" data-plat="all">All</button>
-          <button class="cc-plat-pill" data-plat="instagram">IG</button>
-          <button class="cc-plat-pill" data-plat="tiktok">TT</button>
-          <button class="cc-plat-pill" data-plat="youtube">YT</button>
-          <button class="cc-plat-pill" data-plat="twitter">X</button>
-          <button class="cc-plat-pill" data-plat="linkedin">LI</button>
+          <button type="button" class="cc-plat-pill active" data-plat="all">All</button>
+          <button type="button" class="cc-plat-pill" data-plat="instagram">IG</button>
+          <button type="button" class="cc-plat-pill" data-plat="tiktok">TT</button>
+          <button type="button" class="cc-plat-pill" data-plat="youtube">YT</button>
+          <button type="button" class="cc-plat-pill" data-plat="twitter">X</button>
+          <button type="button" class="cc-plat-pill" data-plat="linkedin">LI</button>
         </div>
         <div class="cc-date-nav">
-          <button class="cc-today-btn" onclick="goToday()">Today</button>
-          <button class="cc-date-nav-btn" onclick="navPrev()">‹</button>
+          <button type="button" class="cc-today-btn" onclick="goToday()">Today</button>
+          <button type="button" class="cc-date-nav-btn" onclick="navPrev()">‹</button>
           <div class="cc-date-label" id="dateLabel"></div>
-          <button class="cc-date-nav-btn" onclick="navNext()">›</button>
+          <button type="button" class="cc-date-nav-btn" onclick="navNext()">›</button>
         </div>
       </div>
     </div>
@@ -94,7 +97,7 @@
     <div class="cc-editor-handle"></div>
     <div class="cc-editor-header">
       <div class="cc-editor-title" id="editorTitle">New Post</div>
-      <button class="cc-editor-close" onclick="closeEditor()">×</button>
+      <button type="button" class="cc-editor-close" onclick="closeEditor()">×</button>
     </div>
     <div class="cc-editor-body">
       <input type="hidden" id="edPostId">
@@ -116,11 +119,11 @@
       <div class="cc-editor-section">
         <div class="cc-editor-label">AI Assist</div>
         <div class="cc-ai-assists">
-          <button class="cc-ai-assist-btn" onclick="aiAssist('caption')">Write Caption</button>
-          <button class="cc-ai-assist-btn" onclick="aiAssist('hook')">Write Hook</button>
-          <button class="cc-ai-assist-btn" onclick="aiAssist('hashtags')">Hashtags</button>
-          <button class="cc-ai-assist-btn" onclick="aiAssist('repurpose')">Repurpose</button>
-          <button class="cc-ai-assist-btn" onclick="aiAssist('improve')">Improve</button>
+          <button type="button" class="cc-ai-assist-btn" onclick="aiAssist('caption')">Write Caption</button>
+          <button type="button" class="cc-ai-assist-btn" onclick="aiAssist('hook')">Write Hook</button>
+          <button type="button" class="cc-ai-assist-btn" onclick="aiAssist('hashtags')">Hashtags</button>
+          <button type="button" class="cc-ai-assist-btn" onclick="aiAssist('repurpose')">Repurpose</button>
+          <button type="button" class="cc-ai-assist-btn" onclick="aiAssist('improve')">Improve</button>
         </div>
         <div class="cc-loading-status" id="ccAiLoading">
           <span id="ccAiVerb">Generating</span><span class="cc-loading-dots"><span></span><span></span><span></span></span>
@@ -132,7 +135,7 @@
         <div class="cc-editor-row">
           <div>
             <div class="cc-editor-label">Title / Hook</div>
-            <input class="cc-editor-input" id="edTitle" placeholder="First line that stops the scroll...">
+            <input aria-label="First line that stops the scroll" class="cc-editor-input" id="edTitle" placeholder="First line that stops the scroll...">
           </div>
           <div>
             <div class="cc-editor-label">Post Type</div>
@@ -154,7 +157,7 @@
 
       <div class="cc-editor-section">
         <div class="cc-editor-label">Hashtags</div>
-        <input class="cc-editor-input" id="edHashtags" placeholder="#creator #content #africa">
+        <input aria-label="#creator #content #africa" class="cc-editor-input" id="edHashtags" placeholder="#creator #content #africa">
       </div>
 
       <!-- Schedule -->
@@ -162,11 +165,11 @@
         <div class="cc-editor-row">
           <div>
             <div class="cc-editor-label">Date</div>
-            <input type="date" class="cc-editor-input" id="edDate">
+            <input aria-label="EdDate" type="date" class="cc-editor-input" id="edDate">
           </div>
           <div>
             <div class="cc-editor-label">Time</div>
-            <input type="time" class="cc-editor-input" id="edTime">
+            <input aria-label="EdTime" type="time" class="cc-editor-input" id="edTime">
           </div>
         </div>
       </div>
@@ -180,19 +183,19 @@
       <!-- Notes -->
       <div class="cc-editor-section">
         <div class="cc-editor-label">Private Notes</div>
-        <input class="cc-editor-input" id="edNotes" placeholder="Notes for yourself (not part of the post)...">
+        <input aria-label="Notes for yourself (not part of the post)" class="cc-editor-input" id="edNotes" placeholder="Notes for yourself (not part of the post)...">
       </div>
 
       <!-- Actions -->
       <div class="cc-editor-section">
         <div class="cc-status-btns">
-          <button class="cc-status-btn" onclick="savePostAs('draft')">Save Draft</button>
-          <button class="cc-status-btn" onclick="savePostAs('ready')" style="background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.25);color:#059669">Mark Ready</button>
-          <button class="cc-status-btn" onclick="savePostAs('posted')" style="background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.25);color:#8B5CF6">Posted</button>
+          <button type="button" class="cc-status-btn" onclick="savePostAs('draft')">Save Draft</button>
+          <button type="button" class="cc-status-btn" onclick="savePostAs('ready')" style="background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.25);color:#059669">Mark Ready</button>
+          <button type="button" class="cc-status-btn" onclick="savePostAs('posted')" style="background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.25);color:#8B5CF6">Posted</button>
         </div>
         <div style="display:flex;gap:6px;margin-top:8px">
-          <button class="cc-status-btn" onclick="duplicateCurrentPost()" style="flex:1">Duplicate</button>
-          <button class="cc-status-btn delete" onclick="deleteCurrentPost()" id="edDeleteBtn" style="flex:1;display:none">Delete</button>
+          <button type="button" class="cc-status-btn" onclick="duplicateCurrentPost()" style="flex:1">Duplicate</button>
+          <button type="button" class="cc-status-btn delete" onclick="deleteCurrentPost()" id="edDeleteBtn" style="flex:1;display:none">Delete</button>
         </div>
       </div>
     </div>
@@ -598,7 +601,7 @@
       var html = '';
       for (var key in E.PLATFORMS) {
         var p = E.PLATFORMS[key];
-        html += '<button class="cc-editor-plat-pill" data-plat="' + key + '">' + p.short + '</button>';
+        html += '<button type="button" class="cc-editor-plat-pill" data-plat="' + key + '">' + p.short + '</button>';
       }
       container.innerHTML = html;
       container.querySelectorAll('.cc-editor-plat-pill').forEach(function (pill) {
@@ -610,7 +613,7 @@
       var container = document.getElementById('edPillars');
       var html = '';
       pillars.forEach(function (p) {
-        html += '<button class="cc-pillar-pill" data-id="' + p.id + '" data-name="' + p.name + '">' +
+        html += '<button type="button" class="cc-pillar-pill" data-id="' + p.id + '" data-name="' + p.name + '">' +
           '<span class="cc-pillar-dot" style="background:' + p.color + '"></span>' + p.name + '</button>';
       });
       container.innerHTML = html;

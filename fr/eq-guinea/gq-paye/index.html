@@ -48,16 +48,16 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js?v=40bd62b3" defer></script>
 <meta property="og:locale:alternate" content="en_US">
@@ -115,7 +115,7 @@
               <span style="font-size:.75rem;font-weight:700;color:#333">Salaire brut mensuel</span>
               <span style="font-size:.92rem;font-weight:800;color:var(--primary)" id="sliderVal">XAF 300,000</span>
             </div>
-            <input type="range" id="salarySlider" min="50000" max="8000000" step="50000" value="300000" oninput="onSlider(this)" style="width:100%;height:5px;border-radius:3px;cursor:pointer">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="8000000" step="50000" value="300000" oninput="onSlider(this)" style="width:100%;height:5px;border-radius:3px;cursor:pointer">
             <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:.65rem;color:#666">
               <span>XAF 50,000</span><span>XAF 8,000,000</span>
             </div>
@@ -127,16 +127,16 @@
             </div>
             <div style="position:relative">
               <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.78rem;font-weight:700;color:#666;pointer-events:none">XAF</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" value="300000" oninput="onInput(this)" style="width:100%;padding:11px 13px 11px 60px;background:#f5f5f5;border:1.5px solid #ddd;border-radius:7px;font-size:1rem;font-weight:600;outline:none;-moz-appearance:textfield">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" value="300000" oninput="onInput(this)" style="width:100%;padding:11px 13px 11px 60px;background:#f5f5f5;border:1.5px solid #ddd;border-radius:7px;font-size:1rem;font-weight:600;outline:none;-moz-appearance:textfield">
             </div>
           </div>
           <!-- Quick Presets -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(300000, this)">XAF 300k</button>
-            <button class="preset-btn" onclick="setPreset(1000000, this)">XAF 1M</button>
-            <button class="preset-btn" onclick="setPreset(2000000, this)">XAF 2M</button>
-            <button class="preset-btn" onclick="setPreset(4000000, this)">XAF 4M</button>
-            <button class="preset-btn" onclick="setPreset(7000000, this)">XAF 7M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(300000, this)">XAF 300k</button>
+            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">XAF 1M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(2000000, this)">XAF 2M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(4000000, this)">XAF 4M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(7000000, this)">XAF 7M</button>
           </div>
 
 
@@ -153,7 +153,7 @@
             <p style="font-size:.7rem;color:#666;margin-top:5px">La cotisation sociale du salarié (4,5 %) est déduite du revenu imposable avant le calcul de l’IRPF.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()" style="width:100%;margin-top:8px">Calculer mon salaire net →</button>
+          <button type="button" class="calc-btn" onclick="calculate()" style="width:100%;margin-top:8px">Calculer mon salaire net →</button>
         </div>
       </div>
 
@@ -166,8 +166,8 @@
         </div>
         <div style="padding:20px">
           <div style="display:flex;gap:4px;background:#f5f5f5;padding:4px;border-radius:7px;margin-bottom:18px">
-            <button class="per-btn on" onclick="setPeriod('monthly',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:#fff;border-radius:5px;cursor:pointer;color:var(--primary);box-shadow:0 1px 5px rgba(0,0,0,.09)">Mensuel</button>
-            <button class="per-btn" onclick="setPeriod('annual',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:transparent;border-radius:5px;cursor:pointer;color:#666">Annuel</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:#fff;border-radius:5px;cursor:pointer;color:var(--primary);box-shadow:0 1px 5px rgba(0,0,0,.09)">Mensuel</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:transparent;border-radius:5px;cursor:pointer;color:#666">Annuel</button>
           </div>
           <div id="resContent"></div>
           <div style="margin:16px 0">
@@ -184,16 +184,16 @@
 
         <div style="padding:0 22px 22px">
           <div style="display:flex;gap:6px;margin-bottom:14px">
-            <button class="chart-tab on" onclick="setChart('donut',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Répartition</button>
-            <button class="chart-tab" onclick="setChart('bar',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Tranches d’impôt</button>
-            <button class="chart-tab" onclick="setChart('employer',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Coût employeur</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Répartition</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Tranches d’impôt</button>
+            <button type="button" class="chart-tab" onclick="setChart('employer',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Coût employeur</button>
           </div>
           <div style="position:relative;height:200px"><canvas id="mainChart"></canvas></div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 22px 22px">
-          <button onclick="openPdfModal()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,215,0,.1);border:1.5px solid rgba(255,215,0,.35);color:#7a6200">📄 Télécharger PDF</button>
-          <button id="gqPartagerBtn" onclick="shareResult()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:#f5f5f5;border:1.5px solid #ddd;color:#333">Partager</button>
+          <button type="button" onclick="openPdfModal()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,215,0,.1);border:1.5px solid rgba(255,215,0,.35);color:#7a6200">📄 Télécharger PDF</button>
+          <button type="button" id="gqPartagerBtn" onclick="shareResult()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:#f5f5f5;border:1.5px solid #ddd;color:#333">Partager</button>
         </div>
 
           <!-- Enregistrer & Partager -->
@@ -224,12 +224,12 @@
         <div style="padding:16px 18px">
           <p class="ai-status" id="aiStatus" style="font-size:.8rem;color:rgba(255,255,255,.48);line-height:1.65;margin-bottom:12px">Calculez votre salaire d'abord — j’analyserai votre situation IRPF.</p>
           <div class="ai-response" id="aiResp" style="font-size:.82rem;color:rgba(255,255,255,.78);line-height:1.7;display:none"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled style="width:100%;padding:11px;border-radius:6px;color:#93C5FD;font-size:.72rem;font-weight:700;cursor:pointer;margin-top:12px">Calculez d'abord →</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled style="width:100%;padding:11px;border-radius:6px;color:#93C5FD;font-size:.72rem;font-weight:700;cursor:pointer;margin-top:12px">Calculez d'abord →</button>
           <div class="ai-chat" id="aiChat" style="display:none;margin-top:12px;border-top:1px solid rgba(255,255,255,.07);padding-top:12px">
             <div id="chatMsgs" style="max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:9px"></div>
             <div style="display:flex;gap:6px">
-              <input class="chat-in" id="chatIn" placeholder="Posez une question de suivi…" onkeydown="if(event.key==='Enter')sendChat()" style="flex:1;padding:8px 11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:5px;font-size:.78rem;color:#fff;outline:none">
-              <button class="chat-send" onclick="sendChat()" style="padding:8px 13px;background:var(--primary);border:none;border-radius:5px;color:#fff;cursor:pointer;font-weight:700">→</button>
+              <input aria-label="Posez une question de suivi" class="chat-in" id="chatIn" placeholder="Posez une question de suivi…" onkeydown="if(event.key==='Enter')sendChat()" style="flex:1;padding:8px 11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:5px;font-size:.78rem;color:#fff;outline:none">
+              <button type="button" class="chat-send" onclick="sendChat()" style="padding:8px 13px;background:var(--primary);border:none;border-radius:5px;color:#fff;cursor:pointer;font-weight:700">→</button>
             </div>
           </div>
         </div>
@@ -253,7 +253,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/gq-vat.webp" alt="Calculateur salaire net Guinée équatoriale" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/gq-vat.webp" alt="Calculateur salaire net Guinée équatoriale" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur salaire net Guinée équatoriale</div>
             <div class="tool-info-cat">Fiscalite et finance</div>
@@ -276,7 +276,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mis à jour : mars 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/tools/calculateur-paye/">Tous les pays</a>
           </div>
         </div>
@@ -313,18 +313,18 @@
     <p style="font-size:.83rem;color:#555;line-height:1.6;margin-bottom:20px">Entrez votre adresse courriel pour recevoir un PDF detaille.</p>
     <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
       <input type="hidden" name="form-name" value="pdf-leads">
-        <p style="display:none"><input name="bot-field"></p>
+        <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
       <input type="hidden" name="country" value="Guinée équatoriale">
       <input type="hidden" name="country_code" value="GQ">
       <input type="hidden" name="tool" value="paye">
       <input type="hidden" name="tool_id" value="gq-paye">
       <input type="hidden" name="currency" value="XAF">
       <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-      <input class="modal-input" type="text" name="name" id="pdfName" placeholder="Votre nom (facultatif)" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
-      <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse courriel" required style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
+      <input aria-label="Votre nom (facultatif)" class="modal-input" type="text" name="name" id="pdfName" placeholder="Votre nom (facultatif)" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
+      <input aria-label="Votre adresse courriel" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse courriel" required style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
       <button class="modal-submit" type="submit" style="width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:7px;font-size:.88rem;font-weight:700;cursor:pointer">Télécharger mon PDF →</button>
     </form>
-    <button class="modal-cancel" onclick="closePdfModal()" style="width:100%;padding:10px;background:transparent;border:none;font-size:.78rem;color:#666;cursor:pointer;margin-top:6px">Non merci</button>
+    <button type="button" class="modal-cancel" onclick="closePdfModal()" style="width:100%;padding:10px;background:transparent;border:none;font-size:.78rem;color:#666;cursor:pointer;margin-top:6px">Non merci</button>
   </div>
 </div>
 

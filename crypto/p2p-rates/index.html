@@ -6,7 +6,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>P2P Crypto Rate Comparator — Compare 8+ Platforms in Africa</title>
-<meta name="description" content="Find the best P2P crypto prices across Africa. Compare Binance, Bybit, KuCoin, Luno, Yellow Card and more. Buy or sell USDT, BTC, ETH in NGN, KES, ZAR, GHS. Real-time rates updated every 60 seconds.">
+<meta name="description" content="Compare reference P2P crypto rate estimates across Africa. Check Binance, Bybit, KuCoin, Luno, Yellow Card and more, then confirm the final rate in the provider app.">
 <link rel="canonical" href="https://afrotools.com/crypto/p2p-rates/">
 <meta property="og:title" content="P2P Crypto Rate Comparator — Best Prices Across Africa">
 <meta property="og:description" content="Compare P2P crypto rates from 8+ platforms. Find the cheapest USDT, BTC, ETH in NGN, KES, ZAR, GHS and more African currencies.">
@@ -60,14 +60,14 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/crypto.css?v=cfeafdf7">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/lib/crypto-data.js?v=b7faee1b"></script>
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
-<script src="/assets/js/bundles/core.3477986a.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/bundles/core.52bda31a.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <style>
 /* ── P2P-specific styles ─────────────────────────────── */
@@ -308,8 +308,8 @@
   <!-- Controls -->
   <div class="crypto-controls">
     <div class="toggle-group" id="sideToggle">
-      <button class="active" data-side="buy">BUY</button>
-      <button data-side="sell">SELL</button>
+      <button type="button" class="active" data-side="buy">BUY</button>
+      <button type="button" data-side="sell">SELL</button>
     </div>
 
     <div>
@@ -346,7 +346,7 @@
 
     <div class="auto-refresh">
       <span class="dot"></span>
-      Live &mdash; refreshes in <strong id="countdown">60</strong>s
+      Reference rates refresh in <strong id="countdown">60</strong>s
     </div>
   </div>
 
@@ -356,7 +356,7 @@
   <!-- Refresh bar -->
   <div class="refresh-bar">
     <span class="result-count" id="resultCount"></span>
-    <button onclick="fetchAndRender()" style="background:none;border:1px solid var(--color-border);padding:6px 14px;border-radius:var(--radius-sm);font-size:var(--text-sm);font-weight:600;cursor:pointer;color:var(--color-text);font-family:var(--font-body);">Refresh Now</button>
+    <button type="button" onclick="fetchAndRender()" style="background:none;border:1px solid var(--color-border);padding:6px 14px;border-radius:var(--radius-sm);font-size:var(--text-sm);font-weight:600;cursor:pointer;color:var(--color-text);font-family:var(--font-body);">Refresh Now</button>
   </div>
 
   <!-- Results -->
@@ -396,8 +396,8 @@
         <option value="ghs">GHS</option>
       </select>
       <span style="font-size:var(--text-sm);font-weight:600;">drops below</span>
-      <input type="number" id="alertThreshold" placeholder="e.g. 1550">
-      <button onclick="addPriceAlert()">Set Alert</button>
+      <input aria-label="E.g. 1550" type="number" id="alertThreshold" placeholder="e.g. 1550">
+      <button type="button" onclick="addPriceAlert()">Set Alert</button>
     </div>
     <div class="active-alerts" id="activeAlerts"></div>
   </div>
@@ -414,7 +414,7 @@
 
   <h2>Why P2P Rates Differ Across Platforms</h2>
 
-  <p>P2P rates are not uniform. Each platform operates its own order book where individual merchants set their own buy and sell prices. Several factors drive price differences: liquidity depth, merchant competition, platform fees, payment method speed, and regional demand. During periods of high demand, such as when the official Naira exchange rate diverges from the parallel market rate, P2P premiums can spike significantly. Our comparator helps you find the best deal in real time by aggregating simulated rates from 8+ major platforms.</p>
+  <p>P2P rates are not uniform. Each platform operates its own order book where individual merchants set their own buy and sell prices. Several factors drive price differences: liquidity depth, merchant competition, platform fees, payment method speed, and regional demand. During periods of high demand, such as when the official Naira exchange rate diverges from the parallel market rate, P2P premiums can spike significantly. This comparator helps you compare reference estimates from major platforms before confirming the final executable price in the provider app.</p>
 
   <p>Binance P2P and Bybit P2P typically offer the tightest spreads due to their massive global liquidity pools and zero-fee maker/taker structures. Local exchanges like Quidax and Roqqu may have slightly wider spreads but offer the convenience of direct NGN bank transfers with faster settlement times. Yellow Card stands out for its pan-African coverage, supporting currencies from Nigeria to Cameroon and Botswana.</p>
 
@@ -624,7 +624,7 @@
     var manualCount = results.filter(function (r) { return r.source === 'manual'; }).length;
     var countText = results.length + ' platform' + (results.length !== 1 ? 's' : '') + ' for ' + coinSymbol + '/' + currencyUpper;
     if (liveCount > 0) countText += ' (' + liveCount + ' live';
-    if (manualCount > 0) countText += (liveCount > 0 ? ', ' : '(') + manualCount + ' admin-updated';
+    if (manualCount > 0) countText += (liveCount > 0 ? ', ' : '(') + manualCount + ' reference estimate';
     if (liveCount > 0 || manualCount > 0) countText += ')';
     $resultCount.textContent = countText;
 
@@ -821,7 +821,7 @@
       var coinMeta = CryptoData.COIN_META[a.crypto] || { symbol: a.crypto.toUpperCase() };
       html += '<div class="alert-item">';
       html += '<span>' + coinMeta.symbol + '/' + a.currency.toUpperCase() + ' drops below <strong>' + formatPrice(a.threshold, a.currency.toUpperCase()) + '</strong></span>';
-      html += '<button class="remove-alert" onclick="removeAlert(' + a.id + ')" title="Remove alert">&times;</button>';
+      html += '<button type="button" class="remove-alert" onclick="removeAlert(' + a.id + ')" title="Remove alert">&times;</button>';
       html += '</div>';
     });
     container.innerHTML = html;

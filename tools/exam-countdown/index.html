@@ -19,9 +19,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <meta name="tool-id" content="exam-countdown">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Exam Countdown Timer","description":"Free exam countdown timer for WAEC, NECO, JAMB UTME, KCSE, KCPE, and SA Matric 2026. Live ticking countdown.","url":"https://afrotools.com/tools/exam-countdown/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/exam-countdown.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Exam Countdown Timer","url":"https://afrotools.com/tools/exam-countdown/","description":"Free exam countdown timer for WAEC, NECO, JAMB UTME, KCSE, KCPE, and SA Matric 2026. Live ticking countdown.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/exam-countdown.webp"}</script>
@@ -163,13 +163,13 @@
       <div class="custom-row">
         <div class="field">
           <label class="f-label">Exam Name</label>
-          <input type="text" class="f-input" id="customName" placeholder="e.g. Final Year Exams">
+          <input aria-label="E.g. Final Year Exams" type="text" class="f-input" id="customName" placeholder="e.g. Final Year Exams">
         </div>
         <div class="field">
           <label class="f-label">Exam Date</label>
-          <input type="date" class="f-input" id="customDate">
+          <input aria-label="CustomDate" type="date" class="f-input" id="customDate">
         </div>
-        <button class="add-btn" onclick="addCustom()">Add Countdown</button>
+        <button type="button" class="add-btn" onclick="addCustom()">Add Countdown</button>
       </div>
     </div>
 
@@ -320,16 +320,16 @@
       var t = getTimeDiff(c.date);
       if (t) {
         return '<div class="cd-card" data-id="' + c.id + '">' +
-          '<div class="cd-card-head"><div><div class="cd-exam-name">' + esc(c.name) + '</div><div class="cd-exam-date">' + fmtDate(c.date) + '</div></div><button class="cd-remove" onclick="removeCountdown(' + c.id + ')" title="Remove">&times;</button></div>' +
+          '<div class="cd-card-head"><div><div class="cd-exam-name">' + esc(c.name) + '</div><div class="cd-exam-date">' + fmtDate(c.date) + '</div></div><button type="button" class="cd-remove" onclick="removeCountdown(' + c.id + ')" title="Remove">&times;</button></div>' +
           '<div class="cd-body"><div class="cd-digits">' +
           '<div class="cd-unit"><div class="cd-num" data-field="days">' + t.days + '</div><div class="cd-lbl">Days</div></div>' +
           '<div class="cd-unit"><div class="cd-num" data-field="hours">' + pad(t.hours) + '</div><div class="cd-lbl">Hours</div></div>' +
           '<div class="cd-unit"><div class="cd-num" data-field="mins">' + pad(t.mins) + '</div><div class="cd-lbl">Minutes</div></div>' +
           '<div class="cd-unit"><div class="cd-num" data-field="secs">' + pad(t.secs) + '</div><div class="cd-lbl">Seconds</div></div>' +
-          '</div><div class="cd-actions"><button class="cd-share" onclick="shareWhatsApp(\'' + esc(c.name) + '\',\'' + c.date + '\')">Share on WhatsApp</button></div></div></div>';
+          '</div><div class="cd-actions"><button type="button" class="cd-share" onclick="shareWhatsApp(\'' + esc(c.name) + '\',\'' + c.date + '\')">Share on WhatsApp</button></div></div></div>';
       } else {
         return '<div class="cd-card" data-id="' + c.id + '">' +
-          '<div class="cd-card-head"><div><div class="cd-exam-name">' + esc(c.name) + '</div><div class="cd-exam-date">' + fmtDate(c.date) + '</div></div><button class="cd-remove" onclick="removeCountdown(' + c.id + ')" title="Remove">&times;</button></div>' +
+          '<div class="cd-card-head"><div><div class="cd-exam-name">' + esc(c.name) + '</div><div class="cd-exam-date">' + fmtDate(c.date) + '</div></div><button type="button" class="cd-remove" onclick="removeCountdown(' + c.id + ')" title="Remove">&times;</button></div>' +
           '<div class="cd-body"><div class="cd-done"><div class="cd-done-text">Exam Day Has Arrived!</div><div class="cd-done-sub">Good luck! You\'ve got this.</div></div></div></div>';
       }
     }).join('');
@@ -375,7 +375,7 @@
   function renderPresets() {
     var grid = document.getElementById('presetGrid');
     grid.innerHTML = presets.map(function(p) {
-      return '<button class="preset-btn" onclick="addCountdown(\'' + esc(p.name) + '\',\'' + p.date + '\')">' +
+      return '<button type="button" class="preset-btn" onclick="addCountdown(\'' + esc(p.name) + '\',\'' + p.date + '\')">' +
         '<div class="preset-name">' + p.name + '</div>' +
         '<div class="preset-date">' + fmtDate(p.date) + '</div>' +
         '<div class="preset-country">' + p.country + '</div>' +
@@ -396,7 +396,7 @@
   setInterval(updateTimers, 1000);
   setInterval(rotateQuote, 15000);
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ec27b12f" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

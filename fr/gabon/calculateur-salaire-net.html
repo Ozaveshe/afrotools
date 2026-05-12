@@ -18,10 +18,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=35f962d9">
-<script src="/assets/js/components/navbar.min.js?v=ca6bb4e6" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0c96f8e4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -113,7 +113,7 @@
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+  <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
   <script src="/assets/js/utils/french-locale.js?v=8c489c62" defer></script>
   <script src="/engines/francophone-paye-engine.js?v=d16920ea" defer></script>
 <meta property="og:locale" content="fr_FR">
@@ -158,23 +158,23 @@
               <span class="slider-label">Salaire brut annuel</span>
               <span class="slider-val" id="sliderVal">30 000 000 FCFA</span>
             </div>
-            <input type="range" id="salarySlider" min="500000" max="100000000" step="500000" value="30000000" oninput="onSlider(this)">
+            <input aria-label="SalarySlider" type="range" id="salarySlider" min="500000" max="100000000" step="500000" value="30000000" oninput="onSlider(this)">
             <div class="slider-limits"><span>500 000</span><span>100 000 000</span></div>
           </div>
           <div class="field">
             <div class="f-label"><span class="f-label-text">Ou saisissez le montant exact annuel</span><span class="f-hint">Avant déductions</span></div>
             <div class="f-wrap">
               <span class="f-prefix">FCFA</span>
-              <input type="number" class="f-input" id="grossSalary" placeholder="30 000 000" min="0" step="500000" value="30000000" oninput="onInput(this)">
+              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="30 000 000" min="0" step="500000" value="30000000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Montants prédéfinis -->
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(3000000, this)">3M</button>
-            <button class="preset-btn" onclick="setPreset(7500000, this)">7,5M</button>
-            <button class="preset-btn" onclick="setPreset(15000000, this)">15M</button>
-            <button class="preset-btn" onclick="setPreset(30000000, this)">30M</button>
-            <button class="preset-btn" onclick="setPreset(60000000, this)">60M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(3000000, this)">3M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(7500000, this)">7,5M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(15000000, this)">15M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(30000000, this)">30M</button>
+            <button type="button" class="preset-btn" onclick="setPreset(60000000, this)">60M</button>
           </div>
 
           <div class="field">
@@ -191,7 +191,7 @@
             </div>
             <p class="f-note">La CNSS (2,5%, plafonnée à 1 500 000 FCFA/mois) et la CNAMGS (2%, sans plafond) sont déductibles du revenu imposable avant le calcul de l'IRPP.</p>
           </div>
-          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net →</button>
+          <button type="button" class="calc-btn" onclick="calculate()">Calculer mon salaire net →</button>
         </div>
       </div>
       <div class="card results-card" id="resultsCard">
@@ -214,14 +214,14 @@
         </div>
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">Répartition</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Barème fiscal</button>
+            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Répartition</button>
+            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Barème fiscal</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Télécharger le PDF</button>
-          <button class="act-btn act-share" id="gaShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Partager</button>
+          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Télécharger le PDF</button>
+          <button type="button" class="act-btn act-share" id="gaShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Partager</button>
         </div>
 
           <!-- Sauvegarder & Partager -->
@@ -251,12 +251,12 @@
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculez votre salaire pour obtenir une analyse IA de votre situation fiscale (IRPP, CNSS, CNAMGS).</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord →</button>
+          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord →</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Posez une question…" onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">→</button>
+              <input aria-label="Posez une question" class="chat-in" id="chatIn" placeholder="Posez une question…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button type="button" class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
         </div>
@@ -307,7 +307,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/ga-paye-fr.webp" alt="Calculateur salaire net Gabon" class="tool-info-img" loading="lazy">
+          <img height="44" width="44" src="/assets/img/tools/ga-paye-fr.webp" alt="Calculateur salaire net Gabon" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur salaire net Gabon</div>
             <div class="tool-info-cat">Paie &amp; fiscalit&eacute;</div>
@@ -330,7 +330,7 @@
         <div class="tool-info-footer">
           <span class="tool-info-updated">Mis à jour : mars 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/gabon/">Outils Gabon</a>
           </div>
         </div>
@@ -378,23 +378,23 @@
       <p>Entrez votre email pour recevoir un PDF détaillé.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
-        <p style="display:none"><input name="bot-field"></p>
+        <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
         <input type="hidden" name="country" value="Gabon">
         <input type="hidden" name="country_code" value="GA">
         <input type="hidden" name="tool" value="paye">
         <input type="hidden" name="tool_id" value="ga-paye-fr">
         <input type="hidden" name="currency" value="XAF">
         <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text" name="name" id="pdfName" placeholder="Votre nom (facultatif)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre courriel" required>
+        <input aria-label="Votre nom (facultatif)" class="modal-input" type="text" name="name" id="pdfName" placeholder="Votre nom (facultatif)" autocomplete="name">
+        <input aria-label="Votre courriel" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre courriel" required>
         <button class="modal-submit" type="submit">Obtenir le PDF →</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">Non merci</button>
+      <button type="button" class="modal-cancel" onclick="closePdfModal()">Non merci</button>
     </div>
     <div class="modal-success" id="modalSuccess">
       <div class="big-check">&#9989;</div>
       <h4>Le PDF s'ouvre maintenant</h4>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Terminé →</button>
+      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Terminé →</button>
     </div>
   </div>
 </div>

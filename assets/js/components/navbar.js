@@ -8,7 +8,7 @@
   const THEME_KEY = 'aft_theme';
   const THEME_STYLE_ID = 'afro-theme-standard';
   const THEME_LINK_ID = 'afro-theme-dark-css';
-  const THEME_LINK_HREF = '/assets/css/theme-dark.min.css?v=5fb8381c';
+  const THEME_LINK_HREF = '/assets/css/theme-dark.min.css?v=a1713d60';
   const COUNTRY_SELECTOR_THEME_STYLE_ID = 'afro-country-theme';
   const THEME_COLOR_LIGHT = '#F8FAFD';
   const THEME_COLOR_DARK = '#09111F';
@@ -453,14 +453,14 @@
       ],
       toolsHa: [
         { label: 'Fassarar medical report', href: '/tools/medical-report/', emoji: 'LAB', badge: 'EN' },
-        { label: 'Genotype da blood group', href: '/ha/kayan-aiki/duba-genotype/', emoji: 'DNA', badge: 'HA' },
-        { label: 'Sickle cell advisor', href: '/ha/kayan-aiki/sickle-cell/', emoji: 'SC', badge: 'HA' },
+        { label: 'Genotype da rukunin jini (ana bita)', href: '/ha/kayan-aiki/duba-genotype/', emoji: 'DNA', badge: 'REVIEW' },
+        { label: 'Jagorar sikila (ana bita)', href: '/ha/kayan-aiki/sickle-cell/', emoji: 'SC', badge: 'REVIEW' },
         { label: 'Kudin asibiti', href: '/ha/kayan-aiki/kudin-asibiti/', emoji: 'HSP', badge: 'HA' },
         { label: 'Kwatanta farashin magani', href: '/ha/kayan-aiki/kwatanta-farashin-magani/', emoji: 'MED', badge: 'HA' },
         { label: 'Blood group compatibility', href: '/tools/blood-group/', emoji: 'BG', badge: 'EN' },
         { label: 'Kudin haihuwa', href: '/ha/kayan-aiki/kudin-haihuwa/', emoji: 'MAT', badge: 'HA' },
         { label: 'Meal plan na Afirka', href: '/ha/kayan-aiki/abincin-afirka/', emoji: 'MEAL', badge: 'HA' },
-        { label: 'Duk kayan lafiya ->', href: '/ha/lafiya/', emoji: 'ALL' }
+        { label: 'Duk kayan lafiya (ana bita) ->', href: '/ha/lafiya/', emoji: 'ALL' }
       ]
     },
     {
@@ -622,14 +622,14 @@
         { label: 'All Language Tools →', href: '/language/', emoji: '🗣️' },
       ],
       toolsHa: [
-        { label: 'Hausa Translator', href: '/tools/hausa-translator/', emoji: 'HA', badge: 'LIVE' },
-        { label: 'Kalmomin kasuwa da aiki', href: '/tools/hausa-translator/', emoji: 'PHR', badge: 'LIVE' },
+        { label: 'Hausa Translator (Turanci)', href: '/tools/hausa-translator/', emoji: 'HA', badge: 'EN' },
+        { label: 'Kalmomin kasuwa da aiki (Turanci)', href: '/tools/hausa-translator/', emoji: 'PHR', badge: 'EN' },
         { label: 'Sunayen Afirka', href: '/tools/african-name-meaning/', emoji: 'NAME', badge: 'EN' },
         { label: 'Karin magana', href: '/tools/african-proverbs/', emoji: 'PROV', badge: 'EN' },
         { label: 'PDF translation', href: '/tools/pdf-translate/', emoji: 'PDF', badge: 'EN' },
         { label: 'Yoruba Translator', href: '/tools/yoruba-translator/', emoji: 'YO', badge: 'EN' },
         { label: 'Swahili Translator', href: '/tools/swahili-translator/', emoji: 'SW', badge: 'EN' },
-        { label: 'Duk kayan harshe ->', href: '/ha/harshe-da-fassara/', emoji: 'ALL' }
+        { label: 'Duk kayan harshe (ana bita) ->', href: '/ha/harshe-da-fassara/', emoji: 'ALL' }
       ]
     },
     {
@@ -1135,7 +1135,7 @@
     ecommerce: '/ha/kasuwanci-da-haraji/',
     language: '/ha/harshe-da-fassara/',
     telecom: '/ha/sadarwa/',
-    african: '/ha/countries/'
+    african: '/countries/'
   };
 
   // 16 categories for the Tools dropdown. Keep top-level navbar categories out of this grid.
@@ -1186,16 +1186,16 @@
     ha: {
       financial: { label: 'Albashi da PAYE', desc: 'PAYE, VAT, FX da harajin Najeriya' },
       'document-pdf': { label: 'Takardu da PDF', desc: 'Invoice, CV, PDF da Naira cikin kalmomi' },
-      ecommerce: { label: 'VAT da Haraji', desc: 'VAT, TIN, invoice da harajin kasuwanci' },
+      ecommerce: { label: 'VAT da Haraji (ana bita)', desc: 'VAT, TIN, invoice da harajin kasuwanci; shafin Hausa yana karkashin bita' },
       'image-design': { label: 'Hoto da Zane', desc: 'Matsa hoto, resize, QR da OCR' },
       developer: { label: 'Kayan Developer', desc: 'JSON, API, Regex, SQL da USSD' },
       education: { label: 'Ilimi da Jarrabawa', desc: 'JAMB, WAEC, NECO, GPA da scholarship' },
-      health: { label: 'Lafiya da Asibiti', desc: 'Kudin asibiti, magani, genotype da abinci' },
+      health: { label: 'Lafiya da Asibiti (ana bita)', desc: 'Kudin asibiti, magani, genotype da abinci; wasu shafuka suna karkashin bita' },
       insurance: { label: 'Insurance', desc: 'Mota, lafiya, rayuwa, kasuwanci da tafiya' },
       fintech: { label: 'Fintech da Banki', desc: 'Rance, ajiya, mobile money da FX' },
       agriculture: { label: 'Noma', desc: 'Amfanin gona, taki, ban ruwa da ribar gona' },
       legal: { label: "Doka da Bin Ka'ida", desc: 'Rajista, TIN, kwangila da data privacy' },
-      language: { label: 'Harshe da Fassara', desc: 'Hausa, Yoruba, Swahili, Pidgin da Amharic' },
+      language: { label: 'Harshe da Fassara (ana bita)', desc: 'Hausa, Yoruba, Swahili, Pidgin da Amharic; fallbacks na Turanci suna a fili' },
       trade: { label: 'Kasuwanci da Shigo da Kaya', desc: 'Customs, HS code, AfCFTA da LC' },
       telecom: { label: 'Sadarwa da Wayar Hannu', desc: 'Data, USSD, roaming da ISP' },
       energy: { label: 'Wuta da Makamashi', desc: 'Wutar lantarki, solar, generator da ruwa' },
@@ -1249,12 +1249,12 @@
   ];
 
   const HA_BUSINESS_LINKS = [
-    { label: 'Widgets', href: '/widgets/', icon: 'W', desc: 'Embeds, Widget Pro, white-label setup, analytics da lead capture.' },
-    { label: 'API na data', href: '/api/', icon: 'API', desc: 'Sandbox keys, API pilots, Pro access da subscription na bayanan Afirka.' },
-    { label: 'VAT da harajin kasuwanci', href: '/ha/kasuwanci-da-haraji/', icon: 'VAT', desc: 'Kalkuletan VAT, TIN, invoice da hanyoyin harajin kasuwanci a Hausa.' },
-    { label: 'Sponsored Tools', href: '/sponsored-tools/', icon: 'SP', desc: 'Tallafin tool, category ko country page tare da pilot pricing.' },
-    { label: 'Custom Calculators', href: '/custom-calculators/', icon: 'CC', desc: 'Calculators na HR, payroll, fintech, accounting, makarantu da media.' },
-    { label: 'Media Kit', href: '/media-kit/', icon: 'MK', desc: 'Audience, inventory, pricing ranges, placements da FAQ.' }
+    { label: 'Widgets (Turanci)', href: '/widgets/', icon: 'W', desc: 'Shafin Turanci don embeds, Widget Pro, white-label setup, analytics da lead capture.' },
+    { label: 'API na data (Turanci)', href: '/api/', icon: 'API', desc: 'Shafin Turanci don sandbox keys, API pilots, Pro access da subscription na bayanan Afirka.' },
+    { label: 'VAT da harajin kasuwanci (ana bita)', href: '/ha/kasuwanci-da-haraji/', icon: 'VAT', desc: 'Kalkuletan VAT, TIN, invoice da hanyoyin harajin kasuwanci a Hausa; ana sake duba rubutu.' },
+    { label: 'Sponsored Tools (Turanci)', href: '/sponsored-tools/', icon: 'SP', desc: 'Shafin Turanci don tallafin tool, category ko country page tare da pilot pricing.' },
+    { label: 'Custom Calculators (Turanci)', href: '/custom-calculators/', icon: 'CC', desc: 'Shafin Turanci don calculators na HR, payroll, fintech, accounting, makarantu da media.' },
+    { label: 'Media Kit (Turanci)', href: '/media-kit/', icon: 'MK', desc: 'Shafin Turanci don audience, inventory, pricing ranges, placements da FAQ.' }
   ];
 
   function localizedItemText(item, field, lang) {
@@ -1283,14 +1283,14 @@
   ];
 
   const COUNTRY_LINKS_HA = [
-    { label: 'Najeriya', href: '/ha/nigeria/', slug: 'nigeria' },
-    { label: 'Kenya', href: '/kenya/', slug: 'kenya' },
-    { label: 'Ghana', href: '/ghana/', slug: 'ghana' },
-    { label: 'Afirka ta Kudu', href: '/south-africa/', slug: 'south-africa' },
-    { label: 'Masar', href: '/egypt/', slug: 'egypt' },
-    { label: 'Tanzania', href: '/tanzania/', slug: 'tanzania' },
-    { label: 'Rwanda', href: '/rwanda/', slug: 'rwanda' },
-    { label: 'Senegal', href: '/senegal/', slug: 'senegal' },
+    { label: 'Najeriya', href: '/ha/najeriya/', slug: 'nigeria' },
+    { label: 'Kenya (Turanci)', href: '/kenya/', slug: 'kenya' },
+    { label: 'Ghana (Turanci)', href: '/ghana/', slug: 'ghana' },
+    { label: 'Afirka ta Kudu (Turanci)', href: '/south-africa/', slug: 'south-africa' },
+    { label: 'Masar (Turanci)', href: '/egypt/', slug: 'egypt' },
+    { label: 'Tanzania (Turanci)', href: '/tanzania/', slug: 'tanzania' },
+    { label: 'Rwanda (Turanci)', href: '/rwanda/', slug: 'rwanda' },
+    { label: 'Senegal (Turanci)', href: '/senegal/', slug: 'senegal' },
   ];
 
   function localizedCountryLinks(lang) {
@@ -2213,6 +2213,90 @@
       var key = path.replace(/\/index\.html$/, '/');
       if (key.length > 1 && key.charAt(key.length - 1) !== '/') key += '/';
       var routeMap = {
+        '/all-tools/': {
+          en: '/all-tools/',
+          fr: '/fr/all-tools/',
+          sw: '/sw/zana-zote/',
+          yo: '/all-tools/',
+          ha: '/ha/kayan-aiki/'
+        },
+        '/fr/all-tools/': {
+          en: '/all-tools/',
+          fr: '/fr/all-tools/',
+          sw: '/sw/zana-zote/',
+          yo: '/all-tools/',
+          ha: '/ha/kayan-aiki/'
+        },
+        '/sw/zana-zote/': {
+          en: '/all-tools/',
+          fr: '/fr/all-tools/',
+          sw: '/sw/zana-zote/',
+          yo: '/all-tools/',
+          ha: '/ha/kayan-aiki/'
+        },
+        '/ha/kayan-aiki/': {
+          en: '/all-tools/',
+          fr: '/fr/all-tools/',
+          sw: '/sw/zana-zote/',
+          yo: '/all-tools/',
+          ha: '/ha/kayan-aiki/'
+        },
+        '/nigeria/': {
+          en: '/nigeria/',
+          fr: '/fr/nigeria/',
+          sw: '/sw/nigeria/',
+          yo: '/nigeria/',
+          ha: '/ha/najeriya/'
+        },
+        '/fr/nigeria/': {
+          en: '/nigeria/',
+          fr: '/fr/nigeria/',
+          sw: '/sw/nigeria/',
+          yo: '/nigeria/',
+          ha: '/ha/najeriya/'
+        },
+        '/sw/nigeria/': {
+          en: '/nigeria/',
+          fr: '/fr/nigeria/',
+          sw: '/sw/nigeria/',
+          yo: '/nigeria/',
+          ha: '/ha/najeriya/'
+        },
+        '/ha/najeriya/': {
+          en: '/nigeria/',
+          fr: '/fr/nigeria/',
+          sw: '/sw/nigeria/',
+          yo: '/nigeria/',
+          ha: '/ha/najeriya/'
+        },
+        '/salary-tax/': {
+          en: '/salary-tax/',
+          fr: '/fr/salary-tax/',
+          sw: '/sw/mshahara-na-kodi/',
+          yo: '/salary-tax/',
+          ha: '/ha/albashi-da-haraji/'
+        },
+        '/fr/salary-tax/': {
+          en: '/salary-tax/',
+          fr: '/fr/salary-tax/',
+          sw: '/sw/mshahara-na-kodi/',
+          yo: '/salary-tax/',
+          ha: '/ha/albashi-da-haraji/'
+        },
+        '/sw/mshahara-na-kodi/': {
+          en: '/salary-tax/',
+          fr: '/fr/salary-tax/',
+          sw: '/sw/mshahara-na-kodi/',
+          yo: '/salary-tax/',
+          ha: '/ha/albashi-da-haraji/'
+        },
+        '/ha/albashi-da-haraji/': {
+          en: '/salary-tax/',
+          fr: '/fr/salary-tax/',
+          sw: '/sw/mshahara-na-kodi/',
+          yo: '/salary-tax/',
+          ha: '/ha/albashi-da-haraji/'
+        },
         '/language/': {
           en: '/language/',
           fr: '/fr/language/',
@@ -2235,13 +2319,6 @@
           ha: '/ha/harshe-da-fassara/'
         },
         '/ha/harshe-da-fassara/': {
-          en: '/language/',
-          fr: '/fr/language/',
-          sw: '/sw/lugha-na-tafsiri/',
-          yo: '/language/',
-          ha: '/ha/harshe-da-fassara/'
-        },
-        '/ha/language/': {
           en: '/language/',
           fr: '/fr/language/',
           sw: '/sw/lugha-na-tafsiri/',
@@ -2314,7 +2391,7 @@
       var lang = this._getLang();
       if (lang === 'fr') return '/fr/countries/';
       if (lang === 'sw') return '/sw/nchi/';
-      if (lang === 'ha') return '/ha/countries/';
+      if (lang === 'ha') return '/countries/';
       return '/countries/';
     }
 
@@ -2408,7 +2485,7 @@
       var allHref = isFr ? '/fr/categories/' : '/categories/';
       allLabel = isSw ? 'Zana zote za Kiswahili ->' : isFr ? 'Tous les outils ->' : isHa ? 'Duk kayan aikin Hausa ->' : 'All Tools ->';
       allDesc = isSw ? 'PAYE, PDF, VAT, nchi na makundi yote' : isFr ? 'Rechercher et filtrer tous les outils' : isHa ? 'PAYE, PDF, VAT, JAMB, WAEC da kasashe' : 'Search and filter every tool';
-      allHref = isSw ? '/sw/zana-zote/' : isFr ? '/fr/all-tools/' : isHa ? '/ha/all-tools/' : '/all-tools/';
+      allHref = isSw ? '/sw/zana-zote/' : isFr ? '/fr/all-tools/' : isHa ? '/ha/kayan-aiki/' : '/all-tools/';
       html += `
         <a href="${allHref}" class="mob-cat" style="border-top:2px solid #e5e7eb;margin-top:4px">
           <div class="mob-cat-icon" style="background:#EEF4FF">🧭</div>
@@ -2450,7 +2527,8 @@
         .replace(/&/g, ' and ')
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '');
-      var prefix = lang === 'fr' ? '/fr' : lang === 'sw' ? '/sw' : (lang === 'ha' && slug === 'nigeria') ? '/ha' : '';
+      if (lang === 'ha' && slug === 'nigeria') return '/ha/najeriya/';
+      var prefix = lang === 'fr' ? '/fr' : lang === 'sw' ? '/sw' : '';
       return slug ? prefix + '/' + slug + '/' : this._countriesHref();
     }
 
@@ -2634,7 +2712,7 @@
           allTools: 'Dukkan kayan aiki',
           tools: 'Kayan aiki',
           countries: 'Kasashe',
-          countriesHref: '/ha/countries/',
+          countriesHref: '/countries/',
           business: 'Na kasuwanci',
           businessNote: 'Widgets, API, sponsorships, custom calculators da media inventory',
           businessBrowse: 'Bude media kit ->',
@@ -2651,7 +2729,7 @@
           devTools: 'Developer',
           devHref: '/developer-tools/',
           african: 'Kasashe da kayan Afirka',
-          africanHref: '/ha/countries/',
+          africanHref: '/countries/',
           education: 'Ilimi',
           educationHref: '/ha/ilimi/',
           insurance: 'Insurance',
@@ -2662,7 +2740,7 @@
           ariaSearch: 'Bincika kayan aiki',
           megaNote: 'Kasashen Afirka 54 · kyauta · babu rajista',
           browseAll: 'Duba duk kayan aiki ->',
-          browseHref: '/ha/all-tools/',
+          browseHref: '/ha/kayan-aiki/',
           allCats: 'Dukkan Rukuni',
           searchPh: 'Bincika PAYE, PDF, VAT, JAMB, WAEC...',
           mobSignIn: 'Shiga',
@@ -3133,12 +3211,12 @@
         "cover-letter": { name: "Kizalishaji cha Barua ya Ombi la Kazi — Kiswahili & Kiingereza", desc: "Tengeneza barua ya ombi la kazi kwa Kiswahili au Kiingereza. Violezo vya kitaalamu kwa sekta za teknolojia, fedha, afya, elimu, na zaidi. Pakua PDF bure bila usajili.", href: "/sw/zana/barua-ombi/", category: "document-pdf", lang: 'sw' },
         "creator-invoice": { name: "Ankara ya Mtayarishi", desc: "Andaa makadirio ya ankara ya mtayarishi kwa line items, VAT ya hiari, discount, total na ujumbe wa malipo.", href: "/sw/zana/ankara-ya-mtayarishi/", category: "document-pdf", lang: 'sw' },
         "crop-insurance-calc": { name: "Kikokotoo cha Bima ya Mazao Afrika", desc: "Chagua nchi na pima makadirio ya bima ya mazao kwa shamba, aina ya zao, eneo na hatari za msimu kwa nchi 15.", href: "/sw/zana/kikokotoo-bima-ya-mazao/", category: "agriculture", lang: 'sw' },
-        "crop-yield-burundi": { name: "Kikokotoo cha Mavuno ya Mazao Burundi â€” AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Burundi. Mahindi, muhogo, maharage, kahawa, viazi na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/burundi/", category: "agriculture", lang: 'sw' },
+        "crop-yield-burundi": { name: "Kikokotoo cha Mavuno ya Mazao Burundi - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Burundi. Mahindi, muhogo, maharage, kahawa, viazi na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/burundi/", category: "agriculture", lang: 'sw' },
         "crop-yield-estimator": { name: "Makisio ya Mavuno ya Mazao Afrika", desc: "Kadiria mavuno ya mazao kwa eneo, yield kwa hekta, hasara baada ya mavuno na bei ya kuuza.", href: "/sw/zana/makisio-ya-mavuno/", category: "agriculture", lang: 'sw' },
-        "crop-yield-kenya": { name: "Kikokotoo cha Mavuno ya Mazao Kenya â€” AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Kenya. Mahindi, mpunga, ngano, maharage na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/kenya/", category: "agriculture", lang: 'sw' },
-        "crop-yield-rwanda": { name: "Kikokotoo cha Mavuno ya Mazao Rwanda â€” AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Rwanda. Mahindi, viazi, maharage, kahawa, chai na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/rwanda/", category: "agriculture", lang: 'sw' },
-        "crop-yield-tanzania": { name: "Kikokotoo cha Mavuno ya Mazao Tanzania â€” AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Tanzania. Mahindi, mpunga, ngano, maharage na mazao mengine katika kanda 6 za kilimo.", href: "/sw/kilimo/mavuno/tanzania/", category: "agriculture", lang: 'sw' },
-        "crop-yield-uganda": { name: "Kikokotoo cha Mavuno ya Mazao Uganda â€” AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Uganda. Mahindi, ndizi, kahawa, mpunga, maharage na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/uganda/", category: "agriculture", lang: 'sw' },
+        "crop-yield-kenya": { name: "Kikokotoo cha Mavuno ya Mazao Kenya - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Kenya. Mahindi, mpunga, ngano, maharage na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/kenya/", category: "agriculture", lang: 'sw' },
+        "crop-yield-rwanda": { name: "Kikokotoo cha Mavuno ya Mazao Rwanda - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Rwanda. Mahindi, viazi, maharage, kahawa, chai na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/rwanda/", category: "agriculture", lang: 'sw' },
+        "crop-yield-tanzania": { name: "Kikokotoo cha Mavuno ya Mazao Tanzania - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Tanzania. Mahindi, mpunga, ngano, maharage na mazao mengine katika kanda 6 za kilimo.", href: "/sw/kilimo/mavuno/tanzania/", category: "agriculture", lang: 'sw' },
+        "crop-yield-uganda": { name: "Kikokotoo cha Mavuno ya Mazao Uganda - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Uganda. Mahindi, ndizi, kahawa, mpunga, maharage na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/uganda/", category: "agriculture", lang: 'sw' },
         "cv-builder": { name: "Mjenzi wa CV | Violezo vya Kitaalamu kwa Afrika", desc: "Tengeneza CV yako ya kitaalamu kwa dakika chache. Violezo 16+ kwa nchi za Afrika: Nigeria, Kenya, Ghana, Afrika Kusini. Pakua PDF bure, bila usajili.", href: "/sw/zana/mjenzi-cv/", category: "document-pdf", lang: 'sw' },
         "cv-paye": { name: "Kikokotoo cha Kodi ya Mshahara Cabo Verde 2026 — INPS IUR", desc: "Kokotoa mshahara wako halisi baada ya kodi ya IUR, INPS Cabo Verde. Banda la kodi 0%–27.5%. Bure, haraka, bila kujisajili.", href: "/sw/cape-verde/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
         "cv-vat": { name: "Kikokotoo cha VAT Cabo Verde 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Cabo Verde: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa CVE.", href: "/sw/cape-verde/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
@@ -3154,18 +3232,18 @@
         "er-paye": { name: "Kikokotoo cha Kodi ya Mshahara Eritrea 2026 — PAYE ERN", desc: "Kokotoa kodi ya mshahara na Bima ya Jamii kwa Eritrea 2026. Mabanda ya kodi 7, sarafu ERN. Zana ya bure ya kuhesabu mshahara halisi.", href: "/sw/eritrea/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
         "et-paye": { name: "Kikokotoo cha Kodi ya Mshahara Ethiopia 2026 — ERCA", desc: "Kikokotoo cha kodi ya mshahara Ethiopia 2025/26. Viwango vya ERCA (0%–35%), Mfuko wa Pensheni 7%, mwajiri 11%. Pata mshahara halisi wako kwa ETB.", href: "/sw/ethiopia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
         "et-vat": { name: "Kikokotoo cha VAT Ethiopia 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Ethiopia: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa ETB.", href: "/sw/ethiopia/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "export-docs": { name: "Nyaraka za Usafirishaji Mazao Afrika", desc: "Checklist ya export docs, AfCFTA, HS code, certificates, invoice na gharama za maandalizi ya kusafirisha mazao.", href: "/sw/zana/nyaraka-za-usafirishaji-mazao/", category: "agriculture", lang: 'sw' },
+        "export-docs": { name: "Nyaraka za Usafirishaji Mazao Afrika", desc: "Orodha ya ukaguzi ya nyaraka za export, AfCFTA, HS code, vyeti, ankara na gharama za maandalizi ya kusafirisha mazao.", href: "/sw/zana/nyaraka-za-usafirishaji-mazao/", category: "agriculture", lang: 'sw' },
         "farm-loans-hub": { name: "Ustahiki wa Mkopo wa Shamba | Agro Loan", desc: "Kagua maandalizi ya mkopo wa shamba kwa mapato, gharama, deni, collateral na uwezo wa kulipa.", href: "/sw/zana/ustahiki-wa-mkopo-wa-shamba/", category: "agriculture", lang: 'sw' },
         "farm-payroll-calculator": { name: "Mishahara ya Wafanyakazi wa Shamba", desc: "Kadiria payroll ya wafanyakazi wa shamba, casual labour, deductions na michango ya mwajiri.", href: "/sw/zana/mishahara-ya-wafanyakazi-wa-shamba/", category: "agriculture", lang: 'sw' },
         "farm-profit-calculator": { name: "Faida na Hasara ya Shamba Afrika", desc: "Kokotoa mapato, gharama, break-even yield na ROI ya msimu wa shamba.", href: "/sw/zana/faida-na-hasara-ya-shamba/", category: "agriculture", lang: 'sw' },
-        "fertilizer-burundi": { name: "Kikokotoo cha Mbolea Burundi â€” AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Burundi. Mapendekezo ya bidhaa za mbolea, bei za soko BIF, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/burundi/", category: "agriculture", lang: 'sw' },
+        "fertilizer-burundi": { name: "Kikokotoo cha Mbolea Burundi - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Burundi. Mapendekezo ya bidhaa za mbolea, bei za soko BIF, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/burundi/", category: "agriculture", lang: 'sw' },
         "fertilizer-calculator": { name: "Kikokotoo cha Mbolea na NPK Afrika", desc: "Kadiria mifuko ya mbolea, gharama na subsidy kwa kutumia mahitaji ya NPK au kg kwa hekta.", href: "/sw/zana/kikokotoo-mbolea/", category: "agriculture", lang: 'sw' },
-        "fertilizer-kenya": { name: "Kikokotoo cha Mbolea Kenya â€” AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Kenya. Mapendekezo ya bidhaa za mbolea, bei za soko, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/kenya/", category: "agriculture", lang: 'sw' },
-        "fertilizer-rwanda": { name: "Kikokotoo cha Mbolea Rwanda â€” AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Rwanda. Mapendekezo ya bidhaa za mbolea, bei za soko RWF, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/rwanda/", category: "agriculture", lang: 'sw' },
-        "fertilizer-tanzania": { name: "Kikokotoo cha Mbolea Tanzania â€” AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Tanzania. Mapendekezo ya bidhaa za mbolea, bei za soko, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/tanzania/", category: "agriculture", lang: 'sw' },
-        "fertilizer-uganda": { name: "Kikokotoo cha Mbolea Uganda â€” AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Uganda. Mapendekezo ya bidhaa za mbolea, bei za soko UGX, na ratiba ya matumizi.", href: "/sw/kilimo/mbolea/uganda/", category: "agriculture", lang: 'sw' },
+        "fertilizer-kenya": { name: "Kikokotoo cha Mbolea Kenya - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Kenya. Mapendekezo ya bidhaa za mbolea, bei za soko, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/kenya/", category: "agriculture", lang: 'sw' },
+        "fertilizer-rwanda": { name: "Kikokotoo cha Mbolea Rwanda - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Rwanda. Mapendekezo ya bidhaa za mbolea, bei za soko RWF, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/rwanda/", category: "agriculture", lang: 'sw' },
+        "fertilizer-tanzania": { name: "Kikokotoo cha Mbolea Tanzania - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Tanzania. Mapendekezo ya bidhaa za mbolea, bei za soko, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/tanzania/", category: "agriculture", lang: 'sw' },
+        "fertilizer-uganda": { name: "Kikokotoo cha Mbolea Uganda - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Uganda. Mapendekezo ya bidhaa za mbolea, bei za soko UGX, na ratiba ya matumizi.", href: "/sw/kilimo/mbolea/uganda/", category: "agriculture", lang: 'sw' },
         "fish-farming-roi": { name: "Faida ya Ufugaji Samaki Afrika", desc: "Kadiria mapato, feed cost, fingerlings, mortality na ROI ya catfish, tilapia au trout.", href: "/sw/zana/faida-ya-ufugaji-samaki/", category: "ecommerce", lang: 'sw' },
-        "foreign-company-reg": { name: "Usajili wa kampuni ya kigeni Afrika", desc: "Mwongozo wa kupanga foreign-company registration: branch, subsidiary, representative office, JV, local partner, sectors, permits na registrar checks kwa nchi 16.", href: "/sw/zana/usajili-wa-kampuni-ya-kigeni/", category: "ecommerce", lang: 'sw' },
+        "foreign-company-reg": { name: "Usajili wa kampuni ya kigeni Afrika", desc: "Mwongozo wa kupanga usajili wa kampuni ya kigeni: tawi, kampuni tanzu, ofisi ya uwakilishi, JV, mshirika wa ndani, sekta, vibali na ukaguzi wa msajili kwa nchi 16.", href: "/sw/zana/usajili-wa-kampuni-ya-kigeni/", category: "ecommerce", lang: 'sw' },
         "forex-profit": { name: "Kikokotoo cha Faida ya Forex | Pips, Thamani ya Pip na P&L", desc: "Kokotoa faida au hasara ya forex kwa Kiswahili. Pima pips, thamani ya pip, position size na P&L kwa jozi kuu na sarafu za Afrika.", href: "/sw/zana/kikokotoo-faida-forex/", category: "ecommerce", lang: 'sw' },
         "freelance-invoice": { name: "Ankara ya Freelancer", desc: "Tengeneza makadirio ya ankara ya freelancer kwa subtotal, VAT/kodi, discount, due date na payment note.", href: "/sw/zana/ankara-ya-freelancer/", category: "document-pdf", lang: 'sw' },
         "ga-paye": { name: "Kikokotoo cha Kodi ya Mshahara Gabon 2026 — PAYE XAF", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na CNSS Gabon. XAF. Bure, haraka, sahihi.", href: "/sw/gabon/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
@@ -3287,7 +3365,7 @@
         "td-vat": { name: "Kikokotoo cha VAT Chadi 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Chadi: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XAF.", href: "/sw/chad/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
         "teacher-salary": { name: "Mshahara wa Mwalimu | Teacher Scale", desc: "Kadiria nafasi yako kwenye teacher scale kwa level ya shule, aina ya mwajiri na miaka ya uzoefu bila kudai scale rasmi.", href: "/sw/zana/mshahara-wa-mwalimu/", category: "financial", lang: 'sw' },
         "telecom-business-internet": { name: "Kikokotoo Intaneti ya Biashara", desc: "Kadiria intaneti ya biashara kwa wafanyakazi, Mbps, matumizi, backup na gharama za mtoa huduma. Matokeo ni ya kupanga, si bei rasmi.", href: "/sw/zana/kikokotoo-intaneti-ya-biashara/", category: "ecommerce", lang: 'sw' },
-        "telecom-sim-reg": { name: "Ukaguzi Usajili wa SIM", desc: "Kagua mahitaji ya usajili wa SIM, KYC, NIN, Ghana Card, passport au ID ya nchi. Tumia kama checklist, si uamuzi rasmi wa regulator.", href: "/sw/zana/ukaguzi-usajili-wa-sim/", category: "ecommerce", lang: 'sw' },
+        "telecom-sim-reg": { name: "Ukaguzi Usajili wa SIM", desc: "Kagua mahitaji ya usajili wa SIM, KYC, NIN, Ghana Card, passport au ID ya nchi. Tumia kama orodha ya ukaguzi, si uamuzi rasmi wa mamlaka.", href: "/sw/zana/ukaguzi-usajili-wa-sim/", category: "ecommerce", lang: 'sw' },
         "telecom-whatsapp-vs-sms": { name: "WhatsApp Business dhidi ya SMS", desc: "Linganishia WhatsApp Business API na SMS nyingi kwa gharama, reach, aina ya ujumbe na breakeven ya biashara.", href: "/sw/zana/whatsapp-business-dhidi-ya-sms/", category: "ecommerce", lang: 'sw' },
         "tg-paye": { name: "Kikokotoo cha Kodi ya Mshahara Togo 2026 — OTR PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya OTR Togo, CNPS 2.5%. Mabanda ya kodi 0%–25%. Bure, haraka.", href: "/sw/togo/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
         "tg-vat": { name: "Kikokotoo cha VAT Togo 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Togo: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/togo/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
@@ -3301,13 +3379,14 @@
         "tz-vat": { name: "Kikokotoo cha VAT Tanzania 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Tanzania: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa TZS.", href: "/sw/tanzania/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
         "ug-vat": { name: "Kikokotoo cha VAT Uganda 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Uganda: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa UGX.", href: "/sw/uganda/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
         "vat-calc-pan-african": { name: "Kikokotoo cha VAT Afrika | Nchi 54", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa nchi zote 54 za Afrika na uunganishe matokeo na ankara, TIN na usajili wa biashara.", href: "/sw/zana/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
+        "hajj-budget": { name: "Bajeti ya Hajj na Umrah", desc: "Panga akiba ya Hajj au Umrah kwa kifurushi, nauli ya ndege, visa, chakula, usafiri na akiba ya dharura.", href: "/sw/zana/bajeti-ya-hajj-na-umrah/", category: "religious-cultural", lang: 'sw' },
         "vat-calculator": { name: "Kikokotoo cha VAT Afrika | Nchi 54", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa nchi zote 54 za Afrika na uunganishe matokeo na ankara, TIN na usajili wa biashara.", href: "/sw/zana/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
         "vehicle-import-duty": { name: "Ushuru wa Kuagiza Gari Afrika", desc: "Kadiria duty, VAT, excise na levies za kuagiza gari. Thibitisha viwango na mamlaka ya forodha kabla ya kununua.", href: "/sw/zana/ushuru-kuagiza-gari/", category: "ecommerce", lang: 'sw' },
         "vehicle-registration": { name: "Usajili na Nyaraka za Gari", desc: "Kagua renewal, road tax, inspection, plates, insurance proof na nyaraka za gari. Thibitisha na mamlaka ya usajili.", href: "/sw/zana/usajili-na-nyaraka-za-gari/", category: "ecommerce", lang: 'sw' },
         "vehicle-tracker-roi": { name: "Faida ya Tracker ya Gari", desc: "Kadiria ROI ya GPS tracker kwa fuel savings, insurance discount, theft recovery risk, subscription na installation cost.", href: "/sw/zana/faida-ya-tracker-ya-gari/", category: "ecommerce", lang: 'sw' },
         "voter-registration": { name: "Usajili wa Mpiga Kura Afrika | INEC, IEBC, IEC na Status", desc: "Mwongozo wa Kiswahili wa usajili wa mpiga kura, eligibility, ID, commission, portal na status kwa nchi kadhaa za Afrika.", href: "/sw/zana/usajili-wa-mpiga-kura/", category: "ecommerce", lang: 'sw' },
         "watermark-bulk": { name: "Watermark Nyingi - weka alama kwenye faili nyingi", desc: "Weka watermark kwenye picha nyingi kwa proofs, listings, media ya jumuiya na drafts ndani ya browser, kisha pakua batch.", href: "/sw/zana/watermark-nyingi/", category: "document-pdf", lang: 'sw' },
-        "winding-up": { name: "Checklist ya kufunga kampuni | Winding-up", desc: "Panga winding-up au kufunga kampuni: voluntary route, creditors, tax clearance, asset realisation, deregistration na risks za directors kwa nchi 16.", href: "/sw/zana/kufunga-kampuni/", category: "ecommerce", lang: 'sw' },
+        "winding-up": { name: "Orodha ya Kufunga Kampuni | Winding-up", desc: "Panga winding-up au kufunga kampuni: njia ya hiari, wadai, uthibitisho wa kodi, kuuza mali, kufuta usajili na hatari kwa wakurugenzi katika nchi 16.", href: "/sw/zana/kufunga-kampuni/", category: "ecommerce", lang: 'sw' },
         "za-paye": { name: "Kikokotoo cha Kodi ya Mshahara Afrika Kusini 2025/26 — SARS", desc: "Kikokotoo cha kodi ya mshahara Afrika Kusini 2025/26. SARS mabanda 7 (18%–45%), UIF 1%, punguzo la pensheni 27.5%, mikopo ya kodi ya matibabu. Mshahara halisi kwa ZAR.", href: "/sw/south-africa/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
         "za-vat": { name: "Kikokotoo cha VAT Afrika Kusini 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Afrika Kusini: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa ZAR.", href: "/sw/south-africa/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
         "zm-paye": { name: "Kikokotoo cha Kodi ya Mshahara Zambia 2025/26", desc: "Kikokotoo cha kodi ya mshahara (PAYE) kwa Zambia 2025/26. Viwango vya ZRA 0%–37.5%, NAPSA 5%. Hesabu sahihi kwa Kwacha ya Zambia (ZMW). Bila malipo.", href: "/sw/zambia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
@@ -3321,11 +3400,11 @@
       const HA_DISCOVERY_OVERRIDES = {
         "ng-paye": { name: "Kalkuleta PAYE Najeriya", desc: "Kokoto albashi, PAYE, pension da NHF na Najeriya. An fi dacewa da ma'aikata da HR a Arewa.", href: "/ha/najeriya/harajin-albashi/", category: "financial", lang: 'ha' },
         "ng-paye-ha": { name: "Kalkuleta PAYE Najeriya", desc: "Kokoto albashi, PAYE, pension da NHF na Najeriya. An fi dacewa da ma'aikata da HR a Arewa.", href: "/ha/najeriya/harajin-albashi/", category: "financial", lang: 'ha' },
-        "vat-calc-pan-african": { name: "Kalkuletan VAT na Afirka", desc: "Kara ko cire VAT, gina invoice, lissafa withholding VAT, sannan ka kwatanta rates na kasashe 54.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha' },
-        "vat-calculator": { name: "Kalkuletan VAT na Afirka", desc: "Kara ko cire VAT, gina invoice, lissafa withholding VAT, sannan ka kwatanta rates na kasashe 54.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha' },
-        "vat-calculator-ha": { name: "Kalkuletan VAT na Afirka", desc: "Kara ko cire VAT, gina invoice, lissafa withholding VAT, sannan ka kwatanta rates na kasashe 54.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha' },
-        "vat-business-tax-ha": { name: "VAT da Harajin Kasuwanci", desc: "Hub din Hausa don VAT, TIN, invoice, PAYE, CIT, WHT da hanyoyin harajin kasuwanci.", href: "/ha/kasuwanci-da-haraji/", category: "ecommerce", lang: 'ha' },
-        "ng-vat": { name: "VAT na Najeriya", desc: "Yi amfani da kalkuletan Hausa don Nigeria VAT 7.5%, invoice, withholding VAT da kwatanta kasashe.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha' },
+        "vat-calc-pan-african": { name: "Kalkuletan VAT na Afirka (ana bita)", desc: "Shafin Hausa yana karkashin bita; idan kana bukatar cikakken UI yanzu, shafin Turanci yana nan.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha', status: 'queued', phase: 'REVIEW' },
+        "vat-calculator": { name: "Kalkuletan VAT na Afirka (ana bita)", desc: "Shafin Hausa yana karkashin bita; idan kana bukatar cikakken UI yanzu, shafin Turanci yana nan.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha', status: 'queued', phase: 'REVIEW' },
+        "vat-calculator-ha": { name: "Kalkuletan VAT na Afirka (ana bita)", desc: "Shafin Hausa yana karkashin bita; idan kana bukatar cikakken UI yanzu, shafin Turanci yana nan.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha', status: 'queued', phase: 'REVIEW' },
+        "vat-business-tax-ha": { name: "VAT da Harajin Kasuwanci (ana bita)", desc: "Hub din Hausa don VAT, TIN, invoice, PAYE, CIT da WHT yana karkashin bita kafin cikakken tallatawa.", href: "/ha/kasuwanci-da-haraji/", category: "ecommerce", lang: 'ha', status: 'queued', phase: 'REVIEW' },
+        "ng-vat": { name: "VAT na Najeriya (ana bita)", desc: "Hanyar Hausa tana karkashin bita; tabbatar da VAT daga FIRS ko kwararre kafin amfani.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha', status: 'queued', phase: 'REVIEW' },
         "document-pdf": { name: "Takardu da PDF", desc: "Hub din Hausa don hada PDF, raba PDF, matsa PDF, CV, invoice da kayan takardu.", href: "/ha/takardu-da-pdf/", category: "document-pdf", lang: 'ha' },
         "document-pdf-ha": { name: "Takardu da PDF", desc: "Hub din Hausa don hada PDF, raba PDF, matsa PDF, CV, invoice da kayan takardu.", href: "/ha/takardu-da-pdf/", category: "document-pdf", lang: 'ha' },
         "invoice-generator": { name: "Kirkiro Invoice", desc: "Kirkiri invoice da VAT, bayanan biyan kudi, PDF export, JSON backup da share link a Hausa.", href: "/ha/kayan-aiki/kirkiro-invoice/", category: "document-pdf", lang: 'ha' },
@@ -3339,8 +3418,8 @@
         "jamb-aggregate": { name: "Kalkuletan JAMB Aggregate", desc: "Lissafa aggregate score na JAMB da department cutoff na jami'o'in Najeriya a Hausa.", href: "/ha/kayan-aiki/kalkuletan-jamb/", category: "education", lang: 'ha' },
         "waec-calculator": { name: "Kalkuletan WAEC/NECO", desc: "Kokoto WAEC, NECO, O'Level da JAMB eligibility cikin sauki a Hausa.", href: "/ha/kayan-aiki/kalkuletan-waec-neco/", category: "education", lang: 'ha' },
         "nysc-allowance": { name: "Kalkuletan alawus na NYSC", desc: "Kokoto allowance na NYSC, state top-up, kudin gefe da kasafin wata a Hausa.", href: "/ha/kayan-aiki/alawus-na-nysc/", category: "education", lang: 'ha' },
-        "hausa-translator": { name: "Hausa Translator & Phrasebook", desc: "English zuwa Hausa da Hausa zuwa English, kalmomin kasuwa, aiki, gaisuwa da dokoki.", href: "/tools/hausa-translator/", category: "language", lang: 'ha' },
-        "language-ha": { name: "Harshe da Fassara a Hausa", desc: "Hub din Hausa don Hausa Translator, phrasebook, sunayen Afirka, karin magana, PDF translation da kayan aikin rubutu.", href: "/ha/harshe-da-fassara/", category: "language", lang: 'ha' },
+        "hausa-translator": { name: "Hausa Translator (Turanci)", desc: "Kayan fassara yana kan shafin Turanci tukuna; Hausa hub yana nuna fallback a fili.", href: "/tools/hausa-translator/", category: "language", lang: 'ha' },
+        "language-ha": { name: "Harshe da Fassara a Hausa (ana bita)", desc: "Hub din Hausa yana karkashin bita kuma yana nuna English fallbacks a fili.", href: "/ha/harshe-da-fassara/", category: "language", lang: 'ha', status: 'queued', phase: 'REVIEW' },
         "telecom-ussd": { name: "Lambobin USSD", desc: "Lambobin USSD na network, banki, data, airtime, balance da mobile money.", href: "/ha/kayan-aiki/lambobin-ussd/", category: "telecom", lang: 'ha' },
         "whatsapp-link": { name: "WhatsApp Link Generator", desc: "Gina wa.me link, message, QR code da bulk links ga kasuwanci.", href: "/ha/kayan-aiki/whatsapp-link/", category: "telecom", lang: 'ha' },
         "mobile-money-fees": { name: "Kudin mobile money", desc: "Fee checker din yana Turanci tukuna; tabbatar da fee daga app ko USSD na provider kafin transaction.", href: "/tools/mobile-money-fees/", category: "telecom", lang: 'ha' },
@@ -3354,8 +3433,8 @@
         "cassava-processing-calculator": { name: "Sarrafa rogo Najeriya", desc: "Kwatanta garri, fufu flour, HQCF, cassava chips da starch ta profit da payback.", href: "/ha/kayan-aiki/sarrafa-rogo/", category: "agriculture", lang: 'ha' },
         "staple-basket": { name: "Kwandon kasuwa", desc: "Duba farashin kwandon abinci, household estimate da verified price report a Hausa.", href: "/ha/kayan-aiki/kwandon-kasuwa/", category: "agriculture", lang: 'ha' },
         "medical-report": { name: "Fassarar medical report", desc: "UI din Turanci ne tukuna; a yi amfani da shi a matsayin fallback domin lab-result explanation.", href: "/tools/medical-report/", category: "health", lang: 'ha' },
-        "genotype-checker": { name: "Genotype da blood group", desc: "Duba AA, AS, SS, AC, SC, CC da blood group reference a Hausa, tare da lab-confirmation disclaimer.", href: "/ha/kayan-aiki/duba-genotype/", category: "health", lang: 'ha' },
-        "sickle-cell": { name: "Sickle Cell Genotype Advisor", desc: "Fahimci genotype probabilities da Punnett square a Hausa; ba diagnosis ba.", href: "/ha/kayan-aiki/sickle-cell/", category: "health", lang: 'ha' },
+        "genotype-checker": { name: "Genotype da rukunin jini (ana bita)", desc: "Shafin Hausa yana karkashin bita; tabbatar da genotype da lab ko kwararren lafiya.", href: "/ha/kayan-aiki/duba-genotype/", category: "health", lang: 'ha', status: 'queued', phase: 'REVIEW' },
+        "sickle-cell": { name: "Jagorar Genotype da Sikila (ana bita)", desc: "Shafin Hausa yana karkashin bita; bayani ne kawai, ba ganewar cuta ba.", href: "/ha/kayan-aiki/sickle-cell/", category: "health", lang: 'ha', status: 'queued', phase: 'REVIEW' },
         "hospital-cost": { name: "Kudin asibiti", desc: "Kiyasta kudin asibiti, delivery, scans da treatment services a Hausa; tabbatar da facility.", href: "/ha/kayan-aiki/kudin-asibiti/", category: "health", lang: 'ha' },
         "drug-price-compare": { name: "Kwatanta farashin magani", desc: "Kwatanta brand da generic medicine a Hausa; tabbatar da pharmacist ko doctor.", href: "/ha/kayan-aiki/kwatanta-farashin-magani/", category: "health", lang: 'ha' },
         "childbirth-cost": { name: "Kudin haihuwa", desc: "Kiyasta ANC, delivery, postnatal care da medicine buffer a Hausa; ba medical advice ba.", href: "/ha/kayan-aiki/kudin-haihuwa/", category: "health", lang: 'ha' },
@@ -3376,7 +3455,7 @@
 
       const localizeHaDiscoveryTool = (tool) => {
         const override = HA_DISCOVERY_OVERRIDES[tool.id];
-        return override ? Object.assign({}, tool, override, { lang: 'ha', status: tool.status || 'live' }) : null;
+        return override ? Object.assign({}, tool, override, { lang: 'ha', status: override.status || tool.status || 'live' }) : null;
       };
 
       const dedupeToolsByHref = (items) => {
@@ -3429,6 +3508,21 @@
         return escapeHtml(text).replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
       };
 
+      const normalizeSearchText = value => String(value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+
+      const SW_SEARCH_INTENT_TARGETS = {
+        paye: ['/sw/mshahara-na-kodi/paye', '/sw/mshahara-na-kodi', '/sw/kenya/kikokotoo-kodi-mshahara', '/sw/tanzania/kikokotoo-kodi-mshahara', '/sw/uganda/kikokotoo-kodi-mshahara'],
+        vat: ['/sw/zana/kikokotoo-vat', '/sw/vat-na-kodi', '/sw/biashara-na-uzingatiaji', '/sw/kenya/kikokotoo-vat', '/sw/tanzania/kikokotoo-vat', '/sw/uganda/kikokotoo-vat'],
+        fedha: ['/sw/fintech', '/sw/mali-na-mikopo', '/sw/sarafu', '/sw/zana/kibadilishaji-sarafu', '/sw/zana/ulinganisho-uhamishaji-pesa'],
+        sheria: ['/sw/serikali-na-nyaraka', '/sw/kazi-na-nyaraka', '/sw/zana/tamko-la-kisheria', '/sw/zana/ustahiki-wa-msaada-wa-kisheria', '/sw/zana/gdpr-dhidi-ya-sheria-za-afrika'],
+        hajj: ['/sw/zana/bajeti-ya-hajj-na-umrah', '/sw/dini-na-utamaduni']
+      };
+
       const getCategoryLabel = (catId) => {
         const cat = NAV_ITEMS.find(c => c.id === catId);
         return cat ? localizedItemText(cat, 'label', this._getLang()) : catId;
@@ -3438,24 +3532,31 @@
         const tools = getTools();
         if (!tools) return null;
         if (!query || query.length < 1) return [];
-        const q = query.toLowerCase().trim();
+        const q = normalizeSearchText(query);
+        const queryTokens = q.split(/\s+/).filter(Boolean);
+        const pageLang = this._getLang();
+        const intentTargets = pageLang === 'sw' ? (SW_SEARCH_INTENT_TARGETS[q] || []) : [];
         const scored = [];
         for (const t of tools) {
-          const nameL = t.name.toLowerCase();
-          const descL = t.desc.toLowerCase();
+          const nameL = normalizeSearchText(t.name);
+          const descL = normalizeSearchText(t.desc);
           let score = 0;
           if (nameL === q) score = 100;
           else if (nameL.startsWith(q)) score = 80;
           else if (nameL.includes(q)) score = 60;
           else if (descL.includes(q)) score = 30;
           else {
-            const words = q.split(/\s+/);
-            const allMatch = words.every(w => nameL.includes(w) || descL.includes(w));
+            const allMatch = queryTokens.every(w => nameL.includes(w) || descL.includes(w));
             if (allMatch) score = 20;
           }
+          const intentRank = intentTargets.indexOf(normalizeDiscoveryHref(t.href || t.id));
+          if (intentRank !== -1) score += 90 - (intentRank * 10);
           if (score > 0) scored.push({ tool: t, score });
         }
-        scored.sort((a, b) => b.score - a.score);
+        scored.sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          return (b.tool.priority || 0) - (a.tool.priority || 0);
+        });
         return scored.slice(0, 8).map(s => s.tool);
       };
 
@@ -3994,6 +4095,14 @@
   })();
 
   /* ── LAZY-LOAD AUTH SYSTEM (every page gets login/signup capability) ── */
+  function _hasLocalAuthHint() {
+    try {
+      return !!(window.localStorage && (localStorage.getItem('afro_auth_v2') || localStorage.getItem('afro_session_v3')));
+    } catch (err) {
+      return false;
+    }
+  }
+
   setTimeout(function() {
     function _authLS(src, cb) {
       if (document.querySelector('script[src*="' + src.split('/').pop() + '"]')) { if (cb) cb(); return; }
@@ -4003,14 +4112,22 @@
       s.onerror = function() { if (cb) cb(); };
       document.body.appendChild(s);
     }
+    function _canUseAuthCookieBridge() {
+      try {
+        var host = window.location.hostname || '';
+        return !/^(localhost|127\.0\.0\.1|::1)$/.test(host) || !!window.AFROTOOLS_ENABLE_LOCAL_AUTH_API;
+      } catch (err) {
+        return true;
+      }
+    }
     _authLS('/assets/js/data/african-countries.js', function() {
       _authLS('/assets/js/afro-auth.js', function() {
         _authLS('/assets/js/components/auth-modal.js', function() {
-          _authLS('/assets/js/auth-cookie-upgrade.js?v=4');
+          if (_canUseAuthCookieBridge()) _authLS('/assets/js/auth-cookie-upgrade.js?v=4');
         });
       });
     });
-  }, 800);
+  }, _hasLocalAuthHint() ? 800 : 12000);
 
   /* ── PWA: inject manifest, theme-color & service worker from navbar (every page) ── */
   (function _pwa() {
@@ -4037,15 +4154,23 @@
 
   _idle(function() {
     /* Animations */
-    if (!document.getElementById('afro-animations-css')) {
-      var l = document.createElement('link'); l.id = 'afro-animations-css';
-      l.rel = 'stylesheet'; l.href = '/assets/css/animations.css';
-      document.head.appendChild(l);
-    }
-    if (!document.getElementById('afro-animations-js')) {
-      var s = document.createElement('script'); s.id = 'afro-animations-js';
-      s.src = '/assets/js/animations.js'; s.defer = true;
-      document.head.appendChild(s);
+    var skipDecorativeMotion = false;
+    try {
+      skipDecorativeMotion = window.matchMedia && window.matchMedia('(max-width: 720px), (prefers-reduced-motion: reduce)').matches;
+    } catch (err) {}
+    if (skipDecorativeMotion) {
+      document.querySelectorAll('.rv, .rv-scale').forEach(function(el) { el.classList.add('in'); });
+    } else {
+      if (!document.getElementById('afro-animations-css')) {
+        var l = document.createElement('link'); l.id = 'afro-animations-css';
+        l.rel = 'stylesheet'; l.href = '/assets/css/animations.css';
+        document.head.appendChild(l);
+      }
+      if (!document.getElementById('afro-animations-js')) {
+        var s = document.createElement('script'); s.id = 'afro-animations-js';
+        s.src = '/assets/js/animations.js'; s.defer = true;
+        document.head.appendChild(s);
+      }
     }
 
     /* Error boundary (global error handler + UI helpers) */
@@ -4080,11 +4205,11 @@
   });
 
   /* Auth: load afro-auth.js (consolidated Supabase auth) */
-  _idle(function() {
+  setTimeout(function() { _idle(function() {
     if (window._afroAuthLoaded) return;
     if (!document.getElementById('afro-auth-js')) {
       var s = document.createElement('script'); s.id = 'afro-auth-js';
       s.src = '/assets/js/afro-auth.js?v=6'; document.head.appendChild(s);
     }
-  });
+  }); }, _hasLocalAuthHint() ? 800 : 12000);
 })();
