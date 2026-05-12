@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <script src="/assets/js/afro-auth.js?v=3978e101"></script>
   <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+  <script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c"></script>
   <style>
     :root{
       --pp-bg:var(--color-bg,#F8FAFD);
@@ -142,6 +143,7 @@
     .prop-tool strong{font-size:12px;font-weight:900}
     .prop-tool span{font-size:11px;color:var(--pp-muted);line-height:1.35}
     .prop-empty{padding:16px;border:1px dashed var(--pp-line-strong);border-radius:var(--pp-radius);background:var(--pp-soft);color:var(--pp-muted);font-size:12px;line-height:1.5}
+    .prop-status-text{font-size:11px;line-height:1.45;color:var(--pp-muted);margin:0}
     @media (max-width:1240px){
       .prop-workflows{grid-template-columns:repeat(3,minmax(0,1fr))}
       .prop-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -248,7 +250,7 @@
                 <h1 class="prop-title">AfroProperty &amp; Project OS</h1>
                 <p class="prop-subtitle">A dense operations console for construction projects, rental work, procurement, BOQ controls, contractor tracking, inspections, cost variance, and document handoff.</p>
               </div>
-              <span class="prop-pill shell">Saved workspace</span>
+              <span class="prop-pill shell" id="workspaceModePill">Local workspace</span>
             </div>
             <div class="prop-snapshot" aria-label="Workspace snapshot">
               <div class="prop-snap">
@@ -273,9 +275,15 @@
             <h2>Project control, not escrow or official valuation</h2>
             <p>This workspace organizes local project records and export packets. It does not verify land title, hold escrow, provide official property valuation, file permits, approve inspections, or move contractor payments.</p>
             <div class="prop-row-actions">
-              <span class="prop-pill review">Account save coming soon</span>
-              <span class="prop-pill shell">Saved on this device</span>
+              <span class="prop-pill review" id="accountSyncPill">Account sync checking</span>
+              <span class="prop-pill shell" id="deviceSavePill">Saved on this device</span>
               <span class="prop-pill planned">Pro gated</span>
+            </div>
+            <p class="prop-status-text" id="accountStatusText">Local save is active. Signed-in users can save the property workspace to the account workspace store when available.</p>
+            <div class="prop-row-actions">
+              <button class="prop-btn primary" type="button" id="saveAccountBtn">Save to account</button>
+              <button class="prop-btn" type="button" id="pullAccountBtn">Pull from account</button>
+              <button class="prop-btn" type="button" id="downloadBackupBtn">Download backup</button>
             </div>
           </aside>
         </section>
@@ -312,7 +320,7 @@
           <div class="prop-panel-head">
             <div>
               <h2 class="prop-h2">Starter Workflows</h2>
-              <p class="prop-note">Fast local actions for a paid Pro workspace while the account-backed property schema is still pending.</p>
+              <p class="prop-note">Fast property actions with device save first and account sync through the shared workspace store when signed in.</p>
             </div>
             <span class="prop-pill shell">Sample workspace</span>
           </div>
@@ -471,6 +479,20 @@
               </div>
             </section>
 
+            <section class="prop-panel" id="reminders">
+              <div class="prop-panel-head">
+                <div>
+                  <h2 class="prop-h2">Milestone Reminders</h2>
+                  <p class="prop-note">Source-derived reminder models for payments, procurement, inspections, and handoff documents. They are saved inside the property workspace item, not live alerts.</p>
+                </div>
+                <span class="prop-pill due-soon" id="reminderSummary">0 active</span>
+              </div>
+              <div class="prop-panel-body">
+                <div class="prop-list" id="reminderList"></div>
+                <p class="prop-status-text" id="reminderSourceNote">Models are based on public project controls, procurement, inspection, and closeout guidance.</p>
+              </div>
+            </section>
+
             <section class="prop-panel" id="rentals">
               <div class="prop-panel-head">
                 <div>
@@ -507,6 +529,19 @@
               </div>
               <div class="prop-panel-body">
                 <div class="prop-list" id="documentList"></div>
+              </div>
+            </section>
+
+            <section class="prop-panel" id="packets">
+              <div class="prop-panel-head">
+                <div>
+                  <h2 class="prop-h2">Recent Packets</h2>
+                  <p class="prop-note">Visible history of local exports and account-recorded packet metadata.</p>
+                </div>
+                <span class="prop-pill exported" id="packetHistoryCount">0</span>
+              </div>
+              <div class="prop-panel-body">
+                <div class="prop-list" id="packetHistoryList"></div>
               </div>
             </section>
 
@@ -548,6 +583,25 @@
       "use strict";
 
       var STORAGE_KEY = "afroproperty_project_os_demo_v1";
+      var WORKSPACE_ITEM_TYPE = "property-project-workspace";
+      var WORKSPACE_ITEM_KEY = "current";
+      var PACKET_ITEM_TYPE = "property-project-packet";
+      var REFERENCE_PATH = "/data/property/project-workflow-reference.json";
+      var sourceModels = {
+        version: 1,
+        sources: [
+          { id: "world_bank_procurement_contract_management", title: "World Bank procurement contract management", url: "https://www.worldbank.org/ext/en/what-we-do/project-procurement/for-borrowers" },
+          { id: "fhwa_project_management_controls", title: "FHWA project management controls", url: "https://www.fhwa.dot.gov/majorprojects/pmp/guidance17.cfm" },
+          { id: "vdot_final_inspection_closeout", title: "VDOT final inspection and closeout", url: "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/locally-administered-projects-manual/chapter-14/" },
+          { id: "mrsc_public_works_closeout", title: "MRSC public works closeout", url: "https://mrsc.org/explore-topics/procurement/contract-administration/project-closeout" }
+        ],
+        reminder_models: [
+          { id: "contractor_payment_review", title: "Contractor payment review", surface: "payments", date_field: "due", due_soon_days: 7, overdue_after_days: 0, source_ids: ["world_bank_procurement_contract_management", "fhwa_project_management_controls"] },
+          { id: "procurement_deadline", title: "Procurement deadline", surface: "procurement", date_field: "needed", due_soon_days: 7, overdue_after_days: 0, source_ids: ["world_bank_procurement_contract_management", "fhwa_project_management_controls"] },
+          { id: "inspection_follow_up", title: "Inspection follow-up", surface: "inspections", date_field: "date", stale_after_days: 10, source_ids: ["vdot_final_inspection_closeout", "fhwa_project_management_controls"] },
+          { id: "handoff_document_gap", title: "Handoff document gap", surface: "documents", trigger: "ready_false", source_ids: ["mrsc_public_works_closeout"] }
+        ]
+      };
 
       var seed = {
         projects: [
@@ -598,21 +652,41 @@
       };
 
       var state = loadState();
+      var pendingAccountPull = false;
 
       function clone(value){
         return JSON.parse(JSON.stringify(value));
+      }
+
+      function asArray(value){
+        return Array.isArray(value) ? value : [];
+      }
+
+      function normalizeState(value){
+        var normalized = Object.assign(clone(seed), value || {});
+        normalized.projects = asArray(normalized.projects);
+        normalized.budgets = asArray(normalized.budgets);
+        normalized.procurement = asArray(normalized.procurement);
+        normalized.payments = asArray(normalized.payments);
+        normalized.leases = asArray(normalized.leases);
+        normalized.inspections = asArray(normalized.inspections);
+        normalized.variances = asArray(normalized.variances);
+        normalized.documents = asArray(normalized.documents);
+        normalized.packHistory = asArray(normalized.packHistory);
+        normalized.accountMeta = Object.assign({}, normalized.accountMeta || {});
+        return normalized;
       }
 
       function loadState(){
         try {
           var raw = window.localStorage.getItem(STORAGE_KEY);
           if (!raw) {
-            return clone(seed);
+            return normalizeState(seed);
           }
           var parsed = JSON.parse(raw);
-          return Object.assign(clone(seed), parsed || {});
+          return normalizeState(parsed);
         } catch (error) {
-          return clone(seed);
+          return normalizeState(seed);
         }
       }
 
@@ -727,6 +801,101 @@
         return items.slice(0, 8);
       }
 
+      function daysFromToday(value){
+        if (!value) {
+          return null;
+        }
+        var due = new Date(String(value) + "T00:00:00Z").getTime();
+        var now = new Date(today() + "T00:00:00Z").getTime();
+        if (!Number.isFinite(due) || !Number.isFinite(now)) {
+          return null;
+        }
+        return Math.round((due - now) / 86400000);
+      }
+
+      function sourceTitles(model){
+        var ids = asArray(model && model.source_ids);
+        var sources = asArray(sourceModels.sources);
+        return ids.map(function(id){
+          var found = sources.find(function(source){ return source.id === id; });
+          return found ? found.title : id;
+        });
+      }
+
+      function reminderModel(id){
+        return asArray(sourceModels.reminder_models).find(function(model){
+          return model.id === id;
+        }) || {};
+      }
+
+      function buildReminders(){
+        var reminders = [];
+        var paymentModel = reminderModel("contractor_payment_review");
+        asArray(state.payments).forEach(function(item){
+          if (className(item.status) === "paid") {
+            return;
+          }
+          var days = daysFromToday(item.due);
+          if (days === null) {
+            return;
+          }
+          if (days <= Number(paymentModel.due_soon_days || 7)) {
+            reminders.push({
+              title: item.contractor + " payment",
+              detail: item.project + " | " + item.milestone + " | " + money(item.amount) + " due " + item.due,
+              status: days < 0 ? "Overdue" : "Due soon",
+              modelId: paymentModel.id,
+              sourceTitles: sourceTitles(paymentModel)
+            });
+          }
+        });
+        var procurementModel = reminderModel("procurement_deadline");
+        asArray(state.procurement).forEach(function(item){
+          if (item.ready) {
+            return;
+          }
+          var days = daysFromToday(item.needed);
+          if (days === null) {
+            return;
+          }
+          if (days <= Number(procurementModel.due_soon_days || 7)) {
+            reminders.push({
+              title: item.item,
+              detail: item.project + " | " + item.supplier + " | needed " + item.needed,
+              status: days < 0 ? "Overdue" : "Due soon",
+              modelId: procurementModel.id,
+              sourceTitles: sourceTitles(procurementModel)
+            });
+          }
+        });
+        var inspectionModel = reminderModel("inspection_follow_up");
+        asArray(state.inspections).forEach(function(item){
+          var days = daysFromToday(item.date);
+          if (days !== null && days <= -Number(inspectionModel.stale_after_days || 10) && className(item.status) !== "ready") {
+            reminders.push({
+              title: item.project + " inspection follow-up",
+              detail: item.date + " | " + item.note,
+              status: "Stale follow-up",
+              modelId: inspectionModel.id,
+              sourceTitles: sourceTitles(inspectionModel)
+            });
+          }
+        });
+        var documentModel = reminderModel("handoff_document_gap");
+        asArray(state.documents).forEach(function(item){
+          if (!item.ready) {
+            reminders.push({
+              title: item.label,
+              detail: item.detail,
+              status: "Missing handoff doc",
+              modelId: documentModel.id,
+              sourceTitles: sourceTitles(documentModel)
+            });
+          }
+        });
+        return reminders.slice(0, 12);
+      }
+
       function renderSummary(){
         var totalBudget = sum(state.projects, "budget");
         var totalSpent = sum(state.projects, "spent");
@@ -757,6 +926,8 @@
         setText("paymentStatus", paymentsDue + " due");
         setText("packStatus", (state.documents || []).filter(function(doc){ return doc.ready; }).length + " ready");
         setText("attentionCount", String(attentionItems().length));
+        setText("reminderSummary", buildReminders().length + " active");
+        setText("packetHistoryCount", String(asArray(state.packHistory).length));
         return { totalBudget: totalBudget, totalSpent: totalSpent };
       }
 
@@ -863,6 +1034,39 @@
         setHtml("attentionList", rows || '<div class="prop-empty">No local warnings right now.</div>');
       }
 
+      function renderReminders(){
+        var reminders = buildReminders();
+        var rows = reminders.map(function(item){
+          var sources = asArray(item.sourceTitles).slice(0, 2).join(" | ");
+          return '<article class="prop-row">' +
+            '<div><h3 class="prop-row-title">' + esc(item.title) + '</h3><div class="prop-row-meta">' + esc(item.detail) + '</div><div class="prop-row-meta">Model: ' + esc(item.modelId) + (sources ? " | " + esc(sources) : "") + '</div></div>' +
+            '<div class="prop-row-actions">' + pill(item.status) + '</div>' +
+          '</article>';
+        }).join("");
+        setHtml("reminderList", rows || '<div class="prop-empty">No payment, procurement, inspection, or handoff reminders are active right now.</div>');
+      }
+
+      function renderPacketHistory(){
+        var rows = asArray(state.packHistory).slice(0, 5).map(function(item){
+          var manifest = asArray(item.fileManifest).map(function(file){ return file.name || file.type || ""; }).filter(Boolean).join(", ");
+          return '<article class="prop-row">' +
+            '<div><h3 class="prop-row-title">' + esc(item.title || "Property packet") + '</h3><div class="prop-row-meta">' + esc((item.exportedAt || item.createdAt || "") + " | " + (item.market || "Pan-African portfolio") + " | " + (item.period || "no period")) + '</div><div class="prop-row-meta">' + esc(manifest || "JSON packet metadata") + '</div></div>' +
+            '<div class="prop-row-actions">' + pill(item.syncMode || "Local packet") + '</div>' +
+          '</article>';
+        }).join("");
+        setHtml("packetHistoryList", rows || '<div class="prop-empty">No packet exports recorded yet.</div>');
+      }
+
+      function renderAccountStatus(){
+        var sync = window.AfroWorkspace || null;
+        var signedIn = !!(sync && typeof sync.isSignedIn === "function" && sync.isSignedIn());
+        var last = state.accountMeta && state.accountMeta.lastSavedAt ? state.accountMeta.lastSavedAt : "";
+        setText("workspaceModePill", signedIn ? "Local + account workspace" : "Local workspace");
+        setText("accountSyncPill", sync ? (signedIn ? "Account sync ready" : "Sign in to sync") : "Account sync unavailable");
+        setText("deviceSavePill", "Saved on this device");
+        setText("accountStatusText", signedIn ? ("Signed in. Save to account writes item type " + WORKSPACE_ITEM_TYPE + " through /api/workspace." + (last ? " Last saved " + last + "." : "")) : "Local save is active. Sign in to save or pull this property workspace through /api/workspace.");
+      }
+
       function render(){
         renderSummary();
         renderProjects();
@@ -874,6 +1078,9 @@
         renderInspections();
         renderDocuments();
         renderAttention();
+        renderReminders();
+        renderPacketHistory();
+        renderAccountStatus();
       }
 
       function today(){
@@ -969,13 +1176,203 @@
         render();
       }
 
+      function safeSlug(value){
+        return String(value || "property").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 80) || "property";
+      }
+
+      function workspaceSummary(){
+        var reminders = buildReminders();
+        return {
+          activeProjects: asArray(state.projects).length,
+          totalBudget: sum(state.projects, "budget"),
+          totalSpent: sum(state.projects, "spent"),
+          openProcurement: asArray(state.procurement).filter(isOpenProcurement).length,
+          paymentsDue: asArray(state.payments).filter(function(item){ return className(item.status) !== "paid"; }).length,
+          documentReadiness: documentReadyPercent(),
+          reminderCount: reminders.length,
+          overdueReminderCount: reminders.filter(function(item){ return className(item.status) === "overdue"; }).length
+        };
+      }
+
+      function workspaceTitle(){
+        var client = byId("clientSelect") ? byId("clientSelect").value : "property-projects";
+        var market = byId("marketSelect") ? byId("marketSelect").value : "Pan-African portfolio";
+        return "Property Projects - " + market + " - " + client.replace(/-/g, " ");
+      }
+
+      function setAccountMessage(title, message, tone){
+        setText("accountSyncPill", title || "Account sync");
+        var pill = byId("accountSyncPill");
+        if (pill) {
+          pill.className = "prop-pill " + (tone === "ready" ? "ready" : tone === "review" ? "needs-review" : tone === "error" ? "at-risk" : "review");
+        }
+        setText("accountStatusText", message || "Local save is active.");
+      }
+
+      function syncBridge(){
+        return window.AfroWorkspace || null;
+      }
+
+      function accountPayload(){
+        return {
+          version: 1,
+          savedAt: new Date().toISOString(),
+          workspaceItemType: WORKSPACE_ITEM_TYPE,
+          sourceReferencePath: REFERENCE_PATH,
+          sourceModelVersion: sourceModels.version || 1,
+          summary: workspaceSummary(),
+          reminders: buildReminders(),
+          state: state
+        };
+      }
+
+      async function saveToAccount(){
+        var bridge = syncBridge();
+        if (!bridge || typeof bridge.upsert !== "function" || !bridge.isSignedIn || !bridge.isSignedIn()) {
+          setAccountMessage("Sign in to sync", "This workspace is saved locally. Sign in before saving property project data to /api/workspace.", "review");
+          return;
+        }
+        try {
+          setAccountMessage("Saving to account", "Writing the current property workspace to /api/workspace.", "review");
+          var savedAt = new Date().toISOString();
+          state.accountMeta = Object.assign({}, state.accountMeta || {}, { lastSavedAt: savedAt, itemType: WORKSPACE_ITEM_TYPE, itemKey: WORKSPACE_ITEM_KEY });
+          saveState();
+          await bridge.upsert({
+            itemType: WORKSPACE_ITEM_TYPE,
+            itemKey: WORKSPACE_ITEM_KEY,
+            toolSlug: "afroproperty-project-os",
+            title: workspaceTitle(),
+            summary: "Property projects workspace with " + workspaceSummary().activeProjects + " projects and " + workspaceSummary().reminderCount + " active reminders.",
+            href: "/pro/apps/property-projects/",
+            payload: accountPayload(),
+            meta: {
+              app: "AfroProperty & Project OS",
+              market: byId("marketSelect") ? byId("marketSelect").value : "",
+              period: byId("periodInput") ? byId("periodInput").value : "",
+              sourceReferencePath: REFERENCE_PATH,
+              reminderModels: asArray(sourceModels.reminder_models).map(function(model){ return model.id; })
+            }
+          });
+          render();
+          setAccountMessage("Saved to account", "Account workspace item saved as " + WORKSPACE_ITEM_TYPE + ". Reminders remain property metadata, not public alerts.", "ready");
+        } catch (error) {
+          setAccountMessage("Account save failed", error && error.message ? error.message : "Workspace save failed.", "error");
+        }
+      }
+
+      async function pullFromAccount(){
+        var bridge = syncBridge();
+        if (!bridge || typeof bridge.get !== "function" || !bridge.isSignedIn || !bridge.isSignedIn()) {
+          setAccountMessage("Sign in to sync", "This workspace is saved locally. Sign in before pulling property project data from /api/workspace.", "review");
+          return;
+        }
+        if (!pendingAccountPull) {
+          pendingAccountPull = true;
+          setAccountMessage("Review before replacing", "Click Pull from account again to download a device backup and replace the local property workspace.", "review");
+          return;
+        }
+        try {
+          setAccountMessage("Pulling from account", "Loading " + WORKSPACE_ITEM_TYPE + " from /api/workspace.", "review");
+          var item = await bridge.get(WORKSPACE_ITEM_TYPE, WORKSPACE_ITEM_KEY);
+          if (!item || !item.payload) {
+            pendingAccountPull = false;
+            setAccountMessage("No account copy found", "Keep working locally, then use Save to account to create the first property workspace item.", "review");
+            return;
+          }
+          downloadDeviceBackup("Backup before Pull from account");
+          state = normalizeState(item.payload.state || item.payload);
+          state.accountMeta = Object.assign({}, state.accountMeta || {}, { lastPulledAt: new Date().toISOString(), itemType: WORKSPACE_ITEM_TYPE, itemKey: WORKSPACE_ITEM_KEY });
+          pendingAccountPull = false;
+          saveState();
+          render();
+          setAccountMessage("Pulled from account", "Local workspace replaced from the saved account copy.", "ready");
+        } catch (error) {
+          pendingAccountPull = false;
+          setAccountMessage("Account pull failed", error && error.message ? error.message : "Workspace pull failed.", "error");
+        }
+      }
+
+      function downloadDeviceBackup(reason){
+        var payload = {
+          createdAt: new Date().toISOString(),
+          reason: reason || "Manual property workspace backup",
+          workspaceItemType: WORKSPACE_ITEM_TYPE,
+          state: state
+        };
+        var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "afroproperty-device-backup-" + today() + ".json";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 500);
+      }
+
+      async function recordPacketToAccount(packet){
+        var bridge = syncBridge();
+        if (!bridge || typeof bridge.upsert !== "function" || !bridge.isSignedIn || !bridge.isSignedIn()) {
+          setAccountMessage("Saved on this device", "Packet metadata was recorded locally. Sign in to record packet history to the account workspace.", "review");
+          return;
+        }
+        try {
+          await bridge.upsert({
+            itemType: PACKET_ITEM_TYPE,
+            itemKey: packet.id,
+            toolSlug: "afroproperty-project-os",
+            title: packet.title,
+            summary: packet.summaryText,
+            href: "/pro/apps/property-projects/",
+            payload: packet,
+            meta: {
+              parentItemType: WORKSPACE_ITEM_TYPE,
+              parentItemKey: WORKSPACE_ITEM_KEY,
+              market: packet.market,
+              period: packet.period,
+              reminderCount: asArray(packet.reminders).length
+            }
+          });
+          state.packHistory = asArray(state.packHistory).map(function(item){
+            if (item.id === packet.id) {
+              return Object.assign({}, item, { syncMode: "Account packet" });
+            }
+            return item;
+          });
+          saveState();
+          render();
+          setAccountMessage("Export recorded to account", "Packet metadata was saved as " + PACKET_ITEM_TYPE + ".", "ready");
+        } catch (error) {
+          setAccountMessage("Packet stayed local", error && error.message ? error.message : "Account packet save failed.", "error");
+        }
+      }
+
       function exportPacket(){
+        var summary = workspaceSummary();
+        var reminders = buildReminders();
+        var exportedAt = new Date().toISOString();
+        var client = byId("clientSelect") ? byId("clientSelect").value : "property-projects";
+        var market = byId("marketSelect") ? byId("marketSelect").value : "Pan-African portfolio";
+        var period = byId("periodInput") ? byId("periodInput").value : "";
+        var id = "property-packet-" + Date.now().toString(36);
+        var filename = "afroproperty-" + safeSlug(market) + "-" + safeSlug(client) + "-" + safeSlug(period || today()) + "-packet.json";
+        var fileManifest = [{ name: filename, type: "property project JSON packet" }];
         var packet = {
+          id: id,
+          title: "Property project packet",
           app: "AfroProperty & Project OS",
-          exportedAt: new Date().toISOString(),
-          workspace: byId("clientSelect") ? byId("clientSelect").value : "property-projects",
-          market: byId("marketSelect") ? byId("marketSelect").value : "Pan-African portfolio",
-          period: byId("periodInput") ? byId("periodInput").value : "",
+          exportedAt: exportedAt,
+          workspace: client,
+          market: market,
+          period: period,
+          workspaceItemType: WORKSPACE_ITEM_TYPE,
+          packetItemType: PACKET_ITEM_TYPE,
+          summary: summary,
+          summaryText: summary.activeProjects + " projects, " + summary.openProcurement + " open procurement items, " + summary.reminderCount + " active reminders.",
+          reminders: reminders,
+          sourceReferencePath: REFERENCE_PATH,
+          sourceModelIds: asArray(sourceModels.reminder_models).map(function(model){ return model.id; }),
+          fileManifest: fileManifest,
           boundary: "Local project packet only. No escrow, title verification, official valuation, official filing, or payment processing.",
           state: state
         };
@@ -983,22 +1380,24 @@
         var url = URL.createObjectURL(blob);
         var link = document.createElement("a");
         link.href = url;
-        link.download = "afroproperty-project-os-packet.json";
+        link.download = filename;
         document.body.appendChild(link);
         link.click();
         link.remove();
         URL.revokeObjectURL(url);
         state.packHistory = state.packHistory || [];
-        state.packHistory.unshift({ exportedAt: packet.exportedAt, period: packet.period, market: packet.market });
+        state.packHistory.unshift({ id: id, title: packet.title, exportedAt: packet.exportedAt, period: packet.period, market: packet.market, summary: packet.summary, reminders: reminders.length, fileManifest: fileManifest, syncMode: "Local packet" });
+        state.packHistory = state.packHistory.slice(0, 12);
         saveState();
         render();
+        recordPacketToAccount(packet);
       }
 
       function resetDemo(){
         if (!window.confirm("Reset AfroProperty sample data on this browser?")) {
           return;
         }
-        state = clone(seed);
+        state = normalizeState(seed);
         try {
           window.localStorage.removeItem(STORAGE_KEY);
         } catch (error) {
@@ -1016,6 +1415,9 @@
         var exportPackBtn = byId("exportPackBtn");
         var exportPackBtn2 = byId("exportPackBtn2");
         var resetDemoBtn = byId("resetDemoBtn");
+        var saveAccountBtn = byId("saveAccountBtn");
+        var pullAccountBtn = byId("pullAccountBtn");
+        var downloadBackupBtn = byId("downloadBackupBtn");
 
         if (addProjectBtn) addProjectBtn.addEventListener("click", addProject);
         if (addBudgetBtn) addBudgetBtn.addEventListener("click", addBudget);
@@ -1025,6 +1427,9 @@
         if (exportPackBtn) exportPackBtn.addEventListener("click", exportPacket);
         if (exportPackBtn2) exportPackBtn2.addEventListener("click", exportPacket);
         if (resetDemoBtn) resetDemoBtn.addEventListener("click", resetDemo);
+        if (saveAccountBtn) saveAccountBtn.addEventListener("click", saveToAccount);
+        if (pullAccountBtn) pullAccountBtn.addEventListener("click", pullFromAccount);
+        if (downloadBackupBtn) downloadBackupBtn.addEventListener("click", function(){ downloadDeviceBackup("Manual property workspace backup"); });
 
         document.addEventListener("change", function(event){
           var procurementIndex = event.target.getAttribute("data-procurement-index");
@@ -1043,8 +1448,30 @@
         });
       }
 
+      function loadReferenceModels(){
+        if (!window.fetch) {
+          return;
+        }
+        fetch(REFERENCE_PATH, { cache: "no-store" }).then(function(response){
+          if (!response.ok) {
+            return null;
+          }
+          return response.json();
+        }).then(function(data){
+          if (!data || !Array.isArray(data.reminder_models)) {
+            return;
+          }
+          sourceModels = data;
+          setText("reminderSourceNote", "Reminder models loaded from " + REFERENCE_PATH + " using public source-derived guidance.");
+          render();
+        }).catch(function(error){
+          window.console.warn("AfroProperty source-derived reminder models could not be loaded", error);
+        });
+      }
+
       bindEvents();
       render();
+      loadReferenceModels();
     }());
   </script>
 </body>

@@ -21,6 +21,7 @@ const OFFER_LABELS = {
 const OFFER_ALIASES = {
   'widget-demo': 'widget_demo',
   'demo-widget': 'widget_demo',
+  'widget-request': 'widget_demo',
   widget: 'widget_demo',
   widgets: 'widget_demo',
   'widget-pro': 'widget_pro',

@@ -1,6 +1,6 @@
 # AfroTools Pro Control Dashboard
 
-Updated: 2026-05-02
+Updated: 2026-05-12
 
 ## Purpose
 
@@ -60,7 +60,7 @@ The directory route `/pro/apps/` is the dense app index. It reads `assets/js/lib
 | `grants-tenders` | `/pro/apps/grants-tenders/` | shell | Shell | Route exists with browser-local opportunity shell state. |
 | `creator-studio` | `/pro/apps/creator-studio/` | shell | Shell | Route exists with browser-local creator workspace shell state. |
 | `stream-intelligence` | `/pro/apps/stream-intelligence/` | needs schema | Needs schema | Route exists as a blocked planning shell; no private intelligence queue is wired. |
-| `property-projects` | `/pro/apps/property-projects/` | shell | Shell | Route exists with browser-local property project shell state. |
+| `property-projects` | `/pro/apps/property-projects/` | shell | Local + account workspace | Route exists with browser-local property project state and signed-in `/api/workspace` sync using `property-project-workspace`; packet metadata uses `property-project-packet`. No dedicated property tables or live alert rows are claimed. |
 
 ## Shared Registry Contract
 
@@ -160,7 +160,7 @@ npm run pro:verify
 - Grants and Tenders shell local opportunity, deadline, document, and review state
 - Creator Studio shell local media kit, rate card, pitch, campaign, and handoff state
 - Stream Intelligence blocked shell planning state; no private queue is wired
-- Property Projects shell local budget, contractor, procurement, rental, document, and milestone state
+- Property Projects local-first budget, contractor, procurement, rental, document, milestone reminder, and packet state; signed-in users can sync through `/api/workspace` item type `property-project-workspace`
 - Daily OS shell checkpoints under `afropro_daily_os_<app-id>_checkpoint_v1`
 
 Local state is useful operational context, but it is not cloud sync proof.
@@ -177,7 +177,7 @@ Local state is useful operational context, but it is not cloud sync proof.
 - Grants and tenders opportunity pipeline, requirements matrix, deadlines, and reviewer workflow
 - Creator workspace private asset/task schema
 - Stream intelligence queue with source/inference/user-edit boundaries
-- Property project, contractor, milestone, budget, and document schema
+- Property project, contractor, milestone, budget, document, and reminder schema if the product graduates from generic `workspace_items`; decide whether milestone reminders should become `public.alerts` rows or a dedicated property reminder model
 - Daily OS shared records, reminders, approvals, vault, portal, WhatsApp template, payment note, and report schema
 
 ## Data Honesty Rules

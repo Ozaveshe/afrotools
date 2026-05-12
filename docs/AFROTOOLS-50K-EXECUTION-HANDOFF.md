@@ -17,6 +17,14 @@ Every new feature, page, workflow, or tool upgrade must answer at least one of t
 
 If the answer is no, the work is lower priority unless it fixes a live user problem, security issue, data accuracy problem, or release blocker.
 
+## Competitor Signals To Beat
+
+Observed 2026-05-12:
+
+- PDF competitors such as iLovePDF sell speed, bulk work, mobile/desktop availability, saved workflows, cloud integrations, and privacy/offline handling as first-class product value. AfroTools document and widget work should keep emphasizing browser-local processing, repeatable workflows, script/iframe fallback, and low-friction publishing.
+- Focused African tax competitors such as Kadiria, WAKATAX, and Taxngr win trust by loudly stating current 2026 law coverage, no-signup use, browser-local calculations, visible breakdowns, and clear filing disclaimers. AfroTools should keep top money tools source-backed, dated, locally contextual, and honest about estimates versus official filing.
+- Generic calculator and PDF platforms win by removing steps. For AfroTools, the commercial edge is not only tool count; it is letting a user calculate, save/export, embed, sponsor, request a custom build, or move into an API pilot from the same high-intent workflow.
+
 ## Priority Offers
 
 1. Widgets

@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "collected_online_on": "2026-05-12",
+  "data_quality": "Source-derived workflow models from public construction, procurement, inspection, and closeout guidance. Values are operational defaults, not random synthetic data and not legal, engineering, valuation, title, payment, or permit advice.",
+  "sources": [
+    {
+      "id": "world_bank_procurement_contract_management",
+      "title": "World Bank Project Procurement for Borrowers",
+      "publisher": "World Bank",
+      "url": "https://www.worldbank.org/ext/en/what-we-do/project-procurement/for-borrowers",
+      "derived_signal": "Contract management should include monitoring, evaluation, payment systems, and key-stage tracking."
+    },
+    {
+      "id": "fhwa_project_management_controls",
+      "title": "Project Management Plan Guidance for Major Projects",
+      "publisher": "Federal Highway Administration",
+      "url": "https://www.fhwa.dot.gov/majorprojects/pmp/guidance17.cfm",
+      "derived_signal": "Project controls should track contract administration, scope, cost, schedule, risk, quality, change management, claims, and reporting."
+    },
+    {
+      "id": "vdot_final_inspection_closeout",
+      "title": "Locally Administered Projects Manual Chapter 14: Project Close-out",
+      "publisher": "Virginia Department of Transportation",
+      "url": "https://www.vdot.virginia.gov/doing-business/technical-guidance-and-support/technical-guidance-documents/locally-administered-projects-manual/chapter-14/",
+      "derived_signal": "Final inspection follows completion of work and punch-list items; inspection teams identify corrective actions and required submittals."
+    },
+    {
+      "id": "mrsc_public_works_closeout",
+      "title": "Public Works Project Closeout",
+      "publisher": "Municipal Research and Services Center",
+      "url": "https://mrsc.org/explore-topics/procurement/contract-administration/project-closeout",
+      "derived_signal": "Closeout covers construction completion, financial administration, document archiving, and official turnover to the owner."
+    },
+    {
+      "id": "autodesk_closeout_handover_competitor_pattern",
+      "title": "Construction Closeout and Project Handover",
+      "publisher": "Autodesk Forma",
+      "url": "https://construction.autodesk.com/workflows/construction-closeout-project-handover/",
+      "derived_signal": "Competitive closeout products emphasize foldered documents, field checklists, and downloadable current project records."
+    }
+  ],
+  "reminder_models": [
+    {
+      "id": "contractor_payment_review",
+      "title": "Contractor payment review",
+      "surface": "payments",
+      "date_field": "due",
+      "due_soon_days": 7,
+      "overdue_after_days": 0,
+      "evidence": ["invoice or payment application", "approved milestone or inspection note", "scope or change order reference"],
+      "source_ids": ["world_bank_procurement_contract_management", "fhwa_project_management_controls"]
+    },
+    {
+      "id": "procurement_deadline",
+      "title": "Procurement deadline",
+      "surface": "procurement",
+      "date_field": "needed",
+      "due_soon_days": 7,
+      "overdue_after_days": 0,
+      "evidence": ["supplier quote", "needed-by date", "approval owner", "material or service description"],
+      "source_ids": ["world_bank_procurement_contract_management", "fhwa_project_management_controls"]
+    },
+    {
+      "id": "inspection_follow_up",
+      "title": "Inspection follow-up",
+      "surface": "inspections",
+      "date_field": "date",
+      "stale_after_days": 10,
+      "evidence": ["site note", "defect or punch-list action", "responsible owner", "follow-up date"],
+      "source_ids": ["vdot_final_inspection_closeout", "fhwa_project_management_controls"]
+    },
+    {
+      "id": "handoff_document_gap",
+      "title": "Handoff document gap",
+      "surface": "documents",
+      "date_field": null,
+      "trigger": "ready_false",
+      "evidence": ["closeout document label", "handoff recipient", "owner review status"],
+      "source_ids": ["mrsc_public_works_closeout", "autodesk_closeout_handover_competitor_pattern"]
+    }
+  ],
+  "packet_metadata_fields": [
+    "summary",
+    "reminders",
+    "sourceModelIds",
+    "fileManifest",
+    "syncMode",
+    "workspaceItemType"
+  ]
+}

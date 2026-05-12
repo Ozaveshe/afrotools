@@ -4,7 +4,7 @@
 
 - `/pro/apps/property-projects/`
 - Pro gate: `<meta name="pro-required" content="afrotools-pro">` plus `/assets/js/pro-gate.js`
-- Current storage: browser-only demo state under `afroproperty_project_os_demo_v1`
+- Current storage: browser-local state under `afroproperty_project_os_demo_v1`, with signed-in account sync through `/api/workspace` item type `property-project-workspace`
 
 ## Product Purpose
 
@@ -21,7 +21,9 @@ This is not a marketing page and not a public calculator. It is a SaaS dashboard
 - Lease and rent tracker for agreements, deposits, arrears, and rent review
 - Inspection notes for site observations, defects, handover, and follow-up
 - Cost variance watch for budget creep and approvals
+- Source-derived milestone reminders for overdue or due-soon contractor payments, procurement deadlines, stale inspection follow-ups, and missing handoff documents
 - Document pack checklist and JSON packet export
+- Recent packet history with account-recorded packet metadata under item type `property-project-packet`
 - Linked property and construction tools from the existing AfroTools catalogue
 
 ## Starter Workflows
@@ -31,7 +33,7 @@ This is not a marketing page and not a public calculator. It is a SaaS dashboard
 - Add procurement item
 - Log contractor payment note
 - Add inspection note
-- Export document packet
+- Export document packet and record packet metadata
 
 ## Linked Existing Tools
 
@@ -65,15 +67,29 @@ The shell must stay clear about what it does not do yet:
 
 The property valuation link is an estimator only. The land title link is a checklist only. Permit and lease tools support preparation and review, not official approval.
 
-## Local State
+## Local And Account State
 
-The first shell stores demo records only in localStorage:
+The shell stores records locally first and can sync a signed-in account copy through the shared workspace API:
 
 - Key: `afroproperty_project_os_demo_v1`
-- Contents: projects, budget lines, procurement items, contractor payment notes, lease records, inspection notes, variance items, document checklist, and export history
-- Export format: JSON download from the browser
+- Account item type: `property-project-workspace`
+- Account item key: `current`
+- Packet item type: `property-project-packet`
+- Contents: projects, budget lines, procurement items, contractor payment notes, lease records, inspection notes, variance items, document checklist, source-derived reminder metadata, account sync metadata, and export history
+- Export format: labeled JSON download from the browser with summary, reminder metadata, source model ids, and file manifest
 
-No project, lease, title, tenant, contractor, or payment data is uploaded by this shell.
+No dedicated property, lease, title, tenant, contractor, or payment tables are live yet. Reminders are stored as property workspace metadata, not as `public.alerts` rows.
+
+## Source-Derived Reminder Models
+
+The reminder models are collected into `data/property/project-workflow-reference.json` from public procurement, project-control, inspection, and closeout guidance. They are operational defaults only:
+
+- Contractor payment review reminders
+- Procurement deadline reminders
+- Inspection follow-up reminders
+- Handoff document gap reminders
+
+The app should not invent random project facts. If more sample/default models are needed, collect them from public sources, record the source URL and derived signal, then wire the data file into the UI.
 
 ## Future Backend Schema
 
@@ -96,8 +112,11 @@ Account-backed Pro storage will need tenant-aware tables with RLS:
 - `property_inspection_notes`
 - `property_document_checklists`
 - `property_document_vault_items`
+- `property_milestone_reminders`
 - `property_export_packs`
 - `property_audit_events`
+
+Before creating live reminder schema, decide whether property milestone reminders belong in `public.alerts` or in a dedicated `property_milestone_reminders` table.
 
 ## Future API Surface
 
