@@ -30,6 +30,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check pause switch
+        run: |
+          if [ "${{ vars.AFROTOOLS_DAILY_MAINTENANCE_PAUSED }}" = "1" ] || [ "${{ secrets.AFROTOOLS_DAILY_MAINTENANCE_PAUSED }}" = "1" ]; then
+            echo "Daily maintenance paused by AFROTOOLS_DAILY_MAINTENANCE_PAUSED."
+            exit 0
+          fi
+
       - name: Run SEO daily fix
         id: seo
         run: node scripts/seo-daily-fix.js

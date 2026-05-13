@@ -60,6 +60,9 @@ function normalizeUrl(url) {
     } else if (pathname.endsWith('/index')) {
       pathname = pathname.slice(0, -'index'.length);
     }
+    if (pathname.length > 1 && pathname.endsWith('/')) {
+      pathname = pathname.slice(0, -1);
+    }
 
     return `${parsed.origin}${pathname || '/'}`;
   } catch {
@@ -69,6 +72,38 @@ function normalizeUrl(url) {
 
 function urlExists(url, allUrls) {
   return allUrls.has(normalizeUrl(url));
+}
+
+function normalizeRoutePath(route) {
+  const normalized = normalizeUrl(route.startsWith('http') ? route : BASE_URL + route);
+  try {
+    return new URL(normalized).pathname || '/';
+  } catch {
+    return route;
+  }
+}
+
+function buildRedirectSourceSet() {
+  const redirectsPath = path.join(ROOT, '_redirects');
+  const sources = new Set();
+  if (!fs.existsSync(redirectsPath)) return sources;
+
+  fs.readFileSync(redirectsPath, 'utf8').split(/\r?\n/).forEach((line) => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#') || trimmed.startsWith('[[redirects]]')) return;
+    const parts = trimmed.split(/\s+/);
+    const [source, target, status] = parts;
+    if (!source || !target) return;
+    if (!/^(301|302|307|308|410)$/.test(String(status || ''))) return;
+    sources.add(normalizeRoutePath(source));
+  });
+
+  return sources;
+}
+
+function isRedirectSourceFile(filePath, redirectSources) {
+  const publicRoute = normalizeRoutePath(fileToPublicRoute(filePath));
+  return redirectSources.has(publicRoute);
 }
 
 function extractHreflangTags(html) {
@@ -120,7 +155,8 @@ function main() {
   let pagesWithHreflang = 0;
   let totalPairs = 0;
 
-  const allFiles = walkHtml(ROOT);
+  const redirectSources = buildRedirectSourceSet();
+  const allFiles = walkHtml(ROOT).filter((filePath) => !isRedirectSourceFile(filePath, redirectSources));
   // Build set of all page URLs for existence checking
   const allUrls = new Set();
   for (const f of allFiles) {
@@ -131,7 +167,13 @@ function main() {
   // Parse all pages — key by normalized URL
   const pageData = new Map(); // normalizedUrl -> { hreflangs, canonical, htmlLang, filePath, url }
   for (const filePath of allFiles) {
-    const html = fs.readFileSync(filePath, 'utf-8');
+    let html = '';
+    try {
+      html = fs.readFileSync(filePath, 'utf-8');
+    } catch (error) {
+      warnings.push(`${path.relative(ROOT, filePath).replace(/\\/g, '/')} — could not read HTML file: ${error.message}`);
+      continue;
+    }
     if (hasNoindex(html)) continue;
     const url = filePathToUrl(filePath);
     const hreflangs = extractHreflangTags(html);
@@ -182,7 +224,7 @@ function main() {
     // 6. Referenced URLs exist as files
     for (const h of hreflangs) {
       if (h.lang === 'x-default') continue; // x-default checked via its target
-      if (!urlExists(h.href, allUrls)) {
+      if (!urlExists(h.href, allUrls) && !redirectSources.has(normalizeRoutePath(h.href))) {
         errors.push(`${rel} — hreflang="${h.lang}" references ${h.href} but that file doesn't exist`);
       }
     }

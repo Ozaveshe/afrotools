@@ -72,7 +72,7 @@ module.exports = {
       const totalDeductions = pensionAmt + nhfAmt + nhisAmt + netTax;
       const netAnnual = grossAnnual - totalDeductions;
       const empPension = pensionBase * 0.10;
-      const empNhf = grossAnnual * 0.025;
+      const empNhf = 0;
 
       return {
         input: { country: 'NG', grossAnnual, regime: normalizedRegime },
@@ -90,7 +90,7 @@ module.exports = {
           effectiveRate: (netTax / grossAnnual * 100).toFixed(2) + '%',
           marginalRate: (bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 || 0) + '%'
         },
-        employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension + empNhf), totalCostMonthly: Math.round((grossAnnual + empPension + empNhf) / 12) },
+        employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension), totalCostMonthly: Math.round((grossAnnual + empPension) / 12) },
         meta: { regime: normalizedRegime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
       };
     } else {
@@ -110,7 +110,7 @@ module.exports = {
       const totalDeductions = pensionAmt + nhfAmt + nhisAmt + netTax;
       const netAnnual = grossAnnual - totalDeductions;
       const empPension = grossAnnual * 0.10;
-      const empNhf = grossAnnual * 0.025;
+      const empNhf = 0;
 
       return {
         input: { country: 'NG', grossAnnual, regime: normalizedRegime },
@@ -128,7 +128,7 @@ module.exports = {
           effectiveRate: (netTax / grossAnnual * 100).toFixed(2) + '%',
           marginalRate: (bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 || 0) + '%'
         },
-        employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension + empNhf), totalCostMonthly: Math.round((grossAnnual + empPension + empNhf) / 12) },
+        employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension), totalCostMonthly: Math.round((grossAnnual + empPension) / 12) },
         meta: { regime: normalizedRegime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
       };
     }

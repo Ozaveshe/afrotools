@@ -411,6 +411,40 @@ walk(ROOT, (fp, fname) => {
 const frIndex = path.join(ROOT, 'fr', 'index.html');
 const frBroken = [];
 
+function normalizeRoutePath(route) {
+  let clean = String(route || '/').split(/[?#]/)[0] || '/';
+  if (!clean.startsWith('/')) clean = `/${clean}`;
+  if (clean.length > 1 && clean.endsWith('/')) clean = clean.slice(0, -1);
+  return clean;
+}
+
+function loadRedirectRules() {
+  const redirectsPath = path.join(ROOT, '_redirects');
+  if (!fs.existsSync(redirectsPath)) return [];
+
+  return readFile(redirectsPath)
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(line => line && !line.startsWith('#'))
+    .map(line => line.split(/\s+/))
+    .filter(parts => parts.length >= 3 && /^(?:200|301|302|307|308|410)!?$/.test(parts[2]))
+    .map(parts => ({
+      source: normalizeRoutePath(parts[0]),
+      wildcard: parts[0].includes('*') ? normalizeRoutePath(parts[0].split('*')[0]) : '',
+    }));
+}
+
+const redirectRules = loadRedirectRules();
+
+function isCoveredByRedirect(route) {
+  const clean = normalizeRoutePath(route);
+  return redirectRules.some(rule => {
+    if (rule.source === clean) return true;
+    if (rule.wildcard && clean.startsWith(rule.wildcard)) return true;
+    return false;
+  });
+}
+
 if (fs.existsSync(frIndex)) {
   const frContent = readFile(frIndex);
   const frLinks   = [...frContent.matchAll(/href="(\/fr\/[^"#?]+)"/g)].map(m => m[1]);
@@ -419,7 +453,7 @@ if (fs.existsSync(frIndex)) {
     const rel   = link.slice(1);  // strip leading /
     const dirP  = path.join(ROOT, rel, 'index.html');
     const htmlP = path.join(ROOT, rel.replace(/\/$/, '') + '.html');
-    if (!fs.existsSync(dirP) && !fs.existsSync(htmlP)) {
+    if (!fs.existsSync(dirP) && !fs.existsSync(htmlP) && !isCoveredByRedirect(link)) {
       frBroken.push(link);
     }
   }

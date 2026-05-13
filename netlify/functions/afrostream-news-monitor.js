@@ -10,14 +10,24 @@ function headers() {
   return { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
 }
 
+function getHeader(event, headerName) {
+  var headers = (event && event.headers) || {};
+  var expected = String(headerName || '').toLowerCase();
+  var keys = Object.keys(headers);
+  for (var i = 0; i < keys.length; i++) {
+    if (String(keys[i]).toLowerCase() === expected) return headers[keys[i]];
+  }
+  return '';
+}
+
 function isScheduled(event) {
-  return event.httpMethod === 'GET' && event.headers && event.headers['x-nf-event'] === 'schedule';
+  return event.httpMethod === 'GET' && getHeader(event, 'x-nf-event') === 'schedule';
 }
 
 function isAuthorized(event) {
   if (isScheduled(event)) return true;
   if (!ADMIN_SECRET) return false;
-  var auth = (event.headers && (event.headers.authorization || event.headers.Authorization)) || '';
+  var auth = getHeader(event, 'authorization');
   return auth === 'Bearer ' + ADMIN_SECRET;
 }
 

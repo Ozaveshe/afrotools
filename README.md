@@ -1,10 +1,16 @@
 # AfroTools Codex Workspace
 
-AfroTools is a static-first web platform with country hubs, calculators, SEO surfaces, blogs, Netlify functions, and content-generation pipelines. This repo now includes a repo-native Codex operating layer so the agent can work with project context instead of generic defaults.
+AfroTools has a mature free directory: static-first tools, country hubs, blogs, widgets, SEO pipelines, and Netlify functions maintained through repeatable scripts rather than one-off edits. Treat this side as largely stabilized: fix broken public flows, keep source ledgers current, and validate release artifacts before shipping.
+
+AfroTools Pro is the active product workstream. Start with `docs/PRO-APP-READINESS.md`, `docs/PRO-FENCE.md`, and the Pro registry files before changing paid routes, gates, billing, or app claims. Only AfroPayroll is active today; the rest must stay honest about local preview, early access, or planned capability until backed by real data and QA.
+
+The current commercial path is sales-led and SEO-assisted: free tools drive acquisition, while Pro, widgets, custom calculators, API pilots, sponsored tools, and B2B enquiries drive revenue. Use `docs/AFROTOOLS-50K-EXECUTION-HANDOFF.md`, `docs/CLOSE-OUT-2026-05.md`, and `docs/ADMIN-OPS.md` to keep that direction coherent.
 
 ## Start Here
 
 - `AGENTS.md` - Codex operating manual
+- `docs/CLOSE-OUT-2026-05.md` - current free-side close-out and Pro handoff
+- `docs/PRO-APP-READINESS.md` - Pro 20-app status and claims boundary
 - `docs/design-doctrine.md` - consolidated design and interaction rules
 - `docs/ARCHITECTURE.md` - product and file structure overview
 - `docs/codex-playbook.md` - common task flows

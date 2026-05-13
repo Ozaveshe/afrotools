@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
   <script src="/assets/js/afro-auth.js?v=3978e101"></script>
   <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+  <script src="/assets/js/lib/analytics.js?v=776bf234"></script>
   <script src="/assets/js/lib/pro-app-registry.js?v=ea108ef8"></script>
   <script src="/assets/js/lib/pro-daily-os-registry.js?v=07383191"></script>
   <script src="/assets/js/lib/pro-architecture.js?v=921b3113"></script>
@@ -323,6 +324,17 @@
           <div class="pc-metric"><strong id="metricVault">0</strong><span>Vault entries</span><small>Device and account</small></div>
         </section>
 
+        <section class="pc-panel" aria-labelledby="whats-new-title">
+          <div class="pc-panel-head">
+            <div>
+              <div class="pc-kicker">What's new</div>
+              <h2 class="pc-h2" id="whats-new-title">Pro change line</h2>
+              <p class="pc-section-note" id="whatsNewLine">Loading from docs/CHANGELOG-PRO.md.</p>
+            </div>
+            <a class="pc-btn" href="/docs/CHANGELOG-PRO.md">Open changelog</a>
+          </div>
+        </section>
+
         <section class="pc-section" id="apps" aria-labelledby="apps-title">
           <div class="pc-section-head">
             <div>
@@ -472,6 +484,7 @@
     var state = {
       proStatus: null,
       cloud: { runs: [], clients: [], companies: [], dashboard: {}, error: "", source: "not-loaded" },
+      history: [],
       local: { savedRuns: [], employees: [], employeeCount: 0, hasDraft: false, draft: null, reviewCount: 0, rowCount: 0 },
       queue: []
     };
@@ -480,7 +493,7 @@
     var appNavOverrides = {
       payroll: { routeStatus: "active", shellState: "Active", statusTone: "ready", routeExists: true },
       "tax-compliance": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      books: { routeStatus: "active", shellState: "Active", statusTone: "ready", routeExists: true },
+      books: { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
       hr: { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
       "trade-desk": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
       "legal-desk": {
@@ -570,6 +583,14 @@
       var node = create("a", "pc-btn" + (primary ? " primary" : ""), label);
       node.setAttribute("href", route);
       return node;
+    }
+
+    function trackAppOpen(appId, source) {
+      try {
+        if (window.AfroTools && window.AfroTools.analytics && window.AfroTools.analytics.trackProAppOpen) {
+          window.AfroTools.analytics.trackProAppOpen(appId, source || "pro-workspace");
+        }
+      } catch (err) {}
     }
 
     function registry() {
@@ -716,6 +737,31 @@
         error: "",
         source: "api"
       };
+    }
+
+    async function loadAccountHistory() {
+      var token = authToken();
+      if (!token) return [];
+      var res = await fetch("/api/history?limit=8", {
+        headers: { Authorization: "Bearer " + token, Accept: "application/json" },
+        credentials: "same-origin"
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data && data.error ? data.error : "History failed");
+      return asArray(data.data);
+    }
+
+    async function renderWhatsNew() {
+      if (!els.whatsNewLine) return;
+      try {
+        var res = await fetch("/docs/CHANGELOG-PRO.md", { cache: "no-cache" });
+        if (!res.ok) throw new Error("Changelog not available");
+        var textBody = await res.text();
+        var line = textBody.split("\n").find(function (line) { return line.indexOf("- ") === 0; });
+        els.whatsNewLine.textContent = line ? line.replace(/^- /, "") : "No Pro changelog entries yet.";
+      } catch (err) {
+        els.whatsNewLine.textContent = "See docs/CHANGELOG-PRO.md for the current Pro change log.";
+      }
     }
 
     function renderSidebar(apps) {
@@ -900,8 +946,14 @@
         card.appendChild(progress);
 
         var actions = create("div", "pc-app-actions");
-        actions.appendChild(linkButton(appActionLabel(app), safeAppRoute(app), isPayroll && app.routeExists !== false));
-        if (app.fallbackRoute && app.routeExists !== false) actions.appendChild(linkButton(app.secondaryAction || "Open workspace", app.fallbackRoute, false));
+        var openAction = linkButton(appActionLabel(app), safeAppRoute(app), isPayroll && app.routeExists !== false);
+        openAction.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-control"); });
+        actions.appendChild(openAction);
+        if (app.fallbackRoute && app.routeExists !== false) {
+          var fallbackAction = linkButton(app.secondaryAction || "Open workspace", app.fallbackRoute, false);
+          fallbackAction.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-fallback"); });
+          actions.appendChild(fallbackAction);
+        }
         card.appendChild(actions);
 
         els.appGrid.appendChild(card);
@@ -939,8 +991,12 @@
         card.appendChild(progress);
 
         var actions = create("div", "pc-app-actions");
-        actions.appendChild(linkButton("Open workspace", safeDailyRoute(app), app.priority <= 3));
-        actions.appendChild(linkButton("Launch plan", safeDailyRoute(app) + "#setup-brief", false));
+        var openDaily = linkButton("Open workspace", safeDailyRoute(app), app.priority <= 3);
+        openDaily.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-daily"); });
+        var launchPlan = linkButton("Launch plan", safeDailyRoute(app) + "#setup-brief", false);
+        launchPlan.addEventListener("click", function () { trackAppOpen(app.id, "pro-workspace-launch-plan"); });
+        actions.appendChild(openDaily);
+        actions.appendChild(launchPlan);
         card.appendChild(actions);
 
         els.dailyAppGrid.appendChild(card);
@@ -965,6 +1021,15 @@
           time: run.savedAt || run.updatedAt || run.lastCalculatedAt || "",
           tone: "local",
           label: "Device"
+        });
+      });
+      asArray(state.history).slice(0, 5).forEach(function (entry) {
+        items.push({
+          title: text(entry.tool_name || entry.tool_slug, "Saved calculation"),
+          meta: "Account history - " + text(entry.country_code || entry.currency, "general") + " - /api/history",
+          time: entry.created_at || entry.updated_at || "",
+          tone: "real",
+          label: "History"
         });
       });
       items.sort(function (a, b) {
@@ -1118,6 +1183,11 @@
       } catch (err) {
         state.cloud = { runs: [], clients: [], companies: [], dashboard: {}, error: err.message || String(err), source: "api-error" };
       }
+      try {
+        state.history = await loadAccountHistory();
+      } catch (err) {
+        state.history = [];
+      }
 
       renderProStatus();
       renderWorkspaceSelect();
@@ -1137,7 +1207,7 @@
         "proStatusCard", "systemModePill", "attentionCount", "activeWorkspaceCount", "liveAppCount",
         "metricApps", "metricClients", "metricRuns", "metricQueue", "metricVault", "registrySummary",
         "appGrid", "dailyAppGrid", "activityList", "reloadPayrollBtn", "buildTableBody", "queuePill", "queueList",
-        "usageRoutes", "usageLive", "usageLocal", "usageCloud", "vaultList", "lastUpdated"
+        "usageRoutes", "usageLive", "usageLocal", "usageCloud", "vaultList", "lastUpdated", "whatsNewLine"
       ].forEach(function (id) {
         els[id] = byId(id);
       });
@@ -1156,6 +1226,7 @@
       renderApps();
       renderDailyApps();
       renderMetrics();
+      renderWhatsNew();
       els.refreshBtn.addEventListener("click", refreshAll);
       els.reloadPayrollBtn.addEventListener("click", refreshAll);
       byId("focusQueueBtn").addEventListener("click", function () { scrollToId("work-queue"); });

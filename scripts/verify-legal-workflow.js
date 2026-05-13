@@ -91,7 +91,7 @@ assert(!thinWorkflowData.length, `Legal workflow data gaps: ${thinWorkflowData.s
   'category-workflow-pack',
   'guardPromise',
   'Free accounts can keep',
-  'Metadata only'
+  'route details only'
 ].forEach((needle) => {
   assert(lite.includes(needle), `Category workflow lite missing legal marker ${needle}`);
 });

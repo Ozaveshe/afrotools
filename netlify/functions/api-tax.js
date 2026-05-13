@@ -70,6 +70,54 @@ function sandboxTaxResponse(body) {
   };
 }
 
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function resolveCountryCode(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const upper = raw.toUpperCase();
+  if (engines.get(upper)) return upper;
+  const slug = slugify(raw);
+  const match = engines.listCountries().find(country =>
+    slugify(country.name) === slug || String(country.code || '').toLowerCase() === slug
+  );
+  return match ? match.code : upper;
+}
+
+function getCountryFromPath(event) {
+  const path = String(event.path || '')
+    .replace(/^\/\.netlify\/functions\/api-tax\/?/, '')
+    .replace(/^\/?api\/v1\/tax\/?/, '')
+    .replace(/^\/?api\/tax\/?/, '')
+    .replace(/^\/+|\/+$/g, '');
+  if (!path) return '';
+  const first = path.split('/').filter(Boolean)[0];
+  if (!first || ['paye', 'calculate', 'rates'].includes(first.toLowerCase())) return '';
+  return resolveCountryCode(first);
+}
+
+function salaryParamsFromQuery(params) {
+  return {
+    country: params.country,
+    grossAnnual: params.grossAnnual || params.gross_annual || params.gross,
+    grossMonthly: params.grossMonthly || params.gross_monthly,
+    netAnnual: params.netAnnual || params.net_annual,
+    netMonthly: params.netMonthly || params.net_monthly
+  };
+}
+
+function normalizeBodyWithPathCountry(event, body) {
+  const next = { ...(body || {}) };
+  if (!next.country) next.country = getCountryFromPath(event);
+  return next;
+}
+
 async function validateApiKey(apiKey, event) {
   if (!apiKey) return { valid: false };
 
@@ -164,9 +212,14 @@ exports.handler = async (event) => {
 
   /* ---- GET: country info / list ---- */
   if (event.httpMethod === 'GET') {
-    const country = (event.queryStringParameters || {}).country;
+    const params = event.queryStringParameters || {};
+    const pathCountry = getCountryFromPath(event);
+    const country = resolveCountryCode(params.country || pathCountry);
 
     if (auth.sandbox) {
+      if (pathCountry) {
+        return respond(200, sandboxTaxResponse({ ...salaryParamsFromQuery(params), country }));
+      }
       if (!country) {
         return respond(200, {
           status: 'success',
@@ -206,6 +259,40 @@ exports.handler = async (event) => {
       });
     }
 
+    if (pathCountry) {
+      const salaryBody = salaryParamsFromQuery(params);
+      salaryBody.country = country;
+      if (!salaryBody.grossAnnual && !salaryBody.grossMonthly && !salaryBody.netAnnual && !salaryBody.netMonthly) {
+        salaryBody.grossAnnual = 7200000;
+      }
+      const rawOptions = { ...params };
+      [
+        'country', 'grossAnnual', 'gross_annual', 'gross',
+        'grossMonthly', 'gross_monthly', 'netAnnual', 'net_annual',
+        'netMonthly', 'net_monthly'
+      ].forEach(key => delete rawOptions[key]);
+      const salaryInput = resolveAnnualSalaryInputs(salaryBody);
+      const options = normalizeTaxOptions(country, rawOptions);
+      const startTime = Date.now();
+      const result = salaryInput.mode === 'gross'
+        ? engine.calculate({ grossAnnual: salaryInput.annualAmount, ...options })
+        : engine.reverseCalculate({ netAnnual: salaryInput.annualAmount, ...options });
+
+      return respond(200, {
+        status: 'success',
+        ...result,
+        _meta: {
+          api: 'AfroTax',
+          version: '1.0',
+          route: `/api/v1/tax/${slugify(engine.countryName)}/paye`,
+          timestamp: new Date().toISOString(),
+          responseTime: `${Date.now() - startTime}ms`,
+          sandbox: false,
+          docs: 'https://afrotools.com/docs/api/tax'
+        }
+      });
+    }
+
     return respond(200, {
       status: 'success',
       country: engine.country,
@@ -230,6 +317,8 @@ exports.handler = async (event) => {
     if (auth.sandbox) {
       return respond(200, sandboxTaxResponse(body));
     }
+
+    body = normalizeBodyWithPathCountry(event, body);
 
     const {
       country,

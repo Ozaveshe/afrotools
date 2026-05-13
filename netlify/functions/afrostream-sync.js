@@ -35,9 +35,19 @@ function getCorsHeaders(event) {
   };
 }
 
+function getHeader(event, headerName) {
+  var headers = (event && event.headers) || {};
+  var expected = String(headerName || '').toLowerCase();
+  var keys = Object.keys(headers);
+  for (var i = 0; i < keys.length; i++) {
+    if (String(keys[i]).toLowerCase() === expected) return headers[keys[i]];
+  }
+  return '';
+}
+
 function isAuthorized(event) {
   if (!ADMIN_SECRET) return false;
-  var auth = (event.headers && (event.headers.authorization || event.headers.Authorization)) || '';
+  var auth = getHeader(event, 'authorization');
   return auth === 'Bearer ' + ADMIN_SECRET;
 }
 
@@ -847,7 +857,7 @@ exports.handler = async function(event) {
   }
 
   // Scheduled invocations (Netlify Scheduled Functions)
-  var isScheduled = event.httpMethod === 'GET' && event.headers['x-nf-event'] === 'schedule';
+  var isScheduled = event.httpMethod === 'GET' && getHeader(event, 'x-nf-event') === 'schedule';
 
   // Manual trigger requires auth
   if (!isScheduled && !isAuthorized(event)) {

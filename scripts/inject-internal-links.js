@@ -70,6 +70,14 @@ const TOOL_SUBPAGE_EXCLUSIONS = new Set([
   'admin.html'
 ]);
 
+function isPublicHtmlSubPage(fileName) {
+  return fileName.endsWith('.html') &&
+    fileName !== 'index.html' &&
+    !fileName.startsWith('_') &&
+    !fileName.includes('_template') &&
+    !fileName.includes('_old');
+}
+
 function injectLinks(indexPath, links, sectionTitle) {
   let html = fs.readFileSync(indexPath, 'utf8');
 
@@ -129,7 +137,7 @@ function processAgriculture() {
     if (!fs.existsSync(indexPath)) continue;
 
     const countryFiles = fs.readdirSync(toolDir)
-      .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template'))
+      .filter(f => isPublicHtmlSubPage(f))
       .sort();
 
     if (countryFiles.length === 0) continue;
@@ -164,7 +172,7 @@ function processCountryHubs() {
     if (!fs.existsSync(indexPath)) continue;
 
     const subPages = fs.readdirSync(fullDir)
-      .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template') && !f.includes('_old'))
+      .filter(f => isPublicHtmlSubPage(f))
       .sort();
 
     if (subPages.length === 0) continue;
@@ -201,7 +209,7 @@ function processToolSubPages() {
 
     // Find country-named .html files
     const subFiles = fs.readdirSync(toolDir)
-      .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template'))
+      .filter(f => isPublicHtmlSubPage(f))
       .filter(f => !TOOL_SUBPAGE_EXCLUSIONS.has(f))
       .filter(f => !(tool.name === 'africa-conflict' && f === 'detail.html'))
       .sort();
@@ -262,7 +270,7 @@ function processFrench() {
     if (!fs.existsSync(indexPath)) continue;
 
     const subPages = fs.readdirSync(fullDir)
-      .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template') && !f.includes('_old'))
+      .filter(f => isPublicHtmlSubPage(f))
       .sort();
 
     if (subPages.length === 0) continue;
@@ -293,7 +301,7 @@ function processFrench() {
       if (!fs.existsSync(indexPath)) continue;
 
       const countryFiles = fs.readdirSync(toolDir)
-        .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template'))
+        .filter(f => isPublicHtmlSubPage(f))
         .sort();
 
       if (countryFiles.length === 0) continue;
@@ -326,7 +334,7 @@ function processFrench() {
       if (!fs.existsSync(indexPath)) continue;
 
       const subFiles = fs.readdirSync(toolDir)
-        .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template'))
+        .filter(f => isPublicHtmlSubPage(f))
         .sort();
 
       if (subFiles.length < 2) continue;
@@ -396,7 +404,7 @@ function processCategoryHubs() {
 
       // Find sibling .html files
       const subFiles = fs.readdirSync(catDir)
-        .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template') && !excludedChildren.has(f.replace(/\.html$/, '')));
+        .filter(f => isPublicHtmlSubPage(f) && !excludedChildren.has(f.replace(/\.html$/, '')));
 
       const links = [];
 

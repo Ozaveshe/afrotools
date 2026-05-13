@@ -28,6 +28,7 @@ const BLOCKED_TOP_LEVEL_DIRS = new Set([
   'artifacts',
   'dist',
   'docs',
+  'lang',
   'netlify',
   'node_modules',
   'ops',
@@ -92,6 +93,7 @@ const BLOCKED_ROOT_EXTENSIONS = new Set([
 const BLOCKED_RELATIVE_FILES = new Set([
   'fr/widgets/iframe/template.html',
   'tools/afrostream/admin.html',
+  'tools/afroatlas/_country-template.html',
   'widgets/iframe/template.html'
 ]);
 

@@ -51,3 +51,14 @@ Endpoint classifications:
 ## Operational Note
 
 If you change the shared admin secret, Mission Control and any admin sub-page session will need a fresh login because the browser only keeps the validated key for the current session.
+
+## Pro Analytics Events
+
+`assets/js/lib/analytics.js` exposes the named GA4 events used by the Pro revenue path:
+
+- `pro_view_pricing` from `/pro/` pricing impressions
+- `pro_click_upgrade` from Pro checkout CTAs
+- `pro_checkout_success` from `/pro/success/` after profile activation
+- `pro_app_open` for Pro app launcher clicks
+
+These helpers respect the existing cookie-consent gate in the analytics library. Use the helper methods instead of direct `gtag` calls when touching Pro CTAs or app launchers.

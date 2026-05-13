@@ -8,11 +8,14 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 
 1. `package.json`
 2. `docs/ARCHITECTURE.md`
-3. `docs/ADDING-A-TOOL.md`
-4. `docs/ADDING-A-COUNTRY.md`
-5. `docs/design-doctrine.md`
-6. `docs/codex-playbook.md`
-7. `docs/known-traps.md`
+3. `docs/PRO-APP-READINESS.md`
+4. `docs/PRO-FENCE.md`
+5. `docs/CLOSE-OUT-2026-05.md`
+6. `docs/ADDING-A-TOOL.md`
+7. `docs/ADDING-A-COUNTRY.md`
+8. `docs/design-doctrine.md`
+9. `docs/codex-playbook.md`
+10. `docs/known-traps.md`
 
 ## Repo Reality
 

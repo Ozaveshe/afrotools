@@ -6,6 +6,8 @@
  *   PAYSTACK_SECRET_KEY - Paystack secret key (sk_live_...)
  */
 
+const proPlan = require('../../assets/js/lib/pro-plan');
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: corsHeaders(), body: '' };
@@ -38,7 +40,14 @@ exports.handler = async (event) => {
     }
 
     const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-    const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
+    const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY_AUTH || process.env.SUPABASE_ANON_KEY;
+    if (!SUPABASE_KEY || !process.env.PAYSTACK_SECRET_KEY) {
+      return {
+        statusCode: 500,
+        headers: corsHeaders(),
+        body: JSON.stringify({ error: 'Server config error' })
+      };
+    }
     const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` },
     });
@@ -59,21 +68,7 @@ exports.handler = async (event) => {
       };
     }
 
-    // Plan amounts in smallest currency unit (kobo, cents, etc.)
-    const plans = {
-      'monthly':     { amount: 500,     currency: 'USD', interval: 'monthly' },    // $5
-      'annual':      { amount: 3000,    currency: 'USD', interval: 'annually' },   // $30
-      'monthly_ngn': { amount: 400000,  currency: 'NGN', interval: 'monthly' },    // NGN 4,000
-      'annual_ngn':  { amount: 2200000, currency: 'NGN', interval: 'annually' },   // NGN 22,000
-      'monthly_kes': { amount: 75000,   currency: 'KES', interval: 'monthly' },    // KES 750
-      'annual_kes':  { amount: 420000,  currency: 'KES', interval: 'annually' },   // KES 4,200
-      'monthly_zar': { amount: 8900,    currency: 'ZAR', interval: 'monthly' },    // ZAR 89
-      'annual_zar':  { amount: 49900,   currency: 'ZAR', interval: 'annually' },   // ZAR 499
-      'monthly_ghs': { amount: 5000,    currency: 'GHS', interval: 'monthly' },    // GHS 50
-      'annual_ghs':  { amount: 28000,   currency: 'GHS', interval: 'annually' },   // GHS 280
-    };
-
-    const selectedPlan = plans[plan];
+    const selectedPlan = proPlan.getPlan(plan);
     if (!selectedPlan) {
       return {
         statusCode: 400,
@@ -95,10 +90,12 @@ exports.handler = async (event) => {
         currency: selectedPlan.currency,
         callback_url: callbackUrl || 'https://afrotools.com/pro/success/',
         metadata: {
-          plan_type: plan,
+          user_id: user.id,
+          plan_type: selectedPlan.id,
           interval: selectedPlan.interval,
           custom_fields: [
-            { display_name: 'Plan', variable_name: 'plan', value: plan }
+            { display_name: 'User ID', variable_name: 'user_id', value: user.id },
+            { display_name: 'Plan', variable_name: 'plan', value: selectedPlan.id }
           ]
         },
         channels: ['card', 'bank', 'ussd', 'mobile_money']

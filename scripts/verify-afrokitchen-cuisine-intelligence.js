@@ -3,6 +3,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
 const ROOT = path.resolve(__dirname, "..");
 const TOOL_DIR = path.join(ROOT, "tools", "afrokitchen");
@@ -51,9 +52,18 @@ function countrySlug(country) {
 
 function parsePublicJs(filePath) {
   const source = readText(filePath).trim();
-  const prefix = "window.AfroKitchenCuisineIntelligence = ";
-  assert(source.startsWith(prefix), "Public cuisine JS does not expose window.AfroKitchenCuisineIntelligence");
-  return JSON.parse(source.slice(prefix.length).replace(/;\s*$/, ""));
+  const exposesIntelligence = /^window\.AfroKitchenCuisineIntelligence\s*=/.test(source);
+  assert(exposesIntelligence, "Public cuisine JS does not expose window.AfroKitchenCuisineIntelligence");
+  if (!exposesIntelligence) return {};
+
+  try {
+    const sandbox = { window: {} };
+    vm.runInNewContext(source, sandbox, { timeout: 1000 });
+    return sandbox.window.AfroKitchenCuisineIntelligence || {};
+  } catch (error) {
+    assert(false, `Public cuisine JS could not be evaluated: ${error.message}`);
+    return {};
+  }
 }
 
 function walkKeys(value, visitor, trail = []) {

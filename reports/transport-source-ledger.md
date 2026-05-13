@@ -1,14 +1,14 @@
 # Transport Source Ledger
 
-Generated: 2026-05-10T07:38:40.992Z
+Generated: 2026-05-13T09:42:28.570Z
 
 ## Summary
 
 - Tools mapped: 23
 - Official sources checked: 41
-- OK sources: 31
+- OK sources: 30
 - Changed sources: 0
-- Manual-review or blocked sources: 10
+- Manual-review or blocked sources: 11
 - Broken sources: 0
 
 ## Sources
@@ -18,7 +18,7 @@ Generated: 2026-05-10T07:38:40.992Z
 | OK | NG | Nigerian Midstream and Downstream Petroleum Regulatory Authority | NMDPRA - Leading Oil & Gas Regulatory Authority in Nigeria \| Ensuring Development through Sustainable Energy | 200 | https://nmdpra.gov.ng/ |
 | OK | KE | Energy and Petroleum Regulatory Authority | Pump Prices \| Energy and Petroleum Regulatory Authority | 200 | https://www.epra.go.ke/pump-prices |
 | OK | GH | National Petroleum Authority | INDICATIVE PRICES - National Petroleum Authority(NPA) | 200 | https://npa.gov.gh/indicative-prices/ |
-| OK | ZA | Department of Mineral Resources and Energy | DMPR Home | 200 | https://www.dmre.gov.za/ |
+| OK | ZA | Department of Mineral Resources and Energy | DMRE No Longer Exists | 200 | https://www.dmre.gov.za/ |
 | OK | NG | Nigeria Customs Service | Nigeria Customs Service &#8211; Nigeria Customs Information Portal | 200 | https://customs.gov.ng/ |
 | OK | KE | Kenya Revenue Authority | Importing & Exporting - KRA | 200 | https://www.kra.go.ke/individual/importing |
 | OK | GH | Ghana Revenue Authority | Customs &#8211; GRA | 200 | https://gra.gov.gh/customs/ |
@@ -50,7 +50,7 @@ Generated: 2026-05-10T07:38:40.992Z
 | OK | ZA | South African Civil Aviation Authority | Home - SACAA | 200 | https://www.caa.co.za/ |
 | OK | GH | Ghana Civil Aviation Authority | Home - GHANA CIVIL AVIATION AUTHORITY | 200 | https://www.gcaa.com.gh/ |
 | Manual | GLOBAL | Uber | Uber price estimate |  | https://www.uber.com/global/en/price-estimate/ |
-| OK | GLOBAL | Bolt | Bolt cities \| Use Bolt in cities around the world \| Bolt | 200 | https://bolt.eu/en/cities/ |
+| Manual | GLOBAL | Bolt | Explore Bolt services \| The all-in-one mobility app \| Bolt | 404 | https://bolt.eu/en/cities/ |
 | Manual review | GLOBAL | DHL | DHL global shipping |  | https://www.dhl.com/ |
 | OK | GLOBAL | FedEx | FedEx \| System Down | 200 | https://www.fedex.com/ |
 | OK | ET | Ethiopian Airlines | Welcome to Ethiopian Airlines Official Website | 200 | https://www.ethiopianairlines.com/ |

@@ -67,12 +67,14 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     <div class="success-icon">
       <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
     </div>
-    <h1>Welcome to AfroTools Pro</h1>
-    <p>Your subscription is active. All Pro features are now unlocked across every AfroTools calculator and tool.</p>
+    <h1 id="activationTitle">Activating AfroTools Pro</h1>
+    <p id="activationMessage">Payment returned successfully. We are checking your profile for the Paystack webhook update.</p>
     <div class="success-actions">
-      <a href="/tools/business-planner/" class="btn-primary">Generate Your Business Plan</a>
-      <a href="/" class="btn-ghost">Back to Home</a>
+      <a href="/pro/workspace/" class="btn-primary" id="workspaceLink" aria-disabled="true">Open Pro Workspace</a>
+      <button class="btn-ghost" id="replayActivation" type="button" style="display:none">Retry activation check</button>
+      <a href="/pro/" class="btn-ghost">Back to Pro</a>
     </div>
+    <p id="activationStatus" style="font-size:13px;margin-top:14px;color:#4b5563"></p>
   </div>
 </section>
 
@@ -109,9 +111,101 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 <afro-footer></afro-footer>
 
 <script src="/assets/js/afro-auth.js?v=3978e101"></script>
+<script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+<script src="/assets/js/lib/analytics.js?v=776bf234"></script>
 <script>
-// Clear any cached non-Pro status so the gate picks up the new subscription
-try { localStorage.removeItem('afro_pro_cache'); } catch(e){}
+(function(){
+  var title = document.getElementById('activationTitle');
+  var message = document.getElementById('activationMessage');
+  var statusNode = document.getElementById('activationStatus');
+  var replayButton = document.getElementById('replayActivation');
+  var workspaceLink = document.getElementById('workspaceLink');
+  var params = new URLSearchParams(window.location.search);
+  var reference = params.get('reference') || params.get('trxref') || params.get('transaction_id') || '';
+
+  function setState(kind, copy, detail) {
+    title.textContent = kind === 'active' ? 'Welcome to AfroTools Pro' : kind === 'timeout' ? 'Payment received, activation pending' : 'Activating AfroTools Pro';
+    message.textContent = copy;
+    statusNode.textContent = detail || '';
+    workspaceLink.setAttribute('aria-disabled', kind === 'active' ? 'false' : 'true');
+    replayButton.style.display = kind === 'timeout' || kind === 'error' ? 'inline-block' : 'none';
+  }
+
+  function token() {
+    try { return window.AfroAuth && window.AfroAuth.getSessionToken ? window.AfroAuth.getSessionToken() : null; } catch (e) { return null; }
+  }
+
+  async function readProfile() {
+    var headers = token() ? { Authorization: 'Bearer ' + token(), Accept: 'application/json' } : { Accept: 'application/json' };
+    var response = await fetch('/api/profile', { headers: headers, credentials: 'same-origin' });
+    if (!response.ok) throw new Error('profile-' + response.status);
+    var data = await response.json();
+    return data && data.profile ? data.profile : null;
+  }
+
+  function isActive(profile) {
+    if (!profile) return false;
+    var tier = String(profile.subscription_tier || profile.tier || '').toLowerCase();
+    var expires = profile.subscription_expires_at ? Date.parse(profile.subscription_expires_at) : NaN;
+    return tier === 'pro' && (isNaN(expires) || expires > Date.now());
+  }
+
+  async function replayActivation() {
+    if (!reference) {
+      setState('timeout', 'We could not find a Paystack reference on this return URL.', 'Use billing support with your Paystack receipt email so we can replay the activation safely.');
+      return false;
+    }
+    if (!token()) {
+      setState('timeout', 'Sign in to the AfroTools account used for checkout, then retry activation.', 'The replay endpoint only runs for the signed-in account.');
+      return false;
+    }
+    var response = await fetch('/.netlify/functions/replay-paystack-activation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token() },
+      credentials: 'same-origin',
+      body: JSON.stringify({ reference: reference })
+    });
+    var data = await response.json().catch(function(){ return {}; });
+    if (!response.ok) throw new Error(data.error || 'Activation replay failed');
+    return true;
+  }
+
+  async function poll() {
+    try { localStorage.removeItem('afro_pro_status_cache'); localStorage.removeItem('afro_pro_cache'); } catch(e){}
+    for (var attempt = 1; attempt <= 15; attempt += 1) {
+      try {
+        var profile = await readProfile();
+        if (isActive(profile)) {
+          setState('active', 'Your subscription is active. Pro workspace access is now unlocked for this account.', 'Profile tier: pro. Renewal: ' + (profile.subscription_expires_at ? profile.subscription_expires_at.slice(0, 10) : 'not set'));
+          if (window.AfroProGate && window.AfroProGate.clearCache) window.AfroProGate.clearCache();
+          if (window.AfroTools && window.AfroTools.analytics) window.AfroTools.analytics.trackProCheckoutSuccess('paystack');
+          return;
+        }
+        setState('checking', 'Payment returned successfully. We are waiting for your profile to switch to Pro.', 'Attempt ' + attempt + ' of 15.');
+      } catch (error) {
+        setState('checking', 'Payment returned successfully. We are retrying the profile check.', 'Attempt ' + attempt + ' of 15.');
+      }
+      await new Promise(function(resolve){ setTimeout(resolve, 2000); });
+    }
+    setState('timeout', 'The payment may be successful, but the Pro profile has not updated yet.', 'Retry activation here or contact billing support with your Paystack receipt.');
+  }
+
+  replayButton.addEventListener('click', async function(){
+    replayButton.disabled = true;
+    replayButton.textContent = 'Retrying...';
+    try {
+      await replayActivation();
+      await poll();
+    } catch (error) {
+      setState('error', 'We could not replay the activation automatically.', error.message || 'Please contact billing support with your Paystack receipt.');
+    } finally {
+      replayButton.disabled = false;
+      replayButton.textContent = 'Retry activation check';
+    }
+  });
+
+  poll();
+}());
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

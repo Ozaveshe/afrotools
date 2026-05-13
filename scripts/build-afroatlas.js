@@ -20,6 +20,8 @@ var template = fs.readFileSync(templatePath, 'utf8');
 var countries = AfroAtlas.getAllCountries();
 var COUNTRIES = AfroAtlas.COUNTRIES;
 var outputDir = path.join(__dirname, '..', 'tools', 'afroatlas', 'country');
+var breadcrumbTemplatePattern = /<script type="application\/ld\+json" data-schema-template="breadcrumb">[\s\S]*?<\/script>/g;
+var faqTemplatePattern = /<script type="application\/ld\+json" data-schema-template="faq">[\s\S]*?<\/script>/g;
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
@@ -222,6 +224,8 @@ countries.forEach(function(country) {
       .replace(/\{\{SLUG\}\}/g, slug)
       .replace(/\{\{COUNTRY_CODE\}\}/g, code)
       .replace(/\{\{META_DESCRIPTION\}\}/g, generateMetaDescription(country))
+      .replace(breadcrumbTemplatePattern, '<script type="application/ld+json">' + generateBreadcrumbSchema(country) + '</script>')
+      .replace(faqTemplatePattern, '<script type="application/ld+json">' + generateFAQSchema(country) + '</script>')
       .replace(/\{\{BREADCRUMB_SCHEMA\}\}/g, generateBreadcrumbSchema(country))
       .replace(/\{\{FAQ_SCHEMA\}\}/g, generateFAQSchema(country));
 

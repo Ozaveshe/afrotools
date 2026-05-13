@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const SKIP = ['node_modules', '.git', '.claude'];
+const SKIP = ['node_modules', '.git', '.claude', '.netlify', 'dist'];
 const issues = [];
 const stats = { files: 0, errors: 0, warnings: 0, fixed: 0 };
 
@@ -49,12 +49,14 @@ function fileExists(refPath, htmlDir) {
 function auditFile(filePath) {
   stats.files++;
   const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
+  if (rel.startsWith('lang/pages/') && rel.endsWith('.body.html')) return;
+  if (rel.endsWith('/_country-template.html')) return;
   const content = fs.readFileSync(filePath, 'utf8');
   const dir = path.dirname(filePath);
   const fileIssues = [];
 
   // 1. Missing <title>
-  const titleMatch = content.match(/<title>(.*?)<\/title>/i);
+  const titleMatch = content.match(/<title\b[^>]*>(.*?)<\/title>/i);
   if (!titleMatch) {
     fileIssues.push({ type: 'ERROR', msg: 'Missing <title> tag' });
   } else if (titleMatch[1].length > 70) {

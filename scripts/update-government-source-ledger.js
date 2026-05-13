@@ -157,6 +157,7 @@ async function fetchSource(source, previousById) {
     const previousHash = previous && (previous.changeHash || previous.contentHash);
     const changedSinceLastRun = Boolean(previousHash && previousHash !== changeHash);
     const baseStatus = classifyHttpStatus(response.status);
+    const status = baseStatus === 'broken' && source.manualReviewOnFailure ? 'manual' : baseStatus;
 
     return {
       id: source.id,
@@ -167,7 +168,6 @@ async function fetchSource(source, previousById) {
       finalUrl: response.url,
       sourceType: source.sourceType,
       watch: source.watch,
-      status: changedSinceLastRun && baseStatus === 'ok' ? 'changed' : baseStatus,
       httpStatus: response.status,
       contentType,
       etag,
@@ -175,7 +175,11 @@ async function fetchSource(source, previousById) {
       contentHash,
       changeHash,
       checkedAt,
-      changedSinceLastRun
+      changedSinceLastRun,
+      note: status === 'manual' && baseStatus === 'broken'
+        ? `Returned HTTP ${response.status}; manual review required before updating public facts.`
+        : undefined,
+      status: changedSinceLastRun && status === 'ok' ? 'changed' : status
     };
   } catch (error) {
     clearTimeout(timer);

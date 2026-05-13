@@ -1435,9 +1435,15 @@ function injectHreflangIntoEnglish(pages) {
       // Remove existing hreflang tags
       html = html.replace(/<link\s+rel="alternate"\s+hreflang="[^"]*"\s+href="[^"]*"\s*\/?>\s*\n?/g, '');
 
-      // Only include hreflang for languages that have translations for this page
-      const availableLangs = getAvailableLangs(pagePath);
-      const hreflangBlock = generateHreflangTags(pagePath, availableLangs);
+      const htmlLangMatch = html.match(/<html[^>]*\slang=["']([^"']+)["']/i);
+      const sourceLang = htmlLangMatch ? htmlLangMatch[1].toLowerCase() : DEFAULT_LANG;
+      const sourceUrl = buildLangUrl(pagePath, DEFAULT_LANG);
+      const hreflangBlock = sourceLang !== DEFAULT_LANG && SUPPORTED_LANGS.includes(sourceLang)
+        ? [
+            `<link rel="alternate" hreflang="${sourceLang}" href="${sourceUrl}" />`,
+            `<link rel="alternate" hreflang="x-default" href="${sourceUrl}" />`,
+          ].join('\n')
+        : generateHreflangTags(pagePath, getAvailableLangs(pagePath));
       html = html.replace('</head>', `${hreflangBlock}\n</head>`);
 
       fs.writeFileSync(sourceFile, html, 'utf8');

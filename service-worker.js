@@ -1,10 +1,10 @@
 /**
  * AFROTOOLS SERVICE WORKER
- * Stale-while-revalidate for assets, network-first for pages, network-only for API
+ * Stale-while-revalidate for assets, network-first for pages, network-only for API.
  *
- * CACHE_VERSION is stamped by `npm run build` — changing it purges old caches.
+ * CACHE_VERSION is stamped by `npm run build`; changing it purges old caches.
  */
-const CACHE_VERSION = '5669aa13';  /* ← bumped by scripts/stamp-sw.js */
+const CACHE_VERSION = '868c0909';
 const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
@@ -21,12 +21,11 @@ const PRECACHE = [
   '/assets/js/lib/error-boundary.js',
   '/assets/img/logo-mark.svg',
   '/assets/img/icon-192.svg',
-  '/assets/img/icon-512.svg',  '/assets/js/bundles/core.52bda31a.min.js',
+  '/assets/img/icon-512.svg',  '/assets/js/bundles/core.009aa1e7.min.js',
   '/assets/js/bundles/tool-page.3b1f7518.min.js',
   '/assets/js/bundles/chat.e5a3e11c.min.js',
 ];
 
-/* ── Install ── */
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_NAME)
@@ -35,7 +34,6 @@ self.addEventListener('install', e => {
   );
 });
 
-/* ── Activate — clean old caches ── */
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -44,24 +42,18 @@ self.addEventListener('activate', e => {
   );
 });
 
-/* ── Fetch strategy ── */
 self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
 
-  // Skip non-GET requests
   if (request.method !== 'GET') return;
 
-  // Network-only: API calls, serverless functions, auth proxy
   if (url.pathname.startsWith('/.netlify/') || url.pathname.startsWith('/api/') || url.pathname.startsWith('/supabase-proxy/')) {
-    return; // let browser handle normally
+    return;
   }
 
-  // Skip cross-origin requests
   if (url.origin !== self.location.origin) return;
 
-  // Stale-while-revalidate: static assets (CSS, JS, images, fonts)
-  // Serves cached version instantly, fetches update in background for next visit
   if (/^\/(assets)\//i.test(url.pathname) || /\.(css|js|woff2?|svg|png|jpg|webp|ico)$/i.test(url.pathname)) {
     e.respondWith(
       caches.match(request).then(cached => {
@@ -79,7 +71,6 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Network-first: HTML pages & navigations
   if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
     e.respondWith(
       fetch(request)
@@ -95,7 +86,6 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Default: cache-first with network fallback
   e.respondWith(
     caches.match(request).then(cached => cached || fetch(request))
   );

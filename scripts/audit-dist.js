@@ -37,6 +37,7 @@ const FORBIDDEN_PATHS = [
   'docs',
   'fr/docs',
   'fr/widgets/iframe/template.html',
+  'lang',
   'mc-7a2f9x.html',
   'netlify',
   'node_modules',
@@ -48,6 +49,7 @@ const FORBIDDEN_PATHS = [
   'test-results',
   'tests',
   'tools/afrostream/admin.html',
+  'tools/afroatlas/_country-template.html',
   'widgets/iframe/template.html'
 ];
 

@@ -334,7 +334,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         <li>Reusable handoff notes and exports</li>
         <li>Email support</li>
       </ul>
-      <a href="/auth/?mode=signup&amp;intent=pro-trial&amp;next=/pro/" class="card-cta cta-monthly" id="btn-monthly" role="button">Start Free Trial</a>
+      <a href="/auth/?mode=signup&amp;intent=pro-checkout&amp;next=/pro/" class="card-cta cta-monthly" id="btn-monthly" role="button">Start Pro Checkout</a>
     </div>
     <!-- Annual -->
     <div class="p-card featured">
@@ -349,7 +349,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         <li>Reusable handoff notes and exports</li>
         <li>Priority email support</li>
       </ul>
-      <a href="/auth/?mode=signup&amp;intent=pro-trial&amp;next=/pro/" class="card-cta cta-annual" id="btn-annual" role="button">Start Free Trial</a>
+      <a href="/auth/?mode=signup&amp;intent=pro-checkout&amp;next=/pro/" class="card-cta cta-annual" id="btn-annual" role="button">Start Pro Checkout</a>
     </div>
   </div>
 </section>
@@ -411,8 +411,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">How does the 7-day free trial work?<span class="arrow">&#9660;</span></button>
-    <div class="faq-a">Sign up and get full Pro access for 7 days at no cost. No credit card required to start. If you love it, choose monthly ($5/mo) or annual ($30/yr) billing. If not, do nothing and you'll stay on the free plan.</div>
+    <button type="button" class="faq-q">How does checkout activation work?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Create a free AfroTools account first, then start checkout. After payment, the success page polls your profile and offers a safe recovery path if Paystack's webhook is delayed.</div>
   </div>
 
   <div class="faq-item">
@@ -442,7 +442,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 <afro-footer></afro-footer>
 
 <script src="/assets/js/afro-auth.js?v=3978e101"></script>
+<script src="/assets/js/lib/pro-plan.js?v=9db2c402"></script>
 <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
+<script src="/assets/js/lib/analytics.js?v=776bf234"></script>
 <script>
 (function(){
   var statusEl = document.getElementById('pro-account-status');
@@ -488,13 +490,13 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         ]);
       } else {
         setStatus('is-signed-out', 'Sign in or create a free account to start Pro checkout, manage billing, or open an active Pro workspace.', 'Account needed', [
-          { label: 'Sign in', href: '/auth/?mode=login&intent=pro-trial&next=/pro/' },
-          { label: 'Create account', href: '/auth/?mode=signup&intent=pro-trial&next=/pro/', primary: true }
+          { label: 'Sign in', href: '/auth/?mode=login&intent=pro-checkout&next=/pro/' },
+          { label: 'Create account', href: '/auth/?mode=signup&intent=pro-checkout&next=/pro/', primary: true }
         ]);
       }
     } catch (err) {
       setStatus('is-free', 'Could not read Pro status yet. Sign in again or choose a plan below.', 'Check failed', [
-        { label: 'Sign in', href: '/auth/?mode=login&intent=pro-trial&next=/pro/', primary: true }
+        { label: 'Sign in', href: '/auth/?mode=login&intent=pro-checkout&next=/pro/', primary: true }
       ]);
     }
   }
@@ -512,14 +514,14 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     });
   });
 
-  // Currency pricing map for display
-  var pricing = {
-    usd: { monthly: '$5',       annual: '$30',       monthlyDetail: 'Billed monthly.',                annualDetail: '$2.50/mo - save 50% vs monthly' },
-    ngn: { monthly: '\u20A64,000',  annual: '\u20A622,000',  monthlyDetail: 'Billed monthly in Naira.',       annualDetail: '\u20A61,833/mo - save 45%' },
-    kes: { monthly: 'KSh750',   annual: 'KSh4,200',  monthlyDetail: 'Billed monthly in KES.',         annualDetail: 'KSh350/mo - save 53%' },
-    zar: { monthly: 'R89',      annual: 'R499',       monthlyDetail: 'Billed monthly in ZAR.',         annualDetail: 'R42/mo - save 53%' },
-    ghs: { monthly: 'GH\u20B550',    annual: 'GH\u20B5280',   monthlyDetail: 'Billed monthly in GHS.',         annualDetail: 'GH\u20B523/mo - save 53%' }
-  };
+  function priceFor(currency, interval) {
+    if (window.AfroProPlan && window.AfroProPlan.getPlanFor) {
+      return window.AfroProPlan.getPlanFor(currency, interval);
+    }
+    return interval === 'annual'
+      ? { label: '$30', suffix: '/year', detail: '$2.50/mo - save 50% vs monthly' }
+      : { label: '$5', suffix: '/month', detail: 'Billed monthly.' };
+  }
 
   var currencySelect = document.getElementById('currency-select');
   var monthlyPrice = document.querySelector('.p-card:first-child .price');
@@ -529,15 +531,19 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 
   function updatePricing() {
     var c = currencySelect.value;
-    var p = pricing[c];
-    if (!p) return;
-    monthlyPrice.innerHTML = p.monthly + ' <span>/month</span>';
-    monthlyDetail.textContent = c === 'usd' ? 'Billed monthly.' : p.monthlyDetail;
-    annualPrice.innerHTML = p.annual + ' <span>/year</span>';
-    annualDetail.textContent = p.annualDetail;
+    var monthly = priceFor(c, 'monthly');
+    var annual = priceFor(c, 'annual');
+    if (!monthly || !annual) return;
+    monthlyPrice.innerHTML = monthly.label + ' <span>' + monthly.suffix + '</span>';
+    monthlyDetail.textContent = monthly.detail;
+    annualPrice.innerHTML = annual.label + ' <span>' + annual.suffix + '</span>';
+    annualDetail.textContent = annual.detail;
   }
 
   currencySelect.addEventListener('change', updatePricing);
+  if (window.AfroTools && window.AfroTools.analytics) {
+    window.AfroTools.analytics.trackProPricing('pro-index');
+  }
 
   // Checkout via Paystack
   async function startCheckout(interval) {
@@ -546,15 +552,18 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     if (currency !== 'usd') {
       plan = interval + '_' + currency; // e.g. 'monthly_ngn'
     }
+    if (window.AfroTools && window.AfroTools.analytics) {
+      window.AfroTools.analytics.trackProUpgrade(plan, 'pro-index');
+    }
 
     // Require login to subscribe
     if (!window.AfroAuth || !window.AfroAuth.isLoggedIn || !window.AfroAuth.isLoggedIn()) {
-      window.location.href = '/auth/?mode=signup&intent=pro-trial&next=/pro/';
+      window.location.href = '/auth/?mode=signup&intent=pro-checkout&next=/pro/';
       return;
     }
     var token = window.AfroAuth.getSessionToken ? window.AfroAuth.getSessionToken() : null;
     if (!token) {
-      window.location.href = '/auth/?mode=signup&intent=pro-trial&next=/pro/';
+      window.location.href = '/auth/?mode=signup&intent=pro-checkout&next=/pro/';
       return;
     }
 
@@ -578,15 +587,15 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       } else {
         alert(data.error || 'Something went wrong. Please try again.');
         btns.forEach(function(b){ b.style.pointerEvents = ''; b.style.opacity = ''; });
-        document.getElementById('btn-monthly').textContent = 'Start Free Trial';
-        document.getElementById('btn-annual').textContent = 'Start Free Trial';
+        document.getElementById('btn-monthly').textContent = 'Start Pro Checkout';
+        document.getElementById('btn-annual').textContent = 'Start Pro Checkout';
       }
     } catch (err) {
       console.error('Checkout error:', err);
       alert('Connection error. Please check your internet and try again.');
       btns.forEach(function(b){ b.style.pointerEvents = ''; b.style.opacity = ''; });
-      document.getElementById('btn-monthly').textContent = 'Start Free Trial';
-      document.getElementById('btn-annual').textContent = 'Start Free Trial';
+      document.getElementById('btn-monthly').textContent = 'Start Pro Checkout';
+      document.getElementById('btn-annual').textContent = 'Start Pro Checkout';
     }
   }
 
