@@ -16,7 +16,9 @@ The free side is close-out ready for maintenance mode after this pass, with Pro 
 - SEO report mode now returns 0 missing canonical tags, 0 missing titles, 0 missing descriptions, 0 remaining hreflang violations, and 0 `/fr/` homepage broken-link warnings.
 - Government and transport source ledgers now put broken official-source lookups into manual review where appropriate.
 - Supabase target schema snapshot was captured under `supabase/snapshots/2026-05-13/` without exporting live user or lead rows.
-- i18n validation now passes with warnings only.
+- i18n validation now passes cleanly: `npm run build:i18n:full` rebuilds i18n, repairs reciprocal hreflang groups, and validates with 0 errors and 0 warnings.
+- 2026-05-14 gap check confirmed `npm test`, `npm run pro:verify`, `npm run build:deploy`, `npm run audit:dist`, `npm run security:scan`, `npm run check-links`, and `npm run seo:report` all pass after the i18n/redirect close-out.
+- 2026-05-15 free-tools debug check confirmed the public tool surface remains close-out ready: `npm run audit`, `npm run check-links`, `npm run seo:report`, `npm run build:i18n:validate`, `npm run validate:hreflang`, `npm run pdf:verify`, `npm run salary-tax:verify`, `npm run vat-business-tax:verify`, `npm run legal-workflow:verify`, `npm run category-workflow:verify`, `npm test`, `npm run pro:verify`, `npm run security:scan`, `npm run build:deploy`, `npm run audit:dist`, and `git diff --check` all passed.
 - CI now includes `npm run pro:verify`.
 - Monthly source-ledger refresh workflow was added.
 - Daily maintenance workflow has `AFROTOOLS_DAILY_MAINTENANCE_PAUSED` as a pause switch.
@@ -24,7 +26,6 @@ The free side is close-out ready for maintenance mode after this pass, with Pro 
 ## Sunset or Deferred
 
 - No Pro app was deleted in this pass. Apps remain either Active, Shell, or Blocked in `docs/PRO-APP-READINESS.md`.
-- Full FR/SW/HA reciprocal hreflang cleanup is deferred as carried localization debt.
 - Live Supabase security advisor warnings are recorded as live-project risk, not repo edits.
 - No freeze tag was cut because this checkout still has unrelated pre-existing user edits plus broad generated churn.
 
@@ -32,7 +33,7 @@ The free side is close-out ready for maintenance mode after this pass, with Pro 
 
 - Daily: SEO maintenance can run, unless paused with `AFROTOOLS_DAILY_MAINTENANCE_PAUSED=1`.
 - Monthly: government and transport ledgers refresh through `.github/workflows/monthly-source-ledgers.yml` and open a manual-review PR on diffs.
-- Before release: run `npm run build:deploy`, `npm test`, `npm run audit`, `npm run seo:report`, `npm run pro:verify`, `npm run audit:dist`, and `npm run security:scan`.
+- Before release: run `npm run build:deploy`, `npm test`, `npm run build:i18n:full`, `npm run audit`, `npm run seo:report`, `npm run pro:verify`, `npm run audit:dist`, and `npm run security:scan`.
 
 ## Active Pro Workstream
 

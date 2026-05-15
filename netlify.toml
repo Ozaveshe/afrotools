@@ -130,6 +130,9 @@
 [functions."scheduled-fetch-agri-inputs"]
   schedule = "0 3 * * 4"
 
+# Crypto spot prices are persisted by scheduled-fetch-crypto. P2P rates stay
+# request-scoped in crypto-p2p.js because that handler only warms in-memory
+# cache and does not write a durable live-data key for scheduled refreshes.
 [functions."scheduled-fetch-crypto"]
   schedule = "0 * * * *"
 

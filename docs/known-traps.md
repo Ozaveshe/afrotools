@@ -6,6 +6,8 @@
 - `scripts/generate-sitemaps.js` preserves existing sitemap `<lastmod>` values by default so CI checkout mtimes do not create generated-output drift. Set `AFROTOOLS_REFRESH_SITEMAP_LASTMOD=1` only when intentionally restamping sitemap dates.
 - Do not patch minified bundles first if the source file exists.
 - Treat many translated pages as outputs of the i18n flow, not canonical sources.
+- Use `npm run build:i18n:full` for hreflang proof. Raw `npm run build:i18n -- --all` can leave reciprocal tags incomplete until `scripts/fix-hreflang-reciprocity.js` runs.
+- On Windows, bulk i18n writes can hit transient `UNKNOWN`/`EBUSY`/`EPERM` locks; keep retry-safe writes in build scripts that touch hundreds of HTML files.
 
 ## Registry Coupling
 

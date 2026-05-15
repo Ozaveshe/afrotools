@@ -36,6 +36,24 @@ const SUPPORTED_LANGS = ['fr', 'sw', 'yo', 'ha'];
 const DEFAULT_LANG = 'en';
 const ALL_LANGS = [DEFAULT_LANG, ...SUPPORTED_LANGS];
 
+function sleep(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function writeFileWithRetry(filePath, content) {
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    try {
+      fs.writeFileSync(filePath, content, 'utf8');
+      return;
+    } catch (error) {
+      if (!['EBUSY', 'EPERM', 'UNKNOWN'].includes(error.code) || attempt === 5) {
+        throw error;
+      }
+      sleep(100 * attempt);
+    }
+  }
+}
+
 // Pages to process (relative to ROOT, without .html extension or trailing slash)
 // These are the source English pages
 const PAGES_TO_BUILD = [];
@@ -416,6 +434,8 @@ function discoverExistingFrPages() {
           } else {
             enPage = 'cars';
           }
+        } else if (country === 'blog') {
+          enPage = null;
         } else if (country === 'tools') {
           enPage = frenchToolSlugToEnglishSource(fileBase) || rel.replace('.html', '').replace(/\/index$/, '');
         } else if (fileBase === 'calculateur-salaire-net' && PAYE_SLUG_MAP[country]) {
@@ -438,7 +458,7 @@ function discoverExistingFrPages() {
         }
         // Dir-style index: /fr/XX/tool/index.html -> XX/tool
         const isEqGuineaTaxRoute = country === 'eq-guinea' && (parts[1] === 'gq-paye' || parts[1] === 'gq-vat');
-        if (country !== 'tools' && !isEqGuineaTaxRoute && parts.length === 3 && parts[2] === 'index.html') {
+        if (country !== 'tools' && country !== 'blog' && !isEqGuineaTaxRoute && parts.length === 3 && parts[2] === 'index.html') {
           const enCountry = COUNTRY_FR_TO_EN[country] || country;
           enPage = enCountry + '/' + parts[1];
         }
@@ -480,8 +500,11 @@ discoverExistingFrPages();
 
 const SW_SLUG_TO_EN = {
   // Category hubs
-  'afya-na-bima': 'health',
-  'biashara-na-faida': 'data-productivity',
+  'afya': 'health',
+  'afya-na-bima': 'health-insurance',
+  'data-na-tija': 'data-productivity',
+  'elimu': 'education',
+  'hati-na-pdf': 'document-pdf',
   'kazi-na-nyaraka': 'document-pdf',
   'kilimo': 'agriculture',
   'mali-na-mikopo': 'mortgage-property',
@@ -569,8 +592,10 @@ function discoverExistingSwPages() {
         const enExists = enPage && resolveSourceFile(enPage);
 
         if (enPage && enExists) {
-          existingSwPages.set(enPage, SITE_URL + swUrl);
-          existingSwToEn.set(swUrl, enPage);
+          if (!existingSwPages.has(enPage)) {
+            existingSwPages.set(enPage, SITE_URL + swUrl);
+            existingSwToEn.set(swUrl, enPage);
+          }
         } else {
           existingSwPages.set('_swonly_' + rel, SITE_URL + swUrl);
         }
@@ -1303,7 +1328,7 @@ function build() {
         if (!flags.dryRun) {
           const outputDir = path.dirname(outputPath);
           fs.mkdirSync(outputDir, { recursive: true });
-          fs.writeFileSync(outputPath, processedHtml, 'utf8');
+          writeFileWithRetry(outputPath, processedHtml);
         }
 
         langBuilt++;
@@ -1415,7 +1440,7 @@ ${entries.join('\n')}
 `;
 
   const outPath = path.join(ROOT, 'sitemap-i18n.xml');
-  fs.writeFileSync(outPath, xml, 'utf8');
+  writeFileWithRetry(outPath, xml);
   console.log(`Generated sitemap-i18n.xml with ${entries.length} URL entries`);
 }
 
@@ -1446,7 +1471,7 @@ function injectHreflangIntoEnglish(pages) {
         : generateHreflangTags(pagePath, getAvailableLangs(pagePath));
       html = html.replace('</head>', `${hreflangBlock}\n</head>`);
 
-      fs.writeFileSync(sourceFile, html, 'utf8');
+      writeFileWithRetry(sourceFile, html);
       count++;
     } catch (err) {
       console.error(`  Error on ${pagePath}: ${err.message}`);
@@ -1496,7 +1521,7 @@ function injectHreflangIntoExistingFrench() {
       ].join('\n');
 
       html = html.replace('</head>', `${tags}\n</head>`);
-      fs.writeFileSync(frFilePath, html, 'utf8');
+      writeFileWithRetry(frFilePath, html);
       count++;
     } catch (err) {
       errors++;
@@ -1518,7 +1543,7 @@ function injectHreflangIntoExistingFrench() {
         `<link rel="alternate" hreflang="x-default" href="${frAbsUrl}" />`,
       ].join('\n');
       html = html.replace('</head>', `${tags}\n</head>`);
-      fs.writeFileSync(frFilePath, html, 'utf8');
+      writeFileWithRetry(frFilePath, html);
       count++;
     } catch (err) {
       errors++;

@@ -94,7 +94,7 @@ function buildRedirectSourceSet() {
     const parts = trimmed.split(/\s+/);
     const [source, target, status] = parts;
     if (!source || !target) return;
-    if (!/^(301|302|307|308|410)$/.test(String(status || ''))) return;
+    if (!/^(301|302|307|308|410)!?$/.test(String(status || ''))) return;
     sources.add(normalizeRoutePath(source));
   });
 

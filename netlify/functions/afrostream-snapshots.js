@@ -15,12 +15,18 @@ function readJson(res) {
   });
 }
 
+function readCount(res, fallback) {
+  var range = res.headers.get('content-range') || '';
+  var match = /\/(\d+)$/.exec(range);
+  return match ? parseInt(match[1], 10) : fallback;
+}
+
 async function fetchSnapshotPage(baseParts, offset, pageSize) {
   var parts = baseParts.slice();
   parts.push('limit=' + pageSize);
   parts.push('offset=' + offset);
   var res = await fetch(SUPABASE_URL + '/rest/v1/as_creator_snapshots?' + parts.join('&'), {
-    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' }
   });
   var rows = await readJson(res);
   return { res: res, rows: rows };
@@ -76,6 +82,7 @@ exports.handler = async function(event) {
     var rows = [];
     var offset = 0;
     var pageSize = Math.min(limit, 1000);
+    var totalCount = null;
 
     while (rows.length < limit) {
       var page = await fetchSnapshotPage(parts, offset, Math.min(pageSize, limit - rows.length));
@@ -88,6 +95,7 @@ exports.handler = async function(event) {
       }
 
       var chunk = Array.isArray(page.rows) ? page.rows : [];
+      if (totalCount === null) totalCount = readCount(page.res, chunk.length);
       rows = rows.concat(chunk);
       if (chunk.length < Math.min(pageSize, limit - rows.length + chunk.length)) break;
       offset += chunk.length;
@@ -121,7 +129,8 @@ exports.handler = async function(event) {
       body: JSON.stringify({
         success: true,
         data: rows,
-        count: rows.length,
+        count: totalCount === null ? rows.length : totalCount,
+        returned_count: rows.length,
         period: period,
         dates: dateList,
         has_history: dateList.length >= 2,

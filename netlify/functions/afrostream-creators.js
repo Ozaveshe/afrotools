@@ -15,6 +15,12 @@ function readJson(res) {
   });
 }
 
+function readCount(res, fallback) {
+  var range = res.headers.get('content-range') || '';
+  var match = /\/(\d+)$/.exec(range);
+  return match ? parseInt(match[1], 10) : fallback;
+}
+
 function q(v) {
   return encodeURIComponent(String(v || '').trim());
 }
@@ -71,7 +77,7 @@ exports.handler = async function(event) {
 
   try {
     var res = await fetch(SUPABASE_URL + '/rest/v1/as_creators?' + parts.join('&'), {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' }
     });
     var data = await readJson(res);
     if (!res.ok) {
@@ -83,7 +89,12 @@ exports.handler = async function(event) {
     }
 
     var rows = Array.isArray(data) ? data : [];
-    return { statusCode: 200, headers: h, body: JSON.stringify({ success: true, data: rows, count: rows.length }) };
+    var totalCount = readCount(res, rows.length);
+    return {
+      statusCode: 200,
+      headers: h,
+      body: JSON.stringify({ success: true, data: rows, count: totalCount, returned_count: rows.length })
+    };
   } catch (e) {
     return { statusCode: 500, headers: h, body: JSON.stringify({ error: e.message }) };
   }

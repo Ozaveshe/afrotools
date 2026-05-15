@@ -49,7 +49,7 @@
     "build:i18n:validate": "node scripts/build-i18n.js --validate",
     "build:i18n:dry-run": "node scripts/build-i18n.js --dry-run",
     "validate:hreflang": "node scripts/validate-hreflang.js",
-    "build:i18n:full": "npm run build:i18n -- --all && npm run validate:hreflang",
+    "build:i18n:full": "npm run build:i18n -- --all && node scripts/fix-hreflang-reciprocity.js && npm run validate:hreflang",
     "test": "node scripts/check-links.js && node scripts/generate-blog-feed.js --check && node scripts/verify-blog-backend.js && node scripts/audit-tools.js && node tests/tool-verification.test.js",
     "test:tool-verification": "node tests/tool-verification.test.js",
     "test:auth-funnel": "playwright test tests/e2e/auth-funnel.spec.js",
