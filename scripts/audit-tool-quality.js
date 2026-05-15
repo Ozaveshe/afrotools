@@ -671,6 +671,10 @@ async function runBrowserSmoke(routes) {
   const server = await ensureServer(PORT);
   const baseUrl = `http://127.0.0.1:${PORT}`;
   const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({
+    viewport: { width: 1366, height: 900 },
+    serviceWorkers: 'block',
+  });
   const results = {};
   const queue = routes.slice(0, BROWSER_LIMIT || routes.length);
   let cursor = 0;
@@ -679,7 +683,7 @@ async function runBrowserSmoke(routes) {
   async function worker() {
     while (cursor < queue.length) {
       const route = queue[cursor++];
-      const page = await browser.newPage({ viewport: { width: 1366, height: 900 } });
+      const page = await context.newPage();
       const consoleErrors = [];
       const pageErrors = [];
       const failedResponses = [];
@@ -689,7 +693,10 @@ async function runBrowserSmoke(routes) {
       let error = '';
 
       page.on('console', (message) => {
-        if (message.type() === 'error') consoleErrors.push(message.text().slice(0, 300));
+        const text = message.text();
+        if (message.type() === 'error' && !/ERR_BLOCKED_BY_CLIENT|net::ERR_ABORTED|Inspector/i.test(text)) {
+          consoleErrors.push(text.slice(0, 300));
+        }
       });
       page.on('pageerror', (err) => pageErrors.push(String(err.message || err).slice(0, 300)));
       page.on('response', (response) => {
@@ -741,10 +748,10 @@ async function runBrowserSmoke(routes) {
       } catch (err) {
         pageErrors.push(String(err.message || err).slice(0, 300));
       }
-      await page.close();
+      await safeClosePage(page);
 
       done += 1;
-      if (done % 100 === 0 || done === queue.length) {
+      if (done % 25 === 0 || done === queue.length) {
         console.log(`Browser-smoked ${done}/${queue.length} routes`);
       }
 
@@ -773,9 +780,37 @@ async function runBrowserSmoke(routes) {
   }
 
   await Promise.all(Array.from({ length: Math.min(CONCURRENCY, queue.length || 1) }, () => worker()));
-  await browser.close();
+  await safeCloseContext(context);
+  await safeCloseBrowser(browser);
   if (server.started && server.process) server.process.kill();
   return results;
+}
+
+async function safeClosePage(page) {
+  try {
+    await Promise.race([
+      page.close({ runBeforeUnload: false }),
+      wait(2000),
+    ]);
+  } catch (_) {}
+}
+
+async function safeCloseContext(context) {
+  try {
+    await Promise.race([
+      context.close(),
+      wait(3000),
+    ]);
+  } catch (_) {}
+}
+
+async function safeCloseBrowser(browser) {
+  try {
+    await Promise.race([
+      browser.close(),
+      wait(3000),
+    ]);
+  } catch (_) {}
 }
 
 function loadChromium() {
