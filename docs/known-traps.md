@@ -30,6 +30,10 @@
 
 - Avoid manual mass edits when a script already exists.
 - Re-run validation after canonical, OG, internal link, or alias changes.
+- Hausa and Yoruba are route-first language surfaces with dedicated generated
+  sitemaps. Keep `/ha/` and `/yo/` out of `sitemap-misc.xml`; the root
+  `/jamb/` tree has its own sitemap, but nested language routes such as
+  `/ha/jamb/` are public content and must be included in the language sitemap.
 
 ## Supabase Footguns
 

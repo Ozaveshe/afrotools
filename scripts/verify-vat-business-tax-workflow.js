@@ -64,11 +64,11 @@ function verifyWorkflowRoutes() {
 
 function verifyHub() {
   const hub = read('vat-business-tax/index.html');
-  assert(hub.includes('data-vatbiz-workflow-app'), 'vat-business-tax/index.html is missing workflow planner mount');
-  assert(/\/assets\/css\/vat-business-tax-workflow\.css\?v=/.test(hub), 'vat-business-tax/index.html is missing VAT workflow stylesheet');
-  assert(/\/assets\/js\/lib\/workspace-sync\.js\?v=/.test(hub), 'vat-business-tax/index.html is missing workspace-sync.js');
-  assert(/\/assets\/js\/lib\/vat-business-tax-report-sync\.js\?v=/.test(hub), 'vat-business-tax/index.html is missing VAT report sync script');
-  assert(/\/assets\/js\/lib\/vat-business-tax-workflow\.js\?v=/.test(hub), 'vat-business-tax/index.html is missing VAT workflow script');
+  assert(!hub.includes('data-vatbiz-workflow-app'), 'vat-business-tax/index.html must not auto-mount the internal VAT workflow planner on the public hub');
+  assert(!/\/assets\/css\/vat-business-tax-workflow\.css\?v=/.test(hub), 'vat-business-tax/index.html must not load the internal VAT workflow stylesheet on the public hub');
+  assert(!/\/assets\/js\/lib\/workspace-sync\.js\?v=/.test(hub), 'vat-business-tax/index.html must not load workspace sync on the public hub');
+  assert(!/\/assets\/js\/lib\/vat-business-tax-report-sync\.js\?v=/.test(hub), 'vat-business-tax/index.html must not load VAT report sync on the public hub');
+  assert(!/\/assets\/js\/lib\/vat-business-tax-workflow\.js\?v=/.test(hub), 'vat-business-tax/index.html must not load the internal VAT workflow script on the public hub');
 }
 
 function verifyCalculator() {
@@ -154,7 +154,7 @@ function main() {
     process.exit(1);
   }
 
-  console.log(`VAT & Business Tax workflow verified (${ecommerceTools.length} registry tools, report sync, hub planner, dashboard workspace).`);
+  console.log(`VAT & Business Tax workflow verified (${ecommerceTools.length} registry tools, report sync, public hub boundary, dashboard workspace).`);
 }
 
 main();

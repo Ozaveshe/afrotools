@@ -1,16 +1,20 @@
 # VAT & Business Tax Workflow
 
-This workflow turns `/vat-business-tax/` from a static category list into a planning surface for VAT quotes, invoices, withholding, monthly filing, cross-border expansion, and source-audit work.
+This workflow supports VAT quotes, invoices, withholding, monthly filing, cross-border expansion, and source-audit work without exposing internal filing workspace UI on the public category hub.
 
 ## Surfaces
 
-- Hub: `vat-business-tax/index.html`
-- Planner UI: `assets/js/lib/vat-business-tax-workflow.js`
-- Planner styles: `assets/css/vat-business-tax-workflow.css`
+- Public hub: `vat-business-tax/index.html`
+- Planner UI for dashboard or explicit workspace contexts: `assets/js/lib/vat-business-tax-workflow.js`
+- Planner styles for dashboard or explicit workspace contexts: `assets/css/vat-business-tax-workflow.css`
 - Report sync: `assets/js/lib/vat-business-tax-report-sync.js`
 - Main calculator: `tools/vat-calculator/index.html`
 - Dashboard continuation: `dashboard/index.html`
 - Verification: `scripts/verify-vat-business-tax-workflow.js`
+
+## Public Hub Boundary
+
+The public `/vat-business-tax/` hub should stay focused on discovery, calculator routing, and category guidance. It must not auto-mount the internal VAT planner, readiness board, filing-pack export, open-items checklist, or dashboard workspace state. Keep those flows in dashboard continuation or explicit workspace entry points.
 
 ## Workflow Lanes
 

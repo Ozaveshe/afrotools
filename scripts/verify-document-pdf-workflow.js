@@ -78,6 +78,9 @@ function verifyWorkflowRoutes() {
 function verifyHub() {
   const hub = read('document-pdf/index.html');
   assert(hub.includes('data-document-pdf-workflow-app'), 'document-pdf/index.html is missing workflow planner mount');
+  assert(hub.includes('data-docpdf-public-planner-only'), 'document-pdf/index.html must keep the saved checklist workspace off the public category page');
+  assert(hub.includes('pruneDocPdfWorkspace'), 'document-pdf/index.html is missing the public-page workspace pruning guard');
+  assert(!hub.includes('data-docpdf-workspace'), 'document-pdf/index.html must not include the saved checklist workspace marker in the public HTML shell');
   assert(/\/assets\/css\/document-pdf-workflow\.css\?v=/.test(hub), 'document-pdf/index.html is missing document PDF workflow stylesheet');
   assert(/\/assets\/js\/lib\/workspace-sync\.js\?v=/.test(hub), 'document-pdf/index.html is missing workspace-sync.js');
   assert(/\/assets\/js\/lib\/document-pdf-report-sync\.js\?v=/.test(hub), 'document-pdf/index.html is missing report sync script');
@@ -158,7 +161,7 @@ function main() {
     process.exit(1);
   }
 
-  console.log(`Document & PDF workflow verified (${tools.length} registry tools, report sync, hub planner, dashboard workspace).`);
+  console.log(`Document & PDF workflow verified (${tools.length} registry tools, report sync, public planner boundary, dashboard workspace).`);
 }
 
 main();

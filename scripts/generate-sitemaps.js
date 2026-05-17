@@ -29,7 +29,11 @@ const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
   '.git', '.github', '.claude', 'supabase', 'netlify', 'assets', 'engines',
   'dist', 'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
-  'afrotools-sentinel', 'prompts', 'docs', 'cars', 'jamb'
+  'afrotools-sentinel', 'prompts', 'docs', 'cars'
+]);
+
+const EXCLUDE_ROOT_DIRS = new Set([
+  'jamb'
 ]);
 
 // Files to exclude
@@ -93,6 +97,8 @@ function findHtmlFiles(dir, files = []) {
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
+      const relDir = path.relative(ROOT, fullPath).replace(/\\/g, '/');
+      if (EXCLUDE_ROOT_DIRS.has(relDir)) continue;
       if (EXCLUDE_DIRS.has(entry.name)) continue;
       findHtmlFiles(fullPath, files);
     } else if (entry.isFile() && entry.name.endsWith('.html')) {
@@ -192,6 +198,8 @@ function inspectHtmlFile(filePath) {
  */
 function categorize(relPath) {
   if (relPath.startsWith('sw/')) return 'sw';
+  if (relPath.startsWith('ha/')) return 'ha';
+  if (relPath.startsWith('yo/')) return 'yo';
   if (relPath.startsWith('agriculture/')) return 'agriculture';
   if (relPath.startsWith('blog/')) return 'blog';
   if (relPath.startsWith('tools/')) return 'tools';
@@ -274,6 +282,8 @@ const groups = {
   blog: [],
   fr: [],
   sw: [],
+  ha: [],
+  yo: [],
   misc: []
 };
 
@@ -322,6 +332,8 @@ const categoryToFile = {
   blog: 'sitemap-blog.xml',
   fr: 'sitemap-fr.xml',
   sw: 'sitemap-sw.xml',
+  ha: 'sitemap-ha.xml',
+  yo: 'sitemap-yo.xml',
   misc: 'sitemap-misc.xml'
 };
 

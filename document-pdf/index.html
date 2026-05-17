@@ -30,6 +30,9 @@
 <link rel="stylesheet" href="/assets/css/document-pdf-workflow.css?v=40147806">
 <link rel="stylesheet" href="/assets/css/document-pdf-workflow-tight.css?v=5044607f">
 <link rel="stylesheet" href="/assets/css/workflow-tightening.css?v=5c3ceaed">
+<style>
+.docpdf-public-planner .docpdf-flow-grid>.docpdf-flow-panel:nth-child(3){display:none}
+</style>
 <script src="/assets/js/components/tool-registry.min.js?v=4fb2e1e9" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
 <script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
@@ -146,7 +149,7 @@
 
 <div class="wrap"><p class="quote">Everything PDF in one place. Merge, split, compress, convert, watermark, encrypt, repair, and export documents - all running in your browser. Files never leave your device.</p></div>
 
-<section class="docpdf-flow-lab" data-document-pdf-workflow-app>
+<section class="docpdf-flow-lab docpdf-public-planner" data-document-pdf-workflow-app data-docpdf-public-planner-only>
   <div class="docpdf-flow-head">
     <div>
       <div class="ey">PDF Planner</div>
@@ -264,6 +267,21 @@ else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script>
+(function(){
+  function pruneDocPdfWorkspace(){
+    document.querySelectorAll('[data-docpdf-public-planner-only] .docpdf-flow-grid>.docpdf-flow-panel:nth-child(3)').forEach(function(panel){
+      panel.remove();
+    });
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var host=document.querySelector('[data-docpdf-public-planner-only]');
+    if(!host)return;
+    pruneDocPdfWorkspace();
+    new MutationObserver(pruneDocPdfWorkspace).observe(host,{childList:true,subtree:true});
+  });
+})();
+</script>
 <script src="/assets/js/lib/document-pdf-workflow.js?v=63499476" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

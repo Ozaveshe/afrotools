@@ -65,6 +65,8 @@ The `/document-pdf/` hub is a workflow surface, not only a grid of PDF tools. It
 - `assets/js/lib/document-pdf-workflow.js`
 - `assets/css/document-pdf-workflow.css`
 
+The public `/document-pdf/` category page should expose the planner and recommended route only. Do not auto-mount the saved plan/checklist readiness workspace on the public hub; detailed saved state belongs in the dashboard `PDF Workspace` tab or in explicit metadata-only exports.
+
 The report-sync layer listens for `afro-pdf-gate-passed` and `afro-pdf-generated` on PDF-category tools. It saves metadata-only export trails under `afro_document_pdf_reports_v1` and, when a signed-in workspace is available, syncs the metadata as `item_type = 'document-pdf-report'`.
 
 The category planner saves:

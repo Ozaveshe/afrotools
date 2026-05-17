@@ -18,7 +18,7 @@ Use this document when upgrading an existing PAYE page or creating a new one.
 
 ## Salary And PAYE Category Workflow
 
-The `/salary-tax/` category is a workflow surface, not only a list of PAYE calculators. It should guide users through:
+The `/salary-tax/` category should guide users from calculator discovery into saved PAYE work without exposing internal payroll workspace boards on the public hub. It should support:
 
 1. Choose the right calculator family.
 2. Run a salary, payroll, tax, property, savings, crypto, FX, or Francophone calculation.
@@ -26,8 +26,8 @@ The `/salary-tax/` category is a workflow surface, not only a list of PAYE calcu
 4. Sync the scenario to the dashboard workspace when signed in.
 5. Generate a report, source note, PDF, payslip-style summary, or payroll review item.
 6. Continue employer work in `/tools/afropayroll-os/workspace.html` when a single calculator result becomes a payroll run draft.
-7. Use the Salary hub planner to choose a country/job route and create a metadata-only handoff brief when the user is ready to continue.
-8. Review a local readiness board with approval status, exception queue, and audit-packet export before payroll handoff.
+7. Use an explicit Salary planner or dashboard workspace to choose a country/job route and create a metadata-only handoff brief when the user is ready to continue.
+8. Review a local readiness board with approval status, exception queue, and audit-packet export before payroll handoff in workspace contexts only.
 
 The category count should come from the curated hub map in `assets/js/salary-tax-index.js`, not from a plain `category === 'financial'` registry filter. As of this standard, the expected curated total is `188` unique tools across:
 
@@ -62,8 +62,8 @@ Every PAYE page should provide:
 6. Signed-in saved scenarios synced into the dashboard workspace.
 7. Reopen support from dashboard back into the calculator state.
 8. Account-gated PDF/report downloads with report metadata saved for later follow-up.
-9. Category-level planner and handoff briefs that connect a single calculation to employer, advisory, and dashboard workflows.
-10. Payroll-style readiness workflow with approval status, exception queue, and metadata-only audit packets.
+9. Category-level planner and handoff briefs in explicit workspace contexts that connect a single calculation to employer, advisory, and dashboard workflows.
+10. Payroll-style readiness workflow with approval status, exception queue, and metadata-only audit packets outside the public category hub.
 
 ## Required Data Flows
 
@@ -104,7 +104,8 @@ Every PAYE page should provide:
 
 ### 5. Category planner and payroll handoff briefs
 
-- The main `/salary-tax/` hub loads `assets/js/lib/salary-tax-workflow.js` and `assets/css/salary-tax-workflow.css`.
+- The main `/salary-tax/` public hub must not auto-mount `assets/js/lib/salary-tax-workflow.js` or `assets/css/salary-tax-workflow.css`.
+- Keep the planner library available for dashboard continuation or explicit workspace entry points.
 - Planner state is saved locally under `afro_salary_workflow_plan_v1`.
 - Handoff briefs are saved locally under `afro_salary_handoff_briefs_v1`.
 - Signed-in handoff metadata syncs to the dashboard workspace as `item_type = 'salary-handoff'`.
@@ -287,8 +288,8 @@ When upgrading another PAYE page to this standard:
 9. Verify auth hydration does not leave the page in a false signed-out state.
 10. Load `assets/js/lib/paye-report-sync.js` after `paye-calculation-sync.js` when the page can generate a PDF/report.
 11. Verify guest report download opens the account gate, signed-in report download bypasses it, and the dashboard shows the saved salary report metadata.
-12. Verify the Salary hub planner can save a route, create a handoff brief, gate the brief download, and show the handoff in the dashboard Salary Workspace.
-13. Verify the readiness board, approval status, exception queue, gated audit packet download, and dashboard Salary Workspace audit section.
+12. Verify the public Salary hub does not auto-mount the internal planner, and verify explicit planner/workspace entry points can save a route, create a handoff brief, gate the brief download, and show the handoff in the dashboard Salary Workspace.
+13. Verify the readiness board, approval status, exception queue, gated audit packet download, and dashboard Salary Workspace audit section stay out of the public category hub.
 
 ## Current Scope
 

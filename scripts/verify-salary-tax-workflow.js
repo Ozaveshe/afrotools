@@ -84,9 +84,10 @@ for (const route of workflowRoutes) {
 }
 
 const salaryHub = read('salary-tax/index.html');
-assert(salaryHub.includes('data-salary-workflow-app'), 'salary-tax/index.html is missing workflow planner mount');
-assert(/\/assets\/js\/lib\/salary-tax-workflow\.js\?v=[a-z0-9]+/.test(salaryHub), 'salary-tax/index.html is missing salary workflow script');
-assert(/\/assets\/css\/salary-tax-workflow\.css\?v=[a-z0-9]+/.test(salaryHub), 'salary-tax/index.html is missing salary workflow stylesheet');
+assert(!salaryHub.includes('data-salary-workflow-app'), 'salary-tax/index.html must not auto-mount the internal salary workflow planner on the public hub');
+assert(!/\/assets\/js\/lib\/salary-tax-workflow\.js\?v=[a-z0-9]+/.test(salaryHub), 'salary-tax/index.html must not load the internal salary workflow script on the public hub');
+assert(!/\/assets\/css\/salary-tax-workflow\.css\?v=[a-z0-9]+/.test(salaryHub), 'salary-tax/index.html must not load the internal salary workflow stylesheet on the public hub');
+assert(/\/assets\/js\/salary-tax-index\.js\?v=[a-z0-9]+/.test(salaryHub), 'salary-tax/index.html is missing the public salary-tax index renderer');
 
 const manifest = JSON.parse(read('assets/js/bundles/manifest.json'));
 const toolPage = manifest['tool-page'] || {};

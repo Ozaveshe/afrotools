@@ -31,9 +31,9 @@ const dashboard = read('dashboard/index.html');
 
 assert(hub.includes('Legal & Compliance Apps for Africa - 69 Apps'), 'Legal hub title is not the 69-app standard');
 assert(hub.includes('"numberOfItems":69'), 'Legal hub JSON-LD numberOfItems is not 69');
-assert(hub.includes('data-category-workflow-lite="legal"'), 'Legal hub missing category workflow mount');
-assert(hub.includes('/assets/css/category-workflow-lite.css'), 'Legal hub missing category workflow CSS');
-assert(hub.includes('/assets/js/lib/category-workflow-lite.js'), 'Legal hub missing category workflow JS');
+assert(!hub.includes('data-category-workflow-lite="legal"'), 'Legal hub must not auto-mount category workflow packs on the public hub');
+assert(!hub.includes('/assets/css/category-workflow-lite.css'), 'Legal hub must not load category workflow CSS on the public hub');
+assert(!hub.includes('/assets/js/lib/category-workflow-lite.js'), 'Legal hub must not load category workflow JS on the public hub');
 assert(hub.includes('Resume saved legal workflows'), 'Legal hub missing dashboard continuation CTA');
 
 const cardLinks = [...hub.matchAll(/<a\s+href="([^"]+)"\s+class="leg-tool-card"/g)].map((match) => match[1]);
@@ -133,4 +133,4 @@ assert(!thinWorkflowData.length, `Legal workflow data gaps: ${thinWorkflowData.s
   assert(dashboard.includes(needle), `Dashboard missing legal workflow continuation marker ${needle}`);
 });
 
-console.log('Legal workflow verified (69 tool routes, copilot coverage, hub planner, gates, and dashboard continuation).');
+console.log('Legal workflow verified (69 tool routes, copilot coverage, public hub boundary, gates, and dashboard continuation).');
