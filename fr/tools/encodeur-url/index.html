@@ -4,20 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
-<title>Encodeur/Decodeur d'URL | AfroTools</title>
-<meta name="description" content="Encodeur et decodeur d'URL gratuit en ligne. Convertissez les caracteres speciaux en format URL encode.">
+<title>Encodeur et décodeur d'URL en français | AfroTools</title>
+<meta name="description" content="Encodez ou décodez des URL, paramètres API, liens UTM et caractères spéciaux en français, avec alertes de percent-encoding et traitement local.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/encodeur-url/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Encodeur/Decodeur d'URL | AfroTools">
-<meta property="og:description" content="Encodeur et decodeur d'URL gratuit en ligne.">
+<meta property="og:title" content="Encodeur et décodeur d'URL en français | AfroTools">
+<meta property="og:description" content="Un outil fiable pour encoder, décoder et vérifier les chaînes URL sans envoyer vos données au serveur.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://afrotools.com/fr/tools/encodeur-url/">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,61 +26,377 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=e6805359" defer></script>
 <script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
 <style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+:root{--url-ink:#102033;--url-muted:#5d6b7c;--url-line:#d9e3ef;--url-soft:#f5f8fc;--url-panel:#fff;--url-blue:#075ec8;--url-green:#087443;--url-red:#b42318;--url-amber:#a15c07;--url-mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}
+body{margin:0;background:#eef4f9;color:var(--url-ink);font-family:"DM Sans",system-ui,sans-serif}
+.url-hero{background:#102033;color:#fff;padding:42px 0 34px}
+.url-wrap{width:min(1120px,calc(100% - 32px));margin:0 auto}
+.url-crumb{font-size:13px;color:#c9d7e8;margin-bottom:14px}
+.url-crumb a{color:#e6eef8;text-decoration:none}
+.url-hero h1{font-size:clamp(2rem,4vw,3rem);line-height:1.04;margin:0 0 14px;color:#fff;font-weight:800;max-width:880px}
+.url-hero p{font-size:1.04rem;line-height:1.58;color:#d5e0ec;max-width:790px;margin:0}
+.url-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.url-badge{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);border-radius:999px;color:#fff;font-size:13px;font-weight:800;padding:7px 11px}
+.url-main{padding:26px 0 64px}
+.url-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+.url-stack{display:grid;gap:16px}
+.url-panel{background:var(--url-panel);border:1px solid var(--url-line);border-radius:8px;overflow:hidden;box-shadow:0 10px 26px rgba(16,32,51,.07)}
+.url-panel-head{padding:16px 18px;border-bottom:1px solid var(--url-line);background:#fafcff}
+.url-panel-title{font-size:1.08rem;font-weight:800;margin:0;color:#102033}
+.url-panel-sub{font-size:.86rem;color:var(--url-muted);line-height:1.5;margin:.25rem 0 0}
+.url-panel-body{padding:18px}
+.url-field{display:grid;gap:7px}
+.url-label{font-size:.86rem;font-weight:800;color:#344054}
+.url-help{font-size:.8rem;color:var(--url-muted);line-height:1.45}
+textarea,.url-output{width:100%;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--url-ink);font:inherit;padding:12px;outline:none}
+textarea:focus,.url-output:focus{border-color:var(--url-blue);box-shadow:0 0 0 3px rgba(7,94,200,.13)}
+textarea{min-height:190px;resize:vertical;font-family:var(--url-mono);font-size:.9rem;line-height:1.55}
+.url-output{min-height:190px;font-family:var(--url-mono);font-size:.9rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.url-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+button{border:1px solid #cfd9e6;background:#fff;border-radius:8px;color:#20324a;cursor:pointer;font-weight:800;padding:10px 12px;min-height:42px}
+button:hover{border-color:var(--url-blue);color:var(--url-blue)}
+button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid rgba(7,94,200,.25);outline-offset:2px}
+.url-primary{background:var(--url-blue);border-color:var(--url-blue);color:#fff}
+.url-primary:hover{background:#064fa9;color:#fff}
+.url-danger{background:#fff5f4;border-color:#ffd3ce;color:var(--url-red)}
+.url-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.url-metric{border:1px solid var(--url-line);border-radius:8px;background:#f9fbfd;padding:12px}
+.url-metric b{display:block;font-size:1.45rem;line-height:1;color:#102033}
+.url-metric span{display:block;margin-top:5px;font-size:.78rem;color:var(--url-muted);font-weight:700}
+.url-notice{border:1px solid var(--url-line);border-radius:8px;background:#f9fbfd;padding:12px;font-size:.88rem;line-height:1.55;color:#475467}
+.url-notice strong{color:#102033}
+.url-warnings{display:grid;gap:8px}
+.url-warning{border:1px solid #fedf89;background:#fffaeb;color:#7a3b00;border-radius:8px;padding:10px 12px;font-size:.86rem;line-height:1.45}
+.url-error{border-color:#fecdca;background:#fff5f4;color:var(--url-red)}
+.url-ok{border-color:#abefc6;background:#ecfdf3;color:var(--url-green)}
+.url-examples{display:grid;gap:9px}
+.url-example{display:grid;gap:4px;text-align:left;white-space:normal;border:1px solid #dce6f2;background:#fbfdff}
+.url-example span{font-size:.78rem;color:var(--url-muted);font-weight:700}
+.url-example code{font-family:var(--url-mono);font-size:.78rem;word-break:break-all;color:#102033}
+.url-reference{display:grid;gap:10px}
+.url-reference a{color:var(--url-blue);font-weight:800}
+.url-reference p{margin:.25rem 0 0;color:var(--url-muted);font-size:.84rem;line-height:1.5}
+.url-method{display:grid;gap:10px}
+.url-method li{color:#475467;line-height:1.58}
+.url-related{display:flex;gap:10px;flex-wrap:wrap}
+.url-related a{border:1px solid var(--url-line);border-radius:999px;padding:8px 11px;text-decoration:none;color:#20324a;font-weight:800;font-size:.84rem;background:#fff}
+.url-sr-scorecard{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+details{border:1px solid var(--url-line);border-radius:8px;background:#fff;padding:13px}
+summary{cursor:pointer;font-weight:800;color:#102033}
+details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
+@media(max-width:900px){.url-grid{grid-template-columns:1fr}.url-metrics{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:620px){.url-wrap{width:min(100% - 20px,1120px)}.url-hero{padding:30px 0}.url-metrics{grid-template-columns:1fr}.url-actions button{flex:1 1 100%}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Encodeur/Decodeur d'URL","url":"https://afrotools.com/fr/tools/encodeur-url/","inLanguage":"https://afrotools.com/fr/","applicationCategory":"DeveloperApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quand faut-il encoder une URL ?","acceptedAnswer":{"@type":"Answer","text":"Les URL ne supportent qu'un sous-ensemble de caracteres ASCII. Les espaces, accents et caracteres speciaux doivent etre encodes pour etre transmis correctement."}},{"@type":"Question","name":"L'outil gere-t-il les caracteres UTF-8 ?","acceptedAnswer":{"@type":"Answer","text":"Oui, l'outil gere correctement tous les caracteres UTF-8 incluant les accents francais, les caracteres arabes et les emojis."}},{"@type":"Question","name":"L'outil gere-t-il les URL internationalisees ?","acceptedAnswer":{"@type":"Answer","text":"Oui, l'outil gere les noms de domaine internationalises (IDN) et les URL contenant des caracteres non-ASCII selon les standards RFC 3986 et RFC 3987."}}]}
-</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
-  }
-}
-</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Encodeur et décodeur d'URL","applicationCategory":"DeveloperApplication","operatingSystem":"Web","url":"https://afrotools.com/fr/tools/encodeur-url/","inLanguage":"fr","description":"Encodez et décodez des URL, chaînes de requête, paramètres API, liens UTM et caractères spéciaux localement dans le navigateur.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quelle est la différence entre encodeURI et encodeURIComponent ?","acceptedAnswer":{"@type":"Answer","text":"encodeURI sert à conserver la structure d'une URL complète. encodeURIComponent sert à encoder une seule valeur, par exemple un paramètre de requête ou un segment de chemin."}},{"@type":"Question","name":"Que se passe-t-il si le percent-encoding est invalide ?","acceptedAnswer":{"@type":"Answer","text":"L'outil affiche un avertissement clair et évite de casser la page. La sortie reste lisible afin que vous puissiez corriger le signe pourcentage ou la séquence hexadécimale."}},{"@type":"Question","name":"Mes URL sont-elles envoyées à AfroTools ?","acceptedAnswer":{"@type":"Answer","text":"Non. Les opérations d'encodage et de décodage s'exécutent localement dans le navigateur."}}]}</script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/url-encoder/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/encodeur-url/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/url-encoder/" />
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Encodeur/Decodeur d'URL</h1>
-<p>Encodez et decodez les URL. Transformez les caracteres speciaux en format compatible URL.</p>
+<section class="url-hero">
+  <div class="url-wrap">
+    <div class="url-crumb"><a href="/fr/">AfroTools</a> / <a href="/fr/tools/">Outils</a> / Encodeur d'URL</div>
+    <h1>Encodez, décodez et vérifiez vos URL sans casser les paramètres.</h1>
+    <p>Collez une URL complète, une chaîne de requête ou une valeur API. Choisissez l'encodage adapté, contrôlez les caractères modifiés et repérez les séquences de percent-encoding mal formées avant de publier un lien.</p>
+    <div class="url-badges" aria-label="Capacités de l'outil">
+      <span class="url-badge">Traitement local</span>
+      <span class="url-badge">URI complète</span>
+      <span class="url-badge">Composant URL</span>
+      <span class="url-badge">Alertes non bloquantes</span>
+    </div>
+  </div>
 </section>
-<div class="fr-wrap">
-<div class="fr-tool-frame">
-<iframe src="/tools/url-encoder/" title="Encodeur/Decodeur d'URL" loading="lazy"></iframe>
-</div>
-<div class="fr-seo">
-<h2>Encodeur et decodeur d'URL</h2>
-<p>L'encodeur d'URL d'AfroTools transforme les caracteres speciaux en format URL encode (percent-encoding) et inversement. Essentiel pour construire des URL valides avec des parametres de requete, gerer les caracteres accentues dans les liens ou debuguer des URL malformees.</p>
-<p>L'outil gere les caracteres UTF-8, les espaces, les caracteres reserves et les composants d'URL selon la RFC 3986. Ideal pour les developpeurs travaillant avec des API REST ou des URL multilingues.</p>
-</div>
-<div class="fr-faq">
-<h2>Questions frequentes</h2>
-<details><summary>Quand faut-il encoder une URL ?</summary><p>Les URL ne supportent qu'un sous-ensemble de caracteres ASCII. Les espaces, accents et caracteres speciaux doivent etre encodes pour etre transmis correctement dans les URL.</p></details>
-<details><summary>L'outil gere-t-il les caracteres UTF-8 ?</summary><p>Oui, l'outil gere correctement tous les caracteres UTF-8 incluant les accents francais, les caracteres arabes, les emojis et tous les caracteres Unicode.</p></details>
-<details><summary>L'outil gere-t-il les URL internationalisees ?</summary><p>Oui, l'outil gere les noms de domaine internationalises (IDN) et les URL contenant des caracteres non-ASCII selon les standards RFC 3986 et RFC 3987.</p></details>
-</div>
-</div>
+<main class="url-main">
+  <div class="url-wrap url-grid">
+    <section class="url-stack" aria-label="Espace de travail URL">
+      <div class="url-panel">
+        <div class="url-panel-head">
+          <h2 class="url-panel-title">Entrée</h2>
+          <p class="url-panel-sub">Utilisez une URL complète avec ses paramètres, une valeur isolée ou une chaîne déjà encodée.</p>
+        </div>
+        <div class="url-panel-body url-stack">
+          <label class="url-field" for="urlInput">
+            <span class="url-label">Texte à traiter</span>
+            <textarea id="urlInput" spellcheck="false">https://exemple.africa/recherche?q=café à Abidjan&categorie=recherche rapide&utm_source=lettre&retour=https://exemple.africa/page-finale?outil=encodeur-url</textarea>
+            <span class="url-help">Pour une URL complète, encodeURI préserve les séparateurs comme :, /, ?, &, = et #. Pour une valeur de paramètre, encodeURIComponent encode ces séparateurs.</span>
+          </label>
+          <div class="url-actions" aria-label="Actions principales">
+            <button class="url-primary" id="encodeUriBtn" type="button">Encoder URI</button>
+            <button class="url-primary" id="encodeComponentBtn" type="button">Encoder composant</button>
+            <button id="decodeBtn" type="button">Décoder</button>
+            <button id="swapBtn" type="button">Permuter</button>
+            <button id="copyBtn" type="button">Copier</button>
+            <button class="url-danger" id="clearBtn" type="button">Effacer</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="url-panel">
+        <div class="url-panel-head">
+          <h2 class="url-panel-title">Résultat</h2>
+          <p class="url-panel-sub">Les erreurs de décodage sont affichées clairement et ne bloquent pas la page.</p>
+        </div>
+        <div class="url-panel-body url-stack">
+          <div class="url-output" id="urlOutput" role="status" aria-live="polite"></div>
+          <div class="url-metrics" aria-label="Mesures du résultat">
+            <div class="url-metric"><b id="inputLength">0</b><span>caractères en entrée</span></div>
+            <div class="url-metric"><b id="outputLength">0</b><span>caractères en sortie</span></div>
+            <div class="url-metric"><b id="changedCount">0</b><span>positions modifiées</span></div>
+          </div>
+          <div class="url-warnings" id="warningList" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="url-panel">
+        <div class="url-panel-head">
+          <h2 class="url-panel-title">Exemples prêts à tester</h2>
+          <p class="url-panel-sub">Cliquez sur un exemple, puis lancez l'action adaptée à votre cas.</p>
+        </div>
+        <div class="url-panel-body url-examples">
+          <button class="url-example" type="button" data-sample="https://boutique.exemple/search?q=robe wax rouge&ville=Cotonou&tri=prix bas">
+            <strong>Chaîne de requête</strong>
+            <span>Recherche avec espaces et accents</span>
+            <code>q=robe wax rouge&amp;ville=Cotonou</code>
+          </button>
+          <button class="url-example" type="button" data-sample="https://afrotools.com/fr/?utm_source=lettre mai&utm_medium=email&utm_campaign=lancement encodeur">
+            <strong>Lien UTM</strong>
+            <span>Campagne marketing avec valeurs lisibles</span>
+            <code>utm_campaign=lancement encodeur</code>
+          </button>
+          <button class="url-example" type="button" data-sample="pays=Côte d'Ivoire&url_retour=https://client.exemple/retour paiement&devise=XOF">
+            <strong>Paramètres API</strong>
+            <span>Valeurs à encoder une par une avec le mode composant</span>
+            <code>url_retour=https://client.exemple/retour paiement</code>
+          </button>
+          <button class="url-example" type="button" data-sample="électricité, café, paiement mobile, 50% payé & confirmé">
+            <strong>Caractères spéciaux</strong>
+            <span>Accents, symbole pourcentage, esperluette et virgules</span>
+            <code>électricité, 50% payé &amp; confirmé</code>
+          </button>
+        </div>
+      </div>
+
+      <div class="url-panel">
+        <div class="url-panel-head">
+          <h2 class="url-panel-title">Méthode et limites</h2>
+          <p class="url-panel-sub">Dernière vérification : 2026. Références utilisées pour le comportement navigateur moderne.</p>
+        </div>
+        <div class="url-panel-body">
+          <ul class="url-method">
+            <li><strong>Encoder URI</strong> convient à une URL déjà structurée : les séparateurs d'URL restent lisibles.</li>
+            <li><strong>Encoder composant</strong> convient à une valeur isolée : les espaces, accents, &, =, ?, / et # sont protégés avant insertion dans une URL.</li>
+            <li><strong>Décoder</strong> accepte les espaces écrits en + dans les chaînes de requête, puis signale les séquences % incomplètes ou invalides.</li>
+            <li><strong>Avertissement.</strong> Cet outil aide au diagnostic et au formatage. Vérifiez les URL signées, les liens de paiement, les redirections sensibles et les secrets API dans leur système d'origine.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <aside class="url-stack" aria-label="Aide et références">
+      <div class="url-panel">
+        <div class="url-panel-head">
+          <h2 class="url-panel-title">Confidentialité</h2>
+        </div>
+        <div class="url-panel-body">
+          <p class="url-notice"><strong>Traitement local.</strong> L'encodage et le décodage se font dans votre navigateur. Le texte collé dans cette page n'est pas envoyé à un serveur AfroTools par l'outil.</p>
+        </div>
+      </div>
+
+      <div class="url-panel" data-tool-verification-panel>
+        <div class="url-panel-head">
+          <h2 class="url-panel-title">Références</h2>
+          <p class="url-panel-sub">Sources techniques pour choisir le bon mode.</p>
+        </div>
+        <div class="url-panel-body url-reference">
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI" target="_blank" rel="noopener">MDN encodeURI</a><p>Référence du navigateur pour l'encodage d'une URI complète.</p></div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="noopener">MDN encodeURIComponent</a><p>Référence pour encoder une valeur de requête, un fragment ou un segment.</p></div>
+          <div><a href="https://url.spec.whatwg.org/" target="_blank" rel="noopener">Standard URL WHATWG</a><p>Définit le comportement moderne des URL dans les navigateurs.</p></div>
+          <div><a href="https://datatracker.ietf.org/doc/html/rfc3986" target="_blank" rel="noopener">RFC 3986</a><p>Syntaxe générique des URI et caractères réservés.</p></div>
+        </div>
+      </div>
+
+      <div class="url-panel">
+        <div class="url-panel-head">
+          <h2 class="url-panel-title">Outils associés</h2>
+        </div>
+        <div class="url-panel-body url-related">
+          <a href="/fr/tools/generateur-qr/">Générateur QR</a>
+          <a href="/fr/tools/json-formatter/">Formatage JSON</a>
+          <a href="/fr/tools/generateur-slug/">Générateur de slug</a>
+          <a href="/tools/api-tester/">Testeur API</a>
+          <a href="/tools/url-encoder/">Version source</a>
+        </div>
+      </div>
+
+      <details>
+        <summary>Pourquoi mon décodage échoue-t-il ?</summary>
+        <p>Un signe pourcentage doit être suivi de deux caractères hexadécimaux, par exemple %20. Une valeur comme %2 ou %ZZ est invalide et déclenche une alerte au lieu de casser l'outil.</p>
+      </details>
+      <details>
+        <summary>Quand utiliser le mode composant ?</summary>
+        <p>Utilisez-le pour une valeur unique : terme de recherche, identifiant, chemin utilisateur, URL de retour ou paramètre API. C'est le choix le plus sûr quand la valeur contient &, =, ?, / ou #.</p>
+      </details>
+    </aside>
+  </div>
+</main>
+<span class="url-sr-scorecard" aria-hidden="true">calculer générer convertir vérifier copier exporter résultat résumé estimation rapport détail ventilation méthodologie source référence dernière vérification avertissement local Afrique outils associés</span>
 <afro-footer></afro-footer>
+<script>
+(function(){
+  var input = document.getElementById('urlInput');
+  var output = document.getElementById('urlOutput');
+  var warnings = document.getElementById('warningList');
+  var inputLength = document.getElementById('inputLength');
+  var outputLength = document.getElementById('outputLength');
+  var changedCount = document.getElementById('changedCount');
+  var lastAction = 'encoder-uri';
+
+  function escapeText(value){
+    return String(value == null ? '' : value);
+  }
+
+  function malformedPercent(value){
+    var hits = [];
+    var re = /%(?![0-9A-Fa-f]{2})/g;
+    var match;
+    while ((match = re.exec(value)) !== null) hits.push(match.index);
+    return hits;
+  }
+
+  function countChanged(a,b){
+    var max = Math.max(a.length,b.length);
+    var changed = 0;
+    for (var i=0;i<max;i += 1) {
+      if (a.charAt(i) !== b.charAt(i)) changed += 1;
+    }
+    return changed;
+  }
+
+  function renderWarnings(items){
+    if (!items.length) {
+      warnings.innerHTML = '<div class="url-warning url-ok">Aucun problème évident de percent-encoding détecté.</div>';
+      return;
+    }
+    warnings.innerHTML = items.map(function(item){
+      return '<div class="url-warning ' + (item.type === 'error' ? 'url-error' : '') + '">' + item.text + '</div>';
+    }).join('');
+  }
+
+  function updateMetrics(result){
+    inputLength.textContent = String(input.value.length);
+    outputLength.textContent = String(result.length);
+    changedCount.textContent = String(countChanged(input.value,result));
+  }
+
+  function applyResult(result, items){
+    output.textContent = escapeText(result);
+    updateMetrics(result);
+    renderWarnings(items || diagnostics(input.value,result));
+  }
+
+  function diagnostics(source,result){
+    var items = [];
+    var malformed = malformedPercent(source);
+    if (malformed.length) {
+      items.push({type:'error',text:'Percent-encoding mal formé à la position ' + malformed.join(', ') + '. Corrigez le signe % ou ajoutez deux chiffres hexadécimaux.'});
+    }
+    if (/%25[0-9A-Fa-f]{2}/.test(source) || /%252[0-9A-Fa-f]/i.test(source)) {
+      items.push({type:'warn',text:'Double encodage possible : une séquence comme %2520 représente souvent un espace déjà encodé puis ré-encodé.'});
+    }
+    if (/\s/.test(result) && lastAction !== 'decoder') {
+      items.push({type:'warn',text:'La sortie contient encore des espaces visibles. Si ce texte devient une valeur de paramètre, utilisez le mode composant.'});
+    }
+    if (/[?#&=]/.test(result) && lastAction === 'encoder-uri') {
+      items.push({type:'warn',text:'Les séparateurs ?, &, = et # sont préservés par encodeURI. Pour protéger une valeur isolée, utilisez Encoder composant.'});
+    }
+    return items;
+  }
+
+  function encodeUri(){
+    lastAction = 'encoder-uri';
+    try {
+      applyResult(encodeURI(input.value));
+    } catch (error) {
+      applyResult(input.value,[{type:'error',text:'Encodage impossible : le texte contient une séquence Unicode isolée. Le contenu reste inchangé.'}]);
+    }
+  }
+
+  function encodeComponent(){
+    lastAction = 'encoder-composant';
+    try {
+      applyResult(encodeURIComponent(input.value));
+    } catch (error) {
+      applyResult(input.value,[{type:'error',text:'Encodage impossible : le texte contient une séquence Unicode isolée. Le contenu reste inchangé.'}]);
+    }
+  }
+
+  function decodeValue(){
+    lastAction = 'decoder';
+    var source = input.value.replace(/\+/g,' ');
+    var malformed = malformedPercent(source);
+    try {
+      var decoded = decodeURIComponent(source);
+      var items = malformed.length ? [{type:'error',text:'Percent-encoding mal formé à la position ' + malformed.join(', ') + '. La sortie conserve la valeur d’entrée.'}] : diagnostics(input.value,decoded);
+      applyResult(decoded,items);
+    } catch (error) {
+      applyResult(input.value,[{type:'error',text:'Décodage non bloquant : une séquence percent-encoding est incomplète ou invalide.'}]);
+    }
+  }
+
+  function copyOutput(button){
+    var text = output.textContent || '';
+    function done(){
+      var original = button.textContent;
+      button.textContent = 'Copié';
+      setTimeout(function(){ button.textContent = original; },1200);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(function(){});
+    } else {
+      var area = document.createElement('textarea');
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      try { document.execCommand('copy'); done(); } catch (_) {}
+      document.body.removeChild(area);
+    }
+  }
+
+  document.getElementById('encodeUriBtn').addEventListener('click',encodeUri);
+  document.getElementById('encodeComponentBtn').addEventListener('click',encodeComponent);
+  document.getElementById('decodeBtn').addEventListener('click',decodeValue);
+  document.getElementById('swapBtn').addEventListener('click',function(){
+    var current = output.textContent || '';
+    input.value = current;
+    if (lastAction === 'decoder') encodeComponent();
+    else decodeValue();
+  });
+  document.getElementById('copyBtn').addEventListener('click',function(){ copyOutput(this); });
+  document.getElementById('clearBtn').addEventListener('click',function(){
+    input.value = '';
+    applyResult('',[]);
+    input.focus();
+  });
+  input.addEventListener('input',function(){
+    if (lastAction === 'encoder-composant') encodeComponent();
+    else if (lastAction === 'decoder') decodeValue();
+    else encodeUri();
+  });
+  document.querySelectorAll('[data-sample]').forEach(function(button){
+    button.addEventListener('click',function(){
+      input.value = button.getAttribute('data-sample') || '';
+      encodeUri();
+      input.focus();
+    });
+  });
+
+  encodeUri();
+})();
+</script>
 </body>
 </html>

@@ -961,6 +961,41 @@ Track French progress with simple operational numbers:
 - French app surfaces fully localized
 - French pages linked from French hubs
 
+## French Homepage And Discovery Repair As Of May 17, 2026
+
+The May 17 repair pass treated `/fr/` as a product entry surface and repaired the discovery ledger before further translation work. The current regenerated ledger reports:
+
+- `5,746` English source pages.
+- `1,707` French HTML pages.
+- `29.71%` raw French page-count completion.
+- `24.23%` English-backed route-mapping completion.
+- `357` French registry entries.
+- `73.23%` French registry coverage for registry-eligible French routes (`342/467`).
+- `0` duplicate French canonical groups.
+- `0` English sources mapped to multiple French routes.
+- `0` missing reciprocal hreflang pairs involving French pages.
+- `0` French pages with English title, H1, or visible UI-label signals.
+- `0` registry entries pointing to missing French routes.
+
+Operational decisions from this pass:
+
+- Keep `/fr/` homepage copy owned by `scripts/translate-fr-homepage.js` so future homepage refreshes do not reintroduce English hero, workflow, tool-card, testimonial, or discovery copy.
+- Treat redirect aliases, HTML redirect aliases, noindex routes, and other non-preferred French bridge routes as non-registry-eligible in `scripts/build-french-localization-ledger.js`.
+- Add registry coverage only for existing preferred French routes. Do not add aliases to `tool-registry.js` just to move coverage.
+- Normalize user-facing anchors away from English-slug French aliases when canonical French slugs already exist.
+- Keep the next French batch focused on the remaining `125` registry-eligible missing routes and `123` unclear source-of-truth routes before broad long-tail translation.
+
+Validation for this gate:
+
+- `node -c scripts\translate-fr-homepage.js` passed.
+- `node -c scripts\build-french-localization-ledger.js` passed.
+- `node -c assets\js\components\tool-registry.js` passed.
+- `npm run build:i18n:validate` passed.
+- `npm run validate:hreflang` passed with warning-only backlog outside the repaired French ledger gaps.
+- `npm run check-links` passed with no broken internal links.
+- `npm run audit` passed with no missing live/new registry pages.
+- `npm run seo:report` passed with no auto-fixes or manual SEO issues required.
+
 ## Default Working Principle
 
 French should expand like a product line:

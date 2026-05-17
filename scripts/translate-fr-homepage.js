@@ -166,6 +166,7 @@ const replacements = [
   ['>Categories</div>\n      <a href="/fr/all-tools/"', '>Categories</div>\n      <a href="/fr/all-tools/"'],
   ['>Explore All →<', '>Explorer tout →<'],
   ['id="cats-heading">550+ Tools. 54 Countries. <span id="cats-tool-count">English & French</span>.<', 'id="cats-heading">550+ outils. 54 pays. <span id="cats-tool-count">Anglais et francais</span>.<'],
+  ['id="cats-heading">2 594+ Tools. 54 Countries. <span id="cats-tool-count">English, French & Swahili</span>.<', 'id="cats-heading">2 594+ outils. 54 pays. <span id="cats-tool-count">Anglais, francais et swahili</span>.<'],
   ['>AfroTools is Africa\'s financial operating system — every tool you reach for, built for African context, free forever.<', '>AfroTools est le systeme financier de l\'Afrique — chaque outil dont vous avez besoin, concu pour le contexte africain, gratuit pour toujours.<'],
 
   // ─── ROADMAP ───
@@ -292,6 +293,10 @@ html = html.replace(
   "if (el) el.textContent = total + '+ Tools. 54 Countries. English & French.';",
   "if (el) el.textContent = total + '+ outils. 54 pays. Anglais et francais.';"
 );
+html = html.replace(
+  "if (el) el.textContent = stats.display.liveToolsPlus + ' Tools. 54 Countries. English, French & Swahili.';",
+  "if (el) el.textContent = stats.display.liveToolsPlus + ' outils. 54 pays. Anglais, francais et swahili.';"
+);
 
 // Roadmap live count
 html = html.replace(
@@ -303,6 +308,10 @@ html = html.replace(
 html = html.replace(
   "h.innerHTML = total + '+ Tools. 54 Countries. <span id=\"cats-tool-count\">English &amp; French</span>.';",
   "h.innerHTML = total + '+ outils. 54 pays. <span id=\"cats-tool-count\">Anglais et fran\\u00e7ais</span>.';"
+);
+html = html.replace(
+  "h.innerHTML = total + ' Tools. 54 Countries. <span id=\"cats-tool-count\">English, French &amp; Swahili</span>.';",
+  "h.innerHTML = total + ' outils. 54 pays. <span id=\"cats-tool-count\">Anglais, francais et swahili</span>.';"
 );
 
 // Newsletter success button
@@ -369,6 +378,131 @@ html = html.replace("'+ more tools…'", "'+ d\\'autres outils…'");
 
 // ─── SCHEMA.ORG descriptions (keep English for SEO but add fr locale) ───
 // These are fine in English for international SEO
+
+// Current compact homepage shell introduced after the older translation table.
+// Keep this close to the end so newer above-fold copy wins over stale partial
+// replacements when the French homepage is refreshed from the English page.
+const currentHomepageReplacements = [
+  ['aria-label="Sign up prompt"', 'aria-label="Invite a l\'inscription"'],
+  ['> Use tools free without an account. Create one only to save and sync calculations.<', '> Utilisez les outils gratuitement sans compte. Creez-en un seulement pour sauvegarder et synchroniser vos calculs.<'],
+  ['>Save and sync &rarr;</a>', '>Sauvegarder et synchroniser &rarr;</a>'],
+  ['>Salary &amp; Tax</a>', '>Salaire et impots</a>'],
+  ['>PDF Tools</a>', '>Outils PDF</a>'],
+  ['>Currency</a>', '>Devises</a>'],
+  ['>CV Builder</a>', '>CV</a>'],
+  ['>Invoice</a>', '>Factures</a>'],
+  ['alt="Currency Converter"', 'alt="Convertisseur de devises"'],
+  ['alt="Invoice Generator"', 'alt="Generateur de factures"'],
+  ['>Countries</a>', '>Pays</a>'],
+  ['>For business</a>', '>Business</a>'],
+  ['>About</a>', '>A propos</a>'],
+  ['href="/fr/tools/pdf-workspace/"', 'href="/fr/tools/espace-pdf/"'],
+  ['href="/fr/tools/invoice-generator/"', 'href="/fr/tools/generateur-factures/"'],
+  ['href="/fr/tools/currency-converter/"', 'href="/fr/tools/convertisseur-devises/"'],
+  ['href="/fr/tools/vat-calculator/"', 'href="/fr/tools/calculateur-tva/"'],
+  ['href="/fr/tools/cv-builder/"', 'href="/fr/tools/generateur-cv/"'],
+  ['href="/fr/tools/remittance-compare/"', 'href="/fr/tools/transfert-argent/"'],
+  ['href="/fr/tools/import-duty/"', 'href="/fr/tools/droits-douane/"'],
+  ['href="/fr/tools/japa-calculator/"', 'href="/fr/tools/calculateur-japa/"'],
+  ['href="/fr/tools/waec-calculator/"', 'href="/fr/tools/calculateur-waec/"'],
+  ['href="/fr/tools/mobile-money-fees/"', 'href="/fr/tools/frais-mobile-money/"'],
+  ['href="/fr/tools/education-hub/"', 'href="/fr/tools/hub-education/"'],
+  ['href="/fr/tools/gpa-calculator/"', 'href="/fr/tools/calculateur-gpa/"'],
+  ['href="/fr/tools/jamb-aggregate/"', 'href="/fr/tools/calculateur-jamb/"'],
+  ['href="/fr/tools/ielts-calculator/"', 'href="/fr/tools/calculateur-ielts/"'],
+  ['href="/fr/tools/fuel-tracker/"', 'href="/fr/tools/suivi-carburant/"'],
+  ['href="/fr/tools/afrorates/"', 'href="/fr/tools/afrotaux/"'],
+  ['href="/fr/tools/" class="cat-card', 'href="/fr/all-tools/" class="cat-card'],
+  ['>Built for African countries<', '>Concu pour les pays africains<'],
+  ['>Calculate PAYE, create invoices, edit PDFs, convert currencies, and plan business decisions with tools built around African currencies, laws, and workflows.<',
+   '>Calculez le PAYE, creez des factures, modifiez des PDF, convertissez des devises et planifiez vos decisions business avec des outils adaptes aux monnaies, lois et workflows africains.<'],
+  ['label="Use AfroTools for"', 'label="Utiliser AfroTools pour" currency-label="devise" search-placeholder="Rechercher parmi 54 pays africains" search-label="Rechercher des pays" diaspora-prefix="Je vis a l\'etranger mais je gere mon argent en " empty-message="Aucun pays trouve. Essayez Nigeria, Kenya, Ghana ou Afrique du Sud."'],
+  ['href="/fr/tools/" class="btn-primary" data-country-tools-href', 'href="/fr/all-tools/" class="btn-primary" data-country-tools-href'],
+  ['href="/fr/start/" class="btn-secondary"', 'href="/fr/countries/" class="btn-secondary"'],
+  ['>Explore local tools &rarr;</a>', '>Explorer les outils locaux &rarr;</a>'],
+  ['>Start by country</a>', '>Commencer par pays</a>'],
+  ['<span>tools</span>', '<span>outils</span>'],
+  ['<span>countries</span>', '<span>pays</span>'],
+  ['<strong>Browser-private</strong><span>where possible</span>', '<strong>Prive dans le navigateur</strong><span>quand possible</span>'],
+  ['<strong>Free core</strong><span>tools</span>', '<strong>Outils essentiels</strong><span>gratuits</span>'],
+  ['aria-label="AfroTools product preview"', 'aria-label="Apercu produit AfroTools"'],
+  ['>Popular workflows<', '>Workflows populaires<'],
+  ['>Search PAYE, invoice, PDF...</strong>', '>Rechercher PAYE, facture, PDF...</strong>'],
+  ['>Nigeria PAYE Calculator<', '>Calculateur PAYE Nigeria<'],
+  ['>Nigeria VAT Calculator<', '>Calculateur TVA Nigeria<'],
+  ['>FIRS PAYE, pension, NHF and national payroll assumptions.<', '>PAYE FIRS, pension, NHF et hypotheses de paie nationales.<'],
+  ['>NGN business VAT workflow<', '>Workflow TVA business en NGN<'],
+  ['>PDF Workspace<', '>Espace PDF<'],
+  ['>Merge, split, compress locally<', '>Fusion, decoupe et compression en local<'],
+  ['>Invoice Generator<', '>Generateur de factures<'],
+  ['>VAT-aware African currencies<', '>TVA et devises africaines<'],
+  ['>Calculator preview<', '>Apercu du calculateur<'],
+  ['>Take-home estimate<', '>Estimation du net a payer<'],
+  ['>NGN currency<', '>Devise NGN<'],
+  ['>Income tax<', '>Impot sur le revenu<'],
+  ['>Suggestions, examples and disclaimers now use Nigeria context.<', '>Suggestions, exemples et avertissements utilisent maintenant le contexte du Nigeria.<'],
+  ['aria-label="Start by country"', 'aria-label="Commencer par pays"'],
+  ['>Start by country</div>', '>Commencer par pays</div>'],
+  ['>Use the rules, currency, and workflows that match where you work.<', '>Utilisez les regles, la devise et les workflows qui correspondent a votre marche.<'],
+  ['label="Search or choose a country"', 'label="Rechercher ou choisir un pays" currency-label="devise" search-placeholder="Rechercher parmi 54 pays africains" search-label="Rechercher des pays" diaspora-prefix="Je vis a l\'etranger mais je gere mon argent en " empty-message="Aucun pays trouve. Essayez Nigeria, Kenya, Ghana ou Afrique du Sud."'],
+  ['>Open country hub<', '>Ouvrir la page pays<'],
+  ['href="/fr/tools/?country=NG" data-country-tools-href', 'href="/fr/all-tools/?country=NG" data-country-tools-href'],
+  ['href="/fr/start/">Choose goal', 'href="/fr/countries/">Choisir un objectif'],
+  ["var toolsHref = '/fr/tools/?country=' + encodeURIComponent(code);", "var toolsHref = '/fr/all-tools/?country=' + encodeURIComponent(code);"],
+  ['>Browse local tools<', '>Parcourir les outils locaux<'],
+  ['>Choose goal<', '>Choisir un objectif<'],
+  ['>All countries<', '>Tous les pays<'],
+  ['>Start with the common jobs<', '>Commencer avec les taches courantes<'],
+  ['>Six useful ways into AfroTools<', '>Six entrees utiles dans AfroTools<'],
+  ['>Focused entry points first. The full directory stays available when you need the long tail.<',
+   '>Des points d\'entree cibles d\'abord. Le repertoire complet reste disponible quand vous avez besoin de la longue traine.<'],
+  ['>Country-accurate take-home pay and deductions.<', '>Salaire net et deductions precis par pays.<'],
+  ['>Calculate tax &rarr;<', '>Calculer l\'impot &rarr;<'],
+  ['>Merge, split, compress, watermark, and protect files locally.<', '>Fusionnez, separez, compressez, filigranez et protegez les fichiers en local.<'],
+  ['>Open workspace &rarr;<', '>Ouvrir l\'espace &rarr;<'],
+  ['>Create VAT-aware invoices in African currencies.<', '>Creez des factures avec TVA dans les devises africaines.<'],
+  ['>Create invoice &rarr;<', '>Creer une facture &rarr;<'],
+  ['>Currency &amp; FX<', '>Devises et change<'],
+  ['>Convert currencies and compare African money flows.<', '>Convertissez les devises et comparez les flux d\'argent africains.<'],
+  ['>Convert money &rarr;<', '>Convertir l\'argent &rarr;<'],
+  ['>VAT &amp; Business Tax<', '>TVA et taxes business<'],
+  ['>VAT, margin, markup, and break-even tools.<', '>TVA, marge, majoration et seuil de rentabilite.<'],
+  ['>Explore VAT tools &rarr;<', '>Explorer les outils TVA &rarr;<'],
+  ['>Career &amp; CV<', '>Carriere et CV<'],
+  ['>Build practical documents for African job markets.<', '>Creez des documents pratiques pour les marches de l\'emploi africains.<'],
+  ['>Build CV &rarr;<', '>Creer un CV &rarr;<'],
+  ['aria-label="Why trust AfroTools"', 'aria-label="Pourquoi faire confiance a AfroTools"'],
+  ['>Built around local rules<', '>Construit autour des regles locales<'],
+  ['>Tax, VAT, salary, and compliance tools name the country logic they use.<', '>Les outils de taxe, TVA, salaire et conformite indiquent la logique pays utilisee.<'],
+  ['>Runs in your browser<', '>Fonctionne dans votre navigateur<'],
+  ['>Most calculators and document tools keep your inputs on your device.<', '>La plupart des calculateurs et outils documentaires gardent vos saisies sur votre appareil.<'],
+  ['>No account required<', '>Pas de compte obligatoire<'],
+  ['>Core tools are free to use. Accounts are optional for saving history.<', '>Les outils essentiels sont gratuits. Le compte sert seulement a sauvegarder l\'historique.<'],
+  ['>Updated when laws change<', '>Mis a jour quand les lois changent<'],
+  ['>Country pages and tax calculators are maintained around official changes.<', '>Les pages pays et calculateurs fiscaux sont maintenus autour des changements officiels.<'],
+  ['>Everything in one place<', '>Tout au meme endroit<'],
+  ['>Built for the full <em>African professional journey.</em><', '>Concu pour tout le <em>parcours professionnel africain.</em><'],
+  ['>Not tools with African flags pasted on. Real data, real context, real currency &mdash; across every discipline.<', '>Pas des outils generiques avec un drapeau africain colle dessus. Des donnees, du contexte et des devises reels pour chaque discipline.<'],
+  ['>See All', '>Tout voir'],
+  ['>Ouvrir Workspace', '>Ouvrir l\'espace PDF'],
+  ['>Ouvrir Tool', '>Ouvrir l\'outil'],
+  ['>Hub Education', '>Hub Education'],
+  ['>All 32 Categories<', '>Les 32 categories<'],
+  ['>Browse <span id="cats-browse-count">2 594+</span> tools &rarr;<', '>Parcourir <span id="cats-browse-count">2 594+</span> outils &rarr;<'],
+  ['>Market Data<', '>Donnees de marche<'],
+  ['>Latest African Market Data<', '>Dernieres donnees de marche africaines<'],
+  ['>Salary &amp; Tax<', '>Salaire et impots<'],
+  ['>AI Advisor Included<', '>Conseiller IA inclus<'],
+  ['>PAYE Tax Calculators<br>for Africa<', '>Calculateurs PAYE<br>pour l\'Afrique<'],
+  ['>Trusted by professionals<', '>Adopte par les professionnels<'],
+  ['>Used daily across <em>the continent.</em><', '>Utilise chaque jour sur <em>le continent.</em><'],
+  ['>Uniquely African<', '>Typiquement africain<'],
+  ['>Tools You Won\'t Find<br>Anywhere Else.<', '>Des outils introuvables<br>ailleurs.<'],
+  ['>Checking latest available rates...<', '>Verification des derniers taux disponibles...<']
+];
+for (const [from, to] of currentHomepageReplacements) {
+  html = html.split(from).join(to);
+}
 
 fs.writeFileSync(file, html, 'utf8');
 console.log(`Done! Applied ${count} HTML replacements + JS dynamic text updates.`);

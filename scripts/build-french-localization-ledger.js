@@ -422,6 +422,10 @@ function isFrenchWidgetParentRoute(route) {
 }
 
 function isRegistryEligible(routeRecord) {
+  if (routeRecord.classification.alias || routeRecord.redirectLike || routeRecord.redirectSource || routeRecord.hasNoindex) {
+    return false;
+  }
+
   return routeRecord.route.startsWith("/fr/tools/")
     || routeRecord.classification.sections.includes("salary-tax")
     || routeRecord.classification.sections.includes("vat-business-tax")
@@ -484,15 +488,16 @@ function main() {
     const hasPack = Boolean(mappedToEnglishSource && frTranslations.has(englishSource));
     const standardGenerated = Boolean(mappedToEnglishSource && publicRoute(buildOutputPath(englishSource, "fr")) === route);
     const generatedFrenchWidgetParent = isFrenchWidgetParentRoute(route);
+    const redirectLike = isRedirectLike(html);
+    const redirectSource = redirectSourceRoutes.has(route);
     const sourceOfTruth = [];
+    if (redirectSource) sourceOfTruth.push("redirect alias in _redirects");
+    if (redirectLike) sourceOfTruth.push("HTML redirect alias");
     if (hasPack) sourceOfTruth.push("lang/pages fr.json");
     if (registryByHref.has(route)) sourceOfTruth.push("tool-registry.js");
     if (generatedFrenchWidgetParent) sourceOfTruth.push("scripts/generate-fr-widget-parent-pages.js");
     if (!hasPack && mappedToEnglishSource) sourceOfTruth.push("existing /fr/ HTML");
     if (!sourceOfTruth.length) sourceOfTruth.push("unclear source of truth");
-
-    const redirectLike = isRedirectLike(html);
-    const redirectSource = redirectSourceRoutes.has(route);
 
     if (canonicalRoute && !hasNoindex(html) && !redirectLike && !redirectSource) {
       if (!canonicalGroups.has(canonicalRoute)) canonicalGroups.set(canonicalRoute, []);
