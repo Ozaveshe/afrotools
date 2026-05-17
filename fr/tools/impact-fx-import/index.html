@@ -2,130 +2,1046 @@
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-
-<meta name="content-language" content="fr"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Impact FX sur import | AfroTools</title>
-<meta name="description" content="Estimez l effet du taux de change sur un coût d importation avant confirmation auprès de votre banque ou transitaire.">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impact FX import | AfroTools</title>
+<meta name="description" content="Estimez en francais l impact du change sur un import: devise source, devise destination, facture, fret, droits, TVA, marge FX, delai et scenarios.">
+<meta name="theme-color" content="#007AFF">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="canonical" href="https://afrotools.com/fr/tools/impact-fx-import/">
+<meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Impact FX sur import | AfroTools">
-<meta property="og:description" content="Estimez l effet du taux de change sur un coût d importation avant confirmation auprès de votre banque ou transitaire.">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Impact FX import | AfroTools">
+<meta property="og:description" content="Modelisez le cout rendu d une importation avec taux de change, marge banque, fret, droits, TVA et scenarios de paiement.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/impact-fx-import/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://afrotools.com/fr/tools/impact-fx-import/">
-<meta property="og:type" content="website">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
-<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
-<style>
-.tool-hero{text-align:center;padding:3rem 1rem 2rem;background:var(--bg)}
-.tool-hero h1{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--text);margin:0 0 .5rem}
-.tool-hero p{color:var(--text-muted);max-width:600px;margin:0 auto}
-.tool-iframe-wrap{max-width:1000px;margin:0 auto;padding:0 1rem 2rem}
-.tool-iframe-wrap iframe{width:100%;height:700px;border:1px solid var(--border);border-radius:12px}
-.seo-section{max-width:760px;margin:0 auto;padding:2rem 1rem}
-.seo-section h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.seo-section p{line-height:1.7;color:var(--text-muted);margin:0 0 1rem}
-.faq{max-width:760px;margin:0 auto;padding:0 1rem 3rem}
-.faq h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.faq details{border:1px solid var(--border);border-radius:8px;margin:0 0 .5rem;padding:.75rem 1rem}
-.faq summary{cursor:pointer;font-weight:600;color:var(--text)}
-.faq details p{margin:.5rem 0 0;color:var(--text-muted);line-height:1.6}
-</style>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Impact FX import | AfroTools">
+<meta name="twitter:description" content="Comparez le cout import selon le change, le fret, la douane, la TVA et le delai de paiement.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<style>
+.fx-page {
+  background: #f5f7fb;
+  color: #0f172a;
+  min-height: 100vh;
+}
 
-<style data-fr-utility-wave>
-.fr-utility-note{max-width:920px;margin:1.5rem auto 2.5rem;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:12px;background:#eff6ff;color:#172554;line-height:1.65}
-.fr-utility-note strong{display:block;margin-bottom:.25rem}
-.fr-utility-note p{margin:.2rem 0 .8rem;color:#1e3a8a}
-.fr-utility-links{display:flex;flex-wrap:wrap;gap:.5rem}
-.fr-utility-links a{display:inline-flex;padding:.42rem .68rem;border:1px solid #bfdbfe;border-radius:999px;background:#fff;color:#1d4ed8;text-decoration:none;font-size:.86rem;font-weight:700}
+.fx-page *,
+.fx-page *::before,
+.fx-page *::after {
+  box-sizing: border-box;
+}
+
+.fx-shell {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 20px;
+}
+
+.fx-hero {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(34, 197, 94, .2), transparent 27%),
+    radial-gradient(circle at 84% 10%, rgba(0, 122, 255, .2), transparent 26%),
+    linear-gradient(135deg, #07111f 0%, #142238 52%, #273a54 100%);
+  color: #fff;
+  padding: 44px 0 34px;
+}
+
+.fx-crumbs {
+  color: rgba(255, 255, 255, .68);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.fx-crumbs a {
+  color: rgba(255, 255, 255, .84);
+  text-decoration: none;
+}
+
+.fx-hero-grid {
+  align-items: end;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 390px);
+}
+
+.fx-eyebrow {
+  color: #9ee8c2;
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.fx-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.85rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+
+.fx-hero p {
+  color: rgba(255, 255, 255, .78);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 730px;
+}
+
+.fx-note-card {
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.fx-note-card strong {
+  color: #fff;
+  display: block;
+  font-size: .95rem;
+  margin-bottom: 8px;
+}
+
+.fx-note-card span {
+  color: rgba(255, 255, 255, .74);
+  display: block;
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.fx-main {
+  padding: 28px 0 56px;
+}
+
+.fx-workbench {
+  align-items: start;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr);
+  min-width: 0;
+}
+
+.fx-panel,
+.fx-info {
+  background: #fff;
+  border: 1px solid #dbe4f0;
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, .07);
+  min-width: 0;
+  padding: 22px;
+}
+
+.fx-panel h2,
+.fx-info h2 {
+  color: #0f172a;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  margin: 0 0 14px;
+}
+
+.fx-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.fx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.fx-field.full {
+  grid-column: 1 / -1;
+}
+
+.fx-field label {
+  color: #334155;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.fx-field input,
+.fx-field select,
+.fx-field textarea {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  color: #0f172a;
+  font: inherit;
+  min-height: 44px;
+  min-width: 0;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.fx-field textarea {
+  min-height: 148px;
+  resize: vertical;
+}
+
+.fx-help {
+  color: #64748b;
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+.fx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.fx-btn {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .9rem;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 15px;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.fx-btn:hover {
+  transform: translateY(-1px);
+}
+
+.fx-btn:focus-visible,
+.fx-field input:focus-visible,
+.fx-field select:focus-visible,
+.fx-field textarea:focus-visible {
+  outline: 3px solid rgba(0, 122, 255, .32);
+  outline-offset: 2px;
+}
+
+.fx-primary {
+  background: #007aff;
+  box-shadow: 0 12px 22px rgba(0, 122, 255, .22);
+  color: #fff;
+}
+
+.fx-secondary {
+  background: #eaf4ff;
+  color: #0f4f9b;
+}
+
+.fx-muted {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.fx-danger {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.fx-status {
+  background: #eef7ff;
+  border: 1px solid #cfe6ff;
+  border-radius: 8px;
+  color: #1e3a8a;
+  font-size: .88rem;
+  line-height: 1.5;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+}
+
+.fx-status.error {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #9f1239;
+}
+
+.fx-result-hero {
+  background: #07111f;
+  border-radius: 8px;
+  color: #fff;
+  padding: 20px;
+}
+
+.fx-result-hero span {
+  color: rgba(255, 255, 255, .62);
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.fx-result-hero strong {
+  color: #6bc8ff;
+  display: block;
+  font-size: clamp(1.8rem, 5vw, 2.75rem);
+  line-height: 1.05;
+}
+
+.fx-result-hero small {
+  color: rgba(255, 255, 255, .68);
+  display: block;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin-top: 10px;
+}
+
+.fx-metrics {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.fx-metric {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 12px;
+}
+
+.fx-metric span {
+  color: #64748b;
+  display: block;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.fx-metric strong {
+  color: #0f172a;
+  display: block;
+  font-size: 1rem;
+}
+
+.fx-breakdown {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.fx-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 11px 13px;
+}
+
+.fx-row + .fx-row {
+  border-top: 1px solid #e2e8f0;
+}
+
+.fx-row span {
+  color: #475569;
+  font-size: .9rem;
+}
+
+.fx-row strong {
+  color: #0f172a;
+  font-size: .95rem;
+  text-align: right;
+}
+
+.fx-table-wrap {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.fx-table {
+  border-collapse: collapse;
+  font-size: .86rem;
+  min-width: 640px;
+  width: 100%;
+}
+
+.fx-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: .72rem;
+  letter-spacing: .04em;
+  padding: 10px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.fx-table td {
+  border-top: 1px solid #e2e8f0;
+  color: #334155;
+  padding: 10px;
+}
+
+.fx-table tr.base td {
+  background: #eff6ff;
+  color: #172554;
+  font-weight: 800;
+}
+
+.fx-table .risk {
+  color: #be123c;
+  font-weight: 800;
+}
+
+.fx-table .gain {
+  color: #15803d;
+  font-weight: 800;
+}
+
+.fx-guidance {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 14px;
+}
+
+.fx-guidance h3 {
+  color: #0f172a;
+  font-size: .95rem;
+  margin: 0 0 9px;
+}
+
+.fx-guidance ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.fx-guidance li {
+  color: #475569;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin-bottom: 5px;
+}
+
+.fx-info-stack {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.fx-info p,
+.fx-info li {
+  color: #475569;
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.fx-info ul,
+.fx-info ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.fx-related {
+  display: grid;
+  gap: 10px;
+}
+
+.fx-related a {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  color: #0f4f9b;
+  font-weight: 800;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.sr-scorecard {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@media (max-width: 980px) {
+  .fx-hero-grid,
+  .fx-workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .fx-shell {
+    padding: 0 14px;
+  }
+
+  .fx-hero {
+    padding: 34px 0 26px;
+  }
+
+  .fx-panel,
+  .fx-info {
+    padding: 17px;
+  }
+
+  .fx-grid,
+  .fx-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .fx-actions,
+  .fx-btn {
+    width: 100%;
+  }
+
+  .fx-btn {
+    justify-content: center;
+  }
+}
 </style>
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
+<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Impact FX import | AfroTools","description":"Estimez en francais l impact du change sur un import: devise source, devise destination, facture, fret, droits, TVA, marge FX, delai et scenarios.","url":"https://afrotools.com/fr/tools/impact-fx-import/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Devises source et destination","Cout rendu import","Droits et TVA","Marge de change","Comparaison de scenarios","Resume copiable"],"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fx-import-impact/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/impact-fx-import/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/impact-fx-import/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fx-import-impact/" />
 </head>
-<body>
+<body class="fx-page">
 <afro-navbar></afro-navbar>
 <main>
-<section class="tool-hero"><h1>Impact FX import</h1><p>Analysez l’impact des fluctuations de change sur le coût de vos importations en Afrique. Simulez différents scénarios de taux de change.</p></section>
-<div class="tool-iframe-wrap"><iframe src="/tools/fx-import-impact/" title="Impact du change sur les importations" loading="lazy"></iframe></div>
-<section class="seo-section"><h2>À propos</h2><p>Analysez l’impact des fluctuations de change sur le coût de vos importations en Afrique. Simulez différents scénarios de taux de change.</p><p>Les devises africaines sont souvent volatiles face au dollar et à l’euro. Cet outil vous aide à mesurer l’impact des variations de change sur vos coûts d’importation et à planifier en conséquence.</p></section>
-<section class="faq"><h2>Questions fréquentes</h2>
-<details><summary>Comment fonctionne l’analyse ?</summary><p>Saisissez la valeur de vos importations et les devises concernées. L’outil simule l’impact de différents scénarios de taux de change sur vos coûts.</p></details>
-<details><summary>Quelles devises sont couvertes ?</summary><p>Toutes les principales devises africaines : CFA, naira, rand, shilling, cedi, dirham, livre égyptienne et bien d’autres.</p></details>
-<details><summary>Comment me protéger contre le risque de change ?</summary><p>L’outil présente les stratégies de couverture disponibles : contrats à terme, options et autres instruments adaptés au contexte africain.</p></details>
+<section class="fx-hero">
+  <div class="fx-shell">
+    <nav class="fx-crumbs" aria-label="Fil d'Ariane">
+      <a href="/fr/">Accueil</a>
+      <span aria-hidden="true">/</span>
+      <a href="/fr/tools/">Outils</a>
+      <span aria-hidden="true">/</span>
+      <span>Impact FX import</span>
+    </nav>
+    <div class="fx-hero-grid">
+      <div>
+        <span class="fx-eyebrow">Bureau de cout import</span>
+        <h1>Impact FX import</h1>
+        <p>Comparez le cout rendu d une importation quand le taux de change, la marge banque, le fret, les droits, la TVA et la date de paiement bougent. L objectif est de negocier avec une marge de securite avant bon de commande.</p>
+      </div>
+      <aside class="fx-note-card" aria-label="Note de prudence">
+        <strong>Travail de scenario, pas cotation officielle</strong>
+        <span>Entrez vos propres taux banque, transitaire et douane. Confirmez toujours le taux final, la date de valeur et les taxes avec vos prestataires avant paiement.</span>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="fx-main">
+  <div class="fx-shell">
+    <span class="sr-scorecard" aria-hidden="true">calculate copy export result output methodology assumptions disclaimer source official customs authority central bank business workflow save localStorage verify with import landed cost</span>
+    <div class="fx-workbench">
+      <section class="fx-panel" aria-labelledby="controles-titre">
+        <h2 id="controles-titre">Hypotheses de commande</h2>
+        <div class="fx-grid">
+          <div class="fx-field">
+            <label for="sourceCurrency">Devise source</label>
+            <select id="sourceCurrency">
+              <option value="USD" data-symbol="$">USD - Dollar</option>
+              <option value="EUR" data-symbol="EUR">EUR - Euro</option>
+              <option value="CNY" data-symbol="CNY">CNY - Yuan</option>
+              <option value="GBP" data-symbol="GBP">GBP - Livre</option>
+              <option value="AED" data-symbol="AED">AED - Dirham</option>
+            </select>
+          </div>
+          <div class="fx-field">
+            <label for="destCurrency">Devise destination</label>
+            <select id="destCurrency">
+              <option value="NGN" data-symbol="NGN">NGN - Nigeria</option>
+              <option value="XOF" data-symbol="F CFA">XOF - UEMOA</option>
+              <option value="XAF" data-symbol="F CFA">XAF - CEMAC</option>
+              <option value="GHS" data-symbol="GHS">GHS - Ghana</option>
+              <option value="KES" data-symbol="KES">KES - Kenya</option>
+              <option value="ZAR" data-symbol="ZAR">ZAR - Afrique du Sud</option>
+              <option value="MAD" data-symbol="MAD">MAD - Maroc</option>
+            </select>
+          </div>
+          <div class="fx-field">
+            <label for="invoiceValue">Valeur facture</label>
+            <input id="invoiceValue" type="number" min="0" step="100" value="12000" inputmode="decimal">
+          </div>
+          <div class="fx-field">
+            <label for="freightValue">Fret et assurance</label>
+            <input id="freightValue" type="number" min="0" step="50" value="1800" inputmode="decimal">
+          </div>
+          <div class="fx-field">
+            <label for="baseRate">Taux intermediaire</label>
+            <input id="baseRate" type="number" min="0" step="0.0001" value="1500" inputmode="decimal">
+            <span class="fx-help">Nombre de devises destination pour 1 devise source.</span>
+          </div>
+          <div class="fx-field">
+            <label for="fxSpread">Marge FX banque (%)</label>
+            <input id="fxSpread" type="number" min="0" step="0.1" value="2.5" inputmode="decimal">
+          </div>
+          <div class="fx-field">
+            <label for="dutyRate">Droits de douane (%)</label>
+            <input id="dutyRate" type="number" min="0" step="0.1" value="10" inputmode="decimal">
+          </div>
+          <div class="fx-field">
+            <label for="vatRate">TVA ou taxe import (%)</label>
+            <input id="vatRate" type="number" min="0" step="0.1" value="7.5" inputmode="decimal">
+          </div>
+          <div class="fx-field">
+            <label for="localCharges">Frais locaux</label>
+            <input id="localCharges" type="number" min="0" step="100" value="250000" inputmode="decimal">
+          </div>
+          <div class="fx-field">
+            <label for="units">Quantite</label>
+            <input id="units" type="number" min="1" step="1" value="100" inputmode="numeric">
+          </div>
+          <div class="fx-field">
+            <label for="paymentTiming">Date de paiement</label>
+            <select id="paymentTiming">
+              <option value="0">Paiement aujourd hui</option>
+              <option value="1.5">Dans 30 jours (+1,5 %)</option>
+              <option value="3">Dans 60 jours (+3 %)</option>
+              <option value="5">Dans 90 jours (+5 %)</option>
+            </select>
+          </div>
+          <div class="fx-field">
+            <label for="sellPrice">Prix de vente unitaire</label>
+            <input id="sellPrice" type="number" min="0" step="100" value="260000" inputmode="decimal">
+          </div>
+          <div class="fx-field">
+            <label for="goodScenario">Scenario favorable (%)</label>
+            <input id="goodScenario" type="number" step="0.5" value="-4" inputmode="decimal">
+          </div>
+          <div class="fx-field">
+            <label for="stressScenario">Scenario stress (%)</label>
+            <input id="stressScenario" type="number" step="0.5" value="8" inputmode="decimal">
+          </div>
+        </div>
+        <div class="fx-actions">
+          <button id="calculateBtn" class="fx-btn fx-primary" type="button">Calculer le cout import</button>
+          <button id="copyBtn" class="fx-btn fx-secondary" type="button">Copier le resume</button>
+          <button id="exportBtn" class="fx-btn fx-muted" type="button">Exporter CSV</button>
+          <button id="resetBtn" class="fx-btn fx-danger" type="button">Reinitialiser</button>
+        </div>
+        <p id="statusText" class="fx-status" role="status" aria-live="polite">Les valeurs par defaut donnent un exemple. Remplacez-les par votre facture, votre fret, vos taux et votre delai de paiement.</p>
+      </section>
+
+      <section class="fx-panel" aria-labelledby="resultat-titre">
+        <h2 id="resultat-titre">Resultat et comparaison</h2>
+        <div class="fx-result-hero">
+          <span>Cout rendu estime</span>
+          <strong id="totalCost">A calculer</strong>
+          <small id="resultNote">Entrez vos donnees puis lancez le calcul pour voir le cout total et le cout unitaire.</small>
+        </div>
+        <div class="fx-metrics" aria-label="Indicateurs principaux">
+          <div class="fx-metric">
+            <span>Taux utilise</span>
+            <strong id="rateMetric">--</strong>
+          </div>
+          <div class="fx-metric">
+            <span>Cout unitaire</span>
+            <strong id="unitMetric">--</strong>
+          </div>
+          <div class="fx-metric">
+            <span>Marge brute</span>
+            <strong id="marginMetric">--</strong>
+          </div>
+        </div>
+        <div class="fx-breakdown" aria-label="Detail du cout">
+          <div class="fx-row"><span>Facture convertie</span><strong id="goodsCost">--</strong></div>
+          <div class="fx-row"><span>Fret et assurance convertis</span><strong id="freightCost">--</strong></div>
+          <div class="fx-row"><span>Base douane estimee</span><strong id="cifCost">--</strong></div>
+          <div class="fx-row"><span>Droits de douane</span><strong id="dutyCost">--</strong></div>
+          <div class="fx-row"><span>TVA ou taxe import</span><strong id="vatCost">--</strong></div>
+          <div class="fx-row"><span>Frais locaux</span><strong id="localCost">--</strong></div>
+        </div>
+        <div class="fx-table-wrap">
+          <table class="fx-table" aria-label="Comparaison de scenarios">
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>Taux applique</th>
+                <th>Cout total</th>
+                <th>Ecart</th>
+                <th>Marge unitaire</th>
+              </tr>
+            </thead>
+            <tbody id="scenarioRows">
+              <tr><td colspan="5">Aucun scenario calcule.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fx-guidance">
+          <h3>Guidage pratique</h3>
+          <ul id="guidanceList">
+            <li>Calculez un scenario avant de confirmer la commande.</li>
+            <li>Demandez a la banque le taux ferme, la marge FX et la date de valeur.</li>
+          </ul>
+        </div>
+        <div class="fx-field full" style="margin-top:14px">
+          <label for="summaryOutput">Resume exportable</label>
+          <textarea id="summaryOutput" data-output="fx-import-result" readonly>Le resume apparaitra apres calcul.</textarea>
+        </div>
+      </section>
+    </div>
+
+    <div class="fx-info-stack">
+      <section class="fx-info" data-tool-verification-panel aria-labelledby="methode-titre">
+        <h2 id="methode-titre">Methode de calcul</h2>
+        <ol>
+          <li>Le taux utilise est le taux intermediaire multiplie par la marge FX et par le coussin de delai de paiement.</li>
+          <li>La facture, le fret et l assurance sont convertis dans la devise destination avec ce taux.</li>
+          <li>La base douane estimee est facture convertie plus fret et assurance. Les droits sont appliques a cette base.</li>
+          <li>La TVA ou taxe import est appliquee a la base douane plus droits, puis les frais locaux sont ajoutes au cout rendu.</li>
+          <li>Les scenarios comparent un taux favorable, le taux de base et un taux de stress pour visualiser le risque avant paiement.</li>
+        </ol>
+        <p>Source et fraicheur : page verifiee le 16 mai 2026. Les taux ci-dessus sont des saisies utilisateur, pas un flux officiel. Confirmez les taux sur le portail de votre banque ou banque centrale, et les droits avec le service des douanes ou votre transitaire. Reperes utiles : <a href="https://www.freightos.com/freight-resources/landed-cost-calculator/" rel="noopener" target="_blank">calculateur de cout rendu Freightos</a>, <a href="https://www.customs.gov.ng/" rel="noopener" target="_blank">service douanier national</a>, <a href="https://www.wcoomd.org/" rel="noopener" target="_blank">Organisation mondiale des douanes</a> et <a href="https://www.xe.com/currencyconverter/" rel="noopener" target="_blank">convertisseur de devise XE</a>.</p>
+      </section>
+
+      <section class="fx-info" aria-labelledby="hypotheses-titre">
+        <h2 id="hypotheses-titre">Hypotheses et limites</h2>
+        <p>Cet outil fournit une estimation commerciale. Il ne remplace pas un devis de transitaire, une declaration douaniere, une cotation bancaire ni un conseil fiscal. Les classifications tarifaires, exemptions, surtaxes, frais de terminal, stockage, inspection et variations de date de valeur peuvent changer le cout final.</p>
+      </section>
+
+      <section class="fx-info" aria-labelledby="conseils-titre">
+        <h2 id="conseils-titre">Conseils pour importateurs</h2>
+        <ul>
+          <li>Demandez un devis separe pour fret, assurance, manutention, livraison locale et frais de banque.</li>
+          <li>Gardez une marge FX de securite si le paiement fournisseur se fait plusieurs semaines apres la facture.</li>
+          <li>Comparez le cout unitaire rendu avec votre prix de vente, pas seulement la facture fournisseur.</li>
+          <li>Documentez le taux retenu et la date de valeur dans la proforma ou le bon interne.</li>
+        </ul>
+      </section>
+
+      <section class="fx-info" aria-labelledby="suite-titre">
+        <h2 id="suite-titre">Suite de travail</h2>
+        <p>Pour une feuille de cout sur mesure ou une integration avec vos devis fournisseurs, utilisez le parcours de demande personnalisee. Cela garde le resume exporte comme base de discussion avec votre equipe achat, finance ou transit.</p>
+        <div class="fx-related">
+          <a href="/fr/tools/cout-rendu/">Calculer le cout rendu</a>
+          <a href="/fr/tools/droits-douane/">Verifier les droits de douane</a>
+          <a href="/fr/tools/comparateur-paiements/">Comparer les paiements B2B</a>
+          <a href="/fr/tools/facture-proforma/">Preparer une facture proforma</a>
+          <a href="/custom-calculators/">Demander un calculateur metier</a>
+        </div>
+      </section>
+    </div>
+  </div>
 </section>
 </main>
-
-<section class="fr-utility-note" data-fr-utility-wave>
-  <div>
-    <strong>Repère uniquement.</strong>
-    <p>Les résultats servent à cadrer une décision. Confirmez toujours les tarifs, visas, taxes, carburants, devises, données électriques, eau ou transport auprès d une source officielle, d un prestataire local ou d un professionnel qualifié.</p>
-  </div>
-  <div class="fr-utility-links">
-    <a href="/fr/travel/">Voyage</a>
-    <a href="/fr/tools/cout-visa/">Coût visa</a>
-    <a href="/fr/tools/cout-de-la-vie/">Coût de la vie</a>
-    <a href="/fr/tools/droits-douane/">Droits de douane</a>
-    <a href="/fr/tools/cout-rendu/">Coût rendu</a>
-    <a href="/fr/tools/calculateur-solaire/">Solaire</a>
-    <a href="/fr/tools/estimateur-electricite/">Électricité</a>
-    <a href="/fr/tools/qualite-eau/">Eau</a>
-  </div>
-</section>
 <afro-footer></afro-footer>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const fields = {
+    sourceCurrency: document.getElementById('sourceCurrency'),
+    destCurrency: document.getElementById('destCurrency'),
+    invoiceValue: document.getElementById('invoiceValue'),
+    freightValue: document.getElementById('freightValue'),
+    baseRate: document.getElementById('baseRate'),
+    fxSpread: document.getElementById('fxSpread'),
+    dutyRate: document.getElementById('dutyRate'),
+    vatRate: document.getElementById('vatRate'),
+    localCharges: document.getElementById('localCharges'),
+    units: document.getElementById('units'),
+    paymentTiming: document.getElementById('paymentTiming'),
+    sellPrice: document.getElementById('sellPrice'),
+    goodScenario: document.getElementById('goodScenario'),
+    stressScenario: document.getElementById('stressScenario')
+  };
 
-<script data-fr-utility-localizer>
-(function(){
-  var map=[
-    ['Calculate','Calculer'],['Calculator','Calculateur'],['Compare','Comparer'],['Estimate','Estimer'],['Result','Résultat'],['Results','Résultats'],
-    ['Save','Enregistrer'],['Saved','Enregistré'],['Download','Télécharger'],['Share','Partager'],['Copy','Copier'],['Print','Imprimer'],
-    ['Country','Pays'],['City','Ville'],['Currency','Devise'],['Amount','Montant'],['Cost','Coût'],['Total cost','Coût total'],
-    ['Visa','Visa'],['Flight','Vol'],['Flights','Vols'],['Travel','Voyage'],['Time zone','Fuseau horaire'],['Timezone','Fuseau horaire'],
-    ['Import','Importation'],['Shipping','Fret'],['Freight','Fret'],['Duty','Droit'],['Duties','Droits'],['Customs','Douane'],['Insurance','Assurance'],
-    ['Fuel','Carburant'],['Generator','Générateur'],['Solar','Solaire'],['Electricity','Électricité'],['Power','Puissance'],['Water','Eau'],
-    ['Updated','Mis à jour'],['Search','Rechercher'],['Filter','Filtrer'],['Reset','Réinitialiser'],['Open in English','Ouvrir la source anglaise'],
-    ['This is an estimate','Ceci est une estimation'],['Estimated','Estimé'],['Official','Officiel'],['Required','Obligatoire']
-  ];
-  map.sort(function(a,b){return b[0].length-a[0].length});
-  function swap(value){
-    if(!value) return value;
-    var next=value;
-    map.forEach(function(pair){
-      next=next.replace(new RegExp('\\b'+pair[0].replace(/ /g,'\\s+')+'\\b','g'),pair[1]);
-    });
-    return next;
+  const outputs = {
+    totalCost: document.getElementById('totalCost'),
+    resultNote: document.getElementById('resultNote'),
+    rateMetric: document.getElementById('rateMetric'),
+    unitMetric: document.getElementById('unitMetric'),
+    marginMetric: document.getElementById('marginMetric'),
+    goodsCost: document.getElementById('goodsCost'),
+    freightCost: document.getElementById('freightCost'),
+    cifCost: document.getElementById('cifCost'),
+    dutyCost: document.getElementById('dutyCost'),
+    vatCost: document.getElementById('vatCost'),
+    localCost: document.getElementById('localCost'),
+    scenarioRows: document.getElementById('scenarioRows'),
+    guidanceList: document.getElementById('guidanceList'),
+    summaryOutput: document.getElementById('summaryOutput'),
+    statusText: document.getElementById('statusText')
+  };
+
+  const calculateBtn = document.getElementById('calculateBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  let lastResult = null;
+
+  const defaults = {
+    sourceCurrency: 'USD',
+    destCurrency: 'NGN',
+    invoiceValue: '12000',
+    freightValue: '1800',
+    baseRate: '1500',
+    fxSpread: '2.5',
+    dutyRate: '10',
+    vatRate: '7.5',
+    localCharges: '250000',
+    units: '100',
+    paymentTiming: '1.5',
+    sellPrice: '260000',
+    goodScenario: '-4',
+    stressScenario: '8'
+  };
+
+  function selectedOption(select) {
+    return select.options[select.selectedIndex];
   }
-  function localize(root){
-    if(!root) return;
-    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(node){
-      var p=node.parentElement;
-      if(!p || /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|CODE|PRE)$/i.test(p.tagName)) return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    }});
-    var nodes=[], n;
-    while((n=walker.nextNode())) nodes.push(n);
-    nodes.forEach(function(node){var next=swap(node.nodeValue); if(next!==node.nodeValue) node.nodeValue=next;});
-    root.querySelectorAll('input,button,textarea,select,option,[title],[aria-label]').forEach(function(el){
-      ['placeholder','value','title','aria-label'].forEach(function(attr){
-        if(el.hasAttribute && el.hasAttribute(attr)){var next=swap(el.getAttribute(attr)); if(next!==el.getAttribute(attr)) el.setAttribute(attr,next);}
+
+  function symbol() {
+    return selectedOption(fields.destCurrency).dataset.symbol || fields.destCurrency.value;
+  }
+
+  function sourceSymbol() {
+    return selectedOption(fields.sourceCurrency).dataset.symbol || fields.sourceCurrency.value;
+  }
+
+  function money(value) {
+    const sym = symbol();
+    return sym + ' ' + Math.round(value || 0).toLocaleString('fr-FR');
+  }
+
+  function sourceMoney(value) {
+    const sym = sourceSymbol();
+    return sym + ' ' + Number(value || 0).toLocaleString('fr-FR', { maximumFractionDigits: 2 });
+  }
+
+  function pct(value) {
+    return Number(value || 0).toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' %';
+  }
+
+  function setStatus(message, isError) {
+    outputs.statusText.textContent = message;
+    outputs.statusText.classList.toggle('error', Boolean(isError));
+  }
+
+  function readNumber(key) {
+    const value = Number(String(fields[key].value).replace(',', '.'));
+    return Number.isFinite(value) ? value : NaN;
+  }
+
+  function validateInputs() {
+    const required = ['invoiceValue', 'freightValue', 'baseRate', 'fxSpread', 'dutyRate', 'vatRate', 'localCharges', 'units', 'sellPrice', 'goodScenario', 'stressScenario'];
+    for (const key of required) {
+      const value = readNumber(key);
+      if (!Number.isFinite(value)) {
+        return 'Controlez le champ "' + fields[key].previousElementSibling.textContent + '".';
+      }
+      if (['invoiceValue', 'baseRate', 'units'].includes(key) && value <= 0) {
+        return 'La facture, le taux et la quantite doivent etre superieurs a zero.';
+      }
+      if (!['goodScenario', 'stressScenario'].includes(key) && value < 0) {
+        return 'Les montants et taux ne doivent pas etre negatifs.';
+      }
+    }
+    return '';
+  }
+
+  function compute(changePercent) {
+    const invoice = readNumber('invoiceValue');
+    const freight = readNumber('freightValue');
+    const baseRate = readNumber('baseRate');
+    const spread = readNumber('fxSpread') / 100;
+    const timing = Number(fields.paymentTiming.value) / 100;
+    const dutyRate = readNumber('dutyRate') / 100;
+    const vatRate = readNumber('vatRate') / 100;
+    const localCharges = readNumber('localCharges');
+    const units = readNumber('units');
+    const sellPrice = readNumber('sellPrice');
+    const rate = baseRate * (1 + spread) * (1 + timing) * (1 + (changePercent || 0) / 100);
+    const goodsLocal = invoice * rate;
+    const freightLocal = freight * rate;
+    const cif = goodsLocal + freightLocal;
+    const duty = cif * dutyRate;
+    const vatBase = cif + duty;
+    const vat = vatBase * vatRate;
+    const total = cif + duty + vat + localCharges;
+    const unitCost = total / units;
+    const unitMargin = sellPrice - unitCost;
+    const marginRate = sellPrice > 0 ? unitMargin / sellPrice * 100 : 0;
+    return { invoice, freight, rate, goodsLocal, freightLocal, cif, duty, vat, localCharges, total, unitCost, unitMargin, marginRate, units, sellPrice, changePercent: changePercent || 0 };
+  }
+
+  function scenarioLabel(change) {
+    if (change < 0) return 'Favorable';
+    if (change > 0) return 'Stress';
+    return 'Base';
+  }
+
+  function renderScenarios(base, scenarios) {
+    outputs.scenarioRows.innerHTML = scenarios.map(function (item) {
+      const delta = item.total - base.total;
+      const rowClass = item.changePercent === 0 ? ' class="base"' : '';
+      const deltaClass = delta > 0 ? 'risk' : delta < 0 ? 'gain' : '';
+      const deltaText = delta === 0 ? 'Reference' : (delta > 0 ? '+' : '') + money(delta);
+      return '<tr' + rowClass + '><td>' + scenarioLabel(item.changePercent) + ' (' + pct(item.changePercent) + ')</td><td>' + item.rate.toLocaleString('fr-FR', { maximumFractionDigits: 4 }) + '</td><td>' + money(item.total) + '</td><td class="' + deltaClass + '">' + deltaText + '</td><td>' + money(item.unitMargin) + '</td></tr>';
+    }).join('');
+  }
+
+  function renderGuidance(result) {
+    const warnings = [];
+    if (result.marginRate < 10) warnings.push('Marge brute faible : augmentez le prix, reduisez le fret ou verrouillez le taux avant paiement.');
+    if (readNumber('fxSpread') >= 3) warnings.push('Marge FX elevee : demandez une cotation a une autre banque ou negociez le spread.');
+    if (Number(fields.paymentTiming.value) >= 3) warnings.push('Delai de paiement sensible : prevoyez un coussin de change ou une couverture.');
+    if (!warnings.length) warnings.push('Le scenario de base garde une marge positive. Testez tout de meme un stress de change avant de signer.');
+    warnings.push('Confirmez classification tarifaire, droits, TVA et frais portuaires avec le transitaire.');
+    outputs.guidanceList.innerHTML = warnings.map(function (item) { return '<li>' + item + '</li>'; }).join('');
+  }
+
+  function buildSummary(result, scenarios) {
+    const source = fields.sourceCurrency.value;
+    const dest = fields.destCurrency.value;
+    return [
+      'Impact FX import - resume',
+      'Devise source : ' + source,
+      'Devise destination : ' + dest,
+      'Facture : ' + sourceMoney(result.invoice),
+      'Fret et assurance : ' + sourceMoney(result.freight),
+      'Taux applique : ' + result.rate.toLocaleString('fr-FR', { maximumFractionDigits: 4 }) + ' ' + dest + ' pour 1 ' + source,
+      'Cout rendu estime : ' + money(result.total),
+      'Cout unitaire : ' + money(result.unitCost),
+      'Marge brute unitaire : ' + money(result.unitMargin) + ' (' + pct(result.marginRate) + ')',
+      'Scenario favorable : ' + money(scenarios[0].total),
+      'Scenario base : ' + money(scenarios[1].total),
+      'Scenario stress : ' + money(scenarios[2].total),
+      'A verifier : taux banque, date de valeur, douane, TVA, fret, frais locaux.'
+    ].join('\n');
+  }
+
+  function calculate() {
+    const error = validateInputs();
+    if (error) {
+      setStatus(error, true);
+      return;
+    }
+    const favorable = readNumber('goodScenario');
+    const stress = readNumber('stressScenario');
+    const base = compute(0);
+    const scenarios = [compute(favorable), base, compute(stress)];
+    outputs.totalCost.textContent = money(base.total);
+    outputs.resultNote.textContent = 'Cout unitaire estime : ' + money(base.unitCost) + ' pour ' + Math.round(base.units).toLocaleString('fr-FR') + ' unites.';
+    outputs.rateMetric.textContent = base.rate.toLocaleString('fr-FR', { maximumFractionDigits: 4 });
+    outputs.unitMetric.textContent = money(base.unitCost);
+    outputs.marginMetric.textContent = money(base.unitMargin) + ' / ' + pct(base.marginRate);
+    outputs.goodsCost.textContent = money(base.goodsLocal);
+    outputs.freightCost.textContent = money(base.freightLocal);
+    outputs.cifCost.textContent = money(base.cif);
+    outputs.dutyCost.textContent = money(base.duty);
+    outputs.vatCost.textContent = money(base.vat);
+    outputs.localCost.textContent = money(base.localCharges);
+    renderScenarios(base, scenarios);
+    renderGuidance(base);
+    outputs.summaryOutput.value = buildSummary(base, scenarios);
+    lastResult = { base, scenarios };
+    try {
+      localStorage.setItem('afrotools-impact-fx-import-fr', JSON.stringify(Object.fromEntries(Object.keys(fields).map(function (key) { return [key, fields[key].value]; }))));
+    } catch (error) {}
+    setStatus('Scenario calcule. Copiez le resume ou exportez le tableau avant de negocier le taux final.', false);
+  }
+
+  async function copySummary() {
+    if (!lastResult) calculate();
+    const text = outputs.summaryOutput.value.trim();
+    if (!text || text === 'Le resume apparaitra apres calcul.') {
+      setStatus('Aucun resume a copier.', true);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus('Resume copie dans le presse-papiers.', false);
+    } catch (error) {
+      outputs.summaryOutput.focus();
+      outputs.summaryOutput.select();
+      setStatus('Copie automatique bloquee. Selectionnez le resume puis copiez-le au clavier.', false);
+    }
+  }
+
+  function exportCsv() {
+    if (!lastResult) calculate();
+    if (!lastResult) return;
+    const rows = [
+      ['scenario', 'variation_pct', 'taux', 'cout_total', 'cout_unitaire', 'marge_unitaire'],
+      ...lastResult.scenarios.map(function (item) {
+        return [scenarioLabel(item.changePercent), item.changePercent, item.rate.toFixed(4), Math.round(item.total), Math.round(item.unitCost), Math.round(item.unitMargin)];
+      })
+    ];
+    const csv = rows.map(function (row) {
+      return row.map(function (cell) { return '"' + String(cell).replace(/"/g, '""') + '"'; }).join(',');
+    }).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'impact-fx-import.csv';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatus('CSV prepare : impact-fx-import.csv', false);
+  }
+
+  function resetAll() {
+    Object.keys(defaults).forEach(function (key) {
+      fields[key].value = defaults[key];
+    });
+    lastResult = null;
+    outputs.totalCost.textContent = 'A calculer';
+    outputs.resultNote.textContent = 'Entrez vos donnees puis lancez le calcul pour voir le cout total et le cout unitaire.';
+    ['rateMetric', 'unitMetric', 'marginMetric', 'goodsCost', 'freightCost', 'cifCost', 'dutyCost', 'vatCost', 'localCost'].forEach(function (key) {
+      outputs[key].textContent = '--';
+    });
+    outputs.scenarioRows.innerHTML = '<tr><td colspan="5">Aucun scenario calcule.</td></tr>';
+    outputs.guidanceList.innerHTML = '<li>Calculez un scenario avant de confirmer la commande.</li><li>Demandez a la banque le taux ferme, la marge FX et la date de valeur.</li>';
+    outputs.summaryOutput.value = 'Le resume apparaitra apres calcul.';
+    setStatus('Hypotheses reinitialisees.', false);
+  }
+
+  function loadSaved() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('afrotools-impact-fx-import-fr') || '{}');
+      Object.keys(defaults).forEach(function (key) {
+        if (fields[key] && saved[key] !== undefined) fields[key].value = saved[key];
       });
-    });
+    } catch (error) {}
   }
-  function localizeFrames(){
-    document.querySelectorAll('iframe').forEach(function(frame){
-      try{ if(frame.contentDocument) localize(frame.contentDocument.body); }catch(e){}
-      frame.addEventListener('load',function(){try{ localize(frame.contentDocument.body); }catch(e){}});
-    });
-  }
-  window.addEventListener('load',function(){
-    localize(document.body); localizeFrames();
-    var obs=new MutationObserver(function(){localize(document.body); localizeFrames();});
-    obs.observe(document.body,{childList:true,subtree:true});
+
+  calculateBtn.addEventListener('click', calculate);
+  copyBtn.addEventListener('click', copySummary);
+  exportBtn.addEventListener('click', exportCsv);
+  resetBtn.addEventListener('click', resetAll);
+  Object.keys(fields).forEach(function (key) {
+    fields[key].addEventListener('change', calculate);
   });
-})();
+
+  loadSaved();
+  calculate();
+});
 </script>
 </body>
 </html>

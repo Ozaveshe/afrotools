@@ -6,6 +6,7 @@ const path = require("path");
 const vm = require("vm");
 const { fileToPublicRoute, isRedirectLike } = require("./lib/canonical-aliases");
 const { frenchToolSlugToEnglishSource } = require("./lib/french-tool-route-map");
+const { frenchTelecomSlugToEnglishSource } = require("./lib/french-telecom-route-map");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE = "https://afrotools.com";
@@ -168,6 +169,24 @@ function normalizeRoute(value) {
   return route || "/";
 }
 
+function buildFrenchRedirectSourceRoutes() {
+  const redirectsPath = path.join(ROOT, "_redirects");
+  const sources = new Set();
+  if (!fs.existsSync(redirectsPath)) return sources;
+
+  for (const raw of fs.readFileSync(redirectsPath, "utf8").split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line || line.startsWith("#") || line.startsWith("[[redirects]]")) continue;
+    const [source, target, status] = line.split(/\s+/);
+    if (!source || !target || !status) continue;
+    if (!source.startsWith("/fr/")) continue;
+    if (!/^(?:301|302|307|308)!?$/.test(status)) continue;
+    sources.add(normalizeRoute(source));
+  }
+
+  return sources;
+}
+
 function sourceKey(pagePath) {
   let clean = (pagePath || "").replace(/^\//, "").replace(/\/$/, "");
   if (clean === "index" || clean === "index.html") clean = "";
@@ -304,6 +323,10 @@ function inferFrenchSourceCandidates(filePath) {
     const mappedToolSource = frenchToolSlugToEnglishSource(fileBase);
     if (mappedToolSource) addCandidate(candidates, mappedToolSource, "fr-tool-slug-map");
   }
+  if (first === "telecom" && fileBase) {
+    const mappedTelecomSource = frenchTelecomSlugToEnglishSource(fileBase);
+    if (mappedTelecomSource) addCandidate(candidates, mappedTelecomSource, "fr-telecom-slug-map");
+  }
 
   if (fileBase === "calculateur-salaire-net" && PAYE_SLUG_MAP[first]) addCandidate(candidates, PAYE_SLUG_MAP[first], "build-i18n-paye-slug-map");
   if (fileBase === "calculateur-tva" && VAT_SLUG_MAP[first]) addCandidate(candidates, VAT_SLUG_MAP[first], "build-i18n-vat-slug-map");
@@ -391,6 +414,13 @@ function sectionsFor(route, source) {
   return Object.entries(sectionFlags(route, source)).filter(([, value]) => value).map(([name]) => name);
 }
 
+function isFrenchWidgetParentRoute(route) {
+  const normalized = normalizeRoute(route);
+  return /^\/fr\/widgets\/[^/]+$/.test(normalized)
+    && normalized !== "/fr/widgets/demo"
+    && !normalized.startsWith("/fr/widgets/iframe");
+}
+
 function isRegistryEligible(routeRecord) {
   return routeRecord.route.startsWith("/fr/tools/")
     || routeRecord.classification.sections.includes("salary-tax")
@@ -438,6 +468,7 @@ function main() {
   const frenchRoutes = new Set();
   const englishToFrenchRoutes = new Map();
   const canonicalGroups = new Map();
+  const redirectSourceRoutes = buildFrenchRedirectSourceRoutes();
 
   for (const filePath of walk(path.join(ROOT, "fr"), { ext: ".html" })) {
     const route = publicRoute(filePath);
@@ -452,20 +483,23 @@ function main() {
     const mappedToEnglishSource = hasEnglishSource(englishSource);
     const hasPack = Boolean(mappedToEnglishSource && frTranslations.has(englishSource));
     const standardGenerated = Boolean(mappedToEnglishSource && publicRoute(buildOutputPath(englishSource, "fr")) === route);
+    const generatedFrenchWidgetParent = isFrenchWidgetParentRoute(route);
     const sourceOfTruth = [];
     if (hasPack) sourceOfTruth.push("lang/pages fr.json");
     if (registryByHref.has(route)) sourceOfTruth.push("tool-registry.js");
+    if (generatedFrenchWidgetParent) sourceOfTruth.push("scripts/generate-fr-widget-parent-pages.js");
     if (!hasPack && mappedToEnglishSource) sourceOfTruth.push("existing /fr/ HTML");
     if (!sourceOfTruth.length) sourceOfTruth.push("unclear source of truth");
 
     const redirectLike = isRedirectLike(html);
+    const redirectSource = redirectSourceRoutes.has(route);
 
-    if (canonicalRoute && !hasNoindex(html) && !redirectLike) {
+    if (canonicalRoute && !hasNoindex(html) && !redirectLike && !redirectSource) {
       if (!canonicalGroups.has(canonicalRoute)) canonicalGroups.set(canonicalRoute, []);
       canonicalGroups.get(canonicalRoute).push(route);
     }
 
-    if (mappedToEnglishSource && !hasNoindex(html) && !redirectLike) {
+    if (mappedToEnglishSource && !hasNoindex(html) && !redirectLike && !redirectSource) {
       if (!englishToFrenchRoutes.has(englishSource)) englishToFrenchRoutes.set(englishSource, []);
       englishToFrenchRoutes.get(englishSource).push(route);
     }
@@ -478,9 +512,9 @@ function main() {
       title: leakage.title,
       h1: leakage.h1,
       classification: {
-        mapping: mappedToEnglishSource ? "English-backed mapped route" : (isAlias ? "duplicate or alias route" : "French-only route"),
-        generation: hasPack || standardGenerated ? "generated output" : "hand-authored French page",
-        alias: isAlias,
+        mapping: redirectSource || isAlias ? "duplicate or alias route" : (mappedToEnglishSource ? "English-backed mapped route" : "French-only route"),
+        generation: hasPack || standardGenerated || generatedFrenchWidgetParent ? "generated output" : "hand-authored French page",
+        alias: redirectSource || isAlias,
         sourceOfTruth,
         sections: sectionsFor(route, englishSource),
       },
@@ -495,10 +529,13 @@ function main() {
       htmlLang: extractHtmlLang(html) || null,
       hasNoindex: hasNoindex(html),
       redirectLike,
+      redirectSource,
     };
     frenchRoutes.add(route);
     routes.push(record);
   }
+
+  const routeRecordByRoute = new Map(routes.map((route) => [route.route, route]));
 
   const duplicateFrenchCanonicals = [...canonicalGroups.entries()]
     .filter(([canonical, groupedRoutes]) => canonical.startsWith("/fr/") && groupedRoutes.length > 1)
@@ -507,6 +544,8 @@ function main() {
 
   const missingReciprocalHreflang = [];
   for (const route of frenchRoutes) {
+    const sourceRecord = routeRecordByRoute.get(route);
+    if (sourceRecord && sourceRecord.redirectSource) continue;
     const html = htmlByRoute.get(route) || "";
     if (!html || hasNoindex(html)) continue;
     for (const tag of extractHreflangs(html).filter((item) => item.lang !== "x-default")) {
@@ -527,6 +566,7 @@ function main() {
   }
 
   const englishLeakage = routes
+    .filter((route) => !route.redirectSource && !(route.hasNoindex && route.redirectLike))
     .filter((route) => route.englishLeakage.titleEnglish || route.englishLeakage.h1English || route.englishLeakage.uiHits.length)
     .map((route) => ({
       route: route.route,

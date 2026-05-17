@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.join(__dirname, '..');
 const WRITE = process.argv.includes('--write');
@@ -94,7 +95,7 @@ function readFile(relPath) {
 }
 
 function writeFile(relPath, content) {
-  fs.writeFileSync(path.join(ROOT, relPath), content, 'utf8');
+  writeFileSyncWithRetry(path.join(ROOT, relPath), content, 'utf8');
 }
 
 function updateFile(relPath, transform) {

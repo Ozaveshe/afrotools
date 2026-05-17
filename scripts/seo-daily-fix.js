@@ -21,6 +21,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const {
   fileToPublicRoute,
@@ -50,7 +51,7 @@ function walk(dir, cb) {
 }
 
 function readFile(fp)          { return fs.readFileSync(fp, 'utf8'); }
-function writeFile(fp, data)   { if (FIX_MODE) fs.writeFileSync(fp, data, 'utf8'); }
+function writeFile(fp, data)   { if (FIX_MODE) writeFileSyncWithRetry(fp, data, 'utf8'); }
 
 function hasCanonical(content) {
   return /<link\b(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["'][^"']+["'])[^>]*>/i.test(content);

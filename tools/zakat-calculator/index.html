@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="tool-id" content="zakat-calculator">
 <title>Zakat Calculator | AfroTools</title>
-<meta name="description" content="Calculate zakat on cash, gold, silver, business inventory, receivables and liabilities with gold or silver nisab planning.">
+<meta name="description" content="Calculate zakat on cash, savings, gold, silver, business inventory, investments, receivables and debts with gold or silver nisab checks.">
 <link rel="canonical" href="https://afrotools.com/tools/zakat-calculator/">
 <meta property="og:title" content="Zakat Calculator | AfroTools">
-<meta property="og:description" content="Calculate zakat on cash, gold, silver, business inventory, receivables and liabilities with gold or silver nisab planning.">
+<meta property="og:description" content="Transparent zakat calculator with asset breakdown, nisab status, hawl reminder, scholar disclaimer, and exportable result.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/zakat-calculator.webp">
 <meta property="og:url" content="https://afrotools.com/tools/zakat-calculator/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zakat Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate zakat on cash, gold, silver, business inventory, receivables and liabilities with gold or silver nisab planning.">
+<meta name="twitter:description" content="Estimate zakatable wealth, nisab status, zakat due, asset breakdown, and next giving steps.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/zakat-calculator.webp">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Zakat Calculator",
-  "description": "Calculate zakat on cash, gold, silver, business inventory, receivables and liabilities with gold or silver nisab planning.",
+  "description": "Calculate zakat on cash, savings, gold, silver, business inventory, investments, receivables and deductible debts.",
   "url": "https://afrotools.com/tools/zakat-calculator/",
-  "applicationCategory": "LifestyleApplication",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "dateModified": "2026-05-16",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -35,44 +40,885 @@
   "image": "https://afrotools.com/assets/img/tools/zakat-calculator.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Religious & Cultural","item":"https://afrotools.com/religious-cultural/"},{"@type":"ListItem","position":3,"name":"Zakat Calculator","item":"https://afrotools.com/tools/zakat-calculator/"}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Religious & Cultural", "item": "https://afrotools.com/religious-cultural/"},
+    {"@type": "ListItem", "position": 3, "name": "Zakat Calculator", "item": "https://afrotools.com/tools/zakat-calculator/"}
+  ]
+}
+</script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
-:root{--en-accent:#D97706;--en-accent-dark:#D97706;--en-accent-light:#FEF3C7;--en-accent-pale:#FFFBEB;--en-shadow-hover:0 4px 16px rgba(15,23,42,.14),0 1px 4px rgba(0,0,0,.08)}
-.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a0a 45%,#3b2800 100%)!important}
-.container{max-width:1080px;margin:0 auto;padding:0 24px}
+:root {
+  --bg: #f7f8fb;
+  --panel: #ffffff;
+  --panel-soft: #f1f6f4;
+  --ink: #111827;
+  --muted: #5b6475;
+  --line: #dbe2e8;
+  --brand: #0f766e;
+  --brand-dark: #0b4f4a;
+  --accent: #b7791f;
+  --danger: #b42318;
+  --good: #157347;
+  --shadow: 0 18px 46px rgba(15, 23, 42, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+}
+a { color: inherit; }
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 10;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+.skip-link:focus { top: 12px; }
+.topbar {
+  background: #0c1f20;
+  color: #ecfdf5;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.topbar-inner {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  font-weight: 800;
+  letter-spacing: .01em;
+  text-decoration: none;
+}
+.topnav {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: .94rem;
+}
+.topnav a {
+  color: #d7ffef;
+  text-decoration: none;
+  padding: 6px 0;
+}
+.hero {
+  background: linear-gradient(135deg, #082f2a 0%, #0f4f46 52%, #7c4a03 100%);
+  color: #fff;
+}
+.wrap {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+}
+.hero .wrap {
+  padding: 34px 0 38px;
+}
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: .92rem;
+  color: #c7f9e8;
+  margin-bottom: 22px;
+}
+.breadcrumb a { text-decoration: none; }
+h1 {
+  font-size: clamp(2rem, 6vw, 4.25rem);
+  line-height: 1.02;
+  margin: 0 0 14px;
+  max-width: 780px;
+}
+.hero-copy {
+  max-width: 760px;
+  color: #e2fff4;
+  font-size: 1.08rem;
+  margin: 0;
+}
+.hero-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+.pill {
+  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.10);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: .88rem;
+  color: #f0fdf4;
+}
+main { padding: 28px 0 44px; }
+.app-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+  gap: 22px;
+  align-items: start;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+.panel-head {
+  padding: 20px 22px 0;
+}
+.panel-head h2, .info-block h2 {
+  margin: 0 0 6px;
+  font-size: 1.22rem;
+}
+.panel-head p, .info-block p {
+  margin: 0;
+  color: var(--muted);
+}
+form {
+  padding: 18px 22px 22px;
+}
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.field-full { grid-column: 1 / -1; }
+label {
+  display: block;
+  font-weight: 700;
+  font-size: .93rem;
+  margin-bottom: 6px;
+}
+input, select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 10px 11px;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+}
+input:focus, select:focus, button:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, .32);
+  outline-offset: 2px;
+}
+.hint {
+  display: block;
+  color: var(--muted);
+  font-size: .82rem;
+  margin-top: 4px;
+}
+.check-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+  border-radius: 8px;
+}
+.check-row input {
+  width: 18px;
+  min-height: 18px;
+  margin-top: 3px;
+}
+.check-row label { margin: 0; }
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.primary {
+  background: var(--brand);
+  color: #fff;
+}
+.secondary {
+  background: #e6f3ef;
+  color: var(--brand-dark);
+  border: 1px solid #b7d7d1;
+}
+.ghost {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.result-panel {
+  position: sticky;
+  top: 16px;
+}
+.status-bar {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: #f6fbfa;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
+}
+.status-label {
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  font-weight: 800;
+}
+.status-pill {
+  background: #fff7ed;
+  color: #8a4b0b;
+  border: 1px solid #fed7aa;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: .82rem;
+  font-weight: 800;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px;
+}
+.metric {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fff;
+}
+.metric span {
+  display: block;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.metric strong {
+  display: block;
+  font-size: clamp(1.25rem, 4vw, 1.95rem);
+  line-height: 1.16;
+  margin-top: 7px;
+  word-break: break-word;
+}
+.wide { grid-column: 1 / -1; }
+.result-copy {
+  padding: 0 18px 18px;
+}
+.result-copy h3 {
+  margin: 16px 0 8px;
+  font-size: 1rem;
+}
+.result-copy p {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+.breakdown {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.breakdown li {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid #edf2f7;
+}
+.breakdown b { text-align: right; }
+.notice {
+  border-left: 4px solid var(--accent);
+  background: #fffbeb;
+  padding: 12px 13px;
+  border-radius: 0 8px 8px 0;
+}
+.notice.good {
+  border-left-color: var(--good);
+  background: #ecfdf3;
+}
+.notice.danger {
+  border-left-color: var(--danger);
+  background: #fff1f2;
+}
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.info-block {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+}
+.info-block ul, .info-block ol {
+  margin: 12px 0 0;
+  padding-left: 20px;
+}
+.info-block li { margin: 8px 0; }
+.related {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.related a {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px;
+  text-decoration: none;
+  font-weight: 800;
+}
+.footer {
+  border-top: 1px solid var(--line);
+  background: #fff;
+  padding: 24px 0;
+  color: var(--muted);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.footer a { color: var(--brand-dark); }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 880px) {
+  .app-grid, .info-grid, .related {
+    grid-template-columns: 1fr;
+  }
+  .result-panel { position: static; }
+}
+@media (max-width: 620px) {
+  .topbar-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 14px 0;
+  }
+  .field-grid, .metrics {
+    grid-template-columns: 1fr;
+  }
+  .actions button {
+    width: 100%;
+  }
+  .wide { grid-column: auto; }
+  form, .panel-head { padding-left: 16px; padding-right: 16px; }
+}
+@media print {
+  .topbar, .hero, .actions, .related, .footer { display: none; }
+  body { background: #fff; }
+  .panel, .info-block { box-shadow: none; break-inside: avoid; }
+  main { padding: 0; }
+}
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/zakat-calculator/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-zakat/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/zakat-calculator/" />
 </head>
 <body>
-<afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
-<section class="en-tool-hero">
-<div class="container">
-<nav class="en-breadcrumb" aria-label="Breadcrumb">
-<a href="/">Home</a><span class="en-breadcrumb-sep">&gt;</span>
-<a href="/religious-cultural/">Religious &amp; Cultural</a><span class="en-breadcrumb-sep">&gt;</span>
-<span class="en-breadcrumb-current">Zakat Calculator</span>
-</nav>
-<h1>Zakat Calculator</h1>
-<p>A practical zakat planner for African households and businesses. It separates liquid assets, trade goods, debts owed to you and liabilities, then checks the nisab threshold before estimating 2.5 percent zakat.</p>
-<div class="en-tool-hero-meta">
-<span class="en-tool-hero-pill">Nisab threshold</span>
-<span class="en-tool-hero-pill">Gold and silver</span>
-<span class="en-tool-hero-pill">Business stock</span>
-<span class="en-tool-hero-pill">Debt netting</span>
-</div>
-</div>
+<a class="skip-link" href="#calculator">Skip to calculator</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/">AfroTools</a>
+    <nav class="topnav" aria-label="Primary">
+      <a href="/tools/">Tools</a>
+      <a href="/religious-cultural/">Religious & Cultural</a>
+      <a href="/tools/islamic-finance/">Islamic Finance</a>
+      <a href="/tools/faraid-inheritance/">Faraid</a>
+    </nav>
+  </div>
+</header>
+<section class="hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">/</span>
+      <a href="/religious-cultural/">Religious & Cultural</a><span aria-hidden="true">/</span>
+      <span>Zakat Calculator</span>
+    </nav>
+    <h1>Zakat Calculator</h1>
+    <p class="hero-copy">Estimate zakatable wealth from cash, savings, precious metals, business inventory, investments, receivables, and deductible short-term debts. Choose a gold, silver, or custom nisab threshold and export a plain-language giving note.</p>
+    <div class="hero-pills" aria-label="Calculator features">
+      <span class="pill">Gold or silver nisab</span>
+      <span class="pill">2.5% formula</span>
+      <span class="pill">Asset breakdown</span>
+      <span class="pill">Hawl reminder</span>
+    </div>
+  </div>
 </section>
-<main>
-<section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="zakat-calculator"></section>
+<main id="calculator" class="wrap">
+  <div class="app-grid">
+    <section class="panel" aria-labelledby="input-title">
+      <div class="panel-head">
+        <h2 id="input-title">Enter zakat assets and debts</h2>
+        <p>Use values in one currency. Update the gold and silver prices to your local spot or jeweller rate before relying on the result.</p>
+      </div>
+      <form id="zakatForm">
+        <div class="field-grid">
+          <div>
+            <label for="currency">Currency</label>
+            <select id="currency" name="currency">
+              <option value="NGN">NGN - Nigerian naira</option>
+              <option value="GHS">GHS - Ghanaian cedi</option>
+              <option value="KES">KES - Kenyan shilling</option>
+              <option value="ZAR">ZAR - South African rand</option>
+              <option value="EGP">EGP - Egyptian pound</option>
+              <option value="USD">USD - US dollar</option>
+              <option value="GBP">GBP - Pound sterling</option>
+            </select>
+          </div>
+          <div>
+            <label for="nisabBasis">Nisab basis</label>
+            <select id="nisabBasis" name="nisabBasis">
+              <option value="silver">Silver nisab - 595g</option>
+              <option value="gold">Gold nisab - 85g</option>
+              <option value="custom">Custom nisab amount</option>
+            </select>
+            <span class="hint">Silver is often used for caution; scholars differ by context.</span>
+          </div>
+          <div>
+            <label for="cash">Cash on hand</label>
+            <input id="cash" name="cash" type="number" min="0" step="0.01" value="120000" inputmode="decimal">
+          </div>
+          <div>
+            <label for="savings">Bank savings and mobile wallets</label>
+            <input id="savings" name="savings" type="number" min="0" step="0.01" value="680000" inputmode="decimal">
+          </div>
+          <div>
+            <label for="goldGrams">Gold owned (grams)</label>
+            <input id="goldGrams" name="goldGrams" type="number" min="0" step="0.01" value="12" inputmode="decimal">
+          </div>
+          <div>
+            <label for="goldPrice">Gold price per gram</label>
+            <input id="goldPrice" name="goldPrice" type="number" min="0" step="0.01" value="95000" inputmode="decimal">
+            <span class="hint">Enter today's local value per gram.</span>
+          </div>
+          <div>
+            <label for="silverGrams">Silver owned (grams)</label>
+            <input id="silverGrams" name="silverGrams" type="number" min="0" step="0.01" value="150" inputmode="decimal">
+          </div>
+          <div>
+            <label for="silverPrice">Silver price per gram</label>
+            <input id="silverPrice" name="silverPrice" type="number" min="0" step="0.01" value="1400" inputmode="decimal">
+          </div>
+          <div>
+            <label for="inventory">Business inventory at resale value</label>
+            <input id="inventory" name="inventory" type="number" min="0" step="0.01" value="850000" inputmode="decimal">
+          </div>
+          <div>
+            <label for="investments">Zakatable investments</label>
+            <input id="investments" name="investments" type="number" min="0" step="0.01" value="300000" inputmode="decimal">
+            <span class="hint">Use the zakatable portion where known.</span>
+          </div>
+          <div>
+            <label for="receivables">Receivables likely to be collected</label>
+            <input id="receivables" name="receivables" type="number" min="0" step="0.01" value="180000" inputmode="decimal">
+          </div>
+          <div>
+            <label for="debts">Deductible debts due soon</label>
+            <input id="debts" name="debts" type="number" min="0" step="0.01" value="220000" inputmode="decimal">
+            <span class="hint">Generally short-term payable obligations, not every long-term loan balance.</span>
+          </div>
+          <div>
+            <label for="customNisab">Custom nisab amount</label>
+            <input id="customNisab" name="customNisab" type="number" min="0" step="0.01" value="0" inputmode="decimal">
+          </div>
+          <div>
+            <label for="hawlDate">Hawl review date</label>
+            <input id="hawlDate" name="hawlDate" type="date">
+            <span class="hint">Use your lunar-year review date or nearest annual zakat date.</span>
+          </div>
+          <div class="field-full check-row">
+            <input id="hawlMet" name="hawlMet" type="checkbox" checked>
+            <label for="hawlMet">I believe the qualifying assets have remained above nisab for one hawl, or I am preparing a Ramadan/annual payment.</label>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary" type="submit">Calculate zakat</button>
+          <button class="secondary" type="button" id="copyBtn">Copy result</button>
+          <button class="secondary" type="button" id="exportBtn">Export CSV</button>
+          <button class="ghost" type="button" id="printBtn">Print</button>
+        </div>
+      </form>
+    </section>
+    <aside class="panel result-panel" aria-labelledby="result-title">
+      <div class="status-bar">
+        <div>
+          <span class="status-label">Result</span>
+          <strong id="result-title">Zakat estimate</strong>
+        </div>
+        <span class="status-pill" id="nisabStatus" data-output="nisab-status">Ready</span>
+      </div>
+      <div class="metrics" aria-live="polite">
+        <div class="metric">
+          <span>Zakatable wealth</span>
+          <strong id="wealthOut" data-output="zakatable-wealth">-</strong>
+        </div>
+        <div class="metric">
+          <span>Zakat due</span>
+          <strong id="zakatOut" data-output="zakat-due">-</strong>
+        </div>
+        <div class="metric">
+          <span>Nisab threshold</span>
+          <strong id="nisabOut" data-output="nisab-threshold">-</strong>
+        </div>
+        <div class="metric">
+          <span>Hawl reminder</span>
+          <strong id="hawlOut" data-output="hawl-reminder">-</strong>
+        </div>
+        <div class="metric wide">
+          <span>Next giving note</span>
+          <strong id="nextOut" data-output="next-step">Enter values, then calculate.</strong>
+        </div>
+      </div>
+      <div class="result-copy">
+        <div id="resultNote" class="notice" data-output="warning">Your result will appear here.</div>
+        <h3>Breakdown by asset</h3>
+        <ul class="breakdown" id="breakdown" data-output="asset-breakdown"></ul>
+        <h3>Suggested next steps</h3>
+        <ol id="nextSteps" data-output="next-steps"></ol>
+      </div>
+    </aside>
+  </div>
+  <section class="info-grid" aria-label="Methodology and assumptions">
+    <div class="info-block">
+      <h2>Methodology</h2>
+      <p>This educational calculator uses the common zakat workflow used by many zakat charities and personal finance worksheets:</p>
+      <ol>
+        <li>Add cash, savings, gold value, silver value, business inventory at resale value, zakatable investments, and collectible receivables.</li>
+        <li>Subtract deductible short-term debts that are due and payable soon.</li>
+        <li>Compare the net amount with the selected nisab: 85 grams of gold, 595 grams of silver, or your custom threshold.</li>
+        <li>If wealth is at or above nisab and hawl is satisfied, estimate zakat as 2.5% of zakatable wealth.</li>
+      </ol>
+    </div>
+    <div class="info-block">
+      <h2>Assumptions and freshness</h2>
+      <p><strong>Last reviewed: 2026-05-16.</strong> This page does not fetch live gold, silver, exchange-rate, or charity data. Enter current local metal prices and use one currency across every field.</p>
+      <ul>
+        <li>Gold nisab uses 85 grams; silver nisab uses 595 grams.</li>
+        <li>Business inventory should be entered at realistic resale or wholesale value.</li>
+        <li>Receivables are included only when they are reasonably collectible.</li>
+        <li>Debt treatment, investment screening, pensions, crypto, farming stock, and jewellery customs can differ by scholar and local context.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h2>Disclaimer</h2>
+      <p>This tool is educational only, not a fatwa, not financial advice, and not a substitute for a qualified scholar or trusted zakat institution. Confirm unusual assets, business accounts, jewellery, debts, and local practice with a qualified scholar before paying.</p>
+    </div>
+    <div class="info-block">
+      <h2>Source and context links</h2>
+      <ul>
+        <li><a href="https://islamic-relief.org/zakat/zakat-faqs/" rel="noopener">Islamic Relief zakat FAQs</a></li>
+        <li><a href="https://zakat.org/what-is-nisab" rel="noopener">Zakat Foundation of America nisab guide</a></li>
+        <li><a href="https://www.aaofi.com/" rel="noopener">AAOIFI standards context</a></li>
+      </ul>
+    </div>
+    <div class="info-block field-full">
+      <h2>Related Islamic finance tools</h2>
+      <div class="related">
+        <a href="/tools/islamic-finance/">Islamic Finance Profit Rate</a>
+        <a href="/tools/faraid-inheritance/">Faraid Inheritance</a>
+        <a href="/tools/hajj-budget/">Hajj and Umrah Budget</a>
+        <a href="/tools/ramadan-timetable/">Ramadan Timetable</a>
+      </div>
+    </div>
+  </section>
 </main>
-<afro-footer></afro-footer>
-<script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>AfroTools religious finance utilities are built for planning, not rulings.</span>
+    <span><a href="/tools/">All tools</a> | <a href="/religious-cultural/">Religious & Cultural</a></span>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById("zakatForm");
+  var fields = Array.prototype.slice.call(form.querySelectorAll("input, select"));
+  var currencyEl = document.getElementById("currency");
+  var nisabBasisEl = document.getElementById("nisabBasis");
+  var customNisabEl = document.getElementById("customNisab");
+  var hawlDateEl = document.getElementById("hawlDate");
+  var hawlMetEl = document.getElementById("hawlMet");
+  var breakdownEl = document.getElementById("breakdown");
+  var nextStepsEl = document.getElementById("nextSteps");
+  var lastResult = null;
+
+  var currencySymbols = {
+    NGN: "NGN",
+    GHS: "GHS",
+    KES: "KES",
+    ZAR: "ZAR",
+    EGP: "EGP",
+    USD: "USD",
+    GBP: "GBP"
+  };
+
+  function todayPlusDays(days) {
+    var date = new Date();
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10);
+  }
+
+  hawlDateEl.value = todayPlusDays(30);
+
+  function numberValue(id) {
+    var value = Number(document.getElementById(id).value);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  }
+
+  function money(value) {
+    var code = currencyEl.value || "USD";
+    return currencySymbols[code] + " " + Number(value || 0).toLocaleString("en-US", {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: value && Math.abs(value) < 100 ? 2 : 0
+    });
+  }
+
+  function plainNumber(value) {
+    return Number(value || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  }
+
+  function setText(id, value) {
+    document.getElementById(id).textContent = value;
+  }
+
+  function daysUntil(dateString) {
+    if (!dateString) return null;
+    var target = new Date(dateString + "T00:00:00");
+    if (Number.isNaN(target.getTime())) return null;
+    var now = new Date();
+    var start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.ceil((target - start) / 86400000);
+  }
+
+  function buildResult() {
+    var goldValue = numberValue("goldGrams") * numberValue("goldPrice");
+    var silverValue = numberValue("silverGrams") * numberValue("silverPrice");
+    var assets = {
+      "Cash on hand": numberValue("cash"),
+      "Bank savings and mobile wallets": numberValue("savings"),
+      "Gold value": goldValue,
+      "Silver value": silverValue,
+      "Business inventory": numberValue("inventory"),
+      "Zakatable investments": numberValue("investments"),
+      "Collectible receivables": numberValue("receivables")
+    };
+    var debts = numberValue("debts");
+    var grossAssets = Object.keys(assets).reduce(function (sum, key) { return sum + assets[key]; }, 0);
+    var zakatableWealth = Math.max(0, grossAssets - debts);
+    var goldNisab = 85 * numberValue("goldPrice");
+    var silverNisab = 595 * numberValue("silverPrice");
+    var basis = nisabBasisEl.value;
+    var nisab = basis === "gold" ? goldNisab : basis === "custom" ? numberValue("customNisab") : silverNisab;
+    var nisabLabel = basis === "gold" ? "Gold nisab" : basis === "custom" ? "Custom nisab" : "Silver nisab";
+    var aboveNisab = nisab > 0 && zakatableWealth >= nisab;
+    var hawlMet = hawlMetEl.checked;
+    var zakatDue = aboveNisab && hawlMet ? zakatableWealth * 0.025 : 0;
+    var remainingToNisab = Math.max(0, nisab - zakatableWealth);
+    var days = daysUntil(hawlDateEl.value);
+    var hawlText = hawlMet ? "Hawl marked complete" : "Review hawl before paying";
+    if (!hawlMet && days !== null) {
+      hawlText = days < 0 ? "Review hawl now" : days + " days to review";
+    }
+    return {
+      assets: assets,
+      debts: debts,
+      grossAssets: grossAssets,
+      zakatableWealth: zakatableWealth,
+      nisab: nisab,
+      nisabLabel: nisabLabel,
+      aboveNisab: aboveNisab,
+      hawlMet: hawlMet,
+      hawlText: hawlText,
+      zakatDue: zakatDue,
+      remainingToNisab: remainingToNisab,
+      goldNisab: goldNisab,
+      silverNisab: silverNisab
+    };
+  }
+
+  function renderBreakdown(result) {
+    var rows = Object.keys(result.assets).map(function (key) {
+      return "<li><span>" + key + "</span><b>" + money(result.assets[key]) + "</b></li>";
+    });
+    rows.push("<li><span>Gross zakatable assets</span><b>" + money(result.grossAssets) + "</b></li>");
+    rows.push("<li><span>Deductible debts</span><b>-" + money(result.debts) + "</b></li>");
+    rows.push("<li><span>Net zakatable wealth</span><b>" + money(result.zakatableWealth) + "</b></li>");
+    breakdownEl.innerHTML = rows.join("");
+  }
+
+  function renderSteps(result) {
+    var steps = [];
+    if (!result.aboveNisab) {
+      steps.push("You are below the selected nisab by " + money(result.remainingToNisab) + ". Keep records and review again on your next hawl date.");
+    } else if (!result.hawlMet) {
+      steps.push("Your wealth is above nisab, but hawl is not marked complete. Confirm the lunar-year condition before paying.");
+    } else {
+      steps.push("Set aside " + money(result.zakatDue) + " for eligible zakat recipients or trusted zakat institutions.");
+    }
+    steps.push("Recheck gold and silver prices on the day of payment, then rerun the calculation.");
+    steps.push("Ask a qualified scholar about business stock, jewellery custom, pensions, crypto, disputed debts, and mixed investments.");
+    steps.push("Keep a dated copy of this result with asset values, debts, nisab basis, and payment reference.");
+    nextStepsEl.innerHTML = steps.map(function (step) { return "<li>" + step + "</li>"; }).join("");
+  }
+
+  function render() {
+    var result = buildResult();
+    lastResult = result;
+    var status = document.getElementById("nisabStatus");
+    var note = document.getElementById("resultNote");
+    setText("wealthOut", money(result.zakatableWealth));
+    setText("zakatOut", money(result.zakatDue));
+    setText("nisabOut", money(result.nisab));
+    setText("hawlOut", result.hawlText);
+    if (!result.aboveNisab) {
+      status.textContent = "Below nisab";
+      status.style.background = "#eef2ff";
+      status.style.color = "#3730a3";
+      note.className = "notice";
+      note.textContent = "Based on the selected " + result.nisabLabel.toLowerCase() + ", zakat is not due yet because net zakatable wealth is below nisab.";
+      setText("nextOut", "Review again when wealth reaches nisab.");
+    } else if (!result.hawlMet) {
+      status.textContent = "Check hawl";
+      status.style.background = "#fff7ed";
+      status.style.color = "#8a4b0b";
+      note.className = "notice";
+      note.textContent = "Wealth is above nisab, but the hawl condition is not confirmed. Treat the zakat amount as a planning estimate until reviewed.";
+      setText("nextOut", "Confirm hawl with your scholar or zakat office.");
+    } else {
+      status.textContent = "Zakat due";
+      status.style.background = "#ecfdf3";
+      status.style.color = "#157347";
+      note.className = "notice good";
+      note.textContent = "Zakat is estimated at 2.5% of net zakatable wealth because the selected nisab and hawl checks are satisfied.";
+      setText("nextOut", "Prepare a payment plan and record eligible recipients.");
+    }
+    renderBreakdown(result);
+    renderSteps(result);
+    try {
+      localStorage.setItem("afrotools-zakat-calculator", JSON.stringify({ savedAt: new Date().toISOString(), inputs: collectInputs(), result: result }));
+    } catch (err) {}
+  }
+
+  function collectInputs() {
+    var output = {};
+    fields.forEach(function (field) {
+      output[field.name || field.id] = field.type === "checkbox" ? field.checked : field.value;
+    });
+    return output;
+  }
+
+  function resultText() {
+    if (!lastResult) render();
+    return [
+      "AfroTools Zakat Calculator result",
+      "Date: " + new Date().toISOString().slice(0, 10),
+      "Currency: " + currencyEl.value,
+      "Nisab basis: " + lastResult.nisabLabel,
+      "Nisab threshold: " + money(lastResult.nisab),
+      "Zakatable wealth: " + money(lastResult.zakatableWealth),
+      "Hawl reminder: " + lastResult.hawlText,
+      "Zakat due: " + money(lastResult.zakatDue),
+      "Educational only. Confirm unusual assets and rulings with a qualified scholar."
+    ].join("\n");
+  }
+
+  function exportCsv() {
+    if (!lastResult) render();
+    var rows = [
+      ["Field", "Value"],
+      ["Date", new Date().toISOString().slice(0, 10)],
+      ["Currency", currencyEl.value],
+      ["Nisab basis", lastResult.nisabLabel],
+      ["Nisab threshold", plainNumber(lastResult.nisab)],
+      ["Zakatable wealth", plainNumber(lastResult.zakatableWealth)],
+      ["Zakat due", plainNumber(lastResult.zakatDue)],
+      ["Hawl reminder", lastResult.hawlText],
+      ["Disclaimer", "Educational only. Confirm with a qualified scholar."]
+    ];
+    Object.keys(lastResult.assets).forEach(function (key) {
+      rows.push([key, plainNumber(lastResult.assets[key])]);
+    });
+    rows.push(["Deductible debts", plainNumber(lastResult.debts)]);
+    var csv = rows.map(function (row) {
+      return row.map(function (cell) {
+        return "\"" + String(cell).replace(/"/g, "\"\"") + "\"";
+      }).join(",");
+    }).join("\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "afrotools-zakat-result.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    render();
+  });
+
+  fields.forEach(function (field) {
+    field.addEventListener("input", render);
+    field.addEventListener("change", render);
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    var text = resultText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        setText("nextOut", "Result copied for sharing or scholar review.");
+      }).catch(function () {
+        window.prompt("Copy your zakat result", text);
+      });
+    } else {
+      window.prompt("Copy your zakat result", text);
+    }
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", exportCsv);
+  document.getElementById("printBtn").addEventListener("click", function () { window.print(); });
+
+  render();
+})();
+</script>
 </body>
 </html>

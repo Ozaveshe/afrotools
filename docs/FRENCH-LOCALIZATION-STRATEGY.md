@@ -132,7 +132,199 @@ This moved mapped completion from `25.54%` (`1,465/5,735`) to `26.77%` (`1,535/5
 
 The remaining lift to the `27%` mapped gate is about `14` unique English-backed French routes. The next safe route is another small generator-owned cars slice, not registry stuffing or alias promotion.
 
-## Completed And Measured Waves Through Set 30
+## Cars Generator Wave 5 As Of May 15, 2026
+
+The next small cars slice stayed inside `scripts/generate-fr-cars-launch-pages.js` and added full-rule-pack markets already present in the generator. It added Toyota make pages plus Corolla 2018, Prado 2016, and Hilux 2015 detail pages for:
+
+- Ghana.
+- Kenya.
+- Uganda.
+- Zambia.
+- Tanzania.
+
+This is `20` new generator-owned French cars routes, not manual cloning. `npm run cars:fr:launch` now creates `164` French cars launch pages and updates `164` English cars hreflang counterparts. The added markets all have car-import rule packs (`gh`, `ke`, `ug`, `zm`, `tz`), while generator copy still labels estimates honestly where the market data is directory-based.
+
+The rebuilt ledger now reports:
+
+- `5,746` English source pages.
+- `1,671` French pages.
+- `29.08%` raw French page-count completion.
+- `24.24%` English-backed route-mapping completion.
+- Cars moved to `169` French pages and `165` unique mapped English sources.
+- Duplicate French canonical groups stayed at `0`.
+- Ledger reciprocal French hreflang gaps are `28`.
+
+Important gate note: this run did not hit the global `27%` mapped-completion gate. The cars wave itself added the intended high-confidence mapped routes, but the current refreshed ledger baseline is lower than the stale May 12 report because many non-cars French pages are currently treated as French-only or unclear source-of-truth routes. Do not treat another small cars slice as sufficient for the global gate until that broader source/hreflang baseline is repaired or intentionally accepted.
+
+## Set 53 Gate As Of May 15, 2026
+
+Set 53 regenerated `reports/french-localization-ledger.json` and `reports/french-localization-ledger.md` after the full-rule-pack cars slice. The measured gate result is a miss against the `27%` mapped-completion target and also a miss against the stale `26.77%` baseline from May 12.
+
+| Metric | May 12 baseline | Set 53 regenerated ledger | Movement |
+|---|---:|---:|---:|
+| English source pages | `5,735` | `5,746` | `+11` |
+| French pages | `1,651` | `1,671` | `+20` |
+| Unique English sources mapped | `1,535` | `1,393` | `-142` |
+| English-backed route-mapping completion | `26.77%` | `24.24%` | `-2.53 pp` |
+| Raw French page-count completion | `28.79%` | `29.08%` | `+0.29 pp` |
+| Cars unique English sources mapped | `146` | `165` | `+19` |
+| Duplicate French canonical groups | `0` | `0` | unchanged |
+| Ledger reciprocal French hreflang gaps | `499` | `28` | `-471` |
+| Visible English UI signal pages | `1` | `19` | `+18` |
+
+Blockers resolved or improved:
+
+- Cars gained `19` unique English-backed mappings from the Set 53 generator-owned page slice.
+- Ledger reciprocal French hreflang gaps are down from `499` to `28`.
+- Duplicate French canonical groups stayed at `0`.
+- Registry entries pointing to missing French routes stayed at `0`.
+
+Blockers still open:
+
+- `201` French pages have no English-backed source mapping.
+- `97` French routes still have unclear source of truth.
+- `19` French pages show English title, H1, or visible UI signals.
+- `230` registry-eligible French pages are still missing from `tool-registry.js`.
+- `16` English sources map to multiple French routes.
+- `28` ledger reciprocal French hreflang gaps remain.
+
+Verdict: French should not move to controlled category waves with limited long-tail yet. Set 53 proves that generator-owned category expansion can add useful mapped cars pages, but the global mapped-completion gate is now blocked by source-truth and non-cars mapping regression. Stay in controlled coverage expansion with a source-truth repair gate first.
+
+Recommended next target: Set 54 should be a French source-truth repair gate, not another page-generation wave. Restore mapped completion to at least the May 12 `26.77%` baseline without counting aliases, dashboards, docs, iframe utilities, deferred wrappers, or account-adjacent pages. Then run a small follow-on category slice only if the ledger is at or above `26.77%`, duplicate French canonicals remain `0`, missing registry hrefs remain `0`, visible English UI signals are trending down, and `npm run validate:hreflang` still exits cleanly.
+
+## Set 54 Duplicate Route Ownership Decisions
+
+This is a discovery-only route ownership table. Do not change registry rows or hreflang from these decisions until the next implementation batch. The regenerated ledger currently reports `16` English sources mapped to multiple French routes. The named Set 54 decision set covers `12` salary, country, and tool-alias families: `7` are active duplicate mappings in the current ledger, while `5` tool aliases are now carryover alias/source-truth risks rather than active duplicate rows.
+
+Active duplicate mappings in the regenerated ledger:
+
+| English source | Preferred French URL | Alias, wrapper, or redirect candidate | Decision and promotion risk |
+|---|---|---|---|
+| `benin/bj-paye` | `/fr/benin/calculateur-salaire-net` | `/fr/benin/bj-paye` | Prefer the semantic French salary URL. The cc-paye route is an alias/redirect candidate and is unsafe to promote. |
+| `burkina-faso/bf-paye` | `/fr/burkina-faso/calculateur-salaire-net` | `/fr/burkina-faso/bf-paye` | Prefer the semantic salary URL with registry ownership. The cc-paye route has visible English UI leakage and is unsafe to promote. |
+| `cameroon/cm-paye` | `/fr/cameroun/calculateur-salaire-net` | `/fr/cameroon/cm-paye` | Prefer the French country slug plus semantic salary URL. The English-country cc-paye route has visible English UI leakage and is unsafe to promote. |
+| `chad` | `/fr/tchad` | `/fr/chad` | Prefer the French country slug. `/fr/chad` is an English-slug alias and should stay out of discovery. |
+| `chad/td-paye` | `/fr/tchad/calculateur-salaire-net` | `/fr/chad/td-paye` | Prefer the semantic Tchad salary URL. The English-country cc-paye route is an alias candidate and is unsafe to promote. |
+| `comoros/km-paye` | `/fr/comores/calculateur-salaire-net` | `/fr/comoros/km-paye` | Prefer the French country slug plus semantic salary URL. The English-country cc-paye route is unsafe to promote. |
+| `cote-divoire/ci-paye` | `/fr/cote-divoire/calculateur-salaire-net` | `/fr/cote-divoire/ci-paye` | Prefer the semantic salary URL. The cc-paye family includes a wrapper and a generated file, so it must not be promoted until the alias is cleaned up. |
+| `djibouti/dj-paye` | `/fr/djibouti/calculateur-salaire-net` | `/fr/djibouti/dj-paye` | Prefer the semantic salary URL. The cc-paye route is an alias candidate and is unsafe to promote. |
+| `drc` | `/fr/rdc` | `/fr/drc` | Prefer the French acronym route. `/fr/drc` is an English acronym alias and should not be promoted. |
+| `madagascar/mg-paye` | `/fr/madagascar/calculateur-salaire-net` | `/fr/madagascar/mg-paye` | Prefer the semantic salary URL. The cc-paye route is an alias candidate and is unsafe to promote. |
+| `mali/ml-paye` | `/fr/mali/calculateur-salaire-net` | `/fr/mali/ml-paye` | Prefer the semantic salary URL. The cc-paye route has visible English UI leakage and is unsafe to promote. |
+| `mauritania/mr-paye` | `/fr/mauritanie/calculateur-salaire-net` | `/fr/mauritania/mr-paye` | Prefer the French country slug plus semantic salary URL. The English-country cc-paye route is unsafe to promote. |
+| `morocco/ma-paye` | `/fr/maroc/calculateur-salaire-net` | `/fr/morocco/ma-paye` | Prefer the French country slug plus semantic salary URL. The English-country cc-paye route has visible English UI leakage and is unsafe to promote. |
+| `senegal/sn-paye` | `/fr/senegal/calculateur-salaire-net` | `/fr/senegal/sn-paye` | Prefer the semantic salary URL. The cc-paye route has visible English UI leakage and is unsafe to promote. |
+| `tools/currency-converter` | `/fr/tools/convertisseur-devises` | `/fr/tools/currency-converter` | Prefer the mapped French slug with registry ownership. The English-slug French page already has redirects but still exists in sitemap output, so it is unsafe to promote. |
+| `tunisia/tn-paye` | `/fr/tunisie/calculateur-salaire-net` | `/fr/tunisia/tn-paye` | Prefer the French country slug plus semantic salary URL. The English-country cc-paye route has visible English UI leakage and is unsafe to promote. |
+
+Named Set 54 tool alias and VAT carryover decisions:
+
+| English source or family | Preferred French URL | Alias, wrapper, or redirect candidate | Decision and promotion risk |
+|---|---|---|---|
+| `tools/ecowas-levy` | `/fr/tools/ecowas-levy` for now | `/fr/tools/prelevements-cedeao` | Current mapped route has the functional CEDEAO calculator. The French-slug page is thin, French-only, and unclear source-of-truth, so it is unsafe to promote until rebuilt or mapped deliberately. |
+| `tools/gh-wht` | `/fr/tools/gh-wht` for now | `/fr/tools/gh-retenue-source` | Current mapped route has the working calculator. The French-slug route is a thin French-only shell and should not be promoted as the counterpart yet. |
+| `tools/ke-wht` | `/fr/tools/ke-wht` for now | `/fr/tools/ke-retenue-source` | Current mapped route has the working calculator. The French-slug route is a thin French-only shell and should not be promoted as the counterpart yet. |
+| `tools/ng-wht` | `/fr/tools/ng-wht` for now | `/fr/tools/ng-retenue-source` | Current mapped route has the working calculator. The French-slug route is a thin French-only shell and should not be promoted as the counterpart yet. |
+| `tools/tenancy-agreement` | `/fr/tools/contrat-location` as the product target | `/fr/tools/contrat-bail` | `/fr/tools/contrat-location` has the fuller contract form. `/fr/tools/contrat-bail` is currently mapped, but appears thinner, so the next implementation batch should either upgrade it or move the route map to `contrat-location` before registry or hreflang repair. |
+| `benin/bj-vat` | `/fr/benin/calculateur-tva` | `/fr/benin/bj-vat` | VAT ownership is already effectively semantic: the cc-vat route is a noindex redirect wrapper. Do not promote the wrapper. |
+| `chad/td-vat` | `/fr/tchad/calculateur-tva` | `/fr/chad/td-vat` | VAT ownership is already effectively semantic: the cc-vat route is a noindex redirect wrapper. Do not promote the wrapper. |
+| `comoros/km-vat` | `/fr/comores/calculateur-tva` | `/fr/comoros/km-vat` | VAT ownership is already effectively semantic: the cc-vat route is a noindex redirect wrapper. Do not promote the wrapper. |
+| `djibouti/dj-vat` | `/fr/djibouti/dj-vat` temporarily | `/fr/djibouti/calculateur-tva` missing | Djibouti VAT has no semantic French route yet. Keep the current cc-vat route as temporary owner and do not expand discovery until a semantic route exists or the exception is accepted. |
+| `madagascar/mg-vat` | `/fr/madagascar/calculateur-tva` | `/fr/madagascar/mg-vat` | VAT ownership is already effectively semantic: the cc-vat route is a noindex redirect wrapper. Do not promote the wrapper. |
+| `mauritania/mr-vat` | `/fr/mauritanie/calculateur-tva` | `/fr/mauritania/mr-vat` | VAT ownership is already effectively semantic: the cc-vat route is a noindex redirect wrapper. Do not promote the wrapper. |
+
+Implementation order after this discovery pass:
+
+1. Update route ownership maps and redirect rules only for rows above where the preferred route is live and useful.
+2. Then repair registry rows so only preferred French URLs are promoted.
+3. Then repair hreflang and sitemap output.
+4. Do not count alias wrappers, English-slug French pages, thin French-only shells, or noindex redirect wrappers toward mapped completion.
+
+## Set 56 Preferred Money Registry Discovery
+
+This batch improved discovery only. It did not add French pages, change route ownership, or promote alias rows. The ledger's `230` registry-eligible missing routes were filtered down to `110` unique salary/VAT money routes:
+
+- `5` preferred, live, indexable French money routes were added to `tool-registry.js`.
+- `103` legacy country-code PAYE/VAT paths stayed skipped because they are aliases, wrappers, temporary cc paths, or duplicate country-code surfaces.
+- `2` VAT API documentation routes stayed skipped because docs/API pages should not be counted as French money discovery rows.
+
+Rows added:
+
+| Registry id | Preferred French route | Reason |
+|---|---|---|
+| `tg-tva-fr` | `/fr/togo/calculateur-tva` | Only remaining semantic live country VAT calculator missing from registry. |
+| `salary-tax-fr` | `/fr/salary-tax` | Live French salary and fiscality hub with English counterpart. |
+| `salary-tax-francophone-fr` | `/fr/salary-tax/francophone` | Live French francophone salary/finance hub with English counterpart. |
+| `salary-tax-paye-fr` | `/fr/salary-tax/paye` | Live French PAYE index pointing users to preferred routes. |
+| `vat-business-tax-fr` | `/fr/vat-business-tax` | Live French VAT/business-tax hub with English counterpart. |
+
+Measured movement after regenerating the ledger:
+
+| Metric | Before | After |
+|---|---:|---:|
+| French registry entries | `295` | `300` |
+| Registry-covered eligible routes | `288/518` | `293/518` |
+| French registry coverage | `55.60%` | `56.56%` |
+| Missing registry queue | `230` | `225` |
+| Salary-tax registry coverage | `34/96` (`35.42%`) | `37/96` (`38.54%`) |
+| VAT/business-tax registry coverage | `26/91` (`28.57%`) | `28/91` (`30.77%`) |
+| Duplicate French canonicals | `0` | `0` |
+| Missing reciprocal French hreflang | `0` | `0` |
+
+Next registry cleanup should stay on the same rule: add only preferred live French routes after route/source ownership is settled. Keep `/fr/docs/api/*`, noindex redirect wrappers, `.html` aliases, English-slug French bridge pages, and legacy `xx-paye` or `xx-vat` country-code paths out of discovery unless a later ownership table explicitly promotes one as the preferred URL.
+
+## Sets 53-71 Wave Measurement Gate As Of May 16, 2026
+
+This gate regenerated `reports/french-localization-ledger.json` and `reports/french-localization-ledger.md`, then ran the full validation stack. The measured result is a miss for the global `27%` mapped-completion gate, even though several quality blockers improved.
+
+| Metric | 26.77% baseline | Current ledger | Movement | Gate result |
+|---|---:|---:|---:|---|
+| English source pages | `5,735` | `5,746` | `+11` | n/a |
+| French pages | `1,651` | `1,707` | `+56` | n/a |
+| Unique English sources mapped | `1,535` | `1,429` | `-106` | Miss |
+| English-backed route-mapping completion | `26.77%` | `24.87%` | `-1.90 pp` | Miss, below `27%` |
+| Raw French page-count completion | `28.79%` | `29.71%` | `+0.92 pp` | Hit for raw count only |
+| French registry coverage | `55.60%` | `58.67%` | `+3.07 pp` | Miss, below `60%` |
+| Registry-covered eligible French routes | `288/518` | `318/542` | `+30` covered | Miss, `224` still missing |
+| Visible English UI signal pages | `1` | `19` | `+18` | Miss |
+| Duplicate French canonical groups | `0` | `0` | unchanged | Hit |
+| English sources mapped to multiple French routes | `16` | `0` | `-16` | Hit, below `12` |
+| Missing reciprocal French hreflang gaps | `499` | `0` | `-499` | Hit, below `250` |
+| Telecom raw French coverage | `9/15` (`60%`) | `11/15` (`73.33%`) | `+2` routes | Hit |
+| Telecom mapped French coverage | `2/15` (`13.33%`) | `4/15` (`26.67%`) | `+2` mapped | Open quality risk |
+
+Blockers resolved or materially improved:
+
+- Duplicate English mappings are down to `0`.
+- Duplicate French canonicals stayed at `0`.
+- Ledger French reciprocal hreflang gaps are down to `0`.
+- Registry entries pointing to missing French routes stayed at `0`.
+- Registry entries pointing to non-preferred French routes stayed at `0`.
+- Telecom raw coverage now has buffer above `60%`.
+
+Blockers still open:
+
+- Mapped completion is `24.87%`, still below the `27%` gate and below the old `26.77%` reference baseline.
+- Registry coverage is `58.67%`, short of the `60%` target after registry work.
+- `19` French pages still have English title, H1, or visible UI signals.
+- `201` French pages have no English-backed source mapping.
+- `96` French routes still have unclear source of truth.
+- `92` French aliases or bridge routes still need to stay out of promotion unless explicitly accepted.
+- Telecom is above `60%` only by raw French coverage; mapped telecom coverage remains `26.67%`.
+
+Set 72 detector rule: the visible English UI signal queue should track promoted/indexable French surfaces. Noindex redirect wrappers, `_redirects` source aliases, and alias pages are excluded from this queue because they are not discovery targets and should not be hand-polished or counted toward French completion. Indexable French pages, generated French outputs, and hand-authored French pages still stay in scope for title, H1, button, placeholder, FAQ, breadcrumb, and helper-text checks.
+
+Validation for this gate:
+
+- `node scripts/build-french-localization-ledger.js` passed.
+- `npm run build:i18n:validate` passed.
+- `npm run check-links` passed on explicit rerun with no broken internal links; the first run exited `1` after loading redirects without printing a failure body.
+- `npm run audit` passed with `0` missing live/new registry pages.
+- `npm run validate:hreflang` passed with `0` errors.
+
+Verdict: French is not ready to move into broad long-tail translation. Keep the next phase in controlled coverage expansion, but make it repair-first: clear visible English UI signals, push registry coverage over `60%` with preferred live routes only, and then use a high-confidence mapped-route batch to recover toward `27%`.
+
+## Completed And Measured Waves Through Set 71
 
 The completed French waves through Set 20 established the current baseline:
 
@@ -159,21 +351,48 @@ The completed French waves through Set 20 established the current baseline:
 21. Set 32: second French cars generator slice, expanding `/fr/cars/` from the initial six-market launch to ten markets and fifteen model-detail pages while keeping long-tail pages generator-owned.
 22. Set 33: explicit French tool route mapping for 77 live, non-alias `/fr/tools/` pages through `scripts/lib/french-tool-route-map.js`.
 23. Sets 41-49: controlled French category waves across education/jobs, travel, transport/import, energy utilities, and registry discovery. These waves moved registry coverage materially above target, but did not move mapped route coverage enough for long-tail translation.
+24. Set 53: cars generator expansion added high-confidence pages, but the regenerated global mapped-completion metric still missed `27%`.
+25. Sets 54-56: route-ownership, alias demotion, and preferred money registry work reduced duplicate English mappings and improved registry coverage without promoting wrappers.
+26. Sets 58-59: reciprocal hreflang cleanup brought ledger French gaps down to `0`.
+27. Sets 60-63: bridge surfaces, widgets, telecom ownership, and approved telecom pages improved navigation while keeping iframe and deferred routes out of promotion.
+28. Sets 64-68: trade, energy, transport, cars safety, and controlled tools-gap work added useful French surfaces without manual long-tail cloning.
+29. Sets 69-71: education/jobs plus property, legal, and insurance trust work strengthened practical French clusters with cautious claims.
+30. Current gate: mapped completion, registry coverage, and visible UI signals still block readiness for limited long-tail expansion.
 
 ## Next 10 Batch Recommendations
 
-Use these batches before broad long-tail translation. Each batch should report before/after movement against the target metrics, especially mapped coverage.
+Use these batches before broad long-tail translation. Each batch should report before/after movement against mapped completion, registry coverage, visible UI signals, duplicate canonicals, duplicate English mappings, hreflang gaps, and telecom raw/mapped coverage.
 
-1. French mapping sprint 3: add explicit mappings only for usable `/fr/tools/` pages whose English source is unambiguous, targeting enough pairs to move mapped coverage toward `27%`.
-2. Salary/PAYE and VAT alias cleanup: reduce the remaining duplicate English mappings for Benin, Chad, Comoros, Djibouti, Madagascar, Mauritania, and ECOWAS levy without promoting aliases.
-3. Country-code PAYE/VAT registry reconciliation: add or correct registry rows only for preferred French salary and VAT routes already live and useful.
-4. Reciprocal hreflang repair batch: fix 100-150 clean en/fr pairs from the `499` ledger gap list, prioritizing preferred tools, country hubs, and salary/VAT routes.
-5. Cars generator wave 4: increase mapped French cars coverage through generator-owned market/model pages, not manual long-tail duplication.
-6. Widgets French parent-page batch: build or improve only real French widget parent pages, keeping iframe utilities noindex and out of sitemap promotion.
-7. Trade/import/logistics follow-up: localize and map remaining live French trade tools such as Incoterms, demurrage, export docs, HS lookup, and AfCFTA tracker.
-8. Energy/transport hub creation: create stable French hubs for energy and transport only after route ownership is clear, then connect existing French utility tools.
-9. Blog reciprocal/discovery cleanup: keep article bodies stable, but repair French blog metadata, internal links, registry/discovery rows, and reciprocal alternates where sources are clear.
-10. Gate after mapping sprint: rerun the ledger and validation suite; only consider broad long-tail translation if mapped coverage reaches `27%`, telecom stays at or above `60%`, duplicate canonicals remain `0`, and missing live/new registry pages remain `0`.
+1. Set 72 visible French UI signal cleanup: reduce the `19` English title, H1, or visible UI signal pages to `0`, starting with `/fr/`, `/fr/all-tools/`, `/fr/blog`, country-code PAYE aliases, and bridge surfaces. Do not add new pages.
+2. Set 73 registry final push: add only preferred, live, useful French rows until registry coverage is at least `60%`. Skip aliases, noindex wrappers, iframe utilities, deferred PDF wrappers, docs, dashboards, and duplicate country-code paths.
+3. Set 74 telecom mapping repair: decide whether telecom should be judged by raw or mapped coverage, then map only the existing safe French telecom owners. Keep SIM registration and TV comparison deferred.
+4. Set 75 source-truth classifier audit: reduce the `201` French-only routes and `96` unclear-source routes by documenting or mapping only clear public counterparts, without counting docs, dashboards, API wrappers, account-adjacent pages, or aliases.
+5. Set 76 high-confidence tools mapping wave: add or polish `20-30` live, non-conflict, non-account French tool pairs through `scripts/lib/french-tool-route-map.js` and registry rows, with no unsafe backend or legal claims.
+6. Set 77 cars generator safety pass: audit the current generator output and add a small data-backed slice only if templates, hreflang, estimate labels, and local-currency display remain clean. Do not manually clone cars pages.
+7. Set 78 blog and hub visible-copy polish: clean `/fr/blog`, high-value French blog alternates, and discovery hubs without rewriting article bodies unless the visible UI itself is English.
+8. Set 79 salary/VAT alias guardrail: keep duplicate English mappings at `0`, preserve preferred semantic French URLs, and noindex or redirect legacy `xx-paye` and `xx-vat` wrappers where repo patterns support it.
+9. Set 80 widget parent-page guardrail: promote only real French widget parent pages and keep `widgets/iframe/**` plus French iframe wrappers `noindex, follow` and out of completion counts.
+10. Set 81 readiness gate: rerun the ledger and full validation. Move to controlled category waves with limited long-tail only when mapped completion is at least `27%`, registry coverage is at least `60%`, visible English UI signals are `0`, duplicate canonicals are `0`, duplicate English mappings stay below `12`, and hreflang gaps stay below `250`.
+
+## Telecom Deferred Route Ownership Decisions As Of May 16, 2026
+
+This began as a discovery-only decision table. The approved airtime-value and number-portability routes have since landed, and the current ledger shows telecom at `11/15` raw French coverage, with `4/15` English-backed mapped sources. Link-only and deferred rows must still stay out of mapped completion claims.
+
+| English source | Preferred French owner | Decision | Rationale | Next action |
+|---|---|---|---|---|
+| `telecom/airtime-value` | New route target: `/fr/telecom/valeur-credit-telephonique/` | Launch now | Standalone calculator, high African telecom/business utility, no identity or regulated compliance workflow, and no current French page owns the airtime-to-cash estimate. | Next telecom implementation subset. Build from the English calculator and shared telecom data, then add reciprocal `en`/`fr` hreflang and registry discovery only after the page exists. |
+| `telecom/number-portability` | New route target: `/fr/telecom/portabilite-numero-mobile/` | Launch now | Clear telecom ownership, useful country-select guide, and no duplicate French page currently owns portability. | Next telecom implementation subset. Keep the French copy as a guide, not a guaranteed regulator filing flow. |
+| `telecom/starlink-compare` | Existing French owner: `/fr/telecom/comparateur-internet/` | Link-only | The existing French internet comparator already owns the broadband comparison surface and includes satellite-vs-local intent closely enough to avoid a duplicate Starlink page. | Link users to `/fr/telecom/comparateur-internet/`; add a Starlink section there only if a later batch needs more depth. |
+| `telecom/ussd-directory` | Existing related French owner: `/fr/tools/simulateur-ussd/` | Link-only | A full operator code directory needs freshness ownership across markets. The current French-safe surface is the USSD simulator, not a promoted directory clone. | Keep directory promotion deferred; point French users to the simulator until operator-code source truth is selected. |
+| `telecom/sim-registration` | None yet | Defer | Identity, telecom compliance, registration deadlines, NIN/RICA-style terms, and privacy expectations need official-source ownership before French promotion. | Do not launch in the next subset. Revisit only with a country-source workflow and compliance disclaimer pattern. |
+| `telecom/tv-compare` | None yet | Defer | TV package prices, channel bundles, and streaming plans change often and are lower priority than money, connectivity, and business telecom surfaces. | Do not launch now. Revisit after a package-data owner and refresh cadence exist. |
+
+Current telecom implementation status:
+
+1. `/fr/telecom/valeur-credit-telephonique/` is live for `telecom/airtime-value`.
+2. `/fr/telecom/portabilite-numero-mobile/` is live for `telecom/number-portability`.
+
+The next telecom batch should repair mapping and discovery around existing live owners before creating more telecom pages. Keep `/fr/telecom/comparateur-internet/` as the Starlink link-only owner, keep `/fr/tools/simulateur-ussd/` as the USSD link-only owner, and keep SIM registration plus TV comparison deferred.
 
 ## Remaining High-Risk Route Families
 
@@ -185,7 +404,7 @@ Use these batches before broad long-tail translation. Each batch should report b
 - `/fr/business/`, `/fr/data-productivity/`, `/fr/developers/`, `/fr/finance/`: redirect or bridge surfaces with mixed English labels.
 - `/fr/blog/**`: strong page count, but registry discovery and visible UI polish still lag.
 - `/fr/agriculture/**`: high raw coverage, but reciprocal hreflang debt is still broad.
-- `/fr/telecom/**`: first launch slice now includes business internet; USSD, airtime, SIM registration, number portability, Starlink, and TV still need ownership decisions before French promotion.
+- `/fr/telecom/**`: raw coverage is above `60%`, but mapped coverage remains low. Airtime value and number portability are now live; Starlink and USSD remain link-only; SIM registration and TV comparison remain deferred.
 - `/fr/tools/**`: still the largest long-tail gap, with only `13.03%` mapped coverage.
 
 ## Strategic Thesis
@@ -654,6 +873,46 @@ Return:
 
 Do not rewrite files unless asked.
 ```
+
+## French Tools Gap Generator Wave As Of May 16, 2026
+
+The controlled tools-gap slice added a small generator-owned set through `scripts/generate-fr-tool-gap-pages.js`. Use this path only for high-confidence English `/tools/<slug>/` pages that are already live/new, have a clean one-to-one English route, and do not require account, admin, Pro, API, deferred PDF, iframe-only, or conflict-dossier ownership.
+
+The first generator-owned French tools routes are:
+
+- `/fr/tools/budget-50-30-20/` for `tools/50-30-20-budget`.
+- `/fr/tools/prevision-tresorerie/` for `tools/cash-flow-forecast`.
+- `/fr/tools/marge-mini-importation/` for `tools/mini-importation`.
+- `/fr/tools/rentabilite-agent-pos/` for `tools/pos-agent`.
+- `/fr/tools/rentabilite-restauration-rue/` for `tools/mama-put`.
+- `/fr/tools/frais-marketplace/` for `tools/marketplace-fees`.
+- `/fr/tools/burn-rate-startup/` for `tools/burn-rate`.
+- `/fr/tools/tarifs-electricite/` for `tools/electricity-tariff`.
+- `/fr/tools/compteur-prepaye/` for `tools/prepaid-meter`.
+- `/fr/tools/roi-solaire/` for `tools/solar-roi`.
+
+For any future slice, update the generator data, `scripts/lib/french-tool-route-map.js`, and the French registry rows together, then regenerate the ledger. Do not use this generator to promote `/tools/africa-conflict/**`, account-adjacent pages, unsafe backend/AI claims, deferred PDF wrappers, or iframe utility surfaces.
+
+## French Registry Coverage Gate As Of May 16, 2026
+
+Set 73 moved French registry coverage from 318/542 (58.67%) to 330/542 (60.89%). The minimum required to cross 60% was 8 additional covered registry-eligible routes; the batch added 12 preferred live rows for a small buffer.
+
+Rows were limited to live, English-backed, non-alias French product surfaces:
+
+- `/fr/tools/ecowas-levy`
+- `/fr/tools/ke-nssf`
+- `/fr/tools/inheritance-tax`
+- `/fr/tools/devis-quantitatif`
+- `/fr/tools/calcul-structure`
+- `/fr/tools/charge-electrique`
+- `/fr/tools/dosage-beton`
+- `/fr/tools/calculateur-armature`
+- `/fr/tools/calculateur-carrelage`
+- `/fr/tools/calculateur-peinture`
+- `/fr/tools/calculateur-toiture`
+- `/fr/tools/dimensionnement-citerne`
+
+Do not use the remaining registry queue as a raw quota list. Keep skipping iframe-only parents, redirect wrappers, noindex pages, conflict dossiers, account/admin/Pro surfaces, deferred PDF wrappers, French-only bridges, and country-code salary/VAT aliases unless route ownership is explicitly settled first.
 
 ## Recommended Execution Order
 

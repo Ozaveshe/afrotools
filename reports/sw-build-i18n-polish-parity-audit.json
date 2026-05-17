@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-05-16T00:00:00+05:00",
+  "prompt": 98,
+  "mode": "audit-only",
+  "filesInspected": [
+    "scripts/build-i18n.js",
+    "scripts/fix-hreflang-reciprocity.js",
+    "docs/SWAHILI-LOCALIZATION-STRATEGY.md",
+    "reports/sw-country-subpage-source-ownership.md/json",
+    "reports/sw-source-layer-pilot-plan.md/json",
+    "reports/sw-unregistered-zana-quality-ledger-2026-05-16.md/json",
+    "recent Prompt 62-97 Swahili reports"
+  ],
+  "scriptEdits": false,
+  "reasonNoScriptEdit": "No narrow, obvious, low-risk script fix was directly supported. The issues are cross-cutting ownership gaps that need a designed implementation prompt and route-output tests.",
+  "repeatedIssues": [
+    {
+      "issue": "Swahili route precedence and alias-safe output",
+      "severity": "high",
+      "shouldBeScriptOwned": true,
+      "evidence": "build-i18n.js maps existing Swahili pages for hreflang via SW_SLUG_TO_EN/existingSwPages, but buildOutputPath still writes to /sw/<English pagePath> for page packs. Prompt 97 found this blocks safe lang/pages/**/sw.json pilots.",
+      "recommendedOwner": "scripts/build-i18n.js plus tests for Swahili alias output"
+    },
+    {
+      "issue": "Country subpage source ownership beyond PAYE",
+      "severity": "high",
+      "shouldBeScriptOwned": true,
+      "evidence": "Prompt 71 ledger: PAYE has fix-sw-paye-custom-ui.js, but VAT, employer-cost, work-permit, gratuity, retrenchment and contractor-vs-employee repeated Swahili country families have no tracked generator.",
+      "recommendedOwner": "new country-family source-owner script or documented generated/static ledger"
+    },
+    {
+      "issue": "Swahili PAYE share/PDF/runtime strings",
+      "severity": "medium",
+      "shouldBeScriptOwned": true,
+      "evidence": "build-i18n.js includes French exact pairs and a French share override. Swahili PAYE pages still show mixed runtime share text patterns such as English ?My <country> PAYE? and fallback ?Share? in some country pages.",
+      "recommendedOwner": "Swahili PAYE runtime/share normalizer, probably adjacent to fix-sw-paye-custom-ui.js"
+    },
+    {
+      "issue": "Search fallback labels and synonyms",
+      "severity": "medium",
+      "shouldBeScriptOwned": true,
+      "evidence": "Prompts 70, 79, 94 relied on registry/search QA and manual registry rows. Swahili search health is good, but query synonyms like PAYE, VAT, PDF, TIN, USSD, CV, forodha and tafsiri should be maintained as data rather than ad hoc page copy.",
+      "recommendedOwner": "shared navbar/search synonym map or registry metadata rule"
+    },
+    {
+      "issue": "Translated reserved attributes and slug artifacts",
+      "severity": "medium",
+      "shouldBeScriptOwned": true,
+      "evidence": "Prompt 96 fixed a concrete artifact: meta view-transition content=\"same-asili\" on /sw/sarafu/. These machine-translated reserved values should be linted.",
+      "recommendedOwner": "i18n/static lint for reserved HTML attribute values"
+    },
+    {
+      "issue": "Canonical/hreflang aliases for hand-authored Swahili",
+      "severity": "medium",
+      "shouldBeScriptOwned": true,
+      "evidence": "validate:hreflang is currently clean, but getAvailableLangs/getSwahiliUrl and buildOutputPath use different concepts of Swahili route ownership. This is stable only while pages remain manually maintained.",
+      "recommendedOwner": "build-i18n route-map contract and hreflang/source tests"
+    },
+    {
+      "issue": "Repeated calculator safety notices",
+      "severity": "medium",
+      "shouldBeScriptOwned": true,
+      "evidence": "Prompts 84-90 repeatedly added or verified planning-aid language for HR/legal/religion/health/environment. The pattern should be a shared snippet per risk class, not reworded manually per lane.",
+      "recommendedOwner": "shared Swahili safety notice registry/snippet helper"
+    },
+    {
+      "issue": "Developer utility local-processing labels",
+      "severity": "low",
+      "shouldBeScriptOwned": true,
+      "evidence": "Prompts 67, 74, 83 and 96 all touched developer/API bridge honesty and local-only wording. Many tool pages use localizer maps in-page.",
+      "recommendedOwner": "shared utility/tool template strings for local-processing and English-only bridge notices"
+    }
+  ],
+  "recommendedImplementationPrompts": [
+    "Prompt 101: Add Swahili alias-safe output resolver and dry-run path reporting to build-i18n.js, with tests proving ghana/gh-paye targets /sw/ghana/kikokotoo-kodi-mshahara/ before any page pack is added.",
+    "Prompt 102: Create a Swahili PAYE runtime/share normalizer that fixes share text, PDF labels, dashboard labels and copied URLs across country PAYE pages without changing formulas.",
+    "Prompt 103: Create a country VAT/TIN source-owner design and decide whether to restore a generator or keep explicit static ownership reports.",
+    "Prompt 104: Add a reserved-attribute localization lint for values like view-transition, rel, target, method and input types so translation passes cannot create same-asili-style artifacts.",
+    "Prompt 105: Move Swahili specialist safety notices into reusable snippets/data keyed by risk class: legal/HR, health, religious/cultural, finance, government/admin and environment."
+  ],
+  "validation": "Audit-only. No script or source HTML changed, so no broad build was run."
+}

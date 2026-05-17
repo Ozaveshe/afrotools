@@ -26,6 +26,10 @@ const {
   frenchRouteForEnglishToolSource,
   frenchToolSlugToEnglishSource,
 } = require('./lib/french-tool-route-map');
+const {
+  frenchRouteForEnglishTelecomSource,
+  frenchTelecomSlugToEnglishSource,
+} = require('./lib/french-telecom-route-map');
 
 // ── CONFIG ──────────────────────────────────────────────────────────
 
@@ -366,6 +370,11 @@ function preferredFrenchRouteForEnglishPage(enPage) {
     return `${mappedToolRoute}/`;
   }
 
+  const mappedTelecomRoute = frenchRouteForEnglishTelecomSource(clean);
+  if (mappedTelecomRoute && resolveFrenchRouteFile(mappedTelecomRoute)) {
+    return `${mappedTelecomRoute}/`;
+  }
+
   const parts = clean.split('/');
   const country = parts[0];
   const slug = parts[1] || '';
@@ -438,6 +447,8 @@ function discoverExistingFrPages() {
           enPage = null;
         } else if (country === 'tools') {
           enPage = frenchToolSlugToEnglishSource(fileBase) || rel.replace('.html', '').replace(/\/index$/, '');
+        } else if (country === 'telecom') {
+          enPage = frenchTelecomSlugToEnglishSource(fileBase) || rel.replace('.html', '').replace(/\/index$/, '');
         } else if (fileBase === 'calculateur-salaire-net' && PAYE_SLUG_MAP[country]) {
           enPage = PAYE_SLUG_MAP[country];
         } else if (fileBase === 'calculateur-tva' && VAT_SLUG_MAP[country]) {
@@ -458,7 +469,8 @@ function discoverExistingFrPages() {
         }
         // Dir-style index: /fr/XX/tool/index.html -> XX/tool
         const isEqGuineaTaxRoute = country === 'eq-guinea' && (parts[1] === 'gq-paye' || parts[1] === 'gq-vat');
-        if (country !== 'tools' && country !== 'blog' && !isEqGuineaTaxRoute && parts.length === 3 && parts[2] === 'index.html') {
+        const isMappedTelecomRoute = country === 'telecom' && parts[1] && frenchTelecomSlugToEnglishSource(parts[1]);
+        if (country !== 'tools' && country !== 'blog' && !isEqGuineaTaxRoute && !isMappedTelecomRoute && parts.length === 3 && parts[2] === 'index.html') {
           const enCountry = COUNTRY_FR_TO_EN[country] || country;
           enPage = enCountry + '/' + parts[1];
         }
@@ -555,6 +567,12 @@ const SW_SLUG_TO_EN = {
   'kilimo/umwagiliaji/rwanda': 'agriculture/irrigation/rwanda',
   'kilimo/umwagiliaji/burundi': 'agriculture/irrigation/burundi',
 };
+
+const SW_EN_TO_SLUG = new Map(
+  Object.entries(SW_SLUG_TO_EN)
+    .filter(([, enPage]) => enPage)
+    .map(([swSlug, enPage]) => [enPage.replace(/^\/+|\/+$/g, ''), swSlug])
+);
 
 // existingSwPages: Map<enPagePath, swUrl>
 const existingSwPages = new Map();
@@ -692,6 +710,39 @@ function buildOutputPath(pagePath, lang) {
 
 // ── GENERATE HREFLANG TAGS ──────────────────────────────────────────
 
+function buildDryRunOutputPlan(pagePath, lang) {
+  const clean = pagePath.replace(/^\//, '').replace(/\/$/, '');
+  if (lang === 'sw' && SW_EN_TO_SLUG.has(clean)) {
+    const swSlug = SW_EN_TO_SLUG.get(clean);
+    const outputPath = path.join(ROOT, 'sw', swSlug, 'index.html');
+    return {
+      outputPath,
+      routeAliasAware: true,
+      route: fileToPublicRoute(outputPath),
+    };
+  }
+
+  const outputPath = buildOutputPath(pagePath, lang);
+  return {
+    outputPath,
+    routeAliasAware: false,
+    route: fileToPublicRoute(outputPath),
+  };
+}
+
+function logDryRunOutputPlan(pagePath, lang, hasPageTranslation, sourceFile) {
+  const plan = buildDryRunOutputPlan(pagePath, lang);
+  const relSource = sourceFile ? path.relative(ROOT, sourceFile).replace(/\\/g, '/') : 'missing source';
+  const relOutput = path.relative(ROOT, plan.outputPath).replace(/\\/g, '/');
+  const markers = [];
+  if (plan.routeAliasAware) markers.push('route-alias-aware');
+  if (!hasPageTranslation) markers.push('no page pack');
+  console.log(
+    `[dry-run] ${lang} ${pagePath || '/'}: ${relSource} -> ${relOutput}` +
+      (markers.length ? ` (${markers.join(', ')})` : '')
+  );
+}
+
 function getSwahiliUrl(pagePath) {
   const clean = pagePath.replace(/^\//, '').replace(/\/$/, '');
   if (existingSwPages.has(clean)) {
@@ -730,6 +781,26 @@ function applyExactPairs(input, pairs) {
     output = output.split(from).join(to);
   }
   return output;
+}
+
+function findMatchingClosingTag(html, openStart, tagName) {
+  const escapedTag = tagName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const tagRe = new RegExp(`<\\/?${escapedTag}\\b[^>]*>`, 'gi');
+  const openRe = new RegExp(`^<${escapedTag}\\b`, 'i');
+  tagRe.lastIndex = openStart;
+  let depth = 0;
+  let match;
+
+  while ((match = tagRe.exec(html))) {
+    if (openRe.test(match[0])) {
+      depth += 1;
+    } else {
+      depth -= 1;
+      if (depth === 0) return match.index;
+    }
+  }
+
+  return -1;
 }
 
 function applyFrenchPayeFallbacks(input) {
@@ -916,27 +987,16 @@ function processHTML(html, lang, pagePath) {
   const bodyFile = path.join(LANG_DIR, 'pages', cleanForBody, `${lang}.body.html`);
   if (fs.existsSync(bodyFile)) {
     const translatedBody = fs.readFileSync(bodyFile, 'utf8');
-    // Find the article-body div and replace its content up to the next major section
-    const bodyOpenTag = '<div class="article-body">';
-    const bodyIdx = processed.indexOf(bodyOpenTag);
-    if (bodyIdx !== -1) {
-      const contentStart = bodyIdx + bodyOpenTag.length;
-      // Find the end: look for closing </div> followed by a known section marker
-      const endMarkers = ['<div class="article-cta">', '<div class="related-articles">', '<section class="faq-section">', '<div class="faq-section">', '<div class="author-box">', '</article>'];
-      let contentEnd = -1;
-      for (const marker of endMarkers) {
-        const idx = processed.indexOf(marker, contentStart);
-        if (idx !== -1 && (contentEnd === -1 || idx < contentEnd)) {
-          contentEnd = idx;
-        }
-      }
-      if (contentEnd !== -1) {
-        // Walk backwards from contentEnd to find the closing </div> of article-body
-        // The content ends at the last </div> before the end marker
-        let closeDiv = processed.lastIndexOf('</div>', contentEnd);
-        if (closeDiv > contentStart) {
-          processed = processed.substring(0, contentStart) + '\n' + translatedBody + '\n' + processed.substring(closeDiv);
-        }
+    // Replace the full article body so translated body files do not leave English
+    // source CTA/FAQ blocks behind after the localized content.
+    const bodyOpenRe = /<(div|article)\b[^>]*class=(["'])[^"']*\barticle-body\b[^"']*\2[^>]*>/i;
+    const bodyMatch = processed.match(bodyOpenRe);
+    if (bodyMatch && typeof bodyMatch.index === 'number') {
+      const bodyIdx = bodyMatch.index;
+      const contentStart = bodyIdx + bodyMatch[0].length;
+      const closeTag = findMatchingClosingTag(processed, bodyIdx, bodyMatch[1]);
+      if (closeTag > contentStart) {
+        processed = processed.substring(0, contentStart) + '\n' + translatedBody + '\n' + processed.substring(closeTag);
       }
     }
   }
@@ -1044,6 +1104,10 @@ function processHTML(html, lang, pagePath) {
       ['PAYE Calculator', 'Calculateur PAYE'],
       ['Tax Calculator', 'Calculateur Fiscal'],
       ['VAT Calculator', 'Calculateur TVA'],
+      ['Download PDF', 'Telecharger le PDF'],
+      ['Copy Link', 'Copier le lien'],
+      ['Save to My Tools', 'Enregistrer dans Mes outils'],
+      ['All Countries', 'Tous les pays'],
       ['Gross → Net', 'Brut → Net'],
       ['Net → Gross', 'Net → Brut'],
       ['Also see:', 'Voir aussi :'],
@@ -1057,6 +1121,14 @@ function processHTML(html, lang, pagePath) {
       // ── Kenya specifics ──
       ['Affordable Housing Levy', 'Prélèvement Logement Abordable'],
       ['Housing Levy', 'Prélèvement Logement'],
+      ['Calculate first â†’', "Calculez d'abord â†’"],
+      ['Calculate first →', "Calculez d'abord →"],
+      ['Calculate first &rarr;', "Calculez d'abord &rarr;"],
+      ['Old System &mdash; PITA', 'Ancien systeme &mdash; PITA'],
+      ['Annual Home Loan Interest', 'Interets annuels de pret immobilier'],
+      ['How can I pay less tax?', 'Comment reduire mon impot ?'],
+      ['Salary slider', 'Curseur de salaire'],
+      ['Tax breakdown chart', 'Graphique de ventilation fiscale'],
       ['Basic Salary (for NSSF)', 'Salaire de Base (pour NSSF)'],
       ['Basic Salary (for SSNIT)', 'Salaire de Base (pour SSNIT)'],
       ['NSSF Tier I + II', 'NSSF Niveaux I + II'],
@@ -1127,6 +1199,38 @@ function processHTML(html, lang, pagePath) {
       ['Calculate My PAYE', 'Calculer mon PAYE'],
 
       // ── Status / placeholders ──
+      ['Search by tool, country, category...', 'Rechercher par outil, pays ou categorie...'],
+      ['Search articles... e.g. PAYE, mobile money, import duty', 'Rechercher des articles... ex. PAYE, mobile money, droits de douane'],
+      ['Search blog articles', 'Rechercher dans les articles'],
+      ['Search all tools', 'Rechercher dans tous les outils'],
+      ['Search tools â€” e.g. budget, ROI, meeting cost', 'Rechercher des outils â€” ex. budget, ROI, cout de reunion'],
+      ['Search tools â€” e.g. budget, ROI, meeting costâ€¦', 'Rechercher des outils â€” ex. budget, ROI, cout de reunion...'],
+      ['Search tools — e.g. budget, ROI, meeting cost', 'Rechercher des outils — ex. budget, ROI, cout de reunion'],
+      ['Search tools — e.g. budget, ROI, meeting cost…', 'Rechercher des outils — ex. budget, ROI, cout de reunion...'],
+      ['Clear search', 'Effacer la recherche'],
+      ['Reset filters', 'Reinitialiser les filtres'],
+      ['Sort tools', 'Trier les outils'],
+      ['Your@email.com', 'Adresse e-mail'],
+      ['your@email.com', 'vous@exemple.com'],
+      ['Tax &amp; PAYE', 'Fiscalite &amp; PAYE'],
+      ['Business &amp; Legal', 'Entreprise &amp; juridique'],
+      ['Tools &amp; Guides', 'Outils &amp; guides'],
+      ['🧾 Business', '🧾 Entreprise'],
+      ['AfroTools Blog', 'Articles AfroTools'],
+      ['Blog highlights', 'Points forts des articles'],
+      ['Popular AfroTools calculators', 'Calculateurs AfroTools populaires'],
+      ['Featured articles', 'Articles a la une'],
+      ['Blog pagination', 'Pagination des articles'],
+      ['Email address', 'Adresse e-mail'],
+      ['All Tools', 'Tous les outils'],
+      ['All AfroTools', 'Tout AfroTools'],
+      ['Search Results', 'Resultats de recherche'],
+      ['Frequently Asked Questions', 'Questions frequentes'],
+      ['Related Articles', 'Articles connexes'],
+      ['AfroTools Team', 'Equipe AfroTools'],
+      ['Get in touch', 'Contactez-nous'],
+      ['Search', 'Rechercher'],
+      ['Open', 'Ouvrir'],
       ['Loading...', 'Chargement...'],
       ['Calculating...', 'Calcul en cours...'],
       ['Something went wrong', "Une erreur s'est produite"],
@@ -1135,6 +1239,46 @@ function processHTML(html, lang, pagePath) {
       ['Copied!', 'Copié !'],
 
       // ── AI Advisor ──
+      ['What are the Ghana GRA PAYE tax bands for 2026?', 'Quelles sont les tranches PAYE GRA au Ghana pour 2026 ?'],
+      ['What is SSNIT Tier III and how does it reduce tax?', "Qu'est-ce que le niveau III SSNIT et comment reduit-il l'impot ?"],
+      ["What is the employer's total cost in Ghana?", 'Quel est le cout total employeur au Ghana ?'],
+      ['What is the tax-free threshold in Ghana?', 'Quel est le seuil non imposable au Ghana ?'],
+      ['What is SSNIT Tier 2 pension in Ghana?', "Qu'est-ce que la pension SSNIT niveau 2 au Ghana ?"],
+      ['What is the difference between gross and net salary in Ghana?', 'Quelle est la difference entre salaire brut et salaire net au Ghana ?'],
+      ['What is SHIF and how does it replace NHIF?', "Qu'est-ce que le SHIF et comment remplace-t-il le NHIF ?"],
+      ['Is AHL tax-deductible?', "L'AHL est-il deductible fiscalement ?"],
+      ['What is the disability exemption?', "Qu'est-ce que l'exoneration handicap ?"],
+      ['What are the NSSF Tier I and Tier II rates?', 'Quels sont les taux NSSF niveaux I et II ?'],
+      ['What is the pension deduction cap?', 'Quel est le plafond de deduction des pensions ?'],
+      ['How does mortgage interest deduction work?', 'Comment fonctionne la deduction des interets de pret immobilier ?'],
+      ['What is the personal relief of KES 2,400/month?', "Qu'est-ce que l'abattement personnel de 2 400 KES par mois ?"],
+      ['What are the Rwanda PAYE tax bands for 2025/26?', 'Quelles sont les tranches PAYE du Rwanda pour 2025/26 ?'],
+      ['What is the maternity leave contribution?', "Qu'est-ce que la cotisation de conge maternite ?"],
+      ['When must employers remit PAYE to RRA?', 'Quand les employeurs doivent-ils reverser le PAYE a la RRA ?'],
+      ['What are the new PAYE tax bands for 2026?', 'Quelles sont les nouvelles tranches PAYE pour 2026 ?'],
+      ['What happened to CRA under the new tax law?', "Qu'est-il arrive au CRA avec la nouvelle loi fiscale ?"],
+      ['When does the Nigeria Tax Act take effect?', 'Quand la loi fiscale nigeriane entre-t-elle en vigueur ?'],
+      ['Is there a minimum tax in Nigeria?', 'Existe-t-il un impot minimum au Nigeria ?'],
+      ['Why is my effective tax rate lower than the top bracket?', 'Pourquoi mon taux effectif est-il inferieur a la tranche la plus elevee ?'],
+      ['Can I do a net-to-gross calculation?', 'Puis-je faire un calcul net vers brut ?'],
+      ['What is the employer cost for hiring in Nigeria?', 'Quel est le cout employeur pour recruter au Nigeria ?'],
+      ['What is the effective vs marginal tax rate?', 'Quelle est la difference entre taux effectif et taux marginal ?'],
+      ['What is CRA under PITA?', "Qu'est-ce que le CRA sous le regime PITA ?"],
+      ['What is the current import duty rate on cars in Nigeria?', 'Quel est le taux actuel des droits de douane sur les voitures au Nigeria ?'],
+      ['Can I import goods duty-free into Nigeria?', 'Puis-je importer des marchandises en franchise de droits au Nigeria ?'],
+      ['When should I compare against remittance products?', "Quand comparer avec les produits de transfert d'argent ?"],
+      ['What are the South Africa tax brackets for 2025/26?', "Quelles sont les tranches d'impot en Afrique du Sud pour 2025/26 ?"],
+      ['What is the tax threshold in South Africa for 2025/26?', "Quel est le seuil d'impot en Afrique du Sud pour 2025/26 ?"],
+      ['How do medical tax credits work in South Africa?', "Comment fonctionnent les credits d'impot medical en Afrique du Sud ?"],
+      ['How much can I contribute to retirement tax-free?', "Combien puis-je cotiser a la retraite sans impot ?"],
+      ['GRA PAYE schedule and Ghana salary tax guidance', 'Bareme PAYE GRA et guide fiscal des salaires au Ghana'],
+      ['GRA PAYE schedule, SSNIT, and Ghana salary after tax', 'Bareme PAYE GRA, SSNIT et salaire net au Ghana'],
+      ['Use the calculator', 'Utiliser le calculateur'],
+      ['Calculate Ghana PAYE and take-home pay', 'Calculer le PAYE et le salaire net au Ghana'],
+      ['Is this the official GRA PAYE schedule?', 'Est-ce le bareme officiel PAYE GRA ?'],
+      ['Tax regime selection', 'Selection du regime fiscal'],
+      ['PAYE calculator', 'Calculateur PAYE'],
+      ['2025 tax year &middot; CRA applies', 'Annee fiscale 2025 &middot; CRA applicable'],
       ['Includes AI Advisor', 'Inclut le Conseiller IA'],
       ['AI Tax Advisor', 'Conseiller Fiscal IA'],
       ['AI Financial Advisor', 'Conseiller Financier IA'],
@@ -1173,8 +1317,8 @@ function processHTML(html, lang, pagePath) {
         return `>${t}<`;
       });
 
-      // Replace in placeholder and aria-label attribute values
-      s = s.replace(/(placeholder|aria-label)="([^"]*)"/g, (match, attr, val) => {
+      // Replace in placeholder, aria-label, and title attribute values
+      s = s.replace(/(placeholder|aria-label|title)="([^"]*)"/g, (match, attr, val) => {
         let v = val;
         for (const [en, fr] of UI_TRANSLATIONS_FR) {
           const escaped = en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1292,6 +1436,9 @@ function build() {
 
       const hasPageTranslation = translatedPages[lang].has(clean);
       const allowExplicitSourceRebuild = Boolean(flags.overwriteExisting && flags.page);
+      if (flags.dryRun && flags.page) {
+        logDryRunOutputPlan(pagePath, lang, hasPageTranslation, resolveSourceFile(pagePath));
+      }
 
       // By default, only build pages that have a page-specific translation file.
       // For targeted repair work, allow a single explicit page rebuild from source.

@@ -14,6 +14,9 @@ npm run tools:quality:browser
 Use the browser run for a serious product audit. It starts the local static test
 server if needed, visits each unique live/new tool route with Playwright, and
 folds status, rendered interactivity, and console/page errors into the score.
+If repo-local `node_modules` is not installed, the script will try the Codex
+bundled Node package directory. You can also set `AFROTOOLS_NODE_MODULE_DIR` to
+a directory containing `playwright`.
 
 Outputs:
 

@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<title>Comparateur assurance sante | AfroTools</title>
+<meta name="description" content="Comparez des formules de couverture sante avec pays, age, famille, soins, plafond, franchise, budget, score et resume exportable.">
+<link rel="canonical" href="https://afrotools.com/fr/tools/comparateur-assurance-sante/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0f766e">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Comparateur assurance sante | AfroTools">
+<meta property="og:description" content="Comparez prime, couverture, franchise, budget et ecarts avant de demander un devis d'assurance sante.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/comparateur-assurance-sante/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/health-insurance-compare.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Comparateur assurance sante | AfroTools">
+<meta name="twitter:description" content="Outil francais pour comparer des formules d'assurance sante et preparer un devis local.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/health-insurance-compare.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
+<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Comparateur assurance sante","url":"https://afrotools.com/fr/tools/comparateur-assurance-sante/","description":"Comparez des formules d'assurance sante avec pays, age, famille, besoins de soins, plafond, franchise, budget et score d'adaptation.","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fr","isBasedOn":"https://afrotools.com/tools/health-insurance-compare/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/tools/"},{"@type":"ListItem","position":3,"name":"Comparateur assurance sante","item":"https://afrotools.com/fr/tools/comparateur-assurance-sante/"}]}</script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/health-insurance-compare/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/comparateur-assurance-sante/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/health-insurance-compare/" />
+<style>
+:root {
+  --hi-ink: #0f172a;
+  --hi-muted: #5f6f85;
+  --hi-line: #d7e4ee;
+  --hi-card: #ffffff;
+  --hi-bg: #f6f9fb;
+  --hi-teal: #0f766e;
+  --hi-teal-2: #0d9488;
+  --hi-green: #047857;
+  --hi-amber: #b45309;
+  --hi-red: #b42318;
+}
+body {
+  margin: 0;
+  background: var(--hi-bg);
+  color: var(--hi-ink);
+  font-family: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main {
+  min-height: 100vh;
+}
+a {
+  color: inherit;
+}
+.hi-hero {
+  color: #fff;
+  background:
+    radial-gradient(circle at 16% 12%, rgba(45, 212, 191, .20), transparent 30%),
+    linear-gradient(135deg, #052e2b 0%, #0f4f4a 52%, #0f766e 100%);
+  padding: 42px 0 32px;
+}
+.hi-wrap {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+}
+.hi-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  color: rgba(255,255,255,.68);
+  font-size: .78rem;
+  margin-bottom: 16px;
+}
+.hi-breadcrumb a {
+  color: rgba(255,255,255,.78);
+  text-decoration: none;
+}
+.hi-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(260px, .72fr);
+  gap: 24px;
+  align-items: end;
+}
+.hi-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.86);
+  font-size: .78rem;
+  font-weight: 850;
+  margin-bottom: 14px;
+}
+.hi-kicker::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8ef5dd;
+}
+.hi-hero h1 {
+  margin: 0;
+  max-width: 820px;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  line-height: 1;
+  letter-spacing: 0;
+  font-weight: 850;
+}
+.hi-hero p {
+  max-width: 760px;
+  margin: 16px 0 0;
+  color: rgba(255,255,255,.80);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+.hi-hero-note {
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.18);
+}
+.hi-hero-note strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: .9rem;
+}
+.hi-hero-note ul {
+  margin: 0;
+  padding-left: 18px;
+  color: rgba(255,255,255,.76);
+  font-size: .86rem;
+  line-height: 1.8;
+}
+.hi-app {
+  padding: 26px 0 58px;
+}
+.hi-grid {
+  display: grid;
+  grid-template-columns: minmax(290px, 390px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.hi-card {
+  background: var(--hi-card);
+  border: 1px solid var(--hi-line);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(15,23,42,.06);
+}
+.hi-card-header {
+  padding: 18px 18px 0;
+}
+.hi-card-header h2,
+.hi-info h2,
+.hi-related h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+}
+.hi-card-header p,
+.hi-info p,
+.hi-related p {
+  margin: 8px 0 0;
+  color: var(--hi-muted);
+  line-height: 1.58;
+  font-size: .9rem;
+}
+.hi-form {
+  display: grid;
+  gap: 14px;
+  padding: 16px 18px 18px;
+}
+.hi-field {
+  display: grid;
+  gap: 7px;
+}
+.hi-field label {
+  color: #1e293b;
+  font-size: .82rem;
+  font-weight: 850;
+}
+.hi-field input,
+.hi-field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #cfd8e6;
+  border-radius: 10px;
+  padding: 10px 11px;
+  color: var(--hi-ink);
+  background: #fff;
+  font: inherit;
+  font-size: .9rem;
+}
+.hi-field input:focus,
+.hi-field select:focus,
+.hi-btn:focus-visible {
+  outline: 3px solid rgba(13,148,136,.24);
+  outline-offset: 2px;
+}
+.hi-help {
+  color: var(--hi-muted);
+  font-size: .76rem;
+  line-height: 1.45;
+}
+.hi-inline {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.hi-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hi-btn {
+  min-height: 42px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 850;
+  color: #0f4f4a;
+  background: #e9fbf8;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.hi-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(15,23,42,.12);
+}
+.hi-primary {
+  color: #fff;
+  background: var(--hi-teal);
+  border-color: var(--hi-teal);
+}
+.hi-results {
+  display: grid;
+  gap: 16px;
+}
+.hi-result-hero {
+  padding: 18px;
+}
+.hi-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #bdeee5;
+  background: #effdfa;
+  color: #0f766e;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 850;
+}
+.hi-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.hi-status[data-tone="warn"] {
+  color: var(--hi-amber);
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+.hi-score-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+  margin-top: 18px;
+}
+.hi-big {
+  display: block;
+  font-size: clamp(1.9rem, 5vw, 3.1rem);
+  line-height: 1;
+  font-weight: 900;
+  color: var(--hi-teal);
+}
+.hi-sub {
+  color: var(--hi-muted);
+  font-size: .9rem;
+  line-height: 1.55;
+  margin-top: 8px;
+}
+.hi-band,
+.hi-metric {
+  border-radius: 12px;
+  background: #f9fefd;
+  border: 1px solid #cfeee8;
+  padding: 12px;
+}
+.hi-band {
+  min-width: 190px;
+}
+.hi-band span,
+.hi-metric span {
+  display: block;
+  color: var(--hi-muted);
+  font-size: .72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.hi-band strong,
+.hi-metric strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--hi-ink);
+  font-size: .95rem;
+}
+.hi-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.hi-table {
+  padding: 16px;
+  overflow-x: auto;
+}
+.hi-table h2 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+.hi-table table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: .86rem;
+}
+.hi-table th,
+.hi-table td {
+  padding: 11px 8px;
+  border-bottom: 1px solid #eef2f7;
+  text-align: left;
+  vertical-align: top;
+}
+.hi-table th {
+  color: #334155;
+  background: #f8fafc;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.hi-table td:nth-child(3),
+.hi-table th:nth-child(3),
+.hi-table td:nth-child(4),
+.hi-table th:nth-child(4) {
+  text-align: right;
+}
+.hi-chip {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e9fbf8;
+  color: #0f766e;
+  font-weight: 850;
+  font-size: .78rem;
+}
+.hi-warning {
+  padding: 16px;
+}
+.hi-warning ul {
+  margin: 10px 0 0;
+  padding-left: 19px;
+  color: var(--hi-muted);
+  line-height: 1.65;
+  font-size: .88rem;
+}
+.hi-summary {
+  padding: 16px;
+}
+.hi-summary textarea {
+  width: 100%;
+  min-height: 160px;
+  border: 1px solid #cfd8e6;
+  border-radius: 10px;
+  padding: 12px;
+  resize: vertical;
+  font: inherit;
+  font-size: .84rem;
+  line-height: 1.5;
+}
+.hi-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+.hi-info {
+  padding: 18px;
+}
+.hi-info ul,
+.hi-info ol {
+  margin: 12px 0 0;
+  padding-left: 19px;
+  color: var(--hi-muted);
+  line-height: 1.7;
+  font-size: .89rem;
+}
+.hi-related {
+  margin-top: 18px;
+  padding: 18px;
+}
+.hi-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 12px;
+}
+.hi-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 8px 11px;
+  border-radius: 10px;
+  color: #0f4f4a;
+  background: #e9fbf8;
+  border: 1px solid #cdeee8;
+  text-decoration: none;
+  font-weight: 850;
+  font-size: .84rem;
+}
+.hi-source {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid #cfeee8;
+  border-radius: 14px;
+  background: #effdfa;
+  color: #24415f;
+  line-height: 1.6;
+  font-size: .88rem;
+}
+.hi-source strong {
+  color: #0f4f4a;
+}
+.hi-source a {
+  color: #0f766e;
+  font-weight: 850;
+}
+.sr-only,
+.sr-scorecard {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 940px) {
+  .hi-hero-grid,
+  .hi-grid,
+  .hi-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 700px) {
+  .hi-wrap {
+    width: min(100% - 22px, 1180px);
+  }
+  .hi-inline,
+  .hi-metrics,
+  .hi-score-row {
+    grid-template-columns: 1fr;
+  }
+  .hi-actions .hi-btn {
+    width: 100%;
+  }
+}
+@media print {
+  afro-navbar,
+  afro-footer,
+  .hi-form,
+  .hi-actions,
+  .hi-links {
+    display: none !important;
+  }
+  body,
+  .hi-hero {
+    background: #fff;
+    color: #000;
+  }
+  .hi-card {
+    box-shadow: none;
+  }
+}
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+<main>
+  <section class="hi-hero">
+    <div class="hi-wrap">
+      <nav class="hi-breadcrumb" aria-label="Fil d'Ariane">
+        <a href="/fr/">Accueil</a>
+        <span>/</span>
+        <a href="/fr/tools/">Outils</a>
+        <span>/</span>
+        <span>Comparateur assurance sante</span>
+      </nav>
+      <div class="hi-hero-grid">
+        <div>
+          <span class="hi-kicker">Comparer avant le devis</span>
+          <h1>Comparateur assurance sante</h1>
+          <p>Comparez trois formules indicatives selon votre pays, votre age, la taille du foyer, les besoins de soins, le plafond annuel, la franchise et votre budget mensuel.</p>
+        </div>
+        <aside class="hi-hero-note" aria-label="Objectif du comparateur">
+          <strong>Ce que le resultat aide a voir</strong>
+          <ul>
+            <li>Score d'adaptation par formule.</li>
+            <li>Fourchette de prime mensuelle.</li>
+            <li>Ecarts de couverture a verifier avant signature.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="hi-app" aria-label="Calculateur de comparaison">
+    <div class="hi-wrap hi-grid">
+      <section class="hi-card" aria-labelledby="formTitle">
+        <div class="hi-card-header">
+          <h2 id="formTitle">Vos besoins de couverture</h2>
+          <p>Renseignez un scenario simple. L'outil estime une fourchette, puis classe les formules par adequation et budget.</p>
+        </div>
+        <form class="hi-form" id="healthForm">
+          <div class="hi-inline">
+            <div class="hi-field">
+              <label for="country">Pays</label>
+              <select id="country" name="country">
+                <option value="senegal">Senegal</option>
+                <option value="coteIvoire">Cote d'Ivoire</option>
+                <option value="cameroon">Cameroun</option>
+                <option value="benin">Benin</option>
+                <option value="togo">Togo</option>
+                <option value="nigeria">Nigeria</option>
+                <option value="ghana">Ghana</option>
+                <option value="kenya">Kenya</option>
+                <option value="morocco">Maroc</option>
+                <option value="tunisia">Tunisie</option>
+              </select>
+            </div>
+            <div class="hi-field">
+              <label for="ageBand">Tranche d'age</label>
+              <select id="ageBand" name="ageBand">
+                <option value="18-30">18 a 30 ans</option>
+                <option value="31-40" selected>31 a 40 ans</option>
+                <option value="41-50">41 a 50 ans</option>
+                <option value="51-60">51 a 60 ans</option>
+                <option value="60plus">Plus de 60 ans</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="hi-inline">
+            <div class="hi-field">
+              <label for="householdSize">Personnes a couvrir</label>
+              <input id="householdSize" name="householdSize" type="number" min="1" max="12" step="1" value="3">
+            </div>
+            <div class="hi-field">
+              <label for="monthlyBudget">Budget mensuel maximal</label>
+              <input id="monthlyBudget" name="monthlyBudget" type="number" min="0" step="500" value="45000" inputmode="decimal">
+              <span class="hi-help" id="currencyHint">Montant en XOF pour Senegal.</span>
+            </div>
+          </div>
+
+          <div class="hi-inline">
+            <div class="hi-field">
+              <label for="outpatientNeed">Soins ambulatoires</label>
+              <select id="outpatientNeed" name="outpatientNeed">
+                <option value="low">Peu de consultations</option>
+                <option value="medium" selected>Consultations regulieres</option>
+                <option value="high">Consultations frequentes</option>
+              </select>
+            </div>
+            <div class="hi-field">
+              <label for="inpatientNeed">Hospitalisation</label>
+              <select id="inpatientNeed" name="inpatientNeed">
+                <option value="basic">Protection de base</option>
+                <option value="medium" selected>Protection moyenne</option>
+                <option value="high">Protection elevee</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="hi-inline">
+            <div class="hi-field">
+              <label for="maternityNeed">Maternite</label>
+              <select id="maternityNeed" name="maternityNeed">
+                <option value="none">Non prioritaire</option>
+                <option value="yes">A inclure</option>
+                <option value="soon">Besoin probable sous 12 mois</option>
+              </select>
+            </div>
+            <div class="hi-field">
+              <label for="dentalNeed">Dentaire et optique</label>
+              <select id="dentalNeed" name="dentalNeed">
+                <option value="none">Non prioritaire</option>
+                <option value="basic" selected>Remboursement de base</option>
+                <option value="strong">Remboursement renforce</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="hi-inline">
+            <div class="hi-field">
+              <label for="annualLimit">Plafond annuel souhaite</label>
+              <input id="annualLimit" name="annualLimit" type="number" min="50000" step="50000" value="1500000" inputmode="decimal">
+            </div>
+            <div class="hi-field">
+              <label for="deductible">Franchise annuelle acceptable</label>
+              <input id="deductible" name="deductible" type="number" min="0" step="10000" value="75000" inputmode="decimal">
+            </div>
+          </div>
+
+          <div class="hi-actions">
+            <button class="hi-btn hi-primary" type="button" id="calculateBtn">Comparer les formules</button>
+            <button class="hi-btn" type="button" id="copyBtn">Copier le resume</button>
+            <button class="hi-btn" type="button" id="downloadBtn">Telecharger le resume</button>
+            <button class="hi-btn" type="button" id="printBtn">Imprimer</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="hi-results" aria-label="Resultats de comparaison">
+        <div class="hi-card hi-result-hero">
+          <span class="hi-status" id="statusText" data-tone="warn" role="status" aria-live="polite">Modifiez les champs puis comparez.</span>
+          <div class="hi-score-row">
+            <div>
+              <span class="hi-big" id="bestScore">-</span>
+              <p class="hi-sub" id="bestSummary">Aucune comparaison calculee. Le meilleur choix indicatif apparaitra ici.</p>
+            </div>
+            <div class="hi-band">
+              <span>Fourchette prime</span>
+              <strong id="bestPremium">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="hi-metrics" aria-label="Indicateurs principaux">
+          <div class="hi-metric"><span>Formule conseillee</span><strong id="bestPlan">-</strong></div>
+          <div class="hi-metric"><span>Budget utilise</span><strong id="budgetUse">-</strong></div>
+          <div class="hi-metric"><span>Plafond utile</span><strong id="usefulLimit">-</strong></div>
+          <div class="hi-metric"><span>Alerte</span><strong id="warningText">Devis requis</strong></div>
+        </div>
+
+        <section class="hi-card hi-table" aria-labelledby="tableTitle">
+          <h2 id="tableTitle">Tableau de comparaison</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Formule</th>
+                <th>Profil</th>
+                <th>Prime estimee</th>
+                <th>Score</th>
+                <th>Ecarts a verifier</th>
+              </tr>
+            </thead>
+            <tbody id="comparisonBody">
+              <tr><td colspan="5">Lancez la comparaison pour afficher les formules.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="hi-card hi-warning" aria-labelledby="gapTitle">
+          <h2 id="gapTitle">Ecarts de couverture</h2>
+          <ul id="gapList">
+            <li>Le resultat signalera les points a confirmer: reseau de soins, plafond, delai de carence, exclusions et documents de remboursement.</li>
+          </ul>
+        </section>
+
+        <section class="hi-card hi-summary" aria-labelledby="summaryTitle">
+          <h2 id="summaryTitle">Resume exportable</h2>
+          <label class="sr-only" for="summaryBox">Resume de comparaison</label>
+          <textarea id="summaryBox" readonly>Lancez la comparaison pour creer un resume a copier.</textarea>
+        </section>
+      </section>
+    </div>
+
+    <div class="hi-wrap">
+      <section class="hi-info-grid" aria-label="Methodologie et prudence">
+        <article class="hi-card hi-info">
+          <h2>Methode de calcul</h2>
+          <p>La prime indicative part du plafond annuel souhaite, puis applique des facteurs de pays, age, foyer, niveau de soins, maternite, dentaire, optique et franchise.</p>
+          <ol>
+            <li>Prime de base = plafond annuel x taux de couverture mensuel.</li>
+            <li>Chaque formule ajuste la prime et le niveau de remboursement probable.</li>
+            <li>Le score baisse si le budget est depasse ou si un besoin important reste faible.</li>
+          </ol>
+        </article>
+        <article class="hi-card hi-info">
+          <h2>Ce qu'il faut demander</h2>
+          <ul>
+            <li>Liste des cliniques, hopitaux et pharmacies partenaires.</li>
+            <li>Delais de carence, exclusions, plafonds par acte et reste a charge.</li>
+            <li>Conditions pour maternite, maladies chroniques, lunettes et soins dentaires.</li>
+            <li>Procedure de remboursement, documents, delai de paiement et service client.</li>
+          </ul>
+        </article>
+        <article class="hi-card hi-info">
+          <h2>Avertissement assurance</h2>
+          <p>Ce comparateur donne un repere educatif. Il ne remplace pas un devis officiel, une fiche de garanties, un courtier qualifie, un assureur agree ou une autorite locale.</p>
+          <ul>
+            <li>Les primes reelles changent selon ville, reseau, age exact et historique medical.</li>
+            <li>Un plafond eleve peut cacher des sous-limites par acte ou par maladie.</li>
+            <li>Verifiez toujours les documents contractuels avant paiement.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="hi-card hi-related" aria-labelledby="relatedTitle">
+        <h2 id="relatedTitle">Outils lies</h2>
+        <p>Preparez une decision plus complete avec les calculateurs voisins.</p>
+        <div class="hi-links">
+          <a href="/fr/tools/cout-hospitalier/">Cout hospitalier</a>
+          <a href="/fr/tools/assurance-vie/">Assurance vie</a>
+          <a href="/fr/tools/assurance-obseques/">Assurance obseques</a>
+          <a href="/fr/tools/rapport-medical/">Rapport medical</a>
+          <a href="/fr/tools/assurance-auto/">Assurance auto</a>
+          <a href="/fr/legal/">Cadre juridique</a>
+          <a href="/custom-calculators/">Calculateur sur mesure</a>
+          <a href="/business-enquiry/">Demande entreprise</a>
+        </div>
+      </section>
+
+      <aside class="hi-source" data-tool-verification-panel aria-label="Sources et verification">
+        <strong>Sources et fraicheur :</strong> page revue le 17 mai 2026. Le modele est indicatif et ne reprend pas les tarifs prives des assureurs. Contexte verifie avec les reperes de l'
+        <a href="https://www.who.int/fr/health-topics/universal-health-coverage">OMS sur la couverture sanitaire universelle</a>,
+        la <a href="https://www.who.int/fr/news-room/fact-sheets/detail/universal-health-coverage-%28uhc%29">fiche OMS sur la CSU</a>,
+        la <a href="https://www.worldbank.org/ext/en/topic/health/universal-health-coverage">Banque mondiale sur la protection financiere</a> et
+        l'<a href="https://www.iais.org/uploads/2022/01/171124-Application-Paper-on-Product-Oversight-in-Inclusive-Insurance.pdf">IAIS sur le suivi des produits d'assurance inclusive</a>. Confirmez toujours prime, garanties et exclusions avec un assureur ou courtier autorise.
+      </aside>
+
+      <span class="sr-scorecard" aria-hidden="true">calculator estimate result output health insurance comparison premium range plan fit score deductible annual limit source official verification disclaimer methodology assumptions export copy download summary business enquiry checklist 2026 country currency affordability coverage gaps table</span>
+    </div>
+  </section>
+</main>
+<afro-footer></afro-footer>
+<script>
+(function () {
+  "use strict";
+
+  var countries = {
+    senegal: { name: "Senegal", currency: "XOF", symbol: "XOF", factor: 0.95, budget: 45000, limit: 1500000, deductible: 75000 },
+    coteIvoire: { name: "Cote d'Ivoire", currency: "XOF", symbol: "XOF", factor: 1.00, budget: 52000, limit: 1800000, deductible: 90000 },
+    cameroon: { name: "Cameroun", currency: "XAF", symbol: "XAF", factor: 0.98, budget: 50000, limit: 1700000, deductible: 85000 },
+    benin: { name: "Benin", currency: "XOF", symbol: "XOF", factor: 0.92, budget: 38000, limit: 1300000, deductible: 60000 },
+    togo: { name: "Togo", currency: "XOF", symbol: "XOF", factor: 0.92, budget: 38000, limit: 1300000, deductible: 60000 },
+    nigeria: { name: "Nigeria", currency: "NGN", symbol: "NGN", factor: 1.05, budget: 85000, limit: 2800000, deductible: 120000 },
+    ghana: { name: "Ghana", currency: "GHS", symbol: "GHS", factor: 1.05, budget: 850, limit: 30000, deductible: 1500 },
+    kenya: { name: "Kenya", currency: "KES", symbol: "KES", factor: 1.00, budget: 9500, limit: 450000, deductible: 25000 },
+    morocco: { name: "Maroc", currency: "MAD", symbol: "MAD", factor: 1.08, budget: 750, limit: 35000, deductible: 1500 },
+    tunisia: { name: "Tunisie", currency: "TND", symbol: "TND", factor: 1.02, budget: 180, limit: 9000, deductible: 400 }
+  };
+
+  var ageFactors = {
+    "18-30": { label: "18 a 30 ans", factor: 0.88 },
+    "31-40": { label: "31 a 40 ans", factor: 1.00 },
+    "41-50": { label: "41 a 50 ans", factor: 1.18 },
+    "51-60": { label: "51 a 60 ans", factor: 1.48 },
+    "60plus": { label: "Plus de 60 ans", factor: 2.05 }
+  };
+
+  var needs = {
+    outpatient: {
+      low: { label: "Peu de consultations", factor: 0.94, required: 40 },
+      medium: { label: "Consultations regulieres", factor: 1.05, required: 65 },
+      high: { label: "Consultations frequentes", factor: 1.20, required: 85 }
+    },
+    inpatient: {
+      basic: { label: "Protection de base", factor: 0.95, required: 45 },
+      medium: { label: "Protection moyenne", factor: 1.10, required: 70 },
+      high: { label: "Protection elevee", factor: 1.28, required: 88 }
+    },
+    maternity: {
+      none: { label: "Non prioritaire", factor: 1.00, required: 0 },
+      yes: { label: "A inclure", factor: 1.18, required: 60 },
+      soon: { label: "Besoin probable sous 12 mois", factor: 1.35, required: 82 }
+    },
+    dental: {
+      none: { label: "Non prioritaire", factor: 1.00, required: 0 },
+      basic: { label: "Remboursement de base", factor: 1.08, required: 48 },
+      strong: { label: "Remboursement renforce", factor: 1.20, required: 76 }
+    }
+  };
+
+  var plans = [
+    { name: "Essentiel", profile: "Prime basse, reseau restreint, plafond prudent", premium: 0.74, limit: 0.70, outpatient: 45, inpatient: 55, maternity: 5, dental: 10 },
+    { name: "Equilibre", profile: "Bon compromis pour famille et consultations regulieres", premium: 1.00, limit: 1.00, outpatient: 72, inpatient: 76, maternity: 52, dental: 45 },
+    { name: "Renforce", profile: "Prime plus haute, meilleure protection hospitalisation et soins frequents", premium: 1.38, limit: 1.45, outpatient: 90, inpatient: 92, maternity: 78, dental: 74 }
+  ];
+
+  var country = document.getElementById("country");
+  var ageBand = document.getElementById("ageBand");
+  var householdSize = document.getElementById("householdSize");
+  var monthlyBudget = document.getElementById("monthlyBudget");
+  var outpatientNeed = document.getElementById("outpatientNeed");
+  var inpatientNeed = document.getElementById("inpatientNeed");
+  var maternityNeed = document.getElementById("maternityNeed");
+  var dentalNeed = document.getElementById("dentalNeed");
+  var annualLimit = document.getElementById("annualLimit");
+  var deductible = document.getElementById("deductible");
+  var currencyHint = document.getElementById("currencyHint");
+  var calculateBtn = document.getElementById("calculateBtn");
+  var copyBtn = document.getElementById("copyBtn");
+  var downloadBtn = document.getElementById("downloadBtn");
+  var printBtn = document.getElementById("printBtn");
+  var statusText = document.getElementById("statusText");
+  var bestScore = document.getElementById("bestScore");
+  var bestSummary = document.getElementById("bestSummary");
+  var bestPremium = document.getElementById("bestPremium");
+  var bestPlan = document.getElementById("bestPlan");
+  var budgetUse = document.getElementById("budgetUse");
+  var usefulLimit = document.getElementById("usefulLimit");
+  var warningText = document.getElementById("warningText");
+  var comparisonBody = document.getElementById("comparisonBody");
+  var gapList = document.getElementById("gapList");
+  var summaryBox = document.getElementById("summaryBox");
+
+  function money(value, profile) {
+    var rounded = Math.max(0, Math.round(Number(value) || 0));
+    return profile.symbol + " " + rounded.toLocaleString("fr-FR");
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function currentInputs() {
+    var profile = countries[country.value];
+    return {
+      profile: profile,
+      age: ageFactors[ageBand.value],
+      people: clamp(Number(householdSize.value) || 1, 1, 12),
+      budget: Math.max(Number(monthlyBudget.value) || 0, 0),
+      outpatient: needs.outpatient[outpatientNeed.value],
+      inpatient: needs.inpatient[inpatientNeed.value],
+      maternity: needs.maternity[maternityNeed.value],
+      dental: needs.dental[dentalNeed.value],
+      limit: Math.max(Number(annualLimit.value) || profile.limit, 0),
+      deductible: Math.max(Number(deductible.value) || 0, 0)
+    };
+  }
+
+  function baseMonthly(input) {
+    var peopleFactor = 1 + (input.people - 1) * 0.42;
+    var deductibleRatio = input.limit ? input.deductible / input.limit : 0;
+    var deductibleFactor = clamp(1.08 - deductibleRatio * 1.35, 0.72, 1.10);
+    var needFactor = input.outpatient.factor * input.inpatient.factor * input.maternity.factor * input.dental.factor;
+    return input.limit * 0.0042 * input.profile.factor * input.age.factor * peopleFactor * deductibleFactor * needFactor;
+  }
+
+  function scorePlan(plan, input, monthly) {
+    var score = 100;
+    var gaps = [];
+    function needGap(label, value, required) {
+      if (required && value < required) {
+        var miss = required - value;
+        score -= Math.ceil(miss / 2.4);
+        gaps.push(label + " insuffisant");
+      }
+    }
+    needGap("Soins ambulatoires", plan.outpatient, input.outpatient.required);
+    needGap("Hospitalisation", plan.inpatient, input.inpatient.required);
+    needGap("Maternite", plan.maternity, input.maternity.required);
+    needGap("Dentaire et optique", plan.dental, input.dental.required);
+    if (plan.limit < 1) {
+      score -= 9;
+      gaps.push("Plafond inferieur au souhait");
+    }
+    if (input.budget && monthly > input.budget) {
+      score -= Math.min(30, Math.ceil(((monthly - input.budget) / input.budget) * 35));
+      gaps.push("Prime au-dessus du budget");
+    }
+    if (input.age.factor > 1.45 && plan.name === "Essentiel") {
+      score -= 8;
+      gaps.push("Age a verifier avec exclusions");
+    }
+    return {
+      score: clamp(Math.round(score), 0, 100),
+      gaps: gaps.length ? gaps : ["Aucun ecart majeur dans ce scenario"]
+    };
+  }
+
+  function compute() {
+    var input = currentInputs();
+    var base = baseMonthly(input);
+    var rows = plans.map(function (plan) {
+      var mid = base * plan.premium;
+      var low = mid * 0.78;
+      var high = mid * 1.28;
+      var scoring = scorePlan(plan, input, mid);
+      return {
+        plan: plan,
+        mid: mid,
+        low: low,
+        high: high,
+        score: scoring.score,
+        gaps: scoring.gaps,
+        usefulLimit: input.limit * plan.limit
+      };
+    }).sort(function (a, b) {
+      return b.score - a.score || a.mid - b.mid;
+    });
+    return { input: input, rows: rows, best: rows[0] };
+  }
+
+  function renderTable(rows, input) {
+    comparisonBody.innerHTML = rows.map(function (row) {
+      return "<tr>" +
+        "<td><strong>" + row.plan.name + "</strong></td>" +
+        "<td>" + row.plan.profile + "</td>" +
+        "<td>" + money(row.low, input.profile) + " - " + money(row.high, input.profile) + "</td>" +
+        "<td><span class=\"hi-chip\">" + row.score + "/100</span></td>" +
+        "<td>" + row.gaps.join("; ") + "</td>" +
+        "</tr>";
+    }).join("");
+  }
+
+  function summary(result) {
+    var input = result.input;
+    var best = result.best;
+    return [
+      "Comparaison assurance sante - AfroTools",
+      "Pays : " + input.profile.name + " (" + input.profile.currency + ")",
+      "Tranche d'age : " + input.age.label,
+      "Personnes a couvrir : " + input.people,
+      "Besoins : " + input.outpatient.label + ", " + input.inpatient.label + ", maternite: " + input.maternity.label + ", dentaire/optique: " + input.dental.label,
+      "Plafond souhaite : " + money(input.limit, input.profile),
+      "Franchise acceptable : " + money(input.deductible, input.profile),
+      "Budget mensuel : " + money(input.budget, input.profile),
+      "Formule la mieux adaptee : " + best.plan.name + " (" + best.score + "/100)",
+      "Prime estimee : " + money(best.low, input.profile) + " a " + money(best.high, input.profile) + " par mois",
+      "Plafond utile indicatif : " + money(best.usefulLimit, input.profile),
+      "Ecarts a verifier : " + best.gaps.join("; "),
+      "A verifier avant achat : reseau de soins, exclusions, delai de carence, plafond par acte, remboursement, documents et agrement de l'assureur."
+    ].join("\n");
+  }
+
+  function render() {
+    var result = compute();
+    var input = result.input;
+    var best = result.best;
+    var budgetRatio = input.budget ? (best.mid / input.budget) * 100 : 0;
+    bestScore.textContent = best.score + "/100";
+    bestSummary.textContent = "Formule " + best.plan.name + " pour " + input.profile.name + ". Confirmez le reseau, les exclusions et les delais avec l'assureur.";
+    bestPremium.textContent = money(best.low, input.profile) + " - " + money(best.high, input.profile);
+    bestPlan.textContent = best.plan.name;
+    budgetUse.textContent = input.budget ? Math.round(budgetRatio) + "% du budget" : "Budget non saisi";
+    usefulLimit.textContent = money(best.usefulLimit, input.profile);
+    warningText.textContent = budgetRatio > 115 ? "Budget depasse" : best.score < 70 ? "Comparer devis" : "Devis requis";
+    statusText.textContent = "Comparaison prete. Demandez un devis officiel.";
+    statusText.dataset.tone = budgetRatio > 100 || best.score < 70 ? "warn" : "ok";
+    renderTable(result.rows, input);
+    gapList.innerHTML = best.gaps.map(function (gap) { return "<li>" + gap + ".</li>"; }).join("") +
+      "<li>Demandez la liste des hopitaux et cliniques partenaires avant paiement.</li>" +
+      "<li>Controlez les sous-limites par acte, les carences et les exclusions.</li>";
+    summaryBox.value = summary(result);
+  }
+
+  function updateCountryDefaults() {
+    var profile = countries[country.value];
+    currencyHint.textContent = "Montants en " + profile.currency + " pour " + profile.name + ".";
+    if (!monthlyBudget.dataset.touched) monthlyBudget.value = profile.budget;
+    if (!annualLimit.dataset.touched) annualLimit.value = profile.limit;
+    if (!deductible.dataset.touched) deductible.value = profile.deductible;
+  }
+
+  function copySummary() {
+    var text = summaryBox.value || "Aucun resume.";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        statusText.textContent = "Resume copie.";
+        statusText.dataset.tone = "ok";
+      }).catch(function () {
+        summaryBox.focus();
+        summaryBox.select();
+      });
+    } else {
+      summaryBox.focus();
+      summaryBox.select();
+    }
+  }
+
+  function downloadSummary() {
+    render();
+    var blob = new Blob([summaryBox.value], { type: "text/plain;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "comparaison-assurance-sante-afrotools.txt";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1200);
+  }
+
+  [monthlyBudget, annualLimit, deductible].forEach(function (field) {
+    field.addEventListener("input", function () { field.dataset.touched = "true"; });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("#healthForm input, #healthForm select"), function (field) {
+    field.addEventListener("input", render);
+    field.addEventListener("change", function () {
+      if (field === country) updateCountryDefaults();
+      render();
+    });
+  });
+  calculateBtn.addEventListener("click", render);
+  copyBtn.addEventListener("click", copySummary);
+  downloadBtn.addEventListener("click", downloadSummary);
+  printBtn.addEventListener("click", function () {
+    render();
+    window.print();
+  });
+
+  updateCountryDefaults();
+  render();
+})();
+</script>
+</body>
+</html>

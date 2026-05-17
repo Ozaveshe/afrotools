@@ -25,8 +25,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Mshahara na Kodi","item":"https://afrotools.com/sw/mshahara-na-kodi/"},{"@type":"ListItem","position":3,"name":"Afrika Kusini","item":"https://afrotools.com/sw/south-africa/"},{"@type":"ListItem","position":4,"name":"Kilinganisha Mkandarasi na Mfanyakazi","item":"https://afrotools.com/sw/south-africa/kilinganisha-mkandarasi-na-mfanyakazi/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><link rel="stylesheet" href="/assets/css/hr-payroll.css?v=91474939">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea"><link rel="stylesheet" href="/assets/css/hr-payroll.css?v=91474939">
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script><script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 </head>
 <body>
@@ -52,6 +52,10 @@
 <p><strong>Kumbuka:</strong> WHT au ankara ya mkandarasi si hoja pekee. Hatari ya uainishaji mbaya inaweza kuleta madai ya PAYE, UIF, likizo na haki nyingine za ajira kama kazi hiyo kwa kweli ni ya mfanyakazi wa kawaida chini ya sheria za Afrika Kusini.</p>
 </section>
 </main>
+
+<section class="sw-country-hr-planning-aid" style="max-width:1120px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Afrika Kusini: planning aid iliyoimarishwa.</strong> Ukurasa huu unasaidia kupanga tofauti ya kupanga kati ya mkandarasi na mfanyakazi kwa Kiswahili. Matokeo ni makadirio ya source page na maingizo yako, si ushauri wa kisheria, kibali cha kazi, haki ya malipo ya kuachishwa kazi, uamuzi wa uainishaji wa mkandarasi, wala gharama ya mwisho ya mwajiri. Hakiki na mwajiri, HR, mhasibu, wakili, mamlaka ya kazi au mamlaka ya uhamiaji kabla ya kutumia kwenye faili rasmi. Inaweza kuzingatiwa kwa discovery ikiwa ripoti ya specialist-risk itathibitisha kuwa hakuna madai ya kupitiliza.</div></section>
+
+<section class="sw-p73-route-honesty" style="max-width:1120px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #dbeafe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Route honesty:</strong> Ukurasa huu ni mwongozo au kikokotoo cha kupanga kwa Kiswahili. Hakiongezi viwango, fomu, tarehe za mwisho au maamuzi rasmi nje ya source page. Kwa VAT, TIN, kibali cha kazi, gharama ya mfanyakazi au uainishaji wa mkandarasi, hakiki na mamlaka, mwajiri, mhasibu, wakili au mshauri wa HR kabla ya kutumia kwenye faili rasmi.</div></section>
 <afro-footer></afro-footer>
 <script src="/data/hr/employer-cost-data.js?v=d97c84ea"></script>
 <script src="/data/hr/severance-data.js?v=bacf7c5f"></script>
@@ -64,7 +68,7 @@ var E=window.AfroTools.HREngine;
 function fv(id){var el=document.getElementById(id);return el?parseFloat(el.value)||0:0;}
 function swError(msg){
   if(!msg) return 'Hitilafu imetokea. Jaribu tena.';
-  if(/country not found/i.test(msg)) return 'Nchi hii haikupatikana kwenye data ya sasa.';
+  if(/country not found/i.test(msg)) return 'Nchi hii haikupatikana kwenye data ya source page.';
   return msg;
 }
 function requirePositive(val,label){
@@ -85,10 +89,10 @@ document.getElementById("calcBtn").addEventListener("click",function(){
   h+='<div class="hr-res-hero-amount">'+r.formatted.savings+'</div>';
   h+='<div class="hr-res-hero-sub">'+r.savingsPercent+'% chini ya gharama ya mfanyakazi</div></div>';
   h+='<table class="hr-summary-table"><thead><tr><th>Kipengele</th><th>Mfanyakazi</th><th>Mkandarasi</th></tr></thead><tbody>';
-  h+='<tr><td>Kiasi cha Mkataba</td><td>'+E.fmt(r.employee.grossSalary,r.employee.symbol)+'</td><td>'+E.fmt(r.contractor.invoiceAmount,r.employee.symbol)+'</td></tr>';
-  h+='<tr><td>Michango ya Mwajiri</td><td>'+E.fmt(r.employee.totalEmployerContributions,r.employee.symbol)+'</td><td>Hakuna</td></tr>';
-  h+='<tr><td>Kodi ya Zuio (WHT)</td><td>Haitumiki</td><td>'+r.contractor.whtRate+'% ('+E.fmt(r.contractor.whtAmount,r.employee.symbol)+')</td></tr>';
-  h+='<tr style="font-weight:800"><td>Gharama Yote kwa Mwajiri</td><td>'+r.formatted.employeeCost+'</td><td>'+r.formatted.contractorCost+'</td></tr>';
+  h+='<tr><td>Kiasi cha mkataba</td><td>'+E.fmt(r.employee.grossSalary,r.employee.symbol)+'</td><td>'+E.fmt(r.contractor.invoiceAmount,r.employee.symbol)+'</td></tr>';
+  h+='<tr><td>Michango ya mwajiri</td><td>'+E.fmt(r.employee.totalEmployerContributions,r.employee.symbol)+'</td><td>Hakuna</td></tr>';
+  h+='<tr><td>Kodi ya zuio (WHT)</td><td>Haitumiki</td><td>'+r.contractor.whtRate+'% ('+E.fmt(r.contractor.whtAmount,r.employee.symbol)+')</td></tr>';
+  h+='<tr style="font-weight:800"><td>Gharama yote kwa mwajiri</td><td>'+r.formatted.employeeCost+'</td><td>'+r.formatted.contractorCost+'</td></tr>';
   h+='</tbody></table>';
   h+='<div class="hr-warn"><strong>Tahadhari ya uzingatiaji:</strong> Kumwita mfanyakazi kuwa mkandarasi bila msingi sahihi kunaweza kuleta madai ya PAYE, UIF na sheria ya kazi. Hakikisha uhusiano huo kweli ni wa mkandarasi huru chini ya sheria za Afrika Kusini.</div>';
   document.getElementById('results').innerHTML=h;

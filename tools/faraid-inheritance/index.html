@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="tool-id" content="faraid-inheritance">
 <title>Islamic Inheritance Faraid Calculator | AfroTools</title>
-<meta name="description" content="Model common Faraid inheritance shares for spouse, parents, sons and daughters with estate deductions and scholar review notes.">
+<meta name="description" content="Conservative Faraid inheritance planner with estate deductions, spouse, parents, children, siblings, share table, blocked-heir warnings, and exportable results.">
 <link rel="canonical" href="https://afrotools.com/tools/faraid-inheritance/">
 <meta property="og:title" content="Islamic Inheritance Faraid Calculator | AfroTools">
-<meta property="og:description" content="Model common Faraid inheritance shares for spouse, parents, sons and daughters with estate deductions and scholar review notes.">
+<meta property="og:description" content="Model common Faraid shares with estate deductions, heir toggles, blocked-heir warnings, methodology, and scholar-lawyer disclaimer.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/faraid-inheritance.webp">
 <meta property="og:url" content="https://afrotools.com/tools/faraid-inheritance/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Islamic Inheritance Faraid Calculator | AfroTools">
-<meta name="twitter:description" content="Model common Faraid inheritance shares for spouse, parents, sons and daughters with estate deductions and scholar review notes.">
+<meta name="twitter:description" content="Estimate net estate, share fractions, amount per heir, exclusions, and next steps for common Faraid cases.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/faraid-inheritance.webp">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Islamic Inheritance Faraid Calculator",
-  "description": "Model common Faraid inheritance shares for spouse, parents, sons and daughters with estate deductions and scholar review notes.",
+  "description": "Conservative Faraid inheritance planner for common spouse, parent, child, and sibling cases.",
   "url": "https://afrotools.com/tools/faraid-inheritance/",
-  "applicationCategory": "LifestyleApplication",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "dateModified": "2026-05-16",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -35,44 +40,1035 @@
   "image": "https://afrotools.com/assets/img/tools/faraid-inheritance.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Religious & Cultural","item":"https://afrotools.com/religious-cultural/"},{"@type":"ListItem","position":3,"name":"Faraid Calculator","item":"https://afrotools.com/tools/faraid-inheritance/"}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Religious & Cultural", "item": "https://afrotools.com/religious-cultural/"},
+    {"@type": "ListItem", "position": 3, "name": "Faraid Calculator", "item": "https://afrotools.com/tools/faraid-inheritance/"}
+  ]
+}
+</script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
-:root{--en-accent:#D97706;--en-accent-dark:#D97706;--en-accent-light:#FEF3C7;--en-accent-pale:#FFFBEB;--en-shadow-hover:0 4px 16px rgba(15,23,42,.14),0 1px 4px rgba(0,0,0,.08)}
-.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a0a 45%,#3b2800 100%)!important}
-.container{max-width:1080px;margin:0 auto;padding:0 24px}
+:root {
+  --bg: #f7f8fb;
+  --panel: #ffffff;
+  --panel-soft: #f5f7fb;
+  --ink: #111827;
+  --muted: #5b6475;
+  --line: #dbe2e8;
+  --brand: #0f766e;
+  --brand-dark: #0b4f4a;
+  --accent: #9a5b13;
+  --warn: #a15c07;
+  --danger: #b42318;
+  --good: #157347;
+  --shadow: 0 18px 46px rgba(15, 23, 42, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+}
+a { color: inherit; }
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 20;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+.skip-link:focus { top: 12px; }
+.topbar {
+  background: #0c1f20;
+  color: #ecfdf5;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.topbar-inner {
+  width: min(1160px, calc(100% - 32px));
+  min-height: 64px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: .01em;
+}
+.topnav {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: .94rem;
+}
+.topnav a {
+  color: #d7ffef;
+  text-decoration: none;
+  padding: 6px 0;
+}
+.hero {
+  background: linear-gradient(135deg, #082f2a 0%, #0f4f46 52%, #7c4a03 100%);
+  color: #fff;
+}
+.wrap {
+  width: min(1160px, calc(100% - 32px));
+  margin: 0 auto;
+}
+.hero .wrap {
+  padding: 34px 0 38px;
+}
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: .92rem;
+  color: #c7f9e8;
+  margin-bottom: 22px;
+}
+.breadcrumb a { text-decoration: none; }
+h1 {
+  font-size: clamp(2rem, 6vw, 4.15rem);
+  line-height: 1.02;
+  margin: 0 0 14px;
+  max-width: 820px;
+}
+.hero-copy {
+  max-width: 790px;
+  color: #e2fff4;
+  font-size: 1.08rem;
+  margin: 0;
+}
+.hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+.pill {
+  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.10);
+  border-radius: 999px;
+  padding: 7px 11px;
+  color: #f0fdf4;
+  font-size: .88rem;
+}
+main { padding: 28px 0 44px; }
+.app-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(340px, .95fr);
+  gap: 22px;
+  align-items: start;
+}
+.app-grid > * { min-width: 0; }
+.panel, .info-block {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+.panel-head {
+  padding: 20px 22px 0;
+}
+.panel-head h2, .info-block h2 {
+  margin: 0 0 6px;
+  font-size: 1.22rem;
+}
+.panel-head p, .info-block p {
+  margin: 0;
+  color: var(--muted);
+}
+form {
+  padding: 18px 22px 22px;
+}
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.field-full { grid-column: 1 / -1; }
+label {
+  display: block;
+  font-weight: 800;
+  font-size: .93rem;
+  margin-bottom: 6px;
+}
+input, select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 10px 11px;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+}
+input:focus, select:focus, button:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, .32);
+  outline-offset: 2px;
+}
+.hint {
+  display: block;
+  color: var(--muted);
+  font-size: .82rem;
+  margin-top: 4px;
+}
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+.check-row input {
+  width: 18px;
+  min-height: 18px;
+  margin-top: 3px;
+}
+.check-row label { margin: 0; }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.primary { background: var(--brand); color: #fff; }
+.secondary {
+  background: #e6f3ef;
+  color: var(--brand-dark);
+  border: 1px solid #b7d7d1;
+}
+.ghost {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.result-panel {
+  position: sticky;
+  top: 16px;
+}
+.status-bar {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: #f6fbfa;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
+}
+.status-label {
+  display: block;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.status-pill {
+  border: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #8a4b0b;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: .82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px;
+}
+.metric {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fff;
+}
+.metric span {
+  display: block;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.metric strong {
+  display: block;
+  font-size: clamp(1.2rem, 4vw, 1.86rem);
+  line-height: 1.16;
+  margin-top: 7px;
+  word-break: break-word;
+}
+.wide { grid-column: 1 / -1; }
+.result-copy {
+  padding: 0 18px 18px;
+}
+.result-copy h3 {
+  margin: 16px 0 8px;
+  font-size: 1rem;
+}
+.result-copy p {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+.notice {
+  border-left: 4px solid var(--accent);
+  background: #fffbeb;
+  padding: 12px 13px;
+  border-radius: 0 8px 8px 0;
+}
+.notice.good {
+  border-left-color: var(--good);
+  background: #ecfdf3;
+}
+.notice.danger {
+  border-left-color: var(--danger);
+  background: #fff1f2;
+}
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+  font-size: .92rem;
+}
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #edf2f7;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: #f8fafc;
+  color: #334155;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+td:last-child, th:last-child { text-align: right; }
+.warning-list, .next-list {
+  margin: 0;
+  padding-left: 20px;
+}
+.warning-list li, .next-list li { margin: 8px 0; }
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.info-block {
+  padding: 20px;
+}
+.info-block ul, .info-block ol {
+  margin: 12px 0 0;
+  padding-left: 20px;
+}
+.info-block li { margin: 8px 0; }
+.related {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.related a {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px;
+  text-decoration: none;
+  font-weight: 800;
+}
+.footer {
+  border-top: 1px solid var(--line);
+  background: #fff;
+  padding: 24px 0;
+  color: var(--muted);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.footer a { color: var(--brand-dark); }
+@media (max-width: 920px) {
+  .app-grid, .info-grid, .related { grid-template-columns: 1fr; }
+  .result-panel { position: static; }
+}
+@media (max-width: 620px) {
+  .topbar-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 14px 0;
+  }
+  .field-grid, .metrics { grid-template-columns: 1fr; }
+  .actions button { width: 100%; }
+  .wide { grid-column: auto; }
+  form, .panel-head { padding-left: 16px; padding-right: 16px; }
+  table { min-width: 480px; }
+}
+@media print {
+  .topbar, .hero, .actions, .related, .footer { display: none; }
+  body { background: #fff; }
+  .panel, .info-block { box-shadow: none; break-inside: avoid; }
+  main { padding: 0; }
+}
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/faraid-inheritance/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/urithi-wa-faraid/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/faraid-inheritance/" />
 </head>
 <body>
-<afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
-<section class="en-tool-hero">
-<div class="container">
-<nav class="en-breadcrumb" aria-label="Breadcrumb">
-<a href="/">Home</a><span class="en-breadcrumb-sep">&gt;</span>
-<a href="/religious-cultural/">Religious &amp; Cultural</a><span class="en-breadcrumb-sep">&gt;</span>
-<span class="en-breadcrumb-current">Faraid Calculator</span>
-</nav>
-<h1>Islamic Inheritance Faraid Calculator</h1>
-<p>A guided Faraid planner for common household cases. It deducts funeral debts and estate costs, allocates fixed shares where applicable, and splits the residue between children.</p>
-<div class="en-tool-hero-meta">
-<span class="en-tool-hero-pill">Fixed shares</span>
-<span class="en-tool-hero-pill">Residue split</span>
-<span class="en-tool-hero-pill">Estate debts</span>
-<span class="en-tool-hero-pill">Scholar review</span>
-</div>
-</div>
+<a class="skip-link" href="#calculator">Skip to calculator</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/">AfroTools</a>
+    <nav class="topnav" aria-label="Primary">
+      <a href="/tools/">Tools</a>
+      <a href="/religious-cultural/">Religious & Cultural</a>
+      <a href="/tools/zakat-calculator/">Zakat</a>
+      <a href="/tools/islamic-finance/">Islamic Finance</a>
+    </nav>
+  </div>
+</header>
+<section class="hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">/</span>
+      <a href="/religious-cultural/">Religious & Cultural</a><span aria-hidden="true">/</span>
+      <span>Faraid Calculator</span>
+    </nav>
+    <h1>Islamic Inheritance Faraid Calculator</h1>
+    <p class="hero-copy">Plan a conservative first-pass Faraid distribution for common cases with a spouse, parents, children, and full siblings. The calculator deducts estate costs first, shows share fractions and amounts, flags blocked heirs, and tells you when the case needs scholar and lawyer review.</p>
+    <div class="hero-pills" aria-label="Calculator features">
+      <span class="pill">Estate deductions</span>
+      <span class="pill">Fixed shares</span>
+      <span class="pill">Residue split</span>
+      <span class="pill">Blocked-heir warnings</span>
+    </div>
+  </div>
 </section>
-<main>
-<section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="faraid-inheritance"></section>
+<main id="calculator" class="wrap">
+  <div class="app-grid">
+    <section class="panel" aria-labelledby="input-title">
+      <div class="panel-head">
+        <h2 id="input-title">Enter estate and heirs</h2>
+        <p>Use one currency. This limited model covers common Sunni-style fixed shares and residue rules for the heirs shown here only.</p>
+      </div>
+      <form id="faraidForm">
+        <div class="field-grid">
+          <div>
+            <label for="currency">Currency</label>
+            <select id="currency" name="currency">
+              <option value="NGN">NGN - Nigerian naira</option>
+              <option value="GHS">GHS - Ghanaian cedi</option>
+              <option value="KES">KES - Kenyan shilling</option>
+              <option value="ZAR">ZAR - South African rand</option>
+              <option value="EGP">EGP - Egyptian pound</option>
+              <option value="USD">USD - US dollar</option>
+              <option value="GBP">GBP - Pound sterling</option>
+            </select>
+          </div>
+          <div>
+            <label for="estate">Gross estate amount</label>
+            <input id="estate" name="estate" type="number" min="0" step="0.01" value="25000000" inputmode="decimal">
+          </div>
+          <div>
+            <label for="debts">Debts and secured liabilities</label>
+            <input id="debts" name="debts" type="number" min="0" step="0.01" value="3000000" inputmode="decimal">
+          </div>
+          <div>
+            <label for="funeral">Funeral and estate costs</label>
+            <input id="funeral" name="funeral" type="number" min="0" step="0.01" value="800000" inputmode="decimal">
+          </div>
+          <div>
+            <label for="bequest">Bequest to non-heirs</label>
+            <input id="bequest" name="bequest" type="number" min="0" step="0.01" value="1000000" inputmode="decimal">
+            <span class="hint">The calculator caps this at one third of the estate after debts and costs.</span>
+          </div>
+          <div>
+            <label for="spouse">Surviving spouse</label>
+            <select id="spouse" name="spouse">
+              <option value="wife">Wife or wives</option>
+              <option value="husband">Husband</option>
+              <option value="none">No spouse</option>
+            </select>
+          </div>
+          <div>
+            <label for="wives">Number of wives</label>
+            <input id="wives" name="wives" type="number" min="1" max="4" step="1" value="1" inputmode="numeric">
+          </div>
+          <div>
+            <label for="sons">Sons</label>
+            <input id="sons" name="sons" type="number" min="0" step="1" value="1" inputmode="numeric">
+          </div>
+          <div>
+            <label for="daughters">Daughters</label>
+            <input id="daughters" name="daughters" type="number" min="0" step="1" value="2" inputmode="numeric">
+          </div>
+          <div>
+            <label for="brothers">Full brothers</label>
+            <input id="brothers" name="brothers" type="number" min="0" step="1" value="1" inputmode="numeric">
+          </div>
+          <div>
+            <label for="sisters">Full sisters</label>
+            <input id="sisters" name="sisters" type="number" min="0" step="1" value="1" inputmode="numeric">
+          </div>
+          <div class="field-full check-row">
+            <input id="father" name="father" type="checkbox" checked>
+            <label for="father">Father is alive</label>
+          </div>
+          <div class="field-full check-row">
+            <input id="mother" name="mother" type="checkbox" checked>
+            <label for="mother">Mother is alive</label>
+          </div>
+          <div class="field-full check-row">
+            <input id="limitedCase" name="limitedCase" type="checkbox" checked>
+            <label for="limitedCase">I understand this is a limited planning calculator and complex heirs must be reviewed by a scholar and lawyer.</label>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary" type="submit">Calculate shares</button>
+          <button class="secondary" type="button" id="copyBtn">Copy result</button>
+          <button class="secondary" type="button" id="exportBtn">Export CSV</button>
+          <button class="ghost" type="button" id="printBtn">Print</button>
+        </div>
+      </form>
+    </section>
+    <aside class="panel result-panel" aria-labelledby="result-title">
+      <div class="status-bar">
+        <div>
+          <span class="status-label">Result</span>
+          <strong id="result-title">Faraid estimate</strong>
+        </div>
+        <span class="status-pill" id="caseStatus" data-output="case-status">Ready</span>
+      </div>
+      <div class="metrics" aria-live="polite">
+        <div class="metric">
+          <span>Net estate</span>
+          <strong id="netOut" data-output="net-estate">-</strong>
+        </div>
+        <div class="metric">
+          <span>Modeled heirs</span>
+          <strong id="heirsOut" data-output="heir-count">-</strong>
+        </div>
+        <div class="metric">
+          <span>Allocated</span>
+          <strong id="allocatedOut" data-output="allocated-estate">-</strong>
+        </div>
+        <div class="metric">
+          <span>Review flag</span>
+          <strong id="reviewOut" data-output="review-flag">-</strong>
+        </div>
+        <div class="metric wide">
+          <span>Next step</span>
+          <strong id="nextOut" data-output="next-step">Enter values, then calculate.</strong>
+        </div>
+      </div>
+      <div class="result-copy">
+        <div id="resultNote" class="notice" data-output="summary-note">Your result will appear here.</div>
+        <h3>Share table</h3>
+        <div class="table-wrap">
+          <table aria-describedby="shareHelp">
+            <caption id="shareHelp">Modeled Faraid shares for the heirs entered above</caption>
+            <thead>
+              <tr>
+                <th scope="col">Heir</th>
+                <th scope="col">Basis</th>
+                <th scope="col">Fraction</th>
+                <th scope="col">Amount per heir</th>
+              </tr>
+            </thead>
+            <tbody id="shareRows" data-output="share-table"></tbody>
+          </table>
+        </div>
+        <h3>Exclusions and warnings</h3>
+        <ul class="warning-list" id="warnings" data-output="blocked-warnings"></ul>
+        <h3>Consultation next steps</h3>
+        <ol class="next-list" id="nextSteps" data-output="consult-steps"></ol>
+      </div>
+    </aside>
+  </div>
+  <section class="info-grid" aria-label="Methodology and sources">
+    <div class="info-block">
+      <h2>Methodology</h2>
+      <p>This conservative workflow follows the usual order used in Faraid planning calculators:</p>
+      <ol>
+        <li>Start with gross estate, then subtract funeral and estate costs, debts, and a valid non-heir bequest capped at one third after costs and debts.</li>
+        <li>Assign fixed shares for spouse, mother, father, and daughters where the shown heirs make that safe to model.</li>
+        <li>Split residue to sons and daughters at a 2:1 ratio when sons exist. Where a father is present without sons, he may receive residue after his fixed share.</li>
+        <li>Block full siblings when a father or descendants are present. If sibling-only residue is safely modeled, brothers and sisters split 2:1.</li>
+        <li>Flag any unallocated residue, awl-style over-allocation, missing heir class, or complex combination for scholar and lawyer review.</li>
+      </ol>
+    </div>
+    <div class="info-block">
+      <h2>Assumptions and limits</h2>
+      <p><strong>Last reviewed: 2026-05-16.</strong> This page models a narrow planning scenario only. It does not model grandparents, grandchildren through deceased children, half siblings, uterine siblings, adopted children, disputed paternity, missing heirs, estate tax, matrimonial property, local probate priority, or every madhhab detail.</p>
+      <ul>
+        <li>Use it as a checklist for records and first-pass discussion, not as a final ruling.</li>
+        <li>Local law can affect executors, probate, matrimonial property, title transfer, tax, and court process.</li>
+        <li>Complex residue, radd, awl, blocked-heir, or representation questions need qualified review.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h2>Sources and verification</h2>
+      <p>The source context for inheritance shares is Quranic inheritance guidance in Surah An-Nisa, especially verses 4:11, 4:12, and 4:176, plus standard Faraid concepts such as fixed shares, residue, blocking, awl, and radd. Links are provided for verification and discussion with a qualified scholar.</p>
+      <ul>
+        <li><a href="https://quran.com/4/11" rel="noopener">Quran.com, Surah An-Nisa 4:11</a></li>
+        <li><a href="https://quran.com/4/12" rel="noopener">Quran.com, Surah An-Nisa 4:12</a></li>
+        <li><a href="https://quran.com/4/176" rel="noopener">Quran.com, Surah An-Nisa 4:176</a></li>
+        <li><a href="https://www.halalwallet.us/tools/faraid-calculator" rel="noopener">HalalWallet Faraid calculator context</a></li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h2>Disclaimer</h2>
+      <p>This tool is educational only. It is not a fatwa, not legal advice, and not a substitute for a qualified scholar, lawyer, executor, court, or local probate authority. Confirm the heirs, estate deductions, blocked heirs, bequest validity, and local law before distributing property.</p>
+    </div>
+    <div class="info-block field-full">
+      <h2>Related tools</h2>
+      <div class="related">
+        <a href="/tools/zakat-calculator/">Zakat Calculator</a>
+        <a href="/tools/islamic-finance/">Islamic Finance Profit Rate</a>
+        <a href="/tools/inheritance-tax/">Inheritance Tax</a>
+        <a href="/tools/will-generator/">Will Generator</a>
+      </div>
+    </div>
+  </section>
 </main>
-<afro-footer></afro-footer>
-<script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>AfroTools religious and legal calculators are for planning conversations, not final rulings.</span>
+    <span><a href="/tools/">All tools</a> | <a href="/religious-cultural/">Religious & Cultural</a></span>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById("faraidForm");
+  var fields = Array.prototype.slice.call(form.querySelectorAll("input, select"));
+  var currencyEl = document.getElementById("currency");
+  var shareRowsEl = document.getElementById("shareRows");
+  var warningsEl = document.getElementById("warnings");
+  var nextStepsEl = document.getElementById("nextSteps");
+  var lastResult = null;
+
+  var currencySymbols = {
+    NGN: "NGN",
+    GHS: "GHS",
+    KES: "KES",
+    ZAR: "ZAR",
+    EGP: "EGP",
+    USD: "USD",
+    GBP: "GBP"
+  };
+
+  function numberValue(id) {
+    var value = Number(document.getElementById(id).value);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  }
+
+  function intValue(id) {
+    return Math.max(0, Math.floor(numberValue(id)));
+  }
+
+  function money(value) {
+    var code = currencyEl.value || "USD";
+    return currencySymbols[code] + " " + Number(value || 0).toLocaleString("en-US", {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: value && Math.abs(value) < 100 ? 2 : 0
+    });
+  }
+
+  function plainNumber(value) {
+    return Number(value || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  }
+
+  function setText(id, value) {
+    document.getElementById(id).textContent = value;
+  }
+
+  function gcd(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    while (b) {
+      var t = b;
+      b = a % b;
+      a = t;
+    }
+    return a || 1;
+  }
+
+  function fraction(value) {
+    if (value <= 0) return "0";
+    var denominator = 72;
+    var numerator = Math.round(value * denominator);
+    var divisor = gcd(numerator, denominator);
+    numerator = numerator / divisor;
+    denominator = denominator / divisor;
+    var percent = (value * 100).toFixed(value < 0.01 ? 2 : 1).replace(/\.0$/, "");
+    return numerator + "/" + denominator + " (" + percent + "%)";
+  }
+
+  function addShare(rows, key, label, count, share, basis) {
+    if (!count || share <= 0) return;
+    rows.push({
+      key: key,
+      label: label,
+      count: count,
+      share: share,
+      perShare: share / count,
+      basis: basis
+    });
+  }
+
+  function buildResult() {
+    var estate = numberValue("estate");
+    var debts = numberValue("debts");
+    var funeral = numberValue("funeral");
+    var requestedBequest = numberValue("bequest");
+    var distributableBeforeBequest = Math.max(0, estate - debts - funeral);
+    var bequestCap = distributableBeforeBequest / 3;
+    var bequestUsed = Math.min(requestedBequest, bequestCap);
+    var netEstate = Math.max(0, distributableBeforeBequest - bequestUsed);
+    var spouse = document.getElementById("spouse").value;
+    var wives = Math.min(4, Math.max(1, intValue("wives") || 1));
+    var sons = intValue("sons");
+    var daughters = intValue("daughters");
+    var brothers = intValue("brothers");
+    var sisters = intValue("sisters");
+    var father = document.getElementById("father").checked;
+    var mother = document.getElementById("mother").checked;
+    var hasChildren = sons + daughters > 0;
+    var siblingCount = brothers + sisters;
+    var rows = [];
+    var warnings = [];
+    var nextSteps = [];
+    var fixedTotal = 0;
+    var residueReceivers = [];
+    var umariyyat = spouse !== "none" && father && mother && !hasChildren && siblingCount === 0;
+
+    if (requestedBequest > bequestCap + 0.01) {
+      warnings.push("The bequest was capped at one third after debts and costs. The excess needs review and heir consent.");
+    }
+    if (debts + funeral > estate) {
+      warnings.push("Debts and funeral or estate costs exceed the gross estate, so no distributable inheritance is shown.");
+    }
+
+    if (spouse === "husband") {
+      var husbandShare = hasChildren ? 1 / 4 : 1 / 2;
+      addShare(rows, "husband", "Husband", 1, husbandShare, hasChildren ? "Fixed 1/4 because descendants exist" : "Fixed 1/2 because no descendants were entered");
+      fixedTotal += husbandShare;
+    } else if (spouse === "wife") {
+      var wifeTotal = hasChildren ? 1 / 8 : 1 / 4;
+      addShare(rows, "wives", wives === 1 ? "Wife" : "Wives", wives, wifeTotal, hasChildren ? "Fixed 1/8 shared by wife or wives because descendants exist" : "Fixed 1/4 shared by wife or wives because no descendants were entered");
+      fixedTotal += wifeTotal;
+    }
+
+    if (mother) {
+      if (umariyyat) {
+        rows.push({ key: "mother-remainder", label: "Mother", count: 1, share: 0, perShare: 0, basis: "Umariyyat case: one third of remainder after spouse, modeled after spouse share" });
+      } else {
+        var motherShare = hasChildren || siblingCount >= 2 ? 1 / 6 : 1 / 3;
+        addShare(rows, "mother", "Mother", 1, motherShare, motherShare === 1 / 6 ? "Fixed 1/6 because descendants or multiple siblings exist" : "Fixed 1/3 because no descendants and fewer than two siblings were entered");
+        fixedTotal += motherShare;
+      }
+    }
+
+    if (father && hasChildren) {
+      addShare(rows, "father-fixed", "Father", 1, 1 / 6, "Fixed 1/6 because descendants exist");
+      fixedTotal += 1 / 6;
+      if (sons === 0 && daughters > 0) {
+        residueReceivers.push({ key: "father-residue", label: "Father residue", count: 1, unitWeight: 1, basis: "Residue after fixed shares because daughters exist without sons" });
+      }
+    } else if (father && !hasChildren) {
+      residueReceivers.push({ key: "father-residue", label: "Father", count: 1, unitWeight: 1, basis: "Residue after fixed shares because no descendants were entered" });
+    }
+
+    if (sons > 0) {
+      var childWeight = sons * 2 + daughters;
+      residueReceivers.push({ key: "sons", label: "Son", count: sons, unitWeight: 2, totalWeight: childWeight, basis: "Residue split 2:1 among sons and daughters" });
+      if (daughters > 0) {
+        residueReceivers.push({ key: "daughters-residue", label: "Daughter", count: daughters, unitWeight: 1, totalWeight: childWeight, basis: "Residue split 2:1 among sons and daughters" });
+      }
+    } else if (daughters === 1) {
+      addShare(rows, "daughter-fixed", "Daughter", 1, 1 / 2, "Fixed 1/2 because one daughter and no sons were entered");
+      fixedTotal += 1 / 2;
+    } else if (daughters > 1) {
+      addShare(rows, "daughters-fixed", "Daughters", daughters, 2 / 3, "Fixed 2/3 shared by daughters because no sons were entered");
+      fixedTotal += 2 / 3;
+    }
+
+    if (siblingCount > 0 && (father || hasChildren)) {
+      warnings.push("Full siblings are blocked in this limited model because a father or descendants were entered.");
+    } else if (siblingCount > 0 && !father && !hasChildren) {
+      if (brothers > 0) {
+        var siblingWeight = brothers * 2 + sisters;
+        residueReceivers.push({ key: "brothers", label: "Full brother", count: brothers, unitWeight: 2, totalWeight: siblingWeight, basis: "Residue split 2:1 among full brothers and full sisters" });
+        if (sisters > 0) {
+          residueReceivers.push({ key: "sisters-residue", label: "Full sister", count: sisters, unitWeight: 1, totalWeight: siblingWeight, basis: "Residue split 2:1 among full brothers and full sisters" });
+        }
+      } else if (sisters === 1) {
+        addShare(rows, "sister-fixed", "Full sister", 1, 1 / 2, "Fixed 1/2 because no father, descendants, or full brothers were entered");
+        fixedTotal += 1 / 2;
+      } else if (sisters > 1) {
+        addShare(rows, "sisters-fixed", "Full sisters", sisters, 2 / 3, "Fixed 2/3 because no father, descendants, or full brothers were entered");
+        fixedTotal += 2 / 3;
+      }
+    }
+
+    if (!document.getElementById("limitedCase").checked) {
+      warnings.push("The limited-case acknowledgement is unchecked. Treat this output as a draft only.");
+    }
+
+    var scaling = fixedTotal > 1 ? 1 / fixedTotal : 1;
+    if (fixedTotal > 1) {
+      warnings.push("Fixed shares exceed the estate. The calculator proportionally scales modeled shares as an awl-style warning, but this must be reviewed.");
+    }
+
+    rows.forEach(function (row) {
+      if (row.key === "mother-remainder") return;
+      row.share = row.share * scaling;
+      row.perShare = row.share / row.count;
+    });
+
+    var allocatedFixed = rows.reduce(function (sum, row) {
+      return sum + (row.key === "mother-remainder" ? 0 : row.share);
+    }, 0);
+    if (umariyyat) {
+      var spouseShare = allocatedFixed;
+      var remainderAfterSpouse = Math.max(0, 1 - spouseShare);
+      var motherRemainderShare = remainderAfterSpouse / 3;
+      var fatherRemainderShare = remainderAfterSpouse - motherRemainderShare;
+      rows = rows.filter(function (row) { return row.key !== "mother-remainder" && row.key !== "father-residue"; });
+      rows.push({ key: "mother-umariyyat", label: "Mother", count: 1, share: motherRemainderShare, perShare: motherRemainderShare, basis: "One third of remainder after spouse in a spouse plus parents case" });
+      rows.push({ key: "father-umariyyat", label: "Father", count: 1, share: fatherRemainderShare, perShare: fatherRemainderShare, basis: "Residue after spouse and mother in a spouse plus parents case" });
+      allocatedFixed = rows.reduce(function (sum, row) { return sum + row.share; }, 0);
+      residueReceivers = [];
+      warnings.push("This spouse plus parents case is modeled with the common Umariyyat remainder method. Confirm the exact school and local practice.");
+    }
+
+    var residue = Math.max(0, 1 - allocatedFixed);
+    if (residueReceivers.length && residue > 0 && fixedTotal <= 1) {
+      var totalResidueWeight = residueReceivers.reduce(function (sum, item) {
+        return sum + ((item.totalWeight ? item.unitWeight * item.count : item.unitWeight * item.count) || 0);
+      }, 0);
+      residueReceivers.forEach(function (item) {
+        var totalShare = totalResidueWeight ? residue * ((item.unitWeight * item.count) / totalResidueWeight) : 0;
+        addShare(rows, item.key, item.label, item.count, totalShare, item.basis);
+      });
+      allocatedFixed = rows.reduce(function (sum, row) { return sum + row.share; }, 0);
+      residue = Math.max(0, 1 - allocatedFixed);
+    } else if (residueReceivers.length && fixedTotal > 1) {
+      warnings.push("Residue heirs were entered, but fixed shares already exceed the estate. Scholar review is required.");
+    }
+
+    if (residue > 0.0001) {
+      warnings.push("There is unallocated residue in this limited model. Radd or another residuary heir may apply.");
+    }
+    if (!father && !mother && spouse === "none" && sons + daughters + brothers + sisters === 0) {
+      warnings.push("No modeled heirs were entered. Add heirs or consult the relevant authority for extended relatives.");
+    }
+    warnings.push("Not modeled: grandparents, grandchildren through deceased children, half siblings, uterine siblings, adopted children, missing heirs, and local probate rules.");
+
+    nextSteps.push("Collect death certificate, marriage evidence, birth records, asset schedule, debt proof, funeral invoices, and any valid will or bequest document.");
+    nextSteps.push("Ask a qualified scholar to verify heirs, blocked heirs, awl, radd, bequest validity, and school-specific details.");
+    nextSteps.push("Ask a lawyer, executor, or court officer to confirm local probate, matrimonial property, tax, title transfer, and estate administration rules.");
+    nextSteps.push("Do not distribute property until all heirs, debts, and legal claims are confirmed in writing.");
+
+    var allocatedAmount = netEstate * rows.reduce(function (sum, row) { return sum + row.share; }, 0);
+    var reviewFlag = warnings.length > 1 || residue > 0.0001 || fixedTotal > 1 ? "Review required" : "Simple case";
+    return {
+      estate: estate,
+      debts: debts,
+      funeral: funeral,
+      requestedBequest: requestedBequest,
+      bequestUsed: bequestUsed,
+      netEstate: netEstate,
+      rows: rows,
+      warnings: warnings,
+      nextSteps: nextSteps,
+      allocatedAmount: allocatedAmount,
+      unallocatedAmount: Math.max(0, netEstate - allocatedAmount),
+      reviewFlag: reviewFlag
+    };
+  }
+
+  function renderShares(result) {
+    if (!result.rows.length) {
+      shareRowsEl.innerHTML = "<tr><td colspan=\"4\">No modeled shares yet. Enter heirs and calculate.</td></tr>";
+      return;
+    }
+    shareRowsEl.innerHTML = result.rows.map(function (row) {
+      var perAmount = result.netEstate * row.perShare;
+      var name = row.count > 1 ? row.count + " x " + row.label : row.label;
+      return "<tr><td>" + name + "</td><td>" + row.basis + "</td><td>" + fraction(row.share) + "</td><td>" + money(perAmount) + "</td></tr>";
+    }).join("");
+  }
+
+  function renderLists(result) {
+    warningsEl.innerHTML = result.warnings.map(function (item) { return "<li>" + item + "</li>"; }).join("");
+    nextStepsEl.innerHTML = result.nextSteps.map(function (item) { return "<li>" + item + "</li>"; }).join("");
+  }
+
+  function render() {
+    var result = buildResult();
+    lastResult = result;
+    var status = document.getElementById("caseStatus");
+    var note = document.getElementById("resultNote");
+    setText("netOut", money(result.netEstate));
+    setText("heirsOut", String(result.rows.reduce(function (sum, row) { return sum + row.count; }, 0)));
+    setText("allocatedOut", money(result.allocatedAmount));
+    setText("reviewOut", result.reviewFlag);
+    if (result.reviewFlag === "Simple case") {
+      status.textContent = "Modeled";
+      status.style.background = "#ecfdf3";
+      status.style.color = "#157347";
+      note.className = "notice good";
+      note.textContent = "This appears to fit the limited model, but the heirs and local probate process still need qualified review before distribution.";
+      setText("nextOut", "Export this draft and book scholar and legal review.");
+    } else {
+      status.textContent = "Review needed";
+      status.style.background = "#fff7ed";
+      status.style.color = "#8a4b0b";
+      note.className = "notice";
+      note.textContent = "This result is a planning estimate with warnings. Do not distribute property until a qualified scholar and local legal adviser confirm the case.";
+      setText("nextOut", "Use the warnings as your review checklist.");
+    }
+    renderShares(result);
+    renderLists(result);
+    try {
+      localStorage.setItem("afrotools-faraid-inheritance", JSON.stringify({ savedAt: new Date().toISOString(), inputs: collectInputs(), result: result }));
+    } catch (err) {}
+  }
+
+  function collectInputs() {
+    var output = {};
+    fields.forEach(function (field) {
+      output[field.name || field.id] = field.type === "checkbox" ? field.checked : field.value;
+    });
+    return output;
+  }
+
+  function resultText() {
+    if (!lastResult) render();
+    var lines = [
+      "AfroTools Faraid Calculator result",
+      "Date: " + new Date().toISOString().slice(0, 10),
+      "Currency: " + currencyEl.value,
+      "Gross estate: " + money(lastResult.estate),
+      "Debts: " + money(lastResult.debts),
+      "Funeral and estate costs: " + money(lastResult.funeral),
+      "Bequest used: " + money(lastResult.bequestUsed),
+      "Net estate: " + money(lastResult.netEstate),
+      "Allocated: " + money(lastResult.allocatedAmount),
+      "Review flag: " + lastResult.reviewFlag,
+      "Shares:"
+    ];
+    lastResult.rows.forEach(function (row) {
+      lines.push("- " + row.label + ": " + fraction(row.share) + ", per heir " + money(lastResult.netEstate * row.perShare) + " (" + row.basis + ")");
+    });
+    lines.push("Warnings:");
+    lastResult.warnings.forEach(function (item) { lines.push("- " + item); });
+    lines.push("Educational only. Confirm with a qualified scholar and lawyer before distributing property.");
+    return lines.join("\n");
+  }
+
+  function exportCsv() {
+    if (!lastResult) render();
+    var rows = [
+      ["Field", "Value"],
+      ["Date", new Date().toISOString().slice(0, 10)],
+      ["Currency", currencyEl.value],
+      ["Gross estate", plainNumber(lastResult.estate)],
+      ["Debts", plainNumber(lastResult.debts)],
+      ["Funeral and estate costs", plainNumber(lastResult.funeral)],
+      ["Bequest used", plainNumber(lastResult.bequestUsed)],
+      ["Net estate", plainNumber(lastResult.netEstate)],
+      ["Allocated estate", plainNumber(lastResult.allocatedAmount)],
+      ["Review flag", lastResult.reviewFlag],
+      ["Disclaimer", "Educational only. Confirm with a qualified scholar and lawyer."]
+    ];
+    lastResult.rows.forEach(function (row) {
+      rows.push([row.label, fraction(row.share), row.basis, plainNumber(lastResult.netEstate * row.perShare)]);
+    });
+    lastResult.warnings.forEach(function (warning) {
+      rows.push(["Warning", warning]);
+    });
+    var csv = rows.map(function (row) {
+      return row.map(function (cell) {
+        return "\"" + String(cell == null ? "" : cell).replace(/"/g, "\"\"") + "\"";
+      }).join(",");
+    }).join("\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "afrotools-faraid-result.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    render();
+  });
+
+  fields.forEach(function (field) {
+    field.addEventListener("input", render);
+    field.addEventListener("change", render);
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    var text = resultText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        setText("nextOut", "Result copied for scholar and legal review.");
+      }).catch(function () {
+        window.prompt("Copy your Faraid result", text);
+      });
+    } else {
+      window.prompt("Copy your Faraid result", text);
+    }
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", exportCsv);
+  document.getElementById("printBtn").addEventListener("click", function () { window.print(); });
+  render();
+})();
+</script>
 </body>
 </html>

@@ -104,6 +104,7 @@
 - Use the i18n rule
 - For French-market rollout or French SEO batching, use `afrotools-french-localization-coordinator` and read `docs/FRENCH-LOCALIZATION-STRATEGY.md`
 - For Swahili-market rollout or Swahili SEO batching, use `afrotools-swahili-localization-coordinator` and read `docs/SWAHILI-LOCALIZATION-STRATEGY.md`
+- For Yoruba foundation or shell batching, read `docs/YORUBA-LOCALIZATION-STRATEGY.md`; keep the lane Nigeria-first, route-first, manual-first, and mark English fallbacks until `/yo/` routes exist
 - Treat translated outputs as generated unless the task is explicitly a manual patch
 - Treat Swahili as a selectively generated or hand-authored surface; do not assume `lang/sw.json` alone is enough for high-value page quality
 - If a stale translated page is only a wrapper or thin output, use `node scripts/build-i18n.js --lang fr --page <source-page> --overwrite-existing` to rebuild that specific page from the English source before hand-patching

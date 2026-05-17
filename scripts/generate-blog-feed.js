@@ -8,6 +8,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
 const BLOG_DIR = path.join(ROOT, 'blog');
@@ -269,7 +270,7 @@ function main() {
     return;
   }
 
-  fs.writeFileSync(FEED_PATH, expected, 'utf8');
+  writeFileSyncWithRetry(FEED_PATH, expected, 'utf8');
   console.log(`Generated blog/feed.xml with ${articles.length} items. Latest: ${articles[0].slug}`);
 }
 

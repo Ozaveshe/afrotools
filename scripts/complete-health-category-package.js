@@ -169,8 +169,8 @@ function ensureCss(html) {
 function ensureWorkflowScript(html) {
   if (html.includes('/assets/js/health-workflow.js')) return html;
   const script = '<script src="/assets/js/health-workflow.js" defer></script>';
-  if (html.includes('<script defer src="https://www.googletagmanager.com/gtag/js')) {
-    return html.replace('<script defer src="https://www.googletagmanager.com/gtag/js', `${script}\n<script defer src="https://www.googletagmanager.com/gtag/js`);
+  if (/<script\s+(?:async|defer)\s+src="https:\/\/www\.googletagmanager\.com\/gtag\/js/.test(html)) {
+    return html.replace(/<script\s+(async|defer)\s+src="https:\/\/www\.googletagmanager\.com\/gtag\/js/, `${script}\n<script $1 src="https://www.googletagmanager.com/gtag/js`);
   }
   return html.replace('</body>', `${script}\n</body>`);
 }

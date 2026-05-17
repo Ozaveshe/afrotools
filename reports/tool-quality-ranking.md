@@ -1,13 +1,13 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-05-15T17:24:51.443Z
+Generated: 2026-05-17T03:33:22.482Z
 
 ## Scope
 
-- Registry rows scored: 2183
+- Registry rows scored: 2389
 - Live/new expanded tool instances represented: 2594
-- Unique live/new routes: 2180
-- Browser smoke: not run
+- Unique live/new routes: 2386
+- Browser smoke: enabled, 2386 routes tested
 - Reports: `reports/tool-quality-ranking.json`, `reports/tool-quality-ranking.csv`
 
 ## Score Meaning
@@ -22,207 +22,198 @@ Generated: 2026-05-15T17:24:51.443Z
 
 | Rank | Rows | Weighted instances |
 | --- | ---: | ---: |
-| A | 526 | 761 |
-| B | 564 | 633 |
-| C | 552 | 867 |
-| D | 421 | 1189 |
-| F | 120 | 516 |
+| A | 688 | 1028 |
+| B | 624 | 693 |
+| C | 607 | 991 |
+| D | 399 | 1113 |
+| F | 71 | 347 |
 
-Low-ranked rows below C: 541
-Repair-first rows below D: 120
+Low-ranked rows below C: 470
+Repair-first rows below D: 71
 
 ## Lowest Category Averages
 
 | Category | Rows | Instances | Avg score | Low rows | P0 | Browser failures |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Insurance | 30 | 336 | 54.8 | 24 | 4 | 0 |
-| Religious & Cultural | 25 | 25 | 54.8 | 20 | 5 | 0 |
-| Energy & Utilities | 44 | 311 | 61.5 | 20 | 6 | 0 |
-| Career & Development | 9 | 9 | 62 | 4 | 0 | 0 |
-| HR & Payroll | 38 | 323 | 62.4 | 20 | 0 | 0 |
-| Sports & Entertainment | 15 | 15 | 62.8 | 11 | 0 | 0 |
-| Personal Finance | 22 | 22 | 64.7 | 3 | 0 | 0 |
-| Business & ROI | 27 | 27 | 66.1 | 14 | 0 | 0 |
-| Transport & Logistics | 29 | 29 | 66.1 | 13 | 1 | 0 |
-| Education | 93 | 93 | 67.2 | 40 | 0 | 0 |
-| Fintech & Banking | 44 | 44 | 67.3 | 11 | 0 | 0 |
-| Image & Design | 49 | 49 | 67.8 | 18 | 0 | 0 |
-| Creative Economy | 46 | 46 | 68.2 | 13 | 0 | 0 |
-| Trade & Import | 48 | 48 | 68.4 | 16 | 0 | 0 |
-| Developer Tools | 47 | 47 | 68.9 | 15 | 0 | 0 |
-| Telecom & Mobile | 36 | 36 | 69.1 | 15 | 0 | 0 |
-| Small Business & SME | 37 | 52 | 69.5 | 14 | 0 | 0 |
-| Travel & Tourism | 14 | 14 | 70.4 | 0 | 0 | 0 |
-| Uniquely African | 92 | 107 | 71 | 38 | 0 | 0 |
-| Government & Civic | 28 | 136 | 71 | 11 | 0 | 0 |
+| Insurance | 34 | 340 | 62.3 | 22 | 0 | 0 |
+| Sports & Entertainment | 15 | 15 | 65.8 | 7 | 0 | 0 |
+| Career & Development | 12 | 12 | 65.8 | 4 | 0 | 0 |
+| Personal Finance | 23 | 23 | 66.8 | 4 | 0 | 0 |
+| HR & Payroll | 22 | 307 | 67 | 9 | 0 | 0 |
+| Education | 109 | 109 | 67.9 | 39 | 0 | 0 |
+| Telecom & Mobile | 50 | 50 | 68 | 22 | 0 | 0 |
+| Religious & Cultural | 31 | 31 | 69.3 | 10 | 0 | 0 |
+| Transport & Logistics | 33 | 33 | 69.5 | 3 | 1 | 0 |
+| Small Business & SME | 44 | 59 | 70.1 | 15 | 0 | 0 |
+| Business & ROI | 32 | 32 | 70.4 | 13 | 0 | 0 |
+| Fintech & Banking | 44 | 44 | 70.4 | 4 | 0 | 0 |
+| Creative Economy | 50 | 50 | 71.2 | 4 | 0 | 0 |
+| Energy & Utilities | 67 | 334 | 71.3 | 31 | 0 | 0 |
+| Uniquely African | 95 | 110 | 72.4 | 39 | 0 | 0 |
+| Document & PDF | 110 | 110 | 72.4 | 29 | 0 | 0 |
+| Travel & Tourism | 14 | 14 | 72.9 | 0 | 0 | 0 |
+| Engineering & Construction | 48 | 48 | 73 | 10 | 0 | 0 |
+| VAT & Business Tax | 238 | 238 | 73.8 | 69 | 0 | 0 |
+| Trade & Import | 58 | 58 | 73.8 | 9 | 0 | 0 |
 
 ## P0 Queue
 
 | Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 41 | F | P0-high-value-repair | gas-lpg-cost | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | outage-cost | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | paygo-solar | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | islamic-finance | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | car-price-intelligence-fr | Transport & Logistics | Transport and mobility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | solar-vs-generator | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | electricity-bill-verify | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | water-bill | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | zakat-calculator | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | faraid-inheritance | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | funeral-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | wedding-budget | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | baby-name-generator | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 44 | F | P0-high-value-repair | health-insurance-compare | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 44 | F | P0-high-value-repair | health-contribution | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 44 | F | P0-high-value-repair | workers-comp | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 44 | F | P0-high-value-repair | car-price-intelligence-fr | Transport & Logistics | Transport and mobility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 53 | D | P0-browser-failure | capacite-emprunt-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 55 | D | P0-browser-failure | comparateur-salaires-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 60 | D | P0-browser-failure | frais-transfert-propriete-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 65 | C | P0-browser-failure | droits-enregistrement-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 70 | C | P0-browser-failure | louer-vs-acheter-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | unclear primary action; no workflow or methodology evidence; browser route failed; browser console/page errors |
+| 81 | B | P0-browser-failure | ng-paye-ha | Salary, Tax & Crypto | Tax, salary, finance calculator | unclear primary action; no workflow or methodology evidence; browser route failed; browser console/page errors |
 
 ## High-Value P1 Queue
 
 | Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 45 | F | P1-high-value-upgrade | life-insurance-calc | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
 | 46 | F | P1-high-value-upgrade | agriculture-ha | Agriculture | Agriculture and market-data tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 46 | F | P1-high-value-upgrade | car-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 46 | F | P1-high-value-upgrade | motor-third-party | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 46 | F | P1-high-value-upgrade | ramadan-timetable | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 48 | F | P1-high-value-upgrade | document-pdf-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 48 | F | P1-high-value-upgrade | funeral-cost | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 50 | D | P1-high-value-upgrade | solar-roi | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 50 | D | P1-high-value-upgrade | electricity-tariff | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 50 | D | P1-high-value-upgrade | prepaid-meter | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 50 | D | P1-high-value-upgrade | business-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 50 | D | P1-high-value-upgrade | prayer-times | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-sign-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-reorder-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-watermark-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-ocr-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-bates-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 46 | F | P1-high-value-upgrade | funeral-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | jamb-cbt-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | telecom-data-plan-ha | Telecom & Mobile | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | jamb-tutor-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | wedding-budget | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | jamb-past-questions-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | jamb-chemistry-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | baby-name-generator | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 47 | F | P1-high-value-upgrade | health-insurance-compare | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 47 | F | P1-high-value-upgrade | health-contribution | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 47 | F | P1-high-value-upgrade | workers-comp | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 48 | F | P1-high-value-upgrade | life-insurance-calc | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 48 | F | P1-high-value-upgrade | jamb-mathematics-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 48 | F | P1-high-value-upgrade | jamb-biology-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 49 | F | P1-high-value-upgrade | car-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 49 | F | P1-high-value-upgrade | motor-third-party | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 49 | F | P1-high-value-upgrade | ramadan-timetable | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P1-high-value-upgrade | document-pdf-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P1-high-value-upgrade | pdf-convert-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P1-high-value-upgrade | jamb-english-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 51 | D | P1-high-value-upgrade | telecom-ha | Telecom & Mobile | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 51 | D | P1-high-value-upgrade | language-ha | Language & Translation | Language and translation utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 51 | D | P1-high-value-upgrade | funeral-cost | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 52 | D | P1-high-value-upgrade | yoruba-document-pdf | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 52 | D | P1-high-value-upgrade | vat-business-tax-ha | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 52 | D | P1-high-value-upgrade | pdf-workspace-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 52 | D | P1-high-value-upgrade | jamb-physics-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 53 | D | P1-high-value-upgrade | solar-roi | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 53 | D | P1-high-value-upgrade | electricity-tariff | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 53 | D | P1-high-value-upgrade | health-ha | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 53 | D | P1-high-value-upgrade | prepaid-meter | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 53 | D | P1-high-value-upgrade | business-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 53 | D | P1-high-value-upgrade | prayer-times | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
 | 53 | D | P1-high-value-upgrade | telecom-sim-reg | Telecom & Mobile | General online utility | unclear primary action; no obvious output/result model; thin visible copy; no completion path |
-| 54 | D | P1-high-value-upgrade | car-price-intelligence | Transport & Logistics | Transport and mobility estimator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-image-convert-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-form-filler-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | html-to-pdf-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
 | 54 | D | P1-high-value-upgrade | pdf-to-audio-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-protect-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-page-numbers-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-repair-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-header-footer-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-find-replace-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 55 | D | P1-high-value-upgrade | telecom-ha | Telecom & Mobile | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 55 | D | P1-high-value-upgrade | hajj-budget | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 56 | D | P1-high-value-upgrade | pdf-translate-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 56 | D | P1-high-value-upgrade | pdf-compare-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 56 | D | P1-high-value-upgrade | school-fees-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 56 | D | P1-high-value-upgrade | crop-insurance | Agriculture | Agriculture and market-data tool | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 58 | D | P1-high-value-upgrade | pdf-compress-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 58 | D | P1-high-value-upgrade | pdf-convert-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 59 | D | P1-high-value-upgrade | gov-scholarship | Government & Civic | Government and civic guide | unclear primary action; no obvious output/result model; thin visible copy; no completion path |
-| 60 | D | P1-high-value-upgrade | pdf-chat-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 60 | D | P1-high-value-upgrade | childbirth-cost-ha | Health & Wellness | Health and wellness estimator | unclear primary action; no workflow or methodology evidence; missing export/copy/save path; browser smoke not run |
-| 60 | D | P1-high-value-upgrade | hospital-cost-ha | Health & Wellness | Health and wellness estimator | unclear primary action; no workflow or methodology evidence; missing export/copy/save path; browser smoke not run |
+| 54 | D | P1-high-value-upgrade | pdf-workspace-yo | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 54 | D | P1-high-value-upgrade | sim-registration-ha | Telecom & Mobile | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 55 | D | P1-high-value-upgrade | car-price-intelligence | Transport & Logistics | Transport and mobility estimator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 55 | D | P1-high-value-upgrade | pdf-sign-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
 
 ## Lowest 100 Individual Tools
 
 | Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 37 | F | P1-repair | fr-blog-salaire-net-senegal | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 40 | F | P1-repair | contraste-couleurs-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 40 | F | P1-repair | image-en-texte-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | gas-lpg-cost | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | outage-cost | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | paygo-solar | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | islamic-finance | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P0-high-value-repair | car-price-intelligence-fr | Transport & Logistics | Transport and mobility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | carte-sociale-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | compresser-image-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | convertir-format-image-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | createur-flyer-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | createur-logo-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | createur-miniatures-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | filtres-image-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | naming-ceremony | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | traditional-attire | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | filigrane-images-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | fr-blog-salaire-moyen-rdc | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 41 | F | P1-repair | microinsurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | solar-vs-generator | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | electricity-bill-verify | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | water-bill | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | zakat-calculator | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | faraid-inheritance | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | funeral-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | wedding-budget | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P0-high-value-repair | baby-name-generator | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P1-repair | festival-calendar | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P1-repair | age-calculator-african | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P1-repair | nishati-na-huduma-sw | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P1-repair | crop-insurance-calc | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 43 | F | P1-repair | prix-transfert-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 44 | F | P0-high-value-repair | health-insurance-compare | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 44 | F | P0-high-value-repair | health-contribution | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 44 | F | P0-high-value-repair | workers-comp | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 44 | F | P1-repair | aso-ebi-cost | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 44 | F | P1-repair | suivi-zlecaf-fr | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 44 | F | P1-repair | za-uif-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 44 | F | P1-repair | za-gepf-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 44 | F | P1-repair | transfert-v2-fr | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 45 | F | P1-high-value-upgrade | life-insurance-calc | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 45 | F | P2-upgrade | createur-certificat-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 45 | F | P2-upgrade | zana-kikokotoo-bima-ya-biashara-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 45 | F | P2-upgrade | jours-ouvrables-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 45 | F | P2-upgrade | profit-forex-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 45 | F | P2-upgrade | entites-html-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 45 | F | P2-upgrade | selecteur-aleatoire-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 45 | F | P2-upgrade | conformite-donnees-fr | Security & Safety | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 45 | F | P2-upgrade | compte-a-rebours-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 45 | F | P2-upgrade | calculateur-ovulation-fr | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 45 | F | P2-upgrade | projection-retraite-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 45 | F | P2-upgrade | pret-etudiant-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 45 | F | P2-upgrade | cout-funerailles-fr | Personal Finance | Personal finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 45 | F | P2-upgrade | outils-dev-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 44 | F | P0-high-value-repair | car-price-intelligence-fr | Transport & Logistics | Transport and mobility estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 45 | F | P2-upgrade | calculateur-inflation-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 45 | F | P2-upgrade | planificateur-retraite-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 45 | F | P2-upgrade | calculateur-pourboire-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 45 | F | P2-upgrade | interet-compose-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
 | 46 | F | P1-high-value-upgrade | agriculture-ha | Agriculture | Agriculture and market-data tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 46 | F | P1-high-value-upgrade | car-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 46 | F | P1-high-value-upgrade | motor-third-party | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 46 | F | P1-high-value-upgrade | ramadan-timetable | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 46 | F | P2-upgrade | reference-taux-interet-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 46 | F | P2-upgrade | verificateur-diplome-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 46 | F | P2-upgrade | cout-cac-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 46 | F | P2-upgrade | profit-stand-marche-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 46 | F | P2-upgrade | simulateur-ussd-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 46 | F | P2-upgrade | calculateur-surestaries-fr | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 46 | F | P2-upgrade | calculateur-microfinance-fr | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 46 | F | P2-upgrade | encodeur-url-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 46 | F | P2-upgrade | calculateur-paystack-fr | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 46 | F | P2-upgrade | gh-ssnit-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 46 | F | P2-upgrade | pret-automobile-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 47 | F | P2-upgrade | salary-tax-sw | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-kikokotoo-bima-ya-mazishi-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-kikokotoo-bima-ya-mazao-sw | Agriculture | Agriculture and market-data tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | calculateur-expedition-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 47 | F | P2-upgrade | dr-congo-sw | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-kituo-elimu-sw | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-bima-ndogo-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-bima-ya-lazima-ya-gari-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-kikokotoo-bima-ya-gari-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-kikokotoo-bima-ya-maisha-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-kikokotoo-mchango-wa-afya-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | zana-kilinganisha-bima-ya-afya-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | generateur-uuid-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 47 | F | P2-upgrade | minuteur-pomodoro-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 47 | F | P2-upgrade | ratio-taille-hanches-fr | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 47 | F | P2-upgrade | zana-fidia-ya-wafanyakazi-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 47 | F | P2-upgrade | generateur-contrat-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 47 | F | P2-upgrade | generateur-mot-de-passe-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 47 | F | P2-upgrade | calculateur-ielts-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 47 | F | P2-upgrade | planificateur-etudes-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P1-high-value-upgrade | document-pdf-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 48 | F | P1-high-value-upgrade | funeral-cost | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 48 | F | P2-upgrade | calculatrice-scientifique-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | convertisseur-unites-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | formateur-json-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | hub-education-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | generateur-nom-entreprise-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 48 | F | P2-upgrade | gestion-stocks-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 48 | F | P2-upgrade | risque-diabete-fr | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | encodeur-base64-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 46 | F | P1-high-value-upgrade | funeral-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | jamb-cbt-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | telecom-data-plan-ha | Telecom & Mobile | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | jamb-tutor-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | wedding-budget | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | jamb-past-questions-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | jamb-chemistry-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P1-high-value-upgrade | baby-name-generator | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P2-upgrade | festival-calendar | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P2-upgrade | age-calculator-african | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P2-upgrade | assurance-sante-fr | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P2-upgrade | crop-insurance-calc | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 46 | F | P2-upgrade | prix-transfert-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 47 | F | P1-high-value-upgrade | health-insurance-compare | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 47 | F | P1-high-value-upgrade | health-contribution | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 47 | F | P1-high-value-upgrade | workers-comp | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 47 | F | P2-upgrade | aso-ebi-cost | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 47 | F | P2-upgrade | za-uif-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 47 | F | P2-upgrade | za-gepf-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 47 | F | P2-upgrade | transfert-v2-fr | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 47 | F | P2-upgrade | assurance-obseques-fr | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 47 | F | P2-upgrade | evaluation-startup-fr | Small Business & SME | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 47 | F | P2-upgrade | planificateur-budget-fr | Personal Finance | Personal finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 47 | F | P2-upgrade | rendement-investissement-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 47 | F | P2-upgrade | cout-reunion-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 48 | F | P1-high-value-upgrade | life-insurance-calc | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 48 | F | P1-high-value-upgrade | jamb-mathematics-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 48 | F | P1-high-value-upgrade | jamb-biology-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 48 | F | P2-upgrade | afrotaux-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 48 | F | P2-upgrade | createur-certificat-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 48 | F | P2-upgrade | suivi-carburant-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 48 | F | P2-upgrade | cout-employe-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 48 | F | P2-upgrade | zana-kikokotoo-bima-ya-biashara-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 48 | F | P2-upgrade | calculateur-conges-fr | Career & Development | Career tool | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 48 | F | P2-upgrade | generateur-contrat-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 48 | F | P2-upgrade | jours-ouvrables-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 48 | F | P2-upgrade | profit-forex-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 48 | F | P2-upgrade | entites-html-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 48 | F | P2-upgrade | selecteur-aleatoire-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 48 | F | P2-upgrade | conformite-donnees-fr | Security & Safety | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 48 | F | P2-upgrade | compte-a-rebours-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 48 | F | P2-upgrade | calculateur-ovulation-fr | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 48 | F | P2-upgrade | projection-retraite-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 48 | F | P2-upgrade | pret-etudiant-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 48 | F | P2-upgrade | cout-funerailles-fr | Personal Finance | Personal finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 48 | F | P2-upgrade | outils-dev-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P1-high-value-upgrade | car-insurance | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 49 | F | P1-high-value-upgrade | motor-third-party | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 49 | F | P1-high-value-upgrade | ramadan-timetable | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 49 | F | P2-upgrade | reference-taux-interet-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | suivi-zlecaf-fr | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | gestion-stocks-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 49 | F | P2-upgrade | verificateur-diplome-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | cout-cac-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 49 | F | P2-upgrade | profit-stand-marche-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | simulateur-ussd-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 49 | F | P2-upgrade | calculateur-microfinance-fr | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | encodeur-url-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | calculateur-paystack-fr | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | gh-ssnit-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | calculateur-location-courte-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 49 | F | P2-upgrade | etude-faisabilite-fr | Small Business & SME | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 49 | F | P2-upgrade | calculateur-pourcentage-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 49 | F | P2-upgrade | pret-automobile-fr | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 49 | F | P2-upgrade | taille-terrain-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P1-high-value-upgrade | document-pdf-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P1-high-value-upgrade | pdf-convert-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P1-high-value-upgrade | jamb-english-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | salary-tax-sw | Salary, Tax & Crypto | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | budget-construction-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | devis-quantitatif-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | zana-kikokotoo-bima-ya-mazishi-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | zana-kikokotoo-bima-ya-mazao-sw | Agriculture | Agriculture and market-data tool | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | calculateur-expedition-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 50 | D | P2-upgrade | charge-electrique-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | frais-service-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | calculateur-armature-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | dr-congo-sw | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | zana-kituo-elimu-sw | Education | Education calculator or guide | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | zana-bima-ndogo-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | zana-bima-ya-lazima-ya-gari-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | zana-kikokotoo-bima-ya-gari-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | zana-kikokotoo-bima-ya-maisha-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | zana-kikokotoo-mchango-wa-afya-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | zana-kilinganisha-bima-ya-afya-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
+| 50 | D | P2-upgrade | calculateur-carrelage-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | calculateur-peinture-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | calculateur-toiture-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | dimensionnement-citerne-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
+| 50 | D | P2-upgrade | seuil-rentabilite-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
+| 50 | D | P2-upgrade | generateur-uuid-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 50 | D | P2-upgrade | minuteur-pomodoro-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 50 | D | P2-upgrade | ratio-taille-hanches-fr | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 50 | D | P2-upgrade | zana-fidia-ya-wafanyakazi-sw | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |

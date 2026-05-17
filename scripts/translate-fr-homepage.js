@@ -18,7 +18,24 @@ const replacements = [
   ['>Calculate My Pay<', '>Calculer mon salaire<'],
   ['placeholder="e.g. Nigeria PAYE, PDF merge, currency…"', 'placeholder="ex. PAYE Nigeria, fusion PDF, devises…"'],
   ['aria-label="Search tools"', 'aria-label="Rechercher des outils"'],
+  ['placeholder="Search PAYE, invoice, PDF, VAT, currency..."', 'placeholder="Rechercher PAYE, facture, PDF, TVA, devises..."'],
+  ['aria-label="Dismiss save and sync message"', "aria-label=\"Fermer le message d'enregistrement et de synchronisation\""],
   ['>Search</button>', '>Rechercher</button>'],
+  ['>Search PAYE, invoice, PDF...</strong>', '>Rechercher PAYE, facture, PDF...</strong>'],
+  ['label="Search or choose a country"', 'label="Rechercher ou choisir un pays"'],
+  ['>Search or choose a country</label>', '>Rechercher ou choisir un pays</label>'],
+  ['>Open country hub</a>', '>Ouvrir la page pays</a>'],
+  ['>Open</button>', '>Ouvrir</button>'],
+  ['>Start by country</a>', '>Commencer par pays</a>'],
+  ['aria-label="Start by country"', 'aria-label="Commencer par pays"'],
+  ['>Start by country</div>', '>Commencer par pays</div>'],
+  ['aria-label="Selected country actions"', 'aria-label="Actions du pays selectionne"'],
+  ['aria-label="Choose country"', 'aria-label="Choisir un pays"'],
+  ['aria-label="Popular countries"', 'aria-label="Pays populaires"'],
+  ['aria-label="Top tools"', 'aria-label="Outils principaux"'],
+  ['aria-label="Salary and tax tools"', 'aria-label="Outils salaire et fiscalite"'],
+  ['aria-label="Tools"', 'aria-label="Outils"'],
+  ['aria-label="Student and education tools"', 'aria-label="Outils etudiants et education"'],
 
   // ─── USE CASE CARDS ───
   ['>Calculate PAYE Tax<', '>Calculateur d\'impots PAYE<'],
@@ -241,6 +258,22 @@ for (const [from, to] of replacements) {
 
 // ─── JAVASCRIPT DYNAMIC TEXT ───
 // These are in the <script> blocks and need special handling
+
+html = html.split(' Tax &amp; Finance</button>').join(' Fiscalite &amp; finance</button>');
+html = html.split(' Business &amp; FX</button>').join(' Entreprise &amp; change</button>');
+html = html.split('>Business &amp; FX</div>').join('>Entreprise &amp; change</div>');
+html = html.split('placeholder="Rechercher PAYE, invoice, PDF, VAT, currency..."').join('placeholder="Rechercher PAYE, facture, PDF, TVA, devises..."');
+html = html.split('aria-label="Rechercher tools"').join('aria-label="Rechercher des outils"');
+html = html.split('>Rechercher or choose a country</label>').join('>Rechercher ou choisir un pays</label>');
+html = html.split('aria-label="Email address"').join('aria-label="Adresse e-mail"');
+html = html.split('aria-label="All 54 African countries"').join('aria-label="Les 54 pays africains"');
+html = html.split('All 54 African countries with live PAYE calculators').join('Les 54 pays africains avec calculateurs PAYE en direct');
+html = html.split('aria-label="Embed Tools"').join('aria-label="Outils integrables"');
+html = html.split("selector.getAttribute('label') || 'Choose country'").join("selector.getAttribute('label') || 'Choisir un pays'");
+html = html.split('>Open workspace &rarr;</em>').join(">Ouvrir l'espace &rarr;</em>");
+html = html.split('>Open Creator Studio &rarr;</a>').join('>Ouvrir le studio createur &rarr;</a>');
+html = html.split('>Open Tool &rarr;</span>').join(">Ouvrir l'outil &rarr;</span>");
+html = html.split('>Open Workspace â†’</div>').join(">Ouvrir l'espace â†’</div>");
 
 // Hero h1 override
 html = html.replace(

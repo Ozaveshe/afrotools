@@ -22,11 +22,11 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
-  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=8cad96da">
-  <script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
-  <script src="/assets/js/components/tool-registry.min.js?v=99d9d3db" defer></script>
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=9c4e21bc">
+  <script src="/assets/js/components/tool-registry.min.js?v=4fb2e1e9" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" async></script>
+  <script src="/assets/js/components/footer.min.js?v=119e83c5" async></script>
 
   <style>
     :root {
@@ -924,6 +924,7 @@ var filterPanel   = document.getElementById('filter-panel');
 var filterToggle  = document.getElementById('filter-toggle');
 var moreFilters   = document.getElementById('more-filters');
 var isSearchReady = false;
+var requestSearchIndexLoad = function() {};
 
 // ════════════════════════════════════════════════════════════
 // SEARCH LOGIC
@@ -1119,6 +1120,7 @@ function renderLoadingState() {
 
 function renderRegistryUnavailable() {
   if (isSearchReady) return;
+  if (!state.query.trim() && state.filter === 'all') return;
   resultsEl.setAttribute('aria-busy', 'false');
   resultsMeta.style.display = 'none';
   sortSelect.disabled = true;
@@ -1130,23 +1132,19 @@ function renderRegistryUnavailable() {
 }
 
 function renderDefaultState() {
-  if (!isSearchReady) {
-    renderLoadingState();
-    return;
-  }
-
   // Trending tools
   var trendHtml = '<div class="default-state">';
   trendHtml += '<div class="default-section"><div class="default-heading">Popular Tools</div><div class="trending-grid">';
   TRENDING.forEach(function(t) {
-    var tool = AFRO_TOOLS.find(function(x) { return x.id === t.id; });
-    if (!tool) return;
-    var isAvail = tool.status === 'live' || tool.status === 'new';
+    var tool = isSearchReady && Array.isArray(window.AFRO_TOOLS)
+      ? AFRO_TOOLS.find(function(x) { return x.id === t.id; })
+      : null;
+    var isAvail = tool && (tool.status === 'live' || tool.status === 'new');
     trendHtml += '<button class="trend-card" type="button" data-query="'+escHtml(t.query)+'">'
-      + '<div class="trend-icon">'+escHtml(tool.icon || '🔧')+'</div>'
+      + '<div class="trend-icon">'+escHtml((tool && tool.icon) || '')+'</div>'
       + '<div>'
-        + '<div class="trend-name">'+escHtml(tool.name)+'</div>'
-        + '<div class="trend-badge">'+(isAvail ? 'Live' : 'Coming Soon')+'</div>'
+        + '<div class="trend-name">'+escHtml((tool && tool.name) || t.query)+'</div>'
+        + '<div class="trend-badge">'+(tool ? (isAvail ? 'Live' : 'Coming Soon') : 'Popular')+'</div>'
       + '</div>'
     + '</button>';
   });
@@ -1168,7 +1166,7 @@ function renderDefaultState() {
 
   resultsEl.innerHTML = trendHtml;
   resultsEl.setAttribute('aria-busy', 'false');
-  sortSelect.disabled = false;
+  sortSelect.disabled = !isSearchReady;
   resultsMeta.style.display = 'none';
   loadMoreWrap.style.display = 'none';
 }
@@ -1221,6 +1219,10 @@ function renderResults(results, tokens, page) {
 
 function doRender() {
   if (!isSearchReady) {
+    if (!state.query.trim() && state.filter === 'all') {
+      renderDefaultState();
+      return;
+    }
     renderLoadingState();
     return;
   }
@@ -1315,6 +1317,7 @@ function pushURL() {
 // ACTIONS
 // ════════════════════════════════════════════════════════════
 function setQuery(q) {
+  if (!isSearchReady) requestSearchIndexLoad();
   state.query = q;
   state.page = 1;
   searchInput.value = q;
@@ -1326,6 +1329,7 @@ function setQuery(q) {
 
 function setFilter(f) {
   if (!f) return;
+  if (!isSearchReady) requestSearchIndexLoad();
   state.filter = f;
   state.page = 1;
   syncFilterUI();
@@ -1355,6 +1359,7 @@ function handleComingSoon(name) {
 var debounceTimer;
 searchInput.addEventListener('input', function() {
   var val = this.value;
+  if (!isSearchReady) requestSearchIndexLoad();
   updateClearBtns(val);
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(function() {
@@ -1448,12 +1453,15 @@ document.addEventListener('keydown', function(e) {
 // INIT
 // ════════════════════════════════════════════════════════════
 (function init() {
-  renderLoadingState();
+  readURL();
+  doRender();
+  var registryUnavailableTimer = setTimeout(renderRegistryUnavailable, 8000);
 
   function startSearch() {
     if (isSearchReady) return true;
     if (!Array.isArray(window.AFRO_TOOLS) || !AFRO_TOOLS.length) return false;
     isSearchReady = true;
+    clearTimeout(registryUnavailableTimer);
     resultsEl.setAttribute('aria-busy', 'false');
     sortSelect.disabled = false;
     updateChipCounts();
@@ -1462,21 +1470,87 @@ document.addEventListener('keydown', function(e) {
     return true;
   }
 
-  function tryInit() {
-    if (startSearch()) return;
-    setTimeout(tryInit, 50);
+  function normalizeSearchTool(tool) {
+    if (Array.isArray(tool)) {
+      return {
+        id: tool[0],
+        name: tool[1] || tool[0],
+        desc: tool[2] || '',
+        category: tool[3] || 'uncategorized',
+        countries: Array.isArray(tool[4]) ? tool[4] : [],
+        status: String(tool[5] || '').toLowerCase(),
+        href: tool[6] || '#',
+        icon: tool[7] || '',
+        priority: Number(tool[8] || 0)
+      };
+    }
+
+    return {
+      id: tool.id,
+      name: tool.name || tool.id,
+      desc: tool.desc || tool.description || '',
+      category: tool.category || tool.category_key || 'uncategorized',
+      countries: Array.isArray(tool.countries) ? tool.countries : [],
+      status: String(tool.status || '').toLowerCase(),
+      href: tool.href || tool.url || '#',
+      icon: tool.icon || '',
+      priority: Number(tool.priority || 0)
+    };
   }
 
-  if (typeof onRegistryReady === 'function') {
-    onRegistryReady(startSearch);
+  function loadSearchIndex() {
+    if (startSearch()) return Promise.resolve();
+    if (window.__afroSearchIndexPromise) return window.__afroSearchIndexPromise;
+
+    window.__afroSearchIndexPromise = fetch('/data/search-index.json', { credentials: 'same-origin' })
+      .then(function(response) {
+        if (!response.ok) throw new Error('Search index failed to load');
+        return response.json();
+      })
+      .then(function(records) {
+        window.AFRO_TOOLS = Array.isArray(records) ? records.map(normalizeSearchTool) : [];
+        document.dispatchEvent(new CustomEvent('afrotools:registry-ready', {
+          detail: { tools: window.AFRO_TOOLS, categories: {} }
+        }));
+        return window.AFRO_TOOLS;
+      });
+
+    return window.__afroSearchIndexPromise;
   }
 
-  document.addEventListener('afrotools:registry-ready', startSearch, { once: true });
-  tryInit();
-  setTimeout(renderRegistryUnavailable, 8000);
+  requestSearchIndexLoad = function() {
+    loadSearchIndex()
+      .then(startSearch)
+      .catch(function() {
+        renderRegistryUnavailable();
+      });
+  };
+
+  function scheduleSearchIndexLoad() {
+    var shouldLoadNow = state.query.trim() || state.filter !== 'all';
+    if (shouldLoadNow) {
+      if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(function() {
+          setTimeout(requestSearchIndexLoad, 0);
+        });
+      } else {
+        setTimeout(requestSearchIndexLoad, 0);
+      }
+      return;
+    }
+
+    var idle = window.requestIdleCallback || function(callback) {
+      setTimeout(callback, 2000);
+    };
+    window.addEventListener('load', function() {
+      idle(requestSearchIndexLoad);
+    }, { once: true });
+  }
+
+  scheduleSearchIndexLoad();
 })();
 </script>
 
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

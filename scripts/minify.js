@@ -58,6 +58,32 @@ function isValidJavaScript(code, filename) {
   }
 }
 
+function waitSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function writeFileSyncWithRetry(filePath, data, encoding) {
+  const retryable = new Set(['EBUSY', 'EPERM', 'UNKNOWN']);
+  let lastError = null;
+  for (let attempt = 0; attempt < 20; attempt++) {
+    try {
+      fs.writeFileSync(filePath, data, encoding);
+      return;
+    } catch (error) {
+      lastError = error;
+      if (!retryable.has(error.code)) throw error;
+      waitSync(75 * (attempt + 1));
+    }
+  }
+  throw lastError;
+}
+
+function writeFileIfChanged(filePath, data, encoding) {
+  if (fs.existsSync(filePath) && fs.readFileSync(filePath, encoding) === data) return false;
+  writeFileSyncWithRetry(filePath, data, encoding);
+  return true;
+}
+
 async function minifyToFixedPoint(code, options, maxPasses = 3) {
   let current = code;
   for (let pass = 0; pass < maxPasses; pass++) {
@@ -110,7 +136,7 @@ async function run() {
         fallbackLabel = ' (fallback: invalid minified output)';
       }
 
-      fs.writeFileSync(minPath, finalCode, 'utf8');
+      writeFileIfChanged(minPath, finalCode, 'utf8');
       const minSize = Buffer.byteLength(finalCode);
       const pct = ((1 - minSize / srcSize) * 100).toFixed(1);
       console.log(`  JS    ${srcRel}: ${fmtKB(srcSize)} -> ${fmtKB(minSize)} (${pct}% smaller)${fallbackLabel}`);
@@ -135,7 +161,7 @@ async function run() {
     const code = fs.readFileSync(srcPath, 'utf8');
     const srcSize = Buffer.byteLength(code);
     const minified = minifyCSS(code);
-    fs.writeFileSync(minPath, minified, 'utf8');
+    writeFileIfChanged(minPath, minified, 'utf8');
     const minSize = Buffer.byteLength(minified);
     const pct = ((1 - minSize / srcSize) * 100).toFixed(1);
     console.log(`  CSS   ${srcRel}: ${fmtKB(srcSize)} -> ${fmtKB(minSize)} (${pct}% smaller)`);
@@ -216,7 +242,7 @@ async function run() {
         output: { comments: /^!/ },
       });
       if (finalCode && isValidJavaScript(finalCode, filePath)) {
-        fs.writeFileSync(filePath, finalCode, 'utf8');
+        writeFileIfChanged(filePath, finalCode, 'utf8');
         const minSize = Buffer.byteLength(finalCode);
         inplaceTotal.before += srcSize;
         inplaceTotal.after += minSize;
@@ -254,7 +280,7 @@ async function run() {
     const srcSize = Buffer.byteLength(code);
     if (srcSize < 100) continue;
     const minified = minifyCSS(code);
-    fs.writeFileSync(filePath, minified, 'utf8');
+    writeFileIfChanged(filePath, minified, 'utf8');
     const minSize = Buffer.byteLength(minified);
     inplaceCssTotal.before += srcSize;
     inplaceCssTotal.after += minSize;

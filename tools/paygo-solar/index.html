@@ -1,63 +1,728 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pay-As-You-Go Solar Calculator — Top 15 African Countries | AfroTools</title>
-<meta name="description" content="Free Pay-As-You-Go Solar Calculator for Africa's top 15 economies. Select your country for local rates and data.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PayGo Solar Calculator | AfroTools</title>
+<meta name="description" content="Compare PayGo solar affordability with appliance loads, country currency, deposit, repayments, term length, current energy spend, savings, and risk flags.">
 <link rel="canonical" href="https://afrotools.com/tools/paygo-solar/">
-<meta property="og:title" content="Pay-As-You-Go Solar Calculator — Top 15 African Countries | AfroTools">
-<meta property="og:description" content="Free Pay-As-You-Go Solar Calculator for Africa's top 15 economies. Select your country for local rates and data.">
+<meta name="tool-id" content="paygo-solar">
+<meta property="og:title" content="PayGo Solar Calculator | AfroTools">
+<meta property="og:description" content="Estimate PayGo solar total paid, monthly affordability, load coverage, savings, payback, and risk flags before signing a plan.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/paygo-solar.webp">
 <meta property="og:url" content="https://afrotools.com/tools/paygo-solar/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="article:modified_time" content="2026-05-16">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Pay-As-You-Go Solar Calculator — Top 15 African Countries | AfroTools">
-<meta name="twitter:description" content="Free Pay-As-You-Go Solar Calculator for Africa">
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
-<script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<meta name="twitter:title" content="PayGo Solar Calculator | AfroTools">
+<meta name="twitter:description" content="Model appliance load, PayGo repayments, total ownership cost, savings, coverage, and risks in local currency.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/paygo-solar.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
+<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PayGo Solar Calculator",
+  "description": "Compare PayGo solar affordability using appliance load, daily usage, deposit, repayment frequency, term length, current energy spend, maintenance buffer, coverage, savings, payback, and risk flags.",
+  "url": "https://afrotools.com/tools/paygo-solar/",
+  "inLanguage": "en",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "dateModified": "2026-05-16",
+  "image": "https://afrotools.com/assets/img/tools/paygo-solar.webp"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"PayGo Solar Calculator","item":"https://afrotools.com/tools/paygo-solar/"}]}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#f6f8f6;color:#10201b;font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.pg-hero{background:linear-gradient(135deg,#12362f 0%,#1f463e 48%,#b8791f 100%);color:#fff;padding:42px 0 34px}
+.pg-shell{max-width:1180px;margin:0 auto;padding:0 22px}
+.pg-breadcrumb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px;color:#d7efe5;font-size:.82rem}
+.pg-breadcrumb a{color:#fff}
+.pg-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:end}
+.pg-hero h1{margin:0 0 10px;font-size:clamp(2rem,5vw,3.35rem);line-height:1.04;font-weight:800;letter-spacing:0}
+.pg-hero p{margin:0;max-width:760px;color:#eef8f3;font-size:1rem;line-height:1.7}
+.pg-stamps{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.pg-stamp{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.12);border-radius:999px;padding:8px 11px;color:#fff;font-size:.76rem;font-weight:800}
+.pg-main{padding:28px 0 56px}
+.pg-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+.pg-panel,.pg-card,.pg-related,.pg-commercial{background:#fff;border:1px solid #d9e4df;border-radius:12px;box-shadow:0 1px 10px rgba(16,32,27,.05)}
+.pg-panel-head{padding:18px 20px;border-bottom:1px solid #e7efeb;display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.pg-kicker,.pg-card h2,.pg-related h2,.pg-commercial h2{margin:0 0 9px;font-size:.86rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#10201b}
+.pg-panel-note{margin:5px 0 0;color:#587064;font-size:.86rem;line-height:1.55}
+.pg-panel-body{padding:20px}
+.pg-form{display:grid;gap:18px;position:relative;z-index:2}
+.pg-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.pg-field{display:grid;gap:7px}
+.pg-label{font-size:.76rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#30483d}
+.pg-help{font-size:.78rem;color:#65786f;line-height:1.45}
+.pg-input,.pg-select{width:100%;min-height:46px;border:1.5px solid #cbd8d2;border-radius:9px;background:#fff;color:#10201b;font:600 1rem "DM Sans",system-ui,sans-serif;padding:10px 12px}
+.pg-input:focus,.pg-select:focus{outline:none;border-color:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.16)}
+.pg-section{border:1px solid #d9e4df;border-radius:10px;background:#f8fbf9;overflow:hidden}
+.pg-section summary{cursor:pointer;padding:14px 16px;font-weight:900;color:#10201b}
+.pg-section-body{padding:0 16px 16px}
+.pg-appliances{display:grid;gap:10px}
+.pg-appliance{display:grid;grid-template-columns:1.15fr repeat(3,minmax(88px,1fr));gap:10px;align-items:end;border:1px solid #d9e4df;border-radius:10px;background:#fff;padding:12px}
+.pg-appliance strong{font-size:.9rem;color:#10201b}
+.pg-appliance label{display:grid;gap:5px;font-size:.7rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#60746a}
+.pg-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pg-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border:1.5px solid #cbd8d2;border-radius:999px;background:#fff;color:#10201b;font:800 .92rem "DM Sans",system-ui,sans-serif;padding:10px 16px;cursor:pointer}
+.pg-btn:hover{border-color:#0f766e;color:#0f766e}
+.pg-btn-primary{background:#0f766e;border-color:#0f766e;color:#fff;box-shadow:0 8px 18px rgba(15,118,110,.22)}
+.pg-btn-primary:hover{background:#115e59;color:#fff}
+.pg-status{min-height:1.4em;color:#0f766e;font-weight:900;font-size:.86rem}
+.pg-results{margin-top:18px;display:grid;gap:16px;position:relative;z-index:1}
+.pg-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pg-metric{border:1px solid #d9e4df;border-radius:10px;background:#f8fbf9;padding:15px;min-height:112px}
+.pg-metric span{display:block;color:#65786f;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.pg-metric strong{display:block;color:#10201b;font-size:1.32rem;line-height:1.1;margin:7px 0 5px;word-break:break-word;overflow-wrap:anywhere}
+.pg-metric em{display:block;color:#65786f;font-size:.78rem;font-style:normal;line-height:1.4}
+.pg-metric-main{background:#ecfdf5;border-color:#99f6e4}
+.pg-metric-main strong{color:#0f766e}
+.pg-breakdown{width:100%;border-collapse:collapse;font-size:.9rem;table-layout:fixed}
+.pg-breakdown th,.pg-breakdown td{padding:11px 12px;border-bottom:1px solid #e7efeb;text-align:left;vertical-align:top;overflow-wrap:anywhere;word-break:break-word}
+.pg-breakdown th{background:#f8fbf9;color:#30483d;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.pg-breakdown td:last-child{font-weight:800;color:#10201b}
+.pg-recommendation{border:1px solid #99f6e4;background:#ecfdf5;color:#134e4a;border-radius:10px;padding:13px 15px;font-size:.9rem;line-height:1.58}
+.pg-warning{border-color:#fed7aa;background:#fff7ed;color:#7c2d12}
+.pg-lists{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pg-list-card{border:1px solid #d9e4df;border-radius:10px;background:#fff;padding:15px}
+.pg-list-card ul{margin:0;padding-left:18px;color:#495f55;font-size:.86rem;line-height:1.65}
+.pg-side{display:grid;gap:14px}
+.pg-card{padding:18px}
+.pg-card p,.pg-card li{color:#495f55;font-size:.86rem;line-height:1.65}
+.pg-card ul,.pg-card ol{margin:0;padding-left:18px}
+.pg-source{background:#f8fbff;border-color:#bfdbfe}
+.pg-source time{font-weight:900;color:#0b77a5}
+.pg-related{margin-top:20px;padding:18px}
+.pg-link-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.pg-link-card{border:1px solid #d9e4df;border-radius:10px;padding:13px;background:#f8fbf9}
+.pg-link-card strong{display:block;font-size:.92rem;color:#10201b;margin-bottom:4px}
+.pg-link-card span{display:block;color:#65786f;font-size:.8rem;line-height:1.45}
+.pg-country-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.pg-country-grid a{border:1px solid #d9e4df;border-radius:9px;background:#fff;padding:10px 11px;color:#30483d;font-weight:800;font-size:.84rem}
+.pg-country-grid a:hover,.pg-link-card:hover{border-color:#0f766e;color:#0f766e;background:#ecfdf5}
+.pg-commercial{margin-top:20px;padding:18px;background:#fff8e6;border-color:#f5d88a}
+.pg-commercial p{margin:0 0 12px;color:#4f3f22;line-height:1.65}
+.pg-commercial .pg-actions a{background:#fff}
+@media(max-width:980px){.pg-hero-grid,.pg-layout{grid-template-columns:1fr}.pg-stamps{justify-content:flex-start}.pg-side{grid-template-columns:1fr 1fr}.pg-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pg-country-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.pg-main{padding-top:18px}.pg-grid,.pg-metrics,.pg-lists,.pg-side,.pg-link-grid,.pg-country-grid{grid-template-columns:1fr}.pg-appliance{grid-template-columns:1fr 1fr}.pg-panel-head{display:block}.pg-panel-body{padding:16px}.pg-btn{width:100%}.pg-input,.pg-select{font-size:16px}.pg-metric{min-height:auto}}
+@media(max-width:480px){.pg-appliance{grid-template-columns:1fr}}
+@media print{afro-navbar,afro-footer,.pg-actions,.pg-related,.pg-commercial,.pg-breadcrumb,.wise-cta-wrap{display:none!important}.pg-hero{background:#fff;color:#10201b;padding:0 0 18px}.pg-hero p{color:#30483d}.pg-layout{display:block}.pg-panel,.pg-card{box-shadow:none;break-inside:avoid}}
+</style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/paygo-solar/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/paygo-solar/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/paygo-solar/" />
 </head>
 <body>
 <afro-navbar theme="dark" active="energy"></afro-navbar>
-<section class="en-tool-hero"><div class="container">
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Pay-As-You-Go Solar Calculator</nav>
-<h1>🌤️ <em>Pay-As-You-Go Solar Calculator</em></h1>
-<p class="en-tool-hero-sub">Free Pay-As-You-Go Solar Calculator for Africa's top 15 economies. Select your country for local rates and data.</p>
-</div></section>
-<main class="en-main">
-<section class="en-hub"><div class="container">
-<h2>Select Your Country</h2>
-<div class="en-hub-country-grid">
-<a href="/tools/paygo-solar/nigeria/" class="en-country-card"><span class="en-country-flag">🇳🇬</span><span class="en-country-name">Nigeria</span></a>
-<a href="/tools/paygo-solar/kenya/" class="en-country-card"><span class="en-country-flag">🇰🇪</span><span class="en-country-name">Kenya</span></a>
-<a href="/tools/paygo-solar/south-africa/" class="en-country-card"><span class="en-country-flag">🇿🇦</span><span class="en-country-name">South Africa</span></a>
-<a href="/tools/paygo-solar/ghana/" class="en-country-card"><span class="en-country-flag">🇬🇭</span><span class="en-country-name">Ghana</span></a>
-<a href="/tools/paygo-solar/egypt/" class="en-country-card"><span class="en-country-flag">🇪🇬</span><span class="en-country-name">Egypt</span></a>
-<a href="/tools/paygo-solar/ethiopia/" class="en-country-card"><span class="en-country-flag">🇪🇹</span><span class="en-country-name">Ethiopia</span></a>
-<a href="/tools/paygo-solar/tanzania/" class="en-country-card"><span class="en-country-flag">🇹🇿</span><span class="en-country-name">Tanzania</span></a>
-<a href="/tools/paygo-solar/uganda/" class="en-country-card"><span class="en-country-flag">🇺🇬</span><span class="en-country-name">Uganda</span></a>
-<a href="/tools/paygo-solar/rwanda/" class="en-country-card"><span class="en-country-flag">🇷🇼</span><span class="en-country-name">Rwanda</span></a>
-<a href="/tools/paygo-solar/cote-divoire/" class="en-country-card"><span class="en-country-flag">🇨🇮</span><span class="en-country-name">Côte d'Ivoire</span></a>
-<a href="/tools/paygo-solar/cameroon/" class="en-country-card"><span class="en-country-flag">🇨🇲</span><span class="en-country-name">Cameroon</span></a>
-<a href="/tools/paygo-solar/senegal/" class="en-country-card"><span class="en-country-flag">🇸🇳</span><span class="en-country-name">Senegal</span></a>
-<a href="/tools/paygo-solar/morocco/" class="en-country-card"><span class="en-country-flag">🇲🇦</span><span class="en-country-name">Morocco</span></a>
-<a href="/tools/paygo-solar/tunisia/" class="en-country-card"><span class="en-country-flag">🇹🇳</span><span class="en-country-name">Tunisia</span></a>
-<a href="/tools/paygo-solar/angola/" class="en-country-card"><span class="en-country-flag">🇦🇴</span><span class="en-country-name">Angola</span></a>
-</div>
-</div></section>
+<header class="pg-hero">
+  <div class="pg-shell">
+    <nav class="pg-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/energy/">Energy &amp; Utilities</a><span>/</span><span>PayGo Solar Calculator</span>
+    </nav>
+    <div class="pg-hero-grid">
+      <div>
+        <h1>PayGo Solar Calculator</h1>
+        <p>Compare a PayGo solar offer against your appliance load, repayment term, current generator or grid spend, maintenance buffer, and ownership risk before you commit.</p>
+      </div>
+      <div class="pg-stamps" aria-label="Tool status">
+        <span class="pg-stamp">Solar affordability</span>
+        <span class="pg-stamp">Exportable decision</span>
+        <span class="pg-stamp">Updated 2026</span>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="pg-main">
+  <div class="pg-shell">
+    <div class="pg-layout">
+      <section class="pg-panel" aria-labelledby="calculator-title">
+        <div class="pg-panel-head">
+          <div>
+            <h2 class="pg-kicker" id="calculator-title">PayGo plan inputs</h2>
+            <p class="pg-panel-note">Enter the load you really need to run, then compare the payment plan against your current energy spend.</p>
+          </div>
+          <div class="pg-status" id="pgStatus" role="status" aria-live="polite"></div>
+        </div>
+        <div class="pg-panel-body">
+          <form class="pg-form" id="paygoForm">
+            <div class="pg-grid">
+              <div class="pg-field">
+                <label class="pg-label" for="country">Country</label>
+                <select class="pg-select" id="country" name="country">
+                  <option value="Nigeria" data-currency="NGN">Nigeria</option>
+                  <option value="Kenya" data-currency="KES">Kenya</option>
+                  <option value="South Africa" data-currency="ZAR">South Africa</option>
+                  <option value="Ghana" data-currency="GHS">Ghana</option>
+                  <option value="Egypt" data-currency="EGP">Egypt</option>
+                  <option value="Ethiopia" data-currency="ETB">Ethiopia</option>
+                  <option value="Tanzania" data-currency="TZS">Tanzania</option>
+                  <option value="Uganda" data-currency="UGX">Uganda</option>
+                  <option value="Rwanda" data-currency="RWF">Rwanda</option>
+                  <option value="Cote d'Ivoire" data-currency="XOF">Cote d'Ivoire</option>
+                  <option value="Cameroon" data-currency="XAF">Cameroon</option>
+                  <option value="Senegal" data-currency="XOF">Senegal</option>
+                  <option value="Morocco" data-currency="MAD">Morocco</option>
+                  <option value="Tunisia" data-currency="TND">Tunisia</option>
+                  <option value="Angola" data-currency="AOA">Angola</option>
+                  <option value="Other" data-currency="USD">Other market</option>
+                </select>
+              </div>
+              <div class="pg-field">
+                <label class="pg-label" for="currency">Local currency</label>
+                <select class="pg-select" id="currency" name="currency">
+                  <option value="NGN">NGN - Nigerian naira</option>
+                  <option value="KES">KES - Kenyan shilling</option>
+                  <option value="ZAR">ZAR - South African rand</option>
+                  <option value="GHS">GHS - Ghanaian cedi</option>
+                  <option value="EGP">EGP - Egyptian pound</option>
+                  <option value="ETB">ETB - Ethiopian birr</option>
+                  <option value="TZS">TZS - Tanzanian shilling</option>
+                  <option value="UGX">UGX - Ugandan shilling</option>
+                  <option value="RWF">RWF - Rwandan franc</option>
+                  <option value="XOF">XOF - West African CFA franc</option>
+                  <option value="XAF">XAF - Central African CFA franc</option>
+                  <option value="MAD">MAD - Moroccan dirham</option>
+                  <option value="TND">TND - Tunisian dinar</option>
+                  <option value="AOA">AOA - Angolan kwanza</option>
+                  <option value="USD">USD - US dollar</option>
+                </select>
+              </div>
+              <div class="pg-field">
+                <label class="pg-label" for="kitWh">Solar kit usable energy per day</label>
+                <input class="pg-input" id="kitWh" name="kitWh" type="number" min="50" max="50000" step="10" inputmode="decimal" value="1200" required>
+                <span class="pg-help">Use the provider quote after battery losses, not just panel watts.</span>
+              </div>
+              <div class="pg-field">
+                <label class="pg-label" for="criticalLoadPct">Critical load target</label>
+                <input class="pg-input" id="criticalLoadPct" name="criticalLoadPct" type="number" min="20" max="100" step="5" inputmode="numeric" value="80" required>
+                <span class="pg-help">Percent of your appliance load that must be covered daily.</span>
+              </div>
+            </div>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-  <wise-cta context="general"></wise-cta>
-</div>
+            <details class="pg-section" open>
+              <summary>Appliance load and daily usage</summary>
+              <div class="pg-section-body">
+                <div class="pg-appliances" aria-label="Appliance load inputs">
+                  <div class="pg-appliance">
+                    <strong>Lights</strong>
+                    <label for="lightsWatts">Watts each<input class="pg-input load" id="lightsWatts" type="number" min="0" step="1" value="9"></label>
+                    <label for="lightsQty">Quantity<input class="pg-input load" id="lightsQty" type="number" min="0" step="1" value="6"></label>
+                    <label for="lightsHours">Hours/day<input class="pg-input load" id="lightsHours" type="number" min="0" max="24" step="0.25" value="6"></label>
+                  </div>
+                  <div class="pg-appliance">
+                    <strong>TV or radio</strong>
+                    <label for="tvWatts">Watts each<input class="pg-input load" id="tvWatts" type="number" min="0" step="1" value="60"></label>
+                    <label for="tvQty">Quantity<input class="pg-input load" id="tvQty" type="number" min="0" step="1" value="1"></label>
+                    <label for="tvHours">Hours/day<input class="pg-input load" id="tvHours" type="number" min="0" max="24" step="0.25" value="4"></label>
+                  </div>
+                  <div class="pg-appliance">
+                    <strong>Phones and small devices</strong>
+                    <label for="phoneWatts">Watts each<input class="pg-input load" id="phoneWatts" type="number" min="0" step="1" value="12"></label>
+                    <label for="phoneQty">Quantity<input class="pg-input load" id="phoneQty" type="number" min="0" step="1" value="4"></label>
+                    <label for="phoneHours">Hours/day<input class="pg-input load" id="phoneHours" type="number" min="0" max="24" step="0.25" value="2"></label>
+                  </div>
+                  <div class="pg-appliance">
+                    <strong>Fan</strong>
+                    <label for="fanWatts">Watts each<input class="pg-input load" id="fanWatts" type="number" min="0" step="1" value="45"></label>
+                    <label for="fanQty">Quantity<input class="pg-input load" id="fanQty" type="number" min="0" step="1" value="1"></label>
+                    <label for="fanHours">Hours/day<input class="pg-input load" id="fanHours" type="number" min="0" max="24" step="0.25" value="6"></label>
+                  </div>
+                  <div class="pg-appliance">
+                    <strong>Fridge, POS, or router</strong>
+                    <label for="fridgeWatts">Watts each<input class="pg-input load" id="fridgeWatts" type="number" min="0" step="1" value="90"></label>
+                    <label for="fridgeQty">Quantity<input class="pg-input load" id="fridgeQty" type="number" min="0" step="1" value="1"></label>
+                    <label for="fridgeHours">Hours/day<input class="pg-input load" id="fridgeHours" type="number" min="0" max="24" step="0.25" value="8"></label>
+                  </div>
+                  <div class="pg-appliance">
+                    <strong>Other load</strong>
+                    <label for="otherWatts">Watts each<input class="pg-input load" id="otherWatts" type="number" min="0" step="1" value="0"></label>
+                    <label for="otherQty">Quantity<input class="pg-input load" id="otherQty" type="number" min="0" step="1" value="0"></label>
+                    <label for="otherHours">Hours/day<input class="pg-input load" id="otherHours" type="number" min="0" max="24" step="0.25" value="0"></label>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <details class="pg-section" open>
+              <summary>Payment plan and current spend</summary>
+              <div class="pg-section-body">
+                <div class="pg-grid">
+                  <div class="pg-field">
+                    <label class="pg-label" for="deposit">Kit deposit</label>
+                    <input class="pg-input" id="deposit" name="deposit" type="number" min="0" step="0.01" inputmode="decimal" value="25000" required>
+                  </div>
+                  <div class="pg-field">
+                    <label class="pg-label" for="repayment">Repayment amount</label>
+                    <input class="pg-input" id="repayment" name="repayment" type="number" min="0" step="0.01" inputmode="decimal" value="250" required>
+                  </div>
+                  <div class="pg-field">
+                    <label class="pg-label" for="frequency">Repayment frequency</label>
+                    <select class="pg-select" id="frequency" name="frequency">
+                      <option value="daily">Daily repayment</option>
+                      <option value="weekly">Weekly repayment</option>
+                      <option value="monthly">Monthly repayment</option>
+                    </select>
+                  </div>
+                  <div class="pg-field">
+                    <label class="pg-label" for="termMonths">Term length in months</label>
+                    <input class="pg-input" id="termMonths" name="termMonths" type="number" min="1" max="84" step="1" inputmode="numeric" value="24" required>
+                  </div>
+                  <div class="pg-field">
+                    <label class="pg-label" for="currentSpend">Current generator or grid spend per month</label>
+                    <input class="pg-input" id="currentSpend" name="currentSpend" type="number" min="0" step="0.01" inputmode="decimal" value="18000" required>
+                    <span class="pg-help">Fuel, charging, grid units, candles, battery rental, and phone charging.</span>
+                  </div>
+                  <div class="pg-field">
+                    <label class="pg-label" for="maintenancePct">Maintenance buffer percent</label>
+                    <input class="pg-input" id="maintenancePct" name="maintenancePct" type="number" min="0" max="50" step="1" inputmode="numeric" value="8" required>
+                    <span class="pg-help">Add for battery care, bulbs, wiring, callouts, theft protection, and payment fees.</span>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <div class="pg-actions">
+              <button class="pg-btn pg-btn-primary" id="calculateBtn" type="submit">Calculate PayGo decision</button>
+              <button class="pg-btn" id="copyResult" type="button">Copy report</button>
+              <button class="pg-btn" id="exportCsv" type="button">Export CSV</button>
+              <button class="pg-btn" id="printResult" type="button">Print</button>
+              <button class="pg-btn" id="shareResult" type="button">Share</button>
+            </div>
+          </form>
+
+          <section class="pg-results" aria-labelledby="results-title">
+            <h2 class="pg-kicker" id="results-title">PayGo decision output</h2>
+            <div class="pg-metrics">
+              <div class="pg-metric pg-metric-main"><span>Total paid</span><strong id="totalPaid">-</strong><em id="totalPaidNote">Deposit plus repayments and maintenance buffer</em></div>
+              <div class="pg-metric"><span>Monthly affordability</span><strong id="monthlyAffordability">-</strong><em id="monthlyAffordabilityNote">Compared with current spend</em></div>
+              <div class="pg-metric"><span>Energy coverage</span><strong id="energyCoverage">-</strong><em id="energyCoverageNote">Usable kit energy vs daily load</em></div>
+              <div class="pg-metric"><span>Daily load</span><strong id="dailyLoad">-</strong><em id="dailyLoadNote">Appliance energy needed</em></div>
+              <div class="pg-metric"><span>Savings over term</span><strong id="termSavings">-</strong><em id="termSavingsNote">Current spend avoided minus total paid</em></div>
+              <div class="pg-metric"><span>Payback estimate</span><strong id="paybackEstimate">-</strong><em id="paybackNote">Months of current spend to cover total paid</em></div>
+            </div>
+            <table class="pg-breakdown" aria-label="PayGo solar cost breakdown">
+              <thead><tr><th>Decision lane</th><th>Method</th><th>Result</th></tr></thead>
+              <tbody>
+                <tr><td>Appliance load</td><td id="loadFormula">Watts x quantity x hours per day</td><td id="loadResult">-</td></tr>
+                <tr><td>Repayment model</td><td id="repaymentFormula">Repayment frequency converted to monthly cost</td><td id="repaymentResult">-</td></tr>
+                <tr><td>Maintenance buffer</td><td id="maintenanceFormula">Monthly repayment x buffer percent</td><td id="maintenanceResult">-</td></tr>
+                <tr><td>Total plan cost</td><td id="totalFormula">Deposit plus term repayments plus maintenance buffer</td><td id="totalResult">-</td></tr>
+                <tr><td>Current energy baseline</td><td id="baselineFormula">Current monthly spend x term months</td><td id="baselineResult">-</td></tr>
+              </tbody>
+            </table>
+            <div class="pg-recommendation" id="recommendation">Run a calculation to see the affordability recommendation.</div>
+            <div class="pg-lists">
+              <article class="pg-list-card">
+                <h2 class="pg-kicker">Risk flags</h2>
+                <ul id="riskFlags"></ul>
+              </article>
+              <article class="pg-list-card">
+                <h2 class="pg-kicker">Decision checklist</h2>
+                <ul id="decisionChecklist"></ul>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <aside class="pg-side" aria-label="Methodology and sources">
+        <section class="pg-card pg-source" data-tool-verification-panel>
+          <h2>Sources &amp; freshness</h2>
+          <p><strong>Last reviewed:</strong> <time datetime="2026-05-16">16 May 2026</time>. The calculator uses user-entered provider prices, appliance labels, and household or business spend, not a live PayGo tariff feed.</p>
+          <p><strong>Source note:</strong> Treat the provider quote, appliance nameplates, warranty booklet, utility bill, generator fuel receipts, and mobile-money payment history as the source documents for the final decision.</p>
+          <p>Before signing, verify the quote with the solar provider contract, appliance watt labels, battery usable capacity, warranty terms, repossession rules, payment fees, and your latest generator, grid, or charging receipts.</p>
+        </section>
+        <section class="pg-card">
+          <h2>Methodology</h2>
+          <ol>
+            <li>Daily load equals each appliance wattage multiplied by quantity and daily usage hours.</li>
+            <li>PayGo repayments are normalized to monthly cost using daily, weekly, or monthly frequency.</li>
+            <li>Total paid equals deposit plus all repayments over the term plus the maintenance buffer.</li>
+            <li>Coverage compares usable daily kit energy with the daily load and your critical-load target.</li>
+            <li>Savings compare the PayGo total paid with current generator, grid, candle, charging, or fuel spend over the same term.</li>
+          </ol>
+        </section>
+        <section class="pg-card">
+          <h2>Disclaimer</h2>
+          <p>This is an estimate only. It does not replace a licensed solar installer, electrician, lender disclosure, consumer-protection advice, or the final PayGo contract. Confirm taxes, fees, warranty, penalties, and ownership transfer terms locally.</p>
+        </section>
+      </aside>
+    </div>
+
+    <section class="pg-related" aria-labelledby="related-title">
+      <h2 id="related-title">Related energy tools</h2>
+      <div class="pg-link-grid">
+        <a class="pg-link-card" href="/tools/solar-calculator/"><strong>Solar panel calculator</strong><span>Size panels, batteries, and inverter capacity.</span></a>
+        <a class="pg-link-card" href="/tools/generator-fuel/"><strong>Generator fuel</strong><span>Compare fuel spend against PayGo payments.</span></a>
+        <a class="pg-link-card" href="/tools/backup-power-costs/"><strong>Backup power costs</strong><span>Compare generator, inverter, LPG, and solar backup.</span></a>
+        <a class="pg-link-card" href="/tools/electricity-estimator/"><strong>Electricity estimator</strong><span>Estimate current grid consumption and spend.</span></a>
+        <a class="pg-link-card" href="/tools/outage-cost/"><strong>Outage cost</strong><span>Model the business cost of unreliable power.</span></a>
+      </div>
+    </section>
+
+    <section class="pg-related" aria-labelledby="country-title">
+      <h2 id="country-title">Country PayGo solar pages</h2>
+      <div class="pg-country-grid">
+        <a href="/tools/paygo-solar/nigeria/">Nigeria</a>
+        <a href="/tools/paygo-solar/kenya/">Kenya</a>
+        <a href="/tools/paygo-solar/south-africa/">South Africa</a>
+        <a href="/tools/paygo-solar/ghana/">Ghana</a>
+        <a href="/tools/paygo-solar/egypt/">Egypt</a>
+        <a href="/tools/paygo-solar/ethiopia/">Ethiopia</a>
+        <a href="/tools/paygo-solar/tanzania/">Tanzania</a>
+        <a href="/tools/paygo-solar/uganda/">Uganda</a>
+        <a href="/tools/paygo-solar/rwanda/">Rwanda</a>
+        <a href="/tools/paygo-solar/cote-divoire/">Cote d'Ivoire</a>
+        <a href="/tools/paygo-solar/cameroon/">Cameroon</a>
+        <a href="/tools/paygo-solar/senegal/">Senegal</a>
+        <a href="/tools/paygo-solar/morocco/">Morocco</a>
+        <a href="/tools/paygo-solar/tunisia/">Tunisia</a>
+        <a href="/tools/paygo-solar/angola/">Angola</a>
+      </div>
+    </section>
+
+    <section class="pg-commercial" aria-labelledby="business-title">
+      <h2 id="business-title">For solar providers, NGOs, and energy publishers</h2>
+      <p>Need this calculator as a branded widget, sponsored PayGo decision tool, lead-capture flow, or API-backed affordability model? AfroTools can adapt it for your country, product catalog, and repayment rules.</p>
+      <div class="pg-actions">
+        <a class="pg-btn" href="/widgets/">Widgets</a>
+        <a class="pg-btn" href="/custom-calculators/">Custom calculators</a>
+        <a class="pg-btn" href="/api/">API</a>
+        <a class="pg-btn" href="/business-enquiry/">Business enquiry</a>
+      </div>
+    </section>
+
+  </div>
 </main>
 <afro-footer></afro-footer>
-<script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
+<script>
+(function(){
+  "use strict";
+
+  var loadRows = [
+    { name:"Lights", watts:"lightsWatts", qty:"lightsQty", hours:"lightsHours" },
+    { name:"TV or radio", watts:"tvWatts", qty:"tvQty", hours:"tvHours" },
+    { name:"Phones and small devices", watts:"phoneWatts", qty:"phoneQty", hours:"phoneHours" },
+    { name:"Fan", watts:"fanWatts", qty:"fanQty", hours:"fanHours" },
+    { name:"Fridge, POS, or router", watts:"fridgeWatts", qty:"fridgeQty", hours:"fridgeHours" },
+    { name:"Other load", watts:"otherWatts", qty:"otherQty", hours:"otherHours" }
+  ];
+  var inputIds = ["country","currency","kitWh","criticalLoadPct","deposit","repayment","frequency","termMonths","currentSpend","maintenancePct"];
+  var el = {};
+  var lastReport = null;
+  inputIds.concat(loadRows.flatMap(function(row){ return [row.watts,row.qty,row.hours]; })).forEach(function(id){
+    el[id] = document.getElementById(id);
+  });
+
+  function byId(id){ return document.getElementById(id); }
+  function num(id, fallback){
+    var value = parseFloat(el[id] && el[id].value);
+    return Number.isFinite(value) ? value : fallback;
+  }
+  function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
+  function round(value, places){
+    var p = Math.pow(10, places || 2);
+    return Math.round(value * p) / p;
+  }
+  function money(value, currency){
+    if(!Number.isFinite(value)) return "-";
+    try {
+      return new Intl.NumberFormat(undefined, {
+        style:"currency",
+        currency:currency,
+        maximumFractionDigits:value >= 1000 ? 0 : 2
+      }).format(value);
+    } catch(error) {
+      return currency + " " + (value >= 1000 ? Math.round(value).toLocaleString() : value.toFixed(2));
+    }
+  }
+  function text(id, value){ byId(id).textContent = value; }
+  function escapeHtml(value){
+    return String(value).replace(/[&<>"']/g,function(ch){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];
+    });
+  }
+  function renderList(id, items){
+    byId(id).innerHTML = items.map(function(item){ return "<li>" + escapeHtml(item) + "</li>"; }).join("");
+  }
+  function csvCell(value){
+    return "\"" + String(value == null ? "" : value).replace(/"/g, "\"\"") + "\"";
+  }
+  function setStatus(message){ byId("pgStatus").textContent = message || ""; }
+
+  function updateCurrencyFromCountry(){
+    var option = el.country.options[el.country.selectedIndex];
+    var currency = option && option.getAttribute("data-currency");
+    if(currency && el.currency.querySelector("option[value='" + currency + "']")){
+      el.currency.value = currency;
+    }
+  }
+
+  function loadTotal(){
+    var details = [];
+    var totalWh = 0;
+    loadRows.forEach(function(row){
+      var watts = Math.max(0, num(row.watts, 0));
+      var qty = Math.max(0, num(row.qty, 0));
+      var hours = clamp(num(row.hours, 0), 0, 24);
+      var wh = watts * qty * hours;
+      totalWh += wh;
+      if(wh > 0){
+        details.push(row.name + ": " + round(wh, 0) + " Wh/day");
+      }
+    });
+    return { totalWh:totalWh, details:details };
+  }
+
+  function monthlyFromFrequency(amount, frequency){
+    if(frequency === "daily") return amount * 30.4375;
+    if(frequency === "weekly") return amount * 4.345;
+    return amount;
+  }
+
+  function calculate(event){
+    if(event) event.preventDefault();
+    var country = el.country.value || "Selected market";
+    var currency = el.currency.value || "USD";
+    var kitWh = Math.max(50, num("kitWh", 0));
+    var criticalLoadPct = clamp(num("criticalLoadPct", 80), 20, 100);
+    var deposit = Math.max(0, num("deposit", 0));
+    var repayment = Math.max(0, num("repayment", 0));
+    var frequency = el.frequency.value || "monthly";
+    var termMonths = Math.max(1, Math.round(num("termMonths", 1)));
+    var currentSpend = Math.max(0, num("currentSpend", 0));
+    var maintenancePct = clamp(num("maintenancePct", 0), 0, 50);
+    var load = loadTotal();
+    var dailyWh = load.totalWh;
+    var dailyKwh = dailyWh / 1000;
+    var monthlyRepayment = monthlyFromFrequency(repayment, frequency);
+    var maintenanceMonthly = monthlyRepayment * (maintenancePct / 100);
+    var monthlyCommitment = monthlyRepayment + maintenanceMonthly;
+    var totalRepayments = monthlyRepayment * termMonths;
+    var totalMaintenance = maintenanceMonthly * termMonths;
+    var totalPaid = deposit + totalRepayments + totalMaintenance;
+    var baselineCost = currentSpend * termMonths;
+    var termSavings = baselineCost - totalPaid;
+    var coveragePct = dailyWh > 0 ? (kitWh / dailyWh) * 100 : 0;
+    var targetMet = coveragePct >= criticalLoadPct;
+    var affordabilityPct = currentSpend > 0 ? (monthlyCommitment / currentSpend) * 100 : 0;
+    var monthlySavings = currentSpend - monthlyCommitment;
+    var paybackMonths = currentSpend > 0 ? totalPaid / currentSpend : 0;
+    var afterTermSavings = Math.max(0, currentSpend - maintenanceMonthly);
+    var frequencyLabel = frequency.charAt(0).toUpperCase() + frequency.slice(1);
+    var risks = [];
+
+    if(dailyWh <= 0) risks.push("No appliance load entered. Add the devices you expect the kit to run.");
+    if(!targetMet) risks.push("Coverage risk: usable kit energy covers " + round(coveragePct, 0) + "% of load, below your " + criticalLoadPct + "% target.");
+    if(monthlyCommitment > currentSpend && currentSpend > 0) risks.push("Affordability risk: PayGo commitment is higher than current monthly energy spend.");
+    if(currentSpend === 0) risks.push("No current energy spend entered, so savings and payback are weak estimates.");
+    if(deposit > currentSpend * 2 && currentSpend > 0) risks.push("Deposit may strain cash flow because it is more than two months of current energy spend.");
+    if(termMonths > 36) risks.push("Long-term obligation: confirm ownership transfer, warranty, and repossession rules.");
+    if(maintenancePct < 5) risks.push("Maintenance buffer is low. Payment fees, bulbs, wiring, battery care, and callouts can add cost.");
+    if(dailyKwh > 2.5) risks.push("High daily load for a small PayGo kit. Confirm inverter surge, battery usable Wh, and fridge or motor startup draw.");
+    if(risks.length === 0) risks.push("No major red flags from these assumptions. Still verify contract, warranty, fees, and installer sizing.");
+
+    var checklist = [
+      "Ask the provider for usable battery Wh per day, not only panel watts or marketing kit size.",
+      "Confirm whether the asset becomes yours after the final payment and whether unlock fees apply.",
+      "Check warranty length, battery replacement policy, theft protection, service call fees, and late-payment lockout.",
+      "Test the kit against your highest-priority load before signing, especially fridges, fans, routers, POS, or pumps.",
+      "Keep your current energy receipts so you can compare actual savings after the first month."
+    ];
+
+    text("totalPaid", money(totalPaid, currency));
+    text("totalPaidNote", money(deposit, currency) + " deposit plus " + termMonths + " months");
+    text("monthlyAffordability", money(monthlyCommitment, currency));
+    text("monthlyAffordabilityNote", currentSpend > 0 ? round(affordabilityPct, 0) + "% of current monthly spend" : "Enter current spend for ratio");
+    text("energyCoverage", round(coveragePct, 0) + "%");
+    text("energyCoverageNote", targetMet ? "Meets " + criticalLoadPct + "% critical-load target" : "Below " + criticalLoadPct + "% target");
+    text("dailyLoad", round(dailyKwh, 2) + " kWh/day");
+    text("dailyLoadNote", round(dailyWh, 0) + " Wh from appliance rows");
+    text("termSavings", money(termSavings, currency));
+    text("termSavingsNote", termSavings >= 0 ? "Estimated savings during term" : "Estimated extra cost during term");
+    text("paybackEstimate", currentSpend > 0 ? round(paybackMonths, 1) + " months" : "-");
+    text("paybackNote", currentSpend > 0 ? "Avoided current spend covers total paid" : "Needs current spend");
+    text("loadFormula", load.details.length ? load.details.join("; ") : "No appliance load entered");
+    text("loadResult", round(dailyWh, 0) + " Wh/day (" + round(dailyKwh, 2) + " kWh/day)");
+    text("repaymentFormula", frequencyLabel + " repayment " + money(repayment, currency) + " converted to monthly");
+    text("repaymentResult", money(monthlyRepayment, currency) + " per month");
+    text("maintenanceFormula", money(monthlyRepayment, currency) + " x " + maintenancePct + "% buffer");
+    text("maintenanceResult", money(maintenanceMonthly, currency) + " per month");
+    text("totalFormula", money(deposit, currency) + " + " + money(totalRepayments, currency) + " repayments + " + money(totalMaintenance, currency) + " buffer");
+    text("totalResult", money(totalPaid, currency));
+    text("baselineFormula", money(currentSpend, currency) + " current monthly spend x " + termMonths + " months");
+    text("baselineResult", money(baselineCost, currency));
+
+    var recommendation = "";
+    var warning = false;
+    if(!targetMet){
+      recommendation = "Size warning: this kit does not cover the selected critical load target. Reduce appliances, choose a larger kit, or ask for a verified load test before paying the deposit.";
+      warning = true;
+    } else if(monthlySavings > 0 && termSavings >= 0){
+      recommendation = "Good affordability signal for " + country + ": the kit covers the target load and appears cheaper than current energy spend over the term. After ownership, potential monthly savings are about " + money(afterTermSavings, currency) + " before major repairs.";
+    } else if(monthlySavings > 0){
+      recommendation = "Mixed signal: monthly cash flow improves by about " + money(monthlySavings, currency) + ", but the deposit and full term still cost more than the current baseline. Negotiate deposit, term, or kit price.";
+      warning = true;
+    } else {
+      recommendation = "Cost warning: this plan is not cheaper than your current monthly energy spend under these assumptions. It may still be worth it for reliability, but negotiate price or confirm the kit replaces more spend.";
+      warning = true;
+    }
+    byId("recommendation").textContent = recommendation;
+    byId("recommendation").className = "pg-recommendation" + (warning ? " pg-warning" : "");
+    renderList("riskFlags", risks);
+    renderList("decisionChecklist", checklist);
+
+    lastReport = {
+      country:country,
+      currency:currency,
+      dailyWh:round(dailyWh, 0),
+      dailyKwh:round(dailyKwh, 2),
+      kitWh:round(kitWh, 0),
+      coveragePct:round(coveragePct, 1),
+      targetMet:targetMet ? "Yes" : "No",
+      deposit:round(deposit, 2),
+      repaymentFrequency:frequency,
+      repaymentAmount:round(repayment, 2),
+      monthlyRepayment:round(monthlyRepayment, 2),
+      maintenanceMonthly:round(maintenanceMonthly, 2),
+      monthlyCommitment:round(monthlyCommitment, 2),
+      termMonths:termMonths,
+      totalPaid:round(totalPaid, 2),
+      currentSpend:round(currentSpend, 2),
+      baselineCost:round(baselineCost, 2),
+      termSavings:round(termSavings, 2),
+      paybackMonths:currentSpend > 0 ? round(paybackMonths, 1) : "",
+      riskFlags:risks.join(" | "),
+      recommendation:recommendation,
+      generatedAt:new Date().toISOString()
+    };
+    try { localStorage.setItem("afrotools-paygo-solar-result", JSON.stringify(lastReport)); } catch(error) {}
+    setStatus("Decision updated");
+    return lastReport;
+  }
+
+  function reportText(){
+    var report = lastReport || calculate();
+    return [
+      "PayGo Solar Calculator - AfroTools",
+      "Generated: " + new Date().toLocaleString(),
+      "Country: " + report.country + " (" + report.currency + ")",
+      "Daily load: " + report.dailyWh + " Wh/day (" + report.dailyKwh + " kWh/day)",
+      "Kit usable energy: " + report.kitWh + " Wh/day",
+      "Energy coverage: " + report.coveragePct + "%",
+      "Monthly repayment: " + money(report.monthlyRepayment, report.currency),
+      "Monthly maintenance buffer: " + money(report.maintenanceMonthly, report.currency),
+      "Monthly commitment: " + money(report.monthlyCommitment, report.currency),
+      "Total paid: " + money(report.totalPaid, report.currency),
+      "Current baseline over term: " + money(report.baselineCost, report.currency),
+      "Savings over term: " + money(report.termSavings, report.currency),
+      "Payback estimate: " + (report.paybackMonths || "not available") + " months",
+      "Risk flags: " + report.riskFlags,
+      "Recommendation: " + report.recommendation,
+      "Disclaimer: estimate only. Confirm provider contract, usable battery capacity, warranty, payment fees, taxes, ownership transfer, and installer sizing."
+    ].join("\n");
+  }
+
+  function copyReport(){
+    var value = reportText();
+    function done(){ setStatus("Report copied"); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(value).then(done).catch(function(){ fallbackCopy(value); });
+    } else {
+      fallbackCopy(value);
+    }
+  }
+
+  function fallbackCopy(value){
+    var area = document.createElement("textarea");
+    area.value = value;
+    area.setAttribute("readonly", "readonly");
+    area.style.position = "fixed";
+    area.style.left = "-9999px";
+    document.body.appendChild(area);
+    area.select();
+    try {
+      document.execCommand("copy");
+      setStatus("Report copied");
+    } catch(error) {
+      setStatus("Copy blocked. Select the report text after printing.");
+    }
+    document.body.removeChild(area);
+  }
+
+  function exportCsv(){
+    var report = lastReport || calculate();
+    var rows = [["Metric","Value"]];
+    Object.keys(report).forEach(function(key){ rows.push([key, report[key]]); });
+    var csv = rows.map(function(row){ return row.map(csvCell).join(","); }).join("\n");
+    var blob = new Blob([csv], { type:"text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "paygo-solar-decision.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setStatus("CSV exported");
+  }
+
+  function shareReport(){
+    var value = reportText();
+    if(navigator.share){
+      navigator.share({ title:"PayGo Solar Calculator", text:value, url:location.href }).then(function(){
+        setStatus("Share sheet opened");
+      }).catch(function(){
+        setStatus("Share cancelled");
+      });
+    } else {
+      copyReport();
+    }
+  }
+
+  el.country.addEventListener("change", function(){
+    updateCurrencyFromCountry();
+    calculate();
+  });
+  el.frequency.addEventListener("change", calculate);
+  inputIds.concat(loadRows.flatMap(function(row){ return [row.watts,row.qty,row.hours]; })).forEach(function(id){
+    if(el[id] && id !== "country" && id !== "frequency"){
+      el[id].addEventListener("input", calculate);
+    }
+  });
+  byId("paygoForm").addEventListener("submit", calculate);
+  byId("copyResult").addEventListener("click", copyReport);
+  byId("exportCsv").addEventListener("click", exportCsv);
+  byId("printResult").addEventListener("click", function(){ window.print(); });
+  byId("shareResult").addEventListener("click", shareReport);
+
+  updateCurrencyFromCountry();
+  calculate();
+})();
+</script>
 </body>
 </html>

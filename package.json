@@ -7,8 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "counts:sync": "node scripts/build-tool-directory.js && node scripts/update-counts.js --write",
-    "tools:directory": "node scripts/build-tool-directory.js",
+    "counts:sync": "node scripts/build-tool-directory.js && node scripts/build-search-index.js && node scripts/build-salary-tax-index.js && node scripts/update-counts.js --write",
+    "tools:directory": "node scripts/build-tool-directory.js && node scripts/build-search-index.js && node scripts/build-salary-tax-index.js",
     "tools:quality": "node scripts/audit-tool-quality.js",
     "tools:quality:browser": "node scripts/audit-tool-quality.js --browser",
     "minify": "node scripts/minify.js",
@@ -40,7 +40,7 @@
     "cars:research:queue:wave2": "node scripts/generate-real-data-research-queue.js --wave data/cars/catalog-expansion-wave-2-ev-luxury.csv --output data/cars/real-data-research-queue-wave-2-ev-luxury.csv --wave-only",
     "cars:research:queue:wave3": "node scripts/generate-real-data-research-queue.js --wave data/cars/catalog-expansion-wave-3-premium-ev.csv --output data/cars/real-data-research-queue-wave-3-premium-ev.csv --wave-only",
     "bundle": "node scripts/bundle.js && node scripts/update-html-bundles.js",
-    "build": "node scripts/build-tool-directory.js && node scripts/update-counts.js --write && node scripts/minify.js && node scripts/bundle.js && node scripts/update-html-bundles.js && node scripts/build-related-tools-data.js && node scripts/prune-unused-registry.js && node scripts/build-seo-system.js && node scripts/apply-og-fallbacks.js && node scripts/cachebust.js && node scripts/inject-internal-links.js && node scripts/fix-canonical-alias-links.js && node scripts/update-html-canonical-redirects.js && node scripts/generate-blog-feed.js && node scripts/generate-sitemaps.js && node scripts/seo-daily-fix.js && node scripts/stamp-sw.js && node tests/tool-verification.test.js",
+    "build": "node scripts/build-tool-directory.js && node scripts/build-search-index.js && node scripts/build-salary-tax-index.js && node scripts/update-counts.js --write && node scripts/minify.js && node scripts/bundle.js && node scripts/update-html-bundles.js && node scripts/build-related-tools-data.js && node scripts/prune-unused-registry.js && node scripts/build-seo-system.js && node scripts/apply-og-fallbacks.js && node scripts/cachebust.js && node scripts/inject-internal-links.js && node scripts/fix-canonical-alias-links.js && node scripts/update-html-canonical-redirects.js && node scripts/generate-blog-feed.js && node scripts/generate-sitemaps.js && node scripts/seo-daily-fix.js && node scripts/stamp-sw.js && node tests/tool-verification.test.js",
     "build:deploy": "npm run build && node scripts/build-dist.js",
     "audit:dist": "node scripts/audit-dist.js",
     "security:scan": "node scripts/security-scan.js",
@@ -82,6 +82,8 @@
     "seo:widgets": "node scripts/fix-widget-iframe-seo.js",
     "seo:dry": "node scripts/seo-daily-fix.js --dry-run",
     "seo:report": "node scripts/seo-daily-fix.js --report",
+    "mobile:audit": "node scripts/mobile-audit.js",
+    "mobile:network": "node scripts/mobile-network-smoke.js",
     "inventory:site": "node scripts/build-site-inventory.js",
     "government:sources": "node scripts/update-government-source-ledger.js",
     "government:sources:check": "node scripts/update-government-source-ledger.js --check",

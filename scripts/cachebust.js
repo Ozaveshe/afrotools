@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
 const SKIP_DIRS = new Set([
@@ -31,27 +32,6 @@ const SKIP_DIRS = new Set([
 
 // Cache file hashes so we don't re-read the same file
 const hashCache = new Map();
-const WRITE_RETRY_CODES = new Set(['EPERM', 'EBUSY', 'UNKNOWN']);
-
-function writeFileWithRetry(filePath, content, attempts = 3) {
-  let lastError = null;
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    try {
-      fs.writeFileSync(filePath, content, 'utf8');
-      return;
-    } catch (error) {
-      lastError = error;
-      if (!WRITE_RETRY_CODES.has(error.code) || attempt === attempts) {
-        throw error;
-      }
-
-      const delayMs = attempt * 150;
-      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, delayMs);
-    }
-  }
-
-  throw lastError;
-}
 
 function getFileHash(filePath) {
   if (hashCache.has(filePath)) return hashCache.get(filePath);
@@ -157,7 +137,7 @@ for (const htmlPath of htmlFiles) {
     const newRefs = (html.match(/\?v=[a-f0-9]{8}/g) || []).length;
     refCount += newRefs;
 
-    writeFileWithRetry(htmlPath, html);
+    writeFileSyncWithRetry(htmlPath, html, 'utf8');
     updatedCount++;
   }
 }

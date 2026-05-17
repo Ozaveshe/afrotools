@@ -32,6 +32,29 @@ const COUNTRIES = [
   { code: "TZ", frSlug: "tanzanie", enSlug: "tanzania", frName: "Tanzanie", city: "Dar es Salaam" }
 ];
 
+const COUNTRY_PLACE_FR = {
+  CI: "en C\u00f4te d'Ivoire",
+  SN: "au S\u00e9n\u00e9gal",
+  CM: "au Cameroun",
+  MA: "au Maroc",
+  DZ: "en Alg\u00e9rie",
+  TN: "en Tunisie",
+  RW: "au Rwanda",
+  NG: "au Nigeria",
+  GH: "au Ghana",
+  KE: "au Kenya",
+  EG: "en \u00c9gypte",
+  ET: "en \u00c9thiopie",
+  AO: "en Angola",
+  ZA: "en Afrique du Sud",
+  MZ: "au Mozambique",
+  BW: "au Botswana",
+  NA: "en Namibie",
+  UG: "en Ouganda",
+  ZM: "en Zambie",
+  TZ: "en Tanzanie"
+};
+
 const MODEL_PAGES = [
   { countryCode: "CI", make: "toyota", model: "corolla", year: 2018 },
   { countryCode: "SN", make: "toyota", model: "corolla", year: 2018 },
@@ -85,7 +108,22 @@ const MODEL_PAGES = [
   { countryCode: "MZ", make: "toyota", model: "hilux", year: 2015 },
   { countryCode: "MZ", make: "toyota", model: "corolla", year: 2018 },
   { countryCode: "BW", make: "toyota", model: "hilux", year: 2015 },
-  { countryCode: "NA", make: "toyota", model: "hilux", year: 2015 }
+  { countryCode: "NA", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "GH", make: "toyota", model: "corolla", year: 2018 },
+  { countryCode: "GH", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "GH", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "KE", make: "toyota", model: "corolla", year: 2018 },
+  { countryCode: "KE", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "KE", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "UG", make: "toyota", model: "corolla", year: 2018 },
+  { countryCode: "UG", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "UG", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "ZM", make: "toyota", model: "corolla", year: 2018 },
+  { countryCode: "ZM", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "ZM", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "TZ", make: "toyota", model: "corolla", year: 2018 },
+  { countryCode: "TZ", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "TZ", make: "toyota", model: "hilux", year: 2015 }
 ];
 
 const TOP_MODELS = [
@@ -199,21 +237,16 @@ function normalizeFrenchText(value) {
   if (value && typeof value === "object") {
     return Object.fromEntries(Object.entries(value).map(([key, nested]) => [key, normalizeFrenchText(nested)]));
   }
-  return String(value == null ? "" : value)
-    .replace(/Ã€|Ã/g, "\u00c0")
-    .replace(/Ã‰/g, "\u00c9")
-    .replace(/a/g, "\u00e2")
-    .replace(/a/g, "\u00e0")
-    .replace(/c/g, "\u00e7")
-    .replace(/e/g, "\u00e9")
-    .replace(/e/g, "\u00e8")
-    .replace(/e/g, "\u00ea")
-    .replace(/e/g, "\u00eb")
-    .replace(/Ã®/g, "\u00ee")
-    .replace(/i/g, "\u00ef")
-    .replace(/o/g, "\u00f4")
-    .replace(/Ã¹/g, "\u00f9")
-    .replace(/u/g, "\u00fb");
+  let text = String(value == null ? "" : value);
+  if (/[\u00c2\u00c3\u00e2]/.test(text)) {
+    try {
+      const repaired = Buffer.from(text, "latin1").toString("utf8");
+      if (!repaired.includes("\ufffd")) text = repaired;
+    } catch (_) {
+      // Keep the original text if the runtime cannot safely repair mojibake.
+    }
+  }
+  return text;
 }
 
 function escapeHtml(value) {
@@ -244,6 +277,10 @@ function money(value, currency) {
 
 function countryByCode(code) {
   return COUNTRIES.find((country) => country.code === code);
+}
+
+function countryPlace(country) {
+  return COUNTRY_PLACE_FR[country.code] || `en ${country.frName}`;
 }
 
 function contextFor(countryCode, vehicleSpec) {
@@ -516,8 +553,9 @@ function renderCountryPage(country) {
   rememberReciprocal(enRoute, route);
   const sourceCountry = priceData.countries[country.code];
   const profile = priceData.countryMarketProfiles[country.code] || {};
-  const title = `Prix des voitures en ${country.frName} | Import ou achat local | AfroTools`;
-  const description = `Comparez les fourchettes de prix voiture en ${country.frName}, les estimations d'import, les prix locaux en ${sourceCountry.currency_code} et les modèles prioritaires.`;
+  const place = countryPlace(country);
+  const title = `Prix des voitures ${place} | Import ou achat local | AfroTools`;
+  const description = `Comparez les fourchettes de prix voiture ${place}, les estimations d'import, les prix locaux en ${sourceCountry.currency_code} et les modèles prioritaires.`;
   const rows = TOP_MODELS.map((spec) => {
     const ctx = contextFor(country.code, spec);
     const modelRoute = MODEL_PAGES.some((page) => page.countryCode === country.code && page.make === spec.make && page.model === spec.model && page.year === spec.year)
@@ -554,7 +592,7 @@ function renderCountryPage(country) {
     <section class="fr-cars-hero">
       <div class="fr-cars-shell">
         <span class="fr-kicker">Marché automobile</span>
-        <h1>Prix de voitures en ${escapeHtml(country.frName)}</h1>
+        <h1>Prix de voitures ${escapeHtml(place)}</h1>
         <p>${escapeHtml(frenchCountryIntro(country, sourceCountry))}</p>
         <div class="fr-cars-actions">
           <a class="fr-cars-button" href="/fr/cars/">Retour aux voitures</a>
@@ -595,10 +633,11 @@ function renderMakePage(page) {
   const enRoute = `cars/${country.enSlug}/${page.make}`;
   rememberReciprocal(enRoute, route);
   const sourceCountry = priceData.countries[country.code];
+  const place = countryPlace(country);
   const makeLabel = page.make.split("-").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
   const entries = MODEL_PAGES.filter((item) => item.countryCode === page.countryCode && item.make === page.make);
-  const title = `${makeLabel} en ${country.frName} | Prix rendus et modèles | AfroTools`;
-  const description = `Repères français pour comparer les modèles ${makeLabel} en ${country.frName}: prix rendu, prix local indicatif, risque import et pages modèle disponibles.`;
+  const title = `${makeLabel} ${place} | Prix rendus et modèles | AfroTools`;
+  const description = `Repères français pour comparer les modèles ${makeLabel} ${place}: prix rendu, prix local indicatif, risque import et pages modèle disponibles.`;
   const rows = entries.map((item) => {
     const ctx = contextFor(item.countryCode, item);
     const modelRoute = hasFrenchModelIndex(item)
@@ -636,7 +675,7 @@ function renderMakePage(page) {
     <section class="fr-cars-hero">
       <div class="fr-cars-shell">
         <span class="fr-kicker">Marque automobile</span>
-        <h1>${escapeHtml(makeLabel)} en ${escapeHtml(country.frName)}</h1>
+        <h1>${escapeHtml(makeLabel)} ${escapeHtml(place)}</h1>
         <p>Comparez les modèles ${escapeHtml(makeLabel)} déjà couverts par le lancement français, avec une lecture prudente du coût rendu et du prix local indicatif en ${escapeHtml(sourceCountry.currency_code)}.</p>
         <div class="fr-cars-actions">
           <a class="fr-cars-button" href="/fr/cars/${country.frSlug}/">Voir ${escapeHtml(country.frName)}</a>
@@ -663,10 +702,11 @@ function renderModelIndexPage(page) {
   const enRoute = `cars/${country.enSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}`;
   rememberReciprocal(enRoute, route);
   const sourceCountry = priceData.countries[country.code];
+  const place = countryPlace(country);
   const vehicleLabel = `${ctx.vehicle.make} ${ctx.vehicle.model}`;
   const entries = MODEL_PAGES.filter((item) => item.countryCode === page.countryCode && item.make === page.make && item.model === page.model);
-  const title = `${vehicleLabel} en ${country.frName} | Années, prix et import | AfroTools`;
-  const description = `Vue française pour ${vehicleLabel} en ${country.frName}: années disponibles, coût rendu estimé, prix local indicatif et liens vers les pages détaillées.`;
+  const title = `${vehicleLabel} ${place} | Années, prix et import | AfroTools`;
+  const description = `Vue française pour ${vehicleLabel} ${place}: années disponibles, coût rendu estimé, prix local indicatif et liens vers les pages détaillées.`;
   const rows = entries.map((item) => {
     const yearCtx = contextFor(item.countryCode, item);
     return `<tr>
@@ -707,7 +747,7 @@ function renderModelIndexPage(page) {
     <section class="fr-cars-hero">
       <div class="fr-cars-shell">
         <span class="fr-kicker">Modèle automobile</span>
-        <h1>${escapeHtml(vehicleLabel)} en ${escapeHtml(country.frName)}</h1>
+        <h1>${escapeHtml(vehicleLabel)} ${escapeHtml(place)}</h1>
         <p>Choisissez une année disponible pour comparer le coût rendu estimé, le prix local indicatif en ${escapeHtml(sourceCountry.currency_code)} et les signaux de risque avant de parler à un vendeur ou à un transitaire.</p>
         <div class="fr-cars-actions">
           <a class="fr-cars-button" href="/fr/cars/${country.frSlug}/${ctx.vehicle.makeSlug}/">Voir ${escapeHtml(ctx.vehicle.make)}</a>
@@ -733,9 +773,10 @@ function renderModelPage(page) {
   const route = `fr/cars/${country.frSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}`;
   const enRoute = `cars/${country.enSlug}/${ctx.vehicle.makeSlug}/${ctx.vehicle.modelSlug}/${ctx.vehicle.year}`;
   rememberReciprocal(enRoute, route);
+  const place = countryPlace(country);
   const vehicleName = `${ctx.vehicle.year} ${ctx.vehicle.make} ${ctx.vehicle.model}`;
-  const title = `${vehicleName} en ${country.frName} | Prix rendu et local | AfroTools`;
-  const description = `Estimation française pour ${vehicleName} en ${country.frName}: prix source, coût rendu, prix local indicatif, risque d'import et lecture achat local.`;
+  const title = `${vehicleName} ${place} | Prix rendu et local | AfroTools`;
+  const description = `Estimation française pour ${vehicleName} ${place}: prix source, coût rendu, prix local indicatif, risque d'import et lecture achat local.`;
   const priceRows = [
     ["Prix source", ctx.sourcePrice.median, "Avant fret, assurance et frais du pays de destination."],
     ["Coût rendu estimé", ctx.landed.normal, "Scénario normal AfroTools, avec devise locale affichée."],
@@ -771,7 +812,7 @@ function renderModelPage(page) {
     <section class="fr-cars-hero">
       <div class="fr-cars-shell">
         <span class="fr-kicker">Modèle prioritaire</span>
-        <h1>${escapeHtml(vehicleName)} en ${escapeHtml(country.frName)}</h1>
+        <h1>${escapeHtml(vehicleName)} ${escapeHtml(place)}</h1>
         <p>${escapeHtml(frenchRecommendationExplanation(ctx))}</p>
         <div class="fr-cars-actions">
           <a class="fr-cars-button" href="/fr/cars/${country.frSlug}/">Voir ${escapeHtml(country.frName)}</a>

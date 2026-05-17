@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { ROOT, preferredRouteForFile } = require('./lib/canonical-aliases');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 // Country slug → readable name
 const COUNTRY_NAMES = {
@@ -119,7 +120,7 @@ ${SEO_NAV_MARKER}`;
     }
   }
 
-  fs.writeFileSync(indexPath, html, 'utf8');
+  writeFileSyncWithRetry(indexPath, html, 'utf8');
 }
 
 // ── Process agriculture tool directories ──

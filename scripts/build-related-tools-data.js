@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'assets', 'js', 'components', 'tool-registry.js');
@@ -72,8 +73,8 @@ const prettyPayload = banner +
 const compactPayload = banner +
   `(function(root){root.AFRO_RELATED_TOOLS=${JSON.stringify(relatedTools)};})(typeof window!=="undefined"?window:globalThis);`;
 
-fs.writeFileSync(OUTPUT_PATH, prettyPayload, 'utf8');
-fs.writeFileSync(OUTPUT_MIN_PATH, compactPayload, 'utf8');
+writeFileSyncWithRetry(OUTPUT_PATH, prettyPayload, 'utf8');
+writeFileSyncWithRetry(OUTPUT_MIN_PATH, compactPayload, 'utf8');
 
 const prettySize = Buffer.byteLength(prettyPayload);
 const compactSize = Buffer.byteLength(compactPayload);

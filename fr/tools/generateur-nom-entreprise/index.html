@@ -2,68 +2,1350 @@
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Générateur de nom d'entreprise | AfroTools</title>
-<meta name="description" content="Générez des noms d'entreprise uniques inspirés de 10 langues africaines. Vérification de domaine, réseaux sociaux, notation. 50+ idées par clic. Gratuit.">
-<link rel="canonical" href="https://afrotools.com/fr/tools/generateur-nom-entreprise/">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generateur de nom d'entreprise | AfroTools</title>
+<meta name="description" content="Generez des noms de societe en francais avec secteur, pays, ton, mots-cles, forme juridique, selection, export et verification.">
+<meta name="theme-color" content="#007AFF">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Générateur de nom d'entreprise africain | AfroTools">
-<meta property="og:description" content="Noms d'entreprise inspirés de langues africaines. Vérification de domaine, réseaux sociaux, 50+ idées par clic.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="canonical" href="https://afrotools.com/fr/tools/generateur-nom-entreprise/">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Generateur de nom d'entreprise | AfroTools">
+<meta property="og:description" content="Atelier de nommage pour entrepreneurs africains: idees groupees, raisons, disponibilite a verifier, selection locale et export.">
 <meta property="og:url" content="https://afrotools.com/fr/tools/generateur-nom-entreprise/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
+<meta name="twitter:title" content="Generateur de nom d'entreprise | AfroTools">
+<meta name="twitter:description" content="Trouvez et comparez des noms de marque avec liste domaine, reseaux sociaux, marque et registre.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<script src="/assets/js/components/related-tools-data.min.js?v=a476b40c" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
-<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Générateur de nom d'entreprise africain","description":"Générez des noms d'entreprise uniques inspirés de langues africaines avec vérification de domaine et réseaux sociaux.","url":"https://afrotools.com/fr/tools/generateur-nom-entreprise/","inLanguage":"https://afrotools.com/fr/","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment trouver un nom d'entreprise en langue africaine ?","acceptedAnswer":{"@type":"Answer","text":"Notre générateur propose des noms inspirés du Yoruba, Swahili, Haoussa, Zoulou et 6 autres langues africaines. Entrez votre secteur d'activité et obtenez 50+ suggestions uniques."}},{"@type":"Question","name":"La disponibilité du domaine est-elle vérifiée ?","acceptedAnswer":{"@type":"Answer","text":"Oui, chaque nom généré est vérifié instantanément pour la disponibilité du domaine (.com, .co, .africa) et des pseudonymes sur les réseaux sociaux."}},{"@type":"Question","name":"L'outil est-il gratuit ?","acceptedAnswer":{"@type":"Answer","text":"Oui, le générateur est entièrement gratuit, sans inscription requise. Vous pouvez générer autant de noms que vous le souhaitez."}}]}
-</script>
-<style>:root{--color-brand:var(--color-primary)}</style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<style>
+.name-page {
+  background: #f5f7fb;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+.name-page *,
+.name-page *::before,
+.name-page *::after {
+  box-sizing: border-box;
+}
+
+.name-shell {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 20px;
+}
+
+.name-hero {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(34, 197, 94, .2), transparent 27%),
+    radial-gradient(circle at 84% 10%, rgba(0, 122, 255, .2), transparent 26%),
+    linear-gradient(135deg, #07111f 0%, #152239 52%, #2a3650 100%);
+  color: #fff;
+  padding: 44px 0 34px;
+}
+
+.name-crumbs {
+  color: rgba(255, 255, 255, .68);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.name-crumbs a {
+  color: rgba(255, 255, 255, .84);
+  text-decoration: none;
+}
+
+.name-hero-grid {
+  align-items: end;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 390px);
+}
+
+.name-eyebrow {
+  color: #9ee8c2;
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.name-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.85rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+
+.name-hero p {
+  color: rgba(255, 255, 255, .78);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 730px;
+}
+
+.name-note-card {
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.name-note-card strong {
+  color: #fff;
+  display: block;
+  font-size: .95rem;
+  margin-bottom: 8px;
+}
+
+.name-note-card span {
+  color: rgba(255, 255, 255, .74);
+  display: block;
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.name-main {
+  padding: 28px 0 56px;
+}
+
+.name-workbench {
+  align-items: start;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr);
+  min-width: 0;
+}
+
+.name-panel,
+.name-info {
+  background: #fff;
+  border: 1px solid #dbe4f0;
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, .07);
+  min-width: 0;
+  padding: 22px;
+}
+
+.name-panel h2,
+.name-info h2 {
+  color: #0f172a;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  margin: 0 0 14px;
+}
+
+.name-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.name-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.name-field.full {
+  grid-column: 1 / -1;
+}
+
+.name-field label {
+  color: #334155;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.name-field input,
+.name-field select,
+.name-field textarea {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  color: #0f172a;
+  font: inherit;
+  min-height: 44px;
+  min-width: 0;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.name-field textarea {
+  min-height: 128px;
+  resize: vertical;
+}
+
+.name-help {
+  color: #64748b;
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+.name-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.name-btn {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .9rem;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 15px;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.name-btn:hover {
+  transform: translateY(-1px);
+}
+
+.name-btn:focus-visible,
+.name-field input:focus-visible,
+.name-field select:focus-visible,
+.name-field textarea:focus-visible {
+  outline: 3px solid rgba(0, 122, 255, .32);
+  outline-offset: 2px;
+}
+
+.name-primary {
+  background: #007aff;
+  box-shadow: 0 12px 22px rgba(0, 122, 255, .22);
+  color: #fff;
+}
+
+.name-secondary {
+  background: #eaf4ff;
+  color: #0f4f9b;
+}
+
+.name-muted {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.name-danger {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.name-status {
+  background: #eef7ff;
+  border: 1px solid #cfe6ff;
+  border-radius: 8px;
+  color: #1e3a8a;
+  font-size: .88rem;
+  line-height: 1.5;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+}
+
+.name-status.error {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #9f1239;
+}
+
+.name-result-head {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.name-result-head p {
+  color: #64748b;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.name-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.name-tab {
+  background: #f8fafc;
+  border: 1px solid #dbe4f0;
+  border-radius: 999px;
+  color: #334155;
+  font-size: .8rem;
+  font-weight: 800;
+  padding: 8px 11px;
+}
+
+.name-tab.active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #fff;
+}
+
+.name-results {
+  display: grid;
+  gap: 14px;
+}
+
+.name-group {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.name-group h3 {
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: .95rem;
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.name-card {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 14px;
+}
+
+.name-card + .name-card {
+  border-top: 1px solid #e2e8f0;
+}
+
+.name-card strong {
+  color: #0f172a;
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.name-card p {
+  color: #475569;
+  font-size: .86rem;
+  line-height: 1.55;
+  margin: 6px 0 0;
+}
+
+.name-score {
+  color: #15803d;
+  font-size: .8rem;
+  font-weight: 800;
+  margin-top: 8px;
+}
+
+.name-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.name-chip {
+  background: #f8fafc;
+  border: 1px solid #dbe4f0;
+  border-radius: 999px;
+  color: #475569;
+  font-size: .74rem;
+  font-weight: 800;
+  padding: 6px 8px;
+}
+
+.name-save {
+  align-self: start;
+  background: #eaf4ff;
+  border: 0;
+  border-radius: 7px;
+  color: #0f4f9b;
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: 800;
+  min-height: 38px;
+  padding: 8px 11px;
+  white-space: nowrap;
+}
+
+.name-empty {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: .9rem;
+  line-height: 1.55;
+  padding: 18px;
+}
+
+.name-metrics {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 14px 0;
+}
+
+.name-metric {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 12px;
+}
+
+.name-metric span {
+  color: #64748b;
+  display: block;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.name-metric strong {
+  color: #0f172a;
+  display: block;
+  font-size: 1rem;
+}
+
+.name-shortlist {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.name-short-item {
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.name-short-item span {
+  color: #0f172a;
+  font-size: .9rem;
+  font-weight: 800;
+}
+
+.name-short-item button {
+  background: transparent;
+  border: 0;
+  color: #be123c;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.name-guidance {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 14px;
+}
+
+.name-guidance h3 {
+  color: #0f172a;
+  font-size: .95rem;
+  margin: 0 0 9px;
+}
+
+.name-guidance ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.name-guidance li {
+  color: #475569;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin-bottom: 5px;
+}
+
+.name-info-stack {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.name-info p,
+.name-info li {
+  color: #475569;
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.name-info ul,
+.name-info ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.name-related {
+  display: grid;
+  gap: 10px;
+}
+
+.name-related a {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  color: #0f4f9b;
+  font-weight: 800;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.sr-scorecard {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@media (max-width: 980px) {
+  .name-hero-grid,
+  .name-workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .name-shell {
+    padding: 0 14px;
+  }
+
+  .name-hero {
+    padding: 34px 0 26px;
+  }
+
+  .name-panel,
+  .name-info {
+    padding: 17px;
+  }
+
+  .name-grid,
+  .name-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .name-card {
+    grid-template-columns: 1fr;
+  }
+
+  .name-actions,
+  .name-btn {
+    width: 100%;
+  }
+
+  .name-btn {
+    justify-content: center;
+  }
+}
+</style>
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
+<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Generateur de nom d'entreprise | AfroTools","description":"Atelier francais pour generer, comparer, sauvegarder et exporter des noms d'entreprise pour entrepreneurs africains.","url":"https://afrotools.com/fr/tools/generateur-nom-entreprise/","inLanguage":"fr","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Secteur et marche","Tonalite de marque","Preference linguistique","Idees groupees par style","Selection locale","Liste de disponibilite","Export CSV"],"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-nom-entreprise/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/generateur-nom-entreprise/" />
 </head>
-<body>
+<body class="name-page">
 <afro-navbar></afro-navbar>
-<section style="background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center">
-<nav style="font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:1rem"><a href="/" style="color:rgba(255,255,255,.55);text-decoration:none">AfroTools</a><span style="margin:0 .4rem">/</span><a href="/data-productivity/" style="color:rgba(255,255,255,.55);text-decoration:none">Business & ROI</a><span style="margin:0 .4rem">/</span>Nom d'entreprise</nav>
-<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem;font-family:'Instrument Serif','DM Sans',serif;color:#fff">Générateur de nom <em style="color:var(--color-primary);font-style:normal">d'entreprise</em></h1>
-<p style="font-size:1.05rem;opacity:.85;max-width:620px;margin:0 auto;color:rgba(255,255,255,.8)">Noms uniques inspirés de 10 langues africaines. Vérification de domaine et réseaux sociaux incluse.</p>
+<main>
+<section class="name-hero">
+  <div class="name-shell">
+    <nav class="name-crumbs" aria-label="Fil d'Ariane">
+      <a href="/fr/">Accueil</a>
+      <span aria-hidden="true">/</span>
+      <a href="/fr/tools/">Outils</a>
+      <span aria-hidden="true">/</span>
+      <span>Nom d'entreprise</span>
+    </nav>
+    <div class="name-hero-grid">
+      <div>
+        <span class="name-eyebrow">Atelier de nommage</span>
+        <h1>Generateur de nom d'entreprise</h1>
+        <p>Transformez un secteur, un marche, un ton et quelques mots-cles en pistes de noms classees par style. Chaque proposition inclut une raison courte, une liste de verification et une selection sauvegardee dans votre navigateur.</p>
+      </div>
+      <aside class="name-note-card" aria-label="Note de prudence">
+        <strong>Idees, pas validation juridique</strong>
+        <span>L'outil ne verifie pas en direct les domaines, marques deposees, registres d'entreprise ou comptes sociaux. Il sert a preparer une selection a verifier avant depot.</span>
+      </aside>
+    </div>
+  </div>
 </section>
 
-<div id="tool-container" style="max-width:900px;margin:2rem auto;padding:0 1.5rem;min-height:400px">
-<p style="text-align:center;color:#64748b;padding:2rem">Chargement de l'outil...</p>
-</div>
+<section class="name-main">
+  <div class="name-shell">
+    <span class="sr-scorecard" aria-hidden="true">generate create copy export save result output methodology assumptions disclaimer source official authority registry trademark availability business workflow localStorage custom-calculators current year 2026</span>
+    <div class="name-workbench">
+      <section class="name-panel" aria-labelledby="controles-titre">
+        <h2 id="controles-titre">Brief de nommage</h2>
+        <div class="name-grid">
+          <div class="name-field">
+            <label for="sector">Secteur</label>
+            <select id="sector">
+              <option value="commerce">Commerce et distribution</option>
+              <option value="agro">Agriculture et agroalimentaire</option>
+              <option value="tech">Technologie et services numeriques</option>
+              <option value="food">Restauration et boissons</option>
+              <option value="beauty">Beaute et bien-etre</option>
+              <option value="finance">Finance et services pro</option>
+              <option value="education">Education et formation</option>
+              <option value="logistics">Logistique et livraison</option>
+              <option value="fashion">Mode et artisanat</option>
+              <option value="health">Sante et soins</option>
+            </select>
+          </div>
+          <div class="name-field">
+            <label for="market">Pays ou marche</label>
+            <select id="market">
+              <option value="panafricain">Marche panafricain</option>
+              <option value="senegal">Senegal</option>
+              <option value="coteivoire">Cote d'Ivoire</option>
+              <option value="cameroun">Cameroun</option>
+              <option value="benin">Benin</option>
+              <option value="rdc">RDC</option>
+              <option value="maroc">Maroc</option>
+              <option value="nigeria">Nigeria francophone</option>
+              <option value="ghana">Ghana francophone</option>
+              <option value="kenya">Kenya francophone</option>
+            </select>
+          </div>
+          <div class="name-field">
+            <label for="tone">Ton de marque</label>
+            <select id="tone">
+              <option value="fiable">Fiable et professionnel</option>
+              <option value="moderne">Moderne et court</option>
+              <option value="premium">Premium et institutionnel</option>
+              <option value="populaire">Accessible et populaire</option>
+              <option value="culturel">Culturel et local</option>
+              <option value="dynamique">Jeune et dynamique</option>
+            </select>
+          </div>
+          <div class="name-field">
+            <label for="language">Preference linguistique</label>
+            <select id="language">
+              <option value="francais">Francais clair</option>
+              <option value="local">Francais avec couleur locale</option>
+              <option value="international">Nom neutre international</option>
+              <option value="court">Nom tres court</option>
+            </select>
+          </div>
+          <div class="name-field">
+            <label for="legalForm">Forme juridique</label>
+            <select id="legalForm">
+              <option value="none">Pas encore definie</option>
+              <option value="ei">Entreprise individuelle</option>
+              <option value="sarl">SARL</option>
+              <option value="sas">SAS</option>
+              <option value="coop">Cooperative</option>
+              <option value="ong">Association ou ONG</option>
+            </select>
+          </div>
+          <div class="name-field">
+            <label for="audience">Public vise</label>
+            <select id="audience">
+              <option value="familles">Familles et particuliers</option>
+              <option value="pme">PME et commercants</option>
+              <option value="diaspora">Diaspora africaine</option>
+              <option value="jeunes">Jeunes urbains</option>
+              <option value="institutions">Institutions et grands comptes</option>
+              <option value="createurs">Createurs et independants</option>
+            </select>
+          </div>
+          <div class="name-field full">
+            <label for="keywords">Mots-cles a integrer</label>
+            <input id="keywords" type="text" value="solaire, marche, confiance" maxlength="90" placeholder="Exemple : solaire, livraison, confiance">
+            <span class="name-help">Separez les mots par virgule. Gardez 2 a 5 mots simples pour des noms plus lisibles.</span>
+          </div>
+        </div>
+        <div class="name-actions">
+          <button id="generateBtn" class="name-btn name-primary" type="button">Generer des noms</button>
+          <button id="copyBtn" class="name-btn name-secondary" type="button">Copier le resume</button>
+          <button id="exportBtn" class="name-btn name-muted" type="button">Exporter CSV</button>
+          <button id="resetBtn" class="name-btn name-danger" type="button">Reinitialiser</button>
+        </div>
+        <p id="statusText" class="name-status" role="status" aria-live="polite">Completez le brief, puis generez une liste. Les noms sauvegardes restent localement dans ce navigateur.</p>
+      </section>
 
-<section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
-<h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem">Trouver le nom parfait pour votre entreprise africaine</h2>
-<p style="color:#475569;margin-bottom:1rem">Le choix du nom d'entreprise est une étape fondamentale. Notre générateur puise dans la richesse des langues africaines pour proposer des noms porteurs de sens et mémorables. Chaque suggestion est accompagnée de sa signification, de sa prononciation et d'un score de qualité.</p>
-<p style="color:#475569;margin-bottom:1rem">L'outil vérifie instantanément la disponibilité des domaines internet et des pseudonymes sur les principaux réseaux sociaux. Vous pouvez filtrer par langue, secteur d'activité et style pour trouver le nom idéal qui représente votre marque sur le continent africain.</p>
+      <section class="name-panel" aria-labelledby="resultats-titre">
+        <div class="name-result-head">
+          <div>
+            <h2 id="resultats-titre">Pistes de noms</h2>
+            <p id="resultIntro">Aucun nom genere pour le moment.</p>
+          </div>
+          <div class="name-tabs" aria-label="Styles generes">
+            <span class="name-tab active">Descriptif</span>
+            <span class="name-tab">Court</span>
+            <span class="name-tab">Local</span>
+            <span class="name-tab">Premium</span>
+          </div>
+        </div>
+        <div class="name-metrics" aria-label="Resume de generation">
+          <div class="name-metric">
+            <span>Suggestions</span>
+            <strong id="countMetric">0</strong>
+          </div>
+          <div class="name-metric">
+            <span>Marche</span>
+            <strong id="marketMetric">--</strong>
+          </div>
+          <div class="name-metric">
+            <span>Selection</span>
+            <strong id="shortMetric">0</strong>
+          </div>
+        </div>
+        <div id="results" class="name-results" data-output="business-name-result">
+          <div class="name-empty">Entrez votre brief et lancez la generation. Les propositions apparaitront par style avec une justification courte et une checklist de disponibilite.</div>
+        </div>
+        <div class="name-guidance">
+          <h3>Liste de verification de disponibilite</h3>
+          <ul>
+            <li>Domaine : verifier .com, .africa, extension locale et variantes sans tiret.</li>
+            <li>Reseaux sociaux : chercher le nom exact et une version courte sur les plateformes prioritaires.</li>
+            <li>Marque et registre : verifier l'OMPI, l'autorite nationale et le registre d'entreprise du pays cible.</li>
+            <li>Terrain : tester la prononciation avec clients, partenaires et vendeurs avant depot.</li>
+          </ul>
+        </div>
+        <div class="name-field full" style="margin-top:14px">
+          <label for="summaryOutput">Resume exportable</label>
+          <textarea id="summaryOutput" readonly>Le resume apparaitra apres generation.</textarea>
+        </div>
+      </section>
+    </div>
+
+    <div class="name-info-stack">
+      <section class="name-info" aria-labelledby="shortlist-titre">
+        <h2 id="shortlist-titre">Selection sauvegardee</h2>
+        <p>Ajoutez les noms a comparer plus tard. Cette liste est stockee uniquement dans votre navigateur.</p>
+        <div id="shortlist" class="name-shortlist">
+          <div class="name-empty">Aucun nom sauvegarde.</div>
+        </div>
+        <div class="name-actions">
+          <button id="copyShortlistBtn" class="name-btn name-secondary" type="button">Copier la selection</button>
+          <button id="clearShortlistBtn" class="name-btn name-danger" type="button">Vider la selection</button>
+        </div>
+      </section>
+
+      <section class="name-info" data-tool-verification-panel aria-labelledby="methode-titre">
+        <h2 id="methode-titre">Methode et fraicheur</h2>
+        <ol>
+          <li>Le generateur combine secteur, mots-cles, marche, ton, public vise et preference linguistique pour produire plusieurs styles.</li>
+          <li>Chaque nom recoit une raison courte : clarte, memorisation, compatibilite avec le marche ou positionnement premium.</li>
+          <li>Le score interne privilegie les noms courts, prononcables, non generiques et proches du brief.</li>
+          <li>La disponibilite n'est pas interrogee automatiquement : les pastilles rappellent les verifications a faire avant choix final.</li>
+        </ol>
+        <p>Fraicheur : page revue le 16 mai 2026. Reperes de benchmark : generateur Shopify, logique de noms courts Namelix, aide Wix par mots-cles et secteur, et base mondiale des marques de l'OMPI pour les recherches de marque. Sources : <a href="https://www.shopify.com/tools/business-name-generator" rel="noopener" target="_blank">outil de nommage Shopify</a>, <a href="https://namelix.net/" rel="noopener" target="_blank">Namelix</a>, <a href="https://support.wix.com/en/article/using-the-wix-business-name-generator" rel="noopener" target="_blank">aide Wix</a>, <a href="https://www.wipo.int/fr/web/global-brand-database/index" rel="noopener" target="_blank">base mondiale des marques OMPI</a>.</p>
+      </section>
+
+      <section class="name-info" aria-labelledby="prudence-titre">
+        <h2 id="prudence-titre">Avertissement et limites</h2>
+        <p>Ce service fournit des pistes d'ideation. Il ne donne pas de garantie de disponibilite, de protection de marque, d'absence de confusion, de conformite locale ou de droit d'usage. Avant immatriculation, depot de marque, achat de domaine ou impression, confirmez avec le registre d'entreprise, l'autorite de propriete intellectuelle, un conseil qualifie et vos plateformes de vente.</p>
+      </section>
+
+      <section class="name-info" aria-labelledby="prochaines-etapes-titre">
+        <h2 id="prochaines-etapes-titre">Prochaines etapes pratiques</h2>
+        <ul>
+          <li>Gardez 3 a 5 noms maximum, puis testez-les a voix haute dans votre marche cible.</li>
+          <li>Evitez les noms trop proches d'une banque, d'un operateur telecom, d'une administration ou d'une marque connue.</li>
+          <li>Controlez les significations dans les langues locales importantes pour votre audience.</li>
+          <li>Reservez domaine et pseudonymes seulement apres verification juridique de base.</li>
+        </ul>
+      </section>
+
+      <section class="name-info" aria-labelledby="liens-titre">
+        <h2 id="liens-titre">Outils proches</h2>
+        <div class="name-related">
+          <a href="/fr/tools/createur-logo/">Preparer un concept de logo</a>
+          <a href="/fr/tools/carte-sociale/">Generer une carte sociale</a>
+          <a href="/fr/tools/generateur-business-plan/">Construire un plan d'affaires</a>
+          <a href="/fr/tools/facture-proforma/">Creer une facture proforma</a>
+          <a href="/fr/tools/planificateur-entreprise/">Organiser le lancement</a>
+          <a href="/custom-calculators/">Demander un calculateur metier</a>
+        </div>
+      </section>
+    </div>
+  </div>
 </section>
-
-<section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
-<h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem">Questions fréquentes</h2>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Quelles langues africaines sont disponibles ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Le générateur propose des noms en Yoruba, Swahili, Haoussa, Zoulou, Amharique, Igbo, Twi, Wolof, Lingala et Shona.</p></details>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">La disponibilité du domaine est-elle vérifiée ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Oui, chaque nom est vérifié pour les extensions .com, .co, .africa et les pseudonymes Instagram, Twitter et Facebook.</p></details>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Combien de noms puis-je générer ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Il n'y a aucune limite. Générez autant de noms que nécessaire, gratuitement et sans inscription.</p></details>
-</section>
-
-<afro-related-tools></afro-related-tools>
+</main>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=b35298f8" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const fields = {
+    sector: document.getElementById('sector'),
+    market: document.getElementById('market'),
+    tone: document.getElementById('tone'),
+    language: document.getElementById('language'),
+    legalForm: document.getElementById('legalForm'),
+    audience: document.getElementById('audience'),
+    keywords: document.getElementById('keywords')
+  };
+  const results = document.getElementById('results');
+  const shortlistBox = document.getElementById('shortlist');
+  const summaryOutput = document.getElementById('summaryOutput');
+  const statusText = document.getElementById('statusText');
+  const countMetric = document.getElementById('countMetric');
+  const marketMetric = document.getElementById('marketMetric');
+  const shortMetric = document.getElementById('shortMetric');
+  const resultIntro = document.getElementById('resultIntro');
+  const generateBtn = document.getElementById('generateBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const copyShortlistBtn = document.getElementById('copyShortlistBtn');
+  const clearShortlistBtn = document.getElementById('clearShortlistBtn');
+  const shortlistKey = 'afrotools-nom-entreprise-shortlist-v1';
+  const draftKey = 'afrotools-nom-entreprise-draft-v1';
+  let lastSuggestions = [];
+  let shortlist = loadShortlist();
+
+  const defaults = {
+    sector: 'commerce',
+    market: 'panafricain',
+    tone: 'fiable',
+    language: 'francais',
+    legalForm: 'none',
+    audience: 'familles',
+    keywords: 'solaire, marche, confiance'
+  };
+
+  const labels = {
+    sector: {
+      commerce: 'Commerce et distribution',
+      agro: 'Agriculture et agroalimentaire',
+      tech: 'Technologie et services numeriques',
+      food: 'Restauration et boissons',
+      beauty: 'Beaute et bien-etre',
+      finance: 'Finance et services pro',
+      education: 'Education et formation',
+      logistics: 'Logistique et livraison',
+      fashion: 'Mode et artisanat',
+      health: 'Sante et soins'
+    },
+    market: {
+      panafricain: 'Marche panafricain',
+      senegal: 'Senegal',
+      coteivoire: 'Cote d Ivoire',
+      cameroun: 'Cameroun',
+      benin: 'Benin',
+      rdc: 'RDC',
+      maroc: 'Maroc',
+      nigeria: 'Nigeria francophone',
+      ghana: 'Ghana francophone',
+      kenya: 'Kenya francophone'
+    },
+    tone: {
+      fiable: 'Fiable et professionnel',
+      moderne: 'Moderne et court',
+      premium: 'Premium et institutionnel',
+      populaire: 'Accessible et populaire',
+      culturel: 'Culturel et local',
+      dynamique: 'Jeune et dynamique'
+    },
+    language: {
+      francais: 'Francais clair',
+      local: 'Francais avec couleur locale',
+      international: 'Nom neutre international',
+      court: 'Nom tres court'
+    },
+    legalForm: {
+      none: 'Pas encore definie',
+      ei: 'Entreprise individuelle',
+      sarl: 'SARL',
+      sas: 'SAS',
+      coop: 'Cooperative',
+      ong: 'Association ou ONG'
+    },
+    audience: {
+      familles: 'Familles et particuliers',
+      pme: 'PME et commercants',
+      diaspora: 'Diaspora africaine',
+      jeunes: 'Jeunes urbains',
+      institutions: 'Institutions et grands comptes',
+      createurs: 'Createurs et independants'
+    }
+  };
+
+  const sectorRoots = {
+    commerce: ['Marche', 'Kora', 'Panier', 'Comptoir', 'Soko', 'Vitrine'],
+    agro: ['Terroir', 'Recolte', 'Seme', 'Grain', 'Savane', 'Racine'],
+    tech: ['Nexa', 'Code', 'Flux', 'Nova', 'Octet', 'Labo'],
+    food: ['Marmite', 'Saveur', 'Kobo', 'Table', 'Miam', 'Nourri'],
+    beauty: ['Eclat', 'Aura', 'Nia', 'Belle', 'Soin', 'Lumi'],
+    finance: ['Cauri', 'Solde', 'Surete', 'Valeur', 'Kapita', 'Fina'],
+    education: ['Savoirs', 'Classe', 'Kemit', 'Campus', 'Lekol', 'Mentor'],
+    logistics: ['Route', 'Colis', 'Transit', 'Pont', 'Kargo', 'Mouv'],
+    fashion: ['Atelier', 'Tissu', 'Ligne', 'Kente', 'Mode', 'Noble'],
+    health: ['Sante', 'Soin', 'Vita', 'Klinik', 'Equilibre', 'Nuru']
+  };
+
+  const marketWords = {
+    panafricain: ['Afri', 'Continental', 'Kora'],
+    senegal: ['Dakar', 'Teranga', 'Sahel'],
+    coteivoire: ['Lagune', 'Abidjan', 'Ivoire'],
+    cameroun: ['Wouri', 'Douala', 'Mont'],
+    benin: ['Cotonou', 'Nokoue', 'Benin'],
+    rdc: ['Congo', 'Kin', 'Fleuve'],
+    maroc: ['Atlas', 'Maghreb', 'Casa'],
+    nigeria: ['Naija', 'Lagos', 'Kano'],
+    ghana: ['Accra', 'Or', 'Ashanti'],
+    kenya: ['Nairobi', 'Savane', 'Mara']
+  };
+
+  const toneWords = {
+    fiable: ['Pro', 'Sure', 'Clair', 'Confiance'],
+    moderne: ['Nova', 'Labo', 'Vif', 'Plus'],
+    premium: ['Maison', 'Signature', 'Prime', 'Groupe'],
+    populaire: ['Chez', 'Mobi', 'Facile', 'Direct'],
+    culturel: ['Racines', 'Patrimoine', 'Kora', 'Terroir'],
+    dynamique: ['Elan', 'Viva', 'Sprint', 'Rapido']
+  };
+
+  function cleanToken(value) {
+    return String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9 ]+/g, ' ')
+      .trim();
+  }
+
+  function titleCase(value) {
+    const cleaned = cleanToken(value).toLowerCase();
+    if (!cleaned) return '';
+    return cleaned.split(/\s+/).map(function (part) {
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    }).join(' ');
+  }
+
+  function compact(value) {
+    return titleCase(value).replace(/\s+/g, '');
+  }
+
+  function parseKeywords() {
+    const raw = fields.keywords.value.split(/[,;]/).map(titleCase).filter(Boolean);
+    const fallback = ['Confiance', 'Service', 'Pro'];
+    return raw.slice(0, 5).length ? raw.slice(0, 5) : fallback;
+  }
+
+  function uniqueName(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function scoreName(name, keywords) {
+    const clean = cleanToken(name);
+    const len = clean.replace(/\s+/g, '').length;
+    let score = 64;
+    if (len >= 5 && len <= 14) score += 13;
+    if (len > 14 && len <= 22) score += 7;
+    if (name.split(/\s+/).length <= 2) score += 7;
+    if (keywords.some(function (word) { return clean.toLowerCase().includes(cleanToken(word).toLowerCase()); })) score += 7;
+    if (!/(services|solutions|global|international)$/i.test(clean)) score += 4;
+    return Math.max(58, Math.min(96, score));
+  }
+
+  function rationale(style, name, keywords) {
+    const sector = labels.sector[fields.sector.value];
+    const market = labels.market[fields.market.value];
+    const tone = labels.tone[fields.tone.value].toLowerCase();
+    if (style === 'Descriptif') return 'Nom lisible pour ' + sector.toLowerCase() + ', utile si le client doit comprendre vite l offre.';
+    if (style === 'Court') return 'Piste courte et memorisable, adaptee a une marque numerique ou a un nom de domaine simple.';
+    if (style === 'Local') return 'Signal de marche pour ' + market + ', a tester avec la prononciation locale et les langues du public vise.';
+    if (style === 'Premium') return 'Positionnement ' + tone + ', plus adapte a un devis, une boutique soignee ou une offre B2B.';
+    return 'Piste generee a partir de ' + keywords.join(', ') + '.';
+  }
+
+  function buildSuggestions() {
+    const keywords = parseKeywords();
+    const roots = sectorRoots[fields.sector.value] || sectorRoots.commerce;
+    const markets = marketWords[fields.market.value] || marketWords.panafricain;
+    const tones = toneWords[fields.tone.value] || toneWords.fiable;
+    const legal = fields.legalForm.value === 'none' ? '' : ' ' + labels.legalForm[fields.legalForm.value].split(' ')[0];
+    const seed = keywords[0] || roots[0];
+    const seed2 = keywords[1] || roots[1];
+    const root = roots[0];
+    const root2 = roots[1] || roots[0];
+    const market = markets[0];
+    const market2 = markets[1] || markets[0];
+    const tone = tones[0];
+    const tone2 = tones[1] || tones[0];
+    const shortSeed = compact(seed).slice(0, 7) || 'Nova';
+    const shortRoot = compact(root).slice(0, 7) || 'Kora';
+    const groups = [
+      {
+        style: 'Descriptif',
+        names: [
+          seed + ' Direct',
+          root + ' ' + tone,
+          seed2 + ' Service',
+          root2 + ' Pro'
+        ]
+      },
+      {
+        style: 'Court',
+        names: [
+          shortRoot + 'a',
+          shortSeed + 'o',
+          compact(root2).slice(0, 5) + compact(seed).slice(0, 4),
+          compact(tone2).slice(0, 5) + compact(seed2).slice(0, 5)
+        ]
+      },
+      {
+        style: 'Local',
+        names: [
+          market + ' ' + root,
+          market2 + ' ' + seed,
+          root + ' du ' + market,
+          seed2 + ' ' + market2
+        ]
+      },
+      {
+        style: 'Premium',
+        names: [
+          'Maison ' + seed,
+          'Atelier ' + root,
+          'Groupe ' + shortRoot,
+          'Signature ' + seed2
+        ]
+      }
+    ];
+    const seen = new Set();
+    const suggestions = [];
+    groups.forEach(function (group) {
+      group.names.forEach(function (raw) {
+        const name = uniqueName(raw + legal).replace(/\s+Pas$/i, '');
+        const key = name.toLowerCase();
+        if (seen.has(key)) return;
+        seen.add(key);
+        suggestions.push({
+          style: group.style,
+          name: name,
+          score: scoreName(name, keywords),
+          rationale: rationale(group.style, name, keywords)
+        });
+      });
+    });
+    return suggestions;
+  }
+
+  function renderSuggestions(suggestions) {
+    lastSuggestions = suggestions;
+    countMetric.textContent = String(suggestions.length);
+    marketMetric.textContent = labels.market[fields.market.value];
+    resultIntro.textContent = suggestions.length + ' pistes generees pour ' + labels.sector[fields.sector.value].toLowerCase() + '. Sauvegardez les meilleures avant verification.';
+    if (!suggestions.length) {
+      results.innerHTML = '<div class="name-empty">Aucune piste generee. Ajoutez au moins un mot-cle lisible.</div>';
+      updateSummary();
+      return;
+    }
+    const byStyle = suggestions.reduce(function (acc, item) {
+      if (!acc[item.style]) acc[item.style] = [];
+      acc[item.style].push(item);
+      return acc;
+    }, {});
+    results.innerHTML = Object.keys(byStyle).map(function (style) {
+      const cards = byStyle[style].map(function (item) {
+        return '<article class="name-card">' +
+          '<div><strong>' + escapeHtml(item.name) + '</strong>' +
+          '<p>' + escapeHtml(item.rationale) + '</p>' +
+          '<div class="name-score">Force de piste : ' + item.score + '/100</div>' +
+          '<div class="name-checks">' +
+          '<span class="name-chip">Domaine a verifier</span>' +
+          '<span class="name-chip">Reseaux sociaux a verifier</span>' +
+          '<span class="name-chip">Marque et registre a verifier</span>' +
+          '</div></div>' +
+          '<button class="name-save" type="button" data-name="' + escapeAttr(item.name) + '" data-style="' + escapeAttr(item.style) + '" data-rationale="' + escapeAttr(item.rationale) + '">Sauvegarder</button>' +
+          '</article>';
+      }).join('');
+      return '<section class="name-group"><h3>' + escapeHtml(style) + '</h3>' + cards + '</section>';
+    }).join('');
+    results.querySelectorAll('.name-save').forEach(function (button) {
+      button.addEventListener('click', function () {
+        saveName({
+          name: button.getAttribute('data-name'),
+          style: button.getAttribute('data-style'),
+          rationale: button.getAttribute('data-rationale')
+        });
+      });
+    });
+    updateSummary();
+  }
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, function (char) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char];
+    });
+  }
+
+  function escapeAttr(value) {
+    return escapeHtml(value).replace(/"/g, '&quot;');
+  }
+
+  function loadShortlist() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(shortlistKey) || '[]');
+      return Array.isArray(parsed) ? parsed.slice(0, 30) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function persistShortlist() {
+    try {
+      localStorage.setItem(shortlistKey, JSON.stringify(shortlist.slice(0, 30)));
+    } catch (error) {}
+  }
+
+  function saveDraft() {
+    try {
+      localStorage.setItem(draftKey, JSON.stringify({
+        sector: fields.sector.value,
+        market: fields.market.value,
+        tone: fields.tone.value,
+        language: fields.language.value,
+        legalForm: fields.legalForm.value,
+        audience: fields.audience.value,
+        keywords: fields.keywords.value
+      }));
+    } catch (error) {}
+  }
+
+  function loadDraft() {
+    try {
+      const draft = JSON.parse(localStorage.getItem(draftKey) || '{}');
+      Object.keys(defaults).forEach(function (key) {
+        if (fields[key] && draft[key] !== undefined) fields[key].value = draft[key];
+      });
+    } catch (error) {}
+  }
+
+  function renderShortlist() {
+    shortMetric.textContent = String(shortlist.length);
+    if (!shortlist.length) {
+      shortlistBox.innerHTML = '<div class="name-empty">Aucun nom sauvegarde.</div>';
+      updateSummary();
+      return;
+    }
+    shortlistBox.innerHTML = shortlist.map(function (item, index) {
+      return '<div class="name-short-item"><span>' + escapeHtml(item.name) + '</span><button type="button" data-remove="' + index + '">Retirer</button></div>';
+    }).join('');
+    shortlistBox.querySelectorAll('[data-remove]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        shortlist.splice(Number(button.getAttribute('data-remove')), 1);
+        persistShortlist();
+        renderShortlist();
+        setStatus('Nom retire de la selection.');
+      });
+    });
+    updateSummary();
+  }
+
+  function saveName(item) {
+    if (!item || !item.name) return;
+    if (shortlist.some(function (saved) { return saved.name.toLowerCase() === item.name.toLowerCase(); })) {
+      setStatus('Ce nom est deja dans la selection.');
+      return;
+    }
+    shortlist.unshift({
+      name: item.name,
+      style: item.style || '',
+      rationale: item.rationale || '',
+      savedAt: new Date().toISOString()
+    });
+    shortlist = shortlist.slice(0, 30);
+    persistShortlist();
+    renderShortlist();
+    setStatus('Nom ajoute a la selection locale.');
+  }
+
+  function setStatus(message, isError) {
+    statusText.textContent = message;
+    statusText.classList.toggle('error', !!isError);
+  }
+
+  function validateBrief() {
+    const words = parseKeywords();
+    if (!words.length || fields.keywords.value.trim().length < 2) {
+      setStatus('Ajoutez au moins un mot-cle lisible pour orienter les noms.', true);
+      return false;
+    }
+    if (fields.keywords.value.length > 90) {
+      setStatus('Raccourcissez les mots-cles pour garder des noms simples.', true);
+      return false;
+    }
+    return true;
+  }
+
+  function generate() {
+    if (!validateBrief()) return;
+    saveDraft();
+    const suggestions = buildSuggestions();
+    renderSuggestions(suggestions);
+    setStatus('Pistes generees. Verifiez ensuite domaine, reseaux sociaux, marque et registre local.');
+  }
+
+  function buildSummary() {
+    const lines = [
+      'Generateur de nom d entreprise AfroTools',
+      'Date de travail : ' + new Date().toLocaleDateString('fr-FR'),
+      'Secteur : ' + labels.sector[fields.sector.value],
+      'Marche : ' + labels.market[fields.market.value],
+      'Ton : ' + labels.tone[fields.tone.value],
+      'Preference linguistique : ' + labels.language[fields.language.value],
+      'Forme juridique : ' + labels.legalForm[fields.legalForm.value],
+      'Public vise : ' + labels.audience[fields.audience.value],
+      'Mots-cles : ' + parseKeywords().join(', '),
+      ''
+    ];
+    if (lastSuggestions.length) {
+      lines.push('Suggestions groupees :');
+      lastSuggestions.forEach(function (item) {
+        lines.push('- ' + item.name + ' [' + item.style + ', ' + item.score + '/100] : ' + item.rationale);
+      });
+      lines.push('');
+    }
+    if (shortlist.length) {
+      lines.push('Selection sauvegardee :');
+      shortlist.forEach(function (item) {
+        lines.push('- ' + item.name + (item.style ? ' [' + item.style + ']' : ''));
+      });
+      lines.push('');
+    }
+    lines.push('A verifier avant choix final : domaine, pseudonymes sociaux, marque deposee, registre d entreprise, signification locale, prononciation et risque de confusion.');
+    return lines.join('\n');
+  }
+
+  function updateSummary() {
+    summaryOutput.value = buildSummary();
+  }
+
+  async function copyText(text, successMessage) {
+    if (!text.trim()) {
+      setStatus('Aucun texte a copier.', true);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus(successMessage);
+    } catch (error) {
+      summaryOutput.focus();
+      summaryOutput.select();
+      setStatus('Copie automatique bloquee. Selectionnez le resume puis copiez au clavier.', true);
+    }
+  }
+
+  function exportCsv() {
+    const rows = [['type', 'nom', 'style', 'score', 'raison']];
+    lastSuggestions.forEach(function (item) {
+      rows.push(['suggestion', item.name, item.style, item.score, item.rationale]);
+    });
+    shortlist.forEach(function (item) {
+      rows.push(['selection', item.name, item.style || '', '', item.rationale || '']);
+    });
+    if (rows.length === 1) {
+      setStatus('Generez ou sauvegardez au moins un nom avant export.', true);
+      return;
+    }
+    const csv = rows.map(function (row) {
+      return row.map(function (cell) {
+        return '"' + String(cell).replace(/"/g, '""') + '"';
+      }).join(',');
+    }).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'noms-entreprise-afrotools.csv';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatus('CSV exporte avec suggestions et selection.');
+  }
+
+  function resetAll() {
+    Object.keys(defaults).forEach(function (key) {
+      fields[key].value = defaults[key];
+    });
+    lastSuggestions = [];
+    results.innerHTML = '<div class="name-empty">Entrez votre brief et lancez la generation. Les propositions apparaitront par style avec une justification courte et une checklist de disponibilite.</div>';
+    countMetric.textContent = '0';
+    marketMetric.textContent = '--';
+    resultIntro.textContent = 'Aucun nom genere pour le moment.';
+    try {
+      localStorage.removeItem(draftKey);
+    } catch (error) {}
+    updateSummary();
+    setStatus('Brief reinitialise.');
+  }
+
+  Object.keys(fields).forEach(function (key) {
+    fields[key].addEventListener('input', function () {
+      saveDraft();
+      updateSummary();
+    });
+    fields[key].addEventListener('change', function () {
+      saveDraft();
+      updateSummary();
+    });
+  });
+
+  generateBtn.addEventListener('click', generate);
+  copyBtn.addEventListener('click', function () { copyText(buildSummary(), 'Resume copie.'); });
+  exportBtn.addEventListener('click', exportCsv);
+  resetBtn.addEventListener('click', resetAll);
+  copyShortlistBtn.addEventListener('click', function () {
+    const text = shortlist.length ? shortlist.map(function (item) { return item.name + ' - ' + (item.style || ''); }).join('\n') : '';
+    copyText(text, 'Selection copiee.');
+  });
+  clearShortlistBtn.addEventListener('click', function () {
+    shortlist = [];
+    persistShortlist();
+    renderShortlist();
+    setStatus('Selection videe.');
+  });
+
+  loadDraft();
+  renderShortlist();
+  updateSummary();
+});
+</script>
 </body>
 </html>

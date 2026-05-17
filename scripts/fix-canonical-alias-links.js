@@ -2,6 +2,7 @@
 "use strict";
 
 const fs = require("fs");
+const { writeFileSyncWithRetry } = require("./lib/safe-write");
 
 const {
   ROOT,
@@ -38,7 +39,7 @@ for (const filePath of walkHtmlFiles(ROOT)) {
 
   if (!replacements || next === original) continue;
 
-  fs.writeFileSync(filePath, next, "utf8");
+  writeFileSyncWithRetry(filePath, next, "utf8");
   totalReplacements += replacements;
   changedFiles.push(relativeHtmlPath(filePath));
 }

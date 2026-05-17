@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const SW_PATH = path.join(__dirname, '..', 'service-worker.js');
 const MANIFEST_PATH = path.join(__dirname, '..', 'assets', 'js', 'bundles', 'manifest.json');
@@ -73,5 +74,5 @@ if (fs.existsSync(MANIFEST_PATH)) {
   }
 }
 
-fs.writeFileSync(SW_PATH, sw, 'utf8');
+writeFileSyncWithRetry(SW_PATH, sw, 'utf8');
 console.log(`  SW    CACHE_VERSION stamped: ${version}`);

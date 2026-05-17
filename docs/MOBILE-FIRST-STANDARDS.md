@@ -55,5 +55,6 @@ AfroTools should assume the primary user is on a phone first, often on variable 
 ## Validation
 
 - Spot-check the homepage, one category page, one tool page, and one calculator page on mobile widths.
+- Run `npm run mobile:network` for the representative throttled route set before calling broad mobile architecture healthy.
 - Run the narrowest validation for touched files after shared mobile changes.
 - If a mobile fix becomes a repeating pattern, update this doc instead of re-explaining it in each task.

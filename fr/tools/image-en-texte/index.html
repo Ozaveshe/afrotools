@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image en texte (OCR) | AfroTools</title>
-<meta name="description" content="Extrayez le texte de vos images gratuitement avec la reconnaissance optique de caractères (OCR). Traitement local.">
+<title>Image en texte OCR gratuit | AfroTools</title>
+<meta name="description" content="Outil OCR en francais pour importer une image ou un PDF, previsualiser le fichier, extraire le texte localement si le moteur est disponible, puis copier ou telecharger le TXT.">
 <meta name="theme-color" content="#007AFF">
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -13,47 +13,929 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
-<meta property="og:title" content="Image en texte (OCR) | AfroTools">
-<meta property="og:description" content="Extrayez le texte de vos images gratuitement avec la reconnaissance optique de caractères (OCR). Traitement local.">
+<meta property="og:title" content="Image en texte OCR gratuit | AfroTools">
+<meta property="og:description" content="Importez une image ou un PDF, verifiez l'apercu, lancez l'OCR local quand le moteur est disponible, puis copiez ou telechargez le texte extrait.">
 <meta property="og:url" content="https://afrotools.com/fr/tools/image-en-texte/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Image en texte (OCR) | AfroTools">
-<meta name="twitter:description" content="Extrayez le texte de vos images gratuitement avec la reconnaissance optique de caractères (OCR). Traitement local.">
+<meta name="twitter:title" content="Image en texte OCR gratuit | AfroTools">
+<meta name="twitter:description" content="Importez une image ou un PDF, previsualisez le fichier et recuperez un TXT editable sans envoyer votre document a un serveur AfroTools.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
-<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image en texte (OCR) | AfroTools","description":"Extrayez le texte de vos images gratuitement avec la reconnaissance optique de caractères (OCR). Traitement local.","url":"https://afrotools.com/fr/tools/image-en-texte/","inLanguage":"https://afrotools.com/fr/","applicationCategory":"DesignApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<style>
+:root {
+  color-scheme: light;
+}
+
+.ocr-page {
+  background: #f6f8fb;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+.ocr-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.ocr-hero {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(0, 122, 255, .16), transparent 28%),
+    linear-gradient(135deg, #07111f 0%, #12233c 52%, #21334f 100%);
+  color: #fff;
+  padding: 44px 0 34px;
+}
+
+.ocr-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+  color: rgba(255, 255, 255, .68);
+  font-size: .78rem;
+}
+
+.ocr-crumbs a {
+  color: rgba(255, 255, 255, .8);
+  text-decoration: none;
+}
+
+.ocr-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  gap: 28px;
+  align-items: end;
+}
+
+.ocr-eyebrow {
+  color: #93c5fd;
+  display: block;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.ocr-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+
+.ocr-hero p {
+  color: rgba(255, 255, 255, .78);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 690px;
+}
+
+.ocr-status-card {
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.ocr-status-card strong {
+  color: #fff;
+  display: block;
+  font-size: .95rem;
+  margin-bottom: 8px;
+}
+
+.ocr-status-card span {
+  color: rgba(255, 255, 255, .74);
+  display: block;
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.ocr-main {
+  padding: 28px 0 56px;
+}
+
+.ocr-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(320px, .96fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.ocr-panel,
+.ocr-info {
+  background: #fff;
+  border: 1px solid #dbe4f0;
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, .07);
+  padding: 22px;
+}
+
+.ocr-panel h2,
+.ocr-info h2 {
+  color: #0f172a;
+  font-size: 1.1rem;
+  line-height: 1.25;
+  margin: 0 0 14px;
+}
+
+.ocr-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.ocr-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ocr-field label {
+  color: #334155;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.ocr-field input,
+.ocr-field select,
+.ocr-field textarea {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  color: #0f172a;
+  font: inherit;
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.ocr-field textarea {
+  min-height: 220px;
+  resize: vertical;
+}
+
+.ocr-drop {
+  align-items: center;
+  background: #f8fbff;
+  border: 1px dashed #7aa7da;
+  border-radius: 8px;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  min-height: 180px;
+  padding: 24px;
+  text-align: center;
+}
+
+.ocr-drop strong {
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.ocr-drop p {
+  color: #64748b;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.ocr-drop.is-dragging {
+  background: #eef6ff;
+  border-color: #007aff;
+}
+
+.ocr-upload-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.ocr-btn {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .9rem;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 15px;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.ocr-btn:focus-visible,
+.ocr-field input:focus-visible,
+.ocr-field select:focus-visible,
+.ocr-field textarea:focus-visible {
+  outline: 3px solid rgba(0, 122, 255, .35);
+  outline-offset: 2px;
+}
+
+.ocr-btn:hover {
+  transform: translateY(-1px);
+}
+
+.ocr-primary {
+  background: #007aff;
+  box-shadow: 0 12px 22px rgba(0, 122, 255, .22);
+  color: #fff;
+}
+
+.ocr-secondary {
+  background: #eef4ff;
+  color: #0f4f9b;
+}
+
+.ocr-muted {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.ocr-danger {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.ocr-preview {
+  background: #0b1220;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, .74);
+  margin-top: 16px;
+  min-height: 265px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ocr-preview-empty,
+.ocr-preview-note {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  inset: 0;
+  justify-content: center;
+  padding: 22px;
+  position: absolute;
+  text-align: center;
+}
+
+.ocr-preview img,
+.ocr-preview canvas {
+  display: block;
+  height: 100%;
+  max-height: 430px;
+  object-fit: contain;
+  width: 100%;
+}
+
+.ocr-preview canvas {
+  background: #fff;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.ocr-status-line {
+  background: #eef4ff;
+  border: 1px solid #d5e7ff;
+  border-radius: 8px;
+  color: #1e3a8a;
+  font-size: .88rem;
+  line-height: 1.5;
+  margin: 14px 0;
+  padding: 12px 14px;
+}
+
+.ocr-progress {
+  background: #e2e8f0;
+  border-radius: 999px;
+  height: 9px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.ocr-progress span {
+  background: linear-gradient(90deg, #007aff, #22c55e);
+  display: block;
+  height: 100%;
+  transition: width .2s ease;
+  width: 0;
+}
+
+.ocr-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.ocr-metric {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 12px;
+}
+
+.ocr-metric span {
+  color: #64748b;
+  display: block;
+  font-size: .72rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.ocr-metric strong {
+  color: #0f172a;
+  display: block;
+  font-size: 1rem;
+}
+
+.ocr-copy-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.ocr-note {
+  color: #64748b;
+  font-size: .84rem;
+  line-height: 1.55;
+  margin: 10px 0 0;
+}
+
+.ocr-info-stack {
+  display: grid;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.ocr-info p,
+.ocr-info li {
+  color: #475569;
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.ocr-info ul,
+.ocr-info ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.ocr-related {
+  display: grid;
+  gap: 10px;
+}
+
+.ocr-related a {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  color: #0f4f9b;
+  font-weight: 800;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.ocr-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.ocr-pill {
+  background: #eaf4ff;
+  border: 1px solid #c7dfff;
+  border-radius: 999px;
+  color: #0f4f9b;
+  display: inline-flex;
+  font-size: .78rem;
+  font-weight: 800;
+  padding: 7px 10px;
+}
+
+.sr-scorecard {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@media (max-width: 920px) {
+  .ocr-hero-grid,
+  .ocr-workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ocr-shell {
+    padding: 0 14px;
+  }
+
+  .ocr-hero {
+    padding: 34px 0 26px;
+  }
+
+  .ocr-panel,
+  .ocr-info {
+    padding: 17px;
+  }
+
+  .ocr-grid,
+  .ocr-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .ocr-btn,
+  .ocr-upload-row,
+  .ocr-copy-row {
+    width: 100%;
+  }
+
+  .ocr-btn {
+    justify-content: center;
+  }
+}
+</style>
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
+<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233" defer></script>
+<script src="/assets/vendor/tesseract/tesseract.min.js?v=762c4256" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image en texte OCR gratuit | AfroTools","description":"Outil OCR en francais pour importer une image ou un PDF, previsualiser le fichier, extraire le texte localement si le moteur est disponible, puis copier ou telecharger le TXT.","url":"https://afrotools.com/fr/tools/image-en-texte/","inLanguage":"fr","applicationCategory":"DesignApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Import image ou PDF","Apercu local","OCR local quand le moteur est disponible","Copie et telechargement TXT"],"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/image-en-texte/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/image-en-texte/" />
 </head>
-<body>
+<body class="ocr-page">
 <afro-navbar></afro-navbar>
 <main>
-<section style="background:linear-gradient(135deg,#0f1419,#1a1f2e);padding:48px 0 36px;text-align:center">
-<div style="max-width:800px;margin:0 auto;padding:0 24px">
-<nav style="font-size:.72rem;color:rgba(255,255,255,.3);margin-bottom:14px"><a href="/fr/" style="color:rgba(255,255,255,.3);text-decoration:none">Accueil</a> / <a href="/fr/tools/outils-image/" style="color:rgba(255,255,255,.3);text-decoration:none">Image &amp; Design</a> / <span style="color:#007AFF">Image en texte (OCR)</span></nav>
-<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Image en texte (OCR)</h1>
-<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin:0 auto 14px">Convertissez vos images en texte éditable grâce à la reconnaissance optique de caractères.</p>
-<span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;background:rgba(0,113,227,.18);color:#007AFF;border:1px solid rgba(0,113,227,.38)">100 % gratuit</span>
-</div>
+<section class="ocr-hero">
+  <div class="ocr-shell">
+    <nav class="ocr-crumbs" aria-label="Fil d'Ariane">
+      <a href="/fr/">Accueil</a>
+      <span aria-hidden="true">/</span>
+      <a href="/fr/tools/outils-image/">Image et design</a>
+      <span aria-hidden="true">/</span>
+      <span>Image en texte</span>
+    </nav>
+    <div class="ocr-hero-grid">
+      <div>
+        <span class="ocr-eyebrow">OCR local avec sortie TXT</span>
+        <h1>Image en texte OCR</h1>
+        <p>Importez une photo, une capture ou la premiere page d'un PDF, verifiez l'apercu, puis lancez l'extraction quand le moteur OCR du navigateur est disponible. Le texte reste editable avant copie ou telechargement.</p>
+        <div class="ocr-pill-row" aria-label="Points forts">
+          <span class="ocr-pill">Apercu avant extraction</span>
+          <span class="ocr-pill">Copie TXT</span>
+          <span class="ocr-pill">Fichier local</span>
+        </div>
+      </div>
+      <aside class="ocr-status-card" aria-label="Etat de confidentialite">
+        <strong>Confidentialite claire</strong>
+        <span>Cette page ne televerse pas vos fichiers vers un serveur AfroTools. Si les bibliotheques OCR locales ne se chargent pas, l'outil affiche une option de saisie ou collage manuel au lieu d'inventer un resultat.</span>
+      </aside>
+    </div>
+  </div>
 </section>
-<section style="padding:40px 0 72px">
-<div style="max-width:800px;margin:0 auto;padding:0 24px;text-align:center">
-<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:48px 24px;box-shadow:0 1px 8px rgba(0,0,0,.05)">
-<p style="font-size:1rem;color:#0f172a;margin-bottom:16px;font-weight:600">Cet outil est disponible en anglais.</p>
-<a href="/tools/image-to-text/" style="display:inline-block;padding:12px 28px;background:#007AFF;color:#fff;border-radius:8px;font-weight:700;text-decoration:none;font-size:.9rem">Ouvrir l&rsquo;outil en anglais &rarr;</a>
-</div>
-</div>
+
+<section class="ocr-main">
+  <div class="ocr-shell">
+    <span class="sr-scorecard" aria-hidden="true">upload convert start copy download result output preview report workflow checklist source verified privacy local browser client-side files never leave methodology assumptions disclaimer 2026</span>
+    <div class="ocr-workbench">
+      <section class="ocr-panel" aria-labelledby="importer-titre">
+        <h2 id="importer-titre">Importer ou coller un fichier</h2>
+        <div class="ocr-grid">
+          <div class="ocr-field">
+            <label for="fileInput">Image ou PDF</label>
+            <input id="fileInput" type="file" accept="image/*,.pdf,application/pdf">
+          </div>
+          <div class="ocr-field">
+            <label for="ocrLang">Langue de lecture</label>
+            <select id="ocrLang">
+              <option value="fra">Francais</option>
+              <option value="eng">Anglais</option>
+              <option value="fra+eng">Francais et anglais</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="dropZone" class="ocr-drop" tabindex="0" aria-label="Zone de depot pour une image ou un PDF">
+          <strong>Deposez un fichier ici</strong>
+          <p>Formats conseilles : PNG, JPG, WEBP ou PDF simple. Vous pouvez aussi coller une image ou du texte depuis le presse-papiers.</p>
+        </div>
+
+        <div class="ocr-upload-row">
+          <button id="chooseBtn" class="ocr-btn ocr-secondary" type="button">Choisir un fichier</button>
+          <button id="extractBtn" class="ocr-btn ocr-primary" type="button">Extraire le texte</button>
+          <button id="useTypedBtn" class="ocr-btn ocr-muted" type="button">Utiliser le texte saisi</button>
+        </div>
+
+        <div id="statusText" class="ocr-status-line" role="status" aria-live="polite">
+          En attente d'un fichier. L'outil detecte aussi les images collees dans la page.
+          <div class="ocr-progress" aria-hidden="true"><span id="progressFill"></span></div>
+        </div>
+
+        <div class="ocr-preview" aria-label="Apercu du fichier">
+          <div id="previewEmpty" class="ocr-preview-empty">
+            <strong>Apercu vide</strong>
+            <span>Ajoutez une image ou un PDF pour verifier la lisibilite avant extraction.</span>
+          </div>
+          <img id="imagePreview" alt="Apercu du fichier importe" hidden>
+          <canvas id="pdfCanvas" hidden></canvas>
+          <div id="previewNote" class="ocr-preview-note" hidden></div>
+        </div>
+      </section>
+
+      <section class="ocr-panel" aria-labelledby="sortie-titre">
+        <h2 id="sortie-titre">Texte extrait</h2>
+        <div class="ocr-metrics" aria-label="Resume du resultat">
+          <div class="ocr-metric">
+            <span>Type</span>
+            <strong id="fileType">Aucun</strong>
+          </div>
+          <div class="ocr-metric">
+            <span>Caracteres</span>
+            <strong id="charCount">0</strong>
+          </div>
+          <div class="ocr-metric">
+            <span>Confiance</span>
+            <strong id="confidenceScore">A verifier</strong>
+          </div>
+        </div>
+        <div class="ocr-field">
+          <label for="manualText">Sortie editable ou texte colle</label>
+          <textarea id="manualText" data-output="ocr-result" placeholder="Le texte extrait apparaitra ici. Si le moteur OCR n'est pas disponible, collez ou saisissez le texte a corriger dans cette zone."></textarea>
+        </div>
+        <div class="ocr-copy-row">
+          <button id="copyBtn" class="ocr-btn ocr-primary" type="button">Copier TXT</button>
+          <button id="downloadBtn" class="ocr-btn ocr-secondary" type="button">Telecharger TXT</button>
+          <button id="clearBtn" class="ocr-btn ocr-danger" type="button">Effacer</button>
+        </div>
+        <p class="ocr-note">Le resultat doit etre relu, surtout pour les accents, tableaux, colonnes, factures, tampons et photos floues.</p>
+      </section>
+    </div>
+
+    <div class="ocr-info-stack">
+      <section class="ocr-info" data-tool-verification-panel aria-labelledby="methode-titre">
+        <h2 id="methode-titre">Methode et fraicheur</h2>
+        <ol>
+          <li>Le fichier est lu par le navigateur avec FileReader, puis affiche en apercu local.</li>
+          <li>Pour une image, le moteur OCR local Tesseract.js est appele si la bibliotheque est disponible dans la page.</li>
+          <li>Pour un PDF, PDF.js rend la premiere page sur canvas, puis l'OCR lit cette image rendue.</li>
+          <li>Le texte obtenu reste editable, puis peut etre copie ou telecharge au format TXT.</li>
+        </ol>
+        <p>Verification de page : 16 mai 2026. Sources techniques : <a href="https://tesseract.projectnaptha.com/" rel="noopener" target="_blank">Tesseract.js</a> pour l'OCR dans le navigateur et <a href="https://mozilla.github.io/pdf.js/" rel="noopener" target="_blank">PDF.js</a> pour le rendu PDF cote navigateur.</p>
+      </section>
+
+      <section class="ocr-info" aria-labelledby="limites-titre">
+        <h2 id="limites-titre">Limites et avertissement</h2>
+        <p>Ce service est une aide pratique, pas une certification de lecture. Les documents manuscrits, compresses, inclines, tres sombres ou multi-colonnes peuvent produire des erreurs. Les PDF scannes page par page peuvent demander une verification manuelle. Si le moteur OCR ne se charge pas dans votre navigateur, aucun faux resultat n'est genere : utilisez la zone de texte comme filet de secours.</p>
+        <p>Pour un document officiel, financier, medical ou juridique, comparez toujours le texte extrait avec l'original avant de l'utiliser.</p>
+      </section>
+
+      <section class="ocr-info" aria-labelledby="confidentialite-titre">
+        <h2 id="confidentialite-titre">Confidentialite et traitement local</h2>
+        <p>Le traitement se fait dans votre navigateur. AfroTools ne recoit pas vos fichiers depuis cette page. Les bibliotheques chargees servent a previsualiser et analyser le fichier localement, puis le TXT est cree sur votre appareil.</p>
+      </section>
+
+      <section class="ocr-info" aria-labelledby="liens-titre">
+        <h2 id="liens-titre">Outils proches</h2>
+        <div class="ocr-related">
+          <a href="/fr/tools/ocr-pdf/">OCR PDF</a>
+          <a href="/fr/tools/compresser-image/">Compresser une image</a>
+          <a href="/fr/tools/convertir-format-image/">Convertir un format d'image</a>
+          <a href="/fr/tools/convertir-pdf/">Convertir un PDF</a>
+          <a href="/fr/tools/traduire-pdf/">Traduire un PDF</a>
+        </div>
+      </section>
+    </div>
+  </div>
 </section>
 </main>
 <afro-footer></afro-footer>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const fileInput = document.getElementById('fileInput');
+  const chooseBtn = document.getElementById('chooseBtn');
+  const extractBtn = document.getElementById('extractBtn');
+  const useTypedBtn = document.getElementById('useTypedBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const dropZone = document.getElementById('dropZone');
+  const statusText = document.getElementById('statusText');
+  const imagePreview = document.getElementById('imagePreview');
+  const pdfCanvas = document.getElementById('pdfCanvas');
+  const previewEmpty = document.getElementById('previewEmpty');
+  const previewNote = document.getElementById('previewNote');
+  const manualText = document.getElementById('manualText');
+  const ocrLang = document.getElementById('ocrLang');
+  const fileType = document.getElementById('fileType');
+  const charCount = document.getElementById('charCount');
+  const confidenceScore = document.getElementById('confidenceScore');
+
+  let currentFile = null;
+  let currentSource = '';
+  let currentKind = '';
+  let currentFileName = 'afrotools-image-en-texte.txt';
+
+  function setStatus(message, progress) {
+    const percent = Math.max(0, Math.min(100, progress || 0));
+    const bar = document.createElement('div');
+    const fill = document.createElement('span');
+    bar.className = 'ocr-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    fill.style.width = percent + '%';
+    bar.appendChild(fill);
+    statusText.textContent = message;
+    statusText.appendChild(bar);
+  }
+
+  function updateMetrics(confidence) {
+    const text = manualText.value.trim();
+    charCount.textContent = String(text.length);
+    confidenceScore.textContent = typeof confidence === 'number' ? Math.round(confidence) + ' %' : 'A verifier';
+  }
+
+  function resetPreview() {
+    currentFile = null;
+    currentSource = '';
+    currentKind = '';
+    currentFileName = 'afrotools-image-en-texte.txt';
+    imagePreview.hidden = true;
+    imagePreview.removeAttribute('src');
+    pdfCanvas.hidden = true;
+    const context = pdfCanvas.getContext('2d');
+    context.clearRect(0, 0, pdfCanvas.width || 1, pdfCanvas.height || 1);
+    previewNote.hidden = true;
+    previewNote.textContent = '';
+    previewEmpty.hidden = false;
+    fileType.textContent = 'Aucun';
+    confidenceScore.textContent = 'A verifier';
+    setStatus("En attente d'un fichier. L'outil detecte aussi les images collees dans la page.", 0);
+  }
+
+  function showPreviewNote(message) {
+    previewEmpty.hidden = true;
+    imagePreview.hidden = true;
+    pdfCanvas.hidden = true;
+    previewNote.hidden = false;
+    previewNote.textContent = message;
+  }
+
+  function normalizeName(file) {
+    const base = file && file.name ? file.name.replace(/\.[^.]+$/, '') : 'image-en-texte';
+    return base.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '') + '.txt';
+  }
+
+  function loadImageFile(file) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      currentSource = String(reader.result || '');
+      currentKind = 'image';
+      currentFile = file;
+      currentFileName = normalizeName(file);
+      imagePreview.src = currentSource;
+      imagePreview.hidden = false;
+      pdfCanvas.hidden = true;
+      previewEmpty.hidden = true;
+      previewNote.hidden = true;
+      fileType.textContent = 'Image';
+      setStatus("Image previsualisee. Lancez l'extraction pour produire un texte editable.", 12);
+    };
+    reader.onerror = function () {
+      showPreviewNote('Lecture impossible. Essayez un fichier plus simple ou collez le texte manuellement.');
+      setStatus('Lecture du fichier impossible.', 0);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function loadPdfFile(file) {
+    currentFile = file;
+    currentKind = 'pdf';
+    currentFileName = normalizeName(file);
+    fileType.textContent = 'PDF page 1';
+    if (!window.pdfjsLib) {
+      showPreviewNote('PDF.js n est pas disponible dans ce navigateur. Convertissez la page en image ou utilisez la saisie manuelle.');
+      setStatus('Apercu PDF indisponible. Aucun texte automatique ne sera invente.', 0);
+      return;
+    }
+    try {
+      if (window.pdfjsLib.GlobalWorkerOptions) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2';
+      }
+      setStatus('Rendu de la premiere page PDF en cours.', 24);
+      const buffer = await file.arrayBuffer();
+      const pdf = await window.pdfjsLib.getDocument({ data: buffer }).promise;
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: Math.min(2, window.devicePixelRatio || 1.5) });
+      const context = pdfCanvas.getContext('2d', { willReadFrequently: true });
+      pdfCanvas.width = Math.floor(viewport.width);
+      pdfCanvas.height = Math.floor(viewport.height);
+      await page.render({ canvasContext: context, viewport: viewport }).promise;
+      currentSource = pdfCanvas.toDataURL('image/png');
+      previewEmpty.hidden = true;
+      imagePreview.hidden = true;
+      previewNote.hidden = true;
+      pdfCanvas.hidden = false;
+      setStatus("Premiere page previsualisee. Lancez l'OCR pour extraire le texte visible.", 36);
+    } catch (error) {
+      currentSource = '';
+      showPreviewNote('PDF non rendu dans ce navigateur. Essayez une image ou collez le texte manuellement.');
+      setStatus('Apercu PDF impossible. Aucun resultat automatique n a ete cree.', 0);
+    }
+  }
+
+  function handleFile(file) {
+    if (!file) return;
+    const type = file.type || '';
+    if (type.startsWith('image/')) {
+      loadImageFile(file);
+      return;
+    }
+    if (type === 'application/pdf' || /\.pdf$/i.test(file.name || '')) {
+      loadPdfFile(file);
+      return;
+    }
+    showPreviewNote('Format non pris en charge. Utilisez PNG, JPG, WEBP ou PDF.');
+    setStatus('Format non pris en charge.', 0);
+  }
+
+  async function runOcr() {
+    if (!currentSource) {
+      setStatus('Ajoutez une image ou rendez une page PDF avant extraction.', 0);
+      manualText.focus();
+      return;
+    }
+    if (!window.Tesseract || !window.Tesseract.recognize) {
+      setStatus('Moteur OCR indisponible dans ce navigateur. Collez ou saisissez le texte dans la zone de sortie.', 0);
+      manualText.focus();
+      return;
+    }
+    extractBtn.disabled = true;
+    setStatus('OCR en cours. Gardez cette page ouverte.', 42);
+    try {
+      const result = await window.Tesseract.recognize(currentSource, ocrLang.value, {
+        logger: function (event) {
+          if (event && typeof event.progress === 'number') {
+            const pct = Math.round(event.progress * 100);
+            const label = event.status ? event.status.replace(/_/g, ' ') : 'traitement';
+            setStatus('OCR : ' + label + ' (' + pct + ' %).', pct);
+          }
+        }
+      });
+      const text = result && result.data && result.data.text ? result.data.text.trim() : '';
+      manualText.value = text;
+      updateMetrics(result && result.data ? result.data.confidence : null);
+      if (text) {
+        setStatus('Texte extrait. Relisez le contenu avant copie ou telechargement.', 100);
+        try {
+          localStorage.setItem('afrotools-image-en-texte-last', text.slice(0, 10000));
+        } catch (storageError) {}
+      } else {
+        setStatus('OCR termine, mais aucun texte fiable n a ete detecte. Essayez une image plus nette ou saisissez le texte.', 100);
+      }
+    } catch (error) {
+      setStatus('OCR indisponible ou interrompu. Collez ou saisissez le texte dans la zone de sortie.', 0);
+      manualText.focus();
+    } finally {
+      extractBtn.disabled = false;
+    }
+  }
+
+  async function copyText() {
+    const text = manualText.value.trim();
+    if (!text) {
+      setStatus('Aucun texte a copier.', 0);
+      manualText.focus();
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus('Texte copie dans le presse-papiers.', 100);
+    } catch (error) {
+      manualText.select();
+      setStatus('Copie automatique bloquee. Selectionnez le texte puis copiez-le avec le clavier.', 100);
+    }
+  }
+
+  function downloadText() {
+    const text = manualText.value.trim();
+    if (!text) {
+      setStatus('Aucun texte a telecharger.', 0);
+      manualText.focus();
+      return;
+    }
+    const blob = new Blob([text + '\n'], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = currentFileName || 'afrotools-image-en-texte.txt';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatus('Fichier TXT prepare sur votre appareil.', 100);
+  }
+
+  function useTypedText() {
+    updateMetrics(null);
+    setStatus('Texte saisi pris en compte. Vous pouvez le copier ou le telecharger.', manualText.value.trim() ? 100 : 0);
+    manualText.focus();
+  }
+
+  function clearAll() {
+    fileInput.value = '';
+    manualText.value = '';
+    resetPreview();
+    updateMetrics(null);
+  }
+
+  chooseBtn.addEventListener('click', function () {
+    fileInput.click();
+  });
+  fileInput.addEventListener('change', function () {
+    handleFile(fileInput.files && fileInput.files[0]);
+  });
+  extractBtn.addEventListener('click', runOcr);
+  useTypedBtn.addEventListener('click', useTypedText);
+  copyBtn.addEventListener('click', copyText);
+  downloadBtn.addEventListener('click', downloadText);
+  clearBtn.addEventListener('click', clearAll);
+  manualText.addEventListener('input', function () {
+    updateMetrics(null);
+  });
+
+  ['dragenter', 'dragover'].forEach(function (eventName) {
+    dropZone.addEventListener(eventName, function (event) {
+      event.preventDefault();
+      dropZone.classList.add('is-dragging');
+    });
+  });
+  ['dragleave', 'drop'].forEach(function (eventName) {
+    dropZone.addEventListener(eventName, function (event) {
+      event.preventDefault();
+      dropZone.classList.remove('is-dragging');
+    });
+  });
+  dropZone.addEventListener('drop', function (event) {
+    const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+    handleFile(file);
+  });
+  dropZone.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      fileInput.click();
+    }
+  });
+
+  document.addEventListener('paste', function (event) {
+    const items = event.clipboardData && Array.from(event.clipboardData.items || []);
+    const imageItem = items.find(function (item) { return item.type && item.type.startsWith('image/'); });
+    if (imageItem) {
+      const file = imageItem.getAsFile();
+      if (file) {
+        handleFile(new File([file], 'image-collee.png', { type: file.type || 'image/png' }));
+        setStatus("Image collee et previsualisee. Lancez l'extraction si le moteur OCR est disponible.", 18);
+      }
+      return;
+    }
+    const text = event.clipboardData && event.clipboardData.getData('text/plain');
+    if (text && document.activeElement !== manualText) {
+      manualText.value = (manualText.value ? manualText.value + '\n' : '') + text;
+      updateMetrics(null);
+      setStatus('Texte colle dans la zone de sortie.', 100);
+    }
+  });
+
+  resetPreview();
+  updateMetrics(null);
+});
+</script>
 </body>
 </html>

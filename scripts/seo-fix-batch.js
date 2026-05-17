@@ -103,7 +103,7 @@ const TOOL_NAMES = {
   'poultry-roi': 'Poultry ROI Calculator'
 };
 
-const GA4_SNIPPET = '<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag(\'js\',new Date());gtag(\'config\',\'G-D859CGF391\');</script>';
+const GA4_SNIPPET = '<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag(\'js\',new Date());gtag(\'config\',\'G-D859CGF391\');</script>';
 const CROSS_TOOL_SCRIPT = '<script src="/assets/js/lib/cross-tool-nav.js" defer></script>';
 
 let stats = { hubsFixed: 0, crossToolAdded: 0, breadcrumbAdded: 0, ga4Added: 0 };

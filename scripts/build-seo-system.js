@@ -3,6 +3,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { writeFileSyncWithRetry } = require("./lib/safe-write");
 
 const ROOT = path.resolve(__dirname, "..");
 const DATA_PATH = path.join(ROOT, "data", "seo", "priority-pages.json");
@@ -13,27 +14,8 @@ function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
 }
 
-function sleep(ms) {
-  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
-}
-
 function writeFile(filePath, content) {
-  const maxAttempts = 6;
-
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    try {
-      fs.writeFileSync(filePath, content, "utf8");
-      return;
-    } catch (error) {
-      const retryable = error && ["EBUSY", "EPERM", "UNKNOWN"].includes(error.code);
-
-      if (!retryable || attempt === maxAttempts) {
-        throw error;
-      }
-
-      sleep(attempt * 120);
-    }
-  }
+  writeFileSyncWithRetry(filePath, content, "utf8");
 }
 
 function escapeHtml(value) {

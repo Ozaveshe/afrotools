@@ -3,6 +3,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { writeFileSyncWithRetry } = require("./lib/safe-write");
 
 const { ROOT, buildCanonicalAliasMap } = require("./lib/canonical-aliases");
 
@@ -88,7 +89,7 @@ if (stripGenerated.includes(INSERT_BEFORE)) {
   next = `${stripGenerated.trimEnd()}${eol}${eol}${block}${eol}`;
 }
 
-fs.writeFileSync(REDIRECTS_PATH, next, "utf8");
+writeFileSyncWithRetry(REDIRECTS_PATH, next, "utf8");
 
 console.log("Generated HTML canonical redirect rules:", count);
 console.log(`Updated ${path.relative(ROOT, REDIRECTS_PATH).replace(/\\/g, "/")}`);

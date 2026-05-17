@@ -15,12 +15,12 @@
     countries:  { en: 'Countries', fr: 'Pays', sw: 'Nchi', yo: 'Orílẹ̀-èdè', ha: 'Ƙasashe' },
     company:    { en: 'Company', fr: 'Entreprise', sw: 'Kampuni', yo: 'Ilé-iṣẹ́', ha: 'Kamfani' },
     legal:      { en: 'Legal', fr: 'Légal', sw: 'Sheria', yo: 'Òfin', ha: 'Doka' },
-    logoTagline:{ en: "Africa's Everything Platform", ha: 'Dandalin kayan aikin Afirka' },
+    logoTagline:{ en: "Africa's Everything Platform", yo: 'Pẹpẹ irinṣẹ Afirika', ha: 'Dandalin kayan aikin Afirka' },
     nlEyebrow:  { en: 'Stay Updated', fr: 'Restez informé', sw: 'Pata Habari', yo: 'Ṣe Àjọjú', ha: 'Sabbin kayan aiki' },
     nlTitle:    { en: 'New tools. Every week. Free.', fr: 'Nouveaux outils. Gratuit.', sw: 'Zana mpya. Kila wiki. Bure.', yo: 'Iṣẹ́ tuntun. Ọ̀fẹ́.', ha: 'Sabbin kayan aiki da bayanai, kyauta.' },
     placeholder:{ en: 'your@email.com', fr: 'votre@email.com', sw: 'barua@pepe.com', yo: 'imeeli@rẹ.com', ha: 'adireshin imel dinka' },
     btnLabel:   { en: 'Notify Me →', fr: "M'inscrire →", sw: 'Nijulishe →', yo: 'Fara mọ́ →', ha: 'Sanar da ni →' },
-    note:       { en: 'No spam. Unsubscribe anytime.', fr: 'Pas de spam. Désinscription facile.', sw: 'Hakuna taka. Jiondoe wakati wowote.', yo: 'Kò sí àdàlù. Yọ ara rẹ nígbàkígbà.', ha: 'Babu spam. Kana iya fita a kowane lokaci.' },
+    note:       { en: 'No spam. Unsubscribe anytime.', fr: 'Pas de spam. Désinscription facile.', sw: 'Hakuna taka. Jiondoe wakati wowote.', yo: 'Kò sí àdàlù. Yọ ara rẹ nígbàkígbà.', ha: 'Babu sakon talla. Kana iya fita a kowane lokaci.' },
     tagline:    { en: 'Tax calculators, PDF tools, CV builder, currency tools and more — built for all 54 African nations. Free forever.',
                   fr: 'Calculateurs, outils PDF, CV, devises — pour les 54 nations africaines. Gratuit à jamais.',
                   sw: 'Vikokotoo vya kodi, zana za PDF, sarafu na zaidi — kwa mataifa yote 54 ya Afrika. Bure milele.',
@@ -35,54 +35,59 @@
                   fr: "Certains outils contiennent des liens d'affiliation vers des partenaires de confiance. AfroTools peut percevoir une commission sans frais supplémentaires pour vous.",
                   sw: 'Baadhi ya zana zina viungo vya washirika kwa washirika wanaoaminiwa. AfroTools inaweza kupata tume bila gharama zaidi kwako.',
                   yo: 'Àwọn iṣẹ́ kan ní àwọn ọ̀nà ìsopọ̀ afilieti sí àwọn alábàáṣiṣẹ́pọ̀ tí a gbẹ́kẹ̀lé. AfroTools lè ní èrè láì ní idiyele àfikún fún ọ.',
-                  ha: 'Wasu shafuka na iya dauke da affiliate links zuwa abokan hulda. AfroTools na iya samun commission ba tare da karin kudi daga gare ka ba.' },
+                  ha: 'Wasu shafuka na iya dauke da hanyoyin abokan hulda. AfroTools na iya samun rabo ba tare da karin kudi daga gare ka ba.' },
     stats:      { countries: { en: 'African countries', fr: 'Pays africains', sw: 'Nchi za Afrika', yo: 'Orílẹ̀-èdè Áfíríkà', ha: 'Ƙasashen Afirka' },
                    categories: { en: 'Tool categories', fr: 'Catégories', sw: 'Kategoria', yo: 'Ẹ̀ka', ha: 'Rukunan kayan aiki' },
                    paye:       { en: 'PAYE countries live', fr: 'Pays PAYE en ligne', sw: 'Nchi za PAYE mubashara', yo: 'Àwọn orílẹ̀-èdè PAYE tó wà', ha: 'Kasashen PAYE da ke aiki' },
                    free:       { en: 'Always, forever', fr: 'Toujours gratuit', sw: 'Bure milele', yo: 'Ọ̀fẹ́ títí', ha: 'Kyauta har abada' } },
-    freeValue:  { en: 'Free', ha: 'Kyauta' },
-    privacy:    { en: 'Privacy', fr: 'Confidentialité', sw: 'Faragha', yo: 'Aṣírí', ha: 'Sirri' },
-    terms:      { en: 'Terms', fr: 'Conditions', sw: 'Masharti', yo: 'Òfin', ha: 'Sharudda' },
-    sitemap:    { en: 'Sitemap', ha: 'Taswirar shafi' },
-    contact:    { en: 'Contact', ha: 'Tuntube mu' },
-    emailLabel: { en: 'Email address', ha: 'Adireshin imel' },
-    subscribed: { en: '✓ Subscribed!', ha: '✓ An yi rajista!' },
-    retry:      { en: '✗ Try again', ha: '✗ Sake gwadawa' },
+    freeValue:  { en: 'Free', yo: 'Ọ̀fẹ́', ha: 'Kyauta' },
+    privacy:    { en: 'Privacy', fr: 'Confidentialité', sw: 'Faragha', yo: 'Aṣírí - ojú ìwé Gẹẹsi', ha: 'Sirri' },
+    terms:      { en: 'Terms', fr: 'Conditions', sw: 'Masharti', yo: 'Òfin - ojú ìwé Gẹẹsi', ha: 'Sharudda' },
+    sitemap:    { en: 'Sitemap', yo: 'Àtòjọ ojú-ìwé', ha: 'Taswirar shafi' },
+    contact:    { en: 'Contact', yo: 'Kan sí wa - ojú ìwé Gẹẹsi', ha: 'Tuntube mu' },
+    emailLabel: { en: 'Email address', yo: 'Àdírẹ́sì imeeli', ha: 'Adireshin imel' },
+    subscribed: { en: '✓ Subscribed!', yo: '✓ A ti forúkọ sílẹ̀!', ha: '✓ An yi rajista!' },
+    retry:      { en: '✗ Try again', yo: '✗ Gbìyànjú lẹ́ẹ̀kan sí', ha: '✗ Sake gwadawa' },
     builtWith:  { en: 'Built with ♥ for Africa', fr: 'Fait avec ♥ pour l\'Afrique', sw: 'Imejengwa kwa ♥ kwa Afrika', yo: 'A kọ́ pẹ̀lú ♥ fún Áfíríkà', ha: 'An gina shi don Afirka' },
   };
 
   const LINKS = {
     tools: [
-      { en: 'Salary & Tax',        fr: 'Salaire & Impôts', sw: 'Mshahara & Kodi', yo: 'Owó Oṣù & Owó-Orí', ha: 'Albashi da PAYE', href: '/salary-tax/', hrefHa: '/ha/albashi-da-haraji/' },
-      { en: 'PDF Workspace',       fr: 'Espace PDF',       sw: 'Eneo la PDF',     yo: 'Ibùdó PDF',          ha: 'Takardu da PDF', href: '/tools/pdf-workspace/', hrefHa: '/ha/takardu-da-pdf/' },
+      { en: 'Salary & Tax',        fr: 'Salaire & Impôts', sw: 'Mshahara & Kodi', yo: 'Owó oṣù àti owó-orí', ha: 'Albashi da PAYE', href: '/salary-tax/', hrefHa: '/ha/albashi-da-haraji/', hrefYo: '/yo/owo-osu-ati-owo-ori/' },
+      { en: 'PDF Workspace',       fr: 'Espace PDF',       sw: 'Eneo la PDF',     yo: 'Ìwé àti PDF',          ha: 'Takardu da PDF', href: '/tools/pdf-workspace/', hrefHa: '/ha/takardu-da-pdf/', hrefYo: '/yo/iwe-ati-pdf/' },
       { en: 'Education',           ha: 'Ilimi',             href: '/education/', hrefHa: '/ha/ilimi/', haOnly: true },
+      { en: 'Education',           yo: 'Ẹ̀kọ́',             href: '/education/', hrefYo: '/yo/eko/', yoOnly: true },
+      { en: 'Telecom & Mobile',    yo: 'Ìbáraẹnisọrọ',     href: '/telecom/', hrefYo: '/yo/ibaraenisoro/', yoOnly: true },
+      { en: 'Health',              yo: 'Ìlera',             href: '/health/', hrefYo: '/yo/ilera/', yoOnly: true },
+      { en: 'Agriculture',         yo: 'Ọ̀gbìn',            href: '/agriculture/', hrefYo: '/yo/ogbin/', yoOnly: true },
+      { en: 'Language & Translation', yo: 'Èdè àti Ìtumọ̀', href: '/language/', hrefYo: '/yo/ede-ati-itumo/', yoOnly: true },
       { en: 'Language & Translation', ha: 'Harshe da Fassara', href: '/language/', hrefHa: '/ha/harshe-da-fassara/', haOnly: true },
-      { en: 'CV Builder',          fr: 'Créer un CV',      sw: 'Tengeneza CV',     yo: 'Kọ CV',             ha: 'CV Builder (Turanci)',      href: '/tools/cv-builder/' },
-      { en: 'Invoice Generator',   fr: 'Facture',          sw: 'Ankara',           yo: 'Iṣẹ́ Ìwé-Owó',      ha: 'Kirkiro Invoice', href: '/tools/invoice-generator/', hrefHa: '/ha/kayan-aiki/kirkiro-invoice/' },
-      { en: 'VAT Calculator',      fr: 'Calculateur TVA',  sw: 'Kikokotoo VAT',    yo: 'Àṣeàṣe VAT',       ha: 'Kalkuletan VAT',  href: '/tools/vat-calculator/', hrefHa: '/ha/kayan-aiki/kalkuletan-vat/' },
-      { en: 'Currency Converter',  fr: 'Convertisseur',    sw: 'Kubadili Sarafu',  yo: 'Iyípadà Owó',       ha: 'Canjin kudi (Turanci)',     href: '/tools/currency-converter/' },
+      { en: 'CV Builder',          fr: 'Créer un CV',      sw: 'Tengeneza CV',     yo: 'Kọ CV - ojú ìwé Gẹẹsi',             ha: 'Mai gina CV',      href: '/tools/cv-builder/', hrefHa: '/ha/kayan-aiki/gina-cv/' },
+      { en: 'Invoice Generator',   fr: 'Facture',          sw: 'Ankara',           yo: 'Ìwé owó - ojú ìwé Gẹẹsi',      ha: 'Kirkiro takardar kudi', href: '/tools/invoice-generator/', hrefHa: '/ha/kayan-aiki/kirkiro-invoice/' },
+      { en: 'VAT Calculator',      fr: 'Calculateur TVA',  sw: 'Kikokotoo VAT',    yo: 'VAT àti owó-orí iṣẹ́',       ha: 'Kalkuletan VAT',  href: '/tools/vat-calculator/', hrefHa: '/ha/kayan-aiki/kalkuletan-vat/', hrefYo: '/yo/owo-ori-owo-ise/' },
+      { en: 'Currency Converter',  fr: 'Convertisseur',    sw: 'Kubadili Sarafu',  yo: 'Iyípadà owó - ojú ìwé Gẹẹsi',       ha: 'Canjin kudi - shafi na Turanci',     href: '/tools/currency-converter/' },
     ],
     countries: [
-      { en: 'All countries', ha: 'Duk kasashe (Turanci)', href: '/countries/', hrefHa: '/countries/', haOnly: true },
-      { en: 'Nigeria',      ha: 'Najeriya',       href: '/nigeria/', hrefHa: '/ha/najeriya/' },
-      { en: 'Kenya',        ha: 'Kenya (Turanci)',           href: '/kenya/' },
-      { en: 'Ghana',        ha: 'Ghana (Turanci)',           href: '/ghana/' },
-      { en: 'South Africa', ha: 'Afirka ta Kudu (Turanci)',  href: '/south-africa/' },
-      { en: 'Egypt',        ha: 'Masar (Turanci)',           href: '/egypt/' },
-      { en: 'Tanzania',     ha: 'Tanzania (Turanci)',        href: '/tanzania/' },
+      { en: 'All countries', ha: 'Duk kasashe - shafi na Turanci', href: '/countries/', hrefHa: '/countries/', haOnly: true },
+      { en: 'Nigeria',      yo: 'Naijiria', ha: 'Najeriya',       href: '/nigeria/', hrefHa: '/ha/najeriya/', hrefYo: '/yo/naijiria/' },
+      { en: 'Kenya',        yo: 'Kenya - ojú ìwé Gẹẹsi',              ha: 'Kenya - shafi na Turanci',           href: '/kenya/' },
+      { en: 'Ghana',        yo: 'Ghana - ojú ìwé Gẹẹsi',              ha: 'Ghana - shafi na Turanci',           href: '/ghana/' },
+      { en: 'South Africa', yo: 'South Africa - ojú ìwé Gẹẹsi',       ha: 'Afirka ta Kudu - shafi na Turanci',  href: '/south-africa/' },
+      { en: 'Egypt',        yo: 'Egypt - ojú ìwé Gẹẹsi',              ha: 'Masar - shafi na Turanci',           href: '/egypt/' },
+      { en: 'Tanzania',     yo: 'Tanzania - ojú ìwé Gẹẹsi',           ha: 'Tanzania - shafi na Turanci',        href: '/tanzania/' },
     ],
     company: [
-      { en: 'About',       fr: 'À propos',        sw: 'Kuhusu',        yo: 'Nípa Wa',          ha: 'Game da Mu (Turanci)',    href: '/about/' },
-      { en: 'Blog',        fr: 'Blog',             sw: 'Blogu',         yo: 'Blọ́ọ̀gì',          ha: 'Blog (Turanci)',          href: '/blog/' },
-      { en: 'Contact',     fr: 'Contact',          sw: 'Wasiliana',     yo: 'Kan Sí Wa',        ha: 'Tuntube Mu (Turanci)',    href: '/contact/' },
-      { en: 'Changelog',   fr: 'Mises à jour',     sw: 'Mabadiliko',    yo: 'Àwọn Àyípadà',    ha: 'Canje-canje (Turanci)',   href: '/changelog/' },
-      { en: 'All Tools',   fr: 'Tous les outils',  sw: 'Zana Zote',     yo: 'Gbogbo Iṣẹ́',      ha: 'Duk kayan aiki',href: '/all-tools/', hrefHa: '/ha/kayan-aiki/' },
-      { en: 'API Docs',    fr: 'API Docs',         sw: 'API Docs',      yo: 'API Docs',         ha: 'API Docs (Turanci)',      href: '/api/' },
-      { en: 'Embed Tools', fr: 'Intégrer',         sw: 'Chomeka Zana',  yo: 'Fi Iṣẹ́ Sínú',     ha: 'Saka Kayan Aiki (Turanci)', href: '/widgets/demo/' },
+      { en: 'About',       fr: 'À propos',        sw: 'Kuhusu',        yo: 'Nípa wa - ojú ìwé Gẹẹsi',          ha: 'Game da mu - shafi na Turanci',    href: '/about/' },
+      { en: 'Blog',        fr: 'Blog',             sw: 'Blogu',         yo: 'Blọ́ọ̀gì - ojú ìwé Gẹẹsi',          ha: 'Labaran shafi - shafi na Turanci',          href: '/blog/' },
+      { en: 'Contact',     fr: 'Contact',          sw: 'Wasiliana',     yo: 'Kan sí wa - ojú ìwé Gẹẹsi',        ha: 'Tuntube mu - shafi na Turanci',    href: '/contact/' },
+      { en: 'Changelog',   fr: 'Mises à jour',     sw: 'Mabadiliko',    yo: 'Àwọn àyípadà - ojú ìwé Gẹẹsi',    ha: 'Canje-canje - shafi na Turanci',   href: '/changelog/' },
+      { en: 'All Tools',   fr: 'Tous les outils',  sw: 'Zana Zote',     yo: 'Gbogbo irinṣẹ',      ha: 'Duk kayan aiki',href: '/all-tools/', hrefHa: '/ha/kayan-aiki/', hrefYo: '/yo/awon-ise/' },
+      { en: 'API Docs',    fr: 'API Docs',         sw: 'API Docs',      yo: 'Ìwé API - ojú ìwé Gẹẹsi',         ha: 'Takardun API - shafi na Turanci',      href: '/api/' },
+      { en: 'Embed Tools', fr: 'Intégrer',         sw: 'Chomeka Zana',  yo: 'Fi irinṣẹ sínú - ojú ìwé Gẹẹsi',     ha: 'Saka kayan aiki - shafi na Turanci', href: '/widgets/demo/' },
     ],
     legal: [
-      { en: 'Privacy Policy', fr: 'Confidentialité', sw: 'Sera ya Faragha', yo: 'Ìlànà Aṣírí',  ha: 'Manufar sirri (Turanci)', href: '/privacy/' },
-      { en: 'Terms of Use',   fr: 'Conditions',      sw: 'Masharti',        yo: 'Òfin Lílò',     ha: 'Sharuddan amfani (Turanci)', href: '/terms/' },
+      { en: 'Privacy Policy', fr: 'Confidentialité', sw: 'Sera ya Faragha', yo: 'Ìlànà aṣírí - ojú ìwé Gẹẹsi',  ha: 'Manufar sirri - shafi na Turanci', href: '/privacy/' },
+      { en: 'Terms of Use',   fr: 'Conditions',      sw: 'Masharti',        yo: 'Òfin lílò - ojú ìwé Gẹẹsi',     ha: 'Sharuddan amfani - shafi na Turanci', href: '/terms/' },
       { en: 'Sitemap',        fr: 'Plan du site',    sw: 'Ramani',          yo: 'Àtòjọ Ojú-ìwé', ha: 'Taswirar shafi',href: '/sitemap.xml' },
     ],
   };
@@ -320,7 +325,7 @@
 
     _col(titleObj, items) {
       const t = this._l(titleObj);
-      const visibleItems = items.filter(i => this._lang === 'ha' || !i.haOnly);
+      const visibleItems = items.filter(i => (this._lang === 'ha' || !i.haOnly) && (this._lang === 'yo' || !i.yoOnly));
       const links = visibleItems.map(i => `<a href="${this._linkHref(i)}" class="col-link">${this._t(i)}</a>`).join('');
       return `<div><div class="col-title">${t}</div>${links}</div>`;
     }
@@ -333,11 +338,13 @@
     _linkHref(item) {
       var href = item && item.href ? item.href : '#';
       if (this._lang === 'ha') return item.hrefHa || href;
+      if (this._lang === 'yo') return item.hrefYo || href;
       return this._prefixHref(href);
     }
 
-    _footerHref(href, haHref) {
+    _footerHref(href, haHref, yoHref) {
       if (this._lang === 'ha') return haHref || href;
+      if (this._lang === 'yo') return yoHref || href;
       return this._prefixHref(href);
     }
 
@@ -395,7 +402,7 @@
 
             <div class="top">
               <div>
-                <a href="${this._footerHref('/', '/ha/')}" class="logo-row">
+                <a href="${this._footerHref('/', '/ha/', '/yo/')}" class="logo-row">
                   ${MARK}
                   <div>
                     <span class="logo-name">AFRO<b>TOOLS</b></span>

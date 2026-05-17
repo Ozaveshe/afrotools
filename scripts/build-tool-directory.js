@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.join(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'assets/js/components/tool-registry.js');
@@ -207,11 +208,11 @@ const records = tools
 const publicStats = typeof getPublicToolStats === 'function' ? getPublicToolStats('en') : null;
 
 fs.mkdirSync(path.dirname(DIRECTORY_JSON_PATH), { recursive: true });
-fs.writeFileSync(DIRECTORY_JSON_PATH, JSON.stringify(records, null, 2) + '\n', 'utf8');
+writeFileSyncWithRetry(DIRECTORY_JSON_PATH, JSON.stringify(records, null, 2) + '\n', 'utf8');
 
 const toolsPage = fs.readFileSync(TOOLS_PAGE, 'utf8');
 const updatedToolsPage = replaceFallback(toolsPage, buildFallbackHtml(records));
-fs.writeFileSync(TOOLS_PAGE, updatedToolsPage, 'utf8');
+writeFileSyncWithRetry(TOOLS_PAGE, updatedToolsPage, 'utf8');
 
 console.log(`Built ${records.length} crawlable tool rows`);
 if (publicStats) console.log(`Public live tool count: ${publicStats.liveTools}`);

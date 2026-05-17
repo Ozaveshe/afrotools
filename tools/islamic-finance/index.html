@@ -1,78 +1,566 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Islamic Finance Profit Rate Calculator | AfroTools</title>
-<meta name="description" content="Compare Murabaha markup, Ijarah lease payments and Musharakah equity contribution for halal financing planning.">
+<meta name="description" content="Estimate Murabaha or Ijarah-style payments with asset price, deposit, profit margin, term, fees, currency, total payable, comparison rate, and affordability warning.">
 <link rel="canonical" href="https://afrotools.com/tools/islamic-finance/">
+<meta name="tool-id" content="islamic-finance">
 <meta property="og:title" content="Islamic Finance Profit Rate Calculator | AfroTools">
-<meta property="og:description" content="Compare Murabaha markup, Ijarah lease payments and Musharakah equity contribution for halal financing planning.">
+<meta property="og:description" content="Calculate Islamic finance payments, total profit, total payable, annualized comparison rate, scenarios, and affordability flags.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/islamic-finance.webp">
 <meta property="og:url" content="https://afrotools.com/tools/islamic-finance/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="article:modified_time" content="2026-05-16">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Islamic Finance Profit Rate Calculator | AfroTools">
-<meta name="twitter:description" content="Compare Murabaha markup, Ijarah lease payments and Musharakah equity contribution for halal financing planning.">
+<meta name="twitter:description" content="Compare Murabaha and Ijarah-style profit plans with total cost, payment frequency, scenarios, and careful disclaimers.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/islamic-finance.webp">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Islamic Finance Profit Rate Calculator",
-  "description": "Compare Murabaha markup, Ijarah lease payments and Musharakah equity contribution for halal financing planning.",
-  "url": "https://afrotools.com/tools/islamic-finance/",
-  "applicationCategory": "LifestyleApplication",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "provider": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/islamic-finance.webp"
-}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Islamic Finance Profit Rate Calculator","description":"Estimate Murabaha or Ijarah-style payments, total profit, total payable, effective annualized comparison rate, scenarios, and affordability warnings.","url":"https://afrotools.com/tools/islamic-finance/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/islamic-finance.webp","dateModified":"2026-05-16"}
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Religious & Cultural","item":"https://afrotools.com/religious-cultural/"},{"@type":"ListItem","position":3,"name":"Islamic Finance","item":"https://afrotools.com/tools/islamic-finance/"}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Religious & Cultural","item":"https://afrotools.com/religious-cultural/"},{"@type":"ListItem","position":3,"name":"Islamic Finance","item":"https://afrotools.com/tools/islamic-finance/"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
+<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
-:root{--en-accent:#D97706;--en-accent-dark:#D97706;--en-accent-light:#FEF3C7;--en-accent-pale:#FFFBEB;--en-shadow-hover:0 4px 16px rgba(15,23,42,.14),0 1px 4px rgba(0,0,0,.08)}
-.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a0a 45%,#3b2800 100%)!important}
-.container{max-width:1080px;margin:0 auto;padding:0 24px}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#f8faf7;color:#17211c;font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.if-hero{background:linear-gradient(135deg,#123124 0%,#213729 48%,#7c4b12 100%);color:#fff;padding:42px 0 34px}
+.if-shell{max-width:1180px;margin:0 auto;padding:0 22px}
+.if-breadcrumb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px;color:#e4efe7;font-size:.82rem}
+.if-breadcrumb a{color:#fff}
+.if-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:24px;align-items:end}
+.if-hero h1{margin:0 0 10px;font-size:clamp(2rem,5vw,3.25rem);line-height:1.05;font-weight:800;letter-spacing:0}
+.if-hero p{margin:0;max-width:760px;color:#f1f8f3;font-size:1rem;line-height:1.7}
+.if-stamps{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.if-stamp{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.12);border-radius:999px;padding:8px 11px;color:#fff;font-size:.76rem;font-weight:800}
+.if-main{padding:28px 0 56px}
+.if-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+.if-panel,.if-card,.if-related,.if-commercial{background:#fff;border:1px solid #dce5dc;border-radius:12px;box-shadow:0 1px 10px rgba(23,33,28,.05)}
+.if-panel-head{padding:18px 20px;border-bottom:1px solid #e7efe8;display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.if-kicker,.if-card h2,.if-related h2,.if-commercial h2{margin:0 0 9px;font-size:.86rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#17211c}
+.if-panel-note{margin:5px 0 0;color:#617266;font-size:.86rem;line-height:1.55}
+.if-panel-body{padding:20px}
+.if-form{display:grid;gap:18px;position:relative;z-index:2}
+.if-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.if-field{display:grid;gap:7px}
+.if-label{font-size:.76rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#30483b}
+.if-help{font-size:.78rem;color:#66756b;line-height:1.45}
+.if-input,.if-select{width:100%;min-height:46px;border:1.5px solid #cdd8cf;border-radius:9px;background:#fff;color:#17211c;font:600 1rem "DM Sans",system-ui,sans-serif;padding:10px 12px}
+.if-input:focus,.if-select:focus{outline:none;border-color:#15803d;box-shadow:0 0 0 3px rgba(21,128,61,.16)}
+.if-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.if-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border:1.5px solid #cdd8cf;border-radius:999px;background:#fff;color:#17211c;font:800 .92rem "DM Sans",system-ui,sans-serif;padding:10px 16px;cursor:pointer}
+.if-btn:hover{border-color:#15803d;color:#15803d}
+.if-btn-primary{background:#15803d;border-color:#15803d;color:#fff;box-shadow:0 8px 18px rgba(21,128,61,.22)}
+.if-btn-primary:hover{background:#166534;color:#fff}
+.if-status{min-height:1.4em;color:#15803d;font-weight:900;font-size:.86rem}
+.if-results{margin-top:18px;display:grid;gap:16px;position:relative;z-index:1}
+.if-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.if-metric{border:1px solid #dce5dc;border-radius:10px;background:#f8faf7;padding:15px;min-height:112px}
+.if-metric span{display:block;color:#66756b;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.if-metric strong{display:block;color:#17211c;font-size:1.32rem;line-height:1.1;margin:7px 0 5px;word-break:break-word;overflow-wrap:anywhere}
+.if-metric em{display:block;color:#66756b;font-size:.78rem;font-style:normal;line-height:1.4}
+.if-metric-main{background:#ecfdf3;border-color:#bbf7d0}
+.if-metric-main strong{color:#15803d}
+.if-breakdown{width:100%;border-collapse:collapse;font-size:.9rem;table-layout:fixed}
+.if-breakdown th,.if-breakdown td{padding:11px 12px;border-bottom:1px solid #e7efe8;text-align:left;vertical-align:top;overflow-wrap:anywhere;word-break:break-word}
+.if-breakdown th{background:#f8faf7;color:#30483b;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.if-breakdown td:last-child{font-weight:800;color:#17211c}
+.if-warning{border:1px solid #fed7aa;background:#fff7ed;color:#7c2d12;border-radius:10px;padding:13px 15px;font-size:.9rem;line-height:1.58}
+.if-good{border-color:#bbf7d0;background:#ecfdf3;color:#14532d}
+.if-lists{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.if-list-card{border:1px solid #dce5dc;border-radius:10px;background:#fff;padding:15px}
+.if-list-card ul{margin:0;padding-left:18px;color:#4b5f52;font-size:.86rem;line-height:1.65}
+.if-side{display:grid;gap:14px}
+.if-card{padding:18px}
+.if-card p,.if-card li{color:#4b5f52;font-size:.86rem;line-height:1.65}
+.if-card ul,.if-card ol{margin:0;padding-left:18px}
+.if-source{background:#f8fbff;border-color:#bfdbfe}
+.if-source time{font-weight:900;color:#0b77a5}
+.if-source a{color:#0b63a3;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.if-related{margin-top:20px;padding:18px}
+.if-link-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.if-link-card{border:1px solid #dce5dc;border-radius:10px;padding:13px;background:#f8faf7}
+.if-link-card strong{display:block;font-size:.92rem;color:#17211c;margin-bottom:4px}
+.if-link-card span{display:block;color:#66756b;font-size:.8rem;line-height:1.45}
+.if-link-card:hover{border-color:#15803d;color:#15803d;background:#ecfdf3}
+.if-commercial{margin-top:20px;padding:18px;background:#fff8e6;border-color:#f5d88a}
+.if-commercial p{margin:0 0 12px;color:#4f3f22;line-height:1.65}
+.if-commercial .if-actions a{background:#fff}
+@media(max-width:980px){.if-hero-grid,.if-layout{grid-template-columns:1fr}.if-stamps{justify-content:flex-start}.if-side{grid-template-columns:1fr 1fr}.if-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.if-main{padding-top:18px}.if-grid,.if-metrics,.if-lists,.if-side,.if-link-grid{grid-template-columns:1fr}.if-panel-head{display:block}.if-panel-body{padding:16px}.if-btn{width:100%}.if-input,.if-select{font-size:16px}.if-metric{min-height:auto}}
+@media print{afro-navbar,afro-footer,.if-actions,.if-related,.if-commercial,.if-breadcrumb{display:none!important}.if-hero{background:#fff;color:#17211c;padding:0 0 18px}.if-hero p{color:#30483b}.if-layout{display:block}.if-panel,.if-card{box-shadow:none;break-inside:avoid}}
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/islamic-finance/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/fedha-za-kiislamu/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/islamic-finance/" />
 </head>
 <body>
 <afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
-<section class="en-tool-hero">
-<div class="container">
-<nav class="en-breadcrumb" aria-label="Breadcrumb">
-<a href="/">Home</a><span class="en-breadcrumb-sep">&gt;</span>
-<a href="/religious-cultural/">Religious &amp; Cultural</a><span class="en-breadcrumb-sep">&gt;</span>
-<span class="en-breadcrumb-current">Islamic Finance</span>
-</nav>
-<h1>Islamic Finance Profit Rate Calculator</h1>
-<p>A halal finance comparison tool for asset purchase, business equipment or vehicle finance. It shows the cash deposit, financed amount and monthly obligation under common structures.</p>
-<div class="en-tool-hero-meta">
-<span class="en-tool-hero-pill">Murabaha</span>
-<span class="en-tool-hero-pill">Ijarah</span>
-<span class="en-tool-hero-pill">Musharakah</span>
-<span class="en-tool-hero-pill">Deposit planning</span>
-</div>
-</div>
-</section>
-<main>
-<section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="islamic-finance"></section>
+<header class="if-hero">
+  <div class="if-shell">
+    <nav class="if-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/religious-cultural/">Religious &amp; Cultural</a><span>/</span><span>Islamic Finance</span>
+    </nav>
+    <div class="if-hero-grid">
+      <div>
+        <h1>Islamic Finance Profit Rate Calculator</h1>
+        <p>Estimate a Murabaha or Ijarah-style asset finance quote, compare profit margins, and produce a clear decision note without presenting the result as a fatwa.</p>
+      </div>
+      <div class="if-stamps" aria-label="Tool status">
+        <span class="if-stamp">Murabaha</span>
+        <span class="if-stamp">Ijarah</span>
+        <span class="if-stamp">Scenario comparison</span>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="if-main">
+  <div class="if-shell">
+    <div class="if-layout">
+      <section class="if-panel" aria-labelledby="calculator-title">
+        <div class="if-panel-head">
+          <div>
+            <h2 class="if-kicker" id="calculator-title">Finance quote inputs</h2>
+            <p class="if-panel-note">Use the provider's written quote. This tool models payment and cost only; Shariah approval must come from a qualified board or scholar.</p>
+          </div>
+          <div class="if-status" id="ifStatus" role="status" aria-live="polite"></div>
+        </div>
+        <div class="if-panel-body">
+          <form class="if-form" id="financeForm">
+            <div class="if-grid">
+              <div class="if-field">
+                <label class="if-label" for="structure">Finance structure</label>
+                <select class="if-select" id="structure" name="structure">
+                  <option value="murabaha">Murabaha cost-plus sale</option>
+                  <option value="ijarah">Ijarah lease / rent-to-own style</option>
+                </select>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="currency">Currency</label>
+                <select class="if-select" id="currency" name="currency">
+                  <option value="NGN">NGN - Nigerian naira</option>
+                  <option value="KES">KES - Kenyan shilling</option>
+                  <option value="ZAR">ZAR - South African rand</option>
+                  <option value="GHS">GHS - Ghanaian cedi</option>
+                  <option value="EGP">EGP - Egyptian pound</option>
+                  <option value="TZS">TZS - Tanzanian shilling</option>
+                  <option value="UGX">UGX - Ugandan shilling</option>
+                  <option value="XOF">XOF - West African CFA franc</option>
+                  <option value="XAF">XAF - Central African CFA franc</option>
+                  <option value="USD">USD - US dollar</option>
+                </select>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="assetPrice">Asset price</label>
+                <input class="if-input" id="assetPrice" name="assetPrice" type="number" min="0" step="0.01" inputmode="decimal" value="5000000" required>
+                <span class="if-help">Cash price of vehicle, equipment, inventory, house item, or business asset.</span>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="deposit">Deposit or customer contribution</label>
+                <input class="if-input" id="deposit" name="deposit" type="number" min="0" step="0.01" inputmode="decimal" value="1000000" required>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="financedAmount">Financed amount</label>
+                <input class="if-input" id="financedAmount" name="financedAmount" type="number" min="0" step="0.01" inputmode="decimal" value="4000000" required>
+                <span class="if-help">Usually asset price minus deposit. You can edit it if fees or equity are structured differently.</span>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="profitMargin">Profit margin over term</label>
+                <input class="if-input" id="profitMargin" name="profitMargin" type="number" min="0" max="200" step="0.01" inputmode="decimal" value="18" required>
+                <span class="if-help">Flat disclosed profit margin, not a religious ruling on permissibility.</span>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="termMonths">Term length in months</label>
+                <input class="if-input" id="termMonths" name="termMonths" type="number" min="1" max="360" step="1" inputmode="numeric" value="36" required>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="frequency">Payment frequency</label>
+                <select class="if-select" id="frequency" name="frequency">
+                  <option value="monthly">Monthly</option>
+                  <option value="quarterly">Quarterly</option>
+                  <option value="weekly">Weekly</option>
+                </select>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="fees">Documentation, admin, or takaful fees</label>
+                <input class="if-input" id="fees" name="fees" type="number" min="0" step="0.01" inputmode="decimal" value="75000">
+                <span class="if-help">Enter required fees so total payable is not understated.</span>
+              </div>
+              <div class="if-field">
+                <label class="if-label" for="monthlyBudget">Monthly affordability budget</label>
+                <input class="if-input" id="monthlyBudget" name="monthlyBudget" type="number" min="0" step="0.01" inputmode="decimal" value="180000">
+                <span class="if-help">Your maximum comfortable monthly cash-flow limit.</span>
+              </div>
+            </div>
+            <div class="if-actions">
+              <button class="if-btn if-btn-primary" id="calculateBtn" type="submit">Calculate finance quote</button>
+              <button class="if-btn" id="copyResult" type="button">Copy report</button>
+              <button class="if-btn" id="exportCsv" type="button">Export CSV</button>
+              <button class="if-btn" id="printResult" type="button">Print</button>
+              <button class="if-btn" id="shareResult" type="button">Share</button>
+            </div>
+          </form>
+
+          <section class="if-results" aria-labelledby="results-title">
+            <h2 class="if-kicker" id="results-title">Quote result and comparison</h2>
+            <div class="if-metrics">
+              <div class="if-metric if-metric-main"><span>Monthly payment</span><strong id="monthlyPayment">-</strong><em id="monthlyNote">Equivalent monthly obligation</em></div>
+              <div class="if-metric"><span>Total profit</span><strong id="totalProfit">-</strong><em id="profitNote">Disclosed profit over term</em></div>
+              <div class="if-metric"><span>Total payable</span><strong id="totalPayable">-</strong><em id="payableNote">Deposit, financed balance, profit, and fees</em></div>
+              <div class="if-metric"><span>Payment per frequency</span><strong id="periodicPayment">-</strong><em id="periodicNote">Based on selected schedule</em></div>
+              <div class="if-metric"><span>Annualized comparison</span><strong id="annualRate">-</strong><em id="rateNote">Cash-flow comparison only</em></div>
+              <div class="if-metric"><span>Affordability status</span><strong id="affordability">-</strong><em id="affordabilityNote">Monthly payment vs budget</em></div>
+            </div>
+            <table class="if-breakdown" aria-label="Islamic finance formula and scenario comparison">
+              <thead><tr><th>Lane</th><th>Formula or scenario</th><th>Result</th></tr></thead>
+              <tbody>
+                <tr><td>Financed amount</td><td id="financedFormula">Asset price minus deposit</td><td id="financedResult">-</td></tr>
+                <tr><td>Profit calculation</td><td id="profitFormula">Financed amount x profit margin</td><td id="profitResult">-</td></tr>
+                <tr><td>Base scenario</td><td id="baseScenario">Current margin and term</td><td id="baseResult">-</td></tr>
+                <tr><td>Lower margin scenario</td><td id="lowerScenario">Margin reduced by 2 percentage points</td><td id="lowerResult">-</td></tr>
+                <tr><td>Higher margin scenario</td><td id="higherScenario">Margin increased by 2 percentage points</td><td id="higherResult">-</td></tr>
+              </tbody>
+            </table>
+            <div class="if-warning" id="warningBox">Run a calculation to see the affordability warning.</div>
+            <div class="if-lists">
+              <article class="if-list-card">
+                <h2 class="if-kicker">Review checklist</h2>
+                <ul id="reviewChecklist"></ul>
+              </article>
+              <article class="if-list-card">
+                <h2 class="if-kicker">Decision notes</h2>
+                <ul id="decisionNotes"></ul>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <aside class="if-side" aria-label="Methodology and source context">
+        <section class="if-card if-source" data-tool-verification-panel>
+          <h2>Source &amp; context</h2>
+          <p><strong>Last reviewed:</strong> <time datetime="2026-05-16">16 May 2026</time>. This calculator is a payment model, not a Shariah certification engine.</p>
+          <ul>
+            <li><a href="https://aaoifi.com/shariaa-standards/?lang=en" rel="noopener noreferrer" target="_blank">AAOIFI Shariah standards</a> for contract-governance context.</li>
+            <li><a href="https://www.ifsb.org/glossary/" rel="noopener noreferrer" target="_blank">IFSB glossary</a> for Islamic finance terminology.</li>
+            <li><a href="https://www.isdb.org/what-we-do" rel="noopener noreferrer" target="_blank">Islamic Development Bank</a> for broader Islamic finance development context.</li>
+          </ul>
+        </section>
+        <section class="if-card">
+          <h2>Methodology</h2>
+          <ol>
+            <li>Financed amount is the asset price less deposit, unless you edit it to match the written quote.</li>
+            <li>Total profit equals financed amount multiplied by the disclosed profit margin over the whole term.</li>
+            <li>Total payable adds deposit, financed amount, disclosed profit, and fees.</li>
+            <li>Payment per period divides financed amount, profit, and fees across the selected schedule.</li>
+            <li>The annualized comparison rate is a cash-flow comparison to help compare quotes. It is not an interest label and does not decide Shariah compliance.</li>
+          </ol>
+        </section>
+        <section class="if-card">
+          <h2>Disclaimer</h2>
+          <p>This tool is not a fatwa or financial advice. It does not approve a Murabaha, Ijarah, Tawarruq, Musharakah, or any other contract. Ask a qualified Shariah scholar or Shariah board, and review the provider contract, fees, ownership transfer, late-payment clauses, takaful, and local law before signing.</p>
+        </section>
+      </aside>
+    </div>
+
+    <section class="if-related" aria-labelledby="related-title">
+      <h2 id="related-title">Related zakat, faraid, and finance tools</h2>
+      <div class="if-link-grid">
+        <a class="if-link-card" href="/tools/zakat-calculator/"><strong>Zakat calculator</strong><span>Estimate zakat on cash, gold, silver, and business assets.</span></a>
+        <a class="if-link-card" href="/tools/faraid-inheritance/"><strong>Faraid inheritance</strong><span>Model common estate shares before scholar review.</span></a>
+        <a class="if-link-card" href="/tools/loan-compare/"><strong>Loan comparison</strong><span>Compare conventional quotes for cash-flow context.</span></a>
+        <a class="if-link-card" href="/tools/budget-planner/"><strong>Budget planner</strong><span>Check whether payments fit your monthly cash flow.</span></a>
+        <a class="if-link-card" href="/tools/savings-goal/"><strong>Savings goal</strong><span>Plan the deposit before signing a finance offer.</span></a>
+      </div>
+    </section>
+
+    <section class="if-commercial" aria-labelledby="business-title">
+      <h2 id="business-title">For Islamic finance providers and publishers</h2>
+      <p>Need a branded affordability widget, quote-comparison calculator, or Shariah-board-reviewed education page? AfroTools can adapt this model to your products, currencies, contract language, and lead path.</p>
+      <div class="if-actions">
+        <a class="if-btn" href="/widgets/">Widgets</a>
+        <a class="if-btn" href="/custom-calculators/">Custom calculators</a>
+        <a class="if-btn" href="/api/">API</a>
+        <a class="if-btn" href="/business-enquiry/">Business enquiry</a>
+      </div>
+    </section>
+  </div>
 </main>
 <afro-footer></afro-footer>
-<script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>
+<script>
+(function(){
+  "use strict";
+
+  var ids = ["structure","currency","assetPrice","deposit","financedAmount","profitMargin","termMonths","frequency","fees","monthlyBudget"];
+  var el = {};
+  var lastReport = null;
+  ids.forEach(function(id){ el[id] = document.getElementById(id); });
+
+  function byId(id){ return document.getElementById(id); }
+  function num(id, fallback){
+    var value = parseFloat(el[id] && el[id].value);
+    return Number.isFinite(value) ? value : fallback;
+  }
+  function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
+  function round(value, places){
+    var p = Math.pow(10, places || 2);
+    return Math.round(value * p) / p;
+  }
+  function money(value, currency){
+    if(!Number.isFinite(value)) return "-";
+    try {
+      return new Intl.NumberFormat(undefined, {
+        style:"currency",
+        currency:currency,
+        maximumFractionDigits:value >= 1000 ? 0 : 2
+      }).format(value);
+    } catch(error) {
+      return currency + " " + (value >= 1000 ? Math.round(value).toLocaleString() : value.toFixed(2));
+    }
+  }
+  function text(id, value){ byId(id).textContent = value; }
+  function escapeHtml(value){
+    return String(value).replace(/[&<>"']/g,function(ch){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];
+    });
+  }
+  function renderList(id, items){
+    byId(id).innerHTML = items.map(function(item){ return "<li>" + escapeHtml(item) + "</li>"; }).join("");
+  }
+  function csvCell(value){
+    return "\"" + String(value == null ? "" : value).replace(/"/g, "\"\"") + "\"";
+  }
+  function periodsPerYear(frequency){
+    if(frequency === "weekly") return 52;
+    if(frequency === "quarterly") return 4;
+    return 12;
+  }
+  function frequencyLabel(frequency){
+    return frequency.charAt(0).toUpperCase() + frequency.slice(1);
+  }
+  function setStatus(message){ byId("ifStatus").textContent = message || ""; }
+
+  function scenario(financedAmount, marginPct, fees, termMonths, frequency){
+    var margin = Math.max(0, marginPct) / 100;
+    var profit = financedAmount * margin;
+    var amountToAmortize = financedAmount + profit + fees;
+    var periods = Math.max(1, Math.round((termMonths / 12) * periodsPerYear(frequency)));
+    var periodic = amountToAmortize / periods;
+    return { profit:profit, amountToAmortize:amountToAmortize, periods:periods, periodic:periodic };
+  }
+
+  function annualizedSimple(financedAmount, profit, fees, termMonths){
+    if(financedAmount <= 0 || termMonths <= 0) return 0;
+    var years = termMonths / 12;
+    return ((profit + fees) / financedAmount / years) * 100;
+  }
+
+  function calculate(event){
+    if(event) event.preventDefault();
+    var structure = el.structure.value;
+    var structureName = el.structure.options[el.structure.selectedIndex].text;
+    var currency = el.currency.value || "USD";
+    var assetPrice = Math.max(0, num("assetPrice", 0));
+    var deposit = Math.max(0, num("deposit", 0));
+    var financedAmount = Math.max(0, num("financedAmount", Math.max(0, assetPrice - deposit)));
+    var profitMargin = clamp(num("profitMargin", 0), 0, 200);
+    var termMonths = Math.max(1, Math.round(num("termMonths", 1)));
+    var frequency = el.frequency.value || "monthly";
+    var fees = Math.max(0, num("fees", 0));
+    var monthlyBudget = Math.max(0, num("monthlyBudget", 0));
+    var base = scenario(financedAmount, profitMargin, fees, termMonths, frequency);
+    var lower = scenario(financedAmount, Math.max(0, profitMargin - 2), fees, termMonths, frequency);
+    var higher = scenario(financedAmount, profitMargin + 2, fees, termMonths, frequency);
+    var totalPayable = deposit + base.amountToAmortize;
+    var monthlyEquivalent = base.periodic * periodsPerYear(frequency) / 12;
+    var annualRate = annualizedSimple(financedAmount, base.profit, fees, termMonths);
+    var affordabilityPct = monthlyBudget > 0 ? (monthlyEquivalent / monthlyBudget) * 100 : 0;
+    var affordable = monthlyBudget > 0 && monthlyEquivalent <= monthlyBudget;
+    var financeShare = assetPrice > 0 ? (financedAmount / assetPrice) * 100 : 0;
+    var paymentLabel = frequencyLabel(frequency);
+
+    text("monthlyPayment", money(monthlyEquivalent, currency));
+    text("monthlyNote", "Equivalent monthly cash-flow obligation");
+    text("totalProfit", money(base.profit, currency));
+    text("profitNote", profitMargin + "% disclosed margin over " + termMonths + " months");
+    text("totalPayable", money(totalPayable, currency));
+    text("payableNote", "Includes deposit and " + money(fees, currency) + " fees");
+    text("periodicPayment", money(base.periodic, currency));
+    text("periodicNote", paymentLabel + " payment over " + base.periods + " periods");
+    text("annualRate", round(annualRate, 2) + "%");
+    text("rateNote", "Simple annualized cash-flow comparison");
+    text("affordability", monthlyBudget > 0 ? (affordable ? "Within budget" : "Over budget") : "Budget missing");
+    text("affordabilityNote", monthlyBudget > 0 ? round(affordabilityPct, 0) + "% of monthly budget" : "Enter a monthly budget");
+    text("financedFormula", money(assetPrice, currency) + " asset price minus " + money(deposit, currency) + " deposit");
+    text("financedResult", money(financedAmount, currency) + " (" + round(financeShare, 1) + "% of asset price)");
+    text("profitFormula", money(financedAmount, currency) + " x " + profitMargin + "% disclosed margin");
+    text("profitResult", money(base.profit, currency));
+    text("baseScenario", structureName + " at " + profitMargin + "% margin, " + termMonths + " months");
+    text("baseResult", money(base.periodic, currency) + " per " + frequency + "; total " + money(totalPayable, currency));
+    text("lowerScenario", Math.max(0, profitMargin - 2) + "% margin with same term and fees");
+    text("lowerResult", money(lower.periodic, currency) + " per " + frequency + "; saves " + money(base.amountToAmortize - lower.amountToAmortize, currency));
+    text("higherScenario", (profitMargin + 2) + "% margin with same term and fees");
+    text("higherResult", money(higher.periodic, currency) + " per " + frequency + "; adds " + money(higher.amountToAmortize - base.amountToAmortize, currency));
+
+    var warning = "";
+    var warningClass = "if-warning";
+    if(financedAmount <= 0){
+      warning = "Check the inputs: financed amount is zero, so there is no meaningful quote to compare.";
+    } else if(monthlyBudget <= 0){
+      warning = "Affordability warning: add a monthly budget before deciding. The payment may be acceptable contractually but still strain cash flow.";
+    } else if(!affordable){
+      warning = "Affordability warning: the equivalent monthly payment is above your stated budget. Negotiate deposit, margin, term, asset price, or fees before signing.";
+    } else if(affordabilityPct > 80){
+      warning = "Caution: the payment is within budget but uses more than 80% of the available monthly allowance. Keep a buffer for takaful, maintenance, business shocks, and late fees.";
+    } else {
+      warning = "Cash-flow signal looks manageable under these assumptions. Still confirm Shariah governance, contract terms, fees, ownership transfer, and local legal obligations.";
+      warningClass += " if-good";
+    }
+    byId("warningBox").textContent = warning;
+    byId("warningBox").className = warningClass;
+
+    var checklist = [
+      "Confirm the seller, asset ownership, purchase sequence, and transfer documents are clear.",
+      "Ask whether the profit, rent, fees, takaful, and late-payment clauses are fully disclosed.",
+      "Check who carries asset risk before delivery and during the lease or sale period.",
+      "Ask for the Shariah board or scholar approval note for the exact product, not only the institution.",
+      "Compare total payable, not only the headline profit margin."
+    ];
+    var notes = [
+      "This is a payment calculator for planning and comparison, not a compliance ruling.",
+      "The annualized rate is included only because many users need a cash-flow comparison across quotes.",
+      structure === "murabaha" ? "Murabaha planning usually focuses on cost price, disclosed markup, payment schedule, and sale documentation." : "Ijarah planning usually focuses on rent schedule, asset use, maintenance responsibility, residual value, and transfer promise.",
+      "If fees are financed or paid upfront differently, edit the financed amount and fees to mirror the written quote."
+    ];
+    renderList("reviewChecklist", checklist);
+    renderList("decisionNotes", notes);
+
+    lastReport = {
+      structure:structureName,
+      currency:currency,
+      assetPrice:round(assetPrice, 2),
+      deposit:round(deposit, 2),
+      financedAmount:round(financedAmount, 2),
+      profitMarginPct:round(profitMargin, 2),
+      termMonths:termMonths,
+      frequency:frequency,
+      fees:round(fees, 2),
+      periodicPayment:round(base.periodic, 2),
+      monthlyEquivalent:round(monthlyEquivalent, 2),
+      totalProfit:round(base.profit, 2),
+      totalPayable:round(totalPayable, 2),
+      annualizedComparisonPct:round(annualRate, 2),
+      affordability:monthlyBudget > 0 ? (affordable ? "Within budget" : "Over budget") : "Budget missing",
+      warning:warning,
+      generatedAt:new Date().toISOString()
+    };
+    try { localStorage.setItem("afrotools-islamic-finance-result", JSON.stringify(lastReport)); } catch(error) {}
+    setStatus("Quote updated");
+    return lastReport;
+  }
+
+  function reportText(){
+    var report = lastReport || calculate();
+    return [
+      "Islamic Finance Profit Rate Calculator - AfroTools",
+      "Generated: " + new Date().toLocaleString(),
+      "Structure: " + report.structure,
+      "Currency: " + report.currency,
+      "Asset price: " + money(report.assetPrice, report.currency),
+      "Deposit: " + money(report.deposit, report.currency),
+      "Financed amount: " + money(report.financedAmount, report.currency),
+      "Profit margin: " + report.profitMarginPct + "%",
+      "Term: " + report.termMonths + " months",
+      "Payment frequency: " + report.frequency,
+      "Payment per frequency: " + money(report.periodicPayment, report.currency),
+      "Monthly equivalent: " + money(report.monthlyEquivalent, report.currency),
+      "Total profit: " + money(report.totalProfit, report.currency),
+      "Total payable: " + money(report.totalPayable, report.currency),
+      "Annualized comparison: " + report.annualizedComparisonPct + "%",
+      "Affordability: " + report.affordability,
+      "Warning: " + report.warning,
+      "Disclaimer: not a fatwa or financial advice. Confirm with a qualified Shariah scholar or board and review the contract before signing."
+    ].join("\n");
+  }
+
+  function copyReport(){
+    var value = reportText();
+    function done(){ setStatus("Report copied"); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(value).then(done).catch(function(){ fallbackCopy(value); });
+    } else {
+      fallbackCopy(value);
+    }
+  }
+
+  function fallbackCopy(value){
+    var area = document.createElement("textarea");
+    area.value = value;
+    area.setAttribute("readonly", "readonly");
+    area.style.position = "fixed";
+    area.style.left = "-9999px";
+    document.body.appendChild(area);
+    area.select();
+    try {
+      document.execCommand("copy");
+      setStatus("Report copied");
+    } catch(error) {
+      setStatus("Copy blocked. Print the report instead.");
+    }
+    document.body.removeChild(area);
+  }
+
+  function exportCsv(){
+    var report = lastReport || calculate();
+    var rows = [["Metric","Value"]];
+    Object.keys(report).forEach(function(key){ rows.push([key, report[key]]); });
+    var csv = rows.map(function(row){ return row.map(csvCell).join(","); }).join("\n");
+    var blob = new Blob([csv], { type:"text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "islamic-finance-profit-rate.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setStatus("CSV exported");
+  }
+
+  function shareReport(){
+    var value = reportText();
+    if(navigator.share){
+      navigator.share({ title:"Islamic Finance Profit Rate Calculator", text:value, url:location.href }).then(function(){
+        setStatus("Share sheet opened");
+      }).catch(function(){
+        setStatus("Share cancelled");
+      });
+    } else {
+      copyReport();
+    }
+  }
+
+  byId("financeForm").addEventListener("submit", calculate);
+  byId("copyResult").addEventListener("click", copyReport);
+  byId("exportCsv").addEventListener("click", exportCsv);
+  byId("printResult").addEventListener("click", function(){ window.print(); });
+  byId("shareResult").addEventListener("click", shareReport);
+  ids.forEach(function(id){
+    el[id].addEventListener(id === "structure" || id === "currency" || id === "frequency" ? "change" : "input", calculate);
+  });
+  calculate();
+})();
+</script>
 </body>
 </html>

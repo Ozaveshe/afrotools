@@ -712,7 +712,17 @@ function detectOverflowRisks(page, rules, html) {
 function detectCustomNavSearch(page, html, cssText, jsText, usesSharedNavbar) {
   if (usesSharedNavbar) return null;
   if (hasCreatorShellMobileCoverage(page, cssText)) return null;
-  const navSignals = collectSignalMatches(`${html}\n${cssText}\n${jsText}`, [
+  const signalPatterns = page.isWidget ? [
+    /\btopbar\b/gi,
+    /\bbottom-nav\b/gi,
+    /\bmobile-menu\b/gi,
+    /\bmenu-toggle\b/gi,
+    /\bdrawer\b/gi,
+    /\bnav-item\b/gi,
+    /\bnav-link\b/gi,
+    /\bsearch-panel\b/gi,
+    /\bsearch-bar\b/gi,
+  ] : [
     /\btopbar\b/gi,
     /\bbottom-nav\b/gi,
     /\bmobile-menu\b/gi,
@@ -724,7 +734,8 @@ function detectCustomNavSearch(page, html, cssText, jsText, usesSharedNavbar) {
     /\bsearch-panel\b/gi,
     /\bsearch-bar\b/gi,
     /\bfilter-bar\b/gi,
-  ]);
+  ];
+  const navSignals = collectSignalMatches(`${html}\n${cssText}\n${jsText}`, signalPatterns);
   if (navSignals.length < 2) return null;
   return makeIssue(page, 'custom_mobile_nav_search', {
     evidence: [{ source: page.relPath, detail: `Page uses custom mobile chrome tokens: ${navSignals.slice(0, 5).join(', ')}.` }],
@@ -800,7 +811,7 @@ function isDecorativeControlSubpartRule(rule) {
 
 function isLabelOnlyRule(rule) {
   if (NATIVE_CONTROL_SELECTOR_RE.test(rule.selectorsLower)) return false;
-  return /(^|[\s>+~,(])label\b|[.#][a-z0-9_-]*label\b/i.test(rule.selectorsLower);
+  return /(^|[\s>+~,(])label\b|[.#][a-z0-9_-]*(?:label|help|hint|note|description|caption)\b/i.test(rule.selectorsLower);
 }
 
 function isStaticTableRule(rule) {

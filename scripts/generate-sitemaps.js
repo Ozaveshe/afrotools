@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { fileToPublicRoute } = require('./lib/canonical-aliases');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
@@ -332,7 +333,7 @@ for (const [cat, fileName] of Object.entries(categoryToFile)) {
 
   const xml = generateSitemap(urls);
   const outPath = path.join(ROOT, fileName);
-  fs.writeFileSync(outPath, xml, 'utf8');
+  writeFileSyncWithRetry(outPath, xml, 'utf8');
 
   const lastmod = urls.reduce((latest, entry) => entry.lastmod > latest ? entry.lastmod : latest, urls[0].lastmod);
   sitemapFileNames.push({ file: fileName, lastmod });
@@ -393,7 +394,7 @@ if (i18nEntries.length > 0) {
   }
   i18nXml += '</urlset>\n';
 
-  fs.writeFileSync(path.join(ROOT, 'sitemap-i18n.xml'), i18nXml, 'utf8');
+  writeFileSyncWithRetry(path.join(ROOT, 'sitemap-i18n.xml'), i18nXml, 'utf8');
   const i18nLastmod = i18nEntries.reduce((latest, entry) => entry.lastmod > latest ? entry.lastmod : latest, i18nEntries[0].lastmod);
   sitemapFileNames.push({ file: 'sitemap-i18n.xml', lastmod: i18nLastmod });
   const i18nCount = (i18nXml.match(/<url>/g) || []).length;
@@ -416,10 +417,10 @@ for (const extraFile of EXTRA_SITEMAPS) {
 
 // Write sitemap index
 const indexXml = generateSitemapIndex(sitemapFileNames);
-fs.writeFileSync(path.join(ROOT, 'sitemap-index.xml'), indexXml, 'utf8');
+writeFileSyncWithRetry(path.join(ROOT, 'sitemap-index.xml'), indexXml, 'utf8');
 
 // Replace sitemap.xml with the index — crawlers check both /sitemap.xml and /sitemap-index.xml
-fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), indexXml, 'utf8');
+writeFileSyncWithRetry(path.join(ROOT, 'sitemap.xml'), indexXml, 'utf8');
 
 console.log(`\n  sitemap-index.xml: ${sitemapFileNames.length} sub-sitemaps`);
 console.log(`  sitemap.xml: replaced with sitemap index (was broken — had dupes & bad URLs)`);

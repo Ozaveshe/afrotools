@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const http = require('http');
+const os = require('os');
 const { spawn } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -691,6 +692,8 @@ async function runBrowserSmoke(routes) {
       let responseStatus = 0;
       let ok = false;
       let error = '';
+      let watchdogFired = false;
+      let watchdog;
 
       page.on('console', (message) => {
         const text = message.text();
@@ -714,17 +717,25 @@ async function runBrowserSmoke(routes) {
       });
 
       try {
+        watchdog = setTimeout(() => {
+          watchdogFired = true;
+          error = `browser harness timeout after ${BROWSER_TIMEOUT + 5000}ms`;
+          safeClosePage(page);
+        }, BROWSER_TIMEOUT + 5000);
         const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded', timeout: BROWSER_TIMEOUT });
         responseStatus = response ? response.status() : 0;
         await page.waitForTimeout(100);
         ok = responseStatus > 0 && responseStatus < 400;
       } catch (err) {
         error = String(err.message || err).slice(0, 300);
+      } finally {
+        if (watchdog) clearTimeout(watchdog);
       }
+      if (watchdogFired && !error) error = `browser harness timeout after ${BROWSER_TIMEOUT + 5000}ms`;
 
       let rendered = {};
       try {
-        rendered = await page.evaluate(() => {
+        rendered = await Promise.race([page.evaluate(() => {
           function isVisible(element) {
             const style = window.getComputedStyle(element);
             const rect = element.getBoundingClientRect();
@@ -744,7 +755,8 @@ async function runBrowserSmoke(routes) {
             outputMarkerCount: document.querySelectorAll(outputSelectors).length,
             loadEventMs: nav ? Math.round(nav.loadEventEnd || nav.domContentLoadedEventEnd || 0) : 0,
           };
-        });
+        }), wait(3000).then(() => ({ evaluationTimedOut: true }))]);
+        if (rendered.evaluationTimedOut) pageErrors.push('browser evaluation timed out');
       } catch (err) {
         pageErrors.push(String(err.message || err).slice(0, 300));
       }
@@ -814,9 +826,11 @@ async function safeCloseBrowser(browser) {
 }
 
 function loadChromium() {
+  const bundledNodeModules = path.join(os.homedir(), '.cache', 'codex-runtimes', 'codex-primary-runtime', 'dependencies', 'node', 'node_modules');
   const moduleDirs = []
     .concat(process.env.AFROTOOLS_NODE_MODULE_DIR || [])
     .concat(process.env.NODE_PATH ? process.env.NODE_PATH.split(path.delimiter) : [])
+    .concat(fs.existsSync(bundledNodeModules) ? [bundledNodeModules] : [])
     .filter(Boolean);
   const attempts = [
     () => require('@playwright/test').chromium,

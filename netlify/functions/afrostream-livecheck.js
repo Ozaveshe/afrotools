@@ -28,6 +28,54 @@ async function sb(method, path, body) {
   try { return JSON.parse(text); } catch (e) { return text; }
 }
 
+function getHeader(event, headerName) {
+  var headers = (event && event.headers) || {};
+  var expected = String(headerName || '').toLowerCase();
+  var keys = Object.keys(headers);
+  for (var i = 0; i < keys.length; i++) {
+    if (String(keys[i]).toLowerCase() === expected) return headers[keys[i]];
+  }
+  return '';
+}
+
+function livecheckSource(event) {
+  return getHeader(event, 'x-nf-event') === 'schedule' ? 'Netlify Scheduled Function' : 'Manual livecheck endpoint';
+}
+
+function summarizeLivecheckErrors(summary) {
+  var errors = [];
+  ['twitch', 'kick', 'youtube'].forEach(function(key) {
+    var lane = summary && summary[key];
+    if (lane && Array.isArray(lane.errors)) {
+      lane.errors.forEach(function(message) {
+        if (message) errors.push(key + ': ' + message);
+      });
+    }
+  });
+  if (summary && Array.isArray(summary.errors)) {
+    summary.errors.forEach(function(message) {
+      if (message) errors.push(message);
+    });
+  }
+  return errors.slice(0, 12).join(' | ').slice(0, 1000) || null;
+}
+
+async function recordLivecheckRun(status, source, recordsCount, errorMessage, durationMs) {
+  try {
+    await sb('POST', 'scraper_runs', {
+      scraper_id: 'afrostream-livecheck',
+      status: status,
+      source: source,
+      records_count: recordsCount || 0,
+      error_message: errorMessage || null,
+      duration_ms: durationMs || 0,
+      fetched_at: new Date().toISOString()
+    });
+  } catch (e) {
+    console.error('AfroStream livecheck run logging failed:', e.message);
+  }
+}
+
 // ── URL extractors ────────────────────────────────────────────────
 function extractTwitchUsername(url) {
   if (!url) return null;
@@ -690,6 +738,7 @@ exports.handler = async function(event) {
 
     summary.total_live = (summary.twitch.live || 0) + (summary.kick.live || 0) + (summary.youtube.live || 0);
     summary.duration_ms = Date.now() - start;
+    await recordLivecheckRun('ok', livecheckSource(event), summary.total_live, summarizeLivecheckErrors(summary), summary.duration_ms);
 
     return {
       statusCode: 200,
@@ -698,6 +747,7 @@ exports.handler = async function(event) {
   } catch (e) {
     summary.errors.push(e.message);
     summary.duration_ms = Date.now() - start;
+    await recordLivecheckRun('error', livecheckSource(event), 0, summarizeLivecheckErrors(summary), summary.duration_ms);
     return {
       statusCode: 200,
       body: JSON.stringify({ success: true, data: summary })

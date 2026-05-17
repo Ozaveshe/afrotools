@@ -183,7 +183,7 @@ function fixAIChat(content, filePath) {
   const aiJS = aiAdvisorJS(toolSlug);
   if (content.includes('googletagmanager.com')) {
     content = content.replace(
-      /(<script\s+defer\s+src="https:\/\/www\.googletagmanager\.com)/,
+      /(<script\s+(?:async|defer)\s+src="https:\/\/www\.googletagmanager\.com)/,
       aiJS + '\n$1'
     );
   } else if (content.includes('</body>')) {

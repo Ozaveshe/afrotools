@@ -9,6 +9,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const IGNORE = ['.claude', 'node_modules', 'afrotools-deploy', '.git', 'dist'];
+const LINK_RESOLUTION_CACHE = new Map();
 
 function escapeRegex(value) {
   return value.replace(/[.+^${}()|[\]\\]/g, '\\$&');
@@ -77,49 +78,24 @@ function loadRedirectRules() {
   return rules;
 }
 
-function findHTMLFiles(dir) {
+function findFiles(dir) {
   const results = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (IGNORE.includes(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      results.push(...findHTMLFiles(full));
-    } else if (entry.name.endsWith('.html')) {
+      results.push(...findFiles(full));
+    } else {
       results.push(full);
     }
   }
   return results;
 }
 
-function existsPathCaseSensitive(targetPath) {
-  const resolved = path.resolve(targetPath);
-  if (!fs.existsSync(resolved)) return false;
-
-  const parsed = path.parse(resolved);
-  let current = parsed.root;
-  const parts = path.relative(parsed.root, resolved).split(path.sep).filter(Boolean);
-
-  for (const part of parts) {
-    let entries;
-    try {
-      entries = fs.readdirSync(current);
-    } catch {
-      return false;
-    }
-    if (!entries.includes(part)) return false;
-    current = path.join(current, part);
-  }
-
-  return true;
-}
+let existingFileSet = new Set();
 
 function existsFileCaseSensitive(targetPath) {
-  if (!existsPathCaseSensitive(targetPath)) return false;
-  try {
-    return fs.statSync(targetPath).isFile();
-  } catch {
-    return false;
-  }
+  return existingFileSet.has(path.normalize(path.resolve(targetPath)));
 }
 
 function extractLinks(html) {
@@ -139,6 +115,7 @@ function extractLinks(html) {
 function resolveLink(href, redirectRules) {
   let target = normalizeRoute(href);
   if (!target.startsWith('/')) return null; // skip relative for now
+  if (LINK_RESOLUTION_CACHE.has(target)) return LINK_RESOLUTION_CACHE.get(target);
 
   // Try: exact file, /index.html, .html
   const tries = [
@@ -148,19 +125,29 @@ function resolveLink(href, redirectRules) {
   ];
 
   for (const t of tries) {
-    if (existsFileCaseSensitive(t)) return true;
+    if (existsFileCaseSensitive(t)) {
+      LINK_RESOLUTION_CACHE.set(target, true);
+      return true;
+    }
   }
-  if (redirectRules.some((rule) => rule.re.test(target))) return true;
+  if (redirectRules.some((rule) => rule.re.test(target))) {
+    LINK_RESOLUTION_CACHE.set(target, true);
+    return true;
+  }
+  LINK_RESOLUTION_CACHE.set(target, false);
   return false;
 }
 
 // Run
-const files = findHTMLFiles(ROOT);
+const allFiles = findFiles(ROOT);
+const files = allFiles.filter((file) => file.endsWith('.html'));
+existingFileSet = new Set(allFiles.map((file) => path.normalize(path.resolve(file))));
 const redirectRules = loadRedirectRules();
 console.log(`Scanning ${files.length} HTML files...`);
 console.log(`Loaded ${redirectRules.length} redirect rules.\n`);
 
 let brokenCount = 0;
+let internalLinkCount = 0;
 const brokenMap = {};
 
 for (const file of files) {
@@ -170,6 +157,7 @@ for (const file of files) {
 
   for (const href of links) {
     if (!href.startsWith('/')) continue; // skip relative
+    internalLinkCount++;
     const exists = resolveLink(href, redirectRules);
     if (!exists) {
       if (!brokenMap[href]) brokenMap[href] = [];
@@ -181,6 +169,7 @@ for (const file of files) {
 
 if (brokenCount === 0) {
   console.log('No broken internal links found!');
+  console.log(`Checked ${internalLinkCount} internal links across ${files.length} HTML files.`);
 } else {
   console.log(`Found ${brokenCount} broken links across ${Object.keys(brokenMap).length} unique targets:\n`);
   const sorted = Object.entries(brokenMap).sort((a, b) => b[1].length - a[1].length);
@@ -191,6 +180,7 @@ if (brokenCount === 0) {
     if (sources.length > 5) console.log(`      ... and ${sources.length - 5} more`);
     console.log();
   }
+  console.log(`Checked ${internalLinkCount} internal links across ${files.length} HTML files.`);
 }
 
 process.exit(brokenCount > 0 ? 1 : 0);

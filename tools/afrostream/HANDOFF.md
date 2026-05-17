@@ -50,6 +50,7 @@ Keep these lanes separate in copy, UI, and ranking logic. Do not treat a mega-cr
 - Syncs: Twitch follower counts + live status, Kick follower counts + live status, YouTube subscriber counts + live status
 - YouTube sync uses YouTube Data API v3 (configured)
 - Sync writes `as_creator_snapshots` daily with `on_conflict=creator_id,snapshot_date`. If a Supabase write fails, the sync must report the error in `results.errors`; do not silently pass partial writes.
+- `afrostream-sync.js` and `afrostream-livecheck.js` must write first-party health rows to `public.scraper_runs` with `scraper_id` values `afrostream-sync` and `afrostream-livecheck` so automation can distinguish stale cron runs from stale product data.
 - When recomputing totals, preserve the larger of platform follower totals and the existing `subscribers` count so incomplete platform fields do not overwrite rankings to zero.
 
 ## Live Media QA

@@ -1,65 +1,1336 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Water Bill Calculator — Top 15 African Countries | AfroTools</title>
-<meta name="description" content="Free Water Bill Calculator for Africa's top 15 economies. Select your country for local rates and data.">
-<link rel="canonical" href="https://afrotools.com/tools/water-bill/">
-<meta property="og:title" content="Water Bill Calculator — Top 15 African Countries | AfroTools">
-<meta property="og:description" content="Free Water Bill Calculator for Africa's top 15 economies. Select your country for local rates and data.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/water-bill.webp">
-<meta property="og:url" content="https://afrotools.com/tools/water-bill/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Water Bill Calculator — Top 15 African Countries | AfroTools">
-<meta name="twitter:description" content="Free Water Bill Calculator for Africa">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
-<script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/water-bill.webp">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Water Bill Calculator | AfroTools</title>
+  <meta name="description" content="Estimate a water bill from meter readings, tariff blocks, fixed charges, VAT, sewerage fees, and leak risk. Export usage and next steps.">
+  <link rel="canonical" href="https://afrotools.com/tools/water-bill/">
+  <meta property="og:title" content="Water Bill Calculator | AfroTools">
+  <meta property="og:description" content="Use country or city presets, custom tariff blocks, meter readings, household or business mode, tax, sewerage, and leak checks.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/water-bill.webp">
+  <meta property="og:url" content="https://afrotools.com/tools/water-bill/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Water Bill Calculator | AfroTools">
+  <meta name="twitter:description" content="Estimate water usage, expected bill, high-use warnings, leak checklist, and next steps.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/water-bill.webp">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Water Bill Calculator",
+  "description": "Estimate a water bill using country or city presets, custom tariff blocks, meter readings, household or business mode, fixed charge, VAT, sewerage, and leak checks.",
+  "url": "https://afrotools.com/tools/water-bill/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "dateModified": "2026-05-16",
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/water-bill.webp"
+}
+</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Water Bill Calculator","item":"https://afrotools.com/tools/water-bill/"}]}</script>
+  <style>
+    :root {
+      --wb-bg: #f4f8f8;
+      --wb-surface: #ffffff;
+      --wb-ink: #102228;
+      --wb-muted: #53676f;
+      --wb-line: #d7e5e5;
+      --wb-blue: #1267a8;
+      --wb-blue-dark: #0b4d7e;
+      --wb-teal: #0b806a;
+      --wb-teal-dark: #075c4d;
+      --wb-amber: #b76c12;
+      --wb-amber-soft: #fff5df;
+      --wb-red: #b42318;
+      --wb-soft: #eaf6f5;
+      --wb-radius: 18px;
+      --wb-shadow: 0 18px 44px rgba(16, 34, 40, .08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--wb-bg);
+      color: var(--wb-ink);
+      font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--wb-blue-dark);
+      text-underline-offset: 3px;
+    }
+
+    .wb-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .wb-nav {
+      background: #102228;
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .wb-nav .wb-shell {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .wb-brand {
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: .03em;
+      text-decoration: none;
+    }
+
+    .wb-brand span {
+      color: #86dcf0;
+    }
+
+    .wb-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-end;
+      font-size: .92rem;
+      font-weight: 700;
+    }
+
+    .wb-nav-links a {
+      color: rgba(255, 255, 255, .84);
+      text-decoration: none;
+    }
+
+    .wb-nav-links a:hover {
+      color: #fff;
+    }
+
+    .wb-hero {
+      padding: 52px 0 30px;
+      background: linear-gradient(180deg, #e4f3f5 0%, var(--wb-bg) 100%);
+      border-bottom: 1px solid var(--wb-line);
+    }
+
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 18px;
+      color: var(--wb-muted);
+      font-size: .92rem;
+    }
+
+    .wb-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+      gap: 26px;
+      align-items: end;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      color: var(--wb-ink);
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 1.03;
+      letter-spacing: 0;
+      max-width: 760px;
+    }
+
+    .wb-lede {
+      margin: 0;
+      color: var(--wb-muted);
+      font-size: 1.08rem;
+      max-width: 760px;
+    }
+
+    .wb-freshness {
+      background: var(--wb-surface);
+      border: 1px solid var(--wb-line);
+      border-radius: var(--wb-radius);
+      padding: 18px;
+      box-shadow: var(--wb-shadow);
+    }
+
+    .wb-eyebrow,
+    .wb-freshness strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--wb-blue-dark);
+      font-size: .78rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .wb-freshness p {
+      margin: 0;
+      color: var(--wb-muted);
+      font-size: .95rem;
+    }
+
+    .wb-main {
+      padding: 30px 0 56px;
+    }
+
+    .wb-tool-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 430px) minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .wb-panel {
+      background: var(--wb-surface);
+      border: 1px solid var(--wb-line);
+      border-radius: var(--wb-radius);
+      box-shadow: var(--wb-shadow);
+    }
+
+    .wb-form-panel {
+      position: sticky;
+      top: 18px;
+      padding: 22px;
+    }
+
+    .wb-section-title {
+      margin-bottom: 18px;
+    }
+
+    .wb-section-title h2,
+    .wb-result-heading h2,
+    .wb-info h2 {
+      margin: 0;
+      color: var(--wb-ink);
+      font-size: 1.25rem;
+      letter-spacing: 0;
+    }
+
+    .wb-section-title p,
+    .wb-result-heading p,
+    .wb-info p {
+      margin: 6px 0 0;
+      color: var(--wb-muted);
+      font-size: .95rem;
+    }
+
+    .wb-input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .wb-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .wb-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .wb-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      grid-column: 1 / -1;
+      padding: 12px;
+      border: 1px solid var(--wb-line);
+      border-radius: 12px;
+      background: #fbfdfd;
+    }
+
+    .wb-check input {
+      width: 18px;
+      min-height: 18px;
+      margin-top: 3px;
+      padding: 0;
+    }
+
+    label {
+      color: #24343a;
+      font-size: .88rem;
+      font-weight: 750;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid #c7d9dc;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--wb-ink);
+      font: inherit;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    button:focus-visible {
+      border-color: var(--wb-blue);
+      box-shadow: 0 0 0 3px rgba(18, 103, 168, .14);
+    }
+
+    .wb-help {
+      color: var(--wb-muted);
+      font-size: .78rem;
+    }
+
+    .wb-assumptions {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--wb-line);
+    }
+
+    .wb-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .wb-button {
+      min-height: 46px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: #fff;
+      color: var(--wb-ink);
+      font: inherit;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .wb-button.primary {
+      background: var(--wb-blue);
+      color: #fff;
+    }
+
+    .wb-button.primary:hover {
+      background: var(--wb-blue-dark);
+    }
+
+    .wb-button.secondary {
+      border-color: var(--wb-line);
+    }
+
+    .wb-button.secondary:hover {
+      border-color: var(--wb-blue);
+      color: var(--wb-blue-dark);
+    }
+
+    .wb-result-panel {
+      padding: 22px;
+    }
+
+    .wb-result-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .wb-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--wb-soft);
+      color: var(--wb-blue-dark);
+      font-size: .78rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .wb-output-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .wb-output-card {
+      min-height: 126px;
+      border: 1px solid var(--wb-line);
+      border-radius: 16px;
+      background: #fbfdfd;
+      padding: 16px;
+    }
+
+    .wb-output-card span {
+      display: block;
+      color: var(--wb-muted);
+      font-size: .78rem;
+      font-weight: 850;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .wb-output-card output {
+      display: block;
+      margin-top: 10px;
+      color: var(--wb-ink);
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .wb-output-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--wb-muted);
+      font-size: .8rem;
+    }
+
+    .wb-breakdown {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .wb-side {
+      border: 1px solid var(--wb-line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .wb-side h3 {
+      margin: 0;
+      padding: 14px 16px;
+      background: #eef7f8;
+      border-bottom: 1px solid var(--wb-line);
+      font-size: 1rem;
+    }
+
+    .wb-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .wb-table th,
+    .wb-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--wb-line);
+      text-align: left;
+      vertical-align: top;
+      font-size: .92rem;
+    }
+
+    .wb-table tr:last-child th,
+    .wb-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .wb-table th {
+      width: 46%;
+      color: var(--wb-muted);
+      font-weight: 750;
+    }
+
+    .wb-next {
+      margin-top: 16px;
+      border: 1px solid #f0d7a6;
+      border-radius: 16px;
+      background: var(--wb-amber-soft);
+      padding: 18px;
+    }
+
+    .wb-next h3 {
+      margin: 0 0 8px;
+      color: var(--wb-ink);
+      font-size: 1.08rem;
+    }
+
+    .wb-next p,
+    .wb-next ul {
+      margin: 8px 0 0;
+      color: #493922;
+    }
+
+    .wb-next ul {
+      padding-left: 20px;
+    }
+
+    .wb-share-note {
+      min-height: 22px;
+      margin-top: 8px;
+      color: var(--wb-blue-dark);
+      font-size: .88rem;
+      font-weight: 750;
+    }
+
+    .wb-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .wb-info {
+      padding: 20px;
+    }
+
+    .wb-info ol,
+    .wb-info ul {
+      margin: 12px 0 0;
+      padding-left: 20px;
+      color: var(--wb-muted);
+    }
+
+    .wb-info li + li {
+      margin-top: 8px;
+    }
+
+    .wb-related {
+      margin-top: 24px;
+      padding: 22px;
+    }
+
+    .wb-link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .wb-link-card {
+      display: block;
+      min-height: 92px;
+      border: 1px solid var(--wb-line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fff;
+      text-decoration: none;
+    }
+
+    .wb-link-card strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--wb-ink);
+    }
+
+    .wb-link-card span {
+      color: var(--wb-muted);
+      font-size: .88rem;
+    }
+
+    .wb-footer {
+      border-top: 1px solid var(--wb-line);
+      background: #102228;
+      color: rgba(255, 255, 255, .78);
+      padding: 24px 0;
+      font-size: .9rem;
+    }
+
+    .wb-footer .wb-shell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wb-footer a {
+      color: #fff;
+    }
+
+    @media (max-width: 980px) {
+      .wb-hero-grid,
+      .wb-tool-grid,
+      .wb-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wb-form-panel {
+        position: static;
+      }
+
+      .wb-output-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .wb-shell {
+        width: min(100% - 22px, 1180px);
+      }
+
+      .wb-hero {
+        padding-top: 34px;
+      }
+
+      .wb-nav .wb-shell {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 14px 0;
+      }
+
+      .wb-nav-links {
+        justify-content: flex-start;
+      }
+
+      .wb-input-grid,
+      .wb-output-grid,
+      .wb-breakdown,
+      .wb-link-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wb-result-heading {
+        display: block;
+      }
+
+      .wb-badge {
+        margin-top: 12px;
+      }
+
+      .wb-actions {
+        flex-direction: column;
+      }
+
+      .wb-button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      .wb-nav,
+      .wb-form-panel,
+      .wb-actions,
+      .wb-related {
+        display: none !important;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .wb-tool-grid,
+      .wb-info-grid {
+        display: block;
+      }
+
+      .wb-panel {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/water-bill/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-bili-ya-maji/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/water-bill/" />
 </head>
 <body>
-<afro-navbar theme="dark" active="energy"></afro-navbar>
-<section class="en-tool-hero"><div class="container">
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Water Bill Calculator</nav>
-<h1>💧 <em>Water Bill Calculator</em></h1>
-<p class="en-tool-hero-sub">Free Water Bill Calculator for Africa's top 15 economies. Select your country for local rates and data.</p>
-</div></section>
-<main class="en-main">
-<section class="en-hub"><div class="container">
-<h2>Select Your Country</h2>
-<div class="en-hub-country-grid">
-<a href="/tools/water-bill/nigeria/" class="en-country-card"><span class="en-country-flag">🇳🇬</span><span class="en-country-name">Nigeria</span></a>
-<a href="/tools/water-bill/kenya/" class="en-country-card"><span class="en-country-flag">🇰🇪</span><span class="en-country-name">Kenya</span></a>
-<a href="/tools/water-bill/south-africa/" class="en-country-card"><span class="en-country-flag">🇿🇦</span><span class="en-country-name">South Africa</span></a>
-<a href="/tools/water-bill/ghana/" class="en-country-card"><span class="en-country-flag">🇬🇭</span><span class="en-country-name">Ghana</span></a>
-<a href="/tools/water-bill/egypt/" class="en-country-card"><span class="en-country-flag">🇪🇬</span><span class="en-country-name">Egypt</span></a>
-<a href="/tools/water-bill/ethiopia/" class="en-country-card"><span class="en-country-flag">🇪🇹</span><span class="en-country-name">Ethiopia</span></a>
-<a href="/tools/water-bill/tanzania/" class="en-country-card"><span class="en-country-flag">🇹🇿</span><span class="en-country-name">Tanzania</span></a>
-<a href="/tools/water-bill/uganda/" class="en-country-card"><span class="en-country-flag">🇺🇬</span><span class="en-country-name">Uganda</span></a>
-<a href="/tools/water-bill/rwanda/" class="en-country-card"><span class="en-country-flag">🇷🇼</span><span class="en-country-name">Rwanda</span></a>
-<a href="/tools/water-bill/cote-divoire/" class="en-country-card"><span class="en-country-flag">🇨🇮</span><span class="en-country-name">Côte d'Ivoire</span></a>
-<a href="/tools/water-bill/cameroon/" class="en-country-card"><span class="en-country-flag">🇨🇲</span><span class="en-country-name">Cameroon</span></a>
-<a href="/tools/water-bill/senegal/" class="en-country-card"><span class="en-country-flag">🇸🇳</span><span class="en-country-name">Senegal</span></a>
-<a href="/tools/water-bill/morocco/" class="en-country-card"><span class="en-country-flag">🇲🇦</span><span class="en-country-name">Morocco</span></a>
-<a href="/tools/water-bill/tunisia/" class="en-country-card"><span class="en-country-flag">🇹🇳</span><span class="en-country-name">Tunisia</span></a>
-<a href="/tools/water-bill/angola/" class="en-country-card"><span class="en-country-flag">🇦🇴</span><span class="en-country-name">Angola</span></a>
-</div>
-</div></section>
+  <nav class="wb-nav" aria-label="Site navigation">
+    <div class="wb-shell">
+      <a class="wb-brand" href="/">AFRO<span>TOOLS</span></a>
+      <div class="wb-nav-links">
+        <a href="/energy/">Energy</a>
+        <a href="/tools/">Tools</a>
+        <a href="/all-tools/">All tools</a>
+        <a href="/custom-calculators/">Custom calculators</a>
+      </div>
+    </div>
+  </nav>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-  <wise-cta context="general"></wise-cta>
-</div>
-</main>
-<afro-footer></afro-footer>
-<script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
+  <header class="wb-hero">
+    <div class="wb-shell">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/energy/">Energy &amp; Utilities</a>
+        <span>/</span>
+        <span>Water Bill Calculator</span>
+      </nav>
+      <div class="wb-hero-grid">
+        <div>
+          <h1>Water Bill Calculator</h1>
+          <p class="wb-lede">Estimate a municipal water bill from meter readings, tariff blocks, fixed charges, VAT, sewerage or service fees, and usage mode. Spot high-use patterns and build a leak or billing follow-up checklist.</p>
+        </div>
+        <aside class="wb-freshness" aria-label="Sources and verification note">
+          <strong>Sources &amp; Verification</strong>
+          <p>Reviewed 16 May 2026. Use your latest meter reading, municipal tariff notice, water utility bill, city authority update, or regulator guidance. Presets are planning defaults, not live official tariffs.</p>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <main class="wb-main">
+    <div class="wb-shell">
+      <div class="wb-tool-grid">
+        <form class="wb-panel wb-form-panel" id="water-form">
+          <div class="wb-section-title">
+            <span class="wb-eyebrow">Editable assumptions</span>
+            <h2>Meter and tariff inputs</h2>
+            <p>Choose a preset or switch to custom tariff and enter the charges from your bill.</p>
+          </div>
+
+          <div class="wb-input-grid">
+            <div class="wb-field">
+              <label for="preset">Country or city preset</label>
+              <select id="preset" name="preset">
+                <option value="lagos" selected>Nigeria - Lagos planning default</option>
+                <option value="nairobi">Kenya - Nairobi planning default</option>
+                <option value="johannesburg">South Africa - Johannesburg planning default</option>
+                <option value="accra">Ghana - Accra planning default</option>
+                <option value="cairo">Egypt - Cairo planning default</option>
+                <option value="dar">Tanzania - Dar es Salaam planning default</option>
+                <option value="custom">Custom tariff</option>
+              </select>
+            </div>
+
+            <div class="wb-field">
+              <label for="currency">Currency</label>
+              <select id="currency" name="currency">
+                <option value="NGN" selected>NGN - Nigerian naira</option>
+                <option value="KES">KES - Kenyan shilling</option>
+                <option value="ZAR">ZAR - South African rand</option>
+                <option value="GHS">GHS - Ghana cedi</option>
+                <option value="EGP">EGP - Egyptian pound</option>
+                <option value="TZS">TZS - Tanzanian shilling</option>
+                <option value="UGX">UGX - Ugandan shilling</option>
+                <option value="RWF">RWF - Rwandan franc</option>
+                <option value="XOF">XOF - West African CFA franc</option>
+                <option value="XAF">XAF - Central African CFA franc</option>
+                <option value="USD">USD - US dollar</option>
+              </select>
+            </div>
+
+            <div class="wb-field">
+              <label for="mode">Usage mode</label>
+              <select id="mode" name="mode">
+                <option value="household" selected>Household</option>
+                <option value="business">Business or institution</option>
+              </select>
+            </div>
+
+            <div class="wb-field">
+              <label for="people">People, staff, or users served</label>
+              <input id="people" name="people" type="number" min="1" step="1" value="5">
+              <span class="wb-help">Used only for high-use warnings.</span>
+            </div>
+
+            <div class="wb-field">
+              <label for="period-start">Billing period start</label>
+              <input id="period-start" name="periodStart" type="date" value="2026-04-01">
+            </div>
+
+            <div class="wb-field">
+              <label for="period-end">Billing period end</label>
+              <input id="period-end" name="periodEnd" type="date" value="2026-04-30">
+            </div>
+
+            <div class="wb-field">
+              <label for="previous-reading">Previous meter reading (m3)</label>
+              <input id="previous-reading" name="previousReading" type="number" min="0" step="0.01" value="1240">
+            </div>
+
+            <div class="wb-field">
+              <label for="current-reading">Current meter reading (m3)</label>
+              <input id="current-reading" name="currentReading" type="number" min="0" step="0.01" value="1264">
+            </div>
+
+            <div class="wb-field">
+              <label for="fixed-charge">Fixed charge</label>
+              <input id="fixed-charge" name="fixedCharge" type="number" min="0" step="0.01" value="1500">
+            </div>
+
+            <div class="wb-field">
+              <label for="sewer-charge">Sewerage or service charge</label>
+              <input id="sewer-charge" name="sewerCharge" type="number" min="0" step="0.01" value="1200">
+            </div>
+
+            <div class="wb-field">
+              <label for="tax-rate">VAT or tax rate (%)</label>
+              <input id="tax-rate" name="taxRate" type="number" min="0" max="100" step="0.01" value="7.5">
+            </div>
+
+            <div class="wb-field">
+              <label for="actual-bill">Actual bill amount (optional)</label>
+              <input id="actual-bill" name="actualBill" type="number" min="0" step="0.01" value="8200">
+            </div>
+
+            <label class="wb-check" for="leak-suspected">
+              <input id="leak-suspected" name="leakSuspected" type="checkbox">
+              <span><strong>Leak suspicion toggle</strong><br><span class="wb-help">Turn on if taps run overnight, the meter moves while closed, a toilet cistern leaks, or usage jumped suddenly.</span></span>
+            </label>
+          </div>
+
+          <div class="wb-assumptions">
+            <div class="wb-section-title">
+              <span class="wb-eyebrow">Tariff blocks</span>
+              <h2>Custom rates</h2>
+              <p>Blocks use cubic metres. Block 3 applies to all usage above the block 2 upper limit.</p>
+            </div>
+            <div class="wb-input-grid">
+              <div class="wb-field">
+                <label for="block1-limit">Block 1 upper limit (m3)</label>
+                <input id="block1-limit" name="block1Limit" type="number" min="0" step="0.01" value="10">
+              </div>
+              <div class="wb-field">
+                <label for="block1-rate">Block 1 rate per m3</label>
+                <input id="block1-rate" name="block1Rate" type="number" min="0" step="0.01" value="120">
+              </div>
+              <div class="wb-field">
+                <label for="block2-limit">Block 2 upper limit (m3)</label>
+                <input id="block2-limit" name="block2Limit" type="number" min="0" step="0.01" value="30">
+              </div>
+              <div class="wb-field">
+                <label for="block2-rate">Block 2 rate per m3</label>
+                <input id="block2-rate" name="block2Rate" type="number" min="0" step="0.01" value="220">
+              </div>
+              <div class="wb-field full">
+                <label for="block3-rate">Block 3 rate per m3</label>
+                <input id="block3-rate" name="block3Rate" type="number" min="0" step="0.01" value="350">
+              </div>
+            </div>
+          </div>
+
+          <div class="wb-actions">
+            <button class="wb-button primary" type="submit">Calculate bill</button>
+            <button class="wb-button secondary" type="button" id="reset-defaults">Reset defaults</button>
+          </div>
+          <p class="wb-help">All calculations run locally in your browser. Confirm final tariffs with your water utility or city authority.</p>
+        </form>
+
+        <section class="wb-panel wb-result-panel result-output" id="results" aria-live="polite">
+          <div class="wb-result-heading">
+            <div>
+              <h2>Water bill result</h2>
+              <p id="scenario-summary">Enter meter readings and charges to estimate consumption and expected bill.</p>
+            </div>
+            <span class="wb-badge" id="usage-status">Ready to calculate</span>
+          </div>
+
+          <div class="wb-output-grid">
+            <div class="wb-output-card">
+              <span>Consumption</span>
+              <output id="consumption-output">-</output>
+              <small id="consumption-note">Meter difference in m3</small>
+            </div>
+            <div class="wb-output-card">
+              <span>Expected bill</span>
+              <output id="expected-bill">-</output>
+              <small id="bill-note">Water, fixed, sewerage, and tax</small>
+            </div>
+            <div class="wb-output-card">
+              <span>Daily usage</span>
+              <output id="daily-usage">-</output>
+              <small id="daily-note">Litres per day</small>
+            </div>
+            <div class="wb-output-card">
+              <span>High-use warning</span>
+              <output id="warning-output">-</output>
+              <small id="warning-note">Based on mode and users served</small>
+            </div>
+          </div>
+
+          <div class="wb-breakdown" aria-label="Bill breakdown and usage analysis">
+            <div class="wb-side">
+              <h3>Bill breakdown</h3>
+              <table class="wb-table">
+                <tbody>
+                  <tr><th>Block 1 charge</th><td id="block1-output">-</td></tr>
+                  <tr><th>Block 2 charge</th><td id="block2-output">-</td></tr>
+                  <tr><th>Block 3 charge</th><td id="block3-output">-</td></tr>
+                  <tr><th>Fixed and sewerage</th><td id="fixed-output">-</td></tr>
+                  <tr><th>VAT or tax</th><td id="tax-output">-</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="wb-side">
+              <h3>Usage signals</h3>
+              <table class="wb-table">
+                <tbody>
+                  <tr><th>Billing period</th><td id="period-output">-</td></tr>
+                  <tr><th>Per-user daily use</th><td id="per-user-output">-</td></tr>
+                  <tr><th>Actual bill variance</th><td id="variance-output">-</td></tr>
+                  <tr><th>Leak risk</th><td id="leak-risk">-</td></tr>
+                  <tr><th>Next priority</th><td id="priority-output">-</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="wb-next">
+            <h3>Leak checklist and next steps</h3>
+            <p id="next-summary">The checklist updates from the reading, mode, usage level, and leak toggle.</p>
+            <ul id="checklist-output">
+              <li>Take a fresh meter photo and compare it with the current bill reading.</li>
+              <li>Check visible taps, toilet cisterns, storage tanks, and underground lines.</li>
+              <li>Confirm tariff block, fixed charge, tax, and sewerage/service charge with the utility.</li>
+            </ul>
+          </div>
+
+          <div class="wb-actions">
+            <button class="wb-button secondary" type="button" id="copy-result">Copy result</button>
+            <button class="wb-button secondary" type="button" id="export-csv">Export CSV</button>
+            <button class="wb-button secondary" type="button" id="print-result">Print</button>
+          </div>
+          <p class="wb-share-note" id="share-note" role="status"></p>
+        </section>
+      </div>
+
+      <section class="wb-info-grid" aria-label="Methodology, assumptions, and disclaimer">
+        <article class="wb-panel wb-info">
+          <h2>Methodology</h2>
+          <p>The calculation method rebuilds a utility-style water bill from meter consumption and tariff blocks.</p>
+          <ol>
+            <li>Consumption = current meter reading - previous meter reading.</li>
+            <li>Tariff charge = block 1 usage x rate + block 2 usage x rate + remaining usage x block 3 rate.</li>
+            <li>Subtotal = tariff charge + fixed charge + sewerage or service charge.</li>
+            <li>Expected bill = subtotal + VAT or tax. Daily usage = consumption x 1,000 / billing days.</li>
+          </ol>
+        </article>
+
+        <article class="wb-panel wb-info">
+          <h2>Assumptions and sources</h2>
+          <p>Presets are editable planning assumptions. They are not live official tariffs and may not match every suburb, customer class, subsidy, or meter plan.</p>
+          <ul>
+            <li>Source data: current bill, meter readings, municipal tariff notice, city water utility schedule, and official authority updates.</li>
+            <li>Freshness note: reviewed 16 May 2026. Update the tariff blocks, fixed charge, tax, and sewerage charge when your provider changes rates.</li>
+            <li>Official check: confirm final amounts with your water utility, city authority, regulator, or consumer protection office.</li>
+          </ul>
+        </article>
+
+        <article class="wb-panel wb-info">
+          <h2>Disclaimer</h2>
+          <p>This is an estimate only. It does not replace an official bill, utility account ledger, licensed plumber inspection, municipal decision, or legal advice.</p>
+          <ul>
+            <li>Tiered tariffs, minimum charges, communal meters, estimated reads, penalties, reconnection fees, and subsidies can change the result.</li>
+            <li>If a leak or billing dispute is serious, document readings and ask for the detailed account calculation before paying disputed charges.</li>
+            <li>For suspected contamination or unsafe water, use a water quality checker and contact the responsible authority.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="wb-panel wb-related" aria-label="Related water and utility tools">
+        <div class="wb-section-title">
+          <span class="wb-eyebrow">Related tools</span>
+          <h2>Plan water, storage, and prepaid utility costs</h2>
+          <p>Use these tools to cross-check storage, scarcity risk, safety, and related prepaid utility planning.</p>
+        </div>
+        <div class="wb-link-grid">
+          <a class="wb-link-card" href="/tools/water-tank/"><strong>Water Tank Sizing Calculator</strong><span>Size storage for household or business supply gaps.</span></a>
+          <a class="wb-link-card" href="/tools/water-scarcity/"><strong>Water Scarcity Calculator</strong><span>Estimate shortage days, storage needs, and stress risk.</span></a>
+          <a class="wb-link-card" href="/tools/prepaid-meter/"><strong>Prepaid Meter Calculator</strong><span>Plan prepaid utility token units and service charges.</span></a>
+          <a class="wb-link-card" href="/tools/water-quality/"><strong>Water Safety Checker</strong><span>Interpret water quality indicators and next steps.</span></a>
+          <a class="wb-link-card" href="/tools/electricity-bill-verify/"><strong>Electricity Bill Verifier</strong><span>Check energy bills against meter and tariff inputs.</span></a>
+          <a class="wb-link-card" href="/tools/backup-power-costs/"><strong>Backup Power Costs</strong><span>Compare generator, LPG, inverter, and solar backup.</span></a>
+          <a class="wb-link-card" href="/widgets/"><strong>Embed a calculator</strong><span>Add AfroTools utility widgets to your site.</span></a>
+          <a class="wb-link-card" href="/api/"><strong>AfroTools API</strong><span>Use calculator workflows in your own product.</span></a>
+          <a class="wb-link-card" href="/custom-calculators/"><strong>Custom calculators</strong><span>Request a city-specific water or utility estimator.</span></a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="wb-footer">
+    <div class="wb-shell">
+      <span>AfroTools water bill tools are informational planning tools. Verify final bills with the utility or city authority.</span>
+      <span><a href="/privacy/">Privacy</a> | <a href="/terms/">Terms</a> | <a href="/contact/">Contact</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const presets = {
+        lagos: { currency: 'NGN', fixedCharge: 1500, sewerCharge: 1200, taxRate: 7.5, block1Limit: 10, block1Rate: 120, block2Limit: 30, block2Rate: 220, block3Rate: 350 },
+        nairobi: { currency: 'KES', fixedCharge: 250, sewerCharge: 300, taxRate: 16, block1Limit: 6, block1Rate: 70, block2Limit: 20, block2Rate: 95, block3Rate: 130 },
+        johannesburg: { currency: 'ZAR', fixedCharge: 120, sewerCharge: 90, taxRate: 15, block1Limit: 6, block1Rate: 24, block2Limit: 30, block2Rate: 34, block3Rate: 52 },
+        accra: { currency: 'GHS', fixedCharge: 15, sewerCharge: 10, taxRate: 15, block1Limit: 10, block1Rate: 2.2, block2Limit: 30, block2Rate: 3.4, block3Rate: 5.1 },
+        cairo: { currency: 'EGP', fixedCharge: 10, sewerCharge: 8, taxRate: 14, block1Limit: 10, block1Rate: 0.75, block2Limit: 30, block2Rate: 1.55, block3Rate: 2.4 },
+        dar: { currency: 'TZS', fixedCharge: 2500, sewerCharge: 2000, taxRate: 18, block1Limit: 10, block1Rate: 600, block2Limit: 30, block2Rate: 900, block3Rate: 1300 },
+        custom: { currency: 'USD', fixedCharge: 0, sewerCharge: 0, taxRate: 0, block1Limit: 10, block1Rate: 1, block2Limit: 30, block2Rate: 1.5, block3Rate: 2 }
+      };
+
+      const defaults = {
+        preset: 'lagos',
+        currency: 'NGN',
+        mode: 'household',
+        people: 5,
+        periodStart: '2026-04-01',
+        periodEnd: '2026-04-30',
+        previousReading: 1240,
+        currentReading: 1264,
+        fixedCharge: 1500,
+        sewerCharge: 1200,
+        taxRate: 7.5,
+        actualBill: 8200,
+        leakSuspected: false,
+        block1Limit: 10,
+        block1Rate: 120,
+        block2Limit: 30,
+        block2Rate: 220,
+        block3Rate: 350
+      };
+
+      const form = document.getElementById('water-form');
+      const fields = Array.from(form.elements).filter((field) => field.name);
+      const ids = [
+        'scenario-summary', 'usage-status', 'consumption-output', 'consumption-note', 'expected-bill',
+        'bill-note', 'daily-usage', 'daily-note', 'warning-output', 'warning-note',
+        'block1-output', 'block2-output', 'block3-output', 'fixed-output', 'tax-output',
+        'period-output', 'per-user-output', 'variance-output', 'leak-risk', 'priority-output',
+        'next-summary', 'checklist-output', 'share-note'
+      ];
+      const el = ids.reduce((map, id) => {
+        map[id] = document.getElementById(id);
+        return map;
+      }, {});
+      let latest = null;
+      let customEdited = false;
+
+      function value(name) {
+        const field = form.elements[name];
+        if (!field) return 0;
+        if (field.type === 'checkbox') return field.checked;
+        if (field.tagName === 'SELECT' || field.type === 'date') return field.value;
+        return Number(field.value || 0);
+      }
+
+      function dateDiffDays(start, end) {
+        const startTime = Date.parse(start);
+        const endTime = Date.parse(end);
+        if (!Number.isFinite(startTime) || !Number.isFinite(endTime)) return 0;
+        return Math.max(1, Math.round((endTime - startTime) / 86400000) + 1);
+      }
+
+      function getInputs() {
+        return {
+          preset: value('preset'),
+          currency: value('currency'),
+          mode: value('mode'),
+          people: Math.max(1, value('people')),
+          periodStart: value('periodStart'),
+          periodEnd: value('periodEnd'),
+          previousReading: Math.max(0, value('previousReading')),
+          currentReading: Math.max(0, value('currentReading')),
+          fixedCharge: Math.max(0, value('fixedCharge')),
+          sewerCharge: Math.max(0, value('sewerCharge')),
+          taxRate: Math.max(0, value('taxRate')),
+          actualBill: Math.max(0, value('actualBill')),
+          leakSuspected: value('leakSuspected'),
+          block1Limit: Math.max(0, value('block1Limit')),
+          block1Rate: Math.max(0, value('block1Rate')),
+          block2Limit: Math.max(0, value('block2Limit')),
+          block2Rate: Math.max(0, value('block2Rate')),
+          block3Rate: Math.max(0, value('block3Rate'))
+        };
+      }
+
+      function money(amount, currency) {
+        const safeAmount = Number.isFinite(amount) ? amount : 0;
+        try {
+          return new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency,
+            maximumFractionDigits: Math.abs(safeAmount) >= 1000 ? 0 : 2
+          }).format(safeAmount);
+        } catch (error) {
+          return currency + ' ' + safeAmount.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        }
+      }
+
+      function number(amount, digits) {
+        return Number(amount || 0).toLocaleString(undefined, { maximumFractionDigits: digits });
+      }
+
+      function pct(amount) {
+        return Number(amount || 0).toLocaleString(undefined, { maximumFractionDigits: 1 }) + '%';
+      }
+
+      function blockUsage(consumption, input) {
+        const block2Upper = Math.max(input.block2Limit, input.block1Limit);
+        let remaining = Math.max(0, consumption);
+        const b1Usage = Math.min(remaining, input.block1Limit);
+        remaining -= b1Usage;
+        const b2Span = Math.max(0, block2Upper - input.block1Limit);
+        const b2Usage = Math.min(remaining, b2Span);
+        remaining -= b2Usage;
+        const b3Usage = Math.max(0, remaining);
+        return {
+          b1Usage,
+          b2Usage,
+          b3Usage,
+          b1Charge: b1Usage * input.block1Rate,
+          b2Charge: b2Usage * input.block2Rate,
+          b3Charge: b3Usage * input.block3Rate
+        };
+      }
+
+      function calculate(input) {
+        const days = dateDiffDays(input.periodStart, input.periodEnd);
+        const rawConsumption = input.currentReading - input.previousReading;
+        const consumption = Math.max(0, rawConsumption);
+        const blocks = blockUsage(consumption, input);
+        const waterCharge = blocks.b1Charge + blocks.b2Charge + blocks.b3Charge;
+        const subtotal = waterCharge + input.fixedCharge + input.sewerCharge;
+        const tax = subtotal * input.taxRate / 100;
+        const expectedBill = subtotal + tax;
+        const dailyM3 = days ? consumption / days : 0;
+        const dailyLitres = dailyM3 * 1000;
+        const perUserLitres = dailyLitres / input.people;
+        const threshold = input.mode === 'business' ? 90 : 150;
+        const highUse = perUserLitres > threshold || dailyLitres > 2000;
+        const variance = input.actualBill > 0 ? input.actualBill - expectedBill : 0;
+        const variancePct = expectedBill ? variance / expectedBill * 100 : 0;
+        const leakRisk = input.leakSuspected || highUse || perUserLitres > threshold * 1.5 || rawConsumption < 0;
+
+        return {
+          input,
+          days,
+          rawConsumption,
+          consumption,
+          blocks,
+          waterCharge,
+          subtotal,
+          tax,
+          expectedBill,
+          dailyM3,
+          dailyLitres,
+          perUserLitres,
+          threshold,
+          highUse,
+          variance,
+          variancePct,
+          leakRisk
+        };
+      }
+
+      function statusText(result) {
+        if (result.rawConsumption < 0) return 'Reading issue';
+        if (result.leakRisk) return 'Leak check needed';
+        if (result.highUse) return 'High use';
+        return 'Normal use';
+      }
+
+      function checklist(result) {
+        const items = [
+          'Photograph the meter reading today and compare it with the current bill reading.',
+          'Check all taps, toilet cisterns, storage tank overflow pipes, garden taps, and visible pipe joints.',
+          'Confirm tariff block, fixed charge, tax, and sewerage or service charge with the water utility.'
+        ];
+        if (result.rawConsumption < 0) {
+          items.unshift('Current reading is lower than previous reading. Check for a rollover, wrong meter, or data entry issue.');
+        }
+        if (result.input.leakSuspected || result.leakRisk) {
+          items.unshift('Do a night-flow test: close all taps, wait 30 minutes, and see whether the meter still moves.');
+          items.push('Ask a plumber or utility inspector to pressure-test hidden lines if usage stays high.');
+        }
+        if (result.highUse) {
+          items.push('High-use warning: compare per-user daily litres with prior months and look for irrigation, tank overflow, or shared-meter usage.');
+        }
+        if (result.input.actualBill > 0 && Math.abs(result.variancePct) > 10) {
+          items.push('Actual bill variance is above 10%. Request the detailed utility calculation and reconcile charges before paying a disputed amount.');
+        }
+        items.push('If water is unsafe or discoloured, separate billing from safety and contact the responsible authority.');
+        return items;
+      }
+
+      function render(result) {
+        latest = result;
+        const input = result.input;
+        const status = statusText(result);
+        const list = checklist(result);
+        const varianceText = input.actualBill > 0
+          ? `${money(result.variance, input.currency)} (${pct(result.variancePct)})`
+          : 'No actual bill entered';
+
+        el['scenario-summary'].textContent = `${input.preset} ${input.mode} estimate for ${number(result.consumption, 2)} m3 over ${result.days} days.`;
+        el['usage-status'].textContent = status;
+        el['consumption-output'].textContent = `${number(result.consumption, 2)} m3`;
+        el['consumption-note'].textContent = result.rawConsumption < 0 ? 'Current reading is below previous reading' : 'Current reading minus previous reading';
+        el['expected-bill'].textContent = money(result.expectedBill, input.currency);
+        el['bill-note'].textContent = `${money(result.waterCharge, input.currency)} water charge before fees`;
+        el['daily-usage'].textContent = `${number(result.dailyLitres, 0)} L/day`;
+        el['daily-note'].textContent = `${number(result.perUserLitres, 0)} L per user per day`;
+        el['warning-output'].textContent = result.highUse ? 'High use' : 'Within planning range';
+        el['warning-note'].textContent = `${number(result.threshold, 0)} L/user/day threshold for ${input.mode}`;
+        el['block1-output'].textContent = `${number(result.blocks.b1Usage, 2)} m3 = ${money(result.blocks.b1Charge, input.currency)}`;
+        el['block2-output'].textContent = `${number(result.blocks.b2Usage, 2)} m3 = ${money(result.blocks.b2Charge, input.currency)}`;
+        el['block3-output'].textContent = `${number(result.blocks.b3Usage, 2)} m3 = ${money(result.blocks.b3Charge, input.currency)}`;
+        el['fixed-output'].textContent = `${money(input.fixedCharge, input.currency)} fixed + ${money(input.sewerCharge, input.currency)} sewerage/service`;
+        el['tax-output'].textContent = `${money(result.tax, input.currency)} at ${pct(input.taxRate)}`;
+        el['period-output'].textContent = `${result.days} days from ${input.periodStart} to ${input.periodEnd}`;
+        el['per-user-output'].textContent = `${number(result.perUserLitres, 0)} litres per user per day`;
+        el['variance-output'].textContent = varianceText;
+        el['leak-risk'].textContent = result.leakRisk ? 'Leak or reading check recommended' : 'No immediate leak signal';
+        el['priority-output'].textContent = result.leakRisk || Math.abs(result.variancePct) > 10 ? 'Check meter and utility calculation' : 'Keep readings and monitor next bill';
+        el['next-summary'].textContent = result.leakRisk
+          ? 'Usage or leak signals are elevated. Prioritise meter photos, night-flow testing, and charge reconciliation.'
+          : 'Usage is within the planning range. Keep readings and confirm the tariff inputs on your next bill.';
+        el['checklist-output'].innerHTML = list.map((item) => `<li>${item}</li>`).join('');
+
+        try {
+          localStorage.setItem('waterBillLastResult', JSON.stringify({
+            input,
+            expectedBill: result.expectedBill,
+            consumption: result.consumption,
+            dailyLitres: result.dailyLitres,
+            status,
+            savedAt: new Date().toISOString()
+          }));
+        } catch (error) {}
+      }
+
+      function calculateAndRender() {
+        render(calculate(getInputs()));
+        el['share-note'].textContent = '';
+      }
+
+      function applyPreset() {
+        const preset = presets[value('preset')] || presets.custom;
+        form.elements.currency.value = preset.currency;
+        if (!customEdited || value('preset') !== 'custom') {
+          form.elements.fixedCharge.value = preset.fixedCharge;
+          form.elements.sewerCharge.value = preset.sewerCharge;
+          form.elements.taxRate.value = preset.taxRate;
+          form.elements.block1Limit.value = preset.block1Limit;
+          form.elements.block1Rate.value = preset.block1Rate;
+          form.elements.block2Limit.value = preset.block2Limit;
+          form.elements.block2Rate.value = preset.block2Rate;
+          form.elements.block3Rate.value = preset.block3Rate;
+        }
+      }
+
+      function asRows(result) {
+        const input = result.input;
+        return [
+          ['Metric', 'Value'],
+          ['Preset', input.preset],
+          ['Mode', input.mode],
+          ['Currency', input.currency],
+          ['Billing period start', input.periodStart],
+          ['Billing period end', input.periodEnd],
+          ['Billing days', result.days],
+          ['Previous reading m3', input.previousReading],
+          ['Current reading m3', input.currentReading],
+          ['Consumption m3', result.consumption.toFixed(3)],
+          ['Daily litres', result.dailyLitres.toFixed(2)],
+          ['Per user daily litres', result.perUserLitres.toFixed(2)],
+          ['Expected bill', result.expectedBill.toFixed(2)],
+          ['Water charge', result.waterCharge.toFixed(2)],
+          ['Fixed charge', input.fixedCharge],
+          ['Sewerage or service charge', input.sewerCharge],
+          ['VAT or tax', result.tax.toFixed(2)],
+          ['Actual bill', input.actualBill],
+          ['Actual bill variance', result.variance.toFixed(2)],
+          ['High use warning', result.highUse ? 'yes' : 'no'],
+          ['Leak risk', result.leakRisk ? 'yes' : 'no'],
+          ['Reviewed', '2026-05-16']
+        ];
+      }
+
+      function toCsv(rows) {
+        return rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+      }
+
+      function resultText(result) {
+        const input = result.input;
+        return [
+          'Water Bill Calculator - AfroTools',
+          `Preset: ${input.preset}`,
+          `Mode: ${input.mode}`,
+          `Consumption: ${number(result.consumption, 2)} m3`,
+          `Expected bill: ${money(result.expectedBill, input.currency)}`,
+          `Daily usage: ${number(result.dailyLitres, 0)} L/day`,
+          `Per-user daily usage: ${number(result.perUserLitres, 0)} L/user/day`,
+          `High-use warning: ${result.highUse ? 'yes' : 'no'}`,
+          `Leak risk: ${result.leakRisk ? 'yes' : 'no'}`,
+          `Actual bill variance: ${input.actualBill > 0 ? money(result.variance, input.currency) : 'not entered'}`,
+          'Disclaimer: estimate only. Verify meter readings, tariff blocks, fixed charges, sewerage, tax, and official utility guidance.'
+        ].join('\n');
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        calculateAndRender();
+      });
+
+      fields.forEach((field) => {
+        field.addEventListener('input', () => {
+          if (/Charge|Rate|Limit|taxRate/.test(field.name)) customEdited = true;
+          calculateAndRender();
+        });
+        field.addEventListener('change', () => {
+          if (field.name === 'preset') applyPreset();
+          calculateAndRender();
+        });
+      });
+
+      document.getElementById('reset-defaults').addEventListener('click', () => {
+        Object.keys(defaults).forEach((name) => {
+          if (!form.elements[name]) return;
+          if (form.elements[name].type === 'checkbox') form.elements[name].checked = Boolean(defaults[name]);
+          else form.elements[name].value = defaults[name];
+        });
+        customEdited = false;
+        calculateAndRender();
+      });
+
+      document.getElementById('copy-result').addEventListener('click', async () => {
+        if (!latest) calculateAndRender();
+        try {
+          await navigator.clipboard.writeText(resultText(latest));
+          el['share-note'].textContent = 'Result copied to clipboard.';
+        } catch (error) {
+          el['share-note'].textContent = 'Copy was blocked by the browser. Use Export CSV or Print instead.';
+        }
+      });
+
+      document.getElementById('export-csv').addEventListener('click', () => {
+        if (!latest) calculateAndRender();
+        const blob = new Blob([toCsv(asRows(latest))], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'water-bill-estimate.csv';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        el['share-note'].textContent = 'CSV export created.';
+      });
+
+      document.getElementById('print-result').addEventListener('click', () => {
+        window.print();
+      });
+
+      calculateAndRender();
+    })();
+  </script>
 </body>
 </html>

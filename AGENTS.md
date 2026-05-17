@@ -119,7 +119,11 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 ### Supabase work
 
-- Use the configured `supabase` MCP server first whenever a task needs live project access, schema inspection, SQL execution, logs, storage, auth, or generated types.
+- Use the AfroTools Supabase MCP target first whenever a task needs live project access, schema inspection, SQL execution, logs, storage, auth, or generated types.
+- Preferred in this repo: repo-local `supabase`.
+- Named global fallback: `supabase_afrotools`.
+- Project ref: `zpclagtgczsygrgztlts`.
+- Do not use the LATMtools Supabase project for AfroTools live data, auth, storage, migrations, or generated types.
 - Keep repo edits and live project actions conceptually separate in your notes and summaries.
 
 ### Release and publish-surface work

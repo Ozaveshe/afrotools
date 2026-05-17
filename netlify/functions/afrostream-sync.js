@@ -87,6 +87,55 @@ async function sb(method, path, body, upsert) {
   return parsed;
 }
 
+function summarizeErrors(value, out) {
+  out = out || [];
+  if (!value || out.length >= 20) return out;
+  if (Array.isArray(value)) {
+    value.forEach(function(item) { summarizeErrors(item, out); });
+    return out;
+  }
+  if (typeof value === 'object') {
+    if (Array.isArray(value.errors)) summarizeErrors(value.errors, out);
+    if (value.rpc_error) out.push('RPC fallback: ' + value.rpc_error);
+    ['twitch', 'kick', 'youtube', 'scoring'].forEach(function(key) {
+      if (value[key]) summarizeErrors(value[key], out);
+    });
+    return out;
+  }
+  if (typeof value !== 'string') return out;
+  var message = String(value || '').trim();
+  if (message) out.push(message);
+  return out;
+}
+
+function snapshotCountFromScoring(scoring) {
+  if (!scoring) return 0;
+  if (Array.isArray(scoring)) {
+    return scoring.reduce(function(total, row) {
+      return total + snapshotCountFromScoring(row && (row.refresh_afrostream_creator_snapshots || row));
+    }, 0);
+  }
+  if (typeof scoring.snapshots === 'number') return scoring.snapshots;
+  if (typeof scoring.snapshots === 'string') return parseInt(scoring.snapshots, 10) || 0;
+  return 0;
+}
+
+async function recordScraperRun(scraperId, status, source, recordsCount, errorMessage, durationMs) {
+  try {
+    await sb('POST', 'scraper_runs', {
+      scraper_id: scraperId,
+      status: status,
+      source: source,
+      records_count: recordsCount || 0,
+      error_message: errorMessage || null,
+      duration_ms: durationMs || 0,
+      fetched_at: new Date().toISOString()
+    });
+  } catch (e) {
+    console.error('AfroStream scraper run logging failed:', e.message);
+  }
+}
+
 async function refreshSnapshotsViaRpc(snapshotDate) {
   var body = {};
   if (snapshotDate) body.p_snapshot_date = snapshotDate;
@@ -809,35 +858,67 @@ async function computeScores() {
 
 // ── Handler ──────────────────────────────────────────────────────
 
-async function runManualSync() {
+async function runManualSync(options) {
+  var runStart = Date.now();
+  var runSource = (options && options.source) || 'Manual sync endpoint';
+  var shouldLog = !options || options.log !== false;
   var twitchResults = { creators_synced: 0, live_count: 0, errors: ['Twitch credentials not configured'] };
   var kickResults = { creators_synced: 0, live_count: 0, errors: ['Kick credentials not configured'] };
   var youtubeResults = { creators_synced: 0, live_count: 0, errors: ['YouTube API key not configured'] };
 
-  if (TWITCH_CLIENT_ID && TWITCH_CLIENT_SECRET) {
-    twitchResults = await syncTwitch();
-  }
-  if (KICK_CLIENT_ID && KICK_CLIENT_SECRET) {
-    kickResults = await syncKick();
-  }
-  if (YOUTUBE_API_KEY) {
-    youtubeResults = await syncYouTube();
-  }
-
-  var scoreResults;
   try {
-    scoreResults = await refreshSnapshotsViaRpc();
-  } catch (rpcError) {
-    scoreResults = await computeScores();
-    scoreResults.rpc_error = rpcError.message;
-  }
+    if (TWITCH_CLIENT_ID && TWITCH_CLIENT_SECRET) {
+      twitchResults = await syncTwitch();
+    }
+    if (KICK_CLIENT_ID && KICK_CLIENT_SECRET) {
+      kickResults = await syncKick();
+    }
+    if (YOUTUBE_API_KEY) {
+      youtubeResults = await syncYouTube();
+    }
 
-  return {
-    twitch: twitchResults,
-    kick: kickResults,
-    youtube: youtubeResults,
-    scoring: scoreResults
-  };
+    var scoreResults;
+    try {
+      scoreResults = await refreshSnapshotsViaRpc();
+    } catch (rpcError) {
+      scoreResults = await computeScores();
+      scoreResults.rpc_error = rpcError.message;
+    }
+
+    var syncResults = {
+      twitch: twitchResults,
+      kick: kickResults,
+      youtube: youtubeResults,
+      scoring: scoreResults
+    };
+
+    var snapshotCount = snapshotCountFromScoring(scoreResults);
+    var errors = summarizeErrors(syncResults).slice(0, 12);
+    if (shouldLog) {
+      await recordScraperRun(
+        'afrostream-sync',
+        snapshotCount > 0 ? 'ok' : 'error',
+        runSource,
+        snapshotCount,
+        errors.length ? errors.join(' | ').slice(0, 1000) : null,
+        Date.now() - runStart
+      );
+    }
+
+    return syncResults;
+  } catch (e) {
+    if (shouldLog) {
+      await recordScraperRun(
+        'afrostream-sync',
+        'error',
+        runSource,
+        0,
+        (e.message || 'Sync failed').slice(0, 1000),
+        Date.now() - runStart
+      );
+    }
+    throw e;
+  }
 }
 
 exports.handler = async function(event) {
@@ -870,14 +951,14 @@ exports.handler = async function(event) {
 
   try {
     if (isScheduled) {
-      var scheduledScoring = await refreshSnapshotsViaRpc();
+      var scheduledSync = await runManualSync({ source: 'Netlify Scheduled Function' });
       return {
         statusCode: 200,
         headers: cors,
         body: JSON.stringify({
           success: true,
-          message: 'Scheduled snapshot refresh completed',
-          data: { scoring: scheduledScoring }
+          message: 'Scheduled AfroStream sync completed',
+          data: scheduledSync
         })
       };
     }
@@ -896,7 +977,7 @@ exports.handler = async function(event) {
       };
     }
 
-    var syncResults = await runManualSync();
+    var syncResults = await runManualSync({ source: 'Manual inline sync endpoint' });
     return {
       statusCode: 200,
       headers: cors,

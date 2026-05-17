@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const { renameSyncWithRetry, writeFileSyncWithRetry } = require("./lib/safe-write");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE_ORIGIN = "https://afrotools.com";
@@ -28,8 +29,8 @@ function escapeRegExp(value) {
 
 function writeFileAtomic(filePath, contents) {
   const tempPath = filePath + ".tmp-" + process.pid + "-" + Date.now();
-  fs.writeFileSync(tempPath, contents, "utf8");
-  fs.renameSync(tempPath, filePath);
+  writeFileSyncWithRetry(tempPath, contents, "utf8");
+  renameSyncWithRetry(tempPath, filePath);
 }
 
 function escapeHtmlAttribute(value) {

@@ -23,6 +23,26 @@ const LEGACY_REGISTRY_PATH = '/assets/js/tool-registry.js';
 const REGISTRY_PATH = '/assets/js/components/tool-registry.js';
 const MINIFIED_REGISTRY_PATH = '/assets/js/components/tool-registry.min.js';
 
+function waitSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function writeFileSyncWithRetry(filePath, data, encoding) {
+  const retryable = new Set(['EBUSY', 'EPERM', 'UNKNOWN']);
+  let lastError = null;
+  for (let attempt = 0; attempt < 20; attempt++) {
+    try {
+      fs.writeFileSync(filePath, data, encoding);
+      return;
+    } catch (error) {
+      lastError = error;
+      if (!retryable.has(error.code)) throw error;
+      waitSync(75 * (attempt + 1));
+    }
+  }
+  throw lastError;
+}
+
 // Build lookup: relative path → bundle name
 const fileToBundleMap = {};
 for (const [bundleName, info] of Object.entries(manifest)) {
@@ -129,7 +149,7 @@ for (const htmlPath of htmlFiles) {
   }
 
   if (html !== original) {
-    fs.writeFileSync(htmlPath, html, 'utf8');
+    writeFileSyncWithRetry(htmlPath, html, 'utf8');
     updatedCount++;
   }
 }

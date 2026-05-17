@@ -12,5 +12,5 @@ exports.handler = async function(event) {
     throw new Error('Unauthorized background sync trigger');
   }
 
-  await syncModule.runManualSync();
+  await syncModule.runManualSync({ source: 'Netlify Background Function' });
 };

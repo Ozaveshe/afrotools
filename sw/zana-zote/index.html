@@ -32,11 +32,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f">
-<script src="/assets/js/components/tool-registry.min.js?v=99d9d3db" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<script src="/assets/js/components/tool-registry.min.js?v=4fb2e1e9" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script>
-<script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
+<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'DM Sans',sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -1061,10 +1061,177 @@
 
     var intentTargets = {
       paye: ['/sw/mshahara-na-kodi/paye', '/sw/mshahara-na-kodi', '/sw/kenya/kikokotoo-kodi-mshahara', '/sw/tanzania/kikokotoo-kodi-mshahara', '/sw/uganda/kikokotoo-kodi-mshahara'],
+      mshahara: ['/sw/mshahara-na-kodi', '/sw/mshahara-na-kodi/paye', '/sw/zana/kikokotoo-kima-cha-chini-cha-mshahara', '/sw/kenya/kikokotoo-kodi-mshahara', '/sw/tanzania/kikokotoo-kodi-mshahara'],
       vat: ['/sw/zana/kikokotoo-vat', '/sw/vat-na-kodi', '/sw/biashara-na-uzingatiaji', '/sw/kenya/kikokotoo-vat', '/sw/tanzania/kikokotoo-vat', '/sw/uganda/kikokotoo-vat'],
       fedha: ['/sw/fintech', '/sw/mali-na-mikopo', '/sw/sarafu', '/sw/zana/kibadilishaji-sarafu', '/sw/zana/ulinganisho-uhamishaji-pesa'],
       sheria: ['/sw/serikali-na-nyaraka', '/sw/kazi-na-nyaraka', '/sw/zana/tamko-la-kisheria', '/sw/zana/ustahiki-wa-msaada-wa-kisheria', '/sw/zana/gdpr-dhidi-ya-sheria-za-afrika'],
-      hajj: ['/sw/zana/bajeti-ya-hajj-na-umrah', '/sw/dini-na-utamaduni']
+      kazi: ['/sw/kazi-na-ajira', '/sw/kazi-na-nyaraka', '/sw/mshahara-na-kodi', '/sw/zana/mjenzi-cv', '/sw/zana/barua-ombi'],
+      hajj: ['/sw/zana/bajeti-ya-hajj-na-umrah', '/sw/dini-na-utamaduni'],
+      ujenzi: ['/sw/ujenzi-na-uhandisi', '/sw/zana/kikokotoo-gharama-za-ujenzi', '/sw/zana/mjenzi-boq', '/sw/zana/kikokotoo-nondo', '/sw/zana/mchanganyiko-wa-zege'],
+      pdf: ['/sw/hati-na-pdf', '/sw/zana-za-pdf', '/sw/zana/kituo-cha-pdf', '/sw/zana/hariri-pdf', '/sw/zana/chat-na-pdf'],
+      tafsiri: ['/sw/lugha-na-tafsiri', '/sw/zana/mtafsiri-wa-kiswahili', '/sw/zana/kutafsiri-pdf', '/sw/zana/mtafsiri-wa-kifaransa-afrika'],
+      mkopo: ['/sw/mali-na-mikopo', '/sw/zana/kikokotoo-mkopo-wa-nyumba', '/sw/zana/mkopo-wa-gari', '/sw/zana/ustahiki-wa-mkopo-wa-shamba'],
+      sarafu: ['/sw/sarafu', '/sw/mshahara-na-kodi/fx', '/sw/zana/kibadilishaji-sarafu', '/sw/fintech'],
+      cv: ['/sw/zana/mjenzi-cv', '/sw/kazi-na-nyaraka', '/sw/kazi-na-ajira', '/sw/hati-na-pdf'],
+      tin: ['/sw/zana/mwongozo-tin', '/sw/biashara-na-uzingatiaji', '/sw/vat-na-kodi'],
+      bima: ['/sw/bima', '/sw/afya-na-bima', '/sw/zana/kilinganisha-bima-ya-afya', '/sw/zana/kikokotoo-bima-ya-gari', '/sw/zana/kikokotoo-bima-ya-biashara']
+    };
+
+    var manualSearchResults = {
+      blogu: [
+        {
+          name: 'Blogu ya AfroTools kwa Kiswahili',
+          desc: 'Daraja la Kiswahili kwa makala za PAYE, VAT, mobile money, sarafu na kilimo. Baadhi ya makala hufunguka kwa Kiingereza.',
+          href: '/sw/blogu/',
+          icon: 'B',
+          lang: 'sw',
+          status: 'live'
+        }
+      ],
+      mshahara: [
+        {
+          name: 'Mshahara na Kodi',
+          desc: 'Kitovu cha PAYE, mshahara, kima cha chini, muda wa ziada, likizo na hifadhi ya jamii kwa Afrika.',
+          href: '/sw/mshahara-na-kodi/',
+          icon: 'PAYE',
+          lang: 'sw',
+          status: 'live'
+        },
+        {
+          name: 'Vikokotoo vya PAYE',
+          desc: 'Tafuta kikokotoo cha kodi ya mshahara kwa nchi husika na ufungue njia ya PAYE inayofaa.',
+          href: '/sw/mshahara-na-kodi/paye/',
+          icon: 'PAYE',
+          lang: 'sw',
+          status: 'live'
+        }
+      ],
+      kazi: [
+        {
+          name: 'Kazi na Ajira',
+          desc: 'Kitovu cha CV, mahojiano, ofa, majadiliano ya mshahara, mikataba na nyaraka za kazi.',
+          href: '/sw/kazi-na-ajira/',
+          icon: 'JOB',
+          lang: 'sw',
+          status: 'live'
+        },
+        {
+          name: 'Kazi na Nyaraka',
+          desc: 'Zana za barua ya ombi, CV, mkataba wa ajira, payslip na nyaraka za HR.',
+          href: '/sw/kazi-na-nyaraka/',
+          icon: 'DOC',
+          lang: 'sw',
+          status: 'live'
+        }
+      ],
+      api: [
+        {
+          name: 'API ya AfroTools kwa Kiswahili',
+          desc: 'Daraja la Kiswahili linaloeleza API, endpoints, JSON, token na bei kabla ya kufungua nyaraka za Kiingereza.',
+          href: '/sw/api/',
+          icon: 'API',
+          lang: 'sw',
+          status: 'live'
+        },
+        {
+          name: 'Saraka ya API za Afrika',
+          desc: 'Mwongozo wa kuchagua API za fedha, kodi, sarafu na data za Afrika kwa bidhaa za developer.',
+          href: '/sw/zana/saraka-ya-api-afrika/',
+          icon: 'API',
+          lang: 'sw',
+          status: 'live'
+        },
+        {
+          name: 'Zana za Developer kwa Kiswahili',
+          desc: 'Kitovu cha JSON, SQL, API testing, USSD, Docker, PWA na zana za kivinjari kwa wasanidi.',
+          href: '/sw/zana-za-developer/',
+          icon: 'DEV',
+          lang: 'sw',
+          status: 'live'
+        }
+      ],
+      zakat: [
+        {
+          name: 'Kikokotoo cha Zakat',
+          desc: 'Makadirio ya zakat kwa fedha, dhahabu, fedha, mali ya biashara na madeni. Tumia kama zana ya kupanga na hakiki na msomi au mamlaka husika.',
+          href: '/sw/zana/kikokotoo-zakat/',
+          icon: 'ZK',
+          lang: 'sw',
+          status: 'live'
+        }
+      ],
+      tafsiri: [
+        {
+          name: 'Lugha na Tafsiri',
+          desc: 'Kitovu cha watafsiri, lugha za Afrika, transliteration na tafsiri za hati kwa tahadhari.',
+          href: '/sw/lugha-na-tafsiri/',
+          icon: 'LANG',
+          lang: 'sw',
+          status: 'live'
+        },
+        {
+          name: 'Mtafsiri wa Kiswahili',
+          desc: 'Msaada wa Kiswahili na kamusi ya misemo kwa biashara, kazi na mawasiliano ya kila siku.',
+          href: '/sw/zana/mtafsiri-wa-kiswahili/',
+          icon: 'LANG',
+          lang: 'sw',
+          status: 'live'
+        }
+      ],
+      ujenzi: [
+        {
+          name: 'Ujenzi na Uhandisi',
+          desc: 'Kitovu cha CAD, BOQ, zege, nondo, paa, gharama na upangaji wa miradi ya ujenzi.',
+          href: '/sw/ujenzi-na-uhandisi/',
+          icon: 'ENG',
+          lang: 'sw',
+          status: 'live'
+        },
+        {
+          name: 'Kikokotoo Gharama za Ujenzi',
+          desc: 'Kadiria gharama za kazi, vifaa, contingency na hatua za mradi kabla ya kuomba bei rasmi.',
+          href: '/sw/zana/kikokotoo-gharama-za-ujenzi/',
+          icon: 'ENG',
+          lang: 'sw',
+          status: 'live'
+        }
+      ],
+      mkopo: [
+        {
+          name: 'Mali, Nyumba na Mikopo',
+          desc: 'Kitovu cha mikopo, nyumba, uwezo wa kulipa na zana za kupanga kabla ya kusaini.',
+          href: '/sw/mali-na-mikopo/',
+          icon: 'LOAN',
+          lang: 'sw',
+          status: 'live'
+        },
+        {
+          name: 'Kikokotoo cha Mkopo wa Nyumba',
+          desc: 'Kadiria malipo, riba, muda na uwezo wa kulipa mkopo wa nyumba kwa muktadha wa Afrika.',
+          href: '/sw/zana/kikokotoo-mkopo-wa-nyumba/',
+          icon: 'LOAN',
+          lang: 'sw',
+          status: 'live'
+        }
+      ],
+      internet: [
+        {
+          name: 'Kilinganisha Intaneti',
+          desc: 'Linganisha gharama, kasi, fiber, LTE, 5G na ISP kwa matumizi ya nyumbani au biashara.',
+          href: '/sw/zana/kilinganisha-intaneti/',
+          icon: 'NET',
+          lang: 'sw',
+          status: 'live'
+        },
+        {
+          name: 'Mawasiliano na Mtandao',
+          desc: 'Kitovu cha Kiswahili kwa data, internet, roaming, USSD, SIM, SMS na WhatsApp Business.',
+          href: '/sw/mawasiliano-na-mtandao/',
+          icon: 'NET',
+          lang: 'sw',
+          status: 'live'
+        }
+      ]
     };
 
     function isPreferredLocale(tool) {
@@ -1180,7 +1347,7 @@
     }
 
     var tokens = tokenize(query);
-    var results = window.AFRO_TOOLS
+    var scoredEntries = window.AFRO_TOOLS
       .filter(function(tool) {
         return isPreferredLocale(tool) || (tool.lang || 'en') === 'en';
       })
@@ -1206,11 +1373,22 @@
         return list.findIndex(function(candidate) {
           return String(candidate.tool.href || candidate.tool.id || '').replace(/\/$/, '') === key;
         }) === index;
-      })
-      .slice(0, 12)
-      .map(function(entry) {
-        return entry.tool;
       });
+    var preferredEntries = scoredEntries.filter(function(entry) {
+      return isPreferredLocale(entry.tool);
+    });
+    var manual = manualSearchResults[normalizeSearchText(query)] || [];
+    var registrySource = manual.length ? preferredEntries : (preferredEntries.length ? preferredEntries : scoredEntries);
+    var registryResults = registrySource.slice(0, 12).map(function(entry) {
+      return entry.tool;
+    });
+
+    var results = manual.concat(registryResults).filter(function(tool, index, list) {
+      var key = String(tool.href || tool.id || '').replace(/\/$/, '');
+      return list.findIndex(function(candidate) {
+        return String(candidate.href || candidate.id || '').replace(/\/$/, '') === key;
+      }) === index;
+    }).slice(0, 12);
 
     section.hidden = false;
     title.textContent = 'Matokeo ya "' + query + '"';

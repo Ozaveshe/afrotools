@@ -6,7 +6,95 @@ This document is the operating system for AfroTools Swahili expansion.
 
 The goal is not "translate all 2,594+ tools." The goal is to turn Swahili into a strong East African product surface with real acquisition value, strong local-language SEO, and a batch process that agents can actually finish.
 
-## Current Audit Snapshot - May 9, 2026
+## Current Operating Snapshot - May 15, 2026
+
+Use this section as the current planning baseline. The May 9 audit and April snapshot below are preserved as historical checkpoints only.
+
+Source artifacts read for this sync:
+
+- `reports/sw-localization-audit.json`
+- `reports/sw-registry-promotion-wave4.json`
+- `reports/sw-registry-promotion-wave5.json`
+- `reports/sw-registry-promotion-wave6.json`
+- `reports/sw-browser-search-qa-wave6.json`
+- `reports/non-swahili-hreflang-backlog-plan.md`
+- source tree under `sw/`
+- `assets/js/components/tool-registry.js`
+
+Current route counts recomputed from the source tree:
+
+- Swahili HTML routes under `/sw/`: `852`.
+- Indexable Swahili routes: `850`.
+- Noindex Swahili routes: `2`.
+- HTML routes under `/sw/zana/`: `519`, made up of `465` direct `/sw/zana/<slug>/` tool routes plus `54` nested TIN guide routes under `/sw/zana/mwongozo-tin/`.
+- Direct `/sw/zana/<slug>/` routes are all indexable in the current tree: `465/465`.
+
+Current registry counts recomputed from `assets/js/components/tool-registry.js`:
+
+- Unique Swahili registry hrefs: `620`.
+- Resolving Swahili registry hrefs: `620/620`.
+- Broken Swahili registry hrefs: `0`.
+- Unique registry hrefs under `/sw/zana/`: `369`.
+- Resolving `/sw/zana/` registry hrefs: `369/369`.
+- Broken `/sw/zana/` registry hrefs: `0`.
+- Direct one-level `/sw/zana/<slug>/` registry coverage: `315/465`, or `67.74%`.
+
+Wave 4-6 registry history:
+
+- The May 9 audit baseline of `6` Swahili registry entries is historical.
+- The May 9 discovery repair raised Swahili registry rows to `352`.
+- Wave 4 added `52` strong existing `/sw/zana/` routes.
+- Wave 5 added `30` more screened `/sw/zana/` routes.
+- Wave 6 accepted `7` construction/property routes, refused `150`, and left `40` pages in the explicit polish-before-promotion queue.
+- Current planning should start from `620/620` resolving Swahili registry hrefs and `369/369` resolving `/sw/zana/` registry hrefs, not from the old 6-row baseline.
+
+Search and browser QA status:
+
+- `reports/sw-browser-search-qa-wave6.json` tested `/sw/`, `/sw/zana-zote/`, and `/sw/tools/` on desktop and mobile.
+- The Wave 6 search QA has `42` query checks across `21` buckets.
+- Missing expected result queries: `0`.
+- English-only result queries: `0`.
+- Duplicate href queries: `0`.
+- Treat shared Swahili search as healthy at the Wave 6 checkpoint, but do not use that as proof that every refused page is promotion-ready.
+
+Hreflang status:
+
+- `reports/non-swahili-hreflang-backlog-plan.md` separated the prior validator backlog into non-Swahili work: `502` carried warnings and `0` warnings involving `/sw/`.
+- May 15 rerun: `npm run build:i18n:validate` passed for `fr`, `sw`, `yo`, and `ha`.
+- May 15 rerun: `npm run validate:hreflang` scanned `7,750` pages, checked `7,748` pages with hreflang tags, validated `19,665` pairs, and reported all checks passed with `0` errors and no warnings printed.
+- Zero `/sw/` hreflang warning status is still true. Do not let French/global reciprocal cleanup distract the Swahili completion track unless a future validation run shows a real Swahili regression.
+
+Current recommendation:
+
+- Polish refused and high-potential pages before the next registry promotion.
+- Prompts 62-69 should improve page quality by lane: construction/property, trade/logistics, transport/fleet, creator/video, cultural/religious, developer utilities, business/legal documents, and environment/energy.
+- Wave 7 registry promotion should only choose from pages polished in those batches. Do not scan the whole remaining `/sw/zana/` tree looking for easy count gains.
+
+## Conservative Legal And HR Glossary - May 16, 2026
+
+Use this glossary for Swahili legal, HR, employment, business-registration, contractor, work-permit, severance, and document routes. The goal is practical Swahili, not legal certainty.
+
+- `contractor`: use `mkandarasi`; explain as a person or business hired for a defined task, not a final legal classification.
+- `employee`: use `mfanyakazi`; do not imply statutory status unless the source page itself supports it.
+- `severance`: use `malipo ya kuachishwa kazi` or `kiinua mgongo` depending on the page; frame as an estimate or checklist, not an entitlement.
+- `work permit`: use `kibali cha kazi`; describe costs, documents, and planning steps, not approval outcomes.
+- `company secretary`: use `katibu wa kampuni`; keep the English term nearby on company-governance tools because users may see it on official forms.
+- `registrar`: use `msajili`; tie it to the official company, court, or government registry where relevant.
+- `filing`: use `uwasilishaji` or `kuwasilisha nyaraka`; mention that acceptance, deadlines, and penalties must be confirmed on the official portal.
+- `service fee`: use `ada ya huduma`; do not present it as an official fee unless the paired source page supports that.
+- `notary`: use `mthibitishaji wa nyaraka`; `commissioner for oaths` is `kamishna wa viapo`.
+- `legal aid`: use `msaada wa kisheria`; describe eligibility checks as planning only, with the legal-aid office or court as the final decision maker.
+- `board resolution`: use `azimio la bodi`; keep `board resolution/azimio la bodi` on first use where the document title matters.
+- `affidavit`: use `kiapo`; keep `affidavit/kiapo` on first use for court and bank forms.
+- `employment contract`: use `mkataba wa ajira`; present outputs as checklists or drafts, not enforceable legal advice.
+
+Standard safety posture:
+
+- Prefer `makadirio`, `rasimu`, `orodha ya ukaguzi`, `planning aid`, and `thibitisha na...`.
+- Avoid `imeidhinishwa`, `hakika`, `lazima utapata`, `haki iliyohakikishwa`, `uamuzi wa kisheria`, and any promise of permit approval, registry acceptance, severance entitlement, or contractor classification.
+- For HR and legal routes, registry descriptions must be conservative enough to stand alone in search results.
+
+## Historical Audit Snapshot - May 9, 2026
 
 Source-of-truth audit artifact: `reports/sw-localization-audit.json`.
 
@@ -17,13 +105,13 @@ This is a no-fix audit snapshot. It does not translate pages, rebuild generated 
 - Swahili routes with an English source pair detected by the current `build-i18n.js` style mapping: `74`, about `1.3%` paired-route coverage.
 - Swahili-only or currently unmapped `/sw/` routes: `778`.
 - `lang/pages/**/sw.json` page packs: `0`; `lang/sw.json` passes global key parity but is not a page-level source layer.
-- Swahili registry entries: `6`, all financial/PAYE or comparison entries, which is only `0.7%` of `/sw/` route volume and `1.15%` of Swahili tool-page volume.
+- Historical Swahili registry entries at audit time: `6`, all financial/PAYE or comparison entries, which was only `0.7%` of `/sw/` route volume and `1.15%` of Swahili tool-page volume.
 - Obvious English UI leakage heuristic: `138` Swahili pages, about `16.2%` of `/sw/` pages.
 - Swahili pages with English internal links: `227`, about `26.6%` of `/sw/` pages. The biggest English destinations are `/tools/`, root `/`, `/agriculture/`, `/blog/`, `/developer-tools/`, and `/all-tools/`.
 - `npm run build:i18n:validate` passes for `fr`, `sw`, `yo`, and `ha`.
 - `npm run validate:hreflang` passes with `0` fatal errors but reports `1,298` non-bidirectional warnings across `7,637` scanned pages; roughly `68` warning lines are Swahili-related and the rest is mostly baseline French/other hreflang debt.
 
-Current route clusters under `/sw/`:
+Route clusters at the May 9 audit point:
 
 - Tool pages: `520`.
 - Country subpages, mostly repeated calculator families: `208`.
@@ -36,14 +124,14 @@ Current route clusters under `/sw/`:
 - Legacy redirect/noindex surfaces: `2`.
 - Utility page: `1`.
 
-Current source ownership map:
+Source ownership map at the May 9 audit point:
 
 - Hand-authored source candidates: `sw/index.html`, `sw/zana-zote/index.html`, `sw/mshahara-na-kodi/index.html`, `sw/nchi/index.html`, plus many category/static hubs.
 - Probable scripted or repeated outputs: country hubs and country subpages, especially repeated PAYE, VAT, employee-cost, severance, contractor-vs-employee, and work-permit families.
 - Tool pages under `sw/zana/` are best treated as hand-authored or copied tool outputs until each source owner is verified.
 - No Swahili page family is currently maintainable through `lang/pages/**/sw.json`.
 
-## Discovery Repair Snapshot - May 9, 2026
+## Historical Discovery Repair Snapshot - May 9, 2026
 
 This pass repaired Swahili discovery without translating or rewriting page content.
 
@@ -51,8 +139,8 @@ Source-of-truth map for this repair:
 
 - Route existence and usability: page-level HTML under `/sw/`; no route was added unless the matching `index.html` existed and was not marked `noindex`.
 - Shared search and registry discovery: `assets/js/components/tool-registry.js`.
-- Current Swahili all-tools search: `sw/zana-zote/index.html`, which now reads the source registry so newly added Swahili discovery rows are visible before a future registry minification pass.
-- Current navbar search fallback: `assets/js/components/navbar.js` and synced `assets/js/components/navbar.min.js`, which map English registry rows to verified Swahili routes while pages still load the older minified registry bundle.
+- Swahili all-tools search at that point: `sw/zana-zote/index.html`, which read the source registry so newly added Swahili discovery rows were visible before a future registry minification pass.
+- Navbar search fallback at that point: `assets/js/components/navbar.js` and synced `assets/js/components/navbar.min.js`, which mapped English registry rows to verified Swahili routes while pages still loaded the older minified registry bundle.
 
 Discovery counts after the repair:
 
@@ -91,11 +179,11 @@ Swahili is a real product and search opportunity for AfroTools:
 
 Treat Swahili as a product line, not a localization checkbox.
 
-## Older Repo Reality Snapshot - April 15, 2026
+## Historical Repo Reality Snapshot - April 15, 2026
 
-The April numbers below are retained for historical context. Use the May 9, 2026 audit snapshot above and `reports/sw-localization-audit.json` for current planning.
+The April numbers below are retained for historical context. Use the May 15, 2026 current operating snapshot above for current planning.
 
-The current Swahili surface is much larger than its maintenance layer:
+At that time, the Swahili surface was much larger than its maintenance layer:
 
 - `189` Swahili HTML pages exist under `/sw/`.
 - `0` page-specific Swahili translation packs exist under `lang/pages/**/sw.json`.
@@ -106,7 +194,7 @@ The current Swahili surface is much larger than its maintenance layer:
   - `32` tool pages under `/sw/zana/**`
   - `16` agriculture pages
   - `9` salary cluster pages
-- `npm run validate:hreflang` currently reports `124` errors and `1,440` warnings across the repo, including Swahili-specific broken mappings and many non-bidirectional language pairs.
+- `npm run validate:hreflang` reported `124` errors and `1,440` warnings across the repo, including Swahili-specific broken mappings and many non-bidirectional language pairs.
 - `scripts/build-i18n.js` supports `sw` and maps existing `/sw/` pages for hreflang and sitemap use.
 - The same build script includes French-specific polish layers such as French PAYE fallbacks and French share-text overrides, but no equivalent Swahili polish layer.
 
@@ -128,13 +216,13 @@ AfroTools should win Swahili by doing four things in order:
 
 Swahili should not start as "all of Africa in Kiswahili." It should start as "the best Swahili finance and work-tool experience for East Africa."
 
-After the May 9 audit, the next direction is still repair-first:
+After the May 15 source-tree sync, the next direction is still repair-first but no longer registry-count-first:
 
-1. Make existing Swahili pages source-owned and discoverable before adding large new translation batches.
-2. Expand `build-i18n.js` Swahili route mappings or create page-pack ownership where repeatable page families need durable regeneration.
-3. Add registry entries only for Swahili pages that are user-ready, paired, and safe to surface in shared search.
-4. Clean English UI leakage and English internal links on the core shell, salary/PAYE cluster, and the most-used `sw/zana/` pages.
-5. Treat broad hreflang warnings as baseline debt unless the batch touches the affected reciprocal pair.
+1. Keep existing Swahili pages source-owned and route-honest before adding large new translation batches.
+2. Polish refused and high-potential pages from Wave 6 before exposing more routes in shared search.
+3. Add registry entries only for Swahili pages that are user-ready, indexable, paired or intentionally standalone, and safe to surface in shared search.
+4. Keep direct `/sw/zana/` coverage quality-screened; `315/465` direct routes are currently registry-covered, so the remaining work is page quality and fit, not blind promotion.
+5. Preserve the zero `/sw/` hreflang-warning state and keep French/global reciprocal warnings in their own backlog lane.
 
 ## Non-Negotiables
 
@@ -153,16 +241,16 @@ After the May 9 audit, the next direction is still repair-first:
 
 ## Immediate Risks To Fix Before Scaling Harder
 
-### 1. Registry under-represents Swahili
+### 1. Registry quality now matters more than raw registry count
 
-The repo has `189` Swahili pages but only `6` Swahili registry entries.
+The repo now has `620` unique Swahili registry hrefs, all resolving, and `369/369` resolving registry hrefs under `/sw/zana/`.
 
 That means:
 
-- search relevance is skewed
-- discovery cards under-represent Swahili
-- counts and hub logic are misleading
-- a page can exist without being properly discoverable
+- the old `6`-entry registry baseline is historical, not current
+- direct `/sw/zana/<slug>/` registry coverage is `315/465` or `67.74%`
+- the next risk is exposing pages whose visible copy is still too English-heavy
+- the registry should grow only from polished, user-ready pages
 
 ### 2. Swahili pages have almost no reusable source layer
 
@@ -170,16 +258,16 @@ There are currently `0` `lang/pages/**/sw.json` files.
 
 That means the Swahili surface is hard to regenerate, hard to batch safely, and hard to keep consistent across repeated agent runs.
 
-### 3. Hreflang and route mappings are noisy
+### 3. Hreflang is currently clean for Swahili, but global backlog remains
 
-Current Swahili issues include:
+The current backlog plan reports `502` carried hreflang warnings and `0` involving `/sw/`.
 
-- `/sw/404.html` self-reference failures
-- Swahili pages pointing to non-existent English targets
-- many Swahili pages that are not bidirectional with their English or French counterparts
-- category-level mappings that resolve to tool URLs that do not exist
+Current operating rules:
 
-SEO upside will be capped while this remains noisy.
+- keep Swahili at `0` warnings
+- treat non-Swahili warnings as carried French/global debt
+- rerun `npm run validate:hreflang` when route assumptions or reciprocal tags change
+- do not broaden a Swahili quality batch into unrelated French/global reciprocal cleanup
 
 ### 4. The build pipeline is Swahili-aware but not Swahili-polished
 
@@ -596,7 +684,7 @@ That includes:
 
 ### 5. Only index what is truly ready
 
-Because Swahili registry coverage is still thin, do not push unfinished pages into the discovery layer just to increase counts.
+Because direct `/sw/zana/` registry coverage is still incomplete and quality-screened, do not push unfinished pages into the discovery layer just to increase counts.
 
 ## Definition Of Done For A Swahili Tool
 
@@ -915,7 +1003,7 @@ Never overclaim job outcomes, legal enforceability, salary levels, promotion tim
 Track Swahili progress with simple operational numbers:
 
 - Swahili pages with documented source of truth
-- Swahili registry entries that map to real finished pages
+- Swahili registry hrefs that map to real finished pages
 - Swahili core pages with clean hreflang
 - East Africa salary clusters completed
 - Swahili pages with no leftover English UI

@@ -1,63 +1,1256 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Electricity Bill Verifier — Top 15 African Countries | AfroTools</title>
-<meta name="description" content="Free Electricity Bill Verifier for Africa's top 15 economies. Select your country for local rates and data.">
-<link rel="canonical" href="https://afrotools.com/tools/electricity-bill-verify/">
-<meta property="og:title" content="Electricity Bill Verifier — Top 15 African Countries | AfroTools">
-<meta property="og:description" content="Free Electricity Bill Verifier for Africa's top 15 economies. Select your country for local rates and data.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/electricity-bill-verify.webp">
-<meta property="og:url" content="https://afrotools.com/tools/electricity-bill-verify/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Electricity Bill Verifier — Top 15 African Countries | AfroTools">
-<meta name="twitter:description" content="Free Electricity Bill Verifier for Africa">
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=e98bfa3f"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=01d16ada" defer></script><script src="/assets/js/components/footer.min.js?v=d60a94ba" defer></script>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
-<script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/electricity-bill-verify.webp">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Electricity Bill Verifier | AfroTools</title>
+  <meta name="description" content="Check an electricity bill against kWh usage, tariff, fixed charges, VAT, arrears, and previous bill patterns. Export a dispute checklist.">
+  <link rel="canonical" href="https://afrotools.com/tools/electricity-bill-verify/">
+  <meta property="og:title" content="Electricity Bill Verifier | AfroTools">
+  <meta property="og:description" content="Verify expected electricity charges, variance, unit cost, likely overcharge, and dispute evidence using local assumptions.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/electricity-bill-verify.webp">
+  <meta property="og:url" content="https://afrotools.com/tools/electricity-bill-verify/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Electricity Bill Verifier | AfroTools">
+  <meta name="twitter:description" content="Compare your actual electricity bill with expected tariff, tax, fixed charge, and arrears.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/electricity-bill-verify.webp">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Electricity Bill Verifier",
+  "description": "Verify an electricity bill using country, currency, billing period, kWh consumed, tariff, fixed charge, VAT, arrears, meter type, previous bill, and actual bill.",
+  "url": "https://afrotools.com/tools/electricity-bill-verify/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "dateModified": "2026-05-16",
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/electricity-bill-verify.webp"
+}
+</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Electricity Bill Verifier","item":"https://afrotools.com/tools/electricity-bill-verify/"}]}</script>
+  <style>
+    :root {
+      --ebv-bg: #f7f8f2;
+      --ebv-surface: #ffffff;
+      --ebv-ink: #172017;
+      --ebv-muted: #5b665d;
+      --ebv-line: #dfe5d8;
+      --ebv-green: #0b7a53;
+      --ebv-green-dark: #075d3e;
+      --ebv-blue: #1f5ed6;
+      --ebv-amber: #b86c13;
+      --ebv-amber-soft: #fff5df;
+      --ebv-red: #b42318;
+      --ebv-red-soft: #fff0ee;
+      --ebv-soft: #edf6ef;
+      --ebv-radius: 18px;
+      --ebv-shadow: 0 18px 44px rgba(23, 32, 23, .08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--ebv-bg);
+      color: var(--ebv-ink);
+      font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--ebv-green-dark);
+      text-underline-offset: 3px;
+    }
+
+    .ebv-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .ebv-nav {
+      background: #132016;
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .ebv-nav .ebv-shell {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .ebv-brand {
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: .03em;
+      text-decoration: none;
+    }
+
+    .ebv-brand span {
+      color: #79d99d;
+    }
+
+    .ebv-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-end;
+      font-size: .92rem;
+      font-weight: 700;
+    }
+
+    .ebv-nav-links a {
+      color: rgba(255, 255, 255, .84);
+      text-decoration: none;
+    }
+
+    .ebv-nav-links a:hover {
+      color: #fff;
+    }
+
+    .ebv-hero {
+      padding: 52px 0 30px;
+      background: linear-gradient(180deg, #eaf4e8 0%, var(--ebv-bg) 100%);
+      border-bottom: 1px solid var(--ebv-line);
+    }
+
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 18px;
+      color: var(--ebv-muted);
+      font-size: .92rem;
+    }
+
+    .ebv-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+      gap: 26px;
+      align-items: end;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      color: var(--ebv-ink);
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 1.03;
+      letter-spacing: 0;
+      max-width: 760px;
+    }
+
+    .ebv-lede {
+      margin: 0;
+      color: var(--ebv-muted);
+      font-size: 1.08rem;
+      max-width: 760px;
+    }
+
+    .ebv-freshness {
+      background: var(--ebv-surface);
+      border: 1px solid var(--ebv-line);
+      border-radius: var(--ebv-radius);
+      padding: 18px;
+      box-shadow: var(--ebv-shadow);
+    }
+
+    .ebv-eyebrow,
+    .ebv-freshness strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ebv-green-dark);
+      font-size: .78rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .ebv-freshness p {
+      margin: 0;
+      color: var(--ebv-muted);
+      font-size: .95rem;
+    }
+
+    .ebv-main {
+      padding: 30px 0 56px;
+    }
+
+    .ebv-tool-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .ebv-panel {
+      background: var(--ebv-surface);
+      border: 1px solid var(--ebv-line);
+      border-radius: var(--ebv-radius);
+      box-shadow: var(--ebv-shadow);
+    }
+
+    .ebv-form-panel {
+      position: sticky;
+      top: 18px;
+      padding: 22px;
+    }
+
+    .ebv-section-title {
+      margin-bottom: 18px;
+    }
+
+    .ebv-section-title h2,
+    .ebv-result-heading h2,
+    .ebv-info h2 {
+      margin: 0;
+      color: var(--ebv-ink);
+      font-size: 1.25rem;
+      letter-spacing: 0;
+    }
+
+    .ebv-section-title p,
+    .ebv-result-heading p,
+    .ebv-info p {
+      margin: 6px 0 0;
+      color: var(--ebv-muted);
+      font-size: .95rem;
+    }
+
+    .ebv-input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .ebv-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ebv-field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #243329;
+      font-size: .88rem;
+      font-weight: 750;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid #cbd8cf;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ebv-ink);
+      font: inherit;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    button:focus-visible {
+      border-color: var(--ebv-blue);
+      box-shadow: 0 0 0 3px rgba(31, 94, 214, .14);
+    }
+
+    .ebv-help {
+      color: var(--ebv-muted);
+      font-size: .78rem;
+    }
+
+    .ebv-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .ebv-button {
+      min-height: 46px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: #fff;
+      color: var(--ebv-ink);
+      font: inherit;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .ebv-button.primary {
+      background: var(--ebv-green);
+      color: #fff;
+    }
+
+    .ebv-button.primary:hover {
+      background: var(--ebv-green-dark);
+    }
+
+    .ebv-button.secondary {
+      border-color: var(--ebv-line);
+    }
+
+    .ebv-button.secondary:hover {
+      border-color: var(--ebv-green);
+      color: var(--ebv-green-dark);
+    }
+
+    .ebv-result-panel {
+      padding: 22px;
+    }
+
+    .ebv-result-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .ebv-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--ebv-soft);
+      color: var(--ebv-green-dark);
+      font-size: .78rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .ebv-output-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .ebv-output-card {
+      min-height: 126px;
+      border: 1px solid var(--ebv-line);
+      border-radius: 16px;
+      background: #fbfdfa;
+      padding: 16px;
+    }
+
+    .ebv-output-card span {
+      display: block;
+      color: var(--ebv-muted);
+      font-size: .78rem;
+      font-weight: 850;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .ebv-output-card output {
+      display: block;
+      margin-top: 10px;
+      color: var(--ebv-ink);
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .ebv-output-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--ebv-muted);
+      font-size: .8rem;
+    }
+
+    .ebv-breakdown {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .ebv-side {
+      border: 1px solid var(--ebv-line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .ebv-side h3 {
+      margin: 0;
+      padding: 14px 16px;
+      background: #f1f7ef;
+      border-bottom: 1px solid var(--ebv-line);
+      font-size: 1rem;
+    }
+
+    .ebv-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .ebv-table th,
+    .ebv-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--ebv-line);
+      text-align: left;
+      vertical-align: top;
+      font-size: .92rem;
+    }
+
+    .ebv-table tr:last-child th,
+    .ebv-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .ebv-table th {
+      width: 46%;
+      color: var(--ebv-muted);
+      font-weight: 750;
+    }
+
+    .ebv-dispute {
+      margin-top: 16px;
+      border: 1px solid #f0d7a6;
+      border-radius: 16px;
+      background: var(--ebv-amber-soft);
+      padding: 18px;
+    }
+
+    .ebv-dispute h3 {
+      margin: 0 0 8px;
+      color: var(--ebv-ink);
+      font-size: 1.08rem;
+    }
+
+    .ebv-dispute p,
+    .ebv-dispute ul {
+      margin: 8px 0 0;
+      color: #493922;
+    }
+
+    .ebv-dispute ul {
+      padding-left: 20px;
+    }
+
+    .ebv-share-note {
+      min-height: 22px;
+      margin-top: 8px;
+      color: var(--ebv-green-dark);
+      font-size: .88rem;
+      font-weight: 750;
+    }
+
+    .ebv-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .ebv-info {
+      padding: 20px;
+    }
+
+    .ebv-info ol,
+    .ebv-info ul {
+      margin: 12px 0 0;
+      padding-left: 20px;
+      color: var(--ebv-muted);
+    }
+
+    .ebv-info li + li {
+      margin-top: 8px;
+    }
+
+    .ebv-related {
+      margin-top: 24px;
+      padding: 22px;
+    }
+
+    .ebv-link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .ebv-link-card {
+      display: block;
+      min-height: 92px;
+      border: 1px solid var(--ebv-line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fff;
+      text-decoration: none;
+    }
+
+    .ebv-link-card strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ebv-ink);
+    }
+
+    .ebv-link-card span {
+      color: var(--ebv-muted);
+      font-size: .88rem;
+    }
+
+    .ebv-footer {
+      border-top: 1px solid var(--ebv-line);
+      background: #132016;
+      color: rgba(255, 255, 255, .78);
+      padding: 24px 0;
+      font-size: .9rem;
+    }
+
+    .ebv-footer .ebv-shell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ebv-footer a {
+      color: #fff;
+    }
+
+    @media (max-width: 980px) {
+      .ebv-hero-grid,
+      .ebv-tool-grid,
+      .ebv-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ebv-form-panel {
+        position: static;
+      }
+
+      .ebv-output-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .ebv-shell {
+        width: min(100% - 22px, 1180px);
+      }
+
+      .ebv-hero {
+        padding-top: 34px;
+      }
+
+      .ebv-nav .ebv-shell {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 14px 0;
+      }
+
+      .ebv-nav-links {
+        justify-content: flex-start;
+      }
+
+      .ebv-input-grid,
+      .ebv-output-grid,
+      .ebv-breakdown,
+      .ebv-link-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ebv-result-heading {
+        display: block;
+      }
+
+      .ebv-badge {
+        margin-top: 12px;
+      }
+
+      .ebv-actions {
+        flex-direction: column;
+      }
+
+      .ebv-button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      .ebv-nav,
+      .ebv-form-panel,
+      .ebv-actions,
+      .ebv-related {
+        display: none !important;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .ebv-tool-grid,
+      .ebv-info-grid {
+        display: block;
+      }
+
+      .ebv-panel {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/electricity-bill-verify/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ukaguzi-wa-bili-ya-umeme/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/electricity-bill-verify/" />
 </head>
 <body>
-<afro-navbar theme="dark" active="energy"></afro-navbar>
-<section class="en-tool-hero"><div class="container">
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Electricity Bill Verifier</nav>
-<h1>🔍 <em>Electricity Bill Verifier</em></h1>
-<p class="en-tool-hero-sub">Free Electricity Bill Verifier for Africa's top 15 economies. Select your country for local rates and data.</p>
-</div></section>
-<main class="en-main">
-<section class="en-hub"><div class="container">
-<h2>Select Your Country</h2>
-<div class="en-hub-country-grid">
-<a href="/tools/electricity-bill-verify/nigeria/" class="en-country-card"><span class="en-country-flag">🇳🇬</span><span class="en-country-name">Nigeria</span></a>
-<a href="/tools/electricity-bill-verify/kenya/" class="en-country-card"><span class="en-country-flag">🇰🇪</span><span class="en-country-name">Kenya</span></a>
-<a href="/tools/electricity-bill-verify/south-africa/" class="en-country-card"><span class="en-country-flag">🇿🇦</span><span class="en-country-name">South Africa</span></a>
-<a href="/tools/electricity-bill-verify/ghana/" class="en-country-card"><span class="en-country-flag">🇬🇭</span><span class="en-country-name">Ghana</span></a>
-<a href="/tools/electricity-bill-verify/egypt/" class="en-country-card"><span class="en-country-flag">🇪🇬</span><span class="en-country-name">Egypt</span></a>
-<a href="/tools/electricity-bill-verify/ethiopia/" class="en-country-card"><span class="en-country-flag">🇪🇹</span><span class="en-country-name">Ethiopia</span></a>
-<a href="/tools/electricity-bill-verify/tanzania/" class="en-country-card"><span class="en-country-flag">🇹🇿</span><span class="en-country-name">Tanzania</span></a>
-<a href="/tools/electricity-bill-verify/uganda/" class="en-country-card"><span class="en-country-flag">🇺🇬</span><span class="en-country-name">Uganda</span></a>
-<a href="/tools/electricity-bill-verify/rwanda/" class="en-country-card"><span class="en-country-flag">🇷🇼</span><span class="en-country-name">Rwanda</span></a>
-<a href="/tools/electricity-bill-verify/cote-divoire/" class="en-country-card"><span class="en-country-flag">🇨🇮</span><span class="en-country-name">Côte d'Ivoire</span></a>
-<a href="/tools/electricity-bill-verify/cameroon/" class="en-country-card"><span class="en-country-flag">🇨🇲</span><span class="en-country-name">Cameroon</span></a>
-<a href="/tools/electricity-bill-verify/senegal/" class="en-country-card"><span class="en-country-flag">🇸🇳</span><span class="en-country-name">Senegal</span></a>
-<a href="/tools/electricity-bill-verify/morocco/" class="en-country-card"><span class="en-country-flag">🇲🇦</span><span class="en-country-name">Morocco</span></a>
-<a href="/tools/electricity-bill-verify/tunisia/" class="en-country-card"><span class="en-country-flag">🇹🇳</span><span class="en-country-name">Tunisia</span></a>
-<a href="/tools/electricity-bill-verify/angola/" class="en-country-card"><span class="en-country-flag">🇦🇴</span><span class="en-country-name">Angola</span></a>
-</div>
-</div></section>
+  <nav class="ebv-nav" aria-label="Site navigation">
+    <div class="ebv-shell">
+      <a class="ebv-brand" href="/">AFRO<span>TOOLS</span></a>
+      <div class="ebv-nav-links">
+        <a href="/energy/">Energy</a>
+        <a href="/tools/">Tools</a>
+        <a href="/all-tools/">All tools</a>
+        <a href="/custom-calculators/">Custom calculators</a>
+      </div>
+    </div>
+  </nav>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-  <wise-cta context="general"></wise-cta>
-</div>
-</main>
-<afro-footer></afro-footer>
-<script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
+  <header class="ebv-hero">
+    <div class="ebv-shell">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/energy/">Energy &amp; Utilities</a>
+        <span>/</span>
+        <span>Electricity Bill Verifier</span>
+      </nav>
+      <div class="ebv-hero-grid">
+        <div>
+          <h1>Electricity Bill Verifier</h1>
+          <p class="ebv-lede">Check whether a power bill is close to the amount your kWh usage, tariff, fixed charges, VAT, arrears, and meter type suggest. Export the variance and a dispute checklist before calling the utility.</p>
+        </div>
+        <aside class="ebv-freshness" aria-label="Sources and verification note">
+          <strong>Sources &amp; Verification</strong>
+          <p>Reviewed 16 May 2026. Use your current bill, meter reading, tariff sheet, utility notice, and official electricity regulator or energy authority updates. This page does not use live tariff feeds.</p>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <main class="ebv-main">
+    <div class="ebv-shell">
+      <div class="ebv-tool-grid">
+        <form class="ebv-panel ebv-form-panel" id="bill-form">
+          <div class="ebv-section-title">
+            <span class="ebv-eyebrow">Editable assumptions</span>
+            <h2>Bill inputs</h2>
+            <p>Enter the figures exactly as they appear on the bill or tariff notice.</p>
+          </div>
+
+          <div class="ebv-input-grid">
+            <div class="ebv-field">
+              <label for="country">Country</label>
+              <select id="country" name="country">
+                <option value="NG" selected>Nigeria</option>
+                <option value="KE">Kenya</option>
+                <option value="ZA">South Africa</option>
+                <option value="GH">Ghana</option>
+                <option value="EG">Egypt</option>
+                <option value="TZ">Tanzania</option>
+                <option value="UG">Uganda</option>
+                <option value="RW">Rwanda</option>
+                <option value="CI">Cote d'Ivoire</option>
+                <option value="CM">Cameroon</option>
+                <option value="SN">Senegal</option>
+                <option value="MA">Morocco</option>
+                <option value="TN">Tunisia</option>
+                <option value="AO">Angola</option>
+                <option value="OTHER">Other country</option>
+              </select>
+            </div>
+
+            <div class="ebv-field">
+              <label for="currency">Currency</label>
+              <select id="currency" name="currency">
+                <option value="NGN" selected>NGN - Nigerian naira</option>
+                <option value="KES">KES - Kenyan shilling</option>
+                <option value="ZAR">ZAR - South African rand</option>
+                <option value="GHS">GHS - Ghana cedi</option>
+                <option value="EGP">EGP - Egyptian pound</option>
+                <option value="TZS">TZS - Tanzanian shilling</option>
+                <option value="UGX">UGX - Ugandan shilling</option>
+                <option value="RWF">RWF - Rwandan franc</option>
+                <option value="XOF">XOF - West African CFA franc</option>
+                <option value="XAF">XAF - Central African CFA franc</option>
+                <option value="MAD">MAD - Moroccan dirham</option>
+                <option value="TND">TND - Tunisian dinar</option>
+                <option value="AOA">AOA - Angolan kwanza</option>
+                <option value="USD">USD - US dollar</option>
+              </select>
+            </div>
+
+            <div class="ebv-field">
+              <label for="period-start">Billing period start</label>
+              <input id="period-start" name="periodStart" type="date" value="2026-04-01">
+            </div>
+
+            <div class="ebv-field">
+              <label for="period-end">Billing period end</label>
+              <input id="period-end" name="periodEnd" type="date" value="2026-04-30">
+            </div>
+
+            <div class="ebv-field">
+              <label for="meter-type">Meter type</label>
+              <select id="meter-type" name="meterType">
+                <option value="prepaid" selected>Prepaid meter</option>
+                <option value="postpaid">Postpaid meter</option>
+                <option value="estimated">Estimated bill</option>
+                <option value="commercial">Commercial meter</option>
+              </select>
+            </div>
+
+            <div class="ebv-field">
+              <label for="kwh">kWh consumed</label>
+              <input id="kwh" name="kwh" type="number" min="0" step="0.01" value="140">
+            </div>
+
+            <div class="ebv-field">
+              <label for="tariff">Tariff per kWh</label>
+              <input id="tariff" name="tariff" type="number" min="0" step="0.01" value="220">
+              <span class="ebv-help">Use the unit rate for your tariff band or service class.</span>
+            </div>
+
+            <div class="ebv-field">
+              <label for="fixed-charge">Fixed charge for period</label>
+              <input id="fixed-charge" name="fixedCharge" type="number" min="0" step="0.01" value="1500">
+            </div>
+
+            <div class="ebv-field">
+              <label for="tax-rate">VAT or tax rate (%)</label>
+              <input id="tax-rate" name="taxRate" type="number" min="0" max="100" step="0.01" value="7.5">
+            </div>
+
+            <div class="ebv-field">
+              <label for="arrears">Arrears or balance brought forward</label>
+              <input id="arrears" name="arrears" type="number" step="0.01" value="0">
+            </div>
+
+            <div class="ebv-field">
+              <label for="actual-bill">Actual bill amount</label>
+              <input id="actual-bill" name="actualBill" type="number" min="0" step="0.01" value="36000">
+            </div>
+
+            <div class="ebv-field">
+              <label for="previous-bill">Previous bill amount (optional)</label>
+              <input id="previous-bill" name="previousBill" type="number" min="0" step="0.01" value="28500">
+            </div>
+          </div>
+
+          <div class="ebv-actions">
+            <button class="ebv-button primary" type="submit">Verify bill</button>
+            <button class="ebv-button secondary" type="button" id="reset-defaults">Reset defaults</button>
+          </div>
+          <p class="ebv-help">Results are calculated in your browser. Confirm final disputes with your utility or regulator.</p>
+        </form>
+
+        <section class="ebv-panel ebv-result-panel result-output" id="results" aria-live="polite">
+          <div class="ebv-result-heading">
+            <div>
+              <h2>Verification result</h2>
+              <p id="scenario-summary">Enter your bill data to compare expected and actual charges.</p>
+            </div>
+            <span class="ebv-badge" id="charge-status">Ready to verify</span>
+          </div>
+
+          <div class="ebv-output-grid">
+            <div class="ebv-output-card">
+              <span>Expected bill</span>
+              <output id="expected-bill">-</output>
+              <small id="expected-note">Energy plus charges</small>
+            </div>
+            <div class="ebv-output-card">
+              <span>Variance</span>
+              <output id="variance">-</output>
+              <small id="variance-note">Actual bill minus expected bill</small>
+            </div>
+            <div class="ebv-output-card">
+              <span>Likely status</span>
+              <output id="charge-label">-</output>
+              <small id="charge-note">Overcharge, undercharge, or close match</small>
+            </div>
+            <div class="ebv-output-card">
+              <span>Unit cost</span>
+              <output id="unit-cost">-</output>
+              <small id="unit-note">Expected bill divided by kWh</small>
+            </div>
+          </div>
+
+          <div class="ebv-breakdown" aria-label="Bill breakdown and anomaly detection">
+            <div class="ebv-side">
+              <h3>Expected bill breakdown</h3>
+              <table class="ebv-table">
+                <tbody>
+                  <tr><th>Energy charge</th><td id="energy-charge">-</td></tr>
+                  <tr><th>Fixed charge</th><td id="fixed-charge-output">-</td></tr>
+                  <tr><th>VAT or tax</th><td id="tax-output">-</td></tr>
+                  <tr><th>Arrears</th><td id="arrears-output">-</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="ebv-side">
+              <h3>Anomaly detection</h3>
+              <table class="ebv-table">
+                <tbody>
+                  <tr><th>Billing period</th><td id="period-output">-</td></tr>
+                  <tr><th>Meter risk</th><td id="meter-risk">-</td></tr>
+                  <tr><th>Previous bill movement</th><td id="previous-output">-</td></tr>
+                  <tr><th>Evidence priority</th><td id="evidence-priority">-</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="ebv-dispute">
+            <h3>Dispute checklist</h3>
+            <p id="dispute-summary">The checklist updates with the strongest checks for your bill variance.</p>
+            <ul id="checklist-output">
+              <li>Confirm the opening and closing meter readings for the billing period.</li>
+              <li>Compare the tariff class and meter type with your account details.</li>
+              <li>Keep a copy of the bill, payment receipts, meter photo, and tariff notice.</li>
+            </ul>
+          </div>
+
+          <div class="ebv-actions">
+            <button class="ebv-button secondary" type="button" id="copy-result">Copy result</button>
+            <button class="ebv-button secondary" type="button" id="export-csv">Export CSV</button>
+            <button class="ebv-button secondary" type="button" id="print-result">Print</button>
+          </div>
+          <p class="ebv-share-note" id="share-note" role="status"></p>
+        </section>
+      </div>
+
+      <section class="ebv-info-grid" aria-label="Methodology, source notes, and disclaimer">
+        <article class="ebv-panel ebv-info">
+          <h2>Methodology</h2>
+          <p>The calculation method rebuilds the bill from your tariff inputs, then compares the result with the actual bill.</p>
+          <ol>
+            <li>Energy charge = kWh consumed x tariff per kWh.</li>
+            <li>Taxable base = energy charge + fixed charge.</li>
+            <li>VAT or tax = taxable base x tax rate.</li>
+            <li>Expected bill = energy charge + fixed charge + tax + arrears.</li>
+            <li>Variance = actual bill - expected bill. Positive values suggest a possible overcharge.</li>
+          </ol>
+        </article>
+
+        <article class="ebv-panel ebv-info">
+          <h2>Source and freshness</h2>
+          <p>Use current local records. The page is not a live tariff database and does not claim official bill approval.</p>
+          <ul>
+            <li>Source data: your bill, meter token receipt, account statement, and published tariff notice.</li>
+            <li>Official check: confirm tariff changes with your electricity distributor, utility authority, energy commission, or regulator.</li>
+            <li>Freshness note: reviewed 16 May 2026. Update the tariff, tax, and fixed charge whenever your provider changes rates.</li>
+          </ul>
+        </article>
+
+        <article class="ebv-panel ebv-info">
+          <h2>Disclaimer</h2>
+          <p>This tool is an estimate only. It does not replace the utility's official account ledger, a licensed meter test, regulator decision, or legal advice.</p>
+          <ul>
+            <li>Tiered tariffs, demand charges, subsidies, estimated reads, penalties, and connection fees can change the bill.</li>
+            <li>If the variance is material, request the detailed billing calculation before paying a disputed amount.</li>
+            <li>For disconnection risk or safety issues, contact the utility or regulator directly.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="ebv-panel ebv-related" aria-label="Related electricity and outage tools">
+        <div class="ebv-section-title">
+          <span class="ebv-eyebrow">Related tools</span>
+          <h2>Cross-check the whole electricity picture</h2>
+          <p>Use these calculators to compare tariff assumptions, prepaid tokens, backup power, and outage cost.</p>
+        </div>
+        <div class="ebv-link-grid">
+          <a class="ebv-link-card" href="/tools/electricity-tariff/"><strong>Electricity Tariff Calculator</strong><span>Model tariff bands and fixed charges.</span></a>
+          <a class="ebv-link-card" href="/tools/prepaid-meter/"><strong>Prepaid Meter Calculator</strong><span>Estimate token units after service charges.</span></a>
+          <a class="ebv-link-card" href="/tools/electricity-estimator/"><strong>Electricity Bill Estimator</strong><span>Estimate usage and monthly grid cost.</span></a>
+          <a class="ebv-link-card" href="/tools/outage-cost/"><strong>Outage Cost for Business</strong><span>Calculate lost revenue during power cuts.</span></a>
+          <a class="ebv-link-card" href="/tools/backup-power-costs/"><strong>Backup Power Costs</strong><span>Compare generator, LPG, inverter, and solar backup.</span></a>
+          <a class="ebv-link-card" href="/tools/solar-vs-generator/"><strong>Solar vs Generator</strong><span>Compare long-term backup costs and payback.</span></a>
+          <a class="ebv-link-card" href="/widgets/"><strong>Embed a calculator</strong><span>Add AfroTools widgets to an energy or consumer-rights site.</span></a>
+          <a class="ebv-link-card" href="/api/"><strong>AfroTools API</strong><span>Use calculator workflows in your own product.</span></a>
+          <a class="ebv-link-card" href="/custom-calculators/"><strong>Custom calculators</strong><span>Build a sponsored utility or tariff checker.</span></a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="ebv-footer">
+    <div class="ebv-shell">
+      <span>AfroTools bill verification tools are informational planning tools. Verify final disputes with the utility or regulator.</span>
+      <span><a href="/privacy/">Privacy</a> | <a href="/terms/">Terms</a> | <a href="/contact/">Contact</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const countryDefaults = {
+        NG: { currency: 'NGN', tariff: 220, fixedCharge: 1500, taxRate: 7.5 },
+        KE: { currency: 'KES', tariff: 32, fixedCharge: 300, taxRate: 16 },
+        ZA: { currency: 'ZAR', tariff: 3.25, fixedCharge: 180, taxRate: 15 },
+        GH: { currency: 'GHS', tariff: 2.4, fixedCharge: 12, taxRate: 15 },
+        EG: { currency: 'EGP', tariff: 1.45, fixedCharge: 10, taxRate: 14 },
+        TZ: { currency: 'TZS', tariff: 350, fixedCharge: 2500, taxRate: 18 },
+        UG: { currency: 'UGX', tariff: 900, fixedCharge: 3500, taxRate: 18 },
+        RW: { currency: 'RWF', tariff: 260, fixedCharge: 1200, taxRate: 18 },
+        CI: { currency: 'XOF', tariff: 90, fixedCharge: 1500, taxRate: 18 },
+        CM: { currency: 'XAF', tariff: 95, fixedCharge: 1500, taxRate: 19.25 },
+        SN: { currency: 'XOF', tariff: 115, fixedCharge: 1500, taxRate: 18 },
+        MA: { currency: 'MAD', tariff: 1.4, fixedCharge: 18, taxRate: 14 },
+        TN: { currency: 'TND', tariff: 0.25, fixedCharge: 2, taxRate: 19 },
+        AO: { currency: 'AOA', tariff: 50, fixedCharge: 750, taxRate: 14 },
+        OTHER: { currency: 'USD', tariff: 0.18, fixedCharge: 2, taxRate: 0 }
+      };
+
+      const defaults = {
+        country: 'NG',
+        currency: 'NGN',
+        periodStart: '2026-04-01',
+        periodEnd: '2026-04-30',
+        meterType: 'prepaid',
+        kwh: 140,
+        tariff: 220,
+        fixedCharge: 1500,
+        taxRate: 7.5,
+        arrears: 0,
+        actualBill: 36000,
+        previousBill: 28500
+      };
+
+      const form = document.getElementById('bill-form');
+      const fields = Array.from(form.elements).filter((field) => field.name);
+      const ids = [
+        'scenario-summary', 'charge-status', 'expected-bill', 'expected-note', 'variance',
+        'variance-note', 'charge-label', 'charge-note', 'unit-cost', 'unit-note',
+        'energy-charge', 'fixed-charge-output', 'tax-output', 'arrears-output',
+        'period-output', 'meter-risk', 'previous-output', 'evidence-priority',
+        'dispute-summary', 'checklist-output', 'share-note'
+      ];
+      const el = ids.reduce((map, id) => {
+        map[id] = document.getElementById(id);
+        return map;
+      }, {});
+      let latest = null;
+      let userEditedTariff = false;
+
+      function value(name) {
+        const field = form.elements[name];
+        if (!field) return 0;
+        if (field.tagName === 'SELECT' || field.type === 'date') return field.value;
+        return Number(field.value || 0);
+      }
+
+      function dateDiffDays(start, end) {
+        const startTime = Date.parse(start);
+        const endTime = Date.parse(end);
+        if (!Number.isFinite(startTime) || !Number.isFinite(endTime)) return 0;
+        return Math.max(1, Math.round((endTime - startTime) / 86400000) + 1);
+      }
+
+      function getInputs() {
+        return {
+          country: value('country'),
+          currency: value('currency'),
+          periodStart: value('periodStart'),
+          periodEnd: value('periodEnd'),
+          meterType: value('meterType'),
+          kwh: Math.max(0, value('kwh')),
+          tariff: Math.max(0, value('tariff')),
+          fixedCharge: Math.max(0, value('fixedCharge')),
+          taxRate: Math.max(0, value('taxRate')),
+          arrears: value('arrears'),
+          actualBill: Math.max(0, value('actualBill')),
+          previousBill: Math.max(0, value('previousBill'))
+        };
+      }
+
+      function money(amount, currency) {
+        const safeAmount = Number.isFinite(amount) ? amount : 0;
+        try {
+          return new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency,
+            maximumFractionDigits: Math.abs(safeAmount) >= 1000 ? 0 : 2
+          }).format(safeAmount);
+        } catch (error) {
+          return currency + ' ' + safeAmount.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        }
+      }
+
+      function pct(value) {
+        return Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 1 }) + '%';
+      }
+
+      function number(value, digits) {
+        return Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: digits });
+      }
+
+      function calculate(input) {
+        const days = dateDiffDays(input.periodStart, input.periodEnd);
+        const energyCharge = input.kwh * input.tariff;
+        const taxableBase = energyCharge + input.fixedCharge;
+        const tax = taxableBase * input.taxRate / 100;
+        const expectedBill = energyCharge + input.fixedCharge + tax + input.arrears;
+        const variance = input.actualBill - expectedBill;
+        const variancePct = expectedBill ? variance / expectedBill * 100 : 0;
+        const unitCost = input.kwh > 0 ? expectedBill / input.kwh : 0;
+        const previousChange = input.previousBill > 0 ? (input.actualBill - input.previousBill) / input.previousBill * 100 : 0;
+        const materialVariance = Math.max(expectedBill * 0.05, 1);
+        let status = 'Close match';
+        if (variance > materialVariance) status = 'Possible overcharge';
+        if (variance < -materialVariance) status = 'Possible undercharge';
+
+        return {
+          input,
+          days,
+          energyCharge,
+          taxableBase,
+          tax,
+          expectedBill,
+          variance,
+          variancePct,
+          unitCost,
+          previousChange,
+          materialVariance,
+          status
+        };
+      }
+
+      function checklist(result) {
+        const input = result.input;
+        const items = [
+          'Take a photo of the current meter reading and compare it with the bill reading.',
+          'Confirm the tariff class, meter type, and billing period on the account profile.',
+          'Ask the utility for the detailed calculation showing energy, fixed charge, tax, arrears, and adjustments.'
+        ];
+
+        if (result.status === 'Possible overcharge') {
+          items.unshift('Open a billing query for the overcharge variance before the dispute deadline.');
+          items.push('Request reversal or credit if the provider used the wrong tariff, wrong reading, or duplicate fixed charge.');
+        } else if (result.status === 'Possible undercharge') {
+          items.unshift('Keep funds aside for a possible correction because the bill is below the expected amount.');
+        } else {
+          items.unshift('The bill is within the tolerance range, but still verify meter readings and arrears.');
+        }
+
+        if (input.meterType === 'estimated') {
+          items.push('Estimated bill flag: request an actual meter read or submit a dated meter photo.');
+        }
+        if (Math.abs(result.previousChange) >= 25 && input.previousBill > 0) {
+          items.push('Previous bill anomaly: ask why the bill changed by more than 25% from the prior period.');
+        }
+        if (input.arrears > 0) {
+          items.push('Arrears included: reconcile the balance brought forward with receipts and prior statements.');
+        }
+        if (input.kwh === 0 && input.actualBill > 0) {
+          items.push('Zero kWh with a positive bill: check minimum charges, estimated billing, or a meter data issue.');
+        }
+        items.push('Escalate unresolved disputes to the electricity regulator, consumer authority, or energy commission where available.');
+        return items;
+      }
+
+      function meterRisk(input) {
+        if (input.meterType === 'estimated') return 'High risk: estimated bill needs reading proof.';
+        if (input.meterType === 'commercial') return 'Check demand charges and service class.';
+        if (input.meterType === 'postpaid') return 'Check opening and closing readings.';
+        return 'Check token receipt, service charge, and units credited.';
+      }
+
+      function render(result) {
+        latest = result;
+        const input = result.input;
+        const absVariance = Math.abs(result.variance);
+        const varianceText = `${money(absVariance, input.currency)} ${result.variance >= 0 ? 'above expected' : 'below expected'}`;
+        const list = checklist(result);
+
+        el['scenario-summary'].textContent = `${input.country} ${input.meterType} bill for ${number(input.kwh, 1)} kWh over ${result.days} days.`;
+        el['charge-status'].textContent = result.status;
+        el['expected-bill'].textContent = money(result.expectedBill, input.currency);
+        el['expected-note'].textContent = `${money(result.energyCharge, input.currency)} energy charge plus charges`;
+        el['variance'].textContent = money(result.variance, input.currency);
+        el['variance-note'].textContent = `${varianceText}, ${pct(result.variancePct)} variance`;
+        el['charge-label'].textContent = result.status;
+        el['charge-note'].textContent = result.status === 'Close match' ? 'Within 5% tolerance band' : 'Outside 5% tolerance band';
+        el['unit-cost'].textContent = money(result.unitCost, input.currency);
+        el['unit-note'].textContent = `Blended unit cost for ${number(input.kwh, 1)} kWh`;
+        el['energy-charge'].textContent = `${money(result.energyCharge, input.currency)} at ${money(input.tariff, input.currency)} per kWh`;
+        el['fixed-charge-output'].textContent = money(input.fixedCharge, input.currency);
+        el['tax-output'].textContent = `${money(result.tax, input.currency)} at ${pct(input.taxRate)}`;
+        el['arrears-output'].textContent = money(input.arrears, input.currency);
+        el['period-output'].textContent = `${result.days} days from ${input.periodStart} to ${input.periodEnd}`;
+        el['meter-risk'].textContent = meterRisk(input);
+        el['previous-output'].textContent = input.previousBill > 0 ? `${pct(result.previousChange)} from ${money(input.previousBill, input.currency)}` : 'No previous bill entered';
+        el['evidence-priority'].textContent = result.status === 'Close match' ? 'Low: keep records' : 'High: collect readings and tariff proof';
+        el['dispute-summary'].textContent = result.status === 'Possible overcharge'
+          ? 'This bill appears higher than expected. Focus on reading, tariff, fixed charge, tax, and arrears evidence.'
+          : result.status === 'Possible undercharge'
+            ? 'This bill appears lower than expected. It may be a subsidy, credit, missing arrears, or future correction.'
+            : 'This bill is close to the rebuilt estimate. Keep records and confirm any unusual line item.';
+        el['checklist-output'].innerHTML = list.map((item) => `<li>${item}</li>`).join('');
+
+        try {
+          localStorage.setItem('electricityBillVerifyLastResult', JSON.stringify({
+            input,
+            expectedBill: result.expectedBill,
+            variance: result.variance,
+            status: result.status,
+            savedAt: new Date().toISOString()
+          }));
+        } catch (error) {}
+      }
+
+      function calculateAndRender() {
+        render(calculate(getInputs()));
+        el['share-note'].textContent = '';
+      }
+
+      function applyCountryDefaults() {
+        const selected = countryDefaults[value('country')] || countryDefaults.OTHER;
+        form.elements.currency.value = selected.currency;
+        if (!userEditedTariff) {
+          form.elements.tariff.value = selected.tariff;
+          form.elements.fixedCharge.value = selected.fixedCharge;
+          form.elements.taxRate.value = selected.taxRate;
+        }
+      }
+
+      function asRows(result) {
+        const input = result.input;
+        return [
+          ['Metric', 'Value'],
+          ['Country', input.country],
+          ['Currency', input.currency],
+          ['Billing period start', input.periodStart],
+          ['Billing period end', input.periodEnd],
+          ['Billing days', result.days],
+          ['Meter type', input.meterType],
+          ['kWh consumed', input.kwh],
+          ['Tariff per kWh', input.tariff],
+          ['Fixed charge', input.fixedCharge],
+          ['VAT or tax rate', input.taxRate],
+          ['Arrears', input.arrears],
+          ['Actual bill', input.actualBill],
+          ['Expected bill', result.expectedBill.toFixed(2)],
+          ['Variance', result.variance.toFixed(2)],
+          ['Variance percent', result.variancePct.toFixed(2)],
+          ['Likely status', result.status],
+          ['Unit cost', result.unitCost.toFixed(4)],
+          ['Previous bill', input.previousBill],
+          ['Previous bill movement percent', result.previousChange.toFixed(2)],
+          ['Reviewed', '2026-05-16']
+        ];
+      }
+
+      function toCsv(rows) {
+        return rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+      }
+
+      function resultText(result) {
+        const input = result.input;
+        return [
+          'Electricity Bill Verifier - AfroTools',
+          `Country: ${input.country}`,
+          `Billing period: ${input.periodStart} to ${input.periodEnd} (${result.days} days)`,
+          `Meter type: ${input.meterType}`,
+          `kWh consumed: ${input.kwh}`,
+          `Expected bill: ${money(result.expectedBill, input.currency)}`,
+          `Actual bill: ${money(input.actualBill, input.currency)}`,
+          `Variance: ${money(result.variance, input.currency)} (${pct(result.variancePct)})`,
+          `Likely status: ${result.status}`,
+          `Unit cost: ${money(result.unitCost, input.currency)} per kWh`,
+          'Disclaimer: estimate only. Verify readings, tariff class, tax, arrears, and official utility or regulator guidance.'
+        ].join('\n');
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        calculateAndRender();
+      });
+
+      fields.forEach((field) => {
+        field.addEventListener('input', () => {
+          if (field.name === 'tariff' || field.name === 'fixedCharge' || field.name === 'taxRate') userEditedTariff = true;
+          calculateAndRender();
+        });
+        field.addEventListener('change', () => {
+          if (field.name === 'country') applyCountryDefaults();
+          calculateAndRender();
+        });
+      });
+
+      document.getElementById('reset-defaults').addEventListener('click', () => {
+        Object.keys(defaults).forEach((name) => {
+          if (form.elements[name]) form.elements[name].value = defaults[name];
+        });
+        userEditedTariff = false;
+        calculateAndRender();
+      });
+
+      document.getElementById('copy-result').addEventListener('click', async () => {
+        if (!latest) calculateAndRender();
+        try {
+          await navigator.clipboard.writeText(resultText(latest));
+          el['share-note'].textContent = 'Result copied to clipboard.';
+        } catch (error) {
+          el['share-note'].textContent = 'Copy was blocked by the browser. Use Export CSV or Print instead.';
+        }
+      });
+
+      document.getElementById('export-csv').addEventListener('click', () => {
+        if (!latest) calculateAndRender();
+        const blob = new Blob([toCsv(asRows(latest))], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'electricity-bill-verification.csv';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        el['share-note'].textContent = 'CSV export created.';
+      });
+
+      document.getElementById('print-result').addEventListener('click', () => {
+        window.print();
+      });
+
+      calculateAndRender();
+    })();
+  </script>
 </body>
 </html>
