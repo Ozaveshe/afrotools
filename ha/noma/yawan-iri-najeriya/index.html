@@ -26,11 +26,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-  <link rel="stylesheet" href="/ha/assets/agriculture-ha.css?v=f82d5505">
-  <script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+  <link rel="stylesheet" href="/ha/assets/agriculture-ha.css?v=ea1f2adc">
+  <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 </head>
 <body>
+<a class="skip-link" href="#main">Tsallake zuwa babban abun ciki</a>
 <afro-navbar theme="dark" active="tools"></afro-navbar>
 <div class="ha-agri">
   <section class="ha-agri-hero" style="background-image:linear-gradient(135deg,rgba(5,46,22,.94),rgba(37,99,235,.78)),url('/assets/img/tools/seed-rate-ng.webp')">
@@ -45,7 +46,7 @@
     </div>
   </section>
 
-  <main class="ha-agri-main">
+  <main id="main" class="ha-agri-main">
     <section class="ha-tool-card">
       <span class="ha-tool-kicker">Shigar da bayanan shuka</span>
       <h2>Kalkuleta</h2>
@@ -54,7 +55,7 @@
         <div class="ha-field"><label for="selMethod">Hanyar shuka</label><select id="selMethod"></select></div>
         <div class="ha-field" id="fldQuality"><label for="selQuality">Ingancin iri</label><select id="selQuality"><option value="certified">Iri da aka tabbatar (tsiro 90%)</option><option value="improved" selected>Iri ingantacce ko na gona (78%)</option><option value="local">Irin gida ko na gona (68%)</option><option value="old">Tsohon iri ko ajiyar da ba ta da kyau (50%)</option></select></div>
         <div class="ha-field"><label for="selConditions">Yanayin fili</label><select id="selConditions"><option value="excellent">Madalla (90%)</option><option value="good">Mai kyau (80%)</option><option value="average" selected>Matsakaici (70%)</option><option value="poor">Mai rauni (60%)</option><option value="harsh">Busasshe ko mai kwari sosai (50%)</option></select></div>
-        <div class="ha-field"><label for="inpFarm">Girman gona (hectare)</label><input id="inpFarm" type="number" min="0.1" step="0.1" value="0.5"></div>
+        <div class="ha-field"><label for="inpFarm">Girman gona (hekta)</label><input id="inpFarm" type="number" min="0.1" step="0.1" value="0.5"></div>
         <div class="ha-field"><label for="selIntercrop">Tsarin shuka</label><select id="selIntercrop"><option value="sole" selected>Gona daya tilo (100%)</option><option value="primary">Hada shuka - babban amfanin gona (75%)</option><option value="secondary">Hada shuka - na biyu ko biyo baya (50%)</option></select></div>
         <div class="ha-field" id="fldRowSpacing"><label for="inpRowSpacing">Tazarar layi (cm)</label><input id="inpRowSpacing" type="number" min="5" max="500" value="75"></div>
         <div class="ha-field" id="fldPlantSpacing"><label for="inpPlantSpacing">Tazarar shuka (cm)</label><input id="inpPlantSpacing" type="number" min="5" max="300" value="25"></div>
@@ -66,7 +67,7 @@
     <section class="ha-results" id="resultsPanel" aria-live="polite">
       <div class="ha-result-hero">
         <div class="ha-result-value" id="rMainAmount">--</div>
-        <div class="ha-result-label" id="rMainLabel">kg na iri a hectare daya</div>
+        <div class="ha-result-label" id="rMainLabel">kg na iri a hekta daya</div>
       </div>
       <div class="ha-tool-grid">
         <div class="ha-tool-card">
@@ -74,7 +75,7 @@
           <div class="ha-metric-grid">
             <div class="ha-metric"><div class="ha-metric-value" id="rTotal">--</div><div class="ha-metric-label" id="rTotalLabel">Iri gaba daya</div></div>
             <div class="ha-metric" id="rBagsCard"><div class="ha-metric-value" id="rBags">--</div><div class="ha-metric-label" id="rBagsLabel">Buhu</div></div>
-            <div class="ha-metric" id="rPopCard"><div class="ha-metric-value" id="rPop">--</div><div class="ha-metric-label" id="rPopLabel">Yawan tsiro a hectare</div></div>
+            <div class="ha-metric" id="rPopCard"><div class="ha-metric-value" id="rPop">--</div><div class="ha-metric-label" id="rPopLabel">Yawan tsiro a hekta</div></div>
           </div>
         </div>
         <div class="ha-tool-card" id="costSection">
@@ -200,14 +201,14 @@
   };
   function displaySeedResults(r){
     $('rMainAmount').textContent = fmtN(r.seedRateKgHa, 1);
-    $('rMainLabel').textContent = 'kg na iri a hectare daya';
+    $('rMainLabel').textContent = 'kg na iri a hekta daya';
     $('rTotal').textContent = fmtN(r.totalSeedKg, 1) + ' kg';
     $('rTotalLabel').textContent = 'Jimillar iri ga ' + r.farmSizeHa + ' ha';
     $('rBagsCard').style.display = '';
     $('rBags').textContent = r.numBags;
     $('rBagsLabel').textContent = 'Buhu na ' + r.bagSize_kg + ' kg';
     $('rPopCard').style.display = r.targetPopHa ? '' : 'none';
-    $('rPopLabel').textContent = 'Yawan tsiro a hectare';
+    $('rPopLabel').textContent = 'Yawan tsiro a hekta';
     if (r.targetPopHa) $('rPop').textContent = fmtN(r.targetPopHa, 0);
     $('costSection').style.display = r.costCertified !== null ? '' : 'none';
     if (r.costCertified !== null) {
@@ -223,7 +224,7 @@
     addLi(list, 'Tazarar layi', r.rowSpacing_cm + ' cm');
     addLi(list, 'Tazarar shuka', r.isBroadcast ? 'Ba ta aiki wajen watsawa' : r.plantSpacing_cm + ' cm');
     addLi(list, 'Iri a rami', r.isBroadcast ? 'Ba ta aiki wajen watsawa' : r.seedsPerHole);
-    addLi(list, 'Yawan tsiro', r.targetPopHa ? fmtN(r.targetPopHa, 0) + ' a hectare' : 'Ana watsa iri');
+    addLi(list, 'Yawan tsiro', r.targetPopHa ? fmtN(r.targetPopHa, 0) + ' a hekta' : 'Ana watsa iri');
     addLi(list, 'Fitar tsiro', r.daysToEmergence ? r.daysToEmergence[0] + '-' + r.daysToEmergence[1] + ' rana' : 'Ya danganta da irin shuka');
     addLi(list, 'Tsawon ajiyar iri', r.shelfLife_months ? r.shelfLife_months + ' watanni' : 'Ya danganta da iri da ajiya');
     fillBreakdown([
@@ -241,7 +242,7 @@
   function displayVegResults(r){
     var mat = materialLabel(r.materialLabel);
     $('rMainAmount').textContent = fmtN(r.plantsPerHa, 0);
-    $('rMainLabel').textContent = mat + ' a hectare daya';
+    $('rMainLabel').textContent = mat + ' a hekta daya';
     $('rTotal').textContent = fmtN(r.totalPlants, 0);
     $('rTotalLabel').textContent = 'Jimillar ' + mat + ' ga gonarka';
     $('rBagsCard').style.display = r.materialWeight ? '' : 'none';
@@ -260,13 +261,13 @@
     addLi(list, 'Kayan dasa', mat);
     addLi(list, 'Tazarar layi', r.rowSpacing_cm + ' cm');
     addLi(list, 'Tazarar shuka', r.plantSpacing_cm + ' cm');
-    addLi(list, 'Adadi a hectare', fmtN(r.plantsPerHa, 0));
+    addLi(list, 'Adadi a hekta', fmtN(r.plantsPerHa, 0));
     addLi(list, 'Jimillar bukata', fmtN(r.totalPlants, 0) + ' ' + mat);
     fillBreakdown([
       ['Kayan dasa', mat],
       ['Girman gona', r.farmSizeHa + ' ha'],
       ['Tazara', r.rowSpacing_cm + ' x ' + r.plantSpacing_cm + ' cm'],
-      ['Tsiro a hectare', fmtN(r.plantsPerHa, 0)],
+      ['Tsiro a hekta', fmtN(r.plantsPerHa, 0)],
       ['Jimillar bukata', fmtN(r.totalPlants, 0)]
     ]);
     $('storageCard').style.display = 'none';

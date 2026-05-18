@@ -24,9 +24,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=9c4e21bc">
-  <script src="/assets/js/components/tool-registry.min.js?v=4fb2e1e9" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=64fedd98" async></script>
-  <script src="/assets/js/components/footer.min.js?v=119e83c5" async></script>
+  <script src="/assets/js/components/tool-registry.min.js?v=32e63b37" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=48a38e5f" async></script>
+  <script src="/assets/js/components/footer.min.js?v=5ba0f525" async></script>
 
   <style>
     :root {
@@ -930,10 +930,28 @@ var requestSearchIndexLoad = function() {};
 // SEARCH LOGIC
 // ════════════════════════════════════════════════════════════
 
-function tokenise(str) {
-  return (str || '').toLowerCase()
+function normalizeSearchText(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ')
     .replace(/['']/g, '')
-    .split(/[\s\-\/&]+/)
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function normalizeSearchHref(value) {
+  return String(value || '')
+    .split('#')[0]
+    .split('?')[0]
+    .replace(/\/+$/, '')
+    .toLowerCase();
+}
+
+function tokenise(str) {
+  return normalizeSearchText(str)
+    .split(/\s+/)
     .filter(Boolean);
 }
 
@@ -945,13 +963,15 @@ function scoreMatch(tool, tokens) {
     tool.desc,
     tool.category,
     tool.id,
+    tool.href,
     (tool.countries || []).join(' '),
     (tool.countries || []).map(function(c) { return COUNTRY_NAMES[c] || c; }).join(' '),
     CATEGORY_NAMES[tool.category] || '',
-  ].join(' ').toLowerCase();
+  ].join(' ');
+  text = normalizeSearchText(text);
 
   var score = 0;
-  var nameText = (tool.name || '').toLowerCase();
+  var nameText = normalizeSearchText(tool.name);
 
   tokens.forEach(function(tok) {
     // Exact name word match — highest value
@@ -1039,7 +1059,14 @@ function search(query, filter, sort) {
     });
   }
 
-  return results;
+  var seenHrefs = Object.create(null);
+  return results.filter(function(result) {
+    var key = normalizeSearchHref(result.tool.href) || normalizeSearchText(result.tool.id || result.tool.name);
+    if (!key) return true;
+    if (seenHrefs[key]) return false;
+    seenHrefs[key] = true;
+    return true;
+  });
 }
 
 // ════════════════════════════════════════════════════════════

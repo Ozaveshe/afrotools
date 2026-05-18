@@ -1,6 +1,6 @@
 # Yoruba Visible Copy Leakage Ledger
 
-Generated: 2026-05-16
+Generated: 2026-05-18
 
 This audit scans `yo/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
@@ -8,11 +8,11 @@ This audit scans `yo/**/*.html` for visible English leakage only. It ignores scr
 
 - Yoruba route tree exists: yes
 - Yoruba routes scanned: 45
-- Clean routes: 20
+- Clean routes: 21
 - Routes with blockers: 0
 - BLOCKER_VISIBLE_ENGLISH findings: 0
-- POSSIBLE_FALSE_POSITIVE findings: 67
-- ACCEPTED_TECH_TERM findings: 228
+- POSSIBLE_FALSE_POSITIVE findings: 64
+- ACCEPTED_TECH_TERM findings: 262
 
 ## Top 20 Blocker Routes
 
@@ -36,19 +36,19 @@ This audit scans `yo/**/*.html` for visible English leakage only. It ignores scr
 | `/yo/awon-ise/amulo-data/` | 64 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi | Batch 1 - General Yoruba shell |
 | `/yo/awon-ise/duba-genotype/` | 78 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi fun ẹya kikun to ṣi wà ní Gẹẹsi. | Batch 1 - Health and family shell |
 | `/yo/awon-ise/ere-oko-eja/` | 65 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi | Batch 1 - Agriculture shell |
-| `/yo/awon-ise/` | 66 | English route label marked as fallback | Ọna tí a fẹ́ kí o bẹ̀rẹ̀ Àwọn kaadi tó ní “ojú ìwé Gẹẹsi” ṣi lọ sí irinṣẹ Gẹẹsi. Àwọn tó lọ sí ` ` ni oju Yorùbá gangan. | Batch 1 - Yoruba shell hubs |
-| `/yo/awon-ise/` | 68 | brand or platform name | Naijiria Hubu Yorùbá fún PAYE, VAT, Naira, JAMB, WAEC, NYSC, BVN, NIN, USSD ati WhatsApp. Ṣí Naijiria | Batch 1 - Yoruba shell hubs |
-| `/yo/awon-ise/` | 72 | English route label marked as fallback | JAMB aggregate - ojú ìwé Gẹẹsi Ṣi wà ní Gẹẹsi, ṣùgbọ́n o wulo fún ọmọ ile-ẹ̀kọ́ tí n ṣàyẹ̀wò UTME ati Post-UTME. Ṣí ojú Gẹẹsi | Batch 1 - Yoruba shell hubs |
-| `/yo/awon-ise/` | 73 | English route label marked as fallback | USSD directory - ojú ìwé Gẹẹsi Awọn koodu fun ìpèsè intanẹẹti, kirẹditi foonu, banki ati owo alagbeka ṣi wà ní ojú ìwé Gẹẹsi fún báyìí. Ṣí ojú Gẹẹsi | Batch 1 - Yoruba shell hubs |
-| `/yo/awon-ise/` | 80 | English route label marked as fallback | Nigbati a ba kọ oju irinṣẹ Yorùbá gidi, a o gbe kaadi rẹ̀ kuro ninu àmì ojú ìwé Gẹẹsi, a o fi àmì ede kun, a o si tun ṣe àyẹ̀wò ẹ̀dá oju-ìwé. | Batch 1 - Yoruba shell hubs |
+| `/yo/awon-ise/` | 65 | English route label marked as fallback | Ọna tí a fẹ́ kí o bẹ̀rẹ̀ Àwọn kaadi tó ní “ojú ìwé Gẹẹsi” ṣi lọ sí irinṣẹ Gẹẹsi. Àwọn tó lọ sí ` ` ni oju Yorùbá gangan. | Batch 1 - Yoruba shell hubs |
+| `/yo/awon-ise/` | 67 | brand or platform name | Naijiria Hubu Yorùbá fún PAYE, VAT, Naira, JAMB, WAEC, NYSC, BVN, NIN, USSD ati WhatsApp. Ṣí Naijiria | Batch 1 - Yoruba shell hubs |
+| `/yo/awon-ise/` | 71 | English route label marked as fallback | JAMB aggregate - ojú ìwé Gẹẹsi Ṣi wà ní Gẹẹsi, ṣùgbọ́n o wulo fún ọmọ ile-ẹ̀kọ́ tí n ṣàyẹ̀wò UTME ati Post-UTME. Ṣí ojú Gẹẹsi | Batch 1 - Yoruba shell hubs |
+| `/yo/awon-ise/` | 72 | English route label marked as fallback | USSD directory - ojú ìwé Gẹẹsi Awọn koodu fun ìpèsè intanẹẹti, kirẹditi foonu, banki ati owo alagbeka ṣi wà ní ojú ìwé Gẹẹsi fún báyìí. Ṣí ojú Gẹẹsi | Batch 1 - Yoruba shell hubs |
+| `/yo/awon-ise/` | 79 | English route label marked as fallback | Nigbati a ba kọ oju irinṣẹ Yorùbá gidi, a o gbe kaadi rẹ̀ kuro ninu àmì ojú ìwé Gẹẹsi, a o fi àmì ede kun, a o si tun ṣe àyẹ̀wò ẹ̀dá oju-ìwé. | Batch 1 - Yoruba shell hubs |
 | `/yo/awon-ise/isuna-ogbin/` | 68 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi | Batch 1 - Agriculture shell |
 | `/yo/awon-ise/kalkuletan-bmi/` | 67 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi fun ẹya kikun to ṣi wà ní Gẹẹsi. | Batch 1 - General Yoruba shell |
 | `/yo/awon-ise/lambobin-ussd/` | 39 | brand or platform name | Yan orílẹ̀-èdè, wa iṣẹ́ kan, ki o daakọ lambar fún ìyókù, káríìdì, GB, fífi owó ránṣẹ́, yíyá káríìdì tabi ìrànwọ́ alabara. Naijiria wa ni iwaju pẹlu MTN, Airtel, Glo ati 9mobile. | Batch 1 - Telecom, USSD, and WhatsApp shell |
 | `/yo/awon-ise/lambobin-ussd/` | 51 | brand or platform name | àpẹẹrẹ: MTN, ìyókù, káríìdì | Batch 1 - Telecom, USSD, and WhatsApp shell |
 | `/yo/awon-ise/lambobin-ussd/` | 59 | brand or platform name | Ṣe gbogbo lambar ṣiṣẹ fun gbogbo SIM? Rara. Lambar kan le jẹ́ ti MTN, Airtel, Glo, 9mobile tabi banki kan pato. Yan orílẹ̀-èdè ati olùpèsè to ba SIM rẹ mu. | Batch 1 - Telecom, USSD, and WhatsApp shell |
-| `/yo/awon-ise/olufassara-yoruba/` | 73 | English route label marked as fallback | Ojú ìwé Gẹẹsi Yorùbá phrasebook tó gbooro Ojú Gẹẹsi naa ni akojọ gbolohun diẹ sii. | Batch 1 - General Yoruba shell |
-| `/yo/awon-ise/olufassara-yoruba/` | 74 | English route label marked as fallback | Ojú ìwé Gẹẹsi Ìtumọ̀ PDF Lo fun ìmúrasílẹ̀ nikan, kii ṣe ìtumọ̀ tí a fọwọ́sí. | Batch 1 - General Yoruba shell |
-| `/yo/awon-ise/olufassara-yoruba/` | 75 | English route label marked as fallback | Ojú ìwé Gẹẹsi Hausa translator Phrasebook Hausa fun ìkíni ati ọrọ ojoojumọ. | Batch 1 - General Yoruba shell |
+| `/yo/awon-ise/olufassara-yoruba/` | 74 | English route label marked as fallback | Ojú ìwé Gẹẹsi Yorùbá phrasebook tó gbooro Ojú Gẹẹsi naa ni akojọ gbolohun diẹ sii. | Batch 1 - General Yoruba shell |
+| `/yo/awon-ise/olufassara-yoruba/` | 75 | English route label marked as fallback | Ojú ìwé Gẹẹsi Ìtumọ̀ PDF Lo fun ìmúrasílẹ̀ nikan, kii ṣe ìtumọ̀ tí a fọwọ́sí. | Batch 1 - General Yoruba shell |
+| `/yo/awon-ise/olufassara-yoruba/` | 76 | English route label marked as fallback | Ojú ìwé Gẹẹsi Hausa translator Phrasebook Hausa fun ìkíni ati ọrọ ojoojumọ. | Batch 1 - General Yoruba shell |
 | `/yo/awon-ise/ounje-eranko/` | 63 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi | Batch 1 - General Yoruba shell |
 | `/yo/awon-ise/owo-ile-iwosan/` | 64 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi fun ẹya kikun to ṣi wà ní Gẹẹsi. | Batch 1 - Health and family shell |
 | `/yo/awon-ise/owo-oja-ogbin/` | 63 | English route label marked as fallback | Ṣí ojú ìwé Gẹẹsi | Batch 1 - Agriculture shell |
@@ -83,20 +83,17 @@ This audit scans `yo/**/*.html` for visible English leakage only. It ignores scr
 | `/yo/ilera/` | 67 | English route label marked as fallback | Ojú ìwé Gẹẹsi Ìtumọ̀ ìwé yàrá Fun alaye gbogbogbo lori ìwé yàrá, pẹlu ìkìlọ̀ lati jẹ́risi pẹlu ọjọgbọn. | Batch 1 - Health and family shell |
 | `/yo/ilera/` | 68 | English route label marked as fallback | Ojú ìwé Gẹẹsi Blood group jinlẹ̀ Oju afikun fun blood group ati Rh, ṣi wà ní Gẹẹsi. | Batch 1 - Health and family shell |
 | `/yo/ilera/` | 69 | English route label marked as fallback | Ojú ìwé Gẹẹsi Ìfiwéra owó oogun Ṣe ìfiwéra owó, ṣugbọn ma yi oogun pada lai ba onímọ̀ oogun tabi oníṣègùn sọrọ. | Batch 1 - Health and family shell |
-| `/yo/` | 54 | English route label marked as fallback | Ojú-ọna yìí ni ìbẹ̀rẹ̀ ilẹ̀ Yorùbá fún AfroTools. A ti dá àwọn ojú-ìwé pàtàkì sílẹ̀, a sì ń fi ìkìlọ̀ hàn kedere níbi tí irinṣẹ ṣi wà ní ojú ìwé Gẹẹsi. | Batch 1 - Yoruba shell hubs |
-| `/yo/` | 86 | English route label marked as fallback | VAT Naijiria - ojú ìwé Gẹẹsi Owó-orí iṣẹ́ | Batch 1 - Yoruba shell hubs |
-| `/yo/` | 87 | English route label marked as fallback | PDF Workspace - ojú ìwé Gẹẹsi Ìwé àti PDF | Batch 1 - Yoruba shell hubs |
-| `/yo/` | 88 | English route label marked as fallback | JAMB aggregate - ojú ìwé Gẹẹsi Ẹ̀kọ́ | Batch 1 - Yoruba shell hubs |
-| `/yo/iwe-ati-pdf/` | 69 | brand or platform name | Dín ìwọ̀n PDF Dín ìwọ̀n PDF ku ṣaaju fifiranṣẹ si WhatsApp, imeeli, ọna ikojọpọ tabi alabara. Ṣí oju Yorùbá | Batch 1 - Document, PDF, invoice, and Naira shell |
-| `/yo/naijiria/` | 55 | brand or platform name | Ojú-ọna yìí kojọ PAYE, VAT, Naira, ẹ̀kọ́, ìwé, USSD, BVN, NIN ati WhatsApp fun awọn olumulo Yorùbá. Ibi tí irinṣẹ ṣi jẹ́ Gẹẹsi ni a samisi kedere. | Batch 1 - Yoruba shell hubs |
-| `/yo/naijiria/` | 71 | English route label marked as fallback | JAMB aggregate - ojú ìwé Gẹẹsi Ṣi wà ní Gẹẹsi; lo fun iṣiro UTME, Post-UTME ati ìwọ̀n wọlé. Ṣí ojú Gẹẹsi | Batch 1 - Yoruba shell hubs |
-| `/yo/naijiria/` | 72 | English route label marked as fallback | WAEC ati NECO - ojú ìwé Gẹẹsi Ṣi wà ní Gẹẹsi; lo fun credit, grade ati ìmúrasílẹ̀ wọlé. Ṣí ojú Gẹẹsi | Batch 1 - Yoruba shell hubs |
-| `/yo/naijiria/` | 73 | English route label marked as fallback | USSD directory - ojú ìwé Gẹẹsi Ṣi wà ní Gẹẹsi; wulo fun ìpèsè intanẹẹti, kirẹditi foonu, banki ati owo alagbeka. Ṣí ojú Gẹẹsi | Batch 1 - Yoruba shell hubs |
-| `/yo/ogbin/` | 72 | English route label marked as fallback | Ojú ìwé Gẹẹsi Omi oko Naijiria Àfiyèsí omi ati akoko irigeson ṣi wà ní Gẹẹsi fun bayi. | Batch 1 - Agriculture shell |
-| `/yo/owo-ori-owo-ise/` | 68 | English route label marked as fallback | VAT Naijiria - ojú ìwé Gẹẹsi Fun oṣuwọn VAT Naijiria, exempt, zero-rated ati reverse VAT. Ṣí ojú Gẹẹsi | Batch 1 - Salary, PAYE, and VAT shell |
-| `/yo/owo-osu-ati-owo-ori/` | 68 | English route label marked as fallback | Payslip generator - ojú ìwé Gẹẹsi Ṣẹda payslip fun oṣiṣẹ́, pẹlu Naira, alaye ìsanwo ati PDF. Ṣí ojú Gẹẹsi | Batch 1 - Salary, PAYE, and VAT shell |
-| `/yo/owo-osu-ati-owo-ori/` | 69 | English route label marked as fallback | Pension projection - ojú ìwé Gẹẹsi Ṣayẹwo bi ifipamọ̀ ìfẹ̀yìntì ṣe le dagba lori akoko. Ṣí ojú Gẹẹsi | Batch 1 - Salary, PAYE, and VAT shell |
-| `/yo/owo-osu-ati-owo-ori/` | 70 | English route label marked as fallback | Currency converter - ojú ìwé Gẹẹsi Yi Naira ati owo miiran pada fun iṣẹ́, invoice ati irin-ajo. Ṣí ojú Gẹẹsi | Batch 1 - Salary, PAYE, and VAT shell |
+| `/yo/` | 53 | English route label marked as fallback | Ojú-ọna yìí ni ìbẹ̀rẹ̀ ilẹ̀ Yorùbá fún AfroTools. A ti dá àwọn ojú-ìwé pàtàkì sílẹ̀, a sì ń fi ìkìlọ̀ hàn kedere níbi tí irinṣẹ ṣi wà ní ojú ìwé Gẹẹsi. | Batch 1 - Yoruba shell hubs |
+| `/yo/` | 85 | English route label marked as fallback | VAT Naijiria - ojú ìwé Gẹẹsi Owó-orí iṣẹ́ | Batch 1 - Yoruba shell hubs |
+| `/yo/` | 86 | English route label marked as fallback | PDF Workspace - ojú ìwé Gẹẹsi Ìwé àti PDF | Batch 1 - Yoruba shell hubs |
+| `/yo/` | 87 | English route label marked as fallback | JAMB aggregate - ojú ìwé Gẹẹsi Ẹ̀kọ́ | Batch 1 - Yoruba shell hubs |
+| `/yo/iwe-ati-pdf/` | 122 | brand or platform name | Dín ìwọ̀n PDF kù fún WhatsApp, imeeli, portal ilé-ẹ̀kọ́, ìbéèrè iṣẹ́, tàbí fifiranṣẹ́ sí oníbàárà. | Batch 1 - Document, PDF, invoice, and Naira shell |
+| `/yo/iwe-ati-pdf/` | 272 | brand or platform name | Darapọ̀ ID, risiti, ìwé banki tàbí scan, dín kù fún WhatsApp, ṣùgbọ́n ma ṣe fi gbogbo ìwé ránṣẹ́ bí ojú-iwe kan ṣoṣo tó to. | Batch 1 - Document, PDF, invoice, and Naira shell |
+| `/yo/naijiria/` | 138 | brand or platform name | USSD, data, foonu, WhatsApp | Batch 1 - Yoruba shell hubs |
+| `/yo/owo-ori-owo-ise/` | 67 | English route label marked as fallback | VAT Naijiria - ojú ìwé Gẹẹsi Fun oṣuwọn VAT Naijiria, exempt, zero-rated ati reverse VAT. Ṣí ojú Gẹẹsi | Batch 1 - Salary, PAYE, and VAT shell |
+| `/yo/owo-osu-ati-owo-ori/` | 67 | English route label marked as fallback | Payslip generator - ojú ìwé Gẹẹsi Ṣẹda payslip fun oṣiṣẹ́, pẹlu Naira, alaye ìsanwo ati PDF. Ṣí ojú Gẹẹsi | Batch 1 - Salary, PAYE, and VAT shell |
+| `/yo/owo-osu-ati-owo-ori/` | 68 | English route label marked as fallback | Pension projection - ojú ìwé Gẹẹsi Ṣayẹwo bi ifipamọ̀ ìfẹ̀yìntì ṣe le dagba lori akoko. Ṣí ojú Gẹẹsi | Batch 1 - Salary, PAYE, and VAT shell |
+| `/yo/owo-osu-ati-owo-ori/` | 69 | English route label marked as fallback | Currency converter - ojú ìwé Gẹẹsi Yi Naira ati owo miiran pada fun iṣẹ́, invoice ati irin-ajo. Ṣí ojú Gẹẹsi | Batch 1 - Salary, PAYE, and VAT shell |
 
 ## ACCEPTED_TECH_TERM
 
@@ -126,6 +123,7 @@ The JSON ledger contains line-level accepted-term examples. These are tracked so
 - `/yo/awon-ise/wht-naijiria/`
 - `/yo/eko/`
 - `/yo/naijiria/owo-ori-owo-osu/`
+- `/yo/ogbin/`
 
 ## Recommended Cleanup Order
 

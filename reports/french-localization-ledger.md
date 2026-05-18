@@ -1,6 +1,6 @@
 # French Localization Ledger
 
-Generated: 2026-05-17
+Generated: 2026-05-18
 
 This is an audit-only ledger. It does not translate or edit French pages. English source inventory follows the skip logic in `scripts/build-i18n.js`.
 
@@ -9,11 +9,11 @@ This is an audit-only ledger. It does not translate or edit French pages. Englis
 - Total English source pages: 5746
 - Total French pages: 1707
 - Raw page-count completion: 29.71%
-- English-backed route-mapping completion: 24.23%
+- English-backed route-mapping completion: 24.35%
 - French registry coverage: 73.23% of registry-eligible French tool/money/PDF routes (342/467)
 - French registry entries: 357
-- English-backed French routes: 1460
-- French-only routes: 237
+- English-backed French routes: 1467
+- French-only routes: 230
 - Generated output routes: 1198
 - Hand-authored French pages: 509
 - Unclear source-of-truth routes: 123
@@ -32,12 +32,12 @@ This is an audit-only ledger. It does not translate or edit French pages. Englis
 | widgets | 225 | 11 | 3 | 4.89% | 1.33% | n/a |
 | pro | 0 | 2 | 0 | n/a | n/a | n/a |
 | auth | 2 | 1 | 1 | 50% | 50% | n/a |
-| telecom | 15 | 11 | 4 | 73.33% | 26.67% | n/a |
+| telecom | 15 | 11 | 11 | 73.33% | 73.33% | n/a |
 | country hubs | 56 | 66 | 54 | 117.86% | 96.43% | n/a |
 
 ## Top 20 Blockers
 
-1. French pages with no English-backed source mapping (237)
+1. French pages with no English-backed source mapping (230)
    - Recommendation: Decide whether each route is intentional French-only content or should be mapped/canonicalized to an English source before translation work expands.
    - Examples: /fr/404, /fr/api/docs, /fr/blog/frais-orange-money-guide-2026, /fr/blog/guide-irpp-senegal-2026, /fr/blog/wave-vs-orange-money-senegal-2026, /fr/cars/afrique-du-sud/ford, /fr/cars/afrique-du-sud/ford/ranger/2018, /fr/cars/afrique-du-sud
 2. Unclear source-of-truth French routes (123)
@@ -49,7 +49,7 @@ This is an audit-only ledger. It does not translate or edit French pages. Englis
 4. French aliases or bridge routes (95)
    - Recommendation: Keep aliases out of registry/search promotion unless they are deliberate bridge pages.
    - Examples: /fr/algeria/dz-paye, /fr/algeria/dz-vat, /fr/algeria, /fr/benin/bj-paye, /fr/benin/bj-vat, /fr/burkina-faso/bf-paye, /fr/burkina-faso/bf-vat, /fr/burkina-faso/bf-vat
-5. English source pages without a mapped French route (4384)
+5. English source pages without a mapped French route (4377)
    - Recommendation: Use high-value section counts to choose the next implementation batch instead of translating randomly.
    - Examples: afrowork, afrowork/api, afrowork/whatsapp, agriculture/crop-planning-yield, agriculture/equipment-infrastructure, agriculture/farm-finance-roi, agriculture/farm-payroll/_template, agriculture/inputs-feed-operations
 6. Generated French outputs with weak registry discovery (58)
@@ -73,10 +73,7 @@ This is an audit-only ledger. It does not translate or edit French pages. Englis
 12. widgets mapped French coverage is below 30% (222)
    - Recommendation: Prioritize canonical route selection and registry wiring for the highest-value widgets pages before copy translation.
    - Examples: widgets/iframe/african-japa-calculator, widgets/iframe/african-mobile-money-fees, widgets/iframe/african-public-holidays, widgets/iframe/african-remittance-compare, widgets/iframe/agriculture-crop-insurance-premium, widgets/iframe/agriculture-crop-yield-estimator, widgets/iframe/agriculture-farm-budget-estimator, widgets/iframe/agriculture-fertilizer-rate
-13. telecom mapped French coverage is below 30% (11)
-   - Recommendation: Prioritize canonical route selection and registry wiring for the highest-value telecom pages before copy translation.
-   - Examples: telecom/bulk-sms-pricing, telecom/business-internet, telecom/data-plan-compare, telecom/data-usage-calc, telecom/fiber-lte-5g, telecom/internet-compare, telecom/roaming-cost, telecom/sim-registration
-14. country hubs raw French count materially exceeds mapped coverage (12)
+13. country hubs raw French count materially exceeds mapped coverage (12)
    - Recommendation: Resolve country hubs aliases and French-only routes before using raw page volume as completion evidence.
    - Examples: /fr/dr-congo
 

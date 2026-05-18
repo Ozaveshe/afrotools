@@ -348,19 +348,12 @@ function buildReport(status) {
 function buildHubSummaryHtml(status) {
   const generated = new Date(status.summary.generatedAt);
   const dateLabel = generated.toISOString().slice(0, 10);
-  const reviewCount = status.summary.changedSources + status.summary.blockedSources + status.summary.brokenSources + status.summary.manualSources;
-  const currentLabel = status.summary.brokenSources > 0
-    ? `${status.summary.brokenSources} broken`
-    : reviewCount > 0
-      ? `${reviewCount} review`
-      : 'Clear';
-
   return [
-    '<div class="trp-source-stats" aria-label="Transport source monitor status">',
-    `  <div class="trp-source-stat"><strong>${escapeHtml(dateLabel)}</strong><span>Last source check</span></div>`,
-    `  <div class="trp-source-stat"><strong>${status.summary.sourceCount}</strong><span>Official sources watched</span></div>`,
-    `  <div class="trp-source-stat"><strong>${status.summary.changedSources}</strong><span>Source changes queued</span></div>`,
-    `  <div class="trp-source-stat"><strong>${escapeHtml(currentLabel)}</strong><span>Current review status</span></div>`,
+    '<div class="trp-source-stats" aria-label="Transport source guidance summary">',
+    `  <div class="trp-source-stat"><strong>${escapeHtml(dateLabel)}</strong><span>Last source review</span></div>`,
+    `  <div class="trp-source-stat"><strong>${status.summary.sourceCount}</strong><span>Official sources referenced</span></div>`,
+    `  <div class="trp-source-stat"><strong>${status.summary.highRiskTools}</strong><span>High-priority workflows</span></div>`,
+    `  <div class="trp-source-stat"><strong>${status.summary.toolCount}</strong><span>Linked workflows</span></div>`,
     '</div>'
   ].join('\n');
 }

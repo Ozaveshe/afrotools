@@ -25,8 +25,8 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
-<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
+<script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 
 <script type="application/ld+json">
 {
@@ -659,8 +659,8 @@ a { text-decoration: none; color: inherit; }
 <p>We use Web Components for shared elements (navbar, footer) which give us component reusability without the framework tax.</p>
 </div></div></div>
 
-<div class="faq-item"><div class="faq-q">How does the tool registry work?<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-a-inner">
-<p>There's a single JavaScript file (<code>tool-registry.min.js</code>) that contains metadata for all 1,341 registry entries. Each entry has an ID, name, icon, description, URL, category, status, supported countries, and priority score. Category pages, search, and the homepage all read from this single registry — add a tool once and it appears everywhere.</p>
+<div class="faq-item"><div class="faq-q">How are AfroTools tools organized?<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-a-inner">
+<p>AfroTools groups tools by country, category, and the job a user is trying to finish. Search, category pages, and homepage recommendations use the same directory information so you can find the right tool without hunting through unrelated pages.</p>
 </div></div></div>
 
 <div class="faq-item"><div class="faq-q">How does auth work technically?<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-a-inner">
@@ -673,7 +673,7 @@ a { text-decoration: none; color: inherit; }
 <li>Our code manually exchanges the code for a session using <code>exchangeCodeForSession()</code></li>
 <li>Session is stored in localStorage and auto-refreshed by the SDK</li>
 </ol>
-<p>We deliberately handle the code exchange manually (not via <code>detectSessionInUrl</code>) to avoid a race condition where the auth state listener fires before the exchange completes.</p>
+<p>AfroTools completes sign-in before showing account-only saves, favorites, and synced history. If a login link looks stale, request a fresh email link and try again.</p>
 </div></div></div>
 
 <div class="faq-item"><div class="faq-q">What about SEO?<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><div class="faq-a-inner">

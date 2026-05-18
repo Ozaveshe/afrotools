@@ -25,9 +25,9 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=9c4e21bc">
-<script src="/assets/js/components/tool-registry.min.js?v=4fb2e1e9" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
-<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=32e63b37" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
+<script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-sans);background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
@@ -336,12 +336,30 @@ a{text-decoration:none;color:inherit;}
 
 <script>
 // ── TOOL ICON — auto-resolve from /assets/img/tools/ ──
-// Tries .webp first, then .svg, then falls back to emoji/gradient
-function getToolIconSrc(toolId) {
-  return '/assets/img/tools/' + toolId + '.webp';
+// Tries registry-backed image keys first, then falls back to emoji/gradient
+function getToolImageCandidate(tool) {
+  const keys = [
+    tool && tool.imageId,
+    tool && tool.sourceId,
+    tool && tool.id
+  ].filter(value => typeof value === 'string' && value.trim()).map(value => value.trim());
+  const extensions = typeof TOOL_CARD_IMAGE_EXTENSIONS !== 'undefined' ? TOOL_CARD_IMAGE_EXTENSIONS : null;
+  if (extensions) {
+    const mappedKey = keys.find(key => extensions[key]);
+    if (mappedKey) return { key: mappedKey, ext: extensions[mappedKey] || 'webp' };
+  }
+  return { key: keys[0] || '', ext: 'webp' };
 }
-function getToolIconFallback(toolId) {
-  return '/assets/img/tools/' + toolId + '.svg';
+
+function getToolIconSrc(tool) {
+  const image = getToolImageCandidate(tool);
+  return image.key ? '/assets/img/tools/' + encodeURIComponent(image.key) + '.' + (image.ext || 'webp') : '';
+}
+
+function getToolIconFallback(tool) {
+  const image = getToolImageCandidate(tool);
+  if (!image.key) return '';
+  return '/assets/img/tools/' + encodeURIComponent(image.key) + '.' + (image.ext === 'svg' ? 'webp' : 'svg');
 }
 
 // ── CATEGORY METADATA ──
@@ -491,11 +509,12 @@ function clearSearch(){
 }
 
 function getIcon(tool){
-  const slug = tool.id || '';
   const safeIcon = (tool.icon||'🛠️').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
   const safeName = (tool.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  if(slug){
-    return `<img src="${getToolIconSrc(slug)}" alt="${safeName}" loading="lazy" width="48" height="48" onerror="this.onerror=function(){this.parentElement.textContent='${safeIcon}';};this.src='${getToolIconFallback(slug)}';">`;
+  const imageSrc = getToolIconSrc(tool);
+  const imageFallback = getToolIconFallback(tool);
+  if(imageSrc){
+    return `<img src="${imageSrc}" alt="${safeName}" loading="lazy" width="48" height="48" onerror="this.onerror=function(){this.parentElement.textContent='${safeIcon}';};this.src='${imageFallback}';">`;
   }
   return safeIcon;
 }
@@ -636,11 +655,12 @@ function renderTools(){
     const safeIcon = escapeHtml(t.icon || '🛠️');
     const safeCatName = escapeHtml(cat.name);
     const safeCatIcon = escapeHtml(cat.icon);
-    const slug = t.id || '';
+    const imageSrc = getToolIconSrc(t);
+    const imageFallback = getToolIconFallback(t);
 
     return `<a href="${safeHref}" class="${cardClass}">
       <div class="tc-image" style="background:linear-gradient(135deg,${cat.color},#e2e8f0)">
-        ${slug ? `<img src="${getToolIconSrc(slug)}" alt="${safeName}" width="600" height="400" loading="lazy" onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='flex');};this.src='${getToolIconFallback(slug)}';">` : ''}
+        ${imageSrc ? `<img src="${imageSrc}" alt="${safeName}" width="600" height="400" loading="lazy" onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='flex');};this.src='${imageFallback}';">` : ''}
         <div class="tc-image-fallback" style="display:none;background:linear-gradient(135deg,${cat.color},#cbd5e1)">${safeIcon}</div>
       </div>
       <div class="tc-body">

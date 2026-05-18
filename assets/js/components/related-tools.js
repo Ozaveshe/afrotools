@@ -34,6 +34,27 @@ class AfroRelatedTools extends HTMLElement {
     })[c] || { gradient:'linear-gradient(145deg,#374151,#6b7280)', pill:'#f3f4f6', pillTxt:'#374151', label: c };
   }
 
+  _imageKey(t) {
+    const candidates = [
+      t && t.imageKey,
+      t && t.imageId,
+      t && t.sourceId,
+      t && t.id
+    ].filter(v => typeof v === 'string' && v.trim()).map(v => v.trim());
+    const extMap = (typeof TOOL_CARD_IMAGE_EXTENSIONS !== 'undefined') ? TOOL_CARD_IMAGE_EXTENSIONS : null;
+    if (extMap) {
+      const match = candidates.find(key => extMap[key]);
+      if (match) return match;
+    }
+    return candidates[0] || '';
+  }
+
+  _imageExt(t, imageKey) {
+    if (t && (t.imageExt === 'svg' || t.imageExt === 'webp')) return t.imageExt;
+    const extMap = (typeof TOOL_CARD_IMAGE_EXTENSIONS !== 'undefined') ? TOOL_CARD_IMAGE_EXTENSIONS : null;
+    return (extMap && imageKey && extMap[imageKey]) || '';
+  }
+
   _getTools() {
     const cat     = this.getAttribute('category') || '';
     const current = this.getAttribute('current')  || '';
@@ -73,11 +94,13 @@ class AfroRelatedTools extends HTMLElement {
 
     const cards = tools.map(t => {
       const cs   = this._cat(t.category);
-      const imageExt = (t.imageExt === 'svg' || t.imageExt === 'webp') ? t.imageExt : 'webp';
+      const imageKey = this._imageKey(t);
+      const imageExt = this._imageExt(t, imageKey);
       const fallbackExt = imageExt === 'svg' ? 'webp' : 'svg';
-      const img  = `/assets/img/tools/${t.id}.${imageExt}`;
-      const imgFallback = `/assets/img/tools/${t.id}.${fallbackExt}`;
-      const useImage = !fallbackOnlyIds.has(t.id);
+      const encodedImageKey = imageKey ? encodeURIComponent(imageKey) : '';
+      const img  = imageExt && encodedImageKey ? `/assets/img/tools/${encodedImageKey}.${imageExt}` : '';
+      const imgFallback = imageExt && encodedImageKey ? `/assets/img/tools/${encodedImageKey}.${fallbackExt}` : '';
+      const useImage = Boolean(imageExt && encodedImageKey && !fallbackOnlyIds.has(t.id) && !fallbackOnlyIds.has(imageKey));
       const desc = t.desc && t.desc.length > 50 ? t.desc.slice(0,48)+'…' : (t.desc||'');
       return `
         <a class="card" href="${t.href}" aria-label="${t.name}">

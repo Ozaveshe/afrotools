@@ -383,7 +383,6 @@ function buildMarkdown(report) {
   lines.push("- `ojú ìwé Gẹẹsi` labels are treated as possible false positives because Yoruba shell links can intentionally disclose English fallback routes.");
   lines.push("- Proper nouns, country names, brand names, and accepted technical acronyms are not blockers by themselves.");
   lines.push("- This report does not edit Yoruba page copy.");
-  lines.push("");
   return `${lines.join("\n")}\n`;
 }
 

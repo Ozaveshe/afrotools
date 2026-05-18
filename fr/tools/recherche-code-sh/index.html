@@ -3,49 +3,457 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Recherche de code SH douanier | Afrique | AfroTools</title>
-<meta name="description" content="Trouvez un code SH de depart pour une marchandise et verifiez la classification finale avec la douane ou le declarant.">
-<link rel="canonical" href="https://afrotools.com/fr/tools/recherche-code-sh/">
+<meta name="view-transition" content="same-origin">
+<title>Recherche de code SH douanier | Qualification import | AfroTools</title>
+<meta name="description" content="Préqualifiez un code SH, estimez coût rendu, droits, TVA, change, risques et documents à vérifier avant déclaration douanière.">
 <meta name="robots" content="index, follow">
+<meta name="tool-id" content="recherche-code-sh-fr">
+<link rel="canonical" href="https://afrotools.com/fr/tools/recherche-code-sh/">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Recherche de code SH douanier | AfroTools">
-<meta property="og:description" content="Cherchez un code SH de depart avant calcul des droits, taxes et documents requis.">
+<meta property="og:description" content="Préparez la classification SH, le coût rendu, les droits, la TVA, les documents et les questions à poser au déclarant.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://afrotools.com/fr/tools/recherche-code-sh/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
-<script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Recherche de code SH douanier","description":"Trouvez un code SH de depart pour une marchandise avant verification douaniere.","url":"https://afrotools.com/fr/tools/recherche-code-sh/","inLanguage":"fr","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
+<script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Recherche de code SH douanier","description":"Outil français pour préqualifier un code SH, préparer les documents import, estimer coût rendu, droits, TVA et risques avant vérification douanière.","url":"https://afrotools.com/fr/tools/recherche-code-sh/","inLanguage":"fr","applicationCategory":"BusinessApplication","operatingSystem":"Web","browserRequirements":"JavaScript requis","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/tools/"},{"@type":"ListItem","position":3,"name":"Recherche code SH","item":"https://afrotools.com/fr/tools/recherche-code-sh/"}]}</script>
 <style>
-body{font-family:var(--font-body,'DM Sans',system-ui,sans-serif);background:#f8fafd;color:#111827;margin:0}.tool-hero{padding:3rem 1rem 2rem;text-align:center;background:#fff7ed;border-bottom:1px solid #fed7aa}.tool-hero h1{font-size:clamp(1.7rem,4vw,2.35rem);margin:0 0 .65rem}.tool-hero p{max-width:720px;margin:0 auto;color:#475569;line-height:1.65}.tool-frame{max-width:1080px;margin:0 auto;padding:1rem}.tool-frame iframe{width:100%;min-height:760px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}.seo-section{max-width:840px;margin:0 auto;padding:1.5rem 1rem;color:#475569;line-height:1.7}.seo-section h2{font-size:1.3rem;color:#111827;margin:0 0 .75rem}.trade-note{border:1px solid #bfdbfe;background:#eff6ff;color:#172554;border-radius:10px;padding:1rem;margin-top:.5rem}.link-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.7rem}.link-row a{border:1px solid #dbeafe;border-radius:999px;padding:.45rem .7rem;background:#fff;color:#1d4ed8;font-weight:700;text-decoration:none}
+*{box-sizing:border-box}
+body{margin:0;font-family:"DM Sans",system-ui,-apple-system,sans-serif;background:#f6f8fb;color:#0f172a;line-height:1.6}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.hero{background:linear-gradient(135deg,#08111f 0%,#0e3565 54%,#0f766e 100%);color:#fff;padding:78px 0 42px}
+.crumb{font-size:.86rem;color:rgba(255,255,255,.76);margin-bottom:14px}
+.crumb a{color:#fff;text-decoration:none}
+.eyebrow{display:inline-flex;align-items:center;margin-bottom:12px;padding:7px 11px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);font-size:.76rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(300px,.72fr);gap:28px;align-items:center}
+h1{max-width:840px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04;font-weight:900;letter-spacing:0}
+.lead{max-width:870px;margin:16px 0 0;color:rgba(255,255,255,.86);font-size:1.06rem}
+.hero-card{background:#fff;color:#0f172a;border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,.18);box-shadow:0 24px 60px rgba(0,0,0,.22)}
+.hero-card strong{display:block;font-size:1.12rem}
+.hero-card p{margin:8px 0 0;color:#475569}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.badge{display:inline-flex;padding:5px 10px;border-radius:999px;background:#ccfbf1;color:#115e59;font-size:.74rem;font-weight:900}
+.main{padding:24px 0 38px}
+.layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(330px,.72fr);gap:20px;align-items:start}
+.card,.note{background:#fff;border:1px solid #dbe4ee;border-radius:14px;box-shadow:0 12px 28px rgba(15,23,42,.06)}
+.card{padding:20px}
+.note{padding:18px}
+.card h2,.note h2{margin:0 0 12px;color:#0f172a;font-size:1.22rem;line-height:1.25}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.field{min-width:0}
+.field label{display:block;margin:0 0 6px;font-size:.92rem;font-weight:850;color:#1e293b}
+.field input,.field select,.field textarea{width:100%;min-height:44px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;padding:11px 12px;font:inherit}
+.field textarea{min-height:96px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid rgba(15,118,110,.22);border-color:#0f766e}
+.help{display:block;margin-top:4px;color:#64748b;font-size:.78rem;line-height:1.45}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{border:0;border-radius:10px;min-height:44px;padding:11px 14px;background:#0f766e;color:#fff;font-weight:900;cursor:pointer}
+.btn.secondary{background:#e2e8f0;color:#0f172a}
+.btn.ghost{background:#fff;color:#0f172a;border:1px solid #cbd5e1}
+.result{position:sticky;top:88px}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px;min-width:0}
+.metric b{display:block;font-size:1.06rem;line-height:1.3;word-break:break-word}
+.metric span{display:block;margin-top:4px;color:#64748b;font-size:.78rem}
+.alert{border:1px solid #99f6e4;background:#f0fdfa;color:#134e4a;border-radius:12px;padding:12px;margin:12px 0;line-height:1.55}
+.alert.warn{border-color:#fed7aa;background:#fff7ed;color:#7c2d12}
+.alert.bad{border-color:#fecaca;background:#fef2f2;color:#7f1d1d}
+.output{min-height:220px;white-space:pre-wrap;overflow:auto;background:#0f172a;color:#e2e8f0;border-radius:12px;padding:14px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.88rem;line-height:1.55;word-break:break-word}
+.copyline{margin-top:10px;color:#64748b;font-size:.86rem;min-height:20px}
+.section{margin-top:18px}
+.table-wrap{overflow-x:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff}
+.table{width:100%;border-collapse:collapse;min-width:780px}
+.table th,.table td{text-align:left;vertical-align:top;padding:11px 12px;border-bottom:1px solid #e2e8f0}
+.table th{background:#f8fafc;color:#334155;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase}
+.table tr:last-child td{border-bottom:0}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.step{border:1px solid #e2e8f0;border-radius:12px;padding:12px;background:#fff}
+.step strong{display:block;margin-bottom:5px;color:#0f172a}
+.step span{display:block;color:#64748b;font-size:.86rem;line-height:1.45}
+.list{margin:0;padding-left:18px;color:#475569;line-height:1.65}
+.small{margin:0;color:#64748b;font-size:.91rem;line-height:1.65}
+.links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.links a{display:block;text-decoration:none;border:1px solid #dbe4ee;border-radius:10px;padding:11px 12px;background:#fff;color:#1d4ed8;font-weight:850}
+@media(max-width:900px){.hero{padding-top:70px}.hero-grid,.layout,.grid,.metrics,.steps,.links{grid-template-columns:1fr}.result{position:static}.card,.note{padding:16px}.table{min-width:720px}}
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/hs-code-lookup/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/recherche-code-sh/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/hs-code-lookup/" />
 </head>
 <body>
-<afro-navbar></afro-navbar>
+<afro-navbar active="tools"></afro-navbar>
 <main>
-<section class="tool-hero">
-  <h1>Recherche de code SH douanier</h1>
-  <p>Trouvez une classification de depart pour votre marchandise afin de preparer le calcul des droits, les documents et les questions a poser au declarant.</p>
-</section>
-<section class="tool-frame">
-  <iframe src="/tools/hs-code-lookup/" title="Recherche de code SH douanier" loading="lazy"></iframe>
-</section>
-<section class="seo-section">
-  <h2>Utilisation prudente</h2>
-  <p>Les six premiers chiffres du Systeme harmonise sont communs, mais les sous-positions nationales, exemptions, licences et controles changent selon le pays. Le code final doit etre confirme par la douane, le declarant ou un conseiller specialise.</p>
-  <div class="trade-note"><strong>Verification recommandee.</strong> Gardez les fiches techniques, facture, composition, usage et pays d origine du produit pour justifier la classification.</div>
-  <div class="link-row"><a href="/fr/tools/droits-douane/">Droits de douane</a><a href="/fr/tools/generateur-certificat-origine/">Certificat d origine</a><a href="/fr/tools/liste-colisage/">Liste de colisage</a><a href="/fr/tools/documents-export/">Documents export</a></div>
-</section>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <nav class="crumb" aria-label="Fil d'Ariane"><a href="/fr/">AfroTools</a> / <a href="/fr/tools/">Outils</a> / Recherche code SH</nav>
+        <div class="eyebrow">Classification douanière et coût import</div>
+        <h1>Préqualifiez un code SH sans le présenter comme officiel.</h1>
+        <p class="lead">Décrivez le produit, comparez des familles SH probables, estimez le coût rendu avec vos taux vérifiés, puis exportez les questions à envoyer au déclarant, au transitaire ou à l'autorité douanière.</p>
+      </div>
+      <aside class="hero-card" aria-label="Limite de classification">
+        <strong>Le code final dépend de la douane du pays d'import.</strong>
+        <p>Les six premiers chiffres du Système harmonisé donnent une base internationale. Les sous-positions, droits, taxes, licences et contrôles varient par pays.</p>
+        <div class="badges"><span class="badge">Code SH</span><span class="badge">Droits</span><span class="badge">TVA</span><span class="badge">Dossier</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="wrap main">
+    <div class="layout">
+      <section class="card" aria-labelledby="input-title">
+        <h2 id="input-title">Données produit et import</h2>
+        <form id="hsForm">
+          <div class="grid">
+            <div class="field"><label for="origin">Origine</label><input id="origin" type="text" value="Istanbul, Turquie" maxlength="90"></div>
+            <div class="field"><label for="destination">Destination</label><input id="destination" type="text" value="Douala, Cameroun" maxlength="90"></div>
+            <div class="field"><label for="product">Produit à classer</label><input id="product" type="text" value="chaussures de sport en cuir et caoutchouc" maxlength="140"></div>
+            <div class="field"><label for="material">Matière principale</label><input id="material" type="text" value="cuir, caoutchouc, textile" maxlength="120"></div>
+            <div class="field"><label for="useCase">Usage du produit</label><select id="useCase"><option value="consumer">Vente au détail</option><option value="industrial">Usage industriel</option><option value="food">Alimentaire ou agricole</option><option value="medical">Santé, chimie ou contrôle spécial</option><option value="parts">Pièce détachée ou accessoire</option></select></div>
+            <div class="field"><label for="candidateCode">Code SH pressenti</label><input id="candidateCode" type="text" value="6403.XX à confirmer" maxlength="60"><span class="help">Saisissez un code reçu du fournisseur ou laissez une note à confirmer.</span></div>
+            <div class="field"><label for="currency">Devise de calcul</label><select id="currency"><option>USD</option><option>EUR</option><option>XAF</option><option>XOF</option><option>NGN</option><option>GHS</option><option>KES</option><option>ZAR</option></select></div>
+            <div class="field"><label for="fxRate">Taux de change vers devise locale</label><input id="fxRate" type="number" min="0" step="any" value="610" inputmode="decimal"><span class="help">Exemple: 1 USD = 610 XAF. À dater et vérifier.</span></div>
+            <div class="field"><label for="goodsValue">Valeur marchandise</label><input id="goodsValue" type="number" min="0" step="any" value="18500" inputmode="decimal"></div>
+            <div class="field"><label for="freight">Fret international</label><input id="freight" type="number" min="0" step="any" value="2300" inputmode="decimal"></div>
+            <div class="field"><label for="insurance">Assurance et manutention</label><input id="insurance" type="number" min="0" step="any" value="280" inputmode="decimal"></div>
+            <div class="field"><label for="localFees">Frais locaux et dossier</label><input id="localFees" type="number" min="0" step="any" value="750" inputmode="decimal"></div>
+            <div class="field"><label for="dutyRate">Droit de douane vérifié (%)</label><input id="dutyRate" type="number" min="0" step="any" value="20" inputmode="decimal"><span class="help">À confirmer avec code SH, pays et régime import.</span></div>
+            <div class="field"><label for="vatRate">TVA ou taxe import vérifiée (%)</label><input id="vatRate" type="number" min="0" step="any" value="19.25" inputmode="decimal"></div>
+            <div class="field"><label for="documents">Niveau documentaire</label><select id="documents"><option value="complete">Fiche technique, facture, origine, transport</option><option value="partial">Facture et description seulement</option><option value="missingTech">Fiche technique ou composition manquante</option><option value="unclear">Produit ou usage ambigu</option></select></div>
+            <div class="field"><label for="logisticsRisk">Risque logistique</label><select id="logisticsRisk"><option value="low">Faible: produit standard</option><option value="medium">Moyen: nouveau fournisseur ou contrôle possible</option><option value="high">Élevé: licence, contrôle, composition sensible</option></select></div>
+            <div class="field" style="grid-column:1/-1"><label for="description">Description complète pour le déclarant</label><textarea id="description">Chaussures de sport pour adultes, dessus principalement en cuir, semelle extérieure en caoutchouc, usage quotidien, emballage carton. Vérifier si la composition exacte change la sous-position.</textarea></div>
+          </div>
+          <div class="actions">
+            <button class="btn" type="submit">Analyser et chiffrer</button>
+            <button class="btn secondary" id="copySummary" type="button">Copier le résumé</button>
+            <button class="btn ghost" id="downloadSummary" type="button">Exporter le résumé</button>
+            <button class="btn ghost" id="sampleBtn" type="button">Charger un exemple</button>
+            <button class="btn ghost" id="resetBtn" type="button">Réinitialiser</button>
+          </div>
+          <div class="copyline" id="copyStatus" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <aside class="card result" aria-labelledby="result-title">
+        <h2 id="result-title">Résultat de préqualification</h2>
+        <div class="metrics" aria-live="polite">
+          <div class="metric"><b id="primaryCode">À vérifier</b><span>Famille SH probable</span></div>
+          <div class="metric"><b id="landedCost">0</b><span>Coût rendu estimé</span></div>
+          <div class="metric"><b id="readiness">0/100</b><span>Préparation dossier</span></div>
+          <div class="metric"><b id="riskLabel">À vérifier</b><span>Risque de classification</span></div>
+        </div>
+        <div class="alert" id="recommendation">Renseignez les données pour préparer l'analyse.</div>
+        <div class="output" id="summaryOutput" tabindex="0" aria-label="Résumé exportable"></div>
+      </aside>
+    </div>
+
+    <section class="card section" aria-labelledby="candidate-title">
+      <h2 id="candidate-title">Pistes de classification à discuter</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Piste</th><th>Pourquoi elle ressort</th><th>Preuves à fournir</th><th>Limite</th></tr></thead>
+          <tbody id="candidateRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card section" aria-labelledby="breakdown-title">
+      <h2 id="breakdown-title">Ventilation coût rendu, droits et taxes</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Ligne</th><th>Montant</th><th>Méthode</th><th>Contrôle</th></tr></thead>
+          <tbody id="breakdownRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card section" aria-labelledby="scenario-title">
+      <h2 id="scenario-title">Scénarios de taux et dossier</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Scénario</th><th>Coût rendu</th><th>Hypothèse</th><th>Décision utile</th></tr></thead>
+          <tbody id="scenarioRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card section" aria-labelledby="steps-title">
+      <h2 id="steps-title">Méthode de travail</h2>
+      <div class="steps" id="workflowSteps"></div>
+    </section>
+
+    <section class="layout section">
+      <article class="note">
+        <h2>Liste de contrôle</h2>
+        <ul class="list" id="checklist"></ul>
+      </article>
+      <article class="note">
+        <h2>Méthodologie</h2>
+        <p class="small">L'outil rapproche les mots du produit, la matière et l'usage avec de grandes familles SH courantes, puis calcule un coût rendu à partir des taux et montants que vous saisissez. Il ne consulte pas une base tarifaire en direct et ne décide pas la classification finale. Le score de préparation baisse si la fiche technique manque, si l'usage est ambigu, si le risque logistique est élevé ou si le code pressenti reste vague.</p>
+      </article>
+    </section>
+
+    <section class="layout section">
+      <article class="note">
+        <h2>Sources et fraîcheur</h2>
+        <p class="small">Dernière revue: 18 mai 2026. L'outil ne fournit aucun taux officiel. Vérifiez le code, les sous-positions nationales, les droits, la TVA, les licences et les restrictions auprès des autorités ou du déclarant. Références utiles: <a href="https://www.wcoomd.org/en/Topics/Nomenclature/Instrument%20and%20Tools/HS%20Nomenclature%202022%20Edition">source officielle de l'Organisation mondiale des douanes sur la nomenclature SH 2022</a>, <a href="https://www.trade.gov/harmonized-system-hs-codes">source officielle Trade.gov sur les codes SH</a>, <a href="https://www.trade.gov/index.php/common-export-documents">documents export courants de Trade.gov</a>, et le portail douanier du pays d'import.</p>
+      </article>
+      <article class="note">
+        <h2>Avertissement commerce et droit</h2>
+        <p class="small">AfroTools n'est pas une autorité douanière, un déclarant, un transitaire ni un conseiller juridique. Cette préqualification sert à préparer les questions et les hypothèses; elle ne remplace pas une décision de classement, une décision tarifaire, une consultation fiscale ou une vérification officielle.</p>
+      </article>
+    </section>
+
+    <section class="card section" aria-labelledby="links-title">
+      <h2 id="links-title">Outils liés</h2>
+      <div class="links">
+        <a href="/fr/tools/droits-douane/">Droits de douane</a>
+        <a href="/fr/tools/liste-colisage/">Liste de colisage</a>
+        <a href="/fr/tools/documents-export/">Documents export</a>
+        <a href="/fr/tools/generateur-certificat-origine/">Certificat d'origine</a>
+        <a href="/fr/tools/estimateur-fret/">Estimateur de fret</a>
+        <a href="/fr/tools/calculateur-incoterms/">Calculateur Incoterms</a>
+        <a href="/fr/tools/impact-fx-import/">Impact change import</a>
+        <a href="/fr/tools/comparateur-financement-commerce/">Financement commercial</a>
+      </div>
+    </section>
+  </div>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+  let currentSummary = "";
+  const families = [
+    { code:"64", label:"Chaussures, guêtres et articles analogues", keys:["chaussure","sport","semelle","cuir","bottes","sandale"], proof:"composition dessus/semelle, usage, genre, photos, fiche fournisseur" },
+    { code:"61/62", label:"Vêtements et accessoires du vêtement", keys:["textile","vêtement","chemise","robe","pantalon","tissu","coton"], proof:"matière, coupe, genre, usage, échantillon ou fiche technique" },
+    { code:"84/85", label:"Machines, appareils et matériel électrique", keys:["machine","moteur","électrique","electrique","électronique","electronique","appareil","batterie","chargeur","chargeurs","ordinateur","composant"], proof:"fonction principale, tension, puissance, manuel, composants" },
+    { code:"39", label:"Matières plastiques et ouvrages en plastique", keys:["plastique","polypropylène","pvc","emballage","résine"], proof:"matière exacte, forme, usage, fiche matière" },
+    { code:"30/38", label:"Produits pharmaceutiques, chimiques ou préparations", keys:["médical","chimique","réactif","cosmétique","désinfectant","laboratoire"], proof:"composition, usage, fiche de sécurité, autorisation ou licence" },
+    { code:"87", label:"Véhicules, pièces et accessoires", keys:["véhicule","auto","camion","moto","pièce","frein","pneu"], proof:"référence pièce, véhicule compatible, matière, usage" },
+    { code:"09/10/11/12", label:"Produits agricoles ou alimentaires", keys:["riz","maïs","café","cacao","épice","alimentaire","huile","graine"], proof:"origine, état du produit, certificat sanitaire, emballage" }
+  ];
+  function num(id){ return Math.max(0, Number($(id).value || 0)); }
+  function money(value){
+    return new Intl.NumberFormat("fr-FR", { style:"currency", currency:$("currency").value, maximumFractionDigits:0 }).format(value || 0);
+  }
+  function pct(value){ return (Number(value || 0)).toLocaleString("fr-FR", { maximumFractionDigits:2 }) + " %"; }
+  function rankFamilies(){
+    const product = $("product").value.toLowerCase();
+    const material = $("material").value.toLowerCase();
+    const description = $("description").value.toLowerCase();
+    return families.map((fam) => {
+      const productHits = fam.keys.filter((key) => product.includes(key)).length;
+      const materialHits = fam.keys.filter((key) => material.includes(key)).length;
+      const descriptionHits = fam.keys.filter((key) => description.includes(key)).length;
+      const hits = productHits + materialHits + descriptionHits;
+      const score = (productHits * 34) + (materialHits * 24) + (descriptionHits * 12) + (($("candidateCode").value || "").includes(fam.code.split("/")[0]) ? 10 : 0);
+      return { ...fam, hits, score };
+    }).sort((a,b) => b.score - a.score);
+  }
+  function riskPenalty(){
+    return $("logisticsRisk").value === "high" ? 24 : $("logisticsRisk").value === "medium" ? 13 : 4;
+  }
+  function docPenalty(){
+    return $("documents").value === "complete" ? 0 : $("documents").value === "partial" ? 13 : $("documents").value === "missingTech" ? 24 : 30;
+  }
+  function usePenalty(){
+    return $("useCase").value === "medical" ? 22 : $("useCase").value === "food" ? 16 : $("useCase").value === "parts" ? 12 : $("useCase").value === "industrial" ? 8 : 4;
+  }
+  function riskText(readiness){
+    if (readiness >= 82) return "Faible";
+    if (readiness >= 62) return "Moyen";
+    return "Élevé";
+  }
+  function calc(rateMultiplier){
+    const goods = num("goodsValue");
+    const freight = num("freight");
+    const insurance = num("insurance");
+    const localFees = num("localFees");
+    const customsValue = goods + freight + insurance;
+    const dutyRate = num("dutyRate") * (rateMultiplier || 1);
+    const duty = customsValue * (dutyRate / 100);
+    const vatBase = customsValue + duty + localFees;
+    const vat = vatBase * (num("vatRate") / 100);
+    const landed = customsValue + duty + vat + localFees;
+    const local = landed * num("fxRate");
+    const vagueCode = /xx|confirmer|à confirmer|a confirmer|inconnu/i.test($("candidateCode").value);
+    const readiness = Math.max(0, Math.min(100, Math.round(100 - riskPenalty() - docPenalty() - usePenalty() - (vagueCode ? 10 : 0))));
+    const ranked = rankFamilies();
+    return { goods, freight, insurance, localFees, customsValue, dutyRate, duty, vatBase, vat, landed, local, readiness, ranked, primary: ranked[0] };
+  }
+  function renderCandidates(data){
+    const rows = data.ranked.slice(0, 4).map((fam, index) => {
+      const confidence = fam.hits ? (index === 0 ? "Piste principale" : "Piste secondaire") : "À discuter";
+      const reason = fam.hits ? fam.hits + " indice(s) dans le produit, la matière ou la description" : "Aucun indice fort; conserver comme comparaison";
+      return "<tr><td>"+confidence+"<br><strong>"+fam.code+" - "+fam.label+"</strong></td><td>"+reason+"</td><td>"+fam.proof+"</td><td>Préqualification non officielle; sous-position nationale à confirmer.</td></tr>";
+    });
+    $("candidateRows").innerHTML = rows.join("");
+  }
+  function renderBreakdown(data){
+    const rows = [
+      ["Valeur marchandise", money(data.goods), "Montant fournisseur saisi", "Doit correspondre à la facture commerciale."],
+      ["Fret international", money(data.freight), "Montant saisi", "Vérifier port, Incoterm et devise."],
+      ["Assurance et manutention", money(data.insurance), "Montant saisi", "Peut entrer dans la valeur douanière selon le pays."],
+      ["Valeur douanière de travail", money(data.customsValue), "Marchandise + fret + assurance", "Base indicative à valider."],
+      ["Droit de douane", money(data.duty), "Valeur douanière x " + pct(data.dutyRate), "Taux à confirmer avec le code final."],
+      ["TVA ou taxe import", money(data.vat), "(Valeur douanière + droits + frais) x " + pct(num("vatRate")), "Exonérations et base à confirmer."],
+      ["Coût rendu en devise locale", data.local.toLocaleString("fr-FR", { maximumFractionDigits:0 }), "Coût rendu x taux de change", "Taux saisi: " + num("fxRate").toLocaleString("fr-FR")]
+    ];
+    $("breakdownRows").innerHTML = rows.map((row) => "<tr><td>"+row[0]+"</td><td>"+row[1]+"</td><td>"+row[2]+"</td><td>"+row[3]+"</td></tr>").join("");
+  }
+  function renderScenarios(){
+    const base = calc(1);
+    const lower = calc(.75);
+    const higher = calc(1.35);
+    const rows = [
+      ["Code pressenti", base.landed, "Taux saisi sans changement", "Envoyer au déclarant avec preuves produit."],
+      ["Classement favorable", lower.landed, "Droit réduit de 25 %", "Vérifier si une sous-position ou un accord l'autorise."],
+      ["Classement défavorable", higher.landed, "Droit augmenté de 35 %", "Tester marge, trésorerie et risque de redressement."]
+    ];
+    $("scenarioRows").innerHTML = rows.map((row) => "<tr><td>"+row[0]+"</td><td>"+money(row[1])+"</td><td>"+row[2]+"</td><td>"+row[3]+"</td></tr>").join("");
+  }
+  function renderChecklist(data){
+    const items = [
+      "Réunir facture, fiche technique, photos, composition, usage et pays d'origine.",
+      "Comparer le code fournisseur " + $("candidateCode").value.trim() + " avec la nomenclature officielle du pays d'import.",
+      "Vérifier si licence, contrôle sanitaire, certificat d'origine ou inspection avant expédition est requis.",
+      "Confirmer les droits, la TVA et les frais avec une source datée ou un devis de transitaire.",
+      "Garder une trace écrite des raisons de classification et des preuves produit.",
+      data.readiness < 70 ? "Ne pas déposer la déclaration tant que la fiche technique ou l'usage reste ambigu." : "Envoyer le résumé au déclarant pour validation finale."
+    ];
+    $("checklist").innerHTML = items.map((item) => "<li>"+item+"</li>").join("");
+  }
+  function renderSteps(){
+    const steps = [
+      ["1. Décrire", "Produit, matière, usage, origine, photos et fiche technique."],
+      ["2. Comparer", "Familles SH probables et code fournisseur pressenti."],
+      ["3. Chiffrer", "Valeur, fret, droits, TVA, change et scénario défavorable."],
+      ["4. Valider", "Questions au déclarant, portail douane et preuve documentaire."]
+    ];
+    $("workflowSteps").innerHTML = steps.map((step) => "<article class=\"step\"><strong>"+step[0]+"</strong><span>"+step[1]+"</span></article>").join("");
+  }
+  function buildSummary(data){
+    return [
+      "Résumé recherche code SH AfroTools",
+      "Origine: " + $("origin").value.trim(),
+      "Destination: " + $("destination").value.trim(),
+      "Produit: " + $("product").value.trim(),
+      "Matière: " + $("material").value.trim(),
+      "Usage: " + $("useCase").selectedOptions[0].textContent,
+      "Code pressenti: " + $("candidateCode").value.trim(),
+      "Piste principale: " + data.primary.code + " - " + data.primary.label,
+      "",
+      "Valeur marchandise: " + money(data.goods),
+      "Fret: " + money(data.freight),
+      "Droit saisi: " + pct(data.dutyRate) + " soit " + money(data.duty),
+      "TVA ou taxe import: " + money(data.vat) + " au taux saisi de " + pct(num("vatRate")),
+      "Coût rendu estimé: " + money(data.landed),
+      "Équivalent devise locale: " + data.local.toLocaleString("fr-FR", { maximumFractionDigits:0 }),
+      "Préparation dossier: " + data.readiness + "/100",
+      "Risque de classification: " + riskText(data.readiness),
+      "",
+      "Questions à poser: code SH final, sous-position nationale, licences, origine, preuves produit, droits, TVA, frais et restrictions.",
+      "Avertissement: préqualification non officielle. Confirmer avec la douane, le déclarant ou le transitaire avant déclaration."
+    ].join("\n");
+  }
+  function update(event){
+    if (event) event.preventDefault();
+    const data = calc(1);
+    $("primaryCode").textContent = data.primary.code;
+    $("landedCost").textContent = money(data.landed);
+    $("readiness").textContent = data.readiness + "/100";
+    $("riskLabel").textContent = riskText(data.readiness);
+    const box = $("recommendation");
+    if (data.readiness >= 82) {
+      box.className = "alert";
+      box.textContent = "Bonne base de travail. Faites confirmer la sous-position nationale, les taux et les documents avant déclaration.";
+    } else if (data.readiness >= 62) {
+      box.className = "alert warn";
+      box.textContent = "Préqualification utile mais incomplète. Ajoutez fiche technique, composition ou preuve d'usage avant dépôt.";
+    } else {
+      box.className = "alert bad";
+      box.textContent = "Risque élevé de mauvais classement. Ne déclarez pas sans validation du déclarant ou de l'autorité compétente.";
+    }
+    renderCandidates(data);
+    renderBreakdown(data);
+    renderScenarios();
+    renderChecklist(data);
+    renderSteps();
+    currentSummary = buildSummary(data);
+    $("summaryOutput").textContent = currentSummary;
+    $("copyStatus").textContent = "";
+  }
+  async function copySummary(){
+    if (!currentSummary) update();
+    try {
+      await navigator.clipboard.writeText(currentSummary);
+      $("copyStatus").textContent = "Résumé copié.";
+    } catch (error) {
+      $("copyStatus").textContent = "Copie directe indisponible. Sélectionnez le texte du résumé.";
+    }
+  }
+  function downloadSummary(){
+    if (!currentSummary) update();
+    const blob = new Blob([currentSummary], { type:"text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "afrotools-recherche-code-sh.txt";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    $("copyStatus").textContent = "Résumé prêt à exporter.";
+  }
+  function sample(){
+    $("origin").value = "Guangzhou, Chine";
+    $("destination").value = "Lomé, Togo";
+    $("product").value = "chargeurs électriques USB pour téléphones";
+    $("material").value = "plastique, composants électroniques, câble";
+    $("useCase").value = "consumer";
+    $("candidateCode").value = "8504.40 à confirmer";
+    $("currency").value = "USD";
+    $("fxRate").value = "610";
+    $("goodsValue").value = "9600";
+    $("freight").value = "1450";
+    $("insurance").value = "160";
+    $("localFees").value = "520";
+    $("dutyRate").value = "10";
+    $("vatRate").value = "18";
+    $("documents").value = "partial";
+    $("logisticsRisk").value = "medium";
+    $("description").value = "Chargeurs USB pour téléphones mobiles, entrée 100-240V, sortie 5V, boîtier plastique, emballés en cartons. Vérifier normes électriques, marquage et conformité locale.";
+    update();
+  }
+  function reset(){
+    $("hsForm").reset();
+    $("description").value = "";
+    update();
+  }
+  $("hsForm").addEventListener("submit", update);
+  Array.from($("hsForm").elements).forEach((field) => {
+    field.addEventListener("input", update);
+    field.addEventListener("change", update);
+  });
+  $("copySummary").addEventListener("click", copySummary);
+  $("downloadSummary").addEventListener("click", downloadSummary);
+  $("sampleBtn").addEventListener("click", sample);
+  $("resetBtn").addEventListener("click", reset);
+  update();
+})();
+</script>
 </body>
 </html>

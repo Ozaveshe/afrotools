@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-17T12:53:13.809Z",
+  "generatedAt": "2026-05-18T04:02:51.283Z",
   "scope": {
     "repo": "C:\\Users\\Oza\\Documents\\afrotools",
     "note": "Audit only. No translated pages were edited. English source inventory uses scripts/build-i18n.js skip dirs/files."
@@ -7,15 +7,15 @@
   "totals": {
     "englishSourcePages": 5746,
     "frenchPages": 1707,
-    "englishBackedFrenchRoutes": 1460,
-    "uniqueEnglishSourcesMapped": 1392,
-    "frenchOnlyRoutes": 237,
+    "englishBackedFrenchRoutes": 1467,
+    "uniqueEnglishSourcesMapped": 1399,
+    "frenchOnlyRoutes": 230,
     "duplicateOrAliasRoutes": 95,
     "generatedOutputRoutes": 1198,
     "handAuthoredFrenchPages": 509,
     "unclearSourceOfTruthRoutes": 123,
     "rawPageCountCompletionPercent": 29.71,
-    "englishBackedRouteMappingCompletionPercent": 24.23,
+    "englishBackedRouteMappingCompletionPercent": 24.35,
     "frenchRegistryEntries": 357,
     "frenchRegistryExistingHrefEntries": 357,
     "frenchRegistryEligibleRoutes": 467,
@@ -136,10 +136,10 @@
     "telecom": {
       "englishSourcePages": 15,
       "frenchPages": 11,
-      "englishBackedFrenchPages": 4,
-      "uniqueEnglishSourcesMapped": 4,
+      "englishBackedFrenchPages": 11,
+      "uniqueEnglishSourcesMapped": 11,
       "rawCoveragePercent": 73.33,
-      "mappedCoveragePercent": 26.67,
+      "mappedCoveragePercent": 73.33,
       "registryEligibleFrenchPages": 0,
       "registryCoveredFrenchPages": 0,
       "registryCoveragePercent": null
@@ -3119,13 +3119,6 @@
       "start",
       "supabase/email-templates/confirm-signup",
       "supabase/email-templates/reset-password",
-      "telecom/bulk-sms-pricing",
-      "telecom/business-internet",
-      "telecom/data-plan-compare",
-      "telecom/data-usage-calc",
-      "telecom/fiber-lte-5g",
-      "telecom/internet-compare",
-      "telecom/roaming-cost",
       "telecom/sim-registration",
       "telecom/starlink-compare",
       "telecom/tv-compare",
@@ -5681,7 +5674,7 @@
   "top20Blockers": [
     {
       "issue": "French pages with no English-backed source mapping",
-      "count": 237,
+      "count": 230,
       "examples": [
         "/fr/404",
         "/fr/api/docs",
@@ -5741,7 +5734,7 @@
     },
     {
       "issue": "English source pages without a mapped French route",
-      "count": 4384,
+      "count": 4377,
       "examples": [
         "afrowork",
         "afrowork/api",
@@ -5855,21 +5848,6 @@
         "widgets/iframe/agriculture-fertilizer-rate"
       ],
       "recommendation": "Prioritize canonical route selection and registry wiring for the highest-value widgets pages before copy translation."
-    },
-    {
-      "issue": "telecom mapped French coverage is below 30%",
-      "count": 11,
-      "examples": [
-        "telecom/bulk-sms-pricing",
-        "telecom/business-internet",
-        "telecom/data-plan-compare",
-        "telecom/data-usage-calc",
-        "telecom/fiber-lte-5g",
-        "telecom/internet-compare",
-        "telecom/roaming-cost",
-        "telecom/sim-registration"
-      ],
-      "recommendation": "Prioritize canonical route selection and registry wiring for the highest-value telecom pages before copy translation."
     },
     {
       "issue": "country hubs raw French count materially exceeds mapped coverage",
@@ -60069,18 +60047,24 @@
       "title": "Calculateur consommation data mobile | AfroTools",
       "h1": "Calculateur de consommation data",
       "classification": {
-        "mapping": "French-only route",
+        "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
         "alias": false,
         "sourceOfTruth": [
-          "tool-registry.js"
+          "tool-registry.js",
+          "existing /fr/ HTML"
         ],
         "sections": [
           "telecom"
         ]
       },
-      "englishSource": null,
+      "englishSource": "telecom/data-usage-calc",
       "mappingEvidence": [
+        {
+          "source": "telecom/data-usage-calc",
+          "evidence": "fr-telecom-slug-map",
+          "exists": true
+        },
         {
           "source": "telecom/calculateur-consommation-data",
           "evidence": "build-i18n-direct-match",
@@ -60090,6 +60074,11 @@
           "source": "telecom/calculateur-consommation-data",
           "evidence": "build-i18n-dir-style-index",
           "exists": false
+        },
+        {
+          "source": "telecom/data-usage-calc",
+          "evidence": "hreflang-en",
+          "exists": true
         }
       ],
       "registryEntries": [
@@ -60118,18 +60107,24 @@
       "title": "Calculateur roaming Afrique | AfroTools",
       "h1": "Calculateur roaming et SIM locale",
       "classification": {
-        "mapping": "French-only route",
+        "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
         "alias": false,
         "sourceOfTruth": [
-          "tool-registry.js"
+          "tool-registry.js",
+          "existing /fr/ HTML"
         ],
         "sections": [
           "telecom"
         ]
       },
-      "englishSource": null,
+      "englishSource": "telecom/roaming-cost",
       "mappingEvidence": [
+        {
+          "source": "telecom/roaming-cost",
+          "evidence": "fr-telecom-slug-map",
+          "exists": true
+        },
         {
           "source": "telecom/calculateur-roaming",
           "evidence": "build-i18n-direct-match",
@@ -60139,6 +60134,11 @@
           "source": "telecom/calculateur-roaming",
           "evidence": "build-i18n-dir-style-index",
           "exists": false
+        },
+        {
+          "source": "telecom/roaming-cost",
+          "evidence": "hreflang-en",
+          "exists": true
         }
       ],
       "registryEntries": [
@@ -60167,18 +60167,24 @@
       "title": "Comparateur de forfaits data Afrique | AfroTools",
       "h1": "Comparateur de forfaits data",
       "classification": {
-        "mapping": "French-only route",
+        "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
         "alias": false,
         "sourceOfTruth": [
-          "tool-registry.js"
+          "tool-registry.js",
+          "existing /fr/ HTML"
         ],
         "sections": [
           "telecom"
         ]
       },
-      "englishSource": null,
+      "englishSource": "telecom/data-plan-compare",
       "mappingEvidence": [
+        {
+          "source": "telecom/data-plan-compare",
+          "evidence": "fr-telecom-slug-map",
+          "exists": true
+        },
         {
           "source": "telecom/comparateur-forfaits-data",
           "evidence": "build-i18n-direct-match",
@@ -60188,6 +60194,11 @@
           "source": "telecom/comparateur-forfaits-data",
           "evidence": "build-i18n-dir-style-index",
           "exists": false
+        },
+        {
+          "source": "telecom/data-plan-compare",
+          "evidence": "hreflang-en",
+          "exists": true
         }
       ],
       "registryEntries": [
@@ -60216,18 +60227,24 @@
       "title": "Comparateur internet fibre, LTE et Starlink | AfroTools",
       "h1": "Comparateur internet fixe et sans fil",
       "classification": {
-        "mapping": "French-only route",
+        "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
         "alias": false,
         "sourceOfTruth": [
-          "tool-registry.js"
+          "tool-registry.js",
+          "existing /fr/ HTML"
         ],
         "sections": [
           "telecom"
         ]
       },
-      "englishSource": null,
+      "englishSource": "telecom/internet-compare",
       "mappingEvidence": [
+        {
+          "source": "telecom/internet-compare",
+          "evidence": "fr-telecom-slug-map",
+          "exists": true
+        },
         {
           "source": "telecom/comparateur-internet",
           "evidence": "build-i18n-direct-match",
@@ -60237,6 +60254,11 @@
           "source": "telecom/comparateur-internet",
           "evidence": "build-i18n-dir-style-index",
           "exists": false
+        },
+        {
+          "source": "telecom/internet-compare",
+          "evidence": "hreflang-en",
+          "exists": true
         }
       ],
       "registryEntries": [
@@ -60265,18 +60287,24 @@
       "title": "Fibre, LTE ou 5G : quel acces choisir ? | AfroTools",
       "h1": "Fibre, LTE ou 5G ?",
       "classification": {
-        "mapping": "French-only route",
+        "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
         "alias": false,
         "sourceOfTruth": [
-          "tool-registry.js"
+          "tool-registry.js",
+          "existing /fr/ HTML"
         ],
         "sections": [
           "telecom"
         ]
       },
-      "englishSource": null,
+      "englishSource": "telecom/fiber-lte-5g",
       "mappingEvidence": [
+        {
+          "source": "telecom/fiber-lte-5g",
+          "evidence": "fr-telecom-slug-map",
+          "exists": true
+        },
         {
           "source": "telecom/fibre-lte-5g",
           "evidence": "build-i18n-direct-match",
@@ -60286,6 +60314,11 @@
           "source": "telecom/fibre-lte-5g",
           "evidence": "build-i18n-dir-style-index",
           "exists": false
+        },
+        {
+          "source": "telecom/fiber-lte-5g",
+          "evidence": "hreflang-en",
+          "exists": true
         }
       ],
       "registryEntries": [
@@ -60314,18 +60347,24 @@
       "title": "Calculateur internet professionnel en Afrique | AfroTools",
       "h1": "Calculateur internet professionnel",
       "classification": {
-        "mapping": "French-only route",
+        "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
         "alias": false,
         "sourceOfTruth": [
-          "tool-registry.js"
+          "tool-registry.js",
+          "existing /fr/ HTML"
         ],
         "sections": [
           "telecom"
         ]
       },
-      "englishSource": null,
+      "englishSource": "telecom/business-internet",
       "mappingEvidence": [
+        {
+          "source": "telecom/business-internet",
+          "evidence": "fr-telecom-slug-map",
+          "exists": true
+        },
         {
           "source": "telecom/internet-entreprise",
           "evidence": "build-i18n-direct-match",
@@ -60335,6 +60374,11 @@
           "source": "telecom/internet-entreprise",
           "evidence": "build-i18n-dir-style-index",
           "exists": false
+        },
+        {
+          "source": "telecom/business-internet",
+          "evidence": "hreflang-en",
+          "exists": true
         }
       ],
       "registryEntries": [
@@ -60423,18 +60467,24 @@
       "title": "Calculateur prix SMS professionnel Afrique | AfroTools",
       "h1": "Prix SMS professionnel",
       "classification": {
-        "mapping": "French-only route",
+        "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
         "alias": false,
         "sourceOfTruth": [
-          "tool-registry.js"
+          "tool-registry.js",
+          "existing /fr/ HTML"
         ],
         "sections": [
           "telecom"
         ]
       },
-      "englishSource": null,
+      "englishSource": "telecom/bulk-sms-pricing",
       "mappingEvidence": [
+        {
+          "source": "telecom/bulk-sms-pricing",
+          "evidence": "fr-telecom-slug-map",
+          "exists": true
+        },
         {
           "source": "telecom/prix-sms-pro",
           "evidence": "build-i18n-direct-match",
@@ -60444,6 +60494,11 @@
           "source": "telecom/prix-sms-pro",
           "evidence": "build-i18n-dir-style-index",
           "exists": false
+        },
+        {
+          "source": "telecom/bulk-sms-pricing",
+          "evidence": "hreflang-en",
+          "exists": true
         }
       ],
       "registryEntries": [
@@ -64174,7 +64229,7 @@
         {
           "id": "calculateur-pourcentage-fr",
           "name": "Calculateur de pourcentage",
-          "category": "data-productivity",
+          "category": "small-business",
           "href": "/fr/tools/calculateur-pourcentage",
           "status": "live"
         }
@@ -66148,8 +66203,8 @@
       "route": "/fr/tools/compte-a-rebours-examen",
       "file": "fr/tools/compte-a-rebours-examen/index.html",
       "canonical": "/fr/tools/compte-a-rebours-examen",
-      "title": "Compte a rebours examen | AfroTools",
-      "h1": "Compte a rebours examens",
+      "title": "Compte à rebours examen | AfroTools",
+      "h1": "Compte à rebours d’examen et plan de révision",
       "classification": {
         "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
@@ -68089,8 +68144,8 @@
       "route": "/fr/tools/cout-reunion",
       "file": "fr/tools/cout-reunion/index.html",
       "canonical": "/fr/tools/cout-reunion",
-      "title": "Calculateur du coût des réunions | Productivité d'équipe",
-      "h1": "Calculateur du coût des réunions",
+      "title": "Calculateur du coût d'une réunion | AfroTools",
+      "h1": "Calculateur du coût d'une réunion",
       "classification": {
         "mapping": "English-backed mapped route",
         "generation": "hand-authored French page",
@@ -76824,8 +76879,8 @@
       "route": "/fr/tools/rendement-investissement",
       "file": "fr/tools/rendement-investissement/index.html",
       "canonical": "/fr/tools/rendement-investissement",
-      "title": "Calculateur de rendement investissement | ROI et retour annuel",
-      "h1": "Atelier de rendement investissement",
+      "title": "Calculateur de rendement d'investissement | AfroTools",
+      "h1": "Calculateur de rendement d'investissement",
       "classification": {
         "mapping": "French-only route",
         "generation": "hand-authored French page",
@@ -77630,8 +77685,8 @@
       "route": "/fr/tools/selecteur-aleatoire",
       "file": "fr/tools/selecteur-aleatoire/index.html",
       "canonical": "/fr/tools/selecteur-aleatoire",
-      "title": "Sélecteur aléatoire français pour listes, tirages et équipes | AfroTools",
-      "h1": "Sélecteur aléatoire fiable et exportable",
+      "title": "Sélecteur aléatoire | AfroTools",
+      "h1": "Sélecteur aléatoire",
       "classification": {
         "mapping": "French-only route",
         "generation": "hand-authored French page",
@@ -77859,8 +77914,8 @@
       "route": "/fr/tools/simulateur-ussd",
       "file": "fr/tools/simulateur-ussd/index.html",
       "canonical": "/fr/tools/simulateur-ussd",
-      "title": "Simulateur USSD en fran&ccedil;ais | AfroTools",
-      "h1": "Simulateur USSD pour &eacute;quipes fintech, t&eacute;l&eacute;com et terrain",
+      "title": "Simulateur de codes USSD | AfroTools",
+      "h1": "Simulateur de codes USSD",
       "classification": {
         "mapping": "French-only route",
         "generation": "hand-authored French page",
@@ -77957,8 +78012,8 @@
       "route": "/fr/tools/suivi-carburant",
       "file": "fr/tools/suivi-carburant/index.html",
       "canonical": "/fr/tools/suivi-carburant",
-      "title": "Suivi carburant Afrique : coût mensuel, impact prix et transport | AfroTools",
-      "h1": "Suivi carburant pour conducteurs et PME africaines",
+      "title": "Suivi des prix du carburant en Afrique | AfroTools",
+      "h1": "AfroCarburant — Prix du carburant en Afrique",
       "classification": {
         "mapping": "French-only route",
         "generation": "hand-authored French page",
@@ -78219,8 +78274,8 @@
       "route": "/fr/tools/suivi-zlecaf",
       "file": "fr/tools/suivi-zlecaf/index.html",
       "canonical": "/fr/tools/suivi-zlecaf",
-      "title": "Suivi ZLECAf et pr&eacute;paration export | AfroTools",
-      "h1": "Suivi ZLECAf pour pr&eacute;parer un corridor export",
+      "title": "Suivi ZLECAf | AfroTools",
+      "h1": "Suivi ZLECAf",
       "classification": {
         "mapping": "French-only route",
         "generation": "hand-authored French page",

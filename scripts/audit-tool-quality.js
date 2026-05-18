@@ -27,6 +27,8 @@ const BROWSER_LIMIT = numberArg('--browser-limit', 0);
 const CONCURRENCY = numberArg('--concurrency', 6);
 const BROWSER_TIMEOUT = numberArg('--timeout', 8000);
 const PORT = numberArg('--port', 4173);
+const TARGET_IDS = listArg('--id');
+const TARGET_ROUTES = listArg('--route').map(normalizeRoute);
 const GENERATED_AT = new Date().toISOString();
 const GENERATED_DATE = GENERATED_AT.slice(0, 10);
 const CURRENT_YEAR = new Date().getFullYear();
@@ -187,6 +189,22 @@ function numberArg(name, fallback) {
   if (!direct) return fallback;
   const value = Number(direct.slice(prefix.length));
   return Number.isFinite(value) ? value : fallback;
+}
+
+function listArg(name) {
+  const values = [];
+  const prefix = `${name}=`;
+  argv.forEach((arg, index) => {
+    if (arg.startsWith(prefix)) {
+      values.push(arg.slice(prefix.length));
+    } else if (arg === name && argv[index + 1] && !argv[index + 1].startsWith('--')) {
+      values.push(argv[index + 1]);
+    }
+  });
+  return values
+    .flatMap((value) => String(value || '').split(','))
+    .map((value) => value.trim())
+    .filter(Boolean);
 }
 
 function loadRegistry() {
@@ -363,6 +381,31 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
   const hasDisclaimer = /\b(disclaimer|estimate only|not legal advice|not tax advice|not medical advice|informational|verify with|confirm with|not official|does not replace)\b/i.test(text);
   const hasMethodology = /\b(methodology|how it works|calculation method|formula|assumptions|breakdown|we calculate|calculated by|rules applied)\b/i.test(text);
   const sourceWords = /\b(source|official|authority|gazette|verified|reference|last verified|data source|based on)\b/i.test(text);
+  const hasHausaResult = /\b(sakamako|takaitawa|takaitaccen|maki|rauni|shiri|tsari|jadawali|bincike|jimillar)\b/i.test(text);
+  const hasHausaPrimaryAction = buttons > 0 && /\b(tsara|kokoto|kirkiro|kwafi|sauke|duba|fara|sake farawa|cika misali)\b/i.test(text);
+  const hasHausaDisclaimer = /\b(ba shafin hukuma ba|ba hukuma ba|ba hukumar|bai tabbatar|ba ya tabbatar|bayani mai muhimmanci|ka duba|kada a dauka)\b/i.test(text);
+  const hasHausaMethodology = /\b(hanyar lissafi|hanyar tsara|tsarin lissafi|yana kwatanta|ana kwatanta|lissafa|an tsara shafin|ma'aunin)\b/i.test(text);
+  const hasHausaSourceWords = /\b(hukuma|tushen bayani|sabunta bayanai|sabon bayani|shafin hukumar|reja|tabbatar da sabon bayani)\b/i.test(text);
+  const hasHausaPrivacyLocal = /\b(sirri|na'urarka|burauza|babu loda fayil|ba ya aika fayil|uwar garke|ma'ajiyar burauza|fayil dinka yana nan)\b/i.test(text);
+  const hasHausaWorkflowCopy = /\b(matakan aiki|hanyar aiki|jerin dubawa|rahoto|takaitawa|tsara sakamako|abubuwan dubawa)\b/i.test(text);
+  const hasYorubaPrivacyLocal = /\b(ìpamọ|ipamo|aṣàwákiri|asawakiri|ẹrọ rẹ|ero re|kò fi fáìlì|ko fi faili|olupin|ibi ipamọ|ibi ipamo|fáìlì rẹ dúró|faili re duro)\b/i.test(text);
+  const hasYorubaResult = /abajade|akopọ|akopo|ìṣiro|iṣiro|ìpele ewu|imurasile|ìmúrasílẹ̀|ìtọ́sọ́nà|itosona/i.test(text);
+  const hasYorubaPrimaryAction = buttons > 0 && /ṣe àyẹ̀wò|se ayewo|àpẹẹrẹ|apeere|daakọ|daako|gba akopọ|gba akopo|tun bẹ̀rẹ̀|tun bere|ṣayẹwo|sayewo/i.test(text);
+  const hasYorubaDisclaimer = /ìkìlọ̀|ikilo|kì í ṣe ìwé ìjọba|kii se iwe ijoba|kì í ṣe ìmòràn|kii se imoran|ṣayẹwo orísun|sayewo orisun|ìpinnu ikẹhin|ipinnu ikehin/i.test(text);
+  const hasYorubaMethodology = /ìlànà|ilana|àṣàro|asaro|bí a ṣe ń ṣe ìṣiro|bi a se n se isiro|a fi ṣe iṣiro|a fi se isiro|ìwé tí o ti ṣetan|iwe ti o ti setan/i.test(text);
+  const hasYorubaSourceWords = /orísun|orisun|ìjọba|ijoba|ìtọ́sọ́nà|itosona|ọjọ́ ìmúdójúìwọ̀n|ojo imudojuiwon|ṣayẹwo orísun|sayewo orisun/i.test(text);
+  const hasYorubaWorkflowCopy = /ìgbesẹ|igbese|ọ̀nà iṣẹ́|ona ise|akopọ|akopo|ìfiwé àwọn ọ̀nà|ifiwe awon ona/i.test(text);
+  const hasFrenchResult = /\b(résultat|resultat|sortie|aperçu|apercu|résumé|resume|détail|detail|estimation|calcul|score|total|rapport|réponse|reponse|bilan|recommandation|rentabilité|rentabilite)\b/i.test(text);
+  const hasFrenchPrimaryAction = buttons > 0 && /\b(calculer|générer|generer|convertir|compresser|fusionner|téléverser|televerser|vérifier|verifier|créer|creer|télécharger|telecharger|copier|comparer|estimer|analyser|soumettre|démarrer|demarrer|exporter|mettre à jour|mettre a jour|lancer)\b/i.test(text);
+  const hasFrenchDisclaimer = /\b(avertissement|estimation seulement|information générale|information generale|vérifier avec|verifier avec|confirmer avec|non officiel|ne remplace pas|à confirmer|a confirmer|limites|conseil professionnel|hypothèses à valider|hypotheses a valider)\b/i.test(text);
+  const hasFrenchMethodology = /\b(méthodologie|methodologie|méthode de calcul|methode de calcul|formule|hypothèses|hypotheses|ventilation|répartition|repartition|nous calculons|calculé par|calcule par|règles appliquées|regles appliquees|détail du calcul|detail du calcul)\b/i.test(text);
+  const hasFrenchSourceWords = /\b(source|sources|officiel|autorité|autorite|référence|reference|dernière vérification|derniere verification|basé sur|base sur|fraîcheur|fraicheur|mise à jour|mise a jour)\b/i.test(text);
+  const hasSwahiliResult = /\b(matokeo|muhtasari|uchambuzi|faida|hasara|jumla|kizingiti|mapato|gharama|asilimia|makadirio|salio|ripoti)\b/i.test(text);
+  const hasSwahiliPrimaryAction = buttons > 0 && /\b(kokotoa|hesabu|panga|chambua|linganisha|nakili|pakua|anza upya|jaza mfano|fungua|tengeneza)\b/i.test(text);
+  const hasSwahiliDisclaimer = /\b(kanusho|si ushauri wa kodi|si ushauri wa kisheria|si taarifa rasmi|thibitisha na|hakiki na|haibadili ushauri|mwongozo wa jumla|makadirio tu)\b/i.test(text);
+  const hasSwahiliMethodology = /\b(njia ya kukokotoa|mbinu|formula|kanuni|makisio|dhana|tunachokokotoa|imekokotolewa|tunatumia|kizingiti cha faida|gharama zisizobadilika)\b/i.test(text);
+  const hasSwahiliSourceWords = /\b(chanzo|vyanzo|rasmi|mamlaka|imethibitishwa|marejeo|tarehe ya ukaguzi|kiwango cha sasa|upya wa taarifa|hakiki chanzo)\b/i.test(text);
+  const hasSwahiliWorkflowCopy = /\b(hatua|njia ya kazi|orodha ya kumbukumbu|muhtasari|ripoti|maamuzi ya biashara|mpango wa hatua|fuatilia)\b/i.test(text);
   const officialSource = hasOfficialSource(links, text);
   const hasPrivacyLocal = /\b(browser|local|never leave|no upload|private|privacy|client-side|on your device|files never leave)\b/i.test(text);
   const hasBatchWorkflow = /\b(batch|bulk|multiple files|all 54|54 African|workflow|queue|multi-item|compare)\b/i.test(text);
@@ -414,22 +457,22 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
       navFooter: hasNavFooter,
       formControls: inputs > 0 || forms > 0 || hasFileInput,
       inputLabels: inputs === 0 || labels >= Math.min(inputs, 2),
-      primaryAction: hasPrimaryAction,
-      resultOutput: hasResult,
+      primaryAction: hasPrimaryAction || hasHausaPrimaryAction || hasYorubaPrimaryAction || hasSwahiliPrimaryAction || hasFrenchPrimaryAction,
+      resultOutput: hasResult || hasHausaResult || hasYorubaResult || hasSwahiliResult || hasFrenchResult,
       fileUpload: hasFileInput,
       canvasSurface: hasCanvas,
       download: hasDownload,
       copyShare: hasCopyShare,
       saveExport: hasSaveExport,
       businessCta: hasBusinessCta,
-      disclaimer: hasDisclaimer,
-      methodology: hasMethodology,
-      sources: links.length > 0 || sourceWords || !!verificationEntry,
+      disclaimer: hasDisclaimer || hasHausaDisclaimer || hasYorubaDisclaimer || hasSwahiliDisclaimer || hasFrenchDisclaimer,
+      methodology: hasMethodology || hasHausaMethodology || hasYorubaMethodology || hasSwahiliMethodology || hasFrenchMethodology,
+      sources: links.length > 0 || sourceWords || hasHausaSourceWords || hasYorubaSourceWords || hasSwahiliSourceWords || hasFrenchSourceWords || !!verificationEntry,
       officialSource,
       currentYear: date.hasRecentYear || date.explicit,
-      privacyLocal: hasPrivacyLocal,
+      privacyLocal: hasPrivacyLocal || hasHausaPrivacyLocal || hasYorubaPrivacyLocal,
       batchWorkflow: hasBatchWorkflow,
-      workflowCopy: hasWorkflowCopy,
+      workflowCopy: hasWorkflowCopy || hasHausaWorkflowCopy || hasYorubaWorkflowCopy || hasSwahiliWorkflowCopy,
       localContext,
       verificationPanel: /data-tool-verification-panel|Sources\s*&(?:amp;)?\s*verification/i.test(html) || !!verificationEntry,
       relatedLinks: hasRelatedLinks,
@@ -1013,6 +1056,12 @@ async function main() {
   const verification = loadVerification();
   const liveTools = registry.tools
     .filter((tool) => tool.status === 'live' || tool.status === 'new')
+    .filter((tool) => {
+      const route = normalizeRoute(tool.href || `/tools/${tool.id}/`);
+      const idMatch = !TARGET_IDS.length || TARGET_IDS.includes(tool.id);
+      const routeMatch = !TARGET_ROUTES.length || TARGET_ROUTES.includes(route);
+      return idMatch && routeMatch;
+    })
     .slice(0, LIMIT || undefined);
   const pages = liveTools.map((tool) => ({ tool, pageInfo: resolvePage(tool) }));
   const uniqueRoutes = Array.from(new Set(pages.map((entry) => entry.pageInfo.route))).sort();

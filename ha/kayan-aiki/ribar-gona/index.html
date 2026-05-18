@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalkuletan Ribar Gona Najeriya | AfroTools Hausa</title>
-  <meta name="description" content="Kalkuletan Hausa don ribar gona a Najeriya: kudin shiga, kudin kayan aiki, ma'aikata, fili, sufuri, ajiya, bashi, ROI da matakin rufe kudi.">
+  <meta name="description" content="Kalkuletan Hausa don ribar gona a Najeriya: kudin shiga, kudin kayan aiki, ma'aikata, fili, sufuri, ajiya, bashi, ribar jari da matakin rufe kudi.">
   <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/ribar-gona/">
   <meta name="content-language" content="ha">
   <link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/farm-profit/nigeria">
@@ -26,9 +26,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-  <link rel="stylesheet" href="/ha/assets/agriculture-ha.css?v=f82d5505">
-<script src="/assets/js/components/navbar.min.js?v=64fedd98" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=119e83c5" defer></script>
+  <link rel="stylesheet" href="/ha/assets/agriculture-ha.css?v=ea1f2adc">
+<script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
 <body>
@@ -49,7 +49,7 @@
       <div class="ha-form-grid">
         <div class="ha-field"><label for="selCrop">Amfanin gona</label><select id="selCrop"></select></div>
         <div class="ha-field"><label for="selRegion">Yanki</label><select id="selRegion"></select></div>
-        <div class="ha-field"><label for="inpFarm">Girman gona (hectare)</label><input id="inpFarm" type="number" min="0.1" step="0.1" value="1"></div>
+        <div class="ha-field"><label for="inpFarm">Girman gona (hekta)</label><input id="inpFarm" type="number" min="0.1" step="0.1" value="1"></div>
         <div class="ha-field"><label for="inpYield">Amfanin gona da kake sa ran samu (tan/ha)</label><input id="inpYield" type="number" min="0.1" step="0.1" value="1"></div>
         <div class="ha-field"><label for="inpPrice">Farashin kasuwa (kowace tan)</label><input id="inpPrice" type="number" min="1" step="1" value="0"></div>
         <div class="ha-field"><label for="selSelling">Hanyar sayarwa</label><select id="selSelling"><option value="local">Kasuwa ta gida kai tsaye</option><option value="export">Fitarwa kai tsaye</option><option value="process">Sarrafa kafin sayarwa</option></select></div>
@@ -62,8 +62,8 @@
       <div class="ha-form-grid">
         <div class="ha-field"><label for="inpSeedCost">Kudin iri (jimilla)</label><input id="inpSeedCost" type="number" min="0" step="1" value="0"></div>
         <div class="ha-field"><label for="inpFertilizerCost">Kudin taki (jimilla)</label><input id="inpFertilizerCost" type="number" min="0" step="1" value="0"></div>
-        <div class="ha-field"><label for="inpHerbicide">Kudin maganin ciyawa (a hectare)</label><input id="inpHerbicide" type="number" min="0" step="1" value="0"></div>
-        <div class="ha-field"><label for="inpPesticide">Kudin maganin kwari (a hectare)</label><input id="inpPesticide" type="number" min="0" step="1" value="0"></div>
+        <div class="ha-field"><label for="inpHerbicide">Kudin maganin ciyawa (a hekta)</label><input id="inpHerbicide" type="number" min="0" step="1" value="0"></div>
+        <div class="ha-field"><label for="inpPesticide">Kudin maganin kwari (a hekta)</label><input id="inpPesticide" type="number" min="0" step="1" value="0"></div>
       </div>
       <div class="ha-copy-row"><a class="ha-secondary-btn" href="/ha/noma/taki-najeriya/">Kiyasta kudin taki</a></div>
     </section>
@@ -71,7 +71,7 @@
       <div class="ha-tool-card">
         <span class="ha-tool-kicker">3. Ma'aikata</span>
         <div class="ha-form-grid">
-          <div class="ha-field"><label for="inpManDays">Ranakun aiki a hectare</label><input id="inpManDays" type="number" min="1" step="1" value="100"></div>
+          <div class="ha-field"><label for="inpManDays">Ranakun aiki a hekta</label><input id="inpManDays" type="number" min="1" step="1" value="100"></div>
           <div class="ha-field"><label for="inpDailyWage">Kudin aiki a rana</label><input id="inpDailyWage" type="number" min="1" step="1" value="0"></div>
           <div class="ha-field full"><label for="rangeFamily">Aikin yan gida: <span id="familyPctDisplay">0%</span></label><input id="rangeFamily" type="range" min="0" max="100" step="5" value="0" oninput="document.getElementById('familyPctDisplay').textContent=this.value+'%'"></div>
         </div>
@@ -80,9 +80,9 @@
         <span class="ha-tool-kicker">4. Fili da injina</span>
         <div class="ha-form-grid">
           <div class="ha-field"><label for="selLandType">Nau'in fili</label><select id="selLandType" onchange="updateLandFields()"><option value="communal">Filin iyali ko na al'umma</option><option value="rented">Haya</option><option value="owned">Filin kanka (kudin damar amfani)</option></select></div>
-          <div class="ha-field" id="landRentField" style="display:none;"><label for="inpLandRent">Haya a hectare a kaka</label><input id="inpLandRent" type="number" min="0" step="1" value="0"></div>
+          <div class="ha-field" id="landRentField" style="display:none;"><label for="inpLandRent">Haya a hekta a kaka</label><input id="inpLandRent" type="number" min="0" step="1" value="0"></div>
           <div class="ha-field"><label for="selMechType">Amfani da injina</label><select id="selMechType" onchange="updateMechFields()"><option value="none">Aikin hannu</option><option value="animal">Dabbobin ja</option><option value="tractor">Hayan tractor</option><option value="own">Tractor/kayan aiki na kanka</option></select></div>
-          <div class="ha-field" id="tractorCostField" style="display:none;"><label for="inpTractorCost">Kudin tarakta a hectare</label><input id="inpTractorCost" type="number" min="0" step="1" value="0"></div>
+          <div class="ha-field" id="tractorCostField" style="display:none;"><label for="inpTractorCost">Kudin tarakta a hekta</label><input id="inpTractorCost" type="number" min="0" step="1" value="0"></div>
         </div>
       </div>
     </section>
@@ -130,9 +130,9 @@
     </section>
     <section class="ha-tool-card">
       <span class="ha-tool-kicker">Bayani</span>
-      <h2>Yadda ake karanta ROI</h2>
+      <h2>Yadda ake karanta ribar jari</h2>
       <p class="ha-muted" id="countryInfo"></p>
-      <p class="ha-muted">ROI = ribar karshe ÷ jimillar kudi x 100. Idan ROI ya yi ƙasa ko ya zama asara, duba farashin kasuwa, asarar bayan girbi, sufuri, kudin aiki da kudin taki.</p>
+      <p class="ha-muted">Ribar jari = ribar karshe ÷ jimillar kudi x 100. Idan ribar jari ta yi ƙasa ko ta zama asara, duba farashin kasuwa, asarar bayan girbi, sufuri, kudin aiki da kudin taki.</p>
     </section>
     <section class="ha-note-box">Tushen bayanai: FAOSTAT, ILO, World Food Programme, APHLIS da ma'aikatun noma na kasa. Kiyasi ne kawai; sakamako na gaskiya na iya bambanta bisa kaka, tsarin aiki da yanayin kasuwa. Sabuntawa ta karshe: 2026.</section>
   </main>
@@ -142,7 +142,7 @@
 <script src="/data/agriculture/ng-agri-data.js?v=27133035"></script>
 <script src="/data/agriculture/farm-costs.js?v=771d4cd9"></script>
 <script src="/engines/farm-profit-engine.js?v=c3867ec9"></script>
-<script src="/ha/kayan-aiki/ribar-gona/app.js?v=8393a08e"></script>
+<script src="/ha/kayan-aiki/ribar-gona/app.js?v=f0249799"></script>
 <script src="/ha/assets/agriculture-ha-localizer.js?v=c9ac2cd3"></script>
 </body>
 </html>

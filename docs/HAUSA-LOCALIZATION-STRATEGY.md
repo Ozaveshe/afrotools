@@ -26,18 +26,29 @@ visible-copy quality, hreflang, registry discovery, and fallback honesty.
 
 ## Current Audit Snapshot
 
-Snapshot date: 2026-05-16.
+Snapshot date: 2026-05-18.
 
-Source artifact: `reports/hausa-visible-copy-ledger.md`.
+Source artifacts:
+
+- `reports/hausa-visible-copy-ledger.md`
+- `reports/hausa-route-ownership-map.md`
 
 Current visible-copy readiness:
 
-- Hausa routes scanned: `67`.
-- Clean routes: `37`.
+- Hausa routes scanned: `72`.
+- Clean routes: `43`.
 - Routes with blockers: `0`.
 - `BLOCKER_VISIBLE_ENGLISH` findings: `0`.
-- `POSSIBLE_FALSE_POSITIVE` findings: `67`.
-- `ACCEPTED_TECH_TERM` findings: `412`.
+- `POSSIBLE_FALSE_POSITIVE` findings: `62`.
+- `ACCEPTED_TECH_TERM` findings: `454`.
+- Hausa registry rows: `67`.
+- Missing Hausa registry targets: `0`.
+- `lang: 'ha'` rows pointing outside `/ha/`: `0`.
+
+The older Batch 5 operating baseline was `67` public Hausa routes and `62`
+Hausa registry rows. The current working-tree lane has moved to `72` routes and
+`67` registry rows after five Batch 6 shells: bank charges, currency converter,
+CAC checker, business registration, and PDF Sign.
 
 The visible-copy audit is the main readiness gate for Hausa route quality. A
 route can exist, validate structurally, and still be unshippable if visible
@@ -46,7 +57,7 @@ fallback messaging.
 
 ## Route Inventory Summary
 
-Current public Hausa route count: `67` HTML routes under `/ha/`.
+Current public Hausa route count: `72` HTML routes under `/ha/`.
 
 Core and category hubs:
 
@@ -82,10 +93,13 @@ Tool and detail routes:
 - `/ha/kayan-aiki/abincin-dabbobi/`
 - `/ha/kayan-aiki/alawus-na-nysc/`
 - `/ha/kayan-aiki/amfanin-bayanan-intanet/`
+- `/ha/kayan-aiki/cajin-banki/`
+- `/ha/kayan-aiki/canja-kudi/`
 - `/ha/kayan-aiki/canza-pdf/`
 - `/ha/kayan-aiki/cit-najeriya/`
-- `/ha/kayan-aiki/duba-genotype/`
 - `/ha/kayan-aiki/darajar-katin-waya/`
+- `/ha/kayan-aiki/duba-cac/`
+- `/ha/kayan-aiki/duba-genotype/`
 - `/ha/kayan-aiki/fansho-najeriya/`
 - `/ha/kayan-aiki/farashin-kayayyakin-gona/`
 - `/ha/kayan-aiki/gina-cv/`
@@ -111,11 +125,13 @@ Tool and detail routes:
 - `/ha/kayan-aiki/naira-zuwa-kalmomi/`
 - `/ha/kayan-aiki/neman-tallafin-karatu/`
 - `/ha/kayan-aiki/nhf-najeriya/`
+- `/ha/kayan-aiki/rajistar-kasuwanci/`
 - `/ha/kayan-aiki/rajistar-layin-waya-nin/`
 - `/ha/kayan-aiki/ribar-gona/`
 - `/ha/kayan-aiki/ribar-kiwon-kifi/`
 - `/ha/kayan-aiki/rubuta-wasikar-aiki/`
 - `/ha/kayan-aiki/sarrafa-rogo/`
+- `/ha/kayan-aiki/sanya-hannu-pdf/`
 - `/ha/kayan-aiki/sickle-cell/`
 - `/ha/kayan-aiki/wht-najeriya/`
 - `/ha/kayan-aiki/whatsapp-link/`
@@ -123,13 +139,42 @@ Tool and detail routes:
 
 Current source ownership:
 
-- Treat all 67 current routes as hand-authored or manually adapted Hausa pages.
-- Each current route has an English source pair or counterpart, but the Hausa
-  page is the route-visible source for Hausa copy.
+- Hand-authored Hausa hubs own Hausa-first navigation, fallback policy, and
+  card copy.
+- Hausa route-visible shells wrap or guide users toward mature English
+  workflows without claiming full Hausa localization of the underlying app.
+- Translated or adapted tool pages preserve English source logic, data, routes,
+  and calculations while localizing visible Hausa copy.
+- Fallback-only surfaces stay as valid English routes with Hausa labels such as
+  `Shafi na Turanci`.
+- Deferred candidates stay out of the registry until the source route is mature
+  enough for a safe Hausa shell or full adaptation.
 - Do not generate over these routes from English source unless a batch
   explicitly scopes that route and proves the output path first.
 - Do not add `/ha/all-tools/`, `/ha/tools/...`, `/ha/nigeria/`, or other
   English-shaped Hausa aliases as a shortcut.
+
+Current fallback shell list:
+
+- `/ha/jamb/cbt/`
+- `/ha/jamb/tutor/`
+- `/ha/jamb/past-questions/`
+- `/ha/jamb/turanci/`
+- `/ha/jamb/lissafi/`
+- `/ha/jamb/fisiks/`
+- `/ha/jamb/kimiyya/`
+- `/ha/jamb/halittu/`
+- `/ha/kayan-aiki/canza-pdf/`
+- `/ha/kayan-aiki/wurin-aikin-pdf/`
+- `/ha/kayan-aiki/sanya-hannu-pdf/`
+- `/ha/kayan-aiki/gina-cv/`
+- `/ha/kayan-aiki/kwatanta-kudin-makaranta/`
+- `/ha/kayan-aiki/kwatanta-kunshin-intanet/`
+- `/ha/kayan-aiki/mai-fassara-hausa/`
+- `/ha/kayan-aiki/rajistar-kasuwanci/`
+- `/ha/kayan-aiki/duba-cac/`
+- `/ha/kayan-aiki/canja-kudi/`
+- `/ha/kayan-aiki/cajin-banki/`
 
 ## Validation Commands
 
@@ -348,6 +393,34 @@ Unless a batch explicitly says otherwise:
 - Do not treat `lang/ha.json` as proof that route-level Hausa pages are
   generated or complete.
 
+## Internal Preview Status
+
+Current preview verdict: `INTERNAL_PREVIEW_READY`.
+
+Go for internal preview when all of these stay true:
+
+- `node scripts/audit-hausa-visible-copy.js` reports `0`
+  `BLOCKER_VISIBLE_ENGLISH` findings.
+- `npm run audit` reports `missing page 0` and every Hausa registry row points
+  to an existing `/ha/` route.
+- `npm run build:i18n:validate` passes for all supported languages.
+- Any `npm run validate:hreflang` warning is separated as non-Hausa carried
+  debt unless a Hausa route caused it.
+- Hausa hubs label fallback routes as `Shafi na Turanci` or equivalent.
+- PDF, salary/PAYE, VAT, telecom, agriculture, and health pages keep source
+  truth, data, calculations, and safety language intact.
+
+No-go for public launch if any of these appear:
+
+- Any Hausa visible-copy blocker.
+- Missing Hausa registry target, duplicate Hausa registry id, or non-Hausa href
+  stored as `lang: 'ha'`.
+- A hub card that labels an English fallback as a complete Hausa page.
+- Broken internal links on Hausa hubs or newly added shells.
+- New mobile layout or tap-target issue caused by the Hausa lane.
+- Tax, PDF, salary, health, or telecom copy that weakens professional,
+  official-source, or estimate disclaimers.
+
 ## Next Batch Recommendations
 
 Recommended next batches:
@@ -359,7 +432,7 @@ Recommended next batches:
 3. Review mobile layout on the five highest-risk hubs:
    `/ha/kayan-aiki/`, `/ha/najeriya/`, `/ha/lafiya/`,
    `/ha/albashi-da-haraji/`, and `/ha/kasuwanci-da-haraji/`.
-4. Keep metadata and JSON-LD review in the gate for all 59 routes so
+4. Keep metadata and JSON-LD review in the gate for all 72 routes so
    search-visible copy stays Hausa where the page is Hausa.
 5. Audit registry, navbar, and footer after each copy wave to make sure shared
    discovery does not regress.
@@ -370,10 +443,30 @@ Recommended next batches:
    `/ha/kayan-aiki/farashin-kayayyakin-gona/`,
    `/ha/kayan-aiki/abincin-dabbobi/`, and
    `/ha/kayan-aiki/ribar-kiwon-kifi/`.
-7. Keep the next expansion Nigeria-first: JAMB CBT/tutor shells, remaining
-   telecom comparison helpers, deeper document/PDF helpers, and business tax
-   follow-ons only when the English source route is mature.
+7. Keep the next expansion Nigeria-first: JAMB subject guides without yearly
+   archive sprawl, education helpers, business-tax follow-ons, telecom
+   confirmation tools, and document/PDF guides only when the English source
+   route is mature.
 8. Defer page-pack generation until there is an explicit Hausa route map and a
    small hub-only pilot.
+
+Batch 6 candidate backlog:
+
+- PDF Editor: prefer a guide-only shell unless the full editor UI can be safely
+  localized without implying every edit mode is Hausa.
+- JAMB subject guides: Economics, Government, Commerce, Literature, CRS/IRS,
+  Geography, and other high-demand subjects; do not create yearly archives.
+- JAMB study planner, flashcards, and cutoff helpers: create shells only if the
+  English source route is mature and fallback labels stay clear.
+- Business tax: CGT Nigeria, payroll slip, employee cost, Paystack fee,
+  break-even, profit margin, and markup helpers.
+- Telecom: USSD simulator, mobile wallet comparison, remittance comparison,
+  and deeper SIM/NIN helpers when source data and disclaimers are clear.
+- Documents/PDF: PDF page numbers, PDF editor guide, OCR/extract-text guide,
+  and cover/CV export polish.
+- Agriculture: planting calendar, drought risk, farm payroll, market price, and
+  livestock/feed follow-ons where the Nigeria source is mature.
+- Health: keep any new route informational only; avoid diagnosis, emergency,
+  treatment, or price-certainty promises.
 
 Current strategic verdict: `KEEP_MANUAL_ROUTE_LANE`.

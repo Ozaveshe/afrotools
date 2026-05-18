@@ -365,7 +365,7 @@ Use these batches before broad long-tail translation. Each batch should report b
 
 1. Set 72 visible French UI signal cleanup: reduce the `19` English title, H1, or visible UI signal pages to `0`, starting with `/fr/`, `/fr/all-tools/`, `/fr/blog`, country-code PAYE aliases, and bridge surfaces. Do not add new pages.
 2. Set 73 registry final push: add only preferred, live, useful French rows until registry coverage is at least `60%`. Skip aliases, noindex wrappers, iframe utilities, deferred PDF wrappers, docs, dashboards, and duplicate country-code paths.
-3. Set 74 telecom mapping repair: decide whether telecom should be judged by raw or mapped coverage, then map only the existing safe French telecom owners. Keep SIM registration and TV comparison deferred.
+3. Set 74 telecom mapping repair: landed on May 18, 2026. Telecom is now judged by mapped coverage for preferred live routes; SIM registration, Starlink, TV comparison, and USSD directory remain out of mapped completion.
 4. Set 75 source-truth classifier audit: reduce the `201` French-only routes and `96` unclear-source routes by documenting or mapping only clear public counterparts, without counting docs, dashboards, API wrappers, account-adjacent pages, or aliases.
 5. Set 76 high-confidence tools mapping wave: add or polish `20-30` live, non-conflict, non-account French tool pairs through `scripts/lib/french-tool-route-map.js` and registry rows, with no unsafe backend or legal claims.
 6. Set 77 cars generator safety pass: audit the current generator output and add a small data-backed slice only if templates, hreflang, estimate labels, and local-currency display remain clean. Do not manually clone cars pages.
@@ -374,25 +374,31 @@ Use these batches before broad long-tail translation. Each batch should report b
 9. Set 80 widget parent-page guardrail: promote only real French widget parent pages and keep `widgets/iframe/**` plus French iframe wrappers `noindex, follow` and out of completion counts.
 10. Set 81 readiness gate: rerun the ledger and full validation. Move to controlled category waves with limited long-tail only when mapped completion is at least `27%`, registry coverage is at least `60%`, visible English UI signals are `0`, duplicate canonicals are `0`, duplicate English mappings stay below `12`, and hreflang gaps stay below `250`.
 
-## Telecom Deferred Route Ownership Decisions As Of May 16, 2026
+## Telecom Route Ownership And Mapping Decisions As Of May 18, 2026
 
-This began as a discovery-only decision table. The approved airtime-value and number-portability routes have since landed, and the current ledger shows telecom at `11/15` raw French coverage, with `4/15` English-backed mapped sources. Link-only and deferred rows must still stay out of mapped completion claims.
+The May 18 repair found that telecom raw coverage was stronger than mapped coverage because seven real, registry-backed French telecom pages used semantic French slugs while `scripts/lib/french-telecom-route-map.js` only mapped the two newer custom slugs. The durable fix is to map only the existing preferred French owners and add reciprocal `en`/`fr` hreflang on those approved pairs. No alias, wrapper, noindex, iframe, Starlink, TV, SIM registration, or USSD directory route was promoted.
 
-| English source | Preferred French owner | Decision | Rationale | Next action |
-|---|---|---|---|---|
-| `telecom/airtime-value` | New route target: `/fr/telecom/valeur-credit-telephonique/` | Launch now | Standalone calculator, high African telecom/business utility, no identity or regulated compliance workflow, and no current French page owns the airtime-to-cash estimate. | Next telecom implementation subset. Build from the English calculator and shared telecom data, then add reciprocal `en`/`fr` hreflang and registry discovery only after the page exists. |
-| `telecom/number-portability` | New route target: `/fr/telecom/portabilite-numero-mobile/` | Launch now | Clear telecom ownership, useful country-select guide, and no duplicate French page currently owns portability. | Next telecom implementation subset. Keep the French copy as a guide, not a guaranteed regulator filing flow. |
-| `telecom/starlink-compare` | Existing French owner: `/fr/telecom/comparateur-internet/` | Link-only | The existing French internet comparator already owns the broadband comparison surface and includes satellite-vs-local intent closely enough to avoid a duplicate Starlink page. | Link users to `/fr/telecom/comparateur-internet/`; add a Starlink section there only if a later batch needs more depth. |
-| `telecom/ussd-directory` | Existing related French owner: `/fr/tools/simulateur-ussd/` | Link-only | A full operator code directory needs freshness ownership across markets. The current French-safe surface is the USSD simulator, not a promoted directory clone. | Keep directory promotion deferred; point French users to the simulator until operator-code source truth is selected. |
-| `telecom/sim-registration` | None yet | Defer | Identity, telecom compliance, registration deadlines, NIN/RICA-style terms, and privacy expectations need official-source ownership before French promotion. | Do not launch in the next subset. Revisit only with a country-source workflow and compliance disclaimer pattern. |
-| `telecom/tv-compare` | None yet | Defer | TV package prices, channel bundles, and streaming plans change often and are lower priority than money, connectivity, and business telecom surfaces. | Do not launch now. Revisit after a package-data owner and refresh cadence exist. |
+Current ledger status: telecom raw coverage is `11/15` (`73.33%`) and telecom mapped coverage is `11/15` (`73.33%`). Duplicate French canonicals, duplicate English mappings, and French reciprocal hreflang gaps are all `0`.
 
-Current telecom implementation status:
+| English source | Preferred French owner | Decision | Canonical and hreflang status | Registry status | Next action |
+|---|---|---|---|---|---|
+| `telecom` | `/fr/telecom/` | Preferred hub | Reciprocal `en`/`fr`; canonical self | Not registry-eligible | Keep as telecom category hub. |
+| `telecom/airtime-value` | `/fr/telecom/valeur-credit-telephonique/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-airtime-fr` | Keep mapped. |
+| `telecom/bulk-sms-pricing` | `/fr/telecom/prix-sms-pro/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-sms-pro-fr` | Keep mapped through `french-telecom-route-map.js`. |
+| `telecom/business-internet` | `/fr/telecom/internet-entreprise/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-business-internet-fr` | Keep mapped through `french-telecom-route-map.js`. |
+| `telecom/data-plan-compare` | `/fr/telecom/comparateur-forfaits-data/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-data-plan-fr` | Keep mapped through `french-telecom-route-map.js`. |
+| `telecom/data-usage-calc` | `/fr/telecom/calculateur-consommation-data/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-data-usage-fr` | Keep mapped through `french-telecom-route-map.js`. |
+| `telecom/fiber-lte-5g` | `/fr/telecom/fibre-lte-5g/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-fibre-lte-5g-fr` | Keep mapped through `french-telecom-route-map.js`. |
+| `telecom/internet-compare` | `/fr/telecom/comparateur-internet/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-internet-fr` | Keep mapped to the general internet comparator, not to Starlink. |
+| `telecom/number-portability` | `/fr/telecom/portabilite-numero-mobile/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-portabilite-fr` | Keep mapped. |
+| `telecom/roaming-cost` | `/fr/telecom/calculateur-roaming/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-roaming-fr` | Keep mapped through `french-telecom-route-map.js`. |
+| `telecom/whatsapp-vs-sms` | `/fr/telecom/whatsapp-vs-sms/` | Preferred live route | Reciprocal `en`/`fr`; canonical self | `telecom-whatsapp-vs-sms-fr` | Keep mapped by direct slug match. |
+| `telecom/sim-registration` | None | Defer | No French route | None | Revisit only with official country-source ownership and privacy/compliance disclaimer patterns. |
+| `telecom/starlink-compare` | Link context inside `/fr/telecom/comparateur-internet/` | Link-only | No dedicated French route | None | Do not map to avoid duplicate ownership with the general internet comparator. |
+| `telecom/tv-compare` | None | Defer | No French route | None | Revisit only after package-data ownership and refresh cadence exist. |
+| `telecom/ussd-directory` | Related surface: `/fr/tools/simulateur-ussd/` | Link-only | No telecom-owned French route | Tool registry owns simulator separately | Keep directory promotion deferred until operator-code source truth is selected. |
 
-1. `/fr/telecom/valeur-credit-telephonique/` is live for `telecom/airtime-value`.
-2. `/fr/telecom/portabilite-numero-mobile/` is live for `telecom/number-portability`.
-
-The next telecom batch should repair mapping and discovery around existing live owners before creating more telecom pages. Keep `/fr/telecom/comparateur-internet/` as the Starlink link-only owner, keep `/fr/tools/simulateur-ussd/` as the USSD link-only owner, and keep SIM registration plus TV comparison deferred.
+The next telecom work should be source-data hardening, not coverage inflation: choose whether SIM registration, TV comparison, or an operator-code directory can earn a dedicated French route only after ownership and refresh cadence are clear.
 
 ## Remaining High-Risk Route Families
 
@@ -404,7 +410,7 @@ The next telecom batch should repair mapping and discovery around existing live 
 - `/fr/business/`, `/fr/data-productivity/`, `/fr/developers/`, `/fr/finance/`: redirect or bridge surfaces with mixed English labels.
 - `/fr/blog/**`: strong page count, but registry discovery and visible UI polish still lag.
 - `/fr/agriculture/**`: high raw coverage, but reciprocal hreflang debt is still broad.
-- `/fr/telecom/**`: raw coverage is above `60%`, but mapped coverage remains low. Airtime value and number portability are now live; Starlink and USSD remain link-only; SIM registration and TV comparison remain deferred.
+- `/fr/telecom/**`: raw and mapped coverage are both `73.33%` after the May 18 route-map repair. SIM registration and TV comparison remain deferred; Starlink and USSD remain link-only and out of mapped completion.
 - `/fr/tools/**`: still the largest long-tail gap, with only `13.03%` mapped coverage.
 
 ## Strategic Thesis

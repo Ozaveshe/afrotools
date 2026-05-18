@@ -13,7 +13,8 @@
         "lang": "en",
         "priority": 100,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ng-paye"
       },
       {
         "id": "ke-paye",
@@ -25,7 +26,8 @@
         "lang": "en",
         "priority": 100,
         "estTraffic": 5000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ke-paye"
       },
       {
         "id": "afrotools-pro",
@@ -37,7 +39,8 @@
         "lang": "en",
         "priority": 99,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "afrotools-pro"
       },
       {
         "id": "za-paye",
@@ -49,7 +52,8 @@
         "lang": "en",
         "priority": 96,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "za-paye"
       },
       {
         "id": "gh-paye",
@@ -61,7 +65,8 @@
         "lang": "en",
         "priority": 96,
         "estTraffic": 6000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "gh-paye"
       },
       {
         "id": "fuel-tracker",
@@ -73,7 +78,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 30000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "fuel-tracker"
       },
       {
         "id": "import-duty",
@@ -85,7 +91,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "import-duty"
       },
       {
         "id": "crypto-p2p",
@@ -97,7 +104,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crypto-p2p"
       },
       {
         "id": "afrorates",
@@ -109,7 +117,8 @@
         "lang": "en",
         "priority": 94,
         "estTraffic": 25000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afrorates"
       },
       {
         "id": "crypto-portfolio",
@@ -121,7 +130,8 @@
         "lang": "en",
         "priority": 94,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crypto-portfolio"
       },
       {
         "id": "eg-paye",
@@ -133,7 +143,8 @@
         "lang": "en",
         "priority": 94,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "eg-paye"
       },
       {
         "id": "currency-converter",
@@ -145,7 +156,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "currency-converter"
       },
       {
         "id": "crypto-prices",
@@ -157,7 +169,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crypto-prices"
       },
       {
         "id": "payslip-generator",
@@ -169,7 +182,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "payslip-generator"
       },
       {
         "id": "business-planner",
@@ -181,7 +195,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "business-planner"
       },
       {
         "id": "crypto-remittance",
@@ -193,7 +208,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crypto-remittance"
       },
       {
         "id": "crypto-scam",
@@ -205,7 +221,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crypto-scam"
       },
       {
         "id": "crypto-stablecoins",
@@ -217,7 +234,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crypto-stablecoins"
       }
     ],
     "ha::financial": [
@@ -231,7 +249,10 @@
         "lang": "ha",
         "priority": 100,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-paye",
+        "imageId": "ng-paye",
+        "imageKey": "ng-paye"
       },
       {
         "id": "ng-cit-ha",
@@ -243,7 +264,40 @@
         "lang": "ha",
         "priority": 82,
         "estTraffic": 4000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-cit",
+        "imageId": "ng-cit",
+        "imageKey": "ng-cit"
+      },
+      {
+        "id": "bank-charges-ha",
+        "name": "Cajin Banki",
+        "icon": "BNK",
+        "desc": "Jagorar Hausa don kiyasta cajin banki, tura kudi...",
+        "href": "/ha/kayan-aiki/cajin-banki/",
+        "category": "financial",
+        "lang": "ha",
+        "priority": 80,
+        "estTraffic": 5000,
+        "imageExt": "svg",
+        "sourceId": "bank-charges",
+        "imageId": "bank-charges",
+        "imageKey": "bank-charges"
+      },
+      {
+        "id": "currency-converter-ha",
+        "name": "Canjin Kudi",
+        "icon": "FX",
+        "desc": "Jagorar Hausa zuwa AfroFX don Naira, USD da kuda...",
+        "href": "/ha/kayan-aiki/canja-kudi/",
+        "category": "financial",
+        "lang": "ha",
+        "priority": 80,
+        "estTraffic": 5000,
+        "imageExt": "webp",
+        "sourceId": "currency-converter",
+        "imageId": "currency-converter",
+        "imageKey": "currency-converter"
       },
       {
         "id": "ng-wht-ha",
@@ -255,7 +309,10 @@
         "lang": "ha",
         "priority": 78,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-wht",
+        "imageId": "ng-wht",
+        "imageKey": "ng-wht"
       },
       {
         "id": "ng-pension-ha",
@@ -267,7 +324,10 @@
         "lang": "ha",
         "priority": 72,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-pension",
+        "imageId": "ng-pension",
+        "imageKey": "ng-pension"
       },
       {
         "id": "ng-nhf-ha",
@@ -279,7 +339,10 @@
         "lang": "ha",
         "priority": 71,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "ng-nhf",
+        "imageId": "ng-nhf",
+        "imageKey": "ng-nhf"
       }
     ],
     "ha::ecommerce": [
@@ -293,7 +356,10 @@
         "lang": "ha",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "vat-calc-pan-african",
+        "imageId": "vat-calc-pan-african",
+        "imageKey": "vat-calc-pan-african"
       },
       {
         "id": "vat-business-tax-ha",
@@ -305,7 +371,9 @@
         "lang": "ha",
         "priority": 89,
         "estTraffic": 4000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "vat-calc-pan-african",
+        "imageKey": "vat-calc-pan-african"
       },
       {
         "id": "tin-guide-nigeria-ha",
@@ -317,7 +385,41 @@
         "lang": "ha",
         "priority": 77,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "tin-guide",
+        "imageId": "tin-guide"
+      }
+    ],
+    "ha::legal": [
+      {
+        "id": "business-registration-ha",
+        "name": "Rajistar Kasuwanci",
+        "icon": "CAC",
+        "desc": "Jagorar Hausa don shirya CAC, TIN, FIRS, VAT, PA...",
+        "href": "/ha/kayan-aiki/rajistar-kasuwanci/",
+        "category": "legal",
+        "lang": "ha",
+        "priority": 80,
+        "estTraffic": 5000,
+        "imageExt": "webp",
+        "sourceId": "business-registration",
+        "imageId": "business-registration",
+        "imageKey": "business-registration"
+      },
+      {
+        "id": "cac-checker-ha",
+        "name": "Duba Sunan CAC",
+        "icon": "CAC",
+        "desc": "Jagorar Hausa don duba sunan kasuwanci kafin raj...",
+        "href": "/ha/kayan-aiki/duba-cac/",
+        "category": "legal",
+        "lang": "ha",
+        "priority": 76,
+        "estTraffic": 4000,
+        "imageExt": "svg",
+        "sourceId": "cac-checker",
+        "imageId": "cac-checker",
+        "imageKey": "cac-checker"
       }
     ],
     "ha::language": [
@@ -331,7 +433,9 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "hausa-translator",
+        "imageKey": "hausa-translator"
       },
       {
         "id": "hausa-translator-ha",
@@ -343,7 +447,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "hausa-translator",
+        "imageId": "hausa-translator",
+        "imageKey": "hausa-translator"
       }
     ],
     "ha::education": [
@@ -357,7 +464,9 @@
         "lang": "ha",
         "priority": 91,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "education-hub",
+        "imageKey": "education-hub"
       },
       {
         "id": "waec-neco-calculator-ha",
@@ -369,7 +478,10 @@
         "lang": "ha",
         "priority": 90,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "waec-calculator",
+        "imageId": "waec-calculator",
+        "imageKey": "waec-calculator"
       },
       {
         "id": "jamb-aggregate-ha",
@@ -381,7 +493,10 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "jamb-aggregate",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "nysc-allowance-ha",
@@ -393,7 +508,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "nysc-allowance",
+        "imageId": "nysc-allowance",
+        "imageKey": "nysc-allowance"
       },
       {
         "id": "gpa-calculator-ha",
@@ -405,7 +523,10 @@
         "lang": "ha",
         "priority": 82,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "gpa-calculator",
+        "imageId": "gpa-calculator",
+        "imageKey": "gpa-calculator"
       },
       {
         "id": "school-fees-ha",
@@ -417,7 +538,10 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "school-fees",
+        "imageId": "school-fees",
+        "imageKey": "school-fees"
       },
       {
         "id": "scholarship-finder-ha",
@@ -429,19 +553,25 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "scholarship-finder",
+        "imageId": "scholarship-finder",
+        "imageKey": "scholarship-finder"
       },
       {
         "id": "jamb-cbt-ha",
         "name": "Jagorar JAMB CBT a Hausa",
         "icon": "JAMB",
-        "desc": "Shafin Hausa da ke shiryar da dalibai zuwa gwaji...",
+        "desc": "Jagorar Hausa zuwa CBT na Turanci, ba tare da ca...",
         "href": "/ha/jamb/cbt/",
         "category": "education",
         "lang": "ha",
         "priority": 79,
         "estTraffic": 4000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "jamb-cbt",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "student-budget-ha",
@@ -453,7 +583,10 @@
         "lang": "ha",
         "priority": 78,
         "estTraffic": 4500,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "student-budget",
+        "imageId": "student-budget",
+        "imageKey": "student-budget"
       },
       {
         "id": "jamb-tutor-ha",
@@ -465,19 +598,24 @@
         "lang": "ha",
         "priority": 78,
         "estTraffic": 3500,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "jamb-tutor",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "jamb-mathematics-ha",
         "name": "JAMB Lissafi a Hausa",
         "icon": "JAMB",
-        "desc": "Jagorar Hausa don algebra, geometry, kididdiga d...",
+        "desc": "Jagorar Hausa don aljebra, joometri, kididdiga d...",
         "href": "/ha/jamb/lissafi/",
         "category": "education",
         "lang": "ha",
         "priority": 78,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "jamb-english-ha",
@@ -489,7 +627,9 @@
         "lang": "ha",
         "priority": 78,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "jamb-past-questions-ha",
@@ -501,7 +641,10 @@
         "lang": "ha",
         "priority": 77,
         "estTraffic": 3500,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "jamb-past-questions",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "jamb-physics-ha",
@@ -513,7 +656,9 @@
         "lang": "ha",
         "priority": 76,
         "estTraffic": 2500,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "jamb-chemistry-ha",
@@ -525,19 +670,23 @@
         "lang": "ha",
         "priority": 76,
         "estTraffic": 2500,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "jamb-biology-ha",
         "name": "JAMB Nazarin Halittu a Hausa",
         "icon": "JAMB",
-        "desc": "Jagorar Hausa don kwayar halitta, gado, muhalli,...",
+        "desc": "Jagorar Hausa don kwayar halitta, gado, muhalli ...",
         "href": "/ha/jamb/halittu/",
         "category": "education",
         "lang": "ha",
         "priority": 76,
         "estTraffic": 2500,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       }
     ],
     "ha::telecom": [
@@ -551,7 +700,10 @@
         "lang": "ha",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-ussd",
+        "imageId": "telecom-ussd",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "telecom-ha",
@@ -563,7 +715,9 @@
         "lang": "ha",
         "priority": 88,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-ussd",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "telecom-data-usage-ha",
@@ -575,7 +729,10 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-data-usage",
+        "imageId": "telecom-data-usage",
+        "imageKey": "telecom-data-usage"
       },
       {
         "id": "mobile-money-fees-ha",
@@ -587,7 +744,10 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "mobile-money-fees",
+        "imageId": "mobile-money-fees",
+        "imageKey": "mobile-money-fees"
       },
       {
         "id": "whatsapp-link-ha",
@@ -599,7 +759,10 @@
         "lang": "ha",
         "priority": 79,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "whatsapp-link",
+        "imageId": "whatsapp-link",
+        "imageKey": "whatsapp-link"
       },
       {
         "id": "telecom-data-plan-ha",
@@ -611,7 +774,10 @@
         "lang": "ha",
         "priority": 79,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-data-plan",
+        "imageId": "telecom-data-plan",
+        "imageKey": "telecom-data-plan"
       },
       {
         "id": "telecom-airtime-ha",
@@ -623,7 +789,9 @@
         "lang": "ha",
         "priority": 78,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "telecom-airtime",
+        "imageId": "telecom-airtime"
       },
       {
         "id": "sim-registration-ha",
@@ -635,7 +803,10 @@
         "lang": "ha",
         "priority": 77,
         "estTraffic": 4000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-sim-reg",
+        "imageId": "national-id-guide",
+        "imageKey": "national-id-guide"
       }
     ],
     "ha::document-pdf": [
@@ -649,7 +820,9 @@
         "lang": "ha",
         "priority": 97,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "invoice-generator",
+        "imageKey": "invoice-generator"
       },
       {
         "id": "pdf-merge-split-ha",
@@ -661,7 +834,10 @@
         "lang": "ha",
         "priority": 95,
         "estTraffic": 25000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-merge-split",
+        "imageId": "pdf-merge-split",
+        "imageKey": "pdf-merge-split"
       },
       {
         "id": "document-pdf-ha",
@@ -673,7 +849,9 @@
         "lang": "ha",
         "priority": 95,
         "estTraffic": 25000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "pdf-compress-ha",
@@ -685,7 +863,10 @@
         "lang": "ha",
         "priority": 94,
         "estTraffic": 20000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-compress",
+        "imageId": "pdf-compress",
+        "imageKey": "pdf-compress"
       },
       {
         "id": "receipt-generator-ha",
@@ -697,7 +878,9 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "receipt-generator",
+        "imageKey": "receipt-generator"
       },
       {
         "id": "cv-builder-ha",
@@ -709,7 +892,10 @@
         "lang": "ha",
         "priority": 83,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cv-builder",
+        "imageId": "cv-builder",
+        "imageKey": "cv-builder"
       },
       {
         "id": "cover-letter-ha",
@@ -721,7 +907,10 @@
         "lang": "ha",
         "priority": 81,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cover-letter",
+        "imageId": "cover-letter",
+        "imageKey": "cover-letter"
       },
       {
         "id": "pdf-workspace-ha",
@@ -733,7 +922,10 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-workspace",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "pdf-convert-ha",
@@ -745,7 +937,25 @@
         "lang": "ha",
         "priority": 79,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-convert",
+        "imageId": "pdf-convert",
+        "imageKey": "pdf-convert"
+      },
+      {
+        "id": "pdf-sign-ha",
+        "name": "Sa Hannu a PDF",
+        "icon": "PDF",
+        "desc": "Jagorar Hausa zuwa kayan aikin sa hannu a PDF na...",
+        "href": "/ha/kayan-aiki/sanya-hannu-pdf/",
+        "category": "document-pdf",
+        "lang": "ha",
+        "priority": 78,
+        "estTraffic": 5000,
+        "imageExt": "webp",
+        "sourceId": "pdf-sign",
+        "imageId": "pdf-sign",
+        "imageKey": "pdf-sign"
       },
       {
         "id": "naira-to-words-ha",
@@ -757,7 +967,9 @@
         "lang": "ha",
         "priority": 75,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "naira-to-words",
+        "imageKey": "naira-to-words"
       }
     ],
     "ha::agriculture": [
@@ -771,7 +983,9 @@
         "lang": "ha",
         "priority": 88,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "crop-yield-nigeria",
+        "imageKey": "crop-yield-nigeria"
       },
       {
         "id": "farm-profit-nigeria-ha",
@@ -783,7 +997,10 @@
         "lang": "ha",
         "priority": 87,
         "estTraffic": 14000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "farm-profit-calculator",
+        "imageId": "farm-profit-calculator",
+        "imageKey": "farm-profit-calculator"
       },
       {
         "id": "crop-yield-nigeria-ha",
@@ -795,7 +1012,10 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-estimator",
+        "imageId": "crop-yield-nigeria",
+        "imageKey": "crop-yield-nigeria"
       },
       {
         "id": "fertilizer-nigeria-ha",
@@ -807,7 +1027,10 @@
         "lang": "ha",
         "priority": 85,
         "estTraffic": 11000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-calculator",
+        "imageId": "fertilizer-nigeria",
+        "imageKey": "fertilizer-nigeria"
       },
       {
         "id": "cassava-processing-nigeria-ha",
@@ -819,7 +1042,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cassava-processing-calculator",
+        "imageId": "cassava-processing-nigeria",
+        "imageKey": "cassava-processing-nigeria"
       },
       {
         "id": "staple-basket-ha",
@@ -831,7 +1057,10 @@
         "lang": "ha",
         "priority": 83,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "staple-basket",
+        "imageId": "staple-basket",
+        "imageKey": "staple-basket"
       },
       {
         "id": "commodity-prices-ha",
@@ -843,7 +1072,10 @@
         "lang": "ha",
         "priority": 82,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "commodity-prices",
+        "imageId": "commodity-prices",
+        "imageKey": "commodity-prices"
       },
       {
         "id": "irrigation-nigeria-ha",
@@ -855,7 +1087,10 @@
         "lang": "ha",
         "priority": 81,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "irrigation-nigeria",
+        "imageId": "irrigation-nigeria",
+        "imageKey": "irrigation-nigeria"
       },
       {
         "id": "livestock-feed-nigeria-ha",
@@ -867,7 +1102,9 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "livestock-feed-nigeria",
+        "imageId": "livestock-feed-calculator"
       },
       {
         "id": "fish-farming-nigeria-ha",
@@ -879,7 +1116,10 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fish-farming-nigeria",
+        "imageId": "fish-farming-roi",
+        "imageKey": "fish-farming-roi"
       },
       {
         "id": "seed-rate-nigeria-ha",
@@ -891,7 +1131,10 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "seed-rate-ng",
+        "imageId": "seed-rate-ng",
+        "imageKey": "seed-rate-ng"
       }
     ],
     "yo::african": [
@@ -905,7 +1148,9 @@
         "lang": "yo",
         "priority": 93,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "afrotools-pro",
+        "imageKey": "afrotools-pro"
       },
       {
         "id": "yoruba-tools",
@@ -917,7 +1162,9 @@
         "lang": "yo",
         "priority": 92,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "afrotools-pro",
+        "imageKey": "afrotools-pro"
       },
       {
         "id": "yoruba-nigeria",
@@ -929,7 +1176,9 @@
         "lang": "yo",
         "priority": 91,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "ng-paye",
+        "imageKey": "ng-paye"
       }
     ],
     "yo::financial": [
@@ -943,7 +1192,10 @@
         "lang": "yo",
         "priority": 101,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-paye",
+        "imageId": "ng-paye",
+        "imageKey": "ng-paye"
       },
       {
         "id": "yoruba-salary-tax",
@@ -955,7 +1207,9 @@
         "lang": "yo",
         "priority": 91,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "ng-paye",
+        "imageKey": "ng-paye"
       },
       {
         "id": "ng-cit-yo",
@@ -967,7 +1221,10 @@
         "lang": "yo",
         "priority": 83,
         "estTraffic": 4000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-cit",
+        "imageId": "ng-cit",
+        "imageKey": "ng-cit"
       },
       {
         "id": "ng-wht-yo",
@@ -979,7 +1236,10 @@
         "lang": "yo",
         "priority": 79,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-wht",
+        "imageId": "ng-wht",
+        "imageKey": "ng-wht"
       }
     ],
     "yo::ecommerce": [
@@ -993,7 +1253,10 @@
         "lang": "yo",
         "priority": 93,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "vat-calc-pan-african",
+        "imageId": "vat-calc-pan-african",
+        "imageKey": "vat-calc-pan-african"
       },
       {
         "id": "yoruba-vat-business-tax",
@@ -1005,7 +1268,9 @@
         "lang": "yo",
         "priority": 90,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "vat-calc-pan-african",
+        "imageKey": "vat-calc-pan-african"
       },
       {
         "id": "tin-guide-nigeria-yo",
@@ -1017,7 +1282,9 @@
         "lang": "yo",
         "priority": 78,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "tin-guide",
+        "imageId": "tin-guide"
       }
     ],
     "yo::document-pdf": [
@@ -1031,7 +1298,10 @@
         "lang": "yo",
         "priority": 97,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "invoice-generator",
+        "imageId": "invoice-generator",
+        "imageKey": "invoice-generator"
       },
       {
         "id": "yoruba-document-pdf",
@@ -1043,7 +1313,9 @@
         "lang": "yo",
         "priority": 90,
         "estTraffic": 3000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "receipt-generator-yo",
@@ -1055,7 +1327,10 @@
         "lang": "yo",
         "priority": 87,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "receipt-generator",
+        "imageId": "receipt-generator",
+        "imageKey": "receipt-generator"
       },
       {
         "id": "pdf-merge-split-yo",
@@ -1067,7 +1342,10 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-merge-split",
+        "imageId": "pdf-merge-split",
+        "imageKey": "pdf-merge-split"
       },
       {
         "id": "pdf-compress-yo",
@@ -1079,7 +1357,10 @@
         "lang": "yo",
         "priority": 85,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-compress",
+        "imageId": "pdf-compress",
+        "imageKey": "pdf-compress"
       },
       {
         "id": "pdf-reorder-yo",
@@ -1091,7 +1372,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-reorder",
+        "imageId": "pdf-reorder",
+        "imageKey": "pdf-reorder"
       },
       {
         "id": "pdf-workspace-yo",
@@ -1103,7 +1387,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-workspace",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "naira-to-words-yo",
@@ -1115,7 +1402,10 @@
         "lang": "yo",
         "priority": 76,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "naira-to-words",
+        "imageId": "naira-to-words",
+        "imageKey": "naira-to-words"
       }
     ],
     "yo::education": [
@@ -1129,7 +1419,9 @@
         "lang": "yo",
         "priority": 90,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "education-hub",
+        "imageKey": "education-hub"
       },
       {
         "id": "waec-neco-calculator-yo",
@@ -1141,7 +1433,10 @@
         "lang": "yo",
         "priority": 88,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "waec-calculator",
+        "imageId": "waec-calculator",
+        "imageKey": "waec-calculator"
       },
       {
         "id": "jamb-aggregate-yo",
@@ -1153,7 +1448,10 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "jamb-aggregate",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "nysc-allowance-yo",
@@ -1165,7 +1463,10 @@
         "lang": "yo",
         "priority": 82,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "nysc-allowance",
+        "imageId": "nysc-allowance",
+        "imageKey": "nysc-allowance"
       }
     ],
     "yo::legal": [
@@ -1179,7 +1480,10 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "business-registration",
+        "imageId": "business-registration",
+        "imageKey": "business-registration"
       }
     ],
     "yo::telecom": [
@@ -1193,7 +1497,10 @@
         "lang": "yo",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-ussd",
+        "imageId": "telecom-ussd",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "telecom-yo",
@@ -1205,7 +1512,10 @@
         "lang": "yo",
         "priority": 88,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom",
+        "imageId": "telecom-ussd",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "whatsapp-link-yo",
@@ -1217,7 +1527,10 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "whatsapp-link",
+        "imageId": "whatsapp-link",
+        "imageKey": "whatsapp-link"
       },
       {
         "id": "telecom-data-usage-yo",
@@ -1229,7 +1542,10 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-data-usage",
+        "imageId": "telecom-data-usage",
+        "imageKey": "telecom-data-usage"
       },
       {
         "id": "sim-registration-yo",
@@ -1241,7 +1557,10 @@
         "lang": "yo",
         "priority": 77,
         "estTraffic": 4000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "sim-registration",
+        "imageId": "national-id-guide",
+        "imageKey": "national-id-guide"
       }
     ],
     "yo::health": [
@@ -1255,7 +1574,10 @@
         "lang": "yo",
         "priority": 89,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "health",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "genotype-checker-yo",
@@ -1267,7 +1589,10 @@
         "lang": "yo",
         "priority": 87,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "genotype-checker",
+        "imageId": "genotype-checker",
+        "imageKey": "genotype-checker"
       },
       {
         "id": "sickle-cell-yo",
@@ -1279,7 +1604,10 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 11000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "sickle-cell",
+        "imageId": "sickle-cell",
+        "imageKey": "sickle-cell"
       },
       {
         "id": "bmi-calculator-yo",
@@ -1291,7 +1619,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "bmi-calculator",
+        "imageId": "bmi-calculator",
+        "imageKey": "bmi-calculator"
       },
       {
         "id": "hospital-cost-yo",
@@ -1303,7 +1634,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "hospital-cost",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       }
     ],
     "yo::agriculture": [
@@ -1317,7 +1651,10 @@
         "lang": "yo",
         "priority": 88,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "agriculture",
+        "imageId": "crop-yield-nigeria",
+        "imageKey": "crop-yield-nigeria"
       },
       {
         "id": "farm-profit-nigeria-yo",
@@ -1329,7 +1666,10 @@
         "lang": "yo",
         "priority": 87,
         "estTraffic": 14000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "farm-profit-calculator",
+        "imageId": "farm-profit-calculator",
+        "imageKey": "farm-profit-calculator"
       },
       {
         "id": "crop-yield-nigeria-yo",
@@ -1341,7 +1681,10 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-estimator",
+        "imageId": "crop-yield-nigeria",
+        "imageKey": "crop-yield-nigeria"
       },
       {
         "id": "fertilizer-nigeria-yo",
@@ -1353,7 +1696,10 @@
         "lang": "yo",
         "priority": 85,
         "estTraffic": 11000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-calculator",
+        "imageId": "fertilizer-nigeria",
+        "imageKey": "fertilizer-nigeria"
       },
       {
         "id": "cassava-processing-nigeria-yo",
@@ -1365,7 +1711,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cassava-processing-calculator",
+        "imageId": "cassava-processing-nigeria",
+        "imageKey": "cassava-processing-nigeria"
       },
       {
         "id": "staple-basket-yo",
@@ -1377,7 +1726,10 @@
         "lang": "yo",
         "priority": 83,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "staple-basket",
+        "imageId": "staple-basket",
+        "imageKey": "staple-basket"
       },
       {
         "id": "farm-budget-yo",
@@ -1389,7 +1741,10 @@
         "lang": "yo",
         "priority": 83,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "farm-budget",
+        "imageId": "farm-budget",
+        "imageKey": "farm-budget"
       },
       {
         "id": "commodity-prices-yo",
@@ -1401,7 +1756,10 @@
         "lang": "yo",
         "priority": 82,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "commodity-prices",
+        "imageId": "commodity-prices",
+        "imageKey": "commodity-prices"
       },
       {
         "id": "fish-farming-nigeria-yo",
@@ -1413,7 +1771,10 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fish-farming-nigeria",
+        "imageId": "fish-farming-roi",
+        "imageKey": "fish-farming-roi"
       },
       {
         "id": "livestock-feed-nigeria-yo",
@@ -1425,7 +1786,9 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "livestock-feed-nigeria",
+        "imageId": "livestock-feed-calculator"
       }
     ],
     "yo::language": [
@@ -1439,7 +1802,9 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "yoruba-translator",
+        "imageKey": "yoruba-translator"
       },
       {
         "id": "yoruba-translator-yo",
@@ -1451,7 +1816,10 @@
         "lang": "yo",
         "priority": 85,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "yoruba-translator",
+        "imageId": "yoruba-translator",
+        "imageKey": "yoruba-translator"
       }
     ],
     "en::document-pdf": [
@@ -1465,7 +1833,8 @@
         "lang": "en",
         "priority": 97,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "cv-builder"
       },
       {
         "id": "pdf-editor",
@@ -1477,7 +1846,8 @@
         "lang": "en",
         "priority": 96,
         "estTraffic": 40000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-editor"
       },
       {
         "id": "invoice-generator",
@@ -1489,7 +1859,8 @@
         "lang": "en",
         "priority": 96,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "invoice-generator"
       },
       {
         "id": "pdf-merge-split",
@@ -1501,7 +1872,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 25000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-merge-split"
       },
       {
         "id": "pdf-workspace",
@@ -1513,7 +1885,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 25000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "pdf-convert",
@@ -1525,7 +1898,8 @@
         "lang": "en",
         "priority": 94,
         "estTraffic": 30000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-convert"
       },
       {
         "id": "pdf-compress",
@@ -1537,7 +1911,8 @@
         "lang": "en",
         "priority": 94,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-compress"
       },
       {
         "id": "pdf-chat",
@@ -1549,7 +1924,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-chat"
       },
       {
         "id": "cover-letter",
@@ -1561,7 +1937,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "cover-letter"
       },
       {
         "id": "meeting-minutes",
@@ -1573,7 +1950,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "meeting-minutes"
       },
       {
         "id": "pdf-image-convert",
@@ -1585,7 +1963,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "pdf-image-convert"
       },
       {
         "id": "pdf-sign",
@@ -1597,7 +1976,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-sign"
       },
       {
         "id": "pdf-translate",
@@ -1609,7 +1989,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-translate"
       },
       {
         "id": "pdf-password",
@@ -1621,7 +2002,8 @@
         "lang": "en",
         "priority": 89,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-password"
       },
       {
         "id": "pdf-reorder",
@@ -1633,7 +2015,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-reorder"
       },
       {
         "id": "pdf-compare",
@@ -1645,7 +2028,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-compare"
       },
       {
         "id": "pdf-watermark",
@@ -1657,7 +2041,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-watermark"
       },
       {
         "id": "pdf-form-filler",
@@ -1669,7 +2054,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-form-filler"
       }
     ],
     "en::african": [
@@ -1683,7 +2069,8 @@
         "lang": "en",
         "priority": 98,
         "estTraffic": 50000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afropoints"
       },
       {
         "id": "remittance-compare",
@@ -1695,7 +2082,8 @@
         "lang": "en",
         "priority": 98,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "remittance-compare"
       },
       {
         "id": "remittance-v2",
@@ -1707,7 +2095,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "remittance-v2"
       },
       {
         "id": "informal-fx-watch",
@@ -1719,7 +2108,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 11000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "informal-fx-watch"
       },
       {
         "id": "africa-conflict",
@@ -1731,7 +2121,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "africa-conflict"
       },
       {
         "id": "japa-calculator",
@@ -1743,7 +2134,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "japa-calculator"
       },
       {
         "id": "afrokitchen",
@@ -1755,7 +2147,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afrokitchen"
       },
       {
         "id": "staple-basket",
@@ -1767,7 +2160,8 @@
         "lang": "en",
         "priority": 89,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "staple-basket"
       },
       {
         "id": "mobile-money-fees",
@@ -1779,7 +2173,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "mobile-money-fees"
       },
       {
         "id": "brideprice-advisor",
@@ -1791,7 +2186,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "brideprice-advisor"
       },
       {
         "id": "fintech-fee-watch",
@@ -1803,7 +2199,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "fintech-fee-watch"
       },
       {
         "id": "cost-of-living",
@@ -1815,7 +2212,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "cost-of-living"
       },
       {
         "id": "electricity-estimator",
@@ -1827,7 +2225,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "electricity-estimator"
       },
       {
         "id": "wholesale-retail-spread",
@@ -1839,7 +2238,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 8500,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "wholesale-retail-spread"
       },
       {
         "id": "diaspora-guide",
@@ -1851,7 +2251,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 12000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "diaspora-guide"
       },
       {
         "id": "generator-fuel-african",
@@ -1875,7 +2276,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ajo-chama"
       },
       {
         "id": "land-size",
@@ -1887,7 +2289,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "land-size"
       }
     ],
     "en::health": [
@@ -1901,7 +2304,8 @@
         "lang": "en",
         "priority": 99,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "medical-report"
       },
       {
         "id": "pharmacy-prices",
@@ -1913,7 +2317,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 9500,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pharmacy-prices"
       },
       {
         "id": "clinic-costs",
@@ -1925,7 +2330,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "clinic-costs"
       },
       {
         "id": "sickle-cell",
@@ -1937,7 +2343,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 11000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "sickle-cell"
       },
       {
         "id": "calorie-counter",
@@ -1949,7 +2356,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "calorie-counter"
       },
       {
         "id": "pregnancy-nutrition",
@@ -1985,7 +2393,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "blood-pressure"
       },
       {
         "id": "vaccine-schedule",
@@ -1997,7 +2406,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 9000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "vaccine-schedule"
       },
       {
         "id": "bmi-calculator",
@@ -2009,7 +2419,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "bmi-calculator"
       },
       {
         "id": "diabetes-risk",
@@ -2021,7 +2432,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "diabetes-risk"
       },
       {
         "id": "medical-tourism",
@@ -2045,7 +2457,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "due-date"
       },
       {
         "id": "hospital-cost",
@@ -2057,7 +2470,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 7000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "drug-dosage",
@@ -2069,7 +2483,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "drug-dosage"
       },
       {
         "id": "mental-health-cost",
@@ -2105,7 +2520,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "ovulation-calc"
       }
     ],
     "ha::health": [
@@ -2119,7 +2535,9 @@
         "lang": "ha",
         "priority": 89,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "genotype-checker-ha",
@@ -2131,7 +2549,10 @@
         "lang": "ha",
         "priority": 87,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "genotype-checker",
+        "imageId": "genotype-checker",
+        "imageKey": "genotype-checker"
       },
       {
         "id": "sickle-cell-ha",
@@ -2143,7 +2564,10 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 11000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "sickle-cell",
+        "imageId": "sickle-cell",
+        "imageKey": "sickle-cell"
       },
       {
         "id": "childbirth-cost-ha",
@@ -2155,7 +2579,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "childbirth-cost",
+        "imageId": "childbirth-cost",
+        "imageKey": "childbirth-cost"
       },
       {
         "id": "hospital-cost-ha",
@@ -2167,7 +2594,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "hospital-cost",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "drug-price-compare-ha",
@@ -2179,7 +2609,10 @@
         "lang": "ha",
         "priority": 83,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "drug-price-compare",
+        "imageId": "drug-price-compare",
+        "imageKey": "drug-price-compare"
       },
       {
         "id": "african-meal-plan-ha",
@@ -2191,7 +2624,10 @@
         "lang": "ha",
         "priority": 81,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "african-meal-plan",
+        "imageId": "african-meal-plan",
+        "imageKey": "african-meal-plan"
       }
     ],
     "en::ecommerce": [
@@ -2205,7 +2641,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "vat-calc-pan-african"
       },
       {
         "id": "za-vat",
@@ -2217,7 +2654,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 6000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "za-vat"
       },
       {
         "id": "ng-vat",
@@ -2229,7 +2667,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 5000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ng-vat"
       },
       {
         "id": "ke-vat",
@@ -2241,7 +2680,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 4000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ke-vat"
       },
       {
         "id": "eg-vat",
@@ -2253,7 +2693,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 4000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "eg-vat"
       },
       {
         "id": "gh-vat",
@@ -2265,7 +2706,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 3500,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "gh-vat"
       },
       {
         "id": "profit-margin",
@@ -2277,7 +2719,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "profit-margin"
       },
       {
         "id": "vat-calculator",
@@ -2289,7 +2732,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 11000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "vat-calculator"
       },
       {
         "id": "business-name-gen",
@@ -2301,7 +2745,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "business-name-gen"
       },
       {
         "id": "inventory",
@@ -2313,7 +2758,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "inventory"
       },
       {
         "id": "market-stall-profit",
@@ -2325,7 +2771,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "market-stall-profit"
       },
       {
         "id": "shipping-calc",
@@ -2337,7 +2784,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "shipping-calc"
       },
       {
         "id": "ma-vat",
@@ -2349,7 +2797,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 3200,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ma-vat"
       },
       {
         "id": "tz-vat",
@@ -2361,7 +2810,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 2500,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "tz-vat"
       },
       {
         "id": "et-vat",
@@ -2373,7 +2823,8 @@
         "lang": "en",
         "priority": 75,
         "estTraffic": 2500,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "et-vat"
       },
       {
         "id": "markup-calc",
@@ -2385,7 +2836,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "markup-calc"
       },
       {
         "id": "dz-vat",
@@ -2397,7 +2849,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 2800,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "dz-vat"
       },
       {
         "id": "ug-vat",
@@ -2409,7 +2862,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 2000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ug-vat"
       }
     ],
     "en::image-design": [
@@ -2423,7 +2877,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "image-compress"
       },
       {
         "id": "background-remover",
@@ -2435,7 +2890,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "background-remover"
       },
       {
         "id": "image-resize",
@@ -2447,7 +2903,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "image-resize"
       },
       {
         "id": "flyer-maker",
@@ -2459,7 +2916,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 12000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "flyer-maker"
       },
       {
         "id": "qr-generator",
@@ -2471,7 +2929,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "qr-generator"
       },
       {
         "id": "passport-photo",
@@ -2483,7 +2942,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "passport-photo"
       },
       {
         "id": "image-crop",
@@ -2495,7 +2955,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 14000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "image-crop"
       },
       {
         "id": "thumbnail-maker",
@@ -2507,7 +2968,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "thumbnail-maker"
       },
       {
         "id": "meme-generator",
@@ -2519,7 +2981,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 20000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "meme-generator"
       },
       {
         "id": "social-card",
@@ -2531,7 +2994,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "social-card"
       },
       {
         "id": "image-format-convert",
@@ -2543,7 +3007,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 11000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "image-format-convert"
       },
       {
         "id": "image-to-text",
@@ -2555,7 +3020,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "image-to-text"
       },
       {
         "id": "logo-maker",
@@ -2567,7 +3033,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "logo-maker"
       },
       {
         "id": "certificate-maker",
@@ -2579,7 +3046,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "certificate-maker"
       },
       {
         "id": "image-filters",
@@ -2591,7 +3059,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "image-filters"
       },
       {
         "id": "color-picker",
@@ -2603,7 +3072,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "color-picker"
       },
       {
         "id": "colour-palette",
@@ -2615,7 +3085,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "colour-palette"
       },
       {
         "id": "favicon-generator",
@@ -2627,7 +3098,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "favicon-generator"
       }
     ],
     "en::developer": [
@@ -2641,7 +3113,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "json-formatter"
       },
       {
         "id": "data-converter",
@@ -2653,7 +3126,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 7000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "data-converter"
       },
       {
         "id": "ussd-simulator",
@@ -2665,7 +3139,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "ussd-simulator"
       },
       {
         "id": "api-tester",
@@ -2677,7 +3152,8 @@
         "lang": "en",
         "priority": 77,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "api-tester"
       },
       {
         "id": "base64",
@@ -2689,7 +3165,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "base64"
       },
       {
         "id": "hash-generator",
@@ -2701,7 +3178,8 @@
         "lang": "en",
         "priority": 75,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "hash-generator"
       },
       {
         "id": "markdown-editor",
@@ -2713,7 +3191,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "markdown-editor"
       },
       {
         "id": "regex-tester",
@@ -2725,7 +3204,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "regex-tester"
       },
       {
         "id": "sql-playground",
@@ -2737,7 +3217,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "sql-playground"
       },
       {
         "id": "diff-checker",
@@ -2749,7 +3230,8 @@
         "lang": "en",
         "priority": 73,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "diff-checker"
       },
       {
         "id": "meta-tag-generator",
@@ -2761,7 +3243,8 @@
         "lang": "en",
         "priority": 72,
         "estTraffic": 7000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "meta-tag-generator"
       },
       {
         "id": "url-encoder",
@@ -2773,7 +3256,8 @@
         "lang": "en",
         "priority": 72,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "url-encoder"
       },
       {
         "id": "sql-formatter",
@@ -2785,7 +3269,8 @@
         "lang": "en",
         "priority": 70,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "sql-formatter"
       },
       {
         "id": "css-gradient",
@@ -2797,7 +3282,8 @@
         "lang": "en",
         "priority": 70,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "css-gradient"
       },
       {
         "id": "cron-builder",
@@ -2809,7 +3295,8 @@
         "lang": "en",
         "priority": 70,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "cron-builder"
       },
       {
         "id": "jwt-decoder",
@@ -2821,7 +3308,8 @@
         "lang": "en",
         "priority": 70,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "jwt-decoder"
       },
       {
         "id": "meta-tag-gen",
@@ -2833,7 +3321,8 @@
         "lang": "en",
         "priority": 68,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "meta-tag-gen"
       },
       {
         "id": "uuid-generator",
@@ -2845,7 +3334,8 @@
         "lang": "en",
         "priority": 68,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "uuid-generator"
       }
     ],
     "en::education": [
@@ -2859,7 +3349,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 25000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "education-hub"
       },
       {
         "id": "waec-calculator",
@@ -2871,7 +3362,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "waec-calculator"
       },
       {
         "id": "scholarship-finder",
@@ -2883,7 +3375,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "scholarship-finder"
       },
       {
         "id": "jamb-aggregate",
@@ -2895,7 +3388,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "scientific-calc",
@@ -2907,7 +3401,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "scientific-calc"
       },
       {
         "id": "university-ranking",
@@ -2919,7 +3414,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "university-ranking"
       },
       {
         "id": "gpa-calculator",
@@ -2931,7 +3427,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "gpa-calculator"
       },
       {
         "id": "study-planner",
@@ -2943,7 +3440,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 12000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "study-planner"
       },
       {
         "id": "degree-checker",
@@ -2955,7 +3453,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "degree-checker"
       },
       {
         "id": "percentage-calc",
@@ -2967,7 +3466,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "percentage-calc"
       },
       {
         "id": "citation-generator",
@@ -2979,7 +3479,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "citation-generator"
       },
       {
         "id": "flashcard-maker",
@@ -2991,7 +3492,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "flashcard-maker"
       },
       {
         "id": "school-fees",
@@ -3003,7 +3505,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "school-fees"
       },
       {
         "id": "exam-countdown",
@@ -3015,7 +3518,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "exam-countdown"
       },
       {
         "id": "matric-points",
@@ -3027,7 +3531,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "matric-points"
       },
       {
         "id": "algebra-solver",
@@ -3039,7 +3544,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "algebra-solver"
       },
       {
         "id": "word-counter",
@@ -3051,7 +3557,8 @@
         "lang": "en",
         "priority": 75,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "word-counter"
       },
       {
         "id": "periodic-table",
@@ -3063,7 +3570,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "periodic-table"
       }
     ],
     "en::religious-cultural": [
@@ -3077,7 +3585,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "zakat-calculator"
       },
       {
         "id": "lobola-calculator",
@@ -3089,7 +3598,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 12000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "lobola-calculator"
       },
       {
         "id": "prayer-times",
@@ -3101,7 +3611,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "prayer-times"
       },
       {
         "id": "faraid-inheritance",
@@ -3137,7 +3648,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "tithe-offering"
       },
       {
         "id": "hajj-budget",
@@ -3165,9 +3677,9 @@
       },
       {
         "id": "wedding-budget",
-        "name": "African Wedding Budget Calculator",
+        "name": "African Wedding Budget Planner",
         "icon": "WB",
-        "desc": "Build a wedding budget for church, nikah, tradit...",
+        "desc": "Build a wedding budget planner for church, nikah...",
         "href": "/tools/wedding-budget/",
         "category": "religious-cultural",
         "lang": "en",
@@ -3295,7 +3807,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "farm-profit-calculator"
       },
       {
         "id": "cassava-processing-calculator",
@@ -3307,7 +3820,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 16000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "cassava-processing-calculator"
       },
       {
         "id": "crop-yield-estimator",
@@ -3319,7 +3833,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crop-yield-estimator"
       },
       {
         "id": "fish-farming-roi",
@@ -3331,7 +3846,8 @@
         "lang": "en",
         "priority": 81,
         "estTraffic": 14000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "fish-farming-roi"
       },
       {
         "id": "greenhouse-cost-estimator",
@@ -3343,7 +3859,8 @@
         "lang": "en",
         "priority": 81,
         "estTraffic": 14000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "greenhouse-cost-estimator"
       },
       {
         "id": "input-prices",
@@ -3367,7 +3884,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 14000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "farm-payroll-calculator"
       },
       {
         "id": "commodity-prices",
@@ -3379,7 +3897,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "commodity-prices"
       },
       {
         "id": "fertilizer-calculator",
@@ -3391,7 +3910,8 @@
         "lang": "en",
         "priority": 80,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "fertilizer-calculator"
       },
       {
         "id": "storage-loss",
@@ -3403,7 +3923,8 @@
         "lang": "en",
         "priority": 79,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "storage-loss"
       },
       {
         "id": "seed-rate-calculator",
@@ -3415,7 +3936,8 @@
         "lang": "en",
         "priority": 79,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "seed-rate-calculator"
       },
       {
         "id": "agric-profit",
@@ -3427,7 +3949,8 @@
         "lang": "en",
         "priority": 79,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "agric-profit"
       },
       {
         "id": "harvest-date-estimator",
@@ -3451,7 +3974,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "irrigation-calculator"
       },
       {
         "id": "livestock-feed-calculator",
@@ -3475,7 +3999,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "planting-calendar"
       },
       {
         "id": "pesticide-dosage-calculator",
@@ -3499,7 +4024,8 @@
         "lang": "en",
         "priority": 77,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "poultry-roi-calculator"
       }
     ],
     "en::legal": [
@@ -3513,7 +4039,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "business-registration"
       },
       {
         "id": "rent-intelligence",
@@ -3525,7 +4052,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 11000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "rent-intelligence"
       },
       {
         "id": "nda-generator",
@@ -3537,7 +4065,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "nda-generator"
       },
       {
         "id": "land-title-check",
@@ -3549,7 +4078,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "land-title-check"
       },
       {
         "id": "company-type-selector",
@@ -3561,7 +4091,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "company-type-selector"
       },
       {
         "id": "lease-risk-check",
@@ -3573,7 +4104,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "lease-risk-check"
       },
       {
         "id": "tenancy-agreement",
@@ -3585,7 +4117,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "tenancy-agreement"
       },
       {
         "id": "rental-agreement",
@@ -3597,7 +4130,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "rental-agreement"
       },
       {
         "id": "contract-gen",
@@ -3609,7 +4143,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "contract-gen"
       },
       {
         "id": "privacy-policy-gen",
@@ -3621,7 +4156,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "privacy-policy-gen"
       },
       {
         "id": "ng-nhf",
@@ -3633,7 +4169,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "ng-nhf"
       },
       {
         "id": "building-materials",
@@ -3645,7 +4182,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "building-materials"
       },
       {
         "id": "diaspora-property",
@@ -3657,7 +4195,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "diaspora-property"
       },
       {
         "id": "property-valuation",
@@ -3669,7 +4208,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "property-valuation"
       },
       {
         "id": "property-tax",
@@ -3681,7 +4221,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "property-tax"
       },
       {
         "id": "construction-budget",
@@ -3693,7 +4234,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "construction-budget"
       },
       {
         "id": "rental-yield",
@@ -3705,7 +4247,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "rental-yield"
       },
       {
         "id": "will-generator",
@@ -3717,7 +4260,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "will-generator"
       }
     ],
     "en::language": [
@@ -3731,7 +4275,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "pidgin-translator"
       },
       {
         "id": "african-name-meaning",
@@ -3743,7 +4288,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "african-name-meaning"
       },
       {
         "id": "swahili-translator",
@@ -3755,7 +4301,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "swahili-translator"
       },
       {
         "id": "french-african",
@@ -3767,7 +4314,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 9000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "french-african"
       },
       {
         "id": "yoruba-translator",
@@ -3779,7 +4327,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "yoruba-translator"
       },
       {
         "id": "hausa-translator",
@@ -3791,7 +4340,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "hausa-translator"
       },
       {
         "id": "amharic-translator",
@@ -3803,7 +4353,8 @@
         "lang": "en",
         "priority": 75,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "amharic-translator"
       },
       {
         "id": "igbo-translator",
@@ -3815,7 +4366,8 @@
         "lang": "en",
         "priority": 75,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "igbo-translator"
       },
       {
         "id": "zulu-translator",
@@ -3827,7 +4379,8 @@
         "lang": "en",
         "priority": 73,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "zulu-translator"
       },
       {
         "id": "arabic-calc",
@@ -3839,7 +4392,8 @@
         "lang": "en",
         "priority": 64,
         "estTraffic": 3000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "arabic-calc"
       },
       {
         "id": "transliterate",
@@ -3851,7 +4405,8 @@
         "lang": "en",
         "priority": 62,
         "estTraffic": 3000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "transliterate"
       }
     ],
     "en::engineering": [
@@ -3865,7 +4420,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 5000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afrodraft"
       },
       {
         "id": "afroplan-floor-planner",
@@ -3877,7 +4433,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 6000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afroplan-floor-planner"
       },
       {
         "id": "solar-calculator",
@@ -3889,7 +4446,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "solar-calculator"
       },
       {
         "id": "floor-plan",
@@ -3901,7 +4459,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "floor-plan"
       },
       {
         "id": "boq-generator",
@@ -3913,7 +4472,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 4000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "boq-generator"
       },
       {
         "id": "electrical-load",
@@ -3925,7 +4485,8 @@
         "lang": "en",
         "priority": 78,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "electrical-load"
       },
       {
         "id": "rebar-calc",
@@ -3949,7 +4510,8 @@
         "lang": "en",
         "priority": 77,
         "estTraffic": 8000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "generator-sizing"
       },
       {
         "id": "concrete-calc",
@@ -3961,7 +4523,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "concrete-calc"
       },
       {
         "id": "structural-calc",
@@ -3973,7 +4536,8 @@
         "lang": "en",
         "priority": 76,
         "estTraffic": 3000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "structural-calc"
       },
       {
         "id": "borehole-cost",
@@ -3985,7 +4549,8 @@
         "lang": "en",
         "priority": 74,
         "estTraffic": 4000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "borehole-cost"
       },
       {
         "id": "paint-calc",
@@ -3997,7 +4562,8 @@
         "lang": "en",
         "priority": 73,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "paint-calc"
       },
       {
         "id": "roofing-calc",
@@ -4009,7 +4575,8 @@
         "lang": "en",
         "priority": 73,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "roofing-calc"
       },
       {
         "id": "tiles-calc",
@@ -4021,7 +4588,8 @@
         "lang": "en",
         "priority": 73,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "tiles-calc"
       },
       {
         "id": "water-tank",
@@ -4033,7 +4601,8 @@
         "lang": "en",
         "priority": 71,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "water-tank"
       },
       {
         "id": "boq-gen",
@@ -4071,7 +4640,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 10000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "unit-converter"
       },
       {
         "id": "budget-planner",
@@ -4083,7 +4653,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "budget-planner"
       },
       {
         "id": "public-holidays",
@@ -4095,7 +4666,8 @@
         "lang": "en",
         "priority": 72,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "public-holidays"
       },
       {
         "id": "grade-tracker",
@@ -4107,7 +4679,8 @@
         "lang": "en",
         "priority": 72,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "grade-tracker"
       },
       {
         "id": "pomodoro",
@@ -4119,7 +4692,8 @@
         "lang": "en",
         "priority": 68,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "pomodoro"
       },
       {
         "id": "age-calculator",
@@ -4131,7 +4705,8 @@
         "lang": "en",
         "priority": 67,
         "estTraffic": 6000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "age-calculator"
       },
       {
         "id": "time-zone",
@@ -4143,7 +4718,8 @@
         "lang": "en",
         "priority": 66,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "time-zone"
       },
       {
         "id": "working-days",
@@ -4155,7 +4731,8 @@
         "lang": "en",
         "priority": 66,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "working-days"
       },
       {
         "id": "random-picker",
@@ -4167,7 +4744,8 @@
         "lang": "en",
         "priority": 64,
         "estTraffic": 5000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "random-picker"
       },
       {
         "id": "countdown-timer",
@@ -4179,7 +4757,8 @@
         "lang": "en",
         "priority": 62,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "countdown-timer"
       },
       {
         "id": "tip-calculator",
@@ -4191,7 +4770,8 @@
         "lang": "en",
         "priority": 62,
         "estTraffic": 4000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "tip-calculator"
       },
       {
         "id": "meeting-cost",
@@ -4203,10 +4783,25 @@
         "lang": "en",
         "priority": 60,
         "estTraffic": 3000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "meeting-cost"
       }
     ],
     "fr::financial": [
+      {
+        "id": "ng-paye-route-fr",
+        "name": "Calculateur PAYE Nigeria",
+        "icon": "NG",
+        "desc": "Page française du calculateur PAYE Nigeria avec ...",
+        "href": "/fr/nigeria/ng-salary-tax",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 84,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "ng-paye",
+        "imageKey": "ng-paye"
+      },
       {
         "id": "ma-paye-fr",
         "name": "Calculateur Salaire Net — Maroc",
@@ -4217,7 +4812,50 @@
         "lang": "fr",
         "priority": 83,
         "estTraffic": 0,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ma-paye-fr"
+      },
+      {
+        "id": "ke-paye-fr",
+        "name": "Calculateur PAYE Kenya",
+        "icon": "KE",
+        "desc": "Page française du calculateur PAYE Kenya avec KR...",
+        "href": "/fr/kenya/ke-paye",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 82,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "ke-paye",
+        "imageKey": "ke-paye"
+      },
+      {
+        "id": "za-paye-fr",
+        "name": "Calculateur PAYE Afrique du Sud",
+        "icon": "ZA",
+        "desc": "Page française du calculateur PAYE Afrique du Su...",
+        "href": "/fr/south-africa/za-paye",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 81,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "za-paye",
+        "imageKey": "za-paye"
+      },
+      {
+        "id": "gh-paye-fr",
+        "name": "Calculateur PAYE Ghana",
+        "icon": "GH",
+        "desc": "Page française du calculateur PAYE Ghana avec tr...",
+        "href": "/fr/ghana/gh-paye",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 81,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "gh-paye",
+        "imageKey": "gh-paye"
       },
       {
         "id": "dz-paye-fr",
@@ -4253,7 +4891,22 @@
         "lang": "fr",
         "priority": 78,
         "estTraffic": 0,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ci-paye-fr"
+      },
+      {
+        "id": "ng-tva-fr",
+        "name": "Calculateur TVA Nigeria",
+        "icon": "NG",
+        "desc": "Page française du calculateur TVA Nigeria pour H...",
+        "href": "/fr/nigeria/ng-vat",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 78,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "ng-vat",
+        "imageKey": "ng-vat"
       },
       {
         "id": "tn-paye-fr",
@@ -4277,7 +4930,8 @@
         "lang": "fr",
         "priority": 76,
         "estTraffic": 0,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "cm-paye-fr"
       },
       {
         "id": "sn-paye-fr",
@@ -4289,7 +4943,8 @@
         "lang": "fr",
         "priority": 75,
         "estTraffic": 0,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "sn-paye-fr"
       },
       {
         "id": "convertisseur-devises-fr",
@@ -4316,6 +4971,48 @@
         "imageExt": ""
       },
       {
+        "id": "ke-tva-fr",
+        "name": "Calculateur TVA Kenya",
+        "icon": "KE",
+        "desc": "Page française du calculateur TVA Kenya avec tau...",
+        "href": "/fr/kenya/ke-vat",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 74,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "ke-vat",
+        "imageKey": "ke-vat"
+      },
+      {
+        "id": "za-tva-fr",
+        "name": "Calculateur TVA Afrique du Sud",
+        "icon": "ZA",
+        "desc": "Page française du calculateur TVA Afrique du Sud...",
+        "href": "/fr/south-africa/za-vat",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 73,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "za-vat",
+        "imageKey": "za-vat"
+      },
+      {
+        "id": "gh-tva-fr",
+        "name": "Calculateur TVA Ghana",
+        "icon": "GH",
+        "desc": "Page française du calculateur TVA Ghana avec tau...",
+        "href": "/fr/ghana/gh-vat",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 73,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "gh-vat",
+        "imageKey": "gh-vat"
+      },
+      {
         "id": "salary-tax-fr",
         "name": "Salaire et fiscalité Afrique",
         "icon": "💶",
@@ -4324,102 +5021,6 @@
         "category": "financial",
         "lang": "fr",
         "priority": 73,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "dz-tva-fr",
-        "name": "Calculateur TVA — Algérie",
-        "icon": "🇩🇿",
-        "desc": "Route française canonique pour la TVA algérienne...",
-        "href": "/fr/algerie/calculateur-tva",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "calculateur-tva-fr",
-        "name": "Calculateur TVA panafricain",
-        "icon": "🧾",
-        "desc": "Calcul HT/TTC et comparaison TVA déjà publiés en...",
-        "href": "/fr/tools/calculateur-tva",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "za-uif-fr",
-        "name": "Calculateur UIF (SA)",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour calculs d arge...",
-        "href": "/fr/tools/za-uif",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "generateur-fiche-paie-fr",
-        "name": "Générateur de fiche de paie",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour calculs d arge...",
-        "href": "/fr/tools/generateur-fiche-paie",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "reference-taux-interet-fr",
-        "name": "Référence des taux d’intérêt",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour calculs d arge...",
-        "href": "/fr/tools/reference-taux-interet",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "suivi-carburant-fr",
-        "name": "Suivi des prix du carburant en Afrique",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour calculs d arge...",
-        "href": "/fr/tools/suivi-carburant",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "afrotaux-fr",
-        "name": "Taux des banques centrales africaines & Inflation",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour calculs d arge...",
-        "href": "/fr/tools/afrotaux",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "vat-business-tax-fr",
-        "name": "TVA et fiscalité d’entreprise",
-        "icon": "🧾",
-        "desc": "Hub français TVA, HT/TTC, facturation et fiscali...",
-        "href": "/fr/vat-business-tax",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 71,
         "estTraffic": 0,
         "imageExt": ""
       }
@@ -4435,7 +5036,9 @@
         "lang": "fr",
         "priority": 95,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-merge-split",
+        "imageKey": "pdf-merge-split"
       },
       {
         "id": "pdf-compress-fr",
@@ -4447,7 +5050,9 @@
         "lang": "fr",
         "priority": 94,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-compress",
+        "imageKey": "pdf-compress"
       },
       {
         "id": "pdf-convert-fr",
@@ -4459,7 +5064,9 @@
         "lang": "fr",
         "priority": 94,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-convert",
+        "imageKey": "pdf-convert"
       },
       {
         "id": "pdf-chat-fr",
@@ -4471,7 +5078,9 @@
         "lang": "fr",
         "priority": 93,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-chat",
+        "imageKey": "pdf-chat"
       },
       {
         "id": "document-pdf-fr",
@@ -4495,7 +5104,9 @@
         "lang": "fr",
         "priority": 90,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "pdf-image-convert",
+        "imageKey": "pdf-image-convert"
       },
       {
         "id": "pdf-sign-fr",
@@ -4507,7 +5118,9 @@
         "lang": "fr",
         "priority": 90,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-sign",
+        "imageKey": "pdf-sign"
       },
       {
         "id": "pdf-translate-fr",
@@ -4519,7 +5132,9 @@
         "lang": "fr",
         "priority": 90,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-translate",
+        "imageKey": "pdf-translate"
       },
       {
         "id": "pdf-compare-fr",
@@ -4531,7 +5146,9 @@
         "lang": "fr",
         "priority": 88,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-compare",
+        "imageKey": "pdf-compare"
       },
       {
         "id": "pdf-watermark-fr",
@@ -4543,7 +5160,9 @@
         "lang": "fr",
         "priority": 88,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-watermark",
+        "imageKey": "pdf-watermark"
       },
       {
         "id": "pdf-reorder-fr",
@@ -4555,7 +5174,9 @@
         "lang": "fr",
         "priority": 88,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-reorder",
+        "imageKey": "pdf-reorder"
       },
       {
         "id": "pdf-form-filler-fr",
@@ -4567,7 +5188,9 @@
         "lang": "fr",
         "priority": 87,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-form-filler",
+        "imageKey": "pdf-form-filler"
       },
       {
         "id": "pdf-ocr-fr",
@@ -4579,7 +5202,9 @@
         "lang": "fr",
         "priority": 85,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-ocr",
+        "imageKey": "pdf-ocr"
       },
       {
         "id": "html-to-pdf-fr",
@@ -4591,7 +5216,9 @@
         "lang": "fr",
         "priority": 84,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "html-to-pdf",
+        "imageKey": "html-to-pdf"
       },
       {
         "id": "pdf-to-audio-fr",
@@ -4603,7 +5230,9 @@
         "lang": "fr",
         "priority": 84,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-to-audio",
+        "imageKey": "pdf-to-audio"
       },
       {
         "id": "pdf-redact-fr",
@@ -4615,7 +5244,9 @@
         "lang": "fr",
         "priority": 83,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-redact",
+        "imageKey": "pdf-redact"
       },
       {
         "id": "pdf-protect-fr",
@@ -4627,7 +5258,9 @@
         "lang": "fr",
         "priority": 83,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-password",
+        "imageKey": "pdf-password"
       },
       {
         "id": "pdf-page-numbers-fr",
@@ -4639,7 +5272,9 @@
         "lang": "fr",
         "priority": 82,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-page-numbers",
+        "imageKey": "pdf-page-numbers"
       }
     ],
     "fr::ecommerce": [
@@ -4653,7 +5288,9 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "business-name-gen",
+        "imageKey": "business-name-gen"
       },
       {
         "id": "gestion-stocks-fr",
@@ -4665,7 +5302,9 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "inventory",
+        "imageKey": "inventory"
       },
       {
         "id": "calculateur-expedition-fr",
@@ -4677,7 +5316,9 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "shipping-calc",
+        "imageKey": "shipping-calc"
       },
       {
         "id": "profit-stand-marche-fr",
@@ -4689,7 +5330,9 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "market-stall-profit",
+        "imageKey": "market-stall-profit"
       },
       {
         "id": "calculateur-marge-fr",
@@ -4701,7 +5344,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "markup-calc",
+        "imageKey": "markup-calc"
       },
       {
         "id": "seuil-rentabilite-fr",
@@ -4713,7 +5358,9 @@
         "lang": "fr",
         "priority": 59,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "break-even",
+        "imageKey": "break-even"
       },
       {
         "id": "marge-beneficiaire-fr",
@@ -4725,7 +5372,9 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "profit-margin",
+        "imageKey": "profit-margin"
       },
       {
         "id": "tableau-idees-fr",
@@ -4737,7 +5386,8 @@
         "lang": "fr",
         "priority": 55,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "idea-board"
       },
       {
         "id": "calculateur-remise-fr",
@@ -4749,7 +5399,9 @@
         "lang": "fr",
         "priority": 49,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "discount-calc",
+        "imageKey": "discount-calc"
       }
     ],
     "fr::personal-finance": [
@@ -4763,7 +5415,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "50-30-20-budget",
+        "imageId": "50-30-20-budget"
       },
       {
         "id": "planificateur-budget-fr",
@@ -4775,7 +5429,9 @@
         "lang": "fr",
         "priority": 56,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "budget-planner",
+        "imageKey": "budget-planner"
       },
       {
         "id": "cout-funerailles-fr",
@@ -4787,7 +5443,9 @@
         "lang": "fr",
         "priority": 48,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "burial-cost",
+        "imageKey": "burial-cost"
       }
     ],
     "fr::small-business": [
@@ -4801,7 +5459,10 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "mini-importation",
+        "imageId": "mini-importation",
+        "imageKey": "mini-importation"
       },
       {
         "id": "rentabilite-agent-pos-fr",
@@ -4813,7 +5474,10 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pos-agent",
+        "imageId": "pos-agent",
+        "imageKey": "pos-agent"
       },
       {
         "id": "rentabilite-restauration-rue-fr",
@@ -4825,7 +5489,10 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "mama-put",
+        "imageId": "mama-put",
+        "imageKey": "mama-put"
       },
       {
         "id": "prevision-tresorerie-fr",
@@ -4837,7 +5504,10 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cash-flow-forecast",
+        "imageId": "cash-flow-forecast",
+        "imageKey": "cash-flow-forecast"
       },
       {
         "id": "frais-marketplace-fr",
@@ -4849,7 +5519,10 @@
         "lang": "fr",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "marketplace-fees",
+        "imageId": "marketplace-fees",
+        "imageKey": "marketplace-fees"
       },
       {
         "id": "burn-rate-startup-fr",
@@ -4861,7 +5534,10 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "burn-rate",
+        "imageId": "burn-rate",
+        "imageKey": "burn-rate"
       },
       {
         "id": "facture-proforma-fr",
@@ -4873,7 +5549,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "proforma-invoice",
+        "imageKey": "proforma-invoice"
       },
       {
         "id": "plan-affaires-fr",
@@ -4885,7 +5563,9 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "business-plan",
+        "imageKey": "business-plan"
       },
       {
         "id": "evaluation-startup-fr",
@@ -4897,7 +5577,9 @@
         "lang": "fr",
         "priority": 56,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "startup-valuation",
+        "imageKey": "startup-valuation"
       },
       {
         "id": "etude-faisabilite-fr",
@@ -4921,7 +5603,23 @@
         "lang": "fr",
         "priority": 54,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "business-planner",
+        "imageKey": "business-planner"
+      },
+      {
+        "id": "calculateur-pourcentage-fr",
+        "name": "Calculateur de pourcentage",
+        "icon": "%",
+        "desc": "Calculez une variation, une part ou un pourcenta...",
+        "href": "/fr/tools/calculateur-pourcentage",
+        "category": "small-business",
+        "lang": "fr",
+        "priority": 50,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "percentage-calc",
+        "imageKey": "percentage-calc"
       }
     ],
     "fr::energy": [
@@ -4935,7 +5633,10 @@
         "lang": "fr",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "solar-sizing",
+        "imageId": "solar-sizing",
+        "imageKey": "solar-sizing"
       },
       {
         "id": "roi-solaire-fr",
@@ -4947,7 +5648,10 @@
         "lang": "fr",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "solar-roi",
+        "imageId": "solar-roi",
+        "imageKey": "solar-roi"
       },
       {
         "id": "dimensionnement-batterie-onduleur-fr",
@@ -4959,7 +5663,10 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "battery-sizing",
+        "imageId": "battery-sizing",
+        "imageKey": "battery-sizing"
       },
       {
         "id": "tarifs-electricite-fr",
@@ -4971,7 +5678,10 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "electricity-tariff",
+        "imageId": "electricity-tariff",
+        "imageKey": "electricity-tariff"
       },
       {
         "id": "compteur-prepaye-fr",
@@ -4983,7 +5693,10 @@
         "lang": "fr",
         "priority": 67,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "prepaid-meter",
+        "imageId": "prepaid-meter",
+        "imageKey": "prepaid-meter"
       },
       {
         "id": "consommation-appareils-fr",
@@ -4995,7 +5708,10 @@
         "lang": "fr",
         "priority": 67,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "appliance-power",
+        "imageId": "appliance-power",
+        "imageKey": "appliance-power"
       },
       {
         "id": "audit-energie-maison-fr",
@@ -5007,7 +5723,10 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "energy-audit",
+        "imageId": "energy-audit",
+        "imageKey": "energy-audit"
       },
       {
         "id": "calculateur-solaire-fr",
@@ -5019,7 +5738,9 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "solar-calculator",
+        "imageKey": "solar-calculator"
       },
       {
         "id": "autonomie-secours-fr",
@@ -5031,7 +5752,9 @@
         "lang": "fr",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "backup-duration",
+        "imageId": "backup-duration"
       },
       {
         "id": "diesel-vs-solaire-ferme-fr",
@@ -5043,7 +5766,9 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "diesel-vs-solar-farm",
+        "imageId": "diesel-vs-solar-farm"
       },
       {
         "id": "empreinte-carbone-energie-fr",
@@ -5055,7 +5780,9 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "carbon-footprint-energy",
+        "imageId": "carbon-footprint-energy"
       },
       {
         "id": "cout-recharge-ev-fr",
@@ -5067,7 +5794,9 @@
         "lang": "fr",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "ev-charging",
+        "imageId": "ev-charging"
       },
       {
         "id": "estimateur-electricite-fr",
@@ -5079,7 +5808,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "electricity-estimator",
+        "imageKey": "electricity-estimator"
       },
       {
         "id": "faisabilite-mini-reseau-fr",
@@ -5091,7 +5822,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "mini-grid-feasibility",
+        "imageId": "mini-grid-feasibility"
       },
       {
         "id": "carburant-generateur-fr",
@@ -5103,7 +5836,9 @@
         "lang": "fr",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "generator-fuel",
+        "imageKey": "generator-fuel"
       },
       {
         "id": "roi-biogaz-fr",
@@ -5115,7 +5850,9 @@
         "lang": "fr",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "biogas-roi",
+        "imageId": "biogas-roi"
       },
       {
         "id": "dimensionnement-generateur-fr",
@@ -5127,7 +5864,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "generator-sizing",
+        "imageKey": "generator-sizing"
       },
       {
         "id": "cout-carburant-fr",
@@ -5139,7 +5878,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "fuel-cost",
+        "imageKey": "fuel-cost"
       }
     ],
     "fr::data-productivity": [
@@ -5153,7 +5894,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "unit-converter",
+        "imageKey": "unit-converter"
       },
       {
         "id": "jours-feries-fr",
@@ -5165,7 +5908,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "public-holidays",
+        "imageKey": "public-holidays"
       },
       {
         "id": "minuteur-pomodoro-fr",
@@ -5177,7 +5922,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "pomodoro",
+        "imageKey": "pomodoro"
       },
       {
         "id": "calculateur-age-fr",
@@ -5189,7 +5936,9 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "age-calculator",
+        "imageKey": "age-calculator"
       },
       {
         "id": "jours-ouvrables-fr",
@@ -5201,7 +5950,9 @@
         "lang": "fr",
         "priority": 56,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "working-days",
+        "imageKey": "working-days"
       },
       {
         "id": "compte-rendu-reunion-fr",
@@ -5213,7 +5964,9 @@
         "lang": "fr",
         "priority": 55,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "meeting-minutes",
+        "imageKey": "meeting-minutes"
       },
       {
         "id": "editeur-markdown-fr",
@@ -5225,7 +5978,9 @@
         "lang": "fr",
         "priority": 54,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "markdown-editor",
+        "imageKey": "markdown-editor"
       },
       {
         "id": "selecteur-aleatoire-fr",
@@ -5237,7 +5992,9 @@
         "lang": "fr",
         "priority": 54,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "random-picker",
+        "imageKey": "random-picker"
       },
       {
         "id": "compte-a-rebours-fr",
@@ -5249,19 +6006,9 @@
         "lang": "fr",
         "priority": 52,
         "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "calculateur-pourcentage-fr",
-        "name": "Calculateur de pourcentage",
-        "icon": "%",
-        "desc": "Calculez une variation, une part ou un pourcenta...",
-        "href": "/fr/tools/calculateur-pourcentage",
-        "category": "data-productivity",
-        "lang": "fr",
-        "priority": 50,
-        "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "countdown-timer",
+        "imageKey": "countdown-timer"
       },
       {
         "id": "convertisseur-donnees-fr",
@@ -5273,7 +6020,9 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "data-converter",
+        "imageKey": "data-converter"
       },
       {
         "id": "comparateur-texte-fr",
@@ -5285,7 +6034,9 @@
         "lang": "fr",
         "priority": 49,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "diff-checker",
+        "imageKey": "diff-checker"
       },
       {
         "id": "cout-reunion-fr",
@@ -5297,7 +6048,9 @@
         "lang": "fr",
         "priority": 48,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "meeting-cost",
+        "imageKey": "meeting-cost"
       }
     ],
     "fr::developer": [
@@ -5311,7 +6064,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "json-formatter",
+        "imageKey": "json-formatter"
       },
       {
         "id": "simulateur-ussd-fr",
@@ -5323,7 +6078,9 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "ussd-simulator",
+        "imageKey": "ussd-simulator"
       },
       {
         "id": "encodeur-base64-fr",
@@ -5335,7 +6092,9 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "base64",
+        "imageKey": "base64"
       },
       {
         "id": "bac-a-sable-sql-fr",
@@ -5347,7 +6106,9 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "sql-playground",
+        "imageKey": "sql-playground"
       },
       {
         "id": "encodeur-url-fr",
@@ -5359,7 +6120,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "url-encoder",
+        "imageKey": "url-encoder"
       },
       {
         "id": "decodeur-jwt-fr",
@@ -5371,7 +6134,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "jwt-decoder",
+        "imageKey": "jwt-decoder"
       },
       {
         "id": "formateur-sql-fr",
@@ -5383,7 +6148,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "sql-formatter",
+        "imageKey": "sql-formatter"
       },
       {
         "id": "generateur-uuid-fr",
@@ -5395,7 +6162,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "uuid-generator",
+        "imageKey": "uuid-generator"
       },
       {
         "id": "contraste-couleurs-fr",
@@ -5407,7 +6176,9 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "color-contrast",
+        "imageKey": "color-contrast"
       },
       {
         "id": "entites-html-fr",
@@ -5419,7 +6190,9 @@
         "lang": "fr",
         "priority": 55,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "html-entities",
+        "imageKey": "html-entities"
       },
       {
         "id": "generateur-mot-de-passe-fr",
@@ -5431,7 +6204,9 @@
         "lang": "fr",
         "priority": 54,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "password-gen",
+        "imageKey": "password-gen"
       },
       {
         "id": "constructeur-cron-fr",
@@ -5443,7 +6218,9 @@
         "lang": "fr",
         "priority": 53,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "cron-builder",
+        "imageKey": "cron-builder"
       },
       {
         "id": "testeur-regex-fr",
@@ -5455,7 +6232,9 @@
         "lang": "fr",
         "priority": 52,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "regex-tester",
+        "imageKey": "regex-tester"
       },
       {
         "id": "testeur-api-fr",
@@ -5467,7 +6246,9 @@
         "lang": "fr",
         "priority": 51,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "api-tester",
+        "imageKey": "api-tester"
       },
       {
         "id": "outils-dev-fr",
@@ -5479,7 +6260,8 @@
         "lang": "fr",
         "priority": 42,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "dev-tools"
       }
     ],
     "fr::telecom": [
@@ -5493,7 +6275,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-data-plan",
+        "imageKey": "telecom-data-plan"
       },
       {
         "id": "telecom-data-usage-fr",
@@ -5505,7 +6289,9 @@
         "lang": "fr",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-data-usage",
+        "imageKey": "telecom-data-usage"
       },
       {
         "id": "telecom-internet-fr",
@@ -5517,7 +6303,9 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-internet",
+        "imageKey": "telecom-internet"
       },
       {
         "id": "telecom-business-internet-fr",
@@ -5529,7 +6317,9 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-internet",
+        "imageKey": "telecom-internet"
       },
       {
         "id": "telecom-fibre-lte-5g-fr",
@@ -5541,7 +6331,9 @@
         "lang": "fr",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-fiber-lte-5g",
+        "imageKey": "telecom-fiber-lte-5g"
       },
       {
         "id": "telecom-roaming-fr",
@@ -5553,7 +6345,9 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-roaming",
+        "imageKey": "telecom-roaming"
       },
       {
         "id": "telecom-sms-pro-fr",
@@ -5565,7 +6359,9 @@
         "lang": "fr",
         "priority": 67,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-bulk-sms",
+        "imageKey": "telecom-bulk-sms"
       },
       {
         "id": "telecom-airtime-fr",
@@ -5577,7 +6373,8 @@
         "lang": "fr",
         "priority": 67,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "telecom-airtime"
       },
       {
         "id": "telecom-portabilite-fr",
@@ -5589,7 +6386,8 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "telecom-portability"
       },
       {
         "id": "telecom-whatsapp-vs-sms-fr",
@@ -5601,7 +6399,9 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-whatsapp-vs-sms",
+        "imageKey": "telecom-whatsapp-vs-sms"
       }
     ],
     "fr::african": [
@@ -5615,7 +6415,9 @@
         "lang": "fr",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "mobile-money-fees",
+        "imageKey": "mobile-money-fees"
       },
       {
         "id": "transfert-argent-fr",
@@ -5627,7 +6429,9 @@
         "lang": "fr",
         "priority": 73,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "remittance-compare",
+        "imageKey": "remittance-compare"
       }
     ],
     "fr::career": [
@@ -5641,7 +6445,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "leave-days",
+        "imageKey": "leave-days"
       },
       {
         "id": "evaluateur-offre-emploi-fr",
@@ -5653,7 +6459,10 @@
         "lang": "fr",
         "priority": 59,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "job-offer-evaluator",
+        "imageId": "job-offer-evaluator",
+        "imageKey": "job-offer-evaluator"
       },
       {
         "id": "generateur-lettre-motivation-fr",
@@ -5665,7 +6474,10 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cover-letter-generator",
+        "imageId": "cover-letter",
+        "imageKey": "cover-letter"
       },
       {
         "id": "negociation-salaire-fr",
@@ -5677,7 +6489,10 @@
         "lang": "fr",
         "priority": 55,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "salary-negotiation",
+        "imageId": "salary-compare",
+        "imageKey": "salary-compare"
       },
       {
         "id": "salaire-enseignant-fr",
@@ -5689,7 +6504,9 @@
         "lang": "fr",
         "priority": 53,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "teacher-salary",
+        "imageKey": "teacher-salary"
       }
     ],
     "fr::trade": [
@@ -5703,7 +6520,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "landed-cost",
+        "imageKey": "landed-cost"
       },
       {
         "id": "ecowas-levy-fr",
@@ -5715,7 +6534,10 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ecowas-levy",
+        "imageId": "import-duty",
+        "imageKey": "import-duty"
       },
       {
         "id": "suivi-zlecaf-fr",
@@ -5727,7 +6549,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "afcfta-tracker",
+        "imageKey": "afcfta-tracker"
       },
       {
         "id": "calculateur-incoterms-fr",
@@ -5739,7 +6563,8 @@
         "lang": "fr",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "incoterms-calculator"
       },
       {
         "id": "estimateur-fret-fr",
@@ -5751,7 +6576,8 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "shipping-estimator"
       },
       {
         "id": "documents-export-fr",
@@ -5763,7 +6589,8 @@
         "lang": "fr",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "export-docs-trade"
       },
       {
         "id": "droits-douane-fr",
@@ -5787,7 +6614,8 @@
         "lang": "fr",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "trade-finance-comparator"
       },
       {
         "id": "calculateur-credit-documentaire-fr",
@@ -5811,7 +6639,8 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "demurrage-calculator"
       },
       {
         "id": "comparateur-paiements-fr",
@@ -5823,7 +6652,8 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "payment-comparator"
       },
       {
         "id": "impact-fx-import-fr",
@@ -5835,7 +6665,8 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "fx-import-impact"
       },
       {
         "id": "liste-colisage-fr",
@@ -5847,7 +6678,8 @@
         "lang": "fr",
         "priority": 55,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "packing-list"
       },
       {
         "id": "recherche-code-sh-fr",
@@ -5859,7 +6691,8 @@
         "lang": "fr",
         "priority": 53,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "hs-code-lookup"
       },
       {
         "id": "generateur-certificat-origine-fr",
@@ -5871,7 +6704,8 @@
         "lang": "fr",
         "priority": 52,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "coo-generator"
       },
       {
         "id": "generateur-connaissement-fr",
@@ -5883,7 +6717,8 @@
         "lang": "fr",
         "priority": 52,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "bol-generator"
       }
     ],
     "fr::legal": [
@@ -5897,7 +6732,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "building-materials",
+        "imageKey": "building-materials"
       },
       {
         "id": "ng-nhf-fr",
@@ -5909,7 +6746,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "ng-nhf",
+        "imageKey": "ng-nhf"
       },
       {
         "id": "budget-construction-fr",
@@ -5921,7 +6760,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "construction-budget",
+        "imageKey": "construction-budget"
       },
       {
         "id": "verification-titre-foncier-fr",
@@ -5933,7 +6774,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "land-title-check",
+        "imageKey": "land-title-check"
       },
       {
         "id": "verification-locataire-fr",
@@ -5945,7 +6788,8 @@
         "lang": "fr",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "tenant-screening"
       },
       {
         "id": "commission-agent-fr",
@@ -5957,7 +6801,8 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "agent-commission"
       },
       {
         "id": "permis-construire-fr",
@@ -5969,7 +6814,8 @@
         "lang": "fr",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "building-permit"
       },
       {
         "id": "verificateur-cac-fr",
@@ -5981,7 +6827,9 @@
         "lang": "fr",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "cac-checker",
+        "imageKey": "cac-checker"
       },
       {
         "id": "frais-service-fr",
@@ -5993,19 +6841,23 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "service-charge",
+        "imageKey": "service-charge"
       },
       {
         "id": "cout-cac-fr",
         "name": "Coût d’enregistrement CAC",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne ? relire selon le c...",
+        "desc": "Estimez frais CAC, capital social, droit de timb...",
         "href": "/fr/tools/cout-cac",
         "category": "legal",
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "cac-cost",
+        "imageKey": "cac-cost"
       },
       {
         "id": "cout-cipc-fr",
@@ -6017,7 +6869,9 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "cipc-cost",
+        "imageKey": "cipc-cost"
       },
       {
         "id": "propriete-intellectuelle-fr",
@@ -6029,7 +6883,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "ip-rights-africa",
+        "imageKey": "ip-rights-africa"
       },
       {
         "id": "rendement-locatif-fr",
@@ -6041,7 +6897,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "rental-yield",
+        "imageKey": "rental-yield"
       },
       {
         "id": "contrat-bail-fr",
@@ -6053,7 +6911,9 @@
         "lang": "fr",
         "priority": 59,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "tenancy-agreement",
+        "imageKey": "tenancy-agreement"
       },
       {
         "id": "droits-succession-fr",
@@ -6065,7 +6925,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "inheritance-tax",
+        "imageId": "inheritance-tax"
       },
       {
         "id": "capacite-loyer-fr",
@@ -6077,7 +6939,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "rent-affordability",
+        "imageKey": "rent-affordability"
       },
       {
         "id": "caution-locative-fr",
@@ -6089,7 +6953,9 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "tenancy-deposit",
+        "imageKey": "tenancy-deposit"
       },
       {
         "id": "contrat-location-fr",
@@ -6101,7 +6967,9 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "tenancy-agreement",
+        "imageKey": "tenancy-agreement"
       }
     ],
     "fr::education": [
@@ -6115,7 +6983,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "scientific-calc",
+        "imageKey": "scientific-calc"
       },
       {
         "id": "hub-education-fr",
@@ -6127,7 +6997,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "education-hub",
+        "imageKey": "education-hub"
       },
       {
         "id": "verificateur-diplome-fr",
@@ -6139,7 +7011,9 @@
         "lang": "fr",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "degree-checker",
+        "imageKey": "degree-checker"
       },
       {
         "id": "points-matric-fr",
@@ -6151,7 +7025,9 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "matric-points",
+        "imageKey": "matric-points"
       },
       {
         "id": "solveur-algebre-fr",
@@ -6163,7 +7039,9 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "algebra-solver",
+        "imageKey": "algebra-solver"
       },
       {
         "id": "compteur-mots-fr",
@@ -6175,7 +7053,9 @@
         "lang": "fr",
         "priority": 65,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "word-counter",
+        "imageKey": "word-counter"
       },
       {
         "id": "ke-helb-fr",
@@ -6187,7 +7067,9 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "ke-helb",
+        "imageKey": "ke-helb"
       },
       {
         "id": "tableau-periodique-fr",
@@ -6199,7 +7081,9 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "periodic-table",
+        "imageKey": "periodic-table"
       },
       {
         "id": "classement-universites-fr",
@@ -6211,7 +7095,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "university-ranking",
+        "imageKey": "university-ranking"
       },
       {
         "id": "suivi-notes-fr",
@@ -6223,7 +7109,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "grade-tracker",
+        "imageKey": "grade-tracker"
       },
       {
         "id": "calculateur-gpa-fr",
@@ -6235,7 +7123,10 @@
         "lang": "fr",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "gpa-calculator",
+        "imageId": "gpa-calculator",
+        "imageKey": "gpa-calculator"
       },
       {
         "id": "calculateur-fractions-fr",
@@ -6247,7 +7138,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "fraction-calc",
+        "imageKey": "fraction-calc"
       },
       {
         "id": "calculateur-statistiques-fr",
@@ -6259,7 +7152,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "statistics-calc",
+        "imageKey": "statistics-calc"
       },
       {
         "id": "convertisseur-binaire-fr",
@@ -6271,7 +7166,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "binary-converter",
+        "imageKey": "binary-converter"
       },
       {
         "id": "calculateur-waec-fr",
@@ -6283,7 +7180,10 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "waec-calculator",
+        "imageId": "waec-calculator",
+        "imageKey": "waec-calculator"
       },
       {
         "id": "chiffres-romains-fr",
@@ -6295,7 +7195,9 @@
         "lang": "fr",
         "priority": 55,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "roman-numerals",
+        "imageKey": "roman-numerals"
       },
       {
         "id": "recherche-bourses-fr",
@@ -6307,7 +7209,9 @@
         "lang": "fr",
         "priority": 54,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "scholarship-finder",
+        "imageKey": "scholarship-finder"
       },
       {
         "id": "frais-scolarite-fr",
@@ -6319,7 +7223,9 @@
         "lang": "fr",
         "priority": 53,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "school-fees",
+        "imageKey": "school-fees"
       }
     ],
     "fr::health": [
@@ -6333,7 +7239,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "medical-report",
+        "imageKey": "medical-report"
       },
       {
         "id": "risque-diabete-fr",
@@ -6345,7 +7253,9 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "diabetes-risk",
+        "imageKey": "diabetes-risk"
       },
       {
         "id": "calculateur-imc-fr",
@@ -6357,7 +7267,9 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "bmi-calculator",
+        "imageKey": "bmi-calculator"
       },
       {
         "id": "tension-arterielle-fr",
@@ -6369,7 +7281,9 @@
         "lang": "fr",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "blood-pressure",
+        "imageKey": "blood-pressure"
       },
       {
         "id": "risque-paludisme-fr",
@@ -6381,7 +7295,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "malaria-risk",
+        "imageKey": "malaria-risk"
       },
       {
         "id": "ratio-taille-hanches-fr",
@@ -6393,7 +7309,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "waist-hip-ratio",
+        "imageKey": "waist-hip-ratio"
       },
       {
         "id": "dosage-medicament-fr",
@@ -6405,7 +7323,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "drug-dosage",
+        "imageKey": "drug-dosage"
       },
       {
         "id": "cout-hospitalier-fr",
@@ -6417,7 +7337,9 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "calculateur-ovulation-fr",
@@ -6429,7 +7351,9 @@
         "lang": "fr",
         "priority": 51,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "ovulation-calc",
+        "imageKey": "ovulation-calc"
       },
       {
         "id": "calendrier-vaccinal-fr",
@@ -6441,7 +7365,9 @@
         "lang": "fr",
         "priority": 51,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "vaccine-schedule",
+        "imageKey": "vaccine-schedule"
       },
       {
         "id": "apport-eau-fr",
@@ -6453,7 +7379,9 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "water-intake",
+        "imageKey": "water-intake"
       },
       {
         "id": "compteur-calories-fr",
@@ -6465,7 +7393,9 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "calorie-counter",
+        "imageKey": "calorie-counter"
       },
       {
         "id": "date-accouchement-fr",
@@ -6477,7 +7407,9 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "due-date",
+        "imageKey": "due-date"
       },
       {
         "id": "drepanocytose-fr",
@@ -6489,7 +7421,9 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "sickle-cell",
+        "imageKey": "sickle-cell"
       },
       {
         "id": "qualite-eau-fr",
@@ -6501,7 +7435,9 @@
         "lang": "fr",
         "priority": 49,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "water-quality",
+        "imageKey": "water-quality"
       }
     ],
     "fr::insurance": [
@@ -6515,7 +7451,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "health-insurance-compare",
+        "imageKey": "health-insurance-compare"
       },
       {
         "id": "comparateur-assurance-sante-fr",
@@ -6527,7 +7465,9 @@
         "lang": "fr",
         "priority": 59,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "health-insurance-compare",
+        "imageKey": "health-insurance-compare"
       },
       {
         "id": "assurance-auto-fr",
@@ -6539,7 +7479,9 @@
         "lang": "fr",
         "priority": 58,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "car-insurance",
+        "imageKey": "car-insurance"
       },
       {
         "id": "assurance-vie-fr",
@@ -6551,7 +7493,9 @@
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "life-insurance-calc",
+        "imageKey": "life-insurance-calc"
       },
       {
         "id": "assurance-obseques-fr",
@@ -6563,7 +7507,8 @@
         "lang": "fr",
         "priority": 56,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "funeral-insurance"
       }
     ],
     "fr::travel-tourism": [
@@ -6577,7 +7522,9 @@
         "lang": "fr",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "cost-of-living",
+        "imageKey": "cost-of-living"
       },
       {
         "id": "cout-visa-fr",
@@ -6589,7 +7536,9 @@
         "lang": "fr",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "visa-cost",
+        "imageKey": "visa-cost"
       },
       {
         "id": "calculateur-japa-fr",
@@ -6601,7 +7550,9 @@
         "lang": "fr",
         "priority": 53,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "japa-calculator",
+        "imageKey": "japa-calculator"
       },
       {
         "id": "fuseaux-horaires-fr",
@@ -6613,7 +7564,9 @@
         "lang": "fr",
         "priority": 49,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "time-zone",
+        "imageKey": "time-zone"
       }
     ],
     "fr::fintech": [
@@ -6627,7 +7580,9 @@
         "lang": "fr",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "microfinance-calc",
+        "imageKey": "microfinance-calc"
       },
       {
         "id": "calculateur-paystack-fr",
@@ -6639,7 +7594,9 @@
         "lang": "fr",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "payment-gateway",
+        "imageKey": "payment-gateway"
       },
       {
         "id": "transfert-v2-fr",
@@ -6651,7 +7608,9 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "remittance-v2",
+        "imageKey": "remittance-v2"
       }
     ],
     "fr::security": [
@@ -6665,7 +7624,9 @@
         "lang": "fr",
         "priority": 53,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "data-compliance",
+        "imageKey": "data-compliance"
       }
     ],
     "fr::engineering": [
@@ -6679,7 +7640,10 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "boq-generator",
+        "imageId": "boq-generator",
+        "imageKey": "boq-generator"
       },
       {
         "id": "charge-electrique-fr",
@@ -6691,7 +7655,10 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "electrical-load",
+        "imageId": "electrical-load",
+        "imageKey": "electrical-load"
       },
       {
         "id": "calcul-structure-fr",
@@ -6703,7 +7670,10 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "structural-calc",
+        "imageId": "structural-calc",
+        "imageKey": "structural-calc"
       },
       {
         "id": "calculateur-armature-fr",
@@ -6715,7 +7685,9 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "rebar-calc",
+        "imageId": "rebar-calc"
       },
       {
         "id": "dosage-beton-fr",
@@ -6727,7 +7699,10 @@
         "lang": "fr",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "concrete-calc",
+        "imageId": "concrete-calc",
+        "imageKey": "concrete-calc"
       },
       {
         "id": "calculateur-carrelage-fr",
@@ -6739,7 +7714,10 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "tiles-calc",
+        "imageId": "tiles-calc",
+        "imageKey": "tiles-calc"
       },
       {
         "id": "calculateur-peinture-fr",
@@ -6751,7 +7729,10 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "paint-calc",
+        "imageId": "paint-calc",
+        "imageKey": "paint-calc"
       },
       {
         "id": "calculateur-toiture-fr",
@@ -6763,7 +7744,10 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "roofing-calc",
+        "imageId": "roofing-calc",
+        "imageKey": "roofing-calc"
       },
       {
         "id": "dimensionnement-citerne-fr",
@@ -6775,7 +7759,10 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "water-tank",
+        "imageId": "water-tank",
+        "imageKey": "water-tank"
       },
       {
         "id": "cout-renovation-fr",
@@ -6787,7 +7774,9 @@
         "lang": "fr",
         "priority": 50,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "construction-budget",
+        "imageKey": "construction-budget"
       },
       {
         "id": "plan-etage-fr",
@@ -6799,7 +7788,9 @@
         "lang": "fr",
         "priority": 47,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "floor-plan",
+        "imageKey": "floor-plan"
       }
     ],
     "sw::financial": [
@@ -8413,7 +9404,8 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "content-repurposer"
       },
       {
         "id": "zana-kirekodi-skrini-sw-wave9",
@@ -8437,7 +9429,8 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "audio-recorder-editor"
       }
     ],
     "sw::developer": [
@@ -8535,7 +9528,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "html-entities",
+        "imageKey": "html-entities"
       },
       {
         "id": "zana-base64-sw",
@@ -8547,7 +9542,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "base64",
+        "imageKey": "base64"
       },
       {
         "id": "zana-cron-sw",
@@ -8559,7 +9556,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "cron-builder",
+        "imageKey": "cron-builder"
       },
       {
         "id": "zana-kihariri-markdown-sw-wave8",
@@ -8571,7 +9570,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "markdown-editor",
+        "imageKey": "markdown-editor"
       },
       {
         "id": "zana-kijaribu-regex-sw",
@@ -8583,7 +9584,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "regex-tester",
+        "imageKey": "regex-tester"
       },
       {
         "id": "zana-kirekebisha-json-sw",
@@ -8595,7 +9598,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "json-formatter",
+        "imageKey": "json-formatter"
       },
       {
         "id": "zana-kirekebisha-sql-sw",
@@ -8607,7 +9612,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "sql-formatter",
+        "imageKey": "sql-formatter"
       },
       {
         "id": "zana-kisimbuzi-jwt-sw",
@@ -8619,7 +9626,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "jwt-decoder",
+        "imageKey": "jwt-decoder"
       },
       {
         "id": "zana-kizalishaji-hash-sw-wave8",
@@ -8631,7 +9640,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "hash-generator",
+        "imageKey": "hash-generator"
       },
       {
         "id": "zana-kizalishaji-pwa-manifest-sw",
@@ -8643,7 +9654,8 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "pwa-manifest"
       },
       {
         "id": "zana-kizalishaji-robots-txt-sw-wave8",
@@ -8655,7 +9667,8 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "robots-txt-generator"
       }
     ],
     "sw::engineering": [
@@ -8681,7 +9694,8 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "architectural-fee"
       },
       {
         "id": "zana-afrodraft-cad-sw",
@@ -8693,7 +9707,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "afrodraft",
+        "imageKey": "afrodraft"
       },
       {
         "id": "zana-gharama-ya-dimbwi-la-kuogelea-sw",
@@ -8705,7 +9721,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "swimming-pool-cost",
+        "imageKey": "swimming-pool-cost"
       },
       {
         "id": "zana-gharama-ya-uzio-sw",
@@ -8717,7 +9735,8 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "fence-cost"
       },
       {
         "id": "zana-gharama-za-kisima-sw",
@@ -8729,7 +9748,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "borehole-cost",
+        "imageKey": "borehole-cost"
       },
       {
         "id": "zana-kikokotoo-miundo-ya-ujenzi-sw",
@@ -8741,7 +9762,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "structural-calc",
+        "imageKey": "structural-calc"
       },
       {
         "id": "zana-kikokotoo-vigae-na-sakafu-sw",
@@ -8753,7 +9776,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "tiles-calc",
+        "imageKey": "tiles-calc"
       },
       {
         "id": "zana-gharama-ukarabati-wa-nyumba-sw",
@@ -9191,7 +10216,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "ussd-simulator",
+        "imageKey": "ussd-simulator"
       },
       {
         "id": "zana-mjenzi-mtiririko-ussd-sw-wave9",
@@ -9421,7 +10448,8 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "influencer-rate"
       },
       {
         "id": "zana-bio-za-mitandao-sw",
@@ -9433,7 +10461,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "creator-bios",
+        "imageKey": "creator-bios"
       },
       {
         "id": "zana-boresha-linkedin-sw",
@@ -9445,7 +10475,8 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "linkedin-optimizer"
       },
       {
         "id": "zana-brand-kit-ya-mtayarishi-sw",
@@ -9457,7 +10488,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "creator-brand",
+        "imageKey": "creator-brand"
       }
     ],
     "sw::health": [
@@ -10089,7 +11122,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "parking-fee"
       },
       {
         "id": "zana-ada-za-toll-sw",
@@ -10101,7 +11135,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "toll-calc"
       },
       {
         "id": "zana-gharama-mafuta-ya-fleet-sw",
@@ -10113,7 +11148,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "fleet-fuel"
       },
       {
         "id": "zana-gharama-uendeshaji-gari-sw",
@@ -10125,7 +11161,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "vehicle-operating-cost"
       }
     ],
     "sw::legal": [
@@ -10661,7 +11698,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "landed-cost",
+        "imageKey": "landed-cost"
       },
       {
         "id": "zana-ada-lc-sw",
@@ -10673,7 +11712,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "lc-calculator"
       },
       {
         "id": "zana-kikokotoo-gharama-iliyofika-sw",
@@ -10697,7 +11737,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "delivery-cost",
+        "imageKey": "delivery-cost"
       },
       {
         "id": "zana-gharama-za-demurrage-sw",
@@ -10709,7 +11751,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "demurrage-calculator"
       },
       {
         "id": "zana-kikokotoo-incoterms-sw",
@@ -10721,7 +11764,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "incoterms-calculator"
       },
       {
         "id": "zana-kupakia-lori-sw",
@@ -10733,7 +11777,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "truck-load"
       },
       {
         "id": "zana-kizalishaji-orodha-ya-kiasi-sw",
@@ -10745,7 +11790,8 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "boq-gen"
       },
       {
         "id": "zana-uhamishaji-data-mpaka-sw",
@@ -10819,7 +11865,8 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "inventory-tracker"
       }
     ],
     "sw::data-productivity": [
@@ -10845,7 +11892,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "meeting-cost",
+        "imageKey": "meeting-cost"
       },
       {
         "id": "zana-hesabu-siku-za-tukio-sw-wave8",
@@ -10857,7 +11906,8 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "event-countdown"
       },
       {
         "id": "zana-kigawanya-bili-na-tip-sw-wave8",
@@ -10869,7 +11919,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "tip-calculator",
+        "imageKey": "tip-calculator"
       },
       {
         "id": "zana-kigeuzi-saa-za-maeneo-sw-wave8",
@@ -10881,7 +11933,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "time-zone",
+        "imageKey": "time-zone"
       },
       {
         "id": "zana-siku-za-kazi-sw-wave8",
@@ -10893,7 +11947,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "working-days",
+        "imageKey": "working-days"
       },
       {
         "id": "zana-chaguo-nasibu-sw",
@@ -10919,7 +11975,8 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "aso-ebi-cost"
       },
       {
         "id": "zana-gharama-za-mavazi-ya-kimila-sw",
@@ -10931,7 +11988,8 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "traditional-attire"
       },
       {
         "id": "zana-gharama-za-mazishi-sw",
@@ -10943,7 +12001,8 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "funeral-cost"
       },
       {
         "id": "zana-kalenda-ya-kimila-sw",
@@ -10955,7 +12014,8 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "traditional-calendar"
       },
       {
         "id": "zana-kalenda-ya-tamasha-za-utamaduni-sw",
@@ -10967,7 +12027,8 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "festival-calendar"
       },
       {
         "id": "zana-majina-ya-watoto-wa-afrika-sw",
@@ -10979,7 +12040,8 @@
         "lang": "sw",
         "priority": 61,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "baby-name-generator"
       },
       {
         "id": "zana-bajeti-ya-hajj-na-umrah-sw",
@@ -11081,7 +12143,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 6000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afcfta-tracker"
       },
       {
         "id": "landed-cost",
@@ -11093,7 +12156,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 5000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "landed-cost"
       },
       {
         "id": "incoterms-calculator",
@@ -11239,7 +12303,8 @@
         "lang": "en",
         "priority": 89,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "health-insurance-compare"
       },
       {
         "id": "car-insurance",
@@ -11251,7 +12316,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "car-insurance"
       },
       {
         "id": "life-insurance-calc",
@@ -11263,7 +12329,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "life-insurance-calc"
       },
       {
         "id": "travel-insurance",
@@ -11275,7 +12342,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "travel-insurance"
       },
       {
         "id": "business-insurance",
@@ -11287,7 +12355,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 6500,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "business-insurance"
       },
       {
         "id": "motor-third-party",
@@ -11299,7 +12368,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 6000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "motor-third-party"
       },
       {
         "id": "health-contribution",
@@ -11311,7 +12381,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 5000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "health-contribution"
       },
       {
         "id": "funeral-insurance",
@@ -11433,7 +12504,8 @@
         "lang": "en",
         "priority": 89,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "loan-shark-compare"
       },
       {
         "id": "mobile-vs-bank",
@@ -11445,7 +12517,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "mobile-vs-bank"
       },
       {
         "id": "digital-lending",
@@ -11457,7 +12530,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "digital-lending"
       },
       {
         "id": "fixed-deposit",
@@ -11469,7 +12543,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "fixed-deposit"
       },
       {
         "id": "microfinance-loan",
@@ -11481,7 +12556,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "microfinance-loan"
       },
       {
         "id": "payment-gateway",
@@ -11493,7 +12569,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "payment-gateway"
       },
       {
         "id": "sacco-calc",
@@ -11505,7 +12582,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 6000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "sacco-calc"
       },
       {
         "id": "tbill-calc",
@@ -11517,7 +12595,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 6000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "tbill-calc"
       },
       {
         "id": "bnpl-calc",
@@ -11541,7 +12620,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 5000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "real-return"
       },
       {
         "id": "emergency-fund",
@@ -11553,7 +12633,8 @@
         "lang": "en",
         "priority": 81,
         "estTraffic": 5000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "emergency-fund"
       },
       {
         "id": "asset-finance",
@@ -11613,7 +12694,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "debt-snowball"
       },
       {
         "id": "dividend-yield",
@@ -11625,7 +12707,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "dividend-yield"
       },
       {
         "id": "dca-calc",
@@ -11637,7 +12720,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "dca-calc"
       }
     ],
     "en::telecom": [
@@ -11651,7 +12735,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "telecom-data-plan",
@@ -11663,7 +12748,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "telecom-data-plan"
       },
       {
         "id": "telecom-data-usage",
@@ -11675,7 +12761,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "telecom-data-usage"
       },
       {
         "id": "telecom-whatsapp-vs-sms",
@@ -11687,7 +12774,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 7500,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "telecom-whatsapp-vs-sms"
       },
       {
         "id": "telecom-roaming",
@@ -11699,7 +12787,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "telecom-roaming"
       },
       {
         "id": "telecom-bulk-sms",
@@ -11711,7 +12800,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "telecom-bulk-sms"
       },
       {
         "id": "telecom-business-internet",
@@ -11735,7 +12825,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "telecom-fiber-lte-5g"
       }
     ],
     "en::energy": [
@@ -11749,7 +12840,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "solar-roi"
       },
       {
         "id": "generator-fuel",
@@ -11761,7 +12853,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "generator-fuel"
       },
       {
         "id": "electricity-tariff",
@@ -11773,7 +12866,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "electricity-tariff"
       },
       {
         "id": "solar-vs-generator",
@@ -11785,7 +12879,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 11000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "solar-vs-generator"
       },
       {
         "id": "prepaid-meter",
@@ -11797,7 +12892,8 @@
         "lang": "en",
         "priority": 89,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "prepaid-meter"
       },
       {
         "id": "solar-sizing",
@@ -11809,7 +12905,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "solar-sizing"
       },
       {
         "id": "electricity-bill-verify",
@@ -11821,7 +12918,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "electricity-bill-verify"
       },
       {
         "id": "battery-sizing",
@@ -11833,7 +12931,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "battery-sizing"
       },
       {
         "id": "appliance-power",
@@ -11845,7 +12944,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "appliance-power"
       },
       {
         "id": "energy-audit",
@@ -11857,7 +12957,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "energy-audit"
       },
       {
         "id": "gas-lpg-cost",
@@ -11869,7 +12970,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "gas-lpg-cost"
       },
       {
         "id": "water-bill",
@@ -11881,7 +12983,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "water-bill"
       },
       {
         "id": "outage-cost",
@@ -11893,7 +12996,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "outage-cost"
       },
       {
         "id": "backup-duration",
@@ -11967,7 +13071,8 @@
         "lang": "en",
         "priority": 97,
         "estTraffic": 24000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "car-price-intelligence"
       },
       {
         "id": "car-import-cost",
@@ -11979,7 +13084,8 @@
         "lang": "en",
         "priority": 96,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "car-import-cost"
       },
       {
         "id": "ride-fare",
@@ -11991,7 +13097,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 12000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ride-fare"
       },
       {
         "id": "vehicle-import-duty",
@@ -12003,7 +13110,8 @@
         "lang": "en",
         "priority": 89,
         "estTraffic": 10000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "vehicle-import-duty"
       },
       {
         "id": "matatu-fare",
@@ -12015,7 +13123,8 @@
         "lang": "en",
         "priority": 86,
         "estTraffic": 9000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "matatu-fare"
       },
       {
         "id": "boda-income",
@@ -12027,7 +13136,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "boda-income"
       },
       {
         "id": "delivery-cost",
@@ -12039,7 +13149,8 @@
         "lang": "en",
         "priority": 85,
         "estTraffic": 8000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "delivery-cost"
       },
       {
         "id": "car-loan-vs-cash",
@@ -12051,7 +13162,8 @@
         "lang": "en",
         "priority": 84,
         "estTraffic": 7000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "car-loan-vs-cash"
       },
       {
         "id": "vehicle-registration",
@@ -12075,7 +13187,8 @@
         "lang": "en",
         "priority": 79,
         "estTraffic": 5000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "roadworthiness"
       },
       {
         "id": "fleet-fuel",
@@ -12185,7 +13298,9 @@
         "lang": "fr",
         "priority": 76,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "car-price-intelligence",
+        "imageKey": "car-price-intelligence"
       }
     ],
     "en::career": [
@@ -12419,7 +13534,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afrostream"
       },
       {
         "id": "art-commission",
@@ -12443,7 +13559,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-bios"
       },
       {
         "id": "book-publishing-cost",
@@ -12467,7 +13584,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-captions"
       },
       {
         "id": "creator-carousel",
@@ -12479,7 +13597,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-carousel"
       },
       {
         "id": "creator-analytics",
@@ -12491,7 +13610,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-analytics"
       },
       {
         "id": "creator-brand",
@@ -12503,7 +13623,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-brand"
       },
       {
         "id": "creator-calendar",
@@ -12515,7 +13636,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-calendar"
       },
       {
         "id": "creator-canvas",
@@ -12563,7 +13685,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-course"
       },
       {
         "id": "creator-desk",
@@ -12587,7 +13710,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-invoice"
       },
       {
         "id": "creator-kit",
@@ -12599,7 +13723,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "creator-kit"
       },
       {
         "id": "creator-mail",
@@ -12911,7 +14036,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "business-continuity"
       },
       {
         "id": "event-decoration-cost",
@@ -13409,7 +14535,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "image-compress",
+        "imageKey": "image-compress"
       },
       {
         "id": "convertir-format-image-fr",
@@ -13421,7 +14549,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "image-format-convert",
+        "imageKey": "image-format-convert"
       },
       {
         "id": "createur-certificat-fr",
@@ -13433,7 +14563,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "certificate-maker",
+        "imageKey": "certificate-maker"
       },
       {
         "id": "createur-flyer-fr",
@@ -13445,7 +14577,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "flyer-maker",
+        "imageKey": "flyer-maker"
       },
       {
         "id": "createur-logo-fr",
@@ -13457,7 +14591,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "logo-maker",
+        "imageKey": "logo-maker"
       },
       {
         "id": "createur-miniatures-fr",
@@ -13469,7 +14605,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "thumbnail-maker",
+        "imageKey": "thumbnail-maker"
       },
       {
         "id": "filtres-image-fr",
@@ -13481,7 +14619,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "image-filters",
+        "imageKey": "image-filters"
       },
       {
         "id": "carte-sociale-fr",
@@ -13493,7 +14633,9 @@
         "lang": "fr",
         "priority": 72,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "social-card",
+        "imageKey": "social-card"
       },
       {
         "id": "filigrane-images-fr",
@@ -13505,7 +14647,9 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "watermark-bulk",
+        "imageKey": "watermark-bulk"
       }
     ],
     "sw::language": [
@@ -13519,7 +14663,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "diff-checker",
+        "imageKey": "diff-checker"
       },
       {
         "id": "zana-mtafsiri-wa-kiamhari-sw-wave8",
@@ -13531,7 +14677,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "amharic-translator",
+        "imageKey": "amharic-translator"
       },
       {
         "id": "zana-mtafsiri-wa-kifaransa-afrika-sw-wave8",
@@ -13543,7 +14691,8 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "african-french-translator"
       },
       {
         "id": "zana-mtafsiri-wa-kihausa-sw-wave8",
@@ -13555,7 +14704,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "hausa-translator",
+        "imageKey": "hausa-translator"
       },
       {
         "id": "zana-mtafsiri-wa-kiigbo-sw-wave8",
@@ -13567,7 +14718,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "igbo-translator",
+        "imageKey": "igbo-translator"
       },
       {
         "id": "zana-mtafsiri-wa-kiswahili-sw-wave8",
@@ -13579,7 +14732,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "swahili-translator",
+        "imageKey": "swahili-translator"
       },
       {
         "id": "zana-mtafsiri-wa-kiyoruba-sw-wave8",
@@ -13591,7 +14746,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "yoruba-translator",
+        "imageKey": "yoruba-translator"
       },
       {
         "id": "zana-mtafsiri-wa-kizulu-sw-wave8",
@@ -13603,7 +14760,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "zulu-translator",
+        "imageKey": "zulu-translator"
       },
       {
         "id": "zana-mtafsiri-wa-pidgin-ya-nigeria-sw-wave8",
@@ -13615,7 +14774,8 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "nigerian-pidgin-translator"
       },
       {
         "id": "zana-transliteration-ya-maandishi-sw-wave8",
@@ -13627,7 +14787,8 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "text-transliteration"
       }
     ],
     "sw::career": [
@@ -13641,7 +14802,8 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "career-switch"
       },
       {
         "id": "zana-tathmini-ya-ofa-ya-kazi-sw-wave8",
@@ -13653,7 +14815,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "job-offer-evaluator",
+        "imageKey": "job-offer-evaluator"
       },
       {
         "id": "zana-ukuaji-wa-kazi-sw-wave8",
@@ -13665,7 +14829,8 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "career-growth"
       }
     ]
   },
@@ -13681,7 +14846,8 @@
         "lang": "en",
         "priority": 98,
         "estTraffic": 50000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afropoints"
       },
       {
         "id": "pdf-editor",
@@ -13693,7 +14859,8 @@
         "lang": "en",
         "priority": 96,
         "estTraffic": 40000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-editor"
       },
       {
         "id": "fuel-tracker",
@@ -13705,7 +14872,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 30000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "fuel-tracker"
       },
       {
         "id": "pdf-convert",
@@ -13717,7 +14885,8 @@
         "lang": "en",
         "priority": 94,
         "estTraffic": 30000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-convert"
       },
       {
         "id": "pdf-merge-split",
@@ -13729,7 +14898,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 25000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-merge-split"
       },
       {
         "id": "pdf-workspace",
@@ -13741,7 +14911,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 25000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "afrorates",
@@ -13753,7 +14924,8 @@
         "lang": "en",
         "priority": 94,
         "estTraffic": 25000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afrorates"
       },
       {
         "id": "education-hub",
@@ -13765,7 +14937,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 25000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "education-hub"
       },
       {
         "id": "car-price-intelligence",
@@ -13777,7 +14950,8 @@
         "lang": "en",
         "priority": 97,
         "estTraffic": 24000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "car-price-intelligence"
       },
       {
         "id": "cv-builder",
@@ -13789,7 +14963,8 @@
         "lang": "en",
         "priority": 97,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "cv-builder"
       },
       {
         "id": "pdf-compress",
@@ -13801,7 +14976,8 @@
         "lang": "en",
         "priority": 94,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-compress"
       },
       {
         "id": "currency-converter",
@@ -13813,7 +14989,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "currency-converter"
       },
       {
         "id": "pdf-chat",
@@ -13825,7 +15002,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "pdf-chat"
       },
       {
         "id": "crypto-prices",
@@ -13837,7 +15015,8 @@
         "lang": "en",
         "priority": 93,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crypto-prices"
       },
       {
         "id": "afrokitchen",
@@ -13849,7 +15028,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "afrokitchen"
       },
       {
         "id": "scholarship-finder",
@@ -13861,7 +15041,8 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 20000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "scholarship-finder"
       },
       {
         "id": "meme-generator",
@@ -13873,7 +15054,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 20000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "meme-generator"
       },
       {
         "id": "car-import-cost",
@@ -13885,7 +15067,8 @@
         "lang": "en",
         "priority": 96,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "car-import-cost"
       },
       {
         "id": "image-compress",
@@ -13897,7 +15080,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "image-compress"
       },
       {
         "id": "brideprice-advisor",
@@ -13909,7 +15093,8 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "brideprice-advisor"
       },
       {
         "id": "african-name-meaning",
@@ -13921,7 +15106,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "african-name-meaning"
       },
       {
         "id": "farm-profit-calculator",
@@ -13933,7 +15119,8 @@
         "lang": "en",
         "priority": 83,
         "estTraffic": 18000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "farm-profit-calculator"
       },
       {
         "id": "cassava-processing-calculator",
@@ -13945,7 +15132,8 @@
         "lang": "en",
         "priority": 82,
         "estTraffic": 16000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "cassava-processing-calculator"
       },
       {
         "id": "medical-report",
@@ -13957,7 +15145,8 @@
         "lang": "en",
         "priority": 99,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "medical-report"
       },
       {
         "id": "invoice-generator",
@@ -13969,7 +15158,8 @@
         "lang": "en",
         "priority": 96,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "invoice-generator"
       },
       {
         "id": "import-duty",
@@ -13981,7 +15171,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "import-duty"
       },
       {
         "id": "crypto-p2p",
@@ -13993,7 +15184,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "crypto-p2p"
       },
       {
         "id": "remittance-v2",
@@ -14005,7 +15197,8 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "remittance-v2"
       },
       {
         "id": "africa-conflict",
@@ -14017,7 +15210,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "africa-conflict"
       },
       {
         "id": "solar-roi",
@@ -14029,7 +15223,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "solar-roi"
       },
       {
         "id": "telecom-ussd",
@@ -14041,7 +15236,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "vat-calc-pan-african",
@@ -14053,7 +15249,8 @@
         "lang": "en",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "vat-calc-pan-african"
       },
       {
         "id": "background-remover",
@@ -14065,7 +15262,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "background-remover"
       },
       {
         "id": "image-resize",
@@ -14077,7 +15275,8 @@
         "lang": "en",
         "priority": 91,
         "estTraffic": 15000,
-        "imageExt": "svg"
+        "imageExt": "svg",
+        "imageKey": "image-resize"
       },
       {
         "id": "salary-compare",
@@ -14089,7 +15288,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "salary-compare"
       },
       {
         "id": "json-formatter",
@@ -14101,7 +15301,8 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 15000,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "json-formatter"
       }
     ],
     "ha": [
@@ -14115,7 +15316,10 @@
         "lang": "ha",
         "priority": 95,
         "estTraffic": 25000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-merge-split",
+        "imageId": "pdf-merge-split",
+        "imageKey": "pdf-merge-split"
       },
       {
         "id": "document-pdf-ha",
@@ -14127,7 +15331,9 @@
         "lang": "ha",
         "priority": 95,
         "estTraffic": 25000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "pdf-compress-ha",
@@ -14139,7 +15345,10 @@
         "lang": "ha",
         "priority": 94,
         "estTraffic": 20000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-compress",
+        "imageId": "pdf-compress",
+        "imageKey": "pdf-compress"
       },
       {
         "id": "invoice-generator-ha",
@@ -14151,7 +15360,9 @@
         "lang": "ha",
         "priority": 97,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "invoice-generator",
+        "imageKey": "invoice-generator"
       },
       {
         "id": "vat-calculator-ha",
@@ -14163,7 +15374,10 @@
         "lang": "ha",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "vat-calc-pan-african",
+        "imageId": "vat-calc-pan-african",
+        "imageKey": "vat-calc-pan-african"
       },
       {
         "id": "telecom-ussd-ha",
@@ -14175,7 +15389,10 @@
         "lang": "ha",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-ussd",
+        "imageId": "telecom-ussd",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "waec-neco-calculator-ha",
@@ -14187,7 +15404,10 @@
         "lang": "ha",
         "priority": 90,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "waec-calculator",
+        "imageId": "waec-calculator",
+        "imageKey": "waec-calculator"
       },
       {
         "id": "genotype-checker-ha",
@@ -14199,7 +15419,10 @@
         "lang": "ha",
         "priority": 87,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "genotype-checker",
+        "imageId": "genotype-checker",
+        "imageKey": "genotype-checker"
       },
       {
         "id": "jamb-aggregate-ha",
@@ -14211,7 +15434,10 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "jamb-aggregate",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "farm-profit-nigeria-ha",
@@ -14223,7 +15449,10 @@
         "lang": "ha",
         "priority": 87,
         "estTraffic": 14000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "farm-profit-calculator",
+        "imageId": "farm-profit-calculator",
+        "imageKey": "farm-profit-calculator"
       },
       {
         "id": "crop-yield-nigeria-ha",
@@ -14235,7 +15464,10 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-estimator",
+        "imageId": "crop-yield-nigeria",
+        "imageKey": "crop-yield-nigeria"
       },
       {
         "id": "childbirth-cost-ha",
@@ -14247,7 +15479,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "childbirth-cost",
+        "imageId": "childbirth-cost",
+        "imageKey": "childbirth-cost"
       },
       {
         "id": "sickle-cell-ha",
@@ -14259,7 +15494,10 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 11000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "sickle-cell",
+        "imageId": "sickle-cell",
+        "imageKey": "sickle-cell"
       },
       {
         "id": "fertilizer-nigeria-ha",
@@ -14271,7 +15509,10 @@
         "lang": "ha",
         "priority": 85,
         "estTraffic": 11000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-calculator",
+        "imageId": "fertilizer-nigeria",
+        "imageKey": "fertilizer-nigeria"
       },
       {
         "id": "cassava-processing-nigeria-ha",
@@ -14283,7 +15524,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cassava-processing-calculator",
+        "imageId": "cassava-processing-nigeria",
+        "imageKey": "cassava-processing-nigeria"
       },
       {
         "id": "staple-basket-ha",
@@ -14295,7 +15539,10 @@
         "lang": "ha",
         "priority": 83,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "staple-basket",
+        "imageId": "staple-basket",
+        "imageKey": "staple-basket"
       },
       {
         "id": "drug-price-compare-ha",
@@ -14307,7 +15554,10 @@
         "lang": "ha",
         "priority": 83,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "drug-price-compare",
+        "imageId": "drug-price-compare",
+        "imageKey": "drug-price-compare"
       },
       {
         "id": "whatsapp-link-ha",
@@ -14319,7 +15569,10 @@
         "lang": "ha",
         "priority": 79,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "whatsapp-link",
+        "imageId": "whatsapp-link",
+        "imageKey": "whatsapp-link"
       },
       {
         "id": "nysc-allowance-ha",
@@ -14331,7 +15584,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "nysc-allowance",
+        "imageId": "nysc-allowance",
+        "imageKey": "nysc-allowance"
       },
       {
         "id": "african-meal-plan-ha",
@@ -14343,7 +15599,10 @@
         "lang": "ha",
         "priority": 81,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "african-meal-plan",
+        "imageId": "african-meal-plan",
+        "imageKey": "african-meal-plan"
       },
       {
         "id": "ng-paye-ha",
@@ -14355,7 +15614,10 @@
         "lang": "ha",
         "priority": 100,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-paye",
+        "imageId": "ng-paye",
+        "imageKey": "ng-paye"
       },
       {
         "id": "receipt-generator-ha",
@@ -14367,7 +15629,9 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "receipt-generator",
+        "imageKey": "receipt-generator"
       },
       {
         "id": "school-fees-ha",
@@ -14379,7 +15643,10 @@
         "lang": "ha",
         "priority": 80,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "school-fees",
+        "imageId": "school-fees",
+        "imageKey": "school-fees"
       },
       {
         "id": "health-ha",
@@ -14391,7 +15658,9 @@
         "lang": "ha",
         "priority": 89,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "agriculture-ha",
@@ -14403,7 +15672,9 @@
         "lang": "ha",
         "priority": 88,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "crop-yield-nigeria",
+        "imageKey": "crop-yield-nigeria"
       },
       {
         "id": "hospital-cost-ha",
@@ -14415,7 +15686,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "hospital-cost",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "education-ha",
@@ -14427,7 +15701,9 @@
         "lang": "ha",
         "priority": 91,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "education-hub",
+        "imageKey": "education-hub"
       },
       {
         "id": "telecom-ha",
@@ -14439,7 +15715,9 @@
         "lang": "ha",
         "priority": 88,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "telecom-ussd",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "language-ha",
@@ -14451,7 +15729,9 @@
         "lang": "ha",
         "priority": 86,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "hausa-translator",
+        "imageKey": "hausa-translator"
       },
       {
         "id": "cv-builder-ha",
@@ -14463,7 +15743,10 @@
         "lang": "ha",
         "priority": 83,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cv-builder",
+        "imageId": "cv-builder",
+        "imageKey": "cv-builder"
       },
       {
         "id": "commodity-prices-ha",
@@ -14475,7 +15758,10 @@
         "lang": "ha",
         "priority": 82,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "commodity-prices",
+        "imageId": "commodity-prices",
+        "imageKey": "commodity-prices"
       },
       {
         "id": "gpa-calculator-ha",
@@ -14487,7 +15773,10 @@
         "lang": "ha",
         "priority": 82,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "gpa-calculator",
+        "imageId": "gpa-calculator",
+        "imageKey": "gpa-calculator"
       },
       {
         "id": "naira-to-words-ha",
@@ -14499,7 +15788,9 @@
         "lang": "ha",
         "priority": 75,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "naira-to-words",
+        "imageKey": "naira-to-words"
       },
       {
         "id": "hausa-translator-ha",
@@ -14511,7 +15802,10 @@
         "lang": "ha",
         "priority": 84,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "hausa-translator",
+        "imageId": "hausa-translator",
+        "imageKey": "hausa-translator"
       },
       {
         "id": "irrigation-nigeria-ha",
@@ -14523,7 +15817,10 @@
         "lang": "ha",
         "priority": 81,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "irrigation-nigeria",
+        "imageId": "irrigation-nigeria",
+        "imageKey": "irrigation-nigeria"
       },
       {
         "id": "cover-letter-ha",
@@ -14535,7 +15832,10 @@
         "lang": "ha",
         "priority": 81,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cover-letter",
+        "imageId": "cover-letter",
+        "imageKey": "cover-letter"
       }
     ],
     "yo": [
@@ -14549,7 +15849,10 @@
         "lang": "yo",
         "priority": 97,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "invoice-generator",
+        "imageId": "invoice-generator",
+        "imageKey": "invoice-generator"
       },
       {
         "id": "vat-calculator-yo",
@@ -14561,7 +15864,10 @@
         "lang": "yo",
         "priority": 93,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "vat-calc-pan-african",
+        "imageId": "vat-calc-pan-african",
+        "imageKey": "vat-calc-pan-african"
       },
       {
         "id": "telecom-ussd-yo",
@@ -14573,7 +15879,10 @@
         "lang": "yo",
         "priority": 92,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-ussd",
+        "imageId": "telecom-ussd",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "genotype-checker-yo",
@@ -14585,7 +15894,10 @@
         "lang": "yo",
         "priority": 87,
         "estTraffic": 15000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "genotype-checker",
+        "imageId": "genotype-checker",
+        "imageKey": "genotype-checker"
       },
       {
         "id": "farm-profit-nigeria-yo",
@@ -14597,7 +15909,10 @@
         "lang": "yo",
         "priority": 87,
         "estTraffic": 14000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "farm-profit-calculator",
+        "imageId": "farm-profit-calculator",
+        "imageKey": "farm-profit-calculator"
       },
       {
         "id": "waec-neco-calculator-yo",
@@ -14609,7 +15924,10 @@
         "lang": "yo",
         "priority": 88,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "waec-calculator",
+        "imageId": "waec-calculator",
+        "imageKey": "waec-calculator"
       },
       {
         "id": "crop-yield-nigeria-yo",
@@ -14621,7 +15939,10 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-estimator",
+        "imageId": "crop-yield-nigeria",
+        "imageKey": "crop-yield-nigeria"
       },
       {
         "id": "jamb-aggregate-yo",
@@ -14633,7 +15954,10 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 12000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "jamb-aggregate",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       },
       {
         "id": "sickle-cell-yo",
@@ -14645,7 +15969,10 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 11000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "sickle-cell",
+        "imageId": "sickle-cell",
+        "imageKey": "sickle-cell"
       },
       {
         "id": "fertilizer-nigeria-yo",
@@ -14657,7 +15984,10 @@
         "lang": "yo",
         "priority": 85,
         "estTraffic": 11000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-calculator",
+        "imageId": "fertilizer-nigeria",
+        "imageKey": "fertilizer-nigeria"
       },
       {
         "id": "cassava-processing-nigeria-yo",
@@ -14669,7 +15999,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cassava-processing-calculator",
+        "imageId": "cassava-processing-nigeria",
+        "imageKey": "cassava-processing-nigeria"
       },
       {
         "id": "staple-basket-yo",
@@ -14681,7 +16014,10 @@
         "lang": "yo",
         "priority": 83,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "staple-basket",
+        "imageId": "staple-basket",
+        "imageKey": "staple-basket"
       },
       {
         "id": "whatsapp-link-yo",
@@ -14693,7 +16029,10 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 10000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "whatsapp-link",
+        "imageId": "whatsapp-link",
+        "imageKey": "whatsapp-link"
       },
       {
         "id": "pdf-merge-split-yo",
@@ -14705,7 +16044,10 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-merge-split",
+        "imageId": "pdf-merge-split",
+        "imageKey": "pdf-merge-split"
       },
       {
         "id": "pdf-compress-yo",
@@ -14717,7 +16059,10 @@
         "lang": "yo",
         "priority": 85,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-compress",
+        "imageId": "pdf-compress",
+        "imageKey": "pdf-compress"
       },
       {
         "id": "bmi-calculator-yo",
@@ -14729,7 +16074,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "bmi-calculator",
+        "imageId": "bmi-calculator",
+        "imageKey": "bmi-calculator"
       },
       {
         "id": "farm-budget-yo",
@@ -14741,7 +16089,10 @@
         "lang": "yo",
         "priority": 83,
         "estTraffic": 9000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "farm-budget",
+        "imageId": "farm-budget",
+        "imageKey": "farm-budget"
       },
       {
         "id": "ng-paye-yo",
@@ -14753,7 +16104,10 @@
         "lang": "yo",
         "priority": 101,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-paye",
+        "imageId": "ng-paye",
+        "imageKey": "ng-paye"
       },
       {
         "id": "receipt-generator-yo",
@@ -14765,7 +16119,10 @@
         "lang": "yo",
         "priority": 87,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "receipt-generator",
+        "imageId": "receipt-generator",
+        "imageKey": "receipt-generator"
       },
       {
         "id": "pdf-reorder-yo",
@@ -14777,7 +16134,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 8000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-reorder",
+        "imageId": "pdf-reorder",
+        "imageKey": "pdf-reorder"
       },
       {
         "id": "health-yo",
@@ -14789,7 +16149,10 @@
         "lang": "yo",
         "priority": 89,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "health",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "agriculture-yo",
@@ -14801,7 +16164,10 @@
         "lang": "yo",
         "priority": 88,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "agriculture",
+        "imageId": "crop-yield-nigeria",
+        "imageKey": "crop-yield-nigeria"
       },
       {
         "id": "hospital-cost-yo",
@@ -14813,7 +16179,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "hospital-cost",
+        "imageId": "hospital-cost",
+        "imageKey": "hospital-cost"
       },
       {
         "id": "nysc-allowance-yo",
@@ -14825,7 +16194,10 @@
         "lang": "yo",
         "priority": 82,
         "estTraffic": 7000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "nysc-allowance",
+        "imageId": "nysc-allowance",
+        "imageKey": "nysc-allowance"
       },
       {
         "id": "telecom-yo",
@@ -14837,7 +16209,10 @@
         "lang": "yo",
         "priority": 88,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom",
+        "imageId": "telecom-ussd",
+        "imageKey": "telecom-ussd"
       },
       {
         "id": "language-translation-yo",
@@ -14849,7 +16224,9 @@
         "lang": "yo",
         "priority": 86,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "yoruba-translator",
+        "imageKey": "yoruba-translator"
       },
       {
         "id": "yoruba-translator-yo",
@@ -14861,7 +16238,10 @@
         "lang": "yo",
         "priority": 85,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "yoruba-translator",
+        "imageId": "yoruba-translator",
+        "imageKey": "yoruba-translator"
       },
       {
         "id": "commodity-prices-yo",
@@ -14873,7 +16253,10 @@
         "lang": "yo",
         "priority": 82,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "commodity-prices",
+        "imageId": "commodity-prices",
+        "imageKey": "commodity-prices"
       },
       {
         "id": "naira-to-words-yo",
@@ -14885,7 +16268,10 @@
         "lang": "yo",
         "priority": 76,
         "estTraffic": 6000,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "naira-to-words",
+        "imageId": "naira-to-words",
+        "imageKey": "naira-to-words"
       },
       {
         "id": "education-yo",
@@ -14897,7 +16283,9 @@
         "lang": "yo",
         "priority": 90,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "education-hub",
+        "imageKey": "education-hub"
       },
       {
         "id": "pdf-workspace-yo",
@@ -14909,7 +16297,10 @@
         "lang": "yo",
         "priority": 84,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-workspace",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "fish-farming-nigeria-yo",
@@ -14921,7 +16312,10 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fish-farming-nigeria",
+        "imageId": "fish-farming-roi",
+        "imageKey": "fish-farming-roi"
       },
       {
         "id": "business-registration-yo",
@@ -14933,7 +16327,10 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "business-registration",
+        "imageId": "business-registration",
+        "imageKey": "business-registration"
       },
       {
         "id": "telecom-data-usage-yo",
@@ -14945,7 +16342,10 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "telecom-data-usage",
+        "imageId": "telecom-data-usage",
+        "imageKey": "telecom-data-usage"
       },
       {
         "id": "livestock-feed-nigeria-yo",
@@ -14957,7 +16357,9 @@
         "lang": "yo",
         "priority": 80,
         "estTraffic": 5000,
-        "imageExt": ""
+        "imageExt": "",
+        "sourceId": "livestock-feed-nigeria",
+        "imageId": "livestock-feed-calculator"
       },
       {
         "id": "ng-cit-yo",
@@ -14969,7 +16371,10 @@
         "lang": "yo",
         "priority": 83,
         "estTraffic": 4000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ng-cit",
+        "imageId": "ng-cit",
+        "imageKey": "ng-cit"
       }
     ],
     "fr": [
@@ -14983,7 +16388,9 @@
         "lang": "fr",
         "priority": 95,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-merge-split",
+        "imageKey": "pdf-merge-split"
       },
       {
         "id": "pdf-compress-fr",
@@ -14995,7 +16402,9 @@
         "lang": "fr",
         "priority": 94,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-compress",
+        "imageKey": "pdf-compress"
       },
       {
         "id": "pdf-convert-fr",
@@ -15007,7 +16416,9 @@
         "lang": "fr",
         "priority": 94,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-convert",
+        "imageKey": "pdf-convert"
       },
       {
         "id": "pdf-chat-fr",
@@ -15019,7 +16430,9 @@
         "lang": "fr",
         "priority": 93,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-chat",
+        "imageKey": "pdf-chat"
       },
       {
         "id": "document-pdf-fr",
@@ -15043,7 +16456,9 @@
         "lang": "fr",
         "priority": 90,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "imageId": "pdf-image-convert",
+        "imageKey": "pdf-image-convert"
       },
       {
         "id": "pdf-sign-fr",
@@ -15055,7 +16470,9 @@
         "lang": "fr",
         "priority": 90,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-sign",
+        "imageKey": "pdf-sign"
       },
       {
         "id": "pdf-translate-fr",
@@ -15067,7 +16484,9 @@
         "lang": "fr",
         "priority": 90,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-translate",
+        "imageKey": "pdf-translate"
       },
       {
         "id": "pdf-compare-fr",
@@ -15079,7 +16498,9 @@
         "lang": "fr",
         "priority": 88,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-compare",
+        "imageKey": "pdf-compare"
       },
       {
         "id": "pdf-watermark-fr",
@@ -15091,7 +16512,9 @@
         "lang": "fr",
         "priority": 88,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-watermark",
+        "imageKey": "pdf-watermark"
       },
       {
         "id": "pdf-reorder-fr",
@@ -15103,7 +16526,9 @@
         "lang": "fr",
         "priority": 88,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-reorder",
+        "imageKey": "pdf-reorder"
       },
       {
         "id": "pdf-form-filler-fr",
@@ -15115,7 +16540,9 @@
         "lang": "fr",
         "priority": 87,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-form-filler",
+        "imageKey": "pdf-form-filler"
       },
       {
         "id": "pdf-ocr-fr",
@@ -15127,7 +16554,23 @@
         "lang": "fr",
         "priority": 85,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-ocr",
+        "imageKey": "pdf-ocr"
+      },
+      {
+        "id": "ng-paye-route-fr",
+        "name": "Calculateur PAYE Nigeria",
+        "icon": "NG",
+        "desc": "Page française du calculateur PAYE Nigeria avec ...",
+        "href": "/fr/nigeria/ng-salary-tax",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 84,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "ng-paye",
+        "imageKey": "ng-paye"
       },
       {
         "id": "html-to-pdf-fr",
@@ -15139,7 +16582,9 @@
         "lang": "fr",
         "priority": 84,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "html-to-pdf",
+        "imageKey": "html-to-pdf"
       },
       {
         "id": "pdf-to-audio-fr",
@@ -15151,7 +16596,9 @@
         "lang": "fr",
         "priority": 84,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-to-audio",
+        "imageKey": "pdf-to-audio"
       },
       {
         "id": "ma-paye-fr",
@@ -15163,7 +16610,8 @@
         "lang": "fr",
         "priority": 83,
         "estTraffic": 0,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ma-paye-fr"
       },
       {
         "id": "pdf-redact-fr",
@@ -15175,7 +16623,9 @@
         "lang": "fr",
         "priority": 83,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-redact",
+        "imageKey": "pdf-redact"
       },
       {
         "id": "pdf-protect-fr",
@@ -15187,7 +16637,23 @@
         "lang": "fr",
         "priority": 83,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-password",
+        "imageKey": "pdf-password"
+      },
+      {
+        "id": "ke-paye-fr",
+        "name": "Calculateur PAYE Kenya",
+        "icon": "KE",
+        "desc": "Page française du calculateur PAYE Kenya avec KR...",
+        "href": "/fr/kenya/ke-paye",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 82,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "ke-paye",
+        "imageKey": "ke-paye"
       },
       {
         "id": "pdf-page-numbers-fr",
@@ -15199,7 +16665,9 @@
         "lang": "fr",
         "priority": 82,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-page-numbers",
+        "imageKey": "pdf-page-numbers"
       },
       {
         "id": "pdf-repair-fr",
@@ -15211,7 +16679,36 @@
         "lang": "fr",
         "priority": 82,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "pdf-repair"
+      },
+      {
+        "id": "za-paye-fr",
+        "name": "Calculateur PAYE Afrique du Sud",
+        "icon": "ZA",
+        "desc": "Page française du calculateur PAYE Afrique du Su...",
+        "href": "/fr/south-africa/za-paye",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 81,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "za-paye",
+        "imageKey": "za-paye"
+      },
+      {
+        "id": "gh-paye-fr",
+        "name": "Calculateur PAYE Ghana",
+        "icon": "GH",
+        "desc": "Page française du calculateur PAYE Ghana avec tr...",
+        "href": "/fr/ghana/gh-paye",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 81,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "gh-paye",
+        "imageKey": "gh-paye"
       },
       {
         "id": "pdf-header-footer-fr",
@@ -15223,7 +16720,9 @@
         "lang": "fr",
         "priority": 81,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-header-footer",
+        "imageKey": "pdf-header-footer"
       },
       {
         "id": "dz-paye-fr",
@@ -15259,7 +16758,22 @@
         "lang": "fr",
         "priority": 78,
         "estTraffic": 0,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "ci-paye-fr"
+      },
+      {
+        "id": "ng-tva-fr",
+        "name": "Calculateur TVA Nigeria",
+        "icon": "NG",
+        "desc": "Page française du calculateur TVA Nigeria pour H...",
+        "href": "/fr/nigeria/ng-vat",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 78,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "ng-vat",
+        "imageKey": "ng-vat"
       },
       {
         "id": "pdf-bates-fr",
@@ -15271,7 +16785,8 @@
         "lang": "fr",
         "priority": 78,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "",
+        "imageId": "pdf-bates"
       },
       {
         "id": "tn-paye-fr",
@@ -15295,7 +16810,9 @@
         "lang": "fr",
         "priority": 77,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-compare",
+        "imageKey": "pdf-compare"
       },
       {
         "id": "cm-paye-fr",
@@ -15307,7 +16824,8 @@
         "lang": "fr",
         "priority": 76,
         "estTraffic": 0,
-        "imageExt": "webp"
+        "imageExt": "webp",
+        "imageKey": "cm-paye-fr"
       },
       {
         "id": "generateur-factures-fr",
@@ -15319,7 +16837,9 @@
         "lang": "fr",
         "priority": 76,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "invoice-generator",
+        "imageKey": "invoice-generator"
       },
       {
         "id": "car-price-intelligence-fr",
@@ -15331,7 +16851,9 @@
         "lang": "fr",
         "priority": 76,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "car-price-intelligence",
+        "imageKey": "car-price-intelligence"
       },
       {
         "id": "sn-paye-fr",
@@ -15343,67 +16865,8 @@
         "lang": "fr",
         "priority": 75,
         "estTraffic": 0,
-        "imageExt": "webp"
-      },
-      {
-        "id": "convertisseur-devises-fr",
-        "name": "Convertisseur de devises africaines",
-        "icon": "💱",
-        "desc": "Convertisseur de devises déjà publié en français.",
-        "href": "/fr/tools/convertisseur-devises",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 75,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "ma-tva-fr",
-        "name": "Calculateur TVA — Maroc",
-        "icon": "🇲🇦",
-        "desc": "Route française canonique pour la TVA marocaine ...",
-        "href": "/fr/maroc/calculateur-tva",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 74,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "frais-mobile-money-fr",
-        "name": "Frais Mobile Money",
-        "icon": "📱",
-        "desc": "Comparez les frais M-Pesa, MTN MoMo, Airtel Mone...",
-        "href": "/fr/tools/frais-mobile-money",
-        "category": "african",
-        "lang": "fr",
-        "priority": 74,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "transfert-argent-fr",
-        "name": "Comparateur de transferts d'argent",
-        "icon": "💸",
-        "desc": "Comparez les coûts de transfert et les corridors...",
-        "href": "/fr/tools/transfert-argent",
-        "category": "african",
-        "lang": "fr",
-        "priority": 73,
-        "estTraffic": 0,
-        "imageExt": ""
-      },
-      {
-        "id": "salary-tax-fr",
-        "name": "Salaire et fiscalité Afrique",
-        "icon": "💶",
-        "desc": "Hub français salaire, PAYE, cotisations et fisca...",
-        "href": "/fr/salary-tax",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 73,
-        "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "sn-paye-fr"
       }
     ],
     "sw": [

@@ -23,20 +23,46 @@ vm.createContext(context);
 vm.runInContext(registrySource, context, { filename: 'tool-registry.js' });
 
 const allTools = Array.isArray(context.AFRO_TOOLS) ? context.AFRO_TOOLS : [];
+const imageExtensions = context.TOOL_CARD_IMAGE_EXTENSIONS || {};
+
+function cleanImageKey(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function resolveToolImage(tool) {
+  const candidates = [
+    cleanImageKey(tool.imageId),
+    cleanImageKey(tool.sourceId),
+    cleanImageKey(tool.id),
+  ].filter(Boolean);
+  const imageKey = candidates.find((candidate) => imageExtensions[candidate]) || '';
+  return {
+    imageKey,
+    imageExt: imageKey ? imageExtensions[imageKey] : '',
+  };
+}
+
 const liveTools = allTools
   .filter((tool) => tool && typeof tool === 'object' && typeof tool.id === 'string' && tool.status === 'live')
-  .map((tool) => ({
-    id: tool.id,
-    name: tool.name,
-    icon: tool.icon || '',
-    desc: (tool.desc || '').length > 50 ? `${tool.desc.slice(0, 48)}...` : (tool.desc || ''),
-    href: tool.href || '#',
-    category: tool.category || '',
-    lang: tool.lang || 'en',
-    priority: tool.priority || 0,
-    estTraffic: tool.estTraffic || 0,
-    imageExt: (context.TOOL_CARD_IMAGE_EXTENSIONS && context.TOOL_CARD_IMAGE_EXTENSIONS[tool.id]) || '',
-  }));
+  .map((tool) => {
+    const image = resolveToolImage(tool);
+    const item = {
+      id: tool.id,
+      name: tool.name,
+      icon: tool.icon || '',
+      desc: (tool.desc || '').length > 50 ? `${tool.desc.slice(0, 48)}...` : (tool.desc || ''),
+      href: tool.href || '#',
+      category: tool.category || '',
+      lang: tool.lang || 'en',
+      priority: tool.priority || 0,
+      estTraffic: tool.estTraffic || 0,
+      imageExt: image.imageExt,
+    };
+    if (tool.sourceId) item.sourceId = tool.sourceId;
+    if (tool.imageId) item.imageId = tool.imageId;
+    if (image.imageKey) item.imageKey = image.imageKey;
+    return item;
+  });
 
 const sortByPriority = (a, b) => (b.priority - a.priority) || (b.estTraffic - a.estTraffic) || a.name.localeCompare(b.name);
 const sortByTraffic = (a, b) => (b.estTraffic - a.estTraffic) || (b.priority - a.priority) || a.name.localeCompare(b.name);
