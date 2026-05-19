@@ -71,7 +71,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/contract-generator/app">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/contract-generator/app" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/contract-generator/app" />
@@ -231,9 +231,9 @@ function renderForm() {
     html += '<div class="field"><label>'+f.label+'</label>';
     if (f.tip) html += '<div class="tip">'+f.tip+'</div>';
     if (f.type === 'textarea') {
-      html += '<textarea id="f_'+f.id+'" oninput="DATA[\''+f.id+'\']=this.value">'+esc(val)+'</textarea>';
+      html += '<textarea id="f_'+f.id+'" oninput="DATA[\''+f.id+'\']=this.value" aria-label="F">'+esc(val)+'</textarea>';
     } else if (f.type === 'select') {
-      html += '<select id="f_'+f.id+'" onchange="DATA[\''+f.id+'\']=this.value">';
+      html += '<select id="f_'+f.id+'" onchange="DATA[\''+f.id+'\']=this.value" aria-label="F">';
       (f.options||[]).forEach(function(o){html += '<option'+(val===o?' selected':'')+'>'+o+'</option>';});
       html += '</select>';
     } else if (f.type === 'date') {

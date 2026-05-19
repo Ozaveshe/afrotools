@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
   <link rel="stylesheet" href="style.css?v=6e6398a3">
   <style>
     .cml-loading-status{display:none;align-items:center;gap:10px;padding:12px 16px;margin-top:8px;background:linear-gradient(135deg,#f0f4ff 0%,#e8f2ff 100%);border:1px solid #c7d8f4;border-radius:10px;font-size:.85rem;color:#0A1628;}
@@ -26,7 +26,7 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-mail/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-mail/app">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-mail/app" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-mail/app" />
@@ -85,7 +85,7 @@
         </div>
         <div class="cml-global-row">
           <span class="cml-global-label">Font</span>
-          <select class="cml-global-select" id="globalFont">
+          <select class="cml-global-select" id="globalFont" aria-label="Global Font">
             <option value="Arial, sans-serif">Arial</option>
             <option value="Georgia, serif">Georgia</option>
             <option value="Verdana, sans-serif">Verdana</option>
@@ -668,7 +668,7 @@
         html += '<button type="button" class="cml-format-btn" data-cmd="link">&#128279;</button>';
         html += '<button type="button" class="cml-format-btn" data-cmd="ul">&#8226; List</button>';
         html += '</div>';
-        html += '<textarea class="cml-setting-input" id="settHtml" rows="8" style="min-height:120px;resize:vertical;">' + escHtml(d.html || '') + '</textarea></div>';
+        html += '<textarea class="cml-setting-input" id="settHtml" rows="8" style="min-height:120px;resize:vertical;" aria-label="Sett Html">' + escHtml(d.html || '') + '</textarea></div>';
         html += settingColor('Text Color', 'settTextColor', d.textColor || '');
         html += aiWriteButton();
         break;
@@ -683,7 +683,7 @@
         html += settingColor('Text Color', 'settBtnTextColor', d.textColor || '#ffffff');
         break;
       case 'quote':
-        html += '<div class="cml-setting-group"><label class="cml-setting-label">Quote Text</label><textarea class="cml-setting-input" id="settText" rows="4">' + escHtml(d.text || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label" for="settText">Quote Text</label><textarea class="cml-setting-input" id="settText" rows="4">' + escHtml(d.text || '') + '</textarea></div>';
         html += aiWriteButton();
         break;
       case 'social':
@@ -693,13 +693,13 @@
         html += settingInput('YouTube', 'settYoutube', (d.youtube || ''), 'url');
         break;
       case 'two-col':
-        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 1</label><textarea class="cml-setting-input" id="settCol1" rows="4">' + escHtml(d.col1 || '') + '</textarea></div>';
-        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 2</label><textarea class="cml-setting-input" id="settCol2" rows="4">' + escHtml(d.col2 || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 1</label><textarea class="cml-setting-input" id="settCol1" rows="4" aria-label="Sett Col1">' + escHtml(d.col1 || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 2</label><textarea class="cml-setting-input" id="settCol2" rows="4" aria-label="Sett Col2">' + escHtml(d.col2 || '') + '</textarea></div>';
         break;
       case 'three-col':
-        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 1</label><textarea class="cml-setting-input" id="settCol1" rows="3">' + escHtml(d.col1 || '') + '</textarea></div>';
-        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 2</label><textarea class="cml-setting-input" id="settCol2" rows="3">' + escHtml(d.col2 || '') + '</textarea></div>';
-        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 3</label><textarea class="cml-setting-input" id="settCol3" rows="3">' + escHtml(d.col3 || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 1</label><textarea class="cml-setting-input" id="settCol1" rows="3" aria-label="Sett Col1">' + escHtml(d.col1 || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 2</label><textarea class="cml-setting-input" id="settCol2" rows="3" aria-label="Sett Col2">' + escHtml(d.col2 || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 3</label><textarea class="cml-setting-input" id="settCol3" rows="3" aria-label="Sett Col3">' + escHtml(d.col3 || '') + '</textarea></div>';
         break;
       case 'video':
         html += settingInput('Video URL', 'settUrl', d.url || '', 'url');
@@ -709,7 +709,7 @@
         html += settingInput('Label', 'settLabel', d.label || '', 'text');
         break;
       case 'footer':
-        html += '<div class="cml-setting-group"><label class="cml-setting-label">Footer HTML</label><textarea class="cml-setting-input" id="settHtml" rows="4">' + escHtml(d.html || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Footer HTML</label><textarea class="cml-setting-input" id="settHtml" rows="4" aria-label="Sett Html">' + escHtml(d.html || '') + '</textarea></div>';
         break;
     }
 
@@ -735,7 +735,7 @@
   }
 
   function settingSelect(label, id, value, options) {
-    var html = '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><select class="cml-setting-select" id="' + id + '">';
+    var html = '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><select class="cml-setting-select" id="' + id + '" aria-label="Select option">';
     options.forEach(function(o) {
       html += '<option value="' + o[0] + '"' + (o[0] === value ? ' selected' : '') + '>' + o[1] + '</option>';
     });

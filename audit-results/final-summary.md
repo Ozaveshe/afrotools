@@ -1,6 +1,6 @@
 # AfroTools Comprehensive Audit Summary
 
-Generated: 2026-05-18T18:30:04.924Z
+Generated: 2026-05-19T08:11:44.167Z
 
 ## Crawl Totals
 
@@ -11,10 +11,10 @@ Generated: 2026-05-18T18:30:04.924Z
 - Broken pages: 0
 - Broken internal links: 0
 - Broken images: 0
-- Metadata issues: 3356
-- Accessibility issues: 2632
+- Metadata issues: 3355
+- Accessibility issues: 0
 - Dark-mode risks: 456
-- Copy-quality issues: 137
+- Copy-quality issues: 135
 - Mobile issues: 988
 - Render risks: 0
 
@@ -22,9 +22,8 @@ Generated: 2026-05-18T18:30:04.924Z
 
 | Issue | Count |
 | --- | ---: |
-| input_label | 2604 |
 | hard_wide_css | 986 |
-| description_length | 937 |
+| description_length | 936 |
 | missing_h1 | 666 |
 | title_length | 531 |
 | missing_og_description | 343 |
@@ -37,46 +36,46 @@ Generated: 2026-05-18T18:30:04.924Z
 | missing_og_title | 91 |
 | multiple_h1 | 85 |
 | placeholder_copy | 76 |
-| jargon_copy | 38 |
-| button_name | 25 |
+| jargon_copy | 36 |
 | mojibake_signal | 23 |
 | 100vw_overflow_risk | 2 |
-| iframe_title | 2 |
+| missing_canonical | 2 |
+| invalid_json_ld | 1 |
 
 ## Highest-Signal Pages
 
 | Route | Metadata | A11y | Dark | Copy | Mobile | Broken links |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `/tools/japa-calculator/` | 0 | 23 | 0 | 0 | 0 | 0 |
-| `/tools/property-tax/` | 1 | 20 | 0 | 0 | 1 | 0 |
-| `/tools/business-plan-builder/` | 1 | 18 | 0 | 0 | 1 | 0 |
-| `/tools/ng-nhf/` | 1 | 17 | 0 | 0 | 1 | 0 |
-| `/tools/side-hustle-ranker/` | 1 | 17 | 0 | 0 | 0 | 0 |
-| `/tools/creator-kit/app` | 0 | 17 | 0 | 0 | 0 | 0 |
-| `/tools/creator-team/app` | 1 | 16 | 0 | 0 | 0 | 0 |
-| `/tools/creator-club/app` | 2 | 14 | 0 | 0 | 0 | 0 |
-| `/tools/rental-agreement/` | 1 | 14 | 0 | 0 | 1 | 0 |
-| `/tools/afrostream/admin` | 2 | 13 | 0 | 0 | 0 | 0 |
-| `/pro/apps/books/` | 0 | 13 | 0 | 0 | 1 | 0 |
-| `/tools/personal-brand-audit/` | 0 | 14 | 0 | 0 | 0 | 0 |
-| `/tools/scholarship-finder/` | 0 | 13 | 0 | 0 | 1 | 0 |
-| `/sw/zana/kikokotoo-mfuko-wa-nyumba/` | 0 | 12 | 0 | 0 | 1 | 0 |
-| `/tools/creator-course/app` | 2 | 11 | 0 | 0 | 0 | 0 |
-| `/tools/malaria-risk/` | 0 | 13 | 0 | 0 | 0 | 0 |
-| `/tools/proforma-invoice/` | 0 | 12 | 0 | 0 | 1 | 0 |
-| `/fr/tools/calculateur-japa/` | 0 | 11 | 1 | 0 | 0 | 0 |
-| `/tools/afrostream/community` | 2 | 10 | 0 | 0 | 0 | 0 |
-| `/tools/creator-mail/app` | 2 | 10 | 0 | 0 | 0 | 0 |
-| `/tools/debt-snowball/` | 0 | 12 | 0 | 0 | 0 | 0 |
-| `/tools/employment-contract/` | 2 | 9 | 0 | 0 | 1 | 0 |
-| `/tools/event-decoration-cost/` | 4 | 8 | 0 | 0 | 0 | 0 |
-| `/tools/passport-photo/` | 2 | 10 | 0 | 0 | 0 | 0 |
-| `/tools/rent-affordability/` | 2 | 9 | 0 | 0 | 1 | 0 |
-| `/tools/side-hustle-tax/` | 1 | 10 | 0 | 0 | 1 | 0 |
-| `/tools/tenancy-agreement/` | 2 | 9 | 0 | 0 | 1 | 0 |
-| `/tools/art-commission/` | 4 | 7 | 0 | 0 | 0 | 0 |
-| `/tools/building-materials/` | 2 | 9 | 0 | 0 | 0 | 0 |
-| `/tools/diabetes-risk/` | 0 | 10 | 0 | 0 | 1 | 0 |
+| `/sw/botswana/` | 4 | 0 | 2 | 1 | 0 | 0 |
+| `/sw/eswatini/` | 4 | 0 | 2 | 1 | 0 | 0 |
+| `/sw/lesotho/` | 4 | 0 | 2 | 1 | 0 | 0 |
+| `/sw/mozambique/` | 4 | 0 | 2 | 1 | 0 | 0 |
+| `/sw/namibia/` | 4 | 0 | 2 | 1 | 0 | 0 |
+| `/sw/tools/` | 4 | 0 | 2 | 0 | 1 | 0 |
+| `/sw/zimbabwe/` | 4 | 0 | 2 | 1 | 0 | 0 |
+| `/sw/algeria/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/angola/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/burundi/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/cameroon/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/cote-divoire/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/kenya/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/libya/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/malawi/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/mali/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/rwanda/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/senegal/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/tanzania/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/tunisia/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/uganda/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/sw/zambia/` | 4 | 0 | 2 | 0 | 0 | 0 |
+| `/tools/doc-generator/generate` | 5 | 0 | 0 | 0 | 1 | 0 |
+| `/jobs/salary-benchmarks/` | 5 | 0 | 0 | 0 | 0 | 0 |
+| `/start/` | 4 | 0 | 0 | 0 | 1 | 0 |
+| `/tools/afropayroll-os/flow` | 4 | 0 | 0 | 0 | 1 | 0 |
+| `/tools/car-import-cost/ghana/` | 5 | 0 | 0 | 0 | 0 | 0 |
+| `/tools/car-import-cost/uganda/` | 5 | 0 | 0 | 0 | 0 | 0 |
+| `/tools/car-import-cost/zambia/` | 5 | 0 | 0 | 0 | 0 | 0 |
+| `/tools/compliance-calendar/calendar` | 4 | 0 | 0 | 0 | 1 | 0 |
 
 ## Notes
 

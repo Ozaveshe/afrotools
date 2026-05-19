@@ -4,11 +4,12 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
-const EXCLUDED_DIRS = new Set([".git", ".netlify", ".cache", "dist", "node_modules"]);
+const EXCLUDED_DIRS = new Set([".git", ".netlify", ".cache", "audit-results", "dist", "node_modules", "playwright-report", "test-results"]);
 const TARGET_RE = /(^|[\\/])(?:fr[\\/])?[^\\/]+[\\/](?:[a-z]{2}-(?:paye|vat)|ng-salary-tax)\.html$/i;
 const REDIRECT_STATUS_RE = /^(?:301|302|307|308|410)!?$/;
 
 function walk(start, out = []) {
+  if (!fs.existsSync(start)) return out;
   for (const entry of fs.readdirSync(start, { withFileTypes: true })) {
     if (EXCLUDED_DIRS.has(entry.name)) continue;
     const fullPath = path.join(start, entry.name);

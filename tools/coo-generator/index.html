@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Certificate of Origin Generator for Africa — AfCFTA, ECOWAS, EAC, SADC | AfroTools</title>
 <meta name="description" content="Generate Certificates of Origin for African exports. AfCFTA, ECOWAS, EAC, SADC and standard COO templates. Check if your product qualifies for preferential tariff treatment.">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
 <style>
 :root{--coo-blue:#007AFF;--coo-dark:#0A1628;--coo-green:#00A651;}
@@ -88,6 +88,7 @@
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/coo-generator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-certificat-origine/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/cheti-asili/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/coo-generator/" />
 </head>
 <body>
@@ -124,7 +125,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
         <div>
           <div class="f-label">Exporter Country</div>
-          <select id="exporterCountry" class="f-select" onchange="updateApplicable()">
+          <select id="exporterCountry" class="f-select" onchange="updateApplicable()" aria-label="Exporter Country">
             <option value="">— Any —</option>
             <option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option>
             <option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option>
@@ -136,7 +137,7 @@
         </div>
         <div>
           <div class="f-label">Importer Country</div>
-          <select id="importerCountry" class="f-select" onchange="updateApplicable()">
+          <select id="importerCountry" class="f-select" onchange="updateApplicable()" aria-label="Importer Country">
             <option value="">— Any —</option>
             <option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option>
             <option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option>
@@ -270,7 +271,7 @@ function buildForm(templateId) {
       var label = CooEngine.getFieldLabel(fid);
       var isTextarea = fid === 'goods_description' || fid === 'direct_consignment_declaration';
       html += '<div><div class="f-label">' + label + '</div>';
-      if (isTextarea) html += '<textarea class="f-textarea" id="ff_' + fid + '" placeholder="' + label + '">' + (formValues[fid] || '') + '</textarea>';
+      if (isTextarea) html += '<textarea class="f-textarea" id="ff_' + fid + '" placeholder="' + label + '" aria-label="Ff">' + (formValues[fid] || '') + '</textarea>';
       else html += '<input aria-label="' + label + '" type="text" class="f-input" id="ff_' + fid + '" value="' + (formValues[fid] || '') + '" placeholder="' + label + '">';
       html += '</div>';
     }
@@ -278,7 +279,7 @@ function buildForm(templateId) {
   }
   // AfCFTA origin criteria dropdown
   if (templateId === 'afcfta') {
-    html += '<div><div class="f-label">Origin Criteria</div><select class="f-select" id="ff_origin_criteria">' +
+    html += '<div><div class="f-label">Origin Criteria</div><select class="f-select" id="ff_origin_criteria" aria-label="Ff Origin Criteria">' +
       '<option value="WO">WO — Wholly Obtained</option>' +
       '<option value="CTH">CTH — Change in Tariff Heading</option>' +
       '<option value="VA">VA — Value Added (40%)</option>' +

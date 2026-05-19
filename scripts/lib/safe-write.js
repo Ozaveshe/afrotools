@@ -16,7 +16,7 @@ function retrySync(action, shouldRetry, maxAttempts) {
     } catch (error) {
       lastError = error;
       if (!shouldRetry(error) || attempt === maxAttempts - 1) throw error;
-      waitSync(75 * (attempt + 1));
+      waitSync(Math.min(250, 75 * (attempt + 1)));
     }
   }
   throw lastError;
@@ -30,7 +30,7 @@ function writeFileSyncWithRetry(filePath, data, encoding) {
   return retrySync(
     () => fs.writeFileSync(filePath, data, encoding),
     isRetryableWriteError,
-    20
+    80
   );
 }
 
@@ -38,7 +38,7 @@ function renameSyncWithRetry(fromPath, toPath) {
   return retrySync(
     () => fs.renameSync(fromPath, toPath),
     isRetryableWriteError,
-    20
+    80
   );
 }
 

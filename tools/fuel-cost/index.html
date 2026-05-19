@@ -23,9 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
   <meta name="tool-id" content="fuel-cost">
@@ -206,6 +206,7 @@
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fuel-cost/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-carburant/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-mafuta/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fuel-cost/" />
 </head>
 <body>
@@ -234,7 +235,7 @@
   <!-- Trip Mode -->
   <div id="tripMode" class="card">
     <h2>Trip Fuel Cost</h2>
-    <label>Country (auto-fills fuel price)</label>
+    <label for="country">Country (auto-fills fuel price)</label>
     <select id="country" onchange="updateFuelPrice()" style="margin-bottom:1rem;">
       <option value="NG" data-currency="NGN" data-symbol="₦" data-pms="710" data-ago="1050" data-dpk="1100">Nigeria</option>
       <option value="KE" data-currency="KES" data-symbol="KSh" data-pms="217" data-ago="204" data-dpk="195">Kenya</option>
@@ -248,7 +249,7 @@
       <option value="custom" data-currency="" data-symbol="" data-pms="" data-ago="" data-dpk="">Custom</option>
     </select>
 
-    <label>Fuel Type</label>
+    <label for="fuelType">Fuel Type</label>
     <select id="fuelType" onchange="updateFuelPrice()" style="margin-bottom:1rem;">
       <option value="pms">PMS (Petrol/Gasoline)</option>
       <option value="ago">AGO (Diesel)</option>
@@ -262,7 +263,7 @@
       </div>
       <div class="input-group">
         <label>Unit</label>
-        <select id="distUnit">
+        <select id="distUnit" aria-label="Dist Unit">
           <option value="km">Kilometers</option>
           <option value="mi">Miles</option>
         </select>
@@ -276,7 +277,7 @@
       </div>
       <div class="input-group">
         <label>Unit</label>
-        <select id="consUnit">
+        <select id="consUnit" aria-label="Cons Unit">
           <option value="l100">L/100km</option>
           <option value="mpg">MPG (US)</option>
           <option value="kml">km/L</option>
@@ -305,7 +306,7 @@
       <div class="planner-grid">
         <div class="input-group">
           <label>Road / Traffic Condition</label>
-          <select id="routeCondition">
+          <select id="routeCondition" aria-label="Route Condition">
             <option value="highway">Mostly highway</option>
             <option value="mixed" selected>Mixed city and highway</option>
             <option value="traffic">Heavy city traffic</option>
@@ -330,7 +331,7 @@
   <div id="genMode" class="card" style="display:none;">
     <h2>Generator Fuel Cost</h2>
     <label>Country</label>
-    <select id="genCountry" onchange="updateGenPrice()" style="margin-bottom:1rem;">
+    <select id="genCountry" onchange="updateGenPrice()" style="margin-bottom:1rem;" aria-label="Gen Country">
       <option value="NG" data-currency="NGN" data-symbol="₦" data-pms="710" data-ago="1050">Nigeria</option>
       <option value="KE" data-currency="KES" data-symbol="KSh" data-pms="217" data-ago="204">Kenya</option>
       <option value="GH" data-currency="GHS" data-symbol="GH₵" data-pms="15.50" data-ago="15.80">Ghana</option>
@@ -343,7 +344,7 @@
       <option value="custom" data-currency="" data-symbol="" data-pms="" data-ago="">Custom</option>
     </select>
 
-    <label>Fuel Type</label>
+    <label for="genFuelType">Fuel Type</label>
     <select id="genFuelType" onchange="updateGenPrice()" style="margin-bottom:1rem;">
       <option value="pms">PMS (Petrol)</option>
       <option value="ago">AGO (Diesel)</option>

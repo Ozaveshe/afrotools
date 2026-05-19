@@ -5,15 +5,15 @@
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Compliance Calendar App — PAYE Deadlines | AfroTools</title>
-<meta name="description" content="View PAYE, pension, and levy deadlines for African countries. Calendar, timeline, and table views with email alerts.">
+<meta name="description" content="View PAYE, pension, and levy deadlines for African countries. Calendar, timeline, table views, and exportable reminders.">
 <link rel="canonical" href="https://afrotools.com/tools/compliance-calendar/calendar">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/bundles/core.009aa1e7.min.js" defer></script>
@@ -369,13 +369,13 @@ table.ccal-table tr:last-child td{border-bottom:none}
     </div>
   </div>
   <div class="ccal-drawer-actions">
-    <button type="button" class="ccal-btn-sm ccal-btn-orange" id="ccal-add-reminder">🔔 Add Reminder</button>
+    <button type="button" class="ccal-btn-sm ccal-btn-orange" id="ccal-add-reminder">🔔 Reminder Preview</button>
     <a class="ccal-btn-sm" id="ccal-portal-link" href="#" target="_blank" rel="noopener">🌐 Filing Portal ↗</a>
     <button type="button" class="ccal-btn-sm" id="ccal-drawer-close">✕ Close</button>
   </div>
 </div>
 
-<!-- ── Alert Subscription Modal ── -->
+<!-- ── Reminder preview modal ── -->
 <div class="ccal-modal-overlay" id="ccal-alert-modal" role="dialog" aria-modal="true" aria-labelledby="ccal-modal-head">
   <div class="ccal-modal">
     <button type="button" class="ccal-modal-close" id="ccal-modal-close" aria-label="Close">✕</button>
@@ -809,28 +809,24 @@ table.ccal-table tr:last-child td{border-bottom:none}
 
     var mc = document.getElementById('ccal-modal-content');
     mc.innerHTML = [
-      '<div class="ccal-modal-head" id="ccal-modal-head">Set Reminder: ' + esc(ev.name) + '</div>',
-      '<div class="ccal-modal-sub">We\'ll notify you before the <strong>' + esc(ev.name) + '</strong> deadline so you never miss it.</div>',
+      '<div class="ccal-modal-head" id="ccal-modal-head">Reminder Preview: ' + esc(ev.name) + '</div>',
+      '<div class="ccal-modal-sub">Use the iCal export to place reminders in your own calendar. Email and WhatsApp delivery are not active in this public tool.</div>',
 
-      '<div class="ccal-modal-step-label">1. When to notify?</div>',
+      '<div class="ccal-modal-step-label">1. Suggested timing</div>',
       '<div class="ccal-chip-group" id="ccal-timing-chips">',
         '<button type="button" class="ccal-choice-chip selected" data-val="7">1 week before</button>',
         '<button type="button" class="ccal-choice-chip selected" data-val="3">3 days before</button>',
         '<button type="button" class="ccal-choice-chip selected" data-val="1">Day of</button>',
       '</div>',
 
-      '<div class="ccal-modal-step-label">2. How?</div>',
+      '<div class="ccal-modal-step-label">2. Delivery status</div>',
       '<div class="ccal-chip-group" id="ccal-channel-chips">',
-        '<button type="button" class="ccal-choice-chip selected" data-val="email">Email</button>',
-        '<button type="button" class="ccal-choice-chip" data-val="whatsapp">WhatsApp</button>',
+        '<button type="button" class="ccal-choice-chip selected" data-val="calendar">Calendar export supported</button>',
+        '<button type="button" class="ccal-choice-chip" data-val="pending">Notification delivery pending</button>',
       '</div>',
 
-      '<div class="ccal-modal-step-label">3. Your email</div>',
-      '<input aria-label="You@company.com" type="email" class="ccal-modal-input" id="ccal-alert-email" placeholder="you@company.com" autocomplete="email">',
-
       '<div class="ccal-modal-actions">',
-        '<button type="button" class="ccal-btn-sm ccal-btn-orange" id="ccal-alert-submit">🔔 Set Reminder</button>',
-        '<button type="button" class="ccal-btn-sm" id="ccal-alert-cancel">Cancel</button>',
+        '<button type="button" class="ccal-btn-sm ccal-btn-orange" id="ccal-alert-submit">Close Preview</button>',
       '</div>'
     ].join('');
 
@@ -840,36 +836,8 @@ table.ccal-table tr:last-child td{border-bottom:none}
         this.classList.toggle('selected');
       });
     });
-
-    mc.querySelector('#ccal-alert-cancel').addEventListener('click', function () {
-      alertModal.classList.remove('open');
-    });
-
     mc.querySelector('#ccal-alert-submit').addEventListener('click', function () {
-      var email = document.getElementById('ccal-alert-email').value.trim();
-      if (!email || !email.includes('@')) {
-        document.getElementById('ccal-alert-email').focus();
-        document.getElementById('ccal-alert-email').style.borderColor = '#DC2626';
-        return;
-      }
-      // Show success state
-      mc.innerHTML = [
-        '<div class="ccal-success-box">',
-          '<div class="ccal-success-icon">✅</div>',
-          '<div class="ccal-success-msg">Reminder set!</div>',
-          '<div class="ccal-success-sub">You\'ll be notified about <strong>' + esc(ev.name) + '</strong> before the next due date.<br>Check your inbox to confirm.</div>',
-        '</div>',
-        '<div style="text-align:center;margin-top:16px">',
-          '<button type="button" class="ccal-btn-sm" id="ccal-add-another">Add another reminder?</button>',
-          '<button type="button" class="ccal-btn-sm" id="ccal-modal-done" style="margin-left:6px">Done</button>',
-        '</div>'
-      ].join('');
-      mc.querySelector('#ccal-modal-done').addEventListener('click', function () {
-        alertModal.classList.remove('open');
-      });
-      mc.querySelector('#ccal-add-another').addEventListener('click', function () {
-        alertModal.classList.remove('open');
-      });
+      alertModal.classList.remove('open');
     });
 
     alertModal.classList.add('open');

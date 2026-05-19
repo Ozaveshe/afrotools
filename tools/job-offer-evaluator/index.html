@@ -16,8 +16,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea"><script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086"><script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
@@ -332,6 +332,7 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
 <script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/job-offer-evaluator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/evaluateur-offre-emploi/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tathmini-ya-ofa-ya-kazi/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/job-offer-evaluator/" />
 </head>
 <body>
@@ -368,7 +369,7 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
   <!-- Country / Currency row -->
   <div class="joe-settings-row">
     <div class="joe-field">
-      <label class="joe-label">Country (for tax estimate)</label>
+      <label class="joe-label" for="joe-country">Country (for tax estimate)</label>
       <select class="joe-select" id="joe-country" onchange="onCountryChange(this.value)" style="max-width:200px">
         <option value="NG">Nigeria (NGN)</option>
         <option value="KE">Kenya (KES)</option>
@@ -390,7 +391,7 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
       </select>
     </div>
     <div class="joe-field">
-      <label class="joe-label">Currency symbol</label>
+      <label class="joe-label" for="joe-currency">Currency symbol</label>
       <select class="joe-select" id="joe-currency" onchange="joe.currency=this.value" style="max-width:140px">
         <option value="₦">₦ (NGN)</option>
         <option value="KSh ">KSh (KES)</option>
@@ -683,7 +684,7 @@ function renderOfferCard(o, idx) {
           '<input aria-label="Jn bonus '+idx+'" type="number" class="joe-input" id="jn-bonus-'+idx+'" value="'+o.bonusPct+'" min="0" max="200" step="1"></div>' +
       '</div>' +
       '<div class="joe-field"><label class="joe-label">Company Type</label>' +
-        '<select class="joe-select" id="jn-type-'+idx+'">'+typeOpts+'</select></div>' +
+        '<select class="joe-select" id="jn-type-'+idx+'" aria-label="Jn Type">'+typeOpts+'</select></div>' +
       '<div class="joe-section-title" style="margin-top:14px">Benefits</div>' +
       '<div class="joe-row">' +
         '<div class="joe-field"><label class="joe-label">Transport Allowance / mo</label>' +
@@ -727,8 +728,8 @@ function renderOfferCard(o, idx) {
           '<div class="joe-field"><label class="joe-label">Strike / Exercise Price</label><input aria-label="Jn strike '+idx+'" type="number" class="joe-input" id="jn-strike-'+idx+'" value="'+o.strikePrice+'" min="0" step="0.01"></div>' +
         '</div>' +
         '<div class="joe-row">' +
-          '<div class="joe-field"><label class="joe-label">Vesting Period (years)</label><select class="joe-select" id="jn-vesting-'+idx+'"><option value="2"'+(o.vestingYears===2?' selected':'')+'>2 years</option><option value="3"'+(o.vestingYears===3?' selected':'')+'>3 years</option><option value="4"'+(o.vestingYears===4?' selected':'')+'>4 years (standard)</option><option value="5"'+(o.vestingYears===5?' selected':'')+'>5 years</option></select></div>' +
-          '<div class="joe-field"><label class="joe-label">Cliff (months)</label><select class="joe-select" id="jn-cliff-'+idx+'"><option value="3"'+(o.cliffMonths===3?' selected':'')+'>3 months</option><option value="6"'+(o.cliffMonths===6?' selected':'')+'>6 months</option><option value="12"'+(o.cliffMonths===12?' selected':'')+'>12 months (standard)</option></select></div>' +
+          '<div class="joe-field"><label class="joe-label">Vesting Period (years)</label><select class="joe-select" id="jn-vesting-'+idx+'" aria-label="Jn Vesting"><option value="2"'+(o.vestingYears===2?' selected':'')+'>2 years</option><option value="3"'+(o.vestingYears===3?' selected':'')+'>3 years</option><option value="4"'+(o.vestingYears===4?' selected':'')+'>4 years (standard)</option><option value="5"'+(o.vestingYears===5?' selected':'')+'>5 years</option></select></div>' +
+          '<div class="joe-field"><label class="joe-label">Cliff (months)</label><select class="joe-select" id="jn-cliff-'+idx+'" aria-label="Jn Cliff"><option value="3"'+(o.cliffMonths===3?' selected':'')+'>3 months</option><option value="6"'+(o.cliffMonths===6?' selected':'')+'>6 months</option><option value="12"'+(o.cliffMonths===12?' selected':'')+'>12 months (standard)</option></select></div>' +
         '</div>' +
       '</div>' +
 
@@ -737,8 +738,8 @@ function renderOfferCard(o, idx) {
       '<div class="joe-collapsible'+(o.hasRelocation?' open':'')+'" id="jn-reloc-sec-'+idx+'">' +
         '<div class="joe-section-title" style="color:#059669">Relocation Details</div>' +
         '<div class="joe-row">' +
-          '<div class="joe-field"><label class="joe-label">From City</label><select class="joe-select" id="jn-from-'+idx+'">'+cityOptions()+'</select></div>' +
-          '<div class="joe-field"><label class="joe-label">To City</label><select class="joe-select" id="jn-to-'+idx+'">'+cityOptions()+'</select></div>' +
+          '<div class="joe-field"><label class="joe-label">From City</label><select class="joe-select" id="jn-from-'+idx+'" aria-label="Jn From">'+cityOptions()+'</select></div>' +
+          '<div class="joe-field"><label class="joe-label">To City</label><select class="joe-select" id="jn-to-'+idx+'" aria-label="Jn To">'+cityOptions()+'</select></div>' +
         '</div>' +
         '<div class="joe-row">' +
           '<div class="joe-field"><label class="joe-label">Moving Costs (flight + freight)</label><input aria-label="Jn moving '+idx+'" type="number" class="joe-input" id="jn-moving-'+idx+'" value="'+o.movingCost+'" min="0" step="10000"></div>' +

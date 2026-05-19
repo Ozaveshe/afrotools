@@ -109,7 +109,7 @@ function main() {
   writeCsv('metadata-issues.csv', results, 'metadataIssues');
   writeCsv('dark-mode-issues.csv', results, 'darkModeIssues');
   writeCsv('copy-quality-issues.csv', results, 'copyIssues');
-  fs.writeFileSync(path.join(OUT, 'final-summary.md'), renderMarkdown(summary, results), 'utf8');
+  writeText('final-summary.md', renderMarkdown(summary, results));
 
   console.log(`Comprehensive crawl complete: ${summary.routesDiscovered} routes, ${summary.pagesAudited} pages audited.`);
   console.log(`Broken pages: ${summary.brokenPages}; broken internal links: ${summary.brokenLinks}; metadata issues: ${summary.metadataIssues}; dark-mode risks: ${summary.darkModeIssues}; copy issues: ${summary.copyIssues}.`);
@@ -240,24 +240,27 @@ function auditAccessibility(html, page, result) {
   if (!/<html\b[^>]*\blang=["'][^"']+["']/i.test(html)) {
     result.accessibilityIssues.push(issue('missing_lang', 'Missing html lang attribute.'));
   }
-  for (const button of html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
+  const documentHtml = removeExecutableBlocks(html);
+  for (const button of documentHtml.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
     const attrs = button[1] || '';
     const label = stripTags(button[2] || '').trim();
     if (!label && !/\baria-label=|\baria-labelledby=|\btitle=/i.test(attrs)) {
       result.accessibilityIssues.push(issue('button_name', 'Button has no accessible name.'));
     }
   }
-  for (const input of html.matchAll(/<(input|select|textarea)\b([^>]*)>/gi)) {
+  for (const input of documentHtml.matchAll(/<(input|select|textarea)\b([^>]*)>/gi)) {
     const attrs = input[2] || '';
     const id = attr(attrs, 'id');
     const type = (attr(attrs, 'type') || '').toLowerCase();
     if (['hidden', 'submit', 'button', 'reset', 'image'].includes(type)) continue;
-    const hasLabel = id && new RegExp(`<label\\b[^>]*for=["']${escapeRegExp(id)}["']`, 'i').test(html);
+    const hasLabel = id && new RegExp(`<label\\b[^>]*for=["']${escapeRegExp(id)}["']`, 'i').test(documentHtml);
+    const isWrapped = isWrappedByLabel(documentHtml, input.index || 0);
     if (!hasLabel && !/\baria-label=|\baria-labelledby=/i.test(attrs)) {
+      if (isWrapped) continue;
       result.accessibilityIssues.push(issue('input_label', `${input[1]} is missing a visible or aria label.`));
     }
   }
-  for (const iframe of html.matchAll(/<iframe\b([^>]*)>/gi)) {
+  for (const iframe of documentHtml.matchAll(/<iframe\b([^>]*)>/gi)) {
     if (!/\btitle=["'][^"']+["']/i.test(iframe[1] || '')) {
       result.accessibilityIssues.push(issue('iframe_title', 'Iframe is missing a title.'));
     }
@@ -365,7 +368,7 @@ function issueHistogram(results) {
 }
 
 function writeJson(name, data) {
-  fs.writeFileSync(path.join(OUT, name), JSON.stringify(data, null, 2) + '\n', 'utf8');
+  writeText(name, JSON.stringify(data, null, 2) + '\n');
 }
 
 function writeCsv(name, results, key) {
@@ -373,7 +376,30 @@ function writeCsv(name, results, key) {
   for (const page of results) {
     for (const item of page[key] || []) rows.push([page.route, page.file, item.id, item.detail]);
   }
-  fs.writeFileSync(path.join(OUT, name), rows.map((row) => row.map(csvCell).join(',')).join('\n') + '\n', 'utf8');
+  writeText(name, rows.map((row) => row.map(csvCell).join(',')).join('\n') + '\n');
+}
+
+function writeText(name, contents) {
+  const filePath = path.join(OUT, name);
+  const retryableCodes = new Set(['EBUSY', 'EPERM', 'UNKNOWN']);
+  let lastError = null;
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    const tempPath = `${filePath}.${process.pid}.${attempt}.tmp`;
+    try {
+      fs.writeFileSync(tempPath, contents, 'utf8');
+      fs.renameSync(tempPath, filePath);
+      return;
+    } catch (error) {
+      lastError = error;
+      try {
+        if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+      } catch (_) {}
+      if (!retryableCodes.has(error.code) || attempt === 9) break;
+      const waitUntil = Date.now() + 120 * (attempt + 1);
+      while (Date.now() < waitUntil) {}
+    }
+  }
+  throw lastError;
 }
 
 function renderMarkdown(summary, results) {
@@ -556,6 +582,19 @@ function removeCodeBlocks(html) {
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<!--[\s\S]*?-->/g, ' ');
+}
+
+function removeExecutableBlocks(html) {
+  return removeCodeBlocks(html)
+    .replace(/<template[\s\S]*?<\/template>/gi, ' ')
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, ' ');
+}
+
+function isWrappedByLabel(html, controlIndex) {
+  const labelOpen = html.lastIndexOf('<label', controlIndex);
+  if (labelOpen === -1) return false;
+  const labelClose = html.lastIndexOf('</label>', controlIndex);
+  return labelOpen > labelClose;
 }
 
 function collectRedirectRules() {

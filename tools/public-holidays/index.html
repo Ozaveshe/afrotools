@@ -16,8 +16,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>
@@ -113,6 +113,7 @@ select:focus{outline:none;border-color:var(--afro-blue);box-shadow:0 0 0 3px rgb
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/public-holidays/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-feries/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kalenda-likizo-za-umma/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/public-holidays/" />
 </head>
 <body>
@@ -129,7 +130,7 @@ select:focus{outline:none;border-color:var(--afro-blue);box-shadow:0 0 0 3px rgb
 <div class="card-head"><span class="card-title">Holiday Calendar</span><button type="button" class="export-btn" onclick="exportICS()">Export to Calendar (.ics)</button></div>
 <div class="card-body">
 <div class="controls">
-<div class="field"><label>Country</label>
+<div class="field"><label for="country">Country</label>
 <select id="country" onchange="render()">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -143,13 +144,13 @@ select:focus{outline:none;border-color:var(--afro-blue);box-shadow:0 0 0 3px rgb
 <option value="SN">Senegal</option>
 </select></div>
 <div class="field"><label>Year</label>
-<select id="year" onchange="render()">
+<select id="year" onchange="render()" aria-label="Year">
 <option value="2025">2025</option>
 <option value="2026" selected>2026</option>
 <option value="2027">2027</option>
 </select></div>
 <div class="field"><label>Filter</label>
-<select id="filter" onchange="render()">
+<select id="filter" onchange="render()" aria-label="Filter">
 <option value="all">All Holidays</option>
 <option value="upcoming">Upcoming Only</option>
 <option value="weekend">Falls on Weekend</option>
@@ -497,7 +498,7 @@ function exportICS() {
 
 render();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

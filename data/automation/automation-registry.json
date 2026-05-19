@@ -1,0 +1,2651 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-19T07:43:18.087Z",
+  "source_note": "Generated from accessible Codex automation TOMLs, current netlify.toml schedules, GitHub workflow files, and repo audit surfaces. Re-run audit before relying on live status.",
+  "records": [
+    {
+      "id": "codex:afrokitchen-media-freshness-agent",
+      "display_name": "AfroKitchen Media Freshness Agent",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TH;BYHOUR=12;BYMINUTE=15;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "afrokitchen-media-freshness-agent",
+      "sla_hours": 96,
+      "product_surface": "afrokitchen",
+      "public_claims_supported": [
+        "afrokitchen_recipe_media_coverage",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.recipes",
+        "public.recipe_media",
+        "assets/img/kitchen"
+      ],
+      "health_endpoint": null,
+      "owner_category": "AfroKitchen recipe media audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run afrokitchen:verify-intelligence",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:afropayroll-run-automation",
+      "display_name": "AfroPayroll Run Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=9;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "afropayroll-run-automation",
+      "sla_hours": 168,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [
+        "payroll_operational_data"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/payroll",
+        "public payroll source ledgers"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:afroseller-operations-automation",
+      "display_name": "AfroSeller Operations Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=10;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "afroseller-operations-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [
+        "localStorage and Supabase-backed Pro account state"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:afrostream-creator-valuation-agent",
+      "display_name": "AfroStream Creator Valuation Agent",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU,FR;BYHOUR=8;BYMINUTE=15;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "afrostream-creator-valuation-agent",
+      "sla_hours": 96,
+      "product_surface": "afrostream",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.as_news",
+        "public.as_creators",
+        "public.as_creator_snapshots"
+      ],
+      "health_endpoint": "/api/afrostream/health",
+      "owner_category": "AfroStream live operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:afrostream-newswire-agent",
+      "display_name": "AfroStream Newswire Agent",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=DAILY;BYHOUR=7;BYMINUTE=15;BYSECOND=0",
+      "netlify_function": "afrostream-news-monitor",
+      "github_workflow": null,
+      "codex_automation_id": "afrostream-newswire-agent",
+      "sla_hours": 24,
+      "product_surface": "afrostream",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.as_news",
+        "public.as_creators",
+        "public.as_creator_snapshots"
+      ],
+      "health_endpoint": "/api/afrostream/health",
+      "owner_category": "AfroStream live operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/afrostream-news-monitor.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:afrostream-profile-integrity-agent",
+      "display_name": "AfroStream Profile Integrity Agent",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE,SA;BYHOUR=8;BYMINUTE=45;BYSECOND=0",
+      "netlify_function": "afrostream-sync",
+      "github_workflow": null,
+      "codex_automation_id": "afrostream-profile-integrity-agent",
+      "sla_hours": 96,
+      "product_surface": "afrostream",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.as_news",
+        "public.as_creators",
+        "public.as_creator_snapshots"
+      ],
+      "health_endpoint": "/api/afrostream/health",
+      "owner_category": "AfroStream live operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node scripts/audit-afrostream-creator-links.js",
+        "node --check netlify/functions/afrostream-sync.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:afrostream-tracking-health",
+      "display_name": "AfroStream Core Health & Integrity",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=DAILY;BYHOUR=6;BYMINUTE=30;BYSECOND=0",
+      "netlify_function": "afrostream-livecheck",
+      "github_workflow": null,
+      "codex_automation_id": "afrostream-tracking-health",
+      "sla_hours": 24,
+      "product_surface": "afrostream",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.as_news",
+        "public.as_creators",
+        "public.as_creator_snapshots"
+      ],
+      "health_endpoint": "/api/afrostream/health",
+      "owner_category": "AfroStream live operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/afrostream-livecheck.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:agri-farmops-automation",
+      "display_name": "Agri FarmOps Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=8;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "agri-farmops-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:ajo-chama-contribution-automation",
+      "display_name": "Ajo Chama Contribution Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=8;BYMINUTE=40;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "ajo-chama-contribution-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:am-content-batch-2",
+      "display_name": "AM Content Batch",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=9;BYMINUTE=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "am-content-batch-2",
+      "sla_hours": 24,
+      "product_surface": "content_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Content publishing operations",
+      "severity_if_stale": "p3",
+      "validation_commands": [
+        "npm run blog:feed",
+        "npm run blog:feed:check",
+        "npm run blog:verify",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:automation-self-learning-loop",
+      "display_name": "Automation Self Learning Loop",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=FR;BYHOUR=8;BYMINUTE=30;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "automation-self-learning-loop",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:automation-system-maintainer",
+      "display_name": "Automation System Maintainer",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=FR;BYHOUR=7;BYMINUTE=45;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "automation-system-maintainer",
+      "sla_hours": 168,
+      "product_surface": "release_quality",
+      "public_claims_supported": [
+        "platform_ai_advisor"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:beauty-booking-automation",
+      "display_name": "Beauty Booking Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=8;BYMINUTE=40;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "beauty-booking-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:books-close-automation",
+      "display_name": "Books Close Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=10;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "books-close-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:business-planner-followup-automation",
+      "display_name": "Business Planner Followup Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=9;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "business-planner-followup-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:car-price-intelligence-refresh-agent",
+      "display_name": "Car Price Intelligence Refresh Agent",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=SA;BYHOUR=10;BYMINUTE=45;BYSECOND=0",
+      "netlify_function": "scheduled-fetch-stocks",
+      "github_workflow": null,
+      "codex_automation_id": "car-price-intelligence-refresh-agent",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run cars:catalog:refresh",
+        "node --check netlify/functions/scheduled-fetch-stocks.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:clinic-desk-followup-automation",
+      "display_name": "Clinic Desk Followup Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=8;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "clinic-desk-followup-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:commercial-funnel-integrity-sweep",
+      "display_name": "Commercial Funnel Integrity Sweep",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=15;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": "ci.yml",
+      "codex_automation_id": "commercial-funnel-integrity-sweep",
+      "sla_hours": 168,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run check-links",
+        "npm run audit",
+        "npm run seo:report",
+        "npm run test:api-docs",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:daily-5pm-publish-deploy-gate",
+      "display_name": "Daily 5PM Publish Deploy Gate",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=DAILY;BYHOUR=17;BYMINUTE=0;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "daily-5pm-publish-deploy-gate",
+      "sla_hours": 24,
+      "product_surface": "release_quality",
+      "public_claims_supported": [
+        "platform_ai_advisor"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "npm run blog:feed:check",
+        "npm run blog:verify",
+        "npm run security:scan",
+        "npm run build:deploy",
+        "npm run audit:dist",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:daily-bug-scan",
+      "display_name": "Release Safety Sweep",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=20;BYMINUTE=0",
+      "netlify_function": null,
+      "github_workflow": "ci.yml",
+      "codex_automation_id": "daily-bug-scan",
+      "sla_hours": 24,
+      "product_surface": "release_quality",
+      "public_claims_supported": [
+        "platform_ai_advisor"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run check-links",
+        "npm run audit",
+        "npm run seo:report",
+        "npm run build:i18n:validate",
+        "npm run validate:hreflang",
+        "npm run security:scan",
+        "npm run audit:dist",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:dependency-sweep",
+      "display_name": "SEO Guardrail Sweep",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=11;BYMINUTE=30",
+      "netlify_function": null,
+      "github_workflow": "ci.yml",
+      "codex_automation_id": "dependency-sweep",
+      "sla_hours": 24,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run seo:report",
+        "npm run check-links",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:deploy-artifact-security-gate",
+      "display_name": "Deploy Artifact Security Gate",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=14;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": "ci.yml",
+      "codex_automation_id": "deploy-artifact-security-gate",
+      "sla_hours": 168,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "npm run security:scan",
+        "npm run build:deploy",
+        "npm run audit:dist",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:digital-lending-rates-automation",
+      "display_name": "Digital Lending Rates Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=10;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "digital-lending-rates-automation",
+      "sla_hours": 168,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "remittance_quotes_and_rates",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:forex-latest"
+      ],
+      "health_endpoint": "/api/forex",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:eac-cet-schedule-automation",
+      "display_name": "EAC CET Schedule Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=9;BYMINUTE=55;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "eac-cet-schedule-automation",
+      "sla_hours": 168,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:events-ceremony-automation",
+      "display_name": "Events Ceremony Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=8;BYMINUTE=55;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "events-ceremony-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p3",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:faith-community-automation",
+      "display_name": "Faith Community Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=8;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "faith-community-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "platform_ai_advisor"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:farm-payroll-compliance-automation",
+      "display_name": "Farm Payroll Compliance Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=10;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "farm-payroll-compliance-automation",
+      "sla_hours": 168,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [
+        "compliance_calendar_country_coverage",
+        "payroll_operational_data"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/payroll",
+        "public payroll source ledgers"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:field-service-warranty-automation",
+      "display_name": "Field Service Warranty Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=55;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "field-service-warranty-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:food-kitchen-close-automation",
+      "display_name": "Food Kitchen Close Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=9;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "food-kitchen-close-automation",
+      "sla_hours": 168,
+      "product_surface": "afrokitchen",
+      "public_claims_supported": [
+        "afrokitchen_recipe_media_coverage",
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.recipes",
+        "public.recipe_media",
+        "assets/img/kitchen"
+      ],
+      "health_endpoint": null,
+      "owner_category": "AfroKitchen recipe media audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:freelance-invoice-followup-automation",
+      "display_name": "Freelance Invoice Followup Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=8;BYMINUTE=55;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "freelance-invoice-followup-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p3",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:government-source-freshness-sweep",
+      "display_name": "Government Source Freshness Sweep",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "GitHub Actions daily check at 05:17 UTC and weekly refresh PR Monday at 06:43 UTC; Codex review remains manual/follow-up.",
+      "netlify_function": "scheduled-scan-gazette",
+      "github_workflow": "source-ledger-checks.yml,source-ledger-refresh-pr.yml",
+      "codex_automation_id": "government-source-freshness-sweep",
+      "sla_hours": 24,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [
+        "government_transport_source_ledger_claims",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/government/official-sources.json",
+        "data/government/source-status.json",
+        "reports/government-source-ledger.md"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run government:sources",
+        "npm run government:sources:check",
+        "npm run transport:sources:check",
+        "node --check netlify/functions/scheduled-scan-gazette.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:grants-tenders-deadline-automation",
+      "display_name": "Grants Tenders Deadline Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "grants-tenders-deadline-automation",
+      "sla_hours": 168,
+      "product_surface": "grants_and_tenders",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Grants and tender source monitoring",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:hr-onboarding-automation",
+      "display_name": "HR Onboarding Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=8;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "hr-onboarding-automation",
+      "sla_hours": 168,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:hs-code-tariff-automation",
+      "display_name": "HS Code Tariff Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=9;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "hs-code-tariff-automation",
+      "sla_hours": 168,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:i18n-hreflang-integrity-gate",
+      "display_name": "I18n Hreflang Integrity Gate",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=14;BYMINUTE=15;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": "ci.yml",
+      "codex_automation_id": "i18n-hreflang-integrity-gate",
+      "sla_hours": 168,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run build:i18n:validate",
+        "npm run validate:hreflang",
+        "npm run seo:report",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:import-duty-source-automation",
+      "display_name": "Import Duty Source Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=10;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "import-duty-source-automation",
+      "sla_hours": 168,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "data/source-ledgers/government"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:insurance-claim-deadline-automation",
+      "display_name": "Insurance Claim Deadline Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=8;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "insurance-claim-deadline-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "platform_ai_advisor"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:public-claims",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:invoice-generator-payment-automation",
+      "display_name": "Invoice Generator Payment Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=9;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "invoice-generator-payment-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:japa-visa-cost-automation",
+      "display_name": "Japa Visa Cost Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=9;BYMINUTE=40;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "japa-visa-cost-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:landed-cost-source-automation",
+      "display_name": "Landed Cost Source Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=9;BYMINUTE=40;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "landed-cost-source-automation",
+      "sla_hours": 168,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "data/source-ledgers/government"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:leave-pto-calendar-automation",
+      "display_name": "Leave PTO Calendar Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=8;BYMINUTE=40;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "leave-pto-calendar-automation",
+      "sla_hours": 168,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:legal-desk-review-automation",
+      "display_name": "Legal Desk Review Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=8;BYMINUTE=40;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "legal-desk-review-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:life-admin-renewal-automation",
+      "display_name": "Life Admin Renewal Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=8;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "life-admin-renewal-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:live-data-product-upgrade-agent",
+      "display_name": "Live Data Product Upgrade Agent",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TH;BYHOUR=10;BYMINUTE=15;BYSECOND=0",
+      "netlify_function": "scheduled-refresh-market-data",
+      "github_workflow": null,
+      "codex_automation_id": "live-data-product-upgrade-agent",
+      "sla_hours": 96,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit",
+        "node --check netlify/functions/scheduled-refresh-market-data.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:medical-report-followup-automation",
+      "display_name": "Medical Report Followup Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=9;BYMINUTE=55;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "medical-report-followup-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p3",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:minimum-wage-source-automation",
+      "display_name": "Minimum Wage Source Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=8;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "minimum-wage-source-automation",
+      "sla_hours": 168,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [
+        "payroll_operational_data"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/payroll",
+        "public payroll source ledgers",
+        "data/source-ledgers/government"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:mobile-ux-accessibility-sweep",
+      "display_name": "Mobile UX Accessibility Sweep",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=SA;BYHOUR=13;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "mobile-ux-accessibility-sweep",
+      "sla_hours": 168,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run check-links",
+        "npm run audit",
+        "node scripts/mobile-audit.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:overtime-law-automation",
+      "display_name": "Overtime Law Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=8;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "overtime-law-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:payroll-pack-support-automation",
+      "display_name": "Payroll Pack Support Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=9;BYMINUTE=55;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "payroll-pack-support-automation",
+      "sla_hours": 168,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [
+        "payroll_operational_data"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/payroll",
+        "public payroll source ledgers"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:pdf-document-workflow-gate",
+      "display_name": "PDF Document Workflow Gate",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=FR;BYHOUR=12;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": "ci.yml",
+      "codex_automation_id": "pdf-document-workflow-gate",
+      "sla_hours": 168,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run pdf:verify",
+        "npm run audit",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:pension-projection-automation",
+      "display_name": "Pension Projection Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=9;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "pension-projection-automation",
+      "sla_hours": 168,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [
+        "payroll_operational_data"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/payroll",
+        "public payroll source ledgers"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:pm-content-batch-2",
+      "display_name": "PM Content Batch",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=17;BYMINUTE=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "pm-content-batch-2",
+      "sla_hours": 24,
+      "product_surface": "content_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Content publishing operations",
+      "severity_if_stale": "p3",
+      "validation_commands": [
+        "npm run blog:feed",
+        "npm run blog:feed:check",
+        "npm run blog:verify",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:pro-architecture-readiness-gate",
+      "display_name": "Pro Architecture Readiness Gate",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=14;BYMINUTE=20;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": "ci.yml",
+      "codex_automation_id": "pro-architecture-readiness-gate",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [
+        "localStorage and Supabase-backed Pro account state"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run pro:verify",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:pro-vault-freshness-automation",
+      "display_name": "Pro Vault Freshness Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=25;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "pro-vault-freshness-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "localStorage and Supabase-backed Pro account state"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:property-management-fee-automation",
+      "display_name": "Property Management Fee Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=10;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "property-management-fee-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:property-projects-milestone-automation",
+      "display_name": "Property Projects Milestone Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU;BYHOUR=9;BYMINUTE=40;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "property-projects-milestone-automation",
+      "sla_hours": 168,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:registry-count-integrity-watch",
+      "display_name": "Registry Count Integrity Watch",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=12;BYMINUTE=20;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "registry-count-integrity-watch",
+      "sla_hours": 168,
+      "product_surface": "release_quality",
+      "public_claims_supported": [
+        "tool_registry_count"
+      ],
+      "live_data_tables_or_blobs": [
+        "assets/js/components/tool-registry.js"
+      ],
+      "health_endpoint": "/tools/",
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run counts:sync",
+        "npm run check-links",
+        "npm run audit",
+        "npm run audit:public-claims",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:scholarship-source-expansion-agent",
+      "display_name": "Scholarship Source Expansion Agent",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TU,FR;BYHOUR=12;BYMINUTE=45;BYSECOND=0",
+      "netlify_function": "scheduled-verify-scholarships",
+      "github_workflow": null,
+      "codex_automation_id": "scholarship-source-expansion-agent",
+      "sla_hours": 96,
+      "product_surface": "education",
+      "public_claims_supported": [
+        "scholarship_feed_count"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.scholarships",
+        "public.scholarship_sources",
+        "data/source-ledgers/government"
+      ],
+      "health_endpoint": "/api/scholarships",
+      "owner_category": "Education and scholarship truth",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-verify-scholarships.js",
+        "npm run audit:scholarship-truth",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:school-academy-automation",
+      "display_name": "School Academy Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=8;BYMINUTE=55;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "school-academy-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:school-fees-freshness-automation",
+      "display_name": "School Fees Freshness Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=WE;BYHOUR=10;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "school-fees-freshness-automation",
+      "sla_hours": 168,
+      "product_surface": "education",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Education and scholarship truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:skill-progression-map",
+      "display_name": "Live Data Cross-Product Watch",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU;BYHOUR=7;BYMINUTE=30",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "skill-progression-map",
+      "sla_hours": 24,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:social-security-source-automation",
+      "display_name": "Social Security Source Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=TH;BYHOUR=8;BYMINUTE=55;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "social-security-source-automation",
+      "sla_hours": 168,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [
+        "payroll_operational_data"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/payroll",
+        "public payroll source ledgers",
+        "data/source-ledgers/government"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "npm run security:scan",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:supabase-project-advisor-watch",
+      "display_name": "Supabase Project Advisor Watch",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=FR;BYHOUR=8;BYMINUTE=15;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "supabase-project-advisor-watch",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "platform_ai_advisor"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:tax-compliance-calendar-automation",
+      "display_name": "Tax Compliance Calendar Automation",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=40;BYSECOND=0",
+      "netlify_function": "scheduled-detect-changes",
+      "github_workflow": null,
+      "codex_automation_id": "tax-compliance-calendar-automation",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "compliance_calendar_country_coverage"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-detect-changes.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:trade-desk-source-automation",
+      "display_name": "Trade Desk Source Automation",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=10;BYMINUTE=10;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "trade-desk-source-automation",
+      "sla_hours": 168,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "data/source-ledgers/government"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:transport-source-freshness-sweep",
+      "display_name": "Transport Source Freshness Sweep",
+      "runner": "mixed",
+      "production_required": true,
+      "expected_schedule": "GitHub Actions daily check at 05:17 UTC and weekly refresh PR Monday at 06:43 UTC; Codex review remains manual/follow-up.",
+      "netlify_function": "scheduled-fetch-shipping",
+      "github_workflow": "source-ledger-checks.yml,source-ledger-refresh-pr.yml",
+      "codex_automation_id": "transport-source-freshness-sweep",
+      "sla_hours": 24,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [
+        "government_transport_source_ledger_claims",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/transport/official-sources.json",
+        "data/transport/source-status.json",
+        "reports/transport-source-ledger.md"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run government:sources:check",
+        "npm run transport:sources",
+        "npm run transport:sources:check",
+        "node --check netlify/functions/scheduled-fetch-shipping.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:update-agents-md",
+      "display_name": "Update AGENTS.md",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=FR;BYHOUR=11;BYMINUTE=0;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "update-agents-md",
+      "sla_hours": 168,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "github:ci",
+      "display_name": "CI — Link Check & Audit",
+      "runner": "github_actions",
+      "production_required": true,
+      "expected_schedule": "push and pull_request",
+      "netlify_function": null,
+      "github_workflow": "ci.yml",
+      "codex_automation_id": null,
+      "sla_hours": 168,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "dist/",
+        "sitemap*.xml",
+        "SEO audit artifacts"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "npm test",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "github:daily-seo",
+      "display_name": "Daily SEO Auto-fix",
+      "runner": "github_actions",
+      "production_required": true,
+      "expected_schedule": "0 2 * * *",
+      "netlify_function": null,
+      "github_workflow": "daily-seo.yml",
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "dist/",
+        "sitemap*.xml",
+        "SEO audit artifacts"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run seo:report",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "github:source-ledger-checks",
+      "display_name": "Source Ledger Checks",
+      "runner": "github_actions",
+      "production_required": true,
+      "expected_schedule": "17 5 * * *",
+      "netlify_function": null,
+      "github_workflow": "source-ledger-checks.yml",
+      "codex_automation_id": null,
+      "sla_hours": 24,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [
+        "government_transport_source_ledger_claims",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/government/official-sources.json",
+        "data/government/source-status.json",
+        "data/transport/official-sources.json",
+        "data/transport/source-status.json",
+        "reports/government-source-ledger.md",
+        "reports/transport-source-ledger.md"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run government:sources:check",
+        "npm run transport:sources:check",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "github:source-ledger-refresh-pr",
+      "display_name": "Source Ledger Refresh PR",
+      "runner": "github_actions",
+      "production_required": true,
+      "expected_schedule": "43 6 * * 1",
+      "netlify_function": null,
+      "github_workflow": "source-ledger-refresh-pr.yml",
+      "codex_automation_id": null,
+      "sla_hours": 168,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [
+        "government_transport_source_ledger_claims",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/government/source-status.json",
+        "data/transport/source-status.json",
+        "reports/government-source-ledger.md",
+        "reports/transport-source-ledger.md",
+        "government/index.html",
+        "transport/index.html"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run government:sources",
+        "npm run transport:sources",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "runner": "manual",
+      "production_required": false,
+      "expected_schedule": "manual release or incident review",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 168,
+      "severity_if_stale": "p2",
+      "id": "manual:automation-report-closeout",
+      "display_name": "Manual Automation Report Closeout",
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "reports/automation-run-report-2026-05-15-to-2026-05-19.md",
+        "C:/Users/Oza/.codex/automations"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "validation_commands": [
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "runner": "manual",
+      "production_required": false,
+      "expected_schedule": "manual release or incident review",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 168,
+      "severity_if_stale": "p2",
+      "id": "manual:live-data-incident-review",
+      "display_name": "Manual Live Data Incident Review",
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "live_data_and_realtime_language",
+        "fuel_54_country_claim",
+        "remittance_quotes_and_rates"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:*",
+        "public live data tables"
+      ],
+      "health_endpoint": "/api/data-freshness",
+      "owner_category": "Live data freshness audit",
+      "validation_commands": [
+        "npm run audit:public-claims",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "runner": "manual",
+      "production_required": false,
+      "expected_schedule": "manual release or incident review",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 168,
+      "severity_if_stale": "p2",
+      "id": "manual:public-claim-registry-review",
+      "display_name": "Manual Public Claim Registry Review",
+      "product_surface": "release_quality",
+      "public_claims_supported": [
+        "scholarship_feed_count",
+        "tool_registry_count",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/audits/public-claim-registry.json"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Public claim truth registry",
+      "validation_commands": [
+        "npm run audit:public-claims",
+        "npm run audit:scholarship-truth",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "runner": "manual",
+      "production_required": false,
+      "expected_schedule": "manual release or incident review",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 168,
+      "severity_if_stale": "p1",
+      "id": "manual:release-deploy-review",
+      "display_name": "Manual Release Deploy Review",
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "dist/",
+        "netlify.toml",
+        "_headers",
+        "_redirects"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Release quality gates",
+      "validation_commands": [
+        "npm run build:deploy",
+        "npm run audit:dist",
+        "npm run security:scan",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:afrostream-livecheck",
+      "display_name": "Netlify Afrostream Livecheck",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "4,34 * * * *",
+      "netlify_function": "afrostream-livecheck",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 1,
+      "product_surface": "afrostream",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.as_news",
+        "public.as_creators",
+        "public.as_creator_snapshots"
+      ],
+      "health_endpoint": "/api/afrostream/health",
+      "owner_category": "AfroStream live operations",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "node --check netlify/functions/afrostream-livecheck.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:afrostream-news-monitor",
+      "display_name": "Netlify Afrostream News Monitor",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "46 5 * * *",
+      "netlify_function": "afrostream-news-monitor",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "afrostream",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.as_news",
+        "public.as_creators",
+        "public.as_creator_snapshots"
+      ],
+      "health_endpoint": "/api/afrostream/health",
+      "owner_category": "AfroStream live operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/afrostream-news-monitor.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:afrostream-sync",
+      "display_name": "Netlify Afrostream Sync",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "16 */2 * * *",
+      "netlify_function": "afrostream-sync",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 4,
+      "product_surface": "afrostream",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.as_news",
+        "public.as_creators",
+        "public.as_creator_snapshots",
+        "localStorage and Supabase-backed Pro account state"
+      ],
+      "health_endpoint": "/api/afrostream/health",
+      "owner_category": "AfroStream live operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/afrostream-sync.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:conflict-sync",
+      "display_name": "Netlify Conflict Sync",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "12 3 * * *",
+      "netlify_function": "conflict-sync",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "localStorage and Supabase-backed Pro account state"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/conflict-sync.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-cleanup-scraper-runs",
+      "display_name": "Netlify Scheduled Cleanup Scraper Runs",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "53 6 1 * *",
+      "netlify_function": "scheduled-cleanup-scraper-runs",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 744,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-cleanup-scraper-runs.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-detect-changes",
+      "display_name": "Netlify Scheduled Detect Changes",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "26 */6 * * *",
+      "netlify_function": "scheduled-detect-changes",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 12,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-detect-changes.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-agri-inputs",
+      "display_name": "Netlify Scheduled Fetch Agri Inputs",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "19 3 * * 4",
+      "netlify_function": "scheduled-fetch-agri-inputs",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 192,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-agri-inputs.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-bank-rates",
+      "display_name": "Netlify Scheduled Fetch Bank Rates",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "17 3 * * 2",
+      "netlify_function": "scheduled-fetch-bank-rates",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 192,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "remittance_quotes_and_rates",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:forex-latest"
+      ],
+      "health_endpoint": "/api/forex",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-bank-rates.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-central-bank-rates",
+      "display_name": "Netlify Scheduled Fetch Central Bank Rates",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "28 */12 * * *",
+      "netlify_function": "scheduled-fetch-central-bank-rates",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 24,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "remittance_quotes_and_rates",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:forex-latest",
+        "live_data_store:central-bank-rates-latest"
+      ],
+      "health_endpoint": "/api/forex",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-central-bank-rates.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-commodity-prices",
+      "display_name": "Netlify Scheduled Fetch Commodity Prices",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "21 2 * * *",
+      "netlify_function": "scheduled-fetch-commodity-prices",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:commodity-prices-latest"
+      ],
+      "health_endpoint": "/api/commodity-prices",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-commodity-prices.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-crypto",
+      "display_name": "Netlify Scheduled Fetch Crypto",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "27 * * * *",
+      "netlify_function": "scheduled-fetch-crypto",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 2,
+      "product_surface": "payroll_and_hr",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:crypto-latest"
+      ],
+      "health_endpoint": "/api/crypto",
+      "owner_category": "Payroll and HR truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-crypto.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-electricity-tariffs",
+      "display_name": "Netlify Scheduled Fetch Electricity Tariffs",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "33 3 * * *",
+      "netlify_function": "scheduled-fetch-electricity-tariffs",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:electricity-tariffs-latest"
+      ],
+      "health_endpoint": "/api/electricity-tariffs",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-electricity-tariffs.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-forex-rates",
+      "display_name": "Netlify Scheduled Fetch Forex Rates",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "7,22,37,52 * * * *",
+      "netlify_function": "scheduled-fetch-forex-rates",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 0.5,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "remittance_quotes_and_rates",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:forex-latest"
+      ],
+      "health_endpoint": "/api/forex",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-forex-rates.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-fuel-prices",
+      "display_name": "Netlify Scheduled Fetch Fuel Prices",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "13 */6 * * *",
+      "netlify_function": "scheduled-fetch-fuel-prices",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 12,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "fuel_54_country_claim",
+        "country_coverage_54",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:fuel-prices-latest"
+      ],
+      "health_endpoint": "/api/fuel-prices",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-fuel-prices.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-insurance",
+      "display_name": "Netlify Scheduled Fetch Insurance",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "41 3 * * 1",
+      "netlify_function": "scheduled-fetch-insurance",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 192,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-insurance.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-property",
+      "display_name": "Netlify Scheduled Fetch Property",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "44 3 * * 3",
+      "netlify_function": "scheduled-fetch-property",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 192,
+      "product_surface": "pro_apps",
+      "public_claims_supported": [
+        "pro_local_only_sync_pending"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Pro local-only and sync-pending audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-property.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-salaries",
+      "display_name": "Netlify Scheduled Fetch Salaries",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "47 3 * * 5",
+      "netlify_function": "scheduled-fetch-salaries",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 192,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [
+        "payroll_operational_data"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-salaries.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-shipping",
+      "display_name": "Netlify Scheduled Fetch Shipping",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "52 4 * * *",
+      "netlify_function": "scheduled-fetch-shipping",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:shipping-rates-latest"
+      ],
+      "health_endpoint": "/api/shipping-rates",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-shipping.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-stocks",
+      "display_name": "Netlify Scheduled Fetch Stocks",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "11 * * * 1-5",
+      "netlify_function": "scheduled-fetch-stocks",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 2,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:market-data-latest"
+      ],
+      "health_endpoint": "/api/market-data",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-stocks.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-fetch-telecom-plans",
+      "display_name": "Netlify Scheduled Fetch Telecom Plans",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "47 */12 * * *",
+      "netlify_function": "scheduled-fetch-telecom-plans",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 24,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:telecom-plans-latest"
+      ],
+      "health_endpoint": "/api/telecom-plans",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-fetch-telecom-plans.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-refresh-market-data",
+      "display_name": "Netlify Scheduled Refresh Market Data",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "39 1 * * *",
+      "netlify_function": "scheduled-refresh-market-data",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:market-data-latest"
+      ],
+      "health_endpoint": "/api/market-data",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-refresh-market-data.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-scan-gazette",
+      "display_name": "Netlify Scheduled Scan Gazette",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "58 5 * * *",
+      "netlify_function": "scheduled-scan-gazette",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "source_ledgers",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "data/source-ledgers/government"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and transport source ledgers",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-scan-gazette.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-send-jamb-daily",
+      "display_name": "Netlify Scheduled Send Jamb Daily",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "8 * * * *",
+      "netlify_function": "scheduled-send-jamb-daily",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 2,
+      "product_surface": "education",
+      "public_claims_supported": [
+        "platform_ai_advisor",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": "/api/jamb",
+      "owner_category": "Education and scholarship truth",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-send-jamb-daily.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-send-scholarship-reminders",
+      "display_name": "Netlify Scheduled Send Scholarship Reminders",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "43 * * * *",
+      "netlify_function": "scheduled-send-scholarship-reminders",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 2,
+      "product_surface": "education",
+      "public_claims_supported": [
+        "scholarship_feed_count"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.scholarships",
+        "public.scholarship_sources"
+      ],
+      "health_endpoint": "/api/scholarships",
+      "owner_category": "Education and scholarship truth",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-send-scholarship-reminders.js",
+        "npm run audit:scholarship-truth",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "runner": "netlify",
+      "production_required": true,
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "product_surface": "education",
+      "owner_category": "Education and scholarship truth",
+      "severity_if_stale": "p1",
+      "id": "netlify:scheduled-discover-scholarships",
+      "display_name": "Netlify Scheduled Discover Scholarships",
+      "expected_schedule": "49 */6 * * *",
+      "netlify_function": "scheduled-discover-scholarships",
+      "sla_hours": 12,
+      "public_claims_supported": [
+        "scholarship_feed_count"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.scholarship_sources",
+        "public.scholarship_raw_items",
+        "live_data_store:scholarship-source-registry-latest"
+      ],
+      "health_endpoint": "/api/scholarships",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-discover-scholarships.js",
+        "npm run audit:scholarship-truth",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "runner": "netlify",
+      "production_required": true,
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "product_surface": "education",
+      "owner_category": "Education and scholarship truth",
+      "severity_if_stale": "p1",
+      "id": "netlify:scheduled-reconcile-scholarship-deadlines",
+      "display_name": "Netlify Scheduled Reconcile Scholarship Deadlines",
+      "expected_schedule": "18 */2 * * *",
+      "netlify_function": "scheduled-reconcile-scholarship-deadlines",
+      "sla_hours": 4,
+      "public_claims_supported": [
+        "scholarship_feed_count"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.scholarships",
+        "public.user_scholarship_reminders",
+        "public.scholarship_notification_jobs"
+      ],
+      "health_endpoint": "/api/scholarships",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-reconcile-scholarship-deadlines.js",
+        "npm run audit:scholarship-truth",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-source-health-watchdog",
+      "display_name": "Netlify Scheduled Source Health Watchdog",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "57 */2 * * *",
+      "netlify_function": "scheduled-source-health-watchdog",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 4,
+      "product_surface": "release_quality",
+      "public_claims_supported": [
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:automation-health-latest"
+      ],
+      "health_endpoint": "/api/data-freshness",
+      "owner_category": "Release quality gates",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-source-health-watchdog.js",
+        "npm run audit:schedules"
+      ]
+    },
+    {
+      "id": "netlify:scheduled-verify-scholarships",
+      "display_name": "Netlify Scheduled Verify Scholarships",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "34 */6 * * *",
+      "netlify_function": "scheduled-verify-scholarships",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 12,
+      "product_surface": "education",
+      "public_claims_supported": [
+        "scholarship_feed_count"
+      ],
+      "live_data_tables_or_blobs": [
+        "public.scholarships",
+        "public.scholarship_sources"
+      ],
+      "health_endpoint": "/api/scholarships",
+      "owner_category": "Education and scholarship truth",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "node --check netlify/functions/scheduled-verify-scholarships.js",
+        "npm run audit:scholarship-truth",
+        "npm run audit:automation-registry",
+        "node --check netlify/functions/scheduled-discover-scholarships.js",
+        "node --check netlify/functions/scheduled-reconcile-scholarship-deadlines.js"
+      ]
+    },
+    {
+      "id": "netlify:scrape-fx-rates",
+      "display_name": "Netlify Scrape Fx Rates",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "43 6 * * *",
+      "netlify_function": "scrape-fx-rates",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "live_market_data",
+      "public_claims_supported": [
+        "remittance_quotes_and_rates",
+        "live_data_and_realtime_language"
+      ],
+      "live_data_tables_or_blobs": [
+        "live_data_store:forex-latest"
+      ],
+      "health_endpoint": "/api/forex",
+      "owner_category": "Live data freshness audit",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/scrape-fx-rates.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:send-activity-milestones",
+      "display_name": "Netlify Send Activity Milestones",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "23 11 * * *",
+      "netlify_function": "send-activity-milestones",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/send-activity-milestones.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:send-lead-followups",
+      "display_name": "Netlify Send Lead Followups",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "37 12 * * *",
+      "netlify_function": "send-lead-followups",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/send-lead-followups.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:send-monthly-digest",
+      "display_name": "Netlify Send Monthly Digest",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "9 8 1 * *",
+      "netlify_function": "send-monthly-digest",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 744,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/send-monthly-digest.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:send-onboarding-nudges",
+      "display_name": "Netlify Send Onboarding Nudges",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "11 10 * * *",
+      "netlify_function": "send-onboarding-nudges",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 36,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/send-onboarding-nudges.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:send-signin-reminders",
+      "display_name": "Netlify Send Signin Reminders",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "29 9 * * 3",
+      "netlify_function": "send-signin-reminders",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 192,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "node --check netlify/functions/send-signin-reminders.js",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "netlify:send-weekly-newsletter",
+      "display_name": "Netlify Send Weekly Newsletter",
+      "runner": "netlify",
+      "production_required": true,
+      "expected_schedule": "19 8 * * 1",
+      "netlify_function": "send-weekly-newsletter",
+      "github_workflow": null,
+      "codex_automation_id": null,
+      "sla_hours": 192,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "node --check netlify/functions/send-weekly-newsletter.js",
+        "npm run audit:automation-registry"
+      ]
+    }
+  ],
+  "updated_at": "2026-05-19T00:00:00.000Z"
+}

@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>
@@ -694,19 +694,19 @@
     html += '</label>';
 
     if (type === 'select') {
-      html += '<select class="dg-form-select" id="' + id + '">';
+      html += '<select class="dg-form-select" id="' + id + '" aria-label="Select option">';
       html += '<option value="">Select...</option>';
       (options || []).forEach(function (o) {
         html += '<option value="' + o.v + '">' + o.l + '</option>';
       });
       html += '</select>';
     } else if (type === 'textarea') {
-      html += '<textarea class="dg-form-textarea" id="' + id + '" placeholder="' + (placeholder || '') + '"></textarea>';
+      html += '<textarea class="dg-form-textarea" id="' + id + '" placeholder="' + (placeholder || '') + '" aria-label="Text entry"></textarea>';
     } else {
       html += '<input class="dg-form-input" type="' + type + '" id="' + id + '"';
       if (placeholder) html += ' placeholder="' + placeholder + '"';
       if (defaultVal !== undefined && defaultVal !== null) html += ' value="' + defaultVal + '"';
-      html += '>';
+      html += ' aria-label="Input value">';
     }
     if (prefilled) {
       html += '<span class="dg-prefill-note">✓ Pre-filled from ' + (state.country ? state.country.name : '') + ' law — increase freely, do not set below statutory minimum</span>';

@@ -46,6 +46,7 @@ const STATIC_PATHS = {
   'crypto-latest': null,
   'gazette-last-ilo': null,
   'gazette-last-wb-tax': null,
+  'automation-health-latest': null,
 };
 
 // ── Read ────────────────────────────────────────────────────────────

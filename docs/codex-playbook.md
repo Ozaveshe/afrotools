@@ -157,6 +157,15 @@
 
 ## Automation Operating Model
 
+- Before browser-dependent tasks, run `npm run automation:preflight`.
+- If the preflight reports a missing Playwright Chromium browser, run
+  `npx playwright install chromium` when network/tool permissions allow it,
+  then rerun `npm run automation:preflight`.
+- If Playwright or Chromium is still unavailable, mark browser coverage as
+  blocked in the final report and do not claim full browser verification.
+- Use `npm run test:playwright:smoke` as the narrow automation smoke before
+  broader Playwright suites. It covers Scholarship Finder, the data-freshness
+  API route, and a high-risk live-data page.
 - Keep the active production automation set focused on the highest-value AfroTools loops:
   - `AM Content Batch`
   - `PM Content Batch`

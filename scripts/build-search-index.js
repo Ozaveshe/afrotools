@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.join(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'assets/js/components/tool-registry.js');
@@ -63,7 +64,7 @@ const records = loadRegistry()
   .map(searchRecord);
 
 fs.mkdirSync(path.dirname(SEARCH_INDEX_PATH), { recursive: true });
-fs.writeFileSync(SEARCH_INDEX_PATH, JSON.stringify(records) + '\n', 'utf8');
+writeFileSyncWithRetry(SEARCH_INDEX_PATH, JSON.stringify(records) + '\n', 'utf8');
 
 const bytes = fs.statSync(SEARCH_INDEX_PATH).size;
 console.log(`Built ${records.length} search index rows (${Math.round(bytes / 1024)} KB)`);

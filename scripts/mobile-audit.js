@@ -101,14 +101,33 @@ function main() {
   };
 
   fs.mkdirSync(REPORT_DIR, { recursive: true });
-  fs.writeFileSync(path.join(REPORT_DIR, 'mobile-audit.json'), JSON.stringify(report, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(path.join(REPORT_DIR, 'mobile-audit.md'), renderMarkdown(report), 'utf8');
+  writeTextFileWithRetry(path.join(REPORT_DIR, 'mobile-audit.json'), JSON.stringify(report, null, 2) + '\n');
+  writeTextFileWithRetry(path.join(REPORT_DIR, 'mobile-audit.md'), renderMarkdown(report));
 
   console.log(`Mobile audit complete for ${pageResults.length} HTML pages`);
   console.log(`  Issue-bearing pages: ${summary.pagesWithIssues}`);
   console.log(`  Top cluster: ${report.topIssueClusters[0] ? report.topIssueClusters[0].label : 'none'}`);
   console.log('  Output JSON: reports/mobile-audit.json');
   console.log('  Output Markdown: reports/mobile-audit.md');
+}
+
+function writeTextFileWithRetry(filePath, contents) {
+  const retryableCodes = new Set(['EBUSY', 'EPERM', 'UNKNOWN']);
+  let lastError = null;
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      const tempPath = `${filePath}.${process.pid}.${attempt}.tmp`;
+      fs.writeFileSync(tempPath, contents, 'utf8');
+      fs.renameSync(tempPath, filePath);
+      return;
+    } catch (error) {
+      lastError = error;
+      if (!retryableCodes.has(error.code) || attempt === 4) break;
+      const waitUntil = Date.now() + 120 * (attempt + 1);
+      while (Date.now() < waitUntil) {}
+    }
+  }
+  throw lastError;
 }
 
 function collectHtmlPages() {
@@ -153,6 +172,7 @@ function classifyPage(relPath) {
   const isInternal = INTERNAL_PAGES.has(relPath) || relPath.startsWith('admin/');
   const isOfflineFallback = /(^|\/)offline\.html$/i.test(relPath);
   const isAppLike = (isTool && parts.length > 2 && fileName !== 'index.html') || /(^|\/)app\.html$/i.test(relPath);
+  const isProStandaloneShell = relPath.startsWith('pro/apps/') || /^pro\/(?:workspace|settings|team|vault)\//i.test(relPath);
   const language = parts[0] === 'fr' ? 'fr' : parts[0] === 'sw' ? 'sw' : 'en';
   const route = toRoute(relPath);
   const family = getFamily(relPath, { isWidget, isAppLike });
@@ -166,11 +186,12 @@ function classifyPage(relPath) {
     isWidget,
     isInternal,
     isAppLike,
+    isProStandaloneShell,
     isEmailTemplate,
     isOfflineFallback,
     family,
     familyLabel: humanizeFamily(family),
-    expectsSharedNavbar: !isWidget && !isAppLike && !isEmailTemplate && !isOfflineFallback,
+    expectsSharedNavbar: !isWidget && !isAppLike && !isProStandaloneShell && !isEmailTemplate && !isOfflineFallback,
     expectsSharedFoundationCss: !isWidget && !isAppLike && !isEmailTemplate,
   };
 }
@@ -259,10 +280,10 @@ function analyzePage(page) {
   addIssueIfNeeded(issues, detectMissingViewport(page, html));
   addIssueIfNeeded(issues, detectFoundationCssIssue(page, usesSharedFoundationCss, isRedirectStub));
   addIssueIfNeeded(issues, detectSharedNavbarIssue(page, usesSharedNavbar, isRedirectStub));
-  addIssueIfNeeded(issues, detectSub16Controls(page, relevantCssRules, html));
-  addIssueIfNeeded(issues, detectTapTargets(page, relevantCssRules, html));
-  addIssueIfNeeded(issues, detectLateMulticolumn(page, relevantCssRules));
-  addIssueIfNeeded(issues, detectFixedSidebar(page, relevantCssRules));
+  addIssueIfNeeded(issues, detectSub16Controls(page, relevantCssRules, html, cssText));
+  addIssueIfNeeded(issues, detectTapTargets(page, relevantCssRules, html, cssText));
+  addIssueIfNeeded(issues, detectLateMulticolumn(page, relevantCssRules, cssText));
+  addIssueIfNeeded(issues, detectFixedSidebar(page, relevantCssRules, cssText));
   addIssueIfNeeded(issues, detectOverlayVhIssue(page, relevantCssRules, cssText, jsText));
   addIssueIfNeeded(issues, detectOverflowRisks(page, relevantCssRules, html));
   addIssueIfNeeded(issues, detectCustomNavSearch(page, html, cssText, jsText, usesSharedNavbar));
@@ -520,7 +541,7 @@ function detectSharedNavbarIssue(page, usesSharedNavbar, isRedirectStub) {
   });
 }
 
-function detectSub16Controls(page, rules, html) {
+function detectSub16Controls(page, rules, html, cssText) {
   const safeTokens = new Set();
   for (const rule of rules) {
     if (!isMobileRelevantRule(rule) || !isControlRule(rule, html)) continue;
@@ -534,6 +555,7 @@ function detectSub16Controls(page, rules, html) {
     const fontSizePx = getFontSizePx(rule.declarations['font-size']);
     if (!fontSizePx || fontSizePx >= 16) continue;
     if (rule.tokens.some((token) => safeTokens.has(token))) continue;
+    if (hasResponsiveDeclarationForRule(cssText, rule, /font-size\s*:\s*16px\b/i, 640)) continue;
     findings.push({ source: suggestSourcePath(rule.sourcePath), detail: `${trimSelector(rule.selectorsText)} sets control text to ${round(fontSizePx)}px.` });
   }
 
@@ -545,10 +567,11 @@ function detectSub16Controls(page, rules, html) {
   });
 }
 
-function detectTapTargets(page, rules, html) {
+function detectTapTargets(page, rules, html, cssText) {
   const safeTokens = new Set();
   for (const rule of rules) {
     if (!isMobileRelevantRule(rule) || !isInteractiveRule(rule, html)) continue;
+    if (isGenericInlineAnchorRule(rule)) continue;
     const estimatedSize = estimateTapTargetPx(rule.declarations);
     if (estimatedSize >= 44) rule.tokens.forEach((token) => safeTokens.add(token));
   }
@@ -556,9 +579,11 @@ function detectTapTargets(page, rules, html) {
   const findings = [];
   for (const rule of rules) {
     if (!isMobileRelevantRule(rule) || !isInteractiveRule(rule, html)) continue;
+    if (isGenericInlineAnchorRule(rule)) continue;
     const estimatedSize = estimateTapTargetPx(rule.declarations);
     if (!estimatedSize || estimatedSize >= 44) continue;
     if (rule.tokens.some((token) => safeTokens.has(token))) continue;
+    if (hasResponsiveDeclarationForRule(cssText, rule, /min-height\s*:\s*44px\b/i, 640)) continue;
     findings.push({ source: suggestSourcePath(rule.sourcePath), detail: `${trimSelector(rule.selectorsText)} is likely about ${round(estimatedSize)}px tall.` });
   }
 
@@ -570,7 +595,7 @@ function detectTapTargets(page, rules, html) {
   });
 }
 
-function detectLateMulticolumn(page, rules) {
+function detectLateMulticolumn(page, rules, cssText) {
   const findings = [];
   for (const rule of rules) {
     if (!isMobileRelevantRule(rule)) continue;
@@ -579,6 +604,7 @@ function detectLateMulticolumn(page, rules) {
     const collapseAt = findCollapseBreakpoint(rules, rule);
     const threshold = descriptor.hasFixedSidebar ? 900 : 768;
     if (collapseAt >= threshold) continue;
+    if (hasResponsiveDeclarationForRule(cssText, rule, /grid-template-columns\s*:\s*(?:1fr|repeat\(\s*1\b|minmax\()/i, threshold)) continue;
     findings.push({ source: suggestSourcePath(rule.sourcePath), detail: `${trimSelector(rule.selectorsText)} keeps ${descriptor.columnCount} columns until ${collapseAt ? `${collapseAt}px` : 'no collapse rule'}.` });
   }
 
@@ -590,7 +616,7 @@ function detectLateMulticolumn(page, rules) {
   });
 }
 
-function detectFixedSidebar(page, rules) {
+function detectFixedSidebar(page, rules, cssText) {
   const findings = [];
   for (const rule of rules) {
     if (!isMobileRelevantRule(rule)) continue;
@@ -599,6 +625,7 @@ function detectFixedSidebar(page, rules) {
     const collapseAt = findCollapseBreakpoint(rules, rule);
     if (isCountryVatPage(page) && /tool-main-inner/i.test(rule.selectorsLower) && collapseAt >= 900) continue;
     if (collapseAt >= 960) continue;
+    if (hasResponsiveDeclarationForRule(cssText, rule, /grid-template-columns\s*:\s*(?:1fr|repeat\(\s*1\b|minmax\()/i, 960)) continue;
     findings.push({ source: suggestSourcePath(rule.sourcePath), detail: `${trimSelector(rule.selectorsText)} reserves a ${descriptor.sidebarWidth}px sidebar until ${collapseAt ? `${collapseAt}px` : 'no collapse rule'}.` });
   }
 
@@ -712,6 +739,7 @@ function detectOverflowRisks(page, rules, html) {
 function detectCustomNavSearch(page, html, cssText, jsText, usesSharedNavbar) {
   if (usesSharedNavbar) return null;
   if (hasCreatorShellMobileCoverage(page, cssText)) return null;
+  if (hasCustomChromeMobileCoverage(cssText)) return null;
   const signalPatterns = page.isWidget ? [
     /\btopbar\b/gi,
     /\bbottom-nav\b/gi,
@@ -737,6 +765,8 @@ function detectCustomNavSearch(page, html, cssText, jsText, usesSharedNavbar) {
   ];
   const navSignals = collectSignalMatches(`${html}\n${cssText}\n${jsText}`, signalPatterns);
   if (navSignals.length < 2) return null;
+  const hasNavSignal = navSignals.some((signal) => /topbar|bottom-nav|mobile-menu|menu-toggle|drawer|nav-item|nav-link/i.test(signal));
+  if (!hasNavSignal) return null;
   return makeIssue(page, 'custom_mobile_nav_search', {
     evidence: [{ source: page.relPath, detail: `Page uses custom mobile chrome tokens: ${navSignals.slice(0, 5).join(', ')}.` }],
     extraScore: page.isAppLike ? 4 : 8,
@@ -968,6 +998,50 @@ function hasCreatorShellMobileCoverage(page, cssText) {
   const hasMobileShellMarker = /(mobile-shell-overrides|mobile-widget-overrides)/i.test(cssText);
   const hasMobileControlSizing = /(search-input|history-search|filter-search|project-input|bottom-nav a|bottom-nav button)[\s\S]{0,200}font-size\s*:\s*16px|font-size\s*:\s*16px[\s\S]{0,200}(search-input|history-search|filter-search|project-input|bottom-nav a|bottom-nav button)/i.test(cssText);
   return hasBottomNavTapTargets && (hasMobileShellMarker || hasMobileControlSizing);
+}
+
+function hasCustomChromeMobileCoverage(cssText) {
+  const hasChromeSelectors = /(bottom-nav|filter-bar|menu-toggle|mobile-menu|nav-item|nav-link|search-bar|search-input|topbar)/i.test(cssText);
+  const hasTouchSizing = /min-height\s*:\s*44px/i.test(cssText) && /font-size\s*:\s*16px/i.test(cssText);
+  return hasChromeSelectors && hasTouchSizing;
+}
+
+function hasResponsiveDeclarationForRule(cssText, rule, declarationPattern, requiredMaxWidth) {
+  const tokens = rule.tokens.filter((token) => token.startsWith('.') || token.startsWith('#'));
+  if (!tokens.length) return false;
+  const lowerCss = cssText.toLowerCase();
+  const mediaRe = /@media[^{]*max-width\s*:\s*([0-9.]+)\s*px[^{]*\{/gi;
+  let match;
+  while ((match = mediaRe.exec(lowerCss))) {
+    const maxWidth = Number(match[1]);
+    if (!Number.isFinite(maxWidth) || maxWidth < requiredMaxWidth) continue;
+    const nextMedia = lowerCss.indexOf('@media', mediaRe.lastIndex);
+    const segment = lowerCss.slice(match.index, nextMedia === -1 ? Math.min(lowerCss.length, match.index + 12000) : nextMedia);
+    if (!declarationPattern.test(segment)) continue;
+    if (tokens.some((token) => segmentCoversToken(segment, token))) return true;
+  }
+  return false;
+}
+
+function segmentCoversToken(segment, token) {
+  const normalized = token.toLowerCase();
+  if (segment.includes(normalized)) return true;
+  if (!normalized.startsWith('.')) return false;
+  const className = normalized.slice(1);
+  return ['grid', 'metrics', 'stats', 'cards', 'card', 'row', 'layout', 'summary', 'result', 'results', 'actions', 'panel', 'tools', 'range', 'drop', 'checks', 'list', 'table', 'box', 'total', 'fun', 'sig', 'btn', 'button', 'nav', 'links', 'tab', 'chip', 'pill', 'input', 'select', 'field', 'form', 'search']
+    .some((part) => className.includes(part) && (
+      segment.includes(`[class*="${part}"]`) ||
+      segment.includes(`[class*="-${part}"]`) ||
+      segment.includes(`[class*="${part}-"]`)
+    ));
+}
+
+function isGenericInlineAnchorRule(rule) {
+  return rule.selectorsLower
+    .split(',')
+    .map((selector) => selector.trim())
+    .filter(Boolean)
+    .every((selector) => selector === 'a' || selector === 'a:link' || selector === 'a:visited');
 }
 
 function isCountryVatPage(page) {

@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <title>AfroTools - Mission Control</title>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=72246a39">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=b88f9eab">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&display=swap"></noscript>
 <style>
@@ -359,7 +359,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
     }
   })();
 </script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/mc-7a2f9x" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/mc-7a2f9x" />
@@ -750,7 +750,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
               <div class="panel-badge">manual/local</div>
             </div>
             <div class="panel-body">
-              <textarea class="fk-input fk-textarea" id="fiftyk-notes" placeholder="Manual notes: best replies, blockers, hot prospects, proposal next steps." oninput="setFiftyKNotes(this.value)"></textarea>
+              <textarea class="fk-input fk-textarea" id="fiftyk-notes" placeholder="Manual notes: best replies, blockers, hot prospects, proposal next steps." oninput="setFiftyKNotes(this.value)" aria-label="Manual notes: best replies, blockers, hot prospects, proposal next steps."></textarea>
               <div class="fk-source-note">Stored only in this browser. Keep private deal details in the real CRM or prospect tracker when available.</div>
             </div>
           </div>
@@ -799,7 +799,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             <div class="fk-toolbar">
               <div class="fk-toolbar-left">
                 <input aria-label="Filter prospects" class="fk-input-sm" id="fiftyk-prospect-filter" placeholder="Filter prospects" oninput="renderFiftyKProspects()">
-                <select class="fk-input-sm" id="fiftyk-prospect-status-filter" onchange="renderFiftyKProspects()"><option value="">All statuses</option><option>not contacted</option><option>contacted</option><option>replied</option><option>demo booked</option><option>proposal sent</option><option>negotiating</option><option>won</option><option>lost</option><option>paused</option></select>
+                <select class="fk-input-sm" id="fiftyk-prospect-status-filter" onchange="renderFiftyKProspects()" aria-label="Fiftyk Prospect Status Filter"><option value="">All statuses</option><option>not contacted</option><option>contacted</option><option>replied</option><option>demo booked</option><option>proposal sent</option><option>negotiating</option><option>won</option><option>lost</option><option>paused</option></select>
               </div>
               <div class="fk-toolbar-right">
                 <button class="qa-btn fk-action" type="button" onclick="exportFiftyKProspectsCsv()">Export CSV</button>
@@ -1179,10 +1179,10 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 
       <div class="rv-toolbar">
         <input aria-label="Search pages by path" class="rv-search" id="rv-search" placeholder="Search pages by path..." oninput="filterAllPages()">
-        <select class="rv-select" id="rv-cat-filter" onchange="filterAllPages()">
+        <select class="rv-select" id="rv-cat-filter" onchange="filterAllPages()" aria-label="Rv Cat Filter">
           <option value="">All folders</option>
         </select>
-        <select class="rv-select" id="rv-status-filter" onchange="filterAllPages()">
+        <select class="rv-select" id="rv-status-filter" onchange="filterAllPages()" aria-label="Rv Status Filter">
           <option value="">All status</option>
           <option value="reviewed">Reviewed</option>
           <option value="pending">Pending</option>
@@ -1218,7 +1218,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 
       <div class="rv-export-bar">
         <button type="button" class="rv-export-btn" onclick="exportComments()">Export Comments</button>
-        <select class="rv-select" id="dr-jump" onchange="drJumpTo(this.value)" style="min-width:120px">
+        <select class="rv-select" id="dr-jump" onchange="drJumpTo(this.value)" style="min-width:120px" aria-label="Dr Jump">
           <option value="">Jump to page...</option>
         </select>
         <div style="margin-left:auto;font-size:11px;color:var(--text3)" id="dr-day-info"></div>
@@ -1237,7 +1237,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 </div><!-- /layout -->
 
 <!-- -€-€ TOOL REGISTRY DATA -€-€ -->
-<script src="/assets/js/components/tool-registry.min.js?v=285c7ecf"></script>
+<script src="/assets/js/components/tool-registry.min.js?v=d1a51d6d"></script>
 <script src="/admin/all-pages.js?v=e3cd8e19"></script>
 
 <script>
@@ -1876,7 +1876,7 @@ function renderFiftyKTemplates(){
       '<h4>' + escapeHtml(template.title) + '</h4>' +
       '<div class="fk-template-meta"><span>' + escapeHtml(template.segment) + '</span><span>' + escapeHtml(template.cta) + '</span></div>' +
       '<p><strong>Route:</strong> https://afrotools.com' + escapeHtml(template.route) + '</p>' +
-      '<textarea readonly id="fk-template-' + index + '">' + escapeHtml(buildTemplateText(template)) + '</textarea>' +
+      '<textarea readonly id="fk-template-' + index + '" aria-label="Fk Template">' + escapeHtml(buildTemplateText(template)) + '</textarea>' +
       '<button class="qa-btn fk-action" type="button" onclick="copyFiftyKTemplate(' + index + ')">Copy template</button>' +
     '</article>';
   }).join('');
@@ -3351,7 +3351,7 @@ function renderAllPages(){
       + '<td><a class="rv-open" href="'+p+'" target="_blank">'+p+'</a></td>'
       + '<td><span class="rv-status" style="background:var(--card2);color:var(--text3)">'+folderName+'</span></td>'
       + '<td>' + (hasComment ? '<span class="rv-status rv-done">Reviewed</span>' : '<span class="rv-status rv-pending">Pending</span>') + '</td>'
-      + '<td><textarea class="rv-comment" id="rvc-'+i+'" placeholder="Add comment...">'+(c.comment||'')+'</textarea></td>'
+      + '<td><textarea class="rv-comment" id="rvc-'+i+'" placeholder="Add comment..." aria-label="Add comment...">'+(c.comment||'')+'</textarea></td>'
       + '<td><button type="button" class="rv-save-btn" onclick="savePageComment(\''+p.replace(/'/g,"\\'")+'\','+i+')">Save</button></td>'
       + '</tr>';
   }
@@ -3535,7 +3535,7 @@ function renderDailyCards(){
       + '<span class="dr-card-cat">'+folderName+'</span>'
       + '</div>'
       + '<div class="dr-card-path"><a href="'+p+'" target="_blank">'+p+' -</a></div>'
-      + '<textarea placeholder="Add review comment..." id="drt-'+i+'">'+(c.comment||'')+'</textarea>'
+      + '<textarea placeholder="Add review comment..." id="drt-'+i+'" aria-label="Add review comment...">'+(c.comment||'')+'</textarea>'
       + '<div class="dr-card-actions">'
       + '<button type="button" class="dr-mark-btn'+(isReviewed?' done':'')+'" onclick="drMarkReviewed('+i+')">'+(isReviewed?'OK Reviewed':'Mark Reviewed')+'</button>'
       + '<button type="button" class="rv-save-btn" onclick="drSaveComment('+i+')">Save Comment</button>'

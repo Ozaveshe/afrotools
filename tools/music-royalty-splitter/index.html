@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
@@ -72,7 +72,7 @@ a{text-decoration:none;color:inherit}
       </div>
       <div class="en-field">
         <label class="en-label">Country</label>
-        <select id="country" class="en-select">
+        <select id="country" class="en-select" aria-label="Country">
           <option value="NG">Nigeria 🇳🇬 (NGN)</option>
           <option value="KE">Kenya 🇰🇪 (KES)</option>
           <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
@@ -96,7 +96,7 @@ a{text-decoration:none;color:inherit}
       </div>
       <div class="en-field">
         <label class="en-label">Royalty Period</label>
-        <select id="period" class="en-select">
+        <select id="period" class="en-select" aria-label="Period">
           <option value="1">Monthly</option>
           <option value="3" selected>Quarterly</option>
           <option value="12">Annual</option>
@@ -183,7 +183,7 @@ function addCollab(name,role,pct){
   div.className='collab-row';
   div.id='cr'+id;
   div.innerHTML='<div class="en-field"><label class="en-label">Name</label><input aria-label="E.g. Davido" type="text" id="cn'+id+'" class="en-input" placeholder="e.g. Davido" value="'+(name||'')+'"></div>'+
-    '<div class="en-field"><label class="en-label">Role</label><select id="cr_role'+id+'" class="en-select">'+ROLES.map(function(r){return '<option'+(r==role?' selected':'')+'>'+r+'</option>'}).join('')+'</select></div>'+
+    '<div class="en-field"><label class="en-label">Role</label><select id="cr_role'+id+'" class="en-select" aria-label="Cr Role">'+ROLES.map(function(r){return '<option'+(r==role?' selected':'')+'>'+r+'</option>'}).join('')+'</select></div>'+
     '<div class="en-field"><label class="en-label">Split %</label><input aria-label="Cp'+id+'" type="number" id="cp'+id+'" class="en-input" placeholder="25" min="0" max="100" value="'+(pct||'')+'" oninput="validateSplits()"></div>'+
     '<button type="button" class="remove-btn" onclick="removeCollab('+id+')" title="Remove">&times;</button>';
   document.getElementById('collabList').appendChild(div);

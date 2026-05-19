@@ -26,11 +26,24 @@ const DATA_READ_KEY =
 const CACHE_KEY = 'scholarships-latest';
 const DEFAULT_REMINDER_OFFSETS = [30, 14, 7, 1, 0];
 const MIRROR_STALE_HOURS = 36;
+const PUBLIC_MIN_SCHOLARSHIP_COUNT = toPositiveInteger(
+  process.env.SCHOLARSHIP_PUBLIC_MIN_COUNT || process.env.PUBLIC_MIN_SCHOLARSHIP_COUNT,
+  50
+);
+const SCHOLARSHIP_PUBLIC_MIN_COUNT = PUBLIC_MIN_SCHOLARSHIP_COUNT;
 const SOURCE_KEYS = {
   primary: 'afrotools-data-catalog',
   backup: 'afrotools-curated-backup'
 };
+const SOURCE_TYPES = new Set(['official_page', 'rss', 'api', 'curated_import', 'permitted_scrape']);
+const MANUAL_REVIEW_PARSER_KEYS = new Set([
+  'manual_review_official_page',
+  'manual_review_official_directory',
+  'manual_review_official_portal',
+  'manual_review_official_catalog'
+]);
 
+let sourceRegistryCache = null;
 let authClient = null;
 
 function getAuthClient() {
@@ -72,6 +85,16 @@ function toNumber(value) {
   if (value === null || value === undefined || value === '') return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
+}
+
+function toPositiveInteger(value, fallback) {
+  const number = parseInt(value, 10);
+  return Number.isInteger(number) && number > 0 ? number : fallback;
+}
+
+function formatScholarshipClaimLabel(count) {
+  const value = Math.max(0, Math.floor(Number(count) || 0));
+  return value + ' Scholarship' + (value === 1 ? '' : 's');
 }
 
 function slugify(value) {
@@ -143,8 +166,121 @@ function getFallbackScholarships() {
   return [];
 }
 
+function defaultScholarshipSourceDefinitions() {
+  return [
+    {
+      source_key: SOURCE_KEYS.primary,
+      name: 'AfroTools scholarship catalog import',
+      source_type: 'api',
+      base_url: 'internal:data-instance-scholarships',
+      active: true,
+      cadence: 'daily',
+      parser_key: 'data_instance_scholarship_catalog',
+      country_scope: ['ALL'],
+      destination_scope: ['global'],
+      trust_level: 'platform',
+      robots_or_policy_note: 'Internal structured import from the AfroTools scholarship data catalog.'
+    },
+    {
+      source_key: SOURCE_KEYS.backup,
+      name: 'AfroTools curated scholarship backup',
+      source_type: 'curated_import',
+      base_url: 'repo:education-scholarship-feed-fallback',
+      active: false,
+      cadence: 'manual',
+      parser_key: 'curated_backup_catalog',
+      country_scope: ['ALL'],
+      destination_scope: ['global'],
+      trust_level: 'curated',
+      robots_or_policy_note: 'Repo-backed fallback catalog used when the live scholarship pipeline is unavailable.'
+    }
+  ];
+}
+
+function cloneSourceRow(row) {
+  return Object.assign({}, row, {
+    country_scope: ensureArray(row.country_scope),
+    destination_scope: ensureArray(row.destination_scope)
+  });
+}
+
+function normalizeSourceDefinition(input, index) {
+  const source = input || {};
+  const sourceKey = String(source.source_key || '').trim();
+  const name = String(source.name || '').trim();
+  const sourceType = String(source.source_type || '').trim();
+  const baseUrl = String(source.base_url || '').trim();
+  const parserKey = String(source.parser_key || '').trim();
+  const location = sourceKey || 'source #' + (index + 1);
+
+  if (!sourceKey) throw new Error('Scholarship source registry entry missing source_key at index ' + index);
+  if (!name) throw new Error('Scholarship source registry entry missing name for ' + location);
+  if (!SOURCE_TYPES.has(sourceType)) throw new Error('Scholarship source registry entry has unsupported source_type for ' + location);
+  if (!baseUrl) throw new Error('Scholarship source registry entry missing base_url for ' + location);
+  if (!parserKey) throw new Error('Scholarship source registry entry missing parser_key for ' + location);
+
+  return {
+    source_key: sourceKey,
+    name: name,
+    source_type: sourceType,
+    base_url: baseUrl,
+    active: source.active === undefined ? true : !!source.active,
+    cadence: String(source.cadence || 'manual').trim() || 'manual',
+    parser_key: parserKey,
+    country_scope: uniqueStrings(source.country_scope || []),
+    destination_scope: uniqueStrings(source.destination_scope || []),
+    trust_level: String(source.trust_level || 'official').trim() || 'official',
+    robots_or_policy_note: String(source.robots_or_policy_note || '').trim() || null
+  };
+}
+
+function getDefaultScholarshipSourceRows() {
+  return defaultScholarshipSourceDefinitions().map(normalizeSourceDefinition);
+}
+
+function readScholarshipSourceRegistryPayload() {
+  try {
+    return require('../../../data/scholarships/official-sources.json');
+  } catch (error) {
+    if (error && error.code === 'MODULE_NOT_FOUND') return null;
+    throw error;
+  }
+}
+
+function loadScholarshipSourceRegistry(options) {
+  const settings = options || {};
+  if (!settings.force && sourceRegistryCache) {
+    return sourceRegistryCache.map(cloneSourceRow);
+  }
+
+  const byKey = new Map();
+  getDefaultScholarshipSourceRows().forEach(function (row) {
+    byKey.set(row.source_key, row);
+  });
+
+  const payload = readScholarshipSourceRegistryPayload();
+  if (payload) {
+    if (!Array.isArray(payload.sources)) {
+      throw new Error('Scholarship source registry must expose a sources array');
+    }
+    payload.sources.map(normalizeSourceDefinition).forEach(function (row) {
+      byKey.set(row.source_key, row);
+    });
+  }
+
+  sourceRegistryCache = Array.from(byKey.values()).sort(function (left, right) {
+    return left.source_key.localeCompare(right.source_key);
+  });
+  return sourceRegistryCache.map(cloneSourceRow);
+}
+
+function isManualReviewParser(source) {
+  return !!source && MANUAL_REVIEW_PARSER_KEYS.has(String(source.parser_key || '').trim());
+}
+
 function buildLegacyScholarship(row) {
   const snapshot = row && row.raw_snapshot && typeof row.raw_snapshot === 'object' ? row.raw_snapshot : {};
+  const source = row && row._source && typeof row._source === 'object' ? row._source : {};
   return {
     id: row.id,
     slug: row.slug,
@@ -155,6 +291,11 @@ function buildLegacyScholarship(row) {
     info_url: snapshot.info_url || row.official_url || row.source_url || '',
     source_url: row.source_url || snapshot.source_url || snapshot.info_url || snapshot.application_url || '',
     official_url: row.official_url || snapshot.official_url || snapshot.info_url || snapshot.application_url || '',
+    source_key: row.source_key || snapshot.source_key || source.source_key || '',
+    source_type: row.source_type || snapshot.source_type || source.source_type || '',
+    source_name: row.source_name || snapshot.source_name || source.name || '',
+    parser_key: row.parser_key || snapshot.parser_key || source.parser_key || '',
+    trust_level: row.trust_level || snapshot.trust_level || source.trust_level || '',
     levels: ensureArray(snapshot.levels || row.study_levels),
     study_levels: ensureArray(row.study_levels),
     destinations: ensureArray(snapshot.destinations || row.destination_countries),
@@ -238,10 +379,14 @@ function deriveModeFromRows(rows, options) {
 function buildFeedMeta(rows, options) {
   const mode = deriveModeFromRows(rows, options || {});
   const lastCheckedAt = (options && options.lastCheckedAt) || maxTimestamp(rows);
-  const count = Array.isArray(rows) ? rows.length : 0;
+  const countOverride = options && options.count !== undefined ? Number(options.count) : NaN;
+  const count = Number.isFinite(countOverride) && countOverride >= 0
+    ? Math.floor(countOverride)
+    : (Array.isArray(rows) ? rows.length : 0);
   const lastCheckedLabel = formatTimestamp(lastCheckedAt);
   const hasSourceError = !!(options && options.error);
-  const isDegraded = mode === 'cached' || mode === 'fallback' || hasSourceError;
+  const isLimited = count > 0 && count < PUBLIC_MIN_SCHOLARSHIP_COUNT;
+  const isDegraded = mode === 'cached' || mode === 'fallback' || hasSourceError || isLimited;
 
   let label = 'Live feed';
   let message = 'Live scholarship feed refreshed.';
@@ -264,6 +409,18 @@ function buildFeedMeta(rows, options) {
     message = 'Live scholarship feed refreshed' + (lastCheckedLabel ? ' on ' + lastCheckedLabel + '.' : '.');
   }
 
+  if (isLimited) {
+    const limitedSourceLabel = mode === 'fallback'
+      ? 'fallback scholarship dataset'
+      : (mode === 'cached' ? 'cached verified scholarship feed' : 'verified scholarship feed');
+    label = 'Limited live feed';
+    message = 'Showing ' + formatScholarshipClaimLabel(count) +
+      ' from the ' + limitedSourceLabel + '. This is below the public coverage threshold of ' +
+      PUBLIC_MIN_SCHOLARSHIP_COUNT +
+      ', so AfroTools marks the catalog limited while sources are expanded.';
+    tone = 'warn';
+  }
+
   if (options && options.error && mode !== 'fallback') {
     message += ' Feed note: ' + String(options.error);
   }
@@ -278,6 +435,9 @@ function buildFeedMeta(rows, options) {
     lastCheckedAt: lastCheckedAt || null,
     lastCheckedLabel: lastCheckedLabel,
     isDegraded: isDegraded,
+    isLimited: isLimited,
+    publicMinCount: PUBLIC_MIN_SCHOLARSHIP_COUNT,
+    claimSafeLabel: formatScholarshipClaimLabel(count),
     stale: mode === 'cached',
     error: options && options.error ? String(options.error) : ''
   };
@@ -317,34 +477,7 @@ async function readCachedScholarshipPayload() {
 
 async function ensureScholarshipSources(client) {
   if (!client) return [];
-  const rows = [
-    {
-      source_key: SOURCE_KEYS.primary,
-      name: 'AfroTools scholarship catalog import',
-      source_type: 'api',
-      base_url: 'internal:data-instance-scholarships',
-      active: true,
-      cadence: 'daily',
-      parser_key: 'data_instance_scholarship_catalog',
-      country_scope: ['ALL'],
-      destination_scope: ['global'],
-      trust_level: 'platform',
-      robots_or_policy_note: 'Internal structured import from the AfroTools scholarship data catalog.'
-    },
-    {
-      source_key: SOURCE_KEYS.backup,
-      name: 'AfroTools curated scholarship backup',
-      source_type: 'curated_import',
-      base_url: 'repo:education-scholarship-feed-fallback',
-      active: false,
-      cadence: 'manual',
-      parser_key: 'curated_backup_catalog',
-      country_scope: ['ALL'],
-      destination_scope: ['global'],
-      trust_level: 'curated',
-      robots_or_policy_note: 'Repo-backed fallback catalog used when the live scholarship pipeline is unavailable.'
-    }
-  ];
+  const rows = loadScholarshipSourceRegistry();
 
   const { error } = await client.from('scholarship_sources').upsert(rows, {
     onConflict: 'source_key'
@@ -386,7 +519,26 @@ async function fetchMirrorRows(client) {
     .order('title', { ascending: true })
     .limit(500);
   if (error) throw error;
-  return Array.isArray(data) ? data : [];
+
+  const rows = Array.isArray(data) ? data : [];
+  const sourceIds = uniqueValues(rows.map(function (row) { return row.last_source_id; }));
+  if (!sourceIds.length) return rows;
+
+  const { data: sourceRows, error: sourceError } = await client
+    .from('scholarship_sources')
+    .select('id, source_key, name, source_type, parser_key, trust_level')
+    .in('id', sourceIds);
+  if (sourceError) throw sourceError;
+
+  const sourceMap = new Map((sourceRows || []).map(function (source) {
+    return [source.id, source];
+  }));
+
+  return rows.map(function (row) {
+    return Object.assign({}, row, {
+      _source: row.last_source_id ? sourceMap.get(row.last_source_id) || null : null
+    });
+  });
 }
 
 async function fetchDataInstanceScholarships() {
@@ -429,7 +581,16 @@ function normalizeScholarshipRecord(raw, source) {
   const summary = String(raw.summary || raw.description || '').trim();
   const officialUrl = String(raw.official_url || raw.info_url || raw.application_url || raw.source_url || '').trim();
   const sourceUrl = String(raw.source_url || raw.application_url || raw.info_url || officialUrl).trim();
+  if (!sourceUrl) return null;
   const slug = slugify(raw.slug || title + '-' + (raw.provider || raw.destination || raw.country || 'scholarship'));
+  const sourceSnapshot = Object.assign({}, raw, {
+    source_key: source.source_key || '',
+    source_type: source.source_type || '',
+    source_name: source.name || '',
+    parser_key: source.parser_key || '',
+    trust_level: source.trust_level || '',
+    last_source_id: source.id || null
+  });
 
   return {
     slug: slug,
@@ -448,13 +609,13 @@ function normalizeScholarshipRecord(raw, source) {
     deadline_text: String(raw.deadline_text || '').trim() || null,
     status: status,
     confidence_mode: confidenceMode,
-    proof_level: String(raw.proof_level || (officialUrl ? 'official_link' : 'platform_feed')).trim(),
+    proof_level: String(raw.proof_level || (officialUrl ? 'official_link' : 'source_link')).trim(),
     summary: summary || null,
     last_seen_at: new Date().toISOString(),
     last_verified_at: new Date().toISOString(),
     is_featured: !!raw.is_featured,
     is_active: raw.is_active === false ? false : true,
-    raw_snapshot: raw,
+    raw_snapshot: sourceSnapshot,
     last_source_id: source.id
   };
 }
@@ -472,7 +633,7 @@ async function importSourceItems(client, source, rawItems) {
       fetched_at: new Date().toISOString(),
       source_url: normalized.source_url,
       raw_hash: buildHash(rawItem),
-      raw_payload: rawItem,
+      raw_payload: normalized.raw_snapshot,
       parse_status: 'parsed',
       normalized_slug: normalized.slug
     });
@@ -515,13 +676,111 @@ async function importSourceItems(client, source, rawItems) {
   };
 }
 
+async function createManualReviewSourceRecord(client, source, reason) {
+  if (!client || !source || !source.id) {
+    return { itemsSeen: 0, itemsCreated: 0, itemsUpdated: 0, warning: reason || 'manual_review_required' };
+  }
+
+  const checkedAt = new Date().toISOString();
+  const payload = {
+    manual_review_required: true,
+    reason: reason || 'manual_review_required',
+    source_key: source.source_key || '',
+    source_type: source.source_type || '',
+    source_name: source.name || '',
+    base_url: source.base_url || '',
+    cadence: source.cadence || '',
+    parser_key: source.parser_key || '',
+    country_scope: ensureArray(source.country_scope),
+    destination_scope: ensureArray(source.destination_scope),
+    trust_level: source.trust_level || '',
+    robots_or_policy_note: source.robots_or_policy_note || '',
+    checked_at: checkedAt
+  };
+
+  const { error } = await client.from('scholarship_raw_items').upsert({
+    source_id: source.id,
+    fetched_at: checkedAt,
+    source_url: source.base_url || null,
+    raw_hash: buildHash({ source_key: source.source_key, parser_key: source.parser_key, manual_review_required: true }),
+    raw_payload: payload,
+    parse_status: 'skipped',
+    normalized_slug: null
+  }, { onConflict: 'source_id,raw_hash' });
+  if (error) throw error;
+
+  return { itemsSeen: 0, itemsCreated: 0, itemsUpdated: 0, warning: payload.reason };
+}
+
+async function retireStaleScholarships(client) {
+  if (!client) return { inactiveCount: 0, unclearCount: 0, scholarshipIds: [] };
+
+  const { data: backupSource, error: backupError } = await client
+    .from('scholarship_sources')
+    .select('id')
+    .eq('source_key', SOURCE_KEYS.backup)
+    .maybeSingle();
+  if (backupError) throw backupError;
+
+  const backupSourceId = backupSource && backupSource.id ? backupSource.id : null;
+  const inactiveBefore = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const unclearBefore = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  let inactiveQuery = client
+    .from('scholarships')
+    .update({
+      is_active: false,
+      status: 'unclear',
+      proof_level: 'inactive_not_seen_30d'
+    })
+    .eq('is_active', true)
+    .not('last_source_id', 'is', null)
+    .lte('last_seen_at', inactiveBefore);
+  if (backupSourceId) inactiveQuery = inactiveQuery.neq('last_source_id', backupSourceId);
+  const { data: inactiveRows, error: inactiveError } = await inactiveQuery.select('id');
+  if (inactiveError) throw inactiveError;
+
+  let unclearQuery = client
+    .from('scholarships')
+    .update({
+      status: 'unclear',
+      proof_level: 'manual_review'
+    })
+    .eq('is_active', true)
+    .not('last_source_id', 'is', null)
+    .lte('last_seen_at', unclearBefore);
+  if (backupSourceId) unclearQuery = unclearQuery.neq('last_source_id', backupSourceId);
+  const { data: unclearRows, error: unclearError } = await unclearQuery.select('id');
+  if (unclearError) throw unclearError;
+
+  const scholarshipIds = uniqueValues([].concat(
+    (inactiveRows || []).map(function (row) { return row.id; }),
+    (unclearRows || []).map(function (row) { return row.id; })
+  ));
+
+  return {
+    inactiveCount: (inactiveRows || []).length,
+    unclearCount: (unclearRows || []).length,
+    scholarshipIds: scholarshipIds
+  };
+}
+
 async function fetchSourceItems(source) {
-  if (!source || !source.parser_key) return [];
+  if (!source || !source.parser_key) {
+    return { rawItems: [], manualReview: true, warning: 'manual_review_required: missing parser key' };
+  }
   if (source.parser_key === 'data_instance_scholarship_catalog') {
-    return fetchDataInstanceScholarships();
+    return { rawItems: await fetchDataInstanceScholarships(), manualReview: false };
   }
   if (source.parser_key === 'curated_backup_catalog') {
-    return getFallbackScholarships();
+    return { rawItems: getFallbackScholarships(), manualReview: false };
+  }
+  if (isManualReviewParser(source)) {
+    return {
+      rawItems: [],
+      manualReview: true,
+      warning: 'manual_review_required: ' + source.parser_key
+    };
   }
   throw new Error('Unsupported scholarship parser: ' + source.parser_key);
 }
@@ -543,11 +802,28 @@ async function syncScholarshipMirror(options) {
   let sawAnyData = false;
   let primaryError = null;
   const touchedScholarshipIds = [];
+  let staleRetirement = null;
 
   for (const source of (sources || [])) {
     const runId = await beginIngestRun(client, source.id);
     try {
-      const rawItems = await fetchSourceItems(source);
+      const fetchResult = await fetchSourceItems(source);
+      if (fetchResult.manualReview) {
+        const manualCounts = await createManualReviewSourceRecord(client, source, fetchResult.warning);
+        await finishIngestRun(client, runId, {
+          status: 'partial',
+          items_seen: 0,
+          items_created: 0,
+          items_updated: 0,
+          error_summary: manualCounts.warning
+        });
+        await updateSourceHealth(client, source.id, {
+          last_success_at: new Date().toISOString(),
+          last_error_at: null
+        });
+        continue;
+      }
+      const rawItems = fetchResult.rawItems;
       const counts = await importSourceItems(client, source, rawItems);
       if (counts.scholarshipIds && counts.scholarshipIds.length) {
         touchedScholarshipIds.push.apply(touchedScholarshipIds, counts.scholarshipIds);
@@ -611,6 +887,11 @@ async function syncScholarshipMirror(options) {
     }
   }
 
+  staleRetirement = await retireStaleScholarships(client);
+  if (staleRetirement.scholarshipIds && staleRetirement.scholarshipIds.length) {
+    touchedScholarshipIds.push.apply(touchedScholarshipIds, staleRetirement.scholarshipIds);
+  }
+
   let reminderReconciliation = null;
   if (touchedScholarshipIds.length) {
     reminderReconciliation = await reconcileReminderJobsForScholarshipIds(client, touchedScholarshipIds);
@@ -631,12 +912,55 @@ async function syncScholarshipMirror(options) {
   return {
     scholarships: scholarships,
     rows: rows,
+    staleRetirement: staleRetirement,
     reminderReconciliation: reminderReconciliation,
     meta: scholarships.length ? meta : buildFeedMeta([], {
       mode: 'fallback',
       error: primaryError ? primaryError.message : 'Scholarship mirror is empty'
     })
   };
+}
+
+async function discoverScholarshipSources(options) {
+  const client = (options && options.client) || getAuthClient();
+  if (!client) throw new Error('Scholarship auth client not configured');
+
+  await ensureScholarshipSources(client);
+  const { data: sourceRows, error } = await client
+    .from('scholarship_sources')
+    .select('source_key, name, source_type, base_url, active, cadence, parser_key, country_scope, destination_scope, trust_level, robots_or_policy_note, last_success_at, last_error_at')
+    .order('source_key', { ascending: true });
+  if (error) throw error;
+
+  const sources = Array.isArray(sourceRows) ? sourceRows : [];
+  const summary = {
+    ok: true,
+    checked_at: new Date().toISOString(),
+    source_count: sources.length,
+    active_source_count: sources.filter(function (source) { return !!source.active; }).length,
+    manual_review_source_count: sources.filter(isManualReviewParser).length,
+    parsable_source_count: sources.filter(function (source) { return !isManualReviewParser(source); }).length,
+    sources: sources.map(function (source) {
+      return {
+        source_key: source.source_key,
+        name: source.name,
+        source_type: source.source_type,
+        base_url: source.base_url,
+        active: !!source.active,
+        cadence: source.cadence,
+        parser_key: source.parser_key,
+        country_scope: ensureArray(source.country_scope),
+        destination_scope: ensureArray(source.destination_scope),
+        trust_level: source.trust_level,
+        manual_review: isManualReviewParser(source),
+        last_success_at: source.last_success_at || null,
+        last_error_at: source.last_error_at || null
+      };
+    })
+  };
+
+  await setData('scholarship-source-registry-latest', summary);
+  return summary;
 }
 
 async function loadScholarshipFeed(options) {
@@ -677,14 +1001,25 @@ async function loadScholarshipFeed(options) {
 
   const cached = await readCachedScholarshipPayload();
   if (cached) {
+    const cachedCount = Array.isArray(cached.scholarships) ? cached.scholarships.length : 0;
+    const isLimited = cachedCount > 0 && cachedCount < PUBLIC_MIN_SCHOLARSHIP_COUNT;
     const meta = Object.assign({}, cached.meta || buildFeedMeta([], { mode: 'cached' }), {
       mode: 'cached',
-      label: 'Cached feed',
+      label: isLimited ? 'Limited live feed' : 'Cached feed',
       isDegraded: true,
       stale: true,
       tone: 'warn',
+      isLimited: isLimited,
+      publicMinCount: PUBLIC_MIN_SCHOLARSHIP_COUNT,
+      claimSafeLabel: formatScholarshipClaimLabel(cachedCount),
       error: settings.error || (cached.meta && cached.meta.error) || ''
     });
+    if (isLimited) {
+      meta.message = 'Showing ' + formatScholarshipClaimLabel(cachedCount) +
+        ' from the cached verified scholarship feed. This is below the public coverage threshold of ' +
+        PUBLIC_MIN_SCHOLARSHIP_COUNT +
+        ', so AfroTools marks the catalog limited while sources are expanded.';
+    }
     return {
       scholarships: cached.scholarships,
       rows: [],
@@ -698,6 +1033,7 @@ async function loadScholarshipFeed(options) {
     rows: [],
     meta: buildFeedMeta([], {
       mode: 'fallback',
+      count: fallback.length,
       error: settings.error || 'Scholarship pipeline unavailable'
     })
   };
@@ -944,6 +1280,23 @@ async function reconcileReminderJobsForScholarshipIds(client, scholarshipIds) {
   };
 }
 
+async function reconcileAllScholarshipDeadlines(options) {
+  const client = (options && options.client) || getAuthClient();
+  if (!client) throw new Error('Scholarship auth client not configured');
+
+  const { data: scholarshipRows, error } = await client
+    .from('scholarships')
+    .select('id')
+    .limit(1000);
+  if (error) throw error;
+
+  const ids = (scholarshipRows || []).map(function (row) { return row.id; });
+  const result = await reconcileReminderJobsForScholarshipIds(client, ids);
+  return Object.assign({
+    checked_at: new Date().toISOString()
+  }, result);
+}
+
 async function saveScholarshipForUser(client, userId, input) {
   const scholarshipId = input.scholarship_id || input.scholarshipId;
   if (!scholarshipId) throw new Error('Missing scholarship_id');
@@ -1043,17 +1396,23 @@ module.exports = {
   AUTH_URL,
   CACHE_KEY,
   DEFAULT_REMINDER_OFFSETS,
+  SCHOLARSHIP_PUBLIC_MIN_COUNT,
+  PUBLIC_MIN_SCHOLARSHIP_COUNT,
   SOURCE_KEYS,
   buildFeedMeta,
   buildLegacyScholarship,
   buildReminderSchedule,
   filterScholarships,
+  discoverScholarshipSources,
+  ensureScholarshipSources,
   getAuthClient,
   getFallbackScholarships,
   getScholarshipById,
   listSavedScholarships,
   loadScholarshipFeed,
+  loadScholarshipSourceRegistry,
   normalizeOffsets,
+  reconcileAllScholarshipDeadlines,
   reconcileReminderJobsForScholarshipIds,
   saveScholarshipForUser,
   syncScholarshipMirror,

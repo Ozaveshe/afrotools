@@ -35,13 +35,17 @@ For the first run after changing source-classification logic, run `node scripts/
 
 ## Automation Model
 
-The recurring job should:
+GitHub Actions owns the routine source-ledger maintenance:
 
-1. Run `npm run government:sources`.
-2. Read `data/government/source-status.json` and `reports/government-source-ledger.md`.
-3. Separate broken official sources from changed official sources.
-4. Patch tool data only after a human-readable source change is confirmed.
-5. Run `npm run government:sources:check`.
-6. Run `npm run check-links` when hub routes, source links, or schema changed.
+- `.github/workflows/source-ledger-checks.yml` runs `npm run government:sources:check` daily. It is read/check-only and uploads the current status/report files as evidence when available.
+- `.github/workflows/source-ledger-refresh-pr.yml` runs `npm run government:sources` weekly and opens a manual-review PR when generated ledger, report, or hub summary files change.
+
+Codex follow-up should:
+
+1. Read `data/government/source-status.json` and `reports/government-source-ledger.md`.
+2. Separate broken official sources from changed official sources.
+3. Patch tool data only after a human-readable source change is confirmed.
+4. Run `npm run government:sources:check`.
+5. Run `npm run check-links` when hub routes, source links, or schema changed.
 
 Keep source-monitor output separate from unrelated dirty-tree changes.

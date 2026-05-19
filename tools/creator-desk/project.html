@@ -13,7 +13,7 @@
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-desk/project">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-desk/project" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-desk/project" />
@@ -81,7 +81,7 @@ function render() {
   html += '<h1 contenteditable="true" oninput="updateField(\'name\', this.textContent)">' + escHtml(project.name) + '</h1>';
   if (project.client) html += '<div class="cd-detail-client">👤 ' + escHtml(project.client) + '</div>';
   html += '<div class="cd-detail-meta">';
-  html += '<div class="cd-detail-meta-item"><select onchange="updateField(\'status\',this.value)" style="border:none;background:transparent;font-size:.75rem;font-weight:700;color:' + statusObj.color + '">';
+  html += '<div class="cd-detail-meta-item"><select onchange="updateField(\'status\',this.value)" style="border:none;background:transparent;font-size:.75rem;font-weight:700;color:' + statusObj.color + '" aria-label="Select option">';
   STATUSES.forEach(function(s) { html += '<option value="' + s.id + '"' + (s.id === project.status ? ' selected' : '') + '>' + s.label + '</option>'; });
   html += '</select></div>';
   if (project.due) html += '<div class="cd-detail-meta-item">📅 ' + project.due + '</div>';

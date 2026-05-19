@@ -67,7 +67,7 @@
 <link rel="canonical" href="https://afrotools.com/admin/remittance">
 <meta property="og:url" content="https://afrotools.com/admin/remittance">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 </head>
 <body>
@@ -86,19 +86,19 @@
   <!-- Add new corridor -->
   <div class="add-row-bar">
     <strong style="font-size:.8rem">+ Add Corridor:</strong>
-    <span><label>Provider</label>
+    <span><label for="new-provider">Provider</label>
       <select id="new-provider" style="width:130px">
         <option value="">Select…</option>
       </select>
     </span>
     <span><label>Send</label>
-      <select id="new-send" style="width:75px">
+      <select id="new-send" style="width:75px" aria-label="New Send">
         <option value="US">US</option><option value="UK">UK</option><option value="EU">EU</option>
         <option value="CA">CA</option><option value="AU">AU</option><option value="AE">AE</option>
       </select>
     </span>
     <span><label>Receive</label>
-      <select id="new-receive" style="width:75px">
+      <select id="new-receive" style="width:75px" aria-label="New Receive">
         <option value="NG">NG</option><option value="KE">KE</option><option value="GH">GH</option>
         <option value="ZA">ZA</option><option value="TZ">TZ</option><option value="UG">UG</option>
         <option value="SN">SN</option><option value="ET">ET</option><option value="CM">CM</option>
@@ -111,7 +111,7 @@
     <span><label>FX Margin %</label><input aria-label="New fx" type="number" id="new-fx" step="0.01" placeholder="0.00"></span>
     <span><label>Time</label><input aria-label="Instant" type="text" id="new-time" placeholder="Instant" style="width:100px"></span>
     <span><label>Delivery</label>
-      <select id="new-delivery" style="width:120px">
+      <select id="new-delivery" style="width:120px" aria-label="New Delivery">
         <option>Bank</option><option>Mobile Money</option><option>Cash Pickup</option><option>Bank + Mobile</option>
       </select>
     </span>
@@ -232,7 +232,7 @@ function renderTable() {
       '<td><input aria-label="Transfer time" type="text" value="' + n(r.transfer_time) + '" data-field="transfer_time" style="width:100px"></td>' +
       '<td><input aria-label="Min send usd" type="number" step="1"    value="' + n(r.min_send_usd) + '" data-field="min_send_usd"></td>' +
       '<td><input aria-label="Max send usd" type="number" step="1"    value="' + n(r.max_send_usd) + '" data-field="max_send_usd"></td>' +
-      '<td><select data-field="delivery_method">' +
+      '<td><select data-field="delivery_method" aria-label="Select option">' +
         ['Bank','Mobile Money','Cash Pickup','Bank + Mobile'].map(function(d) {
           return '<option value="' + d + '"' + (r.delivery_method === d ? ' selected' : '') + '>' + d + '</option>';
         }).join('') +

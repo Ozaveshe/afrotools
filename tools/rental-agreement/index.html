@@ -46,9 +46,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
@@ -196,7 +196,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
       <div class="card-body">
 
         <div class="form-group">
-          <label class="form-label">Country / Governing Law</label>
+          <label class="form-label" for="country">Country / Governing Law</label>
           <select id="country" onchange="onCountryChange()">
             <option value="NG">🇳🇬 Nigeria (Lagos Tenancy Law 2011 / State Laws)</option>
             <option value="KE">🇰🇪 Kenya (Landlord &amp; Tenant Act, Cap 301)</option>
@@ -219,7 +219,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Property Type</label>
-            <select id="propType" onchange="updateAI()">
+            <select id="propType" onchange="updateAI()" aria-label="Prop Type">
               <option value="flat">Flat / Apartment</option>
               <option value="house">Detached House</option>
               <option value="semi">Semi-detached</option>
@@ -229,7 +229,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
           </div>
           <div class="form-group">
             <label class="form-label">Bedrooms</label>
-            <select id="bedrooms">
+            <select id="bedrooms" aria-label="Bedrooms">
               <option value="Studio">Studio</option>
               <option value="1">1 bedroom</option>
               <option value="2" selected>2 bedrooms</option>
@@ -273,7 +273,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
           </div>
           <div class="form-group">
             <label class="form-label">Tenancy Duration</label>
-            <select id="duration" onchange="calcEndDate(); updateAI()">
+            <select id="duration" onchange="calcEndDate(); updateAI()" aria-label="Duration">
               <option value="6">6 months</option>
               <option value="12" selected>1 year (12 months)</option>
               <option value="24">2 years (24 months)</option>
@@ -296,7 +296,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
           </div>
           <div class="form-group">
             <label class="form-label">Rent Payment Frequency</label>
-            <select id="payFreq" onchange="updateFinancials(); updateAI()">
+            <select id="payFreq" onchange="updateFinancials(); updateAI()" aria-label="Pay Freq">
               <option value="monthly">Monthly</option>
               <option value="quarterly">Quarterly</option>
               <option value="biannually">Bi-annually (6 months)</option>
@@ -323,7 +323,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
           </div>
           <div class="form-group">
             <label class="form-label">Annual Rent Review</label>
-            <select id="rentReview">
+            <select id="rentReview" aria-label="Rent Review">
               <option value="none">No automatic review</option>
               <option value="5">5% per annum</option>
               <option value="10">10% per annum</option>
@@ -338,7 +338,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Pets Allowed?</label>
-            <select id="pets">
+            <select id="pets" aria-label="Pets">
               <option value="no">No pets allowed</option>
               <option value="small">Small pets only (with consent)</option>
               <option value="yes">Yes, pets permitted</option>
@@ -346,7 +346,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
           </div>
           <div class="form-group">
             <label class="form-label">Subletting?</label>
-            <select id="subletting">
+            <select id="subletting" aria-label="Subletting">
               <option value="no">No subletting permitted</option>
               <option value="consent">Only with landlord's written consent</option>
             </select>
@@ -355,7 +355,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 
         <div class="form-group">
           <label class="form-label">Utilities Responsibility</label>
-          <select id="utilities">
+          <select id="utilities" aria-label="Utilities">
             <option value="tenant">Tenant pays all utilities (electricity, water, internet)</option>
             <option value="landlord">Landlord pays all utilities</option>
             <option value="split">Shared: Landlord pays water, tenant pays electricity</option>
@@ -493,7 +493,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
       <span class="leg-action-kicker">PDF gate</span>
@@ -591,7 +591,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
     </div>
   </div>
   <label class="leg-action-copy-label">Copyable review note</label>
-  <textarea class="leg-action-copy-text" readonly>Rental contract operational checklist action pack
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Rental contract operational checklist action pack
 Tool: rental-agreement
 Coverage: Rental template
 

@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/structural-calc/">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <style>
 :root{--sky:#0ea5e9;--sky-light:#e0f2fe;--sky-dark:#0284c7}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -111,6 +111,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/structural-calc/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calcul-structure/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-miundo-ya-ujenzi/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/structural-calc/" />
 </head>
 <body>
@@ -121,7 +122,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 </section>
 <div class="container">
 <div class="currency-bar">
-<label>🌍 Country / Currency</label>
+<label for="sc-currency">🌍 Country / Currency</label>
 <select id="sc-currency">
 <option value="NGN">Nigeria (₦ Naira)</option>
 <option value="KES">Kenya (KSh)</option>
@@ -147,8 +148,8 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 <div class="form-grid">
 <div class="form-group"><label>Span (m)</label><input aria-label="B span" type="number" id="b-span" value="5" step="0.1" min="1"></div>
 <div class="form-group"><label>Uniformly Distributed Load (kN/m)</label><input aria-label="B udl" type="number" id="b-udl" value="25" step="1" min="1"></div>
-<div class="form-group"><label>Concrete Grade</label><select id="b-fcu"><option value="20">C20 (20 MPa)</option><option value="25" selected>C25 (25 MPa)</option><option value="30">C30 (30 MPa)</option><option value="35">C35 (35 MPa)</option></select></div>
-<div class="form-group"><label>Steel Grade</label><select id="b-fy"><option value="410">Y410 (Grade 410)</option><option value="460" selected>Y460 (Grade 460)</option><option value="500">Y500 (Grade 500)</option></select></div>
+<div class="form-group"><label>Concrete Grade</label><select id="b-fcu" aria-label="B Fcu"><option value="20">C20 (20 MPa)</option><option value="25" selected>C25 (25 MPa)</option><option value="30">C30 (30 MPa)</option><option value="35">C35 (35 MPa)</option></select></div>
+<div class="form-group"><label>Steel Grade</label><select id="b-fy" aria-label="B Fy"><option value="410">Y410 (Grade 410)</option><option value="460" selected>Y460 (Grade 460)</option><option value="500">Y500 (Grade 500)</option></select></div>
 <div class="form-group"><label>Beam Width (mm)</label><input aria-label="B width" type="number" id="b-width" value="225" step="25" min="150"></div>
 <div class="form-group"><label>Cover (mm)</label><input aria-label="B cover" type="number" id="b-cover" value="25" step="5" min="20"></div>
 </div>
@@ -165,9 +166,9 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 <h2>Short Braced Column (Axial Load)</h2>
 <div class="form-grid">
 <div class="form-group"><label>Axial Load N (kN)</label><input aria-label="C load" type="number" id="c-load" value="800" step="10" min="10"></div>
-<div class="form-group"><label>Concrete Grade</label><select id="c-fcu"><option value="20">C20 (20 MPa)</option><option value="25" selected>C25 (25 MPa)</option><option value="30">C30 (30 MPa)</option></select></div>
-<div class="form-group"><label>Steel Grade</label><select id="c-fy"><option value="410">Y410</option><option value="460" selected>Y460</option><option value="500">Y500</option></select></div>
-<div class="form-group"><label>Column Shape</label><select id="c-shape"><option value="square">Square</option><option value="circular">Circular</option></select></div>
+<div class="form-group"><label>Concrete Grade</label><select id="c-fcu" aria-label="C Fcu"><option value="20">C20 (20 MPa)</option><option value="25" selected>C25 (25 MPa)</option><option value="30">C30 (30 MPa)</option></select></div>
+<div class="form-group"><label>Steel Grade</label><select id="c-fy" aria-label="C Fy"><option value="410">Y410</option><option value="460" selected>Y460</option><option value="500">Y500</option></select></div>
+<div class="form-group"><label>Column Shape</label><select id="c-shape" aria-label="C Shape"><option value="square">Square</option><option value="circular">Circular</option></select></div>
 <div class="form-group"><label>Steel Percentage (%)</label><input aria-label="C steel" type="number" id="c-steel" value="2" step="0.5" min="1" max="6"></div>
 </div>
 <div style="text-align:center;margin-top:1.25rem"><button type="button" class="btn" onclick="calcColumn()">Calculate Column</button></div>
@@ -184,7 +185,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 <div class="form-grid">
 <div class="form-group"><label>Span (m)</label><input aria-label="S span" type="number" id="s-span" value="4" step="0.1" min="1"></div>
 <div class="form-group"><label>Imposed Load (kN/m2)</label><input aria-label="S live" type="number" id="s-live" value="3" step="0.5" min="0.5"><div style="font-size:.75rem;color:#94a3b8">Residential: 1.5-2, Office: 2.5-3, Commercial: 4-5</div></div>
-<div class="form-group"><label>Concrete Grade</label><select id="s-fcu"><option value="20">C20</option><option value="25" selected>C25</option><option value="30">C30</option></select></div>
+<div class="form-group"><label>Concrete Grade</label><select id="s-fcu" aria-label="S Fcu"><option value="20">C20</option><option value="25" selected>C25</option><option value="30">C30</option></select></div>
 <div class="form-group"><label>Finishes Load (kN/m2)</label><input aria-label="S finish" type="number" id="s-finish" value="1.5" step="0.5" min="0"></div>
 </div>
 <div style="text-align:center;margin-top:1.25rem"><button type="button" class="btn" onclick="calcSlab()">Calculate Slab</button></div>
@@ -200,8 +201,8 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 <h2>Pad Footing (Concentric Load)</h2>
 <div class="form-grid">
 <div class="form-group"><label>Column Load (kN)</label><input aria-label="F load" type="number" id="f-load" value="600" step="10" min="10"></div>
-<div class="form-group"><label>Soil Bearing Capacity (kN/m2)</label><select id="f-sbc"><option value="75">Soft clay (75)</option><option value="100">Firm clay (100)</option><option value="150" selected>Stiff clay (150)</option><option value="200">Sandy (200)</option><option value="300">Gravel (300)</option><option value="400">Laterite/Rock (400)</option></select></div>
-<div class="form-group"><label>Concrete Grade</label><select id="f-fcu"><option value="20" selected>C20</option><option value="25">C25</option><option value="30">C30</option></select></div>
+<div class="form-group"><label>Soil Bearing Capacity (kN/m2)</label><select id="f-sbc" aria-label="F Sbc"><option value="75">Soft clay (75)</option><option value="100">Firm clay (100)</option><option value="150" selected>Stiff clay (150)</option><option value="200">Sandy (200)</option><option value="300">Gravel (300)</option><option value="400">Laterite/Rock (400)</option></select></div>
+<div class="form-group"><label>Concrete Grade</label><select id="f-fcu" aria-label="F Fcu"><option value="20" selected>C20</option><option value="25">C25</option><option value="30">C30</option></select></div>
 <div class="form-group"><label>Column Size (mm)</label><input aria-label="F colsize" type="number" id="f-colsize" value="225" step="25" min="150"></div>
 </div>
 <div style="text-align:center;margin-top:1.25rem"><button type="button" class="btn" onclick="calcFooting()">Calculate Footing</button></div>
@@ -235,7 +236,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 </section>
 <afro-related-tools></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 
 <script src="/assets/js/components/navbar.js?v=8a5a32fc" defer></script>
 <script src="/assets/js/components/footer.js?v=a62a07a2" defer></script>

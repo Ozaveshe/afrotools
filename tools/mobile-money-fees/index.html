@@ -19,9 +19,9 @@
 <meta name="twitter:description" content="Compare mobile-money transfer and withdrawal fees across African providers and see which option is cheaper before you move money.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/mobile-money-fees.webp">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>
@@ -60,8 +60,8 @@
 .mm-results-header h3{font-size:.85rem;font-weight:800;color:#111;text-transform:uppercase;letter-spacing:.04em;}
 .mm-cheapest-tag{background:#DBEAFE;border:1px solid #93C5FD;color:#1D4ED8;padding:5px 12px;border-radius:8px;font-size:.72rem;font-weight:700;}
 
-.mm-table-wrap{overflow-x:auto;}
-.mm-table{width:100%;border-collapse:collapse;}
+.mm-table-wrap{display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.mm-table{width:100%;min-width:560px;max-width:none;border-collapse:collapse;}
 .mm-table thead{background:#f9fafb;border-bottom:2px solid #e5e7eb;}
 .mm-table th{padding:10px 14px;text-align:left;font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;}
 .mm-table th.right{text-align:right;}
@@ -225,11 +225,13 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<link rel="stylesheet" href="/assets/css/seo-clusters.css?v=5a8b6c7a">
+<link rel="stylesheet" href="/assets/css/seo-clusters.css?v=3620302e">
 <link rel="stylesheet" href="/assets/css/african-workflow.css?v=b5a0b1a7">
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mobile-money-fees/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/frais-mobile-money/" />
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kudin-tura-kudi-ta-waya/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-pesa-simu/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mobile-money-fees/" />
 </head>
 <body>
@@ -239,7 +241,7 @@
 <div style="max-width:1200px;margin:0 auto;padding:0 24px">
 <div class="breadcrumb" style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:rgba(255,255,255,.3);text-decoration:none">AfroTools</a> / <a href="/uniquely-african/" style="color:rgba(255,255,255,.3);text-decoration:none">Uniquely African</a> / <span style="color:#93c5fd">Mobile Money Fee Checker</span></div>
 <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Mobile Money Fee <em style="color:var(--color-primary);font-style:normal">Checker</em></h1>
-<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px">Compare M-Pesa, MTN MoMo, Airtel Money, OPay, and Chipper Cash fees instantly. Find the cheapest way to send mobile money across Africa.</p>
+<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px">Compare M-Pesa, MTN MoMo, Airtel Money, OPay, and Chipper Cash fees before you send. See which option looks cheapest for your amount and country.</p>
 <div style="display:flex;flex-wrap:wrap;gap:7px"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">🌍 Pan-African</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Client-side</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Free</span></div>
 </div></section>
 
@@ -258,7 +260,7 @@
 
     <div class="mm-form-row">
       <div class="mm-field">
-        <label>Country</label>
+        <label for="mmCountry">Country</label>
         <select id="mmCountry" onchange="onCountryChange()"></select>
       </div>
       <div class="mm-field">
@@ -267,7 +269,7 @@
       </div>
       <div class="mm-field">
         <label>Transaction Type</label>
-        <select id="mmTxType">
+        <select id="mmTxType" aria-label="Mm Tx Type">
           <option value="send">Send to Another Person</option>
           <option value="withdraw">Withdraw to Bank</option>
           <option value="pay">Pay a Merchant/Bill</option>
@@ -281,7 +283,7 @@
       <div class="mm-route-grid">
         <div class="mm-field">
           <label>Recipient Route</label>
-          <select id="mmRouteNetwork">
+          <select id="mmRouteNetwork" aria-label="Mm Route Network">
             <option value="same">Same provider wallet</option>
             <option value="cross">Different provider or interop</option>
             <option value="agent">Agent cash handoff</option>
@@ -290,7 +292,7 @@
         </div>
         <div class="mm-field">
           <label>Payment Purpose</label>
-          <select id="mmPurpose">
+          <select id="mmPurpose" aria-label="Mm Purpose">
             <option value="family">Family support</option>
             <option value="business">Business payment</option>
             <option value="rent">Rent or school fees</option>
@@ -363,11 +365,11 @@
 <section style="max-width:860px;margin:48px auto;padding:0 24px;font-family:'DM Sans',system-ui,sans-serif;color:#374151;line-height:1.8;">
 
   <h2 style="font-size:1.6rem;font-weight:800;color:#111;margin-bottom:16px;">Understanding Mobile Money Fees in Africa</h2>
-  <p>Mobile money has revolutionised financial access across the African continent, enabling hundreds of millions of people to send, receive, and store money using nothing more than a basic mobile phone. From bustling markets in Lagos to rural villages in western Kenya, mobile money platforms have become the backbone of everyday commerce and personal finance. However, every transaction comes with a fee, and those fees vary dramatically depending on the provider, the country, the transaction type, and the amount being transferred. Understanding these costs is essential for anyone who relies on mobile money for daily transactions, business payments, or cross-border remittances.</p>
-  <p>The AfroTools Mobile Money Fee Checker is a free comparison tool designed specifically for African mobile money users. It aggregates real fee-band data from the largest providers operating across more than 20 African countries, letting you instantly see which platform offers the lowest cost for your specific transfer. Whether you are sending money to a family member, withdrawing cash from an agent, paying a merchant, or transferring funds internationally, this tool calculates the exact fee each provider will charge and highlights the cheapest option so you can make an informed decision every time.</p>
+  <p>Mobile money is part of everyday life for many people across Africa. It helps traders get paid, families send support, workers cash out, and customers pay bills. The cost is not always obvious. Fees change by country, provider, transaction type, and amount.</p>
+  <p>The AfroTools Mobile Money Fee Checker compares common fee bands from major providers in more than 20 African countries. Use it to estimate the fee before you send, withdraw, pay a merchant, or make an international transfer. Treat the result as a guide and confirm large transfers in your provider app or USSD menu.</p>
 
   <h3 style="font-size:1.15rem;font-weight:700;color:#111;margin-top:32px;margin-bottom:10px;">How the Fee Checker Works</h3>
-  <p>Using the tool is straightforward. First, select the country where you are making the transaction. The tool then loads all mobile money providers that operate in that country, along with their current fee schedules. Next, enter the amount you wish to transfer and choose the transaction type: person-to-person send, bank withdrawal, merchant or bill payment, or international transfer. Click the compare button and the tool instantly calculates the fee for every selected provider, presenting the results in a sortable table. The cheapest provider is highlighted at the top, and a visual bar chart makes it easy to see relative costs at a glance. You can also toggle individual providers on or off if you only want to compare a subset. Recent comparisons are saved to your browser history for quick reference.</p>
+  <p>Select your country, enter the amount, and choose the transaction type. The tool compares the selected providers and shows the estimated fee, the amount the sender pays, and what the receiver may get. You can switch providers on or off and keep recent comparisons in your browser for quick reference.</p>
 
   <h3 style="font-size:1.15rem;font-weight:700;color:#111;margin-top:32px;margin-bottom:10px;">Supported Mobile Money Providers</h3>
   <p>The tool covers the six most widely used mobile money platforms on the continent:</p>
@@ -389,7 +391,7 @@
 
   <details style="border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-bottom:10px;">
     <summary style="font-weight:700;cursor:pointer;color:#111;">How accurate are the fee estimates shown by this tool?</summary>
-    <p style="margin-top:10px;">The fee data in this tool is based on publicly available fee schedules and regulatory filings as of early 2026. Providers occasionally revise their tariffs, so we recommend confirming the exact fee via your provider's USSD menu or official app before making large transfers. The tool is designed to give you a reliable ballpark comparison so you can identify the cheapest option quickly, but it should not be treated as a binding quote.</p>
+    <p style="margin-top:10px;">The estimates use publicly available fee schedules and regulatory filings as of early 2026. Providers can revise tariffs, so confirm the exact fee in your provider's USSD menu or official app before making a large transfer. This is a guide, not a binding quote.</p>
   </details>
 
   <details style="border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-bottom:10px;">

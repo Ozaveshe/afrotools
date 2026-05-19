@@ -66,11 +66,16 @@ function writeFileSyncWithRetry(filePath, data, encoding) {
   const retryable = new Set(['EBUSY', 'EPERM', 'UNKNOWN']);
   let lastError = null;
   for (let attempt = 0; attempt < 20; attempt++) {
+    const tempPath = `${filePath}.${process.pid}.${attempt}.tmp`;
     try {
-      fs.writeFileSync(filePath, data, encoding);
+      fs.writeFileSync(tempPath, data, encoding);
+      fs.renameSync(tempPath, filePath);
       return;
     } catch (error) {
       lastError = error;
+      try {
+        if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+      } catch {}
       if (!retryable.has(error.code)) throw error;
       waitSync(75 * (attempt + 1));
     }

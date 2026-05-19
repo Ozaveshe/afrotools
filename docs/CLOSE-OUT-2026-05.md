@@ -20,7 +20,7 @@ The free side is close-out ready for maintenance mode after this pass, with Pro 
 - 2026-05-14 gap check confirmed `npm test`, `npm run pro:verify`, `npm run build:deploy`, `npm run audit:dist`, `npm run security:scan`, `npm run check-links`, and `npm run seo:report` all pass after the i18n/redirect close-out.
 - 2026-05-15 free-tools debug check confirmed the public tool surface remains close-out ready: `npm run audit`, `npm run check-links`, `npm run seo:report`, `npm run build:i18n:validate`, `npm run validate:hreflang`, `npm run pdf:verify`, `npm run salary-tax:verify`, `npm run vat-business-tax:verify`, `npm run legal-workflow:verify`, `npm run category-workflow:verify`, `npm test`, `npm run pro:verify`, `npm run security:scan`, `npm run build:deploy`, `npm run audit:dist`, and `git diff --check` all passed.
 - CI now includes `npm run pro:verify`.
-- Monthly source-ledger refresh workflow was added.
+- Source-ledger GitHub Actions now split daily check mode from weekly refresh PR mode.
 - Daily maintenance workflow has `AFROTOOLS_DAILY_MAINTENANCE_PAUSED` as a pause switch.
 
 ## Sunset or Deferred
@@ -32,7 +32,8 @@ The free side is close-out ready for maintenance mode after this pass, with Pro 
 ## Maintenance Cadence
 
 - Daily: SEO maintenance can run, unless paused with `AFROTOOLS_DAILY_MAINTENANCE_PAUSED=1`.
-- Monthly: government and transport ledgers refresh through `.github/workflows/monthly-source-ledgers.yml` and open a manual-review PR on diffs.
+- Daily: government and transport ledgers run check mode through `.github/workflows/source-ledger-checks.yml`.
+- Weekly: government and transport ledgers refresh through `.github/workflows/source-ledger-refresh-pr.yml` and open a manual-review PR on diffs.
 - Before release: run `npm run build:deploy`, `npm test`, `npm run build:i18n:full`, `npm run audit`, `npm run seo:report`, `npm run pro:verify`, `npm run audit:dist`, and `npm run security:scan`.
 
 ## Active Pro Workstream

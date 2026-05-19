@@ -18,8 +18,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea"><script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086"><script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
@@ -112,6 +112,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <meta property="article:modified_time" content="2026-03-28">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/sql-formatter/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/formateur-sql/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kirekebisha-sql/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sql-formatter/" />
 </head>
 <body>
@@ -129,11 +130,11 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <div class="card-head"><span class="card-title">Input SQL</span></div>
 <div class="card-body">
 <div class="options-row">
-<div><label>Keyword Case</label><select id="keywordCase"><option value="upper" selected>UPPERCASE</option><option value="lower">lowercase</option><option value="preserve">Preserve</option></select></div>
-<div><label>Indent</label><select id="indent"><option value="2" selected>2 spaces</option><option value="4">4 spaces</option><option value="tab">Tab</option></select></div>
-<div><label>Sample</label><select id="sample" onchange="loadSample()"><option value="">-- Choose --</option><option value="select">SELECT query</option><option value="join">JOIN query</option><option value="insert">INSERT</option><option value="create">CREATE TABLE</option><option value="subquery">Subquery</option></select></div>
+<div><label for="keywordCase">Keyword Case</label><select id="keywordCase"><option value="upper" selected>UPPERCASE</option><option value="lower">lowercase</option><option value="preserve">Preserve</option></select></div>
+<div><label>Indent</label><select id="indent" aria-label="Indent"><option value="2" selected>2 spaces</option><option value="4">4 spaces</option><option value="tab">Tab</option></select></div>
+<div><label>Sample</label><select id="sample" onchange="loadSample()" aria-label="Sample"><option value="">-- Choose --</option><option value="select">SELECT query</option><option value="join">JOIN query</option><option value="insert">INSERT</option><option value="create">CREATE TABLE</option><option value="subquery">Subquery</option></select></div>
 </div>
-<textarea class="sql-input" id="sqlInput" placeholder="Paste your SQL here...">SELECT u.id, u.name, u.email, o.order_id, o.total FROM users u INNER JOIN orders o ON u.id = o.user_id WHERE o.status = 'completed' AND o.total > 100 ORDER BY o.total DESC LIMIT 50;</textarea>
+<textarea class="sql-input" id="sqlInput" placeholder="Paste your SQL here..." aria-label="Paste your SQL here...">SELECT u.id, u.name, u.email, o.order_id, o.total FROM users u INNER JOIN orders o ON u.id = o.user_id WHERE o.status = 'completed' AND o.total > 100 ORDER BY o.total DESC LIMIT 50;</textarea>
 <div class="btn-row">
 <button type="button" class="btn btn-primary" onclick="formatSQL()">Format SQL</button>
 <button type="button" class="btn btn-secondary" onclick="minifySQL()">Minify</button>
@@ -145,7 +146,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <div class="card-head"><span class="card-title">Formatted SQL</span><button type="button" class="btn btn-secondary" style="padding:5px 12px;font-size:.7rem" onclick="copyOutput()">Copy</button></div>
 <div class="card-body">
 <div class="highlighted" id="highlighted"></div>
-<textarea class="sql-output" id="sqlOutput" style="display:none" readonly></textarea>
+<textarea class="sql-output" id="sqlOutput" style="display:none" readonly aria-label="Sql Output"></textarea>
 <div class="stats" id="stats"></div>
 </div></div>
 </div>

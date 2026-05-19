@@ -24,8 +24,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
-<link rel="stylesheet" href="../../assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="../../assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="../../assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="../../assets/css/global.min.css?v=98898086">
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=5ea7102b">
 <script src="../../assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="../../assets/js/components/footer.js?v=a62a07a2" defer></script>
@@ -172,6 +172,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/bol-generator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-connaissement/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bill-of-lading/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/bol-generator/" />
 </head>
 <body>
@@ -274,11 +275,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
         <div class="section-title">Parties</div>
         <div class="form-row"><div class="fg"><label>Shipper Name</label><input aria-label="Exporting company" type="text" id="blShipperName" oninput="renderBL()" placeholder="Exporting company"></div></div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Shipper Address</label><textarea id="blShipperAddr" rows="2" oninput="renderBL()" placeholder="Street, City, Country"></textarea></div>
-          <div class="fg"><label>Shipper Country</label><select id="blShipperCountry" onchange="renderBL()"></select></div>
+          <div class="fg"><label>Shipper Address</label><textarea id="blShipperAddr" rows="2" oninput="renderBL()" placeholder="Street, City, Country" aria-label="Street, City, Country"></textarea></div>
+          <div class="fg"><label>Shipper Country</label><select id="blShipperCountry" onchange="renderBL()" aria-label="Bl Shipper Country"></select></div>
         </div>
         <div class="form-row"><div class="fg"><label>Consignee</label><input aria-label="Company name or TO ORDER" type="text" id="blConsigneeName" oninput="renderBL()" placeholder="Company name or TO ORDER"></div><span class="hint" style="font-size:.72rem;color:#94a3b8">Use "TO ORDER" or "TO ORDER OF [BANK]" for negotiable B/L</span></div>
-        <div class="form-row"><div class="fg"><label>Consignee Address</label><textarea id="blConsigneeAddr" rows="2" oninput="renderBL()" placeholder="Street, City, Country"></textarea></div></div>
+        <div class="form-row"><div class="fg"><label>Consignee Address</label><textarea id="blConsigneeAddr" rows="2" oninput="renderBL()" placeholder="Street, City, Country" aria-label="Street, City, Country"></textarea></div></div>
         <div class="form-row form-row-2">
           <div class="fg"><label>Notify Party Name</label><input aria-label="Buyer's freight agent" type="text" id="blNotifyName" oninput="renderBL()" placeholder="Buyer's freight agent"></div>
           <div class="fg"><label>Notify Party Phone</label><input aria-label="BlNotifyPhone" type="text" id="blNotifyPhone" oninput="renderBL()" placeholder="+254 700 000 000"></div>
@@ -332,7 +333,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">Freight</div>
         <div class="form-row form-row-3">
-          <div class="fg"><label>Freight Payable</label>
+          <div class="fg"><label for="blFreightPayable">Freight Payable</label>
             <select id="blFreightPayable" onchange="renderBL()">
               <option value="Prepaid">Prepaid</option>
               <option value="Collect">Collect</option>
@@ -340,14 +341,14 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
           </div>
           <div class="fg"><label>Freight Amount</label><input aria-label="BlFreightAmt" type="number" id="blFreightAmt" oninput="renderBL()" placeholder="0.00" min="0"></div>
           <div class="fg"><label>Currency</label>
-            <select id="blFreightCur" onchange="renderBL()">
+            <select id="blFreightCur" onchange="renderBL()" aria-label="Bl Freight Cur">
               <option>USD</option><option>EUR</option><option>GBP</option><option>KES</option><option>NGN</option><option>ZAR</option>
             </select>
           </div>
         </div>
         <div class="form-row form-row-2">
           <div class="fg"><label>Number of Originals</label>
-            <select id="blOriginals" onchange="renderBL()">
+            <select id="blOriginals" onchange="renderBL()" aria-label="Bl Originals">
               <option>1</option><option value="2">2</option><option value="3" selected>3</option>
             </select>
           </div>
@@ -559,11 +560,11 @@ function addCargo(){
     <td><input aria-label="TCKU1234567" type="text" placeholder="TCKU1234567" oninput="renderBL()"></td>
     <td><input aria-label="SL123456" type="text" placeholder="SL123456" oninput="renderBL()"></td>
     <td><input aria-label="MARK 01" type="text" placeholder="MARK-01" oninput="renderBL()"></td>
-    <td><input type="number" placeholder="1" min="0" value="1" style="width:48px" oninput="renderBL()"></td>
-    <td><select onchange="renderBL()"><option>x20GP</option><option>x40GP</option><option>x40HC</option><option>Cartons</option><option>Pallets</option><option>Bags</option></select></td>
+    <td><input type="number" placeholder="1" min="0" value="1" style="width:48px" oninput="renderBL()" aria-label="Input value"></td>
+    <td><select onchange="renderBL()" aria-label="Select option"><option>x20GP</option><option>x40GP</option><option>x40HC</option><option>Cartons</option><option>Pallets</option><option>Bags</option></select></td>
     <td><input aria-label="Description of goods" type="text" placeholder="Description of goods" oninput="renderBL()"></td>
     <td><input aria-label="Line item amount" type="number" placeholder="0" min="0" step="any" value="0" style="width:72px" oninput="renderBL()"></td>
-    <td><input type="number" placeholder="0.000" min="0" step="any" value="0" style="width:64px" oninput="renderBL()"></td>
+    <td><input type="number" placeholder="0.000" min="0" step="any" value="0" style="width:64px" oninput="renderBL()" aria-label="Input value"></td>
     <td><button type="button" class="btn-remove" onclick="removeCargo(${id})">&#10005;</button></td>
   `;
   tbody.appendChild(tr);

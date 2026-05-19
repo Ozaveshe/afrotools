@@ -24,8 +24,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
-<link rel="stylesheet" href="../../assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="../../assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="../../assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="../../assets/css/global.min.css?v=98898086">
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=5ea7102b">
 <script src="../../assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="../../assets/js/components/footer.js?v=a62a07a2" defer></script>
@@ -135,6 +135,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/packing-list/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/liste-colisage/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/orodha-ya-kupakia/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/packing-list/" />
 </head>
 <body>
@@ -168,16 +169,16 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">Shipper / Exporter</div>
         <div class="form-row"><div class="fg"><label>Name</label><input aria-label="Exporting company name" type="text" id="shipperName" oninput="renderDoc()" placeholder="Exporting company name"></div></div>
-        <div class="form-row"><div class="fg"><label>Address</label><textarea id="shipperAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, State/Province"></textarea></div></div>
-        <div class="form-row"><div class="fg"><label>Country</label><select id="shipperCountry" onchange="renderDoc()"></select></div></div>
+        <div class="form-row"><div class="fg"><label>Address</label><textarea id="shipperAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, State/Province" aria-label="Street, City, State/Province"></textarea></div></div>
+        <div class="form-row"><div class="fg"><label>Country</label><select id="shipperCountry" onchange="renderDoc()" aria-label="Shipper Country"></select></div></div>
       </div>
 
       <!-- Consignee -->
       <div class="form-section">
         <div class="section-title">Consignee</div>
         <div class="form-row"><div class="fg"><label>Name</label><input aria-label="Importing company / recipient" type="text" id="consigneeName" oninput="renderDoc()" placeholder="Importing company / recipient"></div></div>
-        <div class="form-row"><div class="fg"><label>Address</label><textarea id="consigneeAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, Country"></textarea></div></div>
-        <div class="form-row"><div class="fg"><label>Country</label><select id="consigneeCountry" onchange="renderDoc()"></select></div></div>
+        <div class="form-row"><div class="fg"><label>Address</label><textarea id="consigneeAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, Country" aria-label="Street, City, Country"></textarea></div></div>
+        <div class="form-row"><div class="fg"><label>Country</label><select id="consigneeCountry" onchange="renderDoc()" aria-label="Consignee Country"></select></div></div>
       </div>
 
       <!-- Notify Party -->
@@ -205,7 +206,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
           <div class="fg"><label>Port of Discharge</label><input aria-label="Durban, South Africa" type="text" id="plPOD" oninput="renderDoc()" placeholder="Durban, South Africa"></div>
         </div>
         <div class="form-row">
-          <div class="fg"><label>Country of Origin</label><select id="plOrigin" onchange="renderDoc()"></select></div>
+          <div class="fg"><label>Country of Origin</label><select id="plOrigin" onchange="renderDoc()" aria-label="Pl Origin"></select></div>
         </div>
       </div>
 
@@ -317,12 +318,12 @@ function addPackage(){
   tr.innerHTML = `
     <td><input aria-label="MARK 01" type="text" placeholder="MARK-01" oninput="calcPkg()"></td>
     <td><input aria-label="$ total of ?" type="text" placeholder="${total} of ?" style="width:56px" oninput="calcPkg()"></td>
-    <td><select onchange="calcPkg()">
+    <td><select onchange="calcPkg()" aria-label="Select option">
       <option>Carton</option><option>Pallet</option><option>Crate</option>
       <option>Bundle</option><option>Drum</option><option>Bag</option>
     </select></td>
     <td><input aria-label="Description of goods" type="text" placeholder="Description of goods" oninput="calcPkg()"></td>
-    <td><input type="number" placeholder="1" min="0" step="any" style="width:48px" value="1" oninput="calcPkg()"></td>
+    <td><input type="number" placeholder="1" min="0" step="any" style="width:48px" value="1" oninput="calcPkg()" aria-label="Input value"></td>
     <td><input aria-label="Net $ id" type="number" placeholder="0" min="0" step="any" style="width:60px" value="0" id="net-${id}" oninput="calcPkg()"></td>
     <td><input aria-label="Line item amount" type="number" placeholder="0" min="0" step="any" style="width:60px" value="0" oninput="calcPkg()"></td>
     <td>

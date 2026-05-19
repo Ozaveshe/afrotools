@@ -15,11 +15,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -46,6 +46,7 @@ h1 em{color:var(--accent);font-style:normal}
 /* MAIN LAYOUT */
 .tool-main{padding:28px 0 72px}
 .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.calc-area,.sidebar,.card,.tab-panel{min-width:0}
 
 /* CARDS */
 .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
@@ -185,9 +186,11 @@ h1 em{color:var(--accent);font-style:normal}
   .chart-grid{grid-template-columns:1fr}
   .comp-row{grid-template-columns:1fr}
   .tco-grid{grid-template-columns:1fr}
-  .tab-btn{font-size:.68rem;padding:10px 8px}
+  .tab-bar{overflow-x:auto}
+  .tab-btn{font-size:.68rem;padding:10px 8px;min-width:0;white-space:normal}
 }
 @media(max-width:480px){
+  .tool-main-inner{padding:0 16px}
   .result-grid{grid-template-columns:1fr}
 }
 </style>
@@ -214,6 +217,7 @@ h1 em{color:var(--accent);font-style:normal}
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/car-loan/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mkopo-wa-gari/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/car-loan/" />
 </head>
 <body>
@@ -248,7 +252,7 @@ h1 em{color:var(--accent);font-style:normal}
 <!-- TAB 1: MONTHLY PAYMENT -->
 <div class="tab-panel active" id="panel-monthly">
 <div class="field">
-<label class="f-label">Country / Currency</label>
+<label class="f-label" for="country">Country / Currency</label>
 <select id="country" class="f-select" onchange="onCountryChange()"></select>
 </div>
 <div class="field-row">
@@ -291,7 +295,7 @@ h1 em{color:var(--accent);font-style:normal}
 </div>
 <div class="field-row">
 <div class="field">
-<label class="f-label">Loan Term</label>
+<label class="f-label" for="term">Loan Term</label>
 <select id="term" class="f-select">
 <option value="12">1 Year (12 months)</option>
 <option value="24">2 Years (24 months)</option>
@@ -324,7 +328,7 @@ h1 em{color:var(--accent);font-style:normal}
 <!-- TAB 2: AFFORDABILITY -->
 <div class="tab-panel" id="panel-afford">
 <div class="field">
-<label class="f-label">Country / Currency</label>
+<label class="f-label" for="affCountry">Country / Currency</label>
 <select id="affCountry" class="f-select" onchange="onAffCountryChange()"></select>
 </div>
 <div class="field">
@@ -337,7 +341,7 @@ h1 em{color:var(--accent);font-style:normal}
 <input aria-label="AffRate" type="number" id="affRate" class="f-input" value="22" step="0.1">
 </div>
 <div class="field">
-<label class="f-label">Loan Term</label>
+<label class="f-label" for="affTerm">Loan Term</label>
 <select id="affTerm" class="f-select">
 <option value="12">1 Year</option>
 <option value="24">2 Years</option>
@@ -365,7 +369,7 @@ h1 em{color:var(--accent);font-style:normal}
 <!-- TAB 3: COMPARISON -->
 <div class="tab-panel" id="panel-compare">
 <div class="field">
-<label class="f-label">Country / Currency</label>
+<label class="f-label" for="cmpCountry">Country / Currency</label>
 <select id="cmpCountry" class="f-select"></select>
 </div>
 <div class="field">
@@ -384,7 +388,7 @@ h1 em{color:var(--accent);font-style:normal}
 <input aria-label="CmpRateA" type="number" id="cmpRateA" class="f-input" value="18" step="0.1">
 </div>
 <div class="field">
-<label class="f-label">Term (Years)</label>
+<label class="f-label" for="cmpTermA">Term (Years)</label>
 <select id="cmpTermA" class="f-select">
 <option value="12">1 Year</option><option value="24">2 Years</option><option value="36" selected>3 Years</option><option value="48">4 Years</option><option value="60">5 Years</option><option value="72">6 Years</option><option value="84">7 Years</option>
 </select>
@@ -401,7 +405,7 @@ h1 em{color:var(--accent);font-style:normal}
 <input aria-label="CmpRateB" type="number" id="cmpRateB" class="f-input" value="24" step="0.1">
 </div>
 <div class="field">
-<label class="f-label">Term (Years)</label>
+<label class="f-label" for="cmpTermB">Term (Years)</label>
 <select id="cmpTermB" class="f-select">
 <option value="12">1 Year</option><option value="24">2 Years</option><option value="36">3 Years</option><option value="48">4 Years</option><option value="60" selected>5 Years</option><option value="72">6 Years</option><option value="84">7 Years</option>
 </select>
@@ -1061,6 +1065,15 @@ function toggleAmortView(btn,view){
 
 /* ===== CHARTS ===== */
 function renderCharts(principal,interest,schedule,sym){
+  if(typeof Chart==='undefined'){
+    document.querySelectorAll('#chartDoughnut,#chartLine,#chartBar').forEach(canvas=>{
+      const note=document.createElement('p');
+      note.className='chart-fallback-note';
+      note.textContent='Chart unavailable. The payment and amortisation figures above are still shown.';
+      canvas.replaceWith(note);
+    });
+    return;
+  }
   const chartColors={blue:'#3b82f6',red:'#ef4444',green:'#10b981',gray:'#94a3b8'};
 
   // Doughnut

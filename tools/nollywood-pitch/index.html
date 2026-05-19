@@ -21,8 +21,8 @@
 <meta name="twitter:description" content="Estimate production costs for African film and TV projects. Budget templates for Nollywood, Kenyan, Ghanaian, and South African markets.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta name="robots" content="index, follow">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <style>
 :root{--amber:var(--color-primary);--amber-light:#E8F2FF;--amber-dark:#0063D1}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -109,7 +109,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .zfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
 @media(max-width:500px){.zfun{grid-template-columns:1fr}}
 </style>
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <meta name="tool-id" content="nollywood-pitch">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Film & TV Budget Estimator Africa","description":"Estimate your African film or TV production budget with pre-loaded industry costs for Nollywood, Kenyan, Ghanaian, and South African markets.","url":"https://afrotools.com/tools/nollywood-pitch/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Film & TV Budget Estimator Africa","url":"https://afrotools.com/tools/nollywood-pitch/","description":"Estimate your African film or TV production budget with pre-loaded industry costs for Nollywood, Kenyan, Ghanaian, and South African markets.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -172,9 +172,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="card">
 <h2>Project Setup</h2>
 <div class="form-grid">
-<div class="form-group"><label>Production Country</label><select id="country" onchange="loadPreset()"><option value="NG">Nigeria (Nollywood)</option><option value="KE">Kenya</option><option value="GH">Ghana (Ghallywood)</option><option value="ZA">South Africa</option></select></div>
-<div class="form-group"><label>Project Type</label><select id="projectType" onchange="loadPreset()"><option value="feature">Feature Film</option><option value="series">TV Series (per episode)</option><option value="short">Short Film</option><option value="music_video">Music Video</option><option value="documentary">Documentary</option></select></div>
-<div class="form-group"><label>Budget Tier</label><select id="tier" onchange="loadPreset()"><option value="low">Low Budget</option><option value="mid">Mid Budget</option><option value="high">High Budget</option></select></div>
+<div class="form-group"><label for="country">Production Country</label><select id="country" onchange="loadPreset()"><option value="NG">Nigeria (Nollywood)</option><option value="KE">Kenya</option><option value="GH">Ghana (Ghallywood)</option><option value="ZA">South Africa</option></select></div>
+<div class="form-group"><label>Project Type</label><select id="projectType" onchange="loadPreset()" aria-label="Project Type"><option value="feature">Feature Film</option><option value="series">TV Series (per episode)</option><option value="short">Short Film</option><option value="music_video">Music Video</option><option value="documentary">Documentary</option></select></div>
+<div class="form-group"><label>Budget Tier</label><select id="tier" onchange="loadPreset()" aria-label="Tier"><option value="low">Low Budget</option><option value="mid">Mid Budget</option><option value="high">High Budget</option></select></div>
 </div>
 </div>
 
@@ -211,7 +211,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-group"><label>Logline</label><input aria-label="One sentence story hook" id="pitchLogline" placeholder="One sentence story hook"></div>
 <div class="form-group"><label>Shoot Days</label><input aria-label="PitchDays" id="pitchDays" type="number" value="18" min="1"></div>
 <div class="form-group"><label>Funding Secured (%)</label><input aria-label="PitchFunded" id="pitchFunded" type="number" value="30" min="0" max="100"></div>
-<div class="form-group"><label>Target Outlet</label><select id="pitchOutlet"><option value="cinema">Cinema release</option><option value="streaming">Streaming pitch</option><option value="tv">TV / Africa Magic</option><option value="festival">Festival route</option><option value="brand">Brand funded</option></select></div>
+<div class="form-group"><label>Target Outlet</label><select id="pitchOutlet" aria-label="Pitch Outlet"><option value="cinema">Cinema release</option><option value="streaming">Streaming pitch</option><option value="tv">TV / Africa Magic</option><option value="festival">Festival route</option><option value="brand">Brand funded</option></select></div>
 </div>
 <div class="pitch-output" id="pitchOutput"></div>
 </div>
@@ -334,7 +334,7 @@ function loadPreset(){
     cat.items.forEach(item=>{
       const val=preset[idx]||0;
       allItems.push({cat:cat.cat,item,val});
-      html+=`<tr><td style="padding-left:1.5rem">${item}</td><td><input type="number" data-idx="${idx}" value="${val}" min="0" onchange="recalc()"></td></tr>`;
+      html+=`<tr><td style="padding-left:1.5rem">${item}</td><td><input type="number" data-idx="${idx}" value="${val}" min="0" onchange="recalc()" aria-label="Input value"></td></tr>`;
       idx++;
     });
   });

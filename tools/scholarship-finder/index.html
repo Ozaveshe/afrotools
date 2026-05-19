@@ -5,7 +5,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>African Scholarship Finder & Eligibility Check | AfroTools</title>
-<meta name="description" content="Run a quick scholarship eligibility check or explore 120+ scholarships with profile-aware match scoring, fit explanations, and shortlist tools for African students.">
+<meta name="description" content="Run a quick scholarship eligibility check against the verified live feed, with profile-aware match scoring, fit explanations, and shortlist tools for African students.">
 <link rel="canonical" href="https://afrotools.com/tools/scholarship-finder/">
 <meta name="tool-id" content="scholarship-finder">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -13,8 +13,8 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/scholarship-finder.webp"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/scholarship-finder/">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a"><link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script><script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
@@ -128,7 +128,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="African Scholarship Finder & Eligibility Check | AfroTools">
-<meta name="twitter:description" content="Quick scholarship check plus 120+ scholarships with profile-aware match scoring, fit explanations, and shortlist tools.">
+<meta name="twitter:description" content="Quick scholarship check using the verified live feed, with profile-aware match scoring, fit explanations, and shortlist tools.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/scholarship-finder.webp">
 <script type="application/ld+json">
 {
@@ -161,6 +161,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scholarship-finder/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/recherche-bourses/" />
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/neman-tallafin-karatu/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/udhamini/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scholarship-finder/" />
 </head>
 <body>
@@ -169,7 +171,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Scholarship Finder</span></div>
 <h1>African <em>Scholarship</em> Finder</h1>
 <p class="hero-sub">Start with a quick eligibility check, then refine your GPA, IELTS, field, level, and destination to see profile-aware scholarship matches for African students.</p>
-<div class="hero-badges"><span class="badge b-em" id="totalBadge">120+ Scholarships</span><span class="badge b-em">Quick Check</span><span class="badge b-em">Fit Explanations</span><span class="badge b-em">Shortlists</span></div>
+<div class="hero-badges"><span class="badge b-em" id="totalBadge">Checking Scholarships</span><span class="badge b-em">Quick Check</span><span class="badge b-em">Fit Explanations</span><span class="badge b-em">Shortlists</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -185,7 +187,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       <h2>Quick Eligibility Check</h2>
       <p>Answer four practical questions and get a fast first-pass view of strong, medium, and weaker-fit scholarships without leaving the main Scholarship Finder.</p>
       <div class="quick-check-grid">
-        <div class="field"><label>Current Grade Band</label>
+        <div class="field"><label for="quickBand">Current Grade Band</label>
           <select id="quickBand">
             <option value="">Select grade band</option>
             <option value="elite">First Class / 75%+ / 4.5-5.0 GPA</option>
@@ -195,7 +197,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
           </select>
         </div>
         <div class="field"><label>Target Level</label>
-          <select id="quickLevel">
+          <select id="quickLevel" aria-label="Quick Level">
             <option value="">Any level</option>
             <option value="undergrad">Undergraduate</option>
             <option value="masters">Master's</option>
@@ -204,7 +206,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
           </select>
         </div>
         <div class="field"><label>Field</label>
-          <select id="quickField">
+          <select id="quickField" aria-label="Quick Field">
             <option value="">Any field</option>
             <option value="stem">STEM / Engineering</option>
             <option value="business">Business / Economics</option>
@@ -215,7 +217,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
           </select>
         </div>
         <div class="field"><label>Destination</label>
-          <select id="quickDest">
+          <select id="quickDest" aria-label="Quick Dest">
             <option value="">Any destination</option>
             <option value="uk">United Kingdom</option>
             <option value="us">United States</option>
@@ -263,7 +265,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   <div class="profile-grid">
     <div class="field"><label>GPA / Score</label><input aria-label="E.g. 3.50" type="number" id="profileGPA" step="0.01" min="0" max="100" placeholder="e.g. 3.50"></div>
     <div class="field"><label>GPA Scale</label>
-      <select id="profileScale">
+      <select id="profileScale" aria-label="Profile Scale">
         <option value="">Select scale</option>
         <option value="4.0">4.0 scale</option>
         <option value="5.0">5.0 scale (Nigeria)</option>
@@ -274,7 +276,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     </div>
     <div class="field"><label>IELTS Overall</label><input aria-label="E.g. 7.0" type="number" id="profileIELTS" step="0.5" min="0" max="9" placeholder="e.g. 7.0"></div>
     <div class="field"><label>Target Level</label>
-      <select id="profileLevel">
+      <select id="profileLevel" aria-label="Profile Level">
         <option value="">Select level</option>
         <option value="undergrad">Undergraduate</option>
         <option value="masters">Master's</option>
@@ -283,7 +285,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       </select>
     </div>
     <div class="field"><label>Target Field</label>
-      <select id="profileField">
+      <select id="profileField" aria-label="Profile Field">
         <option value="">Any field</option>
         <option value="stem">STEM / Engineering</option>
         <option value="business">Business / Economics</option>
@@ -294,7 +296,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       </select>
     </div>
     <div class="field"><label>Target Destination</label>
-      <select id="profileDest">
+      <select id="profileDest" aria-label="Profile Dest">
         <option value="">Any destination</option>
         <option value="uk">United Kingdom</option>
         <option value="us">United States</option>
@@ -320,7 +322,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Filter Scholarships</span><span class="stat" id="countBadge"></span></div>
 <div class="card-body">
 <div class="filter-row field">
-<div><label>Study Level</label>
+<div><label for="level">Study Level</label>
 <select id="level" onchange="applyFilters()">
 <option value="all">All Levels</option>
 <option value="undergrad">Undergraduate</option>
@@ -329,7 +331,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="postdoc">Postdoctoral</option>
 </select></div>
 <div><label>Destination</label>
-<select id="destination" onchange="applyFilters()">
+<select id="destination" onchange="applyFilters()" aria-label="Destination">
 <option value="all">All Destinations</option>
 <option value="uk">United Kingdom</option>
 <option value="us">United States</option>
@@ -340,7 +342,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="global">Global / Multiple</option>
 </select></div>
 <div><label>Field of Study</label>
-<select id="field" onchange="applyFilters()">
+<select id="field" onchange="applyFilters()" aria-label="Field">
 <option value="all">All Fields</option>
 <option value="stem">STEM / Engineering</option>
 <option value="business">Business / Economics</option>
@@ -351,7 +353,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="any">Open to Any Field</option>
 </select></div>
 <div><label>Funding</label>
-<select id="funding" onchange="applyFilters()">
+<select id="funding" onchange="applyFilters()" aria-label="Funding">
 <option value="all">All Types</option>
 <option value="full">Fully Funded</option>
 <option value="partial">Partial / Tuition Only</option>
@@ -363,7 +365,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <!-- Sort row -->
 <div class="sort-row">
   <label>Sort by:</label>
-  <select id="sortBy" onchange="applyFilters()">
+  <select id="sortBy" onchange="applyFilters()" aria-label="Sort By">
     <option value="match">Best Match</option>
     <option value="name">Name (A-Z)</option>
     <option value="deadline">Nearest Deadline</option>
@@ -422,9 +424,9 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <section class="seo-section">
 <h2>Scholarships for African Students</h2>
-<p>Thousands of scholarships are available specifically for African students, covering everything from undergraduate studies to postdoctoral research. These range from fully-funded government programmes (Chevening, Fulbright, DAAD) to university-specific awards and private foundation grants. With rising tuition costs globally and limited funding for higher education within Africa, scholarships represent a critical pathway for talented African students to access world-class education.</p>
-<p>Fully-funded scholarships - which typically cover tuition, living expenses, flights, and health insurance - are the most sought-after. Top programmes include the Chevening Scholarship (UK, ~1,500 awards/year globally), Mastercard Foundation Scholars Program (covering study at leading universities worldwide), Rhodes Scholarship (Oxford), Gates Cambridge, and DAAD (Germany). Many of these specifically target or have dedicated streams for African applicants, recognizing the importance of developing African talent.</p>
-<p>Within Africa, the African Union's Mwalimu Nyerere Scholarship provides funding for postgraduate study at African institutions, while the African Development Bank and various national programmes (PTDF Nigeria, Jubilee Scholarship Ghana, CDF Kenya) offer funding for both domestic and international study. University-specific scholarships at institutions like University of Cape Town, Wits, Makerere, and the University of Ghana also provide significant funding for African students.</p>
+<p>Scholarship funding for African students changes constantly, so this finder starts from the verified live feed returned by AfroTools instead of a fixed marketing count. When the catalog is limited, the page says so and shows the exact number loaded from the API.</p>
+<p>Use each match as a source-backed shortlist, then open the official scholarship page before applying. Major programmes such as Chevening, Fulbright, DAAD, Mastercard Foundation Scholars, Rhodes, Gates Cambridge, Erasmus Mundus, and national education funds can change deadlines, country rules, and eligibility windows by cycle.</p>
+<p>Fully funded awards may cover tuition, living expenses, flights, and health insurance, while partial awards may only cover tuition or a fixed grant. The live feed marks funding type, official links, deadline status, and source confidence wherever those fields are available.</p>
 <p>Success in scholarship applications requires preparation, authentic storytelling, and strategic timing. Start early - most major scholarships have deadlines 9-12 months before the start date. Focus on demonstrating leadership, community impact, and a clear plan for how you'll use your education to contribute to Africa's development. Get strong recommendation letters, write compelling personal statements, and apply to multiple scholarships to increase your chances.</p>
 
 <h2>Frequently Asked Questions</h2>
@@ -663,9 +665,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       .replace(/'/g, '&#39;');
   }
 
-  function formatScholarshipCount(count) {
-    return count >= 120 ? '120+ Scholarships' : count + ' Scholarships';
-  }
+function formatScholarshipCount(count) {
+  var value = Number(count || 0);
+  if (!isFinite(value) || value < 0) value = 0;
+  value = Math.floor(value);
+  return value + ' Scholarship' + (value === 1 ? '' : 's');
+}
 
   function updateFeedStatus() {
     var note = getEl('feedStatus');
@@ -1046,6 +1051,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
           } else if (mode === 'fallback') {
             label = 'Curated fallback';
             message = 'Live scholarship feed is unavailable. Showing a narrower curated backup dataset instead.';
+            isDegraded = true;
+          }
+
+          if (data && data.label) label = data.label;
+          if (data && data.message) message = data.message;
+          if (data && (data.isDegraded || data.isLimited || data.tone === 'warn')) {
             isDegraded = true;
           }
 

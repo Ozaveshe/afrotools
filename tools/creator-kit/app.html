@@ -26,7 +26,7 @@
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/creator-kit/app">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-kit/app" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-kit/app" />
@@ -142,7 +142,7 @@
           <h3>About / Bio</h3>
           <div class="ck-hint">Tell your story. The AI can write 3 versions — short (50 words), medium (100), and long (200).</div>
           <div class="ck-field">
-            <label>Tone</label>
+            <label for="bioTone">Tone</label>
             <select id="bioTone" onchange="updateData('bioTone', this.value)">
               <option value="professional">Professional</option>
               <option value="warm">Warm</option>
@@ -152,15 +152,15 @@
           </div>
           <div class="ck-field">
             <label>Short Bio (50 words)</label>
-            <textarea id="bioShort" placeholder="A quick intro for social profiles and email signatures..." oninput="updateData('bioShort', this.value)" rows="3"></textarea>
+            <textarea id="bioShort" placeholder="A quick intro for social profiles and email signatures..." oninput="updateData('bioShort', this.value)" rows="3" aria-label="A quick intro for social profiles and email signatures..."></textarea>
           </div>
           <div class="ck-field">
             <label>Medium Bio (100 words)</label>
-            <textarea id="bioMedium" placeholder="The standard media kit bio..." oninput="updateData('bioMedium', this.value)" rows="5"></textarea>
+            <textarea id="bioMedium" placeholder="The standard media kit bio..." oninput="updateData('bioMedium', this.value)" rows="5" aria-label="The standard media kit bio..."></textarea>
           </div>
           <div class="ck-field">
             <label>Long Bio (200 words)</label>
-            <textarea id="bioLong" placeholder="For press pages and detailed about sections..." oninput="updateData('bioLong', this.value)" rows="8"></textarea>
+            <textarea id="bioLong" placeholder="For press pages and detailed about sections..." oninput="updateData('bioLong', this.value)" rows="8" aria-label="For press pages and detailed about sections..."></textarea>
           </div>
           <button type="button" class="ck-ai-btn" onclick="aiGenerate('bio')">✨ Write all 3 bios</button>
         </div>
@@ -173,7 +173,7 @@
           <div class="ck-hint">Upload 4-12 of your best works. Show range — different clients, settings, and styles.</div>
           <div class="ck-field">
             <label>Layout</label>
-            <select id="portfolioLayout" onchange="updateData('portfolioLayout', this.value)">
+            <select id="portfolioLayout" onchange="updateData('portfolioLayout', this.value)" aria-label="Portfolio Layout">
               <option value="grid-2">2-Column Grid</option>
               <option value="grid-3">3-Column Masonry</option>
               <option value="hero-thumb">Hero + Thumbnails</option>
@@ -200,7 +200,7 @@
             </div>
             <div class="ck-stat-input-card">
               <label>Primary Platform</label>
-              <select onchange="updateStat('primaryPlatform', this.value)" style="width:100%;padding:8px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:13px;color:#fff;font-family:inherit">
+              <select onchange="updateStat('primaryPlatform', this.value)" style="width:100%;padding:8px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:13px;color:#fff;font-family:inherit" aria-label="Select option">
                 <option value="">Select...</option>
                 <option value="instagram">Instagram</option>
                 <option value="tiktok">TikTok</option>
@@ -255,7 +255,7 @@
             <div class="ck-toggle-label">Show prices on kit</div>
           </div>
           <div class="ck-field">
-            <label>Currency</label>
+            <label for="currency">Currency</label>
             <select id="currency" onchange="updateData('currency', this.value)">
               <option value="NGN">NGN (₦)</option>
               <option value="KES">KES (KSh)</option>
@@ -287,19 +287,19 @@
             <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:10px">Packages (Optional)</label>
             <div class="ck-packages-grid" id="packagesGrid">
               <div class="ck-package-card" data-tier="bronze">
-                <div class="ck-field"><label>Package Name</label><input type="text" value="Starter" oninput="updatePackage(0,'name',this.value)"></div>
+                <div class="ck-field"><label>Package Name</label><input type="text" value="Starter" oninput="updatePackage(0,'name',this.value)" aria-label="Input value"></div>
                 <div class="ck-field"><label>Price</label><input aria-label="E.g. 100000" type="text" inputmode="numeric" placeholder="e.g. 100000" oninput="updatePackage(0,'price',this.value)"></div>
-                <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="2 hours shoot&#10;10 edited photos&#10;1 location" oninput="updatePackage(0,'includes',this.value)"></textarea></div>
+                <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="2 hours shoot&#10;10 edited photos&#10;1 location" oninput="updatePackage(0,'includes',this.value)" aria-label="2 hours shoot&amp;#10;10 edited photos&amp;#10;1 location"></textarea></div>
               </div>
               <div class="ck-package-card featured" data-tier="silver">
-                <div class="ck-field"><label>Package Name</label><input type="text" value="Standard" oninput="updatePackage(1,'name',this.value)"></div>
+                <div class="ck-field"><label>Package Name</label><input type="text" value="Standard" oninput="updatePackage(1,'name',this.value)" aria-label="Input value"></div>
                 <div class="ck-field"><label>Price</label><input aria-label="E.g. 250000" type="text" inputmode="numeric" placeholder="e.g. 250000" oninput="updatePackage(1,'price',this.value)"></div>
-                <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="4 hours shoot&#10;30 edited photos&#10;2 locations&#10;1 outfit change" oninput="updatePackage(1,'includes',this.value)"></textarea></div>
+                <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="4 hours shoot&#10;30 edited photos&#10;2 locations&#10;1 outfit change" oninput="updatePackage(1,'includes',this.value)" aria-label="4 hours shoot&amp;#10;30 edited photos&amp;#10;2 locations&amp;#10;1 outfit change"></textarea></div>
               </div>
               <div class="ck-package-card" data-tier="gold">
-                <div class="ck-field"><label>Package Name</label><input type="text" value="Premium" oninput="updatePackage(2,'name',this.value)"></div>
+                <div class="ck-field"><label>Package Name</label><input type="text" value="Premium" oninput="updatePackage(2,'name',this.value)" aria-label="Input value"></div>
                 <div class="ck-field"><label>Price</label><input aria-label="E.g. 500000" type="text" inputmode="numeric" placeholder="e.g. 500000" oninput="updatePackage(2,'price',this.value)"></div>
-                <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="Full day shoot&#10;All edited photos&#10;Unlimited locations&#10;Video highlights&#10;Rush delivery" oninput="updatePackage(2,'includes',this.value)"></textarea></div>
+                <div class="ck-field"><label>What's Included (one per line)</label><textarea rows="4" placeholder="Full day shoot&#10;All edited photos&#10;Unlimited locations&#10;Video highlights&#10;Rush delivery" oninput="updatePackage(2,'includes',this.value)" aria-label="Full day shoot&amp;#10;All edited photos&amp;#10;Unlimited locations&amp;#10;Video highlights&amp;#10;Rush delivery"></textarea></div>
               </div>
             </div>
             <button type="button" class="ck-ai-btn" onclick="aiGenerate('packages')" style="margin-top:12px">✨ Suggest packages for my craft</button>
@@ -314,7 +314,7 @@
           <div class="ck-hint">List brands you've worked with. Put the most recognizable names first.</div>
           <div class="ck-field">
             <label>Client Names (one per line)</label>
-            <textarea id="clientNames" rows="6" placeholder="MTN Nigeria&#10;Access Bank&#10;Lagos Fashion Week&#10;Coca-Cola Africa&#10;Netflix Naija" oninput="updateData('clients', this.value)"></textarea>
+            <textarea id="clientNames" rows="6" placeholder="MTN Nigeria&#10;Access Bank&#10;Lagos Fashion Week&#10;Coca-Cola Africa&#10;Netflix Naija" oninput="updateData('clients', this.value)" aria-label="MTN Nigeria&amp;#10;Access Bank&amp;#10;Lagos Fashion Week&amp;#10;Coca-Cola Africa&amp;#10;Netflix Naija"></textarea>
           </div>
         </div>
       </div>
@@ -326,7 +326,7 @@
           <div class="ck-hint">Paste client feedback — even casual WhatsApp messages. The AI polishes them into professional testimonials.</div>
           <div id="testimonialsList">
             <div class="ck-testimonial-card">
-              <div class="ck-field"><label>Client Quote (paste raw feedback)</label><textarea class="ck-testi-quote" rows="3" placeholder='e.g. "Bro the photos were fire 🔥🔥 my wife loved them"' oninput="updateTestimonials()"></textarea></div>
+              <div class="ck-field"><label>Client Quote (paste raw feedback)</label><textarea class="ck-testi-quote" rows="3" placeholder='e.g. "Bro the photos were fire 🔥🔥 my wife loved them"' oninput="updateTestimonials()" aria-label="e.g."></textarea></div>
               <div class="ck-field"><label>Client Name & Role</label><input aria-label="E.g. Tunde Bakare, CEO, BakeHouse" type="text" class="ck-testi-name" placeholder="e.g. Tunde Bakare, CEO, BakeHouse" oninput="updateTestimonials()"></div>
               <button type="button" class="ck-ai-btn" onclick="aiPolishTestimonial(this)">✨ Polish this testimonial</button>
             </div>
@@ -379,7 +379,7 @@
           </div>
           <div class="ck-field">
             <label>Font Pairing</label>
-            <select id="fontPairing" onchange="updateData('fontPairing', this.value)">
+            <select id="fontPairing" onchange="updateData('fontPairing', this.value)" aria-label="Font Pairing">
               <option value="default">Instrument Serif + DM Sans</option>
               <option value="modern">Inter + Space Grotesk</option>
               <option value="elegant">Playfair Display + Lato</option>
@@ -566,7 +566,7 @@ function addTestimonial() {
   var list = document.getElementById('testimonialsList');
   var card = document.createElement('div');
   card.className = 'ck-testimonial-card';
-  card.innerHTML = '<div class="ck-field"><label>Client Quote</label><textarea class="ck-testi-quote" rows="3" placeholder="Paste raw feedback..." oninput="updateTestimonials()"></textarea></div>' +
+  card.innerHTML = '<div class="ck-field"><label>Client Quote</label><textarea class="ck-testi-quote" rows="3" placeholder="Paste raw feedback..." oninput="updateTestimonials()" aria-label="Paste raw feedback..."></textarea></div>' +
     '<div class="ck-field"><label>Client Name & Role</label><input aria-label="E.g. Jane Doe, Marketing Dir" type="text" class="ck-testi-name" placeholder="e.g. Jane Doe, Marketing Dir" oninput="updateTestimonials()"></div>' +
     '<button type="button" class="ck-ai-btn" onclick="aiPolishTestimonial(this)">✨ Polish this testimonial</button>';
   list.appendChild(card);

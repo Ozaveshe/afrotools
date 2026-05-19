@@ -20,12 +20,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <style>
 :root{--pt-primary:#059669;--pt-primary-dark:#047857;--pt-primary-darker:#064e3b;--pt-accent:#a7f3d0;--pt-dark:#0f172a;--pt-bg:#f8fafc;--pt-border:#e2e8f0;--pt-muted:#64748b;--pt-red:#ef4444;--pt-amber:#f59e0b;--pt-blue:#3b82f6;--pt-purple:#8b5cf6;--pt-radius:10px}
 *,*::before,*::after{box-sizing:border-box}
@@ -230,6 +230,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/property-tax/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/taxe-fonciere/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kodi-mali/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/property-tax/" />
 </head>
 <body>
@@ -269,7 +270,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <div class="pt-card-head"><span class="pt-card-title">Annual Property Tax</span></div>
 <div class="pt-card-body">
 <div class="pt-row" style="margin-bottom:16px">
-<div class="pt-field"><label class="pt-label">Country</label>
+<div class="pt-field"><label class="pt-label" for="at-country">Country</label>
 <select class="pt-select" id="at-country" onchange="AT.updateCity()">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -288,11 +289,11 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <option value="CI">Cote d'Ivoire</option>
 </select></div>
 <div class="pt-field"><label class="pt-label">City / Region</label>
-<select class="pt-select" id="at-city"></select></div>
+<select class="pt-select" id="at-city" aria-label="At City"></select></div>
 </div>
 <div class="pt-row" style="margin-bottom:16px">
 <div class="pt-field"><label class="pt-label">Property Use</label>
-<select class="pt-select" id="at-use">
+<select class="pt-select" id="at-use" aria-label="At Use">
 <option value="residential">Residential (Owner-occupied)</option>
 <option value="rental">Residential (Rental/Investment)</option>
 <option value="commercial">Commercial</option>
@@ -325,7 +326,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <div class="pt-card-head"><span class="pt-card-title">Total Acquisition Cost Calculator</span></div>
 <div class="pt-card-body">
 <div class="pt-row" style="margin-bottom:16px">
-<div class="pt-field"><label class="pt-label">Country</label>
+<div class="pt-field"><label class="pt-label" for="bc-country">Country</label>
 <select class="pt-select" id="bc-country">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -344,7 +345,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <option value="CI">Cote d'Ivoire</option>
 </select></div>
 <div class="pt-field"><label class="pt-label">Property Location</label>
-<select class="pt-select" id="bc-location">
+<select class="pt-select" id="bc-location" aria-label="Bc Location">
 <option value="urban">Urban</option>
 <option value="rural">Rural</option>
 </select></div>
@@ -353,7 +354,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <div class="pt-field"><label class="pt-label">Purchase Price</label>
 <input aria-label="Bc price" class="pt-input" type="number" id="bc-price" value="50000000" min="0" step="1000000"></div>
 <div class="pt-field"><label class="pt-label">Property Type</label>
-<select class="pt-select" id="bc-type">
+<select class="pt-select" id="bc-type" aria-label="Bc Type">
 <option value="residential">Residential</option>
 <option value="commercial">Commercial</option>
 </select></div>
@@ -388,7 +389,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <div class="pt-card-head"><span class="pt-card-title">Rental Income Tax Calculator</span></div>
 <div class="pt-card-body">
 <div class="pt-row" style="margin-bottom:16px">
-<div class="pt-field"><label class="pt-label">Country</label>
+<div class="pt-field"><label class="pt-label" for="rt-country">Country</label>
 <select class="pt-select" id="rt-country">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -407,7 +408,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <option value="CI">Cote d'Ivoire</option>
 </select></div>
 <div class="pt-field"><label class="pt-label">Property Type</label>
-<select class="pt-select" id="rt-type">
+<select class="pt-select" id="rt-type" aria-label="Rt Type">
 <option value="residential">Residential</option>
 <option value="commercial">Commercial</option>
 </select></div>
@@ -447,7 +448,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <div class="pt-card-head"><span class="pt-card-title">Capital Gains Tax Calculator</span></div>
 <div class="pt-card-body">
 <div class="pt-row" style="margin-bottom:16px">
-<div class="pt-field"><label class="pt-label">Country</label>
+<div class="pt-field"><label class="pt-label" for="cg-country">Country</label>
 <select class="pt-select" id="cg-country">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -466,7 +467,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <option value="CI">Cote d'Ivoire</option>
 </select></div>
 <div class="pt-field"><label class="pt-label">Property Type</label>
-<select class="pt-select" id="cg-type">
+<select class="pt-select" id="cg-type" aria-label="Cg Type">
 <option value="residential">Residential</option>
 <option value="commercial">Commercial</option>
 </select></div>
@@ -489,7 +490,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <div class="pt-field"><label class="pt-label">Holding Period (Years)</label>
 <input aria-label="Cg years" class="pt-input" type="number" id="cg-years" value="5" min="0" max="50" step="1"></div>
 <div class="pt-field"><label class="pt-label">Primary Residence?</label>
-<select class="pt-select" id="cg-primary">
+<select class="pt-select" id="cg-primary" aria-label="Cg Primary">
 <option value="no">No (Investment Property)</option>
 <option value="yes">Yes (Primary Residence)</option>
 </select></div>
@@ -515,13 +516,13 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <input aria-label="Cmp value" class="pt-input" type="number" id="cmp-value" value="100000" min="1000" step="10000">
 <p class="pt-hint">Enter value in USD for fair cross-country comparison</p></div>
 <div class="pt-field"><label class="pt-label">Property Use</label>
-<select class="pt-select" id="cmp-use">
+<select class="pt-select" id="cmp-use" aria-label="Cmp Use">
 <option value="residential">Residential</option>
 <option value="commercial">Commercial</option>
 </select></div>
 <div class="pt-row" style="margin-bottom:16px">
 <div class="pt-field"><label class="pt-label">Compare Country 1</label>
-<select class="pt-select" id="cmp-c1">
+<select class="pt-select" id="cmp-c1" aria-label="Cmp C1">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
 <option value="ZA" selected>South Africa</option>
@@ -539,7 +540,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <option value="CI">Cote d'Ivoire</option>
 </select></div>
 <div class="pt-field"><label class="pt-label">Compare Country 2</label>
-<select class="pt-select" id="cmp-c2">
+<select class="pt-select" id="cmp-c2" aria-label="Cmp C2">
 <option value="NG">Nigeria</option>
 <option value="KE" selected>Kenya</option>
 <option value="ZA">South Africa</option>
@@ -558,7 +559,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 </select></div>
 </div>
 <div class="pt-field"><label class="pt-label">Compare Country 3 (Optional)</label>
-<select class="pt-select" id="cmp-c3">
+<select class="pt-select" id="cmp-c3" aria-label="Cmp C3">
 <option value="">-- None --</option>
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -715,7 +716,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
       <span class="leg-action-kicker">PDF gate</span>
@@ -813,7 +814,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
     </div>
   </div>
   <label class="leg-action-copy-label">Copyable review note</label>
-  <textarea class="leg-action-copy-text" readonly>Property tax exposure map action pack
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Property tax exposure map action pack
 Tool: property-tax
 Coverage: Property tax model
 

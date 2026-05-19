@@ -8,15 +8,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
   <link rel="stylesheet" href="style.css?v=92e13330">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-schedule/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-schedule/app">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-schedule/app" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-schedule/app" />
@@ -59,9 +59,9 @@
 
       <!-- Calendar Nav -->
       <div class="csc-calendar-header">
-        <button type="button" class="csc-cal-nav-btn" id="calPrev">&larr;</button>
+        <button type="button" class="csc-cal-nav-btn" id="calPrev" aria-label="Previous month">&larr;</button>
         <button type="button" class="csc-cal-nav-btn today" id="calToday">Today</button>
-        <button type="button" class="csc-cal-nav-btn" id="calNext">&rarr;</button>
+        <button type="button" class="csc-cal-nav-btn" id="calNext" aria-label="Next month">&rarr;</button>
         <div class="csc-calendar-title" id="calTitle">April 2026</div>
       </div>
 
@@ -93,7 +93,7 @@
 
           <!-- Text -->
           <div class="csc-form-group">
-            <label class="csc-form-label">Post Text</label>
+            <label class="csc-form-label" for="postText">Post Text</label>
             <textarea class="csc-form-textarea" id="postText" placeholder="What do you want to share with your audience?"></textarea>
             <div class="csc-char-counter" id="charCounter">0 characters</div>
           </div>
@@ -145,7 +145,7 @@
             <label class="csc-form-label">Recurring</label>
             <div class="csc-recurring-row">
               <span style="font-size:13px;color:rgba(255,255,255,.6)">Repeat this post</span>
-              <button type="button" class="csc-toggle" id="recurringToggle"></button>
+              <button type="button" class="csc-toggle" id="recurringToggle" aria-label="Toggle recurring schedule"></button>
             </div>
             <div class="csc-recurring-options" id="recurringOptions" style="display:none;">
               <span class="csc-recurring-pill" data-val="daily">Daily</span>
@@ -179,7 +179,7 @@
 ---
 Second post — behind the scenes of the shoot...
 ---
-Third post — customer testimonial spotlight..."></textarea>
+Third post — customer testimonial spotlight..." aria-label="My first post about the new collection... --- Second post — behind the scenes of the shoot... --- Third post — customer "></textarea>
         <div class="csc-bulk-hint">Separate posts with --- on its own line</div>
         <div class="csc-bulk-actions">
           <button type="button" class="csc-save-btn" style="width:auto;padding:10px 24px;font-size:13px;" id="bulkCreateBtn">Create All Posts</button>
@@ -203,7 +203,7 @@ Third post — customer testimonial spotlight..."></textarea>
         </div>
         <div class="csc-form-group">
           <label class="csc-form-label">Template Text (use &#123;&#123;placeholder&#125;&#125; for variables)</label>
-          <textarea class="csc-form-textarea" id="tplText" placeholder="Introducing {{product_name}} — our newest {{category}}. Available now at {{link}}. What do you think? &#128071;"></textarea>
+          <textarea class="csc-form-textarea" id="tplText" placeholder="Introducing {{product_name}} — our newest {{category}}. Available now at {{link}}. What do you think? &#128071;" aria-label="Introducing {{product_name}} — our newest {{category}}. Available now at {{link}}. What do you think? &amp;#128071;"></textarea>
         </div>
         <div class="csc-form-group">
           <label class="csc-form-label">Default Platform</label>
@@ -232,7 +232,7 @@ Third post — customer testimonial spotlight..."></textarea>
   <!-- DAY DETAIL MODAL -->
   <div class="csc-day-modal-overlay" id="dayModal">
     <div class="csc-day-modal">
-      <button type="button" class="csc-day-modal-close" id="dayModalClose">&times;</button>
+      <button type="button" class="csc-day-modal-close" id="dayModalClose" aria-label="Close day details">&times;</button>
       <div class="csc-day-modal-title" id="dayModalTitle">Posts for April 12</div>
       <div id="dayModalContent"></div>
       <button type="button" class="csc-save-btn" style="margin-top:16px;font-size:13px;padding:10px 20px;" id="dayModalAdd">+ Add Post for This Day</button>

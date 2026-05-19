@@ -39,8 +39,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>
@@ -122,9 +122,9 @@ details[open] summary::after{content:'\2212'}
     <table class="holdings-table">
       <thead><tr><th>Stock / Ticker</th><th>Shares</th><th>Buy Price</th><th>Current Price</th><th></th></tr></thead>
       <tbody id="holdings-tbody">
-        <tr><td><input aria-label="E.g. DANGCEM" type="text" placeholder="e.g. DANGCEM"></td><td><input type="number" placeholder="100" min="0"></td><td><input type="number" placeholder="250" min="0"></td><td><input type="number" placeholder="310" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
-        <tr><td><input aria-label="E.g. GTCO" type="text" placeholder="e.g. GTCO"></td><td><input type="number" placeholder="500" min="0"></td><td><input type="number" placeholder="28" min="0"></td><td><input type="number" placeholder="35" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
-        <tr><td><input aria-label="E.g. AIRTELAFRI" type="text" placeholder="e.g. AIRTELAFRI"></td><td><input type="number" placeholder="200" min="0"></td><td><input type="number" placeholder="1200" min="0"></td><td><input type="number" placeholder="1450" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+        <tr><td><input aria-label="E.g. DANGCEM" type="text" placeholder="e.g. DANGCEM"></td><td><input type="number" placeholder="100" min="0" aria-label="Input value"></td><td><input type="number" placeholder="250" min="0" aria-label="Input value"></td><td><input type="number" placeholder="310" min="0" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+        <tr><td><input aria-label="E.g. GTCO" type="text" placeholder="e.g. GTCO"></td><td><input type="number" placeholder="500" min="0" aria-label="Input value"></td><td><input type="number" placeholder="28" min="0" aria-label="Input value"></td><td><input type="number" placeholder="35" min="0" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
+        <tr><td><input aria-label="E.g. AIRTELAFRI" type="text" placeholder="e.g. AIRTELAFRI"></td><td><input type="number" placeholder="200" min="0" aria-label="Input value"></td><td><input type="number" placeholder="1200" min="0" aria-label="Input value"></td><td><input type="number" placeholder="1450" min="0" aria-label="Input value"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td></tr>
       </tbody>
     </table>
     <button type="button" class="btn-add" onclick="addRow()">+ Add Another Stock</button>
@@ -166,7 +166,7 @@ function setExchange(cur,sym,btn){
 function addRow(){
   var tbody=document.getElementById('holdings-tbody');
   var tr=document.createElement('tr');
-  tr.innerHTML='<td><input aria-label="Ticker" type="text" placeholder="Ticker"></td><td><input type="number" placeholder="100" min="0"></td><td><input aria-label="Line item amount" type="number" placeholder="0" min="0"></td><td><input aria-label="Line item amount" type="number" placeholder="0" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td>';
+  tr.innerHTML='<td><input aria-label="Ticker" type="text" placeholder="Ticker"></td><td><input type="number" placeholder="100" min="0" aria-label="Input value"></td><td><input aria-label="Line item amount" type="number" placeholder="0" min="0"></td><td><input aria-label="Line item amount" type="number" placeholder="0" min="0"></td><td><button type="button" class="btn-del" onclick="delRow(this)">&#x2715;</button></td>';
   tbody.appendChild(tr);
 }
 function delRow(btn){btn.closest('tr').remove();}

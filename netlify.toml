@@ -16,7 +16,7 @@
   node_bundler = "esbuild"
 
 # --- Staging & Preview Environments ---
-# Branch deploys: push to any branch → auto-deploys at branch-name--afrotools.netlify.app
+# Branch deploys: push to any branch -> auto-deploys at branch-name--afrotools.netlify.app
 # Deploy previews: every PR gets a unique preview URL
 
 [context.deploy-preview]
@@ -41,103 +41,112 @@
 # --- Live Monitoring Scheduled Functions ---
 
 [functions."scheduled-fetch-forex-rates"]
-  schedule = "*/15 * * * *"
+  schedule = "7,22,37,52 * * * *"
 
 [functions."scheduled-fetch-fuel-prices"]
-  schedule = "0 */6 * * *"
+  schedule = "13 */6 * * *"
 
 [functions."scheduled-fetch-central-bank-rates"]
-  schedule = "0 */12 * * *"
+  schedule = "28 */12 * * *"
 
 [functions."scrape-fx-rates"]
-  schedule = "0 6 * * *"
+  schedule = "43 6 * * *"
 
 [functions."send-monthly-digest"]
-  schedule = "0 8 1 * *"
+  schedule = "9 8 1 * *"
 
 [functions."send-weekly-newsletter"]
-  schedule = "0 8 * * 1"
+  schedule = "19 8 * * 1"
 
 [functions."send-signin-reminders"]
-  schedule = "0 9 * * 3"
+  schedule = "29 9 * * 3"
 
 [functions."send-onboarding-nudges"]
-  schedule = "0 10 * * *"
+  schedule = "11 10 * * *"
 
 [functions."send-activity-milestones"]
-  schedule = "0 11 * * *"
+  schedule = "23 11 * * *"
 
 [functions."send-lead-followups"]
-  schedule = "0 12 * * *"
+  schedule = "37 12 * * *"
 
 [functions."scheduled-send-jamb-daily"]
-  schedule = "0 * * * *"
+  schedule = "8 * * * *"
 
 [functions."scheduled-verify-scholarships"]
-  schedule = "0 4 * * *"
+  schedule = "34 */6 * * *"
+
+[functions."scheduled-discover-scholarships"]
+  schedule = "49 */6 * * *"
+
+[functions."scheduled-reconcile-scholarship-deadlines"]
+  schedule = "18 */2 * * *"
 
 [functions."scheduled-send-scholarship-reminders"]
-  schedule = "0 * * * *"
+  schedule = "43 * * * *"
 
 [functions."afrostream-sync"]
-  schedule = "0 */2 * * *"
+  schedule = "16 */2 * * *"
 
 [functions."afrostream-livecheck"]
-  schedule = "*/30 * * * *"
+  schedule = "4,34 * * * *"
 
 [functions."afrostream-news-monitor"]
-  schedule = "0 5 * * *"
+  schedule = "46 5 * * *"
 
 [functions."conflict-sync"]
-  schedule = "0 3 * * *"
+  schedule = "12 3 * * *"
 
 [functions."scheduled-fetch-commodity-prices"]
-  schedule = "0 2 * * *"
+  schedule = "21 2 * * *"
 
 [functions."scheduled-fetch-electricity-tariffs"]
-  schedule = "0 3 * * *"
+  schedule = "33 3 * * *"
 
 [functions."scheduled-fetch-telecom-plans"]
-  schedule = "0 */12 * * *"
+  schedule = "47 */12 * * *"
 
 [functions."scheduled-detect-changes"]
-  schedule = "0 */6 * * *"
+  schedule = "26 */6 * * *"
 
 [functions."scheduled-fetch-insurance"]
-  schedule = "0 3 * * 1"
+  schedule = "41 3 * * 1"
 
 [functions."scheduled-fetch-property"]
-  schedule = "0 3 * * 3"
+  schedule = "44 3 * * 3"
 
 [functions."scheduled-fetch-salaries"]
-  schedule = "0 3 * * 5"
+  schedule = "47 3 * * 5"
 
 [functions."scheduled-fetch-stocks"]
-  schedule = "0 * * * 1-5"
+  schedule = "11 * * * 1-5"
 
 [functions."scheduled-fetch-shipping"]
-  schedule = "0 4 * * *"
+  schedule = "52 4 * * *"
 
 [functions."scheduled-scan-gazette"]
-  schedule = "0 5 * * *"
+  schedule = "58 5 * * *"
 
 [functions."scheduled-cleanup-scraper-runs"]
-  schedule = "0 6 1 * *"
+  schedule = "53 6 1 * *"
 
 [functions."scheduled-fetch-bank-rates"]
-  schedule = "0 3 * * 2"
+  schedule = "17 3 * * 2"
 
 [functions."scheduled-fetch-agri-inputs"]
-  schedule = "0 3 * * 4"
+  schedule = "19 3 * * 4"
 
 # Crypto spot prices are persisted by scheduled-fetch-crypto. P2P rates stay
 # request-scoped in crypto-p2p.js because that handler only warms in-memory
 # cache and does not write a durable live-data key for scheduled refreshes.
 [functions."scheduled-fetch-crypto"]
-  schedule = "0 * * * *"
+  schedule = "27 * * * *"
 
 [functions."scheduled-refresh-market-data"]
-  schedule = "0 1 * * *"
+  schedule = "39 1 * * *"
+
+[functions."scheduled-source-health-watchdog"]
+  schedule = "57 */2 * * *"
 
 # --- Live Monitoring API Redirects ---
 
@@ -681,7 +690,7 @@
   to = "/salary-tax/"
   status = 301
 
-# Fix: French Côte d'Ivoire hub doesn't exist
+# Fix: French CÃƒÂ´te d'Ivoire hub doesn't exist
 [[redirects]]
   from = "/fr/cote-divoire/"
   to = "/cote-divoire/"
@@ -709,7 +718,7 @@
   to = "/assets/img/logo-mark.svg"
   status = 200
 
-# Fix: Duplicate privacy/terms pages — canonical is /privacy/ and /terms/
+# Fix: Duplicate privacy/terms pages Ã¢â‚¬â€ canonical is /privacy/ and /terms/
 [[redirects]]
   from = "/privacy-policy"
   to = "/privacy/"
@@ -944,7 +953,7 @@
     Cache-Control = "public, max-age=21600, stale-while-revalidate=32400"
 
 # --- Security headers managed in _headers file (single source of truth) ---
-# Do NOT add security headers here — they conflict with _headers.
+# Do NOT add security headers here Ã¢â‚¬â€ they conflict with _headers.
 # See _headers for CSP, X-Frame-Options, HSTS, etc.
 
 # --- i18n Language-Based Redirects ---

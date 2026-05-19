@@ -20,9 +20,9 @@
 <meta name="twitter:title" content="Employee Cost Calculator — All 54 African Countries | AfroTools">
 <meta name="twitter:description" content="True cost of hiring across all 54 African countries. FTE vs Contractor vs EOR.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/staff-cost.webp">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.css?v=9b7aab1f">
-<link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b"><script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.css?v=4b86b610">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b"><script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 
 <script src="/assets/js/components/navbar.js?v=8a5a32fc" defer></script>
 <script src="/assets/js/components/footer.js?v=a62a07a2" defer></script>
@@ -251,6 +251,7 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/staff-cost/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-employe/" />
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kudin-maikaci/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/staff-cost/" />
 </head>
 <body>
@@ -294,7 +295,7 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 </div>
 <div class="sc-card-body">
 <div class="sc-field">
-<label class="sc-label">Country</label>
+<label class="sc-label" for="country">Country</label>
 <select id="country" class="sc-select" onchange="updateSidebar()"></select>
 </div>
 <div class="sc-field">
@@ -318,7 +319,7 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 
 <div class="sc-field">
 <label class="sc-label">Sector (Optional)</label>
-<select id="sector" class="sc-select">
+<select id="sector" class="sc-select" aria-label="Sector">
 <option value="">General / Office</option>
 <option value="oil">Oil &amp; Gas</option>
 <option value="mining">Mining</option>
@@ -342,7 +343,7 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 <div class="sc-divider">
 <div class="sc-toggle"><label for="recruitment">Include Recruitment Cost</label><input type="checkbox" id="recruitment"></div>
 <div class="sc-conditional" id="recruitField">
-<select id="recruitType" class="sc-select" style="margin-bottom:8px">
+<select id="recruitType" class="sc-select" style="margin-bottom:8px" aria-label="Recruit Type">
 <option value="agency">Agency Fee (% of annual salary)</option>
 <option value="referral">Internal Referral Fee (fixed amount)</option>
 <option value="direct">Direct Hire (no fee)</option>
@@ -441,7 +442,7 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 <div class="sc-card-body">
 <p style="font-size:.85rem;color:#475569;margin-bottom:16px">Compare the three hiring models side by side. The right model depends on your budget, compliance needs, and management capacity.</p>
 <div class="sc-row">
-<div class="sc-field"><label class="sc-label">Country</label><select id="cmp-country" class="sc-select" onchange="updateCmpCur()"></select></div>
+<div class="sc-field"><label class="sc-label" for="cmp-country">Country</label><select id="cmp-country" class="sc-select" onchange="updateCmpCur()"></select></div>
 <div class="sc-field"><label class="sc-label">Monthly Salary (<span id="cmpCur">NGN</span>)</label><input aria-label="E.g. 500,000" type="text" id="cmp-salary" class="sc-input" placeholder="e.g. 500,000" inputmode="numeric"></div>
 </div>
 <button type="button" class="sc-btn" onclick="compareCalc()" style="margin-top:8px">Compare Hiring Models</button>
@@ -503,13 +504,13 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 <div class="sc-card-body">
 <p style="font-size:.85rem;color:#475569;margin-bottom:16px">Calculate the total liability when an employee exits &mdash; notice pay, severance, leave encashment, and final salary.</p>
 <div class="sc-row">
-<div class="sc-field"><label class="sc-label">Country</label><select id="term-country" class="sc-select" onchange="updateTermCur()"></select></div>
+<div class="sc-field"><label class="sc-label" for="term-country">Country</label><select id="term-country" class="sc-select" onchange="updateTermCur()"></select></div>
 <div class="sc-field"><label class="sc-label">Monthly Salary (<span id="termCur">NGN</span>)</label><input aria-label="E.g. 500,000" type="text" id="term-salary" class="sc-input" placeholder="e.g. 500,000" inputmode="numeric"></div>
 </div>
 <div class="sc-row">
 <div class="sc-field"><label class="sc-label">Years of Service</label><input aria-label="E.g. 3" type="number" id="term-years" class="sc-input" placeholder="e.g. 3" min="0" step="0.5"></div>
 <div class="sc-field"><label class="sc-label">Reason for Exit</label>
-<select id="term-reason" class="sc-select">
+<select id="term-reason" class="sc-select" aria-label="Term Reason">
 <option value="retrenchment">Retrenchment / Redundancy</option>
 <option value="dismissal">Dismissal (with cause)</option>
 <option value="resignation">Resignation (accepted)</option>
@@ -803,7 +804,7 @@ function addMcRow() {
   if (container.children.length >= 5) return;
   var row = document.createElement('div');
   row.className = 'mc-row';
-  row.innerHTML = '<div class="sc-field" style="margin:0"><label class="sc-label">Country</label><select class="sc-select mc-country"></select></div>' +
+  row.innerHTML = '<div class="sc-field" style="margin:0"><label class="sc-label">Country</label><select class="sc-select mc-country" aria-label="Select option"></select></div>' +
     '<div class="sc-field" style="margin:0"><label class="sc-label">Role</label><input aria-label="E.g. Developer" class="sc-input mc-role" placeholder="e.g. Developer"></div>' +
     '<div class="sc-field" style="margin:0"><label class="sc-label">Monthly Salary</label><input aria-label="Sc input mc salary" class="sc-input mc-salary" placeholder="500,000" inputmode="numeric"></div>' +
     '<button class="mc-remove" onclick="removeMcRow(this)" type="button" aria-label="Remove">\u00d7</button>';

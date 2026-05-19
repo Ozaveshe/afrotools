@@ -35,13 +35,17 @@ For the first run after changing source-classification logic, run `node scripts/
 
 ## Automation Model
 
-The recurring job should:
+GitHub Actions owns the routine source-ledger maintenance:
 
-1. Run `npm run transport:sources`.
-2. Read `data/transport/source-status.json` and `reports/transport-source-ledger.md`.
-3. Separate changed official sources from blocked/manual sources and broken required sources.
-4. Patch tool data only after a human-readable source change is confirmed.
-5. Run `npm run transport:sources:check`.
-6. Run `npm run check-links` when hub routes, source links, or schema changed.
+- `.github/workflows/source-ledger-checks.yml` runs `npm run transport:sources:check` daily. It is read/check-only and uploads the current status/report files as evidence when available.
+- `.github/workflows/source-ledger-refresh-pr.yml` runs `npm run transport:sources` weekly and opens a manual-review PR when generated ledger, report, or hub summary files change.
+
+Codex follow-up should:
+
+1. Read `data/transport/source-status.json` and `reports/transport-source-ledger.md`.
+2. Separate changed official sources from blocked/manual sources and broken required sources.
+3. Patch tool data only after a human-readable source change is confirmed.
+4. Run `npm run transport:sources:check`.
+5. Run `npm run check-links` when hub routes, source links, or schema changed.
 
 Keep source-monitor output separate from unrelated dirty-tree changes.

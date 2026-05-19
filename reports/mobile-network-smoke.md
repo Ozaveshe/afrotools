@@ -1,6 +1,6 @@
 # Mobile Network Smoke
 
-Generated: 2026-05-18T18:33:25.626Z
+Generated: 2026-05-19T08:19:45.980Z
 Profile: Africa mobile 3G/low 4G
 Network: 900 Kbps down, 350 Kbps up, 220ms RTT, 4x CPU throttle
 
@@ -8,21 +8,19 @@ Verdict: WARN
 
 | Route | Status | DCL | Load | LCP | Transfer | Resources | Overflow | Controls <16px | Verdict |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| `/` | 200 | 7880ms | 10016ms | 600ms | 831.2 KB | 101 | 0px | 0 | WARN |
-| `/search/` | 200 | 16231ms | 16244ms | 2612ms | 1.50 MB | 19 | 0px | 0 | WARN |
-| `/salary-tax/` | 200 | 9404ms | 9408ms | 1496ms | 1017.9 KB | 10 | 0px | 0 | WARN |
-| `/nigeria/ng-salary-tax` | 200 | 5839ms | 5840ms | 1476ms | 621.3 KB | 14 | 0px | 0 | WARN |
-| `/tools/mobile-money-fees/` | 200 | 11616ms | 11845ms | 1816ms | 1.03 MB | 21 | 0px | 0 | WARN |
-| `/telecom/airtime-value/` | 200 | 7115ms | 7817ms | 1620ms | 528.4 KB | 19 | 0px | 0 | WARN |
+| `/` | 200 | 8212ms | 10256ms | 564ms | 847.5 KB | 101 | 0px | 0 | WARN |
+| `/search/` | 200 | 2934ms | 8600ms | 2892ms | 641.9 KB | 18 | 0px | 0 | PASS |
+| `/salary-tax/` | 200 | 441ms | 1391ms | 1396ms | 88.3 KB | 9 | 0px | 0 | PASS |
+| `/nigeria/ng-salary-tax` | 200 | 6081ms | 6084ms | 1704ms | 644.7 KB | 14 | 0px | 0 | WARN |
+| `/tools/mobile-money-fees/` | 200 | 11724ms | 11945ms | 2332ms | 1.05 MB | 21 | 0px | 0 | WARN |
+| `/telecom/airtime-value/` | 200 | 7235ms | 7972ms | 2100ms | 544.8 KB | 19 | 0px | 0 | WARN |
 
 ## Warnings
 
-- `/`: DCL 7880ms; CLS 0.422
-- `/search/`: DCL 16231ms; load 16244ms
-- `/salary-tax/`: DCL 9404ms
-- `/nigeria/ng-salary-tax`: CLS 0.146
-- `/tools/mobile-money-fees/`: DCL 11616ms
-- `/telecom/airtime-value/`: DCL 7115ms; function unavailable in static smoke: /.netlify/functions/api-telecom; function unavailable in static smoke: /.netlify/functions/api-data-freshness
+- `/`: DCL 8212ms; CLS 0.473
+- `/nigeria/ng-salary-tax`: DCL 6081ms
+- `/tools/mobile-money-fees/`: DCL 11724ms
+- `/telecom/airtime-value/`: DCL 7235ms; function unavailable in static smoke: /.netlify/functions/api-telecom; function unavailable in static smoke: /.netlify/functions/api-data-freshness
 
 ## Assumptions
 

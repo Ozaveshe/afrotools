@@ -20,12 +20,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{--afro-dark:#0f1419;--accent:#059669;--accent-dark:#047857;--accent-darker:#064e3b;--accent-light:#a7f3d0;--accent-bg:#ecfdf5;--accent-glow:rgba(5,150,105,.15)}
@@ -308,7 +308,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Your Side Hustle Details</span></div>
 <div class="card-body">
 <div class="row field">
-<div><label>Country</label>
+<div><label for="country">Country</label>
 <select id="country" onchange="onCountryChange()">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -322,7 +322,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="SN">Senegal</option>
 </select></div>
 <div><label>Side Hustle Type</label>
-<select id="hustleType">
+<select id="hustleType" aria-label="Hustle Type">
 <option value="freelance">Freelance / Consulting</option>
 <option value="ecommerce">Online Business / E-commerce</option>
 <option value="gig">Gig Work (Uber, Bolt)</option>
@@ -337,7 +337,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 <div class="row field">
 <div><label>Do you have a primary job?</label>
-<select id="hasJob" onchange="toggleSalary()">
+<select id="hasJob" onchange="toggleSalary()" aria-label="Has Job">
 <option value="yes">Yes, employed full-time</option>
 <option value="no">No, side hustle is only income</option>
 </select></div>
@@ -358,7 +358,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-body">
 <div class="row field">
 <div><label>Country</label>
-<select id="country2" onchange="syncCountry(this)">
+<select id="country2" onchange="syncCountry(this)" aria-label="Country2">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
 <option value="ZA">South Africa</option>
@@ -371,7 +371,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="SN">Senegal</option>
 </select></div>
 <div><label>Employment Status</label>
-<select id="hasJob2" onchange="syncJob(this)">
+<select id="hasJob2" onchange="syncJob(this)" aria-label="Has Job2">
 <option value="yes">Employed + Side Hustle</option>
 <option value="no">Side Hustle Only</option>
 </select></div>
@@ -412,7 +412,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <p style="font-size:.78rem;color:#94a3b8;margin-bottom:14px">Select a platform to auto-fill common deductions and expense categories.</p>
 <div class="presets-grid" id="presetsGrid"></div>
 <div class="row field">
-<div><label>Country</label>
+<div><label for="country3">Country</label>
 <select id="country3" onchange="syncCountry(this)">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -430,7 +430,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 <div class="row field">
 <div><label>Employment Status</label>
-<select id="hasJob3" onchange="syncJob(this)">
+<select id="hasJob3" onchange="syncJob(this)" aria-label="Has Job3">
 <option value="yes">Employed + Side Hustle</option>
 <option value="no">Side Hustle Only</option>
 </select></div>
@@ -452,7 +452,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-body">
 <p style="font-size:.78rem;color:#94a3b8;margin-bottom:14px">Compare simplified turnover tax with standard income tax for your country. Available in Nigeria, Kenya, and South Africa.</p>
 <div class="row field">
-<div><label>Country</label>
+<div><label for="country4">Country</label>
 <select id="country4" onchange="syncCountry(this);updateRegimeInfo()">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
@@ -466,7 +466,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div><label>Annual Expenses / Costs</label>
 <input aria-label="CompareExpenses" type="number" id="compareExpenses" value="500000" min="0" step="50000"></div>
 <div><label>Employment Status</label>
-<select id="hasJob4">
+<select id="hasJob4" aria-label="Has Job4">
 <option value="no">Side Hustle Only</option>
 <option value="yes">Employed + Side Hustle</option>
 </select></div>
@@ -1321,7 +1321,7 @@ function selectPreset(id) {
     if (!ded) return;
     const defaultVal = preset.defaults[dedId] || 0;
     html += '<div class="deduction-row">';
-    html += '<input type="checkbox" checked>';
+    html += '<input type="checkbox" checked aria-label="Input value">';
     html += '<label class="deduction-label">' + ded.label + '<span class="deduction-hint">' + ded.hint + '</span></label>';
     html += '<input aria-label="Deduction amount" type="number" class="deduction-amount" value="' + defaultVal + '" min="0" step="10000">';
     html += '</div>';

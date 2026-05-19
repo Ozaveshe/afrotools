@@ -19,8 +19,8 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/rebar-calc.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>
@@ -140,6 +140,7 @@ h1 em{color:#4DA3FF;font-style:normal}
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/rebar-calculator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-armature/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-nondo/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/rebar-calculator/" />
 </head>
 <body>
@@ -301,10 +302,10 @@ function addBar(data) {
   div.className = 'field-row-5';
   div.id = 'bar-' + id;
   div.innerHTML =
-    '<div><label>Bar</label><select data-f="size">' + sizeOpts + '</select></div>' +
+    '<div><label>Bar</label><select data-f="size" aria-label="Select option">' + sizeOpts + '</select></div>' +
     '<div><label>Description</label><input aria-label="E.g. Bottom bars in slab" type="text" data-f="desc" value="' + (d.desc||'') + '" placeholder="e.g. Bottom bars in slab"></div>' +
-    '<div><label>Length (m)</label><input type="number" data-f="length" value="' + d.length + '" step="0.01" min="0.1"></div>' +
-    '<div><label>Quantity</label><input type="number" data-f="qty" value="' + d.qty + '" min="1"></div>' +
+    '<div><label>Length (m)</label><input type="number" data-f="length" value="' + d.length + '" step="0.01" min="0.1" aria-label="Input value"></div>' +
+    '<div><label>Quantity</label><input type="number" data-f="qty" value="' + d.qty + '" min="1" aria-label="Input value"></div>' +
     '<div><label>&nbsp;</label><button type="button" class="btn-remove" onclick="removeBar(' + id + ')">X</button></div>';
   barList.appendChild(div);
 }

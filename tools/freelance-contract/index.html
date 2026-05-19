@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
@@ -37,6 +37,7 @@ a{text-decoration:none;color:inherit}
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/freelance-contract/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mkataba-wa-freelance/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/freelance-contract/" />
 </head>
 <body>
@@ -73,8 +74,8 @@ a{text-decoration:none;color:inherit}
         <div class="en-card-title"><div class="en-card-title-icon">📋</div>Project Details</div>
         <div class="en-form-grid">
           <div class="en-field"><label class="en-label">Project Title</label><input aria-label="Brand Identity Design Package" class="en-input" id="projectTitle" placeholder="Brand Identity Design Package" oninput="buildContract()"></div>
-          <div class="en-field en-field-full"><label class="en-label">Project Description</label><textarea class="en-input" id="projectDesc" rows="2" placeholder="Design of logo, business card, letterhead, and brand style guide" oninput="buildContract()"></textarea></div>
-          <div class="en-field en-field-full"><label class="en-label">Deliverables (comma separated)</label><textarea class="en-input" id="deliverables" rows="2" placeholder="Logo (3 concepts), Business card (front+back), Brand style guide PDF" oninput="buildContract()"></textarea></div>
+          <div class="en-field en-field-full"><label class="en-label">Project Description</label><textarea class="en-input" id="projectDesc" rows="2" placeholder="Design of logo, business card, letterhead, and brand style guide" oninput="buildContract()" aria-label="Design of logo, business card, letterhead, and brand style guide"></textarea></div>
+          <div class="en-field en-field-full"><label class="en-label">Deliverables (comma separated)</label><textarea class="en-input" id="deliverables" rows="2" placeholder="Logo (3 concepts), Business card (front+back), Brand style guide PDF" oninput="buildContract()" aria-label="Logo (3 concepts), Business card (front+back), Brand style guide PDF"></textarea></div>
           <div class="en-field"><label class="en-label">Project Start Date</label><input aria-label="StartDate" class="en-input" type="date" id="startDate" oninput="buildContract()"></div>
           <div class="en-field"><label class="en-label">Delivery Date</label><input aria-label="DeliveryDate" class="en-input" type="date" id="deliveryDate" oninput="buildContract()"></div>
         </div>
@@ -84,10 +85,10 @@ a{text-decoration:none;color:inherit}
         <div class="en-card-title"><div class="en-card-title-icon">💰</div>Payment Terms</div>
         <div class="en-form-grid en-form-grid-2">
           <div class="en-field"><label class="en-label">Total Project Fee</label><input aria-label="TotalFee" class="en-input" type="number" id="totalFee" placeholder="150000" oninput="buildContract()"></div>
-          <div class="en-field"><label class="en-label">Currency</label><select class="en-select" id="feeCurrency" onchange="buildContract()"><option value="NGN">₦ Naira</option><option value="KES">KES</option><option value="ZAR">R Rand</option><option value="GHS">GHS</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option></select></div>
+          <div class="en-field"><label class="en-label">Currency</label><select class="en-select" id="feeCurrency" onchange="buildContract()" aria-label="Fee Currency"><option value="NGN">₦ Naira</option><option value="KES">KES</option><option value="ZAR">R Rand</option><option value="GHS">GHS</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option></select></div>
           <div class="en-field en-field-full">
             <label class="en-label">Payment Schedule</label>
-            <select class="en-select" id="paySchedule" onchange="buildContract()">
+            <select class="en-select" id="paySchedule" onchange="buildContract()" aria-label="Pay Schedule">
               <option value="50_50">50% upfront, 50% on delivery</option>
               <option value="100_up">100% upfront (full payment)</option>
               <option value="milestone">Milestone-based (33% / 33% / 34%)</option>
@@ -103,10 +104,10 @@ a{text-decoration:none;color:inherit}
       <div class="en-card">
         <div class="en-card-title"><div class="en-card-title-icon">⚖️</div>Legal Terms</div>
         <div class="en-form-grid en-form-grid-2">
-          <div class="en-field"><label class="en-label">IP Ownership</label><select class="en-select" id="ipOwner" onchange="buildContract()"><option value="client_on_payment">Client (after full payment)</option><option value="freelancer">Freelancer retains all rights</option><option value="shared">Shared / Licensed to client</option></select></div>
-          <div class="en-field"><label class="en-label">Confidentiality Clause</label><select class="en-select" id="confidentiality" onchange="buildContract()"><option value="yes">Yes — mutual NDA</option><option value="no">No confidentiality needed</option></select></div>
-          <div class="en-field"><label class="en-label">Governing Law (Jurisdiction)</label><select class="en-select" id="jurisdiction" onchange="buildContract()"><option value="NG">Federal Republic of Nigeria</option><option value="KE">Republic of Kenya</option><option value="ZA">Republic of South Africa</option><option value="GH">Republic of Ghana</option><option value="EG">Arab Republic of Egypt</option><option value="RW">Republic of Rwanda</option></select></div>
-          <div class="en-field"><label class="en-label">Dispute Resolution</label><select class="en-select" id="dispute" onchange="buildContract()"><option value="mediation">Mediation first, then court</option><option value="arbitration">Binding arbitration</option><option value="court">Court proceedings only</option></select></div>
+          <div class="en-field"><label class="en-label">IP Ownership</label><select class="en-select" id="ipOwner" onchange="buildContract()" aria-label="Ip Owner"><option value="client_on_payment">Client (after full payment)</option><option value="freelancer">Freelancer retains all rights</option><option value="shared">Shared / Licensed to client</option></select></div>
+          <div class="en-field"><label class="en-label">Confidentiality Clause</label><select class="en-select" id="confidentiality" onchange="buildContract()" aria-label="Confidentiality"><option value="yes">Yes — mutual NDA</option><option value="no">No confidentiality needed</option></select></div>
+          <div class="en-field"><label class="en-label">Governing Law (Jurisdiction)</label><select class="en-select" id="jurisdiction" onchange="buildContract()" aria-label="Jurisdiction"><option value="NG">Federal Republic of Nigeria</option><option value="KE">Republic of Kenya</option><option value="ZA">Republic of South Africa</option><option value="GH">Republic of Ghana</option><option value="EG">Arab Republic of Egypt</option><option value="RW">Republic of Rwanda</option></select></div>
+          <div class="en-field"><label class="en-label">Dispute Resolution</label><select class="en-select" id="dispute" onchange="buildContract()" aria-label="Dispute"><option value="mediation">Mediation first, then court</option><option value="arbitration">Binding arbitration</option><option value="court">Court proceedings only</option></select></div>
         </div>
       </div>
     </div>

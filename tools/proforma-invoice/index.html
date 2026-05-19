@@ -24,8 +24,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
-<link rel="stylesheet" href="../../assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="../../assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="../../assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="../../assets/css/global.min.css?v=98898086">
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=5ea7102b">
 <script src="../../assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="../../assets/js/components/footer.js?v=a62a07a2" defer></script>
@@ -136,6 +136,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/proforma-invoice/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/facture-proforma/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ankara-proforma/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/proforma-invoice/" />
 </head>
 <body>
@@ -170,9 +171,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">Seller / Exporter</div>
         <div class="form-row"><div class="fg"><label>Company Name</label><input aria-label="Your company name" type="text" id="sellerName" oninput="renderDoc()" placeholder="Your company name"></div></div>
-        <div class="form-row"><div class="fg"><label>Address</label><textarea id="sellerAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, State"></textarea></div></div>
+        <div class="form-row"><div class="fg"><label>Address</label><textarea id="sellerAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, State" aria-label="Street, City, State"></textarea></div></div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Country</label><select id="sellerCountry" onchange="renderDoc()"><?php echo countryOptions(); ?></select></div>
+          <div class="fg"><label>Country</label><select id="sellerCountry" onchange="renderDoc()" aria-label="Seller Country"><?php echo countryOptions(); ?></select></div>
           <div class="fg"><label>Phone</label><input aria-label="SellerPhone" type="text" id="sellerPhone" oninput="renderDoc()" placeholder="+234 800 000 0000"></div>
         </div>
         <div class="form-row form-row-2">
@@ -186,9 +187,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="form-section">
         <div class="section-title">Buyer / Importer</div>
         <div class="form-row"><div class="fg"><label>Company Name</label><input aria-label="Buyer company name" type="text" id="buyerName" oninput="renderDoc()" placeholder="Buyer company name"></div></div>
-        <div class="form-row"><div class="fg"><label>Address</label><textarea id="buyerAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, Country"></textarea></div></div>
+        <div class="form-row"><div class="fg"><label>Address</label><textarea id="buyerAddr" rows="2" oninput="renderDoc()" placeholder="Street, City, Country" aria-label="Street, City, Country"></textarea></div></div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Country</label><select id="buyerCountry" onchange="renderDoc()"></select></div>
+          <div class="fg"><label>Country</label><select id="buyerCountry" onchange="renderDoc()" aria-label="Buyer Country"></select></div>
           <div class="fg"><label>Phone</label><input aria-label="BuyerPhone" type="text" id="buyerPhone" oninput="renderDoc()" placeholder="+254 700 000 000"></div>
         </div>
         <div class="form-row form-row-2">
@@ -207,7 +208,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
         <div class="form-row form-row-2">
           <div class="fg"><label>Valid Until</label><input aria-label="PiValidUntil" type="date" id="piValidUntil" onchange="renderDoc()"></div>
           <div class="fg"><label>Incoterm</label>
-            <select id="piIncoterm" onchange="renderDoc()">
+            <select id="piIncoterm" onchange="renderDoc()" aria-label="Pi Incoterm">
               <option>EXW</option><option>FCA</option><option>CPT</option><option>CIP</option>
               <option>DAP</option><option>DDP</option><option>FAS</option><option selected>FOB</option>
               <option>CFR</option><option>CIF</option>
@@ -219,9 +220,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
           <div class="fg"><label>Port of Discharge</label><input aria-label="Mombasa" type="text" id="piPOD" oninput="renderDoc()" placeholder="Mombasa"></div>
         </div>
         <div class="form-row form-row-2">
-          <div class="fg"><label>Country of Origin</label><select id="piOriginCountry" onchange="renderDoc()"></select></div>
+          <div class="fg"><label>Country of Origin</label><select id="piOriginCountry" onchange="renderDoc()" aria-label="Pi Origin Country"></select></div>
           <div class="fg"><label>Currency</label>
-            <select id="piCurrency" onchange="renderDoc()">
+            <select id="piCurrency" onchange="renderDoc()" aria-label="Pi Currency">
               <option value="USD">USD — US Dollar</option>
               <option value="EUR">EUR — Euro</option>
               <option value="GBP">GBP — British Pound</option>
@@ -236,7 +237,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
         </div>
         <div class="form-row form-row-2">
           <div class="fg"><label>Payment Terms</label>
-            <select id="piPaymentTerms" onchange="renderDoc()">
+            <select id="piPaymentTerms" onchange="renderDoc()" aria-label="Pi Payment Terms">
               <option>LC at Sight</option>
               <option>Usance LC 30 Days</option>
               <option>Usance LC 60 Days</option>
@@ -352,10 +353,10 @@ function addItem(){
   tr.id = `item-row-${id}`;
   tr.innerHTML = `
     <td><input aria-label="Product description" type="text" placeholder="Product description" onchange="calcTotals()" oninput="calcTotals()"></td>
-    <td><input type="text" placeholder="6309.90" style="width:80px" oninput="calcTotals()"></td>
-    <td><input type="number" placeholder="1" min="0" step="any" style="width:60px" oninput="calcItemTotal(${id})" value="1"></td>
-    <td><select onchange="calcTotals()"><option>pcs</option><option>kg</option><option>MT</option><option>CBM</option><option>Cartons</option></select></td>
-    <td><input type="number" placeholder="0.00" min="0" step="any" style="width:80px" oninput="calcItemTotal(${id})" value="0"></td>
+    <td><input type="text" placeholder="6309.90" style="width:80px" oninput="calcTotals()" aria-label="Input value"></td>
+    <td><input type="number" placeholder="1" min="0" step="any" style="width:60px" oninput="calcItemTotal(${id})" value="1" aria-label="Input value"></td>
+    <td><select onchange="calcTotals()" aria-label="Select option"><option>pcs</option><option>kg</option><option>MT</option><option>CBM</option><option>Cartons</option></select></td>
+    <td><input type="number" placeholder="0.00" min="0" step="any" style="width:80px" oninput="calcItemTotal(${id})" value="0" aria-label="Input value"></td>
     <td class="td-total" id="item-total-${id}">0.00</td>
     <td><button type="button" class="btn-remove" onclick="removeItem(${id})" title="Remove">&#10005;</button></td>
   `;

@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/grade-tracker/">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <style>
 :root{--purple:#7c3aed;--purple-light:#f5f3ff;--purple-dark:#6d28d9}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -118,6 +118,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/grade-tracker/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-notes/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kifuatiliaji-alama/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/grade-tracker/" />
 </head>
 <body>
@@ -220,7 +221,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </section>
 <afro-related-tools></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 
 <script src="/assets/js/components/navbar.js?v=8a5a32fc" defer></script>
 <script src="/assets/js/components/footer.js?v=a62a07a2" defer></script>
@@ -270,7 +271,7 @@ function addCourse(data){
   if(caMode){
     div.innerHTML=`
       <div><label>Course Name</label><input aria-label="E.g. MTH 101" type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
-      <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
+      <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1" aria-label="Input value"></div>
       <div class="ca-split-fields" style="display:contents">
         <div><label>CA Score (40%)</label><input aria-label="Ca score" type="number" class="ca-score" min="0" max="40" step="0.5" placeholder="0-40"></div>
         <div><label>Exam Score (60%)</label><input aria-label="Exam score" type="number" class="exam-score" min="0" max="60" step="0.5" placeholder="0-60"></div>
@@ -280,8 +281,8 @@ function addCourse(data){
   } else {
     div.innerHTML=`
       <div><label>Course Name</label><input aria-label="E.g. MTH 101" type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
-      <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
-      <div><label>Grade</label><select class="grade-select">${sys.grades.map(g=>`<option value="${g.gp}"${g.gp==d.grade?' selected':''}>${g.label}</option>`).join('')}</select></div>
+      <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1" aria-label="Input value"></div>
+      <div><label>Grade</label><select class="grade-select" aria-label="Select option">${sys.grades.map(g=>`<option value="${g.gp}"${g.gp==d.grade?' selected':''}>${g.label}</option>`).join('')}</select></div>
       <div><label>&nbsp;</label><button type="button" class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
     `;
   }

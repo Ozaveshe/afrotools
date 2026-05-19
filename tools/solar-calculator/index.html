@@ -10,9 +10,9 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <link rel="icon" href="/assets/img/favicon.ico">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>
@@ -212,7 +212,7 @@ select.field-input{cursor:pointer;}
         <h2><span>⚙️</span> System Setup</h2>
         <div class="field-group">
           <div class="field-label">System Type</div>
-          <select class="field-input" id="systemType">
+          <select class="field-input" id="systemType" aria-label="System Type">
             <option value="offgrid">Off-Grid (No Utility Connection)</option>
             <option value="hybrid" selected>Hybrid (Solar + Grid Backup)</option>
             <option value="ongrid">On-Grid (Grid-Tied)</option>
@@ -221,7 +221,7 @@ select.field-input{cursor:pointer;}
         <div class="field-row">
           <div class="field-group">
             <div class="field-label">Panel Wattage <span class="hint">per panel</span></div>
-            <select class="field-input" id="panelWatts">
+            <select class="field-input" id="panelWatts" aria-label="Panel Watts">
               <option value="250">250W (Poly)</option>
               <option value="300">300W (Mono)</option>
               <option value="400" selected>400W (Mono PERC)</option>
@@ -231,7 +231,7 @@ select.field-input{cursor:pointer;}
           </div>
           <div class="field-group">
             <div class="field-label">Battery Type</div>
-            <select class="field-input" id="battType">
+            <select class="field-input" id="battType" aria-label="Batt Type">
               <option value="lead">Lead-Acid (FLA)</option>
               <option value="gel">Gel VRLA</option>
               <option value="lifepo4" selected>LiFePO4 (Lithium)</option>
@@ -241,7 +241,7 @@ select.field-input{cursor:pointer;}
         <div class="field-row">
           <div class="field-group">
             <div class="field-label">Backup Days <span class="hint">cloudy days</span></div>
-            <select class="field-input" id="backupDays">
+            <select class="field-input" id="backupDays" aria-label="Backup Days">
               <option value="1">1 Day</option>
               <option value="2" selected>2 Days</option>
               <option value="3">3 Days</option>
@@ -256,7 +256,7 @@ select.field-input{cursor:pointer;}
         <div class="field-row">
           <div class="field-group">
             <div class="field-label">Panel Direction <span class="hint">roof layout</span></div>
-            <select class="field-input" id="orientationFactor">
+            <select class="field-input" id="orientationFactor" aria-label="Orientation Factor">
               <option value="1" selected>Best facing roof</option>
               <option value="0.93">Flat roof or mixed tilt</option>
               <option value="0.9">East-west split roof</option>
@@ -265,7 +265,7 @@ select.field-input{cursor:pointer;}
           </div>
           <div class="field-group">
             <div class="field-label">Shade Loss <span class="hint">trees, walls, tanks</span></div>
-            <select class="field-input" id="shadeLoss">
+            <select class="field-input" id="shadeLoss" aria-label="Shade Loss">
               <option value="0" selected>No shade</option>
               <option value="5">Light shade, 5%</option>
               <option value="10">Some shade, 10%</option>
@@ -277,7 +277,7 @@ select.field-input{cursor:pointer;}
         <div class="field-row">
           <div class="field-group">
             <div class="field-label">Dust / Soiling <span class="hint">monthly cleaning</span></div>
-            <select class="field-input" id="soilingLoss">
+            <select class="field-input" id="soilingLoss" aria-label="Soiling Loss">
               <option value="3">Clean coastal or rainy area, 3%</option>
               <option value="7" selected>Typical city dust, 7%</option>
               <option value="12">Dusty dry season, 12%</option>
@@ -293,7 +293,7 @@ select.field-input{cursor:pointer;}
           <div class="field-label">Generator (Comparison) <span class="hint">monthly fuel cost</span></div>
           <div style="display:flex;gap:10px;align-items:center;">
             <input aria-label="E.g. 50000" type="number" class="field-input" id="genCost" placeholder="e.g. 50000" style="flex:1;">
-            <select class="field-input" id="currency" style="width:90px;">
+            <select class="field-input" id="currency" style="width:90px;" aria-label="Currency">
               <option value="NGN">NGN ₦</option>
               <option value="KES">KES KSh</option>
               <option value="GHS">GHS ₵</option>
@@ -729,7 +729,7 @@ function renderAppliances(){
   appliances.forEach((app, i) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="text" value="${app.name}" onchange="appliances[${i}].name=this.value" style="width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;background:#fafafa;"></td>
+      <td><input type="text" value="${app.name}" onchange="appliances[${i}].name=this.value" style="width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;background:#fafafa;" aria-label="Input value"></td>
       <td><input aria-label="Appliance qty" type="number" class="appliance-qty" value="${app.watts}" onchange="appliances[${i}].watts=+this.value;updateTotals()"></td>
       <td><input aria-label="Appliance qty" type="number" class="appliance-qty" value="${app.qty}" onchange="appliances[${i}].qty=+this.value;updateTotals()"></td>
       <td><input aria-label="Appliance qty" type="number" class="appliance-qty" value="${app.hrs}" onchange="appliances[${i}].hrs=+this.value;updateTotals()"></td>

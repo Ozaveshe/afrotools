@@ -20,8 +20,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/afro-auth.js?v=3978e101"></script>
 <script src="/engines/afroideas-engine.js?v=d856fa9b"></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
@@ -276,7 +276,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
     <h1>What Business Should You<br>Start in <em>Africa</em>?</h1>
     <p class="hero-sub">Real costs. Real breakeven timelines. Real data for all 54 African countries and 20 sectors. Submit your own ideas and vote on the best ones.</p>
     <div class="hero-form">
-      <select id="country-select"></select>
+      <select id="country-select" aria-label="Country Select"></select>
       <input aria-label="Available capital (optional)" type="number" id="budget-input" placeholder="Available capital (optional)">
       <button type="button" class="btn-primary" id="btn-find">Find Ideas for Me</button>
     </div>
@@ -308,7 +308,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
 <!-- FILTERS + IDEAS -->
 <section class="wrap" style="padding-top:24px">
   <div class="filters" id="filters-bar">
-    <label>Sort:</label>
+    <label for="sort-select">Sort:</label>
     <select class="filter-select" id="sort-select">
       <option value="breakeven">Fastest Breakeven</option>
       <option value="cost">Lowest Cost</option>
@@ -354,7 +354,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
       </div>
       <div class="chat-input">
         <input aria-label="Ask about any business idea" type="text" id="chat-input" placeholder="Ask about any business idea...">
-        <button type="button" id="btn-send"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button>
+        <button type="button" id="btn-send" aria-label="Send idea"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button>
       </div>
     </div>
   </div>
@@ -384,7 +384,7 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
 <!-- DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
-    <button type="button" class="modal-close" id="modal-close">&times;</button>
+    <button type="button" class="modal-close" id="modal-close" aria-label="Close idea details">&times;</button>
     <div class="modal-header" id="modal-header"></div>
     <div class="modal-body" id="modal-body"></div>
   </div>
@@ -730,14 +730,14 @@ h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
     wrap.innerHTML =
       '<div class="form-row"><label>Business Name</label><input aria-label="E.g. Mobile Phone Repair Shop" type="text" id="sf-name" placeholder="e.g. Mobile Phone Repair Shop" maxlength="120"></div>' +
       '<div class="form-grid">' +
-        '<div class="form-row"><label>Sector</label><select id="sf-sector">' + sectors.map(function(s){ return '<option value="'+s.id+'">'+s.name+'</option>'; }).join('') + '</select></div>' +
-        '<div class="form-row"><label>Country</label><select id="sf-country">' + countries.map(function(c){ return '<option value="'+c.code+'" data-currency="'+c.currency+'">'+c.name+'</option>'; }).join('') + '</select></div>' +
+        '<div class="form-row"><label>Sector</label><select id="sf-sector" aria-label="Sf Sector">' + sectors.map(function(s){ return '<option value="'+s.id+'">'+s.name+'</option>'; }).join('') + '</select></div>' +
+        '<div class="form-row"><label>Country</label><select id="sf-country" aria-label="Sf Country">' + countries.map(function(c){ return '<option value="'+c.code+'" data-currency="'+c.currency+'">'+c.name+'</option>'; }).join('') + '</select></div>' +
       '</div>' +
-      '<div class="form-row"><label>Description</label><textarea id="sf-desc" placeholder="Describe the business idea, what it does, and how it makes money..." maxlength="1000"></textarea></div>' +
-      '<div class="form-row"><label>Why This Works in Africa</label><textarea id="sf-why" placeholder="Why is this idea particularly suited for the African market?" maxlength="500"></textarea></div>' +
+      '<div class="form-row"><label>Description</label><textarea id="sf-desc" placeholder="Describe the business idea, what it does, and how it makes money..." maxlength="1000" aria-label="Describe the business idea, what it does, and how it makes money..."></textarea></div>' +
+      '<div class="form-row"><label>Why This Works in Africa</label><textarea id="sf-why" placeholder="Why is this idea particularly suited for the African market?" maxlength="500" aria-label="Why is this idea particularly suited for the African market?"></textarea></div>' +
       '<div class="form-grid">' +
-        '<div class="form-row"><label>Cost Tier</label><select id="sf-cost-tier"><option value="micro">Micro (under $500)</option><option value="small" selected>Small ($500 - $5K)</option><option value="medium">Medium ($5K - $50K)</option><option value="large">Large ($50K+)</option></select></div>' +
-        '<div class="form-row"><label>Risk Level</label><select id="sf-risk"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>' +
+        '<div class="form-row"><label>Cost Tier</label><select id="sf-cost-tier" aria-label="Sf Cost Tier"><option value="micro">Micro (under $500)</option><option value="small" selected>Small ($500 - $5K)</option><option value="medium">Medium ($5K - $50K)</option><option value="large">Large ($50K+)</option></select></div>' +
+        '<div class="form-row"><label>Risk Level</label><select id="sf-risk" aria-label="Sf Risk"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>' +
       '</div>' +
       '<div class="form-grid">' +
         '<div class="form-row"><label>Startup Cost (Min, local currency)</label><input aria-label="E.g. 500000" type="number" id="sf-cost-min" placeholder="e.g. 500000"></div>' +

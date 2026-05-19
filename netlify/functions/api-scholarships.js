@@ -44,6 +44,69 @@ function paginate(list, params) {
   };
 }
 
+function formatClaimSafeLabel(count) {
+  const value = Math.max(0, Math.floor(Number(count) || 0));
+  return value + ' Scholarship' + (value === 1 ? '' : 's');
+}
+
+function getScholarshipMode(item) {
+  const mode = item && (item.confidence_mode || item.mode || item.source_mode);
+  if (mode === 'live' || mode === 'cached' || mode === 'curated' || mode === 'fallback') {
+    return mode;
+  }
+  return 'curated';
+}
+
+function getScholarshipStatus(item) {
+  const status = String(item && item.status ? item.status : '').toLowerCase();
+  if (status === 'open' || status === 'upcoming' || status === 'unclear' || status === 'closed') {
+    return status;
+  }
+
+  if (item && item.deadline_date) {
+    const deadline = new Date(item.deadline_date);
+    if (!Number.isNaN(deadline.getTime())) {
+      return deadline.getTime() < Date.now() ? 'closed' : 'open';
+    }
+  }
+
+  return 'unclear';
+}
+
+function hasOfficialLink(item) {
+  return !!(item && (item.official_url || item.application_url || item.info_url || item.source_url));
+}
+
+function buildScholarshipSummary(items, meta) {
+  const list = Array.isArray(items) ? items : [];
+  const summary = {
+    total: list.length,
+    live: 0,
+    curated: 0,
+    cached: 0,
+    fallback: 0,
+    open: 0,
+    upcoming: 0,
+    unclear: 0,
+    closed: 0,
+    officialLink: 0,
+    withDeadlineDate: 0,
+    claimSafeLabel: formatClaimSafeLabel(list.length),
+    isLimited: !!(meta && meta.isLimited)
+  };
+
+  list.forEach(function (item) {
+    const mode = getScholarshipMode(item);
+    const status = getScholarshipStatus(item);
+    summary[mode] += 1;
+    summary[status] += 1;
+    if (hasOfficialLink(item)) summary.officialLink += 1;
+    if (item && item.deadline_date) summary.withDeadlineDate += 1;
+  });
+
+  return summary;
+}
+
 exports.handler = async function (event) {
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
 
@@ -74,8 +137,10 @@ exports.handler = async function (event) {
       lastCheckedAt: feed.meta.lastCheckedAt || feed.meta.cachedAt || null,
       lastCheckedLabel: feed.meta.lastCheckedLabel || '',
       isDegraded: !!feed.meta.isDegraded,
+      isLimited: !!feed.meta.isLimited,
       error: feed.meta.error || ''
     };
+    payload.summary = buildScholarshipSummary(filtered, feed.meta);
 
     const authResult = await getUserFromEvent(event);
     const sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;

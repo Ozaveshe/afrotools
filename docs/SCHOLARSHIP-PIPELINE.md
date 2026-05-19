@@ -40,7 +40,9 @@ The auth-side Supabase migration `supabase/migrations/022-scholarship-platform.s
 
 ## Source Strategy
 
-Start with stable sources only.
+Start with stable sources only. Source definitions now live in
+`data/scholarships/official-sources.json`; that file is a source registry, not
+a scholarship-row seed file.
 
 - `afrotools-data-catalog`
   - parser key: `data_instance_scholarship_catalog`
@@ -53,7 +55,21 @@ MVP rule:
 
 - prefer official pages, APIs, RSS, or structured imports
 - only add scrape-heavy sources when they are permitted and operationally sane
-- keep every scholarship tied to a source and a freshness timestamp
+- keep every scholarship tied to a source URL, source type, confidence mode,
+  and freshness timestamps
+- do not create rows from official pages that do not have a reliable parser yet
+- for manual-review official pages, record source health/run evidence and leave
+  scholarship row creation to a verified parser or curated review flow
+- public scholarship-count copy must stay exact until the live API has enough
+  active verified or explicitly curated records to support a larger claim
+
+Stale retirement:
+
+- source-owned rows not seen for 7 days become `unclear` with `manual_review`
+  proof level
+- source-owned rows not seen for 30 days become inactive
+- the repo curated backup is exempt from automatic retirement unless it is
+  replaced by a verified source-owned row
 
 ## Netlify Functions
 
@@ -70,9 +86,14 @@ Core functions:
 - `api-scholarship-reminders`
   - update reminder enablement and offsets
 - `scheduled-verify-scholarships`
-  - runs scholarship mirror sync on schedule
+  - runs scholarship mirror sync every 6 hours
+- `scheduled-discover-scholarships`
+  - syncs the official source registry every 6 hours without scraping
+    manual-review pages
+- `scheduled-reconcile-scholarship-deadlines`
+  - reconciles saved reminder jobs every 2 hours after deadline/status changes
 - `scheduled-send-scholarship-reminders`
-  - processes queued reminder jobs
+  - processes queued reminder jobs hourly
 
 Shared helpers:
 

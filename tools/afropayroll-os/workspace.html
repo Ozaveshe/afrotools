@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/bundles/core.009aa1e7.min.js" defer></script>
@@ -4131,10 +4131,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       var calc = calculateRow(row);
       var pack = getPack(row.country);
       return "<tr>"
-        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"employeeRecordId\"" + lockAttr() + ">" + renderEmployeeOptions(row.employeeRecordId) + "</select></td>"
-        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"name\" value=\"" + escapeHtml(row.name) + "\" placeholder=\"" + escapeHtml(t("placeholders.employeeName")) + "\"" + lockAttr() + "></td>"
-        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"role\" value=\"" + escapeHtml(row.role) + "\" placeholder=\"" + escapeHtml(t("placeholders.role")) + "\"" + lockAttr() + "></td>"
-        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"country\"" + lockAttr() + ">" + renderCountryOptions(row.country) + "</select></td>"
+        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"employeeRecordId\"" + lockAttr() + " aria-label="Select option">" + renderEmployeeOptions(row.employeeRecordId) + "</select></td>"
+        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"name\" value=\"" + escapeHtml(row.name) + "\" placeholder=\"" + escapeHtml(t("placeholders.employeeName")) + "\"" + lockAttr() + " aria-label="Input value"></td>"
+        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"role\" value=\"" + escapeHtml(row.role) + "\" placeholder=\"" + escapeHtml(t("placeholders.role")) + "\"" + lockAttr() + " aria-label="Input value"></td>"
+        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"country\"" + lockAttr() + " aria-label="Select option">" + renderCountryOptions(row.country) + "</select></td>"
         + moneyInput(row, "gross")
         + moneyInput(row, "allowances")
         + moneyInput(row, "overtime")
@@ -4171,12 +4171,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
   function moneyInput(row, field) {
     return "<td><input class=\"apw-row-input money\" type=\"number\" min=\"0\" step=\"0.01\" data-row-id=\""
-      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + "></td>";
+      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-label="Input value"></td>";
   }
 
   function numberInput(row, field) {
     return "<td><input class=\"apw-row-input money\" type=\"number\" min=\"0\" step=\"0.5\" data-row-id=\""
-      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + "></td>";
+      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-label="Input value"></td>";
   }
 
   function outputCell(value, currency, label) {
@@ -6203,7 +6203,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     var sample = column && column.samples.length ? column.samples.join(" | ") : "";
     return "<tr>"
       + "<td><div class=\"apw-import-field\">" + escapeHtml(fieldDef.label) + "</div><span class=\"apw-mini-badge " + badgeClass + "\">" + escapeHtml(requirement) + "</span></td>"
-      + "<td><select data-import-field=\"" + escapeHtml(fieldDef.key) + "\">" + renderImportColumnOptions(selected) + "</select></td>"
+      + "<td><select data-import-field=\"" + escapeHtml(fieldDef.key) + "\" aria-label="Select option">" + renderImportColumnOptions(selected) + "</select></td>"
       + "<td><div class=\"apw-import-sample\">" + escapeHtml(sample || "-") + "</div></td>"
       + "</tr>";
   }

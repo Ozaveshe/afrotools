@@ -885,7 +885,7 @@ const doc = new Document({
         spacer(100),
 
         richPara([{ text: 'SOURCE 4: University & Resource Pages ', bold: true, color: BLUE }, { text: '(Target: 15\u201330 high-authority links)' }]),
-        bullet('Email 10 universities per week: "We built a free scholarship matcher with 120+ African scholarships"'),
+        bullet('Email 10 universities per week: "We built a free scholarship matcher backed by verified official sources"'),
         bullet('Target .edu and .gov sites \u2014 one link from these = worth 100 Fiverr links'),
         bullet('Expected: 5\u201310 per month = 15\u201330 in 3 months'),
         spacer(100),
@@ -1108,7 +1108,7 @@ const doc = new Document({
             ['/api/tax-rates', 'GET', 'Tax rate reference data (PAYE + VAT)'],
             ['/api/salary-benchmarks', 'GET', 'Salary data by country/role'],
             ['/api/crypto', 'GET', 'Crypto prices + P2P rates'],
-            ['/api/scholarships', 'GET', 'Search 120+ African scholarships'],
+            ['/api/scholarships', 'GET', 'Search verified scholarship opportunities'],
             ['/api/v1/* (gateway)', 'POST', 'Unified gateway: tax, forex, countries with API key auth'],
           ],
           [2500, 1860, 5000]

@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
   <link rel="stylesheet" href="style.css?v=421ee208">
   <style>
     .cbk-loading-status { text-align:center; font-size:.85rem; color:#64748b; margin-top:8px; opacity:0; transition:opacity .3s; }
@@ -27,7 +27,7 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-brand/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-brand/app">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-brand/app" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-brand/app" />
@@ -81,16 +81,16 @@
           </div>
           <div class="cbk-form-group">
             <label class="cbk-form-label">Mission (1 paragraph)</label>
-            <textarea class="cbk-form-textarea" id="brandMission" rows="3" placeholder="What does your brand exist to do?" data-field="mission"></textarea>
+            <textarea class="cbk-form-textarea" id="brandMission" rows="3" placeholder="What does your brand exist to do?" data-field="mission" aria-label="What does your brand exist to do?"></textarea>
           </div>
           <div class="cbk-form-group">
             <label class="cbk-form-label">Brand Story</label>
-            <textarea class="cbk-form-textarea" id="brandStory" rows="5" placeholder="How did your brand come to be? What drives you?" data-field="story"></textarea>
+            <textarea class="cbk-form-textarea" id="brandStory" rows="5" placeholder="How did your brand come to be? What drives you?" data-field="story" aria-label="How did your brand come to be? What drives you?"></textarea>
           </div>
           <div class="cbk-form-row">
             <div class="cbk-form-group">
               <label class="cbk-form-label">Industry</label>
-              <select class="cbk-form-select" id="brandIndustry" data-field="industry">
+              <select class="cbk-form-select" id="brandIndustry" data-field="industry" aria-label="Brand Industry">
                 <option value="">Select industry...</option>
                 <option value="fashion">Fashion &amp; Beauty</option>
                 <option value="tech">Technology</option>
@@ -109,7 +109,7 @@
               </select>
             </div>
             <div class="cbk-form-group">
-              <label class="cbk-form-label">Target Audience</label>
+              <label class="cbk-form-label" for="brandAudience">Target Audience</label>
               <textarea class="cbk-form-textarea" id="brandAudience" rows="2" placeholder="Who is your brand for?" data-field="audience" style="min-height:44px"></textarea>
             </div>
           </div>
@@ -251,7 +251,7 @@
         <div class="cbk-card">
           <div class="cbk-card-title">&#128229; Import Kit</div>
           <p style="font-size:13px;margin-bottom:12px;">Paste a previously exported JSON to restore your brand kit.</p>
-          <textarea class="cbk-form-textarea" id="importTextarea" rows="4" placeholder="Paste JSON here..."></textarea>
+          <textarea class="cbk-form-textarea" id="importTextarea" rows="4" placeholder="Paste JSON here..." aria-label="Paste JSON here..."></textarea>
           <button type="button" class="cbk-btn secondary small" id="importApplyBtn" style="margin-top:8px;">Apply Import</button>
         </div>
       </div>
@@ -590,7 +590,7 @@
       var shades = [shadeColor(c.hex, 0.1), shadeColor(c.hex, 0.2), shadeColor(c.hex, 0.3)];
 
       html += '<div class="cbk-color-card">';
-      html += '<div class="cbk-color-swatch" style="background:' + c.hex + '"><input type="color" value="' + c.hex + '" data-color-pick="' + i + '"></div>';
+      html += '<div class="cbk-color-swatch" style="background:' + c.hex + '"><input type="color" value="' + c.hex + '" data-color-pick="' + i + '" aria-label="Input value"></div>';
       html += '<div class="cbk-color-body">';
       html += '<div class="cbk-color-name">' + escapeHtml(c.name) + '</div>';
       html += '<div class="cbk-color-hex-row"><input aria-label="Cbk color hex input" type="text" class="cbk-color-hex-input" value="' + c.hex + '" data-color-hex="' + i + '"><button type="button" class="cbk-btn small secondary" data-color-apply="' + i + '" style="padding:6px 10px;font-size:11px;">Set</button></div>';
@@ -724,7 +724,7 @@
       var current = kit.fonts[slot.key] || 'DM Sans';
       html += '<div class="cbk-font-slot">';
       html += '<div class="cbk-font-slot-label">' + slot.label + '</div>';
-      html += '<select class="cbk-form-select" data-font-slot="' + slot.key + '">';
+      html += '<select class="cbk-form-select" data-font-slot="' + slot.key + '" aria-label="Select option">';
       GOOGLE_FONTS.forEach(function(f) {
         html += '<option value="' + f + '"' + (f === current ? ' selected' : '') + '>' + f + '</option>';
       });

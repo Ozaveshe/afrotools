@@ -24,9 +24,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
@@ -248,6 +248,8 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
 </script>
 <meta property="article:modified_time" content="2026-04-28">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-editor/" />
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/gyara-pdf/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/hariri-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-editor/" />
 </head>
 <body>
@@ -317,14 +319,14 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
     <div class="tb-sep"></div>
 
     <!-- Zoom -->
-    <div class="tb-zoom"><button type="button" id="zo">&#8722;</button><span id="zl">100%</span><button type="button" id="zi">+</button><button type="button" id="zFit" title="Fit to width" style="font-size:11px;padding:0 6px">Fit</button></div>
+    <div class="tb-zoom"><button type="button" id="zo" aria-label="Zoom out">&#8722;</button><span id="zl">100%</span><button type="button" id="zi">+</button><button type="button" id="zFit" title="Fit to width" style="font-size:11px;padding:0 6px">Fit</button></div>
 
     <!-- Edit count badge -->
     <div id="editBadge" style="display:none;font-size:11px;font-weight:700;background:#eff6ff;color:var(--color-primary);padding:3px 10px;border-radius:20px;border:1.5px solid #bfdbfe;white-space:nowrap;flex-shrink:0">0 edits</div>
 
     <!-- Download & Close -->
     <button type="button" class="tb-btn tb-dl" id="tbDL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download</span></button>
-    <button type="button" class="tb-close" id="tbX">&#215;</button>
+    <button type="button" class="tb-close" id="tbX" aria-label="Close toolbar">&#215;</button>
   </div>
 
   <!-- Properties Bar -->
@@ -368,7 +370,7 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
     <!-- Stamp properties -->
     <div id="propStamp" style="display:none;align-items:center;gap:10px">
       <label>Stamp</label>
-      <select id="propStampText">
+      <select id="propStampText" aria-label="Prop Stamp Text">
         <option value="APPROVED">APPROVED</option>
         <option value="REVIEWED">REVIEWED</option>
         <option value="CONFIDENTIAL">CONFIDENTIAL</option>
@@ -383,7 +385,7 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
 
   <!-- Body -->
   <div class="ws-body">
-    <button type="button" class="sb-toggle" id="sbTog">&#9776;</button>
+    <button type="button" class="sb-toggle" id="sbTog" aria-label="Open page sidebar">&#9776;</button>
     <div class="sidebar" id="sb"></div>
     <div class="main-view" id="mv">
       <div class="canvas-wrap" id="canvasWrap">
@@ -391,7 +393,7 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
         <canvas id="overlayCanvas"></canvas>
         <!-- Text input floating element -->
         <div class="text-input-overlay" id="textInput">
-          <textarea id="tioText" rows="1" placeholder="Type here..."></textarea>
+          <textarea id="tioText" rows="1" placeholder="Type here..." aria-label="Type here..."></textarea>
           <div class="tio-actions">
             <button type="button" class="tio-ok" id="tioOk">Add</button>
             <button type="button" class="tio-cancel" id="tioCancel">Cancel</button>
@@ -441,7 +443,7 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
   <button type="button" id="mStamp" title="Stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6l1 7H8l1-7z"/><path d="M6 14h12v6H6z"/></svg></button>
   <button type="button" id="mUndo" title="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 105.64-8.36L1 10"/></svg></button>
   <span id="mobPg" style="font-size:11px;font-weight:700;color:#6b7280;min-width:40px;text-align:center;flex-shrink:0">1/1</span>
-  <button type="button" class="mob-dl" id="mobDl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+  <button type="button" class="mob-dl" id="mobDl" aria-label="Download file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
 </div>
 
 <!-- Processing overlay -->

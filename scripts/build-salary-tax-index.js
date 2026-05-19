@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.join(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'assets/js/components/tool-registry.js');
@@ -63,7 +64,7 @@ const records = loadRegistry()
   .map(toRecord);
 
 fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
-fs.writeFileSync(OUTPUT_PATH, JSON.stringify(records) + '\n', 'utf8');
+writeFileSyncWithRetry(OUTPUT_PATH, JSON.stringify(records) + '\n', 'utf8');
 
 const bytes = fs.statSync(OUTPUT_PATH).size;
 console.log(`Built ${records.length} salary-tax rows (${Math.round(bytes / 1024)} KB)`);

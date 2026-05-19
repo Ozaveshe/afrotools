@@ -115,8 +115,8 @@ async function main() {
   };
 
   fs.mkdirSync(REPORT_DIR, { recursive: true });
-  fs.writeFileSync(path.join(REPORT_DIR, 'mobile-network-smoke.json'), JSON.stringify(report, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(path.join(REPORT_DIR, 'mobile-network-smoke.md'), renderMarkdown(report), 'utf8');
+  writeTextFileWithRetry(path.join(REPORT_DIR, 'mobile-network-smoke.json'), JSON.stringify(report, null, 2) + '\n');
+  writeTextFileWithRetry(path.join(REPORT_DIR, 'mobile-network-smoke.md'), renderMarkdown(report));
 
   console.log(`Mobile network smoke complete for ${results.length} routes`);
   console.log(`  Profile: ${profile.label}`);
@@ -125,6 +125,28 @@ async function main() {
   console.log('  Output Markdown: reports/mobile-network-smoke.md');
 
   if (options.failOnWarn && report.summary.verdict !== 'PASS') process.exitCode = 1;
+}
+
+function writeTextFileWithRetry(filePath, contents) {
+  const retryableCodes = new Set(['EBUSY', 'EPERM', 'UNKNOWN']);
+  let lastError = null;
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    const tempPath = `${filePath}.${process.pid}.${attempt}.tmp`;
+    try {
+      fs.writeFileSync(tempPath, contents, 'utf8');
+      fs.renameSync(tempPath, filePath);
+      return;
+    } catch (error) {
+      lastError = error;
+      try {
+        if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+      } catch {}
+      if (!retryableCodes.has(error.code) || attempt === 9) break;
+      const waitUntil = Date.now() + 120 * (attempt + 1);
+      while (Date.now() < waitUntil) {}
+    }
+  }
+  throw lastError;
 }
 
 function parseArgs(args) {

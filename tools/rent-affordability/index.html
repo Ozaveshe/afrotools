@@ -46,9 +46,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
@@ -184,6 +184,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/rent-affordability/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/capacite-loyer/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/uwezo-wa-kulipa-pango/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/rent-affordability/" />
 </head>
 <body>
@@ -222,7 +223,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
       <div class="card-body">
 
         <div class="form-group">
-          <label class="form-label">Country</label>
+          <label class="form-label" for="country">Country</label>
           <select id="country" onchange="onCountryChange()">
             <option value="">— Select country —</option>
             <option value="NG">🇳🇬 Nigeria</option>
@@ -252,7 +253,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 
         <div class="form-group">
           <label class="form-label">Advance Rent (months) <span class="hint" id="advanceHint"></span></label>
-          <select id="advanceMonths" onchange="calculate()">
+          <select id="advanceMonths" onchange="calculate()" aria-label="Advance Months">
             <option value="1">1 month</option>
             <option value="2">2 months</option>
             <option value="3">3 months</option>
@@ -264,7 +265,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 
         <div class="form-group">
           <label class="form-label">Agent Fee <span class="hint">months of rent</span></label>
-          <select id="agentFee" onchange="calculate()">
+          <select id="agentFee" onchange="calculate()" aria-label="Agent Fee">
             <option value="0">None</option>
             <option value="0.5">Half month</option>
             <option value="1" selected>1 month</option>
@@ -274,7 +275,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 
         <div class="form-group">
           <label class="form-label">Caution / Security Deposit <span class="hint">months of rent</span></label>
-          <select id="cautionMonths" onchange="calculate()">
+          <select id="cautionMonths" onchange="calculate()" aria-label="Caution Months">
             <option value="0">None</option>
             <option value="1">1 month</option>
             <option value="2" selected>2 months</option>
@@ -444,7 +445,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
       <span class="leg-action-kicker">PDF gate</span>
@@ -542,7 +543,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
     </div>
   </div>
   <label class="leg-action-copy-label">Copyable review note</label>
-  <textarea class="leg-action-copy-text" readonly>Move-in cost and income-stress check action pack
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Move-in cost and income-stress check action pack
 Tool: rent-affordability
 Coverage: Tenant affordability model
 

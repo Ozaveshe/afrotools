@@ -8,15 +8,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
   <link rel="stylesheet" href="style.css?v=a75e5ac5">
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
   <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/creator-team/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-team/app">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-team/app" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-team/app" />
@@ -65,8 +65,8 @@
       <!-- ===== BOARD VIEW ===== -->
       <div id="boardView">
         <div class="ctm-filter-bar">
-          <select class="ctm-filter-select" id="filterAssignee"><option value="">All members</option></select>
-          <select class="ctm-filter-select" id="filterPlatform">
+          <select class="ctm-filter-select" id="filterAssignee" aria-label="Filter Assignee"><option value="">All members</option></select>
+          <select class="ctm-filter-select" id="filterPlatform" aria-label="Filter Platform">
             <option value="">All platforms</option>
             <option value="instagram">Instagram</option>
             <option value="youtube">YouTube</option>
@@ -77,7 +77,7 @@
             <option value="podcast">Podcast</option>
             <option value="other">Other</option>
           </select>
-          <select class="ctm-filter-select" id="filterDue">
+          <select class="ctm-filter-select" id="filterDue" aria-label="Filter Due">
             <option value="">Any date</option>
             <option value="overdue">Overdue</option>
             <option value="today">Due today</option>
@@ -110,7 +110,7 @@
       <div id="assetsView" style="display:none">
         <div class="ctm-assets-toolbar">
           <input aria-label="Search assets" type="text" class="ctm-filter-search" id="assetSearch" placeholder="Search assets...">
-          <select class="ctm-filter-select" id="assetTypeFilter">
+          <select class="ctm-filter-select" id="assetTypeFilter" aria-label="Asset Type Filter">
             <option value="">All types</option>
             <option value="image">Image</option>
             <option value="video">Video</option>
@@ -286,7 +286,7 @@
     var html = '<button type="button" class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
     html += '<h3>Add Team Member</h3>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Name</label><input aria-label="Team member name" type="text" class="ctm-form-input" id="mName" placeholder="Team member name" maxlength="30"></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Role</label><select class="ctm-form-select" id="mRole"><option value="editor">Editor</option><option value="viewer">Viewer</option></select></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Role</label><select class="ctm-form-select" id="mRole" aria-label="M Role"><option value="editor">Editor</option><option value="viewer">Viewer</option></select></div>';
     html += '<button type="button" class="ctm-btn" id="saveMemberBtn">Add Member</button>';
     openModal(html);
     document.getElementById('saveMemberBtn').addEventListener('click', function() {
@@ -448,23 +448,23 @@
     var html = '<button type="button" class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
     html += '<h3>' + (isEdit ? 'Edit Card' : 'New Card') + '</h3>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Title</label><input aria-label="Content title" type="text" class="ctm-form-input" id="cTitle" value="' + (card ? esc(card.title) : '') + '" placeholder="Content title" maxlength="80"></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Description</label><textarea class="ctm-form-textarea" id="cDesc" placeholder="What is this content about?" rows="3">' + (card ? esc(card.description || '') : '') + '</textarea></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Description</label><textarea class="ctm-form-textarea" id="cDesc" placeholder="What is this content about?" rows="3" aria-label="What is this content about?">' + (card ? esc(card.description || '') : '') + '</textarea></div>';
     html += '<div class="ctm-form-row">';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Assignee</label><select class="ctm-form-select" id="cAssignee"><option value="">Unassigned</option>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Assignee</label><select class="ctm-form-select" id="cAssignee" aria-label="C Assignee"><option value="">Unassigned</option>';
     state.members.forEach(function(m) { html += '<option value="' + m.id + '"' + (card && card.assignee === m.id ? ' selected' : '') + '>' + esc(m.name) + '</option>'; });
     html += '</select></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Due Date</label><input aria-label="CDue" type="date" class="ctm-form-input" id="cDue" value="' + (card && card.due ? card.due : '') + '"></div>';
     html += '</div>';
     html += '<div class="ctm-form-row">';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Platform</label><select class="ctm-form-select" id="cPlatform"><option value="">Select</option>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Platform</label><select class="ctm-form-select" id="cPlatform" aria-label="C Platform"><option value="">Select</option>';
     PLATFORMS.forEach(function(p) { html += '<option value="' + p + '"' + (card && card.platform === p ? ' selected' : '') + '>' + p + '</option>'; });
     html += '</select></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Priority</label><select class="ctm-form-select" id="cPriority"><option value="">None</option><option value="high"' + (card && card.priority === 'high' ? ' selected' : '') + '>High</option><option value="medium"' + (card && card.priority === 'medium' ? ' selected' : '') + '>Medium</option><option value="low"' + (card && card.priority === 'low' ? ' selected' : '') + '>Low</option></select></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Priority</label><select class="ctm-form-select" id="cPriority" aria-label="C Priority"><option value="">None</option><option value="high"' + (card && card.priority === 'high' ? ' selected' : '') + '>High</option><option value="medium"' + (card && card.priority === 'medium' ? ' selected' : '') + '>Medium</option><option value="low"' + (card && card.priority === 'low' ? ' selected' : '') + '>Low</option></select></div>';
     html += '</div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Status</label><select class="ctm-form-select" id="cStatus">';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Status</label><select class="ctm-form-select" id="cStatus" aria-label="C Status">';
     COLUMNS.forEach(function(col) { html += '<option value="' + col.id + '"' + ((card && card.status === col.id) || (!card && defaultCol === col.id) ? ' selected' : '') + '>' + col.name + '</option>'; });
     html += '</select></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Notes</label><textarea class="ctm-form-textarea" id="cNotes" placeholder="Additional notes, links, references..." rows="2">' + (card ? esc(card.notes || '') : '') + '</textarea></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Notes</label><textarea class="ctm-form-textarea" id="cNotes" placeholder="Additional notes, links, references..." rows="2" aria-label="Additional notes, links, references...">' + (card ? esc(card.notes || '') : '') + '</textarea></div>';
     html += '<div style="display:flex;gap:8px;margin-top:8px">';
     html += '<button type="button" class="ctm-btn" id="saveCardBtn">' + (isEdit ? 'Save Changes' : 'Add Card') + '</button>';
     if (isEdit) {
@@ -579,19 +579,19 @@
     html += '<h3>' + (isEdit ? 'Edit Brief' : tmpl ? tmpl.name + ' Brief' : 'New Brief') + '</h3>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Topic</label><input aria-label="What is this content about?" type="text" class="ctm-form-input" id="bTopic" value="' + esc(brief ? brief.topic : '') + '" placeholder="What is this content about?" maxlength="100"></div>';
     html += '<div class="ctm-form-row">';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Platform</label><select class="ctm-form-select" id="bPlatform"><option value="">Select</option>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Platform</label><select class="ctm-form-select" id="bPlatform" aria-label="B Platform"><option value="">Select</option>';
     PLATFORMS.forEach(function(p) { html += '<option value="' + p + '"' + ((brief && brief.platform === p) || (tmpl && tmpl.platform === p) ? ' selected' : '') + '>' + p + '</option>'; });
     html += '</select></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Assign to</label><select class="ctm-form-select" id="bAssignee"><option value="">Unassigned</option>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Assign to</label><select class="ctm-form-select" id="bAssignee" aria-label="B Assignee"><option value="">Unassigned</option>';
     state.members.forEach(function(m) { html += '<option value="' + m.id + '"' + (brief && brief.assignee === m.id ? ' selected' : '') + '>' + esc(m.name) + '</option>'; });
     html += '</select></div></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Target Audience</label><input aria-label="Who is this for?" type="text" class="ctm-form-input" id="bAudience" value="' + esc(brief ? brief.audience || '' : (tmpl ? tmpl.audience : '')) + '" placeholder="Who is this for?"></div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Key Points (one per line)</label><textarea class="ctm-form-textarea" id="bPoints" rows="4" placeholder="Main points to cover">' + esc(brief ? (brief.points || []).join('\n') : (tmpl ? tmpl.points.join('\n') : '')) + '</textarea></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Key Points (one per line)</label><textarea class="ctm-form-textarea" id="bPoints" rows="4" placeholder="Main points to cover" aria-label="Main points to cover">' + esc(brief ? (brief.points || []).join('\n') : (tmpl ? tmpl.points.join('\n') : '')) + '</textarea></div>';
     html += '<div class="ctm-form-row">';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Tone</label><input aria-label="Casual, bold, educational" type="text" class="ctm-form-input" id="bTone" value="' + esc(brief ? brief.tone || '' : (tmpl ? tmpl.tone : '')) + '" placeholder="Casual, bold, educational..."></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Deadline</label><input aria-label="BDeadline" type="date" class="ctm-form-input" id="bDeadline" value="' + (brief && brief.deadline ? brief.deadline : '') + '"></div>';
     html += '</div>';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">References (URLs, one per line)</label><textarea class="ctm-form-textarea" id="bRefs" rows="2" placeholder="https://...">' + esc(brief ? (brief.refs || []).join('\n') : '') + '</textarea></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">References (URLs, one per line)</label><textarea class="ctm-form-textarea" id="bRefs" rows="2" placeholder="https://..." aria-label="https://...">' + esc(brief ? (brief.refs || []).join('\n') : '') + '</textarea></div>';
     html += '<div style="display:flex;gap:8px;margin-top:8px">';
     html += '<button type="button" class="ctm-btn" id="saveBriefBtn">' + (isEdit ? 'Save Changes' : 'Create Brief') + '</button>';
     if (isEdit) html += '<button type="button" class="ctm-btn danger" id="delBriefBtn" style="flex-shrink:0;width:auto;padding:12px 18px">&times;</button>';
@@ -742,7 +742,7 @@
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Title</label><input aria-label="Asset name" type="text" class="ctm-form-input" id="aTitle" placeholder="Asset name" maxlength="60"></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">URL</label><input aria-label="Https://" type="url" class="ctm-form-input" id="aUrl" placeholder="https://..."></div>';
     html += '<div class="ctm-form-row">';
-    html += '<div class="ctm-form-group"><label class="ctm-form-label">Type</label><select class="ctm-form-select" id="aType"><option value="image">Image</option><option value="video">Video</option><option value="doc">Document</option><option value="other">Other</option></select></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Type</label><select class="ctm-form-select" id="aType" aria-label="A Type"><option value="image">Image</option><option value="video">Video</option><option value="doc">Document</option><option value="other">Other</option></select></div>';
     html += '<div class="ctm-form-group"><label class="ctm-form-label">Tag</label><input aria-label="E.g. branding, ep12" type="text" class="ctm-form-input" id="aTag" placeholder="e.g. branding, ep12" maxlength="20"></div>';
     html += '</div>';
     html += '<button type="button" class="ctm-btn" id="saveAssetBtn">Add Asset</button>';

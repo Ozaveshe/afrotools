@@ -7,6 +7,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
 const SKIP_DIRS = new Set(['node_modules', '.git', '.claude', 'scripts', 'netlify', 'dist']);
@@ -18,28 +19,10 @@ const REGISTRY_SCRIPT_TAG = '<script src="/assets/js/components/tool-registry.mi
 const RELATED_DATA_SCRIPT = '<script src="/assets/js/components/related-tools-data.min.js" defer></script>';
 const RELATED_DATA_RE = /<script\b[^>]*src=["'][^"']*related-tools-data\.min\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>/i;
 const HEAD_INSERT_RE = /(<script\b[^>]*src=["'][^"']*\/assets\/js\/components\/navbar(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>)/i;
-const WRITE_RETRY_CODES = new Set(['EPERM', 'EBUSY', 'UNKNOWN']);
-
-function writeFileWithRetry(filePath, content, attempts = 3) {
-  let lastError = null;
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    try {
-      fs.writeFileSync(filePath, content, 'utf8');
-      return;
-    } catch (error) {
-      lastError = error;
-      if (!WRITE_RETRY_CODES.has(error.code) || attempt === attempts) {
-        throw error;
-      }
-
-      const delayMs = attempt * 150;
-      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, delayMs);
-    }
-  }
-
-  throw lastError;
-}
-
+const LIGHTWEIGHT_INDEX_PAGES = new Set([
+  'search/index.html',
+  'salary-tax/index.html',
+]);
 function walkHtml(dir) {
   const files = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -69,7 +52,9 @@ function insertBeforeNavbarOrHead(html, scriptTag) {
 
 for (const htmlPath of htmlFiles) {
   const original = fs.readFileSync(htmlPath, 'utf8');
-  const usesRegistryDirectly = REGISTRY_USAGE_RE.test(original);
+  const relativeHtmlPath = path.relative(ROOT, htmlPath).replace(/\\/g, '/');
+  const isLightweightIndexPage = LIGHTWEIGHT_INDEX_PAGES.has(relativeHtmlPath);
+  const usesRegistryDirectly = !isLightweightIndexPage && REGISTRY_USAGE_RE.test(original);
   const hasLazyRegistryLoader = LAZY_REGISTRY_RE.test(original);
   const usesRelatedTools = RELATED_TOOLS_RE.test(original);
   const hasRegistryScript = REGISTRY_SCRIPT_RE.test(original);
@@ -106,7 +91,7 @@ for (const htmlPath of htmlFiles) {
   }
 
   if (updated !== original) {
-    writeFileWithRetry(htmlPath, updated);
+    writeFileSyncWithRetry(htmlPath, updated, 'utf8');
     updatedCount += 1;
     removedTags += localRemoved;
     replacedTags += localReplaced;

@@ -23,10 +23,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
   <link rel="stylesheet" href="/assets/css/japa-calculator.css?v=be3d44a4">
-<script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>:root { --color-brand: var(--color-primary); }
@@ -106,7 +106,7 @@
 }
 </script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
-<script src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
+<script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <script type="application/ld+json">
@@ -137,11 +137,12 @@
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
-<link rel="stylesheet" href="/assets/css/seo-clusters.css?v=5a8b6c7a">
+<link rel="stylesheet" href="/assets/css/seo-clusters.css?v=3620302e">
 <link rel="stylesheet" href="/assets/css/african-workflow.css?v=b5a0b1a7">
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/japa-calculator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-japa/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-uhamishaji/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/japa-calculator/" />
 </head>
 <body>
@@ -179,7 +180,7 @@
   <div class="jf">
     <h2><span class="n">1</span> Where are you now?</h2>
     <div class="jr">
-      <div class="jfl"><label>Your Country</label>
+      <div class="jfl"><label for="oCtry">Your Country</label>
         <select id="oCtry" onchange="updOrigin()">
           <optgroup label="West Africa">
             <option value="NG">Nigeria</option>
@@ -231,7 +232,7 @@
           </optgroup>
         </select>
       </div>
-      <div class="jfl"><label>Departure City</label><select id="oCity"></select></div>
+      <div class="jfl"><label for="oCity">Departure City</label><select id="oCity"></select></div>
     </div>
     <div class="jr">
       <div class="jfl"><label>Monthly Income (USD equiv.)</label><input aria-label="E.g. 2000" type="number" id="monthlyIncome" placeholder="e.g. 2000" min="0"><span class="ht">Used to calculate savings timeline</span></div>
@@ -242,7 +243,7 @@
     <h2><span class="n">2</span> Where are you going?</h2>
     <div class="jr">
       <div class="jfl"><label>Destination Country</label>
-        <select id="dCtry" onchange="updDest()">
+        <select id="dCtry" onchange="updDest()" aria-label="D Ctry">
           <optgroup label="North America">
             <option value="CA">???? Canada</option>
             <option value="US">???? United States</option>
@@ -274,7 +275,7 @@
           </optgroup>
         </select>
       </div>
-      <div class="jfl"><label>Destination City</label><select id="dCity" onchange="recalcIfDone()"></select></div>
+      <div class="jfl"><label for="dCity">Destination City</label><select id="dCity" onchange="recalcIfDone()"></select></div>
     </div>
   </div>
   <div class="jf">
@@ -447,8 +448,8 @@
     </div>
     <div id="tab-costliving" style="display:none">
       <div class="col-select-row">
-        <select id="colOriginCity" onchange="renderCostLiving()"></select>
-        <select id="colDestCity" onchange="renderCostLiving()"></select>
+        <select id="colOriginCity" onchange="renderCostLiving()" aria-label="Col Origin City"></select>
+        <select id="colDestCity" onchange="renderCostLiving()" aria-label="Col Dest City"></select>
       </div>
       <div class="col-summary" id="colSummary"></div>
       <div class="col-grid" id="colGrid"></div>
@@ -465,15 +466,15 @@
       <div class="vp-panel"><h3>?? Visa Success Predictor</h3>
         <div class="vp-form" id="vpForm">
           <div class="vp-field"><label>Age</label><input aria-label="E.g. 28" type="number" id="vpAge" placeholder="e.g. 28" min="18" max="65"></div>
-          <div class="vp-field"><label>Highest Education</label><select id="vpEdu"><option value="highschool">High School</option><option value="diploma">Diploma</option><option value="bachelors" selected>Bachelor's</option><option value="masters">Master's</option><option value="phd">PhD</option></select></div>
+          <div class="vp-field"><label>Highest Education</label><select id="vpEdu" aria-label="Vp Edu"><option value="highschool">High School</option><option value="diploma">Diploma</option><option value="bachelors" selected>Bachelor's</option><option value="masters">Master's</option><option value="phd">PhD</option></select></div>
           <div class="vp-field"><label>Years of Work Experience</label><input aria-label="E.g. 5" type="number" id="vpExp" placeholder="e.g. 5" min="0" max="40"></div>
-          <div class="vp-field"><label>English Proficiency</label><select id="vpEng"><option value="basic">Basic</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option><option value="fluent" selected>Fluent / Native</option><option value="ielts6">IELTS 6.0</option><option value="ielts65">IELTS 6.5</option><option value="ielts7">IELTS 7.0</option><option value="ielts75">IELTS 7.5+</option></select></div>
+          <div class="vp-field"><label>English Proficiency</label><select id="vpEng" aria-label="Vp Eng"><option value="basic">Basic</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option><option value="fluent" selected>Fluent / Native</option><option value="ielts6">IELTS 6.0</option><option value="ielts65">IELTS 6.5</option><option value="ielts7">IELTS 7.0</option><option value="ielts75">IELTS 7.5+</option></select></div>
           <div class="vp-field"><label>Available Funds (USD)</label><input aria-label="E.g. 15000" type="number" id="vpFunds" placeholder="e.g. 15000" min="0"></div>
-          <div class="vp-field"><label>Has Job Offer in Destination?</label><select id="vpJob"><option value="no">No</option><option value="yes">Yes</option></select></div>
-          <div class="vp-field"><label>Family Ties in Destination?</label><select id="vpFamily"><option value="no">No</option><option value="yes">Yes</option></select></div>
-          <div class="vp-field"><label>Previous Visa Refusals?</label><select id="vpRefusal" onchange="document.getElementById('vpRefusalCount').style.display=this.value==='yes'?'block':'none'"><option value="no">No</option><option value="yes">Yes</option></select></div>
+          <div class="vp-field"><label>Has Job Offer in Destination?</label><select id="vpJob" aria-label="Vp Job"><option value="no">No</option><option value="yes">Yes</option></select></div>
+          <div class="vp-field"><label>Family Ties in Destination?</label><select id="vpFamily" aria-label="Vp Family"><option value="no">No</option><option value="yes">Yes</option></select></div>
+          <div class="vp-field"><label>Previous Visa Refusals?</label><select id="vpRefusal" onchange="document.getElementById('vpRefusalCount').style.display=this.value==='yes'?'block':'none'" aria-label="Vp Refusal"><option value="no">No</option><option value="yes">Yes</option></select></div>
           <div class="vp-field" id="vpRefusalCount" style="display:none"><label>Number of Refusals</label><input aria-label="VpRefNum" type="number" id="vpRefNum" value="1" min="1" max="10"></div>
-          <div class="vp-field"><label>Criminal Record?</label><select id="vpCriminal"><option value="no">No</option><option value="yes">Yes</option></select></div>
+          <div class="vp-field"><label>Criminal Record?</label><select id="vpCriminal" aria-label="Vp Criminal"><option value="no">No</option><option value="yes">Yes</option></select></div>
           <button type="button" class="vp-submit" id="vpSubmit" onclick="runVisaPredictor()">?? Predict My Visa Success</button>
         </div>
         <div class="vp-result" id="vpResult">

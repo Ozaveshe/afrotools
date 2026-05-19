@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
   <link rel="stylesheet" href="style.css?v=e8f53793">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
@@ -17,7 +17,7 @@
 <link rel="canonical" href="https://afrotools.com/tools/creator-club/app">
 <meta property="og:url" content="https://afrotools.com/tools/creator-club/app">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c9df5f7b">
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
 <script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/creator-club/app" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/creator-club/app" />
@@ -126,7 +126,7 @@
                   <div class="ccb-builder-section-title">About</div>
                   <div class="ccb-form-group">
                     <label class="ccb-form-label">About You</label>
-                    <textarea class="ccb-form-textarea" id="pbAbout" rows="4" placeholder="Tell your audience who you are and what they get by joining..."></textarea>
+                    <textarea class="ccb-form-textarea" id="pbAbout" rows="4" placeholder="Tell your audience who you are and what they get by joining..." aria-label="Tell your audience who you are and what they get by joining..."></textarea>
                   </div>
                 </div>
                 <div class="ccb-builder-section">
@@ -188,10 +188,10 @@
           </div>
           <div class="ccb-table-wrap">
             <div class="ccb-table-toolbar">
-              <select class="ccb-table-filter" id="memberTierFilter">
+              <select class="ccb-table-filter" id="memberTierFilter" aria-label="Member Tier Filter">
                 <option value="all">All Tiers</option>
               </select>
-              <select class="ccb-table-filter" id="memberStatusFilter">
+              <select class="ccb-table-filter" id="memberStatusFilter" aria-label="Member Status Filter">
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
                 <option value="churned">Churned</option>
@@ -214,7 +214,7 @@
           </div>
           <div style="margin-bottom:20px;">
             <div class="ccb-form-group">
-              <textarea class="ccb-form-textarea" id="newPostText" rows="3" placeholder="Write an update for your community..."></textarea>
+              <textarea class="ccb-form-textarea" id="newPostText" rows="3" placeholder="Write an update for your community..." aria-label="Write an update for your community..."></textarea>
             </div>
             <div class="ccb-form-row" style="margin-bottom:12px;">
               <div class="ccb-form-group" style="margin-bottom:0;">
@@ -223,7 +223,7 @@
               </div>
               <div class="ccb-form-group" style="margin-bottom:0;">
                 <label class="ccb-form-label">Tier Access</label>
-                <select class="ccb-form-select" id="newPostTier">
+                <select class="ccb-form-select" id="newPostTier" aria-label="New Post Tier">
                   <option value="all">All Members</option>
                 </select>
               </div>
@@ -280,7 +280,7 @@
           <div class="ccb-form-group">
             <div class="ccb-toggle-row">
               <label class="ccb-form-label" style="margin-bottom:0;text-transform:none;font-size:14px;color:rgba(255,255,255,.8);">&#9888;&#65039; Test Mode</label>
-              <button type="button" class="ccb-toggle on" id="testModeToggle"></button>
+              <button type="button" class="ccb-toggle on" id="testModeToggle" aria-label="Toggle test mode"></button>
             </div>
           </div>
           <div class="ccb-payment-grid">
@@ -356,7 +356,7 @@
             </div>
             <div class="ccb-form-group">
               <label class="ccb-form-label">Body</label>
-              <textarea class="ccb-form-textarea" id="emailBody" rows="6">Hey {{name}},
+              <textarea class="ccb-form-textarea" id="emailBody" rows="6" aria-label="Email Body">Hey {{name}},
 
 Welcome to the {{tier}} tier! Here's what you get:
 
@@ -410,7 +410,7 @@ Thanks for joining. Let's build something great together.</textarea>
     <div class="ccb-modal">
       <div class="ccb-modal-header">
         <h3 id="tierModalTitle">Add Tier</h3>
-        <button type="button" class="ccb-modal-close" onclick="CCB.closeTierModal()">&times;</button>
+        <button type="button" class="ccb-modal-close" onclick="CCB.closeTierModal()" aria-label="Close tier modal">&times;</button>
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Tier Name</label>
@@ -423,7 +423,7 @@ Thanks for joining. Let's build something great together.</textarea>
         </div>
         <div class="ccb-form-group">
           <label class="ccb-form-label">Currency</label>
-          <select class="ccb-form-select" id="tierCurrencyInput">
+          <select class="ccb-form-select" id="tierCurrencyInput" aria-label="Tier Currency Input">
             <option value="NGN">NGN - Naira</option>
             <option value="KES">KES - Shilling</option>
             <option value="ZAR">ZAR - Rand</option>
@@ -434,7 +434,7 @@ Thanks for joining. Let's build something great together.</textarea>
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Billing Cycle</label>
-        <select class="ccb-form-select" id="tierCycleInput">
+        <select class="ccb-form-select" id="tierCycleInput" aria-label="Tier Cycle Input">
           <option value="monthly">Monthly</option>
           <option value="yearly">Yearly</option>
           <option value="one-time">One-time</option>
@@ -452,7 +452,7 @@ Thanks for joining. Let's build something great together.</textarea>
       <div class="ccb-form-group">
         <div class="ccb-toggle-row">
           <label class="ccb-form-label" style="margin-bottom:0;text-transform:none;font-size:13px;color:rgba(255,255,255,.7);">Member Limit</label>
-          <button type="button" class="ccb-toggle" id="tierLimitToggle"></button>
+          <button type="button" class="ccb-toggle" id="tierLimitToggle" aria-label="Toggle tier limits"></button>
         </div>
         <input aria-label="Max members" class="ccb-form-input" id="tierLimitInput" type="number" placeholder="Max members" min="1" style="margin-top:8px;display:none;">
       </div>
@@ -468,10 +468,10 @@ Thanks for joining. Let's build something great together.</textarea>
     <div class="ccb-modal">
       <div class="ccb-modal-header">
         <h3 id="contentModalTitle">Add Content</h3>
-        <button type="button" class="ccb-modal-close" onclick="CCB.closeContentModal()">&times;</button>
+        <button type="button" class="ccb-modal-close" onclick="CCB.closeContentModal()" aria-label="Close content modal">&times;</button>
       </div>
       <div class="ccb-form-group">
-        <label class="ccb-form-label">Content Type</label>
+        <label class="ccb-form-label" for="contentTypeInput">Content Type</label>
         <select class="ccb-form-select" id="contentTypeInput">
           <option value="pdf">PDF Link</option>
           <option value="video">Video Link</option>
@@ -486,7 +486,7 @@ Thanks for joining. Let's build something great together.</textarea>
       </div>
       <div class="ccb-form-group">
         <label class="ccb-form-label">Description</label>
-        <textarea class="ccb-form-textarea" id="contentDescInput" rows="3" placeholder="Brief description..."></textarea>
+        <textarea class="ccb-form-textarea" id="contentDescInput" rows="3" placeholder="Brief description..." aria-label="Brief description..."></textarea>
       </div>
       <div class="ccb-form-group" id="contentUrlGroup">
         <label class="ccb-form-label">URL</label>
@@ -494,12 +494,12 @@ Thanks for joining. Let's build something great together.</textarea>
       </div>
       <div class="ccb-form-group" id="contentBodyGroup" style="display:none">
         <label class="ccb-form-label">Content Body</label>
-        <textarea class="ccb-form-textarea" id="contentBodyInput" rows="6" placeholder="Write your post content here..."></textarea>
+        <textarea class="ccb-form-textarea" id="contentBodyInput" rows="6" placeholder="Write your post content here..." aria-label="Write your post content here..."></textarea>
       </div>
       <div class="ccb-form-row">
         <div class="ccb-form-group">
           <label class="ccb-form-label">Tier Access</label>
-          <select class="ccb-form-select" id="contentTierInput"></select>
+          <select class="ccb-form-select" id="contentTierInput" aria-label="Content Tier Input"></select>
         </div>
         <div class="ccb-form-group">
           <label class="ccb-form-label">Drip Date (optional)</label>

@@ -18,8 +18,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea"><script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086"><script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
@@ -108,6 +108,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/tenancy-deposit/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/caution-locative/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/amana-ya-upangaji/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tenancy-deposit/" />
 </head>
 <body>
@@ -125,7 +126,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Rental Details</span></div>
 <div class="card-body">
 <div class="row field">
-<div><label>Country</label>
+<div><label for="country">Country</label>
 <select id="country" onchange="updateDefaults()">
 <option value="ng">Nigeria</option>
 <option value="ke">Kenya</option>
@@ -136,7 +137,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 <div class="row field">
 <div><label>Advance Rent (Months)</label>
-<select id="advanceMonths">
+<select id="advanceMonths" aria-label="Advance Months">
 <option value="12" selected>12 months (Nigeria standard)</option>
 <option value="6">6 months</option>
 <option value="3">3 months</option>
@@ -144,7 +145,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="1">1 month</option>
 </select></div>
 <div><label>Security Deposit (Months)</label>
-<select id="depositMonths">
+<select id="depositMonths" aria-label="Deposit Months">
 <option value="0">None</option>
 <option value="1" selected>1 month</option>
 <option value="2">2 months</option>
@@ -153,7 +154,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 <div class="row field">
 <div><label>Agent Fee (% of Annual Rent)</label>
-<select id="agentFee">
+<select id="agentFee" aria-label="Agent Fee">
 <option value="0">No agent</option>
 <option value="5">5%</option>
 <option value="10" selected>10% (Nigeria standard)</option>
@@ -161,7 +162,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="8.33">1 month rent (8.33%)</option>
 </select></div>
 <div><label>Agreement / Legal Fee</label>
-<select id="legalFee">
+<select id="legalFee" aria-label="Legal Fee">
 <option value="0">None</option>
 <option value="5" selected>5% of annual rent</option>
 <option value="10">10% of annual rent</option>
@@ -251,7 +252,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
     <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
   </div>
-  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly aria-label="Text entry"></textarea>
   <form class="leg-pdf-gate" data-workflow-gate novalidate>
     <div>
       <span class="leg-action-kicker">PDF gate</span>
@@ -349,7 +350,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     </div>
   </div>
   <label class="leg-action-copy-label">Copyable review note</label>
-  <textarea class="leg-action-copy-text" readonly>Deposit and rent-advance risk check action pack
+  <textarea class="leg-action-copy-text" readonly aria-label="Text entry">Deposit and rent-advance risk check action pack
 Tool: tenancy-deposit
 Coverage: Rent deposit reference
 
