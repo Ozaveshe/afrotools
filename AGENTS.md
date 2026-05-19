@@ -106,6 +106,15 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - For tool social-card changes, add the matching route image and run `npm run seo:og`.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
 
+### PR SEO Safety Contract
+
+- Keep canonical URLs aligned with served routes: `foo/index.html` maps to `/foo/`, while `foo.html` maps to `/foo`.
+- Treat sitemap files as generated output; update sitemap sources or scripts, then run `npm run sitemap` or the narrower SEO command.
+- Keep incomplete, thin, embed, auth, and utility surfaces `noindex, follow` and out of search-facing sitemap output.
+- Preserve existing JSON-LD and structured data unless the PR explicitly changes the underlying content or schema contract.
+- Preserve existing analytics events and event names unless the PR explicitly changes measurement behavior.
+- Every PR must include acceptance criteria plus build, lint, and test evidence. If no lint script exists, say so and list the substitute syntax or targeted validation that was run.
+
 ### Content publishing
 
 - Read `docs/CONTENT-PUBLISHING-WORKFLOW.md`.
