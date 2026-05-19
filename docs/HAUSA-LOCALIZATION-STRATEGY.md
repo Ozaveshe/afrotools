@@ -35,20 +35,19 @@ Source artifacts:
 
 Current visible-copy readiness:
 
-- Hausa routes scanned: `72`.
+- Hausa routes scanned: `92`.
 - Clean routes: `43`.
 - Routes with blockers: `0`.
 - `BLOCKER_VISIBLE_ENGLISH` findings: `0`.
-- `POSSIBLE_FALSE_POSITIVE` findings: `62`.
-- `ACCEPTED_TECH_TERM` findings: `454`.
-- Hausa registry rows: `67`.
+- `POSSIBLE_FALSE_POSITIVE` findings: `149`.
+- `ACCEPTED_TECH_TERM` findings: `523`.
+- Hausa registry rows: `87`.
 - Missing Hausa registry targets: `0`.
 - `lang: 'ha'` rows pointing outside `/ha/`: `0`.
 
 The older Batch 5 operating baseline was `67` public Hausa routes and `62`
-Hausa registry rows. The current working-tree lane has moved to `72` routes and
-`67` registry rows after five Batch 6 shells: bank charges, currency converter,
-CAC checker, business registration, and PDF Sign.
+Hausa registry rows. The current working-tree lane has moved to `92` routes and
+`87` registry rows after the Batch 6 shells plus the core Hausa expansion wave.
 
 The visible-copy audit is the main readiness gate for Hausa route quality. A
 route can exist, validate structurally, and still be unshippable if visible
@@ -57,7 +56,7 @@ fallback messaging.
 
 ## Route Inventory Summary
 
-Current public Hausa route count: `72` HTML routes under `/ha/`.
+Current public Hausa route count: `92` HTML routes under `/ha/`.
 
 Core and category hubs:
 
@@ -432,7 +431,7 @@ Recommended next batches:
 3. Review mobile layout on the five highest-risk hubs:
    `/ha/kayan-aiki/`, `/ha/najeriya/`, `/ha/lafiya/`,
    `/ha/albashi-da-haraji/`, and `/ha/kasuwanci-da-haraji/`.
-4. Keep metadata and JSON-LD review in the gate for all 72 routes so
+4. Keep metadata and JSON-LD review in the gate for all 92 routes so
    search-visible copy stays Hausa where the page is Hausa.
 5. Audit registry, navbar, and footer after each copy wave to make sure shared
    discovery does not regress.
@@ -470,3 +469,17 @@ Batch 6 candidate backlog:
   treatment, or price-certainty promises.
 
 Current strategic verdict: `KEEP_MANUAL_ROUTE_LANE`.
+
+
+## Full Coverage Completion Rule
+
+The Hausa lane is now broad enough for internal product preview, but full AfroTools parity still requires category-by-category expansion. Do not treat the remaining English registry as automatically translated. A new Hausa route needs:
+
+- a real source route or mature workflow,
+- a natural Hausa slug,
+- honest fallback wording if the runtime remains English,
+- registry ownership only after the route exists,
+- reciprocal hreflang when the English counterpart is clear,
+- visible-copy audit passing with zero blockers.
+
+Use `reports/hausa-full-localization-coverage.md` as the current completion ledger before starting the next expansion batch.

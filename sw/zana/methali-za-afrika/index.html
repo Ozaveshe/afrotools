@@ -96,22 +96,22 @@
 </select>
 </div>
 <div class="en-field">
-<label class="en-label">Topic / Theme</label>
+<label class="en-label">Mada / theme</label>
 <select class="en-select" id="filterTopic">
-<option value="all">All Topics</option>
-<option value="wisdom">Wisdom</option>
-<option value="patience">Patience</option>
-<option value="community">Community / Unity</option>
-<option value="family">Family</option>
-<option value="hard-work">Hard Work</option>
-<option value="leadership">Leadership</option>
-<option value="success">Success</option>
+<option value="all">Mada zote</option>
+<option value="wisdom">Hekima</option>
+<option value="patience">Subira</option>
+<option value="community">Jamii / Umoja</option>
+<option value="family">Familia</option>
+<option value="hard-work">Juhudi</option>
+<option value="leadership">Uongozi</option>
+<option value="success">Mafanikio</option>
 </select>
 </div>
 </div>
 <div class="en-form-actions">
-<button type="button" class="en-btn" onclick="generateRandom()"> Random Proverb</button>
-<button type="button" class="en-btn en-btn-secondary" onclick="filterProverbs()"> Filter Matokeo</button>
+<button type="button" class="en-btn" onclick="generateRandom()"> Methali ya nasibu</button>
+<button type="button" class="en-btn en-btn-secondary" onclick="filterProverbs()"> Chuja matokeo</button>
 </div>
 </div>
 
@@ -123,7 +123,7 @@
 <div class="proverb-translation" id="fpTranslation"></div>
 <div class="proverb-meta">
 <span class="proverb-tag" id="fpCulture">Yoruba</span>
-<span class="proverb-tag" id="fpTopic">Wisdom</span>
+<span class="proverb-tag" id="fpTopic">Hekima</span>
 </div>
 </div>
 </div>
@@ -132,37 +132,37 @@
 <div class="proverb-context-text" id="fpContext"></div>
 </div>
 <div style="text-align:center;margin-bottom:24px">
-<button type="button" class="en-btn en-btn-secondary en-btn-sm" onclick="shareProverb()"> Share Proverb</button>
-<button type="button" class="en-btn en-btn-secondary en-btn-sm" onclick="generateRandom()" style="margin-left:8px"> Another One</button>
+<button type="button" class="en-btn en-btn-secondary en-btn-sm" onclick="shareProverb()"> Shiriki methali</button>
+<button type="button" class="en-btn en-btn-secondary en-btn-sm" onclick="generateRandom()" style="margin-left:8px"> Methali nyingine</button>
 </div>
 </div>
 
 <div class="proverb-use-card">
-<div class="en-card-title"><span class="en-card-title-icon"></span>Proverb Matumizi Studio</div>
-<p class="en-muted" style="margin:0 0 12px">Turn the selected proverb into a caption, toast, classroom note, speech line, or leadership message with context that protects the meaning.</p>
+<div class="en-card-title"><span class="en-card-title-icon"></span>Studio ya matumizi ya methali</div>
+<p class="en-muted" style="margin:0 0 12px">Geuza methali uliyochagua kuwa caption, toast ya familia, dokezo la darasa, mstari wa hotuba au ujumbe wa uongozi bila kupoteza maana yake.</p>
 <div class="proverb-use-grid">
 <div class="en-field">
 <label class="en-label">Matumizi</label>
 <select class="en-select" id="useCase">
-<option value="caption">Social caption</option>
-<option value="toast">Family toast</option>
-<option value="classroom">Classroom note</option>
-<option value="leadership">Leadership message</option>
-<option value="speech">Speech opener</option>
+<option value="caption">Caption ya mitandao</option>
+<option value="toast">Toast ya familia</option>
+<option value="classroom">Dokezo la darasa</option>
+<option value="leadership">Ujumbe wa uongozi</option>
+<option value="speech">Ufunguzi wa hotuba</option>
 </select>
 </div>
 <div class="en-field">
-<label class="en-label">Tone</label>
+<label class="en-label">Sauti ya ujumbe</label>
 <select class="en-select" id="useTone">
-<option value="warm">Warm</option>
-<option value="formal">Formal</option>
-<option value="youthful">Youthful</option>
-<option value="reflective">Reflective</option>
+<option value="warm">Ya ukaribu</option>
+<option value="formal">Rasmi</option>
+<option value="youthful">Ya vijana</option>
+<option value="reflective">Ya tafakari</option>
 </select>
 </div>
 <div class="en-field">
-<label class="en-label">Audience</label>
-<input aria-label="UseAudience" class="en-input" id="useAudience" value="family and friends">
+<label class="en-label">Hadhira</label>
+<input aria-label="UseAudience" class="en-input" id="useAudience" value="familia na marafiki">
 </div>
 </div>
 <div class="proverb-use-output" id="proverbUseOutput"></div>
@@ -173,7 +173,7 @@
 
 <!-- ALL PROVERBS -->
 <div class="en-card">
-<div class="en-card-title"><span class="en-card-title-icon"></span>All Proverbs <span id="proverbCount" style="font-size:.8rem;font-weight:400;color:#64748b;margin-left:6px"></span></div>
+<div class="en-card-title"><span class="en-card-title-icon"></span>Methali zote <span id="proverbCount" style="font-size:.8rem;font-weight:400;color:#64748b;margin-left:6px"></span></div>
 <div class="all-proverbs-grid" id="proverbsGrid"></div>
 </div>
 
@@ -187,50 +187,51 @@
 <afro-footer></afro-footer>
 <script>
 var PROVERBS=[
-  {o:"ni t b f j oyin k gbd ff ikn",e:"He who wants to eat honey must not be afraid of bees.",c:"Yoruba",t:"hard-work",ctx:"This Yoruba proverb teaches that achieving great rewards requires enduring discomfort and facing challenges head-on. Used to encourage people to persist despite obstacles."},
-  {o:"In in ni   s gn",e:"It is in the fire that one processes the bone (for medicine).",c:"Yoruba",t:"hard-work",ctx:"Meaningful things often require intense effort or difficult circumstances. The proverb acknowledges that value is forged under pressure."},
-  {o:"w kan k gb'yan wl",e:"One hand cannot lift a load onto one's head.",c:"Yoruba",t:"community",ctx:"Cooperation is essential. This proverb is frequently used to promote teamwork and collective effort in Yoruba communities."},
-  {o:"B or b dra, in j l  r i",e:"If destiny is good, it reveals itself in the marketplace.",c:"Yoruba",t:"success",ctx:"Success and destiny manifest in public life and community. One's good fortune becomes visible when they participate in the affairs of the community."},
-  {o:"gbdo t b w gb yl n ml r",e:"The corn that enters the mouth of the dove knows its end.",c:"Yoruba",t:"wisdom",ctx:"Used to counsel that one should be aware of the consequences of their choices before committing to them."},
-  {o:"Onye wetara oji wetara nd",e:"He who brings kola brings life.",c:"Igbo",t:"community",ctx:"The kola nut is sacred in Igbo culture, used in prayers, blessings, and welcoming guests. This proverb emphasizes hospitality and the sanctity of community bonds."},
-  {o:"Egbe b ugo, ndu b ala",e:"Fellowship is a badge of honor, life is community.",c:"Igbo",t:"community",ctx:"Igbo philosophy places great emphasis on community membership. This proverb underscores that one's worth is expressed through belonging and participation."},
-  {o:"Aka nri kw aka ekpe, aka ekpe akw aka nri",e:"The right hand washes the left, the left washes the right.",c:"Igbo",t:"community",ctx:"Mutual interdependence is the bedrock of Igbo communal life. This proverb teaches reciprocity  prosperity comes from helping one another."},
-  {o:"Onye nwere mmad d ya mma ka onye nwere ego",e:"He who has people around him is richer than he who has money.",c:"Igbo",t:"family",ctx:"Igbo culture values human relationships over material wealth. A person surrounded by loyal family and friends is considered truly wealthy."},
-  {o:"Hankuri maganin duniya",e:"Patience is the medicine of the world.",c:"Hausa",t:"patience",ctx:"One of the most widely known Hausa proverbs. It teaches that patience is the cure for all of life's difficulties. Used constantly in daily Hausa speech."},
-  {o:"Duk mai nema yana samu",e:"All who seek will find.",c:"Hausa",t:"success",ctx:"A proverb encouraging persistence and effort. Used to motivate people who are pursuing goals that seem distant or unattainable."},
-  {o:"Gida da mutane a ke son shi, ba katanga ba",e:"It is the people in a house that make it desirable, not its walls.",c:"Hausa",t:"family",ctx:"Family and community are what give a home its value, not physical possessions. Used to remind people to prioritize relationships."},
-  {o:"Obi nkyer akoma",e:"The heart does not show itself.",c:"Akan",t:"wisdom",ctx:"People's true thoughts and intentions are often hidden. This Akan proverb from Ghana counsels discernment and warns against trusting appearances."},
-  {o:"Odo nyera fie kwan",e:"Love does not lose its way home.",c:"Akan",t:"family",ctx:"Genuine love always finds its way back. Used in discussions about family loyalty, romantic love, and enduring bonds."},
-  {o:"Onipa na ohia onipa",e:"A person needs other people.",c:"Akan",t:"community",ctx:"The Akan value of interdependence. No person can truly thrive alone  community and mutual support are essential to human flourishing."},
-  {o:"Obra ye obra",e:"Life is life (life must be lived as it comes).",c:"Akan",t:"wisdom",ctx:"A philosophical acceptance of life's unpredictability. Used to counsel equanimity in the face of hardship or unexpected change."},
-  {o:"Haraka haraka haina baraka",e:"Hurry hurry has no blessing.",c:"Swahili",t:"patience",ctx:"One of the most famous Swahili proverbs across East Africa. It warns against rushing and emphasizes the value of patience and deliberate action."},
-  {o:"Umoja ni nguvu, utengano ni udhaifu",e:"Unity is strength, division is weakness.",c:"Swahili",t:"community",ctx:"This proverb became the motto of Tanzania and Kenya. Used in political and community contexts to emphasize collective action."},
-  {o:"Asante kwa saa ngapi, bora kuliko asante saa nzima",e:"One sincere thank you is worth more than empty gratitude all day.",c:"Swahili",t:"wisdom",ctx:"Authenticity matters more than performance. Used to counsel sincerity in relationships and caution against hollow words."},
-  {o:"Mtu ni watu",e:"A person is people.",c:"Swahili",t:"community",ctx:"Similar to the Ubuntu philosophy, this East African proverb teaches that personhood is defined through community. You exist through others."},
-  {o:"Akili ni mali",e:"Intelligence is wealth.",c:"Swahili",t:"wisdom",ctx:"Among the most widely quoted Swahili proverbs. It elevates mental capacity and education as the highest form of riches."},
-  {o:"Indlela ibuzwa kwabaphambili",e:"The road is asked from those who have travelled ahead.",c:"Zulu",t:"wisdom",ctx:"Seek wisdom from elders and those with experience. This Zulu proverb is at the heart of the respect shown to ancestors and elders in Zulu culture."},
-  {o:"Umuntu ngumuntu ngabantu",e:"A person is a person through other persons (Ubuntu).",c:"Zulu",t:"community",ctx:"The Ubuntu philosophy at its most distilled. This is arguably Africa's most recognized philosophical statement. It became globally known through Desmond Tutu and Nelson Mandela."},
-  {o:"Injobo enhle igocwa izintanga",e:"A beautiful dress is praised by the wearer's peers.",c:"Zulu",t:"community",ctx:"Recognition and validation come from your peers and community. Used to discuss reputation and how one's character is assessed by those around them."},
-  {o:"Izandla ziyagezana",e:"Hands wash each other.",c:"Zulu",t:"community",ctx:"Cooperation and mutual assistance. Just as both hands are needed to wash them, people need each other to succeed and grow."},
-  {o:"Lij yasazal neger yichalal",e:"A child who is not embraced by the village will burn it down to feel its warmth.",c:"Amharic",t:"community",ctx:"Community must nurture and include all its members. Neglect creates disconnection and danger. Used in Ethiopia in discussions of raising children collectively."},
-  {o:"Yimeta gena yibelal",e:"Even if you are full, still eat a bit more (to show appreciation).",c:"Amharic",t:"family",ctx:"Hospitality in Ethiopian culture means eating what is offered, even when full, as a sign of respect and gratitude to the host."},
-  {o:"Tolo kewetaw ante tolo ante le honena",e:"What you do quickly, the consequences also come quickly.",c:"Amharic",t:"patience",ctx:"Rushing leads to hasty outcomes. This Amharic proverb, common in Ethiopia and Eritrea, counsels deliberation and patience."},
-  {o:"Guoko kumwe ti uguo",e:"One hand is not enough to hold a calabash.",c:"Kikuyu",t:"community",ctx:"A Kikuyu proverb from central Kenya emphasizing cooperation. Tasks of significance require multiple people working together."},
-  {o:"Mugunda wa mwanake ndimunyota",e:"The farm of a young man does not starve him.",c:"Kikuyu",t:"hard-work",ctx:"Hard work and diligence, especially in youth, will provide sustenance. A motivational proverb encouraging young people to embrace labour."},
-  {o:"Muoyo ni mawira",e:"Life is work.",c:"Kikuyu",t:"hard-work",ctx:"The Kikuyu ethic of diligence and industry. Living fully means working purposefully. Idleness is antithetical to a good life."},
-  {o:"Ukweli unauma",e:"The truth hurts.",c:"Swahili",t:"wisdom",ctx:"Truth is often painful to hear but necessary. Used to preface difficult truths and to encourage honest communication in East African communities."},
-  {o:"Si haba ya nguruwe, nguruwe wa mtu",e:"A small pig, but it is someone's pig.",c:"Swahili",t:"wisdom",ctx:"Do not underestimate small things  even modest achievements belong to someone and have their own value."},
-  {o:" b n'ime mmiri ka  b n'elu mmiri",e:"It is underwater that the fish lives, not on top of the water.",c:"Igbo",t:"wisdom",ctx:"Every being thrives in its proper element. Used to teach that people should operate in their areas of strength and natural calling."},
-  {o:"gbdo t a b t sn p, k n h",e:"Corn stored in a bag will not germinate.",c:"Yoruba",t:"leadership",ctx:"Potential that is hoarded or never given room to grow will be wasted. Leaders must create conditions for others to flourish."},
-  {o:"Nkechi nke onwe ya b nke oma",e:"Every person's own share is the good share.",c:"Igbo",t:"success",ctx:"Contentment with one's own portion and individual path leads to peace. Envy of others' success brings no benefit."}
+  {o:"ni t b f j oyin k gbd ff ikn",e:"Anayetaka kula asali asiogope nyuki.",c:"Yoruba",t:"hard-work",ctx:"Methali hii ya Yoruba hufundisha kuwa thawabu kubwa huhitaji kuvumilia usumbufu na kukabiliana na changamoto moja kwa moja. Hutumika kuhimiza uvumilivu licha ya vikwazo."},
+  {o:"In in ni   s gn",e:"Ni kwenye moto ndipo mfupa hutayarishwa kwa dawa.",c:"Yoruba",t:"hard-work",ctx:"Mambo yenye maana mara nyingi huhitaji juhudi kubwa au mazingira magumu. Methali inaonyesha kuwa thamani hutengenezwa chini ya shinikizo."},
+  {o:"w kan k gb'yan wl",e:"Mkono mmoja hauwezi kuinua mzigo kichwani.",c:"Yoruba",t:"community",ctx:"Ushirikiano ni muhimu. Methali hii hutumika kusisitiza teamwork na juhudi za pamoja katika jamii za Yoruba."},
+  {o:"B or b dra, in j l  r i",e:"Kama majaaliwa ni mazuri, hujionyesha sokoni.",c:"Yoruba",t:"success",ctx:"Mafanikio na majaaliwa huonekana katika maisha ya jamii. Bahati njema huonekana mtu anaposhiriki shughuli za jamii."},
+  {o:"gbdo t b w gb yl n ml r",e:"Mahindi yanayoingia mdomoni mwa njiwa yanajua mwisho wake.",c:"Yoruba",t:"wisdom",ctx:"Hutumika kukumbusha mtu ajue matokeo ya maamuzi yake kabla ya kujifunga nayo."},
+  {o:"Onye wetara oji wetara nd",e:"Anayeleta kola huleta uhai.",c:"Igbo",t:"community",ctx:"Kola nut ina nafasi ya heshima katika utamaduni wa Igbo, ikitumika katika sala, baraka na kukaribisha wageni. Methali hii husisitiza ukarimu na thamani ya mahusiano ya jamii."},
+  {o:"Egbe b ugo, ndu b ala",e:"Ushirika ni alama ya heshima; maisha ni jamii.",c:"Igbo",t:"community",ctx:"Falsafa ya Igbo inasisitiza uanachama wa jamii. Methali hii inaonyesha kuwa thamani ya mtu huonekana kupitia kuwa sehemu ya jamii na kushiriki."},
+  {o:"Aka nri kw aka ekpe, aka ekpe akw aka nri",e:"Mkono wa kulia huosha wa kushoto, na wa kushoto huosha wa kulia.",c:"Igbo",t:"community",ctx:"Kutegemeana ni msingi wa maisha ya kijamii ya Igbo. Methali hii hufundisha kurudishiana wema; ustawi hutokana na kusaidiana."},
+  {o:"Onye nwere mmad d ya mma ka onye nwere ego",e:"Aliye na watu karibu naye ni tajiri kuliko mwenye pesa peke yake.",c:"Igbo",t:"family",ctx:"Utamaduni wa Igbo huthamini mahusiano kuliko mali. Mtu aliyezungukwa na familia na marafiki waaminifu huonekana kuwa tajiri kweli."},
+  {o:"Hankuri maganin duniya",e:"Subira ni dawa ya dunia.",c:"Hausa",t:"patience",ctx:"Ni moja ya methali maarufu za Hausa. Hufundisha kuwa subira ni tiba ya changamoto nyingi za maisha na hutumika sana katika mazungumzo ya kila siku."},
+  {o:"Duk mai nema yana samu",e:"Wote wanaotafuta hupata.",c:"Hausa",t:"success",ctx:"Methali ya kuhimiza uvumilivu na juhudi. Hutumika kuwatia moyo wanaofuata malengo yanayoonekana mbali au magumu."},
+  {o:"Gida da mutane a ke son shi, ba katanga ba",e:"Watu ndani ya nyumba ndio huifanya ipendeke, si kuta zake.",c:"Hausa",t:"family",ctx:"Familia na jamii ndizo huipa nyumba thamani, si vitu vya kimwili. Hutumika kukumbusha watu kutanguliza mahusiano."},
+  {o:"Obi nkyer akoma",e:"Moyo haujionyeshi.",c:"Akan",t:"wisdom",ctx:"Mawazo na nia za kweli mara nyingi hufichika. Methali hii ya Akan kutoka Ghana hushauri busara na tahadhari dhidi ya kuamini mwonekano pekee."},
+  {o:"Odo nyera fie kwan",e:"Upendo haupotezi njia ya kurudi nyumbani.",c:"Akan",t:"family",ctx:"Upendo wa kweli hurudi nyumbani. Hutumika katika mazungumzo kuhusu uaminifu wa familia, mapenzi na mahusiano yanayodumu."},
+  {o:"Onipa na ohia onipa",e:"Mtu huhitaji watu wengine.",c:"Akan",t:"community",ctx:"Hii inaonyesha thamani ya Akan ya kutegemeana. Hakuna mtu anayestawi peke yake; jamii na msaada wa pamoja ni muhimu kwa ustawi wa binadamu."},
+  {o:"Obra ye obra",e:"Maisha ni maisha; huishiwa kadri yanavyokuja.",c:"Akan",t:"wisdom",ctx:"Ni kukubali kwa kifalsafa kuwa maisha hayatabiriki. Hutumika kushauri utulivu mbele ya ugumu au mabadiliko yasiyotarajiwa."},
+  {o:"Haraka haraka haina baraka",e:"Haraka haraka haina baraka.",c:"Swahili",t:"patience",ctx:"Ni moja ya methali maarufu za Kiswahili Afrika Mashariki. Huonya dhidi ya kukurupuka na kusisitiza thamani ya subira na hatua za makusudi."},
+  {o:"Umoja ni nguvu, utengano ni udhaifu",e:"Umoja ni nguvu, utengano ni udhaifu.",c:"Swahili",t:"community",ctx:"Methali hii hutumika sana katika muktadha wa siasa na jamii kusisitiza nguvu ya hatua za pamoja."},
+  {o:"Asante kwa saa ngapi, bora kuliko asante saa nzima",e:"Shukrani moja ya kweli ina thamani kuliko maneno matupu siku nzima.",c:"Swahili",t:"wisdom",ctx:"Ukweli wa moyo una thamani kuliko maigizo. Hutumika kushauri uaminifu katika mahusiano na kuonya dhidi ya maneno matupu."},
+  {o:"Mtu ni watu",e:"Mtu ni watu.",c:"Swahili",t:"community",ctx:"Kama falsafa ya Ubuntu, methali hii ya Afrika Mashariki hufundisha kuwa utu hujengwa kupitia jamii. Unaonekana kupitia wengine."},
+  {o:"Akili ni mali",e:"Akili ni mali.",c:"Swahili",t:"wisdom",ctx:"Ni miongoni mwa methali za Kiswahili zinazotajwa sana. Huinua akili na elimu kama utajiri muhimu."},
+  {o:"Indlela ibuzwa kwabaphambili",e:"Njia huulizwa kwa waliotangulia kusafiri.",c:"Zulu",t:"wisdom",ctx:"Tafuta hekima kwa wazee na wenye uzoefu. Methali hii ya Zulu inaonyesha heshima kwa mababu na wazee katika utamaduni wa Zulu."},
+  {o:"Umuntu ngumuntu ngabantu",e:"Mtu ni mtu kupitia watu wengine (Ubuntu).",c:"Zulu",t:"community",ctx:"Hii ni muhtasari wa falsafa ya Ubuntu. Ni moja ya kauli za kifalsafa za Afrika zinazotambulika sana duniani."},
+  {o:"Injobo enhle igocwa izintanga",e:"Vazi zuri husifiwa na watu wa rika la mvaaji.",c:"Zulu",t:"community",ctx:"Kutambuliwa na kuthibitishwa hutoka kwa rika na jamii. Hutumika kuzungumzia sifa na namna tabia ya mtu inavyopimwa na walio karibu naye."},
+  {o:"Izandla ziyagezana",e:"Mikono huoshana.",c:"Zulu",t:"community",ctx:"Ushirikiano na kusaidiana. Kama mikono miwili inavyohitajika kuoshana, watu huhitajiana ili kufanikiwa na kukua."},
+  {o:"Lij yasazal neger yichalal",e:"Mtoto asiyekumbatiwa na kijiji anaweza kukichoma ili ahisi joto lake.",c:"Amharic",t:"community",ctx:"Jamii inapaswa kulea na kujumuisha wanachama wake wote. Kutelekezwa huleta kutengwa na hatari. Hutumika Ethiopia katika mijadala ya kulea watoto kwa pamoja."},
+  {o:"Yimeta gena yibelal",e:"Hata ukiwa umeshiba, kula kidogo zaidi kuonyesha shukrani.",c:"Amharic",t:"family",ctx:"Ukarimu katika utamaduni wa Ethiopia hujumuisha kula kilichotolewa hata ukiwa umeshiba, kama ishara ya heshima na shukrani kwa mwenyeji."},
+  {o:"Tolo kewetaw ante tolo ante le honena",e:"Unachofanya haraka, matokeo yake pia huja haraka.",c:"Amharic",t:"patience",ctx:"Kukurupuka huleta matokeo ya haraka yasiyopimwa. Methali hii ya Kiamhari, inayojulikana Ethiopia na Eritrea, hushauri tafakari na subira."},
+  {o:"Guoko kumwe ti uguo",e:"Mkono mmoja hautoshi kushika kibuyu.",c:"Kikuyu",t:"community",ctx:"Methali ya Kikuyu kutoka Kenya ya kati inayosisitiza ushirikiano. Kazi muhimu huhitaji watu kadhaa kufanya pamoja."},
+  {o:"Mugunda wa mwanake ndimunyota",e:"Shamba la kijana halimwachi na njaa.",c:"Kikuyu",t:"hard-work",ctx:"Bidii na juhudi, hasa ujana, huleta riziki. Ni methali ya kuwatia moyo vijana kukumbatia kazi."},
+  {o:"Muoyo ni mawira",e:"Maisha ni kazi.",c:"Kikuyu",t:"hard-work",ctx:"Hii inaonyesha maadili ya Kikuyu ya bidii na kazi. Kuishi kikamilifu kunamaanisha kufanya kazi kwa kusudi. Uvivu hupingana na maisha bora."},
+  {o:"Ukweli unauma",e:"Ukweli unauma.",c:"Swahili",t:"wisdom",ctx:"Ukweli mara nyingi huumiza kuusikia lakini ni muhimu. Hutumika kutanguliza ukweli mgumu na kuhimiza mawasiliano ya uaminifu."},
+  {o:"Si haba ya nguruwe, nguruwe wa mtu",e:"Ni nguruwe mdogo, lakini ni nguruwe wa mtu.",c:"Swahili",t:"wisdom",ctx:"Usidharau vitu vidogo; hata mafanikio madogo ni ya mtu na yana thamani yake."},
+  {o:" b n'ime mmiri ka  b n'elu mmiri",e:"Samaki huishi chini ya maji, si juu ya maji.",c:"Igbo",t:"wisdom",ctx:"Kila kiumbe hustawi katika mazingira yake sahihi. Hutumika kufundisha watu wafanye kazi katika maeneo yao ya nguvu na wito wa asili."},
+  {o:"gbdo t a b t sn p, k n h",e:"Mahindi yaliyohifadhiwa kwenye gunia hayaoti.",c:"Yoruba",t:"leadership",ctx:"Uwezo unaofichwa au usiopewa nafasi ya kukua hupotea. Viongozi wanapaswa kuunda mazingira ya wengine kustawi."},
+  {o:"Nkechi nke onwe ya b nke oma",e:"Fungu la kila mtu ndilo fungu jema kwake.",c:"Igbo",t:"success",ctx:"Kuridhika na fungu lako na njia yako huleta amani. Kuonea wivu mafanikio ya wengine hakusaidii."}
 ];
 
 var currentProverb=null;
 var lastProverbUse='';
+var TOPIC_LABELS={wisdom:'Hekima',patience:'Subira',community:'Jamii',family:'Familia','hard-work':'Juhudi',leadership:'Uongozi',success:'Mafanikio'};
 
 function generateRandom(){
   var filtered=getFiltered();
-  if(filtered.length===0){alert('No proverbs found for that filter. Try a different combination.');return;}
+  if(filtered.length===0){alert('Hakuna methali iliyopatikana kwa kichujio hicho. Jaribu mchanganyiko mwingine.');return;}
   var p=filtered[Math.floor(Math.random()*filtered.length)];
   showFeatured(p);
 }
@@ -248,7 +249,7 @@ function showFeatured(p){
   document.getElementById('fpOriginal').textContent=p.o;
   document.getElementById('fpTranslation').textContent='"'+p.e+'"';
   document.getElementById('fpCulture').textContent=' '+p.c;
-  document.getElementById('fpTopic').textContent='#'+p.t;
+  document.getElementById('fpTopic').textContent='#'+(TOPIC_LABELS[p.t]||p.t);
   document.getElementById('fpContext').textContent=p.ctx;
   renderProverbUse();
   var el=document.getElementById('featuredProverb');
@@ -266,59 +267,59 @@ function renderProverbUse(){
   var tone=toneEl?toneEl.value:'warm';
   var audience=audienceEl&&audienceEl.value.trim()?audienceEl.value.trim():'family and friends';
   var lead={
-    caption:'Use it as a short caption that makes people pause before the lesson.',
-    toast:'Use it as a respectful toast before a family decision, wedding speech, or community meal.',
-    classroom:'Use it to open a discussion about the value behind the proverb, not just the literal words.',
-    leadership:'Use it to frame a team decision, responsibility, patience, or shared effort.',
-    speech:'Use it as a speech opener, then connect the lesson to the room in plain language.'
+    caption:'Tumia kama caption fupi inayowafanya watu watulie kabla ya somo.',
+    toast:'Tumia kama toast yenye heshima kabla ya uamuzi wa familia, hotuba ya harusi au chakula cha jamii.',
+    classroom:'Tumia kufungua mjadala kuhusu thamani iliyo nyuma ya methali, si maneno ya juu tu.',
+    leadership:'Tumia kuunda muktadha wa uamuzi wa timu, wajibu, subira au juhudi za pamoja.',
+    speech:'Tumia kufungua hotuba, kisha unganisha somo na hadhira kwa lugha rahisi.'
   }[use]||'Use it as a thoughtful note with cultural context.';
   var toneLine={
-    warm:'Keep the delivery gentle, personal, and generous.',
-    formal:'Keep the delivery precise and dignified, with one short explanation.',
-    youthful:'Keep the delivery conversational without turning the proverb into a joke.',
-    reflective:'Let the proverb breathe, then ask what it teaches today.'
+    warm:'Wasilisha kwa upole, ukaribu na ukarimu.',
+    formal:'Wasilisha kwa usahihi na heshima, ukiambatanisha maelezo mafupi.',
+    youthful:'Wasilisha kwa mazungumzo bila kuifanya methali kuwa utani.',
+    reflective:'Ipe methali nafasi, kisha uliza inafundisha nini leo.'
   }[tone]||'Keep the delivery respectful.';
   var meaning=String(p.e||'').replace(/^"|"$/g,'');
   lastProverbUse=[
-    p.c+' proverb: '+p.o,
-    'Meaning: '+meaning,
-    'Best use: '+lead,
-    'Audience: '+audience,
-    'Tone: '+toneLine,
-    'Context note: '+p.ctx
+    p.c+' methali: '+p.o,
+    'Maana: '+meaning,
+    'Matumizi bora: '+lead,
+    'Hadhira: '+audience,
+    'Sauti: '+toneLine,
+    'Dokezo la muktadha: '+p.ctx
   ].join('\n');
   var out=document.getElementById('proverbUseOutput');
   if(out){
-    out.innerHTML='<h4>'+p.c+' usage note</h4><p><strong>Meaning:</strong> '+meaning+'</p><p>'+lead+'</p><p><strong>Tone guardrail:</strong> '+toneLine+'</p><p><strong>Audience:</strong> '+audience+'</p>';
+    out.innerHTML='<h4>'+p.c+' - dokezo la matumizi</h4><p><strong>Maana:</strong> '+meaning+'</p><p>'+lead+'</p><p><strong>Mwongozo wa sauti:</strong> '+toneLine+'</p><p><strong>Hadhira:</strong> '+audience+'</p>';
   }
 }
 
 function copyProverbUse(){
-  if(lastProverbUse&&navigator.clipboard){navigator.clipboard.writeText(lastProverbUse).then(function(){alert('Proverb use note copied.');});}
+  if(lastProverbUse&&navigator.clipboard){navigator.clipboard.writeText(lastProverbUse).then(function(){alert('Dokezo la matumizi ya methali limenakiliwa.');});}
 }
 
 function filterProverbs(){
   var filtered=getFiltered();
-  document.getElementById('proverbCount').textContent='('+filtered.length+' shown)';
+  document.getElementById('proverbCount').textContent='('+filtered.length+' zimeonyeshwa)';
   var grid=document.getElementById('proverbsGrid');
   grid.innerHTML='';
   filtered.forEach(function(p){
     var card=document.createElement('div');
     card.className='mini-proverb';
-    card.innerHTML='<div class="mini-original">&#8220;'+p.o+'&#8221;</div><div class="mini-english">'+p.e+'</div><div class="mini-tags"><span class="mini-tag">'+p.c+'</span><span class="mini-tag">#'+p.t+'</span></div>';
+    card.innerHTML='<div class="mini-original">&#8220;'+p.o+'&#8221;</div><div class="mini-english">'+p.e+'</div><div class="mini-tags"><span class="mini-tag">'+p.c+'</span><span class="mini-tag">#'+(TOPIC_LABELS[p.t]||p.t)+'</span></div>';
     card.onclick=function(){showFeatured(p);};
     grid.appendChild(card);
   });
-  if(filtered.length===0){grid.innerHTML='<p style="color:#64748b;font-size:.9rem;padding:8px 0">No proverbs found. Try different filters.</p>';}
+  if(filtered.length===0){grid.innerHTML='<p style="color:#64748b;font-size:.9rem;padding:8px 0">Hakuna methali iliyopatikana. Jaribu vichujio vingine.</p>';}
 }
 
 function shareProverb(){
   var orig=document.getElementById('fpOriginal').textContent;
   var trans=document.getElementById('fpTranslation').textContent;
   var culture=document.getElementById('fpCulture').textContent;
-  var text=orig+'\n'+trans+'\n '+culture+'\n\nDiscover more African proverbs at AfroTools.com';
-  if(navigator.share){navigator.share({title:'African Proverb',text:text});}
-  else if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){alert('Proverb copied to clipboard!');});}
+  var text=orig+'\n'+trans+'\n '+culture+'\n\nGundua methali zaidi za Afrika kwenye AfroTools.com';
+  if(navigator.share){navigator.share({title:'Methali ya Afrika',text:text});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){alert('Methali imenakiliwa kwenye clipboard!');});}
 }
 
 filterProverbs();
@@ -337,7 +338,7 @@ generateRandom();
 </section>
 <script id="sw-rc-runtime-localizer">
 (function(){
-  var map = new Map([["Home","Nyumbani"],["Tools","Zana"],["Religious & Cultural","Dini na Utamaduni"],["Religious & Cultural Tools","Zana za Dini na Utamaduni"],["Religious & Cultural Tools for Africa","Zana za Dini na Utamaduni Afrika"],["Built for Africa","Kwa Afrika"],["Faith & Heritage","Imani na Urithi"],["Islamic","Kiislamu"],["Christian","Kikristo"],["Traditional","Kimila"],["Christian & Multi-Faith","Kikristo na Imani Kadhaa"],["Islamic Finance & Worship","Fedha za Kiislamu na Ibada"],["Islamic Tools","Zana za Kiislamu"],["Christian & Multi-Faith Tools","Zana za Kikristo na Imani Kadhaa"],["Cultural Heritage","Urithi wa Utamaduni"],["Family & Ceremony Planning","Mipango ya Familia na Sherehe"],["Tithe & Offering Calculator","Kikokotoo Fungu la Kumi na Sadaka"],["Tithe Calculator","Kikokotoo Fungu la Kumi"],["Tithe & Offering","Fungu la Kumi na Sadaka"],["Tithe","Fungu la kumi"],["Offering","Sadaka"],["Offerings","Sadaka"],["Annual Planning","Mpango wa mwaka"],["Income Details","Maelezo ya mapato"],["Monthly Income","Mapato ya mwezi"],["Currency","Sarafu"],["Tithe Basis","Msingi wa fungu la kumi"],["Tithe Percentage","Asilimia ya fungu la kumi"],["Additional Monthly Offering","Sadaka ya ziada ya mwezi"],["Other Income (side hustle, etc.)","Mapato mengine"],["Essential Monthly Expenses","Matumizi muhimu ya mwezi"],["Special Pledge Goal","Lengo la pledge maalum"],["Pledge Months","Miezi ya pledge"],["Giving Rhythm","Ratiba ya kutoa"],["Calculate Giving","Hesabu mpango wa kutoa"],["Your Giving Plan","Mpango wako wa kutoa"],["Gross Income (before tax)","Mapato ghafi kabla ya kodi"],["Net Income (after tax)","Mapato baada ya kodi"],["Standard tithe","Fungu la kumi la kawaida"],["First fruits","Malimbuko"],["Double portion","Sehemu maradufu"],["Gross vs Net Tithe","Fungu kabla au baada ya kodi"],["Zakat Calculator","Kikokotoo Zakat"],["Prayer Times Calculator","Nyakati za Swala"],["Prayer Times and Qibla Planner","Nyakati za Swala na Qibla"],["Ramadan Timetable Generator","Ratiba ya Ramadhani"],["Ramadan Timetable","Ratiba ya Ramadhani"],["Islamic Inheritance Faraid Calculator","Kikokotoo Urithi wa Faraid"],["Islamic Inheritance (Faraid) Calculator","Kikokotoo Urithi wa Faraid"],["Faraid Calculator","Kikokotoo Faraid"],["Hajj / Umrah Budget Calculator","Bajeti ya Hajj na Umrah"],["Hajj and Umrah Budget Calculator","Bajeti ya Hajj na Umrah"],["Islamic Finance Profit Rate Calculator","Fedha za Kiislamu"],["Islamic Finance","Fedha za Kiislamu"],["Halal Business Compliance Checker","Ukaguzi wa Halal kwa Biashara"],["Halal Compliance","Ukaguzi wa Halal"],["Islamic Calendar Converter","Kalenda ya Kiislamu"],["Islamic Calendar","Kalenda ya Kiislamu"],["African Wedding Budget Calculator","Bajeti ya Harusi Afrika"],["Wedding Budget","Bajeti ya Harusi"],["Naming Ceremony Budget Calculator","Bajeti ya Sherehe ya Jina"],["Naming Ceremony","Sherehe ya Jina"],["Funeral Cost Calculator","Gharama za Mazishi"],["Funeral Cost","Gharama za Mazishi"],["African Proverb Teaching Planner","Mpangaji wa Methali za Afrika"],["African Proverbs","Methali za Afrika"],["African Baby Name Generator","Majina ya Watoto wa Afrika"],["Baby Name Generator","Majina ya Watoto"],["Traditional Calendar Converter","Kalenda ya Kimila"],["Traditional Calendar","Kalenda ya Kimila"],["Age Calculator with African Name Day","Umri na Jina la Siku Afrika"],["Age and Name Day","Umri na Jina la Siku"],["Cultural Festival Calendar","Kalenda ya Tamasha za Utamaduni"],["Festival Calendar","Kalenda ya Tamasha"],["Aso-Ebi Group Outfit Cost Calculator","Gharama za Aso-Ebi"],["Aso-Ebi Cost","Gharama za Aso-Ebi"],["Traditional Attire Cost Calculator","Gharama za Mavazi ya Kimila"],["Traditional Attire","Mavazi ya Kimila"],["Calculate","Hesabu"],["Update plan","Sasisha mpango"],["Result","Matokeo"],["Results","Matokeo"],["Save to dashboard","Hifadhi kwenye dashboard"],["Create PDF pack","Tengeneza kifurushi cha PDF"],["Copy summary","Nakili muhtasari"],["Print","Chapisha"],["Action checklist","Orodha ya hatua"],["Feature sources","Vyanzo vya kipengele"],["Next connected apps","Zana zinazofuata"],["Dashboard trail","Mfuatano wa dashibodi"],["Complete package","Kifurushi kamili"],["Interactive app","Zana ya kutumia"],["Deep improvement","Safu ya kupanga"],["Competitor check","Ulinganisho wa soko"],["AfroTools upgrade","Nyongeza ya AfroTools"],["Workflow","Mtiririko"],["Category","Kategoria"],["Status","Hali"],["Ready","Tayari"],["Planning","Kupanga"],["Country","Nchi"],["Use case","Matumizi"],["Use","Matumizi"],["Purpose","Kusudi"],["Date note","Dokezo la tarehe"],["Confidence","Uhakika"],["Context needed","Muktadha unahitajika"],["Selected culture","Utamaduni uliochaguliwa"],["Culture","Utamaduni"],["City presets","Miji iliyowekwa"],["Qibla bearing","Mwelekeo wa Qibla"],["Asr school","Madhhab ya Asr"],["Fajr","Fajr"],["Dhuhr","Dhuhr"],["Asr","Asr"],["Maghrib","Maghrib"],["Isha","Isha"],["Suhoor and iftar","Suhoor na iftar"],["Last ten nights","Siku kumi za mwisho"],["Shareable plan","Mpango wa kushirikisha"],["Moon sighting","Kuonekana kwa mwezi"],["Hijri adjustment","Marekebisho ya Hijri"],["Event reminders","Vikumbusho vya tukio"],["Community calendar","Kalenda ya jamii"],["Nisab threshold","Kiwango cha nisab"],["Gold and silver","Dhahabu na fedha"],["Business stock","Bidhaa za biashara"],["Debt netting","Kufidia madeni"],["Fixed shares","Mafungu yaliyowekwa"],["Residue split","Mgawanyo wa salio"],["Estate debts","Madeni ya mirathi"],["Scholar review","Mapitio ya msomi"],["Hajj or Umrah","Hajj au Umrah"],["Savings target","Lengo la akiba"],["Family plan","Mpango wa familia"],["Contingency","Akiba ya dharura"],["Deposit planning","Mpango wa malipo ya awali"],["Guest count","Idadi ya wageni"],["Family contribution","Mchango wa familia"],["Venue and food","Ukumbi na chakula"],["Aqiqah or naming","Aqiqah au jina"],["Food and gifts","Chakula na zawadi"],["Officiant support","Msaada wa kiongozi"],["Family hosting","Kukaribisha familia"],["Burial essentials","Mahitaji ya mazishi"],["Transport","Usafiri"],["Remembrance","Kumbukumbu"],["Origin context","Muktadha wa asili"],["Lesson prompt","Swali la kujifunza"],["Speech line","Mstari wa hotuba"],["Family discussion","Mazungumzo ya familia"],["Meaning filter","Kichujio cha maana"],["Culture context","Muktadha wa utamaduni"],["Gender options","Chaguo za jinsia"],["Family shortlist","Orodha fupi ya familia"],["Market days","Siku za soko"],["Ethiopian estimate","Makadirio ya Ethiopia"],["Event notes","Maelezo ya tukio"],["Local confirmation","Uthibitisho wa eneo"],["Exact age","Umri kamili"],["Day name","Jina la siku"],["Milestones","Hatua muhimu"],["Family note","Dokezo la familia"],["Country filter","Kichujio cha nchi"],["Month filter","Kichujio cha mwezi"],["Travel prep","Maandalizi ya safari"],["Respect notes","Dokezo la heshima"],["Cattle equivalent","Kiasi sawa cha ngombe"],["Family envelope","Bahasha ya familia"],["Negotiation notes","Dokezo za mazungumzo"],["Respect checklist","Orodha ya heshima"],["Bulk fabric","Kitambaa kwa wingi"],["Tailoring","Ushonaji"],["Payment tracking","Kufuatilia malipo"],["Delivery buffer","Muda wa ziada wa uwasilishaji"],["Fabric choice","Chaguo la kitambaa"],["Tailoring complexity","Ugumu wa ushonaji"],["Accessories","Vifaa vya ziada"],["Rush fee","Ada ya haraka"],["Certification pathway","Njia ya uthibitishaji"],["Supplier screening","Ukaguzi wa wauzaji"],["Riba exposure","Hatari ya riba"],["Audit evidence","Ushahidi wa ukaguzi"],["LIVE","LIVE"],["NEW","MPYA"],["Countries","Nchi"],["Faith Traditions","Mila za imani"],["Free","Bure"],["Always","Daima"],["Build a saved faith, family, or heritage pack","Jenga kifurushi cha imani, familia au urithi"],["Every Religious & Cultural app now carries results into the dashboard, PDF handoffs, and the next related app. Start with a workflow below or open an individual tool.","Kila zana ya Dini na Utamaduni inaweza kubeba matokeo kwenda dashibodi, makabidhiano ya PDF na zana inayofuata. Anza na mtiririko au fungua zana moja."],["apps reviewed","apps zilizopitiwa"],["saved packs on this device","vifurushi vilivyohifadhiwa kwenye kifaa hiki"],["email-gated exports","PDF zinazotumwa kwa email"],["Open dashboard","Fungua dashboard"],["Saved plans appear in My Workspace as Religious & Cultural packs. Signed-in users also push eligible records through AfroWorkspace.","Mipango iliyohifadhiwa huonekana kwenye My Workspace kama vifurushi vya Dini na Utamaduni. Watumiaji walioingia wanaweza kusawazisha rekodi kupitia AfroWorkspace."],["No Religious & Cultural packs saved yet. Open any app, update the plan, then save it.","Hakuna kifurushi cha Dini na Utamaduni kilichohifadhiwa bado. Fungua zana, sasisha mpango, kisha hifadhi."],["Carry this result into the next practical decision instead of starting over.","Beba matokeo haya kwenda hatua inayofuata badala ya kuanza upya."],["Get a clean PDF for family, mosque, church, vendor, elder or adviser handoff. Email is required, name is optional.","Pata PDF safi ya kushirikisha familia, msikiti, kanisa, mtoa huduma, mzee au mshauri. Email inahitajika, jina ni hiari."],["Email this","Tuma kwa email"],["pack","kifurushi"],["Email and create PDF","Tuma email na tengeneza PDF"],["No spam. You can unsubscribe anytime.","Hakuna barua taka. Unaweza kujiondoa wakati wowote."],["Send me practical AfroTools cultural and family planning updates.","Nitumie taarifa za AfroTools kuhusu utamaduni na kupanga familia."],["Email","Email"],["Name","Jina"],["(optional)","(hiari)"]]);
+  var map = new Map([["Home","Nyumbani"],["Tools","Zana"],["Religious & Cultural","Dini na Utamaduni"],["Religious & Cultural Tools","Zana za Dini na Utamaduni"],["Religious & Cultural Tools for Africa","Zana za Dini na Utamaduni Afrika"],["Built for Africa","Kwa Afrika"],["Faith & Heritage","Imani na Urithi"],["Islamic","Kiislamu"],["Christian","Kikristo"],["Traditional","Kimila"],["Christian & Multi-Faith","Kikristo na Imani Kadhaa"],["Islamic Finance & Worship","Fedha za Kiislamu na Ibada"],["Islamic Tools","Zana za Kiislamu"],["Christian & Multi-Faith Tools","Zana za Kikristo na Imani Kadhaa"],["Cultural Heritage","Urithi wa Utamaduni"],["Family & Ceremony Planning","Mipango ya Familia na Sherehe"],["Tithe & Offering Calculator","Kikokotoo Fungu la Kumi na Sadaka"],["Tithe Calculator","Kikokotoo Fungu la Kumi"],["Tithe & Offering","Fungu la Kumi na Sadaka"],["Tithe","Fungu la kumi"],["Offering","Sadaka"],["Offerings","Sadaka"],["Annual Planning","Mpango wa mwaka"],["Income Details","Maelezo ya mapato"],["Monthly Income","Mapato ya mwezi"],["Currency","Sarafu"],["Tithe Basis","Msingi wa fungu la kumi"],["Tithe Percentage","Asilimia ya fungu la kumi"],["Additional Monthly Offering","Sadaka ya ziada ya mwezi"],["Other Income (side hustle, etc.)","Mapato mengine"],["Essential Monthly Expenses","Matumizi muhimu ya mwezi"],["Special Pledge Goal","Lengo la pledge maalum"],["Pledge Months","Miezi ya pledge"],["Giving Rhythm","Ratiba ya kutoa"],["Calculate Giving","Hesabu mpango wa kutoa"],["Your Giving Plan","Mpango wako wa kutoa"],["Gross Income (before tax)","Mapato ghafi kabla ya kodi"],["Net Income (after tax)","Mapato baada ya kodi"],["Standard tithe","Fungu la kumi la kawaida"],["First fruits","Malimbuko"],["Double portion","Sehemu maradufu"],["Gross vs Net Tithe","Fungu kabla au baada ya kodi"],["Zakat Calculator","Kikokotoo Zakat"],["Prayer Times Calculator","Nyakati za Swala"],["Prayer Times and Qibla Planner","Nyakati za Swala na Qibla"],["Ramadan Timetable Generator","Ratiba ya Ramadhani"],["Ramadan Timetable","Ratiba ya Ramadhani"],["Islamic Inheritance Faraid Calculator","Kikokotoo Urithi wa Faraid"],["Islamic Inheritance (Faraid) Calculator","Kikokotoo Urithi wa Faraid"],["Faraid Calculator","Kikokotoo Faraid"],["Hajj / Umrah Budget Calculator","Bajeti ya Hajj na Umrah"],["Hajj and Umrah Budget Calculator","Bajeti ya Hajj na Umrah"],["Islamic Finance Profit Rate Calculator","Fedha za Kiislamu"],["Islamic Finance","Fedha za Kiislamu"],["Halal Business Compliance Checker","Ukaguzi wa Halal kwa Biashara"],["Halal Compliance","Ukaguzi wa Halal"],["Islamic Calendar Converter","Kalenda ya Kiislamu"],["Islamic Calendar","Kalenda ya Kiislamu"],["African Wedding Budget Calculator","Bajeti ya Harusi Afrika"],["Wedding Budget","Bajeti ya Harusi"],["Naming Ceremony Budget Calculator","Bajeti ya Sherehe ya Jina"],["Naming Ceremony","Sherehe ya Jina"],["Funeral Cost Calculator","Gharama za Mazishi"],["Funeral Cost","Gharama za Mazishi"],["Methali ya Afrika Teaching Planner","Mpangaji wa Methali za Afrika"],["Methali ya Afrikas","Methali za Afrika"],["African Baby Name Generator","Majina ya Watoto wa Afrika"],["Baby Name Generator","Majina ya Watoto"],["Traditional Calendar Converter","Kalenda ya Kimila"],["Traditional Calendar","Kalenda ya Kimila"],["Age Calculator with African Name Day","Umri na Jina la Siku Afrika"],["Age and Name Day","Umri na Jina la Siku"],["Cultural Festival Calendar","Kalenda ya Tamasha za Utamaduni"],["Festival Calendar","Kalenda ya Tamasha"],["Aso-Ebi Group Outfit Cost Calculator","Gharama za Aso-Ebi"],["Aso-Ebi Cost","Gharama za Aso-Ebi"],["Traditional Attire Cost Calculator","Gharama za Mavazi ya Kimila"],["Traditional Attire","Mavazi ya Kimila"],["Calculate","Hesabu"],["Update plan","Sasisha mpango"],["Result","Matokeo"],["Results","Matokeo"],["Save to dashboard","Hifadhi kwenye dashboard"],["Create PDF pack","Tengeneza kifurushi cha PDF"],["Copy summary","Nakili muhtasari"],["Print","Chapisha"],["Action checklist","Orodha ya hatua"],["Feature sources","Vyanzo vya kipengele"],["Next connected apps","Zana zinazofuata"],["Dashboard trail","Mfuatano wa dashibodi"],["Complete package","Kifurushi kamili"],["Interactive app","Zana ya kutumia"],["Deep improvement","Safu ya kupanga"],["Competitor check","Ulinganisho wa soko"],["AfroTools upgrade","Nyongeza ya AfroTools"],["Workflow","Mtiririko"],["Category","Kategoria"],["Status","Hali"],["Ready","Tayari"],["Planning","Kupanga"],["Country","Nchi"],["Use case","Matumizi"],["Use","Matumizi"],["Purpose","Kusudi"],["Date note","Dokezo la tarehe"],["Confidence","Uhakika"],["Context needed","Muktadha unahitajika"],["Selected culture","Utamaduni uliochaguliwa"],["Culture","Utamaduni"],["City presets","Miji iliyowekwa"],["Qibla bearing","Mwelekeo wa Qibla"],["Asr school","Madhhab ya Asr"],["Fajr","Fajr"],["Dhuhr","Dhuhr"],["Asr","Asr"],["Maghrib","Maghrib"],["Isha","Isha"],["Suhoor and iftar","Suhoor na iftar"],["Last ten nights","Siku kumi za mwisho"],["Shareable plan","Mpango wa kushirikisha"],["Moon sighting","Kuonekana kwa mwezi"],["Hijri adjustment","Marekebisho ya Hijri"],["Event reminders","Vikumbusho vya tukio"],["Community calendar","Kalenda ya jamii"],["Nisab threshold","Kiwango cha nisab"],["Gold and silver","Dhahabu na fedha"],["Business stock","Bidhaa za biashara"],["Debt netting","Kufidia madeni"],["Fixed shares","Mafungu yaliyowekwa"],["Residue split","Mgawanyo wa salio"],["Estate debts","Madeni ya mirathi"],["Scholar review","Mapitio ya msomi"],["Hajj or Umrah","Hajj au Umrah"],["Savings target","Lengo la akiba"],["Family plan","Mpango wa familia"],["Contingency","Akiba ya dharura"],["Deposit planning","Mpango wa malipo ya awali"],["Guest count","Idadi ya wageni"],["Family contribution","Mchango wa familia"],["Venue and food","Ukumbi na chakula"],["Aqiqah or naming","Aqiqah au jina"],["Food and gifts","Chakula na zawadi"],["Officiant support","Msaada wa kiongozi"],["Family hosting","Kukaribisha familia"],["Burial essentials","Mahitaji ya mazishi"],["Transport","Usafiri"],["Remembrance","Kumbukumbu"],["Origin context","Muktadha wa asili"],["Lesson prompt","Swali la kujifunza"],["Speech line","Mstari wa hotuba"],["Family discussion","Mazungumzo ya familia"],["Meaning filter","Kichujio cha maana"],["Culture context","Muktadha wa utamaduni"],["Gender options","Chaguo za jinsia"],["Family shortlist","Orodha fupi ya familia"],["Market days","Siku za soko"],["Ethiopian estimate","Makadirio ya Ethiopia"],["Event notes","Maelezo ya tukio"],["Local confirmation","Uthibitisho wa eneo"],["Exact age","Umri kamili"],["Day name","Jina la siku"],["Milestones","Hatua muhimu"],["Family note","Dokezo la familia"],["Country filter","Kichujio cha nchi"],["Month filter","Kichujio cha mwezi"],["Travel prep","Maandalizi ya safari"],["Respect notes","Dokezo la heshima"],["Cattle equivalent","Kiasi sawa cha ngombe"],["Family envelope","Bahasha ya familia"],["Negotiation notes","Dokezo za mazungumzo"],["Respect checklist","Orodha ya heshima"],["Bulk fabric","Kitambaa kwa wingi"],["Tailoring","Ushonaji"],["Payment tracking","Kufuatilia malipo"],["Delivery buffer","Muda wa ziada wa uwasilishaji"],["Fabric choice","Chaguo la kitambaa"],["Tailoring complexity","Ugumu wa ushonaji"],["Accessories","Vifaa vya ziada"],["Rush fee","Ada ya haraka"],["Certification pathway","Njia ya uthibitishaji"],["Supplier screening","Ukaguzi wa wauzaji"],["Riba exposure","Hatari ya riba"],["Audit evidence","Ushahidi wa ukaguzi"],["LIVE","LIVE"],["NEW","MPYA"],["Countries","Nchi"],["Faith Traditions","Mila za imani"],["Free","Bure"],["Always","Daima"],["Build a saved faith, family, or heritage pack","Jenga kifurushi cha imani, familia au urithi"],["Every Religious & Cultural app now carries results into the dashboard, PDF handoffs, and the next related app. Start with a workflow below or open an individual tool.","Kila zana ya Dini na Utamaduni inaweza kubeba matokeo kwenda dashibodi, makabidhiano ya PDF na zana inayofuata. Anza na mtiririko au fungua zana moja."],["apps reviewed","apps zilizopitiwa"],["saved packs on this device","vifurushi vilivyohifadhiwa kwenye kifaa hiki"],["email-gated exports","PDF zinazotumwa kwa email"],["Open dashboard","Fungua dashboard"],["Saved plans appear in My Workspace as Religious & Cultural packs. Signed-in users also push eligible records through AfroWorkspace.","Mipango iliyohifadhiwa huonekana kwenye My Workspace kama vifurushi vya Dini na Utamaduni. Watumiaji walioingia wanaweza kusawazisha rekodi kupitia AfroWorkspace."],["No Religious & Cultural packs saved yet. Open any app, update the plan, then save it.","Hakuna kifurushi cha Dini na Utamaduni kilichohifadhiwa bado. Fungua zana, sasisha mpango, kisha hifadhi."],["Carry this result into the next practical decision instead of starting over.","Beba matokeo haya kwenda hatua inayofuata badala ya kuanza upya."],["Get a clean PDF for family, mosque, church, vendor, elder or adviser handoff. Email is required, name is optional.","Pata PDF safi ya kushirikisha familia, msikiti, kanisa, mtoa huduma, mzee au mshauri. Email inahitajika, jina ni hiari."],["Email this","Tuma kwa email"],["pack","kifurushi"],["Email and create PDF","Tuma email na tengeneza PDF"],["No spam. You can unsubscribe anytime.","Hakuna barua taka. Unaweza kujiondoa wakati wowote."],["Send me practical AfroTools cultural and family planning updates.","Nitumie taarifa za AfroTools kuhusu utamaduni na kupanga familia."],["Email","Email"],["Name","Jina"],["(optional)","(hiari)"]]);
   var partial = [["Religious & Cultural","Dini na Utamaduni"],["Prayer Times","Nyakati za Swala"],["Tithe Calculator","Kikokotoo Fungu la Kumi"],["Zakat Calculator","Kikokotoo Zakat"],["Wedding Budget","Bajeti ya Harusi"],["Funeral Cost","Gharama za Mazishi"],["Baby Name Generator","Majina ya Watoto"],["Traditional Calendar","Kalenda ya Kimila"],["Festival Calendar","Kalenda ya Tamasha"],["Aso-Ebi Cost","Gharama za Aso-Ebi"],["Traditional Attire","Mavazi ya Kimila"],["Halal Compliance","Ukaguzi wa Halal"],["Islamic Calendar","Kalenda ya Kiislamu"]];
   function localizeText(node){
     var raw = node.textContent || '';

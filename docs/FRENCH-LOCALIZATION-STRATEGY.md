@@ -1013,6 +1013,43 @@ French should expand like a product line:
 
 If there is a tradeoff, choose the option that produces fewer but better French pages with cleaner SEO and clearer ownership.
 
+## French Source-Truth Completion Pass As Of May 18, 2026
+
+The May 18 completion pass focused on source-backed French coverage instead of unsafe page cloning. It repaired the route ledger so existing preferred French tools count only when they have a clean English source, a live French page, and a stable canonical owner.
+
+Current regenerated ledger after the pass:
+
+- `5,749` English source pages.
+- `1,707` French HTML pages.
+- `29.69%` raw French page-count completion.
+- `25.66%` English-backed route-mapping completion.
+- `73.12%` French registry coverage for registry-eligible French routes.
+- `0` French pages with English title, H1, or visible UI-label signals.
+- `0` duplicate French canonical groups.
+- `0` English sources mapped to multiple French routes.
+- `0` missing reciprocal hreflang pairs involving French pages.
+- `0` registry entries pointing to missing French routes.
+
+Decisions from this pass:
+
+- `scripts/lib/french-tool-route-map.js` now includes explicit mappings for existing, live, registry-backed French tool pages that already had clear English counterparts.
+- `/fr/` homepage copy remains owned by `scripts/translate-fr-homepage.js`; rerun it after broad i18n generation so generated homepage refreshes do not restore English UI labels.
+- `/fr/tools/ke-wht/` and `/fr/tools/ng-wht/` are abbreviation aliases, not preferred French product URLs. They stay noindex and canonicalize to `/fr/tools/ke-retenue-source/` and `/fr/tools/ng-retenue-source/`.
+- Registry discovery should point at the preferred semantic French WHT routes, not abbreviation aliases.
+- `/cape-verde/` reciprocates with `/fr/cabo-verde/`; `/fr/cape-verde/` remains a noindex alias wrapper.
+- `scripts/build-i18n.js` now keeps source-owned French PAYE/blog discovery from rewriting valid French pages as French-only when the English source is a preferred country route or when the root blog source is actually non-English content.
+- `npm run build:i18n -- --lang fr` refreshed the small source-owned French i18n set, but it is not a mass-translation mechanism for the remaining long tail.
+
+Remaining completion blockers:
+
+- `4,274` English source pages still have no unique mapped French source.
+- `152` French routes are still French-only or alias/bridge surfaces and should not be counted as translated English coverage until ownership is clear.
+- `123` French routes still have unclear source-of-truth classification.
+- `125` registry-eligible French routes remain outside registry discovery.
+- Broad tools, cars, widgets, JAMB, docs, dashboards, iframe utilities, noindex wrappers, and deferred PDF wrappers still need separate ownership decisions before any French expansion.
+
+Next French expansion should use durable generators or route-map/source-data updates first, then create hand-authored pages only for high-value tools with clear product ownership.
+
 ### Education And JAMB Rule
 
 Education localization should prioritize pan-African or francophone-relevant tools first: GPA/CGPA, university comparison, scholarship and study-planning surfaces, and broad exam calculators.

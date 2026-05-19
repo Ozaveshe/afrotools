@@ -24,17 +24,32 @@ function normalizeRoute(value) {
 
 function compileRedirectPattern(pattern) {
   const normalized = normalizeRoute(pattern);
-  const body = escapeRegex(normalized)
-    .replace(/\*/g, '.*')
-    .replace(/:([A-Za-z][A-Za-z0-9_]*)/g, '[^/]+');
-  return new RegExp(`^${body}/?$`);
+  const names = [];
+  const body = normalized.split('/').map((segment) => {
+    if (!segment) return '';
+    if (segment === '*') {
+      names.push('splat');
+      return '(.*)';
+    }
+    if (/^:[A-Za-z][A-Za-z0-9_]*$/.test(segment)) {
+      names.push(segment.slice(1));
+      return '([^/]+)';
+    }
+    if (segment.includes('*')) {
+      names.push('splat');
+      return escapeRegex(segment).replace(/\*/g, '(.*)');
+    }
+    return escapeRegex(segment);
+  }).join('/');
+  return { re: new RegExp(`^${body}/?$`), names };
 }
 
-function addRedirectRule(rules, from, status) {
-  if (!from || !from.startsWith('/')) return;
+function addRedirectRule(rules, from, to, status) {
+  if (!from || !to || !from.startsWith('/')) return;
   const code = Number.parseInt(status, 10);
   if (code === 404 || code === 410) return;
-  rules.push({ from, re: compileRedirectPattern(from) });
+  const compiled = compileRedirectPattern(from);
+  rules.push({ from, to, status: code, re: compiled.re, names: compiled.names });
 }
 
 function loadRedirectRules() {
@@ -45,8 +60,8 @@ function loadRedirectRules() {
     for (const raw of lines) {
       const line = raw.trim();
       if (!line || line.startsWith('#')) continue;
-      const [from, , status] = line.split(/\s+/);
-      addRedirectRule(rules, from, status);
+      const [from, to, status] = line.split(/\s+/);
+      addRedirectRule(rules, from, to, status);
     }
   }
 
@@ -55,7 +70,7 @@ function loadRedirectRules() {
     const lines = fs.readFileSync(netlifyPath, 'utf8').split(/\r?\n/);
     let current = null;
     const flush = () => {
-      if (current) addRedirectRule(rules, current.from, current.status);
+      if (current) addRedirectRule(rules, current.from, current.to, current.status);
       current = null;
     };
 
@@ -69,6 +84,8 @@ function loadRedirectRules() {
       if (!current) continue;
       const fromMatch = line.match(/^from\s*=\s*"([^"]+)"/);
       if (fromMatch) current.from = fromMatch[1];
+      const toMatch = line.match(/^to\s*=\s*"([^"]+)"/);
+      if (toMatch) current.to = toMatch[1];
       const statusMatch = line.match(/^status\s*=\s*(\d+)/);
       if (statusMatch) current.status = statusMatch[1];
     }
@@ -100,11 +117,21 @@ function existsFileCaseSensitive(targetPath) {
 
 function extractLinks(html) {
   const links = [];
-  const re = /href=["']([^"'#?]+)/g;
+  const re = /<(?:a|area|link)\b[^>]*\bhref=["']([^"'#?]+)/gi;
+  const markup = html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ');
   let m;
-  while ((m = re.exec(html)) !== null) {
+  while ((m = re.exec(markup)) !== null) {
     const href = m[1].trim();
     // Only internal links
+    if (href.startsWith('http') || href.startsWith('//') || href.startsWith('mailto:') ||
+        href.startsWith('tel:') || href.startsWith('javascript:') || href.startsWith('data:')) continue;
+    links.push(href);
+  }
+  const jsNavRe = /\blocation\.href\s*=\s*["']([^"'#?]+)/g;
+  while ((m = jsNavRe.exec(html)) !== null) {
+    const href = m[1].trim();
     if (href.startsWith('http') || href.startsWith('//') || href.startsWith('mailto:') ||
         href.startsWith('tel:') || href.startsWith('javascript:') || href.startsWith('data:')) continue;
     links.push(href);
@@ -130,7 +157,7 @@ function resolveLink(href, redirectRules) {
       return true;
     }
   }
-  if (redirectRules.some((rule) => rule.re.test(target))) {
+  if (redirectRules.some((rule) => redirectTargetExists(rule, target))) {
     LINK_RESOLUTION_CACHE.set(target, true);
     return true;
   }
@@ -184,3 +211,40 @@ if (brokenCount === 0) {
 }
 
 process.exit(brokenCount > 0 ? 1 : 0);
+
+function redirectTargetExists(rule, href) {
+  const targetRoute = normalizeRoute(href);
+  const match = rule.re.exec(targetRoute);
+  if (!match) return false;
+
+  const target = substituteRedirectTarget(rule.to, rule.names, match);
+  if (/^(https?:)?\/\//i.test(target)) return true;
+  if (/^\/?\.netlify\/functions\//i.test(target)) return true;
+  if (/^\/api\//i.test(target)) return true;
+
+  const clean = safeDecodeURIComponent(target.split(/[?#]/)[0]).replace(/^\/+/, '');
+  if (!clean) return existsFileCaseSensitive(path.join(ROOT, 'index.html'));
+  return [
+    path.join(ROOT, clean),
+    path.join(ROOT, clean, 'index.html'),
+    path.join(ROOT, clean + '.html'),
+  ].some(existsFileCaseSensitive);
+}
+
+function substituteRedirectTarget(target, names, match) {
+  let out = target;
+  names.forEach((name, index) => {
+    const value = match[index + 1] || '';
+    out = out.replace(new RegExp(`:${escapeRegex(name)}\\b`, 'g'), value);
+    if (name === 'splat') out = out.replace(/\*/g, value);
+  });
+  return out;
+}
+
+function safeDecodeURIComponent(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch (_) {
+    return value;
+  }
+}

@@ -41,6 +41,20 @@ education, telecom, health, agriculture, language, PDF, and business-tax tool su
 page translation readiness because `lang/yo.json` exists or because the first
 manual routes exist.
 
+Current completion layer:
+
+- `/yo/awon-ise/` now includes a registry-backed Yoruba catalog for the full
+  English/Yoruba live tool surface.
+- The catalog is documentation-first: it explains every registry tool in Yoruba
+  terms, marks the 45 real Yoruba pages, and labels the remaining English tool
+  routes as English fallbacks.
+- This catalog does not make the remaining tools Yoruba-ready. A tool becomes a
+  Yoruba tool only after a real `/yo/` route exists, visible copy is reviewed,
+  registry discovery points to the real route, and the Yoruba visible-copy audit
+  has no blockers.
+- Keep the catalog source in `assets/js/yoruba-tool-catalog.js` and the host
+  page in `yo/awon-ise/index.html`.
+
 First public shell routes:
 
 - `/yo/`

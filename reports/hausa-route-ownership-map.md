@@ -4,8 +4,8 @@ Snapshot date: 2026-05-18
 
 ## Summary
 
-- Public Hausa routes: 72 under `/ha/`.
-- Hausa registry rows: 67.
+- Public Hausa routes: 92 under `/ha/`.
+- Hausa registry rows: 87.
 - Registry rows with missing Hausa targets: 0.
 - Registry rows with duplicate Hausa ids: 0.
 - Registry rows with `lang: 'ha'` pointing outside `/ha/`: 0.
@@ -166,7 +166,7 @@ Hausa registry until a prompt verifies source maturity and fallback honesty:
 
 ### Routes without clear source owner
 
-None in the current 72-route lane. Some route-visible shells intentionally keep
+None in the current 92-route lane. Some route-visible shells intentionally keep
 the full workflow on an English counterpart, but each public Hausa page has a
 clear source surface or English counterpart.
 
@@ -180,3 +180,29 @@ clear source surface or English counterpart.
   workflow before final validation.
 - Keep `dist/`, generated deploy output, and hand-edited minified files out of
   Hausa docs-only batches.
+
+
+### Core expansion pages
+
+These Batch 7-style routes are Hausa route-visible guides or shells for mature source pages. They do not claim that complex English runtimes are fully localized:
+
+- `/ha/jamb/tattalin-arziki/` -> `/jamb/economics/`
+- `/ha/jamb/gwamnati/` -> `/jamb/government/`
+- `/ha/jamb/kasuwanci/` -> `/jamb/commerce/`
+- `/ha/jamb/adabi/` -> `/jamb/literature/`
+- `/ha/jamb/tarihi/` -> `/jamb/history/`
+- `/ha/jamb/crk/` -> `/jamb/crk/`
+- `/ha/kayan-aiki/gyara-pdf/` -> `/tools/pdf-editor/`
+- `/ha/kayan-aiki/lambar-shafi-pdf/` -> `/tools/pdf-page-numbers/`
+- `/ha/kayan-aiki/cgt-najeriya/` -> `/tools/ng-cgt/`
+- `/ha/kayan-aiki/kalkuletan-paystack/` -> `/tools/paystack-calculator/`
+- `/ha/kayan-aiki/tazarar-riba/` -> `/tools/profit-margin/`
+- `/ha/kayan-aiki/dawo-da-jari/` -> `/tools/break-even/`
+- `/ha/kayan-aiki/karin-farashi/` -> `/tools/markup-calc/`
+- `/ha/kayan-aiki/takardar-albashi/` -> `/tools/payslip-generator/`
+- `/ha/kayan-aiki/kudin-maikaci/` -> `/tools/staff-cost/`
+- `/ha/kayan-aiki/gwajin-ussd/` -> `/tools/ussd-simulator/`
+- `/ha/kayan-aiki/waya-ko-banki/` -> `/tools/mobile-vs-bank/`
+- `/ha/kayan-aiki/kwatanta-aika-kudi/` -> `/tools/remittance-compare/`
+- `/ha/noma/kalandar-shuka/` -> `/tools/planting-calendar/`
+- `/ha/noma/hadarin-fari/` -> `/tools/drought-risk/`

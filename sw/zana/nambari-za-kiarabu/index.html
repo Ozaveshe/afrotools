@@ -21,7 +21,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea"><script src="/assets/js/components/related-tools-data.min.js?v=1ade494a" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea"><script src="/assets/js/components/related-tools-data.min.js?v=dbd42636" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
@@ -89,10 +89,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
 <body>
 <afro-navbar active="language"></afro-navbar>
 <section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/sw/tools/">Zana</a> / <span>Arabic Numerals</span></div>
-<h1>Arabic & Eastern Arabic <em>Numeral Converter</em></h1>
-<p class="hero-sub">Convert between Magharibi digits (0-9), Eastern Arabic numerals (٠-٩), and written Arabic number words. Used across North Africa and the Arab world.</p>
-<div class="hero-badges"><span class="badge b-em">Badilisha papo hapo</span><span class="badge b-em">Eastern Arabic</span><span class="badge b-em">Number Words</span></div>
+<div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/sw/tools/">Zana</a> / <span>Nambari za Kiarabu</span></div>
+<h1>Kigeuzi cha <em>Nambari za Kiarabu</em></h1>
+<p class="hero-sub">Badilisha kati ya digits za Magharibi (0-9), Eastern Arabic numerals (٠-٩), na maneno ya namba za Kiarabu yanayotumika Afrika Kaskazini na ulimwengu wa Kiarabu.</p>
+<div class="hero-badges"><span class="badge b-em">Badilisha papo hapo</span><span class="badge b-em">Eastern Arabic numerals</span><span class="badge b-em">Maneno ya namba</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -100,8 +100,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
 <div class="card">
 <div class="card-head"><span class="card-title">Weka namba</span></div>
 <div class="card-body">
-<label>Type a number in any format</label>
-<input aria-label="E.g. 2025 or ٢٠٢٥" type="text" id="numInput" placeholder="e.g. 2025 or ٢٠٢٥" style="font-size:1.2rem;padding:14px" oninput="convert()">
+<label>Weka namba kwa muundo wowote</label>
+<input aria-label="Mfano 2025 au ٢٠٢٥" type="text" id="numInput" placeholder="mfano 2025 au ٢٠٢٥" style="font-size:1.2rem;padding:14px" oninput="convert()">
 <div class="row" style="margin-top:14px">
 <div><label>Muundo wa kuingiza</label>
 <select id="inputFormat" onchange="convert()">
@@ -145,17 +145,17 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
 </table>
 </div></div>
 <div class="info-card">
-<h4>About Arabic Numerals</h4>
-<p>The digits 0-9 we use globally actually originated from Arabic scholars. "Eastern Arabic" numerals (٠١٢٣٤٥٦٧٨٩) are still used in Egypt, Sudan, Libya, and across the Middle East.</p>
+<h4>Kuhusu nambari za Kiarabu</h4>
+<p>Digits 0-9 zinazotumika duniani zina historia ndefu katika elimu ya Kiarabu. Eastern Arabic numerals (٠١٢٣٤٥٦٧٨٩) bado hutumika Misri, Sudan, Libya na maeneo mengi ya Mashariki ya Kati.</p>
 </div>
 <div class="info-card" style="margin-top:10px">
-<h4>Where They're Used in Africa</h4>
+<h4>Mahali zinapotumika Afrika</h4>
 <ul>
-<li><strong>Egypt</strong> — daily use in prices, signs</li>
-<li><strong>Sudan</strong> — government & commerce</li>
-<li><strong>Libya</strong> — mixed with Magharibi</li>
-<li><strong>Morocco/Tunisia</strong> — Magharibi digits dominant</li>
-<li><strong>Islamic schools</strong> — Quranic study across Africa</li>
+<li><strong>Misri</strong> - bei, alama na matumizi ya kila siku</li>
+<li><strong>Sudan</strong> - serikali na biashara</li>
+<li><strong>Libya</strong> - hutumika pamoja na digits za Magharibi</li>
+<li><strong>Morocco/Tunisia</strong> - digits za Magharibi hutumika zaidi</li>
+<li><strong>Shule za Kiislamu</strong> - masomo ya Qur'an na lugha katika Afrika</li>
 </ul>
 </div>
 </div>
@@ -250,7 +250,7 @@ function convert() {
   const num = parseInt(western.replace(/[^0-9]/g,''), 10);
 
   let html = '';
-  html += `<div class="res-block"><div class="lbl">Magharibi Digits</div><div class="val" style="direction:ltr">${western.replace(/[^0-9]/g,'') ? parseInt(western.replace(/[^0-9]/g,'')).toLocaleString('en') : '—'}</div><button type="button" class="copy-btn" onclick="cp('${western.replace(/[^0-9]/g,'')}')">Nakili</button></div>`;
+  html += `<div class="res-block"><div class="lbl">Digits za Magharibi</div><div class="val" style="direction:ltr">${western.replace(/[^0-9]/g,'') ? parseInt(western.replace(/[^0-9]/g,'')).toLocaleString('en') : '—'}</div><button type="button" class="copy-btn" onclick="cp('${western.replace(/[^0-9]/g,'')}')">Nakili</button></div>`;
   html += `<div class="res-block"><div class="lbl">Eastern Arabic numerals</div><div class="val">${eastern || '—'}</div><button type="button" class="copy-btn" onclick="cp('${eastern}')">Nakili</button></div>`;
 
   if (!isNaN(num) && num <= 999999999) {
@@ -259,7 +259,7 @@ function convert() {
   }
 
   if (!isNaN(num)) {
-    html += `<div class="res-block"><div class="lbl">Roman Numerals</div><div class="val sm" style="direction:ltr">${num <= 3999999 && num > 0 ? toRoman(num) : 'N/A (out kati ya range)'}</div></div>`;
+    html += `<div class="res-block"><div class="lbl">Nambari za Kirumi</div><div class="val sm" style="direction:ltr">${num <= 3999999 && num > 0 ? toRoman(num) : 'N/A (out kati ya range)'}</div></div>`;
   }
 
   document.getElementById('results').innerHTML = html;

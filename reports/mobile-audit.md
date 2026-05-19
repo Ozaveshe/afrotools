@@ -1,24 +1,24 @@
 # Mobile Audit
 
-Generated: 2026-05-18T06:58:38.937Z
+Generated: 2026-05-18T18:33:09.201Z
 
 ## Scope
 
-- HTML pages audited: 8438
-- Pages with issues: 1059
-- Pages without issues: 7379
-- Pages using shared CSS foundation: 8073
-- Pages using shared navbar: 8004
+- HTML pages audited: 8461
+- Pages with issues: 1067
+- Pages without issues: 7394
+- Pages using shared CSS foundation: 8096
+- Pages using shared navbar: 8027
 
 ## Top 20 Highest-Leverage Issue Clusters
 
 | # | Cluster | Pages | Score | Shared levers | Sample pages |
 | --- | --- | ---: | ---: | --- | --- |
 | 1 | sw / zana: Multi-column layout stays multi-column too long | 73 | 1760 | shared early-collapse layout pattern<br>sw/zana/barua-ombi/index.html<br>sw/zana/bei-mafuta/index.html<br>sw/zana/cron/index.html | `sw/zana/barua-ombi/index.html`<br>`sw/zana/bei-mafuta/index.html`<br>`sw/zana/cron/index.html` |
-| 2 | fr / tools: Multi-column layout stays multi-column too long | 43 | 1070 | shared early-collapse layout pattern<br>assets/css/invoice-generator.css<br>assets/css/japa-calculator.css<br>fr/tools/assurance-auto/index.html | `fr/tools/assurance-auto/index.html`<br>`fr/tools/assurance-obseques/index.html`<br>`fr/tools/assurance-vie/index.html` |
-| 3 | fr / tools: Tap targets likely below 44px | 30 | 608 | shared 44px tap target pattern<br>fr/tools/assurance-auto/index.html<br>fr/tools/calculateur-incoterms/index.html<br>fr/tools/carte-sociale/index.html | `fr/tools/assurance-auto/index.html`<br>`fr/tools/calculateur-incoterms/index.html`<br>`fr/tools/carte-sociale/index.html` |
-| 4 | pro: Custom mobile nav/search pattern looks inconsistent | 25 | 600 | assets/js/components/navbar.js adoption<br>pro | `pro/apps/agri-farmops/index.html`<br>`pro/apps/beauty/index.html`<br>`pro/apps/books/index.html` |
-| 5 | yo: Multi-column layout stays multi-column too long | 26 | 594 | shared early-collapse layout pattern<br>yo/awon-ise/agbon-oja/index.html<br>yo/awon-ise/duba-genotype/index.html<br>yo/awon-ise/ere-ogbin/index.html | `yo/awon-ise/agbon-oja/index.html`<br>`yo/awon-ise/duba-genotype/index.html`<br>`yo/awon-ise/ere-ogbin/index.html` |
+| 2 | fr / tools: Multi-column layout stays multi-column too long | 44 | 1098 | shared early-collapse layout pattern<br>assets/css/invoice-generator.css<br>assets/css/japa-calculator.css<br>fr/tools/assurance-auto/index.html | `fr/tools/assurance-auto/index.html`<br>`fr/tools/assurance-obseques/index.html`<br>`fr/tools/assurance-vie/index.html` |
+| 3 | fr / tools: Tap targets likely below 44px | 35 | 708 | shared 44px tap target pattern<br>fr/tools/assurance-auto/index.html<br>fr/tools/calculateur-incoterms/index.html<br>fr/tools/calculateur-surestaries/index.html | `fr/tools/assurance-auto/index.html`<br>`fr/tools/calculateur-incoterms/index.html`<br>`fr/tools/calculateur-surestaries/index.html` |
+| 4 | yo: Multi-column layout stays multi-column too long | 27 | 618 | shared early-collapse layout pattern<br>yo/awon-ise/agbon-oja/index.html<br>yo/awon-ise/duba-genotype/index.html<br>yo/awon-ise/ere-ogbin/index.html | `yo/awon-ise/agbon-oja/index.html`<br>`yo/awon-ise/duba-genotype/index.html`<br>`yo/awon-ise/ere-ogbin/index.html` |
+| 5 | pro: Custom mobile nav/search pattern looks inconsistent | 25 | 600 | assets/js/components/navbar.js adoption<br>pro | `pro/apps/agri-farmops/index.html`<br>`pro/apps/beauty/index.html`<br>`pro/apps/books/index.html` |
 | 6 | pro: Multi-column layout stays multi-column too long | 19 | 558 | shared early-collapse layout pattern<br>pro/apps/books/index.html<br>pro/apps/creator-studio/index.html<br>pro/apps/events/index.html | `pro/apps/books/index.html`<br>`pro/apps/creator-studio/index.html`<br>`pro/apps/events/index.html` |
 | 7 | Creator app shells: Custom mobile nav/search pattern looks inconsistent | 24 | 480 | shared app shell mobile pattern<br>tools/creator-* | `tools/creator-bios/app.html`<br>`tools/creator-calendar/app.html`<br>`tools/creator-calendar/plan.html` |
 | 8 | pro: Tap targets likely below 44px | 17 | 348 | shared 44px tap target pattern<br>pro/apps/books/index.html<br>pro/apps/creator-studio/index.html<br>pro/apps/events/index.html | `pro/apps/books/index.html`<br>`pro/apps/creator-studio/index.html`<br>`pro/apps/events/index.html` |
@@ -74,18 +74,18 @@ Generated: 2026-05-18T06:58:38.937Z
 
 | Lever | Pages | Score |
 | --- | ---: | ---: |
-| shared early-collapse layout pattern | 703 | 17354 |
-| shared 44px tap target pattern | 502 | 10410 |
-| shared mobile form sizing pattern | 270 | 5808 |
+| shared early-collapse layout pattern | 706 | 17436 |
+| shared 44px tap target pattern | 507 | 10508 |
+| shared mobile form sizing pattern | 269 | 5786 |
 | assets/js/components/navbar.js adoption | 193 | 4272 |
 | shared sidebar collapse pattern | 120 | 2884 |
-| fr/tools/assurance-auto/index.html | 85 | 1970 |
+| fr/tools/assurance-auto/index.html | 91 | 2098 |
 | sw/zana/barua-ombi/index.html | 73 | 1760 |
 | sw/zana/bei-mafuta/index.html | 73 | 1760 |
 | sw/zana/cron/index.html | 73 | 1760 |
 | pro | 49 | 936 |
-| assets/css/japa-calculator.css | 45 | 1122 |
-| assets/css/invoice-generator.css | 43 | 1070 |
+| assets/css/japa-calculator.css | 46 | 1150 |
+| assets/css/invoice-generator.css | 44 | 1098 |
 
 ## Recommended Next-Fix Order
 
@@ -93,17 +93,17 @@ Generated: 2026-05-18T06:58:38.937Z
    73 pages / 1760 score; strong shared lever through shared early-collapse layout pattern.
    Primary levers: shared early-collapse layout pattern, sw/zana/barua-ombi/index.html, sw/zana/bei-mafuta/index.html, sw/zana/cron/index.html
 2. fr / tools: Multi-column layout stays multi-column too long
-   43 pages / 1070 score; strong shared lever through shared early-collapse layout pattern.
+   44 pages / 1098 score; strong shared lever through shared early-collapse layout pattern.
    Primary levers: shared early-collapse layout pattern, assets/css/invoice-generator.css, assets/css/japa-calculator.css, fr/tools/assurance-auto/index.html
 3. fr / tools: Tap targets likely below 44px
-   30 pages / 608 score; strong shared lever through shared 44px tap target pattern.
-   Primary levers: shared 44px tap target pattern, fr/tools/assurance-auto/index.html, fr/tools/calculateur-incoterms/index.html, fr/tools/carte-sociale/index.html
-4. pro: Custom mobile nav/search pattern looks inconsistent
+   35 pages / 708 score; strong shared lever through shared 44px tap target pattern.
+   Primary levers: shared 44px tap target pattern, fr/tools/assurance-auto/index.html, fr/tools/calculateur-incoterms/index.html, fr/tools/calculateur-surestaries/index.html
+4. yo: Multi-column layout stays multi-column too long
+   27 pages / 618 score; strong shared lever through shared early-collapse layout pattern.
+   Primary levers: shared early-collapse layout pattern, yo/awon-ise/agbon-oja/index.html, yo/awon-ise/duba-genotype/index.html, yo/awon-ise/ere-ogbin/index.html
+5. pro: Custom mobile nav/search pattern looks inconsistent
    25 pages / 600 score; strong shared lever through assets/js/components/navbar.js adoption.
    Primary levers: assets/js/components/navbar.js adoption, pro
-5. yo: Multi-column layout stays multi-column too long
-   26 pages / 594 score; strong shared lever through shared early-collapse layout pattern.
-   Primary levers: shared early-collapse layout pattern, yo/awon-ise/agbon-oja/index.html, yo/awon-ise/duba-genotype/index.html, yo/awon-ise/ere-ogbin/index.html
 6. pro: Multi-column layout stays multi-column too long
    19 pages / 558 score; strong shared lever through shared early-collapse layout pattern.
    Primary levers: shared early-collapse layout pattern, pro/apps/books/index.html, pro/apps/creator-studio/index.html, pro/apps/events/index.html

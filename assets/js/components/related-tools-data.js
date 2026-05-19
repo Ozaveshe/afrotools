@@ -255,6 +255,21 @@
         "imageKey": "ng-paye"
       },
       {
+        "id": "payslip-generator-ha",
+        "name": "Takardar Albashi",
+        "icon": "NG",
+        "desc": "Jagorar Hausa don shirya takardar albashi, alawu...",
+        "href": "/ha/kayan-aiki/takardar-albashi/",
+        "category": "financial",
+        "lang": "ha",
+        "priority": 83,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "payslip-generator",
+        "imageId": "payslip-generator",
+        "imageKey": "payslip-generator"
+      },
+      {
         "id": "ng-cit-ha",
         "name": "Kalkuletan CIT Najeriya",
         "icon": "CIT",
@@ -268,6 +283,21 @@
         "sourceId": "ng-cit",
         "imageId": "ng-cit",
         "imageKey": "ng-cit"
+      },
+      {
+        "id": "remittance-compare-ha",
+        "name": "Kwatanta Aika Kudi",
+        "icon": "NG",
+        "desc": "Jagorar Hausa don kwatanta hanyoyin aika kudi, c...",
+        "href": "/ha/kayan-aiki/kwatanta-aika-kudi/",
+        "category": "financial",
+        "lang": "ha",
+        "priority": 82,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "remittance-compare",
+        "imageId": "remittance-compare",
+        "imageKey": "remittance-compare"
       },
       {
         "id": "bank-charges-ha",
@@ -313,6 +343,36 @@
         "sourceId": "ng-wht",
         "imageId": "ng-wht",
         "imageKey": "ng-wht"
+      },
+      {
+        "id": "staff-cost-ha",
+        "name": "Kudin Maikaci",
+        "icon": "NG",
+        "desc": "Jagorar Hausa don kiyasta cikakken kudin daukar ...",
+        "href": "/ha/kayan-aiki/kudin-maikaci/",
+        "category": "financial",
+        "lang": "ha",
+        "priority": 76,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "staff-cost",
+        "imageId": "staff-cost",
+        "imageKey": "staff-cost"
+      },
+      {
+        "id": "ng-cgt-ha",
+        "name": "CGT Najeriya",
+        "icon": "NG",
+        "desc": "Jagorar Hausa don kiyasta CGT Najeriya a kan say...",
+        "href": "/ha/kayan-aiki/cgt-najeriya/",
+        "category": "financial",
+        "lang": "ha",
+        "priority": 73,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "ng-cgt",
+        "imageId": "ng-cgt",
+        "imageKey": "ng-cgt"
       },
       {
         "id": "ng-pension-ha",
@@ -388,6 +448,66 @@
         "imageExt": "",
         "sourceId": "tin-guide",
         "imageId": "tin-guide"
+      },
+      {
+        "id": "profit-margin-ha",
+        "name": "Tazarar Riba",
+        "icon": "BIZ",
+        "desc": "Jagorar Hausa don lissafa tazarar riba, kudin ka...",
+        "href": "/ha/kayan-aiki/tazarar-riba/",
+        "category": "ecommerce",
+        "lang": "ha",
+        "priority": 75,
+        "estTraffic": 2500,
+        "imageExt": "svg",
+        "sourceId": "profit-margin",
+        "imageId": "profit-margin",
+        "imageKey": "profit-margin"
+      },
+      {
+        "id": "break-even-ha",
+        "name": "Dawo da Jari",
+        "icon": "BIZ",
+        "desc": "Jagorar Hausa don gano adadin sayarwa da zai ruf...",
+        "href": "/ha/kayan-aiki/dawo-da-jari/",
+        "category": "ecommerce",
+        "lang": "ha",
+        "priority": 70,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "break-even",
+        "imageId": "break-even",
+        "imageKey": "break-even"
+      },
+      {
+        "id": "markup-calc-ha",
+        "name": "Karin Farashi",
+        "icon": "BIZ",
+        "desc": "Jagorar Hausa don lissafa karin farashi, tazarar...",
+        "href": "/ha/kayan-aiki/karin-farashi/",
+        "category": "ecommerce",
+        "lang": "ha",
+        "priority": 70,
+        "estTraffic": 2500,
+        "imageExt": "svg",
+        "sourceId": "markup-calc",
+        "imageId": "markup-calc",
+        "imageKey": "markup-calc"
+      },
+      {
+        "id": "paystack-calculator-ha",
+        "name": "Kalkuletan Paystack",
+        "icon": "BIZ",
+        "desc": "Jagorar Hausa don kiyasta cajin Paystack da abin...",
+        "href": "/ha/kayan-aiki/kalkuletan-paystack/",
+        "category": "ecommerce",
+        "lang": "ha",
+        "priority": 65,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "paystack-calculator",
+        "imageId": "payment-gateway",
+        "imageKey": "payment-gateway"
       }
     ],
     "ha::legal": [
@@ -687,6 +807,34 @@
         "imageExt": "webp",
         "imageId": "jamb-aggregate",
         "imageKey": "jamb-aggregate"
+      },
+      {
+        "id": "jamb-government-ha",
+        "name": "JAMB Gwamnati a Hausa",
+        "icon": "JAMB",
+        "desc": "Jagorar Hausa don kundin tsarin mulki, tarayya, ...",
+        "href": "/ha/jamb/gwamnati/",
+        "category": "education",
+        "lang": "ha",
+        "priority": 75,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
+      },
+      {
+        "id": "jamb-economics-ha",
+        "name": "JAMB Tattalin arziki a Hausa",
+        "icon": "JAMB",
+        "desc": "Jagorar Hausa don bukata, wadata, kasuwa, kudi d...",
+        "href": "/ha/jamb/tattalin-arziki/",
+        "category": "education",
+        "lang": "ha",
+        "priority": 75,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "imageId": "jamb-aggregate",
+        "imageKey": "jamb-aggregate"
       }
     ],
     "ha::telecom": [
@@ -807,6 +955,36 @@
         "sourceId": "telecom-sim-reg",
         "imageId": "national-id-guide",
         "imageKey": "national-id-guide"
+      },
+      {
+        "id": "mobile-vs-bank-ha",
+        "name": "Waya ko Banki",
+        "icon": "USSD",
+        "desc": "Jagorar Hausa don kwatanta tura kudi ta waya da ...",
+        "href": "/ha/kayan-aiki/waya-ko-banki/",
+        "category": "telecom",
+        "lang": "ha",
+        "priority": 76,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "mobile-vs-bank",
+        "imageId": "mobile-vs-bank",
+        "imageKey": "mobile-vs-bank"
+      },
+      {
+        "id": "ussd-simulator-ha",
+        "name": "Gwajin USSD",
+        "icon": "USSD",
+        "desc": "Jagorar Hausa don gwada tsarin USSD, menu, zabin...",
+        "href": "/ha/kayan-aiki/gwajin-ussd/",
+        "category": "telecom",
+        "lang": "ha",
+        "priority": 72,
+        "estTraffic": 2500,
+        "imageExt": "svg",
+        "sourceId": "ussd-simulator",
+        "imageId": "ussd-simulator",
+        "imageKey": "ussd-simulator"
       }
     ],
     "ha::document-pdf": [
@@ -881,6 +1059,21 @@
         "imageExt": "svg",
         "sourceId": "receipt-generator",
         "imageKey": "receipt-generator"
+      },
+      {
+        "id": "pdf-editor-ha",
+        "name": "Gyara PDF",
+        "icon": "PDF",
+        "desc": "Jagorar Hausa zuwa kayan aikin gyara PDF na Tura...",
+        "href": "/ha/kayan-aiki/gyara-pdf/",
+        "category": "document-pdf",
+        "lang": "ha",
+        "priority": 85,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "pdf-editor",
+        "imageId": "pdf-editor",
+        "imageKey": "pdf-editor"
       },
       {
         "id": "cv-builder-ha",
@@ -970,6 +1163,21 @@
         "imageExt": "svg",
         "sourceId": "naira-to-words",
         "imageKey": "naira-to-words"
+      },
+      {
+        "id": "pdf-page-numbers-ha",
+        "name": "Lambar Shafi a PDF",
+        "icon": "PDF",
+        "desc": "Jagorar Hausa don kara lambobin shafi a PDF, zab...",
+        "href": "/ha/kayan-aiki/lambar-shafi-pdf/",
+        "category": "document-pdf",
+        "lang": "ha",
+        "priority": 74,
+        "estTraffic": 2500,
+        "imageExt": "webp",
+        "sourceId": "pdf-page-numbers",
+        "imageId": "pdf-page-numbers",
+        "imageKey": "pdf-page-numbers"
       }
     ],
     "ha::agriculture": [
@@ -1135,6 +1343,35 @@
         "sourceId": "seed-rate-ng",
         "imageId": "seed-rate-ng",
         "imageKey": "seed-rate-ng"
+      },
+      {
+        "id": "planting-calendar-ha",
+        "name": "Kalandar Shuka",
+        "icon": "NOMA",
+        "desc": "Jagorar Hausa don shirin lokacin shuka, damina, ...",
+        "href": "/ha/noma/kalandar-shuka/",
+        "category": "agriculture",
+        "lang": "ha",
+        "priority": 73,
+        "estTraffic": 2500,
+        "imageExt": "svg",
+        "sourceId": "planting-calendar",
+        "imageId": "planting-calendar",
+        "imageKey": "planting-calendar"
+      },
+      {
+        "id": "drought-risk-ha",
+        "name": "Hadarin Fari",
+        "icon": "NOMA",
+        "desc": "Jagorar Hausa don fahimtar hadarin fari, rashin ...",
+        "href": "/ha/noma/hadarin-fari/",
+        "category": "agriculture",
+        "lang": "ha",
+        "priority": 66,
+        "estTraffic": 2500,
+        "imageExt": "",
+        "sourceId": "drought-risk",
+        "imageId": "drought-risk"
       }
     ],
     "yo::african": [
@@ -8122,8 +8359,8 @@
       },
       {
         "id": "eswatini-sw",
-        "name": "Vikokotoo Eswatini 2026 Ãƒ¢aâ€š¬a- Kodi ya Mshahara na Fedha",
-        "icon": "??",
+        "name": "Vikokotoo Eswatini 2026 - Kodi ya Mshahara na Fedha",
+        "icon": "SZ",
         "desc": "Zana za fedha kwa Eswatini: kodi ya mshahara (PA...",
         "href": "/sw/eswatini/",
         "category": "african",
@@ -8134,8 +8371,8 @@
       },
       {
         "id": "ethiopia-sw",
-        "name": "Vikokotoo Ethiopia 2026 Ãƒ¢aâ€š¬a- Kodi ya Mshahara na Fedha",
-        "icon": "??",
+        "name": "Vikokotoo Ethiopia 2026 - Kodi ya Mshahara na Fedha",
+        "icon": "ET",
         "desc": "Zana za mishahara za Ethiopia kwa Kiswahili: PAY...",
         "href": "/sw/ethiopia/",
         "category": "african",
@@ -9875,6 +10112,32 @@
         "priority": 61,
         "estTraffic": 0,
         "imageExt": ""
+      },
+      {
+        "id": "zana-mpangaji-ramani-ya-sakafu-sw-finish",
+        "name": "Mpangaji Ramani ya Sakafu",
+        "icon": "SW",
+        "desc": "Panga floor plan ya awali kwa vyumba, vipimo na ...",
+        "href": "/sw/zana/mpangaji-ramani-ya-sakafu/",
+        "category": "engineering",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "floor-plan-planner"
+      },
+      {
+        "id": "zana-ukubwa-wa-septic-tank-sw-finish",
+        "name": "Ukubwa wa Septic Tank",
+        "icon": "SW",
+        "desc": "Kadiria ukubwa wa septic tank kwa watu, matumizi...",
+        "href": "/sw/zana/ukubwa-wa-septic-tank/",
+        "category": "engineering",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "septic-tank-size"
       }
     ],
     "sw::education": [
@@ -11163,6 +11426,34 @@
         "estTraffic": 0,
         "imageExt": "",
         "sourceId": "vehicle-operating-cost"
+      },
+      {
+        "id": "zana-mkopo-wa-gari-dhidi-ya-fedha-taslimu-sw-finish",
+        "name": "Mkopo wa Gari Dhidi ya Cash",
+        "icon": "SW",
+        "desc": "Linganisha kununua gari kwa mkopo au fedha tasli...",
+        "href": "/sw/zana/mkopo-wa-gari-dhidi-ya-fedha-taslimu/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "car-loan-vs-cash",
+        "imageKey": "car-loan-vs-cash"
+      },
+      {
+        "id": "zana-ukaguzi-wa-roadworthiness-sw-finish",
+        "name": "Ukaguzi wa Roadworthiness",
+        "icon": "SW",
+        "desc": "Tumia orodha ya roadworthiness kwa breki, taa, t...",
+        "href": "/sw/zana/ukaguzi-wa-roadworthiness/",
+        "category": "transport",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "roadworthiness",
+        "imageKey": "roadworthiness"
       }
     ],
     "sw::legal": [
@@ -11867,6 +12158,34 @@
         "estTraffic": 0,
         "imageExt": "",
         "sourceId": "inventory-tracker"
+      },
+      {
+        "id": "zana-startup-runway-sw-finish",
+        "name": "Runway ya Startup",
+        "icon": "SW",
+        "desc": "Kadiria runway ya startup kwa cash, burn rate, m...",
+        "href": "/sw/zana/startup-runway/",
+        "category": "small-business",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "startup-runway",
+        "imageKey": "startup-runway"
+      },
+      {
+        "id": "zana-unit-economics-sw-finish",
+        "name": "Unit Economics",
+        "icon": "SW",
+        "desc": "Kadiria margin, CAC, LTV, contribution na paybac...",
+        "href": "/sw/zana/unit-economics/",
+        "category": "small-business",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "unit-economics",
+        "imageKey": "unit-economics"
       }
     ],
     "sw::data-productivity": [
@@ -11936,6 +12255,34 @@
         "imageExt": "svg",
         "sourceId": "time-zone",
         "imageKey": "time-zone"
+      },
+      {
+        "id": "zana-kubadilisha-vipimo-sw-finish",
+        "name": "Kubadilisha Vipimo",
+        "icon": "SW",
+        "desc": "Badilisha urefu, uzito, eneo, joto, data, nishat...",
+        "href": "/sw/zana/kubadilisha-vipimo/",
+        "category": "data-productivity",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "svg",
+        "sourceId": "unit-converter",
+        "imageKey": "unit-converter"
+      },
+      {
+        "id": "zana-mpango-bajeti-sw-finish",
+        "name": "Mpango wa Bajeti",
+        "icon": "SW",
+        "desc": "Panga mapato, matumizi, msaada wa familia, akiba...",
+        "href": "/sw/zana/mpango-bajeti/",
+        "category": "data-productivity",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "budget-planner",
+        "imageKey": "budget-planner"
       },
       {
         "id": "zana-siku-za-kazi-sw-wave8",
@@ -14668,6 +15015,19 @@
         "imageKey": "diff-checker"
       },
       {
+        "id": "zana-methali-za-afrika-sw-finish",
+        "name": "Methali za Afrika",
+        "icon": "SW",
+        "desc": "Chagua methali kwa mada, maana na muktadha wa ku...",
+        "href": "/sw/zana/methali-za-afrika/",
+        "category": "language",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "african-proverbs"
+      },
+      {
         "id": "zana-mtafsiri-wa-kiamhari-sw-wave8",
         "name": "Mtafsiri wa Kiamhari",
         "icon": "SW",
@@ -14778,6 +15138,19 @@
         "sourceId": "nigerian-pidgin-translator"
       },
       {
+        "id": "zana-nambari-za-kiarabu-sw-finish",
+        "name": "Nambari za Kiarabu",
+        "icon": "SW",
+        "desc": "Geuza kati ya nambari za kawaida na Arabic-Indic...",
+        "href": "/sw/zana/nambari-za-kiarabu/",
+        "category": "language",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "arabic-numerals"
+      },
+      {
         "id": "zana-transliteration-ya-maandishi-sw-wave8",
         "name": "Transliteration ya Maandishi",
         "icon": "SW",
@@ -14789,6 +15162,19 @@
         "estTraffic": 0,
         "imageExt": "",
         "sourceId": "text-transliteration"
+      },
+      {
+        "id": "zana-umri-na-jina-la-siku-afrika-sw-finish",
+        "name": "Umri na Jina la Siku Afrika",
+        "icon": "SW",
+        "desc": "Kadiria umri, siku ya kuzaliwa na jina la siku k...",
+        "href": "/sw/zana/umri-na-jina-la-siku-afrika/",
+        "category": "language",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "african-name-day-age"
       }
     ],
     "sw::career": [
@@ -14831,6 +15217,45 @@
         "estTraffic": 0,
         "imageExt": "",
         "sourceId": "career-growth"
+      },
+      {
+        "id": "zana-orodha-ya-side-hustle-sw-finish",
+        "name": "Orodha ya Side Hustle",
+        "icon": "SW",
+        "desc": "Chuja mawazo ya kazi za pembeni kwa muda, gharam...",
+        "href": "/sw/zana/orodha-ya-side-hustle/",
+        "category": "career",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "side-hustle-list"
+      },
+      {
+        "id": "zana-ukaguzi-wa-personal-brand-sw-finish",
+        "name": "Ukaguzi wa Personal Brand",
+        "icon": "SW",
+        "desc": "Pima mwonekano wa kitaalamu kwenye LinkedIn, por...",
+        "href": "/sw/zana/ukaguzi-wa-personal-brand/",
+        "category": "career",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "personal-brand-audit"
+      },
+      {
+        "id": "zana-viwango-vya-freelancer-sw-finish",
+        "name": "Viwango vya Freelancer",
+        "icon": "SW",
+        "desc": "Kadiria hourly rate, daily rate na project buffe...",
+        "href": "/sw/zana/viwango-vya-freelancer/",
+        "category": "career",
+        "lang": "sw",
+        "priority": 60,
+        "estTraffic": 0,
+        "imageExt": "",
+        "sourceId": "freelance-rate-card"
       }
     ]
   },

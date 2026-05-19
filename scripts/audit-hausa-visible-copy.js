@@ -373,7 +373,6 @@ function buildMarkdown(report) {
   lines.push("- `English fallback` labels are treated as possible false positives because some Hausa hubs intentionally disclose English fallback routes.");
   lines.push("- Proper nouns, country names, brand names, and accepted technical acronyms are not blockers by themselves.");
   lines.push("- This report does not edit Hausa page copy.");
-  lines.push("");
   return `${lines.join("\n")}\n`;
 }
 

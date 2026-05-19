@@ -315,13 +315,14 @@ const FRENCH_COUNTRY_SLUG_BY_EN = {
   'drc': 'rdc',
   'central-african-republic': 'centrafrique',
   'car': 'centrafrique',
+  'cape-verde': 'cabo-verde',
   'chad': 'tchad',
   'comoros': 'comores',
   'mauritania': 'mauritanie',
 };
 
 const PAYE_SLUG_MAP = {
-  'algerie':'algeria/dz-paye','burkina-faso':'burkina-faso/bf-paye',
+  'algerie':'algeria/dz-paye','benin':'benin/bj-paye','burkina-faso':'burkina-faso/bf-paye',
   'burundi':'burundi/bi-paye','cameroun':'cameroon/cm-paye',
   'centrafrique':'car/cf-paye','chad':'chad/td-paye',
   'comores':'comoros/km-paye','congo':'congo/cg-paye',
@@ -419,6 +420,18 @@ const existingFrPages = new Map();
 // Also: frUrl -> enPagePath for reverse lookup
 const existingFrToEn = new Map();
 
+function sourceHtmlLangForPage(pagePath) {
+  const sourceFile = resolveSourceFile(pagePath);
+  if (!sourceFile) return null;
+  try {
+    const html = fs.readFileSync(sourceFile, 'utf8');
+    const match = html.match(/<html[^>]*\slang=["']([^"']+)["']/i);
+    return match ? match[1].toLowerCase() : null;
+  } catch {
+    return null;
+  }
+}
+
 function discoverExistingFrPages() {
   const frDir = path.join(ROOT, 'fr');
   if (!fs.existsSync(frDir)) return;
@@ -444,7 +457,9 @@ function discoverExistingFrPages() {
             enPage = 'cars';
           }
         } else if (country === 'blog') {
-          enPage = null;
+          const blogEnPage = rel.replace('.html', '').replace(/\/index$/, '');
+          const blogSourceLang = sourceHtmlLangForPage(blogEnPage);
+          enPage = blogSourceLang && blogSourceLang !== DEFAULT_LANG ? null : blogEnPage;
         } else if (country === 'tools') {
           enPage = frenchToolSlugToEnglishSource(fileBase) || rel.replace('.html', '').replace(/\/index$/, '');
         } else if (country === 'telecom') {
@@ -469,8 +484,10 @@ function discoverExistingFrPages() {
         }
         // Dir-style index: /fr/XX/tool/index.html -> XX/tool
         const isEqGuineaTaxRoute = country === 'eq-guinea' && (parts[1] === 'gq-paye' || parts[1] === 'gq-vat');
+        const isMappedPayeRoute = fileBase === 'calculateur-salaire-net' && PAYE_SLUG_MAP[country];
+        const isMappedVatRoute = fileBase === 'calculateur-tva' && VAT_SLUG_MAP[country];
         const isMappedTelecomRoute = country === 'telecom' && parts[1] && frenchTelecomSlugToEnglishSource(parts[1]);
-        if (country !== 'tools' && country !== 'blog' && !isEqGuineaTaxRoute && !isMappedTelecomRoute && parts.length === 3 && parts[2] === 'index.html') {
+        if (country !== 'tools' && country !== 'blog' && !isEqGuineaTaxRoute && !isMappedPayeRoute && !isMappedVatRoute && !isMappedTelecomRoute && parts.length === 3 && parts[2] === 'index.html') {
           const enCountry = COUNTRY_FR_TO_EN[country] || country;
           enPage = enCountry + '/' + parts[1];
         }

@@ -30,6 +30,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
+<script src="/assets/js/yoruba-tool-catalog.js?v=055fb4a6" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <meta name="tool-id" content="yoruba-tools">
 <meta property="article:modified_time" content="2026-05-18">
@@ -99,7 +100,17 @@
   .yt-links strong{display:block;color:#0f2537}
   .yt-chiprow{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
   .yt-chip{border:1px solid #dce6ef;background:#f8fafc;border-radius:999px;padding:.35rem .62rem;font-weight:750;color:#334155}
+  .yo-catalog-controls{display:grid;grid-template-columns:1.3fr .85fr .85fr;gap:.75rem;margin:1rem 0}
+  .yo-catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin-top:.85rem}
+  .yo-tool-card{display:grid;gap:.35rem;border:1px solid #dce6ef;border-radius:14px;background:#fff;padding:.85rem;text-decoration:none;color:#102033;min-height:10.5rem}
+  .yo-tool-card:focus-visible{outline:3px solid #f6c453;outline-offset:2px}
+  .yo-tool-kicker{font-size:.78rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em;color:#0f6b4f}
+  .yo-tool-card strong{font-size:1rem;color:#102033;line-height:1.25}
+  .yo-tool-card span,.yo-tool-card small{color:#536474;line-height:1.48}
+  .yo-catalog-summary{border:1px solid #bee3f8;background:#eff6ff;color:#164e63;border-radius:14px;padding:.75rem .85rem;line-height:1.55}
   @media (max-width:860px){.yt-grid,.yt-fields,.yt-metrics{grid-template-columns:1fr}.yt-actions{display:grid}.yt-btn,.yt-btn.linklike{justify-content:center;text-align:center}.yt-main{padding:.8rem}.yt-panel{border-radius:12px}.yt-table{font-size:.9rem}}
+  @media (max-width:980px){.yo-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.yo-catalog-controls{grid-template-columns:1fr}}
+  @media (max-width:640px){.yo-catalog-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -238,6 +249,40 @@
     </aside>
   </div>
   <div class="yt-wrap" style="margin-top:1rem">
+    <section class="yt-panel" id="gbogbo-irinse" data-yoruba-tool-catalog aria-labelledby="catalog-title">
+      <h2 id="catalog-title">Gbogbo irinṣẹ AfroTools ni Yorùbá</h2>
+      <p>Atokọ yii jẹ́ fẹlẹfẹlẹ ìtúmọ̀ ati ìtọ́nisọ́nà Yorùbá lori gbogbo irinṣẹ tó wà ninu registry AfroTools. O fi oju Yorùbá gidi hàn níbi tí ó ti wà, ó sì samisi oju Gẹ̀ẹ́sì kedere níbi tí iṣẹ́ kikun ṣi wa ni Gẹ̀ẹ́sì.</p>
+      <div class="yo-catalog-controls">
+        <div class="yt-field">
+          <label for="yoCatalogSearch">Wa irinṣẹ</label>
+          <input id="yoCatalogSearch" type="search" data-yo-catalog-search placeholder="PAYE, PDF, JAMB, invoice, rogo, API...">
+        </div>
+        <div class="yt-field">
+          <label for="yoCatalogCategory">Ẹ̀ka</label>
+          <select id="yoCatalogCategory" data-yo-catalog-category>
+            <option value="all">Gbogbo ẹ̀ka</option>
+          </select>
+        </div>
+        <div class="yt-field">
+          <label for="yoCatalogMode">Ipo oju</label>
+          <select id="yoCatalogMode" data-yo-catalog-mode>
+            <option value="all">Yorùbá ati Gẹ̀ẹ́sì</option>
+            <option value="yo">Oju Yorùbá nikan</option>
+            <option value="fallback">Oju Gẹ̀ẹ́sì tí a samisi</option>
+          </select>
+        </div>
+      </div>
+      <div class="yo-catalog-summary" data-yo-catalog-summary role="status" aria-live="polite">Atokọ irinṣẹ ń kojọpọ...</div>
+      <div class="yo-catalog-grid" data-yo-catalog-grid></div>
+      <div class="yt-actions">
+        <button class="yt-btn secondary" type="button" data-yo-catalog-more hidden>Fi kun</button>
+      </div>
+      <h3 style="margin-top:1.2rem">Àwọn oju pataki tí ṣi jẹ́ Gẹ̀ẹ́sì</h3>
+      <p>Àwọn oju wọnyi jẹ́ apakan pataki ninu AfroTools. Wọn ko tii ni oju Yorùbá kikun, nítorí náà a samisi wọn gẹgẹ bí oju Gẹ̀ẹ́sì ki ọna naa má ṣe tan ẹnikẹ́ni jẹ.</p>
+      <div class="yo-catalog-grid" data-yo-core-pages></div>
+    </section>
+  </div>
+  <div class="yt-wrap" style="margin-top:1rem">
     <section class="yt-panel" aria-labelledby="method-title" data-tool-verification-panel="yoruba-tools">
       <h2 id="method-title">Ìlànà, àṣàro ati orísun</h2>
       <div class="yt-grid">
@@ -260,12 +305,12 @@
         </div>
         <div>
           <h3>Ọjọ́ ìmúdójúìwọ̀n ati orísun</h3>
-          <p>Ọ̀nà yìí dá lórí atokọ AfroTools ati oju Yorùbá tí ó wà ní ọjọ́ 18 Mayu 2026. A kò fa data laaye taara; fún owó, owó-orí, ìdánimọ̀, data tàbí idanwo, ṣayẹwo oju osise ṣáájú fífi ìpinnu sílẹ̀.</p>
+          <p>Ọ̀nà yìí dá lórí atokọ AfroTools ati oju Yorùbá tí ó wà ní ọjọ́ 18 Mayu 2026. A kò fa ìmúdójúìwọ̀n laaye taara; fún owó, owó-orí, ìdánimọ̀, alaye tàbí idanwo, ṣayẹwo oju osise ṣáájú fífi ìpinnu sílẹ̀.</p>
           <div class="yt-links">
             <a href="https://www.cbn.gov.ng/" rel="noopener" target="_blank"><strong>CBN</strong><span>Owo, banki ati eto ìṣúná Naijiria.</span></a>
             <a href="https://taxid.nrs.gov.ng/" rel="noopener" target="_blank"><strong>NRS/FIRS TIN</strong><span>Owó-orí apapọ ati ìmúdájú TIN.</span></a>
             <a href="https://www.jamb.gov.ng/" rel="noopener" target="_blank"><strong>JAMB</strong><span>Ìforúkọsílẹ̀ ati alaye idanwo wọlé.</span></a>
-            <a href="https://ndpc.gov.ng/" rel="noopener" target="_blank"><strong>NDPC</strong><span>Ìpamọ́ data ati aabo alaye.</span></a>
+            <a href="https://ndpc.gov.ng/" rel="noopener" target="_blank"><strong>NDPC</strong><span>Ìpamọ́ alaye ati aabo rẹ.</span></a>
           </div>
         </div>
       </div>

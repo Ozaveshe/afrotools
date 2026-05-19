@@ -47,7 +47,7 @@
   <link rel="alternate" hreflang="x-default" href="https://afrotools.com/" />
   <link rel="preload" href="/assets/css/tokens.min.css?v=d2e4e77a" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="/assets/css/global.min.css?v=c0c9d6ea" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <script src="/assets/js/components/tool-registry.min.js?v=32e63b37" defer></script>
+  <script src="/assets/js/components/tool-registry.min.js?v=285c7ecf" defer></script>
 
   <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
@@ -1244,9 +1244,23 @@
       'data-productivity': 'Data na Tija',
       language: 'Lugha',
       engineering: 'Uhandisi',
+      trade: 'Biashara ya nje',
+      career: 'Kazi na ajira',
+      'small-business': 'Biashara ndogo',
       ecommerce: 'VAT na Biashara',
       legal: 'Mali na Sheria'
     };
+
+    var manualHeroTools = [
+      { id: 'sw-home-blogu-bridge', name: 'Blogu ya AfroTools', desc: 'Makala na miongozo. Baadhi ya links bado hufungua blogu ya Kiingereza kwa uwazi.', href: '/sw/blogu/', category: 'data-productivity', icon: 'SW', lang: 'sw', status: 'live', priority: 95 },
+      { id: 'sw-home-api-bridge', name: 'API ya AfroTools', desc: 'Muhtasari wa API kwa Kiswahili, pamoja na docs na pricing zinazobaki Kiingereza.', href: '/sw/api/', category: 'developer', icon: 'API', lang: 'sw', status: 'live', priority: 94 },
+      { id: 'sw-home-developer-hub', name: 'Zana za developer', desc: 'JSON, SQL, regex, sitemap, API na utilities za developer. Baadhi ya maneno ya kiufundi hubaki kama yanavyotumika sokoni.', href: '/sw/zana-za-developer/', category: 'developer', icon: 'DEV', lang: 'sw', status: 'live', priority: 88 },
+      { id: 'sw-home-cv-builder', name: 'Mjenzi wa CV', desc: 'Andaa CV, barua ya ombi na nyaraka za kazi kwa Kiswahili.', href: '/sw/zana/mjenzi-cv/', category: 'career', icon: 'CV', lang: 'sw', status: 'live', priority: 90 },
+      { id: 'sw-home-internet-hub', name: 'Mawasiliano na mtandao', desc: 'Data, internet, ISP, Starlink, LTE, 5G, USSD, SIM, SMS na WhatsApp Business.', href: '/sw/mawasiliano-na-mtandao/', category: 'data-productivity', icon: 'NET', lang: 'sw', status: 'live', priority: 90 },
+      { id: 'sw-home-zakat', name: 'Kikokotoo Zakat', desc: 'Planning aid ya zakat. Thibitisha maamuzi ya dini na msomi au mamlaka unayoiamini.', href: '/sw/zana/kikokotoo-zakat/', category: 'language', icon: 'SW', lang: 'sw', status: 'live', priority: 82 },
+      { id: 'sw-home-hajj', name: 'Bajeti ya Hajj na Umrah', desc: 'Makadirio ya kupanga safari na gharama. Hakiki package, visa na usafiri kwa mtoa huduma rasmi.', href: '/sw/zana/bajeti-ya-hajj-na-umrah/', category: 'language', icon: 'SW', lang: 'sw', status: 'live', priority: 81 },
+      { id: 'sw-home-pdf-hub', name: 'PDF na hati', desc: 'Zana za PDF, hati na workflow za ndani ya browser kwa Kiswahili.', href: '/sw/hati-na-pdf/', category: 'document-pdf', icon: 'PDF', lang: 'sw', status: 'live', priority: 87 }
+    ];
 
     function escapeHtml(value) {
       return (value || '')
@@ -1319,7 +1333,9 @@
       var tokens = tokenize(query);
       if (!tokens.length) return [];
 
-      return window.AFRO_TOOLS
+      var searchableTools = window.AFRO_TOOLS.concat(manualHeroTools);
+
+      return searchableTools
         .filter(function(tool) {
           return isPreferredLocale(tool) || (tool.lang || 'en') === 'en';
         })
