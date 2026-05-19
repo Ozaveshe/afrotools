@@ -63,6 +63,18 @@ MVP rule:
 - public scholarship-count copy must stay exact until the live API has enough
   active verified or explicitly curated records to support a larger claim
 
+Curated official-link expansion:
+
+- use `node scripts/seed-curated-scholarships.js --dry-run` before seeding live
+  rows
+- the script checks each official URL and skips dead, errored, and rejected
+  links before writing to Supabase
+- rows created by this script are intentionally `confidence_mode: curated`,
+  `status: unclear`, and `deadline_text: Check official page` unless a parser
+  or manual review verifies the current application cycle
+- these rows are meant to make the public finder useful at scale without
+  pretending every scholarship has a fresh deadline or open status
+
 Stale retirement:
 
 - source-owned rows not seen for 7 days become `unclear` with `manual_review`
