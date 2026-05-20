@@ -1,12 +1,12 @@
 # Study Abroad Cost Data Quality Audit
 
-Generated: 2026-05-20T04:21:50.635Z
+Generated: 2026-05-20T12:22:13.244Z
 
 ## Overall verdict
 
-**Not ready.**
+**Not ready for full source-backed claims.**
 
-The tool is useful as a planning engine, but the current data layer is not yet safe to present as fully source-backed 2026 cost truth. Official visa-fee and proof-of-funds fields exist for the five hero destinations, but UK living/proof values are stale, Germany proof-of-funds needs mission/portal verification, tuition ranges are not institution-backed, regional data is unsourced, and FX rates have no source/date.
+The tool is useful as a planning engine, and the five hero destinations now have improved source metadata for the official visa/proof fields verified in this pass. It is still not safe to present the whole product as fully source-backed 2026 cost truth because Germany proof-of-funds needs mission/portal verification, tuition ranges are not institution-backed, and regional data is unsourced. FX conversions now have explicit static-estimate metadata, but they are still not live rates.
 
 ## Summary counts
 
@@ -14,19 +14,17 @@ The tool is useful as a planning engine, but the current data layer is not yet s
 | --- | ---: |
 | Destinations audited | 100 |
 | Cost fields audited | 875 |
-| Official government fields | 12 |
+| Official government fields | 14 |
 | Official education fields | 2 |
 | Verified institution fields | 0 |
-| Market estimate fields | 754 |
-| Unknown or unverified fields | 107 |
+| Market estimate fields | 854 |
+| Unknown or unverified fields | 5 |
 
 ## Critical blockers
 
-1. **UK proof-of-funds values are stale.** Replace UK livingOfficial min/max and source with GOV.UK before presenting these as official.
-2. **Expanded destination regional values have no source URLs or last-checked dates.** Keep visible estimate labels and add source methodology before advertising as reliable country data.
-3. **Static FX table has no provider, timestamp, or refresh policy.** Show FX date/source or keep CurrencyDisplay in estimate mode for all USD/local conversions.
-4. **Tuition ranges are not tied to official education or university sources.** Label as typical ranges and prioritize official Study in country portals or named university tuition pages.
-5. **Germany blocked-account amount is not verified from the competent mission/portal in app data.** Do not label Germany proof-of-funds as official government exact value until a mission/portal source is attached.
+1. **Expanded destination regional values have no source URLs or last-checked dates.** Keep visible estimate labels and add source methodology before advertising as reliable country data.
+2. **Tuition ranges are not tied to official education or university sources.** Label as typical ranges and prioritize official Study in country portals or named university tuition pages.
+3. **Germany blocked-account amount is not verified from the competent mission/portal in app data.** Do not label Germany proof-of-funds as official government exact value until a mission/portal source is attached.
 
 ## Source reliability
 
@@ -43,112 +41,113 @@ The tool is useful as a planning engine, but the current data layer is not yet s
 | EducationUSA finance guide | [source](https://educationusa.state.gov/your-5-steps-us-study/finance-your-studies) | medium | Official education source supports strategy warning that costs vary by institution/location, not a single exact value. |
 | German Federal Foreign Office blocked account page | [source](https://www.auswaertiges-amt.de/en/visa-service/visabestimmungen-node/sperrkonto-seite) | medium | Official government source confirms proof logic but delegates exact amount to mission/portal. |
 | DAAD cost guide | [source](https://www.daad.de/en/study-and-research-in-germany/plan-your-studies/costs-of-education-and-living/) | medium | Official education source supports EUR 992/month as planning guidance, but not a mission-specific exact visa source. |
+| Study Abroad FX policy | missing | low | Static estimate mode now includes provider and refresh policy, but the page is not yet connected to /api/forex cached/live timestamps. |
 | Regional AfroTools estimates | missing | low | No source URL, source title, or last-checked date in app data. |
 
 ## Destination summary
 
 | Destination | Currency | Status | Fields | Government | Education | Estimates | Unknown |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| United Kingdom | GBP | not_ready | 24 | 3 | 0 | 17 | 4 |
-| Canada | CAD | not_ready | 23 | 3 | 0 | 18 | 2 |
-| Australia | AUD | not_ready | 22 | 2 | 0 | 18 | 2 |
-| United States | USD | not_ready | 23 | 2 | 1 | 18 | 2 |
-| Germany | EUR | not_ready | 23 | 2 | 1 | 18 | 2 |
-| South Africa | ZAR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Egypt | EGP | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Morocco | MAD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Ghana | GHS | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Kenya | KES | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Rwanda | RWF | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Mauritius | MUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Tunisia | TND | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Botswana | BWP | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Namibia | NAD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Senegal | XOF | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Nigeria | NGN | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Uganda | UGX | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Tanzania | TZS | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Ethiopia | ETB | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Zambia | ZMW | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Algeria | DZD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Cameroon | XAF | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Cote d Ivoire | XOF | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Malawi | MWK | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| France | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Ireland | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Netherlands | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Sweden | SEK | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Finland | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Norway | NOK | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Denmark | DKK | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Italy | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Spain | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Portugal | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Poland | PLN | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Hungary | HUF | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Czech Republic | CZK | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Austria | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Belgium | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Switzerland | CHF | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Estonia | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Lithuania | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Latvia | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Greece | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Romania | RON | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Slovenia | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Slovakia | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Croatia | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Cyprus | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Malta | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Luxembourg | EUR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Iceland | ISK | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Mexico | MXN | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| China | CNY | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Japan | JPY | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| South Korea | KRW | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Malaysia | MYR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Singapore | SGD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| India | INR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Thailand | THB | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Indonesia | IDR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Philippines | PHP | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Vietnam | VND | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Taiwan | TWD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Hong Kong | HKD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Pakistan | PKR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Sri Lanka | LKR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Kazakhstan | KZT | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Uzbekistan | UZS | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Nepal | NPR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Bangladesh | BDT | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Brunei | BND | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Macau | HKD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| United Arab Emirates | AED | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Qatar | QAR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Saudi Arabia | SAR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Oman | OMR | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Jordan | JOD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Israel | ILS | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Turkey | TRY | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Bahrain | BHD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Kuwait | KWD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Lebanon | LBP | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| New Zealand | NZD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Fiji | FJD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Papua New Guinea | PGK | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Samoa | WST | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Brazil | BRL | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Argentina | ARS | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Chile | CLP | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Colombia | COP | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Costa Rica | CRC | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Peru | PEN | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Uruguay | UYU | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Panama | PAB | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Ecuador | USD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Dominican Republic | DOP | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Jamaica | JMD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
-| Barbados | BBD | ready_with_warnings | 8 | 0 | 0 | 7 | 1 |
+| United Kingdom | GBP | not_ready | 24 | 5 | 0 | 18 | 1 |
+| Canada | CAD | not_ready | 23 | 3 | 0 | 19 | 1 |
+| Australia | AUD | not_ready | 22 | 2 | 0 | 19 | 1 |
+| United States | USD | not_ready | 23 | 2 | 1 | 19 | 1 |
+| Germany | EUR | not_ready | 23 | 2 | 1 | 19 | 1 |
+| South Africa | ZAR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Egypt | EGP | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Morocco | MAD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Ghana | GHS | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Kenya | KES | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Rwanda | RWF | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Mauritius | MUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Tunisia | TND | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Botswana | BWP | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Namibia | NAD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Senegal | XOF | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Nigeria | NGN | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Uganda | UGX | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Tanzania | TZS | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Ethiopia | ETB | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Zambia | ZMW | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Algeria | DZD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Cameroon | XAF | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Cote d Ivoire | XOF | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Malawi | MWK | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| France | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Ireland | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Netherlands | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Sweden | SEK | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Finland | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Norway | NOK | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Denmark | DKK | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Italy | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Spain | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Portugal | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Poland | PLN | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Hungary | HUF | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Czech Republic | CZK | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Austria | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Belgium | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Switzerland | CHF | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Estonia | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Lithuania | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Latvia | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Greece | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Romania | RON | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Slovenia | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Slovakia | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Croatia | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Cyprus | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Malta | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Luxembourg | EUR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Iceland | ISK | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Mexico | MXN | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| China | CNY | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Japan | JPY | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| South Korea | KRW | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Malaysia | MYR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Singapore | SGD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| India | INR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Thailand | THB | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Indonesia | IDR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Philippines | PHP | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Vietnam | VND | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Taiwan | TWD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Hong Kong | HKD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Pakistan | PKR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Sri Lanka | LKR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Kazakhstan | KZT | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Uzbekistan | UZS | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Nepal | NPR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Bangladesh | BDT | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Brunei | BND | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Macau | HKD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| United Arab Emirates | AED | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Qatar | QAR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Saudi Arabia | SAR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Oman | OMR | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Jordan | JOD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Israel | ILS | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Turkey | TRY | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Bahrain | BHD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Kuwait | KWD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Lebanon | LBP | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| New Zealand | NZD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Fiji | FJD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Papua New Guinea | PGK | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Samoa | WST | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Brazil | BRL | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Argentina | ARS | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Chile | CLP | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Colombia | COP | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Costa Rica | CRC | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Peru | PEN | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Uruguay | UYU | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Panama | PAB | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Ecuador | USD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Dominican Republic | DOP | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Jamaica | JMD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
+| Barbados | BBD | ready_with_warnings | 8 | 0 | 0 | 8 | 0 |
 
 ## Hero destination field audit
 
@@ -172,9 +171,9 @@ The tool is useful as a planning engine, but the current data layer is not yet s
 | United Kingdom | living_range_market_reference | 13500-19000 | ESTIMATE_MARKET | missing | no | no | low | Estimated annual living range, not official | keep only with estimate label and add market/source methodology |
 | United Kingdom | setup_travel_arrival_cost | 1500 | ESTIMATE_MARKET | missing | no | no | low | Estimated flight and arrival setup cost | keep only as estimate; add origin/city/date methodology or ticket quote timestamp |
 | United Kingdom | dependents_multiplier | spouse:1.35; children:1.55; spouse_and_children:1.8 | UNKNOWN_OR_UNVERIFIED | missing | no | no | low | Dependents adjustment needs verification | replace country-specific dependent costs where official values exist; otherwise show as estimate |
-| United Kingdom | static_fx_GBP_to_usd | 1.27 | UNKNOWN_OR_UNVERIFIED | missing | no | no | unknown | FX estimate, rate date/source missing | add FX provider/date or mark all local/USD conversions as estimate |
-| United Kingdom | living_requirement_outside_london_current_app | 10224 | UNKNOWN_OR_UNVERIFIED | [UKCISA maintenance requirements news](https://www.ukcisa.org.uk/news/increase-to-maintenance-requirements-for-students-from-2025/) | no | no | low | Needs verification: UK proof-of-funds value is stale | replace with GOV.UK GBP 1,171/month outside London for up to 9 months |
-| United Kingdom | living_requirement_london_current_app | 13347 | UNKNOWN_OR_UNVERIFIED | [UKCISA maintenance requirements news](https://www.ukcisa.org.uk/news/increase-to-maintenance-requirements-for-students-from-2025/) | no | no | low | Needs verification: UK London proof-of-funds value is stale | replace with GOV.UK GBP 1,529/month in London for up to 9 months |
+| United Kingdom | static_fx_GBP_to_usd | 1.27 | ESTIMATE_MARKET | missing | no | no | low | Static FX estimate, not live | keep visible static_estimate label or connect Study Abroad to /api/forex with a timestamped cached/live response |
+| United Kingdom | living_requirement_outside_london | 10539 | OFFICIAL_GOVERNMENT | [GOV.UK Student visa: Money you need](https://www.gov.uk/student-visa/money) | yes | yes | high | Official UK student visa financial requirement outside London | keep |
+| United Kingdom | living_requirement_london | 13761 | OFFICIAL_GOVERNMENT | [GOV.UK Student visa: Money you need](https://www.gov.uk/student-visa/money) | yes | yes | high | Official UK student visa financial requirement in London | keep |
 | United Kingdom | student_visa_application_fee | 558 | OFFICIAL_GOVERNMENT | [GOV.UK Student visa application steps and fee](https://www.gov.uk/student-visa/money) | yes | yes | high | Official UK student visa fee | keep |
 | United Kingdom | immigration_health_surcharge_annual | 776 | OFFICIAL_GOVERNMENT | [GOV.UK Pay for UK healthcare as part of your immigration application](https://www.gov.uk/healthcare-immigration-application/how-much-pay) | yes | yes | high | Official UK student IHS annual rate | keep but add source URL to app data |
 | United Kingdom | uk_dependant_living_requirement_missing | not modeled | OFFICIAL_GOVERNMENT | [GOV.UK Financial evidence for Student and Child Student visa applicants](https://www.gov.uk/guidance/financial-evidence-for-student-and-child-student-route-applicants) | no | yes | medium | Official UK dependant funds exist but are not modeled exactly | add country-specific dependant requirement or mark dependent risk approximate |
@@ -196,7 +195,7 @@ The tool is useful as a planning engine, but the current data layer is not yet s
 | Canada | living_range_market_reference | 22895-30000 | ESTIMATE_MARKET | missing | no | no | low | Estimated annual living range, not official | keep only with estimate label and add market/source methodology |
 | Canada | setup_travel_arrival_cost | 2200 | ESTIMATE_MARKET | missing | no | no | low | Estimated flight and arrival setup cost | keep only as estimate; add origin/city/date methodology or ticket quote timestamp |
 | Canada | dependents_multiplier | spouse:1.35; children:1.55; spouse_and_children:1.8 | UNKNOWN_OR_UNVERIFIED | missing | no | no | low | Dependents adjustment needs verification | replace country-specific dependent costs where official values exist; otherwise show as estimate |
-| Canada | static_fx_CAD_to_usd | 0.73 | UNKNOWN_OR_UNVERIFIED | missing | no | no | unknown | FX estimate, rate date/source missing | add FX provider/date or mark all local/USD conversions as estimate |
+| Canada | static_fx_CAD_to_usd | 0.73 | ESTIMATE_MARKET | missing | no | no | low | Static FX estimate, not live | keep visible static_estimate label or connect Study Abroad to /api/forex with a timestamped cached/live response |
 | Canada | proof_of_funds_living_outside_quebec | 22895 | OFFICIAL_GOVERNMENT | [Canada.ca Proof of financial support for study permit](https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit/get-documents/financial-support.html) | yes | yes | high | Official Canada living expense threshold outside Quebec | keep, but clarify excludes tuition and transportation |
 | Canada | study_permit_fee | 150 | OFFICIAL_GOVERNMENT | [IRCC Citizenship and immigration application fees](https://www.ircc.canada.ca/english/information/fees/fees.asp) | yes | yes | high | Official Canada study permit fee | keep |
 | Canada | biometrics_fee | 85 | OFFICIAL_GOVERNMENT | [IRCC Citizenship and immigration application fees](https://www.ircc.canada.ca/english/information/fees/fees.asp) | yes | yes | high | Official Canada biometrics fee | keep |
@@ -219,7 +218,7 @@ The tool is useful as a planning engine, but the current data layer is not yet s
 | Australia | living_range_market_reference | 29710-36000 | ESTIMATE_MARKET | missing | no | no | low | Estimated annual living range, not official | keep only with estimate label and add market/source methodology |
 | Australia | setup_travel_arrival_cost | 2500 | ESTIMATE_MARKET | missing | no | no | low | Estimated flight and arrival setup cost | keep only as estimate; add origin/city/date methodology or ticket quote timestamp |
 | Australia | dependents_multiplier | spouse:1.35; children:1.55; spouse_and_children:1.8 | UNKNOWN_OR_UNVERIFIED | missing | no | no | low | Dependents adjustment needs verification | replace country-specific dependent costs where official values exist; otherwise show as estimate |
-| Australia | static_fx_AUD_to_usd | 0.66 | UNKNOWN_OR_UNVERIFIED | missing | no | no | unknown | FX estimate, rate date/source missing | add FX provider/date or mark all local/USD conversions as estimate |
+| Australia | static_fx_AUD_to_usd | 0.66 | ESTIMATE_MARKET | missing | no | no | low | Static FX estimate, not live | keep visible static_estimate label or connect Study Abroad to /api/forex with a timestamped cached/live response |
 | Australia | student_visa_financial_capacity | 29710 | OFFICIAL_GOVERNMENT | [Study Australia How to apply for your visa](https://www.studyaustralia.gov.au/en/plan-your-move/visa-application-process) | yes | yes | high | Official Australia student visa financial capacity requirement | keep, but warn actual living costs may be higher |
 | Australia | student_visa_application_charge | 2000 | OFFICIAL_GOVERNMENT | [Study Australia Student Visa Application Charge increase](https://www.studyaustralia.gov.au/en/tools-and-resources/news/student-visa-application-charge-increase) | yes | yes | high | Official Australia student visa application charge | keep |
 | Australia | oshc_annual_reference | 950 | ESTIMATE_MARKET | missing | no | no | low | Estimated OSHC premium | keep only as estimate; add provider quote/source strategy |
@@ -241,7 +240,7 @@ The tool is useful as a planning engine, but the current data layer is not yet s
 | United States | living_range_market_reference | 18000-28000 | ESTIMATE_MARKET | missing | no | no | low | Estimated annual living range, not official | keep only with estimate label and add market/source methodology |
 | United States | setup_travel_arrival_cost | 2500 | ESTIMATE_MARKET | missing | no | no | low | Estimated flight and arrival setup cost | keep only as estimate; add origin/city/date methodology or ticket quote timestamp |
 | United States | dependents_multiplier | spouse:1.35; children:1.55; spouse_and_children:1.8 | UNKNOWN_OR_UNVERIFIED | missing | no | no | low | Dependents adjustment needs verification | replace country-specific dependent costs where official values exist; otherwise show as estimate |
-| United States | static_fx_USD_to_usd | 1 | UNKNOWN_OR_UNVERIFIED | missing | no | no | unknown | FX estimate, rate date/source missing | add FX provider/date or mark all local/USD conversions as estimate |
+| United States | static_fx_USD_to_usd | 1 | ESTIMATE_MARKET | missing | no | no | low | Static FX estimate, not live | keep visible static_estimate label or connect Study Abroad to /api/forex with a timestamped cached/live response |
 | United States | student_visa_mrv_fee | 185 | OFFICIAL_GOVERNMENT | [U.S. Department of State Student Visa](https://travel.state.gov/content/travel/en/us-visas/study/student-visa.html) | yes | yes | high | Official U.S. student visa application fee | keep |
 | United States | sevis_i901_fee | 350 | OFFICIAL_GOVERNMENT | [U.S. ICE I-901 SEVIS Fee](https://www.ice.gov/sevis/i901) | yes | yes | high | Official SEVIS I-901 fee | keep |
 | United States | institution_specific_i20_cost_strategy | not modeled | OFFICIAL_EDUCATION | [EducationUSA Finance Your U.S. Studies](https://educationusa.state.gov/your-5-steps-us-study/finance-your-studies) | no | yes | medium | Institution-specific I-20/COA required | add warning that U.S. tuition and living proof vary by school and Form I-20 |
@@ -264,7 +263,7 @@ The tool is useful as a planning engine, but the current data layer is not yet s
 | Germany | living_range_market_reference | 11904-14500 | ESTIMATE_MARKET | missing | no | no | low | Estimated annual living range, not official | keep only with estimate label and add market/source methodology |
 | Germany | setup_travel_arrival_cost | 1800 | ESTIMATE_MARKET | missing | no | no | low | Estimated flight and arrival setup cost | keep only as estimate; add origin/city/date methodology or ticket quote timestamp |
 | Germany | dependents_multiplier | spouse:1.35; children:1.55; spouse_and_children:1.8 | UNKNOWN_OR_UNVERIFIED | missing | no | no | low | Dependents adjustment needs verification | replace country-specific dependent costs where official values exist; otherwise show as estimate |
-| Germany | static_fx_EUR_to_usd | 1.08 | UNKNOWN_OR_UNVERIFIED | missing | no | no | unknown | FX estimate, rate date/source missing | add FX provider/date or mark all local/USD conversions as estimate |
+| Germany | static_fx_EUR_to_usd | 1.08 | ESTIMATE_MARKET | missing | no | no | low | Static FX estimate, not live | keep visible static_estimate label or connect Study Abroad to /api/forex with a timestamped cached/live response |
 | Germany | blocked_account_reference_current_app | 11904 | OFFICIAL_EDUCATION | [DAAD Costs of education and living](https://www.daad.de/en/study-and-research-in-germany/plan-your-studies/costs-of-education-and-living/) | yes | yes | medium | DAAD proof-of-funds planning reference | relabel as official education reference and add mission/Consular Services Portal verification before calling it official government |
 | Germany | blocked_account_mission_verification_needed | not modeled | OFFICIAL_GOVERNMENT | [German Federal Foreign Office blocked account for students](https://www.auswaertiges-amt.de/en/visa-service/visabestimmungen-node/sperrkonto-seite) | no | yes | medium | Germany proof-of-funds value needs official mission verification | add mission/portal source field for exact blocked-account amount by applicant country |
 | Germany | national_visa_fee | 75 | OFFICIAL_GOVERNMENT | [German Federal Foreign Office Visas for Germany](https://www.auswaertiges-amt.de/en/visa-service/215870-215870) | yes | yes | high | Official Germany national visa fee | keep and replace German-language URL with English Federal Foreign Office URL where possible |
@@ -376,7 +375,7 @@ The expanded selector uses regional profiles for non-hero countries. These rows 
 
 ### United Kingdom
 
-- Current app values for UK living support use GBP 1,136/month outside London and GBP 1,483/month London from UKCISA guidance. Current GOV.UK values are GBP 1,171/month outside London and GBP 1,529/month London, each for up to 9 months.
+- UK living support now uses current GOV.UK values: GBP 1,171/month outside London and GBP 1,529/month London, each for up to 9 months.
 - Student visa fee GBP 558 and IHS GBP 776/year are source-backed by GOV.UK.
 - Dependant funds are not modeled exactly; GOV.UK has country-specific dependant amounts.
 - Tuition ranges remain typical estimates and must point users to CAS/university pricing.
@@ -411,9 +410,9 @@ The expanded selector uses regional profiles for non-hero countries. These rows 
 Verdict: **partial**
 
 - The shared LastUpdatedSourceInfo component can display last checked, source link, confidence, and status.
-- CurrencyDisplay already marks values as estimates when called with estimate:true, but does not expose FX source/date.
-- Study Abroad assumption cards include one source link per destination, not per cost field.
-- No structured sourceType/sourceUrl/confidence model exists for every Study Abroad cost category yet.
+- CurrencyDisplay now exposes FX mode metadata for Study Abroad conversions: live, cached, static_estimate, or unavailable.
+- Hero destinations now expose structured sourceType, sourceUrl, sourceName, lastChecked, confidence, and notes through the data trust model.
+- Regional estimates still need source enrichment before they can be displayed as anything stronger than estimates or needs verification.
 
 Required safe labels:
 
@@ -432,7 +431,7 @@ Verdict: **ready_with_warnings**
 
 - Risk considers budget vs upfront and first-year cost, funding source, scholarship reliance, duration, dependents, and destination confidence.
 - Risk depends on low-confidence regional estimates for non-hero destinations and should display: "Risk estimate is approximate because some costs need verification."
-- UK risk currently inherits stale GOV.UK financial requirement values through the hero model.
+- UK risk now inherits GOV.UK student visa financial requirement values through the hero model.
 - Canada upfront/risk copy should clarify that CAD 22,895 excludes tuition and transportation, so tuition must remain part of first-year affordability pressure.
 - Dependents are modeled with generic multipliers rather than country-specific official dependent requirements.
 
@@ -443,28 +442,20 @@ If any low-confidence or regional estimate contributes to a result, the UI shoul
 - Government visa, proof-of-funds, IHS, biometrics, SEVIS, and blocked-account values should display as official only when their exact value is tied to an official government URL and a last-checked date.
 - Tuition ranges should display as **Typical tuition range, verify with the university** unless tied to an official education portal or named university page.
 - Flights, arrival setup, rent, groceries, local transport, insurance estimates, and regional averages should display as **Estimated market cost, not official**.
-- FX conversions should display as estimates unless the rate source and FX date are shown.
+- FX conversions should display as static estimates unless the Study Abroad page is connected to a timestamped cached/live FX response.
 - Germany blocked-account copy should say **Proof-of-funds value needs official mission verification** until the exact mission/portal source is stored.
 - If an official source says actual living costs may be higher than the visa minimum, the result should repeat that warning near the risk display.
 
 ## Recommended next actions
 
-1. Update UK livingOfficial min/max and source to GOV.UK.
-2. Add structured source metadata per cost row: sourceType, sourceUrl, sourceTitle, sourceDate, lastChecked, confidence, supportsExactValue.
-3. Add FX provider/date or keep all USD/local conversions in estimate mode with visible FX caveat.
-4. Add country-specific dependant rules for UK, Canada, Australia, and any country where official dependant requirements exist.
-5. Split official visa/proof values from market living estimates in the result model.
-6. Start enrichment with the five hero destinations before claiming source-backed data for the expanded 100-country selector.
+1. Connect Study Abroad FX to /api/forex only when the UI can show cached/live mode, provider, and timestamp.
+2. Add country-specific dependant rules for UK, Canada, Australia, and any country where official dependant requirements exist.
+3. Add institution or official education sources for tuition ranges before presenting them as stronger than typical planning ranges.
+4. Add mission/Consular Services Portal source fields before presenting Germany blocked-account values as official government exact values.
+5. Start enrichment with the most-used expanded destinations before claiming source-backed data for the 100-country selector.
 
 ## Commands and evidence
 
 - Read current implementation: tools/study-abroad-cost/index.html, tools/study-abroad-cost/study-abroad-cost.js, tools/study-abroad-cost/study-abroad-backbone.js, tools/study-abroad-cost/study-abroad-upgrade.css, assets/js/components/product-backbone.js, tools/scholarship-finder/scholarship-finder-upgrade.js.
 - Verified current official source pages on 2026-05-20.
 - Machine-readable details are in audit-results/study-abroad-cost-data-quality.json.
-- Generated audit artifacts with node scripts/generate-study-abroad-cost-data-quality-audit.js.
-- Validation passed: node --check scripts/generate-study-abroad-cost-data-quality-audit.js.
-- Validation passed: node --check tools/study-abroad-cost/study-abroad-cost.js.
-- Validation passed: node --check tools/study-abroad-cost/study-abroad-backbone.js.
-- Validation passed: node --check assets/js/components/product-backbone.js.
-- Validation passed: npm test.
-- Validation passed: npm run build.

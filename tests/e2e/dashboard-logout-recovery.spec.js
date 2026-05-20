@@ -61,6 +61,8 @@ async function stubDashboardAuth(page) {
         contentType: 'application/javascript; charset=utf-8',
         body: `
           (function(window) {
+            if (window._afroAuthLoaded) { return; }
+            window._afroAuthLoaded = true;
             function readUser() {
               try { return JSON.parse(localStorage.getItem('afro_auth_v2') || 'null'); } catch(e) { return null; }
             }

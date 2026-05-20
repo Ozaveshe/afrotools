@@ -2533,9 +2533,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     return normalizeClientMeta({
       clientId: state.cloudClientId,
       companyId: state.cloudCompanyId,
-      name: elements.clientName && elements.clientName.value,
-      companyName: state.companyName || elements.clientName && elements.clientName.value,
-      country: elements.clientCountry && elements.clientCountry.value,
+      name: elements.clientName && elements.clientName.value || elements.companyName && elements.companyName.value,
+      companyName: state.companyName || elements.companyName && elements.companyName.value || elements.clientName && elements.clientName.value,
+      country: elements.clientCountry && elements.clientCountry.value || elements.defaultCountry && elements.defaultCountry.value,
       payrollContact: elements.clientPayrollContact && elements.clientPayrollContact.value || elements.setupPayrollContact && elements.setupPayrollContact.value,
       reviewerEmail: elements.clientReviewerEmail && elements.clientReviewerEmail.value || elements.setupReviewerEmail && elements.setupReviewerEmail.value,
       defaultCurrency: elements.clientCurrency && elements.clientCurrency.value || elements.setupCurrency && elements.setupCurrency.value,
@@ -4086,11 +4086,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   }
 
   function saveSetupMetadata() {
-    applyClientMeta(Object.assign({}, readClientForm(), {
+    saveClientMetadata(Object.assign({}, readClientForm(), {
       setupSavedAt: new Date().toISOString(),
       setupSavedMode: isCloudSignedIn() ? "account" : "device"
     }));
-    saveClientMetadata();
   }
 
   function renderAll() {
@@ -4131,10 +4130,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       var calc = calculateRow(row);
       var pack = getPack(row.country);
       return "<tr>"
-        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"employeeRecordId\"" + lockAttr() + " aria-label="Select option">" + renderEmployeeOptions(row.employeeRecordId) + "</select></td>"
-        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"name\" value=\"" + escapeHtml(row.name) + "\" placeholder=\"" + escapeHtml(t("placeholders.employeeName")) + "\"" + lockAttr() + " aria-label="Input value"></td>"
-        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"role\" value=\"" + escapeHtml(row.role) + "\" placeholder=\"" + escapeHtml(t("placeholders.role")) + "\"" + lockAttr() + " aria-label="Input value"></td>"
-        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"country\"" + lockAttr() + " aria-label="Select option">" + renderCountryOptions(row.country) + "</select></td>"
+        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"employeeRecordId\"" + lockAttr() + " aria-label=\"Select option\">" + renderEmployeeOptions(row.employeeRecordId) + "</select></td>"
+        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"name\" value=\"" + escapeHtml(row.name) + "\" placeholder=\"" + escapeHtml(t("placeholders.employeeName")) + "\"" + lockAttr() + " aria-label=\"Input value\"></td>"
+        + "<td><input class=\"apw-row-input\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"role\" value=\"" + escapeHtml(row.role) + "\" placeholder=\"" + escapeHtml(t("placeholders.role")) + "\"" + lockAttr() + " aria-label=\"Input value\"></td>"
+        + "<td><select class=\"apw-row-select\" data-row-id=\"" + escapeHtml(row.id) + "\" data-field=\"country\"" + lockAttr() + " aria-label=\"Select option\">" + renderCountryOptions(row.country) + "</select></td>"
         + moneyInput(row, "gross")
         + moneyInput(row, "allowances")
         + moneyInput(row, "overtime")
@@ -4171,12 +4170,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 
   function moneyInput(row, field) {
     return "<td><input class=\"apw-row-input money\" type=\"number\" min=\"0\" step=\"0.01\" data-row-id=\""
-      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-label="Input value"></td>";
+      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-label=\"Input value\"></td>";
   }
 
   function numberInput(row, field) {
     return "<td><input class=\"apw-row-input money\" type=\"number\" min=\"0\" step=\"0.5\" data-row-id=\""
-      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-label="Input value"></td>";
+      + escapeHtml(row.id) + "\" data-field=\"" + escapeHtml(field) + "\" value=\"" + inputNumber(row[field]) + "\"" + lockAttr() + " aria-label=\"Input value\"></td>";
   }
 
   function outputCell(value, currency, label) {
@@ -5714,8 +5713,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       });
   }
 
-  function saveClientMetadata() {
-    applyClientMeta(readClientForm());
+  function saveClientMetadata(clientMeta) {
+    applyClientMeta(clientMeta || readClientForm());
     saveState();
     syncSetupForm();
     renderSetupCompletion();
@@ -6203,7 +6202,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     var sample = column && column.samples.length ? column.samples.join(" | ") : "";
     return "<tr>"
       + "<td><div class=\"apw-import-field\">" + escapeHtml(fieldDef.label) + "</div><span class=\"apw-mini-badge " + badgeClass + "\">" + escapeHtml(requirement) + "</span></td>"
-      + "<td><select data-import-field=\"" + escapeHtml(fieldDef.key) + "\" aria-label="Select option">" + renderImportColumnOptions(selected) + "</select></td>"
+      + "<td><select data-import-field=\"" + escapeHtml(fieldDef.key) + "\" aria-label=\"Select option\">" + renderImportColumnOptions(selected) + "</select></td>"
       + "<td><div class=\"apw-import-sample\">" + escapeHtml(sample || "-") + "</div></td>"
       + "</tr>";
   }

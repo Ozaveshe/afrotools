@@ -27,6 +27,17 @@ function extractBetween(source, startToken, endToken) {
   return source.slice(start + startToken.length, end);
 }
 
+function extractFirstAvailableBetween(source, candidates, label) {
+  for (const [startToken, endToken] of candidates) {
+    const start = source.indexOf(startToken);
+    if (start < 0) continue;
+    const end = source.indexOf(endToken, start + startToken.length);
+    if (end < 0) continue;
+    return source.slice(start + startToken.length, end);
+  }
+  throw new Error(`Missing ${label}`);
+}
+
 global.window = {};
 global.document = {
   readyState: 'loading',
@@ -36,17 +47,25 @@ global.document = {
 };
 
 require(path.join(root, 'tools/study-abroad-cost/study-abroad-cost.js'));
+const heroSources = require(path.join(root, 'tools/study-abroad-cost/study-abroad-hero-sources.js'));
+const fxPolicy = require(path.join(root, 'tools/study-abroad-cost/study-abroad-fx-policy.js'));
+heroSources.applyHeroSourceMetadata(window.AfroStudyAbroadModel);
 const heroDestinations = window.AfroStudyAbroadModel.DESTINATIONS;
 
 const backboneSource = read('tools/study-abroad-cost/study-abroad-backbone.js');
-const fxRates = evaluateObjectLiteral(extractBetween(backboneSource, 't=', ',i='));
+const fxRates = fxPolicy.staticRatesToUsd;
 const regionProfiles = evaluateObjectLiteral(extractBetween(backboneSource, ',i=', '},r=') + '}');
-const countryLiteral = extractBetween(backboneSource, 'var u=', '],l=') + ']';
+const countryLiteral = extractFirstAvailableBetween(backboneSource, [
+  ['var u=', '],l='],
+  ['var c=', '],l='],
+], 'destination country array') + ']';
 const countries = Function(`
   "use strict";
-  function c(e,a,n,t,i,r,o){
+  function buildCountry(e,a,n,t,i,r,o){
     return { key:e, name:a, region:n, currency:t, profile:i||n, confidence:r||(("Middle East"===n||"Latin America"===n)?"low":"medium"), heroKey:o||"" };
   }
+  function c(e,a,n,t,i,r,o){ return buildCountry(e,a,n,t,i,r,o); }
+  function u(e,a,n,t,i,r,o){ return buildCountry(e,a,n,t,i,r,o); }
   return (${countryLiteral});
 `)();
 
@@ -234,6 +253,30 @@ function heroCurrency(country) {
   return country.symbol || country.currencyLabel;
 }
 
+function fxCostRow(currency) {
+  const meta = fxPolicy.getRateToUsd(currency);
+  return costRow({
+    field: `static_fx_${currency}_to_usd`,
+    value: meta ? meta.rate : null,
+    period: null,
+    sourceType: meta ? 'ESTIMATE_MARKET' : 'UNKNOWN_OR_UNVERIFIED',
+    sourceTitle: meta ? meta.provider : null,
+    sourceUrl: null,
+    sourceDate: meta ? meta.lastUpdated : null,
+    supportsExactValue: false,
+    currentFor2026: false,
+    costKind: categoryType.optional_cost,
+    confidence: meta ? 'low' : 'unknown',
+    displayLabel: meta ? 'Static FX estimate, not live' : 'FX unavailable',
+    action: meta
+      ? 'keep visible static_estimate label or connect Study Abroad to /api/forex with a timestamped cached/live response'
+      : 'show destination currency and USD only; hide local conversion until a rate exists',
+    notes: meta
+      ? `FX mode=${meta.mode}; provider=${meta.provider}; lastUpdated=${meta.lastUpdated || 'not available'}; refreshPolicy=${meta.refreshPolicy}`
+      : 'No FX rate exists for this currency; local conversion must not be fabricated.'
+  });
+}
+
 function addTuitionRows(costs, destination) {
   Object.keys(destination.tuition || {}).forEach((level) => {
     Object.keys(destination.tuition[level] || {}).forEach((field) => {
@@ -298,19 +341,7 @@ function addCommonHeroRows(costs, destination) {
     notes: 'The upgraded engine uses generic multipliers rather than country-specific official dependant funding rules.'
   }));
 
-  costs.push(costRow({
-    field: `static_fx_${heroCurrency(destination)}_to_usd`,
-    value: fxRates[heroCurrency(destination)],
-    period: null,
-    sourceType: 'UNKNOWN_OR_UNVERIFIED',
-    supportsExactValue: false,
-    currentFor2026: false,
-    costKind: categoryType.optional_cost,
-    confidence: 'unknown',
-    displayLabel: 'FX estimate, rate date/source missing',
-    action: 'add FX provider/date or mark all local/USD conversions as estimate',
-    notes: 'CurrencyDisplay can label estimates, but the static FX table has no source URL, timestamp, or refresh policy.'
-  }));
+  costs.push(fxCostRow(heroCurrency(destination)));
 }
 
 function buildHero(countryKey) {
@@ -321,40 +352,34 @@ function buildHero(countryKey) {
 
   if (countryKey === 'uk') {
     costs.push(costRow({
-      field: 'living_requirement_outside_london_current_app',
+      field: 'living_requirement_outside_london',
       value: destination.livingOfficial.min,
       period: '9_months',
       durationCapMonths: 9,
-      sourceType: 'UNKNOWN_OR_UNVERIFIED',
-      sourceUrl: destination.livingOfficial.source,
-      sourceTitle: 'UKCISA maintenance requirements news',
-      sourceDate: '2025-01-02',
-      sourceCategory: 'unknown',
-      supportsExactValue: false,
-      currentFor2026: false,
+      sourceType: 'OFFICIAL_GOVERNMENT',
+      source: sources.ukMoney,
+      supportsExactValue: destination.livingOfficial.min === currentOfficial.ukLivingOutside,
+      currentFor2026: destination.livingOfficial.min === currentOfficial.ukLivingOutside,
       costKind: categoryType.visa_requirement,
-      confidence: 'low',
-      displayLabel: 'Needs verification: UK proof-of-funds value is stale',
-      action: 'replace with GOV.UK GBP 1,171/month outside London for up to 9 months',
-      notes: `Current app value is GBP ${destination.livingOfficial.min}. GOV.UK currently gives GBP ${currentOfficial.ukLivingOutside} for 9 months outside London.`
+      confidence: destination.livingOfficial.min === currentOfficial.ukLivingOutside ? 'high' : 'low',
+      displayLabel: 'Official UK student visa financial requirement outside London',
+      action: destination.livingOfficial.min === currentOfficial.ukLivingOutside ? 'keep' : 'replace with current GOV.UK value',
+      notes: `GOV.UK currently gives GBP ${currentOfficial.ukLivingOutside} for 9 months outside London.`
     }));
     costs.push(costRow({
-      field: 'living_requirement_london_current_app',
+      field: 'living_requirement_london',
       value: destination.livingOfficial.max,
       period: '9_months',
       durationCapMonths: 9,
-      sourceType: 'UNKNOWN_OR_UNVERIFIED',
-      sourceUrl: destination.livingOfficial.source,
-      sourceTitle: 'UKCISA maintenance requirements news',
-      sourceDate: '2025-01-02',
-      sourceCategory: 'unknown',
-      supportsExactValue: false,
-      currentFor2026: false,
+      sourceType: 'OFFICIAL_GOVERNMENT',
+      source: sources.ukMoney,
+      supportsExactValue: destination.livingOfficial.max === currentOfficial.ukLivingLondon,
+      currentFor2026: destination.livingOfficial.max === currentOfficial.ukLivingLondon,
       costKind: categoryType.visa_requirement,
-      confidence: 'low',
-      displayLabel: 'Needs verification: UK London proof-of-funds value is stale',
-      action: 'replace with GOV.UK GBP 1,529/month in London for up to 9 months',
-      notes: `Current app value is GBP ${destination.livingOfficial.max}. GOV.UK currently gives GBP ${currentOfficial.ukLivingLondon} for 9 months in London.`
+      confidence: destination.livingOfficial.max === currentOfficial.ukLivingLondon ? 'high' : 'low',
+      displayLabel: 'Official UK student visa financial requirement in London',
+      action: destination.livingOfficial.max === currentOfficial.ukLivingLondon ? 'keep' : 'replace with current GOV.UK value',
+      notes: `GOV.UK currently gives GBP ${currentOfficial.ukLivingLondon} for 9 months in London.`
     }));
     costs.push(costRow({
       field: 'student_visa_application_fee',
@@ -646,19 +671,7 @@ function buildRegional(country) {
       notes: `Uses the ${country.profile || country.region} regional profile. No source URL or last-checked date is present in the app data.`
     }));
   });
-  costs.push(costRow({
-    field: `static_fx_${country.currency}_to_usd`,
-    value: fxRates[country.currency],
-    period: null,
-    sourceType: 'UNKNOWN_OR_UNVERIFIED',
-    supportsExactValue: false,
-    currentFor2026: false,
-    costKind: categoryType.optional_cost,
-    confidence: 'unknown',
-    displayLabel: 'FX estimate, rate date/source missing',
-    action: 'add FX provider/date or mark all local/USD conversions as estimate',
-    notes: 'Static FX table has no source URL, timestamp, or refresh policy.'
-  }));
+  costs.push(fxCostRow(country.currency));
   return {
     country: country.name,
     key: country.key,
@@ -686,27 +699,11 @@ const counts = allCosts.reduce((acc, item) => {
 const criticalIssues = [
   {
     severity: 'critical',
-    issue: 'UK proof-of-funds values are stale',
-    currentAppValue: 'GBP 10,224 outside London and GBP 13,347 London',
-    verifiedCurrentValue: 'GBP 10,539 outside London and GBP 13,761 London for up to 9 months',
-    sourceUrl: sources.ukMoney.url,
-    action: 'Replace UK livingOfficial min/max and source with GOV.UK before presenting these as official.'
-  },
-  {
-    severity: 'critical',
     issue: 'Expanded destination regional values have no source URLs or last-checked dates',
     currentAppValue: 'Regional profiles drive up to 100 country estimates',
     verifiedCurrentValue: null,
     sourceUrl: null,
     action: 'Keep visible estimate labels and add source methodology before advertising as reliable country data.'
-  },
-  {
-    severity: 'high',
-    issue: 'Static FX table has no provider, timestamp, or refresh policy',
-    currentAppValue: 'Hardcoded FX rates in study-abroad-backbone.js',
-    verifiedCurrentValue: null,
-    sourceUrl: null,
-    action: 'Show FX date/source or keep CurrencyDisplay in estimate mode for all USD/local conversions.'
   },
   {
     severity: 'high',
@@ -731,7 +728,7 @@ const riskEngineValidation = {
   findings: [
     'Risk considers budget vs upfront and first-year cost, funding source, scholarship reliance, duration, dependents, and destination confidence.',
     'Risk depends on low-confidence regional estimates for non-hero destinations and should display: "Risk estimate is approximate because some costs need verification."',
-    'UK risk currently inherits stale GOV.UK financial requirement values through the hero model.',
+    'UK risk now inherits GOV.UK student visa financial requirement values through the hero model.',
     'Canada upfront/risk copy should clarify that CAD 22,895 excludes tuition and transportation, so tuition must remain part of first-year affordability pressure.',
     'Dependents are modeled with generic multipliers rather than country-specific official dependent requirements.'
   ]
@@ -741,9 +738,9 @@ const uiSourceLabelValidation = {
   verdict: 'partial',
   findings: [
     'The shared LastUpdatedSourceInfo component can display last checked, source link, confidence, and status.',
-    'CurrencyDisplay already marks values as estimates when called with estimate:true, but does not expose FX source/date.',
-    'Study Abroad assumption cards include one source link per destination, not per cost field.',
-    'No structured sourceType/sourceUrl/confidence model exists for every Study Abroad cost category yet.'
+    'CurrencyDisplay now exposes FX mode metadata for Study Abroad conversions: live, cached, static_estimate, or unavailable.',
+    'Hero destinations now expose structured sourceType, sourceUrl, sourceName, lastChecked, confidence, and notes through the data trust model.',
+    'Regional estimates still need source enrichment before they can be displayed as anything stronger than estimates or needs verification.'
   ],
   requiredLabels: [
     'Official visa requirement',
@@ -755,6 +752,17 @@ const uiSourceLabelValidation = {
     'Source link',
     'Confidence level'
   ]
+};
+
+const fxPolicyValidation = {
+  verdict: 'ready_with_warnings',
+  findings: [
+    'Study Abroad FX uses static_estimate mode, not live mode.',
+    'Each static rate has baseCurrency, quoteCurrency, rate, provider, mode, refreshPolicy, and confidence.',
+    'lastUpdated is intentionally null for static estimates until Study Abroad consumes /api/forex or a timestamped cache.',
+    'Missing FX should hide fabricated local-currency conversion and keep destination/USD values available where possible.'
+  ],
+  existingLiveSurfaces: fxPolicy.LIVE_SURFACES
 };
 
 const audit = {
@@ -777,6 +785,7 @@ const audit = {
   heroDestinationsAudited: heroAudits.map((destination) => destination.country),
   riskEngineValidation,
   uiSourceLabelValidation,
+  fxPolicyValidation,
   destinations
 };
 
@@ -821,6 +830,7 @@ const sourceReliabilityRows = [
   ['EducationUSA finance guide', sources.usEducation.url, 'medium', 'Official education source supports strategy warning that costs vary by institution/location, not a single exact value.'],
   ['German Federal Foreign Office blocked account page', sources.germanyBlocked.url, 'medium', 'Official government source confirms proof logic but delegates exact amount to mission/portal.'],
   ['DAAD cost guide', sources.daadCosts.url, 'medium', 'Official education source supports EUR 992/month as planning guidance, but not a mission-specific exact visa source.'],
+  ['Study Abroad FX policy', 'missing', 'low', 'Static estimate mode now includes provider and refresh policy, but the page is not yet connected to /api/forex cached/live timestamps.'],
   ['Regional AfroTools estimates', 'missing', 'low', 'No source URL, source title, or last-checked date in app data.']
 ].map((row) => `| ${row[0]} | ${row[1] === 'missing' ? 'missing' : `[source](${row[1]})`} | ${row[2]} | ${row[3]} |`);
 
@@ -830,9 +840,9 @@ Generated: ${generatedAt}
 
 ## Overall verdict
 
-**Not ready.**
+**Not ready for full source-backed claims.**
 
-The tool is useful as a planning engine, but the current data layer is not yet safe to present as fully source-backed 2026 cost truth. Official visa-fee and proof-of-funds fields exist for the five hero destinations, but UK living/proof values are stale, Germany proof-of-funds needs mission/portal verification, tuition ranges are not institution-backed, regional data is unsourced, and FX rates have no source/date.
+The tool is useful as a planning engine, and the five hero destinations now have improved source metadata for the official visa/proof fields verified in this pass. It is still not safe to present the whole product as fully source-backed 2026 cost truth because Germany proof-of-funds needs mission/portal verification, tuition ranges are not institution-backed, and regional data is unsourced. FX conversions now have explicit static-estimate metadata, but they are still not live rates.
 
 ## Summary counts
 
@@ -880,7 +890,7 @@ ${expandedRows.join('\n')}
 
 ### United Kingdom
 
-- Current app values for UK living support use GBP 1,136/month outside London and GBP 1,483/month London from UKCISA guidance. Current GOV.UK values are GBP 1,171/month outside London and GBP 1,529/month London, each for up to 9 months.
+- UK living support now uses current GOV.UK values: GBP 1,171/month outside London and GBP 1,529/month London, each for up to 9 months.
 - Student visa fee GBP 558 and IHS GBP 776/year are source-backed by GOV.UK.
 - Dependant funds are not modeled exactly; GOV.UK has country-specific dependant amounts.
 - Tuition ranges remain typical estimates and must point users to CAS/university pricing.
@@ -933,18 +943,17 @@ If any low-confidence or regional estimate contributes to a result, the UI shoul
 - Government visa, proof-of-funds, IHS, biometrics, SEVIS, and blocked-account values should display as official only when their exact value is tied to an official government URL and a last-checked date.
 - Tuition ranges should display as **Typical tuition range, verify with the university** unless tied to an official education portal or named university page.
 - Flights, arrival setup, rent, groceries, local transport, insurance estimates, and regional averages should display as **Estimated market cost, not official**.
-- FX conversions should display as estimates unless the rate source and FX date are shown.
+- FX conversions should display as static estimates unless the Study Abroad page is connected to a timestamped cached/live FX response.
 - Germany blocked-account copy should say **Proof-of-funds value needs official mission verification** until the exact mission/portal source is stored.
 - If an official source says actual living costs may be higher than the visa minimum, the result should repeat that warning near the risk display.
 
 ## Recommended next actions
 
-1. Update UK livingOfficial min/max and source to GOV.UK.
-2. Add structured source metadata per cost row: sourceType, sourceUrl, sourceTitle, sourceDate, lastChecked, confidence, supportsExactValue.
-3. Add FX provider/date or keep all USD/local conversions in estimate mode with visible FX caveat.
-4. Add country-specific dependant rules for UK, Canada, Australia, and any country where official dependant requirements exist.
-5. Split official visa/proof values from market living estimates in the result model.
-6. Start enrichment with the five hero destinations before claiming source-backed data for the expanded 100-country selector.
+1. Connect Study Abroad FX to /api/forex only when the UI can show cached/live mode, provider, and timestamp.
+2. Add country-specific dependant rules for UK, Canada, Australia, and any country where official dependant requirements exist.
+3. Add institution or official education sources for tuition ranges before presenting them as stronger than typical planning ranges.
+4. Add mission/Consular Services Portal source fields before presenting Germany blocked-account values as official government exact values.
+5. Start enrichment with the most-used expanded destinations before claiming source-backed data for the 100-country selector.
 
 ## Commands and evidence
 

@@ -163,7 +163,7 @@ test('Scholarship Finder loads with deterministic API feed', async ({ page }) =>
 
   await expect(page.getByRole('heading', { name: /Scholarship Finder/i })).toBeVisible();
   await expect(page.locator('#scholarshipGrid')).toBeVisible();
-  await expect(page.locator('#feedStatus')).toContainText(/Live scholarship feed/i, { timeout: 10000 });
+  await expect(page.locator('#feedStatus')).toContainText(/Live scholarship feed|Source mode: live/i, { timeout: 10000 });
   expect(fatal).toEqual([]);
 });
 

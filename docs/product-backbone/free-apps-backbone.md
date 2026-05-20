@@ -89,6 +89,73 @@ afrotools:free-app-email-captures:v1
 
 Email capture is optional and must never block tool use.
 
+## FX Labels
+
+CurrencyDisplay callers that show converted values should pass FX metadata when it is available:
+
+```js
+window.AfroProductBackbone.renderCurrencyDisplay(node, {
+  amount: 12000,
+  currency: 'GBP',
+  usdAmount: 15240,
+  localAmount: 20500000,
+  localCurrency: 'NGN',
+  estimate: true,
+  fxRates: [
+    {
+      baseCurrency: 'GBP',
+      quoteCurrency: 'USD',
+      rate: 1.27,
+      provider: 'AfroTools static planning-rate table',
+      lastUpdated: null,
+      mode: 'static_estimate',
+      refreshPolicy: 'Manual review only',
+      confidence: 'estimate'
+    }
+  ],
+  fxMissing: []
+});
+```
+
+Allowed FX modes are `live`, `cached`, and `static_estimate`. Only show `Live rate` when the value came from a live request. Cached rates need a timestamp. Static estimates must say `Static estimate`, and missing local FX should keep the destination currency visible while showing local currency as unavailable.
+
+## Data Confidence Gates
+
+Free apps that mix official fields with broad estimates should add an app-level confidence gate before showing high-precision results. Study Abroad now uses:
+
+- `Hero verified`: the original hero destination model with stronger source metadata.
+- `Ready for planning estimate`: useful regional planning estimate with complete model coverage, but not an official cost database.
+- `Partial source coverage`: broad estimates where some important country-specific sources are still missing.
+- `Needs verification`: weak coverage that should show ranges, source gaps, and a `Planning estimate only` badge.
+
+Low-confidence results should soften dangerous precision by showing ranges instead of exact-looking totals. Every confidence gate should expose a feedback loop for `Suggest an update`, `Report outdated cost`, and `Submit official source`.
+
+Study Abroad source feedback is stored locally first at:
+
+```text
+afrotools:study-abroad-source-feedback:v1
+```
+
+Study Abroad also exports an internal source-gap queue:
+
+```text
+audit-results/study-abroad-source-gap-report.json
+audit-results/study-abroad-source-gap-report.csv
+```
+
+Run:
+
+```bash
+npm run study-abroad:source-gaps
+```
+
+Additional Study Abroad confidence events:
+
+- `study_abroad_source_panel_opened`
+- `study_abroad_report_outdated_clicked`
+- `study_abroad_source_suggested`
+- `study_abroad_low_confidence_result_viewed`
+
 ## Accessibility Rules
 
 - Risk states must include text labels. Do not rely on color alone.

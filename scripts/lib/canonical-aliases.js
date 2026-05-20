@@ -18,10 +18,12 @@ const IGNORE_DIRS = new Set([
   "docs",
   "netlify",
   "node_modules",
+  "playwright-report",
   "prompts",
   "reports",
   "scripts",
   "supabase",
+  "test-results",
   "tests",
 ]);
 
