@@ -14,10 +14,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<link rel="stylesheet" href="/assets/css/product-backbone.css?v=ef0f546e">
+<link rel="stylesheet" href="/tools/scholarship-finder/scholarship-finder-upgrade.css?v=0a581710">
 <script src="/assets/js/components/related-tools-data.min.js?v=c04e5bdd" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script><script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<script src="/assets/js/components/product-backbone.js?v=6de7d198" defer></script>
+<script src="/tools/scholarship-finder/scholarship-finder-upgrade.js?v=56a351d9" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#002D6B 0%,#007AFF 50%,#0063D1 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -380,6 +384,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-body">
   <p class="summary-text" id="summaryText">Start with a quick scholarship check or build your full profile to see stronger fit explanations and save scholarships into a shortlist.</p>
   <p class="feed-note" id="feedStatus">Checking scholarship source status.</p>
+  <div id="scholarshipSourceInfo" class="apb-stack" aria-live="polite"></div>
   <div class="summary-grid">
     <div class="summary-item"><strong id="summaryStrong">0</strong><span>Strong</span></div>
     <div class="summary-item"><strong id="summaryGood">0</strong><span>Good</span></div>
@@ -404,6 +409,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   <div class="skel-card skeleton"></div>
   <div class="skel-card skeleton"></div>
 </div>
+
+<div id="scholarshipLoadMore"></div>
 
 <!-- Workflow CTA -->
 <div class="workflow-cta" id="workflowCta">
@@ -472,6 +479,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     message: 'Checking scholarship source status.',
     isDegraded: false
   };
+  var SCHOLARSHIP_PAGE_SIZE = 12;
+  var visibleResultsLimit = SCHOLARSHIP_PAGE_SIZE;
   var GPA_BANDS = {
     elite: { value: 3.8, scale: '4.0' },
     strong: { value: 3.4, scale: '4.0' },
@@ -561,6 +570,36 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   function getSavedScholarshipRecord(target) {
     var key = typeof target === 'string' ? target : getScholarshipKey(target);
     return key ? (savedScholarshipMap[key] || null) : null;
+  }
+
+  function saveScholarshipToBackbone(scholarship, mode) {
+    var Backbone = window.AfroProductBackbone;
+    if (!Backbone || !scholarship) return;
+    try {
+      Backbone.saveResult({
+        toolId: 'scholarship-finder',
+        name: scholarship.name || scholarship.title || 'Saved scholarship',
+        payload: {
+          scholarshipKey: getScholarshipKey(scholarship),
+          name: scholarship.name || scholarship.title || '',
+          provider: scholarship.provider || '',
+          funding: scholarship.funding || '',
+          destinations: scholarship.destinations || [],
+          levels: scholarship.levels || [],
+          deadlineText: scholarship.deadline_text || '',
+          deadlineDate: scholarship.deadline_date || '',
+          officialLink: scholarship.application_url || scholarship.info_url || '',
+          mode: mode || 'local'
+        }
+      });
+    } catch (error) {
+      if (Backbone.ProductAnalytics) {
+        Backbone.ProductAnalytics.trackSave('scholarship-finder', {
+          save_mode: mode || 'local',
+          save_error: true
+        });
+      }
+    }
   }
 
   function deriveNextSavedDeadline(items) {
@@ -679,6 +718,21 @@ function formatScholarshipCount(count) {
       ? ((scholarshipFeedMeta.label ? scholarshipFeedMeta.label + ': ' : '') + scholarshipFeedMeta.message)
       : 'Checking scholarship source status.';
     note.className = 'feed-note' + (scholarshipFeedMeta && scholarshipFeedMeta.isDegraded ? ' warn' : '');
+    renderSourceInfo();
+  }
+
+  function renderSourceInfo() {
+    var target = getEl('scholarshipSourceInfo');
+    var Backbone = window.AfroProductBackbone;
+    if (!target || !Backbone || !Backbone.renderLastUpdatedSourceInfo) return;
+    Backbone.renderLastUpdatedSourceInfo(target, {
+      label: scholarshipFeedMeta && scholarshipFeedMeta.label ? scholarshipFeedMeta.label : 'Scholarship feed',
+      message: scholarshipFeedMeta && scholarshipFeedMeta.message ? scholarshipFeedMeta.message : '',
+      status: scholarshipFeedMeta && (scholarshipFeedMeta.mode || scholarshipFeedMeta.tone) ? (scholarshipFeedMeta.mode || scholarshipFeedMeta.tone) : 'unknown',
+      lastChecked: scholarshipFeedMeta && (scholarshipFeedMeta.lastCheckedAt || scholarshipFeedMeta.cachedAt || scholarshipFeedMeta.updatedAt),
+      isDegraded: scholarshipFeedMeta && scholarshipFeedMeta.isDegraded,
+      sourceUrl: scholarshipFeedMeta && scholarshipFeedMeta.sourceUrl ? scholarshipFeedMeta.sourceUrl : ''
+    });
   }
 
   function listAsPhrase(items) {
@@ -922,19 +976,30 @@ function formatScholarshipCount(count) {
 
   function renderGrid(results) {
     var grid = getEl('scholarshipGrid');
+    var loadMoreTarget = getEl('scholarshipLoadMore');
     if (!results.length) {
       var emptyMessage = shortlistOnly
         ? (shortlist.length ? 'No shortlisted scholarships match your current filters. Try clearing a filter or switch back to all matches.' : 'You have not saved any scholarships yet. Use the shortlist button on a scholarship card to keep it here.')
         : 'No scholarships match your filters. Try broadening your search.';
-      grid.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:40px;font-size:.88rem;grid-column:1/-1">' + escapeHtml(emptyMessage) + '</p>';
+      if (loadMoreTarget) loadMoreTarget.innerHTML = '';
+      if (window.AfroProductBackbone && window.AfroProductBackbone.renderEmptyState) {
+        window.AfroProductBackbone.renderEmptyState(grid, {
+          icon: '0',
+          title: shortlistOnly ? 'No saved matches here' : 'No scholarships match this filter',
+          message: emptyMessage
+        });
+      } else {
+        grid.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:40px;font-size:.88rem;grid-column:1/-1">' + escapeHtml(emptyMessage) + '</p>';
+      }
       return;
     }
 
     var html = '';
     var DEST_LABELS = {uk:'UK',us:'USA',eu:'Europe',africa:'Africa',canada:'Canada',australia:'Australia',global:'Global'};
     var LEVEL_SHORT = {undergrad:'UG',masters:'MSc',phd:'PhD',postdoc:'PostDoc'};
+    var shownResults = results.slice(0, visibleResultsLimit);
 
-    results.forEach(function (scholarship) {
+    shownResults.forEach(function (scholarship) {
       var fundClass = scholarship.funding === 'full' ? 'full' : 'partial';
       var fundLabel = scholarship.funding === 'full' ? 'FULLY FUNDED' : 'PARTIAL';
       var levels = (scholarship.levels || []).map(function (level) { return LEVEL_SHORT[level] || level; }).join(', ');
@@ -996,6 +1061,26 @@ function formatScholarshipCount(count) {
     });
 
     grid.innerHTML = html;
+    renderLoadMore(results);
+  }
+
+  function renderLoadMore(results) {
+    var target = getEl('scholarshipLoadMore');
+    var Backbone = window.AfroProductBackbone;
+    if (!target) return;
+    if (!Backbone || !Backbone.renderLoadMore) {
+      target.innerHTML = '';
+      return;
+    }
+    Backbone.renderLoadMore(target, {
+      offset: Math.min(visibleResultsLimit, results.length),
+      limit: SCHOLARSHIP_PAGE_SIZE,
+      total: results.length,
+      label: 'Load more scholarships'
+    }, function () {
+      visibleResultsLimit += SCHOLARSHIP_PAGE_SIZE;
+      renderGrid(results);
+    });
   }
 
   function applyProfileState(mode, message, scrollResults) {
@@ -1025,6 +1110,9 @@ function formatScholarshipCount(count) {
   }
 
   function loadScholarships() {
+    if (window.AfroProductBackbone && window.AfroProductBackbone.renderLoadingSkeleton) {
+      window.AfroProductBackbone.renderLoadingSkeleton(getEl('scholarshipGrid'), { count: 6, variant: 'list' });
+    }
     var loader = window.AfroScholarshipFeed && typeof window.AfroScholarshipFeed.load === 'function'
       ? window.AfroScholarshipFeed.load()
       : fetch('/api/scholarships')
@@ -1234,6 +1322,7 @@ function formatScholarshipCount(count) {
             notify(payload && payload.mode === 'account' ? 'Scholarship removed from your saved plan.' : 'Scholarship removed from this device shortlist.', 'success');
           } else {
             recordScholarshipActivity('Saved scholarship shortlist', (scholarship || {}).name || 'Saved scholarship');
+            saveScholarshipToBackbone(scholarship, payload && payload.mode ? payload.mode : 'account');
             notify(payload && payload.mode === 'account' ? 'Scholarship saved to your education plan.' : 'Scholarship saved on this device. Sign in to sync reminders.', 'success');
           }
           applyFilters();
@@ -1248,6 +1337,7 @@ function formatScholarshipCount(count) {
     if (index === -1) {
       shortlist.unshift(key);
       recordScholarshipActivity('Saved scholarship shortlist', (scholarship || {}).name || 'Saved scholarship');
+      saveScholarshipToBackbone(scholarship, savedScholarshipState.isSignedIn ? 'local-fallback' : 'local');
     } else {
       shortlist.splice(index, 1);
       recordScholarshipActivity('Removed scholarship shortlist', (scholarship || {}).name || 'Removed scholarship');
@@ -1313,6 +1403,7 @@ function formatScholarshipCount(count) {
 
   window.applyFilters = function () {
     if (isLoading) return;
+    visibleResultsLimit = SCHOLARSHIP_PAGE_SIZE;
 
     var level = getEl('level').value;
     var dest = getEl('destination').value;
@@ -1366,6 +1457,13 @@ function formatScholarshipCount(count) {
     }
 
     getEl('countBadge').textContent = results.length + (shortlistOnly ? ' shortlisted scholarships' : ' scholarships found');
+    if (window.AfroProductBackbone && window.AfroProductBackbone.ProductAnalytics) {
+      window.AfroProductBackbone.ProductAnalytics.trackResultGenerated('scholarship-finder', {
+        result_count: results.length,
+        shortlist_only: shortlistOnly,
+        mode: entryMode
+      });
+    }
     renderGrid(results);
     updateSummary(results);
   };

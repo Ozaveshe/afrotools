@@ -26,6 +26,7 @@ const BLOCKED_TOP_LEVEL_DIRS = new Set([
   'admin',
   'afrotools-sentinel',
   'artifacts',
+  'audit-results',
   'dist',
   'docs',
   'lang',
@@ -125,6 +126,41 @@ function assertInsideWorkspace(target) {
   }
 }
 
+function sleep(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function removePathWithRetry(target) {
+  const retryable = new Set(['EBUSY', 'ENOTEMPTY', 'EPERM', 'UNKNOWN']);
+  let lastError = null;
+
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    try {
+      fs.rmSync(target, {
+        recursive: true,
+        force: true,
+        maxRetries: 5,
+        retryDelay: 200
+      });
+      return;
+    } catch (error) {
+      lastError = error;
+      if (!retryable.has(error.code)) throw error;
+      sleep(Math.min(1000, 150 + attempt * 50));
+    }
+  }
+
+  throw lastError;
+}
+
+function clearDistWithRetry() {
+  if (!fs.existsSync(DIST)) return;
+
+  for (const entry of fs.readdirSync(DIST)) {
+    removePathWithRetry(path.join(DIST, entry));
+  }
+}
+
 function isHexVerificationFile(fileName) {
   return /^[a-f0-9]{32}\.txt$/i.test(fileName);
 }
@@ -204,6 +240,7 @@ function verifyDist() {
     'afrotools-mission-control.html',
     'afrotools-sentinel',
     'artifacts',
+    'audit-results',
     'fr/docs',
     'fr/widgets/iframe/template.html',
     'mc-7a2f9x.html',
@@ -233,7 +270,7 @@ function verifyDist() {
 
 function main() {
   assertInsideWorkspace(DIST);
-  fs.rmSync(DIST, { recursive: true, force: true });
+  clearDistWithRetry();
   fs.mkdirSync(DIST, { recursive: true });
 
   const counters = { copiedFiles: 0, skippedDirs: 0, skippedFiles: 0 };

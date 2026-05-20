@@ -62,6 +62,27 @@ async function sb(method, path, body, upsert) {
   return parsed;
 }
 
+function newsMonitorSource(event) {
+  return isScheduled(event) ? 'Netlify Scheduled Function' : 'Manual news monitor endpoint';
+}
+
+async function recordNewsMonitorRun(status, source, recordsCount, errorMessage, durationMs, dryRun) {
+  if (dryRun) return;
+  try {
+    await sb('POST', 'scraper_runs', {
+      scraper_id: 'afrostream-news-monitor',
+      status: status,
+      source: source,
+      records_count: recordsCount || 0,
+      error_message: errorMessage || null,
+      duration_ms: durationMs || 0,
+      fetched_at: new Date().toISOString()
+    });
+  } catch (e) {
+    console.error('AfroStream news monitor run logging failed:', e.message);
+  }
+}
+
 async function updateSourceHealth(source, fields, dryRun) {
   if (dryRun || !source || !source.id) return;
   try {
@@ -218,6 +239,8 @@ exports.handler = async function(event) {
   if (!isAuthorized(event)) return { statusCode: 401, headers: headers(), body: JSON.stringify({ success: false, error: 'Unauthorized' }) };
   if (!SUPABASE_SERVICE_KEY) return { statusCode: 500, headers: headers(), body: JSON.stringify({ success: false, error: 'Supabase service key not configured' }) };
 
+  var runStart = Date.now();
+  var runSource = newsMonitorSource(event);
   var dryRun = isDryRun(event);
   var summary = {
     dry_run: dryRun,
@@ -247,6 +270,14 @@ exports.handler = async function(event) {
       });
     summary.sources = sources.length;
     if (!sources.length) {
+      await recordNewsMonitorRun(
+        'error',
+        runSource,
+        0,
+        'No active RSS sources configured',
+        Date.now() - runStart,
+        dryRun
+      );
       return { statusCode: 200, headers: headers(), body: JSON.stringify({ success: true, message: 'No RSS sources configured', data: summary }) };
     }
 
@@ -371,8 +402,24 @@ exports.handler = async function(event) {
       }
     }
 
+    await recordNewsMonitorRun(
+      summary.errors.length ? 'error' : 'ok',
+      runSource,
+      summary.inserted_news + summary.mentions,
+      summary.errors.length ? summary.errors.slice(0, 12).join(' | ').slice(0, 1000) : null,
+      Date.now() - runStart,
+      dryRun
+    );
     return { statusCode: 200, headers: headers(), body: JSON.stringify({ success: true, data: summary }) };
   } catch (e) {
+    await recordNewsMonitorRun(
+      'error',
+      runSource,
+      summary.inserted_news + summary.mentions,
+      (e.message || 'News monitor failed').slice(0, 1000),
+      Date.now() - runStart,
+      dryRun
+    );
     return { statusCode: 500, headers: headers(), body: JSON.stringify({ success: false, error: e.message, data: summary }) };
   }
 };

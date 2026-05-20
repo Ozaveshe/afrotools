@@ -1,6 +1,6 @@
 # AfroTools Comprehensive Audit Summary
 
-Generated: 2026-05-19T08:11:44.167Z
+Generated: 2026-05-19T20:43:14.114Z
 
 ## Crawl Totals
 
@@ -11,7 +11,7 @@ Generated: 2026-05-19T08:11:44.167Z
 - Broken pages: 0
 - Broken internal links: 0
 - Broken images: 0
-- Metadata issues: 3355
+- Metadata issues: 3354
 - Accessibility issues: 0
 - Dark-mode risks: 456
 - Copy-quality issues: 135
@@ -23,7 +23,7 @@ Generated: 2026-05-19T08:11:44.167Z
 | Issue | Count |
 | --- | ---: |
 | hard_wide_css | 986 |
-| description_length | 936 |
+| description_length | 935 |
 | missing_h1 | 666 |
 | title_length | 531 |
 | missing_og_description | 343 |
