@@ -348,6 +348,7 @@ async function syncKick() {
       var isLive = channelData.is_live || (channelData.livestream && channelData.livestream.is_live);
       if (isLive) {
         var streamTitle = (channelData.livestream && channelData.livestream.session_title) || channelData.stream_title || 'Live on Kick';
+        var kickViewers = Number((channelData.livestream && channelData.livestream.viewer_count) || channelData.viewer_count || channelData.viewers || 0) || 0;
         var kickThumb = normalizeThumbnailUrl((channelData.livestream && channelData.livestream.thumbnail) || channelData.banner_image);
         var streamData = {
           creator_name: creator.name,
@@ -357,6 +358,7 @@ async function syncKick() {
           country: creator.country || '',
           stream_date: new Date().toISOString(),
           url: 'https://kick.com/' + slug,
+          viewer_count: kickViewers,
           is_live: true,
           is_published: true
         };
@@ -667,6 +669,7 @@ async function syncTwitch() {
       country: liveCreator.country || '',
       stream_date: new Date().toISOString(),
       url: 'https://twitch.tv/' + liveUname,
+      viewer_count: Number(liveStream.viewer_count || 0) || 0,
       is_live: true,
       is_published: true
     };
@@ -730,17 +733,27 @@ async function computeScores() {
 
   try {
     // Fetch all creators with their per-platform data
-    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,primary_platform,subscribers,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,net_worth,frequency,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
+    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,primary_platform,subscribers,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,peak_viewers,net_worth,frequency,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
     if (!Array.isArray(creators) || !creators.length) return results;
 
     // Fetch stream activity (last 30 days)
     var thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString();
-    var streams = await sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + thirtyDaysAgo + '&select=creator_name');
+    var streams = await sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + thirtyDaysAgo + '&select=creator_id,creator_name,viewer_count');
     var streamCounts = {};
+    var streamPeaks = {};
     if (Array.isArray(streams)) {
       streams.forEach(function(s) {
         var key = String(s.creator_name || '').trim().toLowerCase();
-        if (key) streamCounts[key] = (streamCounts[key] || 0) + 1;
+        var idKey = s.creator_id ? 'id:' + s.creator_id : '';
+        var viewers = Number(s.viewer_count || 0) || 0;
+        if (key) {
+          streamCounts[key] = (streamCounts[key] || 0) + 1;
+          streamPeaks[key] = Math.max(streamPeaks[key] || 0, viewers);
+        }
+        if (idKey) {
+          streamCounts[idKey] = (streamCounts[idKey] || 0) + 1;
+          streamPeaks[idKey] = Math.max(streamPeaks[idKey] || 0, viewers);
+        }
       });
     }
 
@@ -791,7 +804,10 @@ async function computeScores() {
       // 6. Stream consistency (streams in last 30 days — not easily tied by ID here, skip for now)
 
       // ── SCORE CALCULATION ──
-      var streamCount30d = streamCounts[String(cr.name || '').trim().toLowerCase()] || 0;
+      var nameStreamKey = String(cr.name || '').trim().toLowerCase();
+      var idStreamKey = 'id:' + cr.id;
+      var streamCount30d = Math.max(streamCounts[idStreamKey] || 0, streamCounts[nameStreamKey] || 0);
+      var peakViewers = Math.max(Number(cr.peak_viewers || 0) || 0, streamPeaks[idStreamKey] || 0, streamPeaks[nameStreamKey] || 0);
       var followerScore = logScore(totalFollowers, 200000000); // 200M = max (Khaby-level)
       var viewScore = logScore(totalViews, 10000000000);       // 10B = max
       var growthScore = Math.min(100, Math.max(0, growthPct * 5)); // 20% growth = 100
@@ -815,6 +831,7 @@ async function computeScores() {
       try {
         await sb('PATCH', 'as_creators?id=eq.' + cr.id, {
           total_followers: totalFollowers,
+          peak_viewers: peakViewers,
           afro_score: afroScore,
           afro_tier: tier,
           growth_pct: Math.round(growthPct * 100) / 100,

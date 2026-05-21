@@ -422,6 +422,36 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   min-width: 48px;
   flex-shrink: 0;
 }
+.as-cal-stream-media {
+  width: 72px;
+  height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#E8F2FF,#FFF4E8);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(0,0,0,.05);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.as-cal-stream-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, rgba(15,23,42,.16));
+}
+.as-cal-stream-media-initials {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .72rem;
+  font-weight: 800;
+  color: #fff;
+  z-index: 1;
+  text-shadow: 0 1px 8px rgba(15,23,42,.3);
+}
 .as-cal-stream-plat {
   width: 4px;
   height: 36px;
@@ -464,6 +494,22 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   background: rgba(0,0,0,0.04);
   color: #64748b;
   text-transform: capitalize;
+}
+.as-cal-stream-live {
+  font-size: .625rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+.as-cal-stream-viewers {
+  font-size: .625rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: #EEF2FF;
+  color: #2563EB;
 }
 .as-cal-stream-duration {
   font-size: .625rem;
@@ -704,10 +750,10 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       <a href="/tools/afrostream/calendar" data-as-nav="calendar">Calendar</a>
       <a href="/tools/afrostream/methodology/" data-as-nav="methodology">Methodology</a>
       <a href="/tools/afrostream/university/" data-as-nav="university">University</a>
-      <a href="/tools/afrostream/submit" data-as-nav="submit">Submit</a>
+      <a href="/tools/afrostream/community" data-as-nav="submit">Submit</a>
     </div>
     <div class="as-subnav-actions">
-      <a href="/tools/afrostream/submit" class="as-btn as-btn-outline as-btn-sm">Submit Creator</a>
+      <a href="/tools/afrostream/community" class="as-btn as-btn-outline as-btn-sm">Submit Tip</a>
     </div>
   </div>
 </nav>
@@ -783,7 +829,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     <div class="as-cal-cta-content">
       <h3>Going live?</h3>
       <p>Submit a creator or stream tip and help more African content fans discover what is live.</p>
-      <a href="/tools/afrostream/submit" class="as-cal-cta-btn">Submit a Creator &#8594;</a>
+      <a href="/tools/afrostream/community" class="as-cal-cta-btn">Submit a Creator or Stream &#8594;</a>
     </div>
   </section>
 
@@ -824,57 +870,10 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     'DZ': '\uD83C\uDDE9\uD83C\uDDFF'
   };
 
-  /* ── DEMO STREAMS (40 across current month) ────────── */
+  /* ── CURRENT MONTH STATE ────────── */
   var now = new Date();
   var y = now.getFullYear();
   var m = now.getMonth();
-
-  function d(day, hour, min) {
-    return new Date(y, m, day, hour, min || 0);
-  }
-
-  var DEMO_STREAMS = [
-    { id:1,  creator:'NaijaTech', title:'Weekly Tech News Roundup', platform:'youtube', cat:'tech', country:'Nigeria', time:d(1,14,0), duration:90, url:'#' },
-    { id:2,  creator:'GamerQueenKE', title:'Call of Duty Warzone \u2014 Road to 100K', platform:'twitch', cat:'gaming', country:'Kenya', time:d(2,18,0), duration:180, url:'#' },
-    { id:3,  creator:'AccraTechie', title:'Building a SaaS in Public \u2014 Day 47', platform:'youtube', cat:'tech', country:'Ghana', time:d(3,15,0), duration:120, url:'#' },
-    { id:4,  creator:'StyleQueenLagos', title:'Live Fashion Drop \u2014 AfroChic Vol.3', platform:'tiktok', cat:'fashion', country:'Nigeria', time:d(4,19,0), duration:120, url:'#' },
-    { id:5,  creator:'BeatsByKojo', title:'Afrobeats Production Session', platform:'twitch', cat:'music', country:'Ghana', time:d(5,20,0), duration:180, url:'#' },
-    { id:6,  creator:'NairobiLaughs', title:'Comedy Night Live from Nairobi', platform:'youtube', cat:'comedy', country:'Kenya', time:d(5,21,0), duration:60, url:'#' },
-    { id:7,  creator:'Injera Queen', title:'Cooking Ethiopian Doro Wat Live', platform:'instagram', cat:'food', country:'Ethiopia', time:d(6,16,0), duration:90, url:'#' },
-    { id:8,  creator:'DarDarVlogs', title:'Exploring Joburg Day 12', platform:'youtube', cat:'comedy', country:'Tanzania', time:d(7,12,0), duration:60, url:'#' },
-    { id:9,  creator:'PyroGamerNG', title:'Fortnite Friday Tournament', platform:'kick', cat:'gaming', country:'Nigeria', time:d(8,19,0), duration:240, url:'#' },
-    { id:10, creator:'FashionByAminata', title:'Dakar Street Style Haul', platform:'instagram', cat:'fashion', country:'Senegal', time:d(8,15,0), duration:60, url:'#' },
-    { id:11, creator:'KenyanGamer254', title:'EA FC 26 \u2014 Ultimate Team Grind', platform:'twitch', cat:'gaming', country:'Kenya', time:d(9,17,0), duration:180, url:'#' },
-    { id:12, creator:'ComedyChef254', title:'Cooking While Roasting Subscribers', platform:'youtube', cat:'food', country:'Kenya', time:d(10,13,0), duration:90, url:'#' },
-    { id:13, creator:'CapeTownClutch', title:'Valorant Ranked Climb', platform:'twitch', cat:'gaming', country:'South Africa', time:d(11,20,0), duration:180, url:'#' },
-    { id:14, creator:'NaijaTech', title:'Samsung Galaxy S27 Ultra \u2014 First Look', platform:'youtube', cat:'tech', country:'Nigeria', time:d(12,14,0), duration:30, url:'#' },
-    { id:15, creator:'WairimuComedy', title:'Stand-Up Practice Session', platform:'tiktok', cat:'comedy', country:'Kenya', time:d(12,21,0), duration:45, url:'#' },
-    { id:16, creator:'AccraTechie', title:'Code Review Live \u2014 Viewer Projects', platform:'youtube', cat:'tech', country:'Ghana', time:d(13,15,0), duration:120, url:'#' },
-    { id:17, creator:'BilingualBoss', title:'French vs English Challenge', platform:'tiktok', cat:'comedy', country:'Cameroon', time:d(14,18,0), duration:60, url:'#' },
-    { id:18, creator:'GamerQueenKE', title:'Apex Legends Marathon', platform:'twitch', cat:'gaming', country:'Kenya', time:d(15,17,0), duration:240, url:'#' },
-    { id:19, creator:'StyleQueenLagos', title:'How I Style Ankara for Work', platform:'instagram', cat:'fashion', country:'Nigeria', time:d(15,11,0), duration:45, url:'#' },
-    { id:20, creator:'BeatsByKojo', title:'Making a Beat from Scratch \u2014 Viewer Picks Sounds', platform:'twitch', cat:'music', country:'Ghana', time:d(16,20,0), duration:180, url:'#' },
-    { id:21, creator:'CairoGamer', title:'League of Legends \u2014 Bronze to Diamond', platform:'twitch', cat:'gaming', country:'Egypt', time:d(17,19,0), duration:180, url:'#' },
-    { id:22, creator:'KigaliKitchen', title:'Rwandan Isombe Tutorial', platform:'youtube', cat:'food', country:'Rwanda', time:d(17,13,0), duration:60, url:'#' },
-    { id:23, creator:'JoziLifestyle', title:'Exploring Dar es Salaam Day 8', platform:'youtube', cat:'comedy', country:'South Africa', time:d(18,12,0), duration:60, url:'#' },
-    { id:24, creator:'NaijaTech', title:'Budget Laptop Showdown 2026', platform:'youtube', cat:'tech', country:'Nigeria', time:d(19,14,0), duration:45, url:'#' },
-    { id:25, creator:'FunnyFredKE', title:'Improv Night \u2014 Chat Picks the Scenes', platform:'youtube', cat:'comedy', country:'Kenya', time:d(20,21,0), duration:90, url:'#' },
-    { id:26, creator:'TechBroSA', title:'AI Tools Every African Creator Needs', platform:'youtube', cat:'tech', country:'South Africa', time:d(20,16,0), duration:60, url:'#' },
-    { id:27, creator:'GamerQueenKE', title:'Mobile Legends Championship Prep', platform:'kick', cat:'gaming', country:'Kenya', time:d(21,18,0), duration:120, url:'#' },
-    { id:28, creator:'Injera Queen', title:'Ethiopian Coffee Ceremony Live', platform:'instagram', cat:'food', country:'Ethiopia', time:d(22,15,0), duration:60, url:'#' },
-    { id:29, creator:'PyroGamerNG', title:'GTA 6 \u2014 First 24 Hours', platform:'twitch', cat:'gaming', country:'Nigeria', time:d(23,10,0), duration:480, url:'#' },
-    { id:30, creator:'AccraTechie', title:'Saturday Community Build Session', platform:'youtube', cat:'tech', country:'Ghana', time:d(23,14,0), duration:120, url:'#' },
-    { id:31, creator:'NairobiLaughs', title:'Sketch Comedy Marathon', platform:'youtube', cat:'comedy', country:'Kenya', time:d(24,19,0), duration:120, url:'#' },
-    { id:32, creator:'MoroccoBeats', title:'Gnawa Music Production Live', platform:'twitch', cat:'music', country:'Morocco', time:d(24,21,0), duration:120, url:'#' },
-    { id:33, creator:'CapeTownClutch', title:'CS2 Tournament Qualifier', platform:'twitch', cat:'gaming', country:'South Africa', time:d(25,18,0), duration:180, url:'#' },
-    { id:34, creator:'BilingualBoss', title:'Q&A \u2014 Ask Me Anything Bilingual Edition', platform:'tiktok', cat:'comedy', country:'Cameroon', time:d(26,17,0), duration:60, url:'#' },
-    { id:35, creator:'UgandanFoodie', title:'Rolex (Chapati Wrap) Masterclass', platform:'youtube', cat:'food', country:'Uganda', time:d(26,13,0), duration:45, url:'#' },
-    { id:36, creator:'NaijaTech', title:'Creator Gear Guide 2026', platform:'youtube', cat:'tech', country:'Nigeria', time:d(27,14,0), duration:60, url:'#' },
-    { id:37, creator:'StyleQueenLagos', title:'End of Month Mega Sale LIVE', platform:'tiktok', cat:'fashion', country:'Nigeria', time:d(28,19,0), duration:180, url:'#' },
-    { id:38, creator:'BeatsByKojo', title:'Collab Beat Session with MoroccoBeats', platform:'twitch', cat:'music', country:'Ghana', time:d(28,20,0), duration:120, url:'#' },
-    { id:39, creator:'KenyanGamer254', title:'Weekend Warzone Grind', platform:'kick', cat:'gaming', country:'Kenya', time:d(29,16,0), duration:240, url:'#' },
-    { id:40, creator:'DarDarVlogs', title:'Month End Recap \u2014 Best Moments', platform:'youtube', cat:'comedy', country:'Tanzania', time:d(30,12,0), duration:30, url:'#' }
-  ];
 
   /* ── FETCH LIVE DATA ────────────────────────────────── */
   var STREAMS = [];
@@ -890,13 +889,16 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       time:     new Date(s.stream_date || s.datetime || s.time),
       duration: s.duration || 60,
       url:      s.stream_url || s.url || '#',
-      live:     s.is_live || s.live || false
+      live:     s.is_live || s.live || false,
+      thumbnail: s.thumbnail_url || s.thumbnail || s.image_url || s.creator_cover || '',
+      avatar:   s.creator_avatar || s.avatar || s.avatar_url || '',
+      viewers:  Number(s.viewer_count || s.current_viewers || 0) || 0
     };
   }
 
   async function fetchStreams() {
     try {
-      var res = await fetch('/api/afrostream/streams?live=false&limit=100');
+      var res = await fetch('/api/afrostream/streams?limit=500');
       var json = await res.json();
       if (json.success && json.data && json.data.length) {
         return json.data.filter(function(s) { return s.is_published !== false; }).map(mapApiStream);
@@ -949,6 +951,20 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   function monthName(mo, yr) { return new Date(yr, mo, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }); }
   function formatDuration(mins) { return mins >= 60 ? Math.floor(mins/60) + 'h' + (mins%60 ? ' ' + mins%60 + 'm' : '') : mins + 'm'; }
   function esc(s) { var el = document.createElement('span'); el.textContent = s; return el.innerHTML; }
+  function initials(name) {
+    return String(name || 'AS').split(/\s+/).filter(Boolean).slice(0, 2).map(function(part) { return part.charAt(0).toUpperCase(); }).join('') || 'AS';
+  }
+  function avatarGradient(name) {
+    var palettes = ['#0063CC,#34AAFF', '#16A34A,#22C55E', '#DB2777,#F97316', '#7C3AED,#2563EB'];
+    var n = String(name || '').split('').reduce(function(sum, ch) { return sum + ch.charCodeAt(0); }, 0);
+    return 'linear-gradient(135deg,' + palettes[n % palettes.length] + ')';
+  }
+  function fmtViewers(n) {
+    n = Number(n || 0);
+    if (n >= 1000000) return (n / 1000000).toFixed(n >= 10000000 ? 0 : 1).replace(/\.0$/, '') + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, '') + 'K';
+    return String(n);
+  }
   function getSavedReminders() {
     try {
       var saved = JSON.parse(localStorage.getItem('as_reminders') || '[]');
@@ -1021,8 +1037,12 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     var fl = FLAG[s.country] || '';
     var reminderClass = isReminderSet(s.id) ? ' set' : '';
     var reminderLabel = isReminderSet(s.id) ? 'Reminder set' : 'Remind';
+    var media = s.thumbnail || s.avatar || '';
+    var mediaStyle = media ? 'background-image:url(' + esc(media) + ')' : 'background:' + avatarGradient(s.creator);
+    var canWatch = s.url && s.url !== '#';
     return '<div class="as-cal-stream" data-id="' + s.id + '" data-stream-date="' + s.time.toISOString() + '" data-stream-title="' + esc(s.title) + '" data-stream-creator="' + esc(s.creator) + '">' +
       '<div class="as-cal-stream-time">' + formatTime(s.time) + '</div>' +
+      '<div class="as-cal-stream-media" style="' + mediaStyle + '"><span class="as-cal-stream-media-initials">' + initials(s.creator) + '</span></div>' +
       '<div class="as-cal-stream-plat" style="background:' + p.color + '"></div>' +
       '<div class="as-cal-stream-body">' +
         '<div class="as-cal-stream-creator">' +
@@ -1033,12 +1053,14 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         '<div class="as-cal-stream-tags">' +
           '<span class="as-cal-stream-plat-badge" style="background:' + p.color + (s.platform === 'kick' || s.platform === 'tiktok' ? ';color:#0a0a0f' : '') + '">' + p.label + '</span>' +
           '<span class="as-cal-stream-cat">' + esc(s.cat) + '</span>' +
+          (s.live ? '<span class="as-cal-stream-live">Live</span>' : '') +
+          (s.viewers ? '<span class="as-cal-stream-viewers">' + fmtViewers(s.viewers) + ' watching</span>' : '') +
         '</div>' +
       '</div>' +
       '<span class="as-cal-stream-duration">' + formatDuration(s.duration) + '</span>' +
       '<div class="as-cal-stream-actions">' +
         '<button type="button" class="as-cal-stream-remind' + reminderClass + '" data-sid="' + s.id + '">' + reminderLabel + '</button>' +
-        '<a href="' + esc(s.url) + '" class="as-cal-stream-watch" target="_blank" rel="noopener">Watch</a>' +
+        (canWatch ? '<a href="' + esc(s.url) + '" class="as-cal-stream-watch" target="_blank" rel="noopener">Watch</a>' : '') +
       '</div>' +
     '</div>';
   }
@@ -1162,7 +1184,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       h += '</div></div>';
     }
     if (!hasAny) {
-      h += '<div class="as-cal-empty-state"><span>&#128308;</span>No streams scheduled this month matching your filters.</div>';
+      h += '<div class="as-cal-empty-state"><span>&#128308;</span>No stream activity found this month matching your filters.</div>';
     }
     h += '</div>';
     return h;
@@ -1185,7 +1207,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     document.getElementById('asPanelTitle').textContent = dt.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
     var body = document.getElementById('asPanelStreams');
     if (streams.length === 0) {
-      body.innerHTML = '<div class="as-cal-empty-state"><span>&#128564;</span>No streams scheduled for this day.</div>';
+      body.innerHTML = '<div class="as-cal-empty-state"><span>&#128564;</span>No stream activity for this day.</div>';
     } else {
       body.innerHTML = streams.map(streamCardHTML).join('');
       syncReminderButtons(body);

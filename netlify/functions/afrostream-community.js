@@ -91,11 +91,52 @@ var VALID_COUNTRIES = [
   'DR Congo','Mozambique','Zimbabwe','Zambia','Botswana','Namibia','Mauritius','Libya','Gabon'
 ];
 
+var COUNTRY_ALIASES = {
+  NG: 'NG', NIGERIA: 'NG',
+  KE: 'KE', KENYA: 'KE',
+  GH: 'GH', GHANA: 'GH',
+  ZA: 'ZA', 'SOUTH AFRICA': 'ZA',
+  EG: 'EG', EGYPT: 'EG',
+  TZ: 'TZ', TANZANIA: 'TZ',
+  CM: 'CM', CAMEROON: 'CM',
+  ET: 'ET', ETHIOPIA: 'ET',
+  SN: 'SN', SENEGAL: 'SN',
+  RW: 'RW', RWANDA: 'RW',
+  UG: 'UG', UGANDA: 'UG',
+  MA: 'MA', MOROCCO: 'MA',
+  AO: 'AO', ANGOLA: 'AO',
+  DZ: 'DZ', ALGERIA: 'DZ',
+  TN: 'TN', TUNISIA: 'TN',
+  CI: 'CI', "COTE D'IVOIRE": 'CI', 'COTE D IVOIRE': 'CI', "CÔTE D'IVOIRE": 'CI',
+  CD: 'CD', 'DR CONGO': 'CD', 'DEMOCRATIC REPUBLIC OF CONGO': 'CD',
+  MZ: 'MZ', MOZAMBIQUE: 'MZ',
+  ZW: 'ZW', ZIMBABWE: 'ZW',
+  ZM: 'ZM', ZAMBIA: 'ZM',
+  BW: 'BW', BOTSWANA: 'BW',
+  NA: 'NA', NAMIBIA: 'NA',
+  MU: 'MU', MAURITIUS: 'MU',
+  LY: 'LY', LIBYA: 'LY',
+  GA: 'GA', GABON: 'GA'
+};
+
+function normalizeCountry(value) {
+  var raw = String(value || '').trim();
+  if (!raw) return '';
+  var key = raw.toUpperCase().replace(/[’`]/g, "'").replace(/\s+/g, ' ');
+  return COUNTRY_ALIASES[key] || '';
+}
+
+function countryKey(value) {
+  return normalizeCountry(value) || String(value || '').trim().toUpperCase();
+}
+
 var VALID_PLATFORMS = ['youtube','twitch','tiktok','instagram','kick','rumble'];
 
 function validateCreatorPayload(p) {
   if (!p.name || typeof p.name !== 'string' || p.name.length < 2) return 'Creator name required (min 2 chars)';
-  if (!p.country || !VALID_COUNTRIES.includes(p.country)) return 'Valid African country required';
+  var country = normalizeCountry(p.country);
+  if (!country) return 'Valid African country required';
+  p.country = country;
   if (p.primary_platform && !VALID_PLATFORMS.includes(p.primary_platform)) return 'Invalid platform';
   if (p.name.length > 100) return 'Name too long (max 100)';
   if (p.bio && p.bio.length > 500) return 'Bio too long (max 500)';
@@ -107,6 +148,11 @@ function validateStreamPayload(p) {
   if (!p.title || p.title.length < 3) return 'Stream title required (min 3 chars)';
   if (!p.stream_date) return 'Stream date required';
   if (!p.platform || !VALID_PLATFORMS.includes(p.platform)) return 'Valid platform required';
+  if (p.country) {
+    var country = normalizeCountry(p.country);
+    if (!country) return 'Valid African country required';
+    p.country = country;
+  }
   if (p.title.length > 200) return 'Title too long (max 200)';
   return null;
 }
@@ -199,7 +245,7 @@ exports.handler = async function(event) {
         var dupeCheck = await sb('GET', 'as_submissions?type=eq.creator&status=eq.pending&select=id,payload', null);
         var isDupe = (dupeCheck || []).some(function(s) {
           var p = s.payload || {};
-          return p.name && p.name.toLowerCase() === payload.name.toLowerCase() && p.country === payload.country;
+          return p.name && p.name.toLowerCase() === payload.name.toLowerCase() && countryKey(p.country) === countryKey(payload.country);
         });
         if (isDupe) return err(headers, 'This creator has already been submitted and is pending review.');
         // Also check existing creators

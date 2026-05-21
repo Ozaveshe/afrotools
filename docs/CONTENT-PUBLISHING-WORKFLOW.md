@@ -173,11 +173,16 @@ For the current content operating model, the default cadence is:
 - 2 main blog posts per day
 - 2 AfroStream news posts per day
 - creative/news can exceed the baseline when the creator cycle is active
+- 1 post-content image queue after the PM batch, covering newly touched blog posts, AfroStream news items, and any creator/profile media gaps found during that run
 
 A safe operating pattern is two batches per day:
 
 1. Morning batch: 1 main blog post + 1 AfroStream news post
 2. Evening batch: 1 main blog post + 1 AfroStream news post
+
+### Image queue follow-up
+
+The `Daily Blog Image Queue` automation runs after the content batches. It should not generate images itself. Its job is to inspect the latest static blog edits and live AfroStream news rows, then produce a paste-ready prompt pack with destination path or `image_url`, aspect ratio, alt text, context notes, and priority for each missing or weak image.
 
 ## Topic Selection Guardrails
 

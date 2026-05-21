@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const deadlineOverrides = require('../data/scholarships/deadline-overrides.json');
 
 const PROJECT_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SERVICE_KEY =
@@ -12,6 +13,11 @@ const LINK_TIMEOUT_MS = Number(process.env.SCHOLARSHIP_SEED_LINK_TIMEOUT_MS || 6
 const SKIP_LINK_CHECK = process.env.SCHOLARSHIP_SEED_SKIP_LINK_CHECK === '1';
 const ALLOW_HTTP_BLOCKED = process.env.SCHOLARSHIP_SEED_ALLOW_HTTP_BLOCKED !== '0';
 const DRY_RUN = process.argv.includes('--dry-run');
+
+function normalizeSeedStatus(status) {
+  const value = String(status || '').toLowerCase();
+  return value === 'variable' ? 'unclear' : value;
+}
 
 const seedEntries = [
   ['australia-awards-africa', 'Australia Awards Africa', 'Australian Government', 'https://www.dfat.gov.au/people-to-people/australia-awards', 'australia', 'masters', 'full'],
@@ -31,7 +37,7 @@ const seedEntries = [
   ['joint-japan-imf-scholarship', 'Joint Japan/IMF Scholarship Program', 'International Monetary Fund', 'https://www.imf.org/en/About/Factsheets/Sheets/2023/Joint-Japan-IMF-Scholarship-Program', 'global', 'masters', 'full'],
   ['adb-japan-scholarship-program', 'ADB Japan Scholarship Program', 'Asian Development Bank', 'https://www.adb.org/work-with-us/careers/japan-scholarship-program', 'global', 'masters', 'full'],
   ['wells-mountain-initiative-scholars', 'Wells Mountain Initiative Scholars Program', 'Wells Mountain Initiative', 'https://wellsmountaininitiative.org/our-programs/scholars-program/', 'global', 'undergrad', 'partial'],
-  ['aauw-international-fellowships', 'AAUW International Fellowships', 'AAUW', 'https://www.aauw.org/resources/programs/fellowships-grants/current-opportunities/international/', 'us', 'masters|phd|postdoc', 'partial'],
+  ['aauw-international-fellowships', 'AAUW International Fellowships', 'AAUW', 'https://www.aauw.org/resources/programs/fellowships-grants/aauw-international-fellowships/', 'us', 'masters|phd|postdoc', 'partial'],
   ['peo-international-peace-scholarship', 'P.E.O. International Peace Scholarship', 'P.E.O. International', 'https://www.peointernational.org/international-peace-scholarship-fund/', 'us|canada', 'masters|phd', 'partial'],
   ['zonta-amelia-earhart-fellowship', 'Amelia Earhart Fellowship', 'Zonta International', 'https://www.zonta.org/Web/Programs/Education/Amelia_Earhart_Fellowship', 'global', 'phd', 'partial'],
   ['schlumberger-faculty-for-future', 'Faculty for the Future Fellowships', 'SLB Foundation', 'https://www.slb.com/who-we-are/schlumberger-foundation/faculty-for-the-future', 'global', 'phd|postdoc', 'partial'],
@@ -126,7 +132,7 @@ const seedEntries = [
   ['utrecht-excellence-scholarships', 'Utrecht Excellence Scholarships', 'Utrecht University', 'https://www.uu.nl/en/masters/general-information/international-students/financial-matters/grants-and-scholarships/utrecht-excellence-scholarships', 'eu', 'masters', 'partial'],
   ['ku-leuven-global-minds-doctoral-scholarships', 'KU Leuven Global Minds Doctoral Scholarships', 'KU Leuven', 'https://www.kuleuven.be/global/global-development/global-minds/doctoral-scholarships', 'eu', 'phd', 'full'],
   ['vlir-uos-icp-connect-scholarships', 'VLIR-UOS ICP Connect Scholarships', 'VLIR-UOS', 'https://www.vliruos.be/en/scholarships', 'eu', 'masters', 'full'],
-  ['deutschlandstipendium', 'Deutschlandstipendium', 'Federal Ministry of Education and Research Germany', 'https://www.deutschlandstipendium.de/de/english-1700.html', 'eu', 'undergrad|masters', 'partial'],
+  ['deutschlandstipendium', 'Deutschlandstipendium', 'Federal Ministry of Education and Research Germany', 'https://www.deutschlandstipendium.de/deutschlandstipendium/de/services/english/the-deutschlandstipendium-best-of-both-worlds-for-students', 'eu', 'undergrad|masters', 'partial'],
   ['heinrich-boll-foundation-scholarships', 'Heinrich Boll Foundation Scholarships', 'Heinrich Boll Foundation', 'https://www.boell.de/en/scholarships', 'eu', 'undergrad|masters|phd', 'partial'],
   ['friedrich-ebert-foundation-scholarships', 'Friedrich Ebert Stiftung Scholarships', 'Friedrich Ebert Stiftung', 'https://www.fes.de/en/studienfoerderung', 'eu', 'undergrad|masters|phd', 'partial'],
   ['konrad-adenauer-foundation-scholarships', 'Konrad Adenauer Foundation Scholarships for Foreign Students', 'Konrad Adenauer Stiftung', 'https://www.kas.de/en/web/begabtenfoerderung-und-kultur/foreign-students', 'eu', 'masters|phd', 'partial'],
@@ -202,6 +208,20 @@ function shouldKeepStatus(status) {
   return ALLOW_HTTP_BLOCKED && allowedBlockedStatuses.has(status);
 }
 
+function getDeadlineOverride(slug) {
+  const overrides = deadlineOverrides && deadlineOverrides.overrides && typeof deadlineOverrides.overrides === 'object'
+    ? deadlineOverrides.overrides
+    : {};
+  const entry = overrides[String(slug || '').trim()];
+  return entry && typeof entry === 'object' ? entry : null;
+}
+
+function deadlineOverrideConfidence(override) {
+  const explicit = String(override && (override.deadline_confidence || override.confidence) || '').toLowerCase();
+  if (explicit === 'verified' || explicit === 'no_single_public_deadline') return explicit;
+  return override && override.deadline_date ? 'verified' : 'no_single_public_deadline';
+}
+
 async function linkStatus(url) {
   if (SKIP_LINK_CHECK) return 'skipped';
   const controller = new AbortController();
@@ -228,10 +248,11 @@ function buildRow(entry, status, sourceId, now) {
   const fields = fieldsFor(entry);
   const funding = entry[6] || 'partial';
   const blocked = allowedBlockedStatuses.has(status);
+  const deadlineOverride = getDeadlineOverride(entry[0]);
   const summary = entry[1] + ' from ' + entry[2] +
     '. Curated official-link record for African students to verify cycle dates, eligibility, and application requirements on the provider page.';
 
-  return {
+  const row = {
     slug: entry[0],
     title: entry[1],
     provider: entry[2],
@@ -244,11 +265,11 @@ function buildRow(entry, status, sourceId, now) {
     funding_type: funding,
     min_gpa: null,
     min_ielts: null,
-    deadline_date: null,
-    deadline_text: 'Check official page',
-    status: 'unclear',
+    deadline_date: deadlineOverride ? deadlineOverride.deadline_date || null : null,
+    deadline_text: deadlineOverride ? deadlineOverride.deadline_text || null : 'Check official page',
+    status: deadlineOverride ? normalizeSeedStatus(deadlineOverride.status || 'upcoming') : 'unclear',
     confidence_mode: 'curated',
-    proof_level: blocked ? 'official_link_http_blocked' : 'official_link',
+    proof_level: deadlineOverride ? 'official_deadline_manual_review' : (blocked ? 'official_link_http_blocked' : 'official_link'),
     summary,
     last_seen_at: now,
     last_verified_at: now,
@@ -273,6 +294,24 @@ function buildRow(entry, status, sourceId, now) {
       curated_at: now
     }
   };
+  if (deadlineOverride) {
+    const deadlineConfidence = deadlineOverrideConfidence(deadlineOverride);
+    row.raw_snapshot.deadline_override = Object.assign({}, deadlineOverride, {
+      applied_from: 'data/scholarships/deadline-overrides.json'
+    });
+    row.raw_snapshot.deadline_confidence = deadlineConfidence;
+    row.raw_snapshot.deadline_resolution = deadlineOverride.deadline_date ? 'exact_date' : 'no_single_public_deadline';
+    row.raw_snapshot.deadline_source_url = deadlineOverride.deadline_source_url || entry[3];
+    row.raw_snapshot.deadline_notes = deadlineOverride.deadline_notes || '';
+    row.raw_snapshot.deadline_evidence = deadlineOverride.evidence || '';
+    row.raw_snapshot.deadline_checked_urls = Array.isArray(deadlineOverride.checked_urls) ? deadlineOverride.checked_urls : [];
+    row.raw_snapshot.deadline_date = deadlineOverride.deadline_date || null;
+    row.raw_snapshot.deadline_text = deadlineOverride.deadline_text || '';
+    row.raw_snapshot.deadline_status = deadlineConfidence === 'no_single_public_deadline'
+      ? 'variable'
+      : deadlineOverride.status || 'upcoming';
+  }
+  return row;
 }
 
 async function mapLimit(items, limit, iterator) {

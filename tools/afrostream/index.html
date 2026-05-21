@@ -207,9 +207,10 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
 .as-lane-desc{font-size:.82rem;line-height:1.55;color:#64748b}
 .as-lane-cta{margin-top:auto;font-size:.78rem;font-weight:800;color:var(--as-primary)}
 .as-streamer-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.as-streamer-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:14px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.05);text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s}
+.as-streamer-row{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:12px;padding:14px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.05);text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s}
 .as-streamer-row:hover{border-color:var(--as-primary-border);box-shadow:0 6px 20px rgba(0,122,255,.1);transform:translateY(-1px)}
 .as-streamer-rank{width:34px;height:34px;border-radius:10px;background:#f1f5f9;color:#0f172a;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.as-streamer-avatar{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;font-weight:800;border:1px solid #e5e7eb;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
 .as-streamer-name{font-weight:800;color:#0f172a;margin-bottom:3px}
 .as-streamer-meta{display:flex;gap:8px;flex-wrap:wrap;color:#64748b;font-size:.76rem}
 .as-streamer-score{text-align:right}
@@ -297,8 +298,8 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
   .as-rank-table th,.as-rank-table td{padding:8px 6px}
   .as-rank-table-wrap{margin-left:-20px;margin-right:-20px;border-radius:0;border-left:0;border-right:0}
   .as-lane-grid{grid-template-columns:1fr}
-  .as-streamer-row{grid-template-columns:auto 1fr}
-  .as-streamer-score{grid-column:2;text-align:left}
+  .as-streamer-row{grid-template-columns:auto auto 1fr}
+  .as-streamer-score{grid-column:3;text-align:left}
 }
 </style>
 <link rel="stylesheet" href="/tools/afrostream/subnav.css?v=93a02af2">
@@ -322,14 +323,14 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
       <a href="/tools/afrostream/calendar" data-as-nav="calendar">Calendar</a>
       <a href="/tools/afrostream/methodology/" data-as-nav="methodology">Methodology</a>
       <a href="/tools/afrostream/university/" data-as-nav="university">University</a>
-      <a href="/tools/afrostream/submit" data-as-nav="submit">Submit</a>
+      <a href="/tools/afrostream/community" data-as-nav="submit">Submit</a>
     </div>
     <div class="as-subnav-actions">
       <div class="as-subnav-search">
         <svg class="as-search-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
         <input type="search" id="asSearch" placeholder="Search creators..." autocomplete="off" aria-label="Search creators">
       </div>
-      <a href="/tools/afrostream/submit" class="as-btn as-btn-sm as-btn-outline">Submit Creator</a>
+      <a href="/tools/afrostream/community" class="as-btn as-btn-sm as-btn-outline">Submit Tip</a>
     </div>
   </div>
 </nav>
@@ -564,7 +565,7 @@ var COUNTRY_FALLBACK = { code:'--', flag:'\u{1F30D}', name:'Africa' };
 function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function fmtK(n){ return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+'K':n.toString(); }
 function fmtUSD(n){ return '$'+fmtK(n); }
-function gradClass(i){ return 'as-grad-'+(i%2,594+1); }
+function gradClass(i){ return 'as-grad-'+((i%8)+1); }
 function platformBadges(cr){
   var list = cr.platforms || [cr.platform];
   return list.map(function(key){
@@ -601,6 +602,27 @@ function platformKey(value){
 
 function creatorSlug(cr){
   return cr.slug || String(cr.name || '').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+}
+
+function hydrateCreatorRuntimeMetrics(cr){
+  var raw = cr && cr._raw || {};
+  cr.followers = Math.max(parseNum(raw.total_followers), parseNum(raw.subscribers), parseNum(cr.followers), parseNum(cr.subs));
+  cr.subs = cr.followers;
+  cr.views = Math.max(parseNum(raw.total_views), parseNum(raw.yt_views), parseNum(cr.views));
+  cr.peak = Math.max(parseNum(raw.peak_viewers), parseNum(raw.current_viewers), parseNum(cr.peak));
+  return cr;
+}
+
+function hydrateLiveStreamRuntimeMetrics(stream){
+  var key = normalizeName(stream.name);
+  var creator = CREATORS.filter(function(cr){ return normalizeName(cr.name) === key; })[0];
+  if(creator){
+    stream.subs = Math.max(parseNum(stream.subs), parseNum(creator.followers), parseNum(creator.subs));
+    stream.avatar = stream.avatar || creator.avatar || '';
+    stream.country = stream.country || creator.country;
+  }
+  stream.viewers = Math.max(parseNum(stream.viewers), parseNum(stream._raw && stream._raw.viewer_count));
+  return stream;
 }
 
 function isLivePlatformCreator(cr){
@@ -991,12 +1013,17 @@ function renderStreamerBoard(searchQuery){
     var cr = item.creator;
     var c = COUNTRIES[cr.country] || COUNTRY_FALLBACK;
     var href = 'creator.html?id=' + creatorSlug(cr);
+    var avatarStyle = cr.avatar && !cr.avatar.includes('ui-avatars.com')
+      ? ' style="background-image:url(\''+escapeAttr(cr.avatar)+'\')"'
+      : '';
+    var avatarText = avatarStyle ? '' : escapeHtml((cr.name || 'AS').split(/\s+/).map(function(part){ return part.charAt(0); }).join('').slice(0,2).toUpperCase() || 'AS');
     var platformList = (item.platforms || []).slice(0,3).map(function(key){
       var p = PLATFORMS[key] || PLATFORMS.yt;
       return p.name;
     }).join(', ');
     return '<a class="as-streamer-row" href="'+escapeAttr(href)+'">' +
       '<span class="as-streamer-rank">#'+(index+1)+'</span>' +
+      '<span class="as-streamer-avatar '+(!avatarStyle ? gradClass(index) : '')+'"'+avatarStyle+'>'+avatarText+'</span>' +
       '<span>' +
         '<span class="as-streamer-name">'+escapeHtml(cr.name)+'</span>' +
         '<span class="as-streamer-meta">' +
@@ -1065,7 +1092,7 @@ function renderCalendar(){
     el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
       '<div style="font-size:2.5rem;margin-bottom:12px">&#128197;</div>' +
       '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No upcoming streams</div>' +
-      '<div style="font-size:.85rem">Scheduled streams will appear here. <a href="submit.html" style="color:var(--as-primary);text-decoration:underline">Submit a creator</a> to grow the directory</div>' +
+      '<div style="font-size:.85rem">Scheduled streams will appear here. <a href="community.html" style="color:var(--as-primary);text-decoration:underline">Submit a creator or stream</a> to grow the directory</div>' +
     '</div>';
     return;
   }
@@ -1279,12 +1306,12 @@ async function init() {
 
       if (data.creators && data.creators.length) {
         CREATORS.length = 0;
-        data.creators.forEach(function(c){ CREATORS.push(c); });
+        data.creators.forEach(function(c){ CREATORS.push(hydrateCreatorRuntimeMetrics(c)); });
       }
       if (data.streams) {
         if (data.streams.live && data.streams.live.length) {
           LIVE_STREAMS.length = 0;
-          data.streams.live.forEach(function(s){ LIVE_STREAMS.push(s); });
+          data.streams.live.forEach(function(s){ LIVE_STREAMS.push(hydrateLiveStreamRuntimeMetrics(s)); });
         }
         if (data.streams.upcoming && data.streams.upcoming.length) {
           UPCOMING.length = 0;

@@ -21,6 +21,49 @@ function readCount(res, fallback) {
   return match ? parseInt(match[1], 10) : fallback;
 }
 
+function creatorKey(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function mergeStreamStats(creators, streams) {
+  var byId = {};
+  var byName = {};
+
+  (streams || []).forEach(function(row) {
+    if (!row) return;
+    var viewers = Math.max(0, parseInt(row.viewer_count, 10) || 0);
+    var date = row.stream_date || row.updated_at || row.created_at || '';
+    var keys = [];
+    if (row.creator_id) keys.push({ map: byId, key: String(row.creator_id) });
+    var nameKey = creatorKey(row.creator_name);
+    if (nameKey) keys.push({ map: byName, key: nameKey });
+    keys.forEach(function(entry) {
+      var stat = entry.map[entry.key] || { stream_count_30d: 0, peak_viewers: 0, current_viewers: 0, is_live: false, last_stream_at: '' };
+      stat.stream_count_30d += 1;
+      stat.peak_viewers = Math.max(stat.peak_viewers, viewers);
+      if (row.is_live) {
+        stat.is_live = true;
+        stat.current_viewers = Math.max(stat.current_viewers, viewers);
+      }
+      if (!stat.last_stream_at || (date && date > stat.last_stream_at)) stat.last_stream_at = date;
+      entry.map[entry.key] = stat;
+    });
+  });
+
+  return (creators || []).map(function(row) {
+    var idStat = row && row.id ? byId[String(row.id)] : null;
+    var nameStat = byName[creatorKey(row && row.name)] || null;
+    var stat = {
+      stream_count_30d: Math.max(idStat && idStat.stream_count_30d || 0, nameStat && nameStat.stream_count_30d || 0),
+      peak_viewers: Math.max(parseInt(row && row.peak_viewers, 10) || 0, idStat && idStat.peak_viewers || 0, nameStat && nameStat.peak_viewers || 0),
+      current_viewers: Math.max(idStat && idStat.current_viewers || 0, nameStat && nameStat.current_viewers || 0),
+      is_live: (idStat && idStat.is_live) || (nameStat && nameStat.is_live) || false,
+      last_stream_at: (idStat && idStat.last_stream_at || '') > (nameStat && nameStat.last_stream_at || '') ? idStat.last_stream_at : (nameStat && nameStat.last_stream_at || '')
+    };
+    return Object.assign({}, row, stat);
+  });
+}
+
 function q(v) {
   return encodeURIComponent(String(v || '').trim());
 }
@@ -89,6 +132,16 @@ exports.handler = async function(event) {
     }
 
     var rows = Array.isArray(data) ? data : [];
+    if (rows.length) {
+      var streamCutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      var streamRes = await fetch(SUPABASE_URL + '/rest/v1/as_streams?is_published=eq.true&stream_date=gte.' + encodeURIComponent(streamCutoff) + '&select=creator_id,creator_name,viewer_count,is_live,stream_date,updated_at,created_at&limit=1000', {
+        headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+      });
+      if (streamRes.ok) {
+        var streamRows = await readJson(streamRes);
+        rows = mergeStreamStats(rows, Array.isArray(streamRows) ? streamRows : []);
+      }
+    }
     var totalCount = readCount(res, rows.length);
     return {
       statusCode: 200,

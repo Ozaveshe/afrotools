@@ -77,7 +77,7 @@ const banner = bridge.buildBannerHtml(mexicoContext, 'No exact matches found. Sh
 assert(banner.includes('Showing scholarships related to your study abroad plan.'), 'Banner should explain the Study Abroad context');
 assert(banner.includes('Clear context'), 'Banner should expose a clear-context action');
 assert(banner.includes('No exact matches found. Showing related opportunities.'), 'Banner should show no-exact-match behavior');
-assert(banner.includes('Deadline unclear'), 'Banner should preserve deadline uncertainty language');
+assert(banner.includes('provider research queue'), 'Banner should preserve deadline research queue language');
 assert(!/verified deadline|guaranteed|official deadline/i.test(banner), 'Banner should not invent deadline certainty');
 
 const checklist = bridge.buildChecklistHtml(ukContext);

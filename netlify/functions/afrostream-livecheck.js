@@ -279,6 +279,19 @@ async function upsertStream(creatorName, streamData) {
   } else {
     await sb('POST', 'as_streams', streamData);
   }
+  var viewers = parseInt(streamData.viewer_count, 10) || 0;
+  if (viewers > 0) {
+    var creatorFilter = streamData.creator_id ? 'id=eq.' + encodeURIComponent(streamData.creator_id) : 'name=eq.' + encodeURIComponent(creatorName);
+    var peakFilter = encodeURIComponent('(peak_viewers.is.null,peak_viewers.lt.' + viewers + ')');
+    try {
+      await sb('PATCH', 'as_creators?' + creatorFilter + '&or=' + peakFilter, {
+        peak_viewers: viewers,
+        updated_at: new Date().toISOString()
+      });
+    } catch (e) {
+      // Stream freshness should not fail because the denormalized peak counter could not be raised.
+    }
+  }
 }
 
 async function clearCreatorLiveStream(platform, creatorName) {

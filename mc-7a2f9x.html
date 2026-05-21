@@ -339,11 +339,30 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .fk-template-card p{font-size:10px;line-height:1.45;color:var(--color-text-muted,var(--text3));margin:0}
 .fk-template-card textarea{width:100%;min-height:126px;border:1px solid var(--color-border,var(--border));border-radius:8px;padding:8px;font:500 10px/1.45 var(--mono);color:var(--color-text,var(--text));background:var(--color-muted,var(--card2));resize:vertical}
 .fk-copy-status{font-size:10px;font-family:var(--mono);color:var(--color-text-muted,var(--text3));min-height:1.3em}
+.mdos-hero{border-left:4px solid var(--green)}
+.mdos-status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mdos-status-card{border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);background:var(--color-surface,#fff);padding:11px;display:grid;gap:7px}
+.mdos-status-card h4{font-size:12px;font-weight:900;color:var(--color-text,var(--text));margin:0}
+.mdos-status-card p{font-size:10px;line-height:1.45;color:var(--color-text-muted,var(--text3));margin:0}
+.mdos-status-card button{justify-self:start}
+.mdos-calendar{display:grid;gap:8px}
+.mdos-calendar-row{display:grid;grid-template-columns:112px 1fr auto;gap:10px;align-items:start;border-bottom:1px solid var(--color-border,var(--border));padding:8px 0}
+.mdos-calendar-row:last-child{border-bottom:none}
+.mdos-calendar-date{font:800 10px var(--mono);color:var(--color-primary,var(--brand))}
+.mdos-calendar-title{font-size:12px;font-weight:800;color:var(--color-text,var(--text))}
+.mdos-calendar-note{font-size:10px;color:var(--color-text-muted,var(--text3));line-height:1.45;margin-top:2px}
+.mdos-lead-form{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.mdos-lead-form .fk-field--wide{grid-column:span 2}
+.mdos-lead-form .fk-field--full{grid-column:1 / -1}
+.mdos-outreach-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.mdos-route-list{display:flex;flex-wrap:wrap;gap:8px}
+.mdos-route-list a{display:inline-flex;align-items:center;min-height:30px;padding:6px 10px;border:1px solid var(--color-border,var(--border));border-radius:var(--radius-md,8px);background:var(--color-surface,#fff);color:var(--color-text,var(--text));font-size:11px;font-weight:700;text-decoration:none}
+.mdos-route-list a:hover{border-color:var(--color-primary,var(--brand));color:var(--color-primary,var(--brand));background:var(--color-primary-soft,var(--brand-l))}
 
 /* -€-€ RESPONSIVE -€-€ */
 @media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:1100px){.fk-hero,.fk-grid{grid-template-columns:1fr}.fk-summary,.fk-grid-3,.fk-form-grid,.fk-template-grid,.fk-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.fk-metrics,.fk-summary,.fk-grid-3,.fk-form-grid,.fk-template-grid,.fk-status-grid{grid-template-columns:1fr}.fk-ready-row{grid-template-columns:1fr}.fk-field--wide,.fk-field--full{grid-column:1}}
+@media(max-width:1100px){.fk-hero,.fk-grid{grid-template-columns:1fr}.fk-summary,.fk-grid-3,.fk-form-grid,.fk-template-grid,.fk-status-grid,.mdos-status-grid,.mdos-outreach-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mdos-lead-form{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.fk-metrics,.fk-summary,.fk-grid-3,.fk-form-grid,.fk-template-grid,.fk-status-grid,.mdos-status-grid,.mdos-outreach-grid,.mdos-lead-form{grid-template-columns:1fr}.fk-ready-row,.mdos-calendar-row{grid-template-columns:1fr}.fk-field--wide,.fk-field--full,.mdos-lead-form .fk-field--wide,.mdos-lead-form .fk-field--full{grid-column:1}}
 </style>
 <meta property="article:modified_time" content="2026-04-16">
 <script>
@@ -396,6 +415,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
   <nav class="rail">
     <button type="button" class="rail-btn on" data-page="dashboard" onclick="showPage('dashboard', this)" title="Dashboard">/button>
     <button type="button" class="rail-btn" data-page="fiftyk" onclick="showPage('fiftyk', this)" title="50K Execution">50K</button>
+    <button type="button" class="rail-btn" data-page="matchday" onclick="showPage('matchday', this)" title="Matchday OS">MD</button>
     <button type="button" class="rail-btn" data-page="checklist" onclick="showPage('checklist', this)" title="Morning Checklist">CL</button>
     <button type="button" class="rail-btn" data-page="pipelines" onclick="showPage('pipelines', this)" title="Data Pipelines">/button>
     <div class="rail-sep"></div>
@@ -824,6 +844,173 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             <div class="fk-note" style="margin-bottom:12px">Templates avoid invented claims and route buyers into the deployed commercial pages. Customize the first line and target page before sending.</div>
             <div class="fk-template-grid" id="fiftyk-template-grid"></div>
             <div class="fk-copy-status" id="fiftyk-template-status" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATCHDAY OS CONTROL PANEL -->
+    <div class="page" id="page-matchday">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title">Matchday OS Control Panel</div>
+          <div class="page-sub">Internal tournament ops cockpit for daily football, predictions, safety, content, sponsors, and viewing-center work</div>
+        </div>
+        <div class="panel-badge" id="matchday-date-label">Today</div>
+      </div>
+
+      <div class="fk-shell">
+        <section class="fk-hero mdos-hero">
+          <div>
+            <div class="fk-kicker">Internal tournament cockpit</div>
+            <h2>Run Matchday OS without leaking operator language to public pages.</h2>
+            <p>Use this local-only panel to track daily matchday readiness, prize safety gates, content publishing, sponsor leads, viewing-center leads, and social/share-card tasks. No backend writes happen here.</p>
+            <div class="fk-actions">
+              <button class="qa-btn fk-action" type="button" onclick="saveMatchdayOpsState(getMatchdayOpsState()); renderMatchdayOps(); setMatchdayOpsStatus('Matchday OS state saved locally.');">Save local state</button>
+              <button class="qa-btn fk-action" type="button" onclick="copyMatchdayOpsSummary()">Copy daily summary</button>
+              <button class="qa-btn fk-action" type="button" onclick="resetMatchdayOpsToday()">Reset today</button>
+            </div>
+            <div class="fk-status-line" id="matchday-status">Local operator tracker. Prize launch remains blocked until backend, rules, and legal review gates are complete.</div>
+          </div>
+          <div class="fk-source-stack">
+            <div class="fk-source-card">
+              <strong>Storage</strong>
+              <span>Browser localStorage only. This panel does not write to Supabase, Netlify, email, or payment systems.</span>
+            </div>
+            <div class="fk-source-card">
+              <strong>Public Routes</strong>
+              <span>Open the public Matchday OS route, share-card generator, campaign page, prize rules page, sponsor page, and commercial intake routes.</span>
+            </div>
+            <div class="fk-source-card">
+              <strong>Safety Gate</strong>
+              <span>Prize operations must stay draft mode until server-side locks, verification, terms, and legal review are in place. Top 10 verified Prediction Points players share the $1,200 public prize pool; Fan Points never count toward cash prizes.</span>
+            </div>
+            <div class="fk-source-card">
+              <strong>Prize Budget</strong>
+              <span>$1,200 is the public prize pool. Up to $100 extra may be kept as an internal cushion for payout fees, FX changes, payment-method friction, or emergency rounding. Do not advertise the cushion as prize money.</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="fk-summary" id="matchday-summary"></div>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">GO</span> Public Routes And Commercial Paths</div>
+            <div class="panel-badge">operator links</div>
+          </div>
+          <div class="panel-body">
+            <div class="mdos-route-list">
+              <a href="/matchday-os/" target="_blank" rel="noopener">Open Matchday OS</a>
+              <a href="/matchday-os/share-cards/" target="_blank" rel="noopener">Share-card generator</a>
+              <a href="/matchday-os/prediction-challenge/" target="_blank" rel="noopener">Prize challenge page</a>
+              <a href="/matchday-os/prizes/" target="_blank" rel="noopener">Prize and payout rules</a>
+              <a href="/matchday-os/sponsors/" target="_blank" rel="noopener">Sponsor page</a>
+              <a href="/matchday-os/rooms/" target="_blank" rel="noopener">Country rooms</a>
+              <a href="/business-enquiry/?offer=sponsored_tool&amp;prospect=media&amp;prospect_segment=sports_media&amp;source_route=mc-matchday-os&amp;tool=matchday-os-sponsorship&amp;cta_type=internal_panel" target="_blank" rel="noopener">Business enquiry</a>
+              <a href="/media-kit/" target="_blank" rel="noopener">Media kit</a>
+              <a href="/sponsored-tools/" target="_blank" rel="noopener">Sponsored tools</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="fk-grid">
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">DAY</span> Daily Matchday Checklist</div>
+              <div class="panel-badge" id="matchday-check-count">0/0</div>
+            </div>
+            <div class="panel-body" id="matchday-checklist"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">OPS</span> Update Status And Actions</div>
+              <div class="panel-badge">local timestamps</div>
+            </div>
+            <div class="panel-body">
+              <div class="mdos-status-grid" id="matchday-status-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fk-grid">
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">SAFE</span> Prize Safety Checklist</div>
+              <div class="panel-badge" id="matchday-prize-count">0/0</div>
+            </div>
+            <div class="panel-body" id="matchday-prize-checklist"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">CAL</span> Launch Countdown And Calendar</div>
+              <div class="panel-badge">operator schedule</div>
+            </div>
+            <div class="panel-body">
+              <div class="mdos-calendar" id="matchday-calendar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fk-grid">
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">POST</span> Blog And Content Queue</div>
+              <div class="panel-badge">editorial slots</div>
+            </div>
+            <div class="panel-body" id="matchday-content-queue"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title"><span class="icon">ROOM</span> Country Room Prompts</div>
+              <div class="panel-badge">copyable prompts</div>
+            </div>
+            <div class="panel-body" id="matchday-country-prompts"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">LEAD</span> Sponsor And Viewing-Center Lead Tracker</div>
+            <div class="panel-badge" id="matchday-lead-count">0 leads</div>
+          </div>
+          <div class="panel-body">
+            <form class="mdos-lead-form" id="matchday-lead-form" onsubmit="saveMatchdayLead(event)">
+              <input type="hidden" id="matchday-lead-id">
+              <label class="fk-field"><span>Lead type</span><select class="fk-input-sm" id="matchday-lead-type"><option value="sponsor">Sponsor</option><option value="viewing-center">Viewing center</option><option value="media-partner">Media partner</option><option value="campus-community">Campus/community</option><option value="other">Other</option></select></label>
+              <label class="fk-field fk-field--wide"><span>Company or venue</span><input class="fk-input-sm" id="matchday-lead-company" required placeholder="Brand, bar, campus, media house"></label>
+              <label class="fk-field"><span>Contact</span><input class="fk-input-sm" id="matchday-lead-contact" placeholder="Name, email, phone"></label>
+              <label class="fk-field"><span>Market</span><input class="fk-input-sm" id="matchday-lead-market" placeholder="Lagos, Accra, diaspora"></label>
+              <label class="fk-field"><span>Offer</span><select class="fk-input-sm" id="matchday-lead-offer"><option>Main sponsor</option><option>Prediction sponsor</option><option>Country room sponsor</option><option>Viewing-center flyer</option><option>Newsletter sponsor</option><option>Media partner</option><option>Campus partner</option></select></label>
+              <label class="fk-field"><span>Next follow-up</span><input class="fk-input-sm" id="matchday-lead-next" type="date"></label>
+              <label class="fk-field fk-field--full"><span>Notes</span><textarea class="fk-input-sm" id="matchday-lead-notes" rows="2" placeholder="Need current audience data, requested sponsor inventory, pending proposal, etc."></textarea></label>
+              <div class="fk-actions fk-field--full">
+                <button class="qa-btn fk-action" type="submit">Add sponsor/viewing-center lead</button>
+                <button class="qa-btn fk-action" type="button" onclick="resetMatchdayLeadForm()">Clear form</button>
+                <button class="qa-btn fk-action" type="button" onclick="exportMatchdayLeadsCsv()">Export leads CSV</button>
+              </div>
+            </form>
+            <div class="fk-table-wrap">
+              <table class="fk-table">
+                <thead><tr><th>Lead</th><th>Type</th><th>Market</th><th>Contact</th><th>Offer</th><th>Next follow-up</th><th>Notes</th><th>Actions</th></tr></thead>
+                <tbody id="matchday-lead-rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">KIT</span> Copyable Outreach Templates</div>
+            <div class="panel-badge">honest buyer copy</div>
+          </div>
+          <div class="panel-body">
+            <div class="fk-note" style="margin-bottom:12px">Templates avoid invented audience numbers, official tournament claims, and gambling language. Share current analytics privately only when they are available and verified.</div>
+            <div class="mdos-outreach-grid" id="matchday-template-grid"></div>
+            <div class="fk-copy-status" id="matchday-template-status" aria-live="polite"></div>
           </div>
         </div>
       </div>
@@ -1992,6 +2179,553 @@ function resetFiftyKWeek(){
   localStorage.removeItem(getFiftyKStorageKey());
   buildFiftyKDashboard();
   setFiftyKStatus('Week reset locally.');
+}
+
+var MATCHDAY_OPS_KEY = 'afrotools-mc-matchday-os-v1';
+var MATCHDAY_LEADS_KEY = 'afrotools-mc-matchday-leads-v1';
+var MATCHDAY_LAUNCH_TARGET = '2026-06-11T00:00:00Z';
+
+var MATCHDAY_CHECKLIST = [
+  { key: 'fixturesUpdated', label: 'Fixture update status checked', note: 'Confirm public fixture data still says demo/static where live data is unavailable.' },
+  { key: 'scoresChecked', label: 'Scores checked', note: 'No score should be published unless it is from the approved source workflow.' },
+  { key: 'groupTablesChecked', label: 'Group tables checked', note: 'Standings copy must avoid overclaiming tie-breaks or qualification before results support it.' },
+  { key: 'predictionHealth', label: 'Prediction game health checked', note: 'Review lock labels, local/demo state copy, and no-betting wording.' },
+  { key: 'antiCheatQueue', label: 'Anti-cheat review queue checked', note: 'Review late attempts, duplicate signals, IP hash clusters, and identical prediction patterns when backend exists.' },
+  { key: 'flaggedAccounts', label: 'Flagged accounts summary reviewed', note: 'Manual winner verification stays required before any payout.' },
+  { key: 'leaderboardExport', label: 'Leaderboard export status reviewed', note: 'Public tracker can show Top 20 for excitement, but only the final verified Top 10 receive cash prizes.' },
+  { key: 'prizeVerification', label: 'Prize verification checklist reviewed', note: 'Top 10 verified Prediction Points players share the $1,200 public prize pool. Legal review, terms acceptance, eligibility, and backend locks are launch gates.' },
+  { key: 'contentQueue', label: 'Blog/content publishing queue reviewed', note: 'Confirm daily preview, strategy prompt, reaction slot, and sponsor-safe feature slot.' },
+  { key: 'countryRooms', label: 'Country room prompts reviewed', note: 'Update team room prompts without pretending there are live fan comments.' },
+  { key: 'sponsorLeads', label: 'Sponsor leads reviewed', note: 'Track current opportunities without inventing audience numbers.' },
+  { key: 'viewingCenterLeads', label: 'Viewing-center leads reviewed', note: 'Prioritize flyer, poster, and WhatsApp-ready event card leads.' },
+  { key: 'shareCards', label: 'Daily social/share-card tasks planned', note: 'Prepare today card, country support card, and viewing-center poster where relevant.' },
+  { key: 'calendar', label: 'Tournament calendar reviewed', note: 'Use operator targets here; verify official timings before public publishing.' }
+];
+
+var MATCHDAY_PRIZE_CHECKLIST = [
+  { key: 'predictionsLock', label: 'Predictions lock before kickoff', note: 'Frontend copy exists, but real lock enforcement must happen server-side before prize launch.' },
+  { key: 'noEditsAfterLock', label: 'No edits after lock', note: 'Prize mode requires immutable, timestamped server records.' },
+  { key: 'emailVerified', label: 'Email verification before leaderboard eligibility', note: 'Do not mark winners eligible from local/demo state.' },
+  { key: 'oneAccount', label: 'One account per person policy', note: 'Needs duplicate-account review and terms acceptance before launch.' },
+  { key: 'hashedSignals', label: 'Device, IP hash, and user-agent hash signals', note: 'Never store raw sensitive fingerprint data in frontend.' },
+  { key: 'suspiciousPatterns', label: 'Suspicious cluster and identical-pick review', note: 'Admin queue required for duplicate signals and identical-prediction patterns.' },
+  { key: 'manualWinnerVerification', label: 'Manual winner verification before payout', note: 'Verify the final Top 10 before any payout communication. No payout automation belongs in this dashboard.' },
+  { key: 'auditLog', label: 'Admin override audit log planned', note: 'Backend audit log is required for any eligibility or scoring override.' },
+  { key: 'termsAccepted', label: 'Terms acceptance timestamp required', note: 'Rules draft must capture consent timing and eligibility requirements.' },
+  { key: 'legalReview', label: 'Legal review before public prize launch', note: 'Prize campaign remains blocked until reviewed for target countries.' }
+];
+
+var MATCHDAY_STATUS_ITEMS = [
+  { key: 'fixturesUpdated', title: 'Fixture update status', note: 'Last time the static fixture source was reviewed.', actionLabel: 'Mark fixtures updated', action: 'markMatchdayStatus("fixturesUpdated")' },
+  { key: 'scoresChecked', title: 'Score check status', note: 'Manual status only. No fake live scores.', actionLabel: 'Mark scores checked', action: 'markMatchdayStatus("scoresChecked")' },
+  { key: 'groupTablesChecked', title: 'Group table status', note: 'Review standings, tie-break wording, and empty states.', actionLabel: 'Mark group tables checked', action: 'markMatchdayStatus("groupTablesChecked")' },
+  { key: 'predictionHealth', title: 'Prediction game health', note: 'Check deadline labels, local/demo state, and scoring explainer.', actionLabel: 'Mark health checked', action: 'markMatchdayStatus("predictionHealth")' },
+  { key: 'antiCheatQueue', title: 'Anti-cheat review queue', note: 'Review flagged entries when backend review data exists.', actionLabel: 'Review flagged entries', action: 'markMatchdayStatus("antiCheatQueue")' },
+  { key: 'flaggedAccounts', title: 'Flagged accounts summary', note: 'Track duplicate, late, and suspicious-pattern signals.', actionLabel: 'Mark reviewed', action: 'markMatchdayStatus("flaggedAccounts")' },
+  { key: 'leaderboardExport', title: 'Leaderboard export status', note: 'Exports an empty shell until backend rows exist. Top 20 tracker rows are provisional; only final verified Top 10 players receive cash.', actionLabel: 'Export leaderboard shell', action: 'exportMatchdayLeaderboard()' },
+  { key: 'prizeVerification', title: 'Prize verification checklist', note: '$1,200 public prize pool, $500 first place, Top 10 verified Prediction Points winners. Manual winner verification and legal review remain required.', actionLabel: 'Mark prize reviewed', action: 'markMatchdayStatus("prizeVerification")' },
+  { key: 'contentQueue', title: 'Blog/content queue', note: 'Daily preview, strategy, reaction, and viewing guide slots.', actionLabel: 'Publish daily prompt', action: 'publishMatchdayPrompt()' },
+  { key: 'sponsorLeads', title: 'Sponsor leads', note: 'Review current brand conversations and private-data requests.', actionLabel: 'Mark leads reviewed', action: 'markMatchdayStatus("sponsorLeads")' },
+  { key: 'viewingCenterLeads', title: 'Viewing-center leads', note: 'Bar, venue, campus, and community organizer pipeline.', actionLabel: 'Copy venue pitch', action: 'copyMatchdayText("viewingPitch")' },
+  { key: 'shareCards', title: 'Daily social/share-card tasks', note: 'Plan WhatsApp, square, story, and sponsor-safe cards.', actionLabel: 'Copy social post', action: 'copyMatchdayText("dailySocial")' }
+];
+
+var MATCHDAY_CONTENT_QUEUE = [
+  { title: 'Daily match previews', note: 'Prep today and tomorrow modules with African team context, not fake live commentary.' },
+  { title: 'African team watch', note: 'Update tracker language for each represented team and make risk/pressure copy conservative.' },
+  { title: 'Strategy discussion prompt', note: 'Seed one tactical question per country room. Do not invent user replies.' },
+  { title: 'Post-match reaction slot', note: 'Use as an empty editorial slot until a real match is completed and sourced.' },
+  { title: 'Viewing guide', note: 'Highlight viewing-center and newsletter CTAs without blocking the fixture utility.' }
+];
+
+var MATCHDAY_COUNTRY_PROMPTS = [
+  { room: 'Africa focus hub', prompt: 'What would make this a successful matchday for African fans today?' },
+  { room: 'Country room template', prompt: 'What is the one matchup, tactical risk, or player story supporters should watch?' },
+  { room: 'Group pressure meter', prompt: 'What result changes the group pressure without overstating qualification?' },
+  { room: 'Player to watch', prompt: 'Which player story can be explained without relying on unsourced live stats?' },
+  { room: 'Viewing-center prompt', prompt: 'Where are fans gathering today, and what poster/share card should operators create?' }
+];
+
+var MATCHDAY_CALENDAR = [
+  { date: 'Today', title: 'Daily matchday sweep', note: 'Fixtures, scores, group table copy, country rooms, share cards, and sponsor lead review.' },
+  { date: 'This week', title: 'Prize safety gate', note: 'Backend locks, audit log, terms acceptance, and legal-review status must be tracked before prize launch.' },
+  { date: 'Jun 2026', title: 'Tournament-period launch target', note: 'Internal countdown target only. Verify official schedule data before public time-sensitive publishing.' },
+  { date: 'Daily during event', title: 'Content and commercial loop', note: 'Publish preview, update rooms, export review data, send sponsor/viewing-center follow-ups, and refresh social cards.' }
+];
+
+var MATCHDAY_COPY = {
+  dailySocial: 'Today on Matchday OS: African football fixtures, local-time match cards, prediction prompts, and country room talking points are ready. Win up to $500 in the free-to-enter Prediction Challenge. Top 10 verified players share $1,200. Prediction Points decide cash prizes; Fan Points do not count. No betting. No purchase required. https://afrotools.com/matchday-os/',
+  viewingPitch: 'Hi, we are preparing Matchday OS viewing-center tools for African football fans: today posters, WhatsApp event cards, and sponsor-supported flyers. Would you like a simple branded schedule card for your venue? We can share current audience data privately during the conversation.',
+  dailyPrompt: 'Daily Matchday OS prompt: update today fixtures, tomorrow preview, African team watch, group pressure meter, player to watch, post-match reaction slot, country room discussion, share-card task, sponsor lead follow-up, and prize safety review.'
+};
+
+var MATCHDAY_TEMPLATES = [
+  {
+    title: 'Telecom sponsor',
+    segment: 'Telco and mobile data brands',
+    cta: 'Sponsor Matchday OS access and share cards',
+    subject: 'Matchday OS sponsor idea for African football fans',
+    body: 'Hi [Name], AfroTools is preparing Matchday OS, an Africa-first football hub for fixtures, local times, predictions, country rooms, and WhatsApp-ready match cards. A telecom partner can support fans around data-light matchday moments, share cards, and country room visibility. This is not an official tournament partnership, and we do not use protected tournament branding. If useful, we can share current audience data privately and discuss a pilot placement.',
+    short: 'Could your team support data-light Matchday OS moments for African football fans? We can discuss sponsor placements and share current audience data privately.'
+  },
+  {
+    title: 'Fintech sponsor',
+    segment: 'Wallets, remittance, and consumer finance',
+    cta: 'Sponsor predictions, newsletter, or country rooms',
+    subject: 'Skill-based Matchday OS prediction challenge sponsorship',
+    body: 'Hi [Name], Matchday OS includes a free-to-enter, skill-based football prediction challenge, country rooms, and daily African football content. Top 10 verified Prediction Points players share a $1,200 public prize pool, with first place at $500, after backend locks, anti-cheat review, eligibility checks, and legal review are complete. A fintech sponsor can support leaderboard, newsletter, and country-room placements while staying clearly separated from betting, odds, staking, payout automation, scoring, and winner verification. We can share current audience data privately and keep sponsor influence out of editorial outcomes.',
+    short: 'We are opening sponsor conversations for a free-to-enter, skill-based Matchday OS prediction challenge. Top 10 verified players share $1,200. No betting framing, no odds, no paid entry.'
+  },
+  {
+    title: 'Food and drink sponsor',
+    segment: 'Beverage, quick service, snacks, and restaurants',
+    cta: 'Sponsor daily cards and viewing-center flyers',
+    subject: 'Viewing-center and daily match card sponsorship',
+    body: 'Hi [Name], Matchday OS can support daily match cards, viewing-center flyers, WhatsApp event cards, and country-room sponsor slots for African football fans. Placements are labeled as sponsor placements and do not imply official tournament affiliation. We can start with a small pilot for a market, country room, or daily content slot.',
+    short: 'Would you like to test a labeled sponsor placement across Matchday OS daily cards and viewing-center flyers?'
+  },
+  {
+    title: 'Sports bar or viewing center',
+    segment: 'Venues and local organizers',
+    cta: 'Use posters and WhatsApp event cards',
+    subject: 'Matchday posters for your viewing center',
+    body: 'Hi [Name], AfroTools is building Matchday OS tools for viewing centers: today match posters, "show matches here" schedule cards, WhatsApp event cards, and optional sponsor-supported flyers. The tools are designed to help venues promote football nights without using protected official tournament marks. Would you like to test the viewing-center card workflow?',
+    short: 'We can help your venue make clean matchday posters and WhatsApp event cards for football viewing nights.'
+  },
+  {
+    title: 'Media partner',
+    segment: 'Radio, blogs, creators, and newsletters',
+    cta: 'Partner on previews, polls, and strategy prompts',
+    subject: 'Media partner idea for Matchday OS',
+    body: 'Hi [Name], Matchday OS has editorial slots for daily previews, African team watch, strategy prompts, fan polls, and post-match reactions. We are looking for media partners who can contribute useful football context without invented comments, fake live claims, or official tournament association. We can discuss credited partner slots and current audience data privately.',
+    short: 'Would a Matchday OS media partnership around previews, polls, and country-room prompts be worth exploring?'
+  },
+  {
+    title: 'Campus or community partner',
+    segment: 'Student bodies, diaspora groups, and community organizers',
+    cta: 'Coordinate country rooms and viewing guides',
+    subject: 'Community matchday tools for African football fans',
+    body: 'Hi [Name], Matchday OS can help communities coordinate country-room prompts, viewing guides, share cards, and prediction reminders during the tournament period. Entry to the prediction challenge is free, skill-based, and not betting. We can support a campus or community pilot with reusable posters and WhatsApp-friendly cards.',
+    short: 'Could your community use country-room prompts, posters, and WhatsApp matchday cards for the tournament period?'
+  }
+];
+
+function getMatchdayTodayKey(){
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getMatchdayOpsState(){
+  try {
+    var raw = localStorage.getItem(MATCHDAY_OPS_KEY);
+    var parsed = raw ? JSON.parse(raw) : {};
+    if(!parsed || typeof parsed !== 'object') parsed = {};
+    parsed.checks = parsed.checks || {};
+    parsed.prizeChecks = parsed.prizeChecks || {};
+    parsed.statuses = parsed.statuses || {};
+    parsed.dayKey = parsed.dayKey || getMatchdayTodayKey();
+    return parsed;
+  } catch(e){
+    return { dayKey: getMatchdayTodayKey(), checks: {}, prizeChecks: {}, statuses: {} };
+  }
+}
+
+function saveMatchdayOpsState(state){
+  state.updatedAt = new Date().toISOString();
+  localStorage.setItem(MATCHDAY_OPS_KEY, JSON.stringify(state));
+}
+
+function setMatchdayOpsStatus(message){
+  var el = document.getElementById('matchday-status');
+  if(el) el.textContent = message;
+}
+
+function matchdayStatusLabel(value){
+  if(!value) return 'Pending';
+  try {
+    return new Date(value).toLocaleString();
+  } catch(e){
+    return String(value);
+  }
+}
+
+function toggleMatchdayCheck(key, checked){
+  var state = getMatchdayOpsState();
+  state.checks[key] = !!checked;
+  saveMatchdayOpsState(state);
+  renderMatchdayOps();
+}
+
+function toggleMatchdayPrizeCheck(key, checked){
+  var state = getMatchdayOpsState();
+  state.prizeChecks[key] = !!checked;
+  saveMatchdayOpsState(state);
+  renderMatchdayOps();
+}
+
+function markMatchdayStatus(key){
+  var state = getMatchdayOpsState();
+  state.statuses[key] = new Date().toISOString();
+  saveMatchdayOpsState(state);
+  renderMatchdayOps();
+  setMatchdayOpsStatus('Updated ' + key + ' at ' + new Date().toLocaleTimeString() + '.');
+}
+
+function renderMatchdaySummary(){
+  var el = document.getElementById('matchday-summary');
+  if(!el) return;
+  var state = getMatchdayOpsState();
+  var done = MATCHDAY_CHECKLIST.filter(function(item){ return !!state.checks[item.key]; }).length;
+  var prizeDone = MATCHDAY_PRIZE_CHECKLIST.filter(function(item){ return !!state.prizeChecks[item.key]; }).length;
+  var leads = getMatchdayLeads().length;
+  var statusDone = MATCHDAY_STATUS_ITEMS.filter(function(item){ return !!state.statuses[item.key]; }).length;
+  var target = new Date(MATCHDAY_LAUNCH_TARGET).getTime();
+  var days = Math.ceil((target - Date.now()) / 86400000);
+  var countdown = days > 0 ? days + ' days' : 'Target window active';
+  el.innerHTML = [
+    { label: 'Daily checklist', value: done + '/' + MATCHDAY_CHECKLIST.length },
+    { label: 'Prize safety', value: prizeDone + '/' + MATCHDAY_PRIZE_CHECKLIST.length },
+    { label: 'Ops statuses', value: statusDone + '/' + MATCHDAY_STATUS_ITEMS.length },
+    { label: 'Sponsor/venue leads', value: String(leads) },
+    { label: 'Launch countdown', value: countdown }
+  ].map(function(card){
+    return '<div class="fk-summary-card"><div class="fk-summary-label">' + escapeHtml(card.label) + '</div><div class="fk-summary-value">' + escapeHtml(card.value) + '</div></div>';
+  }).join('');
+  var label = document.getElementById('matchday-date-label');
+  if(label) label.textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  var checkCount = document.getElementById('matchday-check-count');
+  if(checkCount) checkCount.textContent = done + '/' + MATCHDAY_CHECKLIST.length;
+  var prizeCount = document.getElementById('matchday-prize-count');
+  if(prizeCount) prizeCount.textContent = prizeDone + '/' + MATCHDAY_PRIZE_CHECKLIST.length;
+  if(state.updatedAt){
+    setMatchdayOpsStatus('Local Matchday OS tracker saved ' + new Date(state.updatedAt).toLocaleString() + '. Prize launch still requires backend and legal gates.');
+  }
+}
+
+function renderMatchdayChecklist(){
+  var el = document.getElementById('matchday-checklist');
+  if(!el) return;
+  var state = getMatchdayOpsState();
+  el.innerHTML = MATCHDAY_CHECKLIST.map(function(item){
+    var checked = !!state.checks[item.key];
+    return '<label class="fk-check-row">' +
+      '<input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="toggleMatchdayCheck(\'' + item.key + '\', this.checked)">' +
+      '<span><strong>' + escapeHtml(item.label) + '</strong><small>' + escapeHtml(item.note) + '</small></span>' +
+    '</label>';
+  }).join('');
+}
+
+function renderMatchdayPrizeChecklist(){
+  var el = document.getElementById('matchday-prize-checklist');
+  if(!el) return;
+  var state = getMatchdayOpsState();
+  el.innerHTML = '<div class="fk-note" style="margin-bottom:10px">Prize campaign is blocked until server-side enforcement, eligibility rules, audit logs, and legal review are complete.</div>' +
+    MATCHDAY_PRIZE_CHECKLIST.map(function(item){
+      var checked = !!state.prizeChecks[item.key];
+      return '<label class="fk-check-row">' +
+        '<input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="toggleMatchdayPrizeCheck(\'' + item.key + '\', this.checked)">' +
+        '<span><strong>' + escapeHtml(item.label) + '</strong><small>' + escapeHtml(item.note) + '</small></span>' +
+      '</label>';
+    }).join('');
+}
+
+function renderMatchdayStatusGrid(){
+  var el = document.getElementById('matchday-status-grid');
+  if(!el) return;
+  var state = getMatchdayOpsState();
+  el.innerHTML = MATCHDAY_STATUS_ITEMS.map(function(item){
+    return '<article class="mdos-status-card">' +
+      '<h4>' + escapeHtml(item.title) + '</h4>' +
+      '<p>' + escapeHtml(item.note) + '</p>' +
+      '<p><strong>Status:</strong> ' + escapeHtml(matchdayStatusLabel(state.statuses[item.key])) + '</p>' +
+      '<button class="qa-btn fk-action" type="button" onclick=\'' + item.action + '\'>' + escapeHtml(item.actionLabel) + '</button>' +
+    '</article>';
+  }).join('');
+}
+
+function renderMatchdayCalendar(){
+  var el = document.getElementById('matchday-calendar');
+  if(!el) return;
+  el.innerHTML = MATCHDAY_CALENDAR.map(function(item){
+    return '<div class="mdos-calendar-row">' +
+      '<div class="mdos-calendar-date">' + escapeHtml(item.date) + '</div>' +
+      '<div><div class="mdos-calendar-title">' + escapeHtml(item.title) + '</div><div class="mdos-calendar-note">' + escapeHtml(item.note) + '</div></div>' +
+      '<button class="qa-btn fk-action" type="button" onclick="copyMatchdayText(\'dailyPrompt\')">Copy prompt</button>' +
+    '</div>';
+  }).join('');
+}
+
+function renderMatchdayContentQueue(){
+  var el = document.getElementById('matchday-content-queue');
+  if(!el) return;
+  el.innerHTML = MATCHDAY_CONTENT_QUEUE.map(function(item){
+    return '<label class="fk-check-row">' +
+      '<input type="checkbox" aria-label="' + escapeHtml(item.title) + '">' +
+      '<span><strong>' + escapeHtml(item.title) + '</strong><small>' + escapeHtml(item.note) + '</small></span>' +
+    '</label>';
+  }).join('') + '<div class="fk-actions" style="margin-top:10px"><button class="qa-btn fk-action" type="button" onclick="publishMatchdayPrompt()">Publish daily match prompt</button><button class="qa-btn fk-action" type="button" onclick="copyMatchdayText(\'dailySocial\')">Copy daily social post</button></div>';
+}
+
+function renderMatchdayCountryPrompts(){
+  var el = document.getElementById('matchday-country-prompts');
+  if(!el) return;
+  el.innerHTML = MATCHDAY_COUNTRY_PROMPTS.map(function(item, index){
+    return '<article class="fk-template-card" style="margin-bottom:10px">' +
+      '<h4>' + escapeHtml(item.room) + '</h4>' +
+      '<p>' + escapeHtml(item.prompt) + '</p>' +
+      '<button class="qa-btn fk-action" type="button" onclick="copyMatchdayCountryPrompt(' + index + ')">Copy prompt</button>' +
+    '</article>';
+  }).join('');
+}
+
+function getMatchdayLeads(){
+  try {
+    var raw = localStorage.getItem(MATCHDAY_LEADS_KEY);
+    var parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch(e){
+    return [];
+  }
+}
+
+function saveMatchdayLeads(rows){
+  localStorage.setItem(MATCHDAY_LEADS_KEY, JSON.stringify(rows.slice(0, 300)));
+}
+
+function saveMatchdayLead(event){
+  if(event) event.preventDefault();
+  var id = document.getElementById('matchday-lead-id').value || String(Date.now() + Math.random());
+  var item = {
+    id: id,
+    type: document.getElementById('matchday-lead-type').value,
+    company: document.getElementById('matchday-lead-company').value.trim(),
+    contact: document.getElementById('matchday-lead-contact').value.trim(),
+    market: document.getElementById('matchday-lead-market').value.trim(),
+    offer: document.getElementById('matchday-lead-offer').value,
+    nextFollowUp: document.getElementById('matchday-lead-next').value,
+    notes: document.getElementById('matchday-lead-notes').value.trim(),
+    updatedAt: new Date().toISOString()
+  };
+  if(!item.company){
+    setMatchdayOpsStatus('Add a company, venue, or partner name before saving.');
+    return;
+  }
+  var rows = getMatchdayLeads().filter(function(row){ return row.id !== id; });
+  rows.unshift(item);
+  saveMatchdayLeads(rows);
+  resetMatchdayLeadForm();
+  renderMatchdayLeads();
+  renderMatchdaySummary();
+  setMatchdayOpsStatus('Lead saved locally: ' + item.company + '.');
+}
+
+function resetMatchdayLeadForm(){
+  var form = document.getElementById('matchday-lead-form');
+  if(form) form.reset();
+  var id = document.getElementById('matchday-lead-id');
+  if(id) id.value = '';
+}
+
+function editMatchdayLead(id){
+  var item = getMatchdayLeads().find(function(row){ return row.id === id; });
+  if(!item) return;
+  document.getElementById('matchday-lead-id').value = item.id;
+  document.getElementById('matchday-lead-type').value = item.type || 'sponsor';
+  document.getElementById('matchday-lead-company').value = item.company || '';
+  document.getElementById('matchday-lead-contact').value = item.contact || '';
+  document.getElementById('matchday-lead-market').value = item.market || '';
+  document.getElementById('matchday-lead-offer').value = item.offer || 'Main sponsor';
+  document.getElementById('matchday-lead-next').value = item.nextFollowUp || '';
+  document.getElementById('matchday-lead-notes').value = item.notes || '';
+  setMatchdayOpsStatus('Editing local lead: ' + (item.company || 'untitled') + '.');
+}
+
+function deleteMatchdayLead(id){
+  if(!confirm('Delete this local Matchday OS lead?')) return;
+  saveMatchdayLeads(getMatchdayLeads().filter(function(row){ return row.id !== id; }));
+  renderMatchdayLeads();
+  renderMatchdaySummary();
+  setMatchdayOpsStatus('Lead deleted locally.');
+}
+
+function renderMatchdayLeads(){
+  var rowsEl = document.getElementById('matchday-lead-rows');
+  var countEl = document.getElementById('matchday-lead-count');
+  if(!rowsEl) return;
+  var rows = getMatchdayLeads();
+  if(countEl) countEl.textContent = rows.length + (rows.length === 1 ? ' lead' : ' leads');
+  if(!rows.length){
+    rowsEl.innerHTML = '<tr><td colspan="8" style="font-size:11px;color:var(--text3)">No sponsor, viewing-center, media, or community leads saved locally yet.</td></tr>';
+    return;
+  }
+  rowsEl.innerHTML = rows.map(function(item){
+    return '<tr>' +
+      '<td><strong>' + escapeHtml(item.company || '') + '</strong></td>' +
+      '<td>' + escapeHtml(item.type || '') + '</td>' +
+      '<td>' + escapeHtml(item.market || '') + '</td>' +
+      '<td>' + escapeHtml(item.contact || '') + '</td>' +
+      '<td>' + escapeHtml(item.offer || '') + '</td>' +
+      '<td>' + escapeHtml(item.nextFollowUp || '') + '</td>' +
+      '<td>' + escapeHtml(item.notes || '') + '</td>' +
+      '<td><button type="button" onclick="editMatchdayLead(\'' + escapeHtml(item.id) + '\')">Edit</button> <button type="button" onclick="deleteMatchdayLead(\'' + escapeHtml(item.id) + '\')">Delete</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+function renderMatchdayTemplates(){
+  var el = document.getElementById('matchday-template-grid');
+  if(!el) return;
+  el.innerHTML = MATCHDAY_TEMPLATES.map(function(template, index){
+    return '<article class="fk-template-card">' +
+      '<h4>' + escapeHtml(template.title) + '</h4>' +
+      '<div class="fk-template-meta"><span>' + escapeHtml(template.segment) + '</span><span>' + escapeHtml(template.cta) + '</span></div>' +
+      '<textarea readonly id="matchday-template-' + index + '" aria-label="Matchday outreach template">' + escapeHtml(buildMatchdayTemplateText(template)) + '</textarea>' +
+      '<button class="qa-btn fk-action" type="button" onclick="copyMatchdayTemplate(' + index + ')">Copy outreach message</button>' +
+    '</article>';
+  }).join('');
+}
+
+function buildMatchdayTemplateText(template){
+  return [
+    'Subject: ' + template.subject,
+    '',
+    template.body,
+    '',
+    'Short WhatsApp/LinkedIn:',
+    template.short,
+    '',
+    'Suggested segment: ' + template.segment,
+    'Primary CTA: ' + template.cta,
+    'Matchday OS route: https://afrotools.com/matchday-os/',
+    'Sponsor intake: https://afrotools.com/business-enquiry/?offer=sponsored_tool&source_route=mc-matchday-os'
+  ].join('\n');
+}
+
+function copyMatchdayTextValue(text, done){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){
+      setMatchdayOpsStatus('Copy blocked by browser clipboard permissions.');
+    });
+  } else {
+    setMatchdayOpsStatus('Copy unavailable in this browser.');
+  }
+}
+
+function copyMatchdayTemplate(index){
+  var el = document.getElementById('matchday-template-' + index);
+  var status = document.getElementById('matchday-template-status');
+  if(!el) return;
+  copyMatchdayTextValue(el.value, function(){
+    if(status) status.textContent = 'Template copied: ' + MATCHDAY_TEMPLATES[index].title;
+    setMatchdayOpsStatus('Outreach template copied.');
+  });
+}
+
+function copyMatchdayText(kind){
+  var text = MATCHDAY_COPY[kind];
+  if(!text) return;
+  copyMatchdayTextValue(text, function(){
+    setMatchdayOpsStatus('Copied Matchday OS text: ' + kind + '.');
+  });
+}
+
+function copyMatchdayCountryPrompt(index){
+  var item = MATCHDAY_COUNTRY_PROMPTS[index];
+  if(!item) return;
+  copyMatchdayTextValue(item.room + ': ' + item.prompt, function(){
+    setMatchdayOpsStatus('Country room prompt copied.');
+  });
+}
+
+function publishMatchdayPrompt(){
+  markMatchdayStatus('contentQueue');
+  copyMatchdayText('dailyPrompt');
+}
+
+function exportMatchdayLeaderboard(){
+  markMatchdayStatus('leaderboardExport');
+  var payload = {
+    exportedAt: new Date().toISOString(),
+    product: 'Matchday OS prediction challenge',
+    mode: 'backend-required-empty-export-shell',
+    prizePolicy: 'Top 20 public tracker rows can be exported for provisional review, but only the final verified Top 10 Prediction Points players receive cash prizes from the $1,200 public prize pool.',
+    note: 'No production leaderboard rows are exported from localStorage. Backend persistence, server locks, email verification, anti-cheat review, eligibility review, and admin review are required before prize launch. Fan Points do not count toward cash prizes.',
+    rows: []
+  };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'matchday-os-leaderboard-shell-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setMatchdayOpsStatus('Leaderboard shell exported. Real prize leaderboard requires backend verification; only final verified Top 10 players receive cash.');
+}
+
+function exportMatchdayLeadsCsv(){
+  var headers = ['company', 'type', 'market', 'contact', 'offer', 'nextFollowUp', 'notes', 'updatedAt'];
+  var lines = [headers.join(',')];
+  getMatchdayLeads().forEach(function(item){
+    lines.push(headers.map(function(field){ return csvEscape(item[field]); }).join(','));
+  });
+  var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'matchday-os-leads-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setMatchdayOpsStatus('Matchday OS leads CSV exported locally.');
+}
+
+function buildMatchdayOpsSummaryText(){
+  var state = getMatchdayOpsState();
+  var lines = [
+    'Matchday OS daily operator summary',
+    'Date: ' + new Date().toLocaleDateString(),
+    '',
+    'Daily checklist:'
+  ];
+  MATCHDAY_CHECKLIST.forEach(function(item){
+    lines.push('- [' + (state.checks[item.key] ? 'x' : ' ') + '] ' + item.label);
+  });
+  lines.push('', 'Prize safety checklist:');
+  MATCHDAY_PRIZE_CHECKLIST.forEach(function(item){
+    lines.push('- [' + (state.prizeChecks[item.key] ? 'x' : ' ') + '] ' + item.label);
+  });
+  lines.push('', 'Status timestamps:');
+  MATCHDAY_STATUS_ITEMS.forEach(function(item){
+    lines.push('- ' + item.title + ': ' + matchdayStatusLabel(state.statuses[item.key]));
+  });
+  lines.push('', 'Local leads: ' + getMatchdayLeads().length);
+  lines.push('Prize launch: blocked until backend enforcement, terms, eligibility rules, and legal review are complete.');
+  return lines.join('\n');
+}
+
+function copyMatchdayOpsSummary(){
+  copyMatchdayTextValue(buildMatchdayOpsSummaryText(), function(){
+    setMatchdayOpsStatus('Daily Matchday OS summary copied.');
+  });
+}
+
+function resetMatchdayOpsToday(){
+  if(!confirm('Reset local Matchday OS checklist and status timestamps? Saved leads stay in place.')) return;
+  localStorage.removeItem(MATCHDAY_OPS_KEY);
+  renderMatchdayOps();
+  setMatchdayOpsStatus('Local Matchday OS day reset. Saved leads were not deleted.');
+}
+
+function renderMatchdayOps(){
+  renderMatchdayChecklist();
+  renderMatchdayPrizeChecklist();
+  renderMatchdayStatusGrid();
+  renderMatchdayCalendar();
+  renderMatchdayContentQueue();
+  renderMatchdayCountryPrompts();
+  renderMatchdayLeads();
+  renderMatchdayTemplates();
+  renderMatchdaySummary();
+}
+
+function buildMatchdayDashboard(){
+  renderMatchdayOps();
 }
 
 function mcFindEndpointCheck(id){
@@ -3610,6 +4344,7 @@ function drMarkReviewed(idx){
 function initAll(){
   buildDashStats();
   buildFiftyKDashboard();
+  buildMatchdayDashboard();
   buildRegistry();
   buildInventoryPage();
   buildSEOPage();

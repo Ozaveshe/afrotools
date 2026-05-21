@@ -58,6 +58,22 @@ const unclear = trust.normalizeDeadline({
 assert.strictEqual(unclear.deadlineStatus, 'unclear', 'unclear text should stay unclear');
 assert.strictEqual(unclear.deadlineConfidence, 'unclear', 'unclear deadlines must not be upgraded without source and date');
 assert.strictEqual(unclear.daysLeft, null, 'unclear deadlines must not calculate days left');
+assert.strictEqual(unclear.displayLabel, 'Research queue', 'unclear rows should use research queue product language');
+assert.strictEqual(unclear.displayText, 'Provider page varies', 'generic provider checks should use research queue wording');
+
+const variable = trust.normalizeDeadline({
+  name: 'Variable scholarship',
+  deadline_text: 'No single public deadline; deadlines vary by partner institution.',
+  deadline_confidence: 'no_single_public_deadline',
+  deadline_source_url: 'https://example.edu/variable',
+  deadline_notes: 'Official source says each partner sets its own deadline.',
+  last_verified_at: '2026-05-20T10:00:00Z'
+}, now);
+
+assert.strictEqual(variable.deadlineStatus, 'variable', 'verified no-single-deadline rows should not remain in research queue');
+assert.strictEqual(variable.deadlineConfidence, 'no_single_public_deadline', 'variable rows should preserve official-source confidence');
+assert.strictEqual(variable.displayLabel, 'Verified variable deadline', 'variable rows should have a clear product label');
+assert.strictEqual(variable.daysLeft, null, 'variable deadlines must not calculate days left');
 
 const closed = trust.normalizeDeadline({
   name: 'Past scholarship',
@@ -73,13 +89,25 @@ assert(closed.detail.includes('passed'), 'closed deadlines should explain that t
 const html = trust.buildTrustRowHtml({
   name: 'Unclear scholarship',
   provider: 'Provider',
-  deadline_text: 'Deadline unclear',
+  deadline_text: 'Check official provider',
   source_url: 'https://example.edu/unclear'
 }, unclear);
 
-assert(html.includes('Deadline unclear'), 'trust row should show unclear deadline label');
+assert(html.includes('Research queue'), 'trust row should show research queue label');
+assert(html.includes('Provider page varies'), 'trust row should avoid vague deadline wording');
 assert(html.includes('Report deadline'), 'unclear trust row should expose report action');
 assert(html.includes('Submit official deadline source'), 'unclear trust row should expose source submission action');
 assert(!/Urgent/.test(html), 'unclear trust row must not present urgency');
+
+const variableHtml = trust.buildTrustRowHtml({
+  name: 'Variable scholarship',
+  provider: 'Provider',
+  deadline_text: variable.deadlineText,
+  deadline_confidence: 'no_single_public_deadline',
+  deadline_source_url: 'https://example.edu/variable'
+}, variable);
+
+assert(variableHtml.includes('Verified variable deadline'), 'trust row should show verified variable status');
+assert(variableHtml.includes('Official source checked'), 'trust row should show official-source checked confidence');
 
 console.log('Scholarship deadline trust model verified.');

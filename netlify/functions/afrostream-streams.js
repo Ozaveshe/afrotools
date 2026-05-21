@@ -21,6 +21,51 @@ function readCount(res, fallback) {
   return match ? parseInt(match[1], 10) : fallback;
 }
 
+function creatorKey(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[''.]/g, '')
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+async function enrichStreamsWithCreators(rows) {
+  if (!rows.length) return rows;
+  var res = await fetch(SUPABASE_URL + '/rest/v1/as_creators?select=id,slug,name,country,avatar,cover,total_followers,subscribers,primary_platform,is_published&limit=1000', {
+    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+  });
+  var creators = await readJson(res);
+  if (!res.ok || !Array.isArray(creators)) return rows;
+
+  var byId = new Map();
+  var byName = new Map();
+  creators.forEach(function(c) {
+    if (c.id) byId.set(String(c.id), c);
+    var key = creatorKey(c.name);
+    if (key && !byName.has(key)) byName.set(key, c);
+  });
+
+  return rows.map(function(row) {
+    var creator = row.creator_id ? byId.get(String(row.creator_id)) : null;
+    if (!creator) creator = byName.get(creatorKey(row.creator_name || row.creator));
+    if (!creator) return row;
+    var out = Object.assign({}, row);
+    out.creator_slug = out.creator_slug || creator.slug || '';
+    out.creator_avatar = out.creator_avatar || creator.avatar || '';
+    out.creator_cover = out.creator_cover || creator.cover || '';
+    out.avatar_url = out.avatar_url || creator.avatar || '';
+    out.cover_url = out.cover_url || creator.cover || '';
+    out.creator_country = out.creator_country || creator.country || '';
+    out.creator_followers = out.creator_followers || creator.total_followers || creator.subscribers || null;
+    out.creator_primary_platform = out.creator_primary_platform || creator.primary_platform || '';
+    if (!out.country) out.country = creator.country || '';
+    return out;
+  });
+}
+
 exports.handler = async function(event) {
   var h = cors(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: h, body: '' };
@@ -64,6 +109,7 @@ exports.handler = async function(event) {
 
     var rows = Array.isArray(data) ? data : [];
     var totalCount = readCount(res, rows.length);
+    rows = await enrichStreamsWithCreators(rows);
     return {
       statusCode: 200,
       headers: h,

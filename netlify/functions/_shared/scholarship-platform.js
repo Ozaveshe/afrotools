@@ -44,6 +44,7 @@ const MANUAL_REVIEW_PARSER_KEYS = new Set([
 ]);
 
 let sourceRegistryCache = null;
+let deadlineOverridesCache = null;
 let authClient = null;
 
 function getAuthClient() {
@@ -247,6 +248,43 @@ function readScholarshipSourceRegistryPayload() {
   }
 }
 
+function readScholarshipDeadlineOverridesPayload() {
+  if (deadlineOverridesCache) return deadlineOverridesCache;
+  try {
+    deadlineOverridesCache = require('../../../data/scholarships/deadline-overrides.json');
+    return deadlineOverridesCache;
+  } catch (error) {
+    if (error && error.code === 'MODULE_NOT_FOUND') return null;
+    throw error;
+  }
+}
+
+function getScholarshipDeadlineOverride(slug) {
+  const payload = readScholarshipDeadlineOverridesPayload();
+  const overrides = payload && payload.overrides && typeof payload.overrides === 'object'
+    ? payload.overrides
+    : {};
+  const entry = overrides[String(slug || '').trim()];
+  return entry && typeof entry === 'object' ? entry : null;
+}
+
+function normalizeDeadlineStatus(status, deadlineDate) {
+  const explicit = String(status || '').toLowerCase();
+  if (['open', 'upcoming', 'unclear', 'closed', 'variable'].indexOf(explicit) !== -1) return explicit;
+  if (deadlineDate && new Date(deadlineDate).getTime() < Date.now()) return 'closed';
+  return deadlineDate ? 'open' : 'unclear';
+}
+
+function getDeadlineOverrideConfidence(override) {
+  const explicit = String(override && (override.deadline_confidence || override.confidence) || '').toLowerCase();
+  if (explicit === 'verified' || explicit === 'no_single_public_deadline') return explicit;
+  return override && override.deadline_date ? 'verified' : 'no_single_public_deadline';
+}
+
+function getDeadlineOverrideResolution(override) {
+  return override && override.deadline_date ? 'exact_date' : 'no_single_public_deadline';
+}
+
 function loadScholarshipSourceRegistry(options) {
   const settings = options || {};
   if (!settings.force && sourceRegistryCache) {
@@ -313,9 +351,12 @@ function buildLegacyScholarship(row) {
     deadline_month: snapshot.deadline_month || null,
     deadline_status: row.deadline_status || snapshot.deadline_status || null,
     deadline_confidence: row.deadline_confidence || snapshot.deadline_confidence || null,
+    deadline_resolution: snapshot.deadline_resolution || null,
     deadline_source_url: row.deadline_source_url || snapshot.deadline_source_url || row.source_url || snapshot.source_url || null,
     deadline_last_checked: row.deadline_last_checked || snapshot.deadline_last_checked || row.last_verified_at || row.last_seen_at || null,
     deadline_notes: row.deadline_notes || snapshot.deadline_notes || '',
+    deadline_evidence: snapshot.deadline_evidence || '',
+    deadline_checked_urls: Array.isArray(snapshot.deadline_checked_urls) ? snapshot.deadline_checked_urls : [],
     status: row.status,
     confidence_mode: row.confidence_mode,
     proof_level: row.proof_level,
@@ -569,14 +610,6 @@ function normalizeScholarshipRecord(raw, source) {
   const title = String(raw.title || raw.name || '').trim();
   if (!title) return null;
 
-  const deadlineDate = parseDeadlineDate(raw.deadline_date || raw.deadlineDate);
-  const status = (function () {
-    const explicit = String(raw.status || '').toLowerCase();
-    if (['open', 'upcoming', 'unclear', 'closed'].indexOf(explicit) !== -1) return explicit;
-    if (deadlineDate && new Date(deadlineDate).getTime() < Date.now()) return 'closed';
-    return deadlineDate ? 'open' : 'unclear';
-  })();
-
   const minGpa4 = toNumber(raw.min_gpa_4);
   const minGpa5 = toNumber(raw.min_gpa_5);
   const confidenceMode = ['live', 'cached', 'curated', 'fallback'].indexOf(String(raw.confidence_mode || '')) !== -1
@@ -588,6 +621,13 @@ function normalizeScholarshipRecord(raw, source) {
   const sourceUrl = String(raw.source_url || raw.application_url || raw.info_url || officialUrl).trim();
   if (!sourceUrl) return null;
   const slug = slugify(raw.slug || title + '-' + (raw.provider || raw.destination || raw.country || 'scholarship'));
+  const deadlineOverride = getScholarshipDeadlineOverride(slug);
+  const deadlineDate = parseDeadlineDate((deadlineOverride && deadlineOverride.deadline_date) || raw.deadline_date || raw.deadlineDate);
+  const overrideConfidence = deadlineOverride ? getDeadlineOverrideConfidence(deadlineOverride) : '';
+  const status = overrideConfidence === 'no_single_public_deadline'
+    ? 'variable'
+    : normalizeDeadlineStatus((deadlineOverride && deadlineOverride.status) || raw.status, deadlineDate);
+  const databaseStatus = status === 'variable' ? 'unclear' : status;
   const sourceSnapshot = Object.assign({}, raw, {
     source_key: source.source_key || '',
     source_type: source.source_type || '',
@@ -596,6 +636,21 @@ function normalizeScholarshipRecord(raw, source) {
     trust_level: source.trust_level || '',
     last_source_id: source.id || null
   });
+  if (deadlineOverride) {
+    const deadlineConfidence = overrideConfidence;
+    sourceSnapshot.deadline_override = Object.assign({}, deadlineOverride, {
+      applied_from: 'data/scholarships/deadline-overrides.json'
+    });
+    sourceSnapshot.deadline_confidence = deadlineConfidence;
+    sourceSnapshot.deadline_resolution = getDeadlineOverrideResolution(deadlineOverride);
+    sourceSnapshot.deadline_source_url = deadlineOverride.deadline_source_url || sourceUrl || '';
+    sourceSnapshot.deadline_notes = deadlineOverride.deadline_notes || '';
+    sourceSnapshot.deadline_evidence = deadlineOverride.evidence || '';
+    sourceSnapshot.deadline_checked_urls = Array.isArray(deadlineOverride.checked_urls) ? deadlineOverride.checked_urls : [];
+    sourceSnapshot.deadline_date = deadlineDate;
+    sourceSnapshot.deadline_text = deadlineOverride.deadline_text || '';
+    sourceSnapshot.deadline_status = status;
+  }
 
   return {
     slug: slug,
@@ -611,10 +666,12 @@ function normalizeScholarshipRecord(raw, source) {
     min_gpa: minGpa4 != null ? minGpa4 : (minGpa5 != null ? Number((minGpa5 * 0.8).toFixed(2)) : null),
     min_ielts: toNumber(raw.min_ielts),
     deadline_date: deadlineDate,
-    deadline_text: String(raw.deadline_text || '').trim() || null,
-    status: status,
+    deadline_text: String((deadlineOverride && deadlineOverride.deadline_text) || raw.deadline_text || '').trim() || null,
+    status: databaseStatus,
     confidence_mode: confidenceMode,
-    proof_level: String(raw.proof_level || (officialUrl ? 'official_link' : 'source_link')).trim(),
+    proof_level: String(deadlineOverride
+      ? (getDeadlineOverrideConfidence(deadlineOverride) === 'verified' ? 'official_deadline_manual_review' : 'official_deadline_no_single_public_date')
+      : (raw.proof_level || (officialUrl ? 'official_link' : 'source_link'))).trim(),
     summary: summary || null,
     last_seen_at: new Date().toISOString(),
     last_verified_at: new Date().toISOString(),

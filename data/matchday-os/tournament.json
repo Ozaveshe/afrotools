@@ -1,0 +1,729 @@
+{
+  "schemaVersion": "2026-05-21.static.1",
+  "dataMode": "static-foundation",
+  "lastReviewed": "2026-05-21",
+  "productName": "Matchday OS",
+  "tournamentLabel": "2026 World Cup period",
+  "officialPartnership": false,
+  "rightsNotice": "Independent AfroTools product. This data layer must not imply official FIFA, CAF, team, sponsor, or tournament partnership.",
+  "updatePolicy": {
+    "sourceOfTruth": "Only update fixtures, groups, squads, venues, and scores from verified official tournament, confederation, federation, or host-city sources.",
+    "placeholderPolicy": "Use status=placeholder and isPlaceholder=true when a match, group, venue, opponent, or kickoff is not verified. Placeholder rows must not be shown as live results.",
+    "scorePolicy": "Scores remain null until a match has a verified result. resultFinal stays false until the result is confirmed."
+  },
+  "sourceNotes": [
+    {
+      "label": "Qualified teams list",
+      "url": "https://www.fifa.com/en/articles/world-cup-2026-who-has-qualified",
+      "lastChecked": "2026-05-21",
+      "use": "African team qualification list and DR Congo play-off qualification status."
+    },
+    {
+      "label": "CAF qualification format",
+      "url": "https://www.cafonline.com/news/everything-you-need-to-know-about-2026-world-cup-qualifying-for-africa/",
+      "lastChecked": "2026-05-21",
+      "use": "Africa qualification format, nine direct CAF places plus one play-off pathway."
+    }
+  ],
+  "tournamentPhases": [
+    { "phaseId": "pre_tournament", "label": "Pre-tournament", "sortOrder": 0, "isKnockout": false },
+    { "phaseId": "group_stage", "label": "Group stage", "sortOrder": 10, "isKnockout": false },
+    { "phaseId": "round_of_32", "label": "Round of 32", "sortOrder": 20, "isKnockout": true },
+    { "phaseId": "round_of_16", "label": "Round of 16", "sortOrder": 30, "isKnockout": true },
+    { "phaseId": "quarter_final", "label": "Quarter-final", "sortOrder": 40, "isKnockout": true },
+    { "phaseId": "semi_final", "label": "Semi-final", "sortOrder": 50, "isKnockout": true },
+    { "phaseId": "third_place", "label": "Third-place match", "sortOrder": 60, "isKnockout": true },
+    { "phaseId": "final", "label": "Final", "sortOrder": 70, "isKnockout": true }
+  ],
+  "matchStatuses": [
+    { "status": "placeholder", "label": "Placeholder", "countsAsLive": false },
+    { "status": "scheduled", "label": "Scheduled", "countsAsLive": false },
+    { "status": "live", "label": "Live", "countsAsLive": true },
+    { "status": "halftime", "label": "Half-time", "countsAsLive": true },
+    { "status": "full_time", "label": "Full-time", "countsAsLive": false },
+    { "status": "postponed", "label": "Postponed", "countsAsLive": false },
+    { "status": "cancelled", "label": "Cancelled", "countsAsLive": false }
+  ],
+  "timeZones": {
+    "defaultTimeZone": "Africa/Lagos",
+    "displayCities": [
+      { "cityId": "lagos", "city": "Lagos", "countryCode": "NG", "timeZone": "Africa/Lagos", "shortLabel": "Lagos", "offsetHint": "UTC+1" },
+      { "cityId": "abuja", "city": "Abuja", "countryCode": "NG", "timeZone": "Africa/Lagos", "shortLabel": "Abuja", "offsetHint": "UTC+1" },
+      { "cityId": "accra", "city": "Accra", "countryCode": "GH", "timeZone": "Africa/Accra", "shortLabel": "Accra", "offsetHint": "UTC+0" },
+      { "cityId": "abidjan", "city": "Abidjan", "countryCode": "CI", "timeZone": "Africa/Abidjan", "shortLabel": "Abidjan", "offsetHint": "UTC+0" },
+      { "cityId": "dakar", "city": "Dakar", "countryCode": "SN", "timeZone": "Africa/Dakar", "shortLabel": "Dakar", "offsetHint": "UTC+0" },
+      { "cityId": "casablanca", "city": "Casablanca", "countryCode": "MA", "timeZone": "Africa/Casablanca", "shortLabel": "Casablanca", "offsetHint": "UTC+1" },
+      { "cityId": "cairo", "city": "Cairo", "countryCode": "EG", "timeZone": "Africa/Cairo", "shortLabel": "Cairo", "offsetHint": "UTC+2/+3" },
+      { "cityId": "johannesburg", "city": "Johannesburg", "countryCode": "ZA", "timeZone": "Africa/Johannesburg", "shortLabel": "Johannesburg", "offsetHint": "UTC+2" },
+      { "cityId": "nairobi", "city": "Nairobi", "countryCode": "KE", "timeZone": "Africa/Nairobi", "shortLabel": "Nairobi", "offsetHint": "UTC+3" },
+      { "cityId": "addis-ababa", "city": "Addis Ababa", "countryCode": "ET", "timeZone": "Africa/Addis_Ababa", "shortLabel": "Addis", "offsetHint": "UTC+3" },
+      { "cityId": "kampala", "city": "Kampala", "countryCode": "UG", "timeZone": "Africa/Kampala", "shortLabel": "Kampala", "offsetHint": "UTC+3" },
+      { "cityId": "dar-es-salaam", "city": "Dar es Salaam", "countryCode": "TZ", "timeZone": "Africa/Dar_es_Salaam", "shortLabel": "Dar", "offsetHint": "UTC+3" },
+      { "cityId": "kigali", "city": "Kigali", "countryCode": "RW", "timeZone": "Africa/Kigali", "shortLabel": "Kigali", "offsetHint": "UTC+2" },
+      { "cityId": "kinshasa", "city": "Kinshasa", "countryCode": "CD", "timeZone": "Africa/Kinshasa", "shortLabel": "Kinshasa", "offsetHint": "UTC+1" },
+      { "cityId": "lusaka", "city": "Lusaka", "countryCode": "ZM", "timeZone": "Africa/Lusaka", "shortLabel": "Lusaka", "offsetHint": "UTC+2" },
+      { "cityId": "harare", "city": "Harare", "countryCode": "ZW", "timeZone": "Africa/Harare", "shortLabel": "Harare", "offsetHint": "UTC+2" }
+    ]
+  },
+  "teams": [
+    {
+      "teamId": "morocco",
+      "name": "Morocco",
+      "countryCode": "MA",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#C1272D",
+      "secondaryColor": "#006233",
+      "fanRoomSlug": "morocco",
+      "roomHref": "/matchday-os/rooms/?team=morocco",
+      "shortLabel": "MAR",
+      "region": "North Africa",
+      "seedStory": "Semi-finalists in 2022 and one of Africa's headline teams for 2026."
+    },
+    {
+      "teamId": "tunisia",
+      "name": "Tunisia",
+      "countryCode": "TN",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#E70013",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": "tunisia",
+      "roomHref": "/matchday-os/rooms/?team=tunisia",
+      "shortLabel": "TUN",
+      "region": "North Africa",
+      "seedStory": "A compact North African tournament side with another global-stage campaign."
+    },
+    {
+      "teamId": "egypt",
+      "name": "Egypt",
+      "countryCode": "EG",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#CE1126",
+      "secondaryColor": "#000000",
+      "fanRoomSlug": "egypt",
+      "roomHref": "/matchday-os/rooms/?team=egypt",
+      "shortLabel": "EGY",
+      "region": "North Africa",
+      "seedStory": "Back at the finals with a large continental and diaspora fan base."
+    },
+    {
+      "teamId": "algeria",
+      "name": "Algeria",
+      "countryCode": "DZ",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#006233",
+      "secondaryColor": "#D21034",
+      "fanRoomSlug": "algeria",
+      "roomHref": "/matchday-os/rooms/?team=algeria",
+      "shortLabel": "ALG",
+      "region": "North Africa",
+      "seedStory": "Returning to the tournament after missing recent editions."
+    },
+    {
+      "teamId": "ghana",
+      "name": "Ghana",
+      "countryCode": "GH",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#FCD116",
+      "secondaryColor": "#006B3F",
+      "fanRoomSlug": "ghana",
+      "roomHref": "/matchday-os/rooms/?team=ghana",
+      "shortLabel": "GHA",
+      "region": "West Africa",
+      "seedStory": "A familiar World Cup nation with a reset campaign ahead."
+    },
+    {
+      "teamId": "cabo-verde",
+      "name": "Cabo Verde",
+      "countryCode": "CV",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#003893",
+      "secondaryColor": "#CF2027",
+      "fanRoomSlug": "cabo-verde",
+      "roomHref": "/matchday-os/rooms/?team=cabo-verde",
+      "shortLabel": "CPV",
+      "region": "West Africa",
+      "seedStory": "A first World Cup appearance and a major fan-story lane."
+    },
+    {
+      "teamId": "south-africa",
+      "name": "South Africa",
+      "countryCode": "ZA",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#007A4D",
+      "secondaryColor": "#FFB612",
+      "fanRoomSlug": "south-africa",
+      "roomHref": "/matchday-os/rooms/?team=south-africa",
+      "shortLabel": "RSA",
+      "region": "Southern Africa",
+      "seedStory": "A return to the finals after a long wait."
+    },
+    {
+      "teamId": "senegal",
+      "name": "Senegal",
+      "countryCode": "SN",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#00853F",
+      "secondaryColor": "#FDEF42",
+      "fanRoomSlug": "senegal",
+      "roomHref": "/matchday-os/rooms/?team=senegal",
+      "shortLabel": "SEN",
+      "region": "West Africa",
+      "seedStory": "One of Africa's most consistent recent tournament sides."
+    },
+    {
+      "teamId": "cote-divoire",
+      "name": "Cote d'Ivoire",
+      "countryCode": "CI",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#F77F00",
+      "secondaryColor": "#009E60",
+      "fanRoomSlug": "cote-divoire",
+      "roomHref": "/matchday-os/rooms/?team=cote-divoire",
+      "shortLabel": "CIV",
+      "region": "West Africa",
+      "seedStory": "AFCON champions returning to the world stage."
+    },
+    {
+      "teamId": "dr-congo",
+      "name": "DR Congo",
+      "countryCode": "CD",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#007FFF",
+      "secondaryColor": "#F7D618",
+      "fanRoomSlug": "dr-congo",
+      "roomHref": "/matchday-os/rooms/?team=dr-congo",
+      "shortLabel": "COD",
+      "region": "Central Africa",
+      "seedStory": "A historic return after qualifying through the play-off route."
+    },
+    {
+      "teamId": "tbd-opponent-1",
+      "name": "Opponent TBD",
+      "countryCode": null,
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "placeholder",
+      "primaryColor": "#64748B",
+      "secondaryColor": "#E2E8F0",
+      "fanRoomSlug": null,
+      "shortLabel": "TBD"
+    }
+  ],
+  "stadiums": [
+    {
+      "venueId": "venue-tbd",
+      "name": "Venue pending",
+      "city": "Host city pending",
+      "countryCode": null,
+      "timeZone": null,
+      "isPlaceholder": true
+    }
+  ],
+  "groups": [
+    {
+      "groupId": "africa-watch",
+      "name": "Africa watch group",
+      "phaseId": "group_stage",
+      "status": "placeholder",
+      "isPlaceholder": true,
+      "teamIds": ["morocco", "tbd-opponent-1", null, null],
+      "tableRows": [
+        { "teamId": "morocco", "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDiff": 0, "points": 0, "status": "placeholder" },
+        { "teamId": "tbd-opponent-1", "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDiff": 0, "points": 0, "status": "placeholder" },
+        { "teamId": null, "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDiff": 0, "points": 0, "status": "placeholder" },
+        { "teamId": null, "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDiff": 0, "points": 0, "status": "placeholder" }
+      ]
+    },
+    {
+      "groupId": "diaspora-prime-time",
+      "name": "Diaspora prime-time group",
+      "phaseId": "group_stage",
+      "status": "placeholder",
+      "isPlaceholder": true,
+      "teamIds": ["senegal", "tbd-opponent-1", null, null],
+      "tableRows": [
+        { "teamId": "senegal", "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDiff": 0, "points": 0, "status": "placeholder" },
+        { "teamId": "tbd-opponent-1", "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDiff": 0, "points": 0, "status": "placeholder" },
+        { "teamId": null, "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDiff": 0, "points": 0, "status": "placeholder" },
+        { "teamId": null, "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "goalDiff": 0, "points": 0, "status": "placeholder" }
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "matchId": "seed-africa-001",
+      "stage": "group_stage",
+      "group": "africa-watch",
+      "homeTeamId": "morocco",
+      "awayTeamId": "tbd-opponent-1",
+      "kickoffUtc": null,
+      "venue": "venue-tbd",
+      "status": "placeholder",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": true,
+      "featuredMarkets": ["Morocco", "Casablanca", "Lagos", "Paris diaspora", "Abidjan"],
+      "contentSlug": "morocco-group-opener-watch",
+      "shareCard": {
+        "headline": "Morocco watch party loading",
+        "body": "Pin Morocco in Matchday OS and get the local kickoff once the verified fixture feed is connected."
+      }
+    },
+    {
+      "matchId": "seed-africa-002",
+      "stage": "group_stage",
+      "group": "diaspora-prime-time",
+      "homeTeamId": "senegal",
+      "awayTeamId": "tbd-opponent-1",
+      "kickoffUtc": null,
+      "venue": "venue-tbd",
+      "status": "placeholder",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": true,
+      "featuredMarkets": ["Dakar", "Accra", "Abidjan", "Lagos", "New York diaspora"],
+      "contentSlug": "senegal-prime-time-watch",
+      "shareCard": {
+        "headline": "Senegal matchday room loading",
+        "body": "Pin Senegal in Matchday OS and invite your group before the verified kickoff drops."
+      }
+    },
+    {
+      "matchId": "seed-africa-003",
+      "stage": "group_stage",
+      "group": null,
+      "homeTeamId": "dr-congo",
+      "awayTeamId": "tbd-opponent-1",
+      "kickoffUtc": null,
+      "venue": "venue-tbd",
+      "status": "placeholder",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": true,
+      "featuredMarkets": ["Kinshasa", "Lubumbashi", "Johannesburg", "Brussels diaspora"],
+      "contentSlug": "dr-congo-return-watch",
+      "shareCard": {
+        "headline": "DR Congo return watch",
+        "body": "Track DR Congo's historic return in Matchday OS without relying on unverified live data."
+      }
+    }
+  ],
+  "knockoutBracket": {
+    "status": "placeholder",
+    "rounds": [
+      { "roundId": "round_of_32", "label": "Round of 32", "matchIds": [] },
+      { "roundId": "round_of_16", "label": "Round of 16", "matchIds": [] },
+      { "roundId": "quarter_final", "label": "Quarter-finals", "matchIds": [] },
+      { "roundId": "semi_final", "label": "Semi-finals", "matchIds": [] },
+      { "roundId": "third_place", "label": "Third-place match", "matchIds": [] },
+      { "roundId": "final", "label": "Final", "matchIds": [] }
+    ]
+  },
+  "predictionGame": {
+    "campaignId": "matchday-os-2026-skill-prize",
+    "status": "local-demo",
+    "mode": "frontend-local-only",
+    "freeToEnter": true,
+    "skillBased": true,
+    "entryCostUsd": 0,
+    "prizePoolUsd": 1200,
+    "prizeMaxUsd": 500,
+    "prizeTeaserUsd": 1200,
+    "prizeHeadline": "Win up to $500 in the Matchday OS Prediction Challenge.",
+    "prizeSupportCopy": "Top 10 verified players share a $1,200 prize pool. First place receives $500.",
+    "rulesNotice": "Final rules, eligibility, scoring, sponsor terms, and dispute process must be published before accepting entries.",
+    "responsiblePlayNote": "Free-to-enter football knowledge challenge. No staking, no odds, no paid entries, and no gambling framing.",
+    "prizeTable": [
+      { "rank": 1, "label": "1st", "prizeUsd": 500 },
+      { "rank": 2, "label": "2nd", "prizeUsd": 250 },
+      { "rank": 3, "label": "3rd", "prizeUsd": 150 },
+      { "rank": 4, "label": "4th", "prizeUsd": 75 },
+      { "rank": 5, "label": "5th", "prizeUsd": 60 },
+      { "rank": 6, "label": "6th", "prizeUsd": 45 },
+      { "rank": 7, "label": "7th", "prizeUsd": 35 },
+      { "rank": 8, "label": "8th", "prizeUsd": 30 },
+      { "rank": 9, "label": "9th", "prizeUsd": 30 },
+      { "rank": 10, "label": "10th", "prizeUsd": 25 }
+    ],
+    "cashPrizeRules": {
+      "winnerCount": 10,
+      "publicTrackerDisplayCount": 20,
+      "winnerBasis": "Top 10 verified players on the final Prediction Points leaderboard",
+      "predictionPointsOnly": true,
+      "fanPointsAffectCashPrize": false,
+      "payoutPage": "/matchday-os/prizes/",
+      "publicLeaderboardNotice": "The public leaderboard is provisional. Final winners are confirmed only after anti-cheat and eligibility review.",
+      "top20TrackerCopy": "The public tracker may show a Top 20 leaderboard for excitement and sharing, but only the final verified Top 10 receive cash prizes.",
+      "tieBreakers": [
+        "Higher number of exact scores",
+        "Higher number of correct match outcomes",
+        "Higher number of correct African-team predictions",
+        "Earlier submitted locked predictions across the tournament",
+        "Manual review if still tied"
+      ],
+      "importantDates": [
+        { "label": "Challenge opens", "value": "To be announced" },
+        { "label": "First match prediction lock", "value": "To be announced" },
+        { "label": "Final match", "value": "To be announced" },
+        { "label": "Leaderboard freeze", "value": "To be announced" },
+        { "label": "Winner verification period", "value": "To be announced" },
+        { "label": "Estimated payout period", "value": "To be announced" }
+      ],
+      "payoutOptions": ["bank transfer", "mobile money", "crypto", "PayPal", "Wise", "other available rails"],
+      "payoutSafetyCopy": "AfroTools will never ask winners to pay a fee to claim a prize. If anyone asks you for a fee, it is not AfroTools.",
+      "cryptoSafetyCopy": "Crypto payout may be available where lawful and practical. Winners who choose crypto are responsible for providing a correct wallet address. AfroTools may use another payout method if crypto is not suitable, safe, or available.",
+      "legalStatus": "Rules draft pending legal review. Prize availability may depend on country, age, verification, payout availability, and local rules."
+    },
+    "lockPolicy": {
+      "label": "Predictions lock before kickoff",
+      "defaultOffsetMinutes": 0,
+      "fixtureLockSource": "fixture.kickoffUtc",
+      "tournamentLockSource": "firstVerifiedFixtureKickoffUtc",
+      "placeholderLockCopy": "Lock deadline appears after verified kickoff data is loaded."
+    },
+    "scoring": {
+      "correctWinner": 3,
+      "correctDraw": 4,
+      "exactScore": 8,
+      "correctGroupQualifier": 10,
+      "correctChampion": 25,
+      "africanTeamBonus": 2
+    },
+    "predictionTypes": [
+      { "typeId": "match_winner", "label": "Match winner", "lockScope": "fixture" },
+      { "typeId": "exact_score", "label": "Exact score", "lockScope": "fixture" },
+      { "typeId": "draw_prediction", "label": "Draw prediction", "lockScope": "fixture" },
+      { "typeId": "group_qualifiers", "label": "Group qualifiers", "lockScope": "group_stage" },
+      { "typeId": "best_african_team", "label": "Best-performing African team", "lockScope": "tournament" },
+      { "typeId": "semi_finalists", "label": "Semi-finalists", "lockScope": "knockout" },
+      { "typeId": "finalists", "label": "Finalists", "lockScope": "knockout" },
+      { "typeId": "champion", "label": "Champion", "lockScope": "tournament" }
+    ],
+    "entryCards": [
+      {
+        "cardId": "match-call",
+        "title": "Match call",
+        "predictionTypeIds": ["match_winner", "draw_prediction", "exact_score"],
+        "copy": "Pick a fixture result and optional exact score. Fixture picks lock at kickoff once verified kickoff data exists."
+      },
+      {
+        "cardId": "group-race",
+        "title": "Group race",
+        "predictionTypeIds": ["group_qualifiers"],
+        "copy": "Choose two group qualifiers from the available seed teams. This remains a local planning pick until verified groups are complete."
+      },
+      {
+        "cardId": "tournament-path",
+        "title": "Tournament path",
+        "predictionTypeIds": ["best_african_team", "semi_finalists", "finalists", "champion"],
+        "copy": "Build a tournament path: best African team, semi-finalists, finalists, and champion."
+      }
+    ],
+    "schemas": {
+      "prediction": {
+        "predictionId": "string slug",
+        "typeId": "match_winner | exact_score | draw_prediction | group_qualifiers | best_african_team | semi_finalists | finalists | champion",
+        "scopeId": "matchId | groupId | tournament",
+        "selection": "teamId | draw | score | teamId[]",
+        "lockDeadlineUtc": "ISO string or null"
+      },
+      "userPrediction": {
+        "userPredictionId": "string slug generated by backend later",
+        "campaignId": "string",
+        "entryMode": "local-demo | persisted",
+        "matchPick": "object with matchId, resultPick, homeScore, awayScore",
+        "groupQualifiers": "object with groupId and teamIds",
+        "tournamentPicks": "object with bestAfricanTeamId, semiFinalistTeamIds, finalistTeamIds, championTeamId",
+        "savedAt": "ISO string"
+      },
+      "scoreCalculation": {
+        "campaignId": "string",
+        "scoringVersion": "string",
+        "rulesApplied": "array of scoring rule ids",
+        "totalPoints": "number",
+        "calculatedAt": "ISO string",
+        "resultSource": "verified static data or backend result source"
+      },
+      "leaderboardRow": {
+        "rank": "number",
+        "displayName": "string",
+        "countryCode": "string",
+        "points": "number",
+        "correctPicks": "number",
+        "entryMode": "sample | live",
+        "updatedAt": "ISO string"
+      },
+      "lockDeadline": {
+        "scopeId": "matchId | group_stage | tournament",
+        "lockDeadlineUtc": "ISO string or null",
+        "lockReason": "kickoff | campaign_cutoff | pending_verified_fixture"
+      }
+    },
+    "leaderboard": {
+      "status": "empty-local-shell",
+      "displayCount": 20,
+      "cashPrizeWinnerCount": 10,
+      "copy": "The public tracker may show Top 20 players for excitement, but the cash-prize leaderboard uses Prediction Points only. Top 10 verified players share the $1,200 prize pool after backend scoring, lock enforcement, anti-cheat review, and eligibility checks are complete.",
+      "verificationNotice": "The public leaderboard is provisional. Final winners are confirmed only after anti-cheat and eligibility review.",
+      "rows": []
+    },
+    "fanPoints": {
+      "status": "frontend-local-demo-backend-ready",
+      "mode": "separate-from-cash-prize-leaderboard",
+      "publicCopy": "Bring your friends into Matchday OS. Earn Fan Points, climb the Top Fans board, and unlock badges. Cash-prize winners are decided by Prediction Points only.",
+      "separationNotice": "Fan Points are separate from Prediction Points and do not decide cash-prize winners.",
+      "scoreTypes": [
+        {
+          "scoreTypeId": "prediction_points",
+          "label": "Prediction Points",
+          "source": "football predictions only",
+          "cashPrizeRanking": true,
+          "fanRecognition": false,
+          "referralInfluence": false,
+          "copy": "Prediction Points are earned only from football predictions and decide the $1,200 prize leaderboard after backend scoring and legal gates are complete."
+        },
+        {
+          "scoreTypeId": "fan_points",
+          "label": "Fan Points",
+          "source": "predictions, sharing actions, referrals, badges, and community activity",
+          "cashPrizeRanking": false,
+          "fanRecognition": true,
+          "referralInfluence": true,
+          "copy": "Fan Points power Top Fans, badges, shoutouts, sponsor perks, and non-cash recognition. They never change the cash-prize ranking."
+        }
+      ],
+      "scoring": {
+        "predictionSaved": 1,
+        "whatsappShare": 1,
+        "shareCardCta": 1,
+        "communityActivity": 1,
+        "badgeEarned": 2,
+        "verifiedReferral": 2,
+        "referralFirstLockedPrediction": 3,
+        "maxReferralReward": 25,
+        "maxDailySharePoints": 3,
+        "referralAwardTiming": "pending-until-first-locked-prediction"
+      },
+      "referralRules": {
+        "copyReferralLink": { "eventType": "referral_link_copied", "fanPoints": 0, "copy": "Track event only. No points." },
+        "friendVisit": { "eventType": "referral_visit", "fanPoints": 0, "copy": "Track event only. No points." },
+        "verifiedSession": { "eventType": "referral_verified_session", "fanPoints": 2, "awardState": "pending until first locked prediction" },
+        "firstLockedPrediction": { "eventType": "referral_first_locked_prediction", "fanPoints": 3, "awardState": "releases verified-session referral reward after backend checks" },
+        "maxReferralReward": 25,
+        "oneRewardPerReferredUser": true,
+        "selfReferralsAllowed": false,
+        "cashPrizeRankingInfluence": false
+      },
+      "schemas": {
+        "referralEvent": {
+          "eventId": "string",
+          "eventType": "referral_link_copied | referral_visit | referral_verified_session | referral_first_locked_prediction",
+          "referrerId": "string",
+          "referredUserId": "string or null until account/session exists",
+          "referralSource": "copy_link | whatsapp | share_card | url_ref",
+          "timestamp": "ISO string",
+          "ipHash": "sha256 string stored server-side only",
+          "deviceSignalHash": "sha256 string stored server-side only",
+          "userAgentHash": "sha256 string stored server-side only"
+        },
+        "fanPointsLedgerRow": {
+          "ledgerId": "string",
+          "userId": "string",
+          "scoreTypeId": "fan_points",
+          "eventType": "string",
+          "points": "number",
+          "awardState": "pending | awarded | rejected | flagged",
+          "createdAt": "ISO string"
+        },
+        "topFanRow": {
+          "rank": "number",
+          "displayName": "string",
+          "fanPoints": "number",
+          "badges": "string[]",
+          "entryMode": "local-demo | live"
+        },
+        "referralReviewFlag": {
+          "flagId": "string",
+          "referrerId": "string",
+          "referredUserId": "string",
+          "ruleId": "self-referral | same-device-referral | repeated-ip-cluster | suspicious-rapid-signups",
+          "severity": "low | medium | high",
+          "status": "open | cleared | rejected | escalated",
+          "reviewedAt": "ISO string or null"
+        }
+      },
+      "abuseProtection": {
+        "status": "backend-required",
+        "copy": "Self-referrals, duplicate/device matches, repeated IP clusters, and suspicious rapid signups require backend review before Fan Points are awarded.",
+        "doNotStoreRawSensitiveSignalsInFrontend": true,
+        "requiredHashFields": ["ipHash", "deviceSignalHash", "userAgentHash"],
+        "detectionRules": [
+          { "ruleId": "self-referral", "label": "Self-referrals are not allowed", "severity": "high" },
+          { "ruleId": "same-device-referral", "label": "Flag same-device referrals", "severity": "high" },
+          { "ruleId": "repeated-ip-cluster", "label": "Flag repeated IP clusters", "severity": "medium" },
+          { "ruleId": "suspicious-rapid-signups", "label": "Flag suspicious rapid signups", "severity": "medium" },
+          { "ruleId": "one-reward-per-referred-user", "label": "One referral reward per referred user", "severity": "medium" }
+        ]
+      },
+      "topFans": {
+        "status": "empty-local-shell",
+        "copy": "Top Fans requires backend accounts, verified referral events, community activity, and abuse checks before live rows appear.",
+        "rows": []
+      }
+    },
+    "antiCheat": {
+      "status": "design-only-backend-required",
+      "launchGateStatus": "blocked-until-server-enforced",
+      "serverSideLockRequired": true,
+      "noEditsAfterLock": true,
+      "oneAccountPerPerson": true,
+      "emailVerificationRequired": true,
+      "adminReviewRequired": true,
+      "manualWinnerVerificationRequired": true,
+      "legalReviewStatus": "required-before-launch",
+      "termsAcceptanceRequired": true,
+      "publicTrustCopy": [
+        "Predictions lock before kickoff",
+        "Free to enter",
+        "No purchase required",
+        "Winners are verified before payout",
+        "Suspicious or duplicate entries may be disqualified",
+        "This is a skill-based prediction challenge, not betting"
+      ],
+      "serverSignals": {
+        "storeRawSensitiveSignals": false,
+        "hashAlgorithm": "sha256",
+        "requiredHashFields": ["ipHash", "userAgentHash", "deviceSignalHash"],
+        "timestampFields": ["submittedAt", "lockedAt", "termsAcceptedAt", "reviewedAt"],
+        "notes": "Raw IP addresses, user agent strings, and device/session fingerprints must be hashed server-side before storage."
+      },
+      "detectionRules": [
+        { "ruleId": "duplicate-account-signal", "label": "Duplicate account detection", "signals": ["verifiedEmailHash", "deviceSignalHash", "ipHash"] },
+        { "ruleId": "suspicious-ip-cluster", "label": "Suspicious IP cluster detection", "signals": ["ipHash", "submittedAt"] },
+        { "ruleId": "identical-prediction-pattern", "label": "Suspicious identical-prediction pattern detection", "signals": ["predictionHash", "submittedAt"] },
+        { "ruleId": "late-entry-attempt", "label": "Late entry attempt detection", "signals": ["submittedAt", "lockDeadlineUtc"] },
+        { "ruleId": "self-referral", "label": "Self-referral detection", "signals": ["referrerId", "referredUserId"] },
+        { "ruleId": "same-device-referral", "label": "Same-device referral detection", "signals": ["deviceSignalHash", "referrerId", "referredUserId"] },
+        { "ruleId": "suspicious-rapid-signups", "label": "Suspicious rapid referral signup detection", "signals": ["submittedAt", "referrerId"] }
+      ],
+      "schemas": {
+        "contestEntrySafety": {
+          "entryId": "string",
+          "userId": "string",
+          "verifiedEmailHash": "sha256 string",
+          "emailVerifiedAt": "ISO string",
+          "ipHash": "sha256 string",
+          "userAgentHash": "sha256 string",
+          "deviceSignalHash": "sha256 string",
+          "predictionHash": "sha256 string",
+          "submittedAt": "ISO string",
+          "lockDeadlineUtc": "ISO string",
+          "lockedAt": "ISO string",
+          "termsAcceptedAt": "ISO string"
+        },
+        "adminReviewItem": {
+          "reviewId": "string",
+          "entryId": "string",
+          "flagReason": "duplicate-account-signal | suspicious-ip-cluster | identical-prediction-pattern | late-entry-attempt | manual",
+          "severity": "low | medium | high",
+          "status": "open | cleared | disqualified | escalated",
+          "reviewedBy": "admin user id",
+          "reviewedAt": "ISO string",
+          "notes": "string"
+        },
+        "adminAuditLog": {
+          "auditId": "string",
+          "actorUserId": "string",
+          "action": "override-lock | clear-flag | disqualify-entry | export-leaderboard | verify-winner",
+          "targetEntryId": "string",
+          "reason": "string",
+          "createdAt": "ISO string"
+        }
+      },
+      "operatorShell": {
+        "status": "empty-review-shell",
+        "exportLeaderboardEnabled": false,
+        "copy": "Operator review is a shell only. Live flags, exports, and overrides require authenticated admin tooling and audit logs.",
+        "flaggedEntries": [],
+        "duplicateSignals": [],
+        "lateEntryAttempts": [],
+        "manualVerification": []
+      }
+    }
+  },
+  "shareCards": [
+    {
+      "cardId": "watchlist",
+      "label": "Watchlist card",
+      "template": "I am tracking {teamName} on Matchday OS. Pin your African team: https://afrotools.com/matchday-os/"
+    },
+    {
+      "cardId": "prediction",
+      "label": "Prediction card",
+      "template": "My Matchday OS pick: {teamName} to go deepest. What's yours? https://afrotools.com/matchday-os/"
+    }
+  ],
+  "contextModules": [
+    {
+      "moduleId": "daily-brief",
+      "type": "blog",
+      "title": "Daily African football brief",
+      "href": "/blog/",
+      "status": "planned",
+      "copy": "Short daily notes can attach to fixtures through contentSlug when editorial posts exist."
+    },
+    {
+      "moduleId": "viewing-center-operator",
+      "type": "tools",
+      "title": "Viewing-center operator pack",
+      "href": "/tools/event-ticket-revenue/",
+      "status": "live",
+      "copy": "Connect ticket revenue, match ticket comparison, and WhatsApp tools for venue operators."
+    },
+    {
+      "moduleId": "sponsor-inventory",
+      "type": "commercial",
+      "title": "Sponsor a matchday moment",
+      "href": "/business-enquiry/?offer=sponsored_tool&source_route=matchday-os&prospect_segment=sports_media&cta_type=sponsor",
+      "status": "live",
+      "copy": "Buyer-facing route for clearly labeled sports and viewing-center placements."
+    }
+  ]
+}

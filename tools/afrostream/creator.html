@@ -1271,8 +1271,10 @@ function renderMissingProfile() {
     var html = '';
     related.forEach(function(c) {
       var linkParam = c.slug || c.id;
+      var avatarStyle = c.avatarUrl ? 'background-image:url(' + c.avatarUrl.replace(/"/g, '%22') + ');background-size:cover;background-position:center' : 'background:' + avatarGradient(c.name);
+      var avatarText = c.avatarUrl ? '' : c.avatar;
       html += '<a href="creator.html?id=' + linkParam + '" class="as-related-card">' +
-        '<div class="as-related-avatar" style="background:' + avatarGradient(c.name) + '">' + c.avatar + '</div>' +
+        '<div class="as-related-avatar" style="' + avatarStyle + '">' + avatarText + '</div>' +
         '<div class="as-related-name">' + c.name + '</div>' +
         '<div class="as-related-meta">' + c.flag + ' ' + c.category + '</div>' +
         '<div class="as-related-followers">' + fmtNum(c.followers) + ' followers</div>' +

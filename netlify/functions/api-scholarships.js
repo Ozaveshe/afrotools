@@ -58,8 +58,12 @@ function getScholarshipMode(item) {
 }
 
 function getScholarshipStatus(item) {
+  if (item && item.deadline_confidence === 'no_single_public_deadline') {
+    return 'variable';
+  }
+
   const status = String(item && item.status ? item.status : '').toLowerCase();
-  if (status === 'open' || status === 'upcoming' || status === 'unclear' || status === 'closed') {
+  if (status === 'open' || status === 'upcoming' || status === 'unclear' || status === 'closed' || status === 'variable') {
     return status;
   }
 
@@ -88,9 +92,13 @@ function buildScholarshipSummary(items, meta) {
     open: 0,
     upcoming: 0,
     unclear: 0,
+    variable: 0,
     closed: 0,
     officialLink: 0,
     withDeadlineDate: 0,
+    deadlineResolved: 0,
+    noSinglePublicDeadline: 0,
+    verifiedExactDeadline: 0,
     claimSafeLabel: formatClaimSafeLabel(list.length),
     isLimited: !!(meta && meta.isLimited)
   };
@@ -102,6 +110,13 @@ function buildScholarshipSummary(items, meta) {
     summary[status] += 1;
     if (hasOfficialLink(item)) summary.officialLink += 1;
     if (item && item.deadline_date) summary.withDeadlineDate += 1;
+    if (item && item.deadline_confidence === 'verified') {
+      summary.verifiedExactDeadline += 1;
+      summary.deadlineResolved += 1;
+    } else if (item && item.deadline_confidence === 'no_single_public_deadline') {
+      summary.noSinglePublicDeadline += 1;
+      summary.deadlineResolved += 1;
+    }
   });
 
   return summary;

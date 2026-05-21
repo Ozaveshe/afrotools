@@ -90,6 +90,12 @@
     .page-stage canvas{box-shadow:none!important}
     .obj-layer{position:absolute;inset:0;z-index:4;line-height:normal}
     .obj-layer.drawing{cursor:crosshair}
+    .pdf-text-layer{position:absolute;inset:0;z-index:3;line-height:normal;pointer-events:none}
+    .text-edit-active .pdf-text-layer{z-index:6;pointer-events:auto}
+    .pdf-text-hit{position:absolute;box-sizing:border-box;border:1px solid transparent;border-radius:2px;background:rgba(37,99,235,.04);cursor:text}
+    .text-edit-active .pdf-text-hit{border-color:rgba(37,99,235,.35);background:rgba(37,99,235,.1)}
+    .text-edit-active .pdf-text-hit:hover,.pdf-text-hit.sel{border-color:#2563eb;background:rgba(37,99,235,.18);box-shadow:0 0 0 2px rgba(37,99,235,.12)}
+    .text-edit-active .page-stage{cursor:text}
     .pdf-obj{position:absolute;box-sizing:border-box;border:1.5px solid transparent;outline:none;cursor:move;touch-action:none;display:flex;align-items:center;justify-content:center;color:#111827;user-select:none;transform-origin:center center}
     .pdf-obj.sel{border-color:#007AFF;box-shadow:0 0 0 2px rgba(0,122,255,.18)}
     .pdf-obj .obj-text{width:100%;height:100%;display:flex;align-items:flex-start;white-space:pre-wrap;word-break:break-word;line-height:1.25;padding:4px}
@@ -258,6 +264,7 @@
     .cmd-download:hover{background:#0059B3!important}
     .cmd-icon{width:44px;padding:0}
     .cmd-shortcut{font-size:10px;color:#64748b;font-weight:900}
+    .cmd-search-btn .cmd-shortcut{display:none}
     .cmd-menu-wrap{position:relative;display:inline-flex}
     .cmd-menu{position:absolute;top:calc(100% + 8px);right:0;width:min(360px,calc(100vw - 24px));max-height:min(76vh,620px);overflow:auto;background:#fff;border:1px solid #dbe3ee;border-radius:10px;box-shadow:0 24px 52px rgba(15,23,42,.18);padding:8px;display:none;z-index:900}
     .cmd-menu.on{display:block}
@@ -412,7 +419,7 @@
         <button type="button" class="cmd-mode" data-mode="export"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Export</span></button>
       </div>
       <div class="cmd-right">
-        <button type="button" class="cmd-icon cmd-search-btn" id="cmdSearchBtn" aria-label="Search commands"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="cmd-shortcut cmd-search-shortcut">Ctrl K</span></button>
+        <button type="button" class="cmd-icon cmd-search-btn" id="cmdSearchBtn" aria-label="Search commands" title="Search commands (Ctrl+K)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="cmd-shortcut cmd-search-shortcut">Ctrl K</span></button>
         <div class="cmd-menu-wrap cmd-more-wrap">
           <button type="button" class="cmd-menu-btn" id="cmdMoreBtn">More <span aria-hidden="true">▾</span></button>
           <div class="cmd-menu" id="cmdMoreMenu" aria-label="More PDF commands">
@@ -462,6 +469,7 @@
       </div>
       <div class="cmd-mode-panel" data-mode-panel="edit">
         <button type="button" class="tb-btn" id="tbText"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg><span>Text</span></button>
+        <button type="button" class="cmd-proxy" id="tbEditExisting"><span>Edit PDF text</span></button>
         <button type="button" class="cmd-proxy" id="tbCorrect"><span>Quick correction</span></button>
         <button type="button" class="tb-btn" id="tbImg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Image</span></button>
         <button type="button" class="tb-btn" id="tbCrop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.13 1L6 16a2 2 0 002 2h15"/><path d="M1 6.13L16 6a2 2 0 012 2v15"/></svg><span>Crop</span></button>
@@ -585,6 +593,7 @@ init();
 var pB=null,po=[],pr={},sel=0,th={},fn="document.pdf",zm=1.5;
 var objs=[],objSel=null,objSeq=1,pageDims={},drawMode=false,redactDrawMode=false,undoStack=[],redoStack=[];
 var pageSel={},pageUndoStack=[],pageRedoStack=[],insertMode="after";
+var textBlocks={},textEditMode=false,selectedTextBlock=null;
 var $=function(id){return document.getElementById(id)};
 
 function pdfViewportType(){
@@ -626,7 +635,7 @@ var CMD_MODE_LABELS={organize:"Pages",edit:"Edit",annotate:"Annotate",sign:"Form
 var CMD_COMMANDS=[
   {id:"tbAdd",label:"Add PDF",group:"File"},{id:"tbDL",label:"Download",group:"File"},{id:"cmdNewWorkspace",label:"New workspace",group:"File"},{id:"cmdClearWorkspace",label:"Clear workspace",group:"File"},
   {id:"tbSplit",label:"Split",group:"Pages",mode:"organize"},{id:"tbRearr",label:"Rearrange",group:"Pages",mode:"organize"},{id:"tbRotate",label:"Rotate",group:"Pages",mode:"organize"},{id:"tbDelete",label:"Delete pages",group:"Pages",mode:"organize"},{id:"tbExtract",label:"Extract pages",group:"Pages",mode:"organize"},{id:"tbPN",label:"Page numbers",group:"Pages",mode:"organize"},
-  {id:"tbText",label:"Add or cover text",group:"Edit",mode:"edit"},{id:"tbCorrect",label:"Quick text correction",group:"Edit",mode:"edit"},{id:"tbImg",label:"Image",group:"Edit",mode:"edit"},{id:"tbCrop",label:"Crop",group:"Edit",mode:"edit"},{id:"tbWM",label:"Watermark",group:"Edit",mode:"edit"},{id:"tbStamp",label:"Stamp",group:"Edit",mode:"edit"},
+  {id:"tbText",label:"Add or cover text",group:"Edit",mode:"edit"},{id:"tbEditExisting",label:"Edit PDF text",group:"Edit",mode:"edit"},{id:"tbCorrect",label:"Quick text correction",group:"Edit",mode:"edit"},{id:"tbImg",label:"Image",group:"Edit",mode:"edit"},{id:"tbCrop",label:"Crop",group:"Edit",mode:"edit"},{id:"tbWM",label:"Watermark",group:"Edit",mode:"edit"},{id:"tbStamp",label:"Stamp",group:"Edit",mode:"edit"},
   {id:"tbHL",label:"Highlight",group:"Annotate",mode:"annotate"},{id:"tbDraw",label:"Draw",group:"Annotate",mode:"annotate"},{id:"tbComment",label:"Comment/note",group:"Annotate",mode:"annotate"},{id:"tbRect",label:"Rectangle",group:"Annotate",mode:"annotate"},{id:"tbCircle",label:"Circle",group:"Annotate",mode:"annotate"},{id:"tbArrow",label:"Arrow",group:"Annotate",mode:"annotate"},{id:"tbLine",label:"Line",group:"Annotate",mode:"annotate"},
   {id:"tbFillText",label:"Fill text field",group:"Forms & Sign",mode:"sign"},{id:"tbCheckbox",label:"Checkbox",group:"Forms & Sign",mode:"sign"},{id:"tbSig",label:"Signature",group:"Forms & Sign",mode:"sign"},{id:"tbInitials",label:"Initials",group:"Forms & Sign",mode:"sign"},{id:"tbDate",label:"Date",group:"Forms & Sign",mode:"sign"},{id:"tbTypeSig",label:"Type signature",group:"Forms & Sign",mode:"sign"},{id:"tbUploadSig",label:"Upload signature",group:"Forms & Sign",mode:"sign"},
   {id:"tbRedact",label:"Cover content visually",group:"Protect",mode:"protect"},{id:"tbLock",label:"Protect if available",group:"Protect",mode:"protect"},{label:"Remove password",group:"Protect",planned:true},{id:"cmdRedactExport",label:"Flatten visual covers",group:"Protect",mode:"protect"},
@@ -648,13 +657,14 @@ function setCmdMode(mode,openSheet){
   document.querySelectorAll(".cmd-mode").forEach(function(b){b.classList.toggle("on",b.dataset.mode===mode)});
   document.querySelectorAll(".mob-mode").forEach(function(b){b.classList.toggle("on",b.dataset.mobileMode===mode)});
   document.querySelectorAll("[data-mode-panel]").forEach(function(p){p.classList.toggle("on",p.dataset.modePanel===mode)});
+  if(mode!=="edit"&&typeof setTextEditMode==="function")setTextEditMode(false,false);
   if($("cmdSheetTitle"))$("cmdSheetTitle").textContent=CMD_MODE_LABELS[mode]||mode;
   if(openSheet&&window.innerWidth<=640&&$("cmdSecondary"))$("cmdSecondary").classList.add("sheet-on");
   trackPdfEvent("pdf_tool_mode_opened",{mode:mode,success:true});
   if(openSheet&&window.innerWidth<=640)trackPdfEvent("pdf_mobile_tool_sheet_opened",{mode:mode,success:true});
 }
 function resetWorkspaceState(msg){
-  pB=null;po=[];pr={};sel=0;th={};fn="document.pdf";zm=1.5;cssZoom=1;objs=[];objSel=null;objSeq=1;pageDims={};drawMode=false;redactDrawMode=false;undoStack=[];redoStack=[];pageSel={};pageUndoStack=[];pageRedoStack=[];
+  pB=null;po=[];pr={};sel=0;th={};fn="document.pdf";zm=1.5;cssZoom=1;objs=[];objSel=null;objSeq=1;pageDims={};drawMode=false;redactDrawMode=false;undoStack=[];redoStack=[];pageSel={};pageUndoStack=[];pageRedoStack=[];textBlocks={};textEditMode=false;selectedTextBlock=null;
   if($("sb"))$("sb").innerHTML="";
   if($("mv"))$("mv").innerHTML="";
   if($("tbFn"))$("tbFn").textContent=fn;
@@ -744,7 +754,7 @@ function pageObjDefaults(type){
   return base;
 }
 function addObj(o){pushObjHistory();objs.push(o);selectObj(o.id);renderAllObjects();toast("Object added")}
-function addSimpleObj(type,text){var o=pageObjDefaults(type);if(text)o.text=text;addObj(o)}
+function addSimpleObj(type,text){setTextEditMode(false,false);var o=pageObjDefaults(type);if(text)o.text=text;addObj(o)}
 function selectObj(id){objSel=id;renderAllObjects();renderObjPanel()}
 function clearObjSelection(){objSel=null;renderAllObjects();renderObjPanel()}
 function updateObj(id,patch){var o=objById(id);if(!o)return;Object.keys(patch).forEach(function(k){o[k]=patch[k]});renderAllObjects();renderObjPanel()}
@@ -812,9 +822,16 @@ function renderObjLayer(idx,layer,w,h){
 }
 function bindObjPointer(d,o,layer,w,h){
   d.onpointerdown=function(e){
-    e.preventDefault();e.stopPropagation();selectObj(o.id);pushObjHistory();
+    e.preventDefault();e.stopPropagation();
+    if(objSel!==o.id){
+      objSel=o.id;
+      document.querySelectorAll(".pdf-obj.sel").forEach(function(el){if(el!==d)el.classList.remove("sel")});
+      d.classList.add("sel");
+      renderObjPanel();
+    }
+    pushObjHistory();
     var resizing=e.target.classList.contains("obj-handle"),sx=e.clientX,sy=e.clientY,ox=o.x,oy=o.y,ow=o.w,oh=o.h;
-    d.setPointerCapture(e.pointerId);
+    try{d.setPointerCapture(e.pointerId)}catch(pe){}
     d.onpointermove=function(ev){
       var dx=(ev.clientX-sx)/w,dy=(ev.clientY-sy)/h;
       if(resizing){o.w=clamp(ow+dx,.02,1-o.x);o.h=clamp(oh+dy,.02,1-o.y)}
@@ -826,6 +843,58 @@ function bindObjPointer(d,o,layer,w,h){
   };
 }
 function renderAllObjects(){document.querySelectorAll(".obj-layer").forEach(function(l){renderObjLayer(parseInt(l.dataset.page),l,l.clientWidth,l.clientHeight)})}
+function textBlockById(id){
+  var pages=Object.keys(textBlocks);
+  for(var i=0;i<pages.length;i++){var list=textBlocks[pages[i]]||[];for(var j=0;j<list.length;j++){if(list[j].id===id)return list[j]}}
+  return null;
+}
+function setTextEditMode(on,notify){
+  textEditMode=!!on;selectedTextBlock=null;
+  if($("ws"))$("ws").classList.toggle("text-edit-active",textEditMode);
+  renderAllTextEditLayers();
+  if(notify!==false)toast(textEditMode?"Click detected PDF text to replace it":"Text edit selection off");
+}
+function renderAllTextEditLayers(){
+  document.querySelectorAll(".pdf-text-layer").forEach(function(l){renderTextEditLayer(parseInt(l.dataset.page),l,l.clientWidth,l.clientHeight)});
+}
+function updateTextBlocksForPage(idx,pg,vp,w,h){
+  if(!pg||!pg.getTextContent){textBlocks[idx]=[];return}
+  pg.getTextContent().then(function(tc){
+    var util=window.pdfjsLib&&pdfjsLib.Util;
+    var items=(tc&&tc.items)||[],blocks=[];
+    items.forEach(function(it,j){
+      var str=String(it.str||"").trim();if(!str)return;
+      var tx=util&&util.transform?util.transform(vp.transform,it.transform):null;
+      if(!tx)return;
+      var fontPx=Math.max(6,Math.hypot(tx[2],tx[3])||((it.height||10)*zm));
+      var bw=Math.max(8,Math.abs((it.width||str.length*fontPx*.45)*zm));
+      var bh=Math.max(8,fontPx*1.25);
+      var x=clamp(tx[4],0,Math.max(0,w-1)),y=clamp(tx[5]-bh,0,Math.max(0,h-1));
+      bw=clamp(bw,8,Math.max(8,w-x));bh=clamp(bh,8,Math.max(8,h-y));
+      blocks.push({id:"pdftext-"+idx+"-"+j,page:idx,text:str,x:x/w,y:y/h,w:bw/w,h:bh/h,fontSize:Math.max(7,Math.round(fontPx/Math.max(.5,zm))),fontName:it.fontName||""});
+    });
+    textBlocks[idx]=blocks;
+    var layer=document.querySelector('.pdf-text-layer[data-page="'+idx+'"]');
+    if(layer)renderTextEditLayer(idx,layer,w,h);
+  }).catch(function(){textBlocks[idx]=[]});
+}
+function renderTextEditLayer(idx,layer,w,h){
+  layer.innerHTML="";
+  if(!textEditMode)return;
+  var blocks=textBlocks[idx]||[];
+  blocks.forEach(function(b){
+    var d=document.createElement("button");d.type="button";d.className="pdf-text-hit"+(b.id===selectedTextBlock?" sel":"");d.dataset.textBlock=b.id;
+    d.title="Replace detected text: "+b.text.slice(0,80);
+    d.style.left=(b.x*w)+"px";d.style.top=(b.y*h)+"px";d.style.width=Math.max(8,b.w*w)+"px";d.style.height=Math.max(8,b.h*h)+"px";
+    d.onclick=function(e){e.preventDefault();e.stopPropagation();selectExistingTextBlock(b.id)};
+    layer.appendChild(d);
+  });
+}
+function selectExistingTextBlock(id){
+  selectedTextBlock=id;renderAllTextEditLayers();
+  var b=textBlockById(id);
+  if(b)openExistingTextModal(b);
+}
 function beginFreeDraw(e,idx,layer,w,h){
   pushObjHistory();var rect=layer.getBoundingClientRect(),pts=[];function pt(ev){return[clamp((ev.clientX-rect.left)/rect.width,0,1),clamp((ev.clientY-rect.top)/rect.height,0,1)]}
   var o=pageObjDefaults("draw");o.page=idx;o.x=0;o.y=0;o.w=1;o.h=1;o.points=[];objs.push(o);objSel=o.id;pts.push(pt(e));o.points=pts.slice();
@@ -833,8 +902,8 @@ function beginFreeDraw(e,idx,layer,w,h){
   layer.onpointermove=function(ev){pts.push(pt(ev));o.points=pts.slice();renderObjLayer(idx,layer,w,h)};
   layer.onpointerup=function(){layer.onpointermove=null;layer.onpointerup=null;drawMode=false;layer.classList.remove("drawing");renderAllObjects();renderObjPanel();toast("Drawing added")};
 }
-function startDrawMode(){drawMode=true;document.querySelectorAll(".obj-layer").forEach(function(l){l.classList.add("drawing")});toast("Drag on a page to draw")}
-function startRedactionMode(){if(!pB){toast("Upload a PDF first",1);return}drawMode=false;redactDrawMode=true;document.querySelectorAll(".obj-layer").forEach(function(l){l.classList.add("drawing")});clM();toast("Drag on a page to draw visual cover boxes")}
+function startDrawMode(){setTextEditMode(false,false);drawMode=true;document.querySelectorAll(".obj-layer").forEach(function(l){l.classList.add("drawing")});toast("Drag on a page to draw")}
+function startRedactionMode(){if(!pB){toast("Upload a PDF first",1);return}setTextEditMode(false,false);drawMode=false;redactDrawMode=true;document.querySelectorAll(".obj-layer").forEach(function(l){l.classList.add("drawing")});clM();toast("Drag on a page to draw visual cover boxes")}
 function beginRedactDraw(e,idx,layer,w,h){
   pushObjHistory();var rect=layer.getBoundingClientRect();
   var sx=clamp((e.clientX-rect.left)/rect.width,0,1),sy=clamp((e.clientY-rect.top)/rect.height,0,1);
@@ -974,7 +1043,7 @@ function run(){
   $("tbSplit").onclick=openSplit;$("tbRearr").onclick=openRearr;
   $("tbRotate").onclick=rotCur;$("tbPN").onclick=openPN;$("tbComp").onclick=openExportDrawer;$("tbDL").onclick=openExportDrawer;
   if($("tbDelete"))$("tbDelete").onclick=function(){if(!selectedPages().length)setPageSelection([sel]);deleteSelectedPages()};
-  $("tbText").onclick=openText;if($("tbCorrect"))$("tbCorrect").onclick=openCorrection;$("tbSig").onclick=function(){openSig("draw")};$("tbImg").onclick=openImg;
+  $("tbText").onclick=openText;if($("tbEditExisting"))$("tbEditExisting").onclick=openExistingTextEditor;if($("tbCorrect"))$("tbCorrect").onclick=openCorrection;$("tbSig").onclick=function(){openSig("draw")};$("tbImg").onclick=openImg;
   if($("tbFillText"))$("tbFillText").onclick=openFillText;if($("tbCheckbox"))$("tbCheckbox").onclick=openCheckbox;if($("tbDate"))$("tbDate").onclick=openDateField;if($("tbInitials"))$("tbInitials").onclick=openInitials;if($("tbTypeSig"))$("tbTypeSig").onclick=function(){openSig("type")};if($("tbUploadSig"))$("tbUploadSig").onclick=function(){openSig("upload")};
   $("tbHL").onclick=openHL;$("tbWM").onclick=openWM;$("tbExtract").onclick=openExtract;
   $("tbStamp").onclick=openStamp;$("tbRedact").onclick=openRedact;$("tbCrop").onclick=openCrop;$("tbLock").onclick=openLock;
@@ -1054,7 +1123,7 @@ async function loadPDFBytes(bytes,name){
   try{
     await ensurePDFRuntime();
     pB=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);fn=name||"document.pdf";
-    var doc=await PDFLib.PDFDocument.load(pB.slice(),{ignoreEncryption:true});objs=[];objSel=null;drawMode=false;redactDrawMode=false;undoStack=[];redoStack=[];pageSel={};pageUndoStack=[];pageRedoStack=[];
+    var doc=await PDFLib.PDFDocument.load(pB.slice(),{ignoreEncryption:true});objs=[];objSel=null;drawMode=false;redactDrawMode=false;undoStack=[];redoStack=[];pageSel={};pageUndoStack=[];pageRedoStack=[];textBlocks={};textEditMode=false;selectedTextBlock=null;
     var n=doc.getPageCount();po=[];for(var i=0;i<n;i++)po.push(i);pr={};sel=0;th={};
     await genTh();$("upScreen").style.display="none";$("ws").classList.add("on");document.body.classList.add("pdf-workspace-active");$("tbFn").textContent=fn;if($("tbVault"))$("tbVault").setAttribute("file-name",fn);
     isMob=window.innerWidth<=768;
@@ -1122,6 +1191,7 @@ function rMain(){
   var mv=$("mv");mv.innerHTML="";
   if(!po.length){mv.innerHTML='<div class="mv-ph">No pages</div>';updateMobPg();return Promise.resolve()}
   if(!hasPJ){for(var i=0;i<po.length;i++){var ph=document.createElement("div");ph.className="mv-ph";ph.textContent="Page "+(po[i]+1);ph.id="mp"+i;mv.appendChild(ph)}updateMobPg();return Promise.resolve()}
+  textBlocks={};
   showP("Rendering pages...","");
   return pdfjsLib.getDocument({data:pB.slice()}).promise.then(function(pdf){
     return new Promise(function(resolve){
@@ -1138,8 +1208,11 @@ function rMain(){
           var c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;
           c.onclick=function(){sel=idx;setPageSelection([idx]);rSB()};
           stage.appendChild(c);
+          var textLayer=document.createElement("div");textLayer.className="pdf-text-layer";textLayer.dataset.page=idx;stage.appendChild(textLayer);
           var layer=document.createElement("div");layer.className="obj-layer";layer.dataset.page=idx;stage.appendChild(layer);
           mv.appendChild(stage);
+          updateTextBlocksForPage(idx,pg,vp,vp.width,vp.height);
+          renderTextEditLayer(idx,textLayer,vp.width,vp.height);
           renderObjLayer(idx,layer,vp.width,vp.height);
           var ctx=c.getContext("2d");
           if(!ctx){stepDone();return}
@@ -1432,8 +1505,52 @@ async function dlPDF(){
 }
 async function doDlPDF(){clM();trackPdfEvent("pdf_download_started",{mode:"export",success:true});showP("Building PDF...","");try{var b=await buildPDFBytes({useObjectStreams:true});hideP();dlB(baseName()+"_edited.pdf",b);trackPdfEvent("pdf_download_completed",{mode:"export",success:true});toast("Downloaded!")}catch(e){hideP();trackPdfEvent("pdf_download_completed",{mode:"export",success:false});toast("Error: "+e.message,1)}}
 
+function openExistingTextEditor(){
+  if(!pB){toast("Upload a PDF first",1);return}
+  setCmdMode("edit",window.innerWidth<=640);
+  setTextEditMode(true,true);
+  closeCommandMenus();
+  var count=Object.keys(textBlocks).reduce(function(n,k){return n+(textBlocks[k]||[]).length},0);
+  if(!count)toast("Looking for selectable PDF text. Some scanned PDFs need OCR before text can be detected.",1);
+}
+function openExistingTextModal(b){
+  $("mT").textContent="Edit detected PDF text";
+  $("mS").textContent="Replace a detected text block without changing the original file until export";
+  $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
+    '<div style="padding:12px 14px;border:1px solid #bfdbfe;border-radius:10px;background:#eff6ff;color:#1e3a8a;font-size:13px;line-height:1.55;">This replaces the visible text in the exported PDF by covering the selected block and placing editable text above it. Some PDFs do not expose safe native text objects in the browser.</div>'+
+    '<div class="pn-field"><label>Detected text</label><textarea id="pdfDetectedText" rows="2" readonly style="flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:DM Sans,sans-serif;font-size:13px;resize:vertical;background:#f8fafc;color:#475569;">'+esc(b.text)+'</textarea></div>'+
+    '<div class="pn-field"><label for="pdfReplaceText">Replacement text</label><textarea id="pdfReplaceText" rows="3" style="flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:DM Sans,sans-serif;font-size:14px;resize:vertical">'+esc(b.text)+'</textarea></div>'+
+    '<div style="display:flex;gap:12px;flex-wrap:wrap;">'+
+    '<div class="pn-field"><label>Size</label><input aria-label="Replacement size" type="number" id="pdfReplaceSize" value="'+(b.fontSize||12)+'" min="6" max="96"></div>'+
+    '<div class="pn-field"><label>Color</label><input aria-label="Replacement color" type="color" id="pdfReplaceColor" value="#111827" style="width:48px;height:36px;border:1.5px solid #e5e7eb;border-radius:6px;cursor:pointer"></div>'+
+    '<label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input aria-label="Replacement bold" type="checkbox" id="pdfReplaceBold"> Bold</label>'+
+    '<label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input aria-label="Replacement italic" type="checkbox" id="pdfReplaceItalic"> Italic</label>'+
+    '</div>'+
+    '<p style="font-size:12px;color:#64748b;margin:0;">After placing it, select the new text box to move, resize, change color, or delete it before downloading.</p>'+
+    '</div>';
+  var ft=$("mF");ft.innerHTML="";
+  var cancel=document.createElement("button");cancel.className="wb wb-s";cancel.textContent="Cancel";cancel.onclick=function(){clM();selectedTextBlock=null;renderAllTextEditLayers()};
+  var btn=document.createElement("button");btn.className="wb wb-p";btn.textContent="Replace text";btn.onclick=function(){applyExistingTextReplacement(b)};
+  ft.appendChild(cancel);ft.appendChild(btn);opM();
+  setTimeout(function(){if($("pdfReplaceText"))$("pdfReplaceText").focus()},0);
+}
+function applyExistingTextReplacement(b){
+  var txt=$("pdfReplaceText")&&$("pdfReplaceText").value;
+  if(!txt){toast("Enter replacement text",1);return}
+  var sz=parseInt($("pdfReplaceSize").value)||b.fontSize||12,col=$("pdfReplaceColor").value||"#111827";
+  clM();pushObjHistory();
+  var padX=.004,padY=.003;
+  var cover=pageObjDefaults("whiteout");cover.page=b.page;cover.x=clamp(b.x-padX,0,.99);cover.y=clamp(b.y-padY,0,.99);cover.w=clamp(b.w+(padX*2),.02,1-cover.x);cover.h=clamp(b.h+(padY*2),.02,1-cover.y);
+  var text=pageObjDefaults("text");text.page=b.page;text.x=clamp(b.x,0,.99);text.y=clamp(b.y,0,.99);text.w=clamp(Math.max(b.w,.08),.02,1-text.x);text.h=clamp(Math.max(b.h,.035),.02,1-text.y);text.text=txt;text.fontSize=sz;text.color=col;text.bold=$("pdfReplaceBold")&&$("pdfReplaceBold").checked;text.italic=$("pdfReplaceItalic")&&$("pdfReplaceItalic").checked;text.replacesTextBlock=b.id;
+  objs.push(cover);objs.push(text);selectedTextBlock=null;setTextEditMode(false,false);selectObj(text.id);renderAllObjects();renderObjPanel();
+  trackPdfEvent("pdf_existing_text_replaced",{mode:"edit",success:true});
+  trackPdfEvent("pdf_text_added",{mode:"edit",success:true});
+  toast("Detected text replaced visually. Download to flatten it into the PDF.");
+}
+
 /* -- ADD TEXT ----------------------------------------------- */
 function openText(){
+  setTextEditMode(false,false);
   $("mT").textContent="Add or cover text";$("mS").textContent="Adds a movable text box. Existing PDF text is not changed until export.";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
     '<div class="pn-field"><label for="atTxt">Text</label><textarea id="atTxt" rows="3" style="flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:DM Sans,sans-serif;font-size:14px;resize:vertical" placeholder="Enter your text here..."></textarea></div>'+
@@ -1465,6 +1582,7 @@ async function doAddText(){
   trackPdfEvent("pdf_text_added",{mode:"edit",success:true});
 }
 function openCorrection(){
+  setTextEditMode(false,false);
   $("mT").textContent="Quick text correction";$("mS").textContent="Cover existing content and place new text. This is overlay editing, not true PDF text-object editing.";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
     '<div style="padding:12px 14px;border:1px solid #bfdbfe;border-radius:10px;background:#eff6ff;color:#1e3a8a;font-size:13px;line-height:1.55;">Use a white cover rectangle over the old content, then add replacement text above it. The original PDF stays unchanged until export.</div>'+
@@ -1606,6 +1724,7 @@ async function doAddSig(){
 
 /* -- ADD IMAGE ---------------------------------------------- */
 function openImg(){
+  setTextEditMode(false,false);
   $("mT").textContent="Add Image";$("mS").textContent="Insert an image on the current page";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
     '<div class="dz" style="padding:30px 20px;" id="imgDz"><div class="dz-emoji">&#128247;</div><h3>Drop an image or click to browse</h3><p>PNG, JPG, or WebP</p><input aria-label="ImgFileIn" type="file" id="imgFileIn" accept="image/png,image/jpeg,image/webp"></div>'+
@@ -1640,6 +1759,7 @@ async function doAddImg(){
 
 /* -- HIGHLIGHT ---------------------------------------------- */
 function openHL(){
+  setTextEditMode(false,false);
   $("mT").textContent="Highlight Area";$("mS").textContent="Draw a colored highlight on the current page";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
     '<div style="display:flex;gap:12px;flex-wrap:wrap;">'+
@@ -1668,6 +1788,7 @@ async function doHL(){
 
 /* -- ADD WATERMARK ------------------------------------------ */
 function openWM(){
+  setTextEditMode(false,false);
   $("mT").textContent="Add Watermark";$("mS").textContent="Add text watermark to all pages";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
     '<div class="pn-field"><label>Text</label><input aria-label="WmTxt" type="text" id="wmTxt" value="CONFIDENTIAL" style="flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px;"></div>'+
@@ -1728,6 +1849,7 @@ async function doExtract(){
 /* -- STAMP -------------------------------------------------- */
 var STAMPS=["CONFIDENTIAL","APPROVED","DRAFT","FINAL","COPY","URGENT","VOID","SAMPLE","REVIEW","SIGNED"];
 function openStamp(){
+  setTextEditMode(false,false);
   $("mT").textContent="Add Stamp";$("mS").textContent="Apply a predefined stamp";
   var html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:16px;">';
   STAMPS.forEach(function(s,i){html+='<div class="pn-pos'+(i===0?" sel":"")+'" data-s="'+s+'" onclick="pickStamp(this)">'+s+'</div>';});
@@ -1756,6 +1878,7 @@ async function doStamp(){
 /* -- REDACT ------------------------------------------------- */
 var REDACTION_WARNING="Visual cover may not remove hidden underlying text or metadata. Do not share sensitive documents until you verify the exported file.";
 function openRedact(){
+  setTextEditMode(false,false);
   $("mT").textContent="Visual cover mode";$("mS").textContent="Cover content visually, then export a flattened copy for review";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
     '<div class="security-note">'+REDACTION_WARNING+'</div>'+
@@ -1850,6 +1973,7 @@ async function performRedactedExport(flatten,removeMeta){
 
 /* -- CROP PAGES --------------------------------------------- */
 function openCrop(){
+  setTextEditMode(false,false);
   $("mT").textContent="Crop Pages";$("mS").textContent="Set margins to crop";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
     '<p style="font-size:13px;color:#6b7280;">Trim margins from all pages. Values in points (72 pt = 1 inch).</p>'+

@@ -344,13 +344,13 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       <a href="/tools/afrostream/calendar" data-as-nav="calendar">Calendar</a>
       <a href="/tools/afrostream/methodology/" data-as-nav="methodology">Methodology</a>
       <a href="/tools/afrostream/university/" data-as-nav="university">University</a>
-      <a href="/tools/afrostream/submit" data-as-nav="submit">Submit</a>
+      <a href="/tools/afrostream/community" data-as-nav="submit">Submit</a>
     </div>
     <div class="as-subnav-actions">
       <div class="as-search-wrap">
         <input aria-label="Search news" type="search" id="newsSearch" class="as-search-input" placeholder="Search news...">
       </div>
-      <a href="/tools/afrostream/submit" class="as-btn-outline">Submit Creator</a>
+      <a href="/tools/afrostream/community" class="as-btn-outline">Submit Tip</a>
     </div>
   </div>
 </nav>
@@ -403,7 +403,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         <div class="as-sidebar-card as-sidebar-cta rv">
           <h3 class="as-sidebar-title">Got a tip?</h3>
           <p>Know something the community should hear? Drop us a line.</p>
-          <a href="/tools/afrostream/submit" class="as-btn-cta">Submit a Tip</a>
+          <a href="/tools/afrostream/community" class="as-btn-cta">Submit a Tip</a>
         </div>
       </aside>
     </div>
@@ -418,216 +418,14 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 <script>
 /* ================================================================
    AfroStream — Creator News Feed (Rebuilt)
-   Fetches live data, falls back to demo.
+   Fetches live data from the AfroStream news API.
    Article pages via ?article=slug instead of modal.
    ================================================================ */
 (function() {
   'use strict';
   var AS_UTIL = window.AfroStreamNewsUtils || {};
 
-  /* -- DEMO / FALLBACK NEWS DATA -------------------------------- */
-  var DEMO_NEWS = [];
-  /* demo removed */
-  var _SKIP_PLACEHOLDER_ = [{_:"x",
-      excerpt: 'The Lagos-based tech reviewer became the first Nigerian tech-only channel to cross one million subscribers on YouTube.',
-      date: new Date(Date.now() - 2*3600000),
-      readTime: 4, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #007AFF 0%, #0063CC 100%)',
-      body: '<p>In a historic moment for Nigerian tech content, NaijaTech \u2014 the YouTube channel run by Chukwuemeka Obi \u2014 has officially crossed one million subscribers, making it the first Nigerian tech-exclusive channel to hit the milestone.</p><p>Obi started the channel in 2020, reviewing smartphones and laptops accessible to the average Nigerian consumer. His no-nonsense style and focus on value-for-money devices resonated with an audience tired of Western-centric tech reviews that ignored African price points and availability.</p><p>\u201CI always said, if I can help one person avoid buying a bad phone with their hard-earned money, I\u2019ve done my job,\u201D Obi told AfroStream in an exclusive interview. \u201COne million people believed in that mission.\u201D</p><p>The milestone comes as YouTube reports a 45% year-over-year increase in tech content viewership from Sub-Saharan Africa, signaling a growing appetite for locally relevant tech coverage.</p>'
-    },
-    {
-      id: 2, slug: 'tiktok-creator-fund-africa',
-      cat: 'platform', catLabel: 'Platform Updates',
-      headline: 'TikTok Launches Creator Fund for Africa \u2014 Here\'s What We Know',
-      excerpt: 'The $20M fund will initially cover Nigeria, South Africa, Kenya, Egypt, and Ghana, with more countries expected by Q3.',
-      date: new Date(Date.now() - 5*3600000),
-      readTime: 5, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)',
-      body: '<p>TikTok has officially announced a $20 million Creator Fund specifically for African content creators, marking the platform\'s most significant investment in the continent to date.</p><p>The fund will initially be available in five markets \u2014 Nigeria, South Africa, Kenya, Egypt, and Ghana \u2014 with plans to expand to at least ten more African countries by Q3 2026.</p><p>Payment will be made through local methods including M-Pesa in Kenya, bank transfers in Nigeria and South Africa, and mobile money in Ghana.</p><p>The move comes as TikTok faces increasing competition from YouTube Shorts and Instagram Reels for African creator talent.</p>'
-    },
-    {
-      id: 3, slug: 'gamerqueenke-samsung-deal',
-      cat: 'business', catLabel: 'Business',
-      headline: 'GamerQueenKE Signs $50K Brand Deal with Samsung East Africa',
-      excerpt: 'Kenya\'s top female gaming streamer lands one of the biggest individual creator sponsorships in East African history.',
-      date: new Date(Date.now() - 8*3600000),
-      readTime: 3, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #F43F5E 0%, #E11D48 100%)',
-      body: '<p>GamerQueenKE, real name Wanjiku Mwangi, has signed a $50,000 brand partnership with Samsung East Africa \u2014 one of the largest individual creator sponsorship deals in the region\'s history.</p><p>The six-month deal will see Mwangi serve as Samsung\'s gaming ambassador across Kenya, Tanzania, and Uganda.</p><p>\u201CWhen I started streaming from my bedroom in Nairobi three years ago, I never imagined a deal like this,\u201D Mwangi said.</p><p>The deal reflects a broader trend of international brands recognizing the commercial value of African gaming content.</p>'
-    },
-    {
-      id: 4, slug: 'youtube-monetization-africa-2026',
-      cat: 'platform', catLabel: 'Platform Updates',
-      headline: 'YouTube Updates Monetization Rules for African Creators in 2026',
-      excerpt: 'New lower thresholds and local currency payouts aim to make YouTube monetization accessible to more African creators.',
-      date: new Date(Date.now() - 24*3600000),
-      readTime: 6, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
-      body: '<p>YouTube has announced significant changes to its Partner Program requirements for creators in African countries, lowering the subscriber threshold from 1,000 to 500 and the watch hours requirement from 4,000 to 2,000 for creators in 30 African markets.</p><p>The changes also introduce local currency payouts in 15 African currencies including the Nigerian Naira, Kenyan Shilling, Ghanaian Cedi, South African Rand, and Egyptian Pound.</p><p>The announcement has been met with cautious optimism. While creators welcomed the lower thresholds, some pointed out that CPM rates in African markets remain significantly lower than in the US or Europe.</p>'
-    },
-    {
-      id: 5, slug: 'lagos-creator-meetup-5000',
-      cat: 'milestones', catLabel: 'Milestones',
-      headline: 'Lagos Creator Meetup Draws 5,000 Attendees \u2014 Biggest Yet',
-      excerpt: 'The annual Lagos Creator Conference exceeded all expectations, with panels on monetization, mental health, and brand deals.',
-      date: new Date(Date.now() - 26*3600000),
-      readTime: 4, author: 'Tunde Bakare',
-      gradient: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-      body: '<p>The 2026 Lagos Creator Conference has set a new attendance record with over 5,000 creators, brand representatives, and industry professionals gathering at the Eko Convention Center over three days.</p><p>The brand marketplace was a major draw, with over 50 companies including MTN, Dangote, Samsung, and Flutterwave offering sponsorship opportunities directly to creators.</p><p>\u201CThree years ago, this event had 200 people in a coworking space,\u201D said organizer Adaeze Nwachukwu. \u201CThe growth mirrors what\u2019s happening in the African creator economy as a whole.\u201D</p>'
-    },
-    {
-      id: 6, slug: 'twitch-mpesa-gifting',
-      cat: 'platform', catLabel: 'Platform Updates',
-      headline: 'Twitch Adds M-Pesa Support for Gifting in Kenya and Tanzania',
-      excerpt: 'East African viewers can now gift subscriptions using M-Pesa mobile money, removing a major barrier to Twitch engagement.',
-      date: new Date(Date.now() - 48*3600000),
-      readTime: 3, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #34AAFF 0%, #0063CC 100%)',
-      body: '<p>Twitch has integrated M-Pesa as a payment method for gifting subscriptions in Kenya and Tanzania, a move that could significantly boost engagement and revenue for East African streamers.</p><p>The integration allows viewers to gift Tier 1, 2, and 3 subscriptions using their M-Pesa mobile wallets, with instant confirmation.</p><p>\u201CThis is huge,\u201D said KenyanGamer254. \u201CHalf my viewers have been asking how to sub for over a year.\u201D</p>'
-    },
-    {
-      id: 7, slug: 'rising-star-ghanaian-coder',
-      cat: 'rising', catLabel: 'Rising Stars',
-      headline: 'Rising Star: 17-Year-Old Ghanaian Coder Goes Viral on TikTok',
-      excerpt: 'Kwame Asante\'s 60-second coding tutorials have amassed 2M followers in just three months.',
-      date: new Date(Date.now() - 72*3600000),
-      readTime: 3, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
-      body: '<p>Kwame Asante, a 17-year-old self-taught programmer from Kumasi, Ghana, has become one of TikTok\u2019s fastest-growing African creators, amassing over 2 million followers with his 60-second coding tutorials.</p><p>His most viewed video, \u201CBuild a WhatsApp Bot in 60 Seconds,\u201D has over 15 million views.</p><p>Multiple tech companies have already reached out with internship and sponsorship offers.</p>'
-    },
-    {
-      id: 8, slug: 'instagram-live-shopping-africa',
-      cat: 'platform', catLabel: 'Platform Updates',
-      headline: 'Instagram Live Shopping Now Available in Nigeria, South Africa, Egypt',
-      excerpt: 'Creators can now sell products directly during live streams, with checkout powered by Paystack and Flutterwave.',
-      date: new Date(Date.now() - 96*3600000),
-      readTime: 4, author: 'Amina Yusuf',
-      gradient: 'linear-gradient(135deg, #EC4899 0%, #DB2777 100%)',
-      body: '<p>Instagram has rolled out its Live Shopping feature in three African markets \u2014 Nigeria, South Africa, and Egypt \u2014 enabling creators and businesses to sell products directly during live broadcasts.</p><p>Early testing showed Nigerian fashion creator StyleByOluwa generating $8,000 in sales during a single 45-minute live session.</p>'
-    },
-    {
-      id: 9, slug: 'accratechie-streaming-business',
-      cat: 'business', catLabel: 'Business',
-      headline: 'Behind the Scenes: How AccraTechie Built a $10K/Month Streaming Business',
-      excerpt: 'An inside look at the revenue streams, tools, and strategy behind one of Ghana\'s most successful tech creators.',
-      date: new Date(Date.now() - 120*3600000),
-      readTime: 7, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)',
-      body: '<p>When AccraTechie \u2014 real name Kofi Mensah \u2014 quit his software engineering job in 2024 to stream full-time, his family thought he was making a mistake. Two years later, he consistently earns over $10,000 per month.</p><p>His income breaks down: YouTube ads ($3,500/month), brand sponsorships ($3,000/month), Twitch subs ($1,500/month), online courses ($1,200/month), and consulting ($800/month).</p>'
-    },
-    {
-      id: 10, slug: 'sa-creator-fake-views-drama',
-      cat: 'drama', catLabel: 'Drama',
-      headline: 'Drama: Popular SA Creator Accused of Fake Viewer Counts',
-      excerpt: 'Screenshots appear to show a major South African lifestyle creator purchasing bot viewers for sponsored streams.',
-      date: new Date(Date.now() - 144*3600000),
-      readTime: 5, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
-      body: '<p>A controversy is erupting in the South African creator community after leaked screenshots appear to show popular lifestyle creator VibeWithThando purchasing bot viewers for sponsored live streams.</p><p>Several brands are reportedly reviewing their partnerships pending an investigation. The incident has reignited debate about the lack of independent viewership verification tools in the African creator economy.</p>'
-    },
-    {
-      id: 11, slug: 'afrobeats-producer-twitch',
-      cat: 'rising', catLabel: 'Rising Stars',
-      headline: 'Rising Star: Afrobeats Producer Streams Beat-Making Sessions, Gains 100K in a Month',
-      excerpt: 'BeatsByKojo streams his production process live, attracting aspiring producers from across the continent.',
-      date: new Date(Date.now() - 168*3600000),
-      readTime: 3, author: 'Kwesi Adjei',
-      gradient: 'linear-gradient(135deg, #14B8A6 0%, #0D9488 100%)',
-      body: '<p>Ghanaian music producer BeatsByKojo has become Twitch\u2019s fastest-growing African music creator after gaining 100,000 followers in just 30 days by streaming his Afrobeats production sessions live.</p><p>What sets BeatsByKojo apart is interactivity. Viewers vote on which sounds to use, suggest chord progressions, and even name the final beats.</p>'
-    },
-    {
-      id: 12, slug: 'nigeria-creator-tax-rules',
-      cat: 'business', catLabel: 'Business',
-      headline: 'Nigeria Clarifies Tax Rules for Content Creators \u2014 What You Need to Know',
-      excerpt: 'FIRS issues guidance on how Nigerian creators should report platform income, sponsorships, and gifts.',
-      date: new Date(Date.now() - 192*3600000),
-      readTime: 6, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #EAB308 0%, #CA8A04 100%)',
-      body: '<p>The Federal Inland Revenue Service (FIRS) has issued long-awaited guidance on how Nigerian content creators should report and pay taxes on their earnings.</p><p>Key points: Platform income is classified as professional income. Sponsorship deals are treated as business income. Gifts exceeding N500,000 annually must be declared.</p>'
-    },
-    {
-      id: 13, slug: 'kenyan-comedy-collective',
-      cat: 'collabs', catLabel: 'Collabs',
-      headline: 'Five Kenyan Comedy Creators Launch Joint Channel \u2014 "NairobiLaughs"',
-      excerpt: 'The super-group combines their audiences for a sketch comedy channel that hit 200K subscribers in its first week.',
-      date: new Date(Date.now() - 216*3600000),
-      readTime: 4, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #F472B6 0%, #EC4899 100%)',
-      body: '<p>Five of Kenya\u2019s biggest comedy creators have launched a joint YouTube channel called NairobiLaughs, and it\u2019s already breaking records.</p><p>The channel hit 200,000 subscribers within its first week, fueled by each creator\u2019s existing audience and a viral launch sketch about Nairobi traffic that racked up 3 million views.</p>'
-    },
-    {
-      id: 14, slug: 'kick-africa-launch',
-      cat: 'platform', catLabel: 'Platform Updates',
-      headline: 'Kick Announces African Expansion \u2014 Launches Creator Incentive Program',
-      excerpt: 'The Twitch competitor is offering guaranteed minimums to African streamers who switch platforms.',
-      date: new Date(Date.now() - 240*3600000),
-      readTime: 4, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #22C55E 0%, #16A34A 100%)',
-      body: '<p>Streaming platform Kick has announced a major push into African markets, launching a Creator Incentive Program that offers guaranteed monthly payments to streamers who commit to streaming exclusively on the platform.</p><p>The program offers three tiers: Bronze ($500/month), Silver ($2,000/month), and Gold (custom deals). The guarantees last for six months.</p>'
-    },
-    {
-      id: 15, slug: 'ethiopian-food-creator-million',
-      cat: 'milestones', catLabel: 'Milestones',
-      headline: 'Ethiopian Food Creator "Injera Queen" Crosses 1M on Instagram',
-      excerpt: 'Her vibrant injera plating videos and cultural storytelling have made her a global sensation.',
-      date: new Date(Date.now() - 288*3600000),
-      readTime: 3, author: 'Selam Tadesse',
-      gradient: 'linear-gradient(135deg, #007AFF 0%, #0063CC 100%)',
-      body: '<p>Hiwot Bekele, known online as \u201CInjera Queen,\u201D has crossed one million followers on Instagram, making her one of the most-followed African food creators on the platform.</p><p>Bekele has leveraged her following into a spice subscription box business that ships Ethiopian spice blends to 30 countries.</p>'
-    },
-    {
-      id: 16, slug: 'tanzanian-creator-collab-sa',
-      cat: 'collabs', catLabel: 'Collabs',
-      headline: 'Tanzanian and South African Creators Unite for Cross-Border Collab Series',
-      excerpt: 'DarDarVlogs and JoziLifestyle are swapping countries for a month in a creator exchange program.',
-      date: new Date(Date.now() - 312*3600000),
-      readTime: 3, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%)',
-      body: '<p>In one of the most ambitious cross-border creator collaborations in African YouTube history, Tanzanian vlogger DarDarVlogs and South African creator JoziLifestyle are literally swapping countries for a full month.</p><p>The series has already attracted sponsorship from Kenya Airways and Safaricom.</p>'
-    },
-    {
-      id: 17, slug: 'nigerian-fashion-tiktok-live',
-      cat: 'business', catLabel: 'Business',
-      headline: 'Nigerian Fashion Creator Makes N15M in a Single TikTok Live Session',
-      excerpt: 'StyleQueenLagos sold out her entire collection during a 2-hour live stream, setting an African record.',
-      date: new Date(Date.now() - 336*3600000),
-      readTime: 4, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #D946EF 0%, #C026D3 100%)',
-      body: '<p>Lagos-based fashion creator StyleQueenLagos has set what appears to be an African record for live commerce, generating N15 million (approximately $9,200) in sales during a single 2-hour TikTok Live session.</p><p>The success highlights the massive potential of live commerce in African markets.</p>'
-    },
-    {
-      id: 18, slug: 'cameroon-bilingual-creator',
-      cat: 'rising', catLabel: 'Rising Stars',
-      headline: 'Rising Star: Cameroonian Creator Bridges French and English Africa',
-      excerpt: 'BilingualBoss switches between French and English mid-sentence, building an audience across language barriers.',
-      date: new Date(Date.now() - 384*3600000),
-      readTime: 3, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #84CC16 0%, #65A30D 100%)',
-      body: '<p>In a continent often divided along linguistic lines, Cameroonian creator BilingualBoss is building something remarkable: a massive audience that spans both Francophone and Anglophone Africa.</p><p>With 800,000 combined followers and growing at 5,000 per day, BilingualBoss may be pioneering a new content format.</p>'
-    },
-    {
-      id: 19, slug: 'african-creators-mental-health',
-      cat: 'drama', catLabel: 'Drama',
-      headline: 'Three Top African Creators Announce Breaks Citing Burnout',
-      excerpt: 'The announcements spark a continent-wide conversation about creator mental health and unsustainable content schedules.',
-      date: new Date(Date.now() - 432*3600000),
-      readTime: 5, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #78716C 0%, #57534E 100%)',
-      body: '<p>In the span of a single week, three prominent African creators have announced extended breaks from content creation, all citing burnout and mental health concerns.</p><p>\u201CThere are no creator unions, no therapists who understand this work, no industry standards for sustainable content schedules,\u201D said media psychologist Dr. Amara Osei.</p>'
-    },
-    {
-      id: 20, slug: 'egypt-gaming-tournament',
-      cat: 'milestones', catLabel: 'Milestones',
-      headline: 'Egypt Hosts Africa\'s Largest Gaming Tournament \u2014 $100K Prize Pool',
-      excerpt: 'The AfroGaming Championship in Cairo drew 256 competitors from 20 African countries.',
-      date: new Date(Date.now() - 480*3600000),
-      readTime: 4, author: 'AfroStream Team',
-      gradient: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-      body: '<p>Cairo\u2019s Smart Village convention center played host to the AfroGaming Championship \u2014 the largest competitive gaming tournament ever held on African soil. With a $100,000 prize pool, 256 competitors from 20 countries, and over 500,000 concurrent viewers.</p><p>\u201CFive years ago, people laughed at the idea of a $100K gaming tournament in Africa,\u201D said tournament organizer Ahmed Hassan. \u201CAfrican esports has arrived.\u201D</p>'
-    }
-  ];
-
-  /* -- FETCH LIVE NEWS (fallback to demo) ----------------------- */
+  /* -- FETCH LIVE NEWS ------------------------------------------ */
   var NEWS = [];
 
   async function fetchNews() {
@@ -653,7 +451,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
           };
         });
       }
-    } catch(e) { /* use fallback */ }
+    } catch(e) { /* leave feed empty until the API returns */ }
     return [];
   }
 
@@ -672,8 +470,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
           };
         });
       }
-    } catch(e) { /* use fallback */ }
-    return TOP_CREATORS;
+    } catch(e) { /* live sidebar stays empty until the API returns */ }
+    return [];
   }
 
   function formatSubs(n) {
@@ -685,16 +483,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
   var TRENDING = [
-    '#AfricanCreators', '#TikTokAfricaFund', '#NairobiLaughs',
-    '#LiveShopping', '#AfroGaming', '#CreatorEconomy', '#AfroTech'
-  ];
-
-  var TOP_CREATORS = [
-    { name: 'NaijaTech', country: 'NG', score: '1.02M subs', avatar: '' },
-    { name: 'GamerQueenKE', country: 'KE', score: '456K subs', avatar: '' },
-    { name: 'AccraTechie', country: 'GH', score: '180K subs', avatar: '' },
-    { name: 'Injera Queen', country: 'ET', score: '1.01M followers', avatar: '' },
-    { name: 'BeatsByKojo', country: 'GH', score: '142K followers', avatar: '' }
+    '#AfricanCreators', '#AfroStreamLive', '#CreatorEconomy',
+    '#AfricanStreaming', '#AfroTech', '#LiveCreators'
   ];
 
   var FLAG = { NG: '\uD83C\uDDF3\uD83C\uDDEC', KE: '\uD83C\uDDF0\uD83C\uDDEA', GH: '\uD83C\uDDEC\uD83C\uDDED', ET: '\uD83C\uDDEA\uD83C\uDDF9', SA: '\uD83C\uDDFF\uD83C\uDDE6', EG: '\uD83C\uDDEA\uD83C\uDDEC', TZ: '\uD83C\uDDF9\uD83C\uDDFF', CM: '\uD83C\uDDE8\uD83C\uDDF2' };

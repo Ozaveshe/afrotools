@@ -322,7 +322,7 @@ function buildMarkdown(counts, sourceSummary, rows, feedMeta) {
     '## Verdict',
     '',
     counts.realDeadlineDate >= Math.max(10, Math.round(counts.totalActiveScholarships * 0.25))
-      ? '**Ready with warnings.** Deadline quality is improving, but unclear deadlines still require official-source confirmation.'
+      ? '**Ready with warnings.** Deadline quality is improving, but research-queue deadlines still require official-source confirmation.'
       : '**Not ready for heavy paid ads.** The UI is safe, but deadline quality remains weak because most active scholarships do not have exact source-backed dates.',
     '',
     '## Current Counts',
@@ -331,7 +331,7 @@ function buildMarkdown(counts, sourceSummary, rows, feedMeta) {
     '| --- | ---: |',
     '| Active scholarships in feed | ' + counts.totalActiveScholarships + ' |',
     '| Real structured deadline_date | ' + counts.realDeadlineDate + ' |',
-    '| Deadline unclear | ' + counts.unclearDeadline + ' |',
+    '| Research queue deadlines | ' + counts.unclearDeadline + ' |',
     '| Structured deadline_month only | ' + counts.deadlineMonthOnly + ' |',
     '| Month-only / annual text only | ' + counts.deadlineMonthOrAnnualTextOnly + ' |',
     '| Rolling deadline | ' + counts.rollingDeadline + ' |',
@@ -340,7 +340,7 @@ function buildMarkdown(counts, sourceSummary, rows, feedMeta) {
     '| Last checked date present | ' + counts.lastChecked + ' |',
     '| Verified deadline confidence | ' + counts.verifiedDeadlineConfidence + ' |',
     '| Inferred deadline confidence | ' + counts.inferredDeadlineConfidence + ' |',
-    '| Unclear deadline confidence | ' + counts.unclearDeadlineConfidence + ' |',
+    '| In-research deadline confidence | ' + counts.unclearDeadlineConfidence + ' |',
     '',
     'Feed mode: `' + (feedMeta.mode || 'unknown') + '`.',
     '',
@@ -349,7 +349,7 @@ function buildMarkdown(counts, sourceSummary, rows, feedMeta) {
     '- Future `deadline_date` values show days left only when the date parses as a real exact date.',
     '- Rolling deadlines show `Rolling deadline` and do not calculate urgency.',
     '- Month-only or annual cycle text shows `Deadline month only` or `Annual cycle expected`; it does not calculate days left.',
-    '- Unclear deadlines show `Deadline unclear` and force official-provider confirmation.',
+    '- Research-queue deadlines show `Research queue` and force official-provider confirmation.',
     '- Past dates show `Currently closed` or needs review language, not urgency.',
     '',
     '## Source Reliability',
