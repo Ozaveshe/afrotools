@@ -90,8 +90,9 @@ function bustReferences(html, htmlPath) {
     const hash = getFileHash(assetPath);
     if (!hash) return match; // file not found, leave as-is
 
-    changed = true;
-    return `${prefix}${cleanRef}?v=${hash}${suffix}`;
+    const replacement = `${prefix}${cleanRef}?v=${hash}${suffix}`;
+    if (replacement !== match) changed = true;
+    return replacement;
   }
 
   html = html.replace(CSS_RE, replacer);
@@ -108,8 +109,9 @@ function bustReferences(html, htmlPath) {
     const hash = getFileHash(assetPath);
     if (!hash) return match;
 
-    changed = true;
-    return `${quote}${cleanRef}?v=${hash}${quote}`;
+    const replacement = `${quote}${cleanRef}?v=${hash}${quote}`;
+    if (replacement !== match) changed = true;
+    return replacement;
   });
 
   return { html, changed };

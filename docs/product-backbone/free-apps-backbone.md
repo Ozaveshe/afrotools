@@ -151,10 +151,62 @@ npm run study-abroad:source-gaps
 
 Additional Study Abroad confidence events:
 
+- `study_abroad_started`
+- `study_abroad_confidence_status_viewed`
 - `study_abroad_source_panel_opened`
+- `study_abroad_summary_copied`
 - `study_abroad_report_outdated_clicked`
 - `study_abroad_source_suggested`
+- `study_abroad_feedback_opened`
+- `study_abroad_feedback_submitted`
 - `study_abroad_low_confidence_result_viewed`
+
+## Confidence-Gated Result Layouts
+
+Tools that mix official fields with broad estimates should show the result in a trust-first order:
+
+1. Destination or result summary.
+2. Confidence status.
+3. Primary estimate.
+4. Upfront or near-term pressure.
+5. Gap or action metric.
+6. Cost or result breakdown.
+7. Source and confidence panel.
+8. Next steps.
+
+Weak data must not look more precise than the source coverage allows. Use ranges, confidence badges, and visible warnings such as `Planning estimate only`. Stronger destinations can show the full breakdown, but official-source fields should still be separated from planning estimates.
+
+## Interpretation Cards
+
+Every high-value calculator should explain the result in plain language after the numeric output. The interpretation should answer:
+
+- whether the user's budget or input clears the main threshold
+- what gap remains
+- which category is driving the result
+- what the user should verify next
+- which linked tool should be opened next
+
+Interpretation cards must not add new claims. They should summarize the already calculated result and point users toward verification or the next AfroTools workflow.
+
+## Feedback Loops
+
+Confidence-gated tools should reuse the source feedback pattern:
+
+- `Suggest an update`
+- `Report outdated cost`
+- `Submit official source`
+
+The first implementation can be localStorage-first. Capture the tool ID, country or item, field, issue type, optional source URL, optional note, confidence status, and timestamp. The UI should confirm that feedback was saved locally and that tool use is not blocked.
+
+## Sponsor Placement Rules
+
+Sponsor placements belong after the result, not inside the core calculation form. A sponsor card must:
+
+- be visibly labeled `Sponsored`, `Partner opportunity`, or `Sponsored placement available`
+- avoid fake partner names
+- avoid implying official endorsement
+- track `sponsor_clicked` or the tool-specific sponsor event
+- preserve the user's ability to save, share, verify sources, and continue without clicking an ad
 
 ## Accessibility Rules
 

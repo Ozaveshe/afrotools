@@ -224,15 +224,26 @@ function buildToolPathIndex(tools) {
   return index;
 }
 
-function findToolAssetRelativePath(toolId) {
-  if (!toolId) return null;
+function getToolImageIds(tool) {
+  return [tool && tool.imageId, tool && tool.sourceId, tool && tool.id]
+    .map(function (value) {
+      return String(value || "").trim();
+    })
+    .filter(Boolean)
+    .filter(function (value, index, values) {
+      return values.indexOf(value) === index;
+    });
+}
 
-  for (const ext of TOOL_IMAGE_EXTENSIONS) {
-    const relativePath = "/assets/img/tools/" + toolId + ext;
-    const absolutePath = path.join(ROOT, "assets", "img", "tools", toolId + ext);
+function findToolAssetRelativePath(tool) {
+  for (const toolId of getToolImageIds(tool)) {
+    for (const ext of TOOL_IMAGE_EXTENSIONS) {
+      const relativePath = "/assets/img/tools/" + toolId + ext;
+      const absolutePath = path.join(ROOT, "assets", "img", "tools", toolId + ext);
 
-    if (fs.existsSync(absolutePath)) {
-      return relativePath;
+      if (fs.existsSync(absolutePath)) {
+        return relativePath;
+      }
     }
   }
 
@@ -264,7 +275,7 @@ function getPreferredToolImage(filePath, html) {
   const pageLang = getHtmlLang(html);
   const candidates = tools
     .map(function (tool) {
-      const relativePath = findToolAssetRelativePath(tool.id);
+      const relativePath = findToolAssetRelativePath(tool);
       return relativePath
         ? {
             tool,

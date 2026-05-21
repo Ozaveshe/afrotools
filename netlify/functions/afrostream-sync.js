@@ -921,6 +921,41 @@ async function runManualSync(options) {
   }
 }
 
+async function runScheduledSnapshotRefresh() {
+  var runStart = Date.now();
+  var runSource = 'Netlify Scheduled Function';
+
+  try {
+    var scoreResults = await refreshSnapshotsViaRpc();
+    var snapshotCount = snapshotCountFromScoring(scoreResults);
+    var errors = summarizeErrors({ scoring: scoreResults }).slice(0, 12);
+
+    await recordScraperRun(
+      'afrostream-sync',
+      snapshotCount > 0 ? 'ok' : 'error',
+      runSource,
+      snapshotCount,
+      errors.length ? errors.join(' | ').slice(0, 1000) : null,
+      Date.now() - runStart
+    );
+
+    return {
+      scoring: scoreResults,
+      snapshots: snapshotCount
+    };
+  } catch (e) {
+    await recordScraperRun(
+      'afrostream-sync',
+      'error',
+      runSource,
+      0,
+      (e.message || 'Scheduled snapshot refresh failed').slice(0, 1000),
+      Date.now() - runStart
+    );
+    throw e;
+  }
+}
+
 exports.handler = async function(event) {
   var cors = getCorsHeaders(event);
 
@@ -951,13 +986,13 @@ exports.handler = async function(event) {
 
   try {
     if (isScheduled) {
-      var scheduledSync = await runManualSync({ source: 'Netlify Scheduled Function' });
+      var scheduledSync = await runScheduledSnapshotRefresh();
       return {
         statusCode: 200,
         headers: cors,
         body: JSON.stringify({
           success: true,
-          message: 'Scheduled AfroStream sync completed',
+          message: 'Scheduled AfroStream snapshot refresh completed',
           data: scheduledSync
         })
       };

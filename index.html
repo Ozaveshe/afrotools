@@ -69,7 +69,7 @@
   </style>
   <!-- Full CSS loaded async — non-blocking -->
   <link rel="preload" href="/assets/css/tokens.min.css?v=ee859bb4" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="/assets/css/global.min.css?v=98898086" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/assets/css/global.min.css?v=e7ad73c8" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <script src="/assets/js/components/country-selector.js?v=78e35c45" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
@@ -82,7 +82,7 @@
   <link rel="preload" href="/assets/css/homepage-refine.css?v=d2252c12" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
-    <link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
     <link rel="stylesheet" href="/assets/css/homepage.css?v=e76f5fac">
     <link rel="stylesheet" href="/assets/css/homepage-refine.css?v=d2252c12">
     <style>.sec,.sec--dark2,.sec--countries{opacity:1!important}</style>
@@ -2111,8 +2111,10 @@ document.addEventListener('DOMContentLoaded', function() {
     section.classList.add('has-favs');
     countEl.textContent = '(' + favTools.length + ')';
     grid.innerHTML = favTools.map(function(t) {
-      var img = '/assets/img/tools/' + t.id + '.webp';
-      var imgFb = '/assets/img/tools/' + t.id + '.svg';
+      var imgId = t.imageId || t.sourceId || t.id;
+      var imgExt = (window.TOOL_CARD_IMAGE_EXTENSIONS && window.TOOL_CARD_IMAGE_EXTENSIONS[imgId]) || 'webp';
+      var img = '/assets/img/tools/' + imgId + '.' + imgExt;
+      var imgFb = '/assets/img/tools/' + imgId + '.svg';
       return '<a href="' + t.href + '" class="my-tool-card">'
         + '<div class="my-tool-icon"><img src="' + img + '" alt="" width="24" height="24" style="width:24px;height:24px;object-fit:contain;border-radius:5px;" onerror="this.onerror=function(){this.outerHTML=\'' + t.icon.replace(/'/g, "\\'") + '\'};this.src=\'' + imgFb + '\'"></div>'
         + '<div class="my-tool-name">' + t.name + '</div>'
@@ -2170,7 +2172,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(document.querySelector('script[src*="tool-registry"]'))return;
     loaded = true;
     var s=document.createElement('script');
-    s.src='/assets/js/components/tool-registry.min.js?v=d1a51d6d';
+    s.src='/assets/js/components/tool-registry.min.js?v=69802e90';
     s.onload=function(){
       if (typeof window.refreshHomepageRegistryStats === 'function') window.refreshHomepageRegistryStats();
       window.dispatchEvent(new CustomEvent('afrotools:registry-ready'));

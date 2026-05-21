@@ -16,6 +16,7 @@ const {
   escapeHtml,
   safeJson,
   ensureDir,
+  writeTextFileSync,
   excerpt,
   slugify,
   countryUrl,
@@ -1783,7 +1784,7 @@ function trimTrailingWhitespace(content) {
 
 function writeHtmlPage(outputDir, html) {
   ensureDir(outputDir);
-  fs.writeFileSync(path.join(outputDir, "index.html"), trimTrailingWhitespace(html), "utf8");
+  writeTextFileSync(path.join(outputDir, "index.html"), trimTrailingWhitespace(html), "utf8");
 }
 
 function replaceMarkedBlock(content, startMarker, endMarker, replacement) {
@@ -2003,7 +2004,7 @@ function updateLandingSource(manifest, cuisineIntelligence) {
     "<!-- ak-static-collection-links:end -->",
     buildLandingCollectionLinksMarkup(manifest)
   );
-  fs.writeFileSync(LANDING_PATH, trimTrailingWhitespace(content), "utf8");
+  writeTextFileSync(LANDING_PATH, trimTrailingWhitespace(content), "utf8");
 }
 
 async function main() {

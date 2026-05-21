@@ -7,6 +7,7 @@ const {
   TOOL_DIR,
   SITE_ORIGIN,
   ensureDir,
+  writeTextFileSync,
   normalizeText,
   slugify,
   excerpt
@@ -774,7 +775,7 @@ function writeShotListCsv(rows) {
     rows.map((row) => headers.map((header) => csvEscape(row[header])).join(","))
   );
   ensureDir(path.dirname(SHOT_LIST_CSV_PATH));
-  fs.writeFileSync(SHOT_LIST_CSV_PATH, `${lines.join("\n")}\n`, "utf8");
+  writeTextFileSync(SHOT_LIST_CSV_PATH, `${lines.join("\n")}\n`, "utf8");
 }
 
 function writeShotListMarkdown(rows, summary) {
@@ -800,20 +801,20 @@ function writeShotListMarkdown(rows, summary) {
       `| ${index + 1} | ${row.recipe} | ${row.country} | ${row.category || "recipe"} | \`${row.filename}\` | ${row.route_path} | ${row.prompt} |`
     );
   });
-  fs.writeFileSync(SHOT_LIST_MD_PATH, `${lines.join("\n")}\n`, "utf8");
+  writeTextFileSync(SHOT_LIST_MD_PATH, `${lines.join("\n")}\n`, "utf8");
 }
 
 function writeCuisineIntelligenceFiles(intelligence) {
   ensureDir(path.dirname(PUBLIC_PATH));
   ensureDir(path.dirname(REPORT_PATH));
   const publicData = publicPayload(intelligence);
-  fs.writeFileSync(PUBLIC_PATH, `${JSON.stringify(publicData, null, 2)}\n`, "utf8");
-  fs.writeFileSync(
+  writeTextFileSync(PUBLIC_PATH, `${JSON.stringify(publicData, null, 2)}\n`, "utf8");
+  writeTextFileSync(
     PUBLIC_JS_PATH,
     `window.AfroKitchenCuisineIntelligence = ${JSON.stringify(publicData)};\n`,
     "utf8"
   );
-  fs.writeFileSync(REPORT_PATH, `${JSON.stringify({
+  writeTextFileSync(REPORT_PATH, `${JSON.stringify({
     version: intelligence.version,
     generated_at: intelligence.generated_at,
     summary: intelligence.summary,

@@ -41,6 +41,37 @@ function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
+function waitForFileLock(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function writeTextFileSync(filePath, content, encoding) {
+  const maxAttempts = 30;
+  const fileEncoding = encoding || "utf8";
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      if (fs.existsSync(filePath) && fs.readFileSync(filePath, fileEncoding) === content) {
+        return;
+      }
+
+      fs.writeFileSync(filePath, content, fileEncoding);
+      return;
+    } catch (error) {
+      if (attempt === maxAttempts) {
+        throw error;
+      }
+
+      const code = String(error && error.code ? error.code : "");
+      if (code && !["UNKNOWN", "EBUSY", "EPERM", "EACCES"].includes(code)) {
+        throw error;
+      }
+
+      waitForFileLock(Math.min(1500, attempt * 150));
+    }
+  }
+}
+
 function normalizeText(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
@@ -854,7 +885,7 @@ async function buildManifest(options) {
 function writeManifest(manifest, targetPath) {
   const outputPath = targetPath || MANIFEST_PATH;
   ensureDir(path.dirname(outputPath));
-  fs.writeFileSync(outputPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  writeTextFileSync(outputPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   return outputPath;
 }
 
@@ -944,7 +975,7 @@ function writeStaticRoutes(manifest, targetPath) {
 })(window);
 `;
 
-  fs.writeFileSync(outputPath, output, "utf8");
+  writeTextFileSync(outputPath, output, "utf8");
   return outputPath;
 }
 
@@ -962,6 +993,7 @@ module.exports = {
   escapeHtml,
   safeJson,
   ensureDir,
+  writeTextFileSync,
   normalizeText,
   slugify,
   excerpt,

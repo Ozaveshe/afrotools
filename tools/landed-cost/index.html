@@ -5,8 +5,8 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Landed Cost Calculator for Africa 2026 — Full Import Cost Breakdown | AfroTools</title>
-<meta name="description" content="Calculate your total landed cost for imports into any African country. FOB to warehouse — customs duty, VAT, levies, port charges, clearing fees. AI-powered advisor for 54 countries.">
+<title>Landed Cost Calculator for Africa 2026 | Planning Import Cost Breakdown | AfroTools</title>
+<meta name="description" content="Estimate landed cost for selected African import markets. Model FOB to warehouse planning costs, customs duty entered by you, VAT presets, levies, port charges, and clearing fees.">
 <link rel="canonical" href="https://afrotools.com/tools/landed-cost/">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
 <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=98898086">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <style>
 :root{--color-brand:var(--color-primary)}
 .t-hero{background:var(--color-bg-dark);padding:40px 0 28px}
@@ -104,8 +104,8 @@
   .lc-4col{grid-template-columns:1fr;}
 }
 </style>
-<meta property="og:title" content="Landed Cost Calculator for Africa 2026 — Full Import Cost Breakdown | AfroTools">
-<meta property="og:description" content="Calculate your total landed cost for imports into any African country. FOB to warehouse — customs duty, VAT, levies, port charges, clearing fees. AI-powered advisor for 54 countries.">
+<meta property="og:title" content="Landed Cost Calculator for Africa 2026 | Planning Import Cost Breakdown | AfroTools">
+<meta property="og:description" content="Estimate landed cost for selected African import markets. Model FOB to warehouse planning costs, customs duty entered by you, VAT presets, levies, port charges, and clearing fees.">
 <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/bundles/core.009aa1e7.min.js" defer></script>
@@ -116,9 +116,10 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/landed-cost.webp">
 <meta property="og:url" content="https://afrotools.com/tools/landed-cost/">
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
+<link rel="stylesheet" href="/assets/css/import-duty-data-trust.css?v=09a78c9e">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Landed Cost Calculator for Africa 2026 — Full Import Cost Breakdown | AfroTools">
-<meta name="twitter:description" content="Calculate your total landed cost for imports into any African country. FOB to warehouse — customs duty, VAT, levies, port charges, clearing fees. AI-powered advisor for 54 countries.">
+<meta name="twitter:title" content="Landed Cost Calculator for Africa 2026 | Planning Import Cost Breakdown | AfroTools">
+<meta name="twitter:description" content="Estimate landed cost for selected African import markets. Model FOB to warehouse planning costs, customs duty entered by you, VAT presets, levies, port charges, and clearing fees.">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/landed-cost/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-rendu/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-bidhaa/" />
@@ -131,7 +132,7 @@
   <div class="container">
     <nav class="bc" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span aria-current="page">Landed Cost Calculator</span></nav>
     <h1>Landed Cost Calculator —<br><em>FOB to Warehouse 2026</em></h1>
-    <p class="t-hero-sub">The definitive import cost calculator. From FOB price through every customs charge, levy, VAT, port fee, and clearing cost — to total landed cost in local currency.</p>
+    <p class="t-hero-sub">A planning import cost calculator from FOB price through duty entered by you, VAT presets, levy estimates, port fee estimates, and clearing cost estimates to landed cost in local currency.</p>
     <div class="hero-badges">
       <span class="badge badge-green">10 African Countries</span>
       <span class="badge badge-blue">Full Cost Waterfall</span>
@@ -370,6 +371,7 @@
 <script src="/data/trade/landed-cost-data.js?v=148eb3d4"></script>
 <script src="/data/trade/fx-history.js?v=21864088"></script>
 <script src="/engines/landed-cost-engine.js?v=330437e1"></script>
+<script src="/assets/js/lib/import-duty-data-trust.js?v=9695e303"></script>
 <script>
 var lastResult = null;
 
@@ -421,6 +423,10 @@ function onCmpCountryChange(ab){
 
 function fmtUSD(v){ return '$'+parseFloat(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function fmtLocal(v, sym){ return (sym||'')+Math.round(v).toLocaleString(); }
+function escHtml(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(ch){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]; }); }
+function trust(){ return window.AfroImportDutyDataTrust || null; }
+function trustMeta(field){ return trust() && field ? trust().renderMeta(field) : ''; }
+function trustDisclaimer(){ return trust() ? trust().DISCLAIMER : 'Import costs can change. AfroTools provides planning estimates only. Always confirm final customs duty, taxes, levies, port charges, exchange rates, and clearing costs with official authorities or licensed professionals before making financial decisions.'; }
 
 function doCalculate(){
   var params = {
@@ -439,6 +445,7 @@ function doCalculate(){
   var r = LandedCostEngine.calculate(params);
   if(!r){alert('Could not calculate — check inputs');return;}
   lastResult = r;
+  var trustFields = trust() ? trust().landedCostResultFields(r, params) : {};
   var sym = r.symbol||r.currency;
   // Hero
   document.getElementById('rhTotal').textContent = fmtLocal(r.totalLandedLocal, sym);
@@ -447,34 +454,36 @@ function doCalculate(){
   document.getElementById('rhEffRate').textContent = 'Effective tax rate: '+r.effectiveTaxRate+'%';
   // Waterfall
   var wf = '';
-  wf += wfRow('', 'FOB Value (Goods)', r.fobUSD, 'USD', '');
+  wf += wfRow('', 'FOB Value (Goods)', r.fobUSD, 'USD', '', trustFields.fob);
   wf += wfRow('section-head', 'FREIGHT & INSURANCE', '', '', '');
-  wf += wfRow('', 'Sea Freight', r.freightUSD, 'USD', '');
-  wf += wfRow('', 'Insurance', r.insuranceUSD, 'USD', '');
-  wf += wfRow('duty', '➕ CIF Value', r.cifUSD, 'USD', '');
+  wf += wfRow('', 'Sea Freight', r.freightUSD, 'USD', '', trustFields.freight);
+  wf += wfRow('', 'Insurance', r.insuranceUSD, 'USD', '', trustFields.insurance);
+  wf += wfRow('duty', 'CIF Value', r.cifUSD, 'USD', '', trustFields.cif);
   wf += wfRow('section-head', 'IMPORT DUTY', '', '', '');
-  wf += wfRow('duty', 'Import Duty ('+r.dutyRate+'%)', r.importDutyUSD, 'USD', '');
+  wf += wfRow('duty', 'Import Duty ('+r.dutyRate+'%)', r.importDutyUSD, 'USD', '', trustFields.duty);
   if(r.levyBreakdown.length){
     wf += wfRow('section-head', 'ADDITIONAL LEVIES', '', '', '');
-    r.levyBreakdown.forEach(function(l){ wf += wfRow('levy', l.name+' ('+l.rate+'% on '+l.base+')', l.amountUSD, 'USD', ''); });
+    r.levyBreakdown.forEach(function(l, i){ wf += wfRow('levy', l.name+' ('+l.rate+'% on '+l.base+')', l.amountUSD, 'USD', '', trustFields.levies && trustFields.levies[i]); });
   }
   wf += wfRow('section-head', 'VAT', '', '', '');
-  wf += wfRow('vat', 'VAT ('+r.vatRate+'%)', r.vatUSD, 'USD', '');
+  wf += wfRow('vat', 'VAT ('+r.vatRate+'%)', r.vatUSD, 'USD', '', trustFields.vat);
   if(r.localChargesUSD > 0){
     wf += wfRow('section-head', 'PORT & CLEARING (converted to USD)', '', '', '');
-    if(r.brokerFeeUSD>0) wf += wfRow('', 'Customs Broker Fee', r.brokerFeeUSD, 'USD', '');
-    if(r.handlingUSD>0) wf += wfRow('', 'Terminal Handling', r.handlingUSD, 'USD', '');
+    if(r.brokerFeeUSD>0) wf += wfRow('', 'Customs Broker Fee', r.brokerFeeUSD, 'USD', '', trustFields.broker);
+    if(r.handlingUSD>0) wf += wfRow('', 'Terminal Handling', r.handlingUSD, 'USD', '', trustFields.handling);
   }
-  wf += wfRow('total', '🏭 TOTAL LANDED COST', r.totalLandedUSD, 'USD (= '+fmtLocal(r.totalLandedLocal,sym)+')', 'total');
+  wf += wfRow('total', 'Estimated landed cost', r.totalLandedUSD, 'USD (= '+fmtLocal(r.totalLandedLocal,sym)+')', 'total', trustFields.total);
+  if(trust()) wf += trust().renderPanel([trustFields.fob, trustFields.freight, trustFields.insurance, trustFields.cif, trustFields.duty, trustFields.vat, trustFields.broker, trustFields.handling, trustFields.total].concat(trustFields.levies || []));
+  wf += '<p class="trust-disclaimer">'+escHtml(trustDisclaimer())+'</p>';
   document.getElementById('waterfall').innerHTML = wf;
   document.getElementById('calcEmpty').style.display = 'none';
   document.getElementById('calcResults').classList.add('on');
 }
 
-function wfRow(cls, label, val, suffix, extraCls){
+function wfRow(cls, label, val, suffix, extraCls, trustField){
   if(cls==='section-head') return '<div class="wf-row section-head">'+label+'</div>';
   var fmtVal = typeof val==='number' ? fmtUSD(val)+(suffix?' '+suffix:'') : '';
-  return '<div class="wf-row '+cls+'"><span class="wf-label '+(extraCls||'')+'">'+label+'</span><span class="wf-val">'+fmtVal+'</span></div>';
+  return '<div class="wf-row '+cls+'"><span class="wf-label '+(extraCls||'')+'">'+label+' '+trustMeta(trustField)+'</span><span class="wf-val">'+fmtVal+'</span></div>';
 }
 
 function doCompare(){

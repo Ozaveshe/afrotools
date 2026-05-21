@@ -766,6 +766,18 @@ FROM (VALUES
 ) AS v(slug, avatar)
 WHERE c.slug = v.slug;
 
+-- Local creator avatars generated in the 2026-05-21 image reconciliation pass.
+UPDATE as_creators AS c
+SET avatar = v.avatar
+FROM (VALUES
+  ('dunsin-oyekan', '/assets/img/afrostream/creators/dunsin-oyekan-avatar.webp'),
+  ('p-square', '/assets/img/afrostream/creators/p-square-avatar.webp'),
+  ('sisiyemmietv', '/assets/img/afrostream/creators/sisiyemmietv-avatar.webp'),
+  ('tems', '/assets/img/afrostream/creators/tems-avatar.webp'),
+  ('wasafi-media', '/assets/img/afrostream/creators/wasafi-media-avatar.webp')
+) AS v(slug, avatar)
+WHERE c.slug = v.slug;
+
 -- Local creator avatars generated in the 2026-05-10 image reconciliation pass.
 UPDATE as_creators AS c
 SET avatar = v.avatar

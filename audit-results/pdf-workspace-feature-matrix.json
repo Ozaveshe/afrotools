@@ -1,0 +1,254 @@
+{
+  "auditDate": "2026-05-21",
+  "route": "/tools/pdf-workspace/",
+  "sourceFiles": {
+    "page": "tools/pdf-workspace/index.html",
+    "loadedCss": [
+      "assets/css/tokens.min.css",
+      "assets/css/global.min.css",
+      "inline CSS in tools/pdf-workspace/index.html"
+    ],
+    "loadedJs": [
+      "assets/js/lib/save-state-classic.js",
+      "assets/js/bundles/core.009aa1e7.min.js",
+      "assets/js/components/related-tools-data.min.js",
+      "assets/js/components/navbar.min.js",
+      "assets/js/components/footer.min.js",
+      "assets/js/components/related-tools.js",
+      "assets/js/components/newsletter-cta.min.js",
+      "assets/js/lib/saved-tools.js",
+      "assets/js/favorites-widget.js",
+      "assets/js/components/save-to-vault-button.js",
+      "assets/js/afro-vault.js",
+      "assets/js/lib/qpdf-aes.js",
+      "assets/js/lib/pdf-download-gate.js",
+      "assets/js/lib/document-pdf-report-sync.js",
+      "inline runtime JS in tools/pdf-workspace/index.html"
+    ],
+    "runtimeVendors": [
+      "assets/vendor/pdf-lib/pdf-lib.min.js",
+      "assets/vendor/pdfjs/pdf.min.js",
+      "assets/vendor/pdfjs/pdf.worker.min.js",
+      "assets/vendor/qpdf/qpdf.js",
+      "assets/vendor/qpdf/qpdf-worker.js",
+      "assets/vendor/qpdf/lib/qpdf.wasm"
+    ],
+    "relatedButNotLoadedByRoute": [
+      "assets/js/lib/pdf-utils.js",
+      "assets/js/lib/pdf-lib-utils.js"
+    ]
+  },
+  "classificationLegend": [
+    "ready",
+    "partial",
+    "missing",
+    "risky",
+    "hidden",
+    "broken"
+  ],
+  "features": [
+    {
+      "id": "route_and_registry",
+      "label": "Route and registry entry",
+      "status": "ready",
+      "evidence": "tools/pdf-workspace/index.html exists; registry id pdf-workspace points to /tools/pdf-workspace/; sitemap-tools.xml includes the route.",
+      "limitations": "The route is implemented as one large inline page rather than a separated app module."
+    },
+    {
+      "id": "initial_upload",
+      "label": "Initial PDF upload",
+      "status": "ready",
+      "evidence": "#fileIn accepts .pdf/application/pdf; local browser smoke uploaded audit-results/pdf-lib-test.pdf and opened the workspace.",
+      "limitations": "No explicit size gate or validation beyond PDF parsing errors."
+    },
+    {
+      "id": "add_merge_pdf",
+      "label": "Add PDF / merge pages",
+      "status": "partial",
+      "evidence": "#tbAdd opens #mergeIn with multiple files; addPDFs copies all pages from added PDFs after the current page.",
+      "limitations": "No merge review queue, no per-file order before insertion, no size guard, skipped files are only surfaced as toasts."
+    },
+    {
+      "id": "pdf_preview",
+      "label": "PDF preview rendering",
+      "status": "ready",
+      "evidence": "PDF.js loads from local vendor assets and rendered a canvas in desktop and mobile smoke tests.",
+      "limitations": "No selectable text layer, search layer, form layer, or lazy page virtualization."
+    },
+    {
+      "id": "download_export",
+      "label": "Edited PDF download",
+      "status": "ready",
+      "evidence": "#tbDL uses email-gate-modal before buildPDF and dlB creates a PDF Blob download.",
+      "limitations": "Download metadata relies on gate events and local pdfSaveOp; generated PDF events are not explicitly dispatched for all exports."
+    },
+    {
+      "id": "split_pdf",
+      "label": "Split PDF",
+      "status": "partial",
+      "evidence": "Split modal opens and produces multiple PDFs inside a manual ZIP when split points are selected.",
+      "limitations": "Only split-point flow, not arbitrary named ranges. ZIP creation is custom code and should get binary regression tests."
+    },
+    {
+      "id": "rearrange_pages",
+      "label": "Rearrange pages",
+      "status": "partial",
+      "evidence": "Rearrange modal opens and drag/drop updates the in-memory page order.",
+      "limitations": "Desktop drag pattern only; limited keyboard and touch affordances."
+    },
+    {
+      "id": "rotate_pages",
+      "label": "Rotate page",
+      "status": "partial",
+      "evidence": "#tbRotate rotates the selected page by 90 degrees and buildPDF applies the rotation on export.",
+      "limitations": "Current page only, no all-pages or selected-pages command, no undo stack."
+    },
+    {
+      "id": "page_numbers",
+      "label": "Page numbers",
+      "status": "partial",
+      "evidence": "Modal supports start number, font size, and six positions, then draws page numbers with pdf-lib.",
+      "limitations": "No page range, prefix/suffix, total-pages format, margins, font choice, or preview placement."
+    },
+    {
+      "id": "compress_pdf",
+      "label": "Compress PDF",
+      "status": "partial",
+      "evidence": "Compress modal opens and re-saves through pdf-lib with object stream options.",
+      "limitations": "This is optimization/rewrite, not true compression. It does not downsample images, remove hidden objects, subset fonts, or report before/after size before download."
+    },
+    {
+      "id": "add_text",
+      "label": "Add text",
+      "status": "partial",
+      "evidence": "Text modal draws new text onto the selected page with pdf-lib.",
+      "limitations": "Overlay-only. It cannot select, edit, delete, reflow, or replace existing PDF text."
+    },
+    {
+      "id": "existing_text_editing",
+      "label": "Edit existing PDF text",
+      "status": "missing",
+      "evidence": "No text extraction editing model, content stream editing, OCR correction, or text object selection is implemented.",
+      "limitations": "Current text behavior is add-only overlay drawing."
+    },
+    {
+      "id": "signature",
+      "label": "Signature",
+      "status": "partial",
+      "evidence": "Signature modal provides a canvas pad and embeds the drawing as a PNG.",
+      "limitations": "Visual signature only. No certificate signing, identity proof, saved signature library, or movable placement handles."
+    },
+    {
+      "id": "image_insert",
+      "label": "Image insert",
+      "status": "partial",
+      "evidence": "Image modal accepts PNG/JPG/WebP, converts WebP through canvas, and embeds the image.",
+      "limitations": "Numeric placement only. No drag placement, resize handles, layer order, crop, opacity, or image compression controls."
+    },
+    {
+      "id": "highlight",
+      "label": "Highlight",
+      "status": "partial",
+      "evidence": "Highlight modal draws a colored rectangle on the selected page.",
+      "limitations": "This is a rectangle overlay, not a PDF text highlight annotation bound to selected text."
+    },
+    {
+      "id": "watermark",
+      "label": "Watermark",
+      "status": "partial",
+      "evidence": "Watermark modal draws text across all pages with size, opacity, color, and rotation controls.",
+      "limitations": "Text only, all pages only, no image watermark, no tiled watermark, no page range."
+    },
+    {
+      "id": "extract_pages",
+      "label": "Extract pages",
+      "status": "ready",
+      "evidence": "Extract modal accepts comma/range syntax and downloads a new PDF containing those copied pages.",
+      "limitations": "No preview of selected pages and no duplicate-page warning."
+    },
+    {
+      "id": "stamp",
+      "label": "Stamp",
+      "status": "partial",
+      "evidence": "Stamp modal offers fixed text presets, color, size, opacity, and all-page toggle.",
+      "limitations": "Preset-only text stamp, fixed center placement and rotation, no custom stamp library."
+    },
+    {
+      "id": "redact",
+      "label": "Redact",
+      "status": "risky",
+      "evidence": "Redact modal draws a black rectangle over content.",
+      "limitations": "Not true redaction. Underlying text, images, and metadata can remain in the PDF and may be extractable."
+    },
+    {
+      "id": "crop",
+      "label": "Crop",
+      "status": "partial",
+      "evidence": "Crop modal sets PDF crop boxes from numeric margins.",
+      "limitations": "No visual crop handles, no validation for invalid crop boxes beyond thrown errors, no page preview."
+    },
+    {
+      "id": "protect",
+      "label": "Password protect",
+      "status": "partial",
+      "evidence": "Protect modal calls the local QPDF WebAssembly wrapper with AES-256 flags and permissions.",
+      "limitations": "Needs end-to-end encrypted-output verification. Mobile toolbar access to Protect is poor because it sits off-screen in horizontal scroll."
+    },
+    {
+      "id": "page_thumbnails",
+      "label": "Page thumbnail system",
+      "status": "partial",
+      "evidence": "PDF.js renders JPEG data URLs for every page and the sidebar uses them for select/delete/rotation display.",
+      "limitations": "All thumbnails render eagerly and live in memory. No lazy loading, recycling, or progress cancellation for large PDFs."
+    },
+    {
+      "id": "object_annotation_layer",
+      "label": "Object / annotation layer",
+      "status": "missing",
+      "evidence": "No persistent object store or overlay layer exists for text, images, signatures, highlights, stamps, redactions, or crops.",
+      "limitations": "Applied objects are burned into new PDF bytes immediately and cannot be selected, moved, edited, undone, or reordered."
+    },
+    {
+      "id": "toolbar_command_system",
+      "label": "Toolbar command system",
+      "status": "risky",
+      "evidence": "17 top-level toolbar buttons are laid out in one horizontal row. Browser smoke measured toolbar scrollWidth 2179px at 1366px and 1920px viewports.",
+      "limitations": "Actions overflow until very wide desktop. There is no command grouping, menu, tool mode state, keyboard command layer, or command palette."
+    },
+    {
+      "id": "mobile_responsive_behavior",
+      "label": "Mobile responsive behavior",
+      "status": "risky",
+      "evidence": "Mobile smoke at 390px opened the workspace, rendered one page, and showed the bottom zoom/download bar.",
+      "limitations": "Toolbar still scrolls horizontally at 390px. Crop and Protect were off-screen enough that Playwright could not click them from the initial toolbar position."
+    },
+    {
+      "id": "debug_inspector_ui",
+      "label": "Production debug / inspector UI",
+      "status": "ready",
+      "evidence": "Source search and browser smoke found no visible debug or inspector UI. debugLikeVisible was empty at desktop and mobile.",
+      "limitations": "There is a source comment saying Save/Share buttons need manual placement, but it is not visible UI."
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics events",
+      "status": "partial",
+      "evidence": "Page loads GA config G-D859CGF391 and pdf-download-gate emits pdf_download_gate_passed when a gated download passes.",
+      "limitations": "No per-command events for upload, split, rearrange, rotate, compress, text, sign, image, highlight, watermark, extract, stamp, redact, crop, or protect. Body lacks tool-page class, so core tool timing/scroll analytics are not clearly active."
+    },
+    {
+      "id": "error_handling",
+      "label": "Error handling",
+      "status": "partial",
+      "evidence": "Most async operations catch errors and show toast messages; core bundle also provides a global error banner.",
+      "limitations": "Errors are terse and not recoverable. Large-PDF memory failures, encrypted-PDF failures, invalid crop boxes, and QPDF initialization failures need more specific UX."
+    },
+    {
+      "id": "large_pdf_behavior",
+      "label": "Large PDF behavior",
+      "status": "risky",
+      "evidence": "The app keeps whole PDF bytes in memory, slices buffers repeatedly, renders every page and thumbnail, and reserializes full documents on each applied change.",
+      "limitations": "No file size budget, page count budget, virtualization, cancellation, worker offload for pdf-lib operations, or low-memory mode."
+    }
+  ]
+}
