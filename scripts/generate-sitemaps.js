@@ -29,7 +29,7 @@ const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
   '.git', '.github', '.claude', 'supabase', 'netlify', 'assets', 'engines',
   'dist', 'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
-  'afrotools-sentinel', 'prompts', 'docs', 'cars'
+  'afrotools-sentinel', 'prompts', 'docs', 'cars', 'audit-results', 'artifacts'
 ]);
 
 const EXCLUDE_ROOT_DIRS = new Set([

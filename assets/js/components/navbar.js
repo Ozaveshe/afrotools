@@ -1585,7 +1585,7 @@
     }
     .logo-name { font-size: 1rem; font-weight: 800; letter-spacing: 0.02em; color: #111827; }
     .logo-name b { color: #0062CC; }
-    .logo-tag { font-size: 0.44rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #9ca3af; display: block; margin-top: 2px; }
+    .logo-tag { font-size: 0.44rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #475569; display: block; margin-top: 2px; }
 
     /* NAV LINKS */
     .nav-links { display: flex; align-items: center; justify-content: flex-start; list-style: none; flex: 1 1 auto; gap: 4px; overflow: hidden; min-width: 0; }
@@ -2070,7 +2070,7 @@
       display: flex; align-items: center; justify-content: center;
       width: 36px; height: 36px; border-radius: 980px;
       border: 1px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.04);
-      cursor: pointer; color: #6b7280;
+      cursor: pointer; color: #374151;
       transition: all 0.13s; flex-shrink: 0;
     }
     .search-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }

@@ -2172,7 +2172,7 @@
         "id": "cover-letter",
         "name": "Cover Letter Generator",
         "icon": "✉️",
-        "desc": "Create tailored cover letters with job matching,...",
+        "desc": "Africa-first cover letters with JD matching, rea...",
         "href": "/tools/cover-letter-generator/",
         "category": "document-pdf",
         "lang": "en",
@@ -5078,7 +5078,8 @@
         "priority": 83,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "ma-paye-fr"
+        "imageId": "ma-paye",
+        "imageKey": "ma-paye"
       },
       {
         "id": "ke-paye-fr",
@@ -5133,7 +5134,8 @@
         "priority": 80,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "dz-paye-fr"
+        "imageId": "dz-paye",
+        "imageKey": "dz-paye"
       },
       {
         "id": "cd-paye-fr",
@@ -5146,7 +5148,8 @@
         "priority": 79,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "cd-paye-fr"
+        "imageId": "cd-paye",
+        "imageKey": "cd-paye"
       },
       {
         "id": "ci-paye-fr",
@@ -5159,7 +5162,8 @@
         "priority": 78,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "ci-paye-fr"
+        "imageId": "ci-paye",
+        "imageKey": "ci-paye"
       },
       {
         "id": "ng-tva-fr",
@@ -5186,7 +5190,8 @@
         "priority": 77,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "tn-paye-fr"
+        "imageId": "tn-paye",
+        "imageKey": "tn-paye"
       },
       {
         "id": "cm-paye-fr",
@@ -5199,7 +5204,8 @@
         "priority": 76,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "cm-paye-fr"
+        "imageId": "cm-paye",
+        "imageKey": "cm-paye"
       },
       {
         "id": "sn-paye-fr",
@@ -5212,7 +5218,8 @@
         "priority": 75,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "sn-paye-fr"
+        "imageId": "sn-paye",
+        "imageKey": "sn-paye"
       },
       {
         "id": "convertisseur-devises-fr",
@@ -5225,7 +5232,8 @@
         "priority": 75,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "convertisseur-devises-fr"
+        "imageId": "currency-converter",
+        "imageKey": "currency-converter"
       },
       {
         "id": "ma-tva-fr",
@@ -5238,7 +5246,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "ma-tva-fr"
+        "imageId": "ma-vat",
+        "imageKey": "ma-vat"
       },
       {
         "id": "ke-tva-fr",
@@ -5292,7 +5301,10 @@
         "lang": "fr",
         "priority": 73,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "salary-intelligence",
+        "imageId": "salary-intelligence",
+        "imageKey": "salary-intelligence"
       }
     ],
     "fr::document-pdf": [
@@ -5362,7 +5374,9 @@
         "lang": "fr",
         "priority": 92,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "pdf-image-convert-fr",
@@ -5862,7 +5876,10 @@
         "lang": "fr",
         "priority": 55,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "dev-feasibility",
+        "imageId": "dev-feasibility",
+        "imageKey": "dev-feasibility"
       },
       {
         "id": "planificateur-entreprise-fr",
@@ -6747,7 +6764,7 @@
         "id": "generateur-lettre-motivation-fr",
         "name": "Générateur de lettre de motivation",
         "icon": "✉️",
-        "desc": "Préparez une lettre de motivation à personnalise...",
+        "desc": "Lettre de motivation local-first avec matching o...",
         "href": "/fr/tools/generateur-lettre-motivation",
         "category": "career",
         "lang": "fr",
@@ -6884,7 +6901,9 @@
         "lang": "fr",
         "priority": 68,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "import-duty",
+        "imageKey": "import-duty"
       },
       {
         "id": "comparateur-financement-commerce-fr",
@@ -6910,7 +6929,10 @@
         "lang": "fr",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "lc-calculator",
+        "imageId": "lc-calculator",
+        "imageKey": "lc-calculator"
       },
       {
         "id": "calculateur-surestaries-fr",
@@ -8100,7 +8122,8 @@
         "priority": 78,
         "estTraffic": 1500,
         "imageExt": "webp",
-        "imageKey": "ke-paye-sw"
+        "imageId": "ke-paye",
+        "imageKey": "ke-paye"
       },
       {
         "id": "tz-paye-sw",
@@ -8113,7 +8136,8 @@
         "priority": 75,
         "estTraffic": 1200,
         "imageExt": "webp",
-        "imageKey": "tz-paye-sw"
+        "imageId": "tz-paye",
+        "imageKey": "tz-paye"
       },
       {
         "id": "mshahara-na-kodi-savings-sw",
@@ -8126,7 +8150,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "mshahara-na-kodi-savings-sw"
+        "sourceId": "savings-goal",
+        "imageId": "savings-goal",
+        "imageKey": "savings-goal"
       },
       {
         "id": "zana-kalenda-likizo-za-umma-sw",
@@ -8139,7 +8165,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "zana-kalenda-likizo-za-umma-sw"
+        "sourceId": "public-holidays",
+        "imageId": "public-holidays",
+        "imageKey": "public-holidays"
       },
       {
         "id": "zana-kikokotoo-kima-cha-chini-cha-mshahara-sw",
@@ -8152,7 +8180,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "zana-kikokotoo-kima-cha-chini-cha-mshahara-sw"
+        "sourceId": "minimum-wage",
+        "imageId": "minimum-wage",
+        "imageKey": "minimum-wage"
       },
       {
         "id": "south-africa-kikokotoo-kodi-mshahara-sw",
@@ -8165,7 +8195,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "south-africa-kikokotoo-kodi-mshahara-sw"
+        "imageId": "za-paye",
+        "imageKey": "za-paye"
       },
       {
         "id": "algeria-kikokotoo-kodi-mshahara-sw",
@@ -8178,7 +8209,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "algeria-kikokotoo-kodi-mshahara-sw"
+        "imageId": "dz-paye",
+        "imageKey": "dz-paye"
       },
       {
         "id": "angola-kikokotoo-kodi-mshahara-sw",
@@ -8191,7 +8223,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "angola-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "ao-paye",
+        "imageId": "ao-paye",
+        "imageKey": "ao-paye"
       },
       {
         "id": "benin-kikokotoo-kodi-mshahara-sw",
@@ -8203,7 +8237,9 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "bj-paye",
+        "imageKey": "bj-paye"
       },
       {
         "id": "botswana-kikokotoo-kodi-mshahara-sw",
@@ -8216,7 +8252,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "botswana-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "bw-paye",
+        "imageId": "bw-paye",
+        "imageKey": "bw-paye"
       },
       {
         "id": "burkina-faso-kikokotoo-kodi-mshahara-sw",
@@ -8229,7 +8267,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "burkina-faso-kikokotoo-kodi-mshahara-sw"
+        "imageId": "bf-paye",
+        "imageKey": "bf-paye"
       },
       {
         "id": "cape-verde-kikokotoo-kodi-mshahara-sw",
@@ -8242,7 +8281,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "cape-verde-kikokotoo-kodi-mshahara-sw"
+        "imageId": "cv-paye",
+        "imageKey": "cv-paye"
       },
       {
         "id": "central-african-republic-kikokotoo-kodi-mshahara-sw",
@@ -8254,7 +8294,9 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "cf-paye",
+        "imageKey": "cf-paye"
       },
       {
         "id": "chad-kikokotoo-kodi-mshahara-sw",
@@ -8267,7 +8309,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "chad-kikokotoo-kodi-mshahara-sw"
+        "imageId": "td-paye",
+        "imageKey": "td-paye"
       },
       {
         "id": "eritrea-kikokotoo-kodi-mshahara-sw",
@@ -8279,7 +8322,10 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "er-paye",
+        "imageId": "er-paye",
+        "imageKey": "er-paye"
       },
       {
         "id": "eswatini-kikokotoo-kodi-mshahara-sw",
@@ -8292,7 +8338,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "eswatini-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "sz-paye",
+        "imageId": "sz-paye",
+        "imageKey": "sz-paye"
       },
       {
         "id": "ethiopia-kikokotoo-kodi-mshahara-sw",
@@ -8305,7 +8353,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "ethiopia-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "et-paye",
+        "imageId": "et-paye",
+        "imageKey": "et-paye"
       },
       {
         "id": "gabon-kikokotoo-kodi-mshahara-sw",
@@ -8318,7 +8368,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "gabon-kikokotoo-kodi-mshahara-sw"
+        "imageId": "ga-paye",
+        "imageKey": "ga-paye"
       }
     ],
     "sw::african": [
@@ -8333,7 +8384,9 @@
         "priority": 82,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "zana-zote-sw"
+        "sourceId": "afrotools-pro",
+        "imageId": "afrotools-pro",
+        "imageKey": "afrotools-pro"
       },
       {
         "id": "madagascar-sw",
@@ -8345,7 +8398,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "mg-paye",
+        "imageId": "mg-paye",
+        "imageKey": "mg-paye"
       },
       {
         "id": "mauritius-sw",
@@ -8357,7 +8413,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "mu-paye",
+        "imageId": "mu-paye",
+        "imageKey": "mu-paye"
       },
       {
         "id": "seychelles-sw",
@@ -8369,7 +8428,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "sc-paye",
+        "imageId": "sc-paye",
+        "imageKey": "sc-paye"
       },
       {
         "id": "south-africa-sw",
@@ -8381,7 +8443,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "za-paye",
+        "imageId": "za-paye",
+        "imageKey": "za-paye"
       },
       {
         "id": "algeria-sw",
@@ -8393,7 +8458,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "dz-paye",
+        "imageId": "dz-paye",
+        "imageKey": "dz-paye"
       },
       {
         "id": "angola-sw",
@@ -8405,7 +8473,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ao-paye",
+        "imageId": "ao-paye",
+        "imageKey": "ao-paye"
       },
       {
         "id": "botswana-sw",
@@ -8417,7 +8488,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "bw-paye",
+        "imageId": "bw-paye",
+        "imageKey": "bw-paye"
       },
       {
         "id": "burundi-sw",
@@ -8429,7 +8503,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "bi-paye",
+        "imageId": "bi-paye",
+        "imageKey": "bi-paye"
       },
       {
         "id": "eswatini-sw",
@@ -8441,7 +8518,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "sz-paye",
+        "imageId": "sz-paye",
+        "imageKey": "sz-paye"
       },
       {
         "id": "ethiopia-sw",
@@ -8453,7 +8533,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "et-paye",
+        "imageId": "et-paye",
+        "imageKey": "et-paye"
       },
       {
         "id": "ghana-sw",
@@ -8465,7 +8548,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "gh-paye",
+        "imageId": "gh-paye",
+        "imageKey": "gh-paye"
       },
       {
         "id": "cameroon-sw",
@@ -8477,7 +8563,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "cm-paye",
+        "imageId": "cm-paye",
+        "imageKey": "cm-paye"
       },
       {
         "id": "kenya-sw",
@@ -8489,7 +8578,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ke-paye",
+        "imageId": "ke-paye",
+        "imageKey": "ke-paye"
       },
       {
         "id": "lesotho-sw",
@@ -8501,7 +8593,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ls-paye",
+        "imageId": "ls-paye",
+        "imageKey": "ls-paye"
       },
       {
         "id": "libya-sw",
@@ -8513,7 +8608,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ly-paye",
+        "imageId": "ly-paye",
+        "imageKey": "ly-paye"
       },
       {
         "id": "malawi-sw",
@@ -8525,7 +8623,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "mw-paye",
+        "imageId": "mw-paye",
+        "imageKey": "mw-paye"
       },
       {
         "id": "mali-sw",
@@ -8537,7 +8638,10 @@
         "lang": "sw",
         "priority": 66,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ml-paye",
+        "imageId": "ml-paye",
+        "imageKey": "ml-paye"
       }
     ],
     "sw::ecommerce": [
@@ -8623,7 +8727,10 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "profit-margin",
+        "imageId": "profit-margin",
+        "imageKey": "profit-margin"
       },
       {
         "id": "biashara-na-uzingatiaji-sw",
@@ -8635,7 +8742,10 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "business-registration",
+        "imageId": "business-registration",
+        "imageKey": "business-registration"
       },
       {
         "id": "biashara-ndogo-sw",
@@ -8647,7 +8757,10 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "business-plan",
+        "imageId": "business-plan",
+        "imageKey": "business-plan"
       },
       {
         "id": "biashara-ya-nje-sw",
@@ -8659,7 +8772,10 @@
         "lang": "sw",
         "priority": 70,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "export-docs-trade",
+        "imageId": "export-docs-trade",
+        "imageKey": "export-docs-trade"
       },
       {
         "id": "zana-kikokotoo-bima-ya-biashara-sw",
@@ -8817,7 +8933,10 @@
         "lang": "sw",
         "priority": 71,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "pdf-workspace",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "zana-html-kwenda-pdf-sw",
@@ -9059,7 +9178,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-estimator",
+        "imageId": "crop-yield-estimator",
+        "imageKey": "crop-yield-estimator"
       },
       {
         "id": "kilimo-mavuno-kenya-sw",
@@ -9071,7 +9193,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-kenya",
+        "imageId": "crop-yield-kenya",
+        "imageKey": "crop-yield-kenya"
       },
       {
         "id": "kilimo-mavuno-rwanda-sw",
@@ -9083,7 +9208,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-estimator",
+        "imageId": "crop-yield-estimator",
+        "imageKey": "crop-yield-estimator"
       },
       {
         "id": "kilimo-mavuno-tanzania-sw",
@@ -9095,7 +9223,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-tanzania",
+        "imageId": "crop-yield-tanzania",
+        "imageKey": "crop-yield-tanzania"
       },
       {
         "id": "kilimo-mavuno-uganda-sw",
@@ -9107,7 +9238,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "crop-yield-uganda",
+        "imageId": "crop-yield-uganda",
+        "imageKey": "crop-yield-uganda"
       },
       {
         "id": "zana-mavuno-ya-upangishaji-sw",
@@ -9131,7 +9265,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-calculator",
+        "imageId": "fertilizer-calculator",
+        "imageKey": "fertilizer-calculator"
       },
       {
         "id": "kilimo-mbolea-kenya-sw",
@@ -9143,7 +9280,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-kenya",
+        "imageId": "fertilizer-kenya",
+        "imageKey": "fertilizer-kenya"
       },
       {
         "id": "zana-kikokotoo-mbolea-sw",
@@ -9167,7 +9307,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-rwanda",
+        "imageId": "fertilizer-rwanda",
+        "imageKey": "fertilizer-rwanda"
       },
       {
         "id": "kilimo-mbolea-tanzania-sw",
@@ -9179,7 +9322,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-tanzania",
+        "imageId": "fertilizer-tanzania",
+        "imageKey": "fertilizer-tanzania"
       },
       {
         "id": "kilimo-mbolea-uganda-sw",
@@ -9191,7 +9337,10 @@
         "lang": "sw",
         "priority": 69,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "fertilizer-uganda",
+        "imageId": "fertilizer-uganda",
+        "imageKey": "fertilizer-uganda"
       }
     ],
     "sw::hr-payroll": [
@@ -16999,7 +17148,9 @@
         "lang": "fr",
         "priority": 92,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "pdf-workspace",
+        "imageKey": "pdf-workspace"
       },
       {
         "id": "pdf-image-convert-fr",
@@ -17166,7 +17317,8 @@
         "priority": 83,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "ma-paye-fr"
+        "imageId": "ma-paye",
+        "imageKey": "ma-paye"
       },
       {
         "id": "pdf-redact-fr",
@@ -17291,7 +17443,8 @@
         "priority": 80,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "dz-paye-fr"
+        "imageId": "dz-paye",
+        "imageKey": "dz-paye"
       },
       {
         "id": "cd-paye-fr",
@@ -17304,7 +17457,8 @@
         "priority": 79,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "cd-paye-fr"
+        "imageId": "cd-paye",
+        "imageKey": "cd-paye"
       },
       {
         "id": "ci-paye-fr",
@@ -17317,7 +17471,8 @@
         "priority": 78,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "ci-paye-fr"
+        "imageId": "ci-paye",
+        "imageKey": "ci-paye"
       },
       {
         "id": "ng-tva-fr",
@@ -17358,7 +17513,8 @@
         "priority": 77,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "tn-paye-fr"
+        "imageId": "tn-paye",
+        "imageKey": "tn-paye"
       },
       {
         "id": "pdf-find-replace-fr",
@@ -17385,7 +17541,8 @@
         "priority": 76,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "cm-paye-fr"
+        "imageId": "cm-paye",
+        "imageKey": "cm-paye"
       },
       {
         "id": "generateur-factures-fr",
@@ -17426,7 +17583,8 @@
         "priority": 75,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "sn-paye-fr"
+        "imageId": "sn-paye",
+        "imageKey": "sn-paye"
       }
     ],
     "sw": [
@@ -17441,7 +17599,8 @@
         "priority": 78,
         "estTraffic": 1500,
         "imageExt": "webp",
-        "imageKey": "ke-paye-sw"
+        "imageId": "ke-paye",
+        "imageKey": "ke-paye"
       },
       {
         "id": "tz-paye-sw",
@@ -17454,7 +17613,8 @@
         "priority": 75,
         "estTraffic": 1200,
         "imageExt": "webp",
-        "imageKey": "tz-paye-sw"
+        "imageId": "tz-paye",
+        "imageKey": "tz-paye"
       },
       {
         "id": "ug-paye-sw",
@@ -17467,7 +17627,8 @@
         "priority": 70,
         "estTraffic": 900,
         "imageExt": "webp",
-        "imageKey": "ug-paye-sw"
+        "imageId": "ug-paye",
+        "imageKey": "ug-paye"
       },
       {
         "id": "rw-paye-sw",
@@ -17480,7 +17641,8 @@
         "priority": 68,
         "estTraffic": 800,
         "imageExt": "webp",
-        "imageKey": "rw-paye-sw"
+        "imageId": "rw-paye",
+        "imageKey": "rw-paye"
       },
       {
         "id": "ke-vs-tz-sw",
@@ -17493,7 +17655,9 @@
         "priority": 65,
         "estTraffic": 600,
         "imageExt": "webp",
-        "imageKey": "ke-vs-tz-sw"
+        "sourceId": "ke-paye",
+        "imageId": "ke-paye",
+        "imageKey": "ke-paye"
       },
       {
         "id": "bi-paye-sw",
@@ -17506,7 +17670,8 @@
         "priority": 62,
         "estTraffic": 500,
         "imageExt": "webp",
-        "imageKey": "bi-paye-sw"
+        "imageId": "bi-paye",
+        "imageKey": "bi-paye"
       },
       {
         "id": "zana-zote-sw",
@@ -17519,7 +17684,9 @@
         "priority": 82,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "zana-zote-sw"
+        "sourceId": "afrotools-pro",
+        "imageId": "afrotools-pro",
+        "imageKey": "afrotools-pro"
       },
       {
         "id": "mshahara-na-kodi-savings-sw",
@@ -17532,7 +17699,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "mshahara-na-kodi-savings-sw"
+        "sourceId": "savings-goal",
+        "imageId": "savings-goal",
+        "imageKey": "savings-goal"
       },
       {
         "id": "zana-kalenda-likizo-za-umma-sw",
@@ -17545,7 +17714,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "zana-kalenda-likizo-za-umma-sw"
+        "sourceId": "public-holidays",
+        "imageId": "public-holidays",
+        "imageKey": "public-holidays"
       },
       {
         "id": "zana-kikokotoo-kima-cha-chini-cha-mshahara-sw",
@@ -17558,7 +17729,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "zana-kikokotoo-kima-cha-chini-cha-mshahara-sw"
+        "sourceId": "minimum-wage",
+        "imageId": "minimum-wage",
+        "imageKey": "minimum-wage"
       },
       {
         "id": "south-africa-kikokotoo-kodi-mshahara-sw",
@@ -17571,7 +17744,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "south-africa-kikokotoo-kodi-mshahara-sw"
+        "imageId": "za-paye",
+        "imageKey": "za-paye"
       },
       {
         "id": "algeria-kikokotoo-kodi-mshahara-sw",
@@ -17584,7 +17758,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "algeria-kikokotoo-kodi-mshahara-sw"
+        "imageId": "dz-paye",
+        "imageKey": "dz-paye"
       },
       {
         "id": "angola-kikokotoo-kodi-mshahara-sw",
@@ -17597,7 +17772,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "angola-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "ao-paye",
+        "imageId": "ao-paye",
+        "imageKey": "ao-paye"
       },
       {
         "id": "benin-kikokotoo-kodi-mshahara-sw",
@@ -17609,7 +17786,9 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "bj-paye",
+        "imageKey": "bj-paye"
       },
       {
         "id": "botswana-kikokotoo-kodi-mshahara-sw",
@@ -17622,7 +17801,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "botswana-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "bw-paye",
+        "imageId": "bw-paye",
+        "imageKey": "bw-paye"
       },
       {
         "id": "burkina-faso-kikokotoo-kodi-mshahara-sw",
@@ -17635,7 +17816,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "burkina-faso-kikokotoo-kodi-mshahara-sw"
+        "imageId": "bf-paye",
+        "imageKey": "bf-paye"
       },
       {
         "id": "cape-verde-kikokotoo-kodi-mshahara-sw",
@@ -17648,7 +17830,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "cape-verde-kikokotoo-kodi-mshahara-sw"
+        "imageId": "cv-paye",
+        "imageKey": "cv-paye"
       },
       {
         "id": "central-african-republic-kikokotoo-kodi-mshahara-sw",
@@ -17660,7 +17843,9 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "cf-paye",
+        "imageKey": "cf-paye"
       },
       {
         "id": "chad-kikokotoo-kodi-mshahara-sw",
@@ -17673,7 +17858,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "chad-kikokotoo-kodi-mshahara-sw"
+        "imageId": "td-paye",
+        "imageKey": "td-paye"
       },
       {
         "id": "eritrea-kikokotoo-kodi-mshahara-sw",
@@ -17685,7 +17871,10 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "er-paye",
+        "imageId": "er-paye",
+        "imageKey": "er-paye"
       },
       {
         "id": "eswatini-kikokotoo-kodi-mshahara-sw",
@@ -17698,7 +17887,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "eswatini-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "sz-paye",
+        "imageId": "sz-paye",
+        "imageKey": "sz-paye"
       },
       {
         "id": "ethiopia-kikokotoo-kodi-mshahara-sw",
@@ -17711,7 +17902,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "ethiopia-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "et-paye",
+        "imageId": "et-paye",
+        "imageKey": "et-paye"
       },
       {
         "id": "gabon-kikokotoo-kodi-mshahara-sw",
@@ -17724,7 +17917,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "gabon-kikokotoo-kodi-mshahara-sw"
+        "imageId": "ga-paye",
+        "imageKey": "ga-paye"
       },
       {
         "id": "gambia-kikokotoo-kodi-mshahara-sw",
@@ -17736,7 +17930,10 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "gm-paye",
+        "imageId": "gm-paye",
+        "imageKey": "gm-paye"
       },
       {
         "id": "ghana-kikokotoo-kodi-mshahara-sw",
@@ -17748,7 +17945,9 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "gh-paye",
+        "imageKey": "gh-paye"
       },
       {
         "id": "guinea-kikokotoo-kodi-mshahara-sw",
@@ -17761,7 +17960,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "guinea-kikokotoo-kodi-mshahara-sw"
+        "imageId": "gn-paye",
+        "imageKey": "gn-paye"
       },
       {
         "id": "equatorial-guinea-kikokotoo-kodi-mshahara-sw",
@@ -17773,7 +17973,9 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageId": "gq-paye",
+        "imageKey": "gq-paye"
       },
       {
         "id": "guinea-bissau-kikokotoo-kodi-mshahara-sw",
@@ -17786,7 +17988,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "guinea-bissau-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "gw-paye",
+        "imageId": "gw-paye",
+        "imageKey": "gw-paye"
       },
       {
         "id": "dr-congo-kikokotoo-kodi-mshahara-sw",
@@ -17799,7 +18003,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "dr-congo-kikokotoo-kodi-mshahara-sw"
+        "imageId": "cd-paye",
+        "imageKey": "cd-paye"
       },
       {
         "id": "congo-kikokotoo-kodi-mshahara-sw",
@@ -17812,7 +18017,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "congo-kikokotoo-kodi-mshahara-sw"
+        "imageId": "cg-paye",
+        "imageKey": "cg-paye"
       },
       {
         "id": "djibouti-kikokotoo-kodi-mshahara-sw",
@@ -17825,7 +18031,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "djibouti-kikokotoo-kodi-mshahara-sw"
+        "imageId": "dj-paye",
+        "imageKey": "dj-paye"
       },
       {
         "id": "cameroon-kikokotoo-kodi-mshahara-sw",
@@ -17838,7 +18045,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "cameroon-kikokotoo-kodi-mshahara-sw"
+        "imageId": "cm-paye",
+        "imageKey": "cm-paye"
       },
       {
         "id": "comoros-kikokotoo-kodi-mshahara-sw",
@@ -17851,7 +18059,8 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "comoros-kikokotoo-kodi-mshahara-sw"
+        "imageId": "km-paye",
+        "imageKey": "km-paye"
       },
       {
         "id": "lesotho-kikokotoo-kodi-mshahara-sw",
@@ -17864,7 +18073,9 @@
         "priority": 74,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "lesotho-kikokotoo-kodi-mshahara-sw"
+        "sourceId": "ls-paye",
+        "imageId": "ls-paye",
+        "imageKey": "ls-paye"
       },
       {
         "id": "liberia-kikokotoo-kodi-mshahara-sw",
@@ -17876,7 +18087,10 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "svg",
+        "sourceId": "lr-paye",
+        "imageId": "lr-paye",
+        "imageKey": "lr-paye"
       },
       {
         "id": "libya-kikokotoo-kodi-mshahara-sw",
@@ -17888,7 +18102,10 @@
         "lang": "sw",
         "priority": 74,
         "estTraffic": 0,
-        "imageExt": ""
+        "imageExt": "webp",
+        "sourceId": "ly-paye",
+        "imageId": "ly-paye",
+        "imageKey": "ly-paye"
       }
     ]
   }

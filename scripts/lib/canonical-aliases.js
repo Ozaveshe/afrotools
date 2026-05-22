@@ -12,6 +12,7 @@ const IGNORE_DIRS = new Set([
   ".github",
   ".netlify",
   "admin",
+  "audit-results",
   "afrotools-sentinel",
   "artifacts",
   "dist",

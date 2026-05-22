@@ -2,165 +2,180 @@
 
 ## Mission
 
-AfroTools is a static-first, multi-surface product for African tools, country hubs, blogs, and data-driven pages. Optimize for safe repeatable changes, not clever one-off edits.
+AfroTools is a static-first, multi-surface product for African tools, country hubs, blogs, widgets, Pro apps, and data-driven pages. Prefer safe, repeatable source changes with clear validation over clever one-off edits.
+
+Future agents should inspect first, keep diffs scoped, preserve unrelated dirty work, and report exactly what was verified.
 
 ## First Read Order
 
 1. `package.json`
 2. `docs/ARCHITECTURE.md`
-3. `docs/PRO-APP-READINESS.md`
-4. `docs/PRO-FENCE.md`
-5. `docs/CLOSE-OUT-2026-05.md`
+3. `docs/CLOSE-OUT-2026-05.md`
+4. `docs/PRO-APP-READINESS.md`
+5. `docs/PRO-FENCE.md`
 6. `docs/ADDING-A-TOOL.md`
 7. `docs/ADDING-A-COUNTRY.md`
 8. `docs/design-doctrine.md`
 9. `docs/codex-playbook.md`
 10. `docs/known-traps.md`
+11. Relevant workflow docs such as `docs/PDF-CATEGORY-WORKFLOW.md`, `docs/CONTENT-PUBLISHING-WORKFLOW.md`, `docs/MOBILE-AUDIT-WORKFLOW.md`, or `docs/release-checklist.md`
 
-## Repo Reality
+## Repo Layout
 
-- Most pages are plain HTML with shared JS and CSS.
-- Many outputs are generated or post-processed by scripts in `scripts/`.
-- `assets/js/components/tool-registry.js` is the routing and discovery backbone for tools.
-- Netlify serves the site and functions.
-- `afrotools-mission-control.html` is the Codex cockpit.
-- `mc-7a2f9x.html` is the legacy ops dashboard.
+- `index.html`, root category/country folders, and `tools/**/index.html` are mostly hand-authored public pages.
+- `tools/{tool-slug}/index.html` is the normal pan-African tool route. App subroutes commonly use `tools/{tool-slug}/app.html` with canonical `/tools/{tool-slug}/app`.
+- Country tools often live at `{country-slug}/{tool-id}.html`; category pages live at folders like `document-pdf/`, `salary-tax/`, `legal/`, `trade/`, and `career/`.
+- `assets/css/` contains the design system and shared CSS. Start with `assets/css/design-system.css` and `docs/design-doctrine.md`.
+- `assets/js/components/tool-registry.js` is the routing/discovery backbone. Registry edits require link and audit validation.
+- `assets/js/lib/` contains shared browser utilities for storage, export, PDF, analytics, a11y, SEO, dark mode, and workspace sync.
+- `assets/js/engines/` contains pure calculation/data engines. Keep engines DOM-free and testable.
+- `scripts/` contains generated-output, SEO, audit, build, inventory, and data maintenance scripts.
+- `tests/` contains node tests and Playwright specs. `playwright.config.js` starts `tests/support/static-server.js` on port `4173`.
+- `netlify/functions/` contains serverless functions. Treat API/auth/storage changes as high risk.
+- `supabase/` contains migrations and project support files. Live project actions require the correct Supabase target.
+- `fr/`, `sw/`, `ha/`, and `yo/` contain localized surfaces; many translated pages are generated outputs.
+- `dist/`, `sitemap*.xml`, `_redirects`, `_headers`, `assets/js/bundles/`, and `*.min.js` may be generated or post-processed. Prefer source files and scripts.
+- `audit-results/`, `reports/`, `artifacts/`, and `test-results/` are evidence/output areas, not product source unless a task explicitly says otherwise.
 
-## Core Commands
+## Commands
 
-- `npm run build` - full site rebuild and post-processing
-- `npm run build:deploy` - rebuild and prepare the publishable `dist/` artifact
-- `npm run counts:sync` - refresh public tool-count copy from the registry-backed source of truth
-- `npm run sitemap` - regenerate sitemap files from source routes
-- `npm test` - link check plus tool audit
-- `npm run check-links` - broken links and routing smoke check
-- `npm run audit` - tool audit
-- `npm run audit:dist` - verify the deploy artifact only contains publishable output
-- `npm run pdf:verify` - verify PDF category gate coverage and workflow wiring
-- `npm run security:scan` - scan publish surfaces for leaked repo internals and risky files
-- `npm run seo` - SEO daily fix pass
-- `npm run seo:og` - apply or refresh OG image fallbacks for tool routes
-- `npm run seo:report` - SEO report mode
-- `npm run seo:priority` - rebuild SEO system
-- `npm run seo:widgets` - normalize embed and thin utility surface SEO
-- `npm run build:i18n -- --all` - regenerate translations
-- `npm run build:i18n:validate` - validate i18n output
-- `npm run build:i18n:full` - rebuild i18n output and validate hreflang together
-- `npm run validate:hreflang` - hreflang validation
-- `npm run cars:catalog:refresh` - validate and rebuild car catalog data
-- `npm run inventory:site` - refresh the internal site ledger used by `mc-7a2f9x.html`
+There is no `npm run dev` or `npm run lint` script in the current `package.json`.
 
-## Edit Strategy
+Local serving:
 
-- Prefer source files over generated outputs.
-- Prefer scripts for bulk edits across many pages.
-- Keep new workflow knowledge in docs and local skills so future agents inherit it.
-- When changing registry, SEO, i18n, build, or Netlify behavior, update the matching playbook or rule.
+- `node tests/support/static-server.js` - static test server on `http://127.0.0.1:4173`, used by Playwright.
+- `node _serve.js` - simple local server on `http://localhost:3000`.
 
-## High-Risk Zones
+Core validation:
 
-- `assets/js/components/tool-registry.js`
-- `netlify.toml`
-- `_redirects`
-- `_headers`
-- `netlify/functions/`
-- `scripts/build-*.js`
-- `scripts/audit-dist.js`
-- `scripts/generate-*.js`
-- `sitemap*.xml`
-- `assets/js/bundles/`
-- `dist/`
-- `*.min.js`
+- `npm test` - broad link, blog, audit, public-claims, automation, CV-template, and focused data tests.
+- `npm run check-links` - route and link smoke.
+- `npm run audit` - tool registry/tool metadata audit.
+- `npm run tools:quality` - product-quality scorecard.
+- `npm run tools:quality:browser` - browser-backed tool quality smoke.
+- `git diff --check` - substitute whitespace/format check when no formatter/linter exists.
+- `node -c path/to/file.js` - syntax check changed CommonJS/server scripts.
 
-Do not hand-edit generated files unless the source is missing or the task explicitly calls for a direct patch.
+Build and release:
+
+- `npm run build` - full source rebuild and post-processing.
+- `npm run build:deploy` - full rebuild plus publishable `dist/` artifact.
+- `npm run audit:dist` - verify deploy artifact contents.
+- `npm run security:scan` - scan publish surfaces for leaked internals and risky files.
+
+SEO, routes, and generated metadata:
+
+- `npm run sitemap`
+- `npm run seo:report`
+- `npm run seo`
+- `npm run seo:og`
+- `npm run seo:widgets`
+- `npm run counts:sync`
+- `npm run inventory:site`
+
+Specialized validation:
+
+- PDF/document tools: `npm run pdf:verify`, `npm run document-pdf:verify`
+- i18n: `npm run build:i18n:validate`, `npm run validate:hreflang`, or `npm run build:i18n:full`
+- Pro apps: `npm run pro:verify`
+- Category workflows: `npm run category-workflow:verify`
+- Legal, tax, and VAT workflows: `npm run legal-workflow:verify`, `npm run salary-tax:verify`, `npm run vat-business-tax:verify`
+- Cars: `npm run cars:catalog:refresh`
+- Government and transport source ledgers: `npm run government:sources:check`, `npm run transport:sources:check`
+- Privacy/AI consent: `npm run test:privacy-ai-consent`
+
+Run the narrowest meaningful checks for the files you touched. For release, Netlify, redirects, functions, or publish-surface changes, run `npm run security:scan`, `npm run build:deploy`, and `npm run audit:dist`.
+
+## Coding Conventions
+
+- Prefer existing static HTML/CSS/JS patterns over new frameworks.
+- Use IIFE/global module style for browser JS unless the page already uses ES modules.
+- Put reusable browser helpers under `assets/js/lib/`; put tool-specific logic near the tool or under `assets/js/pages/`.
+- Keep calculation and matching logic in pure functions where possible, then wire DOM separately.
+- Use kebab-case for route slugs and file/folder names.
+- Use `window.AfroTools.*` for shared browser APIs when adding reusable modules.
+- Use structured parsers or existing repo utilities instead of ad hoc string manipulation when practical.
+- Do not hand-edit generated files unless the source is missing or the task explicitly calls for a direct patch.
+- Do not invent AI, live-data, compliance, official-source, filing, delivery, or integration claims unless the backing implementation and validation exist.
+- Preserve existing analytics event names unless the task explicitly changes measurement behavior.
+
+## Frontend And Accessibility
+
+- Reuse `assets/css/design-system.css`, `style-guide.html`, and `docs/design-doctrine.md` before adding new visual language.
+- Keep interfaces calm, dense, and task-focused. Avoid unnecessary cards, decorative gradients, and text that explains obvious UI.
+- Every input must have a real visible label or accessible name that describes the field, not example content.
+- Buttons and links must be keyboard reachable, visible on focus, and have stable labels.
+- Modals/drawers need focus management, Escape/close behavior, and `aria-modal`/labeling where appropriate.
+- Use live regions for async status, save, export, upload, and validation feedback.
+- Check small mobile widths for overflow, clipped controls, sticky CTA collisions, and tap target size.
+- Respect `prefers-reduced-motion`; do not make motion essential to understanding.
+
+## Sensitive User Data Tools
+
+This section applies to tools that process CVs, resumes, job descriptions, cover letters, recruiter emails, phone numbers, email addresses, LinkedIn or portfolio URLs, achievements, career gaps, salary details, identity details, health data, legal facts, or financial records.
+
+- Keep local-first behavior unless a task explicitly adds opt-in server functionality.
+- Never log raw resume, job description, email, phone, LinkedIn, portfolio, cover-letter, salary, identity, health, legal, or financial content.
+- Do not store sensitive content in analytics, reports, console output, URL query strings, screenshots, test artifacts, server logs, or Supabase unless the feature explicitly requires it and consent is implemented.
+- Analytics may record non-PII metadata only, such as tool id, export format, consent state, score band, template id, country code, or count buckets.
+- Any AI or network call that sends user-entered sensitive content must require explicit user consent, must show what will be sent, and must provide a local-only alternative.
+- Do not claim "AI-powered" unless actual AI functionality exists and the consent boundary is verified.
+- Prefer `localStorage` or IndexedDB only for local drafts. Provide JSON/TXT export and import backup for portability.
+- For share links, avoid embedding raw sensitive text by default. If a task requires shareable state, make the sensitivity obvious and minimize the payload.
+- For exports from local-first sensitive tools, do not put account gates or lead-capture gates in the primary download path unless the user explicitly asks for that product change.
+- Use deterministic offline parsing/scoring first for resume/CV and JD matching. Treat server AI as optional assist, never the default.
+- Test with synthetic fixtures, not real user data. Redact or avoid screenshots that reveal full sensitive fixture content unless needed for proof.
+
+### Cover Letter Generator
+
+The Cover Letter Generator at `tools/cover-letter-generator/` and `tools/cover-letter-generator/app.html` handles sensitive career data and must remain private/local-first by default.
+
+- Preserve pasted/uploaded CV, resume, JD, and letter text in the browser unless a later task explicitly adds opt-in server assist.
+- Keep PDF, Word/DOC or DOCX, TXT, JSON, copy, print, and local saved-letter behavior working.
+- Do not route its primary exports through registration, email capture, or account gates unless the task explicitly changes the product contract.
+- If adding AI Assist, require explicit consent, show the exact content or fields to be sent, and keep deterministic local generation available.
+- When testing ATS-safe PDF or document exports, verify parser compatibility separately; a browser download alone is not enough.
+
+## Supabase Work
+
+Use the configured Supabase MCP server first whenever a task needs live project access, schema inspection, SQL execution, logs, storage, auth, or generated types.
+
+- AfroTools project ref: `zpclagtgczsygrgztlts`
+- Preferred target in this repo: repo-local `supabase`
+- Named global fallback: `supabase_afrotools`
+- LATMtools project ref: `obtgxgbcoychelycvrfj`
+
+Do not use the AfroTools Supabase project for LATMtools work, and do not use the LATMtools Supabase project for AfroTools work. Keep repo edits and live project actions separate in notes and summaries.
 
 ## Workflow Expectations
 
-### Tool and page work
+- Inspect `git status --short` before editing when the tree may be dirty.
+- Keep unrelated dirty files untouched.
+- Prefer source files over generated output.
+- Prefer scripts for bulk edits across many pages.
+- If changing a tool, review `docs/ADDING-A-TOOL.md`.
+- If changing a country surface, review `docs/ADDING-A-COUNTRY.md`.
+- If changing PDF/document workflows, review `docs/PDF-CATEGORY-WORKFLOW.md`.
+- If changing SEO, canonical, OG, sitemap, internal links, or aliases, run the relevant SEO scripts and do not manually patch sitemap files first.
+- If changing translated output, validate hreflang and avoid manually editing generated translations except for targeted fixes.
+- If changing Netlify, redirects, headers, functions, or publish-surface behavior, validate `dist/` directly.
+- Add or update docs, `.claude/rules/`, or `.agents/skills/` only when a new recurring workflow or file-specific rule is introduced.
 
-- If adding or changing a tool, review `docs/ADDING-A-TOOL.md`.
-- If adding or changing a country surface, review `docs/ADDING-A-COUNTRY.md`.
-- If registry entries change, validate links and audit tool metadata.
+## PR Acceptance Criteria
 
-### PDF and document tools
+Every PR or handoff should state:
 
-- Read `docs/PDF-CATEGORY-WORKFLOW.md`.
-- Keep processing local first unless the tool explicitly documents a server-backed flow.
-- Load `assets/js/lib/pdf-download-gate.js` on PDF-category tools that generate downloads, and wrap direct download callbacks with the shared gate.
-- Treat the shared gate's intercepted `<a download>` behavior as fallback coverage, not a replacement for wiring the main action.
+- What changed, with key file paths.
+- Why the change is safe for the affected route or workflow.
+- Which commands were run, with pass/fail status.
+- Which checks were not run and why.
+- Any privacy, accessibility, SEO, analytics, or generated-output impact.
 
-### Design and UI work
+Done means:
 
-- Start from `assets/css/design-system.css`, `style-guide.html`, and `docs/design-doctrine.md`.
-- Use `docs/MOBILE-AUDIT-WORKFLOW.md` and `node scripts/mobile-audit.js` for repo-wide mobile risk sweeps before broad page-by-page fixes.
-- Reuse repo tokens, type, spacing, radii, shadows, and motion rules before inventing new ones.
-- Prefer stronger composition and hierarchy over piling on more cards or controls.
-
-### SEO work
-
-- Use existing SEO scripts before writing a new fixer.
-- Do not manually edit sitemap files as a first choice.
-- `scripts/generate-sitemaps.js` preserves existing sitemap `<lastmod>` values by default; set `AFROTOOLS_REFRESH_SITEMAP_LASTMOD=1` only when intentionally restamping sitemap dates.
-- Keep `widgets/iframe/` utility pages `noindex, follow` and normalize them with `npm run seo:widgets`.
-- Keep generated deploy output such as `dist/` out of source SEO scans; regenerate it from source instead of patching generated URLs.
-- For tool social-card changes, add the matching route image and run `npm run seo:og`.
-- If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
-
-### PR SEO Safety Contract
-
-- Keep canonical URLs aligned with served routes: `foo/index.html` maps to `/foo/`, while `foo.html` maps to `/foo`.
-- Treat sitemap files as generated output; update sitemap sources or scripts, then run `npm run sitemap` or the narrower SEO command.
-- Keep incomplete, thin, embed, auth, and utility surfaces `noindex, follow` and out of search-facing sitemap output.
-- Preserve existing JSON-LD and structured data unless the PR explicitly changes the underlying content or schema contract.
-- Preserve existing analytics events and event names unless the PR explicitly changes measurement behavior.
-- Every PR must include acceptance criteria plus build, lint, and test evidence. If no lint script exists, say so and list the substitute syntax or targeted validation that was run.
-
-### Content publishing
-
-- Read `docs/CONTENT-PUBLISHING-WORKFLOW.md`.
-- Treat `/blog/` as static repo-backed content.
-- Treat AfroStream news as a live Supabase-backed publishing surface and use the configured `supabase` MCP server first for live publishing or inspection.
-
-### i18n work
-
-- Treat translated pages as build outputs unless the task is a targeted manual fix.
-- Validate hreflang after non-trivial translation changes.
-
-### Supabase work
-
-- Use the AfroTools Supabase MCP target first whenever a task needs live project access, schema inspection, SQL execution, logs, storage, auth, or generated types.
-- Preferred in this repo: repo-local `supabase`.
-- Named global fallback: `supabase_afrotools`.
-- Project ref: `zpclagtgczsygrgztlts`.
-- Do not use the LATMtools Supabase project for AfroTools live data, auth, storage, migrations, or generated types.
-- Keep repo edits and live project actions conceptually separate in your notes and summaries.
-
-### Release and publish-surface work
-
-- Read `docs/release-checklist.md`.
-- Netlify must publish `dist/`, never the repo root.
-- For Netlify, redirects, functions, or publish-surface changes, run `npm run security:scan`, `npm run build:deploy`, and `npm run audit:dist`.
-- Inspect `dist/` directly when validating a release or deploy-surface fix.
-
-### Internal inventory work
-
-- If `mc-7a2f9x.html` counts look stale after registry or page changes, run `npm run inventory:site` before relying on the dashboard.
-- If public tool-count copy drifts across homepage, search, category, or country surfaces, run `npm run counts:sync` before SEO review so static marketing pages inherit the current registry-backed total.
-
-## Preferred Validation
-
-- HTML or content changes: `npm test`
-- PDF/document tool changes: `npm run pdf:verify`, `npm run audit`, plus a guest and registered-user browser smoke when downloads changed
-- Registry or navigation changes: `npm run check-links` and `npm run audit`
-- SEO changes: `npm run seo:report` or the narrower script that matches the change
-- i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
-- Car data changes: `npm run cars:catalog:refresh`
-- Netlify/server code changes: `npm run security:scan`, `npm run build:deploy`, `npm run audit:dist`, plus targeted `node -c` or direct function smoke checks when available
-
-## Deliverables
-
-When you introduce a new workflow or recurring pattern:
-
-- Add or update a doc in `docs/`
-- Add or update a scoped rule in `.claude/rules/` if the pattern is file-specific
-- Add or update a local skill in `.agents/skills/` if the workflow is reusable
+- Frontend: the target route renders, core controls work, mobile layout is checked for overflow, and console errors are addressed.
+- Privacy: sensitive content stays local by default, no raw PII is logged or sent, analytics contain metadata only, and any AI/network send has explicit consent.
+- Accessibility: labels, keyboard flow, focus states, status messages, contrast, and modal behavior are checked for touched UI.
+- Tests: the narrowest relevant automated checks pass; for broad/release changes, run the broader build/audit stack.
+- Copy consistency: user-facing claims match actual functionality, no unsupported AI/server/compliance claims are added, and local-first wording matches behavior.
+- SEO/routes: canonicals match served routes, intended `noindex` surfaces stay out of search-facing sitemap output, and hreflang is validated when i18n changes.
