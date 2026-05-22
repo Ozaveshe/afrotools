@@ -3,10 +3,16 @@ const { createClient } = require('@supabase/supabase-js');
 const { getData, setData } = require('./data-store');
 
 let fallbackFeedModule = null;
+let sourceAdapters = null;
 try {
   fallbackFeedModule = require('../../../assets/js/education-scholarship-feed.js');
 } catch (error) {
   fallbackFeedModule = null;
+}
+try {
+  sourceAdapters = require('./scholarship-source-adapters');
+} catch (error) {
+  sourceAdapters = null;
 }
 
 const AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
@@ -86,6 +92,116 @@ function toNumber(value) {
   if (value === null || value === undefined || value === '') return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
+}
+
+function firstDefined() {
+  for (let index = 0; index < arguments.length; index += 1) {
+    const value = arguments[index];
+    if (value !== null && value !== undefined && value !== '') return value;
+  }
+  return null;
+}
+
+function normalizeCurrencyCode(value) {
+  const code = String(value || '').trim().toUpperCase();
+  return /^[A-Z]{3}$/.test(code) ? code : '';
+}
+
+function normalizeJsonObject(value, fallback) {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value : (fallback || {});
+}
+
+function normalizeJsonArray(value) {
+  return Array.isArray(value) ? value.filter(function (item) { return item && typeof item === 'object'; }) : [];
+}
+
+function parseMoneyString(value) {
+  const text = String(value || '').replace(/\u00a0/g, ' ').trim();
+  if (!text) return null;
+
+  const codeMatch = text.match(/\b(USD|EUR|GBP|CAD|AUD|NZD|CHF|JPY|CNY|INR|NGN|KES|GHS|ZAR|EGP|TZS|UGX|ETB|RWF|XOF|XAF|MVR)\b/i);
+  let currency = codeMatch ? codeMatch[1].toUpperCase() : '';
+  if (!currency) {
+    if (text.indexOf('$') !== -1) currency = 'USD';
+    else if (text.indexOf('£') !== -1) currency = 'GBP';
+    else if (text.indexOf('€') !== -1) currency = 'EUR';
+  }
+
+  const numbers = text
+    .match(/(?:\d{1,3}(?:[,\s]\d{3})+|\d+)(?:\.\d+)?/g);
+  if (!numbers || !numbers.length) return currency ? { currency: currency } : null;
+  const amounts = numbers
+    .map(function (item) { return Number(String(item).replace(/[,\s]/g, '')); })
+    .filter(function (number) { return Number.isFinite(number); });
+  if (!amounts.length) return currency ? { currency: currency } : null;
+
+  return {
+    min: Math.min.apply(Math, amounts),
+    max: Math.max.apply(Math, amounts),
+    currency: currency
+  };
+}
+
+function normalizeAwardValue(raw, fallbackSourceUrl) {
+  const text = String(firstDefined(
+    raw.award_value_text,
+    raw.awardValueText,
+    raw.award_text,
+    raw.award,
+    raw.grant,
+    raw.value_text
+  ) || '').trim();
+  const parsed = parseMoneyString(text);
+
+  let min = toNumber(firstDefined(
+    raw.award_value_min,
+    raw.awardValueMin,
+    raw.award_min,
+    raw.value_min,
+    raw.grant_min,
+    raw.award_value_amount,
+    raw.awardValueAmount,
+    raw.award_amount,
+    raw.value_amount,
+    raw.grant_amount
+  ));
+  let max = toNumber(firstDefined(
+    raw.award_value_max,
+    raw.awardValueMax,
+    raw.award_max,
+    raw.value_max,
+    raw.grant_max
+  ));
+
+  if (min == null && parsed && parsed.min != null) min = parsed.min;
+  if (max == null && parsed && parsed.max != null) max = parsed.max;
+  if (min != null && max == null) max = min;
+  if (max != null && min == null) min = max;
+
+  const currency = normalizeCurrencyCode(firstDefined(
+    raw.award_value_currency,
+    raw.awardValueCurrency,
+    raw.award_currency,
+    raw.value_currency,
+    raw.grant_currency,
+    parsed && parsed.currency
+  ));
+  const period = String(firstDefined(raw.award_value_period, raw.awardValuePeriod, raw.award_period, raw.value_period) || '').trim();
+  const confidence = String(firstDefined(raw.award_value_confidence, raw.awardValueConfidence, raw.award_confidence, raw.value_confidence) || '').trim();
+  const sourceUrl = String(firstDefined(raw.award_value_source_url, raw.awardValueSourceUrl, raw.award_source_url, raw.value_source_url, fallbackSourceUrl) || '').trim();
+  const checkedAt = firstDefined(raw.award_value_last_checked_at, raw.awardValueLastCheckedAt, raw.award_checked_at, raw.value_last_checked_at);
+
+  return {
+    min: min,
+    max: max,
+    currency: currency,
+    period: period,
+    text: text,
+    components: normalizeJsonArray(raw.award_components || raw.awardComponents),
+    confidence: confidence || null,
+    sourceUrl: sourceUrl || null,
+    checkedAt: checkedAt || null
+  };
 }
 
 function toPositiveInteger(value, fallback) {
@@ -1380,7 +1496,7 @@ async function saveScholarshipForUser(client, userId, input) {
     .upsert(saveRow, { onConflict: 'user_id,scholarship_id' });
   if (saveError) throw saveError;
 
-  const reminderEnabled = input.reminder_enabled === undefined ? !!scholarship.deadline_date : !!input.reminder_enabled;
+  const reminderEnabled = input.reminder_enabled === undefined ? false : !!input.reminder_enabled;
   const reminderPayload = {
     user_id: userId,
     scholarship_id: scholarshipId,
@@ -1435,6 +1551,16 @@ async function updateReminderForUser(client, userId, input) {
 
   const scholarship = await getScholarshipById(client, scholarshipId);
   if (!scholarship || !scholarship.is_active) throw new Error('Scholarship not found');
+
+  const { data: saveRow, error: saveError } = await client
+    .from('user_saved_scholarships')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('scholarship_id', scholarshipId)
+    .eq('archived', false)
+    .maybeSingle();
+  if (saveError) throw saveError;
+  if (!saveRow) throw new Error('Save the scholarship before enabling reminders');
 
   const { data: reminderRows, error: reminderError } = await client
     .from('user_scholarship_reminders')

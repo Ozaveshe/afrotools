@@ -10,9 +10,7 @@
 <link rel="canonical" href="https://afrotools.com/matchday-os/">
 <meta property="og:title" content="Matchday OS | AfroTools">
 <meta property="og:description" content="An Africa-first football tournament hub for fixtures, team tracking, predictions, country rooms, viewing centers, and sponsors.">
-<meta property="og:image" content="https://afrotools.com/assets/img/afrostream-genre-sports.webp">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/afcon-predictor.webp">
 <meta property="og:url" content="https://afrotools.com/matchday-os/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
@@ -20,20 +18,22 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Matchday OS | AfroTools">
 <meta name="twitter:description" content="Follow African football matchdays with local times, predictions, country rooms, and viewing-center tools.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/afrostream-genre-sports.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afcon-predictor.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=b88f9eab">
 <link rel="stylesheet" href="/assets/css/matchday-os.css?v=7b416ec9">
-<script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
+<link rel="stylesheet" href="/assets/css/matchday-live-upgrade.css?v=afaabe57">
+<script src="/assets/js/components/navbar.min.js?v=721eef89" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/lib/matchday-standings-engine.js?v=9a6fada0" defer></script>
 <script src="/assets/js/lib/matchday-prediction-engine.js?v=69a3d543" defer></script>
 <script src="/assets/js/lib/matchday-fan-points.js?v=47be3cf0" defer></script>
 <script src="/assets/js/lib/matchday-contest-safety.js?v=776581d4" defer></script>
 <script src="/assets/js/matchday-os.js?v=c8223922" defer></script>
+<script src="/assets/js/matchday-live-upgrade.js?v=4c6b2be4" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -50,7 +50,8 @@
     "@type": "Organization",
     "name": "AfroTools",
     "url": "https://afrotools.com/"
-  }
+  },
+  "image": "https://afrotools.com/assets/img/tools/afcon-predictor.webp"
 }
 </script>
 <script type="application/ld+json">
@@ -120,7 +121,7 @@
           </div>
           <div class="matchday-ticker">
             <div><span>Prize campaign</span><strong>Free, skill-based</strong></div>
-            <div><span>Fixture feed</span><strong>Structured placeholders</strong></div>
+            <div><span>Fixture feed</span><strong>Official group fixtures</strong></div>
             <div><span>Sponsor path</span><strong>Media kit and B2B enquiry</strong></div>
           </div>
         </div>
@@ -136,6 +137,18 @@
       <div class="matchday-stat"><strong>0</strong><span>Fake live results</span></div>
     </div>
   </div>
+
+  <section class="matchday-group-rail-section" aria-labelledby="groupRailTitle">
+    <div class="matchday-container">
+      <div class="matchday-section__head matchday-section__head--compact">
+        <div>
+          <span class="matchday-pill">Group stage</span>
+          <h2 id="groupRailTitle">Slide through every group</h2>
+        </div>
+      </div>
+      <div class="matchday-group-rail" data-matchday-group-rail aria-label="Group-stage fixture rail"></div>
+    </div>
+  </section>
 
   <section class="matchday-section matchday-section--surface" aria-labelledby="todayTitle">
     <div class="matchday-container">
@@ -168,11 +181,11 @@
       <div class="matchday-section__head">
         <div>
           <h2 id="teamsTitle">African teams tracker</h2>
-          <p>Pin teams for your own watchlist. The current seed includes factual qualified-team names plus a play-off watch row, while match details wait for a verified feed.</p>
+          <p>Pin teams for your own watchlist. African teams now carry country flags, group opponents, country rooms, and official group-stage fixture cards.</p>
         </div>
       </div>
       <div class="team-grid" data-team-grid aria-live="polite"></div>
-      <p class="matchday-source-note">Tournament data is stored in <code>/data/matchday-os/tournament.json</code>. Fixture, group and bracket records stay labeled as placeholders until verified official data is added.</p>
+      <p class="matchday-source-note">Tournament data is stored in <code>/data/matchday-os/tournament.json</code>. Group-stage fixtures are sourced from FIFA's official schedule; scores stay empty until verified final results are added.</p>
     </div>
   </section>
 
@@ -180,8 +193,8 @@
     <div class="matchday-container">
       <div class="matchday-section__head">
         <div>
-          <h2 id="fixturesTitle">Fixture preview in African local times</h2>
-          <p>Start with local-time conversion before the live fixture source is connected. Seed rows keep the product shape visible without inventing opponents or scores.</p>
+          <h2 id="fixturesTitle">Official group fixture board</h2>
+          <p>All 72 group-stage fixtures are playable. African-team matches carry bonus scoring, but the game now feels like the whole World Cup.</p>
         </div>
         <div class="fixture-tools">
           <label for="timezoneSelect">Time zone</label>
@@ -196,8 +209,8 @@
     <div class="matchday-container">
       <div class="matchday-section__head">
         <div>
-          <h2 id="groupsTitle">Group tables and African progress</h2>
-          <p>Standings count verified final scores only. Tie-break sorting uses points, goal difference, goals scored, then a documented head-to-head placeholder before stable name/order fallback.</p>
+          <h2 id="groupsTitle">Group overview and African progress</h2>
+          <p>A compact 12-group view for scanning every opponent before scores arrive. Full standings logic still counts verified final scores only.</p>
         </div>
       </div>
       <div class="group-grid" data-group-grid aria-live="polite"></div>
@@ -208,8 +221,8 @@
     <div class="matchday-container">
       <div class="matchday-section__head">
         <div>
-          <h2 id="bracketTitle">Knockout bracket shell</h2>
-          <p>Round slots can resolve from group positions once verified results exist. Until then, Matchday OS shows placeholders instead of pretending teams have advanced.</p>
+          <h2 id="bracketTitle">Knockout path</h2>
+          <p>Round slots resolve from group positions once verified results exist. No invented qualifiers before scores are final.</p>
         </div>
       </div>
       <div class="bracket-grid" data-bracket-grid aria-live="polite"></div>
@@ -222,7 +235,7 @@
         <div>
           <span class="matchday-pill">Prediction challenge</span>
           <h2 id="predictionTitle">$1,200 free skill challenge teaser</h2>
-          <p>Build local picks for match results, exact scores, group qualifiers, African-team progress, finalists, and champion. This MVP saves on this device only until backend persistence, verified results, and final rules are connected.</p>
+          <p>Build local picks for every group fixture, exact scores, group qualifiers, African-team progress, finalists, and champion. African-team success adds bonus points without limiting the game to African fixtures only.</p>
         </div>
         <div class="matchday-commercial__links">
           <a class="btn btn-primary" href="/matchday-os/prizes/">See prizes and payouts</a>
@@ -238,7 +251,10 @@
 
       <form class="prediction-form prediction-game" data-prediction-form>
         <div class="prediction-layout">
-          <div class="prediction-entry-grid" data-prediction-entry-cards aria-live="polite"></div>
+          <div>
+            <div class="group-stage-picks" data-group-stage-picks aria-live="polite"></div>
+            <div class="prediction-entry-grid" data-prediction-entry-cards aria-live="polite"></div>
+          </div>
 
           <aside class="prediction-side-panel" aria-label="Prediction challenge details">
             <div class="prediction-prize-card">

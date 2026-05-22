@@ -1,0 +1,4977 @@
+{
+  "schemaVersion": "2026-05-22.static.3",
+  "dataMode": "official-full-group-fixtures-foundation",
+  "lastReviewed": "2026-05-22",
+  "productName": "Matchday OS",
+  "tournamentLabel": "2026 World Cup period",
+  "officialPartnership": false,
+  "rightsNotice": "Independent AfroTools product. This data layer must not imply official FIFA, CAF, team, sponsor, or tournament partnership.",
+  "updatePolicy": {
+    "sourceOfTruth": "Only update fixtures, groups, squads, venues, and scores from verified official tournament, confederation, federation, or host-city sources.",
+    "placeholderPolicy": "Use status=placeholder and isPlaceholder=true when a match, group, venue, opponent, or kickoff is not verified. Placeholder rows must not be shown as live results.",
+    "scorePolicy": "Scores remain null until a match has a verified result. resultFinal stays false until the result is confirmed."
+  },
+  "sourceNotes": [
+    {
+      "label": "FIFA official match schedule",
+      "url": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "lastChecked": "2026-05-22",
+      "use": "Full group-stage fixture board, dates, venues, kickoff times, and Africa bonus display."
+    },
+    {
+      "label": "FIFA final draw results",
+      "url": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/final-draw-results",
+      "lastChecked": "2026-05-22",
+      "use": "Group composition and qualification context for African-team rooms."
+    },
+    {
+      "label": "KickoffAdventures schedule extraction check",
+      "url": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "lastChecked": "2026-05-22",
+      "use": "Extraction aid for the 72 group-stage rows, cross-referenced to FIFA official schedule and updated playoff winners."
+    }
+  ],
+  "tournamentPhases": [
+    {
+      "phaseId": "pre_tournament",
+      "label": "Pre-tournament",
+      "sortOrder": 0,
+      "isKnockout": false
+    },
+    {
+      "phaseId": "group_stage",
+      "label": "Group stage",
+      "sortOrder": 10,
+      "isKnockout": false
+    },
+    {
+      "phaseId": "round_of_32",
+      "label": "Round of 32",
+      "sortOrder": 20,
+      "isKnockout": true
+    },
+    {
+      "phaseId": "round_of_16",
+      "label": "Round of 16",
+      "sortOrder": 30,
+      "isKnockout": true
+    },
+    {
+      "phaseId": "quarter_final",
+      "label": "Quarter-final",
+      "sortOrder": 40,
+      "isKnockout": true
+    },
+    {
+      "phaseId": "semi_final",
+      "label": "Semi-final",
+      "sortOrder": 50,
+      "isKnockout": true
+    },
+    {
+      "phaseId": "third_place",
+      "label": "Third-place match",
+      "sortOrder": 60,
+      "isKnockout": true
+    },
+    {
+      "phaseId": "final",
+      "label": "Final",
+      "sortOrder": 70,
+      "isKnockout": true
+    }
+  ],
+  "matchStatuses": [
+    {
+      "status": "placeholder",
+      "label": "Placeholder",
+      "countsAsLive": false
+    },
+    {
+      "status": "scheduled",
+      "label": "Scheduled",
+      "countsAsLive": false
+    },
+    {
+      "status": "live",
+      "label": "Live",
+      "countsAsLive": true
+    },
+    {
+      "status": "halftime",
+      "label": "Half-time",
+      "countsAsLive": true
+    },
+    {
+      "status": "full_time",
+      "label": "Full-time",
+      "countsAsLive": false
+    },
+    {
+      "status": "postponed",
+      "label": "Postponed",
+      "countsAsLive": false
+    },
+    {
+      "status": "cancelled",
+      "label": "Cancelled",
+      "countsAsLive": false
+    }
+  ],
+  "timeZones": {
+    "defaultTimeZone": "Africa/Lagos",
+    "displayCities": [
+      {
+        "cityId": "lagos",
+        "city": "Lagos",
+        "countryCode": "NG",
+        "timeZone": "Africa/Lagos",
+        "shortLabel": "Lagos",
+        "offsetHint": "UTC+1"
+      },
+      {
+        "cityId": "abuja",
+        "city": "Abuja",
+        "countryCode": "NG",
+        "timeZone": "Africa/Lagos",
+        "shortLabel": "Abuja",
+        "offsetHint": "UTC+1"
+      },
+      {
+        "cityId": "accra",
+        "city": "Accra",
+        "countryCode": "GH",
+        "timeZone": "Africa/Accra",
+        "shortLabel": "Accra",
+        "offsetHint": "UTC+0"
+      },
+      {
+        "cityId": "abidjan",
+        "city": "Abidjan",
+        "countryCode": "CI",
+        "timeZone": "Africa/Abidjan",
+        "shortLabel": "Abidjan",
+        "offsetHint": "UTC+0"
+      },
+      {
+        "cityId": "dakar",
+        "city": "Dakar",
+        "countryCode": "SN",
+        "timeZone": "Africa/Dakar",
+        "shortLabel": "Dakar",
+        "offsetHint": "UTC+0"
+      },
+      {
+        "cityId": "casablanca",
+        "city": "Casablanca",
+        "countryCode": "MA",
+        "timeZone": "Africa/Casablanca",
+        "shortLabel": "Casablanca",
+        "offsetHint": "UTC+1"
+      },
+      {
+        "cityId": "cairo",
+        "city": "Cairo",
+        "countryCode": "EG",
+        "timeZone": "Africa/Cairo",
+        "shortLabel": "Cairo",
+        "offsetHint": "UTC+2/+3"
+      },
+      {
+        "cityId": "johannesburg",
+        "city": "Johannesburg",
+        "countryCode": "ZA",
+        "timeZone": "Africa/Johannesburg",
+        "shortLabel": "Johannesburg",
+        "offsetHint": "UTC+2"
+      },
+      {
+        "cityId": "nairobi",
+        "city": "Nairobi",
+        "countryCode": "KE",
+        "timeZone": "Africa/Nairobi",
+        "shortLabel": "Nairobi",
+        "offsetHint": "UTC+3"
+      },
+      {
+        "cityId": "addis-ababa",
+        "city": "Addis Ababa",
+        "countryCode": "ET",
+        "timeZone": "Africa/Addis_Ababa",
+        "shortLabel": "Addis",
+        "offsetHint": "UTC+3"
+      },
+      {
+        "cityId": "kampala",
+        "city": "Kampala",
+        "countryCode": "UG",
+        "timeZone": "Africa/Kampala",
+        "shortLabel": "Kampala",
+        "offsetHint": "UTC+3"
+      },
+      {
+        "cityId": "dar-es-salaam",
+        "city": "Dar es Salaam",
+        "countryCode": "TZ",
+        "timeZone": "Africa/Dar_es_Salaam",
+        "shortLabel": "Dar",
+        "offsetHint": "UTC+3"
+      },
+      {
+        "cityId": "kigali",
+        "city": "Kigali",
+        "countryCode": "RW",
+        "timeZone": "Africa/Kigali",
+        "shortLabel": "Kigali",
+        "offsetHint": "UTC+2"
+      },
+      {
+        "cityId": "kinshasa",
+        "city": "Kinshasa",
+        "countryCode": "CD",
+        "timeZone": "Africa/Kinshasa",
+        "shortLabel": "Kinshasa",
+        "offsetHint": "UTC+1"
+      },
+      {
+        "cityId": "lusaka",
+        "city": "Lusaka",
+        "countryCode": "ZM",
+        "timeZone": "Africa/Lusaka",
+        "shortLabel": "Lusaka",
+        "offsetHint": "UTC+2"
+      },
+      {
+        "cityId": "harare",
+        "city": "Harare",
+        "countryCode": "ZW",
+        "timeZone": "Africa/Harare",
+        "shortLabel": "Harare",
+        "offsetHint": "UTC+2"
+      }
+    ]
+  },
+  "teams": [
+    {
+      "teamId": "mexico",
+      "name": "Mexico",
+      "countryCode": "MX",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#006847",
+      "secondaryColor": "#CE1126",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "MEX",
+      "flagEmoji": "🇲🇽",
+      "region": "World Cup opponent",
+      "seedStory": "Mexico is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "south-africa",
+      "name": "South Africa",
+      "countryCode": "ZA",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#007A4D",
+      "secondaryColor": "#FFB612",
+      "fanRoomSlug": "south-africa",
+      "roomHref": "/matchday-os/rooms/?team=south-africa",
+      "shortLabel": "RSA",
+      "region": "Southern Africa",
+      "seedStory": "South Africa opens the tournament against Mexico before Czechia and Korea Republic complete the Group A path.",
+      "flagEmoji": "🇿🇦"
+    },
+    {
+      "teamId": "korea-republic",
+      "name": "Korea Republic",
+      "countryCode": "KR",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#C60C30",
+      "secondaryColor": "#003478",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "KOR",
+      "flagEmoji": "🇰🇷",
+      "region": "World Cup opponent",
+      "seedStory": "Korea Republic is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "czechia",
+      "name": "Czechia",
+      "countryCode": "CZ",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#D7141A",
+      "secondaryColor": "#11457E",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "CZE",
+      "flagEmoji": "🇨🇿",
+      "region": "World Cup opponent",
+      "seedStory": "Czechia is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "brazil",
+      "name": "Brazil",
+      "countryCode": "BR",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#009739",
+      "secondaryColor": "#FEDD00",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "BRA",
+      "flagEmoji": "🇧🇷",
+      "region": "World Cup opponent",
+      "seedStory": "Brazil is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "morocco",
+      "name": "Morocco",
+      "countryCode": "MA",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#C1272D",
+      "secondaryColor": "#006233",
+      "fanRoomSlug": "morocco",
+      "roomHref": "/matchday-os/rooms/?team=morocco",
+      "shortLabel": "MAR",
+      "region": "North Africa",
+      "seedStory": "Drawn with Brazil, Haiti and Scotland, Morocco starts as Africa's most watched contender after the 2022 semi-final run.",
+      "flagEmoji": "🇲🇦"
+    },
+    {
+      "teamId": "haiti",
+      "name": "Haiti",
+      "countryCode": "HT",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#00209F",
+      "secondaryColor": "#D21034",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "HAI",
+      "flagEmoji": "🇭🇹",
+      "region": "World Cup opponent",
+      "seedStory": "Haiti is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "scotland",
+      "name": "Scotland",
+      "countryCode": "GB-SCT",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#005EB8",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "SCO",
+      "flagEmoji": "🏴",
+      "region": "World Cup opponent",
+      "seedStory": "Scotland is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "germany",
+      "name": "Germany",
+      "countryCode": "DE",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#000000",
+      "secondaryColor": "#DD0000",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "GER",
+      "flagEmoji": "🇩🇪",
+      "region": "World Cup opponent",
+      "seedStory": "Germany is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "curacao",
+      "name": "Curaçao",
+      "countryCode": "CW",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#002B7F",
+      "secondaryColor": "#F9D616",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "CUW",
+      "flagEmoji": "🇨🇼",
+      "region": "World Cup opponent",
+      "seedStory": "Curaçao is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "cote-divoire",
+      "name": "Côte d'Ivoire",
+      "countryCode": "CI",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#F77F00",
+      "secondaryColor": "#009E60",
+      "fanRoomSlug": "cote-divoire",
+      "roomHref": "/matchday-os/rooms/?team=cote-divoire",
+      "shortLabel": "CIV",
+      "region": "West Africa",
+      "seedStory": "Côte d'Ivoire takes AFCON belief into Group E against Ecuador, Germany and Curaçao.",
+      "flagEmoji": "🇨🇮"
+    },
+    {
+      "teamId": "ecuador",
+      "name": "Ecuador",
+      "countryCode": "EC",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#FCD116",
+      "secondaryColor": "#CE1126",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "ECU",
+      "flagEmoji": "🇪🇨",
+      "region": "World Cup opponent",
+      "seedStory": "Ecuador is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "netherlands",
+      "name": "Netherlands",
+      "countryCode": "NL",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#FF4F00",
+      "secondaryColor": "#21468B",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "NED",
+      "flagEmoji": "🇳🇱",
+      "region": "World Cup opponent",
+      "seedStory": "Netherlands is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "japan",
+      "name": "Japan",
+      "countryCode": "JP",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#BC002D",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "JPN",
+      "flagEmoji": "🇯🇵",
+      "region": "World Cup opponent",
+      "seedStory": "Japan is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "sweden",
+      "name": "Sweden",
+      "countryCode": "SE",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#006AA7",
+      "secondaryColor": "#FECC00",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "SWE",
+      "flagEmoji": "🇸🇪",
+      "region": "World Cup opponent",
+      "seedStory": "Sweden is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "tunisia",
+      "name": "Tunisia",
+      "countryCode": "TN",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#E70013",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": "tunisia",
+      "roomHref": "/matchday-os/rooms/?team=tunisia",
+      "shortLabel": "TUN",
+      "region": "North Africa",
+      "seedStory": "Tunisia meets Sweden, Japan and the Netherlands in Group F, a compact tactical group with little margin for loose starts.",
+      "flagEmoji": "🇹🇳"
+    },
+    {
+      "teamId": "belgium",
+      "name": "Belgium",
+      "countryCode": "BE",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#000000",
+      "secondaryColor": "#FAE042",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "BEL",
+      "flagEmoji": "🇧🇪",
+      "region": "World Cup opponent",
+      "seedStory": "Belgium is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "egypt",
+      "name": "Egypt",
+      "countryCode": "EG",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#CE1126",
+      "secondaryColor": "#000000",
+      "fanRoomSlug": "egypt",
+      "roomHref": "/matchday-os/rooms/?team=egypt",
+      "shortLabel": "EGY",
+      "region": "North Africa",
+      "seedStory": "Egypt faces Belgium, New Zealand and IR Iran in Group G, with the room built around control, experience and set-piece detail.",
+      "flagEmoji": "🇪🇬"
+    },
+    {
+      "teamId": "ir-iran",
+      "name": "IR Iran",
+      "countryCode": "IR",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#239F40",
+      "secondaryColor": "#DA0000",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "IRN",
+      "flagEmoji": "🇮🇷",
+      "region": "World Cup opponent",
+      "seedStory": "IR Iran is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "new-zealand",
+      "name": "New Zealand",
+      "countryCode": "NZ",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#00247D",
+      "secondaryColor": "#CC142B",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "NZL",
+      "flagEmoji": "🇳🇿",
+      "region": "World Cup opponent",
+      "seedStory": "New Zealand is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "spain",
+      "name": "Spain",
+      "countryCode": "ES",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#AA151B",
+      "secondaryColor": "#F1BF00",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "ESP",
+      "flagEmoji": "🇪🇸",
+      "region": "World Cup opponent",
+      "seedStory": "Spain is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "cabo-verde",
+      "name": "Cabo Verde",
+      "countryCode": "CV",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#003893",
+      "secondaryColor": "#CF2027",
+      "fanRoomSlug": "cabo-verde",
+      "roomHref": "/matchday-os/rooms/?team=cabo-verde",
+      "shortLabel": "CPV",
+      "region": "West Africa",
+      "seedStory": "Cabo Verde debuts in Group H against Spain, Uruguay and Saudi Arabia, one of the tournament?s clearest underdog stories.",
+      "flagEmoji": "🇨🇻"
+    },
+    {
+      "teamId": "saudi-arabia",
+      "name": "Saudi Arabia",
+      "countryCode": "SA",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#006C35",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "KSA",
+      "flagEmoji": "🇸🇦",
+      "region": "World Cup opponent",
+      "seedStory": "Saudi Arabia is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "uruguay",
+      "name": "Uruguay",
+      "countryCode": "UY",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#0038A8",
+      "secondaryColor": "#FCD116",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "URU",
+      "flagEmoji": "🇺🇾",
+      "region": "World Cup opponent",
+      "seedStory": "Uruguay is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "france",
+      "name": "France",
+      "countryCode": "FR",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#0055A4",
+      "secondaryColor": "#EF4135",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "FRA",
+      "flagEmoji": "🇫🇷",
+      "region": "World Cup opponent",
+      "seedStory": "France is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "senegal",
+      "name": "Senegal",
+      "countryCode": "SN",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#00853F",
+      "secondaryColor": "#FDEF42",
+      "fanRoomSlug": "senegal",
+      "roomHref": "/matchday-os/rooms/?team=senegal",
+      "shortLabel": "SEN",
+      "region": "West Africa",
+      "seedStory": "Senegal gets France, Norway and Iraq in Group I, with a revenge-story opener and a real knockout path to track.",
+      "flagEmoji": "🇸🇳"
+    },
+    {
+      "teamId": "iraq",
+      "name": "Iraq",
+      "countryCode": "IQ",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#CE1126",
+      "secondaryColor": "#000000",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "IRQ",
+      "flagEmoji": "🇮🇶",
+      "region": "World Cup opponent",
+      "seedStory": "Iraq is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "norway",
+      "name": "Norway",
+      "countryCode": "NO",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#BA0C2F",
+      "secondaryColor": "#00205B",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "NOR",
+      "flagEmoji": "🇳🇴",
+      "region": "World Cup opponent",
+      "seedStory": "Norway is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "argentina",
+      "name": "Argentina",
+      "countryCode": "AR",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#75AADB",
+      "secondaryColor": "#FCBF49",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "ARG",
+      "flagEmoji": "🇦🇷",
+      "region": "World Cup opponent",
+      "seedStory": "Argentina is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "algeria",
+      "name": "Algeria",
+      "countryCode": "DZ",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#006233",
+      "secondaryColor": "#D21034",
+      "fanRoomSlug": "algeria",
+      "roomHref": "/matchday-os/rooms/?team=algeria",
+      "shortLabel": "ALG",
+      "region": "North Africa",
+      "seedStory": "Algeria returns in Group J against Argentina, Jordan and Austria, a high-storyline route back to knockout football.",
+      "flagEmoji": "🇩🇿"
+    },
+    {
+      "teamId": "austria",
+      "name": "Austria",
+      "countryCode": "AT",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#ED2939",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "AUT",
+      "flagEmoji": "🇦🇹",
+      "region": "World Cup opponent",
+      "seedStory": "Austria is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "jordan",
+      "name": "Jordan",
+      "countryCode": "JO",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#007A3D",
+      "secondaryColor": "#CE1126",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "JOR",
+      "flagEmoji": "🇯🇴",
+      "region": "World Cup opponent",
+      "seedStory": "Jordan is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "portugal",
+      "name": "Portugal",
+      "countryCode": "PT",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#006600",
+      "secondaryColor": "#FF0000",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "POR",
+      "flagEmoji": "🇵🇹",
+      "region": "World Cup opponent",
+      "seedStory": "Portugal is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "dr-congo",
+      "name": "DR Congo",
+      "countryCode": "CD",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#007FFF",
+      "secondaryColor": "#F7D618",
+      "fanRoomSlug": "dr-congo",
+      "roomHref": "/matchday-os/rooms/?team=dr-congo",
+      "shortLabel": "COD",
+      "region": "Central Africa",
+      "seedStory": "DR Congo returns in Group K against Portugal, Colombia and Uzbekistan after securing the play-off route.",
+      "flagEmoji": "🇨🇩"
+    },
+    {
+      "teamId": "uzbekistan",
+      "name": "Uzbekistan",
+      "countryCode": "UZ",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#1EB53A",
+      "secondaryColor": "#0099B5",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "UZB",
+      "flagEmoji": "🇺🇿",
+      "region": "World Cup opponent",
+      "seedStory": "Uzbekistan is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "colombia",
+      "name": "Colombia",
+      "countryCode": "CO",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#FCD116",
+      "secondaryColor": "#003893",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "COL",
+      "flagEmoji": "🇨🇴",
+      "region": "World Cup opponent",
+      "seedStory": "Colombia is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "england",
+      "name": "England",
+      "countryCode": "GB-ENG",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#FFFFFF",
+      "secondaryColor": "#CE1124",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "ENG",
+      "flagEmoji": "🏴",
+      "region": "World Cup opponent",
+      "seedStory": "England is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "croatia",
+      "name": "Croatia",
+      "countryCode": "HR",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#FF0000",
+      "secondaryColor": "#171796",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "CRO",
+      "flagEmoji": "🇭🇷",
+      "region": "World Cup opponent",
+      "seedStory": "Croatia is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "ghana",
+      "name": "Ghana",
+      "countryCode": "GH",
+      "confederation": "CAF",
+      "isAfricanTeam": true,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#FCD116",
+      "secondaryColor": "#006B3F",
+      "fanRoomSlug": "ghana",
+      "roomHref": "/matchday-os/rooms/?team=ghana",
+      "shortLabel": "GHA",
+      "region": "West Africa",
+      "seedStory": "Ghana lands in Group L with Panama, England and Croatia, a group built for daily debate and big upset energy.",
+      "flagEmoji": "🇬🇭"
+    },
+    {
+      "teamId": "panama",
+      "name": "Panama",
+      "countryCode": "PA",
+      "confederation": null,
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#005293",
+      "secondaryColor": "#D21034",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "PAN",
+      "flagEmoji": "🇵🇦",
+      "region": "World Cup opponent",
+      "seedStory": "Panama is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "canada",
+      "name": "Canada",
+      "countryCode": "CA",
+      "confederation": "CONCACAF",
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#D80621",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "CAN",
+      "flagEmoji": "🇨🇦",
+      "region": "World Cup opponent",
+      "seedStory": "Canada is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "bosnia-and-herzegovina",
+      "name": "Bosnia and Herzegovina",
+      "countryCode": "BA",
+      "confederation": "UEFA",
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#002F6C",
+      "secondaryColor": "#FCD116",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "BIH",
+      "flagEmoji": "🇧🇦",
+      "region": "World Cup opponent",
+      "seedStory": "Bosnia and Herzegovina is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "qatar",
+      "name": "Qatar",
+      "countryCode": "QA",
+      "confederation": "AFC",
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#8A1538",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "QAT",
+      "flagEmoji": "🇶🇦",
+      "region": "World Cup opponent",
+      "seedStory": "Qatar is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "switzerland",
+      "name": "Switzerland",
+      "countryCode": "CH",
+      "confederation": "UEFA",
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#D52B1E",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "SUI",
+      "flagEmoji": "🇨🇭",
+      "region": "World Cup opponent",
+      "seedStory": "Switzerland is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "united-states",
+      "name": "United States",
+      "countryCode": "US",
+      "confederation": "CONCACAF",
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#3C3B6E",
+      "secondaryColor": "#B22234",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "USA",
+      "flagEmoji": "🇺🇸",
+      "region": "World Cup opponent",
+      "seedStory": "United States is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "paraguay",
+      "name": "Paraguay",
+      "countryCode": "PY",
+      "confederation": "CONMEBOL",
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#D52B1E",
+      "secondaryColor": "#0038A8",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "PAR",
+      "flagEmoji": "🇵🇾",
+      "region": "World Cup opponent",
+      "seedStory": "Paraguay is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "australia",
+      "name": "Australia",
+      "countryCode": "AU",
+      "confederation": "AFC",
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#0057B8",
+      "secondaryColor": "#FFCD00",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "AUS",
+      "flagEmoji": "🇦🇺",
+      "region": "World Cup opponent",
+      "seedStory": "Australia is part of the verified group-stage data used by Matchday OS."
+    },
+    {
+      "teamId": "turkiye",
+      "name": "Türkiye",
+      "countryCode": "TR",
+      "confederation": "UEFA",
+      "isAfricanTeam": false,
+      "group": null,
+      "qualificationStatus": "qualified",
+      "primaryColor": "#E30A17",
+      "secondaryColor": "#FFFFFF",
+      "fanRoomSlug": null,
+      "roomHref": null,
+      "shortLabel": "TUR",
+      "flagEmoji": "🇹🇷",
+      "region": "World Cup opponent",
+      "seedStory": "Türkiye is part of the verified group-stage data used by Matchday OS."
+    }
+  ],
+  "stadiums": [
+    {
+      "venueId": "mexico-city-stadium",
+      "name": "Mexico City Stadium",
+      "city": "Mexico City",
+      "countryCode": "MX",
+      "timeZone": "America/Mexico_City",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "estadio-guadalajara",
+      "name": "Estadio Guadalajara",
+      "city": "Guadalajara",
+      "countryCode": "MX",
+      "timeZone": "America/Mexico_City",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "new-york-new-jersey-stadium",
+      "name": "New York New Jersey Stadium",
+      "city": "New York New Jersey",
+      "countryCode": "US",
+      "timeZone": "America/New_York",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "boston-stadium",
+      "name": "Boston Stadium",
+      "city": "Boston",
+      "countryCode": "US",
+      "timeZone": "America/New_York",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "philadelphia-stadium",
+      "name": "Philadelphia Stadium",
+      "city": "Philadelphia",
+      "countryCode": "US",
+      "timeZone": "America/New_York",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "toronto-stadium",
+      "name": "Toronto Stadium",
+      "city": "Toronto",
+      "countryCode": "CA",
+      "timeZone": "America/Toronto",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "houston-stadium",
+      "name": "Houston Stadium",
+      "city": "Houston",
+      "countryCode": "US",
+      "timeZone": "America/Chicago",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "dallas-stadium",
+      "name": "Dallas Stadium",
+      "city": "Dallas",
+      "countryCode": "US",
+      "timeZone": "America/Chicago",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "estadio-monterrey",
+      "name": "Estadio Monterrey",
+      "city": "Monterrey",
+      "countryCode": "MX",
+      "timeZone": "America/Monterrey",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "atlanta-stadium",
+      "name": "Atlanta Stadium",
+      "city": "Atlanta",
+      "countryCode": "US",
+      "timeZone": "America/New_York",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "miami-stadium",
+      "name": "Miami Stadium",
+      "city": "Miami",
+      "countryCode": "US",
+      "timeZone": "America/New_York",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "seattle-stadium",
+      "name": "Seattle Stadium",
+      "city": "Seattle",
+      "countryCode": "US",
+      "timeZone": "America/Los_Angeles",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "los-angeles-stadium",
+      "name": "Los Angeles Stadium",
+      "city": "Los Angeles",
+      "countryCode": "US",
+      "timeZone": "America/Los_Angeles",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "bc-place-vancouver",
+      "name": "BC Place Vancouver",
+      "city": "Vancouver",
+      "countryCode": "CA",
+      "timeZone": "America/Vancouver",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "kansas-city-stadium",
+      "name": "Kansas City Stadium",
+      "city": "Kansas City",
+      "countryCode": "US",
+      "timeZone": "America/Chicago",
+      "isPlaceholder": false
+    },
+    {
+      "venueId": "san-francisco-bay-area-stadium",
+      "name": "San Francisco Bay Area Stadium",
+      "city": "San Francisco Bay Area",
+      "countryCode": "US",
+      "timeZone": "America/Los_Angeles",
+      "isPlaceholder": false
+    }
+  ],
+  "groups": [
+    {
+      "groupId": "group-a",
+      "name": "Group A: Mexico, South Africa, Korea Republic, Czechia",
+      "shortName": "GROUP A",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "mexico",
+        "south-africa",
+        "korea-republic",
+        "czechia"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "mexico",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "south-africa",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "korea-republic",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "czechia",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-b",
+      "name": "Group B: Canada, Bosnia and Herzegovina, Qatar, Switzerland",
+      "shortName": "GROUP B",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "canada",
+        "bosnia-and-herzegovina",
+        "qatar",
+        "switzerland"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "canada",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "bosnia-and-herzegovina",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "qatar",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "switzerland",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-c",
+      "name": "Group C: Brazil, Morocco, Haiti, Scotland",
+      "shortName": "GROUP C",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "brazil",
+        "morocco",
+        "haiti",
+        "scotland"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "brazil",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "morocco",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "haiti",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "scotland",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-d",
+      "name": "Group D: United States, Paraguay, Australia, Türkiye",
+      "shortName": "GROUP D",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "united-states",
+        "paraguay",
+        "australia",
+        "turkiye"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "united-states",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "paraguay",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "australia",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "turkiye",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-e",
+      "name": "Group E: Germany, Curaçao, Côte d'Ivoire, Ecuador",
+      "shortName": "GROUP E",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "germany",
+        "curacao",
+        "cote-divoire",
+        "ecuador"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "germany",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "curacao",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "cote-divoire",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "ecuador",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-f",
+      "name": "Group F: Netherlands, Japan, Sweden, Tunisia",
+      "shortName": "GROUP F",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "netherlands",
+        "japan",
+        "sweden",
+        "tunisia"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "netherlands",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "japan",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "sweden",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "tunisia",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-g",
+      "name": "Group G: Belgium, Egypt, IR Iran, New Zealand",
+      "shortName": "GROUP G",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "belgium",
+        "egypt",
+        "ir-iran",
+        "new-zealand"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "belgium",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "egypt",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "ir-iran",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "new-zealand",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-h",
+      "name": "Group H: Spain, Cabo Verde, Saudi Arabia, Uruguay",
+      "shortName": "GROUP H",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "spain",
+        "cabo-verde",
+        "saudi-arabia",
+        "uruguay"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "spain",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "cabo-verde",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "saudi-arabia",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "uruguay",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-i",
+      "name": "Group I: France, Senegal, Iraq, Norway",
+      "shortName": "GROUP I",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "france",
+        "senegal",
+        "iraq",
+        "norway"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "france",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "senegal",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "iraq",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "norway",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-j",
+      "name": "Group J: Argentina, Algeria, Austria, Jordan",
+      "shortName": "GROUP J",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "argentina",
+        "algeria",
+        "austria",
+        "jordan"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "argentina",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "algeria",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "austria",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "jordan",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-k",
+      "name": "Group K: Portugal, DR Congo, Uzbekistan, Colombia",
+      "shortName": "GROUP K",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "portugal",
+        "dr-congo",
+        "uzbekistan",
+        "colombia"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "portugal",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "dr-congo",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "uzbekistan",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "colombia",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    },
+    {
+      "groupId": "group-l",
+      "name": "Group L: England, Croatia, Ghana, Panama",
+      "shortName": "GROUP L",
+      "phaseId": "group_stage",
+      "status": "scheduled",
+      "isPlaceholder": false,
+      "teamIds": [
+        "england",
+        "croatia",
+        "ghana",
+        "panama"
+      ],
+      "sourceLabel": "FIFA final draw and schedule",
+      "tableRows": [
+        {
+          "teamId": "england",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "croatia",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "ghana",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        },
+        {
+          "teamId": "panama",
+          "played": 0,
+          "won": 0,
+          "drawn": 0,
+          "lost": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "goalDiff": 0,
+          "points": 0,
+          "status": "scheduled"
+        }
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "matchId": "wc26-a-mexico-south-africa",
+      "matchNumber": 1,
+      "stage": "group_stage",
+      "group": "group-a",
+      "homeTeamId": "mexico",
+      "awayTeamId": "south-africa",
+      "matchDate": "2026-06-11",
+      "kickoffUtc": "2026-06-11T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "mexico-city-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Mexico",
+        "South Africa",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-a-mexico-south-africa",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Mexico v South Africa",
+        "body": "Predict Mexico v South Africa in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-a-korea-republic-czechia",
+      "matchNumber": 2,
+      "stage": "group_stage",
+      "group": "group-a",
+      "homeTeamId": "korea-republic",
+      "awayTeamId": "czechia",
+      "matchDate": "2026-06-11",
+      "kickoffUtc": "2026-06-12T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "estadio-guadalajara",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Korea Republic",
+        "Czechia",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-a-korea-republic-czechia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Korea Republic v Czechia",
+        "body": "Predict Korea Republic v Czechia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-a-czechia-south-africa",
+      "matchNumber": 3,
+      "stage": "group_stage",
+      "group": "group-a",
+      "homeTeamId": "czechia",
+      "awayTeamId": "south-africa",
+      "matchDate": "2026-06-18",
+      "kickoffUtc": "2026-06-18T16:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "atlanta-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Czechia",
+        "South Africa",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-a-czechia-south-africa",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Czechia v South Africa",
+        "body": "Predict Czechia v South Africa in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-a-mexico-korea-republic",
+      "matchNumber": 4,
+      "stage": "group_stage",
+      "group": "group-a",
+      "homeTeamId": "mexico",
+      "awayTeamId": "korea-republic",
+      "matchDate": "2026-06-18",
+      "kickoffUtc": "2026-06-19T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "estadio-guadalajara",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Mexico",
+        "Korea Republic",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-a-mexico-korea-republic",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Mexico v Korea Republic",
+        "body": "Predict Mexico v Korea Republic in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-b-canada-bosnia-and-herzegovina",
+      "matchNumber": 5,
+      "stage": "group_stage",
+      "group": "group-b",
+      "homeTeamId": "canada",
+      "awayTeamId": "bosnia-and-herzegovina",
+      "matchDate": "2026-06-12",
+      "kickoffUtc": "2026-06-12T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "toronto-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Canada",
+        "Bosnia and Herzegovina",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-b-canada-bosnia-and-herzegovina",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Canada v Bosnia and Herzegovina",
+        "body": "Predict Canada v Bosnia and Herzegovina in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-b-qatar-switzerland",
+      "matchNumber": 6,
+      "stage": "group_stage",
+      "group": "group-b",
+      "homeTeamId": "qatar",
+      "awayTeamId": "switzerland",
+      "matchDate": "2026-06-13",
+      "kickoffUtc": "2026-06-13T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "san-francisco-bay-area-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Qatar",
+        "Switzerland",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-b-qatar-switzerland",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Qatar v Switzerland",
+        "body": "Predict Qatar v Switzerland in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-b-switzerland-bosnia-and-herzegovina",
+      "matchNumber": 7,
+      "stage": "group_stage",
+      "group": "group-b",
+      "homeTeamId": "switzerland",
+      "awayTeamId": "bosnia-and-herzegovina",
+      "matchDate": "2026-06-18",
+      "kickoffUtc": "2026-06-18T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "los-angeles-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Switzerland",
+        "Bosnia and Herzegovina",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-b-switzerland-bosnia-and-herzegovina",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Switzerland v Bosnia and Herzegovina",
+        "body": "Predict Switzerland v Bosnia and Herzegovina in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-b-canada-qatar",
+      "matchNumber": 8,
+      "stage": "group_stage",
+      "group": "group-b",
+      "homeTeamId": "canada",
+      "awayTeamId": "qatar",
+      "matchDate": "2026-06-18",
+      "kickoffUtc": "2026-06-19T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "bc-place-vancouver",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Canada",
+        "Qatar",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-b-canada-qatar",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Canada v Qatar",
+        "body": "Predict Canada v Qatar in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-c-brazil-morocco",
+      "matchNumber": 9,
+      "stage": "group_stage",
+      "group": "group-c",
+      "homeTeamId": "brazil",
+      "awayTeamId": "morocco",
+      "matchDate": "2026-06-13",
+      "kickoffUtc": "2026-06-13T22:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "new-york-new-jersey-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Brazil",
+        "Morocco",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-c-brazil-morocco",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Brazil v Morocco",
+        "body": "Predict Brazil v Morocco in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-c-haiti-scotland",
+      "matchNumber": 10,
+      "stage": "group_stage",
+      "group": "group-c",
+      "homeTeamId": "haiti",
+      "awayTeamId": "scotland",
+      "matchDate": "2026-06-13",
+      "kickoffUtc": "2026-06-14T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "boston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Haiti",
+        "Scotland",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-c-haiti-scotland",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Haiti v Scotland",
+        "body": "Predict Haiti v Scotland in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-d-united-states-paraguay",
+      "matchNumber": 11,
+      "stage": "group_stage",
+      "group": "group-d",
+      "homeTeamId": "united-states",
+      "awayTeamId": "paraguay",
+      "matchDate": "2026-06-12",
+      "kickoffUtc": "2026-06-13T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "los-angeles-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "United States",
+        "Paraguay",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-d-united-states-paraguay",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "United States v Paraguay",
+        "body": "Predict United States v Paraguay in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-d-australia-turkiye",
+      "matchNumber": 12,
+      "stage": "group_stage",
+      "group": "group-d",
+      "homeTeamId": "australia",
+      "awayTeamId": "turkiye",
+      "matchDate": "2026-06-13",
+      "kickoffUtc": "2026-06-13T04:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "bc-place-vancouver",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Australia",
+        "Türkiye",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-d-australia-turkiye",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Australia v Türkiye",
+        "body": "Predict Australia v Türkiye in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-e-germany-curacao",
+      "matchNumber": 13,
+      "stage": "group_stage",
+      "group": "group-e",
+      "homeTeamId": "germany",
+      "awayTeamId": "curacao",
+      "matchDate": "2026-06-14",
+      "kickoffUtc": "2026-06-14T17:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "houston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Germany",
+        "Curaçao",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-e-germany-curacao",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Germany v Curaçao",
+        "body": "Predict Germany v Curaçao in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-e-cote-divoire-ecuador",
+      "matchNumber": 14,
+      "stage": "group_stage",
+      "group": "group-e",
+      "homeTeamId": "cote-divoire",
+      "awayTeamId": "ecuador",
+      "matchDate": "2026-06-14",
+      "kickoffUtc": "2026-06-14T23:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "philadelphia-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Côte d'Ivoire",
+        "Ecuador",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-e-cote-divoire-ecuador",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Côte d'Ivoire v Ecuador",
+        "body": "Predict Côte d'Ivoire v Ecuador in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-f-netherlands-japan",
+      "matchNumber": 15,
+      "stage": "group_stage",
+      "group": "group-f",
+      "homeTeamId": "netherlands",
+      "awayTeamId": "japan",
+      "matchDate": "2026-06-14",
+      "kickoffUtc": "2026-06-14T20:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "dallas-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Netherlands",
+        "Japan",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-f-netherlands-japan",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Netherlands v Japan",
+        "body": "Predict Netherlands v Japan in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-f-sweden-tunisia",
+      "matchNumber": 16,
+      "stage": "group_stage",
+      "group": "group-f",
+      "homeTeamId": "sweden",
+      "awayTeamId": "tunisia",
+      "matchDate": "2026-06-14",
+      "kickoffUtc": "2026-06-15T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "estadio-monterrey",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Sweden",
+        "Tunisia",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-f-sweden-tunisia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Sweden v Tunisia",
+        "body": "Predict Sweden v Tunisia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-g-ir-iran-new-zealand",
+      "matchNumber": 17,
+      "stage": "group_stage",
+      "group": "group-g",
+      "homeTeamId": "ir-iran",
+      "awayTeamId": "new-zealand",
+      "matchDate": "2026-06-15",
+      "kickoffUtc": "2026-06-16T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "los-angeles-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "IR Iran",
+        "New Zealand",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-g-ir-iran-new-zealand",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "IR Iran v New Zealand",
+        "body": "Predict IR Iran v New Zealand in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-g-belgium-egypt",
+      "matchNumber": 18,
+      "stage": "group_stage",
+      "group": "group-g",
+      "homeTeamId": "belgium",
+      "awayTeamId": "egypt",
+      "matchDate": "2026-06-15",
+      "kickoffUtc": "2026-06-15T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "seattle-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Belgium",
+        "Egypt",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-g-belgium-egypt",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Belgium v Egypt",
+        "body": "Predict Belgium v Egypt in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-h-spain-cabo-verde",
+      "matchNumber": 19,
+      "stage": "group_stage",
+      "group": "group-h",
+      "homeTeamId": "spain",
+      "awayTeamId": "cabo-verde",
+      "matchDate": "2026-06-15",
+      "kickoffUtc": "2026-06-15T16:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "atlanta-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Spain",
+        "Cabo Verde",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-h-spain-cabo-verde",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Spain v Cabo Verde",
+        "body": "Predict Spain v Cabo Verde in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-h-saudi-arabia-uruguay",
+      "matchNumber": 20,
+      "stage": "group_stage",
+      "group": "group-h",
+      "homeTeamId": "saudi-arabia",
+      "awayTeamId": "uruguay",
+      "matchDate": "2026-06-15",
+      "kickoffUtc": "2026-06-15T22:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "miami-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Saudi Arabia",
+        "Uruguay",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-h-saudi-arabia-uruguay",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Saudi Arabia v Uruguay",
+        "body": "Predict Saudi Arabia v Uruguay in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-i-france-senegal",
+      "matchNumber": 21,
+      "stage": "group_stage",
+      "group": "group-i",
+      "homeTeamId": "france",
+      "awayTeamId": "senegal",
+      "matchDate": "2026-06-16",
+      "kickoffUtc": "2026-06-16T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "new-york-new-jersey-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "France",
+        "Senegal",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-i-france-senegal",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "France v Senegal",
+        "body": "Predict France v Senegal in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-i-iraq-norway",
+      "matchNumber": 22,
+      "stage": "group_stage",
+      "group": "group-i",
+      "homeTeamId": "iraq",
+      "awayTeamId": "norway",
+      "matchDate": "2026-06-16",
+      "kickoffUtc": "2026-06-16T22:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "boston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Iraq",
+        "Norway",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-i-iraq-norway",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Iraq v Norway",
+        "body": "Predict Iraq v Norway in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-j-argentina-algeria",
+      "matchNumber": 23,
+      "stage": "group_stage",
+      "group": "group-j",
+      "homeTeamId": "argentina",
+      "awayTeamId": "algeria",
+      "matchDate": "2026-06-16",
+      "kickoffUtc": "2026-06-17T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "kansas-city-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Argentina",
+        "Algeria",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-j-argentina-algeria",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Argentina v Algeria",
+        "body": "Predict Argentina v Algeria in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-j-austria-jordan",
+      "matchNumber": 24,
+      "stage": "group_stage",
+      "group": "group-j",
+      "homeTeamId": "austria",
+      "awayTeamId": "jordan",
+      "matchDate": "2026-06-17",
+      "kickoffUtc": "2026-06-17T04:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "san-francisco-bay-area-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Austria",
+        "Jordan",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-j-austria-jordan",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Austria v Jordan",
+        "body": "Predict Austria v Jordan in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-c-scotland-morocco",
+      "matchNumber": 25,
+      "stage": "group_stage",
+      "group": "group-c",
+      "homeTeamId": "scotland",
+      "awayTeamId": "morocco",
+      "matchDate": "2026-06-19",
+      "kickoffUtc": "2026-06-19T22:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "boston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Scotland",
+        "Morocco",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-c-scotland-morocco",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Scotland v Morocco",
+        "body": "Predict Scotland v Morocco in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-c-brazil-haiti",
+      "matchNumber": 26,
+      "stage": "group_stage",
+      "group": "group-c",
+      "homeTeamId": "brazil",
+      "awayTeamId": "haiti",
+      "matchDate": "2026-06-19",
+      "kickoffUtc": "2026-06-20T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "philadelphia-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Brazil",
+        "Haiti",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-c-brazil-haiti",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Brazil v Haiti",
+        "body": "Predict Brazil v Haiti in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-d-united-states-australia",
+      "matchNumber": 27,
+      "stage": "group_stage",
+      "group": "group-d",
+      "homeTeamId": "united-states",
+      "awayTeamId": "australia",
+      "matchDate": "2026-06-19",
+      "kickoffUtc": "2026-06-19T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "seattle-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "United States",
+        "Australia",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-d-united-states-australia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "United States v Australia",
+        "body": "Predict United States v Australia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-d-turkiye-paraguay",
+      "matchNumber": 28,
+      "stage": "group_stage",
+      "group": "group-d",
+      "homeTeamId": "turkiye",
+      "awayTeamId": "paraguay",
+      "matchDate": "2026-06-19",
+      "kickoffUtc": "2026-06-20T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "san-francisco-bay-area-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Türkiye",
+        "Paraguay",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-d-turkiye-paraguay",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Türkiye v Paraguay",
+        "body": "Predict Türkiye v Paraguay in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-e-germany-cote-divoire",
+      "matchNumber": 29,
+      "stage": "group_stage",
+      "group": "group-e",
+      "homeTeamId": "germany",
+      "awayTeamId": "cote-divoire",
+      "matchDate": "2026-06-20",
+      "kickoffUtc": "2026-06-20T20:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "toronto-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Germany",
+        "Côte d'Ivoire",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-e-germany-cote-divoire",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Germany v Côte d'Ivoire",
+        "body": "Predict Germany v Côte d'Ivoire in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-e-ecuador-curacao",
+      "matchNumber": 30,
+      "stage": "group_stage",
+      "group": "group-e",
+      "homeTeamId": "ecuador",
+      "awayTeamId": "curacao",
+      "matchDate": "2026-06-20",
+      "kickoffUtc": "2026-06-21T00:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "kansas-city-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Ecuador",
+        "Curaçao",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-e-ecuador-curacao",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Ecuador v Curaçao",
+        "body": "Predict Ecuador v Curaçao in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-f-netherlands-sweden",
+      "matchNumber": 31,
+      "stage": "group_stage",
+      "group": "group-f",
+      "homeTeamId": "netherlands",
+      "awayTeamId": "sweden",
+      "matchDate": "2026-06-20",
+      "kickoffUtc": "2026-06-20T17:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "houston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Netherlands",
+        "Sweden",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-f-netherlands-sweden",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Netherlands v Sweden",
+        "body": "Predict Netherlands v Sweden in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-f-tunisia-japan",
+      "matchNumber": 32,
+      "stage": "group_stage",
+      "group": "group-f",
+      "homeTeamId": "tunisia",
+      "awayTeamId": "japan",
+      "matchDate": "2026-06-21",
+      "kickoffUtc": "2026-06-21T04:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "estadio-monterrey",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Tunisia",
+        "Japan",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-f-tunisia-japan",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Tunisia v Japan",
+        "body": "Predict Tunisia v Japan in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-g-belgium-ir-iran",
+      "matchNumber": 33,
+      "stage": "group_stage",
+      "group": "group-g",
+      "homeTeamId": "belgium",
+      "awayTeamId": "ir-iran",
+      "matchDate": "2026-06-21",
+      "kickoffUtc": "2026-06-21T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "los-angeles-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Belgium",
+        "IR Iran",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-g-belgium-ir-iran",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Belgium v IR Iran",
+        "body": "Predict Belgium v IR Iran in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-g-new-zealand-egypt",
+      "matchNumber": 34,
+      "stage": "group_stage",
+      "group": "group-g",
+      "homeTeamId": "new-zealand",
+      "awayTeamId": "egypt",
+      "matchDate": "2026-06-21",
+      "kickoffUtc": "2026-06-22T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "bc-place-vancouver",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "New Zealand",
+        "Egypt",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-g-new-zealand-egypt",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "New Zealand v Egypt",
+        "body": "Predict New Zealand v Egypt in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-h-spain-saudi-arabia",
+      "matchNumber": 35,
+      "stage": "group_stage",
+      "group": "group-h",
+      "homeTeamId": "spain",
+      "awayTeamId": "saudi-arabia",
+      "matchDate": "2026-06-21",
+      "kickoffUtc": "2026-06-21T16:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "atlanta-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Spain",
+        "Saudi Arabia",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-h-spain-saudi-arabia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Spain v Saudi Arabia",
+        "body": "Predict Spain v Saudi Arabia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-h-uruguay-cabo-verde",
+      "matchNumber": 36,
+      "stage": "group_stage",
+      "group": "group-h",
+      "homeTeamId": "uruguay",
+      "awayTeamId": "cabo-verde",
+      "matchDate": "2026-06-21",
+      "kickoffUtc": "2026-06-21T22:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "miami-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Uruguay",
+        "Cabo Verde",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-h-uruguay-cabo-verde",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Uruguay v Cabo Verde",
+        "body": "Predict Uruguay v Cabo Verde in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-i-france-iraq",
+      "matchNumber": 37,
+      "stage": "group_stage",
+      "group": "group-i",
+      "homeTeamId": "france",
+      "awayTeamId": "iraq",
+      "matchDate": "2026-06-22",
+      "kickoffUtc": "2026-06-22T21:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "philadelphia-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "France",
+        "Iraq",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-i-france-iraq",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "France v Iraq",
+        "body": "Predict France v Iraq in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-i-norway-senegal",
+      "matchNumber": 38,
+      "stage": "group_stage",
+      "group": "group-i",
+      "homeTeamId": "norway",
+      "awayTeamId": "senegal",
+      "matchDate": "2026-06-22",
+      "kickoffUtc": "2026-06-23T00:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "new-york-new-jersey-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Norway",
+        "Senegal",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-i-norway-senegal",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Norway v Senegal",
+        "body": "Predict Norway v Senegal in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-j-argentina-austria",
+      "matchNumber": 39,
+      "stage": "group_stage",
+      "group": "group-j",
+      "homeTeamId": "argentina",
+      "awayTeamId": "austria",
+      "matchDate": "2026-06-22",
+      "kickoffUtc": "2026-06-22T17:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "dallas-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Argentina",
+        "Austria",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-j-argentina-austria",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Argentina v Austria",
+        "body": "Predict Argentina v Austria in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-j-jordan-algeria",
+      "matchNumber": 40,
+      "stage": "group_stage",
+      "group": "group-j",
+      "homeTeamId": "jordan",
+      "awayTeamId": "algeria",
+      "matchDate": "2026-06-22",
+      "kickoffUtc": "2026-06-23T03:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "san-francisco-bay-area-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Jordan",
+        "Algeria",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-j-jordan-algeria",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Jordan v Algeria",
+        "body": "Predict Jordan v Algeria in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-k-portugal-dr-congo",
+      "matchNumber": 41,
+      "stage": "group_stage",
+      "group": "group-k",
+      "homeTeamId": "portugal",
+      "awayTeamId": "dr-congo",
+      "matchDate": "2026-06-17",
+      "kickoffUtc": "2026-06-17T17:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "houston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Portugal",
+        "DR Congo",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-k-portugal-dr-congo",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Portugal v DR Congo",
+        "body": "Predict Portugal v DR Congo in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-k-uzbekistan-colombia",
+      "matchNumber": 42,
+      "stage": "group_stage",
+      "group": "group-k",
+      "homeTeamId": "uzbekistan",
+      "awayTeamId": "colombia",
+      "matchDate": "2026-06-17",
+      "kickoffUtc": "2026-06-18T02:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "mexico-city-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Uzbekistan",
+        "Colombia",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-k-uzbekistan-colombia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Uzbekistan v Colombia",
+        "body": "Predict Uzbekistan v Colombia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-k-portugal-uzbekistan",
+      "matchNumber": 43,
+      "stage": "group_stage",
+      "group": "group-k",
+      "homeTeamId": "portugal",
+      "awayTeamId": "uzbekistan",
+      "matchDate": "2026-06-23",
+      "kickoffUtc": "2026-06-23T17:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "houston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Portugal",
+        "Uzbekistan",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-k-portugal-uzbekistan",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Portugal v Uzbekistan",
+        "body": "Predict Portugal v Uzbekistan in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-k-colombia-dr-congo",
+      "matchNumber": 44,
+      "stage": "group_stage",
+      "group": "group-k",
+      "homeTeamId": "colombia",
+      "awayTeamId": "dr-congo",
+      "matchDate": "2026-06-23",
+      "kickoffUtc": "2026-06-24T02:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "estadio-guadalajara",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Colombia",
+        "DR Congo",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-k-colombia-dr-congo",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Colombia v DR Congo",
+        "body": "Predict Colombia v DR Congo in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-l-england-croatia",
+      "matchNumber": 45,
+      "stage": "group_stage",
+      "group": "group-l",
+      "homeTeamId": "england",
+      "awayTeamId": "croatia",
+      "matchDate": "2026-06-17",
+      "kickoffUtc": "2026-06-17T20:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "dallas-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "England",
+        "Croatia",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-l-england-croatia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "England v Croatia",
+        "body": "Predict England v Croatia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-l-ghana-panama",
+      "matchNumber": 46,
+      "stage": "group_stage",
+      "group": "group-l",
+      "homeTeamId": "ghana",
+      "awayTeamId": "panama",
+      "matchDate": "2026-06-17",
+      "kickoffUtc": "2026-06-17T23:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "toronto-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Ghana",
+        "Panama",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-l-ghana-panama",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Ghana v Panama",
+        "body": "Predict Ghana v Panama in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-l-england-ghana",
+      "matchNumber": 47,
+      "stage": "group_stage",
+      "group": "group-l",
+      "homeTeamId": "england",
+      "awayTeamId": "ghana",
+      "matchDate": "2026-06-23",
+      "kickoffUtc": "2026-06-23T20:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "boston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "England",
+        "Ghana",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-l-england-ghana",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "England v Ghana",
+        "body": "Predict England v Ghana in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-l-panama-croatia",
+      "matchNumber": 48,
+      "stage": "group_stage",
+      "group": "group-l",
+      "homeTeamId": "panama",
+      "awayTeamId": "croatia",
+      "matchDate": "2026-06-23",
+      "kickoffUtc": "2026-06-23T23:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "toronto-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Panama",
+        "Croatia",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-l-panama-croatia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Panama v Croatia",
+        "body": "Predict Panama v Croatia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-a-czechia-mexico",
+      "matchNumber": 49,
+      "stage": "group_stage",
+      "group": "group-a",
+      "homeTeamId": "czechia",
+      "awayTeamId": "mexico",
+      "matchDate": "2026-06-24",
+      "kickoffUtc": "2026-06-25T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "mexico-city-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Czechia",
+        "Mexico",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-a-czechia-mexico",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Czechia v Mexico",
+        "body": "Predict Czechia v Mexico in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-a-south-africa-korea-republic",
+      "matchNumber": 50,
+      "stage": "group_stage",
+      "group": "group-a",
+      "homeTeamId": "south-africa",
+      "awayTeamId": "korea-republic",
+      "matchDate": "2026-06-24",
+      "kickoffUtc": "2026-06-25T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "estadio-monterrey",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "South Africa",
+        "Korea Republic",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-a-south-africa-korea-republic",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "South Africa v Korea Republic",
+        "body": "Predict South Africa v Korea Republic in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-b-switzerland-canada",
+      "matchNumber": 51,
+      "stage": "group_stage",
+      "group": "group-b",
+      "homeTeamId": "switzerland",
+      "awayTeamId": "canada",
+      "matchDate": "2026-06-24",
+      "kickoffUtc": "2026-06-25T01:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "bc-place-vancouver",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Switzerland",
+        "Canada",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-b-switzerland-canada",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Switzerland v Canada",
+        "body": "Predict Switzerland v Canada in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-b-bosnia-and-herzegovina-qatar",
+      "matchNumber": 52,
+      "stage": "group_stage",
+      "group": "group-b",
+      "homeTeamId": "bosnia-and-herzegovina",
+      "awayTeamId": "qatar",
+      "matchDate": "2026-06-24",
+      "kickoffUtc": "2026-06-24T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "seattle-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Bosnia and Herzegovina",
+        "Qatar",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-b-bosnia-and-herzegovina-qatar",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Bosnia and Herzegovina v Qatar",
+        "body": "Predict Bosnia and Herzegovina v Qatar in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-c-scotland-brazil",
+      "matchNumber": 53,
+      "stage": "group_stage",
+      "group": "group-c",
+      "homeTeamId": "scotland",
+      "awayTeamId": "brazil",
+      "matchDate": "2026-06-24",
+      "kickoffUtc": "2026-06-24T22:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "miami-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Scotland",
+        "Brazil",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-c-scotland-brazil",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Scotland v Brazil",
+        "body": "Predict Scotland v Brazil in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-c-morocco-haiti",
+      "matchNumber": 54,
+      "stage": "group_stage",
+      "group": "group-c",
+      "homeTeamId": "morocco",
+      "awayTeamId": "haiti",
+      "matchDate": "2026-06-24",
+      "kickoffUtc": "2026-06-24T22:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "atlanta-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Morocco",
+        "Haiti",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-c-morocco-haiti",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Morocco v Haiti",
+        "body": "Predict Morocco v Haiti in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-d-turkiye-united-states",
+      "matchNumber": 55,
+      "stage": "group_stage",
+      "group": "group-d",
+      "homeTeamId": "turkiye",
+      "awayTeamId": "united-states",
+      "matchDate": "2026-06-25",
+      "kickoffUtc": "2026-06-26T02:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "los-angeles-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Türkiye",
+        "United States",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-d-turkiye-united-states",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Türkiye v United States",
+        "body": "Predict Türkiye v United States in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-d-paraguay-australia",
+      "matchNumber": 56,
+      "stage": "group_stage",
+      "group": "group-d",
+      "homeTeamId": "paraguay",
+      "awayTeamId": "australia",
+      "matchDate": "2026-06-25",
+      "kickoffUtc": "2026-06-26T02:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "san-francisco-bay-area-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Paraguay",
+        "Australia",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-d-paraguay-australia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Paraguay v Australia",
+        "body": "Predict Paraguay v Australia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-e-ecuador-germany",
+      "matchNumber": 57,
+      "stage": "group_stage",
+      "group": "group-e",
+      "homeTeamId": "ecuador",
+      "awayTeamId": "germany",
+      "matchDate": "2026-06-25",
+      "kickoffUtc": "2026-06-25T20:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "new-york-new-jersey-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Ecuador",
+        "Germany",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-e-ecuador-germany",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Ecuador v Germany",
+        "body": "Predict Ecuador v Germany in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-e-curacao-cote-divoire",
+      "matchNumber": 58,
+      "stage": "group_stage",
+      "group": "group-e",
+      "homeTeamId": "curacao",
+      "awayTeamId": "cote-divoire",
+      "matchDate": "2026-06-25",
+      "kickoffUtc": "2026-06-25T20:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "philadelphia-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Curaçao",
+        "Côte d'Ivoire",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-e-curacao-cote-divoire",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Curaçao v Côte d'Ivoire",
+        "body": "Predict Curaçao v Côte d'Ivoire in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-f-japan-sweden",
+      "matchNumber": 59,
+      "stage": "group_stage",
+      "group": "group-f",
+      "homeTeamId": "japan",
+      "awayTeamId": "sweden",
+      "matchDate": "2026-06-25",
+      "kickoffUtc": "2026-06-25T23:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "dallas-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Japan",
+        "Sweden",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-f-japan-sweden",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Japan v Sweden",
+        "body": "Predict Japan v Sweden in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-f-tunisia-netherlands",
+      "matchNumber": 60,
+      "stage": "group_stage",
+      "group": "group-f",
+      "homeTeamId": "tunisia",
+      "awayTeamId": "netherlands",
+      "matchDate": "2026-06-25",
+      "kickoffUtc": "2026-06-25T23:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "kansas-city-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Tunisia",
+        "Netherlands",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-f-tunisia-netherlands",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Tunisia v Netherlands",
+        "body": "Predict Tunisia v Netherlands in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-g-egypt-ir-iran",
+      "matchNumber": 61,
+      "stage": "group_stage",
+      "group": "group-g",
+      "homeTeamId": "egypt",
+      "awayTeamId": "ir-iran",
+      "matchDate": "2026-06-26",
+      "kickoffUtc": "2026-06-27T03:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "seattle-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Egypt",
+        "IR Iran",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-g-egypt-ir-iran",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Egypt v IR Iran",
+        "body": "Predict Egypt v IR Iran in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-g-new-zealand-belgium",
+      "matchNumber": 62,
+      "stage": "group_stage",
+      "group": "group-g",
+      "homeTeamId": "new-zealand",
+      "awayTeamId": "belgium",
+      "matchDate": "2026-06-26",
+      "kickoffUtc": "2026-06-27T03:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "bc-place-vancouver",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "New Zealand",
+        "Belgium",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-g-new-zealand-belgium",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "New Zealand v Belgium",
+        "body": "Predict New Zealand v Belgium in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-h-cabo-verde-saudi-arabia",
+      "matchNumber": 63,
+      "stage": "group_stage",
+      "group": "group-h",
+      "homeTeamId": "cabo-verde",
+      "awayTeamId": "saudi-arabia",
+      "matchDate": "2026-06-26",
+      "kickoffUtc": "2026-06-27T00:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "houston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Cabo Verde",
+        "Saudi Arabia",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-h-cabo-verde-saudi-arabia",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Cabo Verde v Saudi Arabia",
+        "body": "Predict Cabo Verde v Saudi Arabia in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-h-uruguay-spain",
+      "matchNumber": 64,
+      "stage": "group_stage",
+      "group": "group-h",
+      "homeTeamId": "uruguay",
+      "awayTeamId": "spain",
+      "matchDate": "2026-06-26",
+      "kickoffUtc": "2026-06-27T00:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "estadio-guadalajara",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Uruguay",
+        "Spain",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-h-uruguay-spain",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Uruguay v Spain",
+        "body": "Predict Uruguay v Spain in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-i-norway-france",
+      "matchNumber": 65,
+      "stage": "group_stage",
+      "group": "group-i",
+      "homeTeamId": "norway",
+      "awayTeamId": "france",
+      "matchDate": "2026-06-26",
+      "kickoffUtc": "2026-06-26T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "boston-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Norway",
+        "France",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-i-norway-france",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Norway v France",
+        "body": "Predict Norway v France in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-i-senegal-iraq",
+      "matchNumber": 66,
+      "stage": "group_stage",
+      "group": "group-i",
+      "homeTeamId": "senegal",
+      "awayTeamId": "iraq",
+      "matchDate": "2026-06-26",
+      "kickoffUtc": "2026-06-26T19:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "toronto-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Senegal",
+        "Iraq",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-i-senegal-iraq",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Senegal v Iraq",
+        "body": "Predict Senegal v Iraq in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-j-algeria-austria",
+      "matchNumber": 67,
+      "stage": "group_stage",
+      "group": "group-j",
+      "homeTeamId": "algeria",
+      "awayTeamId": "austria",
+      "matchDate": "2026-06-27",
+      "kickoffUtc": "2026-06-28T02:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "kansas-city-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Algeria",
+        "Austria",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-j-algeria-austria",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Algeria v Austria",
+        "body": "Predict Algeria v Austria in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-j-jordan-argentina",
+      "matchNumber": 68,
+      "stage": "group_stage",
+      "group": "group-j",
+      "homeTeamId": "jordan",
+      "awayTeamId": "argentina",
+      "matchDate": "2026-06-27",
+      "kickoffUtc": "2026-06-28T02:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "dallas-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Jordan",
+        "Argentina",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-j-jordan-argentina",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Jordan v Argentina",
+        "body": "Predict Jordan v Argentina in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-k-colombia-portugal",
+      "matchNumber": 69,
+      "stage": "group_stage",
+      "group": "group-k",
+      "homeTeamId": "colombia",
+      "awayTeamId": "portugal",
+      "matchDate": "2026-06-27",
+      "kickoffUtc": "2026-06-27T23:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "miami-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Colombia",
+        "Portugal",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-k-colombia-portugal",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Colombia v Portugal",
+        "body": "Predict Colombia v Portugal in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-k-dr-congo-uzbekistan",
+      "matchNumber": 70,
+      "stage": "group_stage",
+      "group": "group-k",
+      "homeTeamId": "dr-congo",
+      "awayTeamId": "uzbekistan",
+      "matchDate": "2026-06-27",
+      "kickoffUtc": "2026-06-27T23:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "atlanta-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "DR Congo",
+        "Uzbekistan",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-k-dr-congo-uzbekistan",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "DR Congo v Uzbekistan",
+        "body": "Predict DR Congo v Uzbekistan in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-l-panama-england",
+      "matchNumber": 71,
+      "stage": "group_stage",
+      "group": "group-l",
+      "homeTeamId": "panama",
+      "awayTeamId": "england",
+      "matchDate": "2026-06-27",
+      "kickoffUtc": "2026-06-27T21:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "new-york-new-jersey-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": false,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Panama",
+        "England",
+        "Lagos",
+        "Accra"
+      ],
+      "contentSlug": "wc26-l-panama-england",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Panama v England",
+        "body": "Predict Panama v England in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    },
+    {
+      "matchId": "wc26-l-croatia-ghana",
+      "matchNumber": 72,
+      "stage": "group_stage",
+      "group": "group-l",
+      "homeTeamId": "croatia",
+      "awayTeamId": "ghana",
+      "matchDate": "2026-06-27",
+      "kickoffUtc": "2026-06-27T21:00:00Z",
+      "kickoffTimeStatus": "official-edt-converted-to-utc-review-before-launch",
+      "venue": "philadelphia-stadium",
+      "status": "scheduled",
+      "homeScore": null,
+      "awayScore": null,
+      "resultFinal": false,
+      "isAfricaFocus": true,
+      "isPlaceholder": false,
+      "featuredMarkets": [
+        "Croatia",
+        "Ghana",
+        "Lagos",
+        "Accra",
+        "Nairobi",
+        "Johannesburg"
+      ],
+      "contentSlug": "wc26-l-croatia-ghana",
+      "sourceLabel": "FIFA official match schedule",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+      "extractionReviewUrl": "https://www.kickoffadventures.com/events/world-cup-26/schedule/group-stage",
+      "shareCard": {
+        "headline": "Croatia v Ghana",
+        "body": "Predict Croatia v Ghana in Matchday OS. All group fixtures are playable, with Africa bonus points where applicable."
+      }
+    }
+  ],
+  "knockoutBracket": {
+    "status": "placeholder",
+    "rounds": [
+      {
+        "roundId": "round_of_32",
+        "label": "Round of 32",
+        "matchIds": []
+      },
+      {
+        "roundId": "round_of_16",
+        "label": "Round of 16",
+        "matchIds": []
+      },
+      {
+        "roundId": "quarter_final",
+        "label": "Quarter-finals",
+        "matchIds": []
+      },
+      {
+        "roundId": "semi_final",
+        "label": "Semi-finals",
+        "matchIds": []
+      },
+      {
+        "roundId": "third_place",
+        "label": "Third-place match",
+        "matchIds": []
+      },
+      {
+        "roundId": "final",
+        "label": "Final",
+        "matchIds": []
+      }
+    ]
+  },
+  "predictionGame": {
+    "campaignId": "matchday-os-2026-skill-prize",
+    "status": "local-demo",
+    "mode": "frontend-local-only",
+    "freeToEnter": true,
+    "skillBased": true,
+    "entryCostUsd": 0,
+    "prizePoolUsd": 1200,
+    "prizeMaxUsd": 500,
+    "prizeTeaserUsd": 1200,
+    "prizeHeadline": "Win up to $500 in the Matchday OS Prediction Challenge.",
+    "prizeSupportCopy": "Top 10 verified players share a $1,200 prize pool. First place receives $500.",
+    "rulesNotice": "Final rules, eligibility, scoring, sponsor terms, and dispute process must be published before accepting entries.",
+    "responsiblePlayNote": "Free-to-enter football knowledge challenge. No staking, no odds, no paid entries, and no gambling framing.",
+    "prizeTable": [
+      {
+        "rank": 1,
+        "label": "1st",
+        "prizeUsd": 500
+      },
+      {
+        "rank": 2,
+        "label": "2nd",
+        "prizeUsd": 250
+      },
+      {
+        "rank": 3,
+        "label": "3rd",
+        "prizeUsd": 150
+      },
+      {
+        "rank": 4,
+        "label": "4th",
+        "prizeUsd": 75
+      },
+      {
+        "rank": 5,
+        "label": "5th",
+        "prizeUsd": 60
+      },
+      {
+        "rank": 6,
+        "label": "6th",
+        "prizeUsd": 45
+      },
+      {
+        "rank": 7,
+        "label": "7th",
+        "prizeUsd": 35
+      },
+      {
+        "rank": 8,
+        "label": "8th",
+        "prizeUsd": 30
+      },
+      {
+        "rank": 9,
+        "label": "9th",
+        "prizeUsd": 30
+      },
+      {
+        "rank": 10,
+        "label": "10th",
+        "prizeUsd": 25
+      }
+    ],
+    "cashPrizeRules": {
+      "winnerCount": 10,
+      "publicTrackerDisplayCount": 20,
+      "winnerBasis": "Top 10 verified players on the final Prediction Points leaderboard",
+      "predictionPointsOnly": true,
+      "fanPointsAffectCashPrize": false,
+      "payoutPage": "/matchday-os/prizes/",
+      "publicLeaderboardNotice": "The public leaderboard is provisional. Final winners are confirmed only after anti-cheat and eligibility review.",
+      "top20TrackerCopy": "The public tracker may show a Top 20 leaderboard for excitement and sharing, but only the final verified Top 10 receive cash prizes.",
+      "tieBreakers": [
+        "Higher number of exact scores",
+        "Higher number of correct match outcomes",
+        "Higher number of correct African-team predictions",
+        "Earlier submitted locked predictions across the tournament",
+        "Manual review if still tied"
+      ],
+      "importantDates": [
+        {
+          "label": "Challenge opens",
+          "value": "To be announced"
+        },
+        {
+          "label": "First match prediction lock",
+          "value": "To be announced"
+        },
+        {
+          "label": "Final match",
+          "value": "To be announced"
+        },
+        {
+          "label": "Leaderboard freeze",
+          "value": "To be announced"
+        },
+        {
+          "label": "Winner verification period",
+          "value": "To be announced"
+        },
+        {
+          "label": "Estimated payout period",
+          "value": "To be announced"
+        }
+      ],
+      "payoutOptions": [
+        "bank transfer",
+        "mobile money",
+        "crypto",
+        "PayPal",
+        "Wise",
+        "other available rails"
+      ],
+      "payoutSafetyCopy": "AfroTools will never ask winners to pay a fee to claim a prize. If anyone asks you for a fee, it is not AfroTools.",
+      "cryptoSafetyCopy": "Crypto payout may be available where lawful and practical. Winners who choose crypto are responsible for providing a correct wallet address. AfroTools may use another payout method if crypto is not suitable, safe, or available.",
+      "legalStatus": "Rules draft pending legal review. Prize availability may depend on country, age, verification, payout availability, and local rules."
+    },
+    "lockPolicy": {
+      "label": "Predictions lock before kickoff",
+      "defaultOffsetMinutes": 0,
+      "fixtureLockSource": "fixture.kickoffUtc",
+      "tournamentLockSource": "firstVerifiedFixtureKickoffUtc",
+      "placeholderLockCopy": "Group-stage predictions are open in local demo mode. Exact kickoff locks start once official kickoff times are added."
+    },
+    "scoring": {
+      "correctWinner": 3,
+      "correctDraw": 4,
+      "exactScore": 8,
+      "correctGroupQualifier": 10,
+      "correctChampion": 25,
+      "africanTeamBonus": 2,
+      "africanTeamBonusCopy": "+2 bonus points when a correct match, qualifier, or champion pick involves an African team. This keeps every fixture playable while making African-team success matter."
+    },
+    "predictionTypes": [
+      {
+        "typeId": "match_winner",
+        "label": "Match winner",
+        "lockScope": "fixture"
+      },
+      {
+        "typeId": "exact_score",
+        "label": "Exact score",
+        "lockScope": "fixture"
+      },
+      {
+        "typeId": "draw_prediction",
+        "label": "Draw prediction",
+        "lockScope": "fixture"
+      },
+      {
+        "typeId": "group_qualifiers",
+        "label": "Group qualifiers",
+        "lockScope": "group_stage"
+      },
+      {
+        "typeId": "best_african_team",
+        "label": "Best-performing African team",
+        "lockScope": "tournament"
+      },
+      {
+        "typeId": "semi_finalists",
+        "label": "Semi-finalists",
+        "lockScope": "knockout"
+      },
+      {
+        "typeId": "finalists",
+        "label": "Finalists",
+        "lockScope": "knockout"
+      },
+      {
+        "typeId": "champion",
+        "label": "Champion",
+        "lockScope": "tournament"
+      }
+    ],
+    "entryCards": [
+      {
+        "cardId": "match-call",
+        "title": "Match call",
+        "predictionTypeIds": [
+          "match_winner",
+          "draw_prediction",
+          "exact_score"
+        ],
+        "copy": "Pick a fixture result and optional exact score. Fixture picks lock at kickoff once verified kickoff data exists."
+      },
+      {
+        "cardId": "group-race",
+        "title": "Group race",
+        "predictionTypeIds": [
+          "group_qualifiers"
+        ],
+        "copy": "Choose two group qualifiers from the available seed teams. This remains a local planning pick until verified groups are complete."
+      },
+      {
+        "cardId": "tournament-path",
+        "title": "Tournament path",
+        "predictionTypeIds": [
+          "best_african_team",
+          "semi_finalists",
+          "finalists",
+          "champion"
+        ],
+        "copy": "Build a tournament path: best African team, semi-finalists, finalists, and champion."
+      }
+    ],
+    "schemas": {
+      "prediction": {
+        "predictionId": "string slug",
+        "typeId": "match_winner | exact_score | draw_prediction | group_qualifiers | best_african_team | semi_finalists | finalists | champion",
+        "scopeId": "matchId | groupId | tournament",
+        "selection": "teamId | draw | score | teamId[]",
+        "lockDeadlineUtc": "ISO string or null"
+      },
+      "userPrediction": {
+        "userPredictionId": "string slug generated by backend later",
+        "campaignId": "string",
+        "entryMode": "local-demo | persisted",
+        "matchPick": "object with matchId, resultPick, homeScore, awayScore",
+        "groupQualifiers": "object with groupId and teamIds",
+        "tournamentPicks": "object with bestAfricanTeamId, semiFinalistTeamIds, finalistTeamIds, championTeamId",
+        "savedAt": "ISO string"
+      },
+      "scoreCalculation": {
+        "campaignId": "string",
+        "scoringVersion": "string",
+        "rulesApplied": "array of scoring rule ids",
+        "totalPoints": "number",
+        "calculatedAt": "ISO string",
+        "resultSource": "verified static data or backend result source"
+      },
+      "leaderboardRow": {
+        "rank": "number",
+        "displayName": "string",
+        "countryCode": "string",
+        "points": "number",
+        "correctPicks": "number",
+        "entryMode": "sample | live",
+        "updatedAt": "ISO string"
+      },
+      "lockDeadline": {
+        "scopeId": "matchId | group_stage | tournament",
+        "lockDeadlineUtc": "ISO string or null",
+        "lockReason": "kickoff | campaign_cutoff | pending_verified_fixture"
+      }
+    },
+    "leaderboard": {
+      "status": "empty-local-shell",
+      "displayCount": 20,
+      "cashPrizeWinnerCount": 10,
+      "copy": "The public tracker may show Top 20 players for excitement, but the cash-prize leaderboard uses Prediction Points only. Top 10 verified players share the $1,200 prize pool after backend scoring, lock enforcement, anti-cheat review, and eligibility checks are complete.",
+      "verificationNotice": "The public leaderboard is provisional. Final winners are confirmed only after anti-cheat and eligibility review.",
+      "rows": []
+    },
+    "fanPoints": {
+      "status": "frontend-local-demo-backend-ready",
+      "mode": "separate-from-cash-prize-leaderboard",
+      "publicCopy": "Bring your friends into Matchday OS. Earn Fan Points, climb the Top Fans board, and unlock badges. Cash-prize winners are decided by Prediction Points only.",
+      "separationNotice": "Fan Points are separate from Prediction Points and do not decide cash-prize winners.",
+      "scoreTypes": [
+        {
+          "scoreTypeId": "prediction_points",
+          "label": "Prediction Points",
+          "source": "football predictions only",
+          "cashPrizeRanking": true,
+          "fanRecognition": false,
+          "referralInfluence": false,
+          "copy": "Prediction Points are earned only from football predictions and decide the $1,200 prize leaderboard after backend scoring and legal gates are complete."
+        },
+        {
+          "scoreTypeId": "fan_points",
+          "label": "Fan Points",
+          "source": "predictions, sharing actions, referrals, badges, and community activity",
+          "cashPrizeRanking": false,
+          "fanRecognition": true,
+          "referralInfluence": true,
+          "copy": "Fan Points power Top Fans, badges, shoutouts, sponsor perks, and non-cash recognition. They never change the cash-prize ranking."
+        }
+      ],
+      "scoring": {
+        "predictionSaved": 1,
+        "whatsappShare": 1,
+        "shareCardCta": 1,
+        "communityActivity": 1,
+        "badgeEarned": 2,
+        "verifiedReferral": 2,
+        "referralFirstLockedPrediction": 3,
+        "maxReferralReward": 25,
+        "maxDailySharePoints": 3,
+        "referralAwardTiming": "pending-until-first-locked-prediction"
+      },
+      "referralRules": {
+        "copyReferralLink": {
+          "eventType": "referral_link_copied",
+          "fanPoints": 0,
+          "copy": "Track event only. No points."
+        },
+        "friendVisit": {
+          "eventType": "referral_visit",
+          "fanPoints": 0,
+          "copy": "Track event only. No points."
+        },
+        "verifiedSession": {
+          "eventType": "referral_verified_session",
+          "fanPoints": 2,
+          "awardState": "pending until first locked prediction"
+        },
+        "firstLockedPrediction": {
+          "eventType": "referral_first_locked_prediction",
+          "fanPoints": 3,
+          "awardState": "releases verified-session referral reward after backend checks"
+        },
+        "maxReferralReward": 25,
+        "oneRewardPerReferredUser": true,
+        "selfReferralsAllowed": false,
+        "cashPrizeRankingInfluence": false
+      },
+      "schemas": {
+        "referralEvent": {
+          "eventId": "string",
+          "eventType": "referral_link_copied | referral_visit | referral_verified_session | referral_first_locked_prediction",
+          "referrerId": "string",
+          "referredUserId": "string or null until account/session exists",
+          "referralSource": "copy_link | whatsapp | share_card | url_ref",
+          "timestamp": "ISO string",
+          "ipHash": "sha256 string stored server-side only",
+          "deviceSignalHash": "sha256 string stored server-side only",
+          "userAgentHash": "sha256 string stored server-side only"
+        },
+        "fanPointsLedgerRow": {
+          "ledgerId": "string",
+          "userId": "string",
+          "scoreTypeId": "fan_points",
+          "eventType": "string",
+          "points": "number",
+          "awardState": "pending | awarded | rejected | flagged",
+          "createdAt": "ISO string"
+        },
+        "topFanRow": {
+          "rank": "number",
+          "displayName": "string",
+          "fanPoints": "number",
+          "badges": "string[]",
+          "entryMode": "local-demo | live"
+        },
+        "referralReviewFlag": {
+          "flagId": "string",
+          "referrerId": "string",
+          "referredUserId": "string",
+          "ruleId": "self-referral | same-device-referral | repeated-ip-cluster | suspicious-rapid-signups",
+          "severity": "low | medium | high",
+          "status": "open | cleared | rejected | escalated",
+          "reviewedAt": "ISO string or null"
+        }
+      },
+      "abuseProtection": {
+        "status": "backend-required",
+        "copy": "Self-referrals, duplicate/device matches, repeated IP clusters, and suspicious rapid signups require backend review before Fan Points are awarded.",
+        "doNotStoreRawSensitiveSignalsInFrontend": true,
+        "requiredHashFields": [
+          "ipHash",
+          "deviceSignalHash",
+          "userAgentHash"
+        ],
+        "detectionRules": [
+          {
+            "ruleId": "self-referral",
+            "label": "Self-referrals are not allowed",
+            "severity": "high"
+          },
+          {
+            "ruleId": "same-device-referral",
+            "label": "Flag same-device referrals",
+            "severity": "high"
+          },
+          {
+            "ruleId": "repeated-ip-cluster",
+            "label": "Flag repeated IP clusters",
+            "severity": "medium"
+          },
+          {
+            "ruleId": "suspicious-rapid-signups",
+            "label": "Flag suspicious rapid signups",
+            "severity": "medium"
+          },
+          {
+            "ruleId": "one-reward-per-referred-user",
+            "label": "One referral reward per referred user",
+            "severity": "medium"
+          }
+        ]
+      },
+      "topFans": {
+        "status": "empty-local-shell",
+        "copy": "Top Fans requires backend accounts, verified referral events, community activity, and abuse checks before live rows appear.",
+        "rows": []
+      }
+    },
+    "antiCheat": {
+      "status": "design-only-backend-required",
+      "launchGateStatus": "blocked-until-server-enforced",
+      "serverSideLockRequired": true,
+      "noEditsAfterLock": true,
+      "oneAccountPerPerson": true,
+      "emailVerificationRequired": true,
+      "adminReviewRequired": true,
+      "manualWinnerVerificationRequired": true,
+      "legalReviewStatus": "required-before-launch",
+      "termsAcceptanceRequired": true,
+      "publicTrustCopy": [
+        "Predictions lock before kickoff",
+        "Free to enter",
+        "No purchase required",
+        "Winners are verified before payout",
+        "Suspicious or duplicate entries may be disqualified",
+        "This is a skill-based prediction challenge, not betting"
+      ],
+      "serverSignals": {
+        "storeRawSensitiveSignals": false,
+        "hashAlgorithm": "sha256",
+        "requiredHashFields": [
+          "ipHash",
+          "userAgentHash",
+          "deviceSignalHash"
+        ],
+        "timestampFields": [
+          "submittedAt",
+          "lockedAt",
+          "termsAcceptedAt",
+          "reviewedAt"
+        ],
+        "notes": "Raw IP addresses, user agent strings, and device/session fingerprints must be hashed server-side before storage."
+      },
+      "detectionRules": [
+        {
+          "ruleId": "duplicate-account-signal",
+          "label": "Duplicate account detection",
+          "signals": [
+            "verifiedEmailHash",
+            "deviceSignalHash",
+            "ipHash"
+          ]
+        },
+        {
+          "ruleId": "suspicious-ip-cluster",
+          "label": "Suspicious IP cluster detection",
+          "signals": [
+            "ipHash",
+            "submittedAt"
+          ]
+        },
+        {
+          "ruleId": "identical-prediction-pattern",
+          "label": "Suspicious identical-prediction pattern detection",
+          "signals": [
+            "predictionHash",
+            "submittedAt"
+          ]
+        },
+        {
+          "ruleId": "late-entry-attempt",
+          "label": "Late entry attempt detection",
+          "signals": [
+            "submittedAt",
+            "lockDeadlineUtc"
+          ]
+        },
+        {
+          "ruleId": "self-referral",
+          "label": "Self-referral detection",
+          "signals": [
+            "referrerId",
+            "referredUserId"
+          ]
+        },
+        {
+          "ruleId": "same-device-referral",
+          "label": "Same-device referral detection",
+          "signals": [
+            "deviceSignalHash",
+            "referrerId",
+            "referredUserId"
+          ]
+        },
+        {
+          "ruleId": "suspicious-rapid-signups",
+          "label": "Suspicious rapid referral signup detection",
+          "signals": [
+            "submittedAt",
+            "referrerId"
+          ]
+        }
+      ],
+      "schemas": {
+        "contestEntrySafety": {
+          "entryId": "string",
+          "userId": "string",
+          "verifiedEmailHash": "sha256 string",
+          "emailVerifiedAt": "ISO string",
+          "ipHash": "sha256 string",
+          "userAgentHash": "sha256 string",
+          "deviceSignalHash": "sha256 string",
+          "predictionHash": "sha256 string",
+          "submittedAt": "ISO string",
+          "lockDeadlineUtc": "ISO string",
+          "lockedAt": "ISO string",
+          "termsAcceptedAt": "ISO string"
+        },
+        "adminReviewItem": {
+          "reviewId": "string",
+          "entryId": "string",
+          "flagReason": "duplicate-account-signal | suspicious-ip-cluster | identical-prediction-pattern | late-entry-attempt | manual",
+          "severity": "low | medium | high",
+          "status": "open | cleared | disqualified | escalated",
+          "reviewedBy": "admin user id",
+          "reviewedAt": "ISO string",
+          "notes": "string"
+        },
+        "adminAuditLog": {
+          "auditId": "string",
+          "actorUserId": "string",
+          "action": "override-lock | clear-flag | disqualify-entry | export-leaderboard | verify-winner",
+          "targetEntryId": "string",
+          "reason": "string",
+          "createdAt": "ISO string"
+        }
+      },
+      "operatorShell": {
+        "status": "empty-review-shell",
+        "exportLeaderboardEnabled": false,
+        "copy": "Operator review is a shell only. Live flags, exports, and overrides require authenticated admin tooling and audit logs.",
+        "flaggedEntries": [],
+        "duplicateSignals": [],
+        "lateEntryAttempts": [],
+        "manualVerification": []
+      }
+    },
+    "fixtureScope": "all_72_group_stage_fixtures_playable",
+    "africaBonusPolicy": {
+      "status": "active-in-local-demo-scoring",
+      "copy": "Players can predict every group-stage fixture. Correct calls involving African teams earn the African Team Bonus, so Africa remains the emotional edge without shrinking the game.",
+      "appliesTo": [
+        "correct winner involving an African team",
+        "correct draw in a match involving an African team",
+        "exact score in a match involving an African team",
+        "African group qualifier pick",
+        "African champion pick"
+      ],
+      "cashPrizeNote": "Bonus points are part of Prediction Points. Fan Points and referrals still do not affect cash-prize ranking."
+    }
+  },
+  "shareCards": [
+    {
+      "cardId": "watchlist",
+      "label": "Watchlist card",
+      "template": "I am tracking {teamName} on Matchday OS. Pin your African team: https://afrotools.com/matchday-os/"
+    },
+    {
+      "cardId": "prediction",
+      "label": "Prediction card",
+      "template": "My Matchday OS pick: {teamName} to go deepest. What's yours? https://afrotools.com/matchday-os/"
+    }
+  ],
+  "contextModules": [
+    {
+      "moduleId": "daily-brief",
+      "type": "blog",
+      "title": "Daily African football brief",
+      "href": "/blog/",
+      "status": "planned",
+      "copy": "Short daily notes can attach to fixtures through contentSlug when editorial posts exist."
+    },
+    {
+      "moduleId": "viewing-center-operator",
+      "type": "tools",
+      "title": "Viewing-center operator pack",
+      "href": "/tools/event-ticket-revenue/",
+      "status": "live",
+      "copy": "Connect ticket revenue, match ticket comparison, and WhatsApp tools for venue operators."
+    },
+    {
+      "moduleId": "sponsor-inventory",
+      "type": "commercial",
+      "title": "Sponsor a matchday moment",
+      "href": "/business-enquiry/?offer=sponsored_tool&source_route=matchday-os&prospect_segment=sports_media&cta_type=sponsor",
+      "status": "live",
+      "copy": "Buyer-facing route for clearly labeled sports and viewing-center placements."
+    }
+  ]
+}

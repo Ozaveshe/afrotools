@@ -83,6 +83,25 @@ Stale retirement:
 - the repo curated backup is exempt from automatic retirement unless it is
   replaced by a verified source-owned row
 
+## Aggregator Discovery Policy
+
+Aggregator pages are useful for finding leads, but they are not the source of truth for public rows.
+
+- BachelorsPortal / Studyportals: discovery-only. Use robots/sitemap checks and low-volume lead review, then verify the canonical university or provider page before creating or enriching a row. Do not bypass account-gated content.
+- FindAPhD: reference-only from this environment. Direct automated fetches hit Cloudflare protection and the site operates a commercial listing model, so use it for manual research context or partnership exploration, not scraping.
+- Every new aggregator candidate belongs in `data/scholarships/source-candidates.json` until a compliant source contract and official-page verification path exist.
+- Use `npm run scholarships:source-recon -- <url>` to record robots/network posture before proposing a new source adapter.
+
+## Award Values And Local Currency
+
+Scholarship award amounts now have dedicated live columns on `public.scholarships`:
+
+- `award_value_min`, `award_value_max`, and `award_value_currency` store the source amount.
+- `award_value_text`, `award_value_period`, and `award_components` preserve human-readable coverage such as stipend, tuition, fees, relocation, or health cover.
+- `award_value_confidence`, `award_value_source_url`, and `award_value_last_checked_at` are required for trustworthy public display.
+
+The Scholarship Finder displays the user's local currency first when possible. It derives that from the saved profile currency, then country code via `assets/js/lib/currency.js`, and converts through `/api/forex?base=USD` with `data/forex/latest.json` as fallback. USD is shown as a secondary reference, while the source currency remains visible so users can verify against the official provider page.
+
 ## Netlify Functions
 
 Core functions:

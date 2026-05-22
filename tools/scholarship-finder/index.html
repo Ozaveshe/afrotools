@@ -15,16 +15,17 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <link rel="stylesheet" href="/assets/css/product-backbone.css?v=ef0f546e">
-<link rel="stylesheet" href="/tools/scholarship-finder/scholarship-finder-upgrade.css?v=97b620fe">
-<link rel="stylesheet" href="/tools/scholarship-finder/scholarship-deadline-trust.css?v=4241226a">
+<link rel="stylesheet" href="/tools/scholarship-finder/scholarship-finder-upgrade.css?v=608d3256">
+<link rel="stylesheet" href="/tools/scholarship-finder/scholarship-award-values.css?v=161410cd">
 <link rel="stylesheet" href="/tools/scholarship-finder/scholarship-study-context-bridge.css?v=3d7a72bb">
 <script src="/assets/js/components/related-tools-data.min.js?v=23ce2aa2" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script><script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=721eef89" defer></script><script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/components/product-backbone.js?v=6de7d198" defer></script>
-<script src="/tools/scholarship-finder/scholarship-deadline-trust.js?v=321a265b" defer></script>
-<script src="/tools/scholarship-finder/scholarship-finder-upgrade.js?v=aadc370b" defer></script>
+<script>window.AfroScholarshipFinderUpgradeEnabled = true;</script>
+<script src="/tools/scholarship-finder/scholarship-finder-upgrade.js?v=bd2a51d1" defer></script>
+<script src="/tools/scholarship-finder/scholarship-award-values.js?v=cdb87d47" defer></script>
 <script src="/tools/scholarship-finder/scholarship-study-context-bridge.js?v=8b2d1a1c" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
@@ -142,6 +143,7 @@ window.addEventListener('unhandledrejection', function (event) {
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
 <script src="/assets/js/education-scholarship-feed.js?v=dc5d929b" defer></script>
+<script src="/assets/js/lib/currency.js?v=ce2ef469" defer></script>
 <script src="/engines/scholarship-matcher.js?v=59b05ad5" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -399,8 +401,7 @@ window.addEventListener('unhandledrejection', function (event) {
 </div>
 <div class="card-body">
   <p class="summary-text" id="summaryText">Start with a quick scholarship check or build your full profile to see stronger fit explanations and save scholarships into a shortlist.</p>
-  <p class="feed-note" id="feedStatus">Checking scholarship source status.</p>
-  <div id="scholarshipSourceInfo" class="apb-stack" aria-live="polite"></div>
+  <p class="feed-note" id="feedStatus" role="status" aria-live="polite">Checking scholarship source status.</p>
   <div class="summary-grid">
     <div class="summary-item"><strong id="summaryStrong">0</strong><span>Strong</span></div>
     <div class="summary-item"><strong id="summaryGood">0</strong><span>Good</span></div>
@@ -409,9 +410,9 @@ window.addEventListener('unhandledrejection', function (event) {
   </div>
   <div class="summary-actions">
     <button type="button" class="btn btn-primary btn-sm" onclick="jumpToFullProfile()">Continue Building Profile</button>
-    <button type="button" class="btn btn-outline btn-sm" id="shortlistToggle" onclick="toggleShortlistView()">View Shortlist</button>
+    <button type="button" class="btn btn-outline btn-sm" id="shortlistToggle" onclick="toggleShortlistView()">View Saved Scholarships</button>
     <a href="/tools/education-hub/" class="btn btn-outline btn-sm action-link">Back to Education Hub</a>
-    <span class="shortlist-note" id="shortlistNote">No saved scholarships yet</span>
+    <span class="shortlist-note" id="shortlistNote" role="status" aria-live="polite">No saved scholarships yet</span>
   </div>
 </div>
 </div>
@@ -1484,21 +1485,23 @@ function formatScholarshipCount(count) {
     updateSummary(results);
   };
 
-  window.addEventListener('afroedu:scholarship-saves-updated', function (event) {
-    syncSavedScholarships(event && event.detail ? event.detail : {});
-    if (!isLoading) applyFilters();
-  });
-
-  window.addEventListener('afro-auth-change', function () {
-    loadSavedScholarships().then(function () {
+  if (!window.AfroScholarshipFinderUpgradeEnabled) {
+    window.addEventListener('afroedu:scholarship-saves-updated', function (event) {
+      syncSavedScholarships(event && event.detail ? event.detail : {});
       if (!isLoading) applyFilters();
     });
-  });
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadScholarships);
-  } else {
-    loadScholarships();
+    window.addEventListener('afro-auth-change', function () {
+      loadSavedScholarships().then(function () {
+        if (!isLoading) applyFilters();
+      });
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadScholarships);
+    } else {
+      loadScholarships();
+    }
   }
 })();
 </script>

@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/related-tools-data.min.js?v=23ce2aa2" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=721eef89" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <style>
     .ws-page h1,.ws-page h2,.ws-page h3,.ws-page h4,.ws-page h5{text-transform:none!important;letter-spacing:normal!important;font-family:'DM Sans',sans-serif!important}
@@ -41,6 +41,8 @@
     .dz input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:5}
     .up-feats{display:flex;justify-content:center;gap:28px;margin-top:28px;flex-wrap:wrap}.uf{font-size:13px;color:#6b7280;font-weight:600;display:flex;align-items:center;gap:6px}
     .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}.ws.on{display:flex}
+    body.pdf-workspace-active{overflow:hidden}
+    body.pdf-workspace-active .up-screen,body.pdf-workspace-active #pdf-saved-section,body.pdf-workspace-active>section,body.pdf-workspace-active afro-related-tools,body.pdf-workspace-active afro-footer,body.pdf-workspace-active .result-actions{display:none!important}
     body.pdf-workspace-active afro-site-assistant,body.pdf-workspace-active #afro-cookie-consent{display:none!important}
     .toolbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 16px;display:flex;align-items:center;height:50px;gap:2px;overflow-x:auto;flex-shrink:0;position:relative}.toolbar::-webkit-scrollbar{height:0}
     .tb-logo{display:flex;align-items:center;gap:8px;margin-right:12px;text-decoration:none;flex-shrink:0}
@@ -288,7 +290,7 @@
     .cmd-palette-item{width:100%;min-height:44px;border:0;background:transparent;border-radius:8px;padding:9px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;font:800 13px 'DM Sans',sans-serif;color:#334155;cursor:pointer}
     .cmd-palette-item:hover,.cmd-palette-item.on{background:#eaf3ff;color:#0f4aa2}
     .cmd-palette-item small{color:#64748b;font-weight:800}
-    .mob-bar.cmd-mobile-bar{display:none}
+    .mob-bar.cmd-mobile-bar{display:none!important}
     @media(max-width:1100px){
       .cmd-primary-row{grid-template-columns:minmax(120px,190px) minmax(0,1fr) auto}
       .cmd-identity .tb-fname{max-width:110px}
@@ -324,7 +326,7 @@
       .cmd-mode-panel .tb-btn,.cmd-mode-panel .cmd-proxy,.cmd-mode-panel .cmd-muted{min-height:46px;width:100%;justify-content:flex-start;padding:0 12px}
       .cmd-mode-panel .tb-btn span,.cmd-mode-panel .cmd-proxy span,.cmd-mode-panel .cmd-muted span{display:inline!important}
       #sigPad{width:100%!important;height:150px!important}
-      .mob-bar.cmd-mobile-bar{display:flex!important;height:58px;padding:5px 8px;gap:5px;justify-content:space-between}
+      body.pdf-workspace-active .mob-bar.cmd-mobile-bar{display:flex!important;height:58px;padding:5px 8px;gap:5px;justify-content:space-between}
       .mob-bar.cmd-mobile-bar .mob-mode{flex:1;min-width:0;height:48px;border:0;background:#fff;color:#475569;border-radius:8px;font-size:11px;font-weight:900;display:flex;flex-direction:column;gap:2px;padding:4px 2px}
       .mob-bar.cmd-mobile-bar .mob-mode.on{background:#eaf3ff;color:#0f4aa2}
       .main-view{padding-bottom:74px}
@@ -429,6 +431,11 @@
             <div class="cmd-vault-wrap"><save-to-vault id="tbVault" tool-slug="pdf-workspace" file-name="document.pdf"></save-to-vault></div>
             <button type="button" data-run="cmdNewWorkspace"><span>New workspace</span><small>Start over</small></button>
             <button type="button" data-run="cmdClearWorkspace"><span>Clear workspace</span><small>Close file</small></button>
+            <div class="cmd-menu-section">History</div>
+            <button type="button" data-run="cmdUndoEdit"><span>Undo edit</span><small>Objects</small></button>
+            <button type="button" data-run="cmdRedoEdit"><span>Redo edit</span><small>Objects</small></button>
+            <button type="button" data-run="cmdUndoPages"><span>Undo page operation</span><small>Pages</small></button>
+            <button type="button" data-run="cmdRedoPages"><span>Redo page operation</span><small>Pages</small></button>
             <div class="cmd-menu-section">Optimize / Export</div>
             <button type="button" data-run="cmdExportDrawer"><span>Export drawer</span><small>Optimize PDF</small></button>
             <button type="button" data-run="cmdPrint"><span>Print</span><small>Browser print</small></button>
@@ -634,6 +641,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 var CMD_MODE_LABELS={organize:"Pages",edit:"Edit",annotate:"Annotate",sign:"Forms & Sign",protect:"Protect",export:"Export"};
 var CMD_COMMANDS=[
   {id:"tbAdd",label:"Add PDF",group:"File"},{id:"tbDL",label:"Download",group:"File"},{id:"cmdNewWorkspace",label:"New workspace",group:"File"},{id:"cmdClearWorkspace",label:"Clear workspace",group:"File"},
+  {id:"cmdUndoEdit",label:"Undo edit",group:"History"},{id:"cmdRedoEdit",label:"Redo edit",group:"History"},{id:"cmdUndoPages",label:"Undo page operation",group:"History"},{id:"cmdRedoPages",label:"Redo page operation",group:"History"},
   {id:"tbSplit",label:"Split",group:"Pages",mode:"organize"},{id:"tbRearr",label:"Rearrange",group:"Pages",mode:"organize"},{id:"tbRotate",label:"Rotate",group:"Pages",mode:"organize"},{id:"tbDelete",label:"Delete pages",group:"Pages",mode:"organize"},{id:"tbExtract",label:"Extract pages",group:"Pages",mode:"organize"},{id:"tbPN",label:"Page numbers",group:"Pages",mode:"organize"},
   {id:"tbText",label:"Add or cover text",group:"Edit",mode:"edit"},{id:"tbEditExisting",label:"Edit PDF text",group:"Edit",mode:"edit"},{id:"tbCorrect",label:"Quick text correction",group:"Edit",mode:"edit"},{id:"tbImg",label:"Image",group:"Edit",mode:"edit"},{id:"tbCrop",label:"Crop",group:"Edit",mode:"edit"},{id:"tbWM",label:"Watermark",group:"Edit",mode:"edit"},{id:"tbStamp",label:"Stamp",group:"Edit",mode:"edit"},
   {id:"tbHL",label:"Highlight",group:"Annotate",mode:"annotate"},{id:"tbDraw",label:"Draw",group:"Annotate",mode:"annotate"},{id:"tbComment",label:"Comment/note",group:"Annotate",mode:"annotate"},{id:"tbRect",label:"Rectangle",group:"Annotate",mode:"annotate"},{id:"tbCircle",label:"Circle",group:"Annotate",mode:"annotate"},{id:"tbArrow",label:"Arrow",group:"Annotate",mode:"annotate"},{id:"tbLine",label:"Line",group:"Annotate",mode:"annotate"},
@@ -682,6 +690,10 @@ function runCommand(id,label){
   if(id==="cmdNewWorkspace"){cmdNewWorkspace();return}
   if(id==="cmdClearWorkspace"){cmdClearWorkspace();return}
   if(id==="cmdPrint"){cmdPrint();return}
+  if(id==="cmdUndoEdit"){undoObj();return}
+  if(id==="cmdRedoEdit"){redoObj();return}
+  if(id==="cmdUndoPages"){undoPageOp();return}
+  if(id==="cmdRedoPages"){redoPageOp();return}
   if(id==="cmdRedactExport"){openRedactionExport();return}
   if(id==="cmdExportDrawer"){openExportDrawer();return}
   if(id==="cmdDownloadEdited"){dlPDF();return}
@@ -719,7 +731,7 @@ function initCommandBar(){
   if($("cmdPalette"))$("cmdPalette").onclick=function(e){if(e.target===$("cmdPalette"))closeCommandPalette()};
   document.addEventListener("click",function(e){if(!$("cmdMoreMenu")||!$("cmdMoreBtn"))return;if(!$("cmdMoreMenu").contains(e.target)&&!$("cmdMoreBtn").contains(e.target))closeCommandMenus()});
   document.addEventListener("keydown",function(e){
-    if(e.key==="Escape"){closeCommandMenus();closeCommandPalette();closeCommandSheet();return}
+    if(e.key==="Escape"){closeCommandMenus();closeCommandPalette();closeCommandSheet();if(textEditMode)setTextEditMode(false,true);return}
     if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCommandPalette();return}
     if(e.key==="/"&&!isTextEntryTarget(e.target)&&$("ws")&&$("ws").classList.contains("on")){e.preventDefault();openCommandPalette()}
   });
@@ -729,8 +741,8 @@ function initCommandBar(){
 function objSnapshot(){return JSON.stringify(objs)}
 function pushObjHistory(){undoStack.push(objSnapshot());if(undoStack.length>40)undoStack.shift();redoStack=[]}
 function restoreObjs(s){try{objs=JSON.parse(s)||[]}catch(e){objs=[]}objSel=null;renderAllObjects();renderObjPanel()}
-function undoObj(){if(!undoStack.length)return;redoStack.push(objSnapshot());restoreObjs(undoStack.pop())}
-function redoObj(){if(!redoStack.length)return;undoStack.push(objSnapshot());restoreObjs(redoStack.pop())}
+function undoObj(){if(!undoStack.length){toast("No edit to undo",1);return}redoStack.push(objSnapshot());restoreObjs(undoStack.pop());toast("Edit reverted")}
+function redoObj(){if(!redoStack.length){toast("No edit to redo",1);return}undoStack.push(objSnapshot());restoreObjs(redoStack.pop());toast("Edit restored")}
 function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
 function hexRgb(hex){hex=(hex||"#111827").replace("#","");return{r:parseInt(hex.substr(0,2),16)/255,g:parseInt(hex.substr(2,2),16)/255,b:parseInt(hex.substr(4,2),16)/255}}
 function objById(id){return objs.find(function(o){return o.id===id})}
@@ -925,19 +937,27 @@ function addImageObject(file,type){
 }
 function remapObjectsAfterDelete(page){pushObjHistory();objs=objs.filter(function(o){return o.page!==page}).map(function(o){if(o.page>page)o.page--;return o});if(objSel&&!objById(objSel))objSel=null}
 function remapObjectsAfterReorder(oldPo,newPo){pushObjHistory();objs.forEach(function(o){var source=oldPo[o.page];var np=newPo.indexOf(source);o.page=np});objs=objs.filter(function(o){return o.page>=0});objSel=null}
+function exportFontSize(o,fallback){return Math.max(4,((o&&o.fontSize)||fallback||12)/1.5)}
+function exportPageBox(pg,s){
+  var b=null;
+  try{if(pg.getCropBox)b=pg.getCropBox()}catch(e){}
+  if(!b)try{if(pg.getMediaBox)b=pg.getMediaBox()}catch(e){}
+  b=b||{};
+  return{x:b.x||0,y:b.y||0,width:b.width||s.width,height:b.height||s.height};
+}
 async function applyObjectsToPDF(doc){
   var fonts={helv:await doc.embedFont(PDFLib.StandardFonts.Helvetica),bold:await doc.embedFont(PDFLib.StandardFonts.HelveticaBold),italic:await doc.embedFont(PDFLib.StandardFonts.HelveticaOblique),boldItalic:await doc.embedFont(PDFLib.StandardFonts.HelveticaBoldOblique)};
-  for(var i=0;i<objs.length;i++){var o=objs[i];if(o.page<0||o.page>=doc.getPageCount())continue;var pg=doc.getPage(o.page);if(!pg)continue;var s=pg.getSize(),x=o.x*s.width,y=s.height-(o.y+o.h)*s.height,w=o.w*s.width,h=o.h*s.height,rot=PDFLib.degrees(o.rot||0),col=hexRgb(o.color),rgb=PDFLib.rgb(col.r,col.g,col.b),op=o.opacity==null?1:o.opacity;
-    if(o.type==="text"||o.type==="watermark"||o.type==="date"||o.type==="initials"||o.type==="signatureText"){var font=o.bold&&o.italic?fonts.boldItalic:(o.bold?fonts.bold:(o.italic?fonts.italic:fonts.helv)),fs=o.fontSize||18,lines=String(o.text||"Text").split("\n");for(var li=0;li<lines.length;li++){var tx=x+4,tw=font.widthOfTextAtSize(lines[li],fs);if(o.align==="center")tx=x+(w-tw)/2;if(o.align==="right")tx=x+w-tw-4;pg.drawText(lines[li],{x:tx,y:y+h-fs-(li*fs*1.25),size:fs,font:font,color:rgb,opacity:op,rotate:rot})}}
-    else if(o.type==="field"){pg.drawRectangle({x:x,y:y,width:w,height:h,borderColor:PDFLib.rgb(.58,.64,.72),borderWidth:1,opacity:0,borderOpacity:op});var fnt=o.bold&&o.italic?fonts.boldItalic:(o.bold?fonts.bold:(o.italic?fonts.italic:fonts.helv)),fsf=o.fontSize||14,txt=String(o.text||"");if(txt)pg.drawText(txt,{x:x+4,y:y+h-fsf-3,size:fsf,font:fnt,color:rgb,opacity:op,rotate:rot})}
+  for(var i=0;i<objs.length;i++){var o=objs[i];if(o.page<0||o.page>=doc.getPageCount())continue;var pg=doc.getPage(o.page);if(!pg)continue;var s=pg.getSize(),box=exportPageBox(pg,s),x=box.x+(o.x*box.width),y=box.y+box.height-((o.y+o.h)*box.height),w=o.w*box.width,h=o.h*box.height,rot=PDFLib.degrees(o.rot||0),col=hexRgb(o.color),rgb=PDFLib.rgb(col.r,col.g,col.b),op=o.opacity==null?1:o.opacity;
+    if(o.type==="text"||o.type==="watermark"||o.type==="date"||o.type==="initials"||o.type==="signatureText"){var font=o.bold&&o.italic?fonts.boldItalic:(o.bold?fonts.bold:(o.italic?fonts.italic:fonts.helv)),fs=exportFontSize(o,18),lines=String(o.text||"Text").split("\n");for(var li=0;li<lines.length;li++){var tx=x+4,tw=font.widthOfTextAtSize(lines[li],fs);if(o.align==="center")tx=x+(w-tw)/2;if(o.align==="right")tx=x+w-tw-4;pg.drawText(lines[li],{x:tx,y:y+h-fs-(li*fs*1.25),size:fs,font:font,color:rgb,opacity:op,rotate:rot})}}
+    else if(o.type==="field"){pg.drawRectangle({x:x,y:y,width:w,height:h,borderColor:PDFLib.rgb(.58,.64,.72),borderWidth:1,opacity:0,borderOpacity:op});var fnt=o.bold&&o.italic?fonts.boldItalic:(o.bold?fonts.bold:(o.italic?fonts.italic:fonts.helv)),fsf=exportFontSize(o,14),txt=String(o.text||"");if(txt)pg.drawText(txt,{x:x+4,y:y+h-fsf-3,size:fsf,font:fnt,color:rgb,opacity:op,rotate:rot})}
     else if(o.type==="checkbox"){pg.drawRectangle({x:x,y:y,width:w,height:h,borderColor:rgb,borderWidth:1.5,opacity:0,borderOpacity:op});if(o.text==="checked"){pg.drawLine({start:{x:x+w*.18,y:y+h*.52},end:{x:x+w*.42,y:y+h*.22},thickness:2,color:rgb,opacity:op});pg.drawLine({start:{x:x+w*.42,y:y+h*.22},end:{x:x+w*.84,y:y+h*.82},thickness:2,color:rgb,opacity:op})}}
     else if(o.type==="highlight"||o.type==="whiteout"||o.type==="redact")pg.drawRectangle({x:x,y:y,width:w,height:h,color:o.type==="redact"?PDFLib.rgb(0,0,0):rgb,opacity:op,rotate:rot});
     else if(o.type==="rect")pg.drawRectangle({x:x,y:y,width:w,height:h,borderColor:rgb,borderWidth:2,opacity:0,borderOpacity:op,rotate:rot});
     else if(o.type==="circle")pg.drawEllipse({x:x+w/2,y:y+h/2,xScale:w/2,yScale:h/2,borderColor:rgb,borderWidth:2,opacity:0,borderOpacity:op,rotate:rot});
     else if(o.type==="line"||o.type==="arrow"){pg.drawLine({start:{x:x,y:y+h/2},end:{x:x+w,y:y+h/2},thickness:2,color:rgb,opacity:op});if(o.type==="arrow"){pg.drawLine({start:{x:x+w,y:y+h/2},end:{x:x+w-12,y:y+h/2+9},thickness:2,color:rgb,opacity:op});pg.drawLine({start:{x:x+w,y:y+h/2},end:{x:x+w-12,y:y+h/2-9},thickness:2,color:rgb,opacity:op})}}
-    else if(o.type==="draw"){var pts=o.points||[];for(var p=1;p<pts.length;p++)pg.drawLine({start:{x:pts[p-1][0]*s.width,y:s.height-pts[p-1][1]*s.height},end:{x:pts[p][0]*s.width,y:s.height-pts[p][1]*s.height},thickness:2,color:rgb,opacity:op})}
-    else if(o.type==="stamp"){var font=fonts.bold,fs=o.fontSize||22,txt=o.text||"APPROVED",tw=font.widthOfTextAtSize(txt,fs);pg.drawText(txt,{x:x+(w-tw)/2,y:y+(h-fs)/2,size:fs,font:font,color:rgb,opacity:op,rotate:rot});pg.drawRectangle({x:x,y:y,width:w,height:h,borderColor:rgb,borderWidth:2,opacity:0,borderOpacity:op,rotate:rot})}
-    else if(o.type==="comment"){pg.drawRectangle({x:x,y:y,width:w,height:h,color:PDFLib.rgb(1,.95,.45),opacity:.95,borderColor:PDFLib.rgb(.88,.65,.08),borderWidth:1});pg.drawText(String(o.text||"Note").slice(0,180),{x:x+6,y:y+h-16,size:11,font:fonts.helv,color:PDFLib.rgb(.35,.22,.03),opacity:op})}
+    else if(o.type==="draw"){var pts=o.points||[];for(var p=1;p<pts.length;p++)pg.drawLine({start:{x:box.x+(pts[p-1][0]*box.width),y:box.y+box.height-(pts[p-1][1]*box.height)},end:{x:box.x+(pts[p][0]*box.width),y:box.y+box.height-(pts[p][1]*box.height)},thickness:2,color:rgb,opacity:op})}
+    else if(o.type==="stamp"){var font=fonts.bold,fs=exportFontSize(o,22),txt=o.text||"APPROVED",tw=font.widthOfTextAtSize(txt,fs);pg.drawText(txt,{x:x+(w-tw)/2,y:y+(h-fs)/2,size:fs,font:font,color:rgb,opacity:op,rotate:rot});pg.drawRectangle({x:x,y:y,width:w,height:h,borderColor:rgb,borderWidth:2,opacity:0,borderOpacity:op,rotate:rot})}
+    else if(o.type==="comment"){pg.drawRectangle({x:x,y:y,width:w,height:h,color:PDFLib.rgb(1,.95,.45),opacity:.95,borderColor:PDFLib.rgb(.88,.65,.08),borderWidth:1});pg.drawText(String(o.text||"Note").slice(0,180),{x:x+6,y:y+h-11,size:exportFontSize(o,16),font:fonts.helv,color:PDFLib.rgb(.35,.22,.03),opacity:op})}
     else if((o.type==="image"||o.type==="signature")&&o.data){var bytes=dataUrlBytes(o.data),img=o.data.indexOf("image/jpeg")>-1?await doc.embedJpg(bytes):await doc.embedPng(bytes);pg.drawImage(img,{x:x,y:y,width:w,height:h,opacity:op,rotate:rot})}
   }
 }
@@ -1059,7 +1079,7 @@ function run(){
   if($("mobDl"))$("mobDl").onclick=openExportDrawer;
   if($("sbTog"))$("sbTog").onclick=function(){$("sb").classList.toggle("open")};
   initCommandBar();
-  document.addEventListener("keydown",function(e){if(isTextEntryTarget(e.target))return;if((e.key==="Delete"||e.key==="Backspace")&&objSel){e.preventDefault();deleteObj()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="z"){e.preventDefault();if(objSel)undoObj();else undoPageOp()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="y"){e.preventDefault();if(objSel)redoObj();else redoPageOp()}});
+  document.addEventListener("keydown",function(e){if(isTextEntryTarget(e.target))return;if((e.key==="Delete"||e.key==="Backspace")&&objSel){e.preventDefault();deleteObj()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="z"){e.preventDefault();if(e.shiftKey){if(objSel)redoObj();else redoPageOp()}else if(objSel)undoObj();else undoPageOp()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="y"){e.preventDefault();if(objSel)redoObj();else redoPageOp()}});
   /* Pinch to zoom on main view */
   var mv=$("mv"),lastDist=0;
   if(mv){
@@ -1539,7 +1559,7 @@ function applyExistingTextReplacement(b){
   if(!txt){toast("Enter replacement text",1);return}
   var sz=parseInt($("pdfReplaceSize").value)||b.fontSize||12,col=$("pdfReplaceColor").value||"#111827";
   clM();pushObjHistory();
-  var padX=.004,padY=.003;
+  var padX=.008,padY=.008;
   var cover=pageObjDefaults("whiteout");cover.page=b.page;cover.x=clamp(b.x-padX,0,.99);cover.y=clamp(b.y-padY,0,.99);cover.w=clamp(b.w+(padX*2),.02,1-cover.x);cover.h=clamp(b.h+(padY*2),.02,1-cover.y);
   var text=pageObjDefaults("text");text.page=b.page;text.x=clamp(b.x,0,.99);text.y=clamp(b.y,0,.99);text.w=clamp(Math.max(b.w,.08),.02,1-text.x);text.h=clamp(Math.max(b.h,.035),.02,1-text.y);text.text=txt;text.fontSize=sz;text.color=col;text.bold=$("pdfReplaceBold")&&$("pdfReplaceBold").checked;text.italic=$("pdfReplaceItalic")&&$("pdfReplaceItalic").checked;text.replacesTextBlock=b.id;
   objs.push(cover);objs.push(text);selectedTextBlock=null;setTextEditMode(false,false);selectObj(text.id);renderAllObjects();renderObjPanel();

@@ -27,10 +27,12 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=b88f9eab">
 <link rel="stylesheet" href="/assets/css/matchday-os.css?v=7b416ec9">
-<script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
+<link rel="stylesheet" href="/assets/css/matchday-live-upgrade.css?v=afaabe57">
+<script src="/assets/js/components/navbar.min.js?v=721eef89" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/assets/js/lib/matchday-standings-engine.js?v=9a6fada0" defer></script>
 <script src="/assets/js/matchday-rooms.js?v=a25fca1e" defer></script>
+<script src="/assets/js/matchday-live-upgrade.js?v=4c6b2be4" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -73,10 +75,22 @@
       <div class="matchday-section__head">
         <div>
           <h2 id="roomTeamsTitle">Switch country room</h2>
-          <p>Each room is a seed shell until verified fixtures, groups, squads, and posts are loaded.</p>
+          <p>Each room now has verified group-stage fixture context, flags, source-backed news slots, and local prediction entry points.</p>
         </div>
       </div>
       <div class="room-switcher" data-room-switcher aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="matchday-group-rail-section" aria-labelledby="roomGroupRailTitle">
+    <div class="matchday-container">
+      <div class="matchday-section__head matchday-section__head--compact">
+        <div>
+          <span class="matchday-pill">Group stage</span>
+          <h2 id="roomGroupRailTitle">Africa's group paths</h2>
+        </div>
+      </div>
+      <div class="matchday-group-rail" data-matchday-group-rail aria-label="Africa-focused group rail"></div>
     </div>
   </section>
 
@@ -85,10 +99,22 @@
       <div class="matchday-section__head">
         <div>
           <h2 id="roomDashboardTitle">Room dashboard</h2>
-          <p>Fixtures, group table position, latest posts, fan poll, and discussion prompt stay transparent about placeholder data.</p>
+          <p>Fixtures, group table position, latest posts, fan poll, and discussion prompt stay transparent about source-backed data and pending score updates.</p>
         </div>
       </div>
       <div class="room-dashboard" data-room-dashboard aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="matchday-section matchday-section--surface" aria-labelledby="roomNewsTitle">
+    <div class="matchday-container">
+      <div class="matchday-section__head">
+        <div>
+          <h2 id="roomNewsTitle">Latest room news</h2>
+          <p>Source-backed updates for the selected room. No fake comments, no invented live reporting.</p>
+        </div>
+      </div>
+      <div class="room-news-grid" data-room-news aria-live="polite"></div>
     </div>
   </section>
 

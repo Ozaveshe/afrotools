@@ -33,7 +33,7 @@
 <link rel="stylesheet" href="style.css?v=aa1e677d">
 
 <!-- Components -->
-<script src="/assets/js/components/navbar.js?v=8a5a32fc" defer></script>
+<script src="/assets/js/components/navbar.js?v=4bd06397" defer></script>
 <script src="/assets/js/components/footer.js?v=a62a07a2" defer></script>
 <script src="/engines/afrostream-engine.js?v=5a125dcd" defer></script>
 
@@ -48,7 +48,7 @@
     { "@type": "Question", "name": "How are creator rankings calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Creator Reach uses AfroScore: cross-platform followers, total views, growth, consistency, engagement, and multi-platform presence. Live Streamers is a separate leaderboard based on stream activity, live status, peak viewers, and live-platform focus. The public method is documented at /tools/afrostream/afroscore/." } },
     { "@type": "Question", "name": "How is net worth estimated?", "acceptedAnswer": { "@type": "Answer", "text": "Net worth estimates combine publicly available data (gift totals, follower counts, known sponsorship deals) with AI-assisted projections. These are estimates only." } },
     { "@type": "Question", "name": "Can I add my stream to AfroStream?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Submit your creator profile through our form. Once verified, your streams appear in the live feed and you become eligible for rankings." } },
-    { "@type": "Question", "name": "Is it free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, AfroStream is 100% free. Part of the AfroTools suite of 2,594+ free tools for Africa." } },
+    { "@type": "Question", "name": "Is it free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, AfroStream is 100% free. Part of the AfroTools suite of 2,595+ free tools for Africa." } },
     { "@type": "Question", "name": "What platforms are supported?", "acceptedAnswer": { "@type": "Answer", "text": "YouTube, Twitch, TikTok Live, Instagram Live, Kick, and Rumble. More platforms coming." } }
   ]
 }
@@ -216,6 +216,12 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
 .as-streamer-score{text-align:right}
 .as-streamer-score strong{display:block;color:var(--as-primary);font-size:1.05rem}
 .as-streamer-score span{display:block;color:#94a3b8;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em}
+.as-empty-card{grid-column:1/-1;text-align:center;padding:34px 24px;color:#64748b;background:#fff;border:1px dashed #cbd5e1;border-radius:14px}
+.as-empty-card strong{display:block;color:#0f172a;font-size:1rem;margin-bottom:6px}
+.as-empty-card p{margin:0 auto 14px;max-width:520px;font-size:.86rem;line-height:1.55}
+.as-empty-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.as-empty-actions button,.as-empty-actions a{border:1px solid #cbd5e1;background:#f8fafc;color:#0f172a;border-radius:999px;padding:7px 14px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none}
+.as-empty-actions button:hover,.as-empty-actions a:hover{border-color:var(--as-primary);color:var(--as-primary)}
 
 /* ═══ AfroScore & Tier badges ═══ */
 .as-afro-score{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0 8px;padding:8px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9}
@@ -493,7 +499,7 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
     <h2 class="as-explain-title">What is AfroStream?</h2>
     <p class="as-explain-sub">AfroStream is a free discovery hub for African creators and live streamers. We do not host streams; we help you find creators, live activity, rankings, and news across major platforms.</p>
     <div class="as-landing-features" id="featureCards"></div>
-    <p style="color:var(--as-muted);font-size:.8125rem;margin-top:32px">Powered by <a href="/" style="color:var(--as-primary)">AfroTools</a> &mdash; 2,594+ free tools for Africa</p>
+    <p style="color:var(--as-muted);font-size:.8125rem;margin-top:32px">Powered by <a href="/" style="color:var(--as-primary)">AfroTools</a> &mdash; 2,595+ free tools for Africa</p>
   </div>
 </section>
 
@@ -619,6 +625,7 @@ function hydrateLiveStreamRuntimeMetrics(stream){
   if(creator){
     stream.subs = Math.max(parseNum(stream.subs), parseNum(creator.followers), parseNum(creator.subs));
     stream.avatar = stream.avatar || creator.avatar || '';
+    stream.cover = stream.cover || creator.cover || '';
     stream.country = stream.country || creator.country;
   }
   stream.viewers = Math.max(parseNum(stream.viewers), parseNum(stream._raw && stream._raw.viewer_count));
@@ -754,7 +761,7 @@ var FAQS = [
   { q:'How are rankings calculated?', a:'Creator Reach uses AfroScore across followers, views, growth, consistency, engagement, and multi-platform presence. Live Streamers is separate and uses stream count, live status, peak viewers, and live-platform focus. Read the public methodology at /tools/afrostream/afroscore/.' },
   { q:'How is net worth estimated?', a:'Net worth estimates combine publicly available data (gift totals, follower counts, known sponsorship deals) with AI-assisted projections. These are estimates and may not reflect actual earnings.' },
   { q:'Can I add my stream?', a:'Yes! Submit your creator profile through our form. Once verified, your streams appear in the live feed and you become eligible for rankings.' },
-  { q:'Is it free?', a:'Yes, AfroStream is 100% free. It\'s part of the AfroTools suite of 2,594+ free tools for Africa.' },
+  { q:'Is it free?', a:'Yes, AfroStream is 100% free. It\'s part of the AfroTools suite of 2,595+ free tools for Africa.' },
   { q:'What platforms are supported?', a:'YouTube, Twitch, TikTok Live, Instagram Live, Kick, and Rumble. More platforms coming soon.' }
 ];
 
@@ -838,7 +845,11 @@ function resolveLiveThumbnail(stream){
     stream.image,
     stream.poster,
     stream.cover,
-    stream.avatar
+    stream.creator_cover,
+    stream.cover_url,
+    stream.avatar,
+    stream.creator_avatar,
+    stream.avatar_url
   ];
   for(var i=0;i<direct.length;i++){
     var next = normalizeThumbnailUrl(direct[i]);
@@ -855,7 +866,10 @@ function resolveLiveThumbnail(stream){
       raw.imageUrl,
       raw.poster,
       raw.cover,
+      raw.creator_cover,
+      raw.cover_url,
       raw.avatar,
+      raw.creator_avatar,
       raw.avatar_url,
       raw.profile_image,
       raw.banner_image,
@@ -875,7 +889,7 @@ function resolveLiveThumbnail(stream){
 function renderHeroStats(){
   var el = document.getElementById('heroStats');
   var stats = [
-    { val:'2,594+', label:'Creators' },
+    { val:'2,595+', label:'Creators' },
     { val: LIVE_STREAMS.length+'', label:'Live Now' },
     { val:'6', label:'Platforms' },
     { val:'12', label:'Countries' }
@@ -932,7 +946,16 @@ function renderLive(streams){
 function renderTopThree(creators){
   var el = document.getElementById('topThree');
   if(!creators.length){
-    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--as-muted);background:#fff;border:1px dashed #cbd5e1;border-radius:12px">No matching creators found.</div>';
+    var countryText = activeCountry === 'All' ? 'all countries' : activeCountry;
+    var categoryText = activeCat === 'All' ? 'all categories' : activeCat;
+    el.innerHTML = '<div class="as-empty-card">' +
+      '<strong>No creators match '+escapeHtml(categoryText)+' in '+escapeHtml(countryText)+'.</strong>' +
+      '<p>Try clearing the filters, or jump to the live-streamer ranking where recent activity can still surface creators outside this reach view.</p>' +
+      '<div class="as-empty-actions">' +
+        '<button type="button" onclick="clearCreatorFilters()">Clear filters</button>' +
+        '<a href="/tools/afrostream/rankings?mode=streamers&amp;period=month">Live streamer ranking</a>' +
+      '</div>' +
+    '</div>';
     return;
   }
   var medals = ['gold','silver','bronze'];
@@ -1006,7 +1029,14 @@ function renderStreamerBoard(searchQuery){
     return true;
   }).slice(0,8);
   if(!leaders.length){
-    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--as-muted);background:#fff;border:1px dashed #cbd5e1;border-radius:12px">Live streamer activity will appear here after streams are linked to creators.</div>';
+    el.innerHTML = '<div class="as-empty-card">' +
+      '<strong>No live-streamer matches for these filters.</strong>' +
+      '<p>Recent stream activity exists, but this category or country filter is too narrow for the current live-streamer view.</p>' +
+      '<div class="as-empty-actions">' +
+        '<button type="button" onclick="clearCreatorFilters()">Clear filters</button>' +
+        '<a href="/tools/afrostream/rankings?mode=streamers&amp;period=month">Open full ranking</a>' +
+      '</div>' +
+    '</div>';
     return;
   }
   el.innerHTML = leaders.map(function(item, index){
@@ -1188,6 +1218,17 @@ function applyFilters(){
   renderTopThree(filtered);
   renderRankTable(filtered);
   renderStreamerBoard();
+}
+
+function clearCreatorFilters(){
+  activeTime = 'All-Time Reach';
+  activeCat = 'All';
+  activeCountry = 'All';
+  var search = document.getElementById('asSearch');
+  if(search) search.value = '';
+  renderFilters();
+  renderLive(LIVE_STREAMS);
+  applyFilters();
 }
 
 
