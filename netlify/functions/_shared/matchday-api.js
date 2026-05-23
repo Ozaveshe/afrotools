@@ -172,6 +172,13 @@ async function supabaseRest(path, options) {
 }
 
 function loadTournamentData() {
+  try {
+    return require('../../../data/matchday-os/tournament-full.json');
+  } catch (error) {
+    // Fallback keeps direct Node test runs working if a bundler does not rewrite
+    // the static JSON require.
+  }
+
   const dataPath = path.resolve(__dirname, '..', '..', '..', 'data', 'matchday-os', 'tournament-full.json');
   return JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 }

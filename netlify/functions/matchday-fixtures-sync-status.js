@@ -1,13 +1,11 @@
-const fs = require('fs');
-const path = require('path');
 const {
   corsHeaders,
+  loadTournamentData,
   reply
 } = require('./_shared/matchday-api');
 
 function readTournamentStatus() {
-  const dataPath = path.resolve(__dirname, '..', '..', 'data', 'matchday-os', 'tournament-full.json');
-  const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+  const data = loadTournamentData();
   const fixtures = Array.isArray(data.fixtures) ? data.fixtures : [];
   const placeholders = fixtures.filter(function (fixture) {
     return fixture.isPlaceholder || fixture.status === 'placeholder';
