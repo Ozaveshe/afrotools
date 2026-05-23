@@ -24,25 +24,31 @@ Routes are exposed through `_redirects` and implemented in `netlify/functions/`.
   - Reads `tournament-full.json` metadata and returns fixture/source status
 
 - `POST /api/matchday/submit-prediction`
-  - Function shell exists.
-  - Must require authentication before production write enablement.
-  - Must reject edits after fixture lock.
+  - Function: `netlify/functions/matchday-submit-prediction.js`
+  - Requires an authenticated AfroTools/Supabase session.
+  - Writes user profile, one active prediction entry, and unlocked fixture predictions through the server only.
+  - Rejects or skips locked, placeholder, unknown, or invalid fixtures instead of faking a local write.
+  - Response keeps leaderboard and prize eligibility provisional until scoring, anti-cheat, and manual review run.
 
 - `GET /api/matchday/my-predictions`
-  - Function shell exists.
-  - Must return only the authenticated user's predictions.
+  - Function: `netlify/functions/matchday-get-my-predictions.js`
+  - Requires authentication.
+  - Returns only the authenticated user's entries and fixture predictions with computed lock status.
 
 - `POST /api/matchday/submit-referral`
   - Function shell exists.
   - Must reject self-referrals and award points only through the server ledger.
+  - Referral rewards remain intentionally disabled until the server ledger and review rules are implemented.
 
 - `POST /api/matchday/fan-action`
   - Function shell exists.
   - Must award Fan Points server-side only after dedupe and abuse checks.
+  - Fan Point awards remain intentionally disabled for this backend slice.
 
 - `POST /api/matchday/score-engine`
   - Function shell exists.
   - Admin-only before score recompute is enabled.
+  - Scoring remains intentionally disabled until the operator job and review workflow are ready.
 
 - `GET|POST /api/matchday/anti-cheat-review`
   - Function shell exists.

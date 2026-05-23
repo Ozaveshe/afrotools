@@ -121,6 +121,8 @@ function buildScholarshipMetadata(items, meta, now) {
     public_min_count: meta && meta.publicMinCount ? meta.publicMinCount : 0,
     official_link_count: 0,
     with_deadline_count: 0,
+    verified_deadline_count: 0,
+    no_single_public_deadline_count: 0,
     source_backed_count: 0
   };
 
@@ -145,6 +147,8 @@ function buildScholarshipMetadata(items, meta, now) {
     if (!staleDate || current.getTime() - staleDate.getTime() > 30 * 86400000) state.stale += 1;
     if (hasOfficialLink(item)) sourceHealth.official_link_count += 1;
     if (item && item.deadline_date) sourceHealth.with_deadline_count += 1;
+    if (item && item.deadline_confidence === 'verified' && item.deadline_date) sourceHealth.verified_deadline_count += 1;
+    if (item && item.deadline_confidence === 'no_single_public_deadline') sourceHealth.no_single_public_deadline_count += 1;
     if (item && (item.source_url || item.official_url)) sourceHealth.source_backed_count += 1;
     return state;
   }, {

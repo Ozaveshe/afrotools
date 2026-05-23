@@ -335,6 +335,7 @@ create table if not exists public.matchday_daily_marketing_rollups (
 
 create index if not exists matchday_fixture_predictions_user_idx on public.matchday_fixture_predictions(user_id, campaign_id);
 create index if not exists matchday_fixture_predictions_match_idx on public.matchday_fixture_predictions(match_id);
+create unique index if not exists matchday_fixture_predictions_entry_match_uidx on public.matchday_fixture_predictions(entry_id, match_id);
 create index if not exists matchday_public_leaderboard_rank_idx on public.matchday_public_leaderboard(campaign_id, period, rank_position);
 create index if not exists matchday_referral_events_referrer_idx on public.matchday_referral_events(referrer_user_id, campaign_id);
 create index if not exists matchday_anti_cheat_user_idx on public.matchday_anti_cheat_events(user_id, campaign_id);

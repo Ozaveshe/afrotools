@@ -1727,6 +1727,8 @@ async function listSavedScholarships(client, userId) {
 
     const reminder = reminderMap.get(save.scholarship_id) || null;
     const legacy = buildLegacyScholarship(scholarship);
+    const reminderUnavailableReason = getReminderUnavailableReason(scholarship);
+    const canUseDeadlineReminder = !reminderUnavailableReason;
 
     return Object.assign({}, legacy, {
       saveId: save.id,
@@ -1736,17 +1738,19 @@ async function listSavedScholarships(client, userId) {
       priority: save.priority || 'normal',
       archived: !!save.archived,
       reminder: {
-        enabled: !!(reminder && reminder.enabled),
+        enabled: !!(reminder && reminder.enabled && canUseDeadlineReminder),
         offsets: normalizeOffsets(reminder && reminder.offsets),
         lastSentAt: reminder && reminder.last_sent_at ? reminder.last_sent_at : null,
-        reminderType: reminder && reminder.reminder_type ? reminder.reminder_type : 'deadline'
+        reminderType: reminder && reminder.reminder_type ? reminder.reminder_type : 'deadline',
+        canEnable: canUseDeadlineReminder,
+        unavailableReason: reminderUnavailableReason
       }
     });
   }).filter(Boolean);
 
   const nextDeadline = items
     .filter(function (item) {
-      return item.deadline_date && new Date(item.deadline_date).getTime() >= Date.now();
+      return hasDatedFutureDeadline(item);
     })
     .sort(function (left, right) {
       return new Date(left.deadline_date).getTime() - new Date(right.deadline_date).getTime();
@@ -1787,6 +1791,29 @@ function buildReminderSchedule(deadlineDate, offsets, options) {
   });
 }
 
+function hasDatedFutureDeadline(scholarship, options) {
+  if (!scholarship || !scholarship.deadline_date || scholarship.status === 'closed') return false;
+  if (scholarship.deadline_confidence === 'no_single_public_deadline') return false;
+
+  const parsed = parseDeadlineDate(scholarship.deadline_date);
+  if (!parsed) return false;
+
+  const settings = options || {};
+  const current = settings.now instanceof Date ? settings.now : new Date();
+  const today = Date.UTC(current.getUTCFullYear(), current.getUTCMonth(), current.getUTCDate());
+  const deadline = new Date(parsed + 'T00:00:00Z');
+  return deadline.getTime() >= today;
+}
+
+function getReminderUnavailableReason(scholarship) {
+  if (!scholarship || !scholarship.is_active) return 'scholarship_unavailable';
+  if (scholarship.deadline_confidence === 'no_single_public_deadline') return 'no_single_public_deadline';
+  if (!scholarship.deadline_date) return 'missing_dated_deadline';
+  if (scholarship.status === 'closed') return 'deadline_closed';
+  if (!hasDatedFutureDeadline(scholarship)) return 'deadline_not_future_dated';
+  return '';
+}
+
 async function cancelReminderJobs(client, reminderId) {
   if (!reminderId) return;
   await client
@@ -1803,7 +1830,7 @@ async function syncReminderJobs(client, userId, scholarship, reminderRow) {
   if (!reminderRow) return [];
   await cancelReminderJobs(client, reminderRow.id);
 
-  if (!reminderRow.enabled || !scholarship || !scholarship.deadline_date || scholarship.status === 'closed') {
+  if (!reminderRow.enabled || !hasDatedFutureDeadline(scholarship)) {
     return [];
   }
 
@@ -1854,7 +1881,7 @@ async function reconcileReminderJobsForScholarshipIds(client, scholarshipIds) {
 
   const { data: scholarshipRows, error: scholarshipError } = await client
     .from('scholarships')
-    .select('id, title, provider, official_url, source_url, deadline_date, deadline_text, confidence_mode, status, is_active')
+    .select('id, title, provider, official_url, source_url, deadline_date, deadline_text, deadline_confidence, confidence_mode, status, is_active')
     .in('id', ids);
   if (scholarshipError) throw scholarshipError;
 
@@ -1895,7 +1922,7 @@ async function reconcileReminderJobsForScholarshipIds(client, scholarshipIds) {
     const scholarship = scholarshipMap.get(reminderRow.scholarship_id) || null;
     const hasActiveSave = activeSaveKeys.has(buildReminderScopeKey(reminderRow.user_id, reminderRow.scholarship_id));
 
-    if (!hasActiveSave || !scholarship || !scholarship.is_active || scholarship.status === 'closed' || !scholarship.deadline_date) {
+    if (!hasActiveSave || !scholarship || !scholarship.is_active || !hasDatedFutureDeadline(scholarship)) {
       await cancelReminderJobs(client, reminderRow.id);
       cancelledReminders += 1;
       continue;
@@ -1937,6 +1964,11 @@ async function saveScholarshipForUser(client, userId, input) {
   const scholarship = await getScholarshipById(client, scholarshipId);
   if (!scholarship || !scholarship.is_active) throw new Error('Scholarship not found');
 
+  const reminderEnabled = input.reminder_enabled === undefined ? false : !!input.reminder_enabled;
+  if (reminderEnabled && !hasDatedFutureDeadline(scholarship)) {
+    throw new Error('Deadline reminders require a dated future scholarship deadline');
+  }
+
   const saveRow = {
     user_id: userId,
     scholarship_id: scholarshipId,
@@ -1951,7 +1983,6 @@ async function saveScholarshipForUser(client, userId, input) {
     .upsert(saveRow, { onConflict: 'user_id,scholarship_id' });
   if (saveError) throw saveError;
 
-  const reminderEnabled = input.reminder_enabled === undefined ? false : !!input.reminder_enabled;
   const reminderPayload = {
     user_id: userId,
     scholarship_id: scholarshipId,
@@ -2016,6 +2047,9 @@ async function updateReminderForUser(client, userId, input) {
     .maybeSingle();
   if (saveError) throw saveError;
   if (!saveRow) throw new Error('Save the scholarship before enabling reminders');
+  if (input.enabled && !hasDatedFutureDeadline(scholarship)) {
+    throw new Error('Deadline reminders require a dated future scholarship deadline');
+  }
 
   const { data: reminderRows, error: reminderError } = await client
     .from('user_scholarship_reminders')
@@ -2052,6 +2086,7 @@ module.exports = {
   getAuthClient,
   getFallbackScholarships,
   getScholarshipById,
+  hasDatedFutureDeadline,
   listSavedScholarships,
   loadScholarshipSourceCandidates,
   loadScholarshipFeed,

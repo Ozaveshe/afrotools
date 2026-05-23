@@ -129,7 +129,7 @@ The Matchday OS content layer is static-first and editorially seeded. It is not 
 
 The public card studio lives at `/matchday-os/share-cards/`. It renders PNG cards locally with browser canvas and does not embed remote artwork. Supported templates are listed in `content.shareCardTemplates` and include today's African matches, local prediction summaries, leaderboard shell, country-room support, viewing-center flyer, group snapshot, knockout path, post-match reaction template, prize challenge invite, and sponsor-safe daily card.
 
-Cards support `1080 x 1080` square and `1080 x 1920` story output. They may use static teams, fixtures, group tables, time zones, and local prediction state, but must keep placeholder fixtures, pending leaderboard ranks, sponsor badges, and post-match reactions clearly labeled. Do not add official tournament logos, trophy likenesses, remote images, or sponsor names that have not been approved.
+Cards support `1080 x 1080` square output. They may use static teams, fixtures, group tables, time zones, neutral African fan identities, and local prediction state, but must keep placeholder fixtures, pending leaderboard ranks, sponsor badges, and post-match reactions clearly labeled. Do not add official tournament logos, trophy likenesses, remote images, or sponsor names that have not been approved.
 
 ## Commercial Layer
 

@@ -66,7 +66,11 @@ exports.handler = async function (event) {
       meta: {
         source: 'supabase',
         provisional: true,
-        prizeNotice: 'Public leaderboard rows are provisional until anti-cheat and eligibility review.'
+        scoringEnabled: rows.length > 0,
+        prizeNotice: 'Public leaderboard rows are provisional until anti-cheat and eligibility review.',
+        message: rows.length
+          ? 'Leaderboard ranks are provisional and can change after scoring, duplicate checks, and winner verification.'
+          : 'No public leaderboard rows have been published yet. Saved predictions are real, but scoring remains hidden until verified results and review jobs run.'
       }
     }, headers);
   } catch (error) {

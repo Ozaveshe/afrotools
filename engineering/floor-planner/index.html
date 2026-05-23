@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free AI Floor Planner for Africa | AfroTools</title>
-<meta name="description" content="Design your dream home with AI. Draw floor plans, add furniture, estimate construction costs in local currency. Nigerian, Kenyan, South African templates. Free.">
+<title>Free Floor Planner Beta for Africa | AfroTools</title>
+<meta name="description" content="Plan African home layouts with local templates, manual drawing tools, PNG export, printable PDF fallback, and country-aware starter cost estimates.">
 <link rel="canonical" href="https://afrotools.com/engineering/floor-planner/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="AfroPlan - AI-Powered Floor Planner for Africa">
-<meta property="og:description" content="Design your dream home with AI. Draw floor plans, add furniture, estimate construction costs in local currency. Free.">
+<meta property="og:title" content="AfroPlan - Floor Planner Beta for Africa">
+<meta property="og:description" content="Draft home layouts with local templates, manual drawing tools, PNG export, printable PDF fallback, and country-aware starter estimates.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/afroplan-floor-planner.webp">
 <meta property="og:url" content="https://afrotools.com/engineering/floor-planner/">
 <meta property="og:type" content="website">
@@ -19,9 +19,9 @@
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "AfroPlan - AI Floor Planner",
+  "name": "AfroPlan - Floor Planner Beta",
   "url": "https://afrotools.com/engineering/floor-planner/",
-  "description": "Design your dream home with AI. Draw floor plans, add furniture, estimate construction costs in local African currencies.",
+  "description": "Draft home layouts with local templates, manual drawing tools, PNG export, printable PDF fallback, and country-aware starter estimates.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -39,7 +39,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <link rel="stylesheet" href="/engineering/floor-planner/css/floor-planner.css?v=c7c65bb9">
 <link rel="stylesheet" href="/engineering/floor-planner/css/fp-qa.css?v=f3f0619b">
-<link rel="stylesheet" href="/engineering/floor-planner/css/fp-action-safety.css?v=c16e9e9a">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-action-safety.css?v=17b668b5">
 <link rel="stylesheet" href="/engineering/floor-planner/css/fp-mvp-sprint.css?v=e3c7672c">
 <link rel="stylesheet" href="/engineering/floor-planner/css/fp-export-print.css?v=6b153d4b">
 <script src="/assets/js/components/navbar.min.js?v=aa266645" defer></script>
@@ -47,8 +47,8 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
-<meta name="twitter:title" content="AfroPlan - AI-Powered Floor Planner for Africa">
-<meta name="twitter:description" content="Design your dream home with AI. Draw floor plans, add furniture, estimate construction costs in local currency. Free.">
+<meta name="twitter:title" content="AfroPlan - Floor Planner Beta for Africa">
+<meta name="twitter:description" content="Draft home layouts with local templates, manual drawing tools, PNG export, printable PDF fallback, and country-aware starter estimates.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afroplan-floor-planner.webp">
 <script type="application/ld+json">
 {
@@ -84,14 +84,14 @@
 </head>
 <body>
 <afro-navbar></afro-navbar>
-<h1 class="sr-only">AfroPlan - AI Floor Planner for Africa</h1>
+<h1 class="sr-only">AfroPlan - Floor Planner Beta for Africa</h1>
 
 <div id="fp-app">
-  <!-- AI Bar -->
+  <!-- Starter Draft Bar -->
   <div class="fp-ai-bar">
     <div class="fp-ai-bar-inner">
-      <input aria-label="Describe your floor plan e.g. &amp;quot;3 bedroom bungalow with BQ on a 60x120 plot&amp;quot;" type="text" id="fpAiInput" class="fp-ai-input" placeholder="Describe your floor plan... e.g. &quot;3 bedroom bungalow with BQ on a 60x120 plot&quot;">
-      <button type="button" id="fpAiGenerate" class="fp-btn fp-btn-primary">Generate</button>
+      <input aria-label="Describe a starter floor plan e.g. &amp;quot;Kenya 3 bedroom bungalow&amp;quot;" type="text" id="fpAiInput" class="fp-ai-input" placeholder="Describe a starter plan... e.g. &quot;Kenya 3 bedroom bungalow&quot;">
+      <button type="button" id="fpAiGenerate" class="fp-btn fp-btn-primary" title="Load a local template draft. AI generation is paused in beta.">Start draft</button>
       <button type="button" id="fpTemplatesBtn" class="fp-btn fp-btn-ghost">Templates</button>
     </div>
   </div>
@@ -154,13 +154,13 @@
       </select>
     </div>
     <div class="fp-action-right">
-      <button type="button" id="fpOptimize" class="fp-act-btn fp-act-ai" title="AI Optimize Layout">Optimize Layout</button>
-      <button type="button" id="fpEstimateCost" class="fp-act-btn fp-act-ai" title="Estimate Cost">Estimate Cost</button>
-      <button type="button" id="fpAiChat" class="fp-act-btn fp-act-ai" title="AI Chat">Chat</button>
+      <button type="button" id="fpOptimize" class="fp-act-btn" title="Run local review suggestions. Geometry is not changed.">Review plan</button>
+      <button type="button" id="fpEstimateCost" class="fp-act-btn" title="Estimate Cost">Estimate Cost</button>
+      <button type="button" id="fpAiChat" class="fp-act-btn" title="Open local planning help. AI chat is paused in beta.">Local help</button>
       <span class="fp-act-sep"></span>
-      <button type="button" id="fpExportPdf" class="fp-act-btn" title="Export PDF">PDF</button>
+      <button type="button" id="fpExportPdf" class="fp-act-btn" title="Export PDF or open printable fallback">Print/PDF</button>
       <button type="button" id="fpExportPng" class="fp-act-btn" title="Export PNG">PNG</button>
-      <button type="button" id="fpExportBoq" class="fp-act-btn" title="Download BOQ">BOQ</button>
+      <button type="button" id="fpExportBoq" class="fp-act-btn" title="Preview BOQ and download JSON">BOQ JSON</button>
       <button type="button" id="fpShare" class="fp-act-btn" title="Share Plan">Share</button>
     </div>
   </div>
@@ -197,15 +197,15 @@
   </div>
 </div>
 
-<!-- AI Chat Drawer -->
+<!-- Local Help Drawer -->
 <div id="fpChatDrawer" class="fp-chat-drawer" hidden>
   <div class="fp-chat-header">
-    <span>AfroPlan AI Advisor</span>
+    <span>AfroPlan Local Help</span>
     <button type="button" id="fpChatClose" class="fp-chat-close">&times;</button>
   </div>
   <div id="fpChatMessages" class="fp-chat-messages"></div>
   <div class="fp-chat-input-wrap">
-    <input aria-label="Ask about your floor plan" type="text" id="fpChatInput" class="fp-chat-input" placeholder="Ask about your floor plan...">
+    <input aria-label="Ask a local planning question" type="text" id="fpChatInput" class="fp-chat-input" placeholder="Ask a local planning question...">
     <button type="button" id="fpChatSend" class="fp-chat-send">Send</button>
   </div>
 </div>
@@ -216,8 +216,8 @@
   <div class="fp-mobile-tools-grid" id="fpMobileToolsGrid"></div>
 </div>
 
-<!-- Mobile FAB for AI -->
-<button type="button" id="fpMobileFab" class="fp-mobile-fab" title="AI Assistant">
+<!-- Mobile FAB for tools -->
+<button type="button" id="fpMobileFab" class="fp-mobile-fab" title="Tools" aria-label="Open drawing tools">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 017 7v3l2 4H3l2-4V9a7 7 0 017-7z" fill="currentColor" opacity="0.2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
 </button>
 
@@ -229,10 +229,11 @@
 <script src="/engineering/floor-planner/js/fp-objects.js?v=4f241d3d"></script>
 <script src="/engineering/floor-planner/js/fp-furniture.js?v=5b10b82d"></script>
 <script src="/engineering/floor-planner/js/fp-templates.js?v=9268a459"></script>
-<script src="/engineering/floor-planner/js/fp-app.js?v=3772dc62"></script>
+<script src="/engineering/floor-planner/js/fp-app.js?v=287b9b1d"></script>
 <script src="/engineering/floor-planner/js/fp-qa.js?v=0eed3842"></script>
 <script src="/engineering/floor-planner/js/fp-boq-engine.js?v=36a4d5ad"></script>
 <script src="/assets/js/lib/fp-material-pricing.js?v=2988d51e"></script>
+<script src="/engineering/floor-planner/js/fp-beta-safe.js?v=44d423aa"></script>
 <script src="/engineering/floor-planner/js/fp-mvp-sprint.js?v=20b23245"></script>
 <script src="/engineering/floor-planner/js/fp-ai-consent.js?v=c9b55201"></script>
 <script src="/engineering/floor-planner/js/fp-export-suite.js?v=83123965"></script>

@@ -17,6 +17,7 @@ function createMockClient(settings) {
     source_url: 'https://example.edu/scholarship',
     deadline_date: '2026-06-05',
     deadline_text: 'June 5, 2026',
+    deadline_confidence: 'verified',
     confidence_mode: 'live',
     status: 'open',
     is_active: true,
@@ -126,6 +127,55 @@ function createMockClient(settings) {
     return call.table === 'user_scholarship_reminders' && call.op === 'upsert';
   });
   assert.strictEqual(orphanReminderUpsert, undefined, 'orphan reminder requests must not create reminder rows');
+
+  const variableDeadlineClient = createMockClient({
+    hasActiveSave: true,
+    scholarship: {
+      deadline_date: null,
+      deadline_text: 'Official source checked: no single public deadline applies.',
+      deadline_confidence: 'no_single_public_deadline',
+      status: 'unclear'
+    }
+  });
+  await assert.rejects(
+    function () {
+      return updateReminderForUser(variableDeadlineClient, 'user-1', {
+        scholarship_id: 'sch-1',
+        enabled: true
+      });
+    },
+    /dated future scholarship deadline/,
+    'reminders should not enable for verified no-single-public-deadline scholarships'
+  );
+
+  const variableReminderUpsert = variableDeadlineClient.calls.find(function (call) {
+    return call.table === 'user_scholarship_reminders' && call.op === 'upsert';
+  });
+  assert.strictEqual(variableReminderUpsert, undefined, 'no-dated-deadline reminder requests must not create reminder rows');
+
+  const saveWithReminderClient = createMockClient({
+    scholarship: {
+      deadline_date: null,
+      deadline_text: 'Official source checked: no single public deadline applies.',
+      deadline_confidence: 'no_single_public_deadline',
+      status: 'unclear'
+    }
+  });
+  await assert.rejects(
+    function () {
+      return saveScholarshipForUser(saveWithReminderClient, 'user-1', {
+        scholarship_id: 'sch-1',
+        reminder_enabled: true
+      });
+    },
+    /dated future scholarship deadline/,
+    'save plus reminder opt-in should be rejected when no dated deadline exists'
+  );
+
+  const saveUpsert = saveWithReminderClient.calls.find(function (call) {
+    return call.table === 'user_saved_scholarships' && call.op === 'upsert';
+  });
+  assert.strictEqual(saveUpsert, undefined, 'save plus invalid reminder opt-in must not partially save before rejecting');
 
   const savedClient = createMockClient({
     hasActiveSave: true,

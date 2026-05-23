@@ -1,4 +1,5 @@
 const assert = require('assert');
+const fs = require('fs');
 const path = require('path');
 
 const trust = require(path.join(__dirname, '..', 'tools/scholarship-finder/scholarship-deadline-trust.js'));
@@ -72,7 +73,7 @@ const variable = trust.normalizeDeadline({
 
 assert.strictEqual(variable.deadlineStatus, 'variable', 'verified no-single-deadline rows should not remain in research queue');
 assert.strictEqual(variable.deadlineConfidence, 'no_single_public_deadline', 'variable rows should preserve official-source confidence');
-assert.strictEqual(variable.displayLabel, 'Verified variable deadline', 'variable rows should have a clear product label');
+assert.strictEqual(variable.displayLabel, 'No single public deadline', 'variable rows should have a clear product label');
 assert.strictEqual(variable.daysLeft, null, 'variable deadlines must not calculate days left');
 
 const closed = trust.normalizeDeadline({
@@ -107,7 +108,12 @@ const variableHtml = trust.buildTrustRowHtml({
   deadline_source_url: 'https://example.edu/variable'
 }, variable);
 
-assert(variableHtml.includes('Verified variable deadline'), 'trust row should show verified variable status');
+assert(variableHtml.includes('No single public deadline'), 'trust row should show verified variable status');
 assert(variableHtml.includes('Official source checked'), 'trust row should show official-source checked confidence');
+assert(!variableHtml.includes('Report deadline'), 'verified no-single-public-deadline rows should not invite deadline reports');
+
+const indexHtml = fs.readFileSync(path.join(__dirname, '..', 'tools/scholarship-finder/index.html'), 'utf8');
+assert(indexHtml.includes('scholarship-deadline-trust.css'), 'Scholarship Finder should load deadline-trust CSS');
+assert(indexHtml.includes('scholarship-deadline-trust.js'), 'Scholarship Finder should load deadline-trust script');
 
 console.log('Scholarship deadline trust model verified.');

@@ -9,6 +9,7 @@ const metadata = api._private.buildScholarshipMetadata([
     title: 'Open verified scholarship',
     status: 'open',
     deadline_date: '2026-06-01',
+    deadline_confidence: 'verified',
     official_url: 'https://example.edu/open',
     last_verified_at: '2026-05-23T08:00:00Z',
     created_at: '2026-05-22T08:00:00Z'
@@ -43,9 +44,11 @@ assert.strictEqual(metadata.verified_today_count, 1, 'verified today should use 
 assert.strictEqual(metadata.added_today_count, 1, 'added today should use created/published timestamps');
 assert.strictEqual(metadata.last_refresh_at, '2026-05-23T09:30:00Z', 'metadata should expose refresh timestamp');
 assert.strictEqual(metadata.stale_count, 2, 'stale count should flag old or missing verification timestamps');
+assert.strictEqual(metadata.source_health.verified_deadline_count, 1, 'source health should count verified exact deadlines');
+assert.strictEqual(metadata.source_health.no_single_public_deadline_count, 0, 'source health should count no-single-public-deadline rows');
 assert.deepStrictEqual(
   Object.keys(metadata.source_health).sort(),
-  ['degraded', 'label', 'limited', 'mode', 'official_link_count', 'public_min_count', 'source_backed_count', 'stale', 'with_deadline_count'].sort(),
+  ['degraded', 'label', 'limited', 'mode', 'no_single_public_deadline_count', 'official_link_count', 'public_min_count', 'source_backed_count', 'stale', 'verified_deadline_count', 'with_deadline_count'].sort(),
   'source health metadata should be present for the frontend status panel'
 );
 
