@@ -644,6 +644,29 @@ function discoverExistingSwPages() {
 
 discoverExistingSwPages();
 
+// Hand-crafted Hausa pages whose public slugs differ from English source slugs.
+const HA_SLUG_TO_EN = {
+  'kayan-aiki': 'all-tools',
+};
+
+const existingHaPages = new Map();
+
+function discoverExistingHaPages() {
+  const haDir = path.join(ROOT, 'ha');
+  if (!fs.existsSync(haDir)) return;
+
+  for (const [haSlug, enPage] of Object.entries(HA_SLUG_TO_EN)) {
+    const outputPath = path.join(haDir, haSlug, 'index.html');
+    if (fs.existsSync(outputPath) && resolveSourceFile(enPage)) {
+      existingHaPages.set(enPage, SITE_URL + fileToPublicRoute(outputPath));
+    }
+  }
+
+  console.log(`[existing-ha] ${existingHaPages.size} existing Hausa pages mapped`);
+}
+
+discoverExistingHaPages();
+
 // Get which languages have a translation for a given page path
 // Now considers both page-specific JSON files AND existing hand-crafted French pages
 function getAvailableLangs(pagePath) {
@@ -659,6 +682,9 @@ function getAvailableLangs(pagePath) {
     }
     if (lang === 'sw' && existingSwPages.has(clean) && !langs.includes('sw')) {
       langs.push('sw');
+    }
+    if (lang === 'ha' && existingHaPages.has(clean) && !langs.includes('ha')) {
+      langs.push('ha');
     }
   }
   return langs;
@@ -768,6 +794,14 @@ function getSwahiliUrl(pagePath) {
   return buildLangUrl(pagePath, 'sw');
 }
 
+function getHausaUrl(pagePath) {
+  const clean = pagePath.replace(/^\//, '').replace(/\/$/, '');
+  if (existingHaPages.has(clean)) {
+    return existingHaPages.get(clean);
+  }
+  return buildLangUrl(pagePath, 'ha');
+}
+
 function generateHreflangTags(pagePath, activeLangs) {
   const tags = [];
 
@@ -776,6 +810,7 @@ function generateHreflangTags(pagePath, activeLangs) {
     let url;
     if (lang === 'fr') url = getFrenchUrl(pagePath);
     else if (lang === 'sw') url = getSwahiliUrl(pagePath);
+    else if (lang === 'ha') url = getHausaUrl(pagePath);
     else url = buildLangUrl(pagePath, lang);
     tags.push(`<link rel="alternate" hreflang="${lang}" href="${url}" />`);
   }
@@ -1242,6 +1277,16 @@ function processHTML(html, lang, pagePath) {
       ['All Tools', 'Tous les outils'],
       ['All AfroTools', 'Tout AfroTools'],
       ['Search Results', 'Resultats de recherche'],
+      ['The complete AfroTools library — financial calculators, AI advisors, PDF tools, CV builder, engineering, and more. Built for all 54 African countries. Always free.', 'La bibliotheque complete AfroTools : calculateurs financiers, assistants, outils PDF, CV, ingenierie et plus encore. Concue pour les 54 pays africains. Toujours gratuite.'],
+      ['AfroTools is Africa\'s largest collection of free online calculators and productivity tools. Built specifically for the continent, our tools cover salary tax (PAYE) for all 54 African countries, VAT calculations, PDF document tools, education calculators, currency converters, and much more. Whether you are a salaried worker checking your net pay, a business owner calculating import duties, or a student computing your GPA, AfroTools has a tool designed for your needs.', 'AfroTools rassemble une grande collection gratuite de calculateurs et d outils de productivite pour l Afrique. Les outils couvrent le salaire net et le PAYE pour les 54 pays africains, la TVA, les documents PDF, l education, les devises et bien plus.'],
+      ['Browse by category below or use the search bar to find the exact tool you need. All tools are free, require no sign-up, and work on any device. Our tax calculators use official 2026 brackets from each country\'s revenue authority.', 'Parcourez les categories ci-dessous ou utilisez la recherche pour trouver l outil exact dont vous avez besoin. Les outils sont gratuits, sans inscription obligatoire, et fonctionnent sur mobile comme sur ordinateur.'],
+      ['New Tools Dropping Every Week', 'Nouveaux outils chaque semaine'],
+      ['Get notified when new tools launch. No spam, unsubscribe anytime.', 'Recevez une alerte quand un nouvel outil est publie. Pas de spam, desinscription a tout moment.'],
+      ['Live Tools', 'Outils actifs'],
+      ['In Development', 'En preparation'],
+      ['Countries Supported', 'Pays couverts'],
+      ['Free Forever', 'Gratuit pour toujours'],
+      ['Notify Me →', 'Me prevenir'],
       ['Frequently Asked Questions', 'Questions frequentes'],
       ['Related Articles', 'Articles connexes'],
       ['AfroTools Team', 'Equipe AfroTools'],

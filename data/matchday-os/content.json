@@ -265,8 +265,8 @@
         "Egypt"
       ],
       "status": "poll_shell",
-      "persistence": "frontend-only",
-      "note": "Poll buttons are an interface shell until backend persistence exists."
+      "persistence": "local-selection",
+      "note": "Vote totals will appear only when verified fan voting opens."
     },
     {
       "pollId": "first-goal-plan",
@@ -282,8 +282,8 @@
         "Bench impact"
       ],
       "status": "poll_shell",
-      "persistence": "frontend-only",
-      "note": "No public vote totals are shown until a backend exists."
+      "persistence": "local-selection",
+      "note": "Vote totals will appear only when verified fan voting opens."
     }
   ],
   "postMatchReactions": [
@@ -359,7 +359,7 @@
       "groupId": "group-l",
       "status": "scheduled_group",
       "level": "Heating up",
-      "summary": "Group L gives Ghana Panama, England and Croatia. The public tracker should explain Top 20 excitement while cash prizes remain Top 10 only."
+      "summary": "Group L gives Ghana Panama, England and Croatia. The public tracker should explain that the Top 20 can win cash only after manual winner review."
     }
   },
   "shareCardTemplates": [
@@ -367,61 +367,61 @@
       "templateId": "today-african-matches",
       "label": "Today's African matches",
       "description": "A matchday desk card for verified African-team fixtures in the selected city time zone.",
-      "status": "data_driven"
+      "status": "Data ready"
     },
     {
       "templateId": "my-predictions-today",
       "label": "My predictions today",
-      "description": "A local-device prediction summary card. Backend persistence is not implied.",
-      "status": "frontend_local"
+      "description": "A saved-picks summary card for your Matchday OS predictions.",
+      "status": "Saved picks"
     },
     {
       "templateId": "leaderboard-rank",
       "label": "My leaderboard rank",
-      "description": "A leaderboard shell card that stays pending until verified scoring and backend rows exist.",
-      "status": "shell_only"
+      "description": "A leaderboard preview card that appears after verified scoring and public rows are ready.",
+      "status": "Server pending"
     },
     {
       "templateId": "country-room-support",
       "label": "Country room support",
       "description": "A team support card for sharing a Matchday OS country room.",
-      "status": "data_driven"
+      "status": "Data ready"
     },
     {
       "templateId": "viewing-center-flyer",
       "label": "Viewing-center flyer",
       "description": "A venue-friendly flyer for watch parties, kickoff prep, and WhatsApp invites.",
-      "status": "operator_shell"
+      "status": "Viewing center"
     },
     {
       "templateId": "group-table-snapshot",
       "label": "Group table snapshot",
-      "description": "A standings card that shows only static/provisional table data from the Matchday OS data layer.",
-      "status": "data_driven"
+      "description": "A standings card that shows current Matchday OS group-table data.",
+      "status": "Data ready"
     },
     {
       "templateId": "knockout-path",
       "label": "Knockout path",
-      "description": "A bracket-path shell using placeholder round labels until verified knockout teams are known.",
-      "status": "placeholder_shell"
+      "description": "A bracket-path preview that updates when verified knockout teams are known.",
+      "status": "Path pending"
     },
     {
       "templateId": "match-result-reaction",
       "label": "Match result reaction",
       "description": "A post-match reaction template that avoids publishing unverified scores.",
-      "status": "template_only"
+      "status": "Template ready"
     },
     {
       "templateId": "prize-challenge-invite",
       "label": "Prize challenge invite",
       "description": "A free-to-enter, skill-based challenge invitation with no betting or paid-entry framing.",
-      "status": "campaign_draft"
+      "status": "Free challenge"
     },
     {
       "templateId": "sponsor-daily-card",
-      "label": "Sponsor-branded daily card",
-      "description": "A sponsor-safe daily card with a clearly labeled optional sponsor badge placeholder.",
-      "status": "sponsor_shell"
+      "label": "Daily matchday card",
+      "description": "A daily matchday card shell kept out of the fan-facing selector.",
+      "status": "Hidden public template"
     }
   ],
   "commercialInventory": {
@@ -446,13 +446,13 @@
       {
         "placementId": "prediction-challenge-sponsor",
         "label": "Prediction challenge sponsor",
-        "surface": "Challenge page, prize rules page, and free-to-enter skill challenge CTAs for the $1,200 Top 10 verified-player prize pool",
+        "surface": "Challenge page, prize rules page, and free-to-enter skill challenge CTAs for the $3,000 Top 20 verified-player prize pool",
         "status": "blocked_until_rules_and_backend_review"
       },
       {
         "placementId": "leaderboard-sponsor",
         "label": "Leaderboard sponsor",
-        "surface": "Top 20 public tracker shell and verified Prediction Points leaderboard once backend scoring exists. Only the final verified Top 10 receive cash prizes.",
+        "surface": "Top 20 public tracker shell and verified Matchday Leaderboard once server scoring exists. Final cash prizes require manual winner review.",
         "status": "backend_required"
       },
       {
@@ -526,7 +526,7 @@
       },
       {
         "question": "What can be sponsored?",
-        "answer": "Main hub placements, the free-to-enter $1,200 Prediction Challenge after backend and legal gates, Top 20 public tracker surfaces after verified scoring exists, team tracker strips, country rooms, daily cards, viewing-center flyers, newsletter updates, and sponsor-safe editorial features."
+        "answer": "Main hub placements, the free-to-enter $3,000 Prediction Challenge after server checks and legal review, Top 20 public tracker surfaces after verified scoring exists, team tracker strips, country rooms, daily cards, viewing-center flyers, newsletter updates, and sponsor-safe editorial features."
       },
       {
         "question": "What does a pilot include?",
@@ -534,7 +534,7 @@
       },
       {
         "question": "How fast can launch happen?",
-        "answer": "Simple labeled placements can be prepared quickly after sponsor copy, creative, target countries, CTA destination, legal restrictions, and reporting needs are confirmed. Prize and leaderboard sponsorships require backend locks, anti-cheat review, Top 10 verification, and rules gates first."
+        "answer": "Simple labeled placements can be prepared quickly after sponsor copy, creative, target countries, CTA destination, legal restrictions, and reporting needs are confirmed. Prize and leaderboard sponsorships require entry locks, anti-cheat review, Top 20 verification, and rules gates first."
       },
       {
         "question": "How do brands request current audience data?",
@@ -564,7 +564,6 @@
       "newsIds": [
         "news-final-draw-africa"
       ],
-      "sponsorSlot": "Morocco room sponsor slot available after sponsor review.",
       "shareCopy": "I am following Morocco in the Matchday OS country room."
     },
     {
@@ -582,9 +581,9 @@
         "preview-wc26-f-sweden-tunisia"
       ],
       "newsIds": [
+        "news-tunisia-squad",
         "news-final-draw-africa"
       ],
-      "sponsorSlot": "Tunisia room sponsor slot available after sponsor review.",
       "shareCopy": "I am following Tunisia in the Matchday OS country room."
     },
     {
@@ -604,7 +603,6 @@
       "newsIds": [
         "news-final-draw-africa"
       ],
-      "sponsorSlot": "Egypt room sponsor slot available after sponsor review.",
       "shareCopy": "I am following Egypt in the Matchday OS country room."
     },
     {
@@ -624,7 +622,6 @@
       "newsIds": [
         "news-final-draw-africa"
       ],
-      "sponsorSlot": "Algeria room sponsor slot available after sponsor review.",
       "shareCopy": "I am following Algeria in the Matchday OS country room."
     },
     {
@@ -644,7 +641,6 @@
       "newsIds": [
         "news-ghana-queiroz"
       ],
-      "sponsorSlot": "Ghana room sponsor slot available after sponsor review.",
       "shareCopy": "I am following Ghana in the Matchday OS country room."
     },
     {
@@ -664,7 +660,6 @@
       "newsIds": [
         "news-final-draw-africa"
       ],
-      "sponsorSlot": "Cabo Verde room sponsor slot available after sponsor review.",
       "shareCopy": "I am following Cabo Verde in the Matchday OS country room."
     },
     {
@@ -682,9 +677,9 @@
         "preview-wc26-a-mexico-south-africa"
       ],
       "newsIds": [
+        "news-south-africa-squad",
         "news-final-draw-africa"
       ],
-      "sponsorSlot": "South Africa room sponsor slot available after sponsor review.",
       "shareCopy": "I am following South Africa in the Matchday OS country room."
     },
     {
@@ -704,7 +699,6 @@
       "newsIds": [
         "news-senegal-squad"
       ],
-      "sponsorSlot": "Senegal room sponsor slot available after sponsor review.",
       "shareCopy": "I am following Senegal in the Matchday OS country room."
     },
     {
@@ -724,7 +718,6 @@
       "newsIds": [
         "news-cote-divoire-squad"
       ],
-      "sponsorSlot": "Côte d'Ivoire room sponsor slot available after sponsor review.",
       "shareCopy": "I am following Côte d'Ivoire in the Matchday OS country room."
     },
     {
@@ -744,75 +737,439 @@
       "newsIds": [
         "news-dr-congo-qualified"
       ],
-      "sponsorSlot": "DR Congo room sponsor slot available after sponsor review.",
       "shareCopy": "I am following DR Congo in the Matchday OS country room."
     }
   ],
   "teamNews": [
     {
-      "newsId": "news-senegal-squad",
+      "newsId": "news-all-africa-squad-tracker",
+      "postSlug": "african-squad-call-up-tracker",
       "teamIds": [
-        "senegal"
-      ],
-      "label": "Squad news",
-      "title": "Senegal provisional squad announced",
-      "summary": "FIFA reports Senegal named a provisional 28-man squad for Group I against France, Iraq and Norway.",
-      "href": "https://www.fifa.com/en/articles/senegal-world-cup-squad-announcement-pape-thiaw",
-      "source": "FIFA",
-      "updatedAt": "2026-05-20"
-    },
-    {
-      "newsId": "news-cote-divoire-squad",
-      "teamIds": [
-        "cote-divoire"
-      ],
-      "label": "Squad news",
-      "title": "Côte d'Ivoire name World Cup squad",
-      "summary": "FIFA published Côte d'Ivoire squad context before Group E fixtures against Ecuador, Germany and Curaçao.",
-      "href": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/cote-divoire-squad-announcement-emerse-fae",
-      "source": "FIFA",
-      "updatedAt": "2026-05-15"
-    },
-    {
-      "newsId": "news-ghana-queiroz",
-      "teamIds": [
+        "south-africa",
+        "morocco",
+        "cote-divoire",
+        "tunisia",
+        "egypt",
+        "cabo-verde",
+        "senegal",
+        "algeria",
+        "dr-congo",
         "ghana"
       ],
-      "label": "Coach news",
-      "title": "Ghana appoint Carlos Queiroz before Group L",
-      "summary": "FIFA reports Ghana appointed Carlos Queiroz ahead of fixtures with Panama, England and Croatia.",
-      "href": "https://www.fifa.com/en/articles/carlos-queiroz-ghana",
+      "label": "Call-up tracker",
+      "title": "African squad call-up tracker",
+      "summary": "Track confirmed African squad announcements, provisional lists, final-list deadlines, and the teams still waiting for official call-up news.",
+      "href": "/matchday-os/news/?post=african-squad-call-up-tracker",
       "source": "FIFA",
-      "updatedAt": "2026-04-13"
-    },
-    {
-      "newsId": "news-dr-congo-qualified",
-      "teamIds": [
-        "dr-congo"
-      ],
-      "label": "Qualification news",
-      "title": "DR Congo enters Group K through play-off path",
-      "summary": "FIFA confirmed the play-off route that placed DR Congo in Group K with Portugal, Uzbekistan and Colombia.",
-      "href": "https://ipt.fifa.com/news/world-cup-2026-line-up-complete-iraq-bolivia-play-off-fixtures",
-      "source": "FIFA",
-      "updatedAt": "2026-04-01"
+      "sourceHref": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/all-world-cup-squad-announcements",
+      "linkLabel": "Read post",
+      "updatedAt": "2026-05-22"
     },
     {
       "newsId": "news-final-draw-africa",
+      "postSlug": "africa-group-paths-confirmed",
       "teamIds": [
         "morocco",
         "south-africa",
         "egypt",
         "algeria",
         "tunisia",
-        "cabo-verde"
+        "cabo-verde",
+        "senegal",
+        "dr-congo",
+        "ghana",
+        "cote-divoire"
       ],
       "label": "Group draw",
       "title": "Africa group paths confirmed",
-      "summary": "The final draw placed African teams across Groups A, C, E, F, G, H, I, J, K and L.",
-      "href": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/final-draw-results",
+      "summary": "The final draw gives every African team a clear group-stage route. Matchday OS turns those paths into room, prediction, and fixture context.",
+      "href": "/matchday-os/news/?post=africa-group-paths-confirmed",
       "source": "FIFA",
+      "sourceHref": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/final-draw-results",
+      "linkLabel": "Read post",
       "updatedAt": "2026-05-22"
+    },
+    {
+      "newsId": "news-south-africa-squad",
+      "postSlug": "south-africa-preliminary-squad-hugo-broos",
+      "teamIds": [
+        "south-africa"
+      ],
+      "label": "Squad news",
+      "title": "South Africa preliminary squad named",
+      "summary": "Hugo Broos named a preliminary Bafana Bafana squad before South Africa open Group A against Mexico.",
+      "href": "/matchday-os/news/?post=south-africa-preliminary-squad-hugo-broos",
+      "source": "FIFA",
+      "sourceHref": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-africa-hugo-broos-squad-announced",
+      "linkLabel": "Read post",
+      "updatedAt": "2026-05-21"
+    },
+    {
+      "newsId": "news-tunisia-squad",
+      "postSlug": "tunisia-squad-call-ups-sabri-lamouchi",
+      "teamIds": [
+        "tunisia"
+      ],
+      "label": "Squad news",
+      "title": "Tunisia squad call-ups published",
+      "summary": "Tunisia have published their tournament squad context for Group F against Sweden, Japan and the Netherlands.",
+      "href": "/matchday-os/news/?post=tunisia-squad-call-ups-sabri-lamouchi",
+      "source": "FIFA",
+      "sourceHref": "https://www.fifa.com/en/articles/tunisia-squad-named-sabri-lamouchi",
+      "linkLabel": "Read post",
+      "updatedAt": "2026-05-21"
+    },
+    {
+      "newsId": "news-senegal-squad",
+      "postSlug": "senegal-provisional-squad-pape-thiaw",
+      "teamIds": [
+        "senegal"
+      ],
+      "label": "Squad news",
+      "title": "Senegal provisional squad announced",
+      "summary": "Pape Thiaw named a provisional Senegal list for Group I, with final-list cuts still to come before the tournament deadline.",
+      "href": "/matchday-os/news/?post=senegal-provisional-squad-pape-thiaw",
+      "source": "FIFA",
+      "sourceHref": "https://www.fifa.com/en/articles/senegal-world-cup-squad-announcement-pape-thiaw",
+      "linkLabel": "Read post",
+      "updatedAt": "2026-05-20"
+    },
+    {
+      "newsId": "news-cote-divoire-squad",
+      "postSlug": "cote-divoire-world-cup-squad-emerse-fae",
+      "teamIds": [
+        "cote-divoire"
+      ],
+      "label": "Squad news",
+      "title": "Cote d'Ivoire name World Cup squad",
+      "summary": "Emerse Fae's Cote d'Ivoire squad gives the Elephants a settled starting point before Group E fixtures with Ecuador, Germany and Curacao.",
+      "href": "/matchday-os/news/?post=cote-divoire-world-cup-squad-emerse-fae",
+      "source": "FIFA",
+      "sourceHref": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/cote-divoire-squad-announcement-emerse-fae",
+      "linkLabel": "Read post",
+      "updatedAt": "2026-05-15"
+    },
+    {
+      "newsId": "news-ghana-queiroz",
+      "postSlug": "ghana-carlos-queiroz-group-l-reset",
+      "teamIds": [
+        "ghana"
+      ],
+      "label": "Coach news",
+      "title": "Ghana appoint Carlos Queiroz before Group L",
+      "summary": "Ghana moved into Group L preparation with Carlos Queiroz in charge and fixtures against Panama, England and Croatia ahead.",
+      "href": "/matchday-os/news/?post=ghana-carlos-queiroz-group-l-reset",
+      "source": "FIFA",
+      "sourceHref": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/carlos-queiroz-ghana",
+      "linkLabel": "Read post",
+      "updatedAt": "2026-04-13"
+    },
+    {
+      "newsId": "news-dr-congo-qualified",
+      "postSlug": "dr-congo-group-k-playoff-path",
+      "teamIds": [
+        "dr-congo"
+      ],
+      "label": "Qualification news",
+      "title": "DR Congo enters Group K through play-off path",
+      "summary": "DR Congo reach a group path that includes Portugal, Uzbekistan and Colombia, giving the Leopards one of the clearest comeback storylines in Matchday OS.",
+      "href": "/matchday-os/news/?post=dr-congo-group-k-playoff-path",
+      "source": "FIFA",
+      "sourceHref": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/teams/congo-dr",
+      "linkLabel": "Read post",
+      "updatedAt": "2026-04-01"
+    }
+  ],
+  "teamNewsPosts": [
+    {
+      "slug": "african-squad-call-up-tracker",
+      "label": "Call-up tracker",
+      "title": "African squad call-up tracker for the 2026 World Cup period",
+      "dek": "A source-backed desk for African fans tracking preliminary squads, final lists, group fixtures, and what still needs official confirmation.",
+      "updatedAt": "2026-05-22",
+      "sourceName": "FIFA squad announcement tracker",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/all-world-cup-squad-announcements",
+      "teamIds": [
+        "south-africa",
+        "morocco",
+        "cote-divoire",
+        "tunisia",
+        "egypt",
+        "cabo-verde",
+        "senegal",
+        "algeria",
+        "dr-congo",
+        "ghana"
+      ],
+      "sections": [
+        {
+          "heading": "What is confirmed",
+          "paragraphs": [
+            "FIFA has an official squad-announcement tracker for the 2026 World Cup period. Matchday OS uses that tracker as the source-of-record for African squad cards instead of inventing player lists or treating rumours as call-ups.",
+            "The tracker matters because some teams publish preliminary lists before cutting down to the final tournament squad. A preliminary list should not be treated as the final squad until the source page says so."
+          ]
+        },
+        {
+          "heading": "What fans should watch",
+          "paragraphs": [
+            "For African teams, the useful questions are simple: has the coach named a preliminary list, has the final list been confirmed, are major injured players included, and which group fixtures does the squad immediately prepare for?",
+            "Matchday OS keeps those answers attached to country rooms, prediction cards and fixture previews so fans can move from news to matchday action."
+          ]
+        },
+        {
+          "heading": "Editorial note",
+          "paragraphs": [
+            "This post is a tracker, not a live rumour feed. If a federation or FIFA page changes, Matchday OS should update the card, the country room and the prediction context together."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "africa-group-paths-confirmed",
+      "label": "Group draw",
+      "title": "Africa group paths confirmed for the 2026 World Cup period",
+      "dek": "The final draw gives African teams their group-stage routes, opening opponents and country-room storylines.",
+      "updatedAt": "2026-05-22",
+      "sourceName": "FIFA final draw results",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/final-draw-results",
+      "teamIds": [
+        "morocco",
+        "south-africa",
+        "egypt",
+        "algeria",
+        "tunisia",
+        "cabo-verde",
+        "senegal",
+        "dr-congo",
+        "ghana",
+        "cote-divoire"
+      ],
+      "sections": [
+        {
+          "heading": "Why this post matters",
+          "paragraphs": [
+            "The draw turns African team tracking from a broad watchlist into a real matchday product. Every country room can now show the opponents, the next fixture and the prediction action connected to that group.",
+            "Matchday OS uses the draw to power group cards, fixture rows, share cards and the African team tracker. Scores are still pending verified final results."
+          ]
+        },
+        {
+          "heading": "African team paths",
+          "paragraphs": [
+            "South Africa are in Group A, Morocco are in Group C, Cote d'Ivoire are in Group E, Tunisia are in Group F, Egypt are in Group G, Cabo Verde are in Group H, Senegal are in Group I, Algeria are in Group J, DR Congo are in Group K, and Ghana are in Group L.",
+            "Those paths are now usable for predictions and viewing-center planning, but no qualification claim should be made until official match results are final."
+          ]
+        },
+        {
+          "heading": "Matchday OS action",
+          "paragraphs": [
+            "Use this post as the editorial anchor for group explorer cards, country rooms and the share-card studio. It is also the safest source-backed place to link users who ask why a team appears in a specific group."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "south-africa-preliminary-squad-hugo-broos",
+      "label": "Squad news",
+      "title": "South Africa preliminary squad named by Hugo Broos",
+      "dek": "Bafana Bafana move toward Group A with a preliminary squad and a clear opening match against Mexico.",
+      "updatedAt": "2026-05-21",
+      "sourceName": "FIFA South Africa squad story",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-africa-hugo-broos-squad-announced",
+      "teamIds": [
+        "south-africa"
+      ],
+      "sections": [
+        {
+          "heading": "What is confirmed",
+          "paragraphs": [
+            "FIFA reported that Hugo Broos named a preliminary South Africa squad before Bafana Bafana begin Group A against Mexico.",
+            "Because the list is preliminary, Matchday OS should treat it as a call-up stage rather than a final squad until the official final squad is confirmed."
+          ]
+        },
+        {
+          "heading": "Why it matters",
+          "paragraphs": [
+            "South Africa open the tournament against Mexico, then continue Group A against Korea Republic and Czechia in the Matchday OS fixture data. That makes the preliminary squad especially important for early predictions and country-room discussion.",
+            "The fan angle is not just who is selected. It is whether Broos has enough balance between tournament experience, midfield control, defensive recovery and transition threat."
+          ]
+        },
+        {
+          "heading": "Matchday OS action",
+          "paragraphs": [
+            "Pin South Africa in the African teams tracker, open the country room, and use the Mexico fixture card to build the first prediction before kickoff lock."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "tunisia-squad-call-ups-sabri-lamouchi",
+      "label": "Squad news",
+      "title": "Tunisia squad call-ups published for Group F",
+      "dek": "Tunisia move into Group F preparation with Sweden, Japan and the Netherlands waiting.",
+      "updatedAt": "2026-05-21",
+      "sourceName": "FIFA Tunisia squad story",
+      "sourceUrl": "https://www.fifa.com/en/articles/tunisia-squad-named-sabri-lamouchi",
+      "teamIds": [
+        "tunisia"
+      ],
+      "sections": [
+        {
+          "heading": "What is confirmed",
+          "paragraphs": [
+            "FIFA published Tunisia squad context for the 2026 World Cup period, with Sabri Lamouchi leading the team toward Group F.",
+            "The group path in Matchday OS lists Sweden, Japan and the Netherlands, so Tunisia fans can already connect the call-ups to specific fixtures and prediction cards."
+          ]
+        },
+        {
+          "heading": "What fans should watch",
+          "paragraphs": [
+            "Tunisia posts should focus on structure, midfield discipline, set pieces and how the squad handles wide rotations against different styles in the group.",
+            "If later official squad updates arrive, the post should be updated rather than adding duplicate cards."
+          ]
+        },
+        {
+          "heading": "Matchday OS action",
+          "paragraphs": [
+            "Use the Tunisia country room for fixture order, group pressure prompts and share cards. The prediction board should keep all Group F fixtures playable while clearly locking at kickoff."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "senegal-provisional-squad-pape-thiaw",
+      "label": "Squad news",
+      "title": "Senegal provisional squad announced by Pape Thiaw",
+      "dek": "Senegal enter Group I planning with a provisional list and a final cut still to come.",
+      "updatedAt": "2026-05-20",
+      "sourceName": "FIFA Senegal squad story",
+      "sourceUrl": "https://www.fifa.com/en/articles/senegal-world-cup-squad-announcement-pape-thiaw",
+      "teamIds": [
+        "senegal"
+      ],
+      "sections": [
+        {
+          "heading": "What is confirmed",
+          "paragraphs": [
+            "FIFA reported that Pape Thiaw named a provisional Senegal squad for the 2026 World Cup period.",
+            "A provisional squad is not the same as the final tournament list. Matchday OS should keep the card labelled as provisional until the source confirms the final group."
+          ]
+        },
+        {
+          "heading": "Why it matters",
+          "paragraphs": [
+            "Senegal are placed in Group I in the Matchday OS data, with France, Iraq and Norway on the group path. That mix makes squad depth, defensive leadership and attacking availability central to prediction discussion.",
+            "The country room should focus on how Senegal balance experience with fresh legs, especially across three different group opponents."
+          ]
+        },
+        {
+          "heading": "Matchday OS action",
+          "paragraphs": [
+            "Open the Senegal room, create a support card, and make the France fixture prediction once account-backed saving is available."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "cote-divoire-world-cup-squad-emerse-fae",
+      "label": "Squad news",
+      "title": "Cote d'Ivoire name World Cup squad under Emerse Fae",
+      "dek": "The Elephants have a named squad and a Group E route with Ecuador, Germany and Curacao.",
+      "updatedAt": "2026-05-15",
+      "sourceName": "FIFA Cote d'Ivoire squad story",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/cote-divoire-squad-announcement-emerse-fae",
+      "teamIds": [
+        "cote-divoire"
+      ],
+      "sections": [
+        {
+          "heading": "What is confirmed",
+          "paragraphs": [
+            "FIFA published Cote d'Ivoire squad context under Emerse Fae for the 2026 World Cup period.",
+            "Matchday OS links that squad card to Group E, where the fixture data includes Ecuador, Germany and Curacao."
+          ]
+        },
+        {
+          "heading": "Why it matters",
+          "paragraphs": [
+            "Cote d'Ivoire posts should be practical: squad balance, midfield power, wide runners, defensive transitions and the pressure of turning a strong list into group-stage points.",
+            "The card should not imply a result or qualification state before final scores are verified."
+          ]
+        },
+        {
+          "heading": "Matchday OS action",
+          "paragraphs": [
+            "Use the Elephants room for fixture reminders, group-table watch, share cards and prediction prompts tied to each Group E opponent."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ghana-carlos-queiroz-group-l-reset",
+      "label": "Coach news",
+      "title": "Ghana appoint Carlos Queiroz before Group L",
+      "dek": "A coaching change gives Ghana a new tactical frame before fixtures with Panama, England and Croatia.",
+      "updatedAt": "2026-04-13",
+      "sourceName": "FIFA Ghana coach story",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/carlos-queiroz-ghana",
+      "teamIds": [
+        "ghana"
+      ],
+      "sections": [
+        {
+          "heading": "What is confirmed",
+          "paragraphs": [
+            "FIFA reported Ghana appointed Carlos Queiroz before the 2026 World Cup period.",
+            "Matchday OS treats this as coach news rather than squad news, because the core change is the bench and the tactical setup around Group L."
+          ]
+        },
+        {
+          "heading": "Why it matters",
+          "paragraphs": [
+            "Ghana face Panama, England and Croatia in the Matchday OS fixture data. Queiroz is known for tournament structure, which makes defensive shape, transition control and set-piece detail the first watch points.",
+            "The post should be updated if the federation or FIFA publishes a confirmed squad list."
+          ]
+        },
+        {
+          "heading": "Matchday OS action",
+          "paragraphs": [
+            "Open Ghana room prompts around formation, midfield cover and how aggressive Ghana should be in the opener."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "dr-congo-group-k-playoff-path",
+      "label": "Qualification news",
+      "title": "DR Congo enter Group K through play-off path",
+      "dek": "The Leopards return to the World Cup conversation with Portugal, Uzbekistan and Colombia in their group path.",
+      "updatedAt": "2026-04-01",
+      "sourceName": "FIFA Congo DR team profile",
+      "sourceUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/teams/congo-dr",
+      "teamIds": [
+        "dr-congo"
+      ],
+      "sections": [
+        {
+          "heading": "What is confirmed",
+          "paragraphs": [
+            "FIFA lists Congo DR among the 2026 World Cup teams. Matchday OS connects that official team profile to Group K fixture context.",
+            "The group path in the local data includes Portugal, Uzbekistan and Colombia, so DR Congo posts should stay focused on confirmed fixtures and team-profile context."
+          ]
+        },
+        {
+          "heading": "Why it matters",
+          "paragraphs": [
+            "DR Congo are one of the strongest country-room storylines because the room combines return emotion, diaspora energy and a difficult group path.",
+            "The safe editorial angle is progress tracking: fixtures, squad updates when confirmed, prediction prompts and group-table movement after verified scores."
+          ]
+        },
+        {
+          "heading": "Matchday OS action",
+          "paragraphs": [
+            "Use the DR Congo room to prepare share cards, first-match predictions and group-pressure prompts without inventing squad news."
+          ]
+        }
+      ]
     }
   ]
 }

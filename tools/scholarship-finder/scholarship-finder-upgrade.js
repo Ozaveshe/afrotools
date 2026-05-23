@@ -1,1 +1,439 @@
-!function(){"use strict";var e="afro-scholarship-apply-checklists-v1",n={items:[],total:0,offset:0,loading:!1,prefetching:!1,renderLock:!1,suppressObserver:!1,shortlistOnly:!1,feedMode:"live",feedMeta:{},checklist:o(e,{}),savedPayload:null,savedKeys:{},savedRecords:{}},t=[["confirm-deadline","Confirm the deadline on the official provider page"],["check-eligibility","Check eligibility requirements"],["prepare-transcript","Prepare transcript"],["prepare-cv","Prepare CV"],["prepare-sop","Prepare personal statement or SOP"],["request-references","Request references"],["confirm-test","Confirm English test requirement"],["submit-early","Submit before the deadline"]];function i(e){return document.getElementById(e)}function a(e){return String(null==e?"":e).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function o(e,n){try{var t=window.localStorage&&window.localStorage.getItem(e);return t?JSON.parse(t):n}catch(e){return n}}function r(e,n){var t=Object.assign({tool_id:"scholarship-finder"},n||{});window.AfroProductBackbone&&window.AfroProductBackbone.ProductAnalytics?window.AfroProductBackbone.ProductAnalytics.track(e,t):"function"==typeof window.gtag&&window.gtag("event",e,t)}function s(e,n){var t=i("feedStatus");t&&(t.textContent=e,t.className="feed-note"+("warning"===n||"error"===n?" warn":""))}function l(e){return Array.isArray(e)?e.filter(Boolean):"string"==typeof e?e.split(/[;,|]/).map(function(e){return e.trim()}).filter(Boolean):e?[e]:[]}function d(e){var n=String(e||"").toLowerCase();return-1!==n.indexOf("bachelor")||-1!==n.indexOf("under")||"bsc"===n?"undergrad":-1!==n.indexOf("master")||"msc"===n?"masters":-1!==n.indexOf("doctor")||-1!==n.indexOf("phd")?"phd":-1!==n.indexOf("post")?"postdoc":n||"any"}function c(e){var n=String(e||"").toLowerCase();return-1!==n.indexOf("kingdom")||"gb"===n||"uk"===n?"uk":-1!==n.indexOf("united states")||"usa"===n||"us"===n?"us":-1!==n.indexOf("canada")?"canada":-1!==n.indexOf("australia")?"australia":-1!==n.indexOf("africa")?"africa":-1!==n.indexOf("europe")||-1!==n.indexOf("germany")||-1!==n.indexOf("france")||-1!==n.indexOf("hungary")||-1!==n.indexOf("turkey")?"eu":-1!==n.indexOf("global")||-1!==n.indexOf("multiple")?"global":n||"global"}function u(e){var n=String(e||"").toLowerCase();return-1!==n.indexOf("engineer")||-1!==n.indexOf("stem")||-1!==n.indexOf("science")||-1!==n.indexOf("tech")?"stem":-1!==n.indexOf("business")||-1!==n.indexOf("economic")||-1!==n.indexOf("finance")?"business":-1!==n.indexOf("health")||-1!==n.indexOf("medicine")||-1!==n.indexOf("medical")?"health":-1!==n.indexOf("law")||-1!==n.indexOf("govern")?"law":-1!==n.indexOf("agric")||-1!==n.indexOf("environment")||-1!==n.indexOf("climate")?"agric":-1!==n.indexOf("art")||-1!==n.indexOf("human")?"arts":-1!==n.indexOf("any")||-1!==n.indexOf("all")?"any":n||"any"}function f(e){var n=l(e.levels||e.level||e.study_levels||e.studyLevels).map(d),t=l(e.destinations||e.destination||e.destination_countries||e.country||e.countries).map(c),i=l(e.fields||e.field||e.discipline||e.category).map(u),a=String(e.funding||e.funding_type||e.fundingType||"partial").toLowerCase();return Object.assign({},e,{name:e.name||e.title||"Scholarship opportunity",provider:e.provider||e.organization||e.sponsor||"Provider not listed",description:e.description||e.summary||e.notes||"",funding:-1!==a.indexOf("full")?"full":"partial",levels:n.length?h(n):["any"],destinations:t.length?h(t):["global"],fields:i.length?h(i):["any"],officialLink:e.official_link||e.officialLink||e.official_url||e.officialUrl||e.application_url||e.applicationUrl||e.info_url||e.infoUrl||e.source_url||e.sourceUrl||"",sourceUrl:e.source_url||e.sourceUrl||e.official_url||e.officialUrl||e.application_url||e.applicationUrl||e.info_url||e.infoUrl||"",deadlineDate:e.deadline_date||e.deadlineDate||"",deadlineText:e.deadline_text||e.deadlineText||e.deadline||"",lastChecked:e.deadline_last_checked||e.last_verified_at||e.last_checked||e.lastChecked||e.last_checked_at||e.lastCheckedAt||e.updated_at||e.updatedAt||"",confidence:e.confidence||e.confidence_mode||e.confidenceMode||e.status||e.mode||"",deadlineConfidence:e.deadline_confidence||e.deadlineConfidence||"",deadlineResolution:e.deadline_resolution||e.deadlineResolution||"",scholarshipId:e.scholarship_id||e.scholarshipId||e.id||""})}function h(e){var n={};return e.filter(function(e){var t=String(e||"").toLowerCase();return!(!t||n[t]||(n[t]=!0,0))})}function p(e){return window.AfroScholarshipFeed&&"function"==typeof window.AfroScholarshipFeed.getScholarshipKey?window.AfroScholarshipFeed.getScholarshipKey(e):String(e&&(e.application_url||e.info_url||e.source_url||e.officialLink||e.sourceUrl||e.name)||"").trim().toLowerCase()}function g(e){var n={};return e.filter(function(e){var t=p(e);return!(!t||n[t]||(n[t]=!0,0))})}function m(e){var n=e?new Date(e):null;return!n||Number.isNaN(n.getTime())?String(e||"Provider page varies"):n.toLocaleDateString(void 0,{year:"numeric",month:"short",day:"numeric"})}function v(e){var n=String(e.deadlineConfidence||"").toLowerCase(),t=e.deadlineDate||e.deadline_date||"",i=t?new Date(t):null,a=String(e.deadlineText||"").trim(),o="no_single_public_deadline"===n,r="verified"===n||o||-1!==String(e.proof_level||"").indexOf("official");if(!i||Number.isNaN(i.getTime()))return o?{status:"variable",label:"Verified variable",detail:e.deadlineResolution?w(e.deadlineResolution):"Official source checked. This provider uses programme, country, partner, intake, or course-specific deadlines.",dateLabel:a||"Provider-specific deadlines",sortValue:Number.POSITIVE_INFINITY,daysLeft:null,verified:!0}:{status:"unclear",label:"Research queue",detail:"Official provider link is available, but the exact date still needs verification.",dateLabel:a||"Provider page varies",sortValue:Number.POSITIVE_INFINITY,daysLeft:null,verified:!1};var s=new Date;s.setHours(0,0,0,0),i.setHours(0,0,0,0);var l=Math.ceil((i.getTime()-s.getTime())/864e5);if(l<0)return{status:"closed",label:"Closed",detail:"This cycle date has passed. Check the provider page for the next application window.",dateLabel:m(t),sortValue:Number.POSITIVE_INFINITY,daysLeft:l,verified:r};var d=l<=7?"urgent":l<=30?"closing-soon":"open";return{status:d,label:"urgent"===d?"Closing soon":"closing-soon"===d?"Watch":"Open",detail:0===l?"Closes today":l+" day"+(1===l?"":"s")+" left",dateLabel:m(t),sortValue:i.getTime(),daysLeft:l,verified:r}}function w(e){var n=String(e||"").replace(/_/g," ");return n?n.charAt(0).toUpperCase()+n.slice(1)+".":""}function y(e){var n=String(e.confidence||e.status||"").toLowerCase();return"verified"===e.deadlineConfidence?5:"no_single_public_deadline"===e.deadlineConfidence||-1!==n.indexOf("verified")||-1!==n.indexOf("live")||-1!==n.indexOf("high")?4:-1!==n.indexOf("good")||-1!==n.indexOf("active")?3:-1!==n.indexOf("partial")||-1!==n.indexOf("medium")?2:1}function b(){return!!(n.savedPayload&&n.savedPayload.isSignedIn||(window.AfroScholarshipFeed&&"function"==typeof window.AfroScholarshipFeed.isSignedIn?window.AfroScholarshipFeed.isSignedIn():window.AfroAuth&&"function"==typeof window.AfroAuth.isLoggedIn&&window.AfroAuth.isLoggedIn()))}function S(e){var t=e||{},i={},a={};(Array.isArray(t.localKeys)?t.localKeys:[]).forEach(function(e){e&&(i[String(e).toLowerCase()]=!0)}),(Array.isArray(t.items)?t.items:[]).forEach(function(e){var n=f(e),t=p(n);t&&(i[t]=!0,a[t]=n),n.scholarshipId&&(a[String(n.scholarshipId)]=n)}),n.savedPayload=t,n.savedKeys=i,n.savedRecords=a,I(M())}function k(){return window.AfroScholarshipFeed&&"function"==typeof window.AfroScholarshipFeed.loadSaved?window.AfroScholarshipFeed.loadSaved({scholarships:n.items}).then(function(e){return S(e),e}).catch(function(){S(O())}):(S(O()),Promise.resolve(n.savedPayload))}function O(){var e=window.AfroScholarshipFeed&&"function"==typeof window.AfroScholarshipFeed.getLocalShortlistKeys?window.AfroScholarshipFeed.getLocalShortlistKeys():[];return{items:[],count:e.length,localKeys:e,isSignedIn:!1,mode:"local",syncLabel:"Local shortlist",reminderEnabledCount:0,nextDeadline:null}}function A(e){var t=p(e);return!(!t||!n.savedKeys[t])}function x(e){var t="string"==typeof e?e:p(e);return t&&n.savedRecords[t]?n.savedRecords[t]:null}function L(e){for(var t=0;t<n.items.length;t+=1)if(p(n.items[t])===e)return n.items[t];return x(e)}function _(e,n){var t="/api/scholarships?limit="+encodeURIComponent(n||60)+"&offset="+encodeURIComponent(e||0);return fetch(t,{credentials:"same-origin"}).then(function(e){if(!e.ok)throw new Error("Scholarship API returned "+e.status);return e.json()}).then(function(e){var n=(e.scholarships||e.items||e.data||[]).map(f);return{items:n,total:Number(e.total||e.total_count||e.totalCount||e.count||n.length),mode:e.mode||e.label||"live",meta:e}}).catch(function(t){if((e||0)>0||!window.AfroScholarshipFeed||"function"!=typeof window.AfroScholarshipFeed.load)throw t;return window.AfroScholarshipFeed.load().then(function(e){var t=(e.scholarships||[]).map(f);return{items:t.slice(0,n||60),total:t.length,mode:e.meta&&e.meta.mode?e.meta.mode:"fallback",meta:e.meta||{}}})})}function C(){n.prefetching||!n.total||n.offset>=n.total||n.items.length>=240||(n.prefetching=!0,function e(){if(n.offset>=n.total||n.items.length>=240)return n.prefetching=!1,void T();_(n.offset,60).then(function(t){n.items=g(n.items.concat(t.items)),n.total=t.total||n.total||n.items.length,n.offset=n.items.length,n.feedMode=t.mode||n.feedMode,n.feedMeta=t.meta||n.feedMeta,T(),k(),window.setTimeout(e,120)}).catch(function(){n.prefetching=!1})}())}function M(){var e={level:i("level")&&i("level").value||"all",destination:i("destination")&&i("destination").value||"all",field:i("field")&&i("field").value||"all",funding:i("funding")&&i("funding").value||"all",deadline:i("deadlineFilter")&&i("deadlineFilter").value||"all",search:(i("search")&&i("search").value||"").toLowerCase().trim(),sortBy:i("sortBy")&&i("sortBy").value||"deadline"},t=n.items.filter(function(t){var i=v(t),a=[t.name,t.provider,t.description,t.deadlineText].join(" ").toLowerCase();return!("all"!==e.level&&-1===t.levels.indexOf(e.level)&&-1===t.levels.indexOf("any")||"all"!==e.destination&&-1===t.destinations.indexOf(e.destination)&&-1===t.destinations.indexOf("global")||"all"!==e.field&&-1===t.fields.indexOf(e.field)&&-1===t.fields.indexOf("any")||"all"!==e.funding&&t.funding!==e.funding||"all"!==e.deadline&&i.status!==e.deadline||e.search&&-1===a.indexOf(e.search)||n.shortlistOnly&&!A(t))});return t.forEach(function(n){n._upgradeMatchScore=function(e,n){var t=0;return"all"!==n.level&&-1!==e.levels.indexOf(n.level)&&(t+=30),"all"!==n.destination&&-1===e.destinations.indexOf(n.destination)&&-1===e.destinations.indexOf("global")||(t+=22),"all"!==n.field&&-1===e.fields.indexOf(n.field)&&-1===e.fields.indexOf("any")||(t+=20),"all"!==n.funding&&e.funding===n.funding&&(t+=15),t+=3*y(e),"unclear"!==v(e).status&&(t+=8),t}(n,e)}),t.sort(function(n,t){var i=v(n).sortValue,a=v(t).sortValue;return"confidence"===e.sortBy?y(t)-y(n)||i-a:"match"===e.sortBy?(t._upgradeMatchScore||0)-(n._upgradeMatchScore||0)||i-a:"recent"===e.sortBy?P(t.lastChecked)-P(n.lastChecked)||i-a:"name"===e.sortBy?String(n.name||"").localeCompare(String(t.name||"")):i-a||y(t)-y(n)}),t}function P(e){var n=e?new Date(e):null;return n&&!Number.isNaN(n.getTime())?n.getTime():0}function I(e){var t=e||[],i=n.items,a=i.filter(function(e){return v(e).verified&&e.deadlineDate}).length,o=i.filter(function(e){return"variable"===v(e).status}).length,r=i.filter(function(e){return"unclear"===v(e).status}).length,s=t.filter(function(e){return(e._upgradeMatchScore||0)>=70}).length,l=t.filter(function(e){return(e._upgradeMatchScore||0)>=45&&(e._upgradeMatchScore||0)<70}).length,d=Math.max(0,t.length-s-l),c=n.savedPayload&&null!=n.savedPayload.count?Number(n.savedPayload.count):Object.keys(n.savedKeys).length,u=b();F("summaryStrong",s),F("summaryGood",l),F("summaryPossible",d),F("summaryShortlist",isNaN(c)?0:c),F("summaryMode",n.shortlistOnly?"Saved":"Live feed"),F("countBadge",t.length+(n.shortlistOnly?" saved scholarships":" scholarships found")),F("shortlistToggle",n.shortlistOnly?"Show All Scholarships":"View Saved Scholarships"),F("shortlistNote",c?u?c+" synced save"+(1===c?"":"s"):c+" saved on this device":u?"Signed in. Save scholarships to sync reminders.":"Guest saves stay on this device. Sign in for reminders.");var f="Showing "+t.length+" filtered scholarship"+(1===t.length?"":"s")+" from "+n.items.length+" loaded out of "+(n.total||n.items.length)+". "+a+" exact deadlines and "+o+" verified variable deadline rules are resolved.";r&&(f+=" "+r+" records remain in research queue."),n.shortlistOnly&&!t.length&&(f="No saved scholarships match this filter yet. Save a scholarship from the full finder and it will appear here."),F("summaryText",f);var h=(n.feedMode||"live")+" feed. "+n.items.length+" loaded";n.prefetching&&(h+=", still loading more in the background"),F("feedStatus",h+=". Deadlines are exact or marked as verified variable.")}function F(e,n){var t=i(e);t&&(t.textContent=n)}function T(){if(!n.renderLock){n.renderLock=!0;var e=i("scholarshipGrid");if(e){var t=M();if(I(t),n.suppressObserver=!0,!t.length)return window.AfroProductBackbone&&window.AfroProductBackbone.renderEmptyState?window.AfroProductBackbone.renderEmptyState(e,{icon:"0",title:n.shortlistOnly?"No saved scholarships here":"No scholarships match this filter",message:n.shortlistOnly?"Save a scholarship first, then use this view to manage it.":"Try a broader deadline, funding, level, destination, or field filter."}):e.innerHTML="<p>No scholarships match this filter.</p>",V(),window.setTimeout(function(){n.suppressObserver=!1},80),void(n.renderLock=!1);e.innerHTML=t.map(E).join(""),V(),window.setTimeout(function(){n.suppressObserver=!1},80),n.renderLock=!1}else n.renderLock=!1}}function E(e){var i=p(e),o=encodeURIComponent(i),r=v(e),s="sch-checklist-"+(String(i||"").replace(/[^a-z0-9_-]+/gi,"-").slice(0,80)||String(Date.now())),l=A(e),d=x(e)||e,c=d&&d.reminder?d.reminder:null,u=!(!c||!c.enabled),f=function(e,n,t){return t?"Deadline reminder is on for this scholarship":n?e?"Sign in to manage reminders":"Save this scholarship to turn on deadline reminders":"Reminders need an exact future deadline"}(l,!!e.deadlineDate&&"closed"!==r.status,u),h=e.officialLink||e.sourceUrl||"#",g=(e._upgradeMatchScore||0)>=70?"Strong match":(e._upgradeMatchScore||0)>=45?"Good match":"Possible match",w=r.verified?'<span class="sch-upgrade-verified" aria-label="Verified deadline source"><span aria-hidden="true">&#10003;</span> Verified</span>':"";return'<article class="sch-card sch-upgrade-card" data-sch-key="'+a(o)+'"><div class="sch-upgrade-badge-row"><span class="funding-badge '+("full"===e.funding?"full":"partial")+'">'+("full"===e.funding?"FULLY FUNDED":"PARTIAL")+'</span><span class="sch-upgrade-badge '+a(r.status)+'" role="status">'+a(r.label)+"</span>"+w+'<span class="match-badge good">'+a(g)+"</span></div><h3>"+a(e.name)+'</h3><div class="provider">'+a(e.provider)+'</div><div class="details">'+a(e.description||"Open the official provider page to confirm eligibility, funding coverage, and application instructions.")+'</div><div class="deadline deadline-card '+a(r.status)+'"><span class="deadline-label">Deadline</span><strong>'+a(r.dateLabel)+"</strong><small>"+a(r.detail)+'</small></div><div class="sch-upgrade-meta-grid">'+N("Level",R(e.levels,U))+N("Destination",R(e.destinations,B))+N("Field",R(e.fields,D))+N("Last checked",e.lastChecked?m(e.lastChecked):"Verified source record")+'</div><div class="sch-upgrade-actions"><button type="button" class="btn btn-outline btn-sm shortlist-btn'+(l?" is-saved":"")+'" data-sch-save="'+a(o)+'">'+(l?"Saved":"Save scholarship")+'</button><button type="button" class="btn btn-outline btn-sm" data-sch-reminder="'+a(o)+'" aria-label="'+a(f)+'">'+(u?"Reminder on":"Reminder")+'</button><button type="button" class="btn btn-outline btn-sm" data-sch-checklist="'+a(o)+'" aria-controls="'+a(s)+'" aria-expanded="false">Checklist</button><a class="btn btn-primary btn-sm action-link" data-sch-official="'+a(o)+'" href="'+a(h)+'" target="_blank" rel="noopener">Official provider</a></div>'+function(e,i){var o=n.checklist[e]||{};return'<div class="sch-upgrade-checklist" id="'+a(i)+'"><h4>Application checklist</h4>'+t.map(function(n){return'<label><input type="checkbox" data-sch-check-item="'+a(n[0])+'" data-sch-check-key="'+a(encodeURIComponent(e))+'"'+(o[n[0]]?" checked":"")+"> <span>"+a(n[1])+"</span></label>"}).join("")+"</div>"}(i,s)+"</article>"}function N(e,n){return'<div class="sch-upgrade-meta"><span>'+a(e)+"</span><strong>"+a(n||"Not provided")+"</strong></div>"}function R(e,n){var t=(e||[]).map(n).filter(Boolean);return t.length?t.join(", "):"Not provided"}function U(e){return{undergrad:"BSc / Undergraduate",masters:"MSc / Masters",phd:"PhD",postdoc:"Postdoc",any:"All levels"}[e]||e}function B(e){return{uk:"United Kingdom",us:"United States",eu:"Europe",africa:"Africa",canada:"Canada",australia:"Australia",global:"Global / multiple"}[e]||e}function D(e){return{stem:"STEM / Engineering",business:"Business / Economics",health:"Health / Medicine",law:"Law / Governance",arts:"Arts / Humanities",agric:"Agriculture / Environment",any:"Open to any field"}[e]||e}function V(){var e=i("scholarshipLoadMore");e&&(n.offset<n.total&&!n.prefetching?window.AfroProductBackbone&&window.AfroProductBackbone.renderLoadMore&&window.AfroProductBackbone.renderLoadMore(e,{offset:n.offset,limit:60,total:n.total,label:"Load more scholarships"},function(){n.loading?Promise.resolve():(n.loading=!0,r("scholarship_load_more_clicked",{offset:n.offset,limit:60}),_(n.offset,60).then(function(e){return n.items=g(n.items.concat(e.items)),n.total=e.total||n.total||n.items.length,n.offset=n.items.length,n.feedMode=e.mode||n.feedMode,n.feedMeta=e.meta||n.feedMeta,n.loading=!1,T(),k(),e}).catch(function(e){n.loading=!1;var t=i("scholarshipLoadMore");t&&(t.innerHTML='<p class="sch-upgrade-load-status" role="status">'+a(e.message||"Unable to load more scholarships right now.")+"</p>")}))}):e.innerHTML='<p class="sch-upgrade-load-status" role="status">Showing <span class="sch-upgrade-count">'+a(n.items.length)+'</span> of <span class="sch-upgrade-count">'+a(n.total||n.items.length)+"</span> scholarships.</p>")}function K(e,n,t){return Array.prototype.some.call(e.options||[],function(e){return e.value===n})?n:t}function j(){["level","destination","field","funding","deadlineFilter","sortBy"].forEach(function(e){var n=i(e);n&&n.addEventListener("change",function(){r("scholarship_filter_changed",{filter:e}),T()})}),i("search")&&i("search").addEventListener("input",function(){T()}),document.addEventListener("click",function(e){var n=e.target.closest("[data-sch-save]"),t=e.target.closest("[data-sch-reminder]"),i=e.target.closest("[data-sch-checklist]"),a=e.target.closest("[data-sch-official]");n&&H(decodeURIComponent(n.getAttribute("data-sch-save")||"")),t&&!t.disabled&&q(decodeURIComponent(t.getAttribute("data-sch-reminder")||"")),i&&function(e){var n=decodeURIComponent(e.getAttribute("data-sch-checklist")||""),t=e.closest(".sch-upgrade-card"),i=t&&t.querySelector(".sch-upgrade-checklist");if(i){var a=!i.classList.contains("is-open");i.classList.toggle("is-open",a),e.setAttribute("aria-expanded",a?"true":"false"),a&&r("scholarship_apply_checklist_opened",{scholarship_key:n})}}(i),a&&r("scholarship_official_link_clicked",{scholarship_key:decodeURIComponent(a.getAttribute("data-sch-official")||"")})}),document.addEventListener("change",function(t){var i=t.target.closest("[data-sch-check-item]");if(i){var a=decodeURIComponent(i.getAttribute("data-sch-check-key")||""),o=i.getAttribute("data-sch-check-item");n.checklist[a]=n.checklist[a]||{},n.checklist[a][o]=i.checked,function(e,n){try{window.localStorage&&window.localStorage.setItem(e,JSON.stringify(n))}catch(e){}}(e,n.checklist)}}),window.addEventListener("afroedu:scholarship-saves-updated",function(e){S(e&&e.detail?e.detail:{}),T()}),window.addEventListener("afro-auth-change",function(){k().then(T)})}function H(e){var t=L(e);if(t&&window.AfroScholarshipFeed){var i=A(t),a=i&&"function"==typeof window.AfroScholarshipFeed.unsaveScholarship?window.AfroScholarshipFeed.unsaveScholarship({scholarship:t,scholarships:n.items}):"function"==typeof window.AfroScholarshipFeed.saveScholarship?window.AfroScholarshipFeed.saveScholarship({scholarship:t,scholarships:n.items}):null;a&&"function"==typeof a.then&&a.then(function(n){S(n),r(i?"scholarship_unsaved":"scholarship_saved",{scholarship_key:e}),s(i?"Scholarship removed from saved scholarships.":"Scholarship saved. Use View Saved Scholarships to find it again.","success"),T()}).catch(function(e){s(e&&e.message?e.message:"Unable to update saved scholarships right now.","error")})}}function q(e){var t=L(e);if(t){var i=v(t);t.deadlineDate&&"closed"!==i.status?b()?(A(t)?Promise.resolve(n.savedPayload):window.AfroScholarshipFeed.saveScholarship({scholarship:t,scholarships:n.items,allowLocalFallback:!1})).then(function(n){S(n);var i=x(t)||t,a=i&&i.reminder?i.reminder:null,o=!(a&&a.enabled);if(!window.AfroScholarshipFeed||"function"!=typeof window.AfroScholarshipFeed.updateReminder)throw new Error("Reminder controls are unavailable right now.");return window.AfroScholarshipFeed.updateReminder({scholarshipId:i.scholarshipId||i.id||t.scholarshipId||t.id,scholarship:i,enabled:o,offsets:a&&a.offsets&&a.offsets.length?a.offsets:window.AfroScholarshipFeed.DEFAULT_REMINDER_OFFSETS||[30,14,7,1,0]}).then(function(n){S(n),s(o?"Deadline reminder enabled for this saved scholarship.":"Deadline reminder disabled.","success"),r(o?"scholarship_reminder_enabled":"scholarship_reminder_disabled",{scholarship_key:e}),T()})}).catch(function(e){s(e&&e.message?e.message:"Unable to update scholarship reminder right now.","error")}):window.AfroAuthModal&&"function"==typeof window.AfroAuthModal.open?window.AfroAuthModal.open():s("Sign in to sync saved scholarships and deadline reminders.","warning"):s("Reminders need an exact future deadline. Variable or closed cycles stay source-checked without reminders.","warning")}}function G(){var e=i("scholarshipGrid");e&&window.MutationObserver&&new MutationObserver(function(){n.renderLock||n.suppressObserver||!n.items.length||(window.clearTimeout(G.timer),G.timer=window.setTimeout(T,60))}).observe(e,{childList:!0})}function Y(){var e;!function(){var e=i("funding");if(e&&!i("deadlineFilter")){var n=document.createElement("div");n.className="field",n.innerHTML='<label for="deadlineFilter">Deadline</label><select id="deadlineFilter" aria-label="Deadline"><option value="all">All deadlines</option><option value="urgent">Closing soon (0-7 days)</option><option value="closing-soon">Watch (8-30 days)</option><option value="open">Open (30+ days)</option><option value="closed">Closed / next cycle</option><option value="variable">Verified variable</option><option value="unclear">Research queue</option></select>',e.parentElement.parentElement.appendChild(n)}}(),(e=i("sortBy"))&&(e.innerHTML='<option value="deadline">Nearest deadline</option><option value="confidence">Verified first</option><option value="match">Strongest match</option><option value="recent">Recently checked</option><option value="name">Name (A-Z)</option>',e.value="deadline"),function(){var e=new URLSearchParams(window.location.search),n={};["destination","country","level","studyLevel","field","budget","funding","scholarship"].forEach(function(t){e.has(t)&&(n[t]=e.get(t))});var t=o("afrotools:scholarship-finder-prefill:v1",null);if(t&&"object"==typeof t&&(n=Object.assign({},t,n)),Object.keys(n).length&&(i("level")&&(n.level||n.studyLevel)&&(i("level").value=d(n.level||n.studyLevel)),i("destination")&&(n.destination||n.country)&&(i("destination").value=K(i("destination"),c(n.destination||n.country),"global")),i("field")&&n.field&&(i("field").value=K(i("field"),u(n.field),"all")),i("funding")&&-1!==String(n.funding||n.scholarship||"").toLowerCase().indexOf("full")&&(i("funding").value="full"),!i("scholarshipStudyContext")&&i("resultsSummary"))){var a=document.createElement("div");a.id="scholarshipStudyContext",a.className="sch-upgrade-context",a.textContent="Showing scholarships related to your study abroad plan.",i("resultsSummary").parentElement.insertBefore(a,i("resultsSummary"))}}(),j(),window.applyFilters=function(){r("scholarship_filter_changed",{}),T()},window.toggleShortlistView=function(){n.shortlistOnly=!n.shortlistOnly,T()},window.toggleShortlist=function(e){H(decodeURIComponent(e||""))},window.toggleScholarshipReminder=function(e){q(decodeURIComponent(e||""))},G();var t=i("scholarshipGrid");window.AfroProductBackbone&&window.AfroProductBackbone.renderLoadingSkeleton&&window.AfroProductBackbone.renderLoadingSkeleton(t,{count:6,variant:"list"}),n.loading=!0,_(0,60).then(function(e){n.items=g(e.items),n.total=e.total||n.items.length,n.offset=n.items.length,n.feedMode=e.mode||"live",n.feedMeta=e.meta||{},n.loading=!1,T(),k().then(T),window.setTimeout(C,180)}).catch(function(e){n.loading=!1,window.AfroProductBackbone&&window.AfroProductBackbone.renderEmptyState?window.AfroProductBackbone.renderEmptyState(t,{icon:"!",title:"Scholarships could not load",message:e&&e.message?e.message:"Try again in a moment."}):t&&(t.innerHTML="<p>Scholarships could not load.</p>")})}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",Y):Y()}();
+!function() {
+  "use strict";
+  var e = {
+    items: [],
+    meta: {},
+    filters: {},
+    activeTab: "best",
+    saved: function() {
+      try {
+        return JSON.parse(window.localStorage.getItem("afro-scholarship-product-saved-v1") || "{}");
+      } catch (e) {
+        return {};
+      }
+    }(),
+    feedUnavailable: !1
+  }, t = 864e5;
+  function i(e) {
+    return document.getElementById(e);
+  }
+  function a(e) {
+    return String(null == e ? "" : e).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function n(e) {
+    return Array.isArray(e) ? e.filter(Boolean) : "string" == typeof e ? e.split(/[;,|]/).map(function(e) {
+      return e.trim();
+    }).filter(Boolean) : e ? [ e ] : [];
+  }
+  function o(e) {
+    var t = {};
+    return e.filter(function(e) {
+      var i = String(e || "").toLowerCase();
+      return !(!i || t[i] || (t[i] = !0, 0));
+    });
+  }
+  function s(e) {
+    var t = String(e || "").toLowerCase();
+    return t.indexOf("bachelor") >= 0 || t.indexOf("under") >= 0 || "bsc" === t ? "undergrad" : t.indexOf("master") >= 0 || "msc" === t ? "masters" : t.indexOf("doctor") >= 0 || t.indexOf("phd") >= 0 ? "phd" : t.indexOf("post") >= 0 ? "postdoc" : t || "any";
+  }
+  function l(e) {
+    return {
+      undergrad: "BSc",
+      masters: "MSc",
+      phd: "PhD",
+      postdoc: "Postdoc",
+      any: "Any level"
+    }[e] || e;
+  }
+  function r(e) {
+    var t = String(e || "").toLowerCase();
+    return t.indexOf("kingdom") >= 0 || "uk" === t || "gb" === t ? "uk" : t.indexOf("united states") >= 0 || "us" === t || "usa" === t ? "us" : t.indexOf("canada") >= 0 ? "canada" : t.indexOf("australia") >= 0 ? "australia" : t.indexOf("africa") >= 0 || t.indexOf("south africa") >= 0 ? "africa" : t.indexOf("europe") >= 0 || t.indexOf("germany") >= 0 || t.indexOf("france") >= 0 || t.indexOf("hungary") >= 0 || t.indexOf("turkey") >= 0 ? "eu" : t.indexOf("global") >= 0 || t.indexOf("multiple") >= 0 ? "global" : t || "global";
+  }
+  function c(e) {
+    return {
+      uk: "United Kingdom",
+      us: "United States",
+      eu: "Europe",
+      africa: "Africa",
+      canada: "Canada",
+      australia: "Australia",
+      global: "Global"
+    }[e] || e;
+  }
+  function d(e) {
+    var t = String(e || "").toLowerCase();
+    return t.indexOf("engineer") >= 0 || t.indexOf("stem") >= 0 || t.indexOf("science") >= 0 || t.indexOf("tech") >= 0 ? "stem" : t.indexOf("business") >= 0 || t.indexOf("economic") >= 0 || t.indexOf("finance") >= 0 ? "business" : t.indexOf("health") >= 0 || t.indexOf("medicine") >= 0 || t.indexOf("medical") >= 0 ? "health" : t.indexOf("law") >= 0 || t.indexOf("govern") >= 0 || t.indexOf("policy") >= 0 ? "law" : t.indexOf("agric") >= 0 || t.indexOf("environment") >= 0 || t.indexOf("climate") >= 0 ? "agric" : t.indexOf("art") >= 0 || t.indexOf("human") >= 0 || t.indexOf("leadership") >= 0 ? "arts" : t.indexOf("any") >= 0 || t.indexOf("all") >= 0 ? "any" : t || "any";
+  }
+  function u(e) {
+    return {
+      stem: "STEM",
+      business: "Business",
+      health: "Health",
+      law: "Law",
+      agric: "Agriculture",
+      arts: "Arts",
+      any: "Any field"
+    }[e] || e;
+  }
+  function p(e) {
+    return {
+      full: "Fully funded",
+      partial: "Partial funding",
+      varies: "Funding varies"
+    }[e] || "";
+  }
+  function h(e, t) {
+    var i, a, l = o(n(e.levels || e.level || e.study_levels || e.studyLevels || e.scholarship_type).map(s)), c = o(n(e.destinations || e.destination || e.destination_countries || e.country || e.countries).map(r)), u = o(n(e.fields || e.field || e.discipline || e.category).map(d)), p = (i = e.funding || e.funding_type || e.fundingType || e.award_type,
+    (a = String(i || "").toLowerCase()).indexOf("full") >= 0 ? "full" : a.indexOf("var") >= 0 ? "varies" : a ? "partial" : ""), h = e.official_url || e.officialUrl || e.official_link || e.officialLink || e.application_url || e.applicationUrl || e.info_url || e.infoUrl || e.source_url || e.sourceUrl || "#", f = e.id || e.scholarship_id || e.scholarshipId || function(e) {
+      return String(e || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+    }((e.title || e.name || "scholarship") + "-" + (e.provider || e.organization || t));
+    return {
+      id: f,
+      key: String(f || h).toLowerCase(),
+      title: e.title || e.name || "Scholarship opportunity",
+      provider: e.provider || e.provider_name || e.organization || e.sponsor || "Provider not listed",
+      summary: e.summary || e.description || e.notes || "Open the official provider page to confirm eligibility, funding coverage, and application instructions.",
+      levels: l.length ? l : [ "any" ],
+      destinations: c.length ? c : [ "global" ],
+      fields: u.length ? u : [ "any" ],
+      funding: p || "partial",
+      officialUrl: h,
+      sourceType: e.source_type || e.sourceType || "manual_review",
+      sourceConfidence: Number(e.source_confidence || e.confidence || e.confidence_score || 0),
+      localAmount: Number(e.local_value_amount || 0),
+      localCurrency: e.local_value_currency || e.user_currency || e.currency || "",
+      usdAmount: Number(e.award_value_usd || e.value_usd || 0),
+      awardValueText: e.award_value_text || e.awardValueText || e.value || "",
+      deadlineDate: e.deadline_date || e.deadlineDate || "",
+      deadlineText: e.deadline_text || e.deadlineText || e.deadline || "",
+      deadlineStatus: e.deadline_status || e.deadlineStatus || "",
+      verifiedAt: e.verified_at || e.verifiedAt || e.last_verified_at || "",
+      lastCheckedAt: e.last_checked_at || e.lastCheckedAt || e.last_checked || e.updated_at || "",
+      publishedAt: e.published_at || e.publishedAt || "",
+      status: e.status || "",
+      matchScore: Number(e.match_score || e.score || 0),
+      matchReason: e.matchReason || e.match_reason || ""
+    };
+  }
+  function f(e) {
+    var t = e ? new Date(e) : null;
+    return !t || Number.isNaN(t.getTime()) ? "" : t.toLocaleDateString(void 0, {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    });
+  }
+  function v(e, t) {
+    if (!Number.isFinite(e) || e <= 0 || !t) return "";
+    var i = Math.abs(e), a = i >= 1e6 ? e / 1e6 : i >= 1e3 ? e / 1e3 : e, n = i >= 1e6 ? "M" : i >= 1e3 ? "k" : "";
+    try {
+      return new Intl.NumberFormat(void 0, {
+        style: "currency",
+        currency: t,
+        maximumFractionDigits: a >= 100 ? 0 : 1,
+        minimumFractionDigits: 0
+      }).format(a) + n;
+    } catch (e) {
+      return t + " " + a.toFixed(a >= 100 ? 0 : 1) + n;
+    }
+  }
+  function g(e) {
+    var i = String(e.deadlineStatus || "").toLowerCase(), a = String(e.deadlineText || "").trim();
+    if (i.indexOf("rolling") >= 0 || /rolling/i.test(a)) return {
+      label: "Deadline",
+      value: "Rolling deadline",
+      filter: "rolling",
+      tone: "open",
+      sort: Number.POSITIVE_INFINITY
+    };
+    if (i.indexOf("var") >= 0 || /varies|programme|program|country|partner/i.test(a)) return {
+      label: "Deadline",
+      value: "Deadline varies",
+      filter: "varies",
+      tone: "open",
+      sort: Number.POSITIVE_INFINITY
+    };
+    var n = e.deadlineDate ? new Date(e.deadlineDate) : null;
+    if (!n || Number.isNaN(n.getTime())) return null;
+    var o = new Date;
+    o.setHours(0, 0, 0, 0), n.setHours(0, 0, 0, 0);
+    var s = Math.ceil((n.getTime() - o.getTime()) / t);
+    return s < 0 ? {
+      label: "Deadline",
+      value: f(e.deadlineDate),
+      filter: "closed",
+      tone: "closed",
+      sort: Number.POSITIVE_INFINITY
+    } : s <= 7 ? {
+      label: "Deadline",
+      value: f(e.deadlineDate),
+      filter: "closing",
+      tone: "urgent",
+      sort: n.getTime()
+    } : s <= 30 ? {
+      label: "Deadline",
+      value: f(e.deadlineDate),
+      filter: "closing",
+      tone: "soon",
+      sort: n.getTime()
+    } : {
+      label: "Deadline",
+      value: f(e.deadlineDate),
+      filter: "dated",
+      tone: "open",
+      sort: n.getTime()
+    };
+  }
+  function b(e) {
+    var i = e.publishedAt ? new Date(e.publishedAt) : null;
+    return !(!i || Number.isNaN(i.getTime())) && (Date.now() - i.getTime()) / t <= 14;
+  }
+  function m(t) {
+    var i = e.filters || {}, a = t.sourceConfidence ? Math.min(20, t.sourceConfidence / 5) : 8;
+    return "all" !== i.level && t.levels.indexOf(i.level) >= 0 && (a += 25), "all" !== i.destination && (t.destinations.indexOf(i.destination) >= 0 || t.destinations.indexOf("global") >= 0) && (a += 20),
+    "all" !== i.field && (t.fields.indexOf(i.field) >= 0 || t.fields.indexOf("any") >= 0) && (a += 18),
+    "all" !== i.funding && t.funding === i.funding && (a += 12), g(t) && (a += 8), a;
+  }
+  function y(e) {
+    if ("official" === e.sourceType || e.sourceConfidence >= 80) return "Verified";
+    var t = f(e.lastCheckedAt || e.verifiedAt);
+    return t ? "Checked " + t : "Source checked";
+  }
+  function S(e, t, i) {
+    return '<div class="sch-card-meta-item ' + a(e || "") + '"><span>' + a(t) + "</span><strong>" + i + "</strong></div>";
+  }
+  function w(t) {
+    var i = function(e) {
+      var t = v(e.localAmount, e.localCurrency), i = v(e.usdAmount, "USD");
+      return t && i ? '<span class="sch-value-primary">' + a(t) + '</span><span class="sch-value-usd">&asymp; ' + a(i) + "</span>" : t || i ? '<span class="sch-value-primary">' + a(t || i) + "</span>" : "full" === e.funding ? '<span class="sch-value-primary">Fully funded</span>' : "varies" === e.funding || /varies|various benefits/i.test(e.awardValueText) ? '<span class="sch-value-primary">Funding varies</span>' : "";
+    }(t), n = g(t), s = o([ l(t.levels[0]), c(t.destinations[0]), u(t.fields[0]), p(t.funding), y(t) ]).filter(Boolean), r = t.matchReason || "Matched using study level, destination, field, funding type, deadline freshness, and source confidence.";
+    return '<article class="sch-card" data-sch-key="' + a(t.key) + '"><header class="sch-card-header"><div><h3>' + a(t.title) + '</h3><p class="provider">' + a(t.provider) + '</p></div><span class="sch-fit-chip">' + a(function(e) {
+      var t = e.matchScore || m(e);
+      return t >= 80 ? "Strong fit" : t >= 60 ? "Good fit" : t >= 35 ? "Possible fit" : "Low fit";
+    }(t)) + '</span></header><div class="sch-card-chips">' + s.map(function(e) {
+      return '<span class="sch-chip">' + a(e) + "</span>";
+    }).join("") + '</div><p class="sch-card-summary">' + a(t.summary) + '</p><details class="sch-match-details"><summary>Why this matches you</summary><p>' + a(r) + '</p></details><div class="sch-card-meta-row">' + (i ? S("sch-card-value", "Value", i) : "") + (n && "closed" !== n.filter ? S("sch-card-deadline deadline-" + n.tone, n.label, a(n.value)) : "") + (t.destinations.length ? S("sch-card-destination", "Destination", a(t.destinations.map(c).join(", "))) : "") + '</div><div class="sch-card-actions"><a class="btn btn-primary btn-sm action-link" href="' + a(t.officialUrl) + '" target="_blank" rel="noopener">View official details</a><button type="button" class="btn btn-outline btn-sm" data-sch-save="' + a(t.key) + '">' + (e.saved[t.key] ? "Saved" : "Save") + "</button></div></article>";
+  }
+  function k(t) {
+    return "saved" === e.activeTab ? t.filter(function(t) {
+      return e.saved[t.key];
+    }) : "open" === e.activeTab ? t.filter(function(e) {
+      var t = g(e);
+      return !t || "dated" === t.filter || "rolling" === t.filter || "varies" === t.filter;
+    }) : "closing" === e.activeTab ? t.filter(function(e) {
+      var t = g(e);
+      return t && "closing" === t.filter;
+    }) : "full" === e.activeTab ? t.filter(function(e) {
+      return "full" === e.funding;
+    }) : "new" === e.activeTab ? t.filter(b) : t;
+  }
+  function T(e) {
+    var t = e ? new Date(e) : null;
+    return t && !Number.isNaN(t.getTime()) ? t.getTime() : 0;
+  }
+  function A(t, i) {
+    var a = e.activeTab;
+    e.activeTab = t;
+    var n = k(i);
+    return e.activeTab = a, n;
+  }
+  function x(e) {
+    function r(t) {
+      for (var i = 0; i < t.length; i += 1) {
+        var a = Number(t[i]);
+        if (Number.isFinite(a) && a >= 0) return a;
+      }
+      return 0;
+    }
+    function t() {
+      return r([ e.scholarships_added_count, e.total_loaded, e.total, e.summary && e.summary.total, e.scholarships_added_today, e.added_today_count, e.newly_added_count, e.new_count ]);
+    }
+    var n = e.summary || {}, o = r([ e.open_count, Number(n.open || 0) + Number(n.upcoming || 0) + Number(n.variable || 0) ]), s = r([ e.closing_soon_count ]), l = r([ e.verified_today_count ]), c = f(e.last_refresh_at || e.lastCheckedAt || e.cachedAt || e.updatedAt), u = [ [ "Open now", o ], [ "Closing soon", s ], [ "Checked today", l ], [ "Scholarships added", t(), c ? "Updated " + c : "" ] ].filter(function(e) {
+      return e[1];
+    }), p = i("heroStats"), h = i("heroFreshnessMessage");
+    if (p) {
+      if (!u.length) return p.innerHTML = "", void (h && (h.hidden = !1, h.textContent = "We're refreshing verified opportunities. Try browsing all sources or check again soon."));
+      h && (h.hidden = !0), p.innerHTML = u.map(function(e) {
+        var t = "Scholarships added" === e[0] ? " scholarship" + (1 === Number(e[1]) ? "" : "s") : "";
+        return '<div class="sch-hero-stat"><span>' + a(e[0]) + "</span><strong>" + a(e[1]) + a(t) + "</strong>" + (e[2] ? '<small style="display:block;margin-top:4px;color:#64748b;font-size:.72rem;font-weight:700">' + a(e[2]) + "</small>" : "") + "</div>";
+      }).join("");
+    }
+  }
+  function C(e, t) {
+    var a = i(e);
+    a && (a.textContent = t);
+  }
+  function O() {
+    var t = i("scholarshipGrid");
+    if (t) {
+      e.filters = {
+        search: (i("search") && i("search").value || "").toLowerCase().trim(),
+        country: i("eligibilityCountry") && i("eligibilityCountry").value || "all",
+        level: i("level") && i("level").value || "all",
+        field: i("field") && i("field").value || "all",
+        destination: i("destination") && i("destination").value || "all",
+        funding: i("funding") && i("funding").value || "all",
+        deadline: i("deadlineFilter") && i("deadlineFilter").value || "all",
+        confidence: i("sourceConfidence") && i("sourceConfidence").value || "all",
+        sort: i("sortBy") && i("sortBy").value || "match"
+      };
+      var n = e.items.filter(function(t) {
+        return function(e, t) {
+          var i = [ e.title, e.provider, e.summary, e.destinations.join(" "), e.fields.join(" ") ].join(" ").toLowerCase(), a = g(e);
+          if (t.search && i.indexOf(t.search) < 0) return !1;
+          if ("all" !== t.level && e.levels.indexOf(t.level) < 0 && e.levels.indexOf("any") < 0) return !1;
+          if ("all" !== t.destination && e.destinations.indexOf(t.destination) < 0 && e.destinations.indexOf("global") < 0) return !1;
+          if ("all" !== t.field && e.fields.indexOf(t.field) < 0 && e.fields.indexOf("any") < 0) return !1;
+          if ("all" !== t.funding && e.funding !== t.funding) return !1;
+          if ("all" !== t.deadline) {
+            if (!a) return !1;
+            if ("dated" === t.deadline && "dated" !== a.filter && "closing" !== a.filter) return !1;
+            if ("closing" === t.deadline && "closing" !== a.filter) return !1;
+            if ("rolling" === t.deadline && "rolling" !== a.filter) return !1;
+            if ("varies" === t.deadline && "varies" !== a.filter) return !1;
+          }
+          return !("official" === t.confidence && "official" !== e.sourceType || "verified" === t.confidence && !function(e) {
+            var t = e.verifiedAt || e.lastCheckedAt;
+            return !!t && new Date(t).toDateString() === (new Date).toDateString();
+          }(e) && e.sourceConfidence < 80 || "high" === t.confidence && e.sourceConfidence < 80);
+        }(t, e.filters);
+      });
+      (function(t) {
+        var i = function(t) {
+          return {
+            best: t.length,
+            open: A("open", t).length,
+            closing: A("closing", t).length,
+            full: A("full", t).length,
+            new: A("new", t).length,
+            saved: Object.keys(e.saved).length
+          };
+        }(t);
+        Object.keys(i).forEach(function(e) {
+          var t = document.querySelector('[data-tab-count="' + e + '"]');
+          t && (t.textContent = i[e] ? String(i[e]) : "");
+        }), document.querySelectorAll("[data-sch-tab]").forEach(function(t) {
+          var i = t.getAttribute("data-sch-tab") === e.activeTab;
+          t.classList.toggle("is-active", i), t.setAttribute("aria-pressed", i ? "true" : "false");
+        });
+      })(n), function(e) {
+        var t = [];
+        [ [ "eligibilityCountry", "country" ], [ "level", "level" ], [ "field", "field" ], [ "destination", "destination" ], [ "funding", "funding" ], [ "deadlineFilter", "deadline" ], [ "sourceConfidence", "confidence" ] ].forEach(function(n) {
+          var o = i(n[0]), s = e[n[1]];
+          if (o && s && "all" !== s) {
+            var l = o.options[o.selectedIndex] ? o.options[o.selectedIndex].textContent : s;
+            t.push('<span class="sch-filter-chip">' + a(l) + "</span>");
+          }
+        }), e.search && t.push('<span class="sch-filter-chip">Search: ' + a(e.search) + "</span>"),
+        t.length && t.push('<button type="button" class="sch-filter-clear" id="clearScholarshipFilters">Clear all</button>');
+        var n = i("activeFilterChips");
+        n && (n.innerHTML = t.join(""));
+      }(e.filters);
+      var o, s, l = (o = k(n), s = e.filters, o.slice().sort(function(e, t) {
+        var i = g(e), a = g(t);
+        return "newest" === s.sort ? T(t.publishedAt) - T(e.publishedAt) : "deadline" === s.sort ? (i ? i.sort : Number.POSITIVE_INFINITY) - (a ? a.sort : Number.POSITIVE_INFINITY) : "value" === s.sort ? (t.localAmount || t.usdAmount || 0) - (e.localAmount || e.usdAmount || 0) : "recent" === s.sort ? T(t.lastCheckedAt || t.verifiedAt) - T(e.lastCheckedAt || e.verifiedAt) : m(t) - m(e) || (i ? i.sort : Number.POSITIVE_INFINITY) - (a ? a.sort : Number.POSITIVE_INFINITY);
+      }));
+      if (function(t) {
+        var i = e.meta || {}, n = i.summary || {}, o = null != i.open_count ? Number(i.open_count) : Number(n.open || 0) + Number(n.upcoming || 0) + Number(n.variable || 0), s = Number(i.closing_soon_count || 0), l = Number(i.verified_today_count || 0), a = [];
+        o && a.push(o + " open"), s && a.push(s + " closing soon"), l && a.push(l + " checked today"),
+        C("summaryText", e.feedUnavailable ? "Scholarship feed is refreshing. Showing verified fallback opportunities." : "Showing " + t.length + " scholarship" + (1 === t.length ? "" : "s") + (a.length ? " from verified sources: " + a.join(", ") + "." : ".")),
+        C("feedStatus", a.length ? "Source-backed feed checked " + (f(i.last_refresh_at || i.lastCheckedAt || i.cachedAt) || "recently") + "." : "Checking scholarship source status."),
+        C("countBadge", t.length + " scholarships found");
+        var r = Object.keys(e.saved).length;
+        C("shortlistNote", r ? r + " saved scholarship" + (1 === r ? "" : "s") : "No saved scholarships yet");
+      }(l), !l.length) return function(t, i, n) {
+        var o = e.feedUnavailable ? "Scholarship feed is refreshing. Showing verified fallback opportunities." : n ? "No matches with these filters. Clear one filter or browse open scholarships." : "No fresh verified opportunities found yet. Check official sources or come back after the next refresh.";
+        t.innerHTML = '<div class="sch-empty-state"><h3>' + a(n ? "No matches with these filters" : "No fresh scholarships found") + "</h3><p>" + a(o) + "</p></div>";
+      }(t, e.filters, n.length);
+      t.innerHTML = l.map(w).join("");
+    }
+  }
+  function _() {
+    var t;
+    !function() {
+      var e = document.querySelector(".tool-hero");
+      e && (e.className = "tool-hero scholarship-product-hero", e.innerHTML = '<div class="tool-hero-inner sch-hero-layout"><div><div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Scholarship Finder</span></div><span class="sch-section-kicker">Verified scholarship search</span><h1>Find scholarships open to African students</h1><p class="hero-sub">Search verified opportunities by country, level, field, destination, funding, and deadline.</p><div class="sch-hero-search"><label class="sr-only" for="heroSearch">Search scholarships</label><input id="heroSearch" type="search" placeholder="Search scholarship, sponsor, country, field, or school"><button type="button" class="btn btn-primary" id="heroSearchBtn">Search</button></div><div class="sch-hero-actions"><button type="button" class="btn btn-primary" id="heroMatchCta">Find my matches</button><button type="button" class="btn btn-outline" id="heroBrowseCta">Browse open scholarships</button></div><p class="sch-hero-message" id="heroFreshnessMessage" hidden></p></div><div class="sch-hero-stats" id="heroStats" aria-live="polite"></div></div>');
+      var t = document.querySelector(".entry-card");
+      t && (t.className = "sch-compact-panel", t.id = "ScholarshipQuickCheck", t.innerHTML = '<div class="sch-compact-head"><div><span class="sch-section-kicker">Quick profile check</span><h2>Start with the basics, then refine.</h2><p>Use a few practical details to shape the first set of scholarship matches. You can keep browsing without creating an account.</p></div><button type="button" class="btn btn-outline btn-sm" id="quickStartBtn">Start here</button></div><div class="sch-field-grid"><div><label for="quickBand">Current grade band</label><select id="quickBand"><option value="">Select grade band</option><option value="elite">First Class / 75%+</option><option value="strong">Upper Second / 65-74%</option><option value="developing">Lower Second / 55-64%</option></select></div><div><label for="quickLevel">Target level</label><select id="quickLevel"><option value="">Any level</option><option value="undergrad">Bachelors</option><option value="masters">Masters</option><option value="phd">PhD</option></select></div><div><label for="quickField">Field</label><select id="quickField"><option value="">Any field</option><option value="stem">STEM</option><option value="business">Business</option><option value="health">Health</option><option value="law">Law</option><option value="arts">Arts</option><option value="agric">Agriculture</option></select></div><div><label for="quickDest">Destination</label><select id="quickDest"><option value="">Any destination</option><option value="uk">United Kingdom</option><option value="us">United States</option><option value="eu">Europe</option><option value="canada">Canada</option><option value="australia">Australia</option><option value="africa">Within Africa</option><option value="global">Global</option></select></div></div><div class="sch-quick-actions"><button type="button" class="btn btn-primary btn-sm" id="quickMatchBtn">Find matches</button><button type="button" class="btn btn-outline btn-sm" id="quickUseFullBtn">Use full profile</button></div>');
+      var a = i("profileCard");
+      a && (a.hidden = !0);
+      var n = i("countBadge"), o = n && n.closest(".card");
+      o || (o = Array.prototype.find.call(document.querySelectorAll(".card"), function(e) {
+        return /Filter Scholarships|Search and filter/i.test(e.textContent || "");
+      })), o && (o.className = "sch-filter-panel", o.id = "ScholarshipFilters", o.innerHTML = '<div><span class="sch-section-kicker">Search and filter</span><h2>Narrow by eligibility, study plan, funding, and source confidence.</h2><p>Keep filters visible, then switch tabs or sorting as your shortlist gets sharper.</p></div><div class="sch-filter-grid"><div class="sch-filter-search"><label for="search">Search</label><input id="search" type="search" placeholder="Search scholarship, sponsor, country, field, or school"></div><div><label for="eligibilityCountry">Country / eligibility</label><select id="eligibilityCountry"><option value="all">Any African country</option><option value="nigeria">Nigeria</option><option value="ghana">Ghana</option><option value="kenya">Kenya</option><option value="south africa">South Africa</option><option value="uganda">Uganda</option></select></div><div><label for="level">Study level</label><select id="level"><option value="all">All levels</option><option value="undergrad">Bachelors</option><option value="masters">Masters</option><option value="phd">PhD</option><option value="postdoc">Postdoc</option></select></div><div><label for="field">Field</label><select id="field"><option value="all">All fields</option><option value="stem">STEM</option><option value="business">Business</option><option value="health">Health</option><option value="law">Law</option><option value="arts">Arts</option><option value="agric">Agriculture</option></select></div><div><label for="destination">Destination</label><select id="destination"><option value="all">All destinations</option><option value="uk">United Kingdom</option><option value="us">United States</option><option value="eu">Europe</option><option value="africa">Within Africa</option><option value="canada">Canada</option><option value="australia">Australia</option><option value="global">Global</option></select></div><div><label for="funding">Funding type</label><select id="funding"><option value="all">All funding types</option><option value="full">Fully funded</option><option value="partial">Partial funding</option><option value="varies">Funding varies</option></select></div><div><label for="deadlineFilter">Deadline status</label><select id="deadlineFilter"><option value="all">All deadlines</option><option value="dated">Dated</option><option value="closing">Closing soon</option><option value="rolling">Rolling</option><option value="varies">Varies</option></select></div><div><label for="sourceConfidence">Source confidence</label><select id="sourceConfidence"><option value="all">All source levels</option><option value="official">Official source</option><option value="verified">Verified recently</option><option value="high">High confidence</option></select></div><div><label for="sortBy">Sort by</label><select id="sortBy"><option value="match">Best match</option><option value="newest">Newest</option><option value="deadline">Deadline soon</option><option value="value">Highest value</option><option value="recent">Recently verified</option></select></div></div><div class="sch-filter-chip-row" id="activeFilterChips" aria-live="polite"></div>');
+      var s = document.querySelector(".sort-row");
+      s && s.remove();
+      var l = i("resultsSummary");
+      if (l && (l.className = "sch-source-status", l.setAttribute("data-component", "ScholarshipSourceStatus"),
+      l.innerHTML = '<div><span class="sch-section-kicker">Source status</span><p class="summary-text" id="summaryText">Checking verified scholarship sources.</p><p class="feed-note" id="feedStatus" role="status" aria-live="polite">Checking scholarship source status.</p></div><div class="summary-actions"><button type="button" class="btn btn-outline btn-sm" id="shortlistToggle">View saved</button><span class="shortlist-note" id="shortlistNote">No saved scholarships yet</span></div>'),
+      !i("ScholarshipResultTabs")) {
+        var r = document.createElement("section");
+        r.className = "sch-result-tabs", r.id = "ScholarshipResultTabs", r.innerHTML = '<button type="button" class="sch-result-tab is-active" data-sch-tab="best">Best matches <span data-tab-count="best"></span></button><button type="button" class="sch-result-tab" data-sch-tab="open">Open now <span data-tab-count="open"></span></button><button type="button" class="sch-result-tab" data-sch-tab="closing">Closing soon <span data-tab-count="closing"></span></button><button type="button" class="sch-result-tab" data-sch-tab="full">Fully funded <span data-tab-count="full"></span></button><button type="button" class="sch-result-tab" data-sch-tab="new">Newly added <span data-tab-count="new"></span></button><button type="button" class="sch-result-tab" data-sch-tab="saved">Saved <span data-tab-count="saved"></span></button>';
+        var c = i("scholarshipGrid");
+        c && c.parentNode && c.parentNode.insertBefore(r, c);
+      }
+      var d = i("workflowCta");
+      d && (d.className = "sch-guidance", d.id = "ScholarshipApplicationGuidance", d.innerHTML = '<span class="sch-section-kicker">Application guidance</span><h2>Use the finder as a shortlist, then verify the official page.</h2><p>Scholarship rules move by cycle, country, school, and programme. AfroTools helps you compare opportunities, but the official provider page is the application source of truth.</p><div class="sch-guidance-grid"><div class="sch-guidance-card"><h3>Prioritize fit</h3><p>Start with level, destination, field, funding type, and eligibility country. A smaller, better-fit shortlist is more useful than a long list of weak matches.</p></div><div class="sch-guidance-card"><h3>Check the cycle</h3><p>Use dated deadlines when they are available. If a provider uses rolling or programme-specific dates, open the official page before planning your timeline.</p></div><div class="sch-guidance-card"><h3>Prepare evidence early</h3><p>Keep transcripts, references, passport details, test scores, personal statements, and funding documents ready before the deadline window gets crowded.</p></div></div>');
+      var u = document.querySelector(".seo-section");
+      u && (u.innerHTML = '<h2>Frequently Asked Questions</h2><details class="faq-item"><summary>Where does AfroTools get scholarship data?</summary><p>AfroTools prioritizes official scholarship pages, university pages, foundation pages, government portals, embassy pages, and verified institution sources. Aggregators are useful for discovery, but official links stay the application source of truth.</p></details><details class="faq-item"><summary>Why do some scholarships not show a deadline?</summary><p>If there is no reliable public date, AfroTools hides the deadline instead of inventing one. Some providers use rolling admissions, country-specific windows, or programme-level deadlines.</p></details><details class="faq-item"><summary>Can I save scholarships?</summary><p>Yes. Saved scholarships stay on this device for guests. Signed-in users can sync saved scholarships and use reminder controls where the scholarship has a reliable future deadline.</p></details><details class="faq-item"><summary>What does source confidence mean?</summary><p>It is a lightweight signal for how directly the record is backed by a current official or verified source. It should help you prioritize, not replace reading the official page.</p></details>');
+    }(), document.addEventListener("input", function(e) {
+      if (e.target && "heroSearch" === e.target.id) {
+        var t = i("search");
+        t && (t.value = e.target.value), O();
+      }
+      e.target && "search" === e.target.id && O();
+    }), document.addEventListener("change", function(e) {
+      e.target && /^(eligibilityCountry|level|field|destination|funding|deadlineFilter|sourceConfidence|sortBy|quickLevel|quickField|quickDest)$/.test(e.target.id || "") && ("quickLevel" === e.target.id && i("level") && (i("level").value = e.target.value || "all"),
+      "quickField" === e.target.id && i("field") && (i("field").value = e.target.value || "all"),
+      "quickDest" === e.target.id && i("destination") && (i("destination").value = e.target.value || "all"),
+      O());
+    }), document.addEventListener("click", function(t) {
+      var a = t.target.closest("[data-sch-tab]"), n = t.target.closest("[data-sch-save]");
+      if (a && (e.activeTab = a.getAttribute("data-sch-tab") || "best", O()), n) {
+        var o = n.getAttribute("data-sch-save");
+        e.saved[o] ? delete e.saved[o] : e.saved[o] = !0, function() {
+          try {
+            window.localStorage.setItem("afro-scholarship-product-saved-v1", JSON.stringify(e.saved));
+          } catch (e) {}
+        }(), O();
+      }
+      t.target && "clearScholarshipFilters" === t.target.id && ([ "search", "eligibilityCountry", "level", "field", "destination", "funding", "deadlineFilter", "sourceConfidence" ].forEach(function(e) {
+        var t = i(e);
+        t && (t.value = "search" === e ? "" : "all");
+      }), O()), !t.target || "heroMatchCta" !== t.target.id && "quickMatchBtn" !== t.target.id && "heroSearchBtn" !== t.target.id || (i("ScholarshipFilters").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      }), O()), t.target && "heroBrowseCta" === t.target.id && (e.activeTab = "open",
+      i("ScholarshipResultTabs").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      }), O()), t.target && "shortlistToggle" === t.target.id && (e.activeTab = "saved" === e.activeTab ? "best" : "saved",
+      O());
+    }), (t = i("scholarshipGrid")) && (t.innerHTML = '<div class="sch-loading-grid">' + [ 1, 2, 3 ].map(function() {
+      return '<div class="sch-skeleton-card"></div>';
+    }).join("") + "</div>"), fetch("/api/scholarships?limit=120&offset=0", {
+      credentials: "same-origin"
+    }).then(function(e) {
+      if (!e.ok) throw new Error("Scholarship API returned " + e.status);
+      return e.json();
+    }).then(function(t) {
+      var i = t.scholarships || t.items || t.data || [];
+      e.items = i.map(h), e.meta = t || {}, x(e.meta), O();
+    }).catch(function() {
+      if (e.feedUnavailable = !0, window.AfroScholarshipFeed && "function" == typeof window.AfroScholarshipFeed.load) return window.AfroScholarshipFeed.load().then(function(t) {
+        var i = t.scholarships || t.items || t.data || [];
+        e.items = i.map(h), e.meta = t.meta || {}, x(e.meta), O();
+      });
+      e.items = [], x({}), O();
+    });
+  }
+  window.applyFilters = O, window.runQuickCheck = O, window.jumpToFullProfile = function() {
+    var e = i("ScholarshipFilters");
+    e && e.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }, window.toggleShortlistView = function() {
+    e.activeTab = "saved" === e.activeTab ? "best" : "saved", O();
+  }, "loading" === document.readyState ? document.addEventListener("DOMContentLoaded", _) : _();
+}();

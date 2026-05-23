@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const DATA_PATH = path.join(ROOT, 'data', 'matchday-os', 'tournament.json');
+const DATA_PATH = path.join(ROOT, 'data', 'matchday-os', 'tournament-full.json');
 const CONTENT_PATH = path.join(ROOT, 'data', 'matchday-os', 'content.json');
 
 function fail(message) {
@@ -144,18 +144,25 @@ function validatePredictionGame(data) {
   const game = data.predictionGame;
   assert(game && game.freeToEnter === true && game.skillBased === true, 'predictionGame must be free-to-enter and skill-based');
   assert(game.entryCostUsd === 0, 'predictionGame entryCostUsd must be 0');
-  assert(game.mode === 'frontend-local-only', 'predictionGame mode must state frontend-local-only until persistence exists');
+  assert(['frontend-local-only', 'account-backed'].includes(game.mode), 'predictionGame mode must be frontend-local-only or account-backed');
   assert(game.lockPolicy && game.lockPolicy.label === 'Predictions lock before kickoff', 'predictionGame lock policy must expose kickoff locking');
   validatePrizeRules(game);
   assert(game.leaderboard && Array.isArray(game.leaderboard.rows) && game.leaderboard.rows.length === 0, 'predictionGame leaderboard must stay empty until backend persistence exists');
   assert(game.scoring, 'predictionGame scoring config is required');
   const expected = {
-    correctWinner: 3,
+    correctWinner: 4,
     correctDraw: 4,
-    exactScore: 8,
+    correctResult: 4,
+    correctGoalDifference: 3,
+    correctTeamGoal: 1,
+    exactScore: 10,
     correctGroupQualifier: 10,
     correctChampion: 25,
-    africanTeamBonus: 2
+    africanFixtureBonusMultiplier: 0.25,
+    africanTeamWinBonus: 3,
+    africanTeamCleanSheetBonus: 2,
+    maxAfricanFixtureBonus: 8,
+    africanTeamBonus: 0
   };
   for (const [key, value] of Object.entries(expected)) {
     assert(game.scoring[key] === value, `predictionGame scoring.${key} must be ${value}`);
@@ -177,25 +184,25 @@ function validatePredictionGame(data) {
 }
 
 function validatePrizeRules(game) {
-  assert(game.prizePoolUsd === 1200, 'predictionGame prizePoolUsd must be 1200');
-  assert(game.prizeMaxUsd === 500, 'predictionGame prizeMaxUsd must be 500');
-  assert(game.prizeHeadline && game.prizeHeadline.includes('Win up to $500'), 'predictionGame prizeHeadline must mention win up to $500');
-  assert(Array.isArray(game.prizeTable) && game.prizeTable.length === 10, 'predictionGame prizeTable must include Top 10 rows');
+  assert(game.prizePoolUsd === 3000, 'predictionGame prizePoolUsd must be 3000');
+  assert(game.prizeMaxUsd === 1000, 'predictionGame prizeMaxUsd must be 1000');
+  assert(game.prizeHeadline && game.prizeHeadline.includes('Win up to $1,000'), 'predictionGame prizeHeadline must mention win up to $1,000');
+  assert(Array.isArray(game.prizeTable) && game.prizeTable.length === 20, 'predictionGame prizeTable must include Top 20 rows');
   const total = game.prizeTable.reduce((sum, row) => sum + row.prizeUsd, 0);
   assert(total === game.prizePoolUsd, 'predictionGame prizeTable must sum to prizePoolUsd');
-  const expected = [500, 250, 150, 75, 60, 45, 35, 30, 30, 25];
+  const expected = [1000, 500, 200, 150, 100, 80, 80, 80, 80, 80, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65];
   game.prizeTable.forEach((row, index) => {
     assert(row.rank === index + 1, `prizeTable row ${index + 1} rank is wrong`);
     assert(row.prizeUsd === expected[index], `prizeTable rank ${row.rank} prize must be ${expected[index]}`);
   });
   const rules = game.cashPrizeRules || {};
-  assert(rules.winnerCount === 10, 'cashPrizeRules must award Top 10 verified players');
+  assert(rules.winnerCount === 20, 'cashPrizeRules must award Top 20 verified players');
   assert(rules.publicTrackerDisplayCount === 20, 'cashPrizeRules must allow a Top 20 public tracker');
-  assert(rules.predictionPointsOnly === true, 'cashPrizeRules must use Prediction Points only');
-  assert(rules.fanPointsAffectCashPrize === false, 'Fan Points must not affect cash prizes');
+  assert(rules.predictionPointsOnly === false, 'cashPrizeRules must use the combined Matchday Leaderboard');
+  assert(rules.fanPointsAffectCashPrize === true, 'eligible Fan Points must contribute to Total Matchday Points');
   assert(rules.payoutPage === '/matchday-os/prizes/', 'cashPrizeRules payoutPage must point to /matchday-os/prizes/');
   assert(rules.publicLeaderboardNotice && rules.publicLeaderboardNotice.includes('public leaderboard is provisional'), 'cashPrizeRules must warn that the public leaderboard is provisional');
-  assert(rules.top20TrackerCopy && rules.top20TrackerCopy.includes('Top 20') && rules.top20TrackerCopy.includes('Top 10'), 'cashPrizeRules must explain Top 20 tracker vs Top 10 cash winners');
+  assert(rules.top20TrackerCopy && rules.top20TrackerCopy.includes('Top 20') && rules.top20TrackerCopy.includes('manual winner review'), 'cashPrizeRules must explain Top 20 tracker and review');
   assert(Array.isArray(rules.tieBreakers) && rules.tieBreakers.length === 5, 'cashPrizeRules must include five tie-breakers');
   assert((rules.tieBreakers[0] || '').includes('exact scores'), 'first tie-breaker must be exact scores');
   assert(Array.isArray(rules.importantDates) && rules.importantDates.length >= 6, 'cashPrizeRules must include important date placeholders');
@@ -204,15 +211,15 @@ function validatePrizeRules(game) {
   assert(rules.cryptoSafetyCopy && rules.cryptoSafetyCopy.includes('where lawful and practical'), 'crypto payout safety copy is required');
   const leaderboard = game.leaderboard || {};
   assert(leaderboard.displayCount === 20, 'leaderboard shell must support Top 20 public display');
-  assert(leaderboard.cashPrizeWinnerCount === 10, 'leaderboard shell must keep cash prizes to Top 10');
+  assert(leaderboard.cashPrizeWinnerCount === 20, 'leaderboard shell must keep cash prizes to Top 20');
   assert(leaderboard.verificationNotice && leaderboard.verificationNotice.includes('provisional'), 'leaderboard shell must include provisional verification notice');
 }
 
 function validateFanPoints(fanPoints) {
-  assert(fanPoints && fanPoints.status === 'frontend-local-demo-backend-ready', 'fanPoints must be a local-demo backend-ready shell');
-  assert(fanPoints.mode === 'separate-from-cash-prize-leaderboard', 'fanPoints must declare separation from cash-prize leaderboard');
-  assert(typeof fanPoints.publicCopy === 'string' && fanPoints.publicCopy.includes('Cash-prize winners are decided by Prediction Points only'), 'fanPoints public copy must separate Fan Points from cash-prize winners');
-  assert(typeof fanPoints.separationNotice === 'string' && fanPoints.separationNotice.includes('do not decide cash-prize winners'), 'fanPoints separation notice is required');
+  assert(fanPoints && fanPoints.status === 'account-backed-ready', 'fanPoints must be account-backed ready');
+  assert(fanPoints.mode === 'combined-matchday-leaderboard', 'fanPoints must feed the combined Matchday Leaderboard');
+  assert(typeof fanPoints.publicCopy === 'string' && fanPoints.publicCopy.includes('Matchday Leaderboard'), 'fanPoints public copy must explain the Matchday Leaderboard');
+  assert(typeof fanPoints.separationNotice === 'string' && fanPoints.separationNotice.includes('Total Matchday Points'), 'fanPoints total-points notice is required');
 
   const scoreTypes = fanPoints.scoreTypes || [];
   const scoreTypeIds = new Set(scoreTypes.map((type) => type.scoreTypeId));
@@ -220,9 +227,9 @@ function validateFanPoints(fanPoints) {
   assert(scoreTypeIds.has('fan_points'), 'fanPoints scoreTypes must include fan_points');
   const predictionPoints = scoreTypes.find((type) => type.scoreTypeId === 'prediction_points');
   const fanScore = scoreTypes.find((type) => type.scoreTypeId === 'fan_points');
-  assert(predictionPoints.cashPrizeRanking === true, 'Prediction Points must decide cash-prize ranking');
+  assert(predictionPoints.cashPrizeRanking === true, 'Prediction Points must contribute to prize ranking');
   assert(predictionPoints.referralInfluence === false, 'Prediction Points must reject referral influence');
-  assert(fanScore.cashPrizeRanking === false, 'Fan Points must not decide cash-prize ranking');
+  assert(fanScore.cashPrizeRanking === true, 'Fan Points must contribute to prize ranking after eligibility review');
   assert(fanScore.fanRecognition === true, 'Fan Points must be for fan recognition');
 
   const scoring = fanPoints.scoring || {};

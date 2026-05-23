@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tunisia Economy &amp; Natural Resources | AfroAtlas</title>
 <meta name="description" content="Explore Tunisia's natural resources, GDP ($46.3 billion), top exports including Electrical Equipment, Textiles, Olive Oil, trade data, and economic indicators. Arab Spring Birthplace with Phosphates and Olive Oil.">
-<link rel="canonical" href="https://afrotools.com/tools/afroatlas/_country-template">
+<link rel="canonical" href="https://afrotools.com/tools/afroatlas/country/tunisia/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="tool-id" content="afroatlas">
 <meta property="og:title" content="Tunisia Economy &amp; Natural Resources | AfroAtlas | AfroTools">
@@ -15,18 +15,19 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/afroatlas/_country-template">
+<meta property="og:url" content="https://afrotools.com/tools/afroatlas/country/tunisia/">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Tunisia Economy &amp; Natural Resources | AfroAtlas | AfroTools">
 <meta name="twitter:description" content="Explore Tunisia's natural resources, GDP ($46.3 billion), top exports including Electrical Equipment, Textiles, Olive Oil, trade data, and economic indicators. Arab Spring Birthplace with Phosphates and Olive Oil.">
-<meta name="robots" content="noindex, follow">
+<meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <link rel="stylesheet" href="/tools/afroatlas/style.css?v=83c9b5fa">
+<link rel="stylesheet" href="/assets/css/afroatlas-twemoji.css?v=6d8ec1be">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroAtlas","item":"https://afrotools.com/tools/afroatlas/"},{"@type":"ListItem","position":4,"name":"Tunisia","item":"https://afrotools.com/tools/afroatlas/country/tunisia/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are Tunisia's main natural resources?","acceptedAnswer":{"@type":"Answer","text":"Tunisia's key natural resources include: Phosphates (3.8M tonnes/yr), Arable Land (Olive oil: 240K tonnes/yr)."}},{"@type":"Question","name":"What is Tunisia's GDP?","acceptedAnswer":{"@type":"Answer","text":"Tunisia has a nominal GDP of $46.3 billion (GDP per capita: $3,700) with a growth rate of 1.6%."}},{"@type":"Question","name":"What are Tunisia's top exports?","acceptedAnswer":{"@type":"Answer","text":"Tunisia's top exports are: Electrical Equipment ($5.8 billion), Textiles ($3.6 billion), Olive Oil ($1.6 billion), Phosphates ($1.4 billion). Total exports: $20.7 billion."}}]}</script>
 <meta property="og:locale" content="en_US">
@@ -55,6 +56,7 @@
 <script src="/assets/js/components/navbar.min.js?v=529df6b3" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
 <script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
+<script src="/assets/js/lib/afroatlas-twemoji.js?v=f792df45"></script>
 <script>
 (function() {
   'use strict';
@@ -77,6 +79,24 @@
   var RT = AfroAtlas.RESOURCE_TYPES;
   var REGIONS = AfroAtlas.REGIONS;
   var allCountries = AfroAtlas.getAllCountries();
+  var flagTools = window.AfroAtlasFlags || {};
+
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function flagHtml(countryCode, countryData, className) {
+    if (flagTools.flagHtml) return flagTools.flagHtml(countryCode, countryData && countryData.name ? countryData.name : countryCode, className || '');
+    return '<span class="' + esc(className || 'aa-twemoji-flag') + '">' + esc(countryCode || '') + '</span>';
+  }
+
+  function optionLabel(countryCode, countryData) {
+    return esc(flagTools.optionLabel ? flagTools.optionLabel(countryCode, countryData) : ((countryData && countryData.name ? countryData.name : countryCode) + (countryCode ? ' (' + countryCode + ')' : '')));
+  }
 
   function fmtGdp(v) {
     if (v == null) return 'N/A';
@@ -132,7 +152,7 @@
   /* ── 1. Hero Section (light variant for country pages) ── */
   html += '<section class="aa-country-hero">';
   html += '<div class="aa-wrap">';
-  html += '<div class="aa-hero-flag">' + country.flag + '</div>';
+  html += '<div class="aa-hero-flag">' + flagHtml(code, country, 'aa-hero-flag-img') + '</div>';
   html += '<h1>' + country.name + '</h1>';
   if (country.tagline) html += '<p class="aa-hero-tagline">' + country.tagline + '</p>';
   html += '<p class="aa-hero-meta">';
@@ -258,7 +278,7 @@
     var oc = allCountries[ci];
     if (oc.slug === country.slug) continue;
     var ocCode = findCode(oc);
-    html += '<option value="' + ocCode + '">' + oc.flag + ' ' + oc.name + '</option>';
+    html += '<option value="' + ocCode + '">' + optionLabel(ocCode, oc) + '</option>';
   }
   html += '</select>';
   html += '<button type="button" id="aa-cmp-btn" class="aa-btn">Compare &rarr;</button>';

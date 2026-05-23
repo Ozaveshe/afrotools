@@ -20,12 +20,13 @@ const AUTH_SERVICE_KEY =
   process.env.SUPABASE_AUTH_SERVICE_KEY ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_SERVICE_KEY;
-const DATA_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const DATA_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || AUTH_URL;
 const DATA_READ_KEY =
   process.env.SUPABASE_DATA_ANON_KEY ||
   process.env.SUPABASE_ANON_KEY_DATA ||
   process.env.SUPABASE_ANON_KEY ||
   process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+  AUTH_SERVICE_KEY ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_SERVICE_KEY;
 
@@ -43,6 +44,10 @@ const SOURCE_KEYS = {
 };
 const SOURCE_TYPES = new Set(['official_page', 'rss', 'api', 'curated_import', 'permitted_scrape']);
 const MANUAL_REVIEW_PARSER_KEYS = new Set([
+  'manual_official_page',
+  'manual_official_directory',
+  'manual_official_portal',
+  'manual_official_catalog',
   'manual_review_official_page',
   'manual_review_official_directory',
   'manual_review_official_portal',
@@ -50,6 +55,7 @@ const MANUAL_REVIEW_PARSER_KEYS = new Set([
 ]);
 
 let sourceRegistryCache = null;
+let sourceCandidateCache = null;
 let deadlineOverridesCache = null;
 let authClient = null;
 
@@ -317,7 +323,10 @@ function defaultScholarshipSourceDefinitions() {
 function cloneSourceRow(row) {
   return Object.assign({}, row, {
     country_scope: ensureArray(row.country_scope),
-    destination_scope: ensureArray(row.destination_scope)
+    destination_scope: ensureArray(row.destination_scope),
+    crawl_policy: row.crawl_policy && typeof row.crawl_policy === 'object' ? Object.assign({}, row.crawl_policy) : row.crawl_policy,
+    robots_allowed: row.robots_allowed === undefined ? null : row.robots_allowed,
+    rate_limit_ms: toPositiveInteger(row.rate_limit_ms, 5000)
   });
 }
 
@@ -347,7 +356,13 @@ function normalizeSourceDefinition(input, index) {
     country_scope: uniqueStrings(source.country_scope || []),
     destination_scope: uniqueStrings(source.destination_scope || []),
     trust_level: String(source.trust_level || 'official').trim() || 'official',
-    robots_or_policy_note: String(source.robots_or_policy_note || '').trim() || null
+    robots_or_policy_note: String(source.robots_or_policy_note || '').trim() || null,
+    adapter_key: String(source.adapter_key || '').trim() || null,
+    adapter_version: String(source.adapter_version || '').trim() || null,
+    crawl_policy: source.crawl_policy && typeof source.crawl_policy === 'object' ? source.crawl_policy : null,
+    robots_url: String(source.robots_url || '').trim() || null,
+    robots_allowed: source.robots_allowed === undefined ? null : !!source.robots_allowed,
+    rate_limit_ms: toPositiveInteger(source.rate_limit_ms, 5000)
   };
 }
 
@@ -362,6 +377,60 @@ function readScholarshipSourceRegistryPayload() {
     if (error && error.code === 'MODULE_NOT_FOUND') return null;
     throw error;
   }
+}
+
+function readScholarshipSourceCandidatesPayload() {
+  try {
+    return require('../../../data/scholarships/source-candidates.json');
+  } catch (error) {
+    if (error && error.code === 'MODULE_NOT_FOUND') return null;
+    throw error;
+  }
+}
+
+function normalizeSourceCandidateDefinition(input, index) {
+  const candidate = input || {};
+  const sourceKey = String(candidate.source_key || '').trim();
+  const name = String(candidate.name || '').trim();
+  const baseUrl = String(candidate.base_url || '').trim();
+  const parserKey = String(candidate.parser_key || '').trim();
+  const location = sourceKey || 'candidate #' + (index + 1);
+
+  if (!sourceKey) throw new Error('Scholarship source candidate missing source_key at index ' + index);
+  if (!name) throw new Error('Scholarship source candidate missing name for ' + location);
+  if (!baseUrl) throw new Error('Scholarship source candidate missing base_url for ' + location);
+  if (!parserKey) throw new Error('Scholarship source candidate missing parser_key for ' + location);
+
+  return {
+    source_key: sourceKey,
+    name: name,
+    base_url: baseUrl,
+    robots_url: String(candidate.robots_url || '').trim() || null,
+    parser_key: parserKey,
+    status: String(candidate.status || 'reference_only').trim() || 'reference_only',
+    allowed_use: String(candidate.allowed_use || '').trim(),
+    blocked_use: String(candidate.blocked_use || '').trim(),
+    degree_scope: uniqueStrings(candidate.degree_scope || []),
+    notes: String(candidate.notes || '').trim()
+  };
+}
+
+function loadScholarshipSourceCandidates(options) {
+  const settings = options || {};
+  if (!settings.force && sourceCandidateCache) {
+    return sourceCandidateCache.map(function (candidate) {
+      return Object.assign({}, candidate, {
+        degree_scope: ensureArray(candidate.degree_scope)
+      });
+    });
+  }
+
+  const payload = readScholarshipSourceCandidatesPayload();
+  const candidates = payload && Array.isArray(payload.candidates)
+    ? payload.candidates.map(normalizeSourceCandidateDefinition)
+    : [];
+  sourceCandidateCache = candidates;
+  return loadScholarshipSourceCandidates({ force: false });
 }
 
 function readScholarshipDeadlineOverridesPayload() {
@@ -947,6 +1016,10 @@ async function fetchSourceItems(source) {
   if (!source || !source.parser_key) {
     return { rawItems: [], manualReview: true, warning: 'manual_review_required: missing parser key' };
   }
+  if (sourceAdapters && typeof sourceAdapters.fetchSourceItemsWithAdapter === 'function') {
+    const adapterResult = await sourceAdapters.fetchSourceItemsWithAdapter(source);
+    if (adapterResult) return adapterResult;
+  }
   if (source.parser_key === 'data_instance_scholarship_catalog') {
     return { rawItems: await fetchDataInstanceScholarships(), manualReview: false };
   }
@@ -1099,6 +1172,221 @@ async function syncScholarshipMirror(options) {
   };
 }
 
+function decodeXmlEntity(value) {
+  return String(value || '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
+function parseSitemapLocs(xml) {
+  const locs = [];
+  const pattern = /<loc>\s*([^<]+?)\s*<\/loc>/gi;
+  let match = pattern.exec(String(xml || ''));
+  while (match) {
+    const loc = decodeXmlEntity(match[1]).trim();
+    if (/^https?:\/\//i.test(loc)) locs.push(loc);
+    match = pattern.exec(String(xml || ''));
+  }
+  return uniqueValues(locs);
+}
+
+function isLikelyScholarshipLeadUrl(url) {
+  const value = String(url || '').toLowerCase();
+  return /^https?:\/\//.test(value) &&
+    /scholarship|scholarships|funding|studentship|fellowship|bursary|grant/.test(value) &&
+    !/\.(jpg|jpeg|png|gif|webp|svg|pdf|zip)(\?|#|$)/.test(value);
+}
+
+function titleFromLeadUrl(url) {
+  try {
+    const parsed = new URL(url);
+    const segment = parsed.pathname.split('/').filter(Boolean).pop() || parsed.hostname;
+    const title = segment.replace(/\.(html?|aspx?)$/i, '').replace(/[-_]+/g, ' ').trim();
+    return title ? title.replace(/\b\w/g, function (letter) { return letter.toUpperCase(); }) : parsed.hostname;
+  } catch (error) {
+    return 'Scholarship source lead';
+  }
+}
+
+async function fetchTextResource(url, options) {
+  const settings = options || {};
+  const fetchImpl = settings.fetchImpl || fetch;
+  const response = await fetchImpl(url, {
+    headers: {
+      'User-Agent': sourceAdapters && sourceAdapters.DEFAULT_USER_AGENT
+        ? sourceAdapters.DEFAULT_USER_AGENT
+        : 'AfroToolsScholarshipBot/1.0 (+https://afrotools.com/tools/scholarship-finder/)',
+      Accept: 'application/xml,text/xml,text/plain,*/*;q=0.8'
+    }
+  });
+  if (!response.ok) throw new Error('Discovery fetch returned HTTP ' + response.status + ' for ' + url);
+  return response.text();
+}
+
+function buildSuggestionFromLead(candidate, url) {
+  const levels = ensureArray(candidate.degree_scope);
+  return {
+    source_url: url,
+    title: titleFromLeadUrl(url),
+    provider: candidate.name,
+    country_scope: ['Africa'],
+    destination_scope: ['global'],
+    study_levels: levels.length ? levels : ['bachelor', 'master', 'phd'],
+    submitter_note: [
+      'Automated discovery lead from ' + candidate.source_key + '.',
+      candidate.allowed_use || '',
+      'Do not publish until the canonical official provider page is verified.'
+    ].filter(Boolean).join(' '),
+    review_status: 'pending'
+  };
+}
+
+async function discoverSitemapCandidateLeads(candidate, options) {
+  const settings = options || {};
+  const maxChildSitemaps = toPositiveInteger(settings.maxChildSitemaps, 4);
+  const maxLeadsPerCandidate = toPositiveInteger(settings.maxLeadsPerCandidate, 40);
+  const result = {
+    source_key: candidate.source_key,
+    status: candidate.status,
+    checked_at: new Date().toISOString(),
+    robots_allowed: false,
+    leads_seen: 0,
+    leads: []
+  };
+
+  if (!sourceAdapters || typeof sourceAdapters.checkRobots !== 'function') {
+    result.warning = 'robots_check_unavailable';
+    return result;
+  }
+
+  const robots = await sourceAdapters.checkRobots(candidate.base_url, {
+    userAgent: sourceAdapters.DEFAULT_USER_AGENT
+  });
+  result.robots_allowed = !!robots.robotsAllowed;
+  result.robots_url = robots.robotsUrl || candidate.robots_url || '';
+  result.robots_status = robots.robotsStatus || 0;
+  if (!result.robots_allowed) {
+    result.warning = 'robots_disallowed_or_unavailable';
+    return result;
+  }
+
+  const rootXml = await fetchTextResource(candidate.base_url, settings);
+  let locs = parseSitemapLocs(rootXml);
+  let leadUrls = locs.filter(isLikelyScholarshipLeadUrl);
+
+  if (leadUrls.length < maxLeadsPerCandidate) {
+    const childSitemaps = locs.filter(function (loc) {
+      return /\.xml(\?|#|$)/i.test(loc) && /scholarship|program|programme|study|course|degree/i.test(loc);
+    }).slice(0, maxChildSitemaps);
+
+    for (let index = 0; index < childSitemaps.length && leadUrls.length < maxLeadsPerCandidate; index += 1) {
+      const childXml = await fetchTextResource(childSitemaps[index], settings);
+      leadUrls = leadUrls.concat(parseSitemapLocs(childXml).filter(isLikelyScholarshipLeadUrl));
+    }
+  }
+
+  result.leads = uniqueValues(leadUrls).slice(0, maxLeadsPerCandidate).map(function (url) {
+    return buildSuggestionFromLead(candidate, url);
+  });
+  result.leads_seen = result.leads.length;
+  return result;
+}
+
+async function storeScholarshipSourceSuggestions(client, leads) {
+  const uniqueByUrl = new Map();
+  (leads || []).forEach(function (lead) {
+    if (lead && /^https?:\/\//i.test(String(lead.source_url || ''))) {
+      uniqueByUrl.set(lead.source_url, lead);
+    }
+  });
+
+  const sourceUrls = Array.from(uniqueByUrl.keys());
+  if (!client || !sourceUrls.length) {
+    return { seen: sourceUrls.length, existing: 0, created: 0 };
+  }
+
+  const existingSet = new Set();
+  for (let index = 0; index < sourceUrls.length; index += 100) {
+    const chunk = sourceUrls.slice(index, index + 100);
+    const { data, error } = await client
+      .from('scholarship_source_suggestions')
+      .select('source_url')
+      .in('source_url', chunk);
+    if (error) throw error;
+    (data || []).forEach(function (row) {
+      existingSet.add(row.source_url);
+    });
+  }
+
+  const inserts = sourceUrls
+    .filter(function (url) { return !existingSet.has(url); })
+    .map(function (url) { return uniqueByUrl.get(url); });
+
+  if (!inserts.length) {
+    return { seen: sourceUrls.length, existing: existingSet.size, created: 0 };
+  }
+
+  const { error: insertError } = await client
+    .from('scholarship_source_suggestions')
+    .insert(inserts);
+  if (insertError) throw insertError;
+
+  return {
+    seen: sourceUrls.length,
+    existing: existingSet.size,
+    created: inserts.length
+  };
+}
+
+async function discoverScholarshipCandidateLeads(options) {
+  const settings = options || {};
+  const client = settings.client || getAuthClient();
+  const candidates = settings.candidates || loadScholarshipSourceCandidates();
+  const results = [];
+  let leads = [];
+
+  for (const candidate of candidates) {
+    try {
+      if (candidate.status !== 'discovery_only') {
+        results.push({
+          source_key: candidate.source_key,
+          status: candidate.status,
+          checked_at: new Date().toISOString(),
+          leads_seen: 0,
+          warning: 'reference_only_or_manual_use'
+        });
+        continue;
+      }
+      const result = await discoverSitemapCandidateLeads(candidate, settings);
+      results.push(Object.assign({}, result, { leads: undefined }));
+      leads = leads.concat(result.leads || []);
+    } catch (error) {
+      results.push({
+        source_key: candidate.source_key,
+        status: candidate.status,
+        checked_at: new Date().toISOString(),
+        leads_seen: 0,
+        warning: error.message
+      });
+    }
+  }
+
+  const suggestionCounts = await storeScholarshipSourceSuggestions(client, leads);
+  return {
+    ok: true,
+    checked_at: new Date().toISOString(),
+    candidate_count: candidates.length,
+    lead_count: leads.length,
+    suggestions_seen_count: suggestionCounts.seen,
+    suggestions_existing_count: suggestionCounts.existing,
+    suggestions_created_count: suggestionCounts.created,
+    candidates: results
+  };
+}
+
 async function discoverScholarshipSources(options) {
   const client = (options && options.client) || getAuthClient();
   if (!client) throw new Error('Scholarship auth client not configured');
@@ -1136,6 +1424,18 @@ async function discoverScholarshipSources(options) {
       };
     })
   };
+
+  try {
+    summary.candidate_discovery = await discoverScholarshipCandidateLeads({
+      client: client
+    });
+  } catch (error) {
+    summary.candidate_discovery = {
+      ok: false,
+      checked_at: new Date().toISOString(),
+      error: error.message
+    };
+  }
 
   await setData('scholarship-source-registry-latest', summary);
   return summary;
@@ -1591,14 +1891,17 @@ module.exports = {
   buildLegacyScholarship,
   buildReminderSchedule,
   filterScholarships,
+  discoverScholarshipCandidateLeads,
   discoverScholarshipSources,
   ensureScholarshipSources,
   getAuthClient,
   getFallbackScholarships,
   getScholarshipById,
   listSavedScholarships,
+  loadScholarshipSourceCandidates,
   loadScholarshipFeed,
   loadScholarshipSourceRegistry,
+  parseSitemapLocs,
   normalizeOffsets,
   reconcileAllScholarshipDeadlines,
   reconcileReminderJobsForScholarshipIds,

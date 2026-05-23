@@ -12,12 +12,17 @@ const teams = [
 ];
 
 const scoring = {
-  correctWinner: 3,
+  correctResult: 4,
   correctDraw: 4,
-  exactScore: 8,
+  correctGoalDifference: 3,
+  correctTeamGoal: 1,
+  exactScore: 10,
   correctGroupQualifier: 10,
   correctChampion: 25,
-  africanTeamBonus: 2
+  africanFixtureBonusMultiplier: 0.25,
+  africanTeamWinBonus: 3,
+  africanTeamCleanSheetBonus: 2,
+  maxAfricanFixtureBonus: 8
 };
 
 const moroccoWin = {
@@ -51,26 +56,26 @@ const pending = {
 };
 
 let result = Engine.scoreMatchPick({ matchId: 'm1', resultPick: 'morocco', homeScore: 1, awayScore: 0 }, moroccoWin, scoring, teams);
-assert.strictEqual(result.total, 5, 'winner plus African bonus should score 5');
-assert.deepStrictEqual(result.breakdown.map((item) => item.rule), ['correctWinner', 'africanTeamBonus']);
+assert.strictEqual(result.total, 12, 'result, goal difference, and African win bonus should score 12');
+assert.deepStrictEqual(result.breakdown.map((item) => item.rule), ['correctResult', 'correctGoalDifference', 'africanFixtureBonus25Percent', 'correctAfricanTeamWin']);
 
 result = Engine.scoreMatchPick({ matchId: 'm1', resultPick: 'morocco', homeScore: 2, awayScore: 1 }, moroccoWin, scoring, teams);
-assert.strictEqual(result.total, 10, 'exact score plus African bonus should score 10');
-assert.deepStrictEqual(result.breakdown.map((item) => item.rule), ['exactScore', 'africanTeamBonus']);
+assert.strictEqual(result.total, 16, 'exact score plus African fixture and win bonuses should score 16');
+assert.deepStrictEqual(result.breakdown.map((item) => item.rule), ['exactScore', 'africanFixtureBonus25Percent', 'correctAfricanTeamWin']);
 
 result = Engine.scoreMatchPick({ matchId: 'm2', resultPick: 'draw', homeScore: 0, awayScore: 0 }, draw, scoring, teams);
-assert.strictEqual(result.total, 6, 'draw involving an African team should score 6');
-assert.deepStrictEqual(result.breakdown.map((item) => item.rule), ['correctDraw', 'africanTeamBonus']);
+assert.strictEqual(result.total, 9, 'draw with correct goal difference in an African fixture should score 9');
+assert.deepStrictEqual(result.breakdown.map((item) => item.rule), ['correctResult', 'correctGoalDifference', 'africanFixtureBonus25Percent']);
 
 result = Engine.scoreMatchPick({ matchId: 'm3', resultPick: 'senegal', homeScore: 2, awayScore: 0 }, pending, scoring, teams);
 assert.strictEqual(result.total, 0, 'pending fixtures should not score');
 assert.strictEqual(result.scoreable, false, 'pending fixtures should be marked unscoreable');
 
 result = Engine.scoreGroupQualifiersPick({ teamIds: ['morocco', 'brazil'] }, { groupQualifiers: ['morocco', 'japan'] }, scoring, teams);
-assert.strictEqual(result.total, 12, 'African qualifier should score qualifier points plus bonus');
+assert.strictEqual(result.total, 10, 'group qualifier scoring should not apply fixture bonuses');
 
 result = Engine.scoreChampionPick('morocco', { championTeamId: 'morocco' }, scoring, teams);
-assert.strictEqual(result.total, 27, 'African champion should score champion points plus bonus');
+assert.strictEqual(result.total, 25, 'champion scoring should not apply fixture bonuses');
 
 result = Engine.calculateUserScore({
   matchPick: { matchId: 'm1', resultPick: 'morocco', homeScore: 2, awayScore: 1 },
@@ -80,7 +85,7 @@ result = Engine.calculateUserScore({
   groupQualifiers: ['morocco'],
   championTeamId: 'morocco'
 }, scoring, teams, [moroccoWin]);
-assert.strictEqual(result.total, 49, 'combined scoring should add match, qualifier, and champion sections');
+assert.strictEqual(result.total, 51, 'combined scoring should add match, qualifier, and champion sections');
 
 assert.strictEqual(Engine.isLocked('2026-06-11T12:00:00Z', '2026-06-11T12:01:00Z'), true, 'deadline should lock after cutoff');
 assert.strictEqual(Engine.isLocked('2026-06-11T12:00:00Z', '2026-06-11T11:59:00Z'), false, 'deadline should stay open before cutoff');

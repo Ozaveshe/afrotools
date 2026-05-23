@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cover Letter Generator App | AfroTools</title>
-<meta name="description" content="Write tailored cover letters for African and global applications with role templates, job-description matching, readiness checks, and PDF, Word, TXT, and JSON export.">
+<title>Cover Letter Generator | Private App | AfroTools</title>
+<meta name="description" content="Free Africa-first cover letter generator. Tailor your letter to the job description, check missing keywords, improve readiness, and export privately without an account.">
 <link rel="canonical" href="https://afrotools.com/tools/cover-letter-generator/app">
 <meta name="robots" content="noindex, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
-<meta property="og:title" content="Cover Letter Generator App | AfroTools">
-<meta property="og:description" content="Tailor cover letters with templates, job-description matching, readiness checks, and private local export.">
+<meta property="og:title" content="Cover Letter Generator | AfroTools">
+<meta property="og:description" content="Tailor your letter to the job description, check missing keywords, improve readiness, and export privately without an account.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -21,10 +21,10 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cover Letter Generator App | AfroTools">
-<meta name="twitter:description" content="Create role-ready cover letters with PDF, Word, TXT, JSON, and share-link export.">
+<meta name="twitter:title" content="Cover Letter Generator | AfroTools">
+<meta name="twitter:description" content="Free Africa-first cover letter generator with JD matching, readiness scoring, local drafts, and private export.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-05-01">
+<meta property="article:modified_time" content="2026-05-23">
 <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script>
 <style>
@@ -32,79 +32,143 @@
 html{scroll-behavior:smooth}
 body{margin:0;font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f6f7f3;color:#111827;min-height:100vh}
 button,input,select,textarea{font:inherit}
-button{cursor:pointer}
+button{cursor:pointer;min-height:44px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:12px clamp(14px,2vw,28px);background:rgba(255,255,255,.94);border-bottom:1px solid #e5e7eb;backdrop-filter:blur(14px)}
-.topbar a{color:#4b5563;text-decoration:none;font-size:.88rem;font-weight:700}
+.topbar a{display:inline-flex;align-items:center;min-height:44px;color:#4b5563;text-decoration:none;font-size:.88rem;font-weight:700}
 .topbar-title{font-size:.98rem;font-weight:800;margin-right:auto}
 .topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:38px}
+.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:44px}
 .btn:hover,.btn:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none}
 .btn-primary{background:#0b63ce;color:#fff;border-color:#0b63ce}
 .btn-primary:hover,.btn-primary:focus-visible{background:#084eaa;color:#fff}
 .btn-soft{background:#eef5ff;color:#0b63ce;border-color:#bfdbfe}
 .btn-danger{color:#b91c1c;border-color:#fecaca}
-.app-shell{width:min(1440px,100%);margin:0 auto;padding:18px clamp(12px,2vw,28px) 32px}
+.app-shell{--workbench-height:clamp(660px,calc(100vh - 300px),790px);width:min(1500px,100%);margin:0 auto;padding:18px clamp(12px,2vw,28px) 32px}
 .hero-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;margin-bottom:16px}
 .eyebrow{margin:0 0 5px;color:#0b63ce;font-size:.72rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
 .hero-strip h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.4rem);letter-spacing:0;line-height:1.05}
 .hero-strip p{margin:8px 0 0;color:#4b5563;max-width:760px;line-height:1.55}
 .status-line{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #dbeafe;background:#fff;color:#1f2937;border-radius:999px;padding:8px 10px;font-size:.76rem;font-weight:800}
-.workspace{display:grid;grid-template-columns:minmax(320px,390px) minmax(420px,1fr) minmax(290px,340px);gap:16px;align-items:start}
-.panel,.preview-card,.insights-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
-.panel{padding:18px;max-height:calc(100vh - 112px);overflow:auto}
+.pill-button{cursor:pointer;min-height:44px}
+.pill-button:hover,.pill-button:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
+.workflow-progress{margin:0 0 16px}
+.workflow-progress ol{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;list-style:none;margin:0;padding:0}
+.progress-step{display:grid;grid-template-columns:auto 1fr;gap:7px 9px;align-items:center;min-height:78px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;padding:11px;box-shadow:0 14px 34px rgba(15,23,42,.06)}
+.progress-step span{display:grid;place-items:center;width:27px;height:27px;border-radius:999px;background:#e5e7eb;color:#475569;font-size:.78rem;font-weight:900}
+.progress-step strong{font-size:.84rem;color:#111827;line-height:1.15}
+.progress-step small{grid-column:2;color:#6b7280;font-size:.72rem;line-height:1.35}
+.progress-step[data-state=done]{border-color:#bbf7d0;background:#f0fdf4}
+.progress-step[data-state=done] span{background:#16a34a;color:#fff}
+.progress-step[data-state=current]{border-color:#fed7aa;box-shadow:0 14px 34px rgba(249,115,22,.14)}
+.progress-step[data-state=current] span{background:#f97316;color:#fff}
+.workspace{display:grid;grid-template-columns:minmax(320px,390px) minmax(280px,330px) minmax(520px,1fr);grid-template-areas:"inputs insights draft";gap:16px;align-items:stretch}
+.panel,.preview-card,.insights-card{min-height:0;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
+.panel{grid-area:inputs;padding:18px;height:var(--workbench-height);overflow:auto}
+.preview-card{grid-area:draft;height:var(--workbench-height);display:flex;flex-direction:column}
+.insights-card{grid-area:insights}
 .panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
 .panel h2,.preview-card h2,.insights-card h2{margin:0;font-size:1.02rem;line-height:1.2}
 .panel h3{font-size:.86rem;margin:18px 0 10px;text-transform:uppercase;letter-spacing:.06em;color:#374151}
+.stage-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0 16px;padding:5px;border:1px solid #e5e7eb;border-radius:12px;background:#f9fafb}
+.stage-tab{border:0;border-radius:8px;background:transparent;color:#4b5563;padding:9px 7px;min-height:44px;font-size:.78rem;font-weight:900;line-height:1.15}
+.stage-tab[aria-selected=true]{background:#fff;color:#111827;box-shadow:0 7px 18px rgba(15,23,42,.1)}
+.flow-stage{border-top:1px solid #e5e7eb;margin-top:16px;padding-top:16px}
+.flow-stage:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.stage-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.stage-heading h3{margin:0;font-size:.92rem;color:#111827;text-transform:none;letter-spacing:0}
+.stage-heading p{margin:4px 0 0;color:#6b7280;font-size:.8rem;line-height:1.45}
+.stage-badge{flex:0 0 auto;border:1px solid #fed7aa;background:#fff7ed;color:#9a3412;border-radius:999px;padding:5px 8px;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.field span{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase;letter-spacing:.04em}
+.field>span:first-child{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase;letter-spacing:.04em}
 .field input,.field select,.field textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.88rem;line-height:1.35}
 .field textarea{min-height:86px;resize:vertical}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
 .field.full{grid-column:1/-1}
 .helper{margin:-4px 0 10px;color:#6b7280;font-size:.78rem;line-height:1.45}
+.field-help{display:block;margin:0;color:#6b7280;font-size:.76rem;line-height:1.42;text-transform:none;letter-spacing:0;font-weight:500}
+.field-tip{display:block;border-left:3px solid #fdba74;background:#fff7ed;color:#7c2d12;border-radius:8px;padding:8px 10px;font-size:.76rem;line-height:1.42;text-transform:none;letter-spacing:0;font-weight:600}
+.upload-placeholder{border:1px dashed #cbd5e1;border-radius:12px;background:#f8fafc;padding:12px;margin:2px 0 12px;color:#4b5563;font-size:.8rem;line-height:1.45}
+.upload-placeholder button{margin-top:8px}
+.ai-assist-panel{border:1px solid #bfdbfe;background:#f8fbff;border-radius:12px;padding:14px;margin-top:16px}
+.ai-assist-panel:target{box-shadow:0 0 0 3px rgba(11,99,206,.15),0 18px 44px rgba(11,99,206,.14)}
+.ai-assist-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.ai-assist-head h3{margin:0;font-size:.94rem;color:#111827;text-transform:none;letter-spacing:0}
+.ai-assist-head p{margin:5px 0 0;color:#4b5563;font-size:.78rem;line-height:1.45}
+.ai-assist-note{border-left:3px solid #0b63ce;background:#eef5ff;color:#1e3a8a;border-radius:8px;padding:8px 10px;font-size:.76rem;line-height:1.45;margin:8px 0 10px}
+.ai-consent-row{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;min-height:44px;margin:8px 0 10px;color:#374151;font-size:.78rem;line-height:1.45;cursor:pointer}
+.ai-consent-row input{width:22px;height:22px;margin-top:1px}
+.ai-assist-preview,.ai-assist-output{width:100%;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;padding:10px 11px;font-size:.78rem;line-height:1.5;resize:vertical}
+.ai-assist-preview{min-height:136px;font-family:ui-monospace,SFMono-Regular,Consolas,'Liberation Mono',monospace}
+.ai-assist-output{min-height:160px}
+.ai-assist-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.ai-status{min-height:20px;margin:8px 0 0;color:#4b5563;font-size:.78rem;font-weight:700}
+.ai-status.is-error{color:#b91c1c}
+.ai-status.is-good{color:#166534}
 .segmented{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
 .template-option{border:1px solid #d1d5db;background:#fff;border-radius:8px;padding:9px 10px;font-size:.78rem;font-weight:800;color:#374151}
 .template-option[aria-pressed="true"]{border-color:#0b63ce;background:#eef5ff;color:#0b63ce}
+.mobile-stage-actions{display:none}
+.desktop-actions{display:flex}
+.btn:disabled,.btn[aria-disabled=true]{opacity:.58;cursor:not-allowed}
+#afro-theme-fallback-toggle{min-height:44px!important}
 .preview-card{overflow:hidden}
 .preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e7eb;background:#fbfcff}
 .preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.letter-editor{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,420px);gap:0;min-height:710px}
-.letter-text-wrap{padding:16px;border-right:1px solid #e5e7eb;background:#f9fafb}
-#letterText{width:100%;min-height:650px;resize:vertical;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;padding:16px;line-height:1.66;font-family:Georgia,'Times New Roman',serif;font-size:14px}
+.letter-editor{display:grid;grid-template-columns:1fr;gap:0;min-height:0;flex:1;overflow:auto}
+.letter-text-wrap{padding:16px;border-bottom:1px solid #e5e7eb;background:#f9fafb}
+#letterText{width:100%;min-height:285px;resize:vertical;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;padding:16px;line-height:1.66;font-family:Georgia,'Times New Roman',serif;font-size:14px}
 #letterText:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.1)}
-.paper-wrap{padding:18px;background:#eceff3;overflow:auto}
-.paper{width:100%;min-height:595px;background:#fff;border:1px solid #d1d5db;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:38px 34px;color:#1f2937;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.62}
+.paper-wrap{min-width:0;padding:18px;background:#eceff3;overflow:auto}
+.paper{width:100%;min-height:420px;background:#fff;border:1px solid #d1d5db;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:34px 32px;color:#1f2937;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.62}
 .paper p{margin:0 0 13px;white-space:pre-wrap}
 .paper .paper-name{font-weight:700;font-size:15px;margin-bottom:2px}
 .paper .paper-muted{font-family:'DM Sans',system-ui,sans-serif;color:#6b7280;font-size:10px;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:8px}
-.insights-card{padding:18px;position:sticky;top:82px}
-.score-ring{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;margin:14px 0}
-.score-number{display:grid;place-items:center;width:92px;height:92px;border-radius:50%;background:conic-gradient(#0b63ce var(--score-deg,0deg),#e5e7eb 0deg);position:relative;font-weight:900;color:#0b63ce}
-.score-number::before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
-.score-number span{position:relative;font-size:1.45rem}
-.score-copy{font-size:.84rem;color:#4b5563;line-height:1.45}
-.checks{display:grid;gap:8px;margin:14px 0}
-.check{border:1px solid #e5e7eb;border-radius:8px;padding:9px 10px;font-size:.8rem;line-height:1.35;color:#374151}
-.check.good{border-color:#bbf7d0;background:#f0fdf4}
-.check.warn{border-color:#fde68a;background:#fffbeb}
-.chip-row{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 14px}
-.chip{border:1px solid #d1d5db;background:#f9fafb;border-radius:999px;padding:5px 8px;font-size:.72rem;font-weight:800;color:#374151}
+.insights-card{height:var(--workbench-height);padding:0;position:static;overflow:hidden;display:flex;flex-direction:column}
+.readiness-summary{padding:14px 16px;background:linear-gradient(180deg,#f8fbff,#f8fafc);border-bottom:1px solid #e5e7eb}
+.readiness-summary h2{font-size:.98rem}
+.readiness-details{min-height:0;overflow:auto;padding:12px;display:grid;gap:12px}
+.readiness-section{min-width:0}
+.readiness-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:7px}
+.readiness-section h3{margin:0;font-size:.82rem;color:#111827}
+.readiness-section p{margin:3px 0 0;color:#6b7280;font-size:.72rem;line-height:1.4}
+.score-ring{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:center;margin:10px 0 0}
+.score-number{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:conic-gradient(#0b63ce var(--score-deg,0deg),#e5e7eb 0deg);position:relative;font-weight:900;color:#0b63ce}
+.score-number::before{content:"";position:absolute;inset:7px;background:#fff;border-radius:50%}
+.score-number span{position:relative;font-size:1.15rem}
+.score-copy{font-size:.76rem;color:#4b5563;line-height:1.42}
+.checks{display:grid;grid-template-columns:1fr;gap:7px;margin:0}
+.check{border:1px solid #e5e7eb;border-radius:8px;padding:7px 8px;font-size:.72rem;line-height:1.32;color:#374151;background:#fff}
+.check strong{display:flex;align-items:center;gap:6px;margin-bottom:2px;font-size:.72rem;color:#1f2937}
+.check strong::before{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:16px;border-radius:999px;font-size:.54rem;font-weight:900;letter-spacing:.04em}
+.check.good{border-color:#bbf7d0;background:#f4fdf7}
+.check.good strong::before{content:"OK";background:#dcfce7;color:#166534}
+.check.warn{border-color:#fde68a;background:#fff9eb}
+.check.warn strong::before{content:"FIX";background:#fef3c7;color:#92400e}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0 10px}
+.chip{border:1px solid #d1d5db;background:#f9fafb;border-radius:999px;padding:4px 7px;font-size:.68rem;font-weight:800;color:#374151}
 .chip.hit{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
 .chip.miss{border-color:#fecaca;background:#fef2f2;color:#991b1b}
-.saved-list{display:grid;gap:8px;max-height:240px;overflow:auto;margin-top:10px}
+.ai-jump-card{border:1px solid #bfdbfe;background:#f8fbff;border-radius:10px;padding:10px;margin:8px 0}
+.ai-jump-card h3{margin:0 0 5px;font-size:.84rem;color:#111827}
+.ai-jump-card p{margin:0 0 9px;color:#4b5563;font-size:.72rem;line-height:1.42}
+.ai-jump-card .btn{width:100%;justify-content:center}
+.saved-list{display:grid;gap:8px;max-height:120px;overflow:auto;margin-top:10px}
 .saved-item{border:1px solid #e5e7eb;border-radius:9px;padding:10px;background:#fbfcff}
 .saved-title{font-size:.82rem;font-weight:900;margin-bottom:4px}
 .saved-meta{font-size:.72rem;color:#6b7280;margin-bottom:8px}
 .saved-actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty-state{border:1px dashed #cfd8e3;background:#f8fafc;border-radius:12px;padding:12px;color:#6b7280;font-size:.8rem;line-height:1.45;margin:8px 0 12px}
+[hidden]{display:none!important}
 .toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .import-input{display:none}
-@media print{body{background:#fff}.topbar,.hero-strip,.panel,.insights-card,.preview-top,.letter-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.letter-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
-@media(max-width:1180px){.workspace{grid-template-columns:minmax(300px,390px) minmax(420px,1fr)}.insights-card{grid-column:1/-1;position:static}.letter-editor{grid-template-columns:1fr}}
-@media(max-width:780px){.topbar{align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workspace{grid-template-columns:1fr}.panel{max-height:none}.form-grid{grid-template-columns:1fr}.letter-editor{min-height:auto}.letter-text-wrap{border-right:0;border-bottom:1px solid #e5e7eb}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}}
+@media print{body{background:#fff}.topbar,.hero-strip,.workflow-progress,.panel,.insights-card,.preview-top,.letter-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.letter-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+@media(max-width:1320px){#letterText{min-height:300px}}
+@media(max-width:1180px){.app-shell{--workbench-height:clamp(620px,calc(100vh - 290px),760px)}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workflow-progress ol{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace{grid-template-columns:minmax(300px,390px) minmax(0,1fr);grid-template-areas:"inputs draft" "insights draft";align-items:start}.insights-card{height:auto;min-height:360px}.readiness-details{overflow:visible}.checks{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}}
+@media(max-width:900px){.app-shell{--workbench-height:auto}.topbar{position:static;align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto;min-height:44px}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workflow-progress{position:sticky;top:0;z-index:18;background:linear-gradient(180deg,#f6f7f3 78%,rgba(246,247,243,0));padding-top:8px}.workflow-progress ol{display:flex;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}.progress-step{min-width:180px;scroll-snap-align:start}.workspace{grid-template-columns:1fr;grid-template-areas:"inputs" "insights" "draft"}.panel,.preview-card,.insights-card{height:auto}.panel{max-height:none}.form-grid{grid-template-columns:1fr}.flow-stage,.insights-card,.preview-card{display:none}.app-shell[data-stage=profile] .flow-stage[data-stage-panel=profile],.app-shell[data-stage=job] .flow-stage[data-stage-panel=job],.app-shell[data-stage=draft] .flow-stage[data-stage-panel=draft]{display:block}.app-shell[data-stage=job] .insights-card{display:flex}.app-shell[data-stage=draft] .preview-card{display:flex}.stage-tabs{position:sticky;top:92px;z-index:10}.mobile-stage-actions{display:flex;position:sticky;bottom:12px;z-index:12;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid #e5e7eb;border-radius:14px;padding:8px;margin-top:16px;box-shadow:0 18px 35px rgba(15,23,42,.16)}.mobile-stage-actions .btn{flex:1}.desktop-actions{display:none}.letter-editor{min-height:auto}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}.readiness-details{padding:16px}.checks{grid-template-columns:1fr}#afro-theme-fallback-toggle{display:none!important}}
 </style>
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
 <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
@@ -122,23 +186,37 @@ button{cursor:pointer}
     <button class="btn" type="button" data-action="copy">Copy</button>
     <button class="btn" type="button" data-action="save">Save</button>
     <button class="btn btn-soft" type="button" data-action="share">Share link</button>
-    <button class="btn btn-primary" type="button" data-action="pdf">PDF</button>
+    <a class="btn btn-soft" href="#job-match">Check job match</a>
+    <button class="btn btn-soft" type="button" data-ai-assist-open>AI Assist</button>
+    <button class="btn btn-primary" type="button" data-action="pdf">Export draft</button>
   </div>
 </div>
 
-<main class="app-shell">
+<main class="app-shell" data-stage="profile">
   <section class="hero-strip" aria-labelledby="app-title">
     <div>
       <p class="eyebrow">Private application builder</p>
-      <h2 id="app-title">Tailor a strong cover letter before you apply.</h2>
-      <p>Use role templates, job-description keyword checks, Africa-aware guidance, editable drafts, saved versions, and export formats recruiters actually accept.</p>
+      <h2 id="app-title">Create a private, job-matched cover letter.</h2>
+      <p>Free Africa-first, local-first cover letter generator. Tailor your letter to the job description, check missing keywords, improve readiness, and export privately without an account.</p>
     </div>
     <div class="status-line" aria-label="Feature summary">
-      <span class="pill">10 templates</span>
-      <span class="pill">ATS-style checks</span>
-      <span class="pill">PDF, Word, TXT</span>
-      <span class="pill">Local first</span>
+      <span class="pill">Free</span>
+      <span class="pill">No account</span>
+      <span class="pill">No watermark</span>
+      <span class="pill">Local-first</span>
+      <button class="pill pill-button" type="button" data-ai-assist-open>AI Assist copywriter</button>
+      <span class="pill">PDF/DOC/TXT/JSON</span>
     </div>
+  </section>
+
+  <section class="workflow-progress" aria-label="Application progress">
+    <ol>
+      <li class="progress-step" data-progress-step="profile"><span>1</span><strong>Profile complete</strong><small>Add contact details and CV context.</small></li>
+      <li class="progress-step" data-progress-step="job"><span>2</span><strong>Job description added</strong><small>Paste the role details for matching.</small></li>
+      <li class="progress-step" data-progress-step="proof"><span>3</span><strong>Proof points added</strong><small>Show evidence, skills, and motivation.</small></li>
+      <li class="progress-step" data-progress-step="draft"><span>4</span><strong>Draft ready</strong><small>Create or edit your letter.</small></li>
+      <li class="progress-step" data-progress-step="export"><span>5</span><strong>Export ready</strong><small>Save, copy, print, or download.</small></li>
+    </ol>
   </section>
 
   <div class="workspace">
@@ -148,51 +226,184 @@ button{cursor:pointer}
           <p class="eyebrow">Builder</p>
           <h2 id="builder-title">Application details</h2>
         </div>
-        <button class="btn btn-soft" type="button" data-action="rebuild">Rebuild</button>
+        <button class="btn btn-soft" type="button" data-action="rebuild">Create cover letter</button>
       </div>
 
-      <h3>Role fit</h3>
-      <div class="form-grid">
-        <label class="field"><span>Template</span><select id="templateId"></select></label>
-        <label class="field"><span>Tone</span><select id="toneId"></select></label>
-        <label class="field"><span>Market</span><select id="market"></select></label>
-        <label class="field"><span>Length</span><select id="lengthId"></select></label>
+      <div class="stage-tabs" role="tablist" aria-label="Cover letter workflow">
+        <button class="stage-tab" id="tab-profile" type="button" role="tab" aria-controls="stage-profile" aria-selected="true" data-stage-target="profile">1. Profile & CV</button>
+        <button class="stage-tab" id="tab-job" type="button" role="tab" aria-controls="stage-job" aria-selected="false" data-stage-target="job">2. Job & match</button>
+        <button class="stage-tab" id="tab-draft" type="button" role="tab" aria-controls="stage-draft" aria-selected="false" data-stage-target="draft">3. Draft & export</button>
       </div>
 
-      <h3>Your details</h3>
-      <div class="form-grid">
-        <label class="field"><span>Full name</span><input aria-label="Adaeze Okonkwo" id="fullName" autocomplete="name" placeholder="Adaeze Okonkwo"></label>
-        <label class="field"><span>Email</span><input aria-label="Adaeze@email.com" id="email" type="email" autocomplete="email" placeholder="adaeze@email.com"></label>
-        <label class="field"><span>Phone</span><input aria-label="Phone" id="phone" autocomplete="tel" placeholder="+234 801 234 5678"></label>
-        <label class="field"><span>Location</span><input aria-label="Lagos, Nigeria" id="city" autocomplete="address-level2" placeholder="Lagos, Nigeria"></label>
-        <label class="field full"><span>LinkedIn or portfolio</span><input aria-label="Linkedin.com/in/adaeze or portfolio link" id="portfolio" placeholder="linkedin.com/in/adaeze or portfolio link"></label>
+      <div class="flow-stage" id="stage-profile" role="tabpanel" aria-labelledby="tab-profile" data-stage-panel="profile">
+        <div class="stage-heading">
+          <div>
+            <h3>Candidate profile</h3>
+            <p>Start with recruiter-ready contact details and a short CV summary.</p>
+          </div>
+          <span class="stage-badge">Step 1</span>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Full name</span><input id="fullName" autocomplete="name" placeholder="Adaeze Okonkwo" aria-describedby="fullNameHelp"><span class="field-help" id="fullNameHelp">Use the same name shown on your CV and application profile.</span></label>
+          <label class="field"><span>Email</span><input id="email" type="email" autocomplete="email" placeholder="adaeze@email.com" aria-describedby="emailHelp"><span class="field-help" id="emailHelp">Use a professional inbox you check often during hiring.</span></label>
+          <label class="field"><span>Phone</span><input id="phone" autocomplete="tel" placeholder="+234 801 234 5678" aria-describedby="phoneHelp"><span class="field-help" id="phoneHelp">Include your country code when applying across markets.</span></label>
+          <label class="field"><span>Location</span><input id="city" autocomplete="address-level2" placeholder="Lagos, Nigeria" aria-describedby="cityHelp"><span class="field-help" id="cityHelp">City and country help recruiters understand market fit and availability.</span></label>
+          <label class="field full"><span>LinkedIn or portfolio</span><input id="portfolio" placeholder="linkedin.com/in/adaeze or portfolio link" aria-describedby="portfolioHelp"><span class="field-help" id="portfolioHelp">Add one clean link that backs up your experience or work samples.</span></label>
+        </div>
+
+        <div class="stage-heading">
+          <div>
+            <h3>Resume/CV</h3>
+            <p>Paste the strongest summary or background you want reflected in the letter.</p>
+          </div>
+        </div>
+        <label class="field full"><span>Resume summary or background</span><textarea id="resumeSummary" placeholder="Paste a short resume summary or key responsibilities you want the letter to reflect." aria-describedby="resumeSummaryHelp"></textarea><span class="field-help" id="resumeSummaryHelp">Good input names your function, industries, tools, achievements, and markets served.</span><span class="field-tip">Improve this field: "Operations associate with 4 years supporting fintech teams in Nigeria and Ghana, including reconciliations, vendor follow-up, and customer issue resolution."</span></label>
+        <div class="upload-placeholder">
+          <strong>CV upload support is planned.</strong> For now, paste the relevant CV summary or bullet points above so the generator stays fully local in your browser.
+          <button class="btn" type="button" disabled aria-disabled="true">Upload CV later</button>
+        </div>
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-next-stage="job">Next: Job & match</button></div>
       </div>
 
-      <h3>Target role</h3>
-      <div class="form-grid">
-        <label class="field"><span>Job title</span><input aria-label="Product Manager" id="jobTitle" placeholder="Product Manager"></label>
-        <label class="field"><span>Company</span><input aria-label="Safaricom" id="company" placeholder="Safaricom"></label>
-        <label class="field"><span>Hiring manager</span><input aria-label="Ms. Njeri Kamau" id="hiringManager" placeholder="Ms. Njeri Kamau"></label>
-        <label class="field"><span>Application source</span><input aria-label="LinkedIn, referral, company site" id="source" placeholder="LinkedIn, referral, company site"></label>
-        <label class="field full"><span>Job description</span><textarea id="jobDescription" placeholder="Paste the job post. The checker will compare your letter with the role keywords."></textarea></label>
+      <div class="flow-stage" id="stage-job" role="tabpanel" aria-labelledby="tab-job" data-stage-panel="job">
+        <div class="stage-heading">
+          <div>
+            <h3>Target job</h3>
+            <p>Use the actual job post so keyword checks and readiness scoring stay relevant.</p>
+          </div>
+          <span class="stage-badge">Step 2</span>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Job title</span><input id="jobTitle" placeholder="Product Manager" aria-describedby="jobTitleHelp"><span class="field-help" id="jobTitleHelp">Match the title from the advert, including level if listed.</span></label>
+          <label class="field"><span>Company</span><input id="company" placeholder="Safaricom" aria-describedby="companyHelp"><span class="field-help" id="companyHelp">Use the employer name exactly as the role advert shows it.</span></label>
+          <label class="field"><span>Hiring manager</span><input id="hiringManager" placeholder="Ms. Njeri Kamau" aria-describedby="hiringManagerHelp"><span class="field-help" id="hiringManagerHelp">Optional. Add a name only when you are confident it is correct.</span></label>
+          <label class="field"><span>Application source</span><input id="source" placeholder="LinkedIn, referral, company site" aria-describedby="sourceHelp"><span class="field-help" id="sourceHelp">This can help the letter reference a referral or posting channel naturally.</span></label>
+          <label class="field full"><span>Market or country</span><select id="market" aria-describedby="marketHelp"></select><span class="field-help" id="marketHelp">Pick the market closest to the role so guidance reflects local hiring norms.</span></label>
+          <label class="field full"><span>Job description</span><textarea id="jobDescription" placeholder="Paste the job post. The checker will compare your letter with the role keywords." aria-describedby="jobDescriptionHelp"></textarea><span class="field-help" id="jobDescriptionHelp">Paste responsibilities, requirements, tools, and qualifications. Remove private recruiter notes before sharing a device.</span><span class="field-tip">Improve this field: paste the full advert, then keep the role requirements, core tools, language requirements, and location rules.</span></label>
+        </div>
+
+        <div class="stage-heading">
+          <div>
+            <h3>Proof points</h3>
+            <p>Specific evidence makes the draft stronger and improves match quality.</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Years of experience</span><input id="years" type="number" min="0" max="60" value="3" aria-describedby="yearsHelp"><span class="field-help" id="yearsHelp">Use total relevant experience, not every year worked.</span></label>
+          <label class="field"><span>Top skills</span><input id="skills" placeholder="Operations, Excel, stakeholder management" aria-describedby="skillsHelp"><span class="field-help" id="skillsHelp">List skills from the job post that you can honestly prove.</span></label>
+          <label class="field full"><span>Relevant achievement</span><textarea id="achievement" placeholder="Led a team of 5 to cut reconciliation time by 35 percent across 12 branches." aria-describedby="achievementHelp"></textarea><span class="field-help" id="achievementHelp">Use a measurable result, scope, or concrete responsibility.</span><span class="field-tip">Improve this field: "Reduced monthly reconciliation time by 35% across 12 branches by redesigning the Excel review tracker."</span></label>
+          <label class="field full"><span>Why this company?</span><textarea id="whyCompany" placeholder="The company's expansion across East Africa aligns with my experience scaling customer operations." aria-describedby="whyCompanyHelp"></textarea><span class="field-help" id="whyCompanyHelp">Connect the employer's mission, product, market, or growth stage to your background.</span></label>
+          <label class="field"><span>Availability</span><input id="availability" placeholder="Immediate, 30 days, after notice" aria-describedby="availabilityHelp"><span class="field-help" id="availabilityHelp">Mention notice period or relocation readiness only when it helps.</span></label>
+          <label class="field"><span>Referral</span><input id="referral" placeholder="Name or connection, optional" aria-describedby="referralHelp"><span class="field-help" id="referralHelp">Add a referral only if the person agreed or the connection is relevant.</span></label>
+          <label class="field full"><span>Career change or gap note</span><textarea id="contextNote" placeholder="Briefly explain a transition, gap, relocation, or study break if it helps the application." aria-describedby="contextNoteHelp"></textarea><span class="field-help" id="contextNoteHelp">Keep this short and positive. Focus on readiness, not apology.</span><span class="field-tip">Improve this field: "After completing a data analytics certificate, I am targeting operations roles where I can combine branch support experience with reporting skills."</span></label>
+        </div>
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-next-stage="draft">Next: Draft & export</button></div>
       </div>
 
-      <h3>Proof points</h3>
-      <div class="form-grid">
-        <label class="field"><span>Years of experience</span><input aria-label="Years" id="years" type="number" min="0" max="60" value="3"></label>
-        <label class="field"><span>Top skills</span><input aria-label="Operations, Excel, stakeholder management" id="skills" placeholder="Operations, Excel, stakeholder management"></label>
-        <label class="field full"><span>Relevant achievement</span><textarea id="achievement" placeholder="Led a team of 5 to cut reconciliation time by 35 percent across 12 branches."></textarea></label>
-        <label class="field full"><span>Why this company?</span><textarea id="whyCompany" placeholder="The company's expansion across East Africa aligns with my experience scaling customer operations."></textarea></label>
-        <label class="field full"><span>Resume summary or background</span><textarea id="resumeSummary" placeholder="Paste a short resume summary or key responsibilities you want the letter to reflect."></textarea></label>
-      </div>
-
-      <h3>Optional context</h3>
-      <div class="form-grid">
-        <label class="field"><span>Availability</span><input aria-label="Immediate, 30 days, after notice" id="availability" placeholder="Immediate, 30 days, after notice"></label>
-        <label class="field"><span>Referral</span><input aria-label="Name or connection, optional" id="referral" placeholder="Name or connection, optional"></label>
-        <label class="field full"><span>Career change or gap note</span><textarea id="contextNote" placeholder="Briefly explain a transition, gap, relocation, or study break if it helps the application."></textarea></label>
+      <div class="flow-stage" id="stage-draft" role="tabpanel" aria-labelledby="tab-draft" data-stage-panel="draft">
+        <div class="stage-heading">
+          <div>
+            <h3>Generation settings</h3>
+            <p>Choose the structure, tone, and length before creating or refreshing the draft.</p>
+          </div>
+          <span class="stage-badge">Step 3</span>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Template</span><select id="templateId" aria-describedby="templateHelp"></select><span class="field-help" id="templateHelp">Pick a structure that matches the role type and seniority.</span></label>
+          <label class="field"><span>Tone</span><select id="toneId" aria-describedby="toneHelp"></select><span class="field-help" id="toneHelp">Use warm professional for most roles; choose direct for short recruiter screens.</span></label>
+          <label class="field full"><span>Length</span><select id="lengthId" aria-describedby="lengthHelp"></select><span class="field-help" id="lengthHelp">Short is best for email applications; standard works for most portal uploads.</span></label>
+        </div>
+        <div class="actions-row desktop-actions">
+          <button class="btn btn-primary" type="button" data-action="rebuild">Create cover letter</button>
+          <a class="btn btn-soft" href="#preview-title">Review draft</a>
+        </div>
+        <section class="ai-assist-panel" id="ai-assist" aria-labelledby="ai-assist-title">
+          <div class="ai-assist-head">
+            <div>
+              <h3 id="ai-assist-title">Optional AI Copywriter & Advisor</h3>
+              <p>Generate or improve a letter, find proof gaps, or write recruiter messages after you review the exact payload.</p>
+            </div>
+            <span class="stage-badge">Opt-in</span>
+          </div>
+          <p class="ai-assist-note">Uses 1 AI Assist request after a successful response. Review the payload first, then consent before any CV, job description, or draft text is sent.</p>
+          <label class="field full"><span>AI task</span><select id="aiAssistAction" aria-describedby="aiAssistActionHelp">
+            <option value="generate-letter">Generate a stronger targeted cover letter</option>
+            <option value="improve-draft">Improve the current draft</option>
+            <option value="missing-proof">Find missing keywords and proof points</option>
+            <option value="recruiter-email">Write a recruiter email</option>
+            <option value="linkedin-message">Write a LinkedIn message</option>
+            <option value="follow-up-email">Write a follow-up email</option>
+            <option value="interview-points">Create interview talking points</option>
+          </select><span class="field-help" id="aiAssistActionHelp">Choose one focused task so the credit produces a useful result.</span></label>
+          <label class="ai-consent-row" for="aiAssistConsent">
+            <input id="aiAssistConsent" type="checkbox">
+            <span>I understand the payload shown below will be sent to AfroTools AI for this one request. Do not use real private data unless you are comfortable sending it.</span>
+          </label>
+          <label class="field full"><span>Payload preview</span><textarea class="ai-assist-preview" id="aiAssistPayloadPreview" readonly aria-describedby="aiAssistPayloadHelp"></textarea><span class="field-help" id="aiAssistPayloadHelp">This is the exact text that will be sent. It is rebuilt from the fields on this page and stays local until you run AI Assist.</span></label>
+          <div class="ai-assist-actions">
+            <button class="btn btn-soft" type="button" id="aiAssistRefresh">Review payload</button>
+            <button class="btn btn-primary" type="button" id="aiAssistRun">Run AI Assist</button>
+            <button class="btn" type="button" id="aiAssistApply">Apply to draft</button>
+            <button class="btn" type="button" id="aiAssistCopy">Copy AI result</button>
+          </div>
+          <label class="field full"><span>AI result</span><textarea class="ai-assist-output" id="aiAssistOutput" spellcheck="true" aria-describedby="aiAssistOutputHelp"></textarea><span class="field-help" id="aiAssistOutputHelp">Cover-letter improvements can automatically fill the draft. Messages and talking points stay here for review and copy.</span></label>
+          <div class="ai-status" id="aiAssistStatus" role="status" aria-live="polite"></div>
+        </section>
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-action="rebuild">Create cover letter</button></div>
       </div>
     </section>
+
+    <aside class="insights-card" id="job-match" aria-labelledby="insights-title">
+      <div class="readiness-summary">
+        <p class="eyebrow">Quality check</p>
+        <h2 id="insights-title">Application readiness</h2>
+        <div class="score-ring">
+          <div class="score-number" id="scoreRing"><span id="scoreValue">0</span></div>
+          <div class="score-copy" id="scoreCopy">Add your target role and proof points to start scoring.</div>
+        </div>
+        <div class="empty-state" id="readinessEmpty">Readiness will appear once you add a target job, proof points, and a draft.</div>
+      </div>
+
+      <div class="readiness-details">
+        <section class="readiness-section" aria-label="Readiness checks">
+          <div class="readiness-section-head">
+            <div>
+              <h3>Checks</h3>
+              <p>Clear the important gaps before exporting.</p>
+            </div>
+          </div>
+          <div class="checks" id="checksList"></div>
+        </section>
+
+        <section class="readiness-section" aria-labelledby="role-keywords-title">
+          <div class="readiness-section-head">
+            <div>
+              <h3 id="role-keywords-title">Role keywords</h3>
+              <p>Matched and missing terms from the pasted job description.</p>
+            </div>
+          </div>
+          <div class="empty-state" id="keywordsEmpty">Paste a job description to see role keywords and missing terms.</div>
+          <div class="chip-row" id="keywordChips"></div>
+        </section>
+
+        <div class="ai-jump-card" aria-labelledby="ai-jump-title">
+          <h3 id="ai-jump-title">Need a sharper draft?</h3>
+          <p>Open the opt-in AI copywriter to rewrite the letter, find missing proof, or draft recruiter follow-ups. Nothing is sent until you review and consent.</p>
+          <button class="btn btn-primary" type="button" data-ai-assist-open>Open AI Assist</button>
+        </div>
+
+        <section class="readiness-section" aria-labelledby="saved-letters-title">
+          <div class="readiness-section-head">
+            <div>
+              <h3 id="saved-letters-title">Saved letters</h3>
+              <p>Local drafts from this browser.</p>
+            </div>
+          </div>
+          <div class="empty-state" id="savedEmpty">Saved drafts from this browser will appear here. They stay on this device unless you export them.</div>
+          <div class="saved-list" id="savedList"></div>
+        </section>
+      </div>
+    </aside>
 
     <section class="preview-card" aria-labelledby="preview-title">
       <div class="preview-top">
@@ -206,7 +417,7 @@ button{cursor:pointer}
           <button class="btn" type="button" data-action="json">Export JSON</button>
           <button class="btn" type="button" data-action="import">Import</button>
           <button class="btn" type="button" data-action="print">Print</button>
-          <input aria-label="ImportInput" class="import-input" id="importInput" type="file" accept="application/json,.json">
+          <input aria-label="Import saved cover letter JSON" class="import-input" id="importInput" type="file" accept="application/json,.json">
         </div>
       </div>
       <div class="letter-editor">
@@ -215,37 +426,162 @@ button{cursor:pointer}
             <span>Letter text</span>
             <textarea id="letterText" spellcheck="true" data-testid="letter-text"></textarea>
           </label>
-          <p class="helper" id="editState">Edit freely. Click Rebuild if you want the form to regenerate the draft.</p>
+          <p class="helper" id="editState">Edit freely. Click Create cover letter if you want the form to regenerate the draft.</p>
+          <div class="empty-state" id="draftEmpty">No draft yet. Complete the profile, job details, and proof points, then choose Create cover letter.</div>
         </div>
         <div class="paper-wrap" aria-label="Print preview">
           <article class="paper" id="paperPreview"></article>
         </div>
       </div>
     </section>
-
-    <aside class="insights-card" aria-labelledby="insights-title">
-      <p class="eyebrow">Quality check</p>
-      <h2 id="insights-title">Application readiness</h2>
-      <div class="score-ring">
-        <div class="score-number" id="scoreRing"><span id="scoreValue">0</span></div>
-        <div class="score-copy" id="scoreCopy">Add your target role and proof points to start scoring.</div>
-      </div>
-      <div class="checks" id="checksList"></div>
-
-      <h2 style="margin-top:18px">Role keywords</h2>
-      <p class="helper">Paste a job description to see which terms your letter already covers.</p>
-      <div class="chip-row" id="keywordChips"></div>
-
-      <h2 style="margin-top:18px">Saved letters</h2>
-      <div class="saved-list" id="savedList"></div>
-    </aside>
   </div>
 </main>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="/assets/js/pages/cover-letter-generator.js?v=426d3369" defer></script>
+<script src="/assets/js/pages/cover-letter-generator.js?v=c0724994" defer></script>
+<script>
+(function(){
+  var stages=["profile","job","draft"];
+  var progress=["profile","job","proof","draft","export"];
+  function id(name){return document.getElementById(name)}
+  function value(name){var field=id(name);return field?String(field.value||"").trim():""}
+  function hasText(name,min){return value(name).length>=(min||1)}
+  function scheduleProgress(){window.clearTimeout(scheduleProgress.timer);scheduleProgress.timer=window.setTimeout(updateProgress,80)}
+  function setStage(stage,focusPanel){
+    if(stages.indexOf(stage)===-1)stage="profile";
+    var shell=document.querySelector(".app-shell");
+    if(!shell)return;
+    shell.setAttribute("data-stage",stage);
+    document.querySelectorAll("[data-stage-target]").forEach(function(button){
+      var active=button.getAttribute("data-stage-target")===stage;
+      button.setAttribute("aria-selected",active?"true":"false");
+      button.setAttribute("tabindex",active?"0":"-1");
+    });
+    if(focusPanel){
+      var panel=document.querySelector('[data-stage-panel="'+stage+'"]');
+      var focusable=panel&&panel.querySelector("input,select,textarea,button,a");
+      if(focusable)focusable.focus({preventScroll:true});
+      if(panel)panel.scrollIntoView({block:"start",behavior:"smooth"});
+    }
+    updateProgress();
+  }
+  function scoreValue(){
+    var score=parseInt((id("scoreValue")||{}).textContent||"0",10);
+    return Number.isFinite(score)?score:0;
+  }
+  function draftIsReady(){
+    var text=value("letterText");
+    return text.length>160&&!/your organization|the advertised role|Your Name/i.test(text);
+  }
+  function updateProgress(){
+    var profileComplete=hasText("fullName")&&(hasText("email")||hasText("phone"))&&hasText("resumeSummary",24);
+    var jobAdded=hasText("jobDescription",40);
+    var proofAdded=hasText("skills")&&hasText("achievement",25)&&hasText("whyCompany",25);
+    var draftReady=draftIsReady();
+    var exportReady=draftReady&&scoreValue()>=65;
+    var status={profile:profileComplete,job:jobAdded,proof:proofAdded,draft:draftReady,export:exportReady};
+    var firstPending=progress.find(function(step){return !status[step]})||"export";
+    progress.forEach(function(step){
+      var item=document.querySelector('[data-progress-step="'+step+'"]');
+      if(!item)return;
+      item.setAttribute("data-state",status[step]?"done":step===firstPending?"current":"pending");
+      item.setAttribute("aria-current",step===firstPending?"step":"false");
+    });
+    toggleEmptyStates({jobAdded:jobAdded,proofAdded:proofAdded,draftReady:draftReady});
+  }
+  function toggleEmptyStates(state){
+    var draftEmpty=id("draftEmpty");
+    if(draftEmpty)draftEmpty.hidden=state.draftReady;
+    var readinessEmpty=id("readinessEmpty");
+    if(readinessEmpty)readinessEmpty.hidden=state.jobAdded||state.proofAdded||state.draftReady;
+    var keywordsEmpty=id("keywordsEmpty");
+    if(keywordsEmpty)keywordsEmpty.hidden=hasText("jobDescription",40);
+    var keywordChips=id("keywordChips");
+    if(keywordChips)keywordChips.hidden=!hasText("jobDescription",40);
+    var savedEmpty=id("savedEmpty");
+    var savedList=id("savedList");
+    if(savedEmpty&&savedList){
+      var hasSaved=Boolean(savedList.querySelector(".saved-item"));
+      savedEmpty.hidden=hasSaved;
+      savedList.hidden=!hasSaved&&/No saved letters yet/i.test(savedList.textContent||"");
+    }
+  }
+  function openAiAssist(){
+    setStage("draft",false);
+    window.setTimeout(function(){
+      var panel=id("ai-assist");
+      var action=id("aiAssistAction");
+      if(panel){
+        var scroller=panel.closest(".panel");
+        if(scroller)scroller.scrollTo({top:Math.max(0,panel.offsetTop-scroller.offsetTop-12),behavior:"smooth"});
+        panel.scrollIntoView({block:"nearest",behavior:"smooth"});
+      }
+      if(action)action.focus();
+      if(window.history&&window.history.replaceState)window.history.replaceState(null,"","#ai-assist");
+    },80);
+  }
+  function initWorkflow(){
+    setStage((document.querySelector(".app-shell")||{}).getAttribute("data-stage")||"profile",false);
+    document.querySelectorAll("[data-stage-target]").forEach(function(button){
+      button.addEventListener("click",function(){setStage(button.getAttribute("data-stage-target"),true)});
+      button.addEventListener("keydown",function(event){
+        var current=stages.indexOf(button.getAttribute("data-stage-target"));
+        var next=current;
+        if(event.key==="ArrowRight")next=(current+1)%stages.length;
+        if(event.key==="ArrowLeft")next=(current+stages.length-1)%stages.length;
+        if(event.key==="Home")next=0;
+        if(event.key==="End")next=stages.length-1;
+        if(next!==current){event.preventDefault();setStage(stages[next],true)}
+      });
+    });
+    document.querySelectorAll("[data-next-stage]").forEach(function(button){
+      button.addEventListener("click",function(){setStage(button.getAttribute("data-next-stage"),true)});
+    });
+    document.querySelectorAll('a[href="#job-match"]').forEach(function(link){
+      link.addEventListener("click",function(){setStage("job",false);window.setTimeout(function(){var match=id("job-match");if(match)match.scrollIntoView({block:"start",behavior:"smooth"})},60)});
+    });
+    document.querySelectorAll("[data-ai-assist-open]").forEach(function(button){
+      button.addEventListener("click",openAiAssist);
+    });
+    document.addEventListener("input",scheduleProgress,true);
+    document.addEventListener("change",scheduleProgress,true);
+    document.addEventListener("click",function(event){
+      if(event.target.closest("[data-action],[data-load],[data-delete]"))scheduleProgress();
+    },true);
+    var savedList=id("savedList");
+    if(savedList&&window.MutationObserver)new MutationObserver(scheduleProgress).observe(savedList,{childList:true,subtree:true});
+    window.setTimeout(updateProgress,120);
+    window.setTimeout(updateProgress,500);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initWorkflow);else initWorkflow();
+})();
+</script>
+<script src="/assets/js/pages/cover-letter-ai-assist.js?v=953dcc4b" defer></script>
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script>
+(function(){
+  if(!/\/tools\/cover-letter-generator\/app(?:\.html)?\/?$/i.test(location.pathname))return;
+  function markLocalDownload(anchor){
+    if(!anchor||!anchor.download)return;
+    anchor.dataset.noPdfGate="true";
+    anchor.setAttribute("data-no-pdf-gate","true");
+  }
+  function installLocalExportBypass(){
+    if(!window.HTMLAnchorElement)return;
+    var current=window.HTMLAnchorElement.prototype.click;
+    if(current&&current.__coverLetterLocalExportBypass)return;
+    function click(){
+      markLocalDownload(this);
+      return current.apply(this,arguments);
+    }
+    click.__coverLetterLocalExportBypass=true;
+    window.HTMLAnchorElement.prototype.click=click;
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",installLocalExportBypass);
+  else installLocalExportBypass();
+})();
+</script>
 </body>
 </html>

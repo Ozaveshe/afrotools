@@ -883,11 +883,11 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             </div>
             <div class="fk-source-card">
               <strong>Safety Gate</strong>
-              <span>Prize operations must stay draft mode until server-side locks, verification, terms, and legal review are in place. Top 10 verified Prediction Points players share the $1,200 public prize pool; Fan Points never count toward cash prizes.</span>
+              <span>Prize operations must stay draft mode until server-side locks, verification, terms, and legal review are in place. Top 10 verified Matchday Leaderboard players share the $2,000 public prize pool; first place receives $1,000.</span>
             </div>
             <div class="fk-source-card">
               <strong>Prize Budget</strong>
-              <span>$1,200 is the public prize pool. Up to $100 extra may be kept as an internal cushion for payout fees, FX changes, payment-method friction, or emergency rounding. Do not advertise the cushion as prize money.</span>
+              <span>$2,000 is the public prize pool. Keep any payout cushion as an internal budget note only. Do not advertise cushion funds as prize money.</span>
             </div>
           </div>
         </section>
@@ -2189,11 +2189,11 @@ var MATCHDAY_CHECKLIST = [
   { key: 'fixturesUpdated', label: 'Fixture update status checked', note: 'Confirm public fixture data still says demo/static where live data is unavailable.' },
   { key: 'scoresChecked', label: 'Scores checked', note: 'No score should be published unless it is from the approved source workflow.' },
   { key: 'groupTablesChecked', label: 'Group tables checked', note: 'Standings copy must avoid overclaiming tie-breaks or qualification before results support it.' },
-  { key: 'predictionHealth', label: 'Prediction game health checked', note: 'Review lock labels, local/demo state copy, and no-betting wording.' },
+  { key: 'predictionHealth', label: 'Prediction game health checked', note: 'Review lock labels, account-save copy, and no-betting wording.' },
   { key: 'antiCheatQueue', label: 'Anti-cheat review queue checked', note: 'Review late attempts, duplicate signals, IP hash clusters, and identical prediction patterns when backend exists.' },
   { key: 'flaggedAccounts', label: 'Flagged accounts summary reviewed', note: 'Manual winner verification stays required before any payout.' },
   { key: 'leaderboardExport', label: 'Leaderboard export status reviewed', note: 'Public tracker can show Top 20 for excitement, but only the final verified Top 10 receive cash prizes.' },
-  { key: 'prizeVerification', label: 'Prize verification checklist reviewed', note: 'Top 10 verified Prediction Points players share the $1,200 public prize pool. Legal review, terms acceptance, eligibility, and backend locks are launch gates.' },
+  { key: 'prizeVerification', label: 'Prize verification checklist reviewed', note: 'Top 10 verified Matchday Leaderboard players share the $2,000 public prize pool. Legal review, terms acceptance, eligibility, and server locks are launch gates.' },
   { key: 'contentQueue', label: 'Blog/content publishing queue reviewed', note: 'Confirm daily preview, strategy prompt, reaction slot, and sponsor-safe feature slot.' },
   { key: 'countryRooms', label: 'Country room prompts reviewed', note: 'Update team room prompts without pretending there are live fan comments.' },
   { key: 'sponsorLeads', label: 'Sponsor leads reviewed', note: 'Track current opportunities without inventing audience numbers.' },
@@ -2205,7 +2205,7 @@ var MATCHDAY_CHECKLIST = [
 var MATCHDAY_PRIZE_CHECKLIST = [
   { key: 'predictionsLock', label: 'Predictions lock before kickoff', note: 'Frontend copy exists, but real lock enforcement must happen server-side before prize launch.' },
   { key: 'noEditsAfterLock', label: 'No edits after lock', note: 'Prize mode requires immutable, timestamped server records.' },
-  { key: 'emailVerified', label: 'Email verification before leaderboard eligibility', note: 'Do not mark winners eligible from local/demo state.' },
+  { key: 'emailVerified', label: 'Email verification before leaderboard eligibility', note: 'Do not mark winners eligible from client-only or unverified state.' },
   { key: 'oneAccount', label: 'One account per person policy', note: 'Needs duplicate-account review and terms acceptance before launch.' },
   { key: 'hashedSignals', label: 'Device, IP hash, and user-agent hash signals', note: 'Never store raw sensitive fingerprint data in frontend.' },
   { key: 'suspiciousPatterns', label: 'Suspicious cluster and identical-pick review', note: 'Admin queue required for duplicate signals and identical-prediction patterns.' },
@@ -2219,11 +2219,11 @@ var MATCHDAY_STATUS_ITEMS = [
   { key: 'fixturesUpdated', title: 'Fixture update status', note: 'Last time the static fixture source was reviewed.', actionLabel: 'Mark fixtures updated', action: 'markMatchdayStatus("fixturesUpdated")' },
   { key: 'scoresChecked', title: 'Score check status', note: 'Manual status only. No fake live scores.', actionLabel: 'Mark scores checked', action: 'markMatchdayStatus("scoresChecked")' },
   { key: 'groupTablesChecked', title: 'Group table status', note: 'Review standings, tie-break wording, and empty states.', actionLabel: 'Mark group tables checked', action: 'markMatchdayStatus("groupTablesChecked")' },
-  { key: 'predictionHealth', title: 'Prediction game health', note: 'Check deadline labels, local/demo state, and scoring explainer.', actionLabel: 'Mark health checked', action: 'markMatchdayStatus("predictionHealth")' },
-  { key: 'antiCheatQueue', title: 'Anti-cheat review queue', note: 'Review flagged entries when backend review data exists.', actionLabel: 'Review flagged entries', action: 'markMatchdayStatus("antiCheatQueue")' },
+  { key: 'predictionHealth', title: 'Prediction game health', note: 'Check deadline labels, account-save state, and scoring explainer.', actionLabel: 'Mark health checked', action: 'markMatchdayStatus("predictionHealth")' },
+  { key: 'antiCheatQueue', title: 'Prize contest review queue', note: 'Review flagged entries, duplicate signals, late attempts, and manual verification status from admin data.', actionLabel: 'Review flagged entries', action: 'markMatchdayStatus("antiCheatQueue")' },
   { key: 'flaggedAccounts', title: 'Flagged accounts summary', note: 'Track duplicate, late, and suspicious-pattern signals.', actionLabel: 'Mark reviewed', action: 'markMatchdayStatus("flaggedAccounts")' },
   { key: 'leaderboardExport', title: 'Leaderboard export status', note: 'Exports an empty shell until backend rows exist. Top 20 tracker rows are provisional; only final verified Top 10 players receive cash.', actionLabel: 'Export leaderboard shell', action: 'exportMatchdayLeaderboard()' },
-  { key: 'prizeVerification', title: 'Prize verification checklist', note: '$1,200 public prize pool, $500 first place, Top 10 verified Prediction Points winners. Manual winner verification and legal review remain required.', actionLabel: 'Mark prize reviewed', action: 'markMatchdayStatus("prizeVerification")' },
+  { key: 'prizeVerification', title: 'Prize verification checklist', note: '$2,000 public prize pool, $1,000 first place, Top 10 verified Matchday Leaderboard winners. Manual winner verification and legal review remain required.', actionLabel: 'Mark prize reviewed', action: 'markMatchdayStatus("prizeVerification")' },
   { key: 'contentQueue', title: 'Blog/content queue', note: 'Daily preview, strategy, reaction, and viewing guide slots.', actionLabel: 'Publish daily prompt', action: 'publishMatchdayPrompt()' },
   { key: 'sponsorLeads', title: 'Sponsor leads', note: 'Review current brand conversations and private-data requests.', actionLabel: 'Mark leads reviewed', action: 'markMatchdayStatus("sponsorLeads")' },
   { key: 'viewingCenterLeads', title: 'Viewing-center leads', note: 'Bar, venue, campus, and community organizer pipeline.', actionLabel: 'Copy venue pitch', action: 'copyMatchdayText("viewingPitch")' },
@@ -2254,7 +2254,7 @@ var MATCHDAY_CALENDAR = [
 ];
 
 var MATCHDAY_COPY = {
-  dailySocial: 'Today on Matchday OS: African football fixtures, local-time match cards, prediction prompts, and country room talking points are ready. Win up to $500 in the free-to-enter Prediction Challenge. Top 10 verified players share $1,200. Prediction Points decide cash prizes; Fan Points do not count. No betting. No purchase required. https://afrotools.com/matchday-os/',
+  dailySocial: 'Today on Matchday OS: African football fixtures, local-time match cards, prediction prompts, and country room talking points are ready. Win up to $1,000 in the free-to-enter Prediction Challenge. Top 10 verified players share $2,000 on the Matchday Leaderboard. No betting. No purchase required. https://afrotools.com/matchday-os/',
   viewingPitch: 'Hi, we are preparing Matchday OS viewing-center tools for African football fans: today posters, WhatsApp event cards, and sponsor-supported flyers. Would you like a simple branded schedule card for your venue? We can share current audience data privately during the conversation.',
   dailyPrompt: 'Daily Matchday OS prompt: update today fixtures, tomorrow preview, African team watch, group pressure meter, player to watch, post-match reaction slot, country room discussion, share-card task, sponsor lead follow-up, and prize safety review.'
 };
@@ -2273,8 +2273,8 @@ var MATCHDAY_TEMPLATES = [
     segment: 'Wallets, remittance, and consumer finance',
     cta: 'Sponsor predictions, newsletter, or country rooms',
     subject: 'Skill-based Matchday OS prediction challenge sponsorship',
-    body: 'Hi [Name], Matchday OS includes a free-to-enter, skill-based football prediction challenge, country rooms, and daily African football content. Top 10 verified Prediction Points players share a $1,200 public prize pool, with first place at $500, after backend locks, anti-cheat review, eligibility checks, and legal review are complete. A fintech sponsor can support leaderboard, newsletter, and country-room placements while staying clearly separated from betting, odds, staking, payout automation, scoring, and winner verification. We can share current audience data privately and keep sponsor influence out of editorial outcomes.',
-    short: 'We are opening sponsor conversations for a free-to-enter, skill-based Matchday OS prediction challenge. Top 10 verified players share $1,200. No betting framing, no odds, no paid entry.'
+    body: 'Hi [Name], Matchday OS includes a free-to-enter, skill-based football prediction challenge, country rooms, and daily African football content. Top 10 verified Matchday Leaderboard players share a $2,000 public prize pool, with first place at $1,000, after server locks, anti-cheat review, eligibility checks, and legal review are complete. A fintech sponsor can support leaderboard, newsletter, and country-room placements while staying clearly separated from betting, odds, staking, payout automation, scoring, and winner verification. We can share current audience data privately and keep sponsor influence out of editorial outcomes.',
+    short: 'We are opening sponsor conversations for a free-to-enter, skill-based Matchday OS prediction challenge. Top 10 verified players share $2,000. No betting framing, no odds, no paid entry.'
   },
   {
     title: 'Food and drink sponsor',
@@ -2646,9 +2646,9 @@ function exportMatchdayLeaderboard(){
   var payload = {
     exportedAt: new Date().toISOString(),
     product: 'Matchday OS prediction challenge',
-    mode: 'backend-required-empty-export-shell',
-    prizePolicy: 'Top 20 public tracker rows can be exported for provisional review, but only the final verified Top 10 Prediction Points players receive cash prizes from the $1,200 public prize pool.',
-    note: 'No production leaderboard rows are exported from localStorage. Backend persistence, server locks, email verification, anti-cheat review, eligibility review, and admin review are required before prize launch. Fan Points do not count toward cash prizes.',
+    mode: 'admin-review-empty-export-shell',
+    prizePolicy: 'Top 20 public tracker rows can be exported for provisional review, but only the final verified Top 10 Matchday Leaderboard players receive cash prizes from the $2,000 public prize pool.',
+    note: 'No production leaderboard rows are exported from localStorage. Server persistence, server locks, email verification, anti-cheat review, eligibility review, and admin review are required before prize launch.',
     rows: []
   };
   var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });

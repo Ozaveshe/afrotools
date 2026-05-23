@@ -6,11 +6,11 @@
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matchday OS Country Rooms | African Team Matchday Hubs</title>
-<meta name="description" content="Open Matchday OS country rooms for African teams with fixtures, group position, prediction CTAs, editorial prompts, fan polls, share cards, and sponsor slots.">
+<meta name="description" content="Open Matchday OS country rooms for African teams with flags, fixtures, group position, prediction CTAs, source-backed news status, fan polls, and share cards.">
 <link rel="canonical" href="https://afrotools.com/matchday-os/rooms/">
 <meta property="og:title" content="Matchday OS Country Rooms">
-<meta property="og:description" content="African team room shells for fixtures, group context, prediction CTAs, editorial prompts, fan polls, and sponsor slots.">
-<meta property="og:image" content="https://afrotools.com/assets/img/afrostream-genre-sports.webp">
+<meta property="og:description" content="African team rooms for fixtures, group context, prediction CTAs, editorial prompts, fan polls, and share cards.">
+<meta property="og:image" content="https://afrotools.com/assets/img/matchday/world-cup-hero-banner.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://afrotools.com/matchday-os/rooms/">
@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Matchday OS Country Rooms">
 <meta name="twitter:description" content="Country room shells for African football fans across Matchday OS.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/afrostream-genre-sports.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/matchday/world-cup-hero-banner.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -28,18 +28,25 @@
 <link rel="stylesheet" href="/assets/css/design-system.css?v=b88f9eab">
 <link rel="stylesheet" href="/assets/css/matchday-os.css?v=7b416ec9">
 <link rel="stylesheet" href="/assets/css/matchday-live-upgrade.css?v=afaabe57">
+<link rel="stylesheet" href="/assets/css/matchday-worldcup-pages.css?v=eddbec76">
+<link rel="stylesheet" href="/assets/css/afroatlas-twemoji.css?v=6d8ec1be">
+<link rel="stylesheet" href="/assets/css/matchday-twemoji-flags.css?v=c25534fe">
+<link rel="stylesheet" href="/assets/css/matchday-navigation.css?v=1">
 <script src="/assets/js/components/navbar.min.js?v=529df6b3" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
+<script src="/assets/js/lib/afroatlas-twemoji.js?v=f792df45" defer></script>
 <script src="/assets/js/lib/matchday-standings-engine.js?v=9a6fada0" defer></script>
-<script src="/assets/js/matchday-rooms.js?v=15f176de" defer></script>
+<script src="/assets/js/matchday-rooms.js?v=c81516b8" defer></script>
 <script src="/assets/js/matchday-live-upgrade.js?v=7fdd821f" defer></script>
+<script src="/assets/js/matchday-public-cleanup.js?v=60d6a6f6" defer></script>
+<script src="/assets/js/matchday-twemoji-flags.js?v=bd710a43" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Matchday OS Country Rooms",
   "url": "https://afrotools.com/matchday-os/rooms/",
-  "description": "African team room shells for fixtures, group context, prediction CTAs, editorial prompts, fan polls, and sponsor slots.",
+  "description": "African team rooms for fixtures, group context, prediction CTAs, editorial prompts, fan polls, and share cards.",
   "isPartOf": {
     "@type": "WebSite",
     "name": "AfroTools",
@@ -52,6 +59,28 @@
 </head>
 <body class="matchday-page matchday-room-page">
 <afro-navbar theme="dark" active="sports"></afro-navbar>
+
+<nav class="matchday-crumbs" aria-label="Matchday OS navigation">
+  <div class="matchday-container matchday-crumbs__inner">
+    <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/matchday-os/">Matchday OS</a></li>
+      <li><span aria-current="page">Country Rooms</span></li>
+    </ol>
+    <div class="matchday-quick-links" aria-label="Matchday quick links">
+          <a href="/matchday-os/">Hub</a>
+          <a href="/matchday-os/#leaderboard">Scoreboard</a>
+          <a href="/matchday-os/#prediction">Predict</a>
+          <a href="/matchday-os/#fixtures">Fixtures</a>
+          <a href="/matchday-os/rooms/" aria-current="page">Rooms</a>
+          <a href="/matchday-os/share-cards/">Cards</a>
+          <a href="/matchday-os/prizes/">Prizes</a>
+          <a href="/matchday-os/prediction-challenge/">Rules</a>
+          <a href="/matchday-os/news/">News</a>
+          <a href="/matchday-os/sponsors/">Sponsors</a>
+    </div>
+  </div>
+</nav>
 
 <main>
   <section class="room-hero">
@@ -75,25 +104,12 @@
       <div class="matchday-section__head">
         <div>
           <h2 id="roomTeamsTitle">Switch country room</h2>
-          <p>Each room now has verified group-stage fixture context, flags, source-backed news slots, and local prediction entry points.</p>
+          <p>Each room has verified group-stage fixture context, flags, source-backed news status, and prediction entry points.</p>
         </div>
       </div>
       <div class="room-switcher" data-room-switcher aria-live="polite"></div>
     </div>
   </section>
-
-  <section class="matchday-group-rail-section" aria-labelledby="roomGroupRailTitle">
-    <div class="matchday-container">
-      <div class="matchday-section__head matchday-section__head--compact">
-        <div>
-          <span class="matchday-pill">Group stage</span>
-          <h2 id="roomGroupRailTitle">Africa's group paths</h2>
-        </div>
-      </div>
-      <div class="matchday-group-rail" data-matchday-group-rail aria-label="Africa-focused group rail"></div>
-    </div>
-  </section>
-
   <section class="matchday-section" aria-labelledby="roomDashboardTitle">
     <div class="matchday-container">
       <div class="matchday-section__head">
@@ -123,7 +139,7 @@
       <div class="matchday-section__head">
         <div>
           <h2 id="roomPostsTitle">Latest room posts and prompts</h2>
-          <p>No fake comments. This area uses editorial prompts and seed posts until a safe community backend exists.</p>
+          <p>No fake comments. This area uses editorial prompts and seed posts until account-backed community features are ready.</p>
         </div>
       </div>
       <div class="room-post-grid" data-room-posts aria-live="polite"></div>

@@ -337,6 +337,145 @@ a{text-decoration:none;color:inherit;}
 <script>
 // ── TOOL ICON — auto-resolve from /assets/img/tools/ ──
 // Tries registry-backed image keys first, then falls back to emoji/gradient
+const PAGE_LANG = (document.documentElement.lang || 'en').toLowerCase();
+const IS_FR = PAGE_LANG === 'fr';
+const PAGE_COPY = IS_FR ? {
+  breadcrumb: 'Tous les outils',
+  eyebrow: 'Bibliotheque d outils',
+  hero: 'Tous les outils pour <em>l Afrique</em>',
+  heroSub: 'La bibliotheque complete AfroTools : calculateurs financiers, assistants, outils PDF, CV, ingenierie et plus encore. Concue pour les 54 pays africains. Toujours gratuite.',
+  liveTools: 'Outils actifs',
+  inDevelopment: 'En preparation',
+  categories: 'Categories',
+  countries: 'Pays couverts',
+  price: 'Prix',
+  freeForever: 'Gratuit pour toujours',
+  searchPlaceholder: 'Rechercher par outil, pays ou categorie...',
+  searchAria: 'Rechercher dans tous les outils',
+  clearSearch: 'Effacer la recherche',
+  filters: {
+    all: 'Tous',
+    live: 'Actifs',
+    ai: 'IA',
+    'salary-tax': 'PAYE',
+    financial: 'Finance',
+    health: 'Sante',
+    ecommerce: 'Entreprise',
+    'document-pdf': 'PDF',
+    'image-design': 'Image',
+    education: 'Education',
+    agriculture: 'Agriculture',
+    engineering: 'Ingenierie',
+    developer: 'Dev',
+    trade: 'Commerce',
+    african: 'Afrique',
+    legal: 'Juridique',
+    language: 'Langues',
+    'data-productivity': 'Donnees',
+    government: 'Etat',
+    'small-business': 'PME',
+    insurance: 'Assurance',
+    fintech: 'Fintech',
+    energy: 'Energie',
+    transport: 'Transport',
+    'travel-tourism': 'Voyage',
+    creative: 'Creation',
+    'religious-cultural': 'Culture',
+    sports: 'Sport',
+    career: 'Carriere'
+  },
+  sortAria: 'Trier les outils',
+  sortRecommended: 'Tri : recommandes',
+  sortName: 'Tri : A-Z',
+  sortLive: 'Tri : actifs d abord',
+  intro1: 'AfroTools rassemble une grande collection gratuite de calculateurs et d outils de productivite pour l Afrique. Les outils couvrent le salaire net et le PAYE pour les 54 pays africains, la TVA, les documents PDF, l education, les devises et bien plus.',
+  intro2: 'Parcourez les categories ci-dessous ou utilisez la recherche pour trouver l outil exact dont vous avez besoin. Les outils sont gratuits, sans inscription obligatoire, et fonctionnent sur mobile comme sur ordinateur.',
+  allTools: 'Tous les outils',
+  searchResults: 'Resultats de recherche',
+  loading: 'Chargement des outils...',
+  noToolsPrefix: 'Aucun outil ne correspond a',
+  toolsSingular: 'outil',
+  toolsPlural: 'outils',
+  live: 'Actif',
+  soon: 'Bientot',
+  newsletterTitle: 'Nouveaux outils chaque semaine',
+  newsletterText: 'Recevez une alerte quand un nouvel outil est publie. Pas de spam, desinscription a tout moment.',
+  emailAria: 'Adresse e-mail',
+  emailPlaceholder: 'vous@exemple.com',
+  notify: 'Me prevenir'
+} : {
+  allTools: 'All Tools',
+  searchResults: 'Search Results',
+  loading: 'Loading tools...',
+  noToolsPrefix: 'No tools match',
+  toolsSingular: 'tool',
+  toolsPlural: 'tools',
+  live: 'Live',
+  soon: 'Soon'
+};
+
+function localizeStaticShell(){
+  if(!IS_FR) return;
+  const breadcrumb = document.querySelector('.hero-breadcrumb span:last-child');
+  if(breadcrumb) breadcrumb.textContent = PAGE_COPY.breadcrumb;
+  const eyebrow = document.querySelector('.hero-eyebrow');
+  if(eyebrow) eyebrow.textContent = PAGE_COPY.eyebrow;
+  const h1 = document.querySelector('.hero h1');
+  if(h1) h1.innerHTML = PAGE_COPY.hero;
+  const heroSub = document.querySelector('.hero-sub');
+  if(heroSub) heroSub.textContent = PAGE_COPY.heroSub;
+
+  const statLabels = document.querySelectorAll('.hero-stat .s-lbl');
+  const statValues = document.querySelectorAll('.hero-stat .s-val');
+  [PAGE_COPY.liveTools, PAGE_COPY.inDevelopment, PAGE_COPY.categories, PAGE_COPY.countries, PAGE_COPY.price].forEach((text, index) => {
+    if(statLabels[index]) statLabels[index].textContent = text;
+  });
+  if(statValues[4]) statValues[4].textContent = PAGE_COPY.freeForever;
+
+  const search = document.getElementById('searchInput');
+  if(search){
+    search.placeholder = PAGE_COPY.searchPlaceholder;
+    search.setAttribute('aria-label', PAGE_COPY.searchAria);
+  }
+  const clear = document.getElementById('searchClear');
+  if(clear) clear.setAttribute('aria-label', PAGE_COPY.clearSearch);
+
+  document.querySelectorAll('.filter-tab').forEach(button => {
+    const label = PAGE_COPY.filters[button.dataset.filter];
+    if(!label) return;
+    const count = button.querySelector('.filter-count');
+    const first = button.textContent.trim().split(/\s+/)[0];
+    button.textContent = first && !/^\d/.test(first) && first !== 'All' && first !== 'Live' ? first + ' ' + label : label;
+    if(count){
+      button.appendChild(document.createTextNode(' '));
+      button.appendChild(count);
+    }
+  });
+
+  const sort = document.getElementById('sortSel');
+  if(sort){
+    sort.setAttribute('aria-label', PAGE_COPY.sortAria);
+    const labels = [PAGE_COPY.sortRecommended, PAGE_COPY.sortName, PAGE_COPY.sortLive];
+    Array.from(sort.options).forEach((option, index) => { if(labels[index]) option.textContent = labels[index]; });
+  }
+
+  const intro = document.querySelectorAll('section[style*="max-width:900px"] p');
+  if(intro[0]) intro[0].textContent = PAGE_COPY.intro1;
+  if(intro[1]) intro[1].textContent = PAGE_COPY.intro2;
+
+  const newsletterTitle = document.querySelector('.nl-box h3');
+  if(newsletterTitle) newsletterTitle.textContent = PAGE_COPY.newsletterTitle;
+  const newsletterText = document.querySelector('.nl-box p');
+  if(newsletterText) newsletterText.textContent = PAGE_COPY.newsletterText;
+  const email = document.querySelector('.nl-input');
+  if(email){
+    email.setAttribute('aria-label', PAGE_COPY.emailAria);
+    email.placeholder = PAGE_COPY.emailPlaceholder;
+  }
+  const notify = document.querySelector('.nl-btn');
+  if(notify) notify.textContent = PAGE_COPY.notify;
+}
+
 function getToolImageCandidate(tool) {
   const keys = [
     tool && tool.imageId,
@@ -522,8 +661,9 @@ function getIcon(tool){
 function getCatMeta(cat){
   const registryMeta = typeof AFRO_CATEGORIES !== 'undefined' ? AFRO_CATEGORIES[cat] : null;
   const localMeta = CAT_META[cat] || {};
+  const frName = PAGE_COPY.filters && PAGE_COPY.filters[cat];
   return {
-    name: localMeta.name || (registryMeta && registryMeta.name) || cat || 'Tools',
+    name: frName || localMeta.name || (registryMeta && registryMeta.name) || cat || 'Tools',
     color: localMeta.color || (registryMeta && registryMeta.bg) || '#f3f4f6',
     icon: localMeta.icon || (registryMeta && registryMeta.icon) || '🔧',
     desc: (registryMeta && registryMeta.desc) || ''
@@ -568,7 +708,7 @@ function renderTools(){
   const sort = document.getElementById('sortSel').value;
 
   if(typeof AFRO_TOOLS === 'undefined'){
-    grid.innerHTML = '<div class="empty-state"><div class="e-icon">⏳</div><p>Loading tools...</p></div>';
+    grid.innerHTML = '<div class="empty-state"><div class="e-icon">⏳</div><p>' + PAGE_COPY.loading + '</p></div>';
     return;
   }
 
@@ -610,7 +750,7 @@ function renderTools(){
   }
 
   // Update counts using the same registry rows this page actually renders.
-  const publicStats = typeof getPublicToolStats === 'function' ? getPublicToolStats('en') : null;
+  const publicStats = typeof getPublicToolStats === 'function' ? getPublicToolStats(PAGE_LANG) : null;
   const totalAll = publicStats ? publicStats.totalTools : AFRO_TOOLS.length;
   const totalLive = publicStats ? publicStats.liveTools : AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').length;
   const totalQueued = publicStats ? publicStats.inDevelopmentTools : AFRO_TOOLS.filter(t => t.status === 'queued' || t.status === 'planned').length;
@@ -622,15 +762,15 @@ function renderTools(){
   if (document.getElementById('statCategories')) {
     document.getElementById('statCategories').textContent = totalCategories.toLocaleString();
   }
-  document.getElementById('resultsCount').textContent = tools.length + ' tool' + (tools.length!==1?'s':'');
-  document.getElementById('sectionTitle').textContent = rawSearch ? 'Search Results' : (activeFilter === 'all' ? 'All Tools' : getCatMeta(activeFilter).name);
+  document.getElementById('resultsCount').textContent = tools.length.toLocaleString(IS_FR ? 'fr-FR' : 'en-US') + ' ' + (tools.length === 1 ? PAGE_COPY.toolsSingular : PAGE_COPY.toolsPlural);
+  document.getElementById('sectionTitle').textContent = rawSearch ? PAGE_COPY.searchResults : (activeFilter === 'all' ? PAGE_COPY.allTools : getCatMeta(activeFilter).name);
   updateSearchClear();
 
   // Render
   if(tools.length === 0){
     grid.innerHTML = `<div class="empty-state">
       <div class="e-icon">🔍</div>
-      <p>No tools match "<strong>${escapeHtml(rawSearch||activeFilter)}</strong>".</p>
+      <p>${PAGE_COPY.noToolsPrefix} "<strong>${escapeHtml(rawSearch||activeFilter)}</strong>".</p>
       <div class="empty-actions">
         <button type="button" onclick="applySearchSuggestion('paye')">PAYE</button>
         <button type="button" onclick="applySearchSuggestion('pdf')">PDF</button>
@@ -668,7 +808,7 @@ function renderTools(){
         <div class="tc-desc">${safeDesc.substring(0,100)}${safeDesc.length>100?'…':''}</div>
         <div class="tc-meta">
           <span class="cat-pill">${safeCatIcon} ${safeCatName}</span>
-          <span class="tc-badge ${live?'live':'planned'}">${live?'● Live':'Soon'}</span>
+          <span class="tc-badge ${live?'live':'planned'}">${live?'● ' + PAGE_COPY.live:PAGE_COPY.soon}</span>
           ${t.tier?`<span class="tc-badge tier${t.tier.replace('T','')}">${t.tier}</span>`:''}
           ${aiPowered?'<span class="tc-badge" style="background:#ede9fe;color:#6d28d9;">✦ AI</span>':''}
           ${t.countries&&t.countries.length<=4?`<span class="tc-countries">${t.countries.join(' · ')}</span>`:''}
@@ -679,11 +819,13 @@ function renderTools(){
 }
 
 // Init on registry ready (replaces fragile polling pattern)
+document.addEventListener('DOMContentLoaded', localizeStaticShell);
 if (typeof onRegistryReady === 'function') {
-  onRegistryReady(function() { renderTools(); });
+  onRegistryReady(function() { localizeStaticShell(); renderTools(); });
 } else {
   // Fallback: DOMContentLoaded + retry
   document.addEventListener('DOMContentLoaded', function() {
+    localizeStaticShell();
     if (typeof AFRO_TOOLS !== 'undefined') renderTools();
     else document.addEventListener('afrotools:registry-ready', function() { renderTools(); });
   });

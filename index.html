@@ -88,6 +88,223 @@
     <style>.sec,.sec--dark2,.sec--countries{opacity:1!important}</style>
   </noscript>
   <style id="home-lighthouse-hardening">
+    afro-navbar {
+      display:block;
+      min-height:var(--nav-height,62px);
+      background:#0A1628;
+    }
+    .signup-bar {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+      min-height:45px;
+      padding:10px 24px;
+      background:#f8fafc;
+      color:#334155;
+      border-bottom:1px solid var(--color-border,#e2e8f0);
+      font-size:0.82rem;
+      font-weight:500;
+      position:relative;
+      z-index:50;
+      text-align:center;
+    }
+    .signup-bar-btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:34px;
+      padding:5px 16px;
+      border-radius:100px;
+      background:#0f172a;
+      color:#fff;
+      font-size:0.78rem;
+      font-weight:700;
+      line-height:1.4;
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+    .signup-bar-close {
+      position:absolute;
+      right:14px;
+      top:50%;
+      transform:translateY(-50%);
+      flex-shrink:0;
+    }
+    .hero {
+      padding:72px 0 64px;
+      text-align:left;
+      border-bottom:1px solid var(--color-border,#e2e8f0);
+    }
+    .home-hero-grid {
+      display:grid;
+      grid-template-columns:minmax(0,0.95fr) minmax(360px,1fr);
+      gap:48px;
+      align-items:center;
+    }
+    .home-hero-grid .hero-center {
+      max-width:640px;
+      margin:0;
+      text-align:left;
+    }
+    .home-hero-grid .trusted-badge {
+      margin-bottom:16px;
+      background:#eff6ff;
+      border-color:#bfdbfe;
+      color:#0f5cc0;
+      box-shadow:none;
+    }
+    .home-hero-grid .hero-h1 {
+      font-family:var(--font-display,"DM Sans",system-ui,sans-serif);
+      font-size:3.5rem;
+      font-weight:800;
+      line-height:1.02;
+      letter-spacing:0;
+      margin-bottom:18px;
+    }
+    .home-hero-grid .hero-sub {
+      max-width:600px;
+      margin:0 0 24px;
+      font-size:1.04rem;
+      line-height:1.7;
+    }
+    .home-hero-grid .hero-search-wrap {
+      max-width:620px;
+      margin:0 0 18px;
+    }
+    .home-hero-grid .hero-search {
+      border-radius:12px;
+      box-shadow:0 12px 32px rgba(15,23,42,0.08);
+    }
+    .home-hero-grid .hero-search-btn {
+      border-radius:10px;
+    }
+    .home-hero-country {
+      max-width:440px;
+      min-height:91px;
+      margin:18px auto 14px;
+      text-align:left;
+    }
+    .home-hero-country afro-country-selector {
+      display:block;
+      min-height:91px;
+    }
+    .home-hero-grid .hero-btns {
+      max-width:440px;
+      margin:0 auto 24px;
+      justify-content:flex-start;
+      align-items:center;
+      gap:14px;
+      flex-wrap:nowrap;
+    }
+    .home-hero-grid .hero-btns .btn-primary {
+      min-width:225px;
+      justify-content:center;
+    }
+    .home-hero-grid .hero-btns .btn-secondary {
+      min-width:190px;
+      justify-content:center;
+    }
+    .home-trust-row {
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      max-width:620px;
+    }
+    .home-preview-card {
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(260px,0.9fr);
+      gap:14px;
+    }
+    @media (max-width:980px) {
+      .home-hero-grid {
+        grid-template-columns:1fr;
+      }
+      .home-hero-grid .hero-center {
+        max-width:760px;
+        text-align:center;
+      }
+      .home-hero-grid .hero-sub,
+      .home-hero-grid .hero-search-wrap,
+      .home-trust-row {
+        margin-left:auto;
+        margin-right:auto;
+      }
+      .home-hero-grid .hero-btns {
+        justify-content:center;
+      }
+      .home-preview-card {
+        max-width:760px;
+        margin:0 auto;
+      }
+    }
+    @media (max-width:720px) {
+      .signup-bar {
+        min-height:116px;
+        padding:12px 44px 12px 16px;
+        gap:10px;
+        font-size:0.78rem;
+      }
+      .signup-bar-btn {
+        min-height:44px;
+        font-size:1rem;
+        line-height:1.5;
+      }
+      .signup-bar-close {
+        top:8px;
+        transform:none;
+      }
+      .hero {
+        padding:48px 0 44px;
+      }
+      .home-hero-grid {
+        gap:30px;
+      }
+      .home-hero-grid .hero-h1 {
+        font-size:2.3rem;
+      }
+      .home-hero-grid .hero-sub {
+        font-size:0.95rem;
+      }
+      .home-preview-card {
+        grid-template-columns:1fr;
+      }
+      .home-trust-row {
+        grid-template-columns:1fr 1fr;
+      }
+      .home-hero-country,
+      .home-hero-grid .hero-btns {
+        width:100%;
+        max-width:440px;
+      }
+      .home-hero-grid .hero-btns {
+        flex-direction:column;
+        align-items:stretch;
+        gap:10px;
+      }
+      .home-hero-grid .hero-btns .btn-primary,
+      .home-hero-grid .hero-btns .btn-secondary {
+        min-width:0;
+        width:100%;
+      }
+    }
+    @media (max-width:460px) {
+      .home-trust-row {
+        grid-template-columns:1fr;
+      }
+      .home-hero-grid .hero-search {
+        border-radius:12px;
+        flex-wrap:wrap;
+        padding-top:6px;
+      }
+      .home-hero-grid .hero-search input {
+        min-width:0;
+      }
+      .home-hero-grid .hero-search-btn {
+        width:calc(100% - 10px);
+      }
+    }
     :root[data-theme="light"] .btn-primary,
     :root[data-theme="light"] .hero-search-btn,
     :root[data-theme="light"] .showcase-tab.active,
@@ -1077,7 +1294,7 @@
         <div style="font-size:0.78rem;color:#6B7280;line-height:1.5">Calculate WAEC and NECO aggregate scores. Check admission eligibility for Nigerian and Ghanaian universities.</div>
       </a>
       <a href="/tools/jamb-aggregate/" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:22px 18px;text-decoration:none;transition:border-color .2s,box-shadow .2s,transform .2s">
-        <img src="/assets/img/categories/jamb-aggregate.png" alt="" width="48" height="45" style="width:48px;height:45px;margin-bottom:12px;display:block;object-fit:contain" onerror="this.style.display='none'">
+        <img src="/assets/img/categories/jamb-aggregate.webp" alt="" width="48" height="45" style="width:48px;height:45px;margin-bottom:12px;display:block;object-fit:contain" onerror="this.style.display='none'">
         <div style="font-size:0.88rem;font-weight:700;color:#0f172a;margin-bottom:4px">JAMB Aggregate Calculator</div>
         <div style="font-size:0.78rem;color:#6B7280;line-height:1.5">Combine JAMB UTME and O'Level scores. Post-UTME screening aggregate for Nigerian universities.</div>
       </a>

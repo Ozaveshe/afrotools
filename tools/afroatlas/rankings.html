@@ -27,28 +27,115 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <link rel="stylesheet" href="style.css?v=83c9b5fa">
+<link rel="stylesheet" href="/assets/css/afroatlas-twemoji.css?v=6d8ec1be">
 <style>
 /* ── RANKINGS PAGE STYLES ── */
 
 /* Resource Picker Grid */
+.aa-rank-workbench {
+  max-width: 980px;
+  margin: 28px auto 28px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #dbe5f0;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+}
+.aa-rank-kicker {
+  margin: 0 0 6px;
+  color: var(--color-primary, #007AFF);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .aa-picker-title {
   font-family: 'Instrument Serif', serif;
   font-size: 2.4rem;
-  text-align: center;
+  text-align: left;
   margin: 0 0 8px;
   color: var(--color-text, #0f172a);
 }
 .aa-picker-sub {
-  text-align: center;
+  text-align: left;
   color: #64748b;
   font-size: 1.05rem;
-  margin: 0 0 36px;
+  margin: 0;
+  max-width: 68ch;
+  line-height: 1.6;
+}
+.aa-rank-search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 18px;
+}
+.aa-rank-field {
+  display: grid;
+  gap: 6px;
+}
+.aa-rank-label {
+  color: #475569;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.aa-rank-search {
+  min-height: 46px;
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 12px;
+  color: #0f172a;
+  font: 600 0.95rem var(--font-body, 'DM Sans', system-ui, sans-serif);
+}
+.aa-rank-search:focus,
+.aa-rank-action:focus-visible,
+.aa-picker-card:focus-visible,
+.aa-other-tab:focus-visible,
+.aa-back-link:focus-visible {
+  outline: 3px solid rgba(0, 122, 255, 0.28);
+  outline-offset: 2px;
+  border-color: var(--color-primary, #007AFF);
+}
+.aa-rank-method-pill {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #854d0e;
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.aa-rank-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.aa-rank-chip {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid #dbe5f0;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 .aa-picker-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 16px;
-  max-width: 900px;
+  max-width: 980px;
   margin: 0 auto;
   padding: 0 20px 60px;
 }
@@ -71,6 +158,9 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   border-color: var(--color-primary, #007AFF);
 }
+.aa-picker-card[hidden] {
+  display: none;
+}
 .aa-picker-emoji {
   font-size: 2.4rem;
   line-height: 1;
@@ -84,11 +174,39 @@
   font-size: 0.78rem;
   color: #94a3b8;
 }
+.aa-picker-top {
+  min-height: 18px;
+  color: #475569;
+  font-size: 0.74rem;
+  text-align: center;
+}
+.aa-picker-empty {
+  max-width: 980px;
+  margin: -40px auto 60px;
+  padding: 18px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #64748b;
+  text-align: center;
+}
+.aa-picker-empty[hidden] {
+  display: none;
+}
 
 /* Ranking Header */
 .aa-rank-header {
   text-align: center;
   padding: 48px 20px 24px;
+}
+.aa-rank-header-pro {
+  max-width: 980px;
+  margin: 28px auto 24px;
+  padding: 22px 20px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid #dbe5f0;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
 }
 .aa-rank-header h1 {
   font-family: 'Instrument Serif', serif;
@@ -99,6 +217,8 @@
   color: #64748b;
   font-size: 1.05rem;
   margin: 0 0 16px;
+  max-width: 72ch;
+  line-height: 1.6;
 }
 .aa-back-link {
   display: inline-flex;
@@ -111,6 +231,49 @@
 }
 .aa-back-link:hover {
   text-decoration: underline;
+}
+.aa-rank-actionbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.aa-rank-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid #dbe5f0;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+.aa-rank-action.primary {
+  background: var(--color-primary, #007AFF);
+  color: #fff;
+  border-color: var(--color-primary, #007AFF);
+}
+.aa-rank-action:hover {
+  border-color: var(--color-primary, #007AFF);
+  color: var(--color-primary, #007AFF);
+}
+.aa-rank-action.primary:hover {
+  background: var(--color-primary-dark, #0063D1);
+  color: #fff;
+}
+.aa-rank-provenance {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #854d0e;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 /* Podium */
@@ -189,6 +352,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+  padding: 6px 0;
 }
 .aa-rank-num {
   width: 28px;
@@ -237,6 +401,13 @@
   text-align: right;
   flex-shrink: 0;
   font-weight: 500;
+}
+.aa-rank-row-meta {
+  width: 118px;
+  color: #64748b;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  flex-shrink: 0;
 }
 
 /* Chart Section */
@@ -363,6 +534,13 @@
 
 /* Responsive */
 @media (max-width: 640px) {
+  .aa-rank-workbench,
+  .aa-rank-header-pro {
+    margin: 18px 14px 22px;
+  }
+  .aa-rank-search-row {
+    grid-template-columns: 1fr;
+  }
   .aa-picker-title { font-size: 1.8rem; }
   .aa-picker-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
   .aa-rank-header h1 { font-size: 1.8rem; }
@@ -373,6 +551,7 @@
   .aa-podium-card.aa-bronze { order: 2; }
   .aa-rank-name { width: 80px; font-size: 0.8rem; }
   .aa-rank-val { width: 60px; font-size: 0.78rem; }
+  .aa-rank-row-meta { display: none; }
   .aa-rank-num { width: 22px; }
 }
 </style>
@@ -401,6 +580,7 @@
 <script src="/assets/js/components/navbar.js?v=5156fa9b" defer></script>
 <script src="/assets/js/components/footer.js?v=a62a07a2" defer></script>
 <script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
+<script src="/assets/js/lib/afroatlas-twemoji.js?v=f792df45"></script>
 <script>
 (function() {
   'use strict';
@@ -410,11 +590,52 @@
   var resourceParam = params.get('resource');
   var types = AfroAtlas.getResourceTypes();
   var typeKeys = Object.keys(types);
+  var flagTools = window.AfroAtlasFlags || {};
+
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function flagHtml(code, country, className) {
+    if (flagTools.flagHtml) return flagTools.flagHtml(code, country && country.name ? country.name : code, className || '');
+    return '<span class="' + esc(className || 'aa-twemoji-flag') + '">' + esc(code || '') + '</span>';
+  }
 
   // ─── HELPER: build producer count for a resource type ───
   function getProducerCount(type) {
     var list = AfroAtlas.countriesByResource(type);
     return list ? list.length : 0;
+  }
+
+  function getTopProducer(type) {
+    var list = AfroAtlas.countriesByResource(type);
+    return list && list.length ? list[0] : null;
+  }
+
+  function compareHref(a, b) {
+    return 'compare.html?countryA=' + encodeURIComponent(a) + '&countryB=' + encodeURIComponent(b);
+  }
+
+  function wireResourceFilter() {
+    var input = document.getElementById('aa-resource-filter');
+    if (!input) return;
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.aa-picker-card'));
+    var empty = document.getElementById('aa-picker-empty');
+    input.addEventListener('input', function() {
+      var query = input.value.trim().toLowerCase();
+      var shown = 0;
+      for (var i = 0; i < cards.length; i++) {
+        var text = (cards[i].getAttribute('data-resource-search') || '').toLowerCase();
+        var match = !query || text.indexOf(query) !== -1;
+        cards[i].hidden = !match;
+        if (match) shown++;
+      }
+      if (empty) empty.hidden = shown !== 0;
+    });
   }
 
   // ─── HELPER: format large numbers ───
@@ -429,24 +650,37 @@
   // ─── NO RESOURCE: show picker grid ───
   if (!resourceParam || !types[resourceParam]) {
     var html = '';
-    html += '<div style="padding:48px 0 0">';
-    html += '<h1 class="aa-picker-title">Resource Rankings</h1>';
-    html += '<p class="aa-picker-sub">Select a resource to see which African countries lead</p>';
+    html += '<section class="aa-rank-workbench" aria-label="Rankings filters">';
+    html += '<p class="aa-rank-kicker">Decision leaderboard</p>';
+    html += '<h1 class="aa-picker-title">Resource rankings</h1>';
+    html += '<p class="aa-picker-sub">Search by resource, producing country, or theme to jump into a leaderboard. Rankings are directional until each metric has full source, year, and confidence metadata.</p>';
+    html += '<div class="aa-rank-search-row">';
+    html += '<label class="aa-rank-field" for="aa-resource-filter"><span class="aa-rank-label">Find a ranking</span><input class="aa-rank-search" id="aa-resource-filter" type="search" placeholder="Oil, cobalt, Ghana, energy transition"></label>';
+    html += '<div class="aa-rank-method-pill">Mode: share of African production</div>';
+    html += '</div>';
+    html += '<div class="aa-rank-chip-row" aria-label="Popular ranking themes">';
+    html += '<span class="aa-rank-chip">Energy</span><span class="aa-rank-chip">Critical minerals</span><span class="aa-rank-chip">Agriculture</span><span class="aa-rank-chip">Export exposure</span>';
+    html += '</div>';
+    html += '</section>';
     html += '<div class="aa-picker-grid">';
 
     for (var i = 0; i < typeKeys.length; i++) {
       var k = typeKeys[i];
       var t = types[k];
       var count = getProducerCount(k);
-      html += '<a class="aa-picker-card" href="?resource=' + k + '">';
+      var top = getTopProducer(k);
+      var topLabel = top ? top.country.name : 'No leader yet';
+      html += '<a class="aa-picker-card" href="?resource=' + k + '" data-resource-search="' + t.label + ' ' + k + ' ' + topLabel + '">';
       html += '<span class="aa-picker-emoji">' + t.emoji + '</span>';
       html += '<span class="aa-picker-label">' + t.label + '</span>';
       html += '<span class="aa-picker-count">' + count + ' producer' + (count !== 1 ? 's' : '') + '</span>';
+      html += '<span class="aa-picker-top">Top: ' + topLabel + '</span>';
       html += '</a>';
     }
 
-    html += '</div></div>';
+    html += '</div><div class="aa-picker-empty" id="aa-picker-empty" hidden>No matching ranking yet. Try a broader resource term.</div>';
     page.innerHTML = html;
+    wireResourceFilter();
     return;
   }
 
@@ -476,10 +710,19 @@
   var out = '';
 
   // ── Header ──
-  out += '<div class="aa-rank-header">';
-  out += '<a class="aa-back-link" href="rankings.html">&larr; All resources</a>';
+  out += '<div class="aa-rank-header aa-rank-header-pro">';
+  out += '<a class="aa-back-link" href="rankings.html">&larr; All rankings</a>';
+  out += '<p class="aa-rank-kicker">Leaderboard</p>';
   out += '<h1>' + rt.emoji + ' ' + rt.label + '</h1>';
-  out += '<p class="aa-rank-subtitle">African Rankings</p>';
+  out += '<p class="aa-rank-subtitle">Ranked by share of African production where that field exists. Use this as a screening view, then compare the top countries or open a country profile before citing the numbers.</p>';
+  out += '<div class="aa-rank-actionbar">';
+  if (producers.length >= 2) {
+    out += '<a class="aa-rank-action primary" href="' + compareHref(producers[0].code, producers[1].code) + '">Compare top 2</a>';
+  }
+  out += '<a class="aa-rank-action" href="/tools/afroatlas/#brief-builder">Generate brief</a>';
+  out += '<a class="aa-rank-action" href="rankings.html">Change ranking</a>';
+  out += '</div>';
+  out += '<div class="aa-rank-provenance" role="note">Source/year/confidence metadata is pending for this legacy leaderboard. Rows are marked accordingly so missing provenance is visible instead of implied.</div>';
   out += '</div>';
 
   // ── Podium (top 3) ──
@@ -495,7 +738,7 @@
       var r = pr.resource;
       out += '<div class="aa-podium-card ' + medals[p] + '">';
       out += '<div class="aa-podium-medal">' + medalIcons[p] + '</div>';
-      out += '<span class="aa-podium-flag">' + c.flag + '</span>';
+      out += '<span class="aa-podium-flag">' + flagHtml(pr.code, c, 'aa-podium-flag-img') + '</span>';
       out += '<div class="aa-podium-name">' + c.name + '</div>';
       out += '<div class="aa-podium-prod">' + (r.prod || 'N/A') + '</div>';
       out += '<div class="aa-podium-share" style="color:' + rt.color + '">' + (typeof r.share === 'number' ? r.share + '% of Africa' : '') + '</div>';
@@ -505,7 +748,7 @@
   }
 
   // ── Full Ranking Bars ──
-  out += '<div class="aa-rank-bars">';
+  out += '<div class="aa-rank-bars" role="list">';
   out += '<h2 class="aa-rank-bars-title">Full Rankings</h2>';
 
   for (var b = 0; b < producers.length; b++) {
@@ -515,12 +758,13 @@
     var shareVal = typeof br.share === 'number' ? br.share : 0;
     var barWidth = maxShare > 0 ? Math.max(2, Math.round((shareVal / maxShare) * 100)) : 2;
 
-    out += '<div class="aa-rank-bar" data-bar-width="' + barWidth + '">';
+    out += '<div class="aa-rank-bar" data-bar-width="' + barWidth + '" role="listitem">';
     out += '<span class="aa-rank-num">' + (b + 1) + '</span>';
-    out += '<span class="aa-rank-flag">' + bc.flag + '</span>';
+    out += '<span class="aa-rank-flag">' + flagHtml(bp.code, bc, 'aa-rank-flag-img') + '</span>';
     out += '<span class="aa-rank-name" title="' + bc.name + '">' + bc.name + '</span>';
     out += '<div class="aa-bar-track"><div class="aa-bar-fill" style="background:' + rt.color + '"></div></div>';
     out += '<span class="aa-rank-val">' + (typeof br.share === 'number' ? br.share + '%' : br.prod || '-') + '</span>';
+    out += '<span class="aa-rank-row-meta">Source/year pending</span>';
     out += '</div>';
   }
 
@@ -541,7 +785,7 @@
       totalGlobalShare += gr.global;
     }
     if (gr.note && g < 3) {
-      factsList.push(producers[g].country.flag + ' ' + producers[g].country.name + ': ' + gr.note);
+      factsList.push(producers[g].country.name + ': ' + gr.note);
     }
   }
 
@@ -602,15 +846,21 @@
   }
 
   // ── Chart.js horizontal bar chart ──
-  var canvas = document.getElementById('aa-rank-chart');
-  if (canvas && typeof Chart !== 'undefined') {
+  function initRankChart() {
+    var canvas = document.getElementById('aa-rank-chart');
+    if (!canvas) return;
+    if (typeof Chart === 'undefined') {
+      setTimeout(initRankChart, 200);
+      return;
+    }
+
     var labels = [];
     var data = [];
     var colors = [];
 
     for (var ci = 0; ci < producers.length; ci++) {
       var cp = producers[ci];
-      labels.push(cp.country.flag + ' ' + cp.country.name);
+      labels.push(cp.country.name);
       data.push(typeof cp.resource.share === 'number' ? cp.resource.share : 0);
       colors.push(rt.color);
     }
@@ -658,6 +908,7 @@
       }
     });
   }
+  initRankChart();
 
 })();
 </script>

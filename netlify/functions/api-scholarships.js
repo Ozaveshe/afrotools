@@ -81,6 +81,93 @@ function hasOfficialLink(item) {
   return !!(item && (item.official_url || item.application_url || item.info_url || item.source_url));
 }
 
+function parseDate(value) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function utcDateKey(value) {
+  const date = parseDate(value);
+  return date ? date.toISOString().slice(0, 10) : '';
+}
+
+function daysUntil(value, now) {
+  const date = parseDate(value);
+  if (!date) return null;
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const deadline = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  return Math.ceil((deadline - today) / 86400000);
+}
+
+function firstTimestamp(item, fields) {
+  for (let index = 0; index < fields.length; index += 1) {
+    const value = item && item[fields[index]];
+    if (parseDate(value)) return value;
+  }
+  return '';
+}
+
+function buildScholarshipMetadata(items, meta, now) {
+  const list = Array.isArray(items) ? items : [];
+  const current = now instanceof Date ? now : new Date();
+  const todayKey = current.toISOString().slice(0, 10);
+  const sourceHealth = {
+    mode: meta && meta.mode ? meta.mode : 'fallback',
+    label: meta && meta.label ? meta.label : '',
+    stale: !!(meta && meta.stale),
+    degraded: !!(meta && meta.isDegraded),
+    limited: !!(meta && meta.isLimited),
+    public_min_count: meta && meta.publicMinCount ? meta.publicMinCount : 0,
+    official_link_count: 0,
+    with_deadline_count: 0,
+    source_backed_count: 0
+  };
+
+  const counts = list.reduce(function (state, item) {
+    const status = getScholarshipStatus(item);
+    const days = daysUntil(item && item.deadline_date, current);
+    const verifiedAt = firstTimestamp(item, [
+      'verified_at',
+      'last_checked_at',
+      'last_verified_at',
+      'deadline_last_checked',
+      'award_value_last_checked_at'
+    ]);
+    const addedAt = firstTimestamp(item, ['published_at', 'created_at']);
+    const staleAnchor = firstTimestamp(item, ['last_checked_at', 'verified_at', 'last_verified_at', 'last_seen_at']);
+    const staleDate = parseDate(staleAnchor);
+
+    if (status === 'open' || status === 'upcoming' || status === 'variable') state.open += 1;
+    if ((typeof days === 'number' && days >= 0 && days <= 30) || status === 'closing_soon') state.closingSoon += 1;
+    if (verifiedAt && utcDateKey(verifiedAt) === todayKey) state.verifiedToday += 1;
+    if (addedAt && utcDateKey(addedAt) === todayKey) state.addedToday += 1;
+    if (!staleDate || current.getTime() - staleDate.getTime() > 30 * 86400000) state.stale += 1;
+    if (hasOfficialLink(item)) sourceHealth.official_link_count += 1;
+    if (item && item.deadline_date) sourceHealth.with_deadline_count += 1;
+    if (item && (item.source_url || item.official_url)) sourceHealth.source_backed_count += 1;
+    return state;
+  }, {
+    open: 0,
+    closingSoon: 0,
+    verifiedToday: 0,
+    addedToday: 0,
+    stale: 0
+  });
+
+  return {
+    total_loaded: list.length,
+    scholarships_added_count: list.length,
+    added_today_count: counts.addedToday,
+    open_count: counts.open,
+    closing_soon_count: counts.closingSoon,
+    verified_today_count: counts.verifiedToday,
+    last_refresh_at: meta && (meta.lastCheckedAt || meta.cachedAt) ? meta.lastCheckedAt || meta.cachedAt : null,
+    stale_count: counts.stale,
+    source_health: sourceHealth
+  };
+}
+
 function buildScholarshipSummary(items, meta) {
   const list = Array.isArray(items) ? items : [];
   const summary = {
@@ -156,6 +243,7 @@ exports.handler = async function (event) {
       error: feed.meta.error || ''
     };
     payload.summary = buildScholarshipSummary(filtered, feed.meta);
+    Object.assign(payload, buildScholarshipMetadata(filtered, feed.meta));
 
     const authResult = await getUserFromEvent(event);
     const sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
@@ -186,4 +274,11 @@ exports.handler = async function (event) {
       mode: 'fallback'
     });
   }
+};
+
+exports._private = {
+  buildScholarshipMetadata,
+  buildScholarshipSummary,
+  daysUntil,
+  getScholarshipStatus
 };

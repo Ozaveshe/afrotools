@@ -1,1 +1,296 @@
-!function(){"use strict";var r={valuesByKey:{},valuesReady:!1,rates:null,localCurrency:"",profileReady:!1};function e(r){return String(null==r?"":r).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function t(r,e){try{var t=window.localStorage&&window.localStorage.getItem(r);return t?JSON.parse(t):e}catch(r){return e}}function n(r){var e=String(r||"").trim().toUpperCase();return/^[A-Z]{3}$/.test(e)?e:""}function a(){r.localCurrency=function(r){var e=n(r.currency||r.local_currency||r.preferred_currency);if(e)return e;var t=String(r.country_code||r.countryCode||"").trim().toUpperCase();return!t&&r.country&&(t=String(r.country).trim().toUpperCase()),t&&window.AfroTools&&window.AfroTools.currency&&"function"==typeof window.AfroTools.currency.fromCountry?n(window.AfroTools.currency.fromCountry(t)):"USD"}(function(){var r=null;try{window.AfroAuth&&"function"==typeof window.AfroAuth.getCachedProfile&&(r=window.AfroAuth.getCachedProfile())}catch(e){r=null}if(!r){var e=t("afro_profile_cache",null);r=e&&e.user?e.user:null}return r||(r=t("afro_auth_v2",null)),r||{}}()),r.profileReady=!0,s()}function o(r){if(window.AfroScholarshipFeed&&"function"==typeof window.AfroScholarshipFeed.getScholarshipKey)try{return String(window.AfroScholarshipFeed.getScholarshipKey(r)||"").trim().toLowerCase()}catch(r){return""}return String(r&&(r.application_url||r.info_url||r.source_url||r.official_url||r.officialLink||r.sourceUrl||r.name||r.title)||"").trim().toLowerCase()}function u(r){var e=Number(r);return Number.isFinite(e)?e:null}function i(r,e){r=n(r);var t=Number(e);if(!r||!Number.isFinite(t))return"";var a=Math.abs(t)>=1e5;return window.AfroTools&&window.AfroTools.currency&&"function"==typeof window.AfroTools.currency.format?window.AfroTools.currency.format(r,t,{compact:a}):r+" "+t.toLocaleString(void 0,{maximumFractionDigits:a?1:0})}function l(t){var a=n(t.award_value_currency),o=function(r){var e=u(r.award_value_min),t=u(r.award_value_max);return null==e&&null==t?null:null==e?t:null==t?e:(e+t)/2}(t),l=function(r){var e=u(r.award_value_min),t=u(r.award_value_max),a=n(r.award_value_currency);return null==e&&null==t?String(r.award_value_text||"").trim():null!=e&&null!=t&&e!==t?i(a,e)+" - "+i(a,t):i(a,null!=e?e:t)}(t);if(!l)return"";var c=function(e,t){return t=n(t),null!=e&&t?"USD"===t?e:r.rates&&r.rates[t]?e/Number(r.rates[t]):null:null}(o,a),s=n(r.localCurrency||"USD"),d=function(e,t){return t=n(t),null!=e&&t?"USD"===t?e:r.rates&&r.rates[t]?e*Number(r.rates[t]):null:null}(c,s),f=null!=d?i(s,d):l,v=null!=c?i("USD",c):"",h=[];v&&f!==v&&h.push("About "+v),l&&l!==f&&h.push("Source value: "+l),t.award_value_period&&h.push(String(t.award_value_period).replace(/_/g," "));var w,p,y=!(p=(w=t.award_value_last_checked_at)?new Date(w):null)||Number.isNaN(p.getTime())?"":p.toLocaleDateString(void 0,{year:"numeric",month:"short",day:"numeric"});return['<div class="sch-award-value" data-sch-award-value>','<span class="sch-award-value__label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"/></svg> Award value</span>','<strong class="sch-award-value__primary">'+e(f)+"</strong>",h.length?'<div class="sch-award-value__meta">'+e(h.join(" | "))+"</div>":"",'<span class="sch-award-value__verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Verified value</span>',y?'<div class="sch-award-value__source">Checked '+e(y)+"</div>":"","</div>"].join("")}function c(e){if(e&&r.valuesReady){var t=function(r){var e=r&&r.getAttribute("data-sch-key")||"";try{return decodeURIComponent(e).trim().toLowerCase()}catch(r){return e.trim().toLowerCase()}}(e),n=r.valuesByKey[t],a=e.querySelector("[data-sch-award-value]");if(n){var o=l(n);if(o)if(a)a.outerHTML=o;else{var u=e.querySelector(".deadline-card")||e.querySelector(".details")||e.querySelector("h3");u&&u.parentNode&&u.insertAdjacentHTML("afterend",o)}else a&&a.remove()}else a&&a.remove()}}function s(){var r=document.getElementById("scholarshipGrid");r&&Array.prototype.forEach.call(r.querySelectorAll(".sch-upgrade-card[data-sch-key]"),c)}function d(){var r=document.getElementById("scholarshipGrid");r&&window.MutationObserver&&new MutationObserver(function(){window.clearTimeout(d.timer),d.timer=window.setTimeout(s,40)}).observe(r,{childList:!0,subtree:!0})}function f(){a(),fetch("/api/scholarship-values?limit=600",{credentials:"same-origin"}).then(function(r){if(!r.ok)throw new Error("Scholarship values returned "+r.status);return r.json()}).then(function(e){var t={};(e.items||[]).forEach(function(r){(function(r){var e=[r&&r.key,o(r)];["application_url","info_url","source_url","official_url","name","title","slug"].forEach(function(t){r&&r[t]&&e.push(String(r[t]).trim().toLowerCase())});var t={};return e.map(function(r){return String(r||"").trim().toLowerCase()}).filter(function(r){return!(!r||t[r]||(t[r]=!0,0))})})(r).forEach(function(e){e&&(t[e]=r)})}),r.valuesByKey=t,r.valuesReady=!0,s()}).catch(function(){r.valuesReady=!0}),fetch("/api/forex?base=USD",{credentials:"same-origin"}).then(function(r){if(!r.ok)throw new Error("Forex returned "+r.status);return r.json()}).then(function(e){r.rates=e&&e.rates?e.rates:null,s()}).catch(function(){return fetch("/data/forex/latest.json").then(function(r){if(!r.ok)throw new Error("Forex fallback returned "+r.status);return r.json()}).then(function(e){r.rates=e&&e.rates?e.rates:null,s()}).catch(function(){r.rates=null})}),d(),window.addEventListener("afro-auth-change",function(){a()}),window.addEventListener("afroedu:profile-updated",function(){a()})}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",f):f()}();
+!function () {
+  'use strict';
+
+  var state = {
+    valuesByKey: {},
+    valuesReady: false,
+    rates: null,
+    localCurrency: '',
+    profileReady: false
+  };
+
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function readJson(key, fallback) {
+    try {
+      var value = window.localStorage && window.localStorage.getItem(key);
+      return value ? JSON.parse(value) : fallback;
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  function normalizeCurrency(value) {
+    var currency = String(value || '').trim().toUpperCase();
+    return /^[A-Z]{3}$/.test(currency) ? currency : '';
+  }
+
+  function numberOrNull(value) {
+    var parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  function resolveProfileCurrency() {
+    var profile = null;
+    try {
+      if (window.AfroAuth && typeof window.AfroAuth.getCachedProfile === 'function') {
+        profile = window.AfroAuth.getCachedProfile();
+      }
+    } catch (error) {
+      profile = null;
+    }
+    if (!profile) {
+      var cached = readJson('afro_profile_cache', null);
+      profile = cached && cached.user ? cached.user : null;
+    }
+    profile = profile || readJson('afro_auth_v2', null) || {};
+
+    var currency = normalizeCurrency(profile.currency || profile.local_currency || profile.preferred_currency);
+    if (currency) return currency;
+
+    var country = String(profile.country_code || profile.countryCode || profile.country || '').trim().toUpperCase();
+    if (country && window.AfroTools && window.AfroTools.currency && typeof window.AfroTools.currency.fromCountry === 'function') {
+      return normalizeCurrency(window.AfroTools.currency.fromCountry(country)) || 'USD';
+    }
+    return 'USD';
+  }
+
+  function refreshLocalCurrency() {
+    state.localCurrency = resolveProfileCurrency();
+    state.profileReady = true;
+    renderAll();
+  }
+
+  function scholarshipKey(item) {
+    if (window.AfroScholarshipFeed && typeof window.AfroScholarshipFeed.getScholarshipKey === 'function') {
+      try {
+        return String(window.AfroScholarshipFeed.getScholarshipKey(item) || '').trim().toLowerCase();
+      } catch (error) {
+        return '';
+      }
+    }
+    return String(item && (item.application_url || item.info_url || item.source_url || item.official_url || item.name || item.title || item.slug) || '').trim().toLowerCase();
+  }
+
+  function cardKey(card) {
+    var key = card && card.getAttribute('data-sch-key') || '';
+    try {
+      return decodeURIComponent(key).trim().toLowerCase();
+    } catch (error) {
+      return key.trim().toLowerCase();
+    }
+  }
+
+  function formatMoney(currency, amount) {
+    currency = normalizeCurrency(currency);
+    var value = Number(amount);
+    if (!currency || !Number.isFinite(value)) return '';
+    var compact = Math.abs(value) >= 100000;
+    if (window.AfroTools && window.AfroTools.currency && typeof window.AfroTools.currency.format === 'function') {
+      return window.AfroTools.currency.format(currency, value, { compact: compact });
+    }
+    try {
+      return new Intl.NumberFormat(void 0, {
+        style: 'currency',
+        currency: currency,
+        notation: compact ? 'compact' : 'standard',
+        maximumFractionDigits: compact ? 1 : 0
+      }).format(value);
+    } catch (error) {
+      return currency + ' ' + Math.round(value).toLocaleString();
+    }
+  }
+
+  function averageAward(record) {
+    var min = numberOrNull(record.award_value_min);
+    var max = numberOrNull(record.award_value_max);
+    if (min == null && max == null) return numberOrNull(record.award_value_amount);
+    if (min == null) return max;
+    if (max == null) return min;
+    return (min + max) / 2;
+  }
+
+  function convertToUsd(amount, currency) {
+    currency = normalizeCurrency(currency);
+    if (amount == null || !currency) return null;
+    if (currency === 'USD') return amount;
+    return state.rates && state.rates[currency] ? amount / Number(state.rates[currency]) : null;
+  }
+
+  function convertFromUsd(amount, currency) {
+    currency = normalizeCurrency(currency);
+    if (amount == null || !currency) return null;
+    if (currency === 'USD') return amount;
+    return state.rates && state.rates[currency] ? amount * Number(state.rates[currency]) : null;
+  }
+
+  function sourceValueText(record, currency, amount) {
+    if (record.award_value_text) return String(record.award_value_text).trim();
+    if (amount != null && currency) return formatMoney(currency, amount);
+    return '';
+  }
+
+  function renderValue(record) {
+    var sourceCurrency = normalizeCurrency(record.award_value_currency);
+    var sourceAmount = averageAward(record);
+    var sourceText = sourceValueText(record, sourceCurrency, sourceAmount);
+    var fundingType = String(record.funding_type || record.funding || '').toLowerCase();
+
+    if (sourceAmount == null && !sourceText) {
+      if (fundingType.indexOf('fully') !== -1) sourceText = 'Fully funded';
+      else if (/varies|various|variable/.test(fundingType)) sourceText = 'Funding varies';
+    }
+    if (!sourceText && sourceAmount == null) return '';
+
+    var localCurrency = normalizeCurrency(record.local_value_currency) || state.localCurrency || sourceCurrency || 'USD';
+    var usdAmount = numberOrNull(record.award_value_usd);
+    if (usdAmount == null) usdAmount = convertToUsd(sourceAmount, sourceCurrency);
+
+    var localAmount = numberOrNull(record.local_value_amount);
+    if (localAmount == null && localCurrency === sourceCurrency) localAmount = sourceAmount;
+    if (localAmount == null) localAmount = convertFromUsd(usdAmount, localCurrency);
+
+    var primary = localAmount != null ? formatMoney(localCurrency, localAmount) : sourceText;
+    var usd = usdAmount != null && primary !== formatMoney('USD', usdAmount) ? formatMoney('USD', usdAmount) : '';
+    var checked = record.award_value_last_checked_at ? new Date(record.award_value_last_checked_at) : null;
+    var checkedLabel = checked && !Number.isNaN(checked.getTime())
+      ? checked.toLocaleDateString(void 0, { year: 'numeric', month: 'short', day: 'numeric' })
+      : '';
+    var tooltip = [
+      sourceText ? 'Source value: ' + sourceText : '',
+      checkedLabel ? 'Checked ' + checkedLabel : ''
+    ].filter(Boolean).join(' | ');
+
+    return [
+      '<div class="sch-award-value" data-sch-award-value' + (tooltip ? ' title="' + esc(tooltip) + '"' : '') + '>',
+      '<span class="sch-award-value__label">Award</span>',
+      '<strong class="sch-award-value__primary">' + esc(primary) + (usd ? '<span class="sch-award-value__usd">≈ ' + esc(usd) + '</span>' : '') + '</strong>',
+      '<span class="sch-award-value__verified" aria-label="Verified value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Verified</span>',
+      '</div>'
+    ].join('');
+  }
+
+  function renderCard(card) {
+    if (!card || !state.valuesReady) return;
+    var key = cardKey(card);
+    var record = state.valuesByKey[key];
+    var existing = card.querySelector('[data-sch-award-value]');
+    if (!record) {
+      if (existing) existing.remove();
+      return;
+    }
+
+    var html = renderValue(record);
+    if (!html) {
+      if (existing) existing.remove();
+      return;
+    }
+
+    if (existing) {
+      existing.outerHTML = html;
+      return;
+    }
+    var anchor = card.querySelector('.deadline-card') || card.querySelector('.details') || card.querySelector('h3');
+    if (anchor && anchor.parentNode) anchor.insertAdjacentHTML('afterend', html);
+  }
+
+  function renderAll() {
+    var grid = document.getElementById('scholarshipGrid');
+    if (!grid) return;
+    Array.prototype.forEach.call(grid.querySelectorAll('.sch-upgrade-card[data-sch-key]'), renderCard);
+  }
+
+  function observeGrid() {
+    var grid = document.getElementById('scholarshipGrid');
+    if (!grid || !window.MutationObserver) return;
+    new MutationObserver(function () {
+      window.clearTimeout(observeGrid.timer);
+      observeGrid.timer = window.setTimeout(renderAll, 40);
+    }).observe(grid, { childList: true, subtree: true });
+  }
+
+  function collectKeys(record) {
+    var values = [record && record.key, scholarshipKey(record)];
+    ['application_url', 'info_url', 'source_url', 'official_url', 'name', 'title', 'slug'].forEach(function (field) {
+      if (record && record[field]) values.push(String(record[field]).trim().toLowerCase());
+    });
+    var seen = {};
+    return values.map(function (value) {
+      return String(value || '').trim().toLowerCase();
+    }).filter(function (value) {
+      if (!value || seen[value]) return false;
+      seen[value] = true;
+      return true;
+    });
+  }
+
+  function loadAwardValues() {
+    fetch('/api/scholarship-values?limit=600', { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Scholarship values returned ' + response.status);
+        return response.json();
+      })
+      .then(function (payload) {
+        var map = {};
+        (payload.items || []).forEach(function (record) {
+          collectKeys(record).forEach(function (key) {
+            map[key] = record;
+          });
+        });
+        state.valuesByKey = map;
+        state.valuesReady = true;
+        renderAll();
+      })
+      .catch(function () {
+        state.valuesReady = true;
+      });
+  }
+
+  function loadFx() {
+    fetch('/api/forex?base=USD', { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Forex returned ' + response.status);
+        return response.json();
+      })
+      .then(function (payload) {
+        state.rates = payload && payload.rates ? payload.rates : null;
+        renderAll();
+      })
+      .catch(function () {
+        return fetch('/data/forex/latest.json')
+          .then(function (response) {
+            if (!response.ok) throw new Error('Forex fallback returned ' + response.status);
+            return response.json();
+          })
+          .then(function (payload) {
+            state.rates = payload && payload.rates ? payload.rates : null;
+            renderAll();
+          })
+          .catch(function () {
+            state.rates = null;
+          });
+      });
+  }
+
+  function init() {
+    refreshLocalCurrency();
+    loadAwardValues();
+    loadFx();
+    observeGrid();
+    window.addEventListener('afro-auth-change', refreshLocalCurrency);
+    window.addEventListener('afroedu:profile-updated', refreshLocalCurrency);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+}();

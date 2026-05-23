@@ -1,15 +1,15 @@
 # French Localization Ledger
 
-Generated: 2026-05-18
+Generated: 2026-05-23
 
 This is an audit-only ledger. It does not translate or edit French pages. English source inventory follows the skip logic in `scripts/build-i18n.js`.
 
 ## Headline Metrics
 
-- Total English source pages: 5749
+- Total English source pages: 5759
 - Total French pages: 1707
-- Raw page-count completion: 29.69%
-- English-backed route-mapping completion: 25.66%
+- Raw page-count completion: 29.64%
+- English-backed route-mapping completion: 25.61%
 - French registry coverage: 73.12% of registry-eligible French tool/money/PDF routes (340/465)
 - French registry entries: 355
 - English-backed French routes: 1545
@@ -49,7 +49,7 @@ This is an audit-only ledger. It does not translate or edit French pages. Englis
 4. French aliases or bridge routes (97)
    - Recommendation: Keep aliases out of registry/search promotion unless they are deliberate bridge pages.
    - Examples: /fr/algeria/dz-paye, /fr/algeria/dz-vat, /fr/algeria, /fr/benin/bj-paye, /fr/benin/bj-vat, /fr/burkina-faso/bf-paye, /fr/burkina-faso/bf-vat, /fr/burkina-faso/bf-vat
-5. English source pages without a mapped French route (4304)
+5. English source pages without a mapped French route (4314)
    - Recommendation: Use high-value section counts to choose the next implementation batch instead of translating randomly.
    - Examples: afrowork, afrowork/api, afrowork/whatsapp, agriculture/crop-planning-yield, agriculture/equipment-infrastructure, agriculture/farm-finance-roi, agriculture/farm-payroll/_template, agriculture/inputs-feed-operations
 6. Generated French outputs with weak registry discovery (58)
