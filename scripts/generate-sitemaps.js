@@ -45,6 +45,7 @@ const EXCLUDE_PATTERNS = [
   /fr\/widgets\/iframe\/template\.html$/i,
   /mc-7a2f9x\.html$/i,
   /tools\/afrostream\/admin\.html$/i,
+  /tools\/vehicle-import-duty\/index\.html$/i,
   /widgets\/iframe\/template\.html$/i,
   /index_old\.html$/i,
   /^404\.html$/i,

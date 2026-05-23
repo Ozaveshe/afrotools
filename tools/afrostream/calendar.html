@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <link rel="stylesheet" href="style.css?v=aa1e677d">
-<script src="/assets/js/components/navbar.js?v=5156fa9b" defer></script>
+<script src="/assets/js/components/navbar.js?v=e2c352e8" defer></script>
 <script src="/assets/js/components/footer.js?v=a62a07a2" defer></script>
 
 <!-- Google Analytics -->
@@ -539,6 +539,9 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-cal-stream-remind:hover { border-color: rgba(0,122,255,0.4); color: #0063CC; }
 .as-cal-stream-remind.set { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.3); color: #22c55e; pointer-events: none; }
 .as-cal-stream-watch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 5px 12px;
   border-radius: 100px;
   font-size: .6875rem;
@@ -623,6 +626,41 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 }
 .as-cal-panel-close:hover { border-color: rgba(239,68,68,0.3); color: #ef4444; background: rgba(239,68,68,0.06); }
 .as-cal-panel-body { padding: 4px 24px 32px; display: flex; flex-direction: column; gap: 8px; }
+.as-cal-panel .as-cal-stream {
+  display: grid;
+  grid-template-columns: 54px 82px 4px minmax(0, 1fr);
+  grid-template-areas:
+    "time media rail body"
+    "actions actions actions actions";
+  align-items: center;
+  gap: 12px;
+  cursor: default;
+}
+.as-cal-panel .as-cal-stream:hover {
+  transform: none;
+}
+.as-cal-panel .as-cal-stream-time { grid-area: time; }
+.as-cal-panel .as-cal-stream-media {
+  grid-area: media;
+  width: 82px;
+  height: 52px;
+}
+.as-cal-panel .as-cal-stream-plat { grid-area: rail; }
+.as-cal-panel .as-cal-stream-body { grid-area: body; }
+.as-cal-panel .as-cal-stream-duration { display: none; }
+.as-cal-panel .as-cal-stream-actions {
+  grid-area: actions;
+  justify-content: flex-end;
+  width: 100%;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+.as-cal-panel .as-cal-stream-remind,
+.as-cal-panel .as-cal-stream-watch {
+  min-width: 96px;
+  justify-content: center;
+  text-align: center;
+}
 
 /* ── CTA SECTION ──────────────────────────────────── */
 .as-cal-cta {
@@ -719,8 +757,45 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   .as-week-day-header { font-size: .6875rem; padding: 8px 2px; }
   .as-week-block { padding: 4px 6px; font-size: .6875rem; }
   .as-cal-panel { width: 100vw; }
-  .as-cal-stream { flex-wrap: wrap; gap: 10px; }
-  .as-cal-stream-actions { width: 100%; justify-content: flex-end; }
+  .as-cal-stream,
+  .as-cal-panel .as-cal-stream {
+    display: grid;
+    grid-template-columns: 48px 64px 4px minmax(0, 1fr);
+    grid-template-areas:
+      "time media rail body"
+      "actions actions actions actions";
+    gap: 10px;
+    padding: 10px;
+    align-items: center;
+  }
+  .as-cal-stream-time { grid-area: time; }
+  .as-cal-stream-media,
+  .as-cal-panel .as-cal-stream-media {
+    grid-area: media;
+    width: 64px;
+    height: 42px;
+  }
+  .as-cal-stream-plat { grid-area: rail; }
+  .as-cal-stream-body { grid-area: body; }
+  .as-cal-stream-duration { display: none; }
+  .as-cal-stream-actions,
+  .as-cal-panel .as-cal-stream-actions {
+    grid-area: actions;
+    justify-content: flex-end;
+    width: 100%;
+    padding-top: 8px;
+    border-top: 1px solid #e5e7eb;
+    flex-direction: row;
+    gap: 6px;
+  }
+  .as-cal-stream-remind,
+  .as-cal-stream-watch {
+    min-width: 86px;
+    justify-content: center;
+    text-align: center;
+    padding: 5px 10px;
+    font-size: .625rem;
+  }
   .as-subnav-links { gap: 0; }
   .as-subnav-links a { padding: 6px 10px; font-size: .75rem; }
   .as-subnav-inner { gap: 8px; }

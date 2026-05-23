@@ -40,7 +40,7 @@ The shell links to existing public trade and import tools:
 - `/tools/afcfta-tracker/`
 - `/tools/landed-cost/`
 - `/tools/import-duty/`
-- `/tools/vehicle-import-duty/`
+- `/tools/import-duty/`
 - `/tools/mini-importation/`
 - `/tools/payment-gateway/`
 - `/tools/informal-fx-watch/`

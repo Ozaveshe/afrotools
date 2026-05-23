@@ -97,7 +97,7 @@ function summarizeErrors(value, out) {
   if (typeof value === 'object') {
     if (Array.isArray(value.errors)) summarizeErrors(value.errors, out);
     if (value.rpc_error) out.push('RPC fallback: ' + value.rpc_error);
-    ['twitch', 'kick', 'youtube', 'scoring'].forEach(function(key) {
+    ['twitch', 'kick', 'youtube', 'scoring', 'schedule'].forEach(function(key) {
       if (value[key]) summarizeErrors(value[key], out);
     });
     return out;
@@ -728,6 +728,152 @@ function parseMetricValue(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function startOfUtcDay(date) {
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+}
+
+function isoUtcSlot(dayMs, hour) {
+  return new Date(dayMs + hour * 60 * 60 * 1000).toISOString();
+}
+
+function hasStreamUrl(creator) {
+  return !!(creator && (creator.youtube_url || creator.twitch_url || creator.kick_url || creator.tiktok_url || creator.instagram_url));
+}
+
+function streamReach(creator) {
+  return Math.max(Number(creator.total_followers || 0) || 0, Number(creator.subscribers || 0) || 0);
+}
+
+function frequencyRank(value) {
+  var raw = String(value || '').toLowerCase();
+  if (raw === 'daily') return 0;
+  if (raw.indexOf('5x/week') === 0) return 1;
+  if (raw.indexOf('3x/week') === 0) return 2;
+  if (raw.indexOf('2x/week') === 0) return 3;
+  if (raw.indexOf('1x/week') === 0) return 4;
+  return 5;
+}
+
+function chooseScheduledPlatform(creator, recentCount) {
+  var primary = String(creator.primary_platform || '').toLowerCase();
+  if (primary === 'twitch' && creator.twitch_url) return 'Twitch';
+  if (primary === 'kick' && creator.kick_url) return 'Kick';
+  if (primary === 'tiktok' && creator.tiktok_url) return 'TikTok';
+  if (primary === 'instagram' && creator.instagram_url) return 'Instagram';
+  if (creator.twitch_url && recentCount > 0) return 'Twitch';
+  if (creator.kick_url && recentCount > 0) return 'Kick';
+  return 'YouTube';
+}
+
+function chooseScheduledUrl(creator, platform) {
+  var key = String(platform || '').toLowerCase();
+  if (key === 'twitch' && creator.twitch_url) return creator.twitch_url;
+  if (key === 'kick' && creator.kick_url) return creator.kick_url;
+  if (key === 'tiktok' && creator.tiktok_url) return creator.tiktok_url;
+  if (key === 'instagram' && creator.instagram_url) return creator.instagram_url;
+  return creator.twitch_url || creator.kick_url || creator.youtube_url || creator.tiktok_url || creator.instagram_url || '';
+}
+
+function scheduledCategory(creator) {
+  var first = String(creator.categories || '').split(',')[0].trim();
+  return first || 'Entertainment';
+}
+
+async function ensureForwardStreamSchedule() {
+  var results = { target: 28, existing_future: 0, created: 0, errors: [] };
+  var now = new Date();
+  var todayMs = startOfUtcDay(now);
+  var startIso = new Date(todayMs + 86400000).toISOString();
+  var endIso = new Date(todayMs + 8 * 86400000).toISOString();
+
+  try {
+    var existing = await sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + startIso + '&stream_date=lt.' + endIso + '&select=id,creator_id,creator_name,title,stream_date&limit=1000');
+    existing = Array.isArray(existing) ? existing : [];
+    results.existing_future = existing.length;
+    if (existing.length >= results.target) return results;
+
+    var existingKeys = {};
+    existing.forEach(function(row) {
+      var existingDate = row.stream_date ? new Date(row.stream_date).toISOString() : '';
+      existingKeys[String(row.creator_id || row.creator_name || '') + '|' + existingDate] = true;
+    });
+
+    var recentSince = new Date(Date.now() - 45 * 86400000).toISOString();
+    var recentRows = await sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + recentSince + '&select=creator_id,creator_name,viewer_count&limit=1000');
+    var recentCounts = {};
+    if (Array.isArray(recentRows)) {
+      recentRows.forEach(function(row) {
+        var idKey = row.creator_id ? 'id:' + row.creator_id : '';
+        var nameKey = String(row.creator_name || '').trim().toLowerCase();
+        if (idKey) recentCounts[idKey] = (recentCounts[idKey] || 0) + 1;
+        if (nameKey) recentCounts[nameKey] = (recentCounts[nameKey] || 0) + 1;
+      });
+    }
+
+    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,country,categories,frequency,primary_platform,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,total_followers,subscribers&limit=1000');
+    creators = Array.isArray(creators) ? creators.filter(function(creator) {
+      var idKey = creator.id ? 'id:' + creator.id : '';
+      var nameKey = String(creator.name || '').trim().toLowerCase();
+      return hasStreamUrl(creator) && (creator.frequency || recentCounts[idKey] || recentCounts[nameKey]);
+    }) : [];
+
+    creators.sort(function(a, b) {
+      var aRecent = Math.max(recentCounts['id:' + a.id] || 0, recentCounts[String(a.name || '').trim().toLowerCase()] || 0);
+      var bRecent = Math.max(recentCounts['id:' + b.id] || 0, recentCounts[String(b.name || '').trim().toLowerCase()] || 0);
+      if (bRecent !== aRecent) return bRecent - aRecent;
+      var freqDiff = frequencyRank(a.frequency) - frequencyRank(b.frequency);
+      if (freqDiff) return freqDiff;
+      return streamReach(b) - streamReach(a);
+    });
+
+    if (!creators.length) {
+      results.errors.push('No published creators with stream URLs available for schedule top-up');
+      return results;
+    }
+
+    var pool = creators.slice(0, results.target);
+    var hours = [8, 11, 14, 17];
+    var rows = [];
+    var slotIndex = 0;
+    for (var dayOffset = 1; dayOffset <= 7; dayOffset++) {
+      var dayMs = todayMs + dayOffset * 86400000;
+      for (var h = 0; h < hours.length; h++) {
+        var creator = pool[slotIndex % pool.length];
+        slotIndex++;
+        var dateIso = isoUtcSlot(dayMs, hours[h]);
+        var key = String(creator.id || creator.name || '') + '|' + dateIso;
+        if (existingKeys[key]) continue;
+        var recent = Math.max(recentCounts['id:' + creator.id] || 0, recentCounts[String(creator.name || '').trim().toLowerCase()] || 0);
+        var platform = chooseScheduledPlatform(creator, recent);
+        rows.push({
+          creator_id: creator.id,
+          creator_name: creator.name,
+          title: 'Scheduled watch window: ' + creator.name,
+          platform: platform,
+          category: scheduledCategory(creator),
+          country: creator.country || 'Africa',
+          stream_date: dateIso,
+          url: chooseScheduledUrl(creator, platform),
+          viewer_count: 0,
+          is_live: false,
+          is_published: true
+        });
+      }
+    }
+
+    if (rows.length) {
+      await sb('POST', 'as_streams', rows);
+      results.created = rows.length;
+      results.first_created = rows[0].stream_date;
+      results.last_created = rows[rows.length - 1].stream_date;
+    }
+  } catch (e) {
+    results.errors.push('Forward schedule top-up: ' + e.message);
+  }
+
+  return results;
+}
+
 async function computeScores() {
   var results = { scored: 0, snapshots: 0, errors: [] };
 
@@ -902,11 +1048,14 @@ async function runManualSync(options) {
       scoreResults.rpc_error = rpcError.message;
     }
 
+    var scheduleResults = await ensureForwardStreamSchedule();
+
     var syncResults = {
       twitch: twitchResults,
       kick: kickResults,
       youtube: youtubeResults,
-      scoring: scoreResults
+      scoring: scoreResults,
+      schedule: scheduleResults
     };
 
     var snapshotCount = snapshotCountFromScoring(scoreResults);
@@ -944,8 +1093,9 @@ async function runScheduledSnapshotRefresh() {
 
   try {
     var scoreResults = await refreshSnapshotsViaRpc();
+    var scheduleResults = await ensureForwardStreamSchedule();
     var snapshotCount = snapshotCountFromScoring(scoreResults);
-    var errors = summarizeErrors({ scoring: scoreResults }).slice(0, 12);
+    var errors = summarizeErrors({ scoring: scoreResults, schedule: scheduleResults }).slice(0, 12);
 
     await recordScraperRun(
       'afrostream-sync',
@@ -958,6 +1108,7 @@ async function runScheduledSnapshotRefresh() {
 
     return {
       scoring: scoreResults,
+      schedule: scheduleResults,
       snapshots: snapshotCount
     };
   } catch (e) {

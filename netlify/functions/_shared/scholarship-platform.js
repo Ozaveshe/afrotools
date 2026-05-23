@@ -121,6 +121,109 @@ function normalizeJsonArray(value) {
   return Array.isArray(value) ? value.filter(function (item) { return item && typeof item === 'object'; }) : [];
 }
 
+function detailList(values) {
+  return uniqueStrings(values).join(', ');
+}
+
+function buildScholarshipDetailsPayload(record) {
+  const awardValue = firstDefined(record.award_value_text, record.award_value_amount, record.award_value_max, record.award_value_min);
+  const eligible = detailList(record.eligible_countries && record.eligible_countries.length ? record.eligible_countries : record.eligible_origins);
+  const levels = detailList(record.study_levels);
+  const fields = detailList(record.fields);
+  const destinations = detailList(record.destination_countries);
+  const checkedAt = firstDefined(record.last_checked_at, record.verified_at, record.last_verified_at, record.last_seen_at);
+
+  return normalizeJsonObject({
+    version: 1,
+    generated_at: new Date().toISOString(),
+    overview: record.summary || 'Open the official provider page to confirm this scholarship cycle, eligibility, funding coverage, and application steps.',
+    key_facts: {
+      provider: record.provider || '',
+      study_levels: ensureArray(record.study_levels),
+      eligible_countries: ensureArray(record.eligible_countries && record.eligible_countries.length ? record.eligible_countries : record.eligible_origins),
+      destination_countries: ensureArray(record.destination_countries),
+      fields: ensureArray(record.fields),
+      funding_type: record.funding_type || '',
+      award_value_amount: firstDefined(record.award_value_amount, record.award_value_max, record.award_value_min),
+      award_value_currency: record.award_value_currency || '',
+      award_value_usd: record.award_value_usd || null,
+      local_value_amount: record.local_value_amount || null,
+      local_value_currency: record.local_value_currency || '',
+      award_value_text: record.award_value_text || '',
+      award_components: normalizeJsonArray(record.award_components),
+      deadline_date: record.deadline_date || null,
+      deadline_text: record.deadline_text || '',
+      deadline_status: record.deadline_status || '',
+      status: record.status || ''
+    },
+    sections: [
+      {
+        heading: 'What this scholarship covers',
+        items: [
+          record.funding_type ? 'Funding type: ' + record.funding_type + '.' : '',
+          awardValue ? 'Source value note: ' + String(awardValue) + (record.award_value_currency ? ' ' + record.award_value_currency : '') + '.' : '',
+          normalizeJsonArray(record.award_components).length ? 'The stored source record includes component-level award details.' : ''
+        ].filter(Boolean)
+      },
+      {
+        heading: 'Eligibility snapshot',
+        items: [
+          eligible ? 'Eligible countries/origins: ' + eligible + '.' : '',
+          levels ? 'Study level: ' + levels + '.' : '',
+          fields ? 'Field area: ' + fields + '.' : '',
+          destinations ? 'Destination: ' + destinations + '.' : '',
+          record.min_gpa ? 'Minimum GPA signal in AfroTools profile matching: ' + record.min_gpa + ' on a 4.0-style scale.' : '',
+          record.min_ielts ? 'English-test signal in AfroTools profile matching: IELTS ' + record.min_ielts + ' or equivalent where the provider requires it.' : ''
+        ].filter(Boolean)
+      },
+      {
+        heading: 'Deadline and cycle',
+        items: [
+          record.deadline_date ? 'Published deadline: ' + record.deadline_date + '.' : '',
+          record.deadline_status === 'rolling' || record.deadline_status === 'varies'
+            ? 'Deadline status: ' + record.deadline_status + '. Confirm the exact programme, country, or intake window on the official provider page.'
+            : '',
+          record.deadline_text || ''
+        ].filter(Boolean)
+      },
+      {
+        heading: 'Application checklist',
+        items: [
+          'Open the official provider page and confirm the current cycle before starting.',
+          'Check your country, study level, programme, field, GPA, language-test, and funding eligibility.',
+          'Prepare transcripts, certificates, passport or national ID details, CV or resume, references, and personal statement or research proposal where requested.',
+          'Submit only through the official provider, university, foundation, embassy, government, or approved application portal.'
+        ]
+      },
+      {
+        heading: 'Source verification',
+        items: [
+          record.official_url ? 'Official page: ' + record.official_url : '',
+          record.source_url && record.source_url !== record.official_url ? 'Source page: ' + record.source_url : '',
+          record.source_type ? 'Source type: ' + record.source_type + '.' : '',
+          record.source_confidence != null ? 'Source confidence: ' + record.source_confidence + '/100.' : '',
+          checkedAt ? 'Last checked: ' + String(checkedAt).slice(0, 10) + '.' : ''
+        ].filter(Boolean)
+      }
+    ],
+    source: {
+      official_url: record.official_url || '',
+      source_url: record.source_url || '',
+      source_type: record.source_type || '',
+      source_confidence: record.source_confidence || null,
+      freshness_score: record.freshness_score || null,
+      last_checked_at: checkedAt || null,
+      proof_level: record.proof_level || ''
+    },
+    audit: {
+      detail_quality: 'structured_from_verified_fields',
+      review_status: record.review_status || '',
+      last_source_id: record.last_source_id || null,
+      note: 'Details are generated from the verified scholarship row and source snapshot. Students should always confirm the current cycle on the official provider page.'
+    }
+  }, {});
+}
+
 function parseMoneyString(value) {
   const text = String(value || '').replace(/\u00a0/g, ' ').trim();
   if (!text) return null;
@@ -528,6 +631,19 @@ function buildLegacyScholarship(row) {
     funding_type: row.funding_type || '',
     description: row.summary || snapshot.description || snapshot.summary || '',
     summary: row.summary || snapshot.description || '',
+    details: normalizeJsonObject(row.details || snapshot.details, {}),
+    award_value_min: row.award_value_min != null ? row.award_value_min : null,
+    award_value_max: row.award_value_max != null ? row.award_value_max : null,
+    award_value_amount: row.award_value_amount != null ? row.award_value_amount : null,
+    award_value_currency: row.award_value_currency || '',
+    award_value_period: row.award_value_period || '',
+    award_value_text: row.award_value_text || '',
+    award_components: normalizeJsonArray(row.award_components),
+    award_value_confidence: row.award_value_confidence || '',
+    award_value_source_url: row.award_value_source_url || '',
+    award_value_usd: row.award_value_usd != null ? row.award_value_usd : null,
+    local_value_amount: row.local_value_amount != null ? row.local_value_amount : null,
+    local_value_currency: row.local_value_currency || '',
     min_gpa_4: snapshot.min_gpa_4 != null ? snapshot.min_gpa_4 : row.min_gpa,
     min_gpa_5: snapshot.min_gpa_5 != null ? snapshot.min_gpa_5 : null,
     min_ielts: row.min_ielts != null ? row.min_ielts : toNumber(snapshot.min_ielts),
@@ -544,7 +660,13 @@ function buildLegacyScholarship(row) {
     deadline_checked_urls: Array.isArray(snapshot.deadline_checked_urls) ? snapshot.deadline_checked_urls : [],
     status: row.status,
     confidence_mode: row.confidence_mode,
+    source_confidence: row.source_confidence != null ? row.source_confidence : null,
+    freshness_score: row.freshness_score != null ? row.freshness_score : null,
+    review_status: row.review_status || '',
     proof_level: row.proof_level,
+    published_at: row.published_at || null,
+    verified_at: row.verified_at || null,
+    last_checked_at: row.last_checked_at || null,
     last_seen_at: row.last_seen_at,
     last_verified_at: row.last_verified_at,
     is_featured: !!row.is_featured
@@ -805,6 +927,7 @@ function normalizeScholarshipRecord(raw, source) {
   const officialUrl = String(raw.official_url || raw.info_url || raw.application_url || raw.source_url || '').trim();
   const sourceUrl = String(raw.source_url || raw.application_url || raw.info_url || officialUrl).trim();
   if (!sourceUrl) return null;
+  const award = normalizeAwardValue(raw, sourceUrl);
   const slug = slugify(raw.slug || title + '-' + (raw.provider || raw.destination || raw.country || 'scholarship'));
   const deadlineOverride = getScholarshipDeadlineOverride(slug);
   const deadlineDate = parseDeadlineDate((deadlineOverride && deadlineOverride.deadline_date) || raw.deadline_date || raw.deadlineDate);
@@ -813,6 +936,9 @@ function normalizeScholarshipRecord(raw, source) {
     ? 'variable'
     : normalizeDeadlineStatus((deadlineOverride && deadlineOverride.status) || raw.status, deadlineDate);
   const databaseStatus = status === 'variable' ? 'unclear' : status;
+  const studyLevels = uniqueStrings(raw.study_levels || raw.levels);
+  const deadlineStatus = deadlineDate ? 'dated' : (status === 'variable' ? 'varies' : (status === 'rolling' ? 'rolling' : null));
+  const checkedAt = new Date().toISOString();
   const sourceSnapshot = Object.assign({}, raw, {
     source_key: source.source_key || '',
     source_type: source.source_type || '',
@@ -837,7 +963,7 @@ function normalizeScholarshipRecord(raw, source) {
     sourceSnapshot.deadline_status = status;
   }
 
-  return {
+  const record = {
     slug: slug,
     title: title,
     provider: String(raw.provider || '').trim(),
@@ -845,26 +971,55 @@ function normalizeScholarshipRecord(raw, source) {
     official_url: officialUrl || null,
     destination_countries: uniqueStrings(raw.destination_countries || raw.destinations),
     eligible_origins: uniqueStrings(raw.eligible_origins || ['Africa']),
-    study_levels: uniqueStrings(raw.study_levels || raw.levels),
+    eligible_countries: uniqueStrings(raw.eligible_countries || raw.eligible_origins || ['Africa']),
+    study_levels: studyLevels,
+    level: studyLevels[0] || null,
     fields: uniqueStrings(raw.fields || ['any']),
     funding_type: String(raw.funding_type || raw.funding || '').trim() || null,
+    award_value_min: award.min,
+    award_value_max: award.max,
+    award_value_amount: firstDefined(raw.award_value_amount, raw.awardValueAmount, award.max, award.min),
+    award_value_currency: award.currency || null,
+    award_value_period: award.period || null,
+    award_value_text: award.text || null,
+    award_components: award.components,
+    award_value_confidence: award.confidence,
+    award_value_source_url: award.sourceUrl,
+    award_value_last_checked_at: award.checkedAt || null,
     min_gpa: minGpa4 != null ? minGpa4 : (minGpa5 != null ? Number((minGpa5 * 0.8).toFixed(2)) : null),
     min_ielts: toNumber(raw.min_ielts),
     deadline_date: deadlineDate,
     deadline_text: String((deadlineOverride && deadlineOverride.deadline_text) || raw.deadline_text || '').trim() || null,
+    deadline_status: deadlineStatus,
     status: databaseStatus,
     confidence_mode: confidenceMode,
     proof_level: String(deadlineOverride
       ? (getDeadlineOverrideConfidence(deadlineOverride) === 'verified' ? 'official_deadline_manual_review' : 'official_deadline_no_single_public_date')
       : (raw.proof_level || (officialUrl ? 'official_link' : 'source_link'))).trim(),
     summary: summary || null,
-    last_seen_at: new Date().toISOString(),
-    last_verified_at: new Date().toISOString(),
+    source_type: String(raw.source_type || (officialUrl ? 'official' : 'trusted_aggregator')).trim(),
+    source_confidence: toNumber(raw.source_confidence) || (officialUrl ? 88 : 60),
+    freshness_score: toNumber(raw.freshness_score) || (deadlineDate ? 90 : 78),
+    review_status: raw.review_status || (officialUrl ? 'approved' : 'pending'),
+    published_at: raw.published_at || raw.created_at || checkedAt,
+    verified_at: raw.verified_at || checkedAt,
+    last_checked_at: raw.last_checked_at || checkedAt,
+    last_seen_at: checkedAt,
+    last_verified_at: checkedAt,
     is_featured: !!raw.is_featured,
     is_active: raw.is_active === false ? false : true,
     raw_snapshot: sourceSnapshot,
     last_source_id: source.id
   };
+
+  const details = normalizeJsonObject(raw.details, null);
+  if (details && Object.keys(details).length) {
+    record.details = details;
+  } else {
+    record.details = buildScholarshipDetailsPayload(record);
+  }
+
+  return record;
 }
 
 async function importSourceItems(client, source, rawItems) {

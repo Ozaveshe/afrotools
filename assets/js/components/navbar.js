@@ -1007,7 +1007,7 @@
       href: '/transport/', color: '#fef3c7', accent: '#d97706',
       tools: [
         { label: 'Fuel Cost per Trip Calculator', href: '/tools/fuel-cost/', emoji: '⛽', badge: 'LIVE' },
-        { label: 'Vehicle Import Duty Calculator', href: '/tools/vehicle-import-duty/', emoji: '🚗', badge: 'LIVE' },
+        { label: 'Import Duty & Landed Cost Calculator', href: '/tools/import-duty/', emoji: 'BOX', badge: 'LIVE' },
         { label: 'Ride-Hailing Fare Estimator', href: '/tools/ride-fare/', emoji: '🛺', badge: 'LIVE' },
         { label: 'Boda-Boda/Okada Income Calc', href: '/tools/boda-income/', emoji: '🏍️', badge: 'LIVE' },
         { label: 'Matatu/Danfo Route Fare Calc', href: '/tools/matatu-fare/', emoji: '🚌', badge: 'LIVE' },
@@ -3976,7 +3976,7 @@
         "hajj-budget": { name: "Bajeti ya Hajj na Umrah", desc: "Panga akiba ya Hajj au Umrah kwa kifurushi, nauli ya ndege, visa, chakula, usafiri na akiba ya dharura.", href: "/sw/zana/bajeti-ya-hajj-na-umrah/", category: "religious-cultural", lang: 'sw' },
         "zakat-calculator": { name: "Kikokotoo cha Zakat (Zaka)", desc: "Kokotoa zakat ya fedha, dhahabu, biashara na madeni kwa kupanga nisab. Tumia kama makadirio, si fatwa au uamuzi rasmi.", href: "/sw/zana/kikokotoo-zakat/", category: "religious-cultural", lang: 'sw' },
         "vat-calculator": { name: "Kikokotoo cha VAT Afrika | Nchi 54", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa nchi zote 54 za Afrika na uunganishe matokeo na ankara, TIN na usajili wa biashara.", href: "/sw/zana/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "vehicle-import-duty": { name: "Ushuru wa Kuagiza Gari Afrika", desc: "Kadiria duty, VAT, excise na levies za kuagiza gari. Thibitisha viwango na mamlaka ya forodha kabla ya kununua.", href: "/sw/zana/ushuru-kuagiza-gari/", category: "ecommerce", lang: 'sw' },
+        "sw-ushuru-kuagiza-gari": { name: "Ushuru wa Kuagiza Gari Afrika", desc: "Kadiria duty, VAT, excise na levies za kuagiza gari. Thibitisha viwango na mamlaka ya forodha kabla ya kununua.", href: "/sw/zana/ushuru-kuagiza-gari/", category: "ecommerce", lang: 'sw' },
         "vehicle-registration": { name: "Usajili na Nyaraka za Gari", desc: "Kagua renewal, road tax, inspection, plates, insurance proof na nyaraka za gari. Thibitisha na mamlaka ya usajili.", href: "/sw/zana/usajili-na-nyaraka-za-gari/", category: "ecommerce", lang: 'sw' },
         "vehicle-tracker-roi": { name: "Faida ya Tracker ya Gari", desc: "Kadiria ROI ya GPS tracker kwa fuel savings, insurance discount, theft recovery risk, subscription na installation cost.", href: "/sw/zana/faida-ya-tracker-ya-gari/", category: "ecommerce", lang: 'sw' },
         "voter-registration": { name: "Usajili wa Mpiga Kura Afrika | INEC, IEBC, IEC na Status", desc: "Mwongozo wa Kiswahili wa usajili wa mpiga kura, eligibility, ID, commission, portal na status kwa nchi kadhaa za Afrika.", href: "/sw/zana/usajili-wa-mpiga-kura/", category: "ecommerce", lang: 'sw' },

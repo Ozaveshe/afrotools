@@ -148,7 +148,7 @@ IMAGES = [
     (97,  "landed-cost",              "Landed Cost Calculator"),
     (98,  "incoterms-calculator",     "Incoterms Calculator"),
     (99,  "mini-importation",         "Mini Importation Calculator"),
-    (100, "vehicle-import-duty",      "Vehicle Import Duty Calculator"),
+    (100, "import-duty",              "Import Duty & Landed Cost Calculator"),
     (101, "customs-time",             "Customs Clearance Time Estimator"),
     (102, "demurrage-calculator",     "Demurrage Cost Calculator"),
     (103, "shipping-estimator",       "Shipping Cost Estimator"),

@@ -18,7 +18,7 @@
 - Existing currency/FX seed source at `/data/forex/latest.json`.
 - Existing save-to-account path via `AfroHistory` and `<save-result-button>`.
 - Existing CSV/PDF/print/share patterns, with a PDF fallback to `window.print`.
-- Existing transport ecosystem links: import duty, vehicle import duty, currency converter, delivery cost, insurance, and loan tools.
+- Existing transport ecosystem links: import duty and landed cost, currency converter, delivery cost, insurance, and loan tools.
 
 ## What was added
 

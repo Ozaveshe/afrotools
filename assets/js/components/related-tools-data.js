@@ -13700,19 +13700,6 @@
         "imageKey": "ride-fare"
       },
       {
-        "id": "vehicle-import-duty",
-        "name": "Vehicle Import Duty Calculator",
-        "icon": "🚗",
-        "desc": "Calculate vehicle import duty, VAT, and levies f...",
-        "href": "/tools/vehicle-import-duty/",
-        "category": "transport",
-        "lang": "en",
-        "priority": 89,
-        "estTraffic": 10000,
-        "imageExt": "webp",
-        "imageKey": "vehicle-import-duty"
-      },
-      {
         "id": "matatu-fare",
         "name": "Matatu/Danfo Route Fare Calc",
         "icon": "🚌",

@@ -134,7 +134,6 @@ assertClaim(landedFields.total, 'Estimate');
 const importDutyPage = read('tools/import-duty/index.html');
 const importDutyCarCatalog = read('assets/js/pages/import-duty-car-catalog.js');
 const landedCostPage = read('tools/landed-cost/index.html');
-const vehiclePage = read('tools/vehicle-import-duty/index.html');
 const registry = read('assets/js/components/tool-registry.js');
 const nigeriaBlog = read('blog/import-duty-nigeria-2026/index.html');
 const carMarketCoverage = JSON.parse(read('data/cars/import-duty-car-market-coverage.json'));
@@ -151,7 +150,6 @@ for (const [name, html] of [
 const claimSurfaces = [
   importDutyPage,
   landedCostPage,
-  vehiclePage,
   registry,
   nigeriaBlog
 ].join('\n');
