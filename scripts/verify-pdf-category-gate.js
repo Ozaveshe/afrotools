@@ -10,6 +10,7 @@ const workflowPath = path.join(root, 'docs/PDF-CATEGORY-WORKFLOW.md');
 
 const failures = [];
 const warnings = [];
+const localFirstSensitiveGateExemptions = new Set(['cv-builder']);
 
 function read(file) {
   return fs.readFileSync(file, 'utf8');
@@ -86,8 +87,10 @@ function verifyToolPages(tools) {
       const gateCount = (html.match(/pdf-download-gate\.js/g) || []).length;
       const modalCount = (html.match(/<email-gate-modal/g) || []).length;
       const oldGateCount = (html.match(/auto-email-gate\.js/g) || []).length;
-      if (gateCount !== 1) failures.push(`${rel(file)} should load pdf-download-gate.js exactly once, found ${gateCount}.`);
-      if (modalCount < 1) failures.push(`${rel(file)} is missing <email-gate-modal>.`);
+      const gateExempt = localFirstSensitiveGateExemptions.has(tool.slug);
+      if (!gateExempt && gateCount !== 1) failures.push(`${rel(file)} should load pdf-download-gate.js exactly once, found ${gateCount}.`);
+      if (!gateExempt && modalCount < 1) failures.push(`${rel(file)} is missing <email-gate-modal>.`);
+      if (gateExempt && (gateCount > 0 || modalCount > 0)) failures.push(`${rel(file)} is local-first and should not load the PDF/email gate.`);
       if (oldGateCount > 0) failures.push(`${rel(file)} still loads auto-email-gate.js.`);
       [...html.matchAll(/["'](\/assets\/vendor\/[^"']+)["']/g)].forEach((match) => {
         const cleanRef = match[1].split('?')[0].split('#')[0];

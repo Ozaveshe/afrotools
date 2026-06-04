@@ -54,6 +54,24 @@ function startServer() {
   });
 }
 
+function assertNoSensitiveAnalytics(payloads) {
+  const serialized = JSON.stringify(payloads || []);
+  const forbidden = [
+    'Parser Candidate',
+    'parser.candidate@example.com',
+    '08012345678',
+    'linkedin.com/in/parser-candidate',
+    'parser.example.com',
+    'AfroTools QA Lab',
+    'Built weekly reporting dashboards',
+    'Cleaned spreadsheet data'
+  ];
+  const leaked = forbidden.filter((token) => serialized.includes(token));
+  if (leaked.length) {
+    throw new Error(`Analytics payload leaked sensitive fixture content: ${leaked.join(', ')}`);
+  }
+}
+
 async function verify() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const server = await startServer();
@@ -64,6 +82,7 @@ async function verify() {
 
   try {
     const context = await browser.newContext({ acceptDownloads: true, viewport: { width: 1366, height: 768 } });
+    await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: `http://127.0.0.1:${PORT}` }).catch(() => {});
     const page = await context.newPage();
     page.on('console', (msg) => {
       if (msg.type() === 'error') desktopErrors.push(msg.text());
@@ -78,12 +97,55 @@ async function verify() {
     );
     if (!hasAtsFixScript) throw new Error('CV ATS Plain PDF fix script is not loaded on the page');
     await page.waitForFunction(() => window.CVApp && window.CVApp.updateData && window.CVExportUpgrade && window.CVExportAtsPlainPdf);
+    const gateSurface = await page.evaluate(() => ({
+      emailGateModal: Boolean(document.querySelector('email-gate-modal')),
+      pdfGateScript: Array.from(document.scripts).some((script) => /pdf-download-gate\.js/.test(script.src || '')),
+      cvLeadForm: Boolean(document.querySelector('form[name="cv-leads"]')),
+      pdfGateKeys: ['afrotools-email-gate', 'afrotools_lead_email'].filter((key) => {
+        try { return localStorage.getItem(key); } catch (err) { return false; }
+      })
+    }));
+    if (gateSurface.emailGateModal || gateSurface.pdfGateScript || gateSurface.cvLeadForm || gateSurface.pdfGateKeys.length) {
+      throw new Error(`Primary PDF export still has a lead/account gate surface: ${JSON.stringify(gateSurface)}`);
+    }
+    const toolbarActions = await page.evaluate(() => ['pdf'].map((action) => {
+      const el = document.querySelector(`.cv-toolbar-right [data-action="${action}"]`);
+      const rect = el ? el.getBoundingClientRect() : { width: 0, height: 0 };
+      const style = el ? window.getComputedStyle(el) : null;
+      return {
+        action,
+        present: Boolean(el),
+        visible: Boolean(el && rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden')
+      };
+    }));
+    const hiddenActions = toolbarActions.filter((item) => !item.present || !item.visible);
+    if (hiddenActions.length) {
+      throw new Error(`Hidden toolbar actions detected: ${JSON.stringify(hiddenActions)}`);
+    }
+    await page.locator('.cv-more-toggle').click();
+    const secondaryActions = await page.evaluate(() => ['save', 'print', 'import', 'ats', 'coverletter', 'history'].map((action) => {
+      const el = document.querySelector(`.cv-more-menu [data-action="${action}"]`);
+      const rect = el ? el.getBoundingClientRect() : { width: 0, height: 0 };
+      const style = el ? window.getComputedStyle(el) : null;
+      return {
+        action,
+        present: Boolean(el),
+        visible: Boolean(el && rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden')
+      };
+    }));
+    const inaccessibleSecondary = secondaryActions.filter((item) => !item.present || !item.visible);
+    if (inaccessibleSecondary.length) {
+      throw new Error(`Secondary toolbar actions are not accessible from More: ${JSON.stringify(inaccessibleSecondary)}`);
+    }
+    await page.keyboard.press('Escape');
     await page.evaluate(() => {
       window.CVApp.updateData('fn', 'Parser');
       window.CVApp.updateData('ln', 'Candidate');
       window.CVApp.updateData('email', 'parser.candidate@example.com');
       window.CVApp.updateData('phone', '08012345678');
       window.CVApp.updateData('loc', 'Lagos, Nigeria');
+      window.CVApp.updateData('linkedin', 'https://linkedin.com/in/parser-candidate');
+      window.CVApp.updateData('web', 'https://parser.example.com');
       window.CVApp.updateData('title', 'Data Analyst');
       window.CVApp.updateData('summary', 'Entry-level data analyst with strong Excel, SQL, dashboard reporting, and business analysis skills. Interested in roles that use evidence, clean reporting, and practical problem solving.');
       window.CVApp.updateData('exps', [{
@@ -115,6 +177,27 @@ async function verify() {
     });
     await page.locator('[data-export-role]').fill('Data Analyst').catch(() => {});
 
+    const selectedTemplate = await page.evaluate(() => {
+      const select = document.querySelector('.cv-workspace-template-select');
+      if (select) {
+        select.value = 'nairobi-tech';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      } else if (window.CVApp && window.CVApp.setTopState) {
+        window.CVApp.setTopState('template', 'nairobi-tech');
+        window.CVApp.renderAll();
+      }
+      return window.CVApp.getState().template;
+    });
+    if (selectedTemplate !== 'nairobi-tech') throw new Error(`Template switching failed, got ${selectedTemplate}`);
+
+    const toolbarDownloadPromise = page.waitForEvent('download');
+    await page.locator('.cv-toolbar-right [data-action="pdf"]').click();
+    const toolbarDownload = await toolbarDownloadPromise;
+    const normalPath = path.join(OUT_DIR, toolbarDownload.suggestedFilename());
+    await toolbarDownload.saveAs(normalPath);
+    const normalBytes = fs.statSync(normalPath).size;
+    if (normalBytes < 1000) throw new Error('Primary toolbar PDF export produced an unexpectedly small file');
+
     const downloadPromise = page.waitForEvent('download');
     await page.evaluate(() => window.CVExportAtsPlainPdf.exportAtsPdf(window.CVExportUpgrade.buildAtsPlainText()));
     const download = await downloadPromise;
@@ -129,13 +212,109 @@ async function verify() {
     const missing = required.filter((token) => !normalized.includes(token));
     if (missing.length) throw new Error(`ATS Plain PDF missing parsed text: ${missing.join(', ')}`);
 
-    const normalDownload = page.waitForEvent('download');
-    await page.evaluate(() => window.CVExportPdfQuality.exportPdf());
-    const normal = await normalDownload;
-    const normalPath = path.join(OUT_DIR, normal.suggestedFilename());
-    await normal.saveAs(normalPath);
-    const normalBytes = fs.statSync(normalPath).size;
-    if (normalBytes < 1000) throw new Error('Normal designed PDF export produced an unexpectedly small file');
+    const txtDownloadPromise = page.waitForEvent('download');
+    await page.evaluate(() => window.CVExportUpgrade.exportText(window.CVExportUpgrade.buildAtsPlainText()));
+    const txtDownload = await txtDownloadPromise;
+    const txtPath = path.join(OUT_DIR, txtDownload.suggestedFilename());
+    await txtDownload.saveAs(txtPath);
+    const txt = fs.readFileSync(txtPath, 'utf8');
+    if (!txt.includes('Parser Candidate') || !txt.includes('parser.candidate@example.com') || !txt.includes('PROFESSIONAL SUMMARY')) {
+      throw new Error('ATS TXT export is missing required plain-text content');
+    }
+
+    const jsonDownloadPromise = page.waitForEvent('download');
+    await page.evaluate(() => window.CVExportUpgrade.exportJson());
+    const jsonDownload = await jsonDownloadPromise;
+    const jsonPath = path.join(OUT_DIR, jsonDownload.suggestedFilename());
+    await jsonDownload.saveAs(jsonPath);
+    const backup = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    if (!backup || backup.source !== 'afrotools-cv-builder' || backup.data.email !== 'parser.candidate@example.com') {
+      throw new Error('JSON backup export did not preserve the CV data for restore');
+    }
+
+    const copyResult = await page.evaluate(async () => {
+      window.CVExportUpgrade.openAtsModal();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      document.querySelector('[data-export-copy-ats]').click();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      try {
+        return { ok: true, text: await navigator.clipboard.readText() };
+      } catch (err) {
+        const textarea = document.querySelector('[data-export-ats-text]');
+        return { ok: false, text: textarea ? textarea.value : '', error: err.message };
+      }
+    });
+    if (!copyResult.text.includes('Parser Candidate') || !copyResult.text.includes('PROFESSIONAL SUMMARY')) {
+      throw new Error(`Copy action failed to expose ATS plain text: ${copyResult.error || 'empty clipboard'}`);
+    }
+
+    const printResult = await page.evaluate(async () => {
+      let printed = false;
+      const originalOpen = window.open;
+      window.open = function() {
+        return {
+          document: { write() {}, close() {} },
+          set onload(handler) {
+            setTimeout(handler, 0);
+          },
+          focus() {},
+          print() {
+            printed = true;
+          }
+        };
+      };
+      try {
+        window.CVExportUpgrade.printCv();
+        await new Promise((resolve) => setTimeout(resolve, 450));
+      } finally {
+        window.open = originalOpen;
+      }
+      return printed;
+    });
+    if (!printResult) throw new Error('Print action did not reach window.print');
+
+    const savedId = await page.evaluate(() => {
+      window.CVApp.saveCVToList('Parser Candidate Smoke');
+      return window.CVApp.getState().currentCVId;
+    });
+    await page.goto(`http://127.0.0.1:${PORT}/tools/cv-builder/?cv=${encodeURIComponent(savedId)}`, { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.CVApp && window.CVApp.getState && window.CVApp.getState().data.fn === 'Parser');
+    const restored = await page.evaluate(() => ({
+      fn: window.CVApp.getState().data.fn,
+      email: window.CVApp.getState().data.email,
+      savedCount: window.CVApp.getState().savedCVs.length
+    }));
+    if (restored.fn !== 'Parser' || restored.email !== 'parser.candidate@example.com' || restored.savedCount < 1) {
+      throw new Error(`Save/restore failed: ${JSON.stringify(restored)}`);
+    }
+
+    const analyticsPayloads = await page.evaluate(() => window.dataLayer || []);
+    assertNoSensitiveAnalytics(analyticsPayloads);
+    const docDocxPresent = await page.evaluate(() => Array.from(document.querySelectorAll('button, a')).some((el) => {
+      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      const download = el.getAttribute('download') || '';
+      const exportType = el.getAttribute('data-cv-export') || '';
+      return /\b(download\s+)?(docx|doc|word document)\b/i.test(text)
+        || /\.(docx|doc)\b/i.test(download)
+        || /^(docx|doc|word)$/i.test(exportType);
+    }));
+    let docExport = null;
+    if (docDocxPresent) {
+      await page.locator('[data-pack-generate-all]').click();
+      const docDownloadPromise = page.waitForEvent('download');
+      await page.locator('[data-pack-export="doc"]').click();
+      const docDownload = await docDownloadPromise;
+      const docPath = path.join(OUT_DIR, docDownload.suggestedFilename());
+      await docDownload.saveAs(docPath);
+      const docHtml = fs.readFileSync(docPath, 'utf8');
+      if (!/AFROTOOLS APPLICATION PACK/.test(docHtml) || !/Parser Candidate/.test(docHtml)) {
+        throw new Error('DOC export is present but did not contain the generated application pack content');
+      }
+      docExport = {
+        path: path.relative(ROOT, docPath).replace(/\\/g, '/'),
+        bytes: fs.statSync(docPath).size
+      };
+    }
 
     const mobileResults = [];
     for (const viewport of [{ width: 390, height: 844 }, { width: 360, height: 800 }]) {
@@ -196,6 +375,8 @@ async function verify() {
     }
     const overflowViewport = mobileResults.find((metrics) => metrics.overflowX > 0);
     if (overflowViewport) throw new Error(`Mobile horizontal overflow at ${overflowViewport.viewport}: ${overflowViewport.overflowX}px`);
+    const missingExportViewport = mobileResults.find((metrics) => !metrics.exportButtonVisible);
+    if (missingExportViewport) throw new Error(`Mobile export controls were not visible at ${missingExportViewport.viewport}`);
     const smallFontViewport = mobileResults.find((metrics) => metrics.minControlFontSize !== null && metrics.minControlFontSize < 16);
     if (smallFontViewport) {
       throw new Error(`Mobile control font below 16px at ${smallFontViewport.viewport}: ${smallFontViewport.minControlFontSize}px`);
@@ -209,6 +390,10 @@ async function verify() {
       status: 'pass',
       url: `http://127.0.0.1:${PORT}/tools/cv-builder/`,
       hasAtsFixScript,
+      noGateSurface: gateSurface,
+      toolbarActions,
+      secondaryActions,
+      templateSwitch: selectedTemplate,
       atsPlainPdf: {
         path: path.relative(ROOT, pdfPath).replace(/\\/g, '/'),
         bytes: data.length,
@@ -219,6 +404,24 @@ async function verify() {
       normalPdf: {
         path: path.relative(ROOT, normalPath).replace(/\\/g, '/'),
         bytes: normalBytes
+      },
+      atsText: {
+        path: path.relative(ROOT, txtPath).replace(/\\/g, '/'),
+        bytes: Buffer.byteLength(txt, 'utf8'),
+        copyVerified: Boolean(copyResult.text.includes('Parser Candidate'))
+      },
+      jsonBackup: {
+        path: path.relative(ROOT, jsonPath).replace(/\\/g, '/'),
+        bytes: fs.statSync(jsonPath).size,
+        restoreVerified: true,
+        savedCount: restored.savedCount
+      },
+      printVerified: true,
+      docDocxPresent,
+      docExport,
+      analytics: {
+        eventCount: Array.isArray(analyticsPayloads) ? analyticsPayloads.length : 0,
+        sensitivePayloadLeak: false
       },
       mobile: mobileResults,
       consoleErrors: []
