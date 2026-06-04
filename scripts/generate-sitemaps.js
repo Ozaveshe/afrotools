@@ -73,10 +73,17 @@ function readXmlLastmods(filePath, blockTag) {
 function readExistingUrlLastmods() {
   const entries = new Map();
   for (const name of fs.readdirSync(ROOT)) {
-    if (!/^sitemap.*\.xml$/i.test(name) || name === 'sitemap-index.xml') continue;
+    if (
+      !/^sitemap.*\.xml$/i.test(name) ||
+      name === 'sitemap-index.xml' ||
+      name === 'sitemap.xml' ||
+      name === 'sitemap-i18n.xml'
+    ) {
+      continue;
+    }
 
     for (const [loc, lastmod] of readXmlLastmods(path.join(ROOT, name), 'url')) {
-      entries.set(loc, lastmod);
+      if (!entries.has(loc)) entries.set(loc, lastmod);
     }
   }
 
@@ -319,10 +326,15 @@ function dedupeEntries(entries) {
   return [...byUrl.values()];
 }
 
+function compareStableString(left, right) {
+  if (left === right) return 0;
+  return left < right ? -1 : 1;
+}
+
 // Deduplicate and sort URLs within each group
 for (const cat of Object.keys(groups)) {
   groups[cat] = dedupeEntries(groups[cat]);
-  groups[cat].sort((a, b) => a.url.localeCompare(b.url));
+  groups[cat].sort((a, b) => compareStableString(a.url, b.url));
 }
 
 // Write sub-sitemaps
