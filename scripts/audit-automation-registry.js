@@ -6,7 +6,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'data', 'automation', 'automation-registry.json');
 const PUBLIC_CLAIM_REGISTRY_PATH = path.join(ROOT, 'data', 'audits', 'public-claim-registry.json');
-const AUTOMATION_REPORT_PATH = path.join(ROOT, 'reports', 'automation-run-report-2026-05-15-to-2026-05-19.md');
+const REPORTS_DIR = path.join(ROOT, 'reports');
 const CODEX_AUTOMATIONS_DIR = 'C:/Users/Oza/.codex/automations';
 
 const REQUIRED_FIELDS = [
@@ -102,8 +102,9 @@ function parseGithubWorkflows() {
 
 function parseCodexAutomationDefinitions() {
   const definitions = new Set();
+  const statuses = new Map();
   if (!fs.existsSync(CODEX_AUTOMATIONS_DIR)) {
-    return { available: false, definitions };
+    return { available: false, definitions, statuses };
   }
 
   for (const entry of fs.readdirSync(CODEX_AUTOMATIONS_DIR, { withFileTypes: true })) {
@@ -112,18 +113,32 @@ function parseCodexAutomationDefinitions() {
     if (!fs.existsSync(tomlPath)) continue;
     const text = readText(tomlPath);
     const id = (text.match(/^id\s*=\s*"([^"]+)"/m) || [null, entry.name])[1];
+    const status = (text.match(/^status\s*=\s*"([^"]+)"/m) || [null, 'UNKNOWN'])[1];
     definitions.add(id);
+    statuses.set(id, status);
   }
 
-  return { available: true, definitions };
+  return { available: true, definitions, statuses };
+}
+
+function findLatestAutomationReport() {
+  if (!fs.existsSync(REPORTS_DIR)) return null;
+  const reportNames = fs
+    .readdirSync(REPORTS_DIR)
+    .filter((fileName) => /^automation-run-report-\d{4}-\d{2}-\d{2}-to-\d{4}-\d{2}-\d{2}\.md$/.test(fileName))
+    .sort();
+
+  if (reportNames.length === 0) return null;
+  return path.join(REPORTS_DIR, reportNames[reportNames.length - 1]);
 }
 
 function parseAutomationRunReport() {
-  if (!fs.existsSync(AUTOMATION_REPORT_PATH)) {
-    return { available: false, seen: new Set(), noRun: new Set(), statuses: new Map() };
+  const reportPath = findLatestAutomationReport();
+  if (!reportPath) {
+    return { available: false, path: null, seen: new Set(), noRun: new Set(), statuses: new Map() };
   }
 
-  const text = readText(AUTOMATION_REPORT_PATH);
+  const text = readText(reportPath);
   const seen = new Set();
   const noRun = new Set();
   const statuses = new Map();
@@ -134,11 +149,11 @@ function parseAutomationRunReport() {
     const statusText = match[3] || '';
     seen.add(id);
     if (runCount === 0) noRun.add(id);
-    if (/interrupted/i.test(statusText)) statuses.set(id, 'interrupted');
-    if (/in progress/i.test(statusText)) statuses.set(id, 'in progress');
+    const nonCompletedStatus = statusText.match(/\b(interrupted|in progress|incomplete|blocked|failed)\b/i);
+    if (nonCompletedStatus) statuses.set(id, nonCompletedStatus[1].toLowerCase());
   }
 
-  const noRunSection = text.match(/## No-Run Active Automation IDs\s+([\s\S]+)$/);
+  const noRunSection = text.match(/## No-Run Active Automation IDs\s+([\s\S]*?)(?:\n## |\s*$)/);
   if (noRunSection) {
     for (const match of noRunSection[1].matchAll(/`([^`]+)`/g)) {
       noRun.add(match[1]);
@@ -148,10 +163,10 @@ function parseAutomationRunReport() {
 
   for (const match of text.matchAll(/^- \d{4}-\d{2}-\d{2}[^\n]*?`([^`]+)` - ([^:]+):/gm)) {
     seen.add(match[1]);
-    if (/interrupted|in progress/i.test(match[2])) statuses.set(match[1], match[2].toLowerCase());
+    if (/interrupted|in progress|incomplete|blocked|failed/i.test(match[2])) statuses.set(match[1], match[2].toLowerCase());
   }
 
-  return { available: true, seen, noRun, statuses };
+  return { available: true, path: reportPath, seen, noRun, statuses };
 }
 
 function loadRegistry() {
@@ -262,12 +277,15 @@ function audit() {
       if (codexDefinitions.available && !codexDefinitions.definitions.has(codexAutomationId)) {
         warnings.push(`${record.id}: Codex automation id "${codexAutomationId}" is not present on disk.`);
       }
-      if (!runReport.available) {
-        warnings.push(`${record.id}: no recent Codex run evidence report is available.`);
-      } else if (!runReport.seen.has(codexAutomationId) || runReport.noRun.has(codexAutomationId)) {
-        warnings.push(`${record.id}: no recent Codex run evidence in the 2026-05-15 to 2026-05-19 report.`);
-      } else if (runReport.statuses.has(codexAutomationId)) {
-        warnings.push(`${record.id}: latest report includes non-completed status "${runReport.statuses.get(codexAutomationId)}".`);
+      const codexStatus = codexDefinitions.statuses.get(codexAutomationId);
+      if (codexStatus !== 'PAUSED') {
+        if (!runReport.available) {
+          warnings.push(`${record.id}: no recent Codex run evidence report is available.`);
+        } else if (!runReport.seen.has(codexAutomationId) || runReport.noRun.has(codexAutomationId)) {
+          warnings.push(`${record.id}: no recent Codex run evidence in ${path.basename(runReport.path)}.`);
+        } else if (runReport.statuses.has(codexAutomationId)) {
+          warnings.push(`${record.id}: latest report includes non-completed status "${runReport.statuses.get(codexAutomationId)}".`);
+        }
       }
     }
 
@@ -313,7 +331,7 @@ function audit() {
   console.log(`- package.json scripts parsed: ${packageScripts.size}`);
   console.log(`- GitHub workflow files parsed: ${workflows.size}`);
   console.log(`- Codex definitions available: ${codexDefinitions.available ? codexDefinitions.definitions.size : 'no direct access'}`);
-  console.log(`- Recent Codex run evidence: ${runReport.available ? path.relative(ROOT, AUTOMATION_REPORT_PATH) : 'missing'}`);
+  console.log(`- Recent Codex run evidence: ${runReport.available ? path.relative(ROOT, runReport.path) : 'missing'}`);
   console.log(`- Records by runner: ${Object.entries(runnerCounts).map(([runner, count]) => `${runner}=${count}`).join(', ')}`);
   console.log(`- Production-required by runner: ${Object.entries(productionCounts).map(([runner, count]) => `${runner}=${count}`).join(', ') || 'none'}`);
 

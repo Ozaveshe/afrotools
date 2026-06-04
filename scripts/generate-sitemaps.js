@@ -33,7 +33,8 @@ const EXCLUDE_DIRS = new Set([
 ]);
 
 const EXCLUDE_ROOT_DIRS = new Set([
-  'jamb'
+  'jamb',
+  'matchday-os'
 ]);
 
 // Files to exclude

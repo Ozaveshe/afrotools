@@ -457,6 +457,32 @@
       ]
     },
     {
+      "id": "codex:daily-blog-image-queue",
+      "display_name": "Daily Blog Image Queue",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=DAILY;BYHOUR=19;BYMINUTE=15;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "daily-blog-image-queue",
+      "sla_hours": 24,
+      "product_surface": "content_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "public.as_news",
+        "blog image assets",
+        "AfroStream image_url coverage"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Content publishing operations",
+      "severity_if_stale": "p3",
+      "validation_commands": [
+        "npm run blog:feed:check",
+        "npm run blog:verify",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
       "id": "codex:daily-bug-scan",
       "display_name": "Release Safety Sweep",
       "runner": "mixed",

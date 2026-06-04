@@ -1114,7 +1114,6 @@
       descSw: 'Uwezekano wa kubeti, AFCON, mrabaha wa muziki — nchi 54',
       href: '/sports/', color: '#fdf4ff', accent: '#9333ea',
       tools: [
-        { label: 'Matchday OS', href: '/matchday-os/', emoji: 'WC', badge: 'NEW' },
         { label: 'Betting Odds Calculator', href: '/tools/betting-odds/', emoji: '🎲', badge: 'NEW' },
         { label: 'AFCON Match Predictor', href: '/tools/afcon-predictor/', emoji: '🏆', badge: 'NEW' },
         { label: 'Fantasy Football Value Calc', href: '/tools/fantasy-football/', emoji: '⚽', badge: 'NEW' },

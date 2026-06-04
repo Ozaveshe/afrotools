@@ -22,6 +22,7 @@ The free side is close-out ready for maintenance mode after this pass, with Pro 
 - CI now includes `npm run pro:verify`.
 - Source-ledger GitHub Actions now split daily check mode from weekly refresh PR mode.
 - Daily maintenance workflow has `AFROTOOLS_DAILY_MAINTENANCE_PAUSED` as a pause switch.
+- 2026-06-04 shipping pass removes Matchday OS from public discovery, API redirects, sitemap output, and deploy artifacts while archiving its Netlify endpoint files under `ops/archived-matchday-os/` for later reuse.
 
 ## Sunset or Deferred
 

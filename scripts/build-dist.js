@@ -99,8 +99,16 @@ const BLOCKED_RELATIVE_FILES = new Set([
 ]);
 
 const BLOCKED_RELATIVE_DIRS = new Set([
-  'fr/docs'
+  'fr/docs',
+  'matchday-os',
+  'assets/img/matchday',
+  'data/matchday-os'
 ]);
+
+const BLOCKED_RELATIVE_FILE_PATTERNS = [
+  /^assets\/css\/matchday-os(?:\.min)?\.css$/i,
+  /^assets\/js\/matchday-os(?:\.min)?\.js$/i
+];
 
 const ALLOWED_ROOT_FILES = new Set([
   '404.html',
@@ -186,6 +194,7 @@ function shouldSkipDir(dirName, relativeFromRoot) {
 function shouldSkipFile(fileName, relativeFromRoot) {
   const normalizedRelative = relativeFromRoot.replace(/\\/g, '/');
   if (BLOCKED_RELATIVE_FILES.has(normalizedRelative)) return true;
+  if (BLOCKED_RELATIVE_FILE_PATTERNS.some((pattern) => pattern.test(normalizedRelative))) return true;
 
   const parts = relativeFromRoot.split(path.sep).filter(Boolean);
   if (parts.some((part) => part.startsWith('.'))) return true;
