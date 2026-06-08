@@ -14,8 +14,9 @@ const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const SITE = "https://afrotools.com";
 const WIDGETS = require("../widgets/WIDGET-REGISTRY.js");
+const { FRENCH_WIDGET_PARENT_PAGES } = require("./lib/french-widget-parent-map");
 
-const SELECTED_WIDGETS = [
+/* Previous inline widget selection moved to scripts/lib/french-widget-parent-map.js.
   {
     id: "mobile-money-fees",
     slug: "frais-mobile-money",
@@ -96,7 +97,7 @@ const SELECTED_WIDGETS = [
     primaryUse: "Pages de formation agricole, cooperatives, ONG, institutions de microfinance et guides de planification.",
     caution: "Adapter les montants localement et garder les conseils financiers detailles sur les pages completes.",
   },
-];
+*/
 
 function widgetById(id) {
   return WIDGETS.find((widget) => widget.id === id);
@@ -402,7 +403,7 @@ ${cards}
 }
 
 function main() {
-  const resolved = SELECTED_WIDGETS.map((item) => {
+  const resolved = FRENCH_WIDGET_PARENT_PAGES.map((item) => {
     const widget = widgetById(item.id);
     if (!widget) throw new Error(`Missing widget registry entry: ${item.id}`);
     if (!ensureIframeExists(widget.iframePath)) throw new Error(`Missing iframe page for ${item.id}: ${widget.iframePath}`);

@@ -88,7 +88,9 @@ exports.handler = async function(event) {
       sb('as_news?is_published=eq.true&select=published_at,updated_at&order=published_at.desc&limit=1', false),
       sb('as_news_sources?is_active=eq.true&select=name,last_checked_at,last_success_at,last_error,last_status_code,last_item_count&limit=200', false),
       sb('as_creator_supporters?is_published=eq.true&select=id,is_verified,event_date,updated_at&limit=200', true),
-      sb('scraper_runs?scraper_id=in.(afrostream-sync,afrostream-livecheck,afrostream-news-monitor)&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=120', false)
+      sb('scraper_runs?scraper_id=eq.afrostream-sync&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false),
+      sb('scraper_runs?scraper_id=eq.afrostream-livecheck&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false),
+      sb('scraper_runs?scraper_id=eq.afrostream-news-monitor&select=scraper_id,status,source,records_count,error_message,duration_ms,fetched_at&order=fetched_at.desc&limit=1', false)
     ]);
 
     var creatorCount = results[0].count;
@@ -99,7 +101,10 @@ exports.handler = async function(event) {
       : { count: 0 };
     var sources = results[9].data;
     var supporters = results[10].data;
-    var runs = results[11].data;
+    var runs = []
+      .concat(results[11].data || [])
+      .concat(results[12].data || [])
+      .concat(results[13].data || []);
     var latestLiveRun = latestRun(runs, 'afrostream-livecheck');
     var latestSyncRun = latestRun(runs, 'afrostream-sync');
     var latestNewsRun = latestRun(runs, 'afrostream-news-monitor');

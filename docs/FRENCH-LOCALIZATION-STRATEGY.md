@@ -525,7 +525,9 @@ The current French cars slice is intentionally limited to ten markets and fiftee
 
 French widget-facing pages should promote usable French tool surfaces, not iframe utility routes. `/fr/widgets/` is the French widget hub, and `/fr/widgets/demo/` may explain the technical gallery while making clear that the gallery still contains English widgets.
 
-Keep `widgets/iframe/` and any French iframe wrappers as integration utilities: `noindex, follow`, canonicalized to the full parent tool or, for templates without a parent tool, the French widgets hub. Do not put iframe utility pages in sitemap generation, registry-backed discovery, or French completion counts. A widget becomes promotable in French only when the visible tool or its parent page is usable in French.
+Curated French widget parent pages are generated from `scripts/generate-fr-widget-parent-pages.js`, with ownership data in `scripts/lib/french-widget-parent-map.js`. The French parent page is the public French surface. Its English source-of-truth may be the matching English widget iframe source for ledger accounting, but the iframe route itself is not promoted as French SEO.
+
+Keep `widgets/iframe/` and any French iframe wrappers as integration utilities: `noindex, follow`, canonicalized to the full parent tool or, for templates without a parent tool, the French widgets hub. Do not put iframe utility pages in French sitemap generation, registry-backed discovery, or French completion counts. A widget becomes promotable in French only when the visible tool or its parent page is usable in French.
 
 ## What To Prioritize First
 
@@ -1050,6 +1052,190 @@ Remaining completion blockers:
 
 Next French expansion should use durable generators or route-map/source-data updates first, then create hand-authored pages only for high-value tools with clear product ownership.
 
+## French Cars Source-Truth Repair As Of June 6, 2026
+
+The June 6 repair pass did not expand cars. It fixed source-truth classification for the existing generator-owned French cars launch pages.
+
+Current regenerated ledger after the pass:
+
+- `5,759` English source pages.
+- `1,707` French HTML pages.
+- `29.64%` raw French page-count completion.
+- `26.25%` English-backed route-mapping completion.
+- `73.12%` French registry coverage for registry-eligible French routes.
+- `0` French pages with English title, H1, or visible UI-label signals.
+- `0` duplicate French canonical groups.
+- `0` English sources mapped to multiple French routes.
+- `0` missing reciprocal hreflang pairs involving French pages.
+
+Cars-specific result:
+
+- `/fr/cars/**` French-only or unclear source-truth routes moved from `37` to `0`.
+- Cars unique mapped English sources moved from `129` to `166` in the ledger section metrics.
+- Direct generated `/fr/cars/**` routes moved from `127` to `164` unique mapped English sources.
+- Cars mapped coverage moved from `8.14%` to `10.48%`.
+
+Durable rule:
+
+- `scripts/lib/french-cars-route-map.js` owns French cars country-slug mapping.
+- The rule is `/fr/cars/<French country slug>/...` -> `/cars/<English country slug>/...`, preserving the make, model, and year path unchanged.
+- Examples include `/fr/cars/afrique-du-sud/...` -> `/cars/south-africa/...`, `/fr/cars/egypte/...` -> `/cars/egypt/...`, `/fr/cars/maroc/...` -> `/cars/morocco/...`, `/fr/cars/algerie/...` -> `/cars/algeria/...`, and `/fr/cars/tanzanie/...` -> `/cars/tanzania/...`.
+- `scripts/build-french-localization-ledger.js` must count those routes as English-backed generated output owned by `scripts/generate-fr-cars-launch-pages.js` when the English counterpart exists.
+- `scripts/build-i18n.js` must use the same route map and must not let the generic dir-style index fallback overwrite cars country pages.
+- `scripts/generate-fr-cars-launch-pages.js` validates that its country table matches the shared route map before writing pages.
+
+No cars routes were deliberately left French-only or alias in this pass. Remaining cars gaps are ordinary untranslated English catalog routes, not current French-only launch pages.
+
+## French Source-Truth Queue Audit As Of June 6, 2026
+
+This audit reduced the route queues without translating or creating new French pages. The checked-out baseline for this pass was the post-cars ledger, not the stale pre-cars queue:
+
+- French-only routes moved from `115` to `93`.
+- Unclear source-of-truth routes moved from `86` to `41`.
+- English-backed route-mapping completion moved from `26.25%` to `26.64%`.
+- Duplicate French canonical groups, duplicate English mappings, visible English UI signals, and French reciprocal hreflang gaps stayed at `0`.
+
+Source-truth rules added or confirmed:
+
+| Route family | Ledger rule | Coverage impact |
+| --- | --- | --- |
+| Clean translated tool slugs | Add to `scripts/lib/french-tool-route-map.js` only when the French page is live, usable, non-alias, and has one clear public English source route. | Counts as English-backed mapped coverage. |
+| `/fr/api/docs` and `/fr/docs/**` | Classify as `skipped docs/API source surface`. These source areas are excluded from the public English source inventory and `/fr/docs/*` is hard-404 routed in `_redirects`. | Stays out of mapped completion. |
+| `/fr/dashboard/**` and `/fr/pro/**` | Classify as skipped account, dashboard, or Pro surfaces. | Stays out of mapped completion. |
+| `/fr/404` and `/fr/offline` | Classify as `skipped noindex utility surface` even when an English candidate exists. | Stays out of mapped completion. |
+| French-only blog articles | Classify `/fr/blog/**` pages without an English counterpart as `hand-authored French blog article`. | Intentional French-only editorial, not mapped coverage. |
+| `/fr/guinee-equatoriale` | Classify as `hand-authored French country hub` until the English reciprocal/canonical owner points at the canonical French route instead of the old alias. | Future country-alias cleanup, not counted yet. |
+| Widget parents | Map only curated generator-owned French widget parent pages listed in `scripts/lib/french-widget-parent-map.js`; keep raw iframe utilities noindex and unpromoted. | Counts real French parent pages without promoting iframe utilities into French SEO. |
+| Bridge pages | Keep French comparison bridges French-only or alias unless a public English parent route exists. | Not mapped just to improve percentage. |
+
+The high-confidence tool route mappings added in this pass were developer, image, finance, education, and salary utility slugs with existing English counterparts: password, QR, hash, favicon, sitemap, robots.txt, CSS gradient, meta tags, receipt, BOQ, image resize/crop/background removal, color picker, car loan, student loan, savings goal, investment return, pension, retirement, and minimum wage.
+
+Remaining implementation queue:
+
+- `41` unclear routes remain, all in `/fr/tools/**`. These need product decisions before mapping because they include thin French shells, duplicate alias families, country-tax aliases, PDF workspace/editor ownership, localized language/culture routes, WhatsApp/tontine/market utilities, and product pages whose English counterpart is not obvious from slug or registry alone.
+- Keep `/fr/tools/contrat-location`, French WHT alias slugs, and `/fr/tools/prelevements-cedeao` out of mapped completion until canonical ownership is settled against the already mapped preferred routes.
+- Cars remain clean in this queue: `/fr/cars/**` has no French-only or unclear source-truth routes after the cars source-truth repair.
+
+## French Tools Mapping Wave As Of June 6, 2026
+
+This wave stayed inside existing French tool routes. It did not create new pages, add registry rows, translate long-tail content, or promote aliases.
+
+Reviewed pool:
+
+- `53` indexable, non-alias `/fr/tools/**` pages were reviewed from the regenerated ledger.
+- `24` were mapped because they had live, useful French pages and one clear public English `tools/**` source.
+- The rest were skipped because they were duplicate aliases, deferred PDF/workspace wrappers, thin shells, culture/language pages outside this money/trade/developer wave, or product families with unsettled canonical ownership.
+
+Current regenerated ledger after the wave:
+
+- Tools unique mapped English sources moved from `303` to `327`.
+- Tools mapped coverage moved from `12.00%` to `12.96%`.
+- Global English-backed route-mapping completion moved from `26.64%` to `27.05%`.
+- French-only routes moved from `93` to `69`.
+- Unclear source-of-truth routes moved from `41` to `26`.
+- Duplicate French canonical groups, duplicate English mappings, visible English UI signals, and French reciprocal hreflang gaps stayed at `0`.
+
+Mappings added in `scripts/lib/french-tool-route-map.js`:
+
+| French route | English source |
+| --- | --- |
+| `/fr/tools/impot-activite-secondaire` | `/tools/side-hustle-tax` |
+| `/fr/tools/impot-crypto` | `/tools/crypto-tax` |
+| `/fr/tools/ke-plus-value` | `/tools/ke-cgt` |
+| `/fr/tools/ng-impot-societes` | `/tools/ng-cit` |
+| `/fr/tools/ng-plus-value` | `/tools/ng-cgt` |
+| `/fr/tools/ng-taxe-fonciere` | `/tools/ng-land-use` |
+| `/fr/tools/prix-transfert` | `/tools/transfer-pricing` |
+| `/fr/tools/profit-forex` | `/tools/forex-profit` |
+| `/fr/tools/sur-plan-vs-pret` | `/tools/offplan-vs-ready` |
+| `/fr/tools/za-droits-mutation` | `/tools/za-transfer-duty` |
+| `/fr/tools/za-impot-dividendes` | `/tools/za-dividend-tax` |
+| `/fr/tools/za-plus-value` | `/tools/za-cgt` |
+| `/fr/tools/interet-tontine` | `/tools/ajo-interest` |
+| `/fr/tools/naira-en-lettres` | `/tools/naira-to-words` |
+| `/fr/tools/suivi-hawala` | `/tools/hawala-tracker` |
+| `/fr/tools/suivi-susu` | `/tools/susu-tracker` |
+| `/fr/tools/regles-origine-sadc` | `/tools/sadc-roo` |
+| `/fr/tools/tec-eac` | `/tools/eac-cet` |
+| `/fr/tools/generateur-htaccess` | `/tools/htaccess-gen` |
+| `/fr/tools/lien-whatsapp` | `/tools/whatsapp-link` |
+| `/fr/tools/suivi-matieres-premieres` | `/tools/commodity-tracker` |
+| `/fr/tools/revenu-boda` | `/tools/boda-income` |
+| `/fr/tools/revenu-okada` | `/tools/okada-income` |
+| `/fr/tools/jours-marche` | `/tools/market-days` |
+
+Routes deliberately skipped:
+
+- Duplicate or alias risk: `/fr/tools/contrat-location`, `/fr/tools/gh-retenue-source`, `/fr/tools/prelevements-cedeao`, `/fr/tools/planificateur-retraite`, `/fr/tools/suivi-tontine`.
+- Deferred PDF or workspace ownership: `/fr/tools/editeur-pdf`, `/fr/tools/espace-pdf`, `/fr/tools/workflow-pdf`.
+- Thin or outside-wave pages: `/fr/tools/generateur-business-plan`, `/fr/tools/outils-image`, `/fr/tools/palette-couleurs`, `/fr/tools/photo-identite`, `/fr/tools/profit-agricole`, `/fr/tools/rendement-culture`.
+- Culture/language pages left for a separate language-localization decision: `/fr/tools/francais-africain`, `/fr/tools/signification-prenoms-africains`, `/fr/tools/traducteur-*`, `/fr/tools/translitteration`.
+
+## French Registry Discovery Wave As Of June 6, 2026
+
+This wave reduced the registry-missing queue without adding weak discovery rows. It added only existing, indexable, non-alias generated PAYE/TVA pages where no semantic French route currently exists.
+
+Current regenerated ledger after the wave:
+
+- French registry entries moved from `355` to `379`.
+- French registry coverage moved from `73.12%` (`340/465`) to `78.28%` (`364/465`).
+- Missing registry-eligible French routes moved from `125` to `101`.
+- Registry entries pointing to missing French routes stayed at `0`.
+- Registry entries pointing to non-preferred French routes stayed at `0`.
+- English-backed route-mapping completion stayed at `27.05%`; this was discovery work, not new mapping.
+- Salary-tax registry coverage moved to `88.52%` (`54/61`).
+- VAT/business-tax registry coverage moved to `82.46%` (`47/57`).
+
+Rows added in `assets/js/components/tool-registry.js`:
+
+| Family | Registry ids |
+| --- | --- |
+| PAYE | `bw-paye-fr`, `er-paye-fr`, `sz-paye-fr`, `et-paye-fr`, `gm-paye-fr`, `ls-paye-fr`, `lr-paye-fr`, `ly-paye-fr`, `mw-paye-fr`, `mu-paye-fr`, `mz-paye-fr`, `na-paye-fr` |
+| TVA | `bw-tva-fr`, `er-tva-fr`, `sz-tva-fr`, `et-tva-fr`, `gm-tva-fr`, `ls-tva-fr`, `lr-tva-fr`, `ly-tva-fr`, `mw-tva-fr`, `mu-tva-fr`, `mz-tva-fr`, `na-tva-fr` |
+
+Rows deliberately skipped:
+
+- `/fr/docs/api/**` because docs/API surfaces are not public tool discovery rows.
+- `/fr/tools/africa-conflict/**` dossier pages because conflict dossier discovery needs a separate editorial/product decision.
+- `/fr/tools/editeur-pdf`, `/fr/tools/espace-pdf`, and `/fr/tools/workflow-pdf` because the French PDF rule excludes deferred workspace/editor wrappers.
+- `/fr/tools/*/app` app subroutes because discovery should prefer stable parent routes unless app ownership is explicitly settled.
+- Remaining generated PAYE/TVA routes such as Seychelles, Sierra Leone, Somalia, South Sudan, Sudan, Zambia, Zimbabwe, and Djibouti VAT were left for a later small batch rather than filling the registry in one sweep.
+- French-only or unclear tool pages without settled English mapping remain out of registry discovery.
+
+## French Widgets Ownership Wave As Of June 6, 2026
+
+This wave clarified widget ownership without promoting iframe utilities into French SEO. It did not create a broad widget translation wave and did not add registry rows for widget iframes.
+
+Current regenerated ledger after the wave:
+
+- Widget French pages stayed at `11`.
+- Real French widget parent pages stayed at `8`.
+- Widgets unique mapped English sources moved from `3` to `11`.
+- Widgets mapped coverage moved from `1.33%` to `4.89%`.
+- Global English-backed route-mapping completion moved from `27.05%` to `27.19%`.
+- French-only routes moved from `69` to `61`.
+- `223` English widget iframe pages stayed `noindex, follow` with non-iframe canonicals.
+
+Durable rule added:
+
+- `scripts/lib/french-widget-parent-map.js` is the source of truth for curated French widget parent pages.
+- `scripts/generate-fr-widget-parent-pages.js` uses that map to generate `/fr/widgets/` and the selected parent pages.
+- `scripts/build-french-localization-ledger.js` uses the same map to count only those parent pages as English-backed widget mappings.
+- Raw `widgets/iframe/**`, `/fr/widgets/iframe/**`, templates, and technical demos stay out of French registry promotion and French sitemap promotion.
+
+French widget parent pages currently selected:
+
+| French parent route | English widget source |
+| --- | --- |
+| `/fr/widgets/frais-mobile-money` | `widgets/iframe/african-mobile-money-fees` |
+| `/fr/widgets/transfert-argent` | `widgets/iframe/african-remittance-compare` |
+| `/fr/widgets/convertisseur-devises` | `widgets/iframe/financial-currency-converter` |
+| `/fr/widgets/taxe-valeur-ajoutee` | `widgets/iframe/financial-vat-calculator` |
+| `/fr/widgets/droits-douane` | `widgets/iframe/ecommerce-import-duty` |
+| `/fr/widgets/frais-facture` | `widgets/iframe/business-invoice-fee-widget` |
+| `/fr/widgets/rendement-agricole` | `widgets/iframe/agriculture-crop-yield-estimator` |
+| `/fr/widgets/budget-agricole` | `widgets/iframe/agriculture-farm-budget-estimator` |
+
 ### Education And JAMB Rule
 
 Education localization should prioritize pan-African or francophone-relevant tools first: GPA/CGPA, university comparison, scholarship and study-planning surfaces, and broad exam calculators.
@@ -1062,3 +1248,66 @@ Current decision:
 - Keep `/fr/tools/calculateur-jamb/` as a narrow French bridge for the aggregate calculator only.
 - Do not add `/fr/jamb/**` SEO pages in general French batches.
 - A future JAMB batch, if approved, should start with one French explainer hub, the aggregate calculator, and at most 5-10 highest-intent subject/year pages before expanding further.
+
+## Strict French Readiness Gate After Sets 75-83 As Of June 6, 2026
+
+This gate is measurement-first. It regenerated `reports/french-localization-ledger.json` and `reports/french-localization-ledger.md` from the current checkout, then ran the requested validation stack. No route page edits were required by validation.
+
+Measured against the June 6 baseline supplied for this gate:
+
+| Metric | June 6 baseline | Current ledger | Movement | Gate result |
+| --- | ---: | ---: | ---: | --- |
+| English source pages | `5,759` | `5,759` | `0` | Stable |
+| French pages | `1,707` | `1,707` | `0` | Stable |
+| English-backed route-mapping completion | `25.61%` | `27.19%` | `+1.58 pp` | Hit |
+| French registry coverage | `73.12%` | `78.28%` | `+5.16 pp` | Hit |
+| French-only routes | `152` | `61` | `-91` | Hit |
+| Unclear source-of-truth routes | `123` | `26` | `-97` | Hit |
+| Missing registry-eligible French routes | `125` | `101` | `-24` | Improved |
+| Visible English UI signals | target `0` | `0` | unchanged | Hit |
+| Duplicate French canonicals | target `0` | `0` | unchanged | Hit |
+| Duplicate English mappings | target `0` | `0` | unchanged | Hit |
+| French reciprocal hreflang gaps | target `0` | `0` | unchanged | Hit |
+| Registry entries pointing to missing French routes | target `0` | `0` | unchanged | Hit |
+
+Validation for this gate:
+
+- `node scripts/build-french-localization-ledger.js` passed and reported `27.19%` mapped completion, `78.28%` registry coverage, and `13` blocker categories.
+- `npm run build:i18n:validate` passed for `fr`, `sw`, `yo`, and `ha`.
+- `npm run validate:hreflang` passed with `0` errors across `20,851` hreflang pairs.
+- `npm run check-links` passed with no broken internal links across `81,065` internal links.
+- `npm run audit` passed with `2,482` registry rows and `0` missing live/new tool pages.
+- `npm run seo:report` exited successfully with `0` remaining hreflang violations and `0` `/fr/` homepage broken links. It still reported broader site maintenance debt: `2` canonical attribute fixes, `2` `og:url` attribute fixes, `216` sitemap `<lastmod>` updates, and `7` manual metadata issues.
+
+Readiness verdict:
+
+French can move into controlled category expansion. It should not move into broad long-tail translation. The source-truth gate is now healthy enough for category-owned waves because the mapped-completion target is above the `26.5%` trend line and above `27%`, registry coverage is above target, and the zero-error SEO/hreflang/link gates hold. Expansion must still stay bounded because tools, cars, widgets, and registry discovery remain uneven.
+
+Blockers resolved since the June 6 baseline:
+
+- Source-truth queues were reduced materially: French-only routes are down by `91`, and unclear routes are down by `97`.
+- Cars launch pages now use shared French-to-English country route ownership instead of falling into French-only or unclear buckets.
+- Widgets count only curated French parent pages, not iframe utilities.
+- Telecom, transport, energy, trade, and blog ownership decisions are now explicit enough to avoid accidental alias promotion.
+- Registry coverage is above target, and registry href health remains clean.
+
+Blockers still open:
+
+- `101` registry-eligible French routes are still outside registry discovery. The largest groups are non-preferred or product-decision tools, `8` conflict dossier pages, `7` generated PAYE pages, `8` generated VAT pages, and `2` docs/API VAT routes that should not be promoted as ordinary tools.
+- `26` unclear routes remain, all under `/fr/tools/**`: PDF editor/workspace wrappers, African French/language tools, name/culture utilities, image shells, CEDEAO levy ownership, tontine tracking, and translator/transliteration pages.
+- `61` French-only routes remain. Many are deliberately skipped docs/API, dashboard, Pro, offline, 404, French-only blog/editorial, bridge, or unsettled tool-owner routes.
+- `4,223` public English source pages still have no mapped French route. This is a coverage backlog, not a validation failure.
+- Section coverage remains uneven: tools are at `12.96%` mapped coverage, cars at `10.48%`, and widgets at `4.89%`.
+
+Next 10 recommended sets, based on the current ledger:
+
+1. Set 84 registry closeout for generated PAYE/TVA leftovers: add only preferred rows for Seychelles, Sierra Leone, Somalia, South Sudan, Sudan, Zambia, Zimbabwe, and Djibouti VAT where the live French route is indexable and no semantic French route exists.
+2. Set 85 unclear `/fr/tools/**` ownership audit: classify the remaining 26 unclear tools into preferred English-backed route, intentional French-only, noindex wrapper, duplicate alias, or future product decision without editing bodies.
+3. Set 86 deferred PDF French ownership decision: settle `/fr/tools/editeur-pdf`, `/fr/tools/espace-pdf`, and `/fr/tools/workflow-pdf` against the existing French PDF hub rule before any registry or sitemap promotion.
+4. Set 87 language and culture tools decision: decide whether African French, translators, transliteration, names, culture yield, and related pages deserve a French language/culture cluster or should stay out of mapped completion.
+5. Set 88 money and business tool polish wave: pick 10-15 already mapped or clearly mappable finance, tax, invoice, loan, investment, and business pages for metadata, FAQ/schema, related links, and registry proof.
+6. Set 89 trade/import expansion wave: add a small number of English-backed French pages or repairs around freight, customs, landed cost, packing, origin, and finance only where the English source is clean and the French hub needs the link.
+7. Set 90 energy and transport follow-up wave: expand only practical fuel, generator, logistics, and route-cost surfaces that do not duplicate cars, trade/import, or telecom ownership.
+8. Set 91 cars generator safety wave: add a small generator-owned cars slice only after verifying price-intelligence data, import-cost rule packs, French country slugs, estimate language, canonical, and reciprocal hreflang.
+9. Set 92 widget parent wave: select 5-8 more real French widget parent pages from high-value iframe tools, keeping raw iframes `noindex` and out of French registry promotion.
+10. Set 93 readiness re-gate: rerun the ledger and full validation after Sets 84-92, then decide whether the next phase is another controlled category wave or a narrow source-truth repair pass.

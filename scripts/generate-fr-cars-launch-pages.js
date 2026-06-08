@@ -3,6 +3,7 @@ const path = require("path");
 
 const ImportEngine = require("../assets/js/lib/car-import-cost-engine.js");
 const Price = require("../assets/js/lib/car-price-intelligence.js");
+const { FR_CARS_COUNTRY_SLUG_TO_EN } = require("./lib/french-cars-route-map");
 
 const root = path.join(__dirname, "..");
 const priceData = readJson("data/cars/price-intelligence.json");
@@ -31,6 +32,12 @@ const COUNTRIES = [
   { code: "ZM", frSlug: "zambie", enSlug: "zambia", frName: "Zambie", city: "Lusaka" },
   { code: "TZ", frSlug: "tanzanie", enSlug: "tanzania", frName: "Tanzanie", city: "Dar es Salaam" }
 ];
+
+for (const country of COUNTRIES) {
+  if (FR_CARS_COUNTRY_SLUG_TO_EN[country.frSlug] !== country.enSlug) {
+    throw new Error(`French cars route map mismatch for ${country.frSlug}: expected ${country.enSlug}`);
+  }
+}
 
 const COUNTRY_PLACE_FR = {
   CI: "en C\u00f4te d'Ivoire",

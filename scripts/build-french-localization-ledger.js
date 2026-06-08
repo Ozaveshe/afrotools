@@ -5,6 +5,11 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { fileToPublicRoute, isRedirectLike } = require("./lib/canonical-aliases");
+const {
+  englishSourceForFrenchCarsParts,
+  isFrenchCarsRoute,
+} = require("./lib/french-cars-route-map");
+const { englishSourceForFrenchWidgetParentSlug } = require("./lib/french-widget-parent-map");
 const { frenchToolSlugToEnglishSource } = require("./lib/french-tool-route-map");
 const { frenchTelecomSlugToEnglishSource } = require("./lib/french-telecom-route-map");
 
@@ -124,6 +129,12 @@ const SECTION_NAMES = [
   "country hubs",
 ];
 
+const INTENTIONAL_FRENCH_ONLY_BLOG_ROUTES = new Set([
+  "/fr/blog/frais-orange-money-guide-2026",
+  "/fr/blog/guide-irpp-senegal-2026",
+  "/fr/blog/wave-vs-orange-money-senegal-2026",
+]);
+
 function rel(filePath) {
   return path.relative(ROOT, filePath).replace(/\\/g, "/");
 }
@@ -240,6 +251,37 @@ function hasNoindex(html) {
   return Boolean(match && /(^|,|\s)noindex($|,|\s)/i.test(match[1]));
 }
 
+function sourceTruthForUnmappedFrenchRoute(route, html) {
+  const normalized = normalizeRoute(route);
+
+  if (normalized === "/fr/404" || normalized === "/fr/offline") {
+    return "skipped noindex utility surface";
+  }
+  if (normalized === "/fr/api/docs" || /^\/fr\/docs(?:\/|$)/.test(normalized)) {
+    return "skipped docs/API source surface";
+  }
+  if (/^\/fr\/dashboard(?:\/|$)/.test(normalized)) {
+    return "skipped dashboard/account source surface";
+  }
+  if (/^\/fr\/pro(?:\/|$)/.test(normalized)) {
+    return "skipped Pro/account source surface";
+  }
+  if (hasNoindex(html)) {
+    return "skipped noindex utility surface";
+  }
+  if (INTENTIONAL_FRENCH_ONLY_BLOG_ROUTES.has(normalized)) {
+    return "intentional French-only blog article";
+  }
+  if (/^\/fr\/blog\/[^/]+$/.test(normalized)) {
+    return "hand-authored French blog article";
+  }
+  if (normalized === "/fr/guinee-equatoriale") {
+    return "hand-authored French country hub";
+  }
+
+  return null;
+}
+
 function textOf(html, tagName) {
   const match = html.match(new RegExp(`<${tagName}\\b[^>]*>([\\s\\S]*?)<\\/${tagName}>`, "i"));
   return match
@@ -331,9 +373,18 @@ function inferFrenchSourceCandidates(filePath) {
     const mappedToolSource = frenchToolSlugToEnglishSource(fileBase);
     if (mappedToolSource) addCandidate(candidates, mappedToolSource, "fr-tool-slug-map");
   }
+  if (first === "cars") {
+    const carsParts = parts.slice(1);
+    if (carsParts[carsParts.length - 1] === "index.html") carsParts.pop();
+    addCandidate(candidates, englishSourceForFrenchCarsParts(carsParts), "fr-cars-route-map");
+  }
   if (first === "telecom" && fileBase) {
     const mappedTelecomSource = frenchTelecomSlugToEnglishSource(fileBase);
     if (mappedTelecomSource) addCandidate(candidates, mappedTelecomSource, "fr-telecom-slug-map");
+  }
+  if (first === "widgets" && fileBase) {
+    const mappedWidgetSource = englishSourceForFrenchWidgetParentSlug(fileBase);
+    if (mappedWidgetSource) addCandidate(candidates, mappedWidgetSource, "fr-widget-parent-map");
   }
 
   if (fileBase === "calculateur-salaire-net" && PAYE_SLUG_MAP[first]) addCandidate(candidates, PAYE_SLUG_MAP[first], "build-i18n-paye-slug-map");
@@ -350,7 +401,7 @@ function inferFrenchSourceCandidates(filePath) {
   }
 
   const isEqGuineaTaxRoute = first === "eq-guinea" && (parts[1] === "gq-paye" || parts[1] === "gq-vat");
-  if (!isEqGuineaTaxRoute && parts.length === 3 && parts[2] === "index.html") addCandidate(candidates, `${firstEn}/${parts[1]}`, "build-i18n-dir-style-index");
+  if (first !== "cars" && !isEqGuineaTaxRoute && parts.length === 3 && parts[2] === "index.html") addCandidate(candidates, `${firstEn}/${parts[1]}`, "build-i18n-dir-style-index");
 
   const enTag = extractHreflangs(html).find((item) => item.lang === "en");
   if (enTag) addCandidate(candidates, routeToSource(enTag.href), "hreflang-en");
@@ -495,6 +546,7 @@ function main() {
     const mappedToEnglishSource = hasEnglishSource(englishSource);
     const hasPack = Boolean(mappedToEnglishSource && frTranslations.has(englishSource));
     const standardGenerated = Boolean(mappedToEnglishSource && publicRoute(buildOutputPath(englishSource, "fr")) === route);
+    const generatedFrenchCarsRoute = Boolean(mappedToEnglishSource && isFrenchCarsRoute(route));
     const generatedFrenchWidgetParent = isFrenchWidgetParentRoute(route);
     const redirectLike = isRedirectLike(html);
     const redirectSource = redirectSourceRoutes.has(route);
@@ -503,8 +555,13 @@ function main() {
     if (redirectLike) sourceOfTruth.push("HTML redirect alias");
     if (hasPack) sourceOfTruth.push("lang/pages fr.json");
     if (registryByHref.has(route)) sourceOfTruth.push("tool-registry.js");
+    if (generatedFrenchCarsRoute) sourceOfTruth.push("scripts/generate-fr-cars-launch-pages.js");
     if (generatedFrenchWidgetParent) sourceOfTruth.push("scripts/generate-fr-widget-parent-pages.js");
-    if (!hasPack && mappedToEnglishSource) sourceOfTruth.push("existing /fr/ HTML");
+    if (!hasPack && mappedToEnglishSource && !generatedFrenchCarsRoute && !generatedFrenchWidgetParent) sourceOfTruth.push("existing /fr/ HTML");
+    if (!sourceOfTruth.length) {
+      const unmappedSourceTruth = sourceTruthForUnmappedFrenchRoute(route, html);
+      if (unmappedSourceTruth) sourceOfTruth.push(unmappedSourceTruth);
+    }
     if (!sourceOfTruth.length) sourceOfTruth.push("unclear source of truth");
 
     if (canonicalRoute && !hasNoindex(html) && !redirectLike && !redirectSource) {
@@ -526,7 +583,7 @@ function main() {
       h1: leakage.h1,
       classification: {
         mapping: redirectSource || isAlias ? "duplicate or alias route" : (mappedToEnglishSource ? "English-backed mapped route" : "French-only route"),
-        generation: hasPack || standardGenerated || generatedFrenchWidgetParent ? "generated output" : "hand-authored French page",
+        generation: hasPack || standardGenerated || generatedFrenchCarsRoute || generatedFrenchWidgetParent ? "generated output" : "hand-authored French page",
         alias: redirectSource || isAlias,
         sourceOfTruth,
         sections: sectionsFor(route, englishSource),

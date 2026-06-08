@@ -142,6 +142,18 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
 .p-spin{width:40px;height:40px;border:4px solid #e5e7eb;border-top-color:var(--color-primary);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 18px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .p-card h3{font-size:16px;font-weight:700;color:#111;margin:0 0 4px}.p-card p{font-size:13px;color:#6b7280;margin:0}
+.pwd-ov{position:fixed;inset:0;background:rgba(10,15,10,.62);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:1100;padding:20px}.pwd-ov.on{display:flex}
+.pwd-card{background:#fff;border-radius:14px;padding:24px;max-width:390px;width:100%;box-shadow:0 20px 46px rgba(0,0,0,.24);font-family:'DM Sans',sans-serif}
+.pwd-card h3{font-size:18px;font-weight:800;color:#111827;margin:0 0 8px}
+.pwd-card p{font-size:13px;line-height:1.55;color:#6b7280;margin:0 0 16px}
+.pwd-card label{display:block;font-size:12px;font-weight:800;color:#374151;margin-bottom:6px}
+.pwd-card input{width:100%;height:42px;border:1.5px solid #d1d5db;border-radius:8px;padding:0 12px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none}
+.pwd-card input:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+.pwd-error{min-height:18px;color:#dc2626!important;font-size:12px!important;margin:8px 0 0!important}
+.pwd-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.pwd-actions button{height:38px;border-radius:7px;padding:0 14px;border:1.5px solid #d1d5db;background:#fff;color:#374151;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+.pwd-actions button:hover,.pwd-actions button:focus-visible{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
+.pwd-actions .pwd-primary{background:linear-gradient(135deg,#007AFF,#0055D4);color:#fff;border-color:#007AFF}
 
 /* ─── MOBILE BOTTOM BAR ─── */
 .mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;height:52px;background:#fff;border-top:1px solid #e5e7eb;z-index:610;padding:0 8px;align-items:center;gap:4px;overflow-x:auto}
@@ -448,6 +460,19 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
 
 <!-- Processing overlay -->
 <div class="p-ov" id="pOv"><div class="p-card"><div class="p-spin"></div><h3 id="pT">Saving PDF...</h3><p id="pS">Applying edits</p></div></div>
+<div class="pwd-ov" id="pwdOv" aria-hidden="true">
+  <div class="pwd-card" role="dialog" aria-modal="true" aria-labelledby="pwdTitle" aria-describedby="pwdHelp">
+    <h3 id="pwdTitle">Enter PDF password</h3>
+    <p id="pwdHelp">This PDF is locked. Enter the open password to edit it locally in your browser.</p>
+    <label for="pwdInput">PDF password</label>
+    <input id="pwdInput" type="password" autocomplete="current-password">
+    <p class="pwd-error" id="pwdErr" aria-live="polite"></p>
+    <div class="pwd-actions">
+      <button type="button" id="pwdCancel">Cancel</button>
+      <button type="button" class="pwd-primary" id="pwdSubmit">Unlock PDF</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 </div><!-- /pe-page -->
@@ -558,6 +583,7 @@ body.pdf-editor-open #afro-cookie-consent{display:none!important}
 <!-- ENGINE -->
 <!-- ═══════════════════════════════════════════════════ -->
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
+<script src="/assets/js/lib/qpdf-aes.js?v=d44daa51"></script>
 <script>
 (function(){
 'use strict';
@@ -570,6 +596,77 @@ function showProc(t,s){$('pT').textContent=t||'Processing...';$('pS').textConten
 function hideProc(){$('pOv').classList.remove('on')}
 function loadScript(src){return new Promise(function(resolve,reject){var existing=document.querySelector('script[src^="'+src.split('?')[0]+'"]');if(existing){if(window.PDFLib||window.pdfjsLib){resolve();return}existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',function(){reject(new Error('Failed to load '+src))},{once:true});return}var s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=function(){reject(new Error('Failed to load '+src))};document.head.appendChild(s)})}
 async function ensurePdfLib(){if(window.PDFLib&&window.PDFLib.PDFDocument)return window.PDFLib;await loadScript('/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1');if(!window.PDFLib||!window.PDFLib.PDFDocument)throw new Error('PDF editing library failed to load. Please refresh the page.');return window.PDFLib}
+async function ensureQpdfUnlocker(){if(window.AfroQPDF&&window.AfroQPDF.decrypt)return window.AfroQPDF;await new Promise(function(resolve,reject){var src='/assets/js/lib/qpdf-aes.js?v=d44daa51';var existing=document.querySelector('script[src="'+src+'"]');if(existing){existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',function(){reject(new Error('PDF password engine failed to load.'))},{once:true});if(window.AfroQPDF&&window.AfroQPDF.decrypt)resolve();return}var s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=function(){reject(new Error('PDF password engine failed to load.'))};document.head.appendChild(s)});if(!window.AfroQPDF||!window.AfroQPDF.decrypt)throw new Error('PDF password engine failed to initialize.');return window.AfroQPDF}
+function toArrayBuffer(bytes){if(bytes instanceof ArrayBuffer)return bytes;if(ArrayBuffer.isView(bytes))return bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength);return new Uint8Array(bytes).buffer}
+function requestPdfPassword(reason,file){
+  return new Promise(function(resolve,reject){
+    var ov=$('pwdOv'),input=$('pwdInput'),err=$('pwdErr'),title=$('pwdTitle'),help=$('pwdHelp'),submit=$('pwdSubmit'),cancel=$('pwdCancel');
+    var previousFocus=document.activeElement;
+    var retry=reason==='incorrect';
+    title.textContent=retry?'Incorrect PDF password':'Enter PDF password';
+    help.textContent=(retry?'That password did not unlock the file. Try again.':'This PDF is locked. Enter the open password to edit it locally in your browser.')+(file?' File: '+file:'');
+    err.textContent='';
+    input.value='';
+    ov.classList.add('on');
+    ov.setAttribute('aria-hidden','false');
+    setTimeout(function(){input.focus()},0);
+    function cleanup(){
+      submit.removeEventListener('click',onSubmit);
+      cancel.removeEventListener('click',onCancel);
+      ov.removeEventListener('keydown',onKey);
+      ov.classList.remove('on');
+      ov.setAttribute('aria-hidden','true');
+      input.value='';
+      if(previousFocus&&previousFocus.focus)previousFocus.focus();
+    }
+    function onSubmit(){
+      var value=input.value;
+      if(!value){err.textContent='Enter the PDF password.';input.focus();return}
+      cleanup();
+      resolve(value);
+    }
+    function onCancel(){
+      cleanup();
+      reject(new Error('PDF password entry cancelled.'));
+    }
+    function onKey(e){
+      if(e.key==='Escape'){e.preventDefault();onCancel()}
+      if(e.key==='Enter'){e.preventDefault();onSubmit()}
+    }
+    submit.addEventListener('click',onSubmit);
+    cancel.addEventListener('click',onCancel);
+    ov.addEventListener('keydown',onKey);
+  });
+}
+async function loadPdfJsDocument(pdfjs,bytes,name,onPassword){
+  var cancelled=false;
+  var task;
+  var passwordResponses=pdfjs.PasswordResponses||{};
+  task=pdfjs.getDocument({data:bytes.slice(0)});
+  task.onPassword=function(updatePassword,reason){
+    hideProc();
+    var isRetry=reason===passwordResponses.INCORRECT_PASSWORD||reason===2;
+    requestPdfPassword(isRetry?'incorrect':'need',name).then(function(password){
+      onPassword(password);
+      showProc(isRetry?'Checking password...':'Unlocking PDF...','Validating password');
+      updatePassword(password);
+    }).catch(function(err){
+      cancelled=true;
+      if(task&&task.destroy)task.destroy();
+    });
+  };
+  try{
+    return await task.promise;
+  }catch(e){
+    if(cancelled)throw new Error('PDF password entry cancelled.');
+    throw e;
+  }
+}
+async function decryptForEditing(bytes,password){
+  var qpdf=await ensureQpdfUnlocker();
+  var unlocked=await qpdf.decrypt(bytes,password);
+  return toArrayBuffer(unlocked);
+}
 
 /* ─── STATE ─── */
 var pdfBytes=null;         // original ArrayBuffer
@@ -769,10 +866,19 @@ async function openPDF(file){
   showProc('Loading PDF...','Reading file');
   try{
     var ab=await file.arrayBuffer();
-    pdfBytes=ab;
     fileName=file.name;
     var pdfjs=await PdfUtils.ensurePdfJs();
-    pjsDoc=await pdfjs.getDocument({data:ab.slice(0)}).promise;
+    var passwordUsed=null;
+    pjsDoc=await loadPdfJsDocument(pdfjs,ab,fileName,function(password){passwordUsed=password});
+    if(passwordUsed){
+      showProc('Unlocking PDF...','Preparing editable copy');
+      pdfBytes=await decryptForEditing(ab,passwordUsed);
+      passwordUsed=null;
+      if(pjsDoc&&pjsDoc.destroy)await pjsDoc.destroy();
+      pjsDoc=await pdfjs.getDocument({data:pdfBytes.slice(0)}).promise;
+    }else{
+      pdfBytes=ab;
+    }
     pageCount=pjsDoc.numPages;
     currentPage=1;
     operations=[];
@@ -789,10 +895,12 @@ async function openPDF(file){
     updatePageNav();
     updateEmptyState();
     hideProc();
-    toast('PDF loaded — '+pageCount+' page'+(pageCount>1?'s':''));
+    toast('PDF loaded — '+pageCount+' page'+(pageCount>1?'s':'')+(pdfBytes!==ab?' and unlocked for editing':''));
   }catch(e){
     hideProc();
-    toast('Failed to load PDF: '+e.message,true);
+    var msg=e&&e.message?e.message:'Could not open this PDF.';
+    if(/password/i.test(msg))toast(msg,true);
+    else toast('Failed to load PDF: '+msg,true);
     console.error(e);
   }
 }
@@ -1617,7 +1725,7 @@ async function savePDF(){
 
   try{
     var PDFLib=await ensurePdfLib();
-    var pdfDoc=await PDFLib.PDFDocument.load(pdfBytes);
+    var pdfDoc=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});
     var pages=pdfDoc.getPages();
 
     // Group ops by page

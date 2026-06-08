@@ -23,6 +23,10 @@ const path = require('path');
 
 const { fileToPublicRoute } = require('./lib/canonical-aliases');
 const {
+  englishSourceForFrenchCarsParts,
+  frenchRouteForEnglishCarsSource,
+} = require('./lib/french-cars-route-map');
+const {
   frenchRouteForEnglishToolSource,
   frenchToolSlugToEnglishSource,
 } = require('./lib/french-tool-route-map');
@@ -381,9 +385,7 @@ function preferredFrenchRouteForEnglishPage(enPage) {
   const slug = parts[1] || '';
 
   if (country === 'cars' && slug) {
-    const preferredCarsParts = parts.slice();
-    preferredCarsParts[1] = FRENCH_COUNTRY_SLUG_BY_EN[preferredCarsParts[1]] || preferredCarsParts[1];
-    const route = `/fr/${preferredCarsParts.join('/')}`;
+    const route = frenchRouteForEnglishCarsSource(clean);
     if (resolveFrenchRouteFile(route)) return route + '/';
   }
 
@@ -450,12 +452,7 @@ function discoverExistingFrPages() {
         if (country === 'cars') {
           const carsParts = parts.slice(1);
           if (carsParts[carsParts.length - 1] === 'index.html') carsParts.pop();
-          if (carsParts.length) {
-            carsParts[0] = COUNTRY_FR_TO_EN[carsParts[0]] || carsParts[0];
-            enPage = ['cars', ...carsParts].join('/');
-          } else {
-            enPage = 'cars';
-          }
+          enPage = englishSourceForFrenchCarsParts(carsParts);
         } else if (country === 'blog') {
           const blogEnPage = rel.replace('.html', '').replace(/\/index$/, '');
           const blogSourceLang = sourceHtmlLangForPage(blogEnPage);
@@ -487,7 +484,7 @@ function discoverExistingFrPages() {
         const isMappedPayeRoute = fileBase === 'calculateur-salaire-net' && PAYE_SLUG_MAP[country];
         const isMappedVatRoute = fileBase === 'calculateur-tva' && VAT_SLUG_MAP[country];
         const isMappedTelecomRoute = country === 'telecom' && parts[1] && frenchTelecomSlugToEnglishSource(parts[1]);
-        if (country !== 'tools' && country !== 'blog' && !isEqGuineaTaxRoute && !isMappedPayeRoute && !isMappedVatRoute && !isMappedTelecomRoute && parts.length === 3 && parts[2] === 'index.html') {
+        if (country !== 'tools' && country !== 'blog' && country !== 'cars' && !isEqGuineaTaxRoute && !isMappedPayeRoute && !isMappedVatRoute && !isMappedTelecomRoute && parts.length === 3 && parts[2] === 'index.html') {
           const enCountry = COUNTRY_FR_TO_EN[country] || country;
           enPage = enCountry + '/' + parts[1];
         }
