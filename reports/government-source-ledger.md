@@ -1,13 +1,13 @@
 # Government Source Ledger
 
-Generated: 2026-06-08T11:30:15.859Z
+Generated: 2026-06-08T17:10:19.894Z
 
 ## Summary
 
 - Tools mapped: 15
 - Official sources checked: 58
-- OK sources: 27
-- Changed sources: 18
+- OK sources: 31
+- Changed sources: 10
 - Manual-review or blocked sources: 22
 - Broken sources: 0
 
@@ -26,7 +26,7 @@ Generated: 2026-06-08T11:30:15.859Z
 | Manual review | NG | National Identity Management Commission | NIN enrolment portal |  | https://enrollment.nimc.gov.ng/ |
 | Manual review | KE | Government of Kenya | Just a moment... | 403 | https://accounts.ecitizen.go.ke/ |
 | Changed | ZA | Department of Home Affairs | Department of Home Affairs - Identity Documents | 200 | https://www.dha.gov.za/index.php/civic-services/identity-documents |
-| Changed | GH | National Identification Authority | National Identification Authority | 200 | https://nia.gov.gh/ |
+| OK | GH | National Identification Authority | National Identification Authority | 200 | https://nia.gov.gh/ |
 | OK | GH | National Identification Authority | Home : National Identification Authority | 200 | https://register.nia.gov.gh/ |
 | OK | NG | Independent National Electoral Commission | INEC Portal | 200 | https://cvr.inecnigeria.org/ |
 | Manual review | KE | Independent Electoral and Boundaries Commission | IEBC |  | https://www.iebc.or.ke/ |
@@ -37,18 +37,18 @@ Generated: 2026-06-08T11:30:15.859Z
 | Manual review | NG | National Population Commission | National Population Commission |  | https://nationalpopulation.gov.ng/ |
 | OK | KE | Civil Registration Services | Crs | 200 | https://crs.ecitizen.go.ke/ |
 | Manual review | ZA | South African Government | How do I obtain a birth certificate? |  | https://www.gov.za/faq/government-services/how-do-i-acquire-birth-certificate |
-| Changed | GH | Births and Deaths Registry | Births and Deaths Registry, Ghana &#8211; Births and Deaths Registry | 200 | https://bdr.gov.gh/ |
+| OK | GH | Births and Deaths Registry | Births and Deaths Registry, Ghana &#8211; Births and Deaths Registry | 200 | https://bdr.gov.gh/ |
 | Manual review | NG | Federal Ministry of Interior | Marriage registry |  | https://marriage.gov.ng/ |
 | Manual review | ZA | Department of Home Affairs | Marriage certificates |  | https://www.gov.za/services/services-residents/relationships/getting-married |
 | OK | GH | Registrar-General's Department | Registrar General's Department | 200 | https://rgd.gov.gh/ |
-| Changed | KE | Ministry of Lands | Ardhisasa | 200 | https://ardhisasa.lands.go.ke/ |
+| OK | KE | Ministry of Lands | Ardhisasa | 200 | https://ardhisasa.lands.go.ke/ |
 | Manual review | ZA | Department of Agriculture, Land Reform and Rural Development | Deeds registration |  | https://www.deeds.gov.za/ |
 | Manual review | GH | Lands Commission | Lands Commission |  | https://landscommission.gov.gh/ |
 | Manual review | NG | Lagos State Lands Bureau | Lagos State Lands Bureau |  | https://landsbureau.lagosstate.gov.ng/ |
 | OK | NG | National Pension Commission | National Pension Commission \| Regulators of the Nigerian Pension Industry | 200 | https://www.pencom.gov.ng/ |
 | OK | KE | National Social Security Fund | NSSF Kenya &#8211; Growing you for good | 200 | https://www.nssf.or.ke/ |
 | Changed | ZA | Government Employees Pension Fund | Home - Gepf | 200 | https://www.gepf.co.za/ |
-| OK | GH | Social Security and National Insurance Trust | SSNIT &#8211; We Deliver on Our Promise | 200 | https://www.ssnit.org.gh/ |
+| Manual review | GH | Social Security and National Insurance Trust | SSNIT |  | https://www.ssnit.org.gh/ |
 | Changed | NG | Budget Office of the Federation | 2026 Budget | 200 | https://budgetoffice.gov.ng/index.php/resources/internal-resources/budget-documents/2026-budget |
 | OK | KE | The National Treasury | Budget Summary of Revenue & Expenditure \| The National Treasury | 200 | https://www.treasury.go.ke/budget-summary-revenue-expenditure |
 | OK | ZA | National Treasury | National Treasury | 200 | https://www.treasury.gov.za/documents/national%20budget/2026/default.aspx |
@@ -56,7 +56,7 @@ Generated: 2026-06-08T11:30:15.859Z
 | OK | KE | Office of the Data Protection Commissioner | Office of the Data Protection Commissioner (ODPC) | 200 | https://www.odpc.go.ke/ |
 | OK | KE | Office of the Data Protection Commissioner | Office of the Data Protection Commission | 200 | https://dataportal.odpc.go.ke/ |
 | Manual review | NG | Federal Government of Nigeria | FOIA portal |  | https://foia.gov.ng/ |
-| Changed | ZA | Information Regulator South Africa | PAIA | 200 | https://inforegulator.org.za/paia/ |
+| OK | ZA | Information Regulator South Africa | PAIA | 200 | https://inforegulator.org.za/paia/ |
 | OK | KE | Commission on Administrative Justice | Access to Information Act No 31 of 2016 \| The Commission on Administrative Justice | 200 | https://ombudsman.go.ke/node/267 |
 | OK | GH | Right to Information Commission | Right to Information | 200 | https://rtic.gov.gh/ |
 | OK | GH | Right to Information Commission | RTI Request &#8211; Right to Information | 200 | https://rtic.gov.gh/rti-request/ |
@@ -65,8 +65,8 @@ Generated: 2026-06-08T11:30:15.859Z
 | OK | ZA | National Student Financial Aid Scheme | Page Redirection | 200 | https://www.nsfas.org.za/ |
 | OK | GH | Ghana Education Trust Fund | GETFund Ghana - Ghana Education Trust Fund | 200 | https://getfund.gov.gh/ |
 | Manual review | AU | African Union | African Union scholarships |  | https://au.int/en/scholarships |
-| Changed | ZA | South African Social Security Agency | SASSA Portal Not Available | 200 | https://services.sassa.gov.za/portal/r/sassa/sassa/grants-information |
-| Manual review | KE | State Department for Social Protection and Senior Citizen Affairs | Social Protection |  | https://www.socialprotection.go.ke/ |
+| Changed | ZA | South African Social Security Agency | Grants Information | 200 | https://services.sassa.gov.za/portal/r/sassa/sassa/grants-information |
+| OK | KE | State Department for Social Protection and Senior Citizen Affairs | Homepage \| Social Protection | 200 | https://www.socialprotection.go.ke/ |
 | OK | NG | National Social Investment Programme Agency | NSIPA | 200 | https://nsipa.gov.ng/ |
 | OK | GH | Ministry of Gender, Children and Social Protection | Ministry of Gender, Children and Social Protection | 200 | https://www.mogcsp.gov.gh/ |
 | Manual review | ZA | South African Government | Public holidays |  | https://www.gov.za/about-sa/public-holidays |
@@ -81,12 +81,12 @@ Generated: 2026-06-08T11:30:15.859Z
 - work-permit-cost (/tools/work-permit-cost/): Changed
 - national-id-guide (/tools/national-id-guide/): Changed
 - voter-registration (/tools/voter-registration/): Manual review
-- birth-death-cert (/tools/birth-death-cert/): Changed
+- birth-death-cert (/tools/birth-death-cert/): Manual review
 - marriage-cert (/tools/marriage-cert/): Manual review
-- land-registry-fees (/tools/land-registry-fees/): Changed
+- land-registry-fees (/tools/land-registry-fees/): Manual review
 - national-pension (/tools/national-pension/): Changed
 - budget-comparator (/tools/budget-comparator/): Changed
-- foi-template (/tools/foi-template/): Changed
+- foi-template (/tools/foi-template/): Manual review
 - gov-scholarship (/tools/gov-scholarship/): Manual review
 - social-welfare (/tools/social-welfare/): Changed
 - public-holidays (/tools/public-holidays/): Manual review
