@@ -1276,6 +1276,7 @@ function normalizePageRotation(v){v=parseInt(v,10)||0;v=((v%360)+360)%360;return
 function pageRotationAt(i,map){map=map||pr;return normalizePageRotation(map[i]||0)}
 function setPageRotationAt(i,v,map){map=map||pr;v=normalizePageRotation(v);if(v)map[i]=v;else delete map[i]}
 function uniquePageIndices(list){var seen={},out=[];(list||[]).forEach(function(i){i=parseInt(i,10);if(i>=0&&i<po.length&&!seen[i]){seen[i]=true;out.push(i)}});return out.sort(function(a,b){return a-b})}
+function renderRotationForPdfJsPage(pg,extra){return normalizePageRotation(((pg&&pg.rotate)||0)+(extra||0))}
 function pageSnapshot(){return JSON.stringify({po:po.slice(),pr:Object.assign({},pr),sel:sel,objs:JSON.parse(JSON.stringify(objs)),objSeq:objSeq})}
 function pushPageHistory(){pageUndoStack.push(pageSnapshot());if(pageUndoStack.length>30)pageUndoStack.shift();pageRedoStack=[]}
 async function restorePageSnapshot(s){
@@ -1615,7 +1616,7 @@ function rMain(){
         if(done>=po.length){finish();return}
         var pi=po[done];var idx=done;var rot=pageRotationAt(idx);
         pdf.getPage(pi+1).then(function(pg){
-          var vp=pg.getViewport({scale:zm,rotation:rot});
+          var vp=pg.getViewport({scale:zm,rotation:renderRotationForPdfJsPage(pg,rot)});
           pageDims[idx]={w:vp.width/zm,h:vp.height/zm};
           var stage=document.createElement("div");stage.className="page-stage";stage.id="mp"+idx;stage.style.width=vp.width+"px";stage.style.height=vp.height+"px";
           var c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;
