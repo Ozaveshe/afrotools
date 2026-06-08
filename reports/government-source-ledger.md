@@ -1,14 +1,14 @@
 # Government Source Ledger
 
-Generated: 2026-05-13T09:39:44.286Z
+Generated: 2026-06-08T17:10:19.894Z
 
 ## Summary
 
 - Tools mapped: 15
 - Official sources checked: 58
-- OK sources: 32
-- Changed sources: 6
-- Manual-review or blocked sources: 23
+- OK sources: 31
+- Changed sources: 10
+- Manual-review or blocked sources: 22
 - Broken sources: 0
 
 ## Sources
@@ -40,15 +40,15 @@ Generated: 2026-05-13T09:39:44.286Z
 | OK | GH | Births and Deaths Registry | Births and Deaths Registry, Ghana &#8211; Births and Deaths Registry | 200 | https://bdr.gov.gh/ |
 | Manual review | NG | Federal Ministry of Interior | Marriage registry |  | https://marriage.gov.ng/ |
 | Manual review | ZA | Department of Home Affairs | Marriage certificates |  | https://www.gov.za/services/services-residents/relationships/getting-married |
-| Manual review | GH | Registrar-General's Department | Registrar-General's Department |  | https://rgd.gov.gh/ |
+| OK | GH | Registrar-General's Department | Registrar General's Department | 200 | https://rgd.gov.gh/ |
 | OK | KE | Ministry of Lands | Ardhisasa | 200 | https://ardhisasa.lands.go.ke/ |
 | Manual review | ZA | Department of Agriculture, Land Reform and Rural Development | Deeds registration |  | https://www.deeds.gov.za/ |
 | Manual review | GH | Lands Commission | Lands Commission |  | https://landscommission.gov.gh/ |
 | Manual review | NG | Lagos State Lands Bureau | Lagos State Lands Bureau |  | https://landsbureau.lagosstate.gov.ng/ |
 | OK | NG | National Pension Commission | National Pension Commission \| Regulators of the Nigerian Pension Industry | 200 | https://www.pencom.gov.ng/ |
 | OK | KE | National Social Security Fund | NSSF Kenya &#8211; Growing you for good | 200 | https://www.nssf.or.ke/ |
-| OK | ZA | Government Employees Pension Fund | Home - Gepf | 200 | https://www.gepf.co.za/ |
-| OK | GH | Social Security and National Insurance Trust | SSNIT &#8211; We Deliver on Our Promise | 200 | https://www.ssnit.org.gh/ |
+| Changed | ZA | Government Employees Pension Fund | Home - Gepf | 200 | https://www.gepf.co.za/ |
+| Manual review | GH | Social Security and National Insurance Trust | SSNIT |  | https://www.ssnit.org.gh/ |
 | Changed | NG | Budget Office of the Federation | 2026 Budget | 200 | https://budgetoffice.gov.ng/index.php/resources/internal-resources/budget-documents/2026-budget |
 | OK | KE | The National Treasury | Budget Summary of Revenue & Expenditure \| The National Treasury | 200 | https://www.treasury.go.ke/budget-summary-revenue-expenditure |
 | OK | ZA | National Treasury | National Treasury | 200 | https://www.treasury.gov.za/documents/national%20budget/2026/default.aspx |
@@ -62,10 +62,10 @@ Generated: 2026-05-13T09:39:44.286Z
 | OK | GH | Right to Information Commission | RTI Request &#8211; Right to Information | 200 | https://rtic.gov.gh/rti-request/ |
 | OK | NG | Federal Scholarship Board | Top 10, 20 & 50 Best Betting Sites in Nigeria 2026 \| Best Online Sportsbooks for Nigerian Bettors | 200 | https://www.fsbn.com.ng/ |
 | Manual review | KE | Higher Education Loans Board | HELB |  | https://www.helb.co.ke/ |
-| Manual review | ZA | National Student Financial Aid Scheme | NSFAS |  | https://www.nsfas.org.za/ |
+| OK | ZA | National Student Financial Aid Scheme | Page Redirection | 200 | https://www.nsfas.org.za/ |
 | OK | GH | Ghana Education Trust Fund | GETFund Ghana - Ghana Education Trust Fund | 200 | https://getfund.gov.gh/ |
-| Manual | AU | African Union | Page not found \| African Union | 404 | https://au.int/en/scholarships |
-| OK | ZA | South African Social Security Agency | Grants Information | 200 | https://services.sassa.gov.za/portal/r/sassa/sassa/grants-information |
+| Manual review | AU | African Union | African Union scholarships |  | https://au.int/en/scholarships |
+| Changed | ZA | South African Social Security Agency | Grants Information | 200 | https://services.sassa.gov.za/portal/r/sassa/sassa/grants-information |
 | OK | KE | State Department for Social Protection and Senior Citizen Affairs | Homepage \| Social Protection | 200 | https://www.socialprotection.go.ke/ |
 | OK | NG | National Social Investment Programme Agency | NSIPA | 200 | https://nsipa.gov.ng/ |
 | OK | GH | Ministry of Gender, Children and Social Protection | Ministry of Gender, Children and Social Protection | 200 | https://www.mogcsp.gov.gh/ |
@@ -84,9 +84,11 @@ Generated: 2026-05-13T09:39:44.286Z
 - birth-death-cert (/tools/birth-death-cert/): Manual review
 - marriage-cert (/tools/marriage-cert/): Manual review
 - land-registry-fees (/tools/land-registry-fees/): Manual review
+- national-pension (/tools/national-pension/): Changed
 - budget-comparator (/tools/budget-comparator/): Changed
 - foi-template (/tools/foi-template/): Manual review
 - gov-scholarship (/tools/gov-scholarship/): Manual review
+- social-welfare (/tools/social-welfare/): Changed
 - public-holidays (/tools/public-holidays/): Manual review
 
 ## Manual Review Rules

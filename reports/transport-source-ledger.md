@@ -1,13 +1,13 @@
 # Transport Source Ledger
 
-Generated: 2026-05-13T09:42:28.570Z
+Generated: 2026-06-08T17:10:13.963Z
 
 ## Summary
 
 - Tools mapped: 23
 - Official sources checked: 41
-- OK sources: 30
-- Changed sources: 0
+- OK sources: 29
+- Changed sources: 1
 - Manual-review or blocked sources: 11
 - Broken sources: 0
 
@@ -16,7 +16,7 @@ Generated: 2026-05-13T09:42:28.570Z
 | Status | Country | Authority | Source | HTTP | URL |
 | --- | --- | --- | --- | --- | --- |
 | OK | NG | Nigerian Midstream and Downstream Petroleum Regulatory Authority | NMDPRA - Leading Oil & Gas Regulatory Authority in Nigeria \| Ensuring Development through Sustainable Energy | 200 | https://nmdpra.gov.ng/ |
-| OK | KE | Energy and Petroleum Regulatory Authority | Pump Prices \| Energy and Petroleum Regulatory Authority | 200 | https://www.epra.go.ke/pump-prices |
+| Manual review | KE | Energy and Petroleum Regulatory Authority | EPRA pump prices |  | https://www.epra.go.ke/pump-prices |
 | OK | GH | National Petroleum Authority | INDICATIVE PRICES - National Petroleum Authority(NPA) | 200 | https://npa.gov.gh/indicative-prices/ |
 | OK | ZA | Department of Mineral Resources and Energy | DMRE No Longer Exists | 200 | https://www.dmre.gov.za/ |
 | OK | NG | Nigeria Customs Service | Nigeria Customs Service &#8211; Nigeria Customs Information Portal | 200 | https://customs.gov.ng/ |
@@ -50,17 +50,19 @@ Generated: 2026-05-13T09:42:28.570Z
 | OK | ZA | South African Civil Aviation Authority | Home - SACAA | 200 | https://www.caa.co.za/ |
 | OK | GH | Ghana Civil Aviation Authority | Home - GHANA CIVIL AVIATION AUTHORITY | 200 | https://www.gcaa.com.gh/ |
 | Manual | GLOBAL | Uber | Uber price estimate |  | https://www.uber.com/global/en/price-estimate/ |
-| Manual | GLOBAL | Bolt | Explore Bolt services \| The all-in-one mobility app \| Bolt | 404 | https://bolt.eu/en/cities/ |
+| OK | GLOBAL | Bolt | Bolt cities \| Use Bolt in cities around the world \| Bolt | 200 | https://bolt.eu/en/cities/ |
 | Manual review | GLOBAL | DHL | DHL global shipping |  | https://www.dhl.com/ |
 | OK | GLOBAL | FedEx | FedEx \| System Down | 200 | https://www.fedex.com/ |
-| OK | ET | Ethiopian Airlines | Welcome to Ethiopian Airlines Official Website | 200 | https://www.ethiopianairlines.com/ |
-| OK | KE | Kenya Airways | Kenya Airways \| The Pride of Africa | 200 | https://www.kenya-airways.com/ |
+| OK | ET | Ethiopian Airlines | Ethiopian Airlines \| Book Flights & Fly Across the World | 200 | https://www.ethiopianairlines.com/ |
+| Changed | KE | Kenya Airways | Kenya Airways \| The Pride of Africa | 200 | https://www.kenya-airways.com/ |
 | OK | ZA | FlySafair | FlySafair | 200 | https://www.flysafair.co.za/ |
 
 ## Tool Review Queue
 
+- fuel-cost (/tools/fuel-cost/): Manual review
 - vehicle-operating-cost (/tools/vehicle-operating-cost/): Manual review
 - ride-fare (/tools/ride-fare/): Manual review
+- fleet-fuel (/tools/fleet-fuel/): Manual review
 - truck-load (/tools/truck-load/): Manual review
 - boda-income (/tools/boda-income/): Manual review
 - delivery-cost (/tools/delivery-cost/): Manual review
@@ -72,6 +74,7 @@ Generated: 2026-05-13T09:42:28.570Z
 - parking-fee (/tools/parking-fee/): Manual review
 - toll-calc (/tools/toll-calc/): Manual review
 - matatu-fare (/tools/matatu-fare/): Manual review
+- africa-flight (/tools/africa-flight/): Changed
 
 ## Manual Review Rules
 
