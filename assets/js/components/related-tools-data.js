@@ -5825,20 +5825,6 @@
         "imageKey": "burn-rate"
       },
       {
-        "id": "facture-proforma-fr",
-        "name": "Facture proforma",
-        "icon": "#",
-        "desc": "Creez une facture proforma claire pour devis, im...",
-        "href": "/fr/tools/facture-proforma",
-        "category": "small-business",
-        "lang": "fr",
-        "priority": 58,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "imageId": "proforma-invoice",
-        "imageKey": "proforma-invoice"
-      },
-      {
         "id": "plan-affaires-fr",
         "name": "Plan d affaires",
         "icon": "#",
@@ -5940,6 +5926,21 @@
         "sourceId": "solar-roi",
         "imageId": "solar-roi",
         "imageKey": "solar-roi"
+      },
+      {
+        "id": "charge-electrique-fr",
+        "name": "Calculateur de charge electrique",
+        "icon": "FR",
+        "desc": "Estimez une charge electrique domestique ou comm...",
+        "href": "/fr/tools/charge-electrique",
+        "category": "energy",
+        "lang": "fr",
+        "priority": 68,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "sourceId": "electrical-load",
+        "imageId": "electrical-load",
+        "imageKey": "electrical-load"
       },
       {
         "id": "dimensionnement-batterie-onduleur-fr",
@@ -6061,6 +6062,21 @@
         "imageKey": "diesel-vs-solar-farm"
       },
       {
+        "id": "dimensionnement-citerne-fr",
+        "name": "Dimensionnement de citerne d eau",
+        "icon": "FR",
+        "desc": "Calculez une capacite indicative de stockage d e...",
+        "href": "/fr/tools/dimensionnement-citerne",
+        "category": "energy",
+        "lang": "fr",
+        "priority": 64,
+        "estTraffic": 0,
+        "imageExt": "svg",
+        "sourceId": "water-tank",
+        "imageId": "water-tank",
+        "imageKey": "water-tank"
+      },
+      {
         "id": "empreinte-carbone-energie-fr",
         "name": "Empreinte carbone energie",
         "icon": "FR",
@@ -6147,34 +6163,6 @@
         "sourceId": "biogas-roi",
         "imageId": "biogas-roi",
         "imageKey": "biogas-roi"
-      },
-      {
-        "id": "dimensionnement-generateur-fr",
-        "name": "Dimensionnement générateur",
-        "icon": "⚡",
-        "desc": "Estimez une puissance de générateur avant valida...",
-        "href": "/fr/tools/dimensionnement-generateur",
-        "category": "energy",
-        "lang": "fr",
-        "priority": 60,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "imageId": "generator-sizing",
-        "imageKey": "generator-sizing"
-      },
-      {
-        "id": "cout-carburant-fr",
-        "name": "Coût carburant",
-        "icon": "⛽",
-        "desc": "Préparez une estimation de carburant à confirmer...",
-        "href": "/fr/tools/cout-carburant",
-        "category": "energy",
-        "lang": "fr",
-        "priority": 58,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "imageId": "fuel-cost",
-        "imageKey": "fuel-cost"
       }
     ],
     "fr::data-productivity": [
@@ -6879,7 +6867,7 @@
       },
       {
         "id": "documents-export-fr",
-        "name": "Documents d’exportation",
+        "name": "Documents export",
         "icon": "FR",
         "desc": "Verifiez facture, liste de colisage, certificat ...",
         "href": "/fr/tools/documents-export",
@@ -6909,7 +6897,7 @@
         "id": "comparateur-financement-commerce-fr",
         "name": "Comparateur financement commercial",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour import, export...",
+        "desc": "Comparez lettre de credit, garantie et paiement ...",
         "href": "/fr/tools/comparateur-financement-commerce",
         "category": "trade",
         "lang": "fr",
@@ -6963,10 +6951,24 @@
         "imageKey": "payment-comparator"
       },
       {
+        "id": "facture-proforma-fr",
+        "name": "Facture proforma",
+        "icon": "FR",
+        "desc": "Preparez une facture proforma pour devis import-...",
+        "href": "/fr/tools/facture-proforma",
+        "category": "trade",
+        "lang": "fr",
+        "priority": 58,
+        "estTraffic": 0,
+        "imageExt": "webp",
+        "imageId": "proforma-invoice",
+        "imageKey": "proforma-invoice"
+      },
+      {
         "id": "impact-fx-import-fr",
         "name": "Impact FX import",
-        "icon": "💱",
-        "desc": "Estimez l effet du taux de change sur un coût d ...",
+        "icon": "FR",
+        "desc": "Estimez l effet du taux de change sur un cout d ...",
         "href": "/fr/tools/impact-fx-import",
         "category": "trade",
         "lang": "fr",
@@ -6979,8 +6981,8 @@
       {
         "id": "liste-colisage-fr",
         "name": "Liste de colisage",
-        "icon": "📦",
-        "desc": "Preparez une packing list structurée avec poids,...",
+        "icon": "FR",
+        "desc": "Preparez une liste de colisage structuree avec p...",
         "href": "/fr/tools/liste-colisage",
         "category": "trade",
         "lang": "fr",
@@ -7007,8 +7009,8 @@
       {
         "id": "generateur-certificat-origine-fr",
         "name": "Certificat d origine",
-        "icon": "📄",
-        "desc": "Préparez un brouillon export à vérifier auprès d...",
+        "icon": "FR",
+        "desc": "Preparez un brouillon de certificat d origine a ...",
         "href": "/fr/tools/generateur-certificat-origine",
         "category": "trade",
         "lang": "fr",
@@ -7962,21 +7964,6 @@
         "imageKey": "boq-generator"
       },
       {
-        "id": "charge-electrique-fr",
-        "name": "Calculateur de charge electrique",
-        "icon": "FR",
-        "desc": "Estimez une charge electrique domestique ou comm...",
-        "href": "/fr/tools/charge-electrique",
-        "category": "engineering",
-        "lang": "fr",
-        "priority": 68,
-        "estTraffic": 0,
-        "imageExt": "webp",
-        "sourceId": "electrical-load",
-        "imageId": "electrical-load",
-        "imageKey": "electrical-load"
-      },
-      {
         "id": "calcul-structure-fr",
         "name": "Calculateur structural",
         "icon": "FR",
@@ -8065,21 +8052,6 @@
         "sourceId": "roofing-calc",
         "imageId": "roofing-calc",
         "imageKey": "roofing-calc"
-      },
-      {
-        "id": "dimensionnement-citerne-fr",
-        "name": "Dimensionnement de citerne d eau",
-        "icon": "FR",
-        "desc": "Calculez une capacite indicative de stockage d e...",
-        "href": "/fr/tools/dimensionnement-citerne",
-        "category": "engineering",
-        "lang": "fr",
-        "priority": 64,
-        "estTraffic": 0,
-        "imageExt": "svg",
-        "sourceId": "water-tank",
-        "imageId": "water-tank",
-        "imageKey": "water-tank"
       },
       {
         "id": "cout-renovation-fr",
