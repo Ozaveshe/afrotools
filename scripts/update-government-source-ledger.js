@@ -252,9 +252,8 @@ function summarize(manifest, sourceResults) {
   const totals = sourceResults.reduce((acc, source) => {
     acc.total += 1;
     acc[source.status] = (acc[source.status] || 0) + 1;
-    if (source.changedSinceLastRun) acc.changed += 1;
     return acc;
-  }, { total: 0, ok: 0, changed: 0, blocked: 0, broken: 0, manual: 0, changed: 0 });
+  }, { total: 0, ok: 0, changed: 0, blocked: 0, broken: 0, manual: 0 });
 
   const highRiskTools = manifest.tools.filter((tool) => tool.priority === 'high').length;
   return {
