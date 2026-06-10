@@ -5,11 +5,11 @@
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Africa Election Tracker - Presidential and Governorship Calendar | AfroTools</title>
-<meta name="description" content="Track upcoming African presidential, governorship, county, and local-government elections from a local source-tagged calendar.">
+<meta name="description" content="Track upcoming African presidential, governorship, county, and local-government elections from a source-tagged online calendar.">
 <link rel="canonical" href="https://afrotools.com/tools/africa-election-tracker/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Africa Election Tracker | AfroTools">
-<meta property="og:description" content="Local-first African election calendar with presidential, governorship, county, and source review status.">
+<meta property="og:description" content="Source-reviewed African election calendar with presidential, governorship, county, and source review status.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +20,7 @@
 <meta name="twitter:title" content="Africa Election Tracker | AfroTools">
 <meta name="twitter:description" content="Track African election dates with source confidence and source review status.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-06-10">
+<meta property="article:modified_time" content="2026-06-11">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -36,7 +36,7 @@
   "@type": "WebApplication",
   "name": "Africa Election Tracker",
   "url": "https://afrotools.com/tools/africa-election-tracker/",
-  "description": "Local-first African election calendar with source status for presidential and governorship election tracking.",
+  "description": "Source-reviewed African election calendar with source status for presidential and governorship election tracking.",
   "applicationCategory": "GovernmentApplication",
   "operatingSystem": "Any",
   "offers": {
@@ -189,16 +189,16 @@ a{color:inherit}
       <div class="et-heading-grid">
         <div>
           <h1 class="et-title">Africa <span>Election Tracker</span></h1>
-          <p class="et-subtitle">Local-first election calendar for presidential, governorship, county, and local-government cycles across African countries. Each date carries source confidence so official notices stay separate from tentative schedules.</p>
+          <p class="et-subtitle">Online election calendar for presidential, governorship, county, and local-government cycles across African countries. Each date carries source confidence so official notices stay separate from tentative schedules.</p>
           <div class="et-hero-badges" aria-label="Tool status">
-            <span class="et-badge et-badge-green">Local JSON</span>
+            <span class="et-badge et-badge-green">Published data</span>
             <span class="et-badge et-badge-blue">Executive focus</span>
             <span class="et-badge et-badge-amber">Source tagged</span>
           </div>
         </div>
         <aside class="et-hero-panel" aria-live="polite">
           <div class="et-hero-panel-label">Next tracked election</div>
-          <div class="et-hero-next" id="nextElectionTitle">Loading local ledger...</div>
+          <div class="et-hero-next" id="nextElectionTitle">Loading election tracker...</div>
           <div class="et-hero-next-meta" id="nextElectionMeta">Checking election dates and source status.</div>
         </aside>
       </div>
@@ -221,7 +221,7 @@ a{color:inherit}
           <div class="et-card-head">
             <div>
               <div id="filtersTitle" class="et-card-title">Filters</div>
-              <div class="et-card-sub" id="ledgerMeta">Local source ledger</div>
+              <div class="et-card-sub" id="ledgerMeta">Published source file</div>
             </div>
           </div>
           <div class="et-card-body">
@@ -282,7 +282,7 @@ a{color:inherit}
           <div class="et-card-head">
             <div>
               <div id="countryTitle" class="et-card-title">Country Coverage</div>
-              <div class="et-card-sub">Current local ledger, grouped by country</div>
+              <div class="et-card-sub">Published records, grouped by country</div>
             </div>
           </div>
           <div class="et-card-body et-table-wrap">
@@ -319,7 +319,7 @@ a{color:inherit}
           <div class="et-card-head">
             <div>
               <div id="policyTitle" class="et-card-title">Source Policy</div>
-              <div class="et-card-sub">Local-first, official-source gated</div>
+              <div class="et-card-sub">Published data, official-source gated</div>
             </div>
           </div>
           <div class="et-card-body">
@@ -505,7 +505,7 @@ a{color:inherit}
 
     if (!next) {
       els.nextElectionTitle.textContent = 'No upcoming executive record';
-      els.nextElectionMeta.textContent = 'Add new records to the local ledger.';
+      els.nextElectionMeta.textContent = 'Add new source-reviewed records.';
       return;
     }
 
@@ -563,7 +563,7 @@ a{color:inherit}
       .sort((a, b) => dateUtc(a.electionDate) - dateUtc(b.electionDate));
 
     if (!queue.length) {
-      els.reviewQueue.innerHTML = '<div class="et-empty">No review records in the local ledger.</div>';
+      els.reviewQueue.innerHTML = '<div class="et-empty">No review records in the tracker.</div>';
       return;
     }
 
@@ -657,7 +657,7 @@ a{color:inherit}
 
   async function loadData() {
     const response = await fetch(DATA_URL, { cache: 'no-store' });
-    if (!response.ok) throw new Error(`Local ledger returned HTTP ${response.status}`);
+    if (!response.ok) throw new Error(`Election data returned HTTP ${response.status}`);
     return response.json();
   }
 
@@ -671,9 +671,9 @@ a{color:inherit}
       renderAll();
     })
     .catch((error) => {
-      els.errorBox.innerHTML = `<div class="et-error">The local election ledger could not load: ${escapeHtml(error.message)}.</div>`;
-      els.nextElectionTitle.textContent = 'Local ledger unavailable';
-      els.nextElectionMeta.textContent = 'Check /data/government/africa-election-tracker.json.';
+      els.errorBox.innerHTML = `<div class="et-error">The published election data could not load: ${escapeHtml(error.message)}.</div>`;
+      els.nextElectionTitle.textContent = 'Tracker unavailable';
+      els.nextElectionMeta.textContent = 'Check the published election data file.';
       els.resultCount.textContent = '0 records shown';
       els.electionList.innerHTML = '';
     });
