@@ -18,7 +18,7 @@ const ROUTES = [
 
 const REQUIRED_LABELS = [
   /Save run to account/i,
-  /Account-backed Pro/i,
+  /Saved-to-account Pro/i,
   /Saved payroll runs/i,
   /Employee records/i,
   /Import payroll(?: data)?|Import file/i,
@@ -34,6 +34,7 @@ const REQUIRED_LABELS = [
 
 const INTERNAL_WORDING = [
   /Supabase actions/i,
+  /account-backed/i,
   /\bshell\b/i,
   /token route/i,
   /service[- ]role/i,
@@ -339,7 +340,7 @@ test.describe("AfroPayroll Pro browser regression pack", () => {
     await expect(page.locator("#apo-resume-wrap")).toBeVisible();
     await expect(page.locator("#apo-resume-source")).toHaveText(/Device progress/i);
     await expect(page.locator("#apo-resume-btn")).toHaveAttribute("href", /flow\.html\?journey=new-hire&resume=1/);
-    await expect(page.locator("body")).toContainText(/Account-backed Pro/i);
+    await expect(page.locator("body")).toContainText(/Saved-to-account Pro/i);
     await expect(page.locator("body")).toContainText(/does not file returns/i);
     await expectNoHorizontalOverflow(page, "public hub with resume");
   });

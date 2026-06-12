@@ -366,7 +366,7 @@
                 <div>
                   <div class="pc-kicker">Recent activity</div>
                   <h2 class="pc-h2" id="activity-title">Payroll and workspace activity</h2>
-                  <p class="pc-section-note">Activity is sourced from AfroPayroll account-backed runs and device saves. Workspace entries appear only as availability notes.</p>
+                  <p class="pc-section-note">Activity is sourced from AfroPayroll account saves and device saves. Workspace entries appear only as availability notes.</p>
                 </div>
                 <button class="pc-btn" type="button" id="reloadPayrollBtn">Reload payroll</button>
               </div>
@@ -412,7 +412,7 @@
                 <div>
                   <div class="pc-kicker">Notifications</div>
                   <h2 class="pc-h2" id="queue-title">Work queue</h2>
-                  <p class="pc-section-note">Payroll warnings are listed first. Setup tasks stay clearly labelled until account-backed sync is available.</p>
+                  <p class="pc-section-note">Payroll warnings are listed first. Setup tasks stay clearly labelled until account sync is available.</p>
                 </div>
                 <span class="pc-pill warn" id="queuePill">0 open</span>
               </div>
@@ -447,7 +447,7 @@
                 <div>
                   <div class="pc-kicker">Data vault</div>
                   <h2 class="pc-h2" id="vault-title">Data entry points</h2>
-                  <p class="pc-section-note">The shared Vault, Team, and Settings routes are live backbone routes. Only payroll has a live account-backed data lane today.</p>
+                  <p class="pc-section-note">The shared Vault, Team, and Settings routes are live backbone routes. Only payroll has a live save-to-account data lane today.</p>
                 </div>
               </div>
               <div class="pc-panel-body">
@@ -907,7 +907,7 @@
       var localRuns = state.local.savedRuns.length;
       var review = dashboardReviewCount();
       if (cloudRuns) {
-        return "Real dashboard: " + cloudRuns + " account-backed runs, " + number(dashboard.total_rows) + " rows, " + review + " review signals.";
+        return "Real dashboard: " + cloudRuns + " account-saved runs, " + number(dashboard.total_rows) + " rows, " + review + " review signals.";
       }
       if (localRuns) {
         return "Device payroll state: " + localRuns + " browser saves, " + state.local.rowCount + " saved rows, " + review + " review signals.";
@@ -1073,16 +1073,16 @@
         queue.push({ title: "Payroll dashboard did not load", copy: state.cloud.error, label: "Real", tone: "warn" });
       }
       if (!state.proStatus || !state.proStatus.isPro) {
-        queue.push({ title: "Pro access is locked", copy: "This dashboard needs an active Pro profile before account-backed work opens.", label: "Access", tone: "lock" });
+        queue.push({ title: "Pro access is locked", copy: "This dashboard needs an active Pro profile before save-to-account work opens.", label: "Access", tone: "lock" });
       }
       if (review > 0) {
-        queue.push({ title: "Payroll items need review", copy: review + " account-backed payroll review or approval signals need attention.", label: "Payroll", tone: "warn" });
+        queue.push({ title: "Payroll items need review", copy: review + " account-saved payroll review or approval signals need attention.", label: "Payroll", tone: "warn" });
       }
       if (state.local.reviewCount > 0) {
         queue.push({ title: "Device payroll saves have warnings", copy: state.local.reviewCount + " review signals exist on this device and are not account-synced records.", label: "Device", tone: "local" });
       }
       if (state.local.savedRuns.length && !cloudRuns.length) {
-        queue.push({ title: "Device payroll runs are not synced", copy: "Saved runs exist on this device, but no account-backed payroll run was returned by the API.", label: "Device", tone: "local" });
+        queue.push({ title: "Device payroll runs are not synced", copy: "Saved runs exist on this device, but no account-saved payroll run was returned by the API.", label: "Device", tone: "local" });
       }
       if (!clients.length) {
         queue.push({ title: "No payroll client selected", copy: "The workspace selector will show payroll clients after they are available from the account dashboard.", label: "Workspace", tone: "online" });
