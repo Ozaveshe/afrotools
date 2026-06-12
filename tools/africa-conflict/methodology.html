@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <link rel="stylesheet" href="style.css?v=4260f20e">
+<script src="/tools/africa-conflict/local-api-guard.js?v=8f670098" defer></script>
 <script src="/engines/africa-conflict-engine.js?v=3f1cd07e" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -44,8 +45,8 @@
       <nav class="acd-hero-nav">
         <a href="/tools/africa-conflict/">Dashboard</a>
         <a href="/tools/africa-conflict/conflicts/">All Conflicts</a>
-        <a href="/tools/africa-conflict/forecasts/">Forecasts</a>
-        <a href="/tools/africa-conflict/methodology/" class="active">Methodology</a>
+        <a href="/tools/africa-conflict/forecasts">Forecasts</a>
+        <a href="/tools/africa-conflict/methodology" class="active">Methodology</a>
       </nav>
     </div>
   </div>
@@ -63,6 +64,12 @@
       </p>
       <p style="font-size:.85rem;line-height:1.8;color:var(--acd-text-muted);margin-top:10px">
         Scenario forecasts are model estimates based on analyst research and historical conflict patterns. They are not predictions and carry wide uncertainty ranges. The base case represents the most likely trajectory given current conditions; optimistic and worst-case scenarios represent plausible but less likely outcomes. No forecast should be used as the sole basis for operational, financial, or safety decisions.
+      </p>
+      <p style="font-size:.85rem;line-height:1.8;color:var(--acd-text-muted);margin-top:10px">
+        AfroConflict is an information dashboard only. It is not security advice, travel advice, tactical guidance, legal advice, emergency instruction, or a substitute for verified local sources. It does not provide route choices, evasion instructions, weapons guidance, or field action plans.
+      </p>
+      <p style="font-size:.85rem;line-height:1.8;color:var(--acd-text-muted);margin-top:10px">
+        The editorial goal is to help readers understand risk without doomscrolling. We avoid graphic detail, inflammatory labels, and sensational framing; where a record is uncertain, lagged, or static, the source boundary should be visible.
       </p>
     </div>
 
@@ -261,20 +268,20 @@
           <tbody>
             <tr style="border-bottom:1px solid var(--acd-border)">
               <td style="padding:10px 8px">Conflict Events (battles, fatalities)</td>
-              <td style="padding:10px 8px;color:var(--acd-text-muted)">ACLED API (automated)</td>
-              <td style="padding:10px 8px;color:var(--acd-text-muted)">Daily at 03:00 UTC</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">ACLED-style source import where configured</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Source refresh lane; verify displayed date</td>
               <td style="padding:10px 8px;color:var(--acd-text-muted)">1–7 days</td>
             </tr>
             <tr style="border-bottom:1px solid var(--acd-border)">
               <td style="padding:10px 8px">Displacement Figures (IDPs, refugees)</td>
-              <td style="padding:10px 8px;color:var(--acd-text-muted)">UNHCR API (automated)</td>
-              <td style="padding:10px 8px;color:var(--acd-text-muted)">Daily at 03:00 UTC</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">UNHCR/IDMC source import where configured</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Source refresh lane; verify displayed date</td>
               <td style="padding:10px 8px;color:var(--acd-text-muted)">Weeks to months</td>
             </tr>
             <tr style="border-bottom:1px solid var(--acd-border)">
               <td style="padding:10px 8px">GDP / Economic Indicators</td>
-              <td style="padding:10px 8px;color:var(--acd-text-muted)">World Bank API (automated)</td>
-              <td style="padding:10px 8px;color:var(--acd-text-muted)">Daily at 03:00 UTC</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">World Bank/SIPRI source import where configured</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Source refresh lane; verify displayed date</td>
               <td style="padding:10px 8px;color:var(--acd-text-muted)">1–2 years</td>
             </tr>
             <tr style="border-bottom:1px solid var(--acd-border)">
@@ -322,6 +329,8 @@
             <li>Individual terrorist incidents (tracked in events but not primary)</li>
             <li>Historical resolved conflicts (archive only)</li>
             <li>Near-real-time battlefield tracking</li>
+            <li>Security, travel, tactical, weapon, or evasion guidance</li>
+            <li>Graphic or sensational conflict coverage</li>
           </ul>
         </div>
       </div>

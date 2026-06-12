@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AfroConflict — Africa Conflict Intelligence Dashboard | AfroTools</title>
-<meta name="description" content="Live intelligence dashboard tracking armed conflicts across Africa — displacement, economic impact, actor networks, and scenario forecasts. Built by Africans for Africans.">
+<title>AfroConflict - Africa Conflict Information Dashboard | AfroTools</title>
+<meta name="description" content="Information dashboard for understanding armed conflict data across Africa, including event records, displacement estimates, economic indicators, and source limitations.">
 <link rel="canonical" href="https://afrotools.com/tools/africa-conflict/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="AfroConflict — Africa Conflict Intelligence Dashboard">
-<meta property="og:description" content="Live tracking of armed conflicts across Africa — displacement, economic impact, conflict economy actors, and scenario forecasts.">
+<meta property="og:title" content="AfroConflict - Africa Conflict Information Dashboard">
+<meta property="og:description" content="Information dashboard for understanding conflict data across Africa, with source labels, limitations, and non-sensational context.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/africa-conflict.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/africa-conflict/">
@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="/tools/africa-conflict/style.css?v=4260f20e">
 <link rel="stylesheet" href="/tools/africa-conflict/dashboard.css?v=724389d6">
 <link rel="stylesheet" href="/tools/africa-conflict/what-changed.css?v=c7d53a90">
+<link rel="stylesheet" href="/tools/africa-conflict/safety.css?v=44efb980">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   .acd-brief-builder{padding:28px 24px 6px;background:#07111f}
@@ -44,6 +45,7 @@
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
+<script src="/tools/africa-conflict/local-api-guard.js?v=8f670098" defer></script>
 <script src="/engines/africa-conflict-engine.js?v=3f1cd07e" defer></script>
 <script src="/tools/africa-conflict/static-routes.js?v=eb9fb3ae" defer></script>
 <meta property="article:modified_time" content="2026-04-14">
@@ -51,8 +53,8 @@
 <link rel="stylesheet" href="/assets/css/african-workflow.css?v=b5a0b1a7">
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AfroConflict — Africa Conflict Intelligence Dashboard | AfroTools">
-<meta name="twitter:description" content="Live intelligence dashboard tracking armed conflicts across Africa — displacement, economic impact, actor networks, and scenario forecasts. Built by Africans for Africans.">
+<meta name="twitter:title" content="AfroConflict - Africa Conflict Information Dashboard | AfroTools">
+<meta name="twitter:description" content="Information dashboard for understanding armed conflict data across Africa, source limitations, and context without sensational framing.">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/africa-conflict/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/carte-conflits-afrique/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/africa-conflict/" />
@@ -67,37 +69,37 @@
       <div class="acd-hero-copy">
         <div class="acd-hero-kicker">
           <span class="acd-live-dot"></span>
-          Live Intelligence Layer
+          Information dashboard
         </div>
         <div class="acd-hero-heading-wrap">
           <h1>AfroConflict</h1>
-          <p class="acd-hero-desc">An operational dashboard for tracking armed conflict across Africa, pressure on civilians, and spillover risk with a cleaner jump from regional scan to conflict dossier.</p>
+          <p class="acd-hero-desc">A conflict information dashboard for understanding risk without doomscrolling. It is not security advice, not travel advice, not tactical guidance, and not a substitute for verified local sources.</p>
         </div>
         <div class="acd-hero-statline" id="acd-hero-statline">Loading conflict intelligence...</div>
         <div class="acd-hero-protocol" aria-label="Dashboard operating model">
           <div class="acd-hero-protocol-item">
             <span class="acd-protocol-label">Coverage</span>
-            <strong>Conflict theatres, spillover exposure, displacement, and actor networks.</strong>
+            <strong>Conflict theatres, spillover exposure, displacement estimates, and actor-network context.</strong>
           </div>
           <div class="acd-hero-protocol-item">
             <span class="acd-protocol-label">Inputs</span>
-            <strong>ACLED, UNHCR, World Bank, analyst notes, and manual verification layers.</strong>
+            <strong>ACLED-style events, UNHCR/IDMC displacement, World Bank/SIPRI indicators, and static snapshots.</strong>
           </div>
           <div class="acd-hero-protocol-item">
-            <span class="acd-protocol-label">Workflow</span>
-            <strong>Scan the map, pin the watchlist, then open a dossier only when you need depth.</strong>
+            <span class="acd-protocol-label">Boundary</span>
+            <strong>No routes, evasion, weapons, or tactical action. Review sources before sharing.</strong>
           </div>
         </div>
         <div class="acd-hero-actions">
-          <a class="acd-btn acd-btn-primary" href="#acd-map-section">Open live map</a>
+          <a class="acd-btn acd-btn-primary" href="#acd-map-section">Open map</a>
           <a class="acd-btn acd-btn-outline" href="#acd-watchlist-section">Review watchlist</a>
-          <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology/">Read methodology</a>
+          <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology">Read methodology</a>
         </div>
         <div class="acd-hero-chips" id="acd-hero-chips"></div>
       </div>
 
       <aside class="acd-briefing-card" id="acd-briefing-card" aria-live="polite">
-        <div class="acd-loading">Building live briefing...</div>
+        <div class="acd-loading">Building dashboard briefing...</div>
       </aside>
     </div>
 
@@ -107,7 +109,7 @@
           <p class="acd-section-kicker">Filter theatre</p>
           <h2 id="acd-command-title">Trim the signal without losing the regional picture.</h2>
         </div>
-        <p class="acd-command-copy">Search by country or conflict, isolate urgency, or widen the aperture to include global pressure on Africa.</p>
+        <p class="acd-command-copy">Search by country or conflict, isolate urgency, or widen the aperture while keeping source limits visible.</p>
       </div>
 
       <div class="acd-command-bar" aria-label="Dashboard controls">
@@ -143,21 +145,45 @@
 
     <nav class="acd-hero-nav" aria-label="Africa conflict sections">
       <a href="/tools/africa-conflict/" class="active">Dashboard</a>
-      <a href="/tools/africa-conflict/map/">Map</a>
+      <a href="/tools/africa-conflict/map">Map</a>
       <a href="/tools/africa-conflict/conflicts/">All Conflicts</a>
-      <a href="/tools/africa-conflict/economy/">Economy</a>
-      <a href="/tools/africa-conflict/displacement/">Displacement</a>
-      <a href="/tools/africa-conflict/actors/">Actors</a>
-      <a href="/tools/africa-conflict/forecasts/">Forecasts</a>
-      <a href="/tools/africa-conflict/methodology/">Methodology</a>
+      <a href="/tools/africa-conflict/economy">Economy</a>
+      <a href="/tools/africa-conflict/displacement">Displacement</a>
+      <a href="/tools/africa-conflict/actors">Actors</a>
+      <a href="/tools/africa-conflict/forecasts">Forecasts</a>
+      <a href="/tools/africa-conflict/methodology">Methodology</a>
     </nav>
+  </section>
+
+  <section class="acd-method-card" aria-labelledby="acd-method-card-title">
+    <div class="acd-method-card-inner">
+      <div class="acd-method-copy">
+        <p class="acd-section-kicker">Methodology and safety</p>
+        <h2 id="acd-method-card-title">Understand risk without doomscrolling.</h2>
+        <p>AfroConflict is an information dashboard. It summarizes data types, update cadence, known limitations, and source labels so readers can orient themselves without graphic, inflammatory, or sensational framing.</p>
+        <p class="acd-method-caveat">Not security advice, not travel advice, not legal advice, not tactical guidance, and not emergency instruction. Do not use it to choose routes, evade checkpoints, handle weapons, or make field decisions.</p>
+        <div class="acd-method-links">
+          <a class="acd-btn acd-btn-primary" href="/tools/africa-conflict/methodology">Read full methodology</a>
+          <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/map">Map</a>
+          <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/displacement">Displacement</a>
+          <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/economy">Economy</a>
+        </div>
+      </div>
+      <div class="acd-source-label-grid" aria-label="AfroConflict source labels">
+        <article><span>Methodology</span><strong>Data types, update cadence, limitations</strong><small>Use this as context for reading the dashboard, not as security, travel, or tactical guidance.</small></article>
+        <article><span>Event data</span><strong>ACLED-style / manual</strong><small>Event records, dates, locations, actors, and reported fatalities. Treat as structured incident data, not a complete real-time feed.</small></article>
+        <article><span>Displacement</span><strong>UNHCR / IDMC</strong><small>IDPs and refugees can lag fast-moving conditions by weeks or months.</small></article>
+        <article><span>Economic context</span><strong>World Bank / SIPRI / manual</strong><small>Economic and military-spend indicators are historical or modeled estimates, not operational forecasts.</small></article>
+        <article><span>Static snapshot</span><strong>Generated dossier data</strong><small>Static pages reflect the last generated snapshot and should be checked against source dates before quoting.</small></article>
+      </div>
+    </div>
   </section>
 
   <section class="acd-kpi-band">
     <div class="acd-section-intro">
       <div>
-        <p class="acd-section-kicker">Operational snapshot</p>
-        <h2>What changed across the theatre</h2>
+        <p class="acd-section-kicker">Current snapshot</p>
+        <h2>Conflict data in context</h2>
       </div>
       <p>Fast-read totals for scope, displacement, fatalities, military spend, spillover, and recent escalation pressure.</p>
     </div>
@@ -179,9 +205,9 @@
         <div>
           <p class="acd-section-kicker">Brief builder</p>
           <h2 id="acd-brief-builder-title">Turn the dashboard into a situation brief</h2>
-          <p>Create a copyable field note for humanitarian, security, media, or supply-chain users. This does not replace source verification; it packages the current dashboard data so teams know what to check next.</p>
+          <p>Create a copyable or exportable information brief for non-tactical use. Every output includes source labels, caveats, and a review-before-sharing note.</p>
         </div>
-        <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology/">Source notes</a>
+        <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology">Source notes</a>
       </div>
       <div class="acd-brief-form">
         <label class="acd-brief-field">
@@ -191,21 +217,28 @@
         <label class="acd-brief-field">
           <span>Audience</span>
           <select id="acd-brief-audience">
-            <option value="humanitarian">Humanitarian coordination</option>
-            <option value="security">Security brief</option>
-            <option value="media">Media explainer</option>
-            <option value="supply">Supply-chain risk</option>
+            <option value="journalist">Journalist</option>
+            <option value="ngo">NGO analyst</option>
+            <option value="business">Business risk</option>
+            <option value="student">Student / researcher</option>
+            <option value="diaspora">Diaspora family update</option>
           </select>
         </label>
         <label class="acd-brief-field">
           <span>Length</span>
           <select id="acd-brief-length">
-            <option value="short">Short note</option>
-            <option value="ops">Ops checklist</option>
+            <option value="sms">SMS</option>
+            <option value="one-page">One-page</option>
+            <option value="detailed">Detailed</option>
           </select>
         </label>
         <button class="acd-btn acd-btn-primary" id="acd-brief-copy" type="button">Copy brief</button>
       </div>
+      <div class="acd-brief-builder-actions acd-brief-export-actions">
+        <button class="acd-btn acd-btn-outline" id="acd-brief-export-txt" type="button">Export TXT</button>
+        <button class="acd-btn acd-btn-outline" id="acd-brief-export-json" type="button">Export JSON</button>
+      </div>
+      <p class="acd-brief-review-note">Review before sharing. Remove identifying details, check source dates, and do not treat this as security, travel, or tactical advice.</p>
       <div class="acd-brief-result" id="acd-brief-result" aria-live="polite">
         <p>Loading conflict options...</p>
       </div>
@@ -235,7 +268,7 @@
           <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#65a30d"></div>Low</div>
           <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#6b7280"></div>Other</div>
         </div>
-        <span class="acd-source-tag" id="acd-map-footnote">Marker size reflects estimated fatalities</span>
+        <span class="acd-source-tag" id="acd-map-footnote">Static snapshot: marker size reflects estimated fatalities</span>
       </div>
     </div>
 
@@ -248,7 +281,7 @@
         <div class="acd-top-header">
           <div>
             <h2>Priority watchlist</h2>
-            <p class="acd-watchlist-copy">Click a conflict or map marker to pin it as the live briefing.</p>
+            <p class="acd-watchlist-copy">Click a conflict or map marker to pin it as the dashboard briefing.</p>
           </div>
           <span class="acd-watchlist-count" id="acd-watchlist-count">Loading...</span>
         </div>
@@ -266,7 +299,7 @@
           <h2>Recent events</h2>
           <p class="acd-events-copy" id="acd-events-meta">Filtering recent event feed...</p>
         </div>
-        <span class="acd-source-tag">ACLED / Manual</span>
+        <span class="acd-source-tag">ACLED-style / Manual</span>
       </div>
 
       <div class="acd-event-controls">
@@ -345,7 +378,7 @@
     <div>
       <p class="acd-section-kicker">Static dossiers</p>
       <h2 id="acd-static-dossiers-title">Clean static dossiers for high-signal conflicts</h2>
-      <p class="acd-section-sub">17 Africa-scope dossiers now resolve through /tools/africa-conflict/conflicts/&lt;slug&gt;/ routes. Query detail pages remain noindex fallbacks.</p>
+      <p class="acd-section-sub">17 Africa-scope static snapshot dossiers now resolve through /tools/africa-conflict/conflicts/&lt;slug&gt;/ routes. Check source dates before quoting.</p>
     </div>
   </div>
   <div class="acd-static-discovery-grid">
@@ -451,11 +484,12 @@
     })[0] || null;
   }
   function audienceNote(conflict, audience) {
-    var spillover = (conflict.spillover_countries || []).length;
-    if (audience === 'security') return 'Security lens: monitor escalation risk, exposed neighboring states, actor shifts, and recent fatal events before travel or field movement.';
-    if (audience === 'media') return 'Media lens: explain the conflict driver, civilian impact, and source limits. Avoid treating fatality or displacement estimates as exact counts.';
-    if (audience === 'supply') return 'Supply-chain lens: review border exposure, fuel corridors, port/road alternatives, insurance terms, and supplier concentration.';
-    return 'Humanitarian lens: prioritize civilian access, displacement pressure, exposed border communities, and coordination with verified operational data sources.';
+    if (audience === 'journalist') return 'Journalist lens: verify names, dates, figures, and source limits before publishing.';
+    if (audience === 'ngo') return 'NGO analyst lens: use this for desk context and confirm details with primary humanitarian sources.';
+    if (audience === 'business') return 'Business risk lens: use this for country or sector exposure context, not movement or site-security instruction.';
+    if (audience === 'student') return 'Research lens: cite original datasets or reports, not this generated brief alone.';
+    if (audience === 'diaspora') return 'Family update lens: keep wording calm, avoid rumors, and check source dates before sharing.';
+    return 'Information lens: use this as non-tactical context only.';
   }
   function renderBrief() {
     var select = $('acd-brief-conflict');
@@ -467,8 +501,8 @@
       return;
     }
     select.value = conflict.slug;
-    var audience = ($('acd-brief-audience') || {}).value || 'humanitarian';
-    var length = ($('acd-brief-length') || {}).value || 'short';
+    var audience = ($('acd-brief-audience') || {}).value || 'journalist';
+    var length = ($('acd-brief-length') || {}).value || 'sms';
     var spilloverStates = (conflict.spillover_countries || []).join(', ') || 'none listed';
     var summary = conflict.summary || conflict.why_persists || conflict.peace_efforts || 'Analyst summary is still being added for this dossier.';
     var nextChecks = [
@@ -477,7 +511,7 @@
       'Cross-check event trend with ACLED or verified local reporting'
     ];
     if (length === 'ops') {
-      nextChecks.push('Document assumptions before making operational decisions');
+      nextChecks.push('Document assumptions before relying on the brief');
       nextChecks.push('Record last updated time and source owner');
     }
     lastBrief = [
@@ -491,7 +525,8 @@
       'Audience note: ' + audienceNote(conflict, audience),
       'Summary: ' + summary,
       'Next checks: ' + nextChecks.join('; '),
-      'Caution: Use this as situational awareness only. Verify with primary sources before operational action.'
+      'Source labels: Events - ACLED-style / manual; displacement - UNHCR / IDMC; economy - World Bank / SIPRI / manual; static snapshot - AfroConflict dashboard data.',
+      'Caution: Information dashboard only. Not security advice, travel advice, tactical guidance, legal advice, or emergency instruction. Verify with primary sources before sharing.'
     ].join('\n');
     result.innerHTML =
       '<div class="acd-brief-result-grid">' +
@@ -502,8 +537,9 @@
       '</div>' +
       '<p><strong>' + esc(conflict.short_name || conflict.name) + ':</strong> ' + esc(summary) + '</p>' +
       '<p>' + esc(audienceNote(conflict, audience)) + '</p>' +
-      '<p><strong>Verification caution:</strong> Use this brief as situational awareness only, then verify event and displacement figures against primary sources.</p>' +
-      '<div class="acd-brief-builder-actions"><a class="acd-btn acd-btn-outline" href="' + esc(routeFor(conflict.slug)) + '">Open dossier</a><a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology/">Check methodology</a></div>';
+      '<p><strong>Sources:</strong> ACLED-style / manual events; UNHCR / IDMC displacement; World Bank / SIPRI / manual economic indicators; AfroConflict static snapshot.</p>' +
+      '<p><strong>Verification caution:</strong> Information dashboard only. Not security advice, travel advice, tactical guidance, legal advice, or emergency instruction. Verify figures against primary sources before sharing.</p>' +
+      '<div class="acd-brief-builder-actions"><a class="acd-btn acd-btn-outline" href="' + esc(routeFor(conflict.slug)) + '">Open dossier</a><a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology">Check methodology</a></div>';
   }
   function initBriefBuilder() {
     var select = $('acd-brief-conflict');
@@ -546,6 +582,8 @@
   document.addEventListener('DOMContentLoaded', initBriefBuilder);
 })();
 </script>
+<script src="/tools/africa-conflict/brief-builder.js?v=4472e98b" defer></script>
+<script src="/tools/africa-conflict/dashboard-qa.js?v=78c1a83b" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

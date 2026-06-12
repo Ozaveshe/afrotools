@@ -42,7 +42,8 @@
 <link rel="stylesheet" href="/tools/cv-builder/css/cv-mobile-control-fix.css?v=c99ef965">
 <link rel="stylesheet" href="/tools/cv-builder/css/cv-country-advisor-compact.css?v=6cacc450">
 <link rel="stylesheet" href="/tools/cv-builder/css/cv-form-spacing-fix.css?v=49ea1f5e">
-<link rel="stylesheet" href="/tools/cv-builder/css/cv-next-steps-polish.css?v=48c48ecb">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-next-steps-polish.css?v=b8e2755a">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-workflow-dashboard.css?v=395f1340">
 <style>
 .cv-ats-proof{max-width:640px;margin:16px 0 0;padding:14px 16px;border:1px solid var(--color-border,#e5e7eb);border-radius:10px;background:#fff;color:var(--color-text,#111);box-shadow:0 6px 18px rgba(15,23,42,.06)}
 .cv-ats-proof-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
@@ -60,17 +61,58 @@
 .cv-starter-guidance-panel ul{display:grid;gap:5px;margin:0;padding-left:18px;color:#334155;font-size:.76rem;line-height:1.4}
 .cv-section.cv-starter-priority{border-color:#bfdbfe;box-shadow:0 0 0 2px rgba(37,99,235,.08)}
 .cv-section.cv-starter-support{border-color:#d1fae5}
-.cv-handoff-panel{max-width:1180px;margin:18px auto 0;padding:18px;border:1px solid #d7e1ea;border-radius:18px;background:#fff;box-shadow:0 16px 44px rgba(15,23,42,.08);display:grid;gap:14px}
-.cv-handoff-copy{display:grid;gap:6px}.cv-handoff-kicker{color:#087f5b;font-size:11px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}.cv-handoff-copy h2{margin:0;color:#071426;font-size:clamp(20px,2vw,26px);font-weight:950;line-height:1.12;letter-spacing:0}.cv-handoff-copy p{margin:0;color:#536172;font-size:13px;font-weight:750;line-height:1.5}.cv-handoff-note{color:#0f766e!important}
-.cv-handoff-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.cv-handoff-cta{display:flex;align-items:center;justify-content:center;min-height:46px;padding:10px 12px;border:1px solid #cbd8e6;border-radius:10px;background:#f8fbff;color:#102033;text-align:center;text-decoration:none;font-size:13px;font-weight:950;line-height:1.25}.cv-handoff-cta:hover,.cv-handoff-cta:focus-visible{border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.16);outline:none;text-decoration:none}.cv-handoff-cta[aria-disabled="true"]{opacity:.55;cursor:not-allowed}
-.cv-handoff-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cv-handoff-tools button{min-height:40px;padding:8px 12px;border:1px solid #cbd8e6;border-radius:10px;background:#fff;color:#102033;font:inherit;font-size:12px;font-weight:900;cursor:pointer}.cv-handoff-tools button:disabled{opacity:.55;cursor:not-allowed}.cv-handoff-tools button:hover:not(:disabled),.cv-handoff-tools button:focus-visible{border-color:#087f5b;box-shadow:0 0 0 3px rgba(8,127,91,.14);outline:none}.cv-handoff-tools span{color:#64748b;font-size:12px;font-weight:800;line-height:1.4}
+.cv-handoff-panel{max-width:1180px;margin:14px auto 0;padding:14px 16px;border:1px solid #d7e1ea;border-radius:12px;background:#fff;box-shadow:none;display:grid;grid-template-columns:minmax(250px,.92fr) minmax(0,1.25fr);gap:12px;align-items:center}
+.cv-handoff-copy{display:grid;gap:4px;min-width:0}.cv-handoff-kicker{color:#087f5b;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.cv-handoff-copy h2{margin:0;color:#071426;font-size:18px;font-weight:900;line-height:1.15;letter-spacing:0}.cv-handoff-copy p{margin:0;color:#536172;font-size:12.5px;font-weight:700;line-height:1.45}.cv-handoff-note{color:#0f766e!important}
+.cv-handoff-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.cv-handoff-cta{display:flex;align-items:center;justify-content:center;min-height:40px;padding:8px 10px;border:1px solid #d7e1ea;border-radius:8px;background:#fff;color:#102033;text-align:center;text-decoration:none;font-size:12px;font-weight:850;line-height:1.2}.cv-handoff-cta:hover,.cv-handoff-cta:focus-visible{border-color:#0b63ce;background:#f8fbff;box-shadow:0 0 0 3px rgba(11,99,206,.13);outline:none;text-decoration:none}.cv-handoff-cta[aria-disabled="true"]{opacity:.5;cursor:not-allowed}
+.cv-handoff-tools{grid-column:2;display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cv-handoff-tools button{min-height:36px;padding:7px 10px;border:1px solid #d7e1ea;border-radius:8px;background:#fff;color:#102033;font:inherit;font-size:12px;font-weight:850;cursor:pointer}.cv-handoff-tools button:disabled{opacity:.5;cursor:not-allowed}.cv-handoff-tools button:hover:not(:disabled),.cv-handoff-tools button:focus-visible{border-color:#087f5b;box-shadow:0 0 0 3px rgba(8,127,91,.12);outline:none}.cv-handoff-tools span{color:#64748b;font-size:12px;font-weight:750;line-height:1.35}
 .cv-readiness-strip{max-width:1180px;margin:16px auto 0;padding:12px 14px;border:1px solid #dbeafe;border-radius:14px;background:#f8fbff;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;color:#0f172a}
 .cv-readiness-item{min-height:56px;padding:10px;border:1px solid rgba(37,99,235,.12);border-radius:10px;background:#fff}
 .cv-readiness-item strong{display:block;margin-bottom:3px;font-size:.78rem;font-weight:950;color:#102033}
 .cv-readiness-item span{display:block;color:#526173;font-size:.72rem;font-weight:750;line-height:1.35}
-@media(max-width:860px){.cv-handoff-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cv-info{margin:52px 0 0;padding:44px 24px 52px;border-top:1px solid #d8e6ee;border-bottom:1px solid #d8e6ee;background:#f6fafb;color:#263545;font-family:var(--font-body)}
+.cv-info-shell{max-width:1120px;margin:0 auto;display:grid;gap:28px}
+.cv-info-hero{display:grid;grid-template-columns:minmax(0,1.38fr) minmax(260px,.62fr);gap:22px;align-items:stretch}
+.cv-info-copy{display:grid;align-content:start;gap:14px;min-width:0}
+.cv-info-kicker{color:#087f5b;font-size:11px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+.cv-info h2,.cv-info h3,.cv-info h4,.cv-info p{margin:0}
+.cv-info h2{max-width:820px;color:#0b1728;font-family:var(--font-display);font-size:clamp(28px,3vw,42px);font-weight:900;line-height:1.05;letter-spacing:0}
+.cv-info-lede{max-width:850px;color:#4d5f74;font-size:16px;line-height:1.72}
+.cv-info-lede strong{color:#0f5132;font-weight:900}
+.cv-info-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.cv-info-cta button,.cv-info-cta a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border-radius:8px;border:1px solid #b8c9d8;background:#fff;color:#102033;text-decoration:none;font-size:13px;font-weight:900;line-height:1.2;cursor:pointer;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease,color .15s ease}
+.cv-info-cta .primary{border-color:#087f5b;background:#087f5b;color:#fff}
+.cv-info-cta button:hover,.cv-info-cta button:focus-visible,.cv-info-cta a:hover,.cv-info-cta a:focus-visible{border-color:#0369a1;box-shadow:0 0 0 3px rgba(3,105,161,.14);outline:none;text-decoration:none}
+.cv-info-cta .primary:hover,.cv-info-cta .primary:focus-visible{border-color:#075f45;background:#075f45;color:#fff}
+.cv-info-outcome{display:grid;gap:12px;padding:18px;border:1px solid #cfe0dc;border-radius:12px;background:#fff;color:#102033}
+.cv-info-outcome strong{font-size:15px;font-weight:950}
+.cv-info-outcome span{display:block;padding-left:14px;border-left:3px solid #14b8a6;color:#4f6072;font-size:13px;font-weight:750;line-height:1.45}
+.cv-info-block{display:grid;gap:14px}
+.cv-info-block-head{display:grid;gap:6px;max-width:820px}
+.cv-info-block h3{color:#0b1728;font-family:var(--font-display);font-size:24px;font-weight:900;line-height:1.15}
+.cv-info-block-head p,.cv-info-ats p{color:#596a7d;font-size:15px;line-height:1.65}
+.cv-info-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cv-info-tile{display:grid;align-content:start;gap:8px;min-height:132px;padding:14px;border:1px solid #d5e1ea;border-radius:10px;background:#fff}
+.cv-info-tile b{color:#0b1728;font-size:14px;font-weight:950;line-height:1.25}
+.cv-info-tile span,.cv-info-tile p{color:#5a6c80;font-size:13px;font-weight:700;line-height:1.48}
+.cv-info-template{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.cv-info-template .cv-info-tile{min-height:168px;border-top:4px solid #0369a1}
+.cv-info-chip{display:inline-flex;width:max-content;max-width:100%;padding:5px 8px;border-radius:999px;background:#e8f7f4;color:#0f766e;font-size:11px;font-weight:950;line-height:1}
+.cv-info-country{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cv-info-country .cv-info-tile{min-height:178px}
+.cv-info-country a{width:max-content;color:#035fc7;font-weight:950;text-decoration:underline;text-underline-offset:3px}
+.cv-info-country a:hover,.cv-info-country a:focus-visible{color:#023e8a;outline:2px solid rgba(3,105,161,.18);outline-offset:3px}
+.cv-info-ats{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.54fr);gap:18px;align-items:center;padding:18px;border:1px solid #cfe0dc;border-radius:12px;background:#fff}
+.cv-info-ats h3{color:#0b1728;font-family:var(--font-display);font-size:22px;font-weight:900;line-height:1.15}
+.cv-info-ats-note{display:grid;gap:6px;padding:14px;border-radius:10px;background:#effaf8;color:#0f5132;font-size:13px;font-weight:850;line-height:1.45}
+.cv-info-faq{display:grid;gap:10px}
+.cv-info-faq details{border:1px solid #d5e1ea;border-radius:10px;background:#fff;padding:14px 16px}
+.cv-info-faq summary{cursor:pointer;color:#0b1728;font-weight:900}
+.cv-info-faq p{margin-top:8px;color:#58697c;font-size:14px;line-height:1.6}
+@media(max-width:980px){.cv-handoff-panel{grid-template-columns:1fr!important}.cv-handoff-tools{grid-column:1}.cv-handoff-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:860px){.cv-readiness-strip{grid-template-columns:repeat(2,minmax(0,1fr));margin-left:12px;margin-right:12px}}
-@media(max-width:720px){.cv-ats-proof{margin-left:auto;margin-right:auto}.cv-quick-start{grid-template-columns:1fr}.cv-start-card small{font-size:.7rem}.cv-handoff-panel{margin:14px 12px 0;padding:14px;border-radius:16px}.cv-handoff-actions{grid-template-columns:1fr}.cv-handoff-tools{display:grid;grid-template-columns:1fr}.cv-handoff-tools span{grid-column:1}.cv-readiness-strip{grid-template-columns:1fr}}
+@media(max-width:960px){.cv-info{padding:34px 16px 42px}.cv-info-hero,.cv-info-ats{grid-template-columns:1fr!important}.cv-info-tiles{grid-template-columns:repeat(2,minmax(0,1fr))!important}.cv-info-template{grid-template-columns:repeat(2,minmax(0,1fr))!important}.cv-info-country{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:720px){.cv-ats-proof{margin-left:auto;margin-right:auto}.cv-quick-start{grid-template-columns:1fr}.cv-start-card small{font-size:.7rem}.cv-handoff-panel{margin:12px 12px 0;padding:12px;border-radius:10px}.cv-handoff-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.cv-handoff-cta{min-height:46px}.cv-handoff-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important}.cv-handoff-tools span{grid-column:1/-1}.cv-readiness-strip{grid-template-columns:1fr}.cv-info h2{font-size:30px}.cv-info-tiles,.cv-info-template,.cv-info-country{grid-template-columns:1fr!important}.cv-info-tile{min-height:auto}.cv-info-cta{display:grid;grid-template-columns:1fr}.cv-info-cta button,.cv-info-cta a{width:100%}}
+@media(max-width:360px){.cv-handoff-actions,.cv-handoff-tools{grid-template-columns:1fr!important}}
 @media print{.cv-handoff-panel{display:none!important}}
 </style>
 <script>
@@ -412,7 +454,7 @@ window.loadPdfLibs=function(){
     <div class="cv-toolbar-left">
       <div class="cv-tool-brand">
         <span class="cv-brand-icon">CV</span>CV Builder
-        <span class="cv-tool-sub">- 8 export-ready templates for African job markets</span>
+        <span class="cv-tool-sub">- 14 export-ready templates for African job markets</span>
       </div>
     </div>
     <div class="cv-toolbar-right">
@@ -488,85 +530,141 @@ window.loadPdfLibs=function(){
 <div class="cv-toast"></div>
 
 <!-- SEO Content Section -->
-<section style="max-width:1040px;margin:48px auto;padding:0 24px;font-family:var(--font-body);color:#374151;line-height:1.75">
-  <h2 style="font-size:1.65rem;font-weight:850;color:var(--color-text);margin:0 0 14px;font-family:var(--font-display)">Free CV and Resume Builder for African Job Markets</h2>
-  <p>AfroTools CV Builder helps students, graduates and professionals prepare a country-aware CV for African and international applications. It combines a guided editor, live A4 preview, ATS readiness checks, job-description matching, a cover letter generator, LinkedIn profile helpers and a local job application tracker. PDF export is free and does not add a watermark.</p>
-  <p>Use it as a free CV builder for Africa, a free resume builder for diaspora applications, or a focused ATS CV builder when a job portal asks for a simple, readable document. The guidance is educational and editable. It does not force sensitive personal data or promise interviews.</p>
+<section class="cv-info" aria-labelledby="cvInfoTitle">
+  <div class="cv-info-shell">
+    <div class="cv-info-hero">
+      <div class="cv-info-copy">
+        <span class="cv-info-kicker">Built for real applications</span>
+        <h2 id="cvInfoTitle">Free CV and Resume Builder for African Job Markets</h2>
+        <p class="cv-info-lede"><strong>AfroTools CV Builder</strong> helps students, graduates and professionals prepare a country-aware CV for African and international applications. It combines a guided editor, live A4 preview, ATS readiness checks, job-description matching, cover letters, LinkedIn helpers, and a local job tracker.</p>
+        <p class="cv-info-lede">Use it as a free CV builder for Africa, a resume builder for diaspora applications, or a focused ATS CV builder when a job portal asks for a simple, readable document. PDF export is free, has no watermark, and the guidance stays editable.</p>
+        <div class="cv-info-cta" aria-label="CV Builder actions">
+          <button type="button" class="primary" data-cv-entry="build">Start building</button>
+          <a href="/tools/cover-letter-generator/">Create cover letter</a>
+        </div>
+      </div>
+      <aside class="cv-info-outcome" aria-label="What job seekers can finish here">
+        <strong>Leave with the essentials</strong>
+        <span>One clean CV for recruiters, portals, and direct applications.</span>
+        <span>A matching cover letter and short application message.</span>
+        <span>A private backup you control in this browser.</span>
+      </aside>
+    </div>
 
-  <h3 style="font-size:1.2rem;font-weight:800;color:var(--color-text);margin:30px 0 10px;font-family:var(--font-display)">What You Can Build</h3>
-  <ul style="padding-left:20px;margin:0 0 18px">
-    <li>A country-aware CV for Nigeria, Kenya, South Africa, Ghana, Egypt, Morocco, Ethiopia and other African markets.</li>
-    <li>An ATS plain version for portals that prefer simple formatting.</li>
-    <li>A matching cover letter, short email application message, LinkedIn headline and LinkedIn About section.</li>
-    <li>A job tracker with application status, deadline, follow-up date and CV version notes.</li>
-    <li>A reusable JSON backup so you can restore your CV data later.</li>
-  </ul>
+    <div class="cv-info-block">
+      <div class="cv-info-block-head">
+        <h3>What you can build</h3>
+        <p>Pick the output you need now, then keep improving the same CV as your applications change.</p>
+      </div>
+      <div class="cv-info-tiles">
+        <article class="cv-info-tile">
+          <b>Country-aware CV</b>
+          <span>Nigeria, Kenya, South Africa, Ghana, Egypt, Morocco, Ethiopia, and other African markets.</span>
+        </article>
+        <article class="cv-info-tile">
+          <b>ATS plain version</b>
+          <span>A simple format for portals that prefer readable, low-design documents.</span>
+        </article>
+        <article class="cv-info-tile">
+          <b>Application pack</b>
+          <span>Cover letter, email message, LinkedIn headline, and LinkedIn About draft.</span>
+        </article>
+        <article class="cv-info-tile">
+          <b>Job tracker</b>
+          <span>Status, deadline, follow-up date, and CV version notes in one place.</span>
+        </article>
+        <article class="cv-info-tile">
+          <b>Reusable backup</b>
+          <span>Download JSON so you can restore your CV data later.</span>
+        </article>
+      </div>
+    </div>
 
-  <h3 style="font-size:1.2rem;font-weight:800;color:var(--color-text);margin:30px 0 10px;font-family:var(--font-display)">Indexable Template Gallery</h3>
-  <p>The in-app template selector includes categories for ATS simple, graduate, professional, executive, tech, creative, NGO and development, government, diaspora or international, Francophone, and Arabic or bilingual CVs where supported.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:14px 0 8px">
-    <article style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">ATS Simple</h4>
-      <p style="margin:0">Phantom, Pan-African Minimal and Global Compact are no-photo or low-format options for cleaner parsing.</p>
-    </article>
-    <article style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Graduate CV Templates</h4>
-      <p style="margin:0">Accra Graduate and Graduate Launch support entry-level users with skills, education, projects and volunteer evidence.</p>
-    </article>
-    <article style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Professional and Executive</h4>
-      <p style="margin:0">Slate, Indigo, Stone, Lagos Corporate, Cape Town Modern, Nairobi Executive and Boardroom Brief cover business roles.</p>
-    </article>
-    <article style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Specialist Formats</h4>
-      <p style="margin:0">Kigali Tech, Systems Tech, Impact Report, Francophone Standard, Cairo Bilingual, Abuja Government and Portfolio Split support specialist use cases.</p>
-    </article>
-  </div>
+    <div class="cv-info-block">
+      <div class="cv-info-block-head">
+        <h3>Template gallery</h3>
+        <p>The in-app selector includes 14 export-ready options across ATS simple, graduate, professional, executive, tech, creative, NGO, government, diaspora, Francophone, and Arabic or bilingual CV formats where supported.</p>
+      </div>
+      <div class="cv-info-template">
+        <article class="cv-info-tile">
+          <span class="cv-info-chip">Clean parsing</span>
+          <h4>ATS Simple</h4>
+          <p>Phantom, Pan-African Minimal, and Global Compact are no-photo or low-format options for cleaner parsing.</p>
+        </article>
+        <article class="cv-info-tile">
+          <span class="cv-info-chip">First roles</span>
+          <h4>Graduate CV Templates</h4>
+          <p>Accra Graduate and Graduate Launch support skills, education, projects, and volunteer evidence.</p>
+        </article>
+        <article class="cv-info-tile">
+          <span class="cv-info-chip">Career growth</span>
+          <h4>Professional and Executive</h4>
+          <p>Slate, Indigo, Stone, Lagos Corporate, Cape Town Modern, Nairobi Executive, and Boardroom Brief cover business roles.</p>
+        </article>
+        <article class="cv-info-tile">
+          <span class="cv-info-chip">Specialist roles</span>
+          <h4>Specialist Formats</h4>
+          <p>Kigali Tech, Systems Tech, Impact Report, Francophone Standard, Cairo Bilingual, Abuja Government, and Portfolio Split support specialist use cases.</p>
+        </article>
+      </div>
+    </div>
 
-  <h3 style="font-size:1.2rem;font-weight:800;color:var(--color-text);margin:30px 0 10px;font-family:var(--font-display)">CV Guides by Country</h3>
-  <p>Country guidance is not legal advice. It highlights common employer expectations and safer choices so you can decide what to include. Sensitive fields stay optional.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
-    <article id="nigeria-cv-format" style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Nigeria CV Format</h4>
-      <p style="margin:0 0 8px">For Nigerian applications, include clear contact details, education, NYSC status where relevant, skills and evidence-led experience bullets. Treat personal fields as optional unless the employer process asks for them.</p>
-      <a href="/nigeria/" style="color:var(--color-primary);font-weight:800">Nigeria tools</a>
-    </article>
-    <article id="kenya-cv-format" style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Kenya CV Format</h4>
-      <p style="margin:0 0 8px">For Kenya, keep the CV concise, show relevant qualifications, list technical and soft skills, and avoid sharing national ID details unless a trusted hiring process requires them.</p>
-      <a href="/kenya/" style="color:var(--color-primary);font-weight:800">Kenya tools</a>
-    </article>
-    <article id="south-africa-cv-format" style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">South Africa CV Format</h4>
-      <p style="margin:0 0 8px">For South Africa, use a no-photo, achievement-led format by default and avoid unnecessary demographic information unless an employer lawfully requests it.</p>
-      <a href="/south-africa/" style="color:var(--color-primary);font-weight:800">South Africa tools</a>
-    </article>
-    <article id="ghana-cv-format" style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Ghana CV Format</h4>
-      <p style="margin:0 0 8px">For Ghana, lead with profile, education, work experience, national service details where useful, certifications, languages and references on request.</p>
-      <a href="/ghana/" style="color:var(--color-primary);font-weight:800">Ghana tools</a>
-    </article>
-    <article id="egypt-cv-format" style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Egypt CV Format</h4>
-      <p style="margin:0 0 8px">For Egypt, bilingual or formal templates may be useful for some roles. Include language ability and only add photo or military-service information when it fits the target employer process.</p>
-      <a href="/egypt/" style="color:var(--color-primary);font-weight:800">Egypt tools</a>
-    </article>
-    <article id="morocco-cv-format" style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Morocco CV Format</h4>
-      <p style="margin:0 0 8px">For Morocco, prepare French, Arabic or bilingual content when relevant, make language levels visible, and keep sensitive details optional.</p>
-      <a href="/morocco/" style="color:var(--color-primary);font-weight:800">Morocco tools</a>
-    </article>
-    <article id="ethiopia-cv-format" style="border:1px solid var(--color-border);border-radius:10px;padding:14px;background:#fff">
-      <h4 style="margin:0 0 6px;color:var(--color-text);font-size:1rem">Ethiopia CV Format</h4>
-      <p style="margin:0 0 8px">For Ethiopia, keep education, professional training, language ability and practical project evidence easy to scan. Use a simple ATS-friendly template for online applications.</p>
-      <a href="/ethiopia/" style="color:var(--color-primary);font-weight:800">Ethiopia tools</a>
-    </article>
-  </div>
+    <div class="cv-info-block">
+      <div class="cv-info-block-head">
+        <h3>CV guides by country</h3>
+        <p>Country guidance highlights common employer expectations and safer choices. It is editable guidance, not legal advice, and sensitive fields stay optional.</p>
+      </div>
+      <div class="cv-info-country">
+        <article id="nigeria-cv-format" class="cv-info-tile">
+          <h4>Nigeria CV Format</h4>
+          <p>Include clear contact details, education, NYSC status where relevant, skills, and evidence-led experience bullets.</p>
+          <a href="/nigeria/">Nigeria tools</a>
+        </article>
+        <article id="kenya-cv-format" class="cv-info-tile">
+          <h4>Kenya CV Format</h4>
+          <p>Keep the CV concise, show relevant qualifications, list technical and soft skills, and avoid sharing national ID details unless a trusted hiring process requires them.</p>
+          <a href="/kenya/">Kenya tools</a>
+        </article>
+        <article id="south-africa-cv-format" class="cv-info-tile">
+          <h4>South Africa CV Format</h4>
+          <p>Use a no-photo, achievement-led format by default and avoid unnecessary demographic information unless an employer lawfully requests it.</p>
+          <a href="/south-africa/">South Africa tools</a>
+        </article>
+        <article id="ghana-cv-format" class="cv-info-tile">
+          <h4>Ghana CV Format</h4>
+          <p>Lead with profile, education, work experience, national service details where useful, certifications, languages, and references on request.</p>
+          <a href="/ghana/">Ghana tools</a>
+        </article>
+        <article id="egypt-cv-format" class="cv-info-tile">
+          <h4>Egypt CV Format</h4>
+          <p>Bilingual or formal templates may be useful for some roles. Add photo or military-service information only when it fits the target employer process.</p>
+          <a href="/egypt/">Egypt tools</a>
+        </article>
+        <article id="morocco-cv-format" class="cv-info-tile">
+          <h4>Morocco CV Format</h4>
+          <p>Prepare French, Arabic, or bilingual content when relevant, make language levels visible, and keep sensitive details optional.</p>
+          <a href="/morocco/">Morocco tools</a>
+        </article>
+        <article id="ethiopia-cv-format" class="cv-info-tile">
+          <h4>Ethiopia CV Format</h4>
+          <p>Keep education, professional training, language ability, and practical project evidence easy to scan.</p>
+          <a href="/ethiopia/">Ethiopia tools</a>
+        </article>
+      </div>
+    </div>
 
-  <h3 style="font-size:1.2rem;font-weight:800;color:var(--color-text);margin:30px 0 10px;font-family:var(--font-display)">How the ATS and Job-Match Checks Help</h3>
-  <p>The ATS score reviews contact details, summary strength, bullet quality, quantified achievements, skills relevance, education completeness, keyword coverage, formatting safety, country-specific completeness, length and readability. The job-description matcher helps you find missing skills and weak sections, but it encourages evidence and proof instead of keyword stuffing.</p>
+    <div class="cv-info-ats">
+      <div>
+        <h3>How the ATS and job-match checks help</h3>
+        <p>The ATS score reviews contact details, summary strength, bullet quality, quantified achievements, skills relevance, education completeness, keyword coverage, formatting safety, country-specific completeness, length, and readability.</p>
+      </div>
+      <div class="cv-info-ats-note">
+        <span>It helps you improve evidence and clarity.</span>
+        <span>It does not promise interviews or employer ranking outcomes.</span>
+      </div>
+    </div>
 
-  <section class="cv-related-tools" aria-labelledby="cvRelatedToolsTitle">
+    <section class="cv-related-tools" aria-labelledby="cvRelatedToolsTitle">
     <div class="cv-related-tools__head">
       <h3 id="cvRelatedToolsTitle">Related Career and Money Tools</h3>
       <p>Build the rest of your application pack, compare study options, and plan salary or tax decisions after your CV is ready.</p>
@@ -639,27 +737,33 @@ window.loadPdfLibs=function(){
     </div>
   </section>
 
-  <h3 style="font-size:1.2rem;font-weight:800;color:var(--color-text);margin:30px 0 10px;font-family:var(--font-display)">Frequently Asked Questions</h3>
-  <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px;background:#fff">
-    <summary style="font-weight:700;color:var(--color-text);cursor:pointer">Is the AfroTools CV Builder free?</summary>
-    <p style="margin:8px 0 0">Yes. You can create, preview and export a PDF CV without a watermark. AfroTools does not show paid partner placements in the CV Builder while no sponsorships are active.</p>
-  </details>
-  <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px;background:#fff">
-    <summary style="font-weight:700;color:var(--color-text);cursor:pointer">Does the CV Builder work for Nigeria, Kenya and South Africa?</summary>
-    <p style="margin:8px 0 0">Yes. The builder includes country-aware guidance for all 54 African countries and an international or diaspora format. It gives suggestions and warnings rather than forcing sensitive personal fields.</p>
-  </details>
-  <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px;background:#fff">
-    <summary style="font-weight:700;color:var(--color-text);cursor:pointer">Can I use it as an ATS CV builder?</summary>
-    <p style="margin:8px 0 0">The builder includes ATS readiness checks, job-description matching and plain-format export options. It does not guarantee interviews or employer ranking outcomes.</p>
-  </details>
-  <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px;background:#fff">
-    <summary style="font-weight:700;color:var(--color-text);cursor:pointer">Can graduates use the CV templates?</summary>
-    <p style="margin:8px 0 0">Yes. Graduate and no-experience users can start with skills-first templates, project sections, education details and editable examples.</p>
-  </details>
-  <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px;background:#fff">
-    <summary style="font-weight:700;color:var(--color-text);cursor:pointer">Where is my CV saved?</summary>
-    <p style="margin:8px 0 0">Draft CV data is saved in your browser unless you choose to sign in. Avoid using shared devices for private job-search documents.</p>
-  </details>
+    <div class="cv-info-block cv-info-faq" aria-labelledby="cvInfoFaqTitle">
+      <div class="cv-info-block-head">
+        <h3 id="cvInfoFaqTitle">Frequently asked questions</h3>
+        <p>Short answers for the questions people usually ask before trusting a CV tool with career data.</p>
+      </div>
+      <details>
+        <summary>Is the AfroTools CV Builder free?</summary>
+        <p>Yes. You can create, preview, and export a PDF CV without a watermark. AfroTools does not show paid partner placements in the CV Builder while no sponsorships are active.</p>
+      </details>
+      <details>
+        <summary>Does it work for Nigeria, Kenya, and South Africa?</summary>
+        <p>Yes. The builder includes country-aware guidance for all 54 African countries and an international or diaspora format. It gives suggestions and warnings rather than forcing sensitive personal fields.</p>
+      </details>
+      <details>
+        <summary>Can I use it as an ATS CV builder?</summary>
+        <p>The builder includes ATS readiness checks, job-description matching, and plain-format export options. It does not guarantee interviews or employer ranking outcomes.</p>
+      </details>
+      <details>
+        <summary>Can graduates use the CV templates?</summary>
+        <p>Yes. Graduate and no-experience users can start with skills-first templates, project sections, education details, and editable examples.</p>
+      </details>
+      <details>
+        <summary>Where is my CV saved?</summary>
+        <p>Draft CV data is saved in your browser unless you choose to sign in. Avoid using shared devices for private job-search documents.</p>
+      </details>
+    </div>
+  </div>
 </section>
 
 <afro-related-tools category="document-pdf" current="cv-builder"></afro-related-tools>
@@ -675,6 +779,7 @@ window.loadPdfLibs=function(){
 <script src="/tools/cv-builder/js/cv-template-studio.js?v=b7d79784"></script>
 <script src="/tools/cv-builder/js/cv-pdf-templates.js?v=b61ddd79"></script>
 <script src="/tools/cv-builder/js/cv-template-registry.js?v=0441103c"></script>
+<script src="/tools/cv-builder/js/cv-template-registry-studio.js?v=3a808f76"></script>
 <script src="/tools/cv-builder/js/cv-career-copilot.js?v=5d1149c6"></script>
 <script src="/tools/cv-builder/js/cv-workspace-enhancer.js?v=095e7738"></script>
 <script src="/tools/cv-builder/js/cv-template-gallery.js?v=e8a27ddc"></script>
@@ -715,10 +820,11 @@ window.loadPdfLibs=function(){
 <script src="/tools/cv-builder/js/cv-completion-flow-fix.js?v=f7435f9e"></script>
 <script src="/tools/cv-builder/js/cv-ats-plain-pdf-fix.js?v=df1bd4a3"></script>
 <script src="/tools/cv-builder/js/cv-design-foundation.js?v=50609f44"></script>
-<script src="/tools/cv-builder/js/cv-next-steps-polish.js?v=1253e9e6"></script>
+<script src="/tools/cv-builder/js/cv-next-steps-polish.js?v=0ca9a04c"></script>
 <script src="/tools/cv-builder/js/cv-sample-mode.js?v=59e0c8c3"></script>
 <script src="/tools/cv-builder/js/cv-starter-paths.js?v=ffe776fb"></script>
-<script src="/tools/cv-builder/js/cv-privacy-handoff.js?v=093a41e8"></script>
+<script src="/tools/cv-builder/js/cv-privacy-handoff.js?v=a51084c3"></script>
+<script src="/tools/cv-builder/js/cv-workflow-dashboard.js?v=589c2cbc"></script>
 <!-- cv-ai.js is lazy-loaded when user clicks AI buttons -->
 
 <script>

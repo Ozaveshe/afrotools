@@ -6,17 +6,24 @@ const {
   updateReminderForUser
 } = require(path.join(__dirname, '..', 'netlify/functions/_shared/scholarship-platform.js'));
 
+function futureDateIso(daysFromNow) {
+  const date = new Date();
+  date.setUTCDate(date.getUTCDate() + daysFromNow);
+  return date.toISOString().slice(0, 10);
+}
+
 function createMockClient(settings) {
   const options = settings || {};
   const calls = [];
+  const futureDeadline = futureDateIso(45);
   const scholarship = Object.assign({
     id: 'sch-1',
     title: 'Verified scholarship',
     provider: 'Official provider',
     official_url: 'https://example.edu/scholarship',
     source_url: 'https://example.edu/scholarship',
-    deadline_date: '2026-06-05',
-    deadline_text: 'June 5, 2026',
+    deadline_date: futureDeadline,
+    deadline_text: futureDeadline,
     deadline_confidence: 'verified',
     confidence_mode: 'live',
     status: 'open',

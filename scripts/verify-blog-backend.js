@@ -154,10 +154,15 @@ function validateHub(articles, failures) {
   const stat = Number((html.match(/<strong id="statArticles">(\d+)<\/strong>/) || [])[1]);
   const duplicates = [...new Set(cards.filter((href, index) => cards.indexOf(href) !== index))];
   const articleSlugs = new Set(articles.map((article) => article.slug));
+  const publishableSlugs = new Set(articles.filter((article) => article.publishable).map((article) => article.slug));
   const missingTargets = cards
     .filter((href) => href.startsWith('/blog/'))
     .map((href) => href.replace(/^\/blog\//, '').replace(/\/$/, ''))
     .filter((slug) => slug && !articleSlugs.has(slug));
+  const nonPublishableTargets = cards
+    .filter((href) => href.startsWith('/blog/'))
+    .map((href) => href.replace(/^\/blog\//, '').replace(/\/$/, ''))
+    .filter((slug) => slug && articleSlugs.has(slug) && !publishableSlugs.has(slug));
 
   if (Number.isFinite(stat) && stat !== cards.length) {
     failures.push(`blog/index.html statArticles is ${stat}, but ${cards.length} article cards were found`);
@@ -167,6 +172,9 @@ function validateHub(articles, failures) {
   }
   if (missingTargets.length) {
     failures.push(`blog/index.html links to missing article folders: ${[...new Set(missingTargets)].slice(0, 10).join(', ')}`);
+  }
+  if (nonPublishableTargets.length) {
+    failures.push(`blog/index.html links article cards to non-publishable routes: ${[...new Set(nonPublishableTargets)].slice(0, 10).join(', ')}`);
   }
 
   return { cards: cards.length, stat };
