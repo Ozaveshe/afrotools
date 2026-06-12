@@ -307,6 +307,34 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
   .as-streamer-row{grid-template-columns:auto auto 1fr}
   .as-streamer-score{grid-column:3;text-align:left}
 }
+.as-source-rail{max-width:960px;margin:22px auto 0;padding:14px 16px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);display:flex;flex-direction:column;align-items:stretch;gap:12px;font-size:.84rem}
+.as-source-summary{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center}
+.as-source-summary strong{color:#fff;font-weight:800}
+.as-source-summary span:last-child{color:rgba(255,255,255,.68)}
+.as-source-dot{width:9px;height:9px;border-radius:50%;background:#94a3b8;box-shadow:0 0 0 4px rgba(148,163,184,.16);flex:0 0 auto}
+.as-source-rail.live .as-source-dot,.as-source-pill.live::before{background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.18)}
+.as-source-rail.preview .as-source-dot,.as-source-pill.preview::before{background:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+.as-source-rail.stale .as-source-dot,.as-source-pill.stale::before{background:#f97316;box-shadow:0 0 0 4px rgba(249,115,22,.18)}
+.as-source-rail.blocked .as-source-dot,.as-source-pill.blocked::before{background:#ef4444;box-shadow:0 0 0 4px rgba(239,68,68,.18)}
+.as-source-rail.unavailable .as-source-dot,.as-source-pill.unavailable::before{background:#64748b;box-shadow:0 0 0 4px rgba(100,116,139,.22)}
+.as-source-lanes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.as-source-pill{position:relative;display:flex;flex-direction:column;gap:3px;min-height:72px;padding:10px 10px 10px 26px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(15,23,42,.28);text-align:left}
+.as-source-pill::before{content:'';position:absolute;left:10px;top:14px;width:7px;height:7px;border-radius:50%;background:#94a3b8}
+.as-source-pill strong{color:#fff;font-size:.78rem;font-weight:800}
+.as-source-pill span{color:rgba(255,255,255,.64);font-size:.72rem;line-height:1.35}
+.as-source-pill em{font-style:normal;text-transform:uppercase;letter-spacing:.05em;font-size:.64rem;font-weight:800}
+.as-source-pill.live em{color:#86efac}.as-source-pill.preview em{color:#fcd34d}.as-source-pill.stale em{color:#fdba74}.as-source-pill.blocked em{color:#fca5a5}.as-source-pill.unavailable em{color:#cbd5e1}
+.as-brief-action{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;font:700 .72rem var(--as-font-body);cursor:pointer;text-decoration:none;transition:border-color .15s,color .15s,background .15s}
+.as-brief-action:hover{border-color:var(--as-primary);color:var(--as-primary);background:#f8fbff}
+.as-brief-action:focus-visible{outline:3px solid rgba(0,122,255,.28);outline-offset:2px}
+.as-brief-action.copied{border-color:#16a34a;color:#15803d;background:#f0fdf4}
+.as-card-actions{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.as-live-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
+.as-live-open{color:var(--as-primary);font-weight:800;font-size:.76rem;text-decoration:none}
+.as-live-open:hover{text-decoration:underline}
+.as-copy-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.as-source-lanes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.as-source-lanes{grid-template-columns:1fr}.as-source-rail{padding:12px}}
 </style>
 <link rel="stylesheet" href="/tools/afrostream/subnav.css?v=93a02af2">
 <script src="/tools/afrostream/subnav.js?v=bdc266a0" defer></script>
@@ -316,6 +344,7 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
 
 <body class="as-page">
 <afro-navbar></afro-navbar>
+<div id="asCopyStatus" class="as-copy-status" role="status" aria-live="polite"></div>
 
 <!-- ===== Sub-Nav ===== -->
 <nav class="as-subnav" aria-label="AfroStream navigation">
@@ -347,6 +376,19 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
     <h1><span>African Creators</span><br>and Live Streams</h1>
     <p class="as-hero-sub">Track African creators by cross-platform reach, follow live streamers by recent activity, and open real live streams without mixing the two leaderboards.</p>
     <div class="as-hero-stats" id="heroStats"></div>
+    <div class="as-source-rail preview" id="asSourceRail" role="status" aria-live="polite">
+      <div class="as-source-summary">
+        <span class="as-source-dot" aria-hidden="true"></span>
+        <strong>Checking source health</strong>
+        <span>Loading AfroStream lanes.</span>
+      </div>
+      <div class="as-source-lanes" aria-label="AfroStream source health by lane">
+        <span class="as-source-pill preview"><strong>Live streams</strong><em>Preview</em><span>Waiting for source check.</span></span>
+        <span class="as-source-pill preview"><strong>Creator rankings</strong><em>Preview</em><span>Waiting for source check.</span></span>
+        <span class="as-source-pill preview"><strong>News</strong><em>Preview</em><span>Waiting for source check.</span></span>
+        <span class="as-source-pill preview"><strong>Calendar</strong><em>Preview</em><span>Waiting for source check.</span></span>
+      </div>
+    </div>
     <div class="as-hero-ctas">
       <a href="#live" class="as-btn as-btn-primary">Watch Live &#8594;</a>
       <a href="rankings.html" class="as-btn as-btn-outline" style="border-color:rgba(255,255,255,.25);color:#fff">Creator Rankings</a>
@@ -653,6 +695,20 @@ function mapStreamHistoryRow(row){
 }
 
 async function loadStreamHistory(){
+  if(isStaticPreviewHost()){
+    return LIVE_STREAMS.map(function(s){
+      return {
+        creatorId: s._raw && s._raw.creator_id || '',
+        name: s.name,
+        platform: s.platform,
+        date: s.date || s._raw && s._raw.stream_date || '',
+        isLive: true,
+        viewers: s.viewers || 0,
+        peak: s.viewers || 0,
+        url: s.url || ''
+      };
+    });
+  }
   var urls = ['/api/afrostream/streams?limit=500'];
   for(var i=0;i<urls.length;i++){
     try{
@@ -831,9 +887,27 @@ function normalizeThumbnailUrl(value){
     .replace(/^http:\/\//i,'https://')
     .replace(/\{width\}/g,'440')
     .replace(/\{height\}/g,'248');
-  var youtubeId = extractYouTubeVideoId(str);
-  if(youtubeId) return 'https://img.youtube.com/vi/' + youtubeId + '/hqdefault.jpg';
   return /^https?:\/\//i.test(str) ? str : '';
+}
+
+function isAllowedMediaUrl(value){
+  if(!value) return false;
+  try {
+    var url = new URL(value, location.href);
+    var host = url.hostname.toLowerCase();
+    if(url.origin === location.origin) return true;
+    return host === 'yt3.ggpht.com' ||
+      host.endsWith('.ggpht.com') ||
+      host === 'static-cdn.jtvnw.net' ||
+      host === 'static-cdn.kick.com' ||
+      host === 'files.kick.com' ||
+      host === 'kick.com' ||
+      host === 'cdn.jsdelivr.net' ||
+      host === 'lh3.googleusercontent.com' ||
+      host.endsWith('.supabase.co');
+  } catch(e) {
+    return false;
+  }
 }
 
 function resolveLiveThumbnail(stream){
@@ -853,7 +927,7 @@ function resolveLiveThumbnail(stream){
   ];
   for(var i=0;i<direct.length;i++){
     var next = normalizeThumbnailUrl(direct[i]);
-    if(next) return next;
+    if(next && isAllowedMediaUrl(next)) return next;
   }
   if(stream._raw){
     var raw = stream._raw;
@@ -872,15 +946,14 @@ function resolveLiveThumbnail(stream){
       raw.creator_avatar,
       raw.avatar_url,
       raw.profile_image,
-      raw.banner_image,
-      raw.url
+      raw.banner_image
     ];
     for(var j=0;j<rawValues.length;j++){
       var rawNext = normalizeThumbnailUrl(rawValues[j]);
-      if(rawNext) return rawNext;
+      if(rawNext && isAllowedMediaUrl(rawNext)) return rawNext;
     }
   }
-  return normalizeThumbnailUrl(stream.url);
+  return '';
 }
 
 
@@ -897,6 +970,295 @@ function renderHeroStats(){
   el.innerHTML = stats.map(function(s){
     return '<div class="as-hero-stat"><span class="as-hero-stat-val">'+s.val+'</span><span class="as-hero-stat-label">'+s.label+'</span></div>';
   }).join('');
+}
+
+function isStaticPreviewHost(){
+  return /^(localhost|127\.0\.0\.1|\[?::1\]?)$/i.test(location.hostname || '');
+}
+
+var SOURCE_LANES = [
+  { key:'streams', label:'Live streams' },
+  { key:'rankings', label:'Creator rankings' },
+  { key:'news', label:'News' },
+  { key:'calendar', label:'Calendar' }
+];
+var SOURCE_STATUS_LABELS = {
+  live:'Live',
+  preview:'Preview',
+  stale:'Stale',
+  blocked:'Blocked',
+  unavailable:'Unavailable'
+};
+
+function laneHealth(status, detail){
+  return { status: status || 'unavailable', detail: detail || 'Source check unavailable.' };
+}
+
+function sourceHoursAgo(value){
+  if(!value) return null;
+  var date = new Date(value);
+  if(isNaN(date.getTime())) return null;
+  return Math.max(0, Math.round((Date.now() - date.getTime()) / 36e5 * 10) / 10);
+}
+
+function sourceDaysAgo(value){
+  if(!value) return null;
+  var date = new Date(value + 'T00:00:00Z');
+  if(isNaN(date.getTime())) return null;
+  var now = new Date();
+  var today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  var then = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  return Math.max(0, Math.round((today - then) / 864e5));
+}
+
+function isBlockedRun(run){
+  if(!run) return false;
+  var status = String(run.status || '').toLowerCase();
+  return /blocked|error|failed|fail|timeout/.test(status);
+}
+
+function formatAge(hours){
+  if(hours == null) return '';
+  if(hours < 1) return 'under 1h ago';
+  if(hours < 48) return hours + 'h ago';
+  return Math.round(hours / 24) + 'd ago';
+}
+
+function summarizeSourceHealth(lanes){
+  var statuses = SOURCE_LANES.map(function(lane){
+    return lanes[lane.key] && lanes[lane.key].status || 'unavailable';
+  });
+  var order = ['blocked','unavailable','stale','preview','live'];
+  var state = 'live';
+  for(var i=0;i<order.length;i++){
+    if(statuses.indexOf(order[i]) !== -1){
+      state = order[i];
+      break;
+    }
+  }
+  if(state === 'live') return { state:state, title:'Source health live', detail:'All public AfroStream lanes responded recently.' };
+  if(state === 'preview') return { state:state, title:'Static preview mode', detail:'Localhost is showing static empty states without calling Netlify APIs.' };
+  if(state === 'stale') return { state:state, title:'Source health partly stale', detail:'Some lanes loaded, but their upstream source freshness needs review.' };
+  if(state === 'blocked') return { state:state, title:'Source health blocked', detail:'At least one lane reports a failed or blocked source run.' };
+  return { state:state, title:'Source health unavailable', detail:'At least one public lane could not confirm its source state.' };
+}
+
+function renderSourceRail(mode, meta){
+  var rail = document.getElementById('asSourceRail');
+  if(!rail) return;
+  meta = meta || {};
+  var lanes = meta.lanes || {};
+  SOURCE_LANES.forEach(function(lane){
+    if(!lanes[lane.key]){
+      lanes[lane.key] = mode === 'preview'
+        ? laneHealth('preview', 'Static preview; deployed APIs are not called here.')
+        : laneHealth(mode === 'live' ? 'live' : 'unavailable', meta.message || 'Source check unavailable.');
+    }
+  });
+  var summary = summarizeSourceHealth(lanes);
+  rail.className = 'as-source-rail ' + summary.state;
+  rail.innerHTML = '<div class="as-source-summary">' +
+      '<span class="as-source-dot" aria-hidden="true"></span>' +
+      '<strong>'+escapeHtml(summary.title)+'</strong>' +
+      '<span>'+escapeHtml(summary.detail)+'</span>' +
+    '</div>' +
+    '<div class="as-source-lanes" aria-label="AfroStream source health by lane">' +
+      SOURCE_LANES.map(function(lane){
+        var item = lanes[lane.key] || laneHealth('unavailable');
+        var status = SOURCE_STATUS_LABELS[item.status] ? item.status : 'unavailable';
+        return '<span class="as-source-pill '+status+'" data-source-lane="'+escapeAttr(lane.key)+'" data-source-status="'+escapeAttr(status)+'">' +
+          '<strong>'+escapeHtml(lane.label)+'</strong>' +
+          '<em>'+escapeHtml(SOURCE_STATUS_LABELS[status])+'</em>' +
+          '<span>'+escapeHtml(item.detail)+'</span>' +
+        '</span>';
+      }).join('') +
+    '</div>';
+}
+
+async function loadSourceHealth(){
+  if(isStaticPreviewHost()) return null;
+  var res = await fetch('/api/afrostream/health', { credentials:'same-origin' });
+  if(!res.ok) throw new Error('Health API ' + res.status);
+  var json = await res.json();
+  if(json && json.success && json.data) return json.data;
+  throw new Error('Health API response unavailable');
+}
+
+function buildSourceLanes(data, health, healthError){
+  if(isStaticPreviewHost()){
+    return {
+      streams: laneHealth('preview', 'Static preview; live stream API calls are skipped.'),
+      rankings: laneHealth('preview', 'Static preview; creator ranking API calls are skipped.'),
+      news: laneHealth('preview', 'Static preview; news API calls are skipped.'),
+      calendar: laneHealth('preview', 'Static preview; calendar API calls are skipped.')
+    };
+  }
+
+  data = data || {};
+  var streamsLoaded = !!(data.streams && Array.isArray(data.streams.live));
+  var calendarLoaded = !!(data.streams && Array.isArray(data.streams.upcoming));
+  var creatorsLoaded = Array.isArray(data.creators);
+  var newsLoaded = Array.isArray(data.news);
+  var lanes = {
+    streams: streamsLoaded
+      ? laneHealth('live', (data.streams.live.length || 0) + ' live rows loaded from the streams endpoint.')
+      : laneHealth('unavailable', 'Live stream endpoint did not return usable data.'),
+    rankings: creatorsLoaded && data.creators.length
+      ? laneHealth('live', data.creators.length + ' creator rows loaded for the ranking preview.')
+      : laneHealth('unavailable', 'Creator ranking endpoint did not return usable data.'),
+    news: newsLoaded
+      ? laneHealth(data.news.length ? 'live' : 'stale', data.news.length ? data.news.length + ' news rows loaded.' : 'News endpoint responded with no published rows.')
+      : laneHealth('unavailable', 'News endpoint did not return usable data.'),
+    calendar: calendarLoaded
+      ? laneHealth('live', (data.streams.upcoming.length || 0) + ' upcoming stream rows loaded.')
+      : laneHealth('unavailable', 'Calendar source did not return usable stream data.')
+  };
+
+  if(healthError || !health){
+    Object.keys(lanes).forEach(function(key){
+      if(lanes[key].status === 'live'){
+        lanes[key] = laneHealth('unavailable', 'Feed rows loaded, but source freshness could not be confirmed.');
+      }
+    });
+    return lanes;
+  }
+
+  var syncRun = health.automation && health.automation.sync;
+  var liveRun = health.automation && health.automation.livecheck;
+  var newsRun = health.automation && health.automation.news_monitor;
+  var snapshotAge = health.snapshots && (health.snapshots.age_days != null ? health.snapshots.age_days : sourceDaysAgo(health.snapshots.latest_snapshot_date));
+  var syncAge = sourceHoursAgo(syncRun && syncRun.fetched_at);
+  var liveRunAge = sourceHoursAgo(liveRun && liveRun.fetched_at);
+  var latestStreamAge = health.streams && (health.streams.latest_updated_age_hours != null ? health.streams.latest_updated_age_hours : sourceHoursAgo(health.streams.latest_updated_at));
+  var latestNewsAge = health.news && (health.news.latest_age_hours != null ? health.news.latest_age_hours : sourceHoursAgo(health.news.latest_published_at));
+
+  if(isBlockedRun(syncRun)){
+    lanes.rankings = laneHealth('blocked', 'Latest creator sync reported a failed source run.');
+  } else if(creatorsLoaded && data.creators.length && (snapshotAge == null || snapshotAge > 2 || syncAge == null || syncAge > 6)){
+    lanes.rankings = laneHealth('stale', 'Latest ranking snapshot is ' + (snapshotAge == null ? 'not dated' : snapshotAge + 'd old') + '.');
+  } else if(creatorsLoaded && data.creators.length && health.creators && health.creators.published){
+    lanes.rankings = laneHealth('live', health.creators.published + ' published creators; ranking source refreshed recently.');
+  }
+
+  if(isBlockedRun(liveRun)){
+    lanes.streams = laneHealth('blocked', 'Latest live stream check reported a failed source run.');
+  } else if(streamsLoaded && (liveRunAge == null || liveRunAge > 1.5 || latestStreamAge == null || latestStreamAge > 3)){
+    lanes.streams = laneHealth('stale', 'Live stream source last refreshed ' + (formatAge(liveRunAge || latestStreamAge) || 'outside the freshness window') + '.');
+  } else if(streamsLoaded && health.streams){
+    lanes.streams = laneHealth('live', (health.streams.live_now || 0) + ' live now; ' + (health.streams.last_24h || 0) + ' stream rows in 24h.');
+  }
+
+  if(isBlockedRun(newsRun)){
+    lanes.news = laneHealth('blocked', 'Latest news monitor reported a failed source run.');
+  } else if(newsLoaded && health.sources && (health.sources.stale_over_7d || 0) > 0 && !(health.sources.success_last_24h || 0)){
+    lanes.news = laneHealth('stale', 'No source success in 24h; ' + health.sources.stale_over_7d + ' news sources are stale.');
+  } else if(newsLoaded && latestNewsAge != null && latestNewsAge > 168){
+    lanes.news = laneHealth('stale', 'Latest published news is ' + formatAge(latestNewsAge) + '.');
+  } else if(newsLoaded && health.news){
+    lanes.news = laneHealth('live', (health.news.total_published || data.news.length || 0) + ' published news items checked.');
+  }
+
+  if(isBlockedRun(liveRun)){
+    lanes.calendar = laneHealth('blocked', 'Calendar uses the stream source, and the latest live check failed.');
+  } else if(calendarLoaded && (latestStreamAge == null || latestStreamAge > 24)){
+    lanes.calendar = laneHealth('stale', 'Calendar stream source last updated ' + (formatAge(latestStreamAge) || 'outside the freshness window') + '.');
+  } else if(calendarLoaded){
+    lanes.calendar = laneHealth('live', (data.streams.upcoming.length || 0) + ' upcoming rows; stream source checked ' + (formatAge(latestStreamAge) || 'recently') + '.');
+  }
+
+  return lanes;
+}
+
+function sourceNoteForBrief(laneKey){
+  var pill = document.querySelector('[data-source-lane="'+laneKey+'"]');
+  if(!pill) return { status:'Unavailable', detail:'Source status not visible.' };
+  var status = pill.getAttribute('data-source-status') || 'unavailable';
+  var detailEl = pill.querySelector('span:last-child');
+  return {
+    status: SOURCE_STATUS_LABELS[status] || status,
+    detail: detailEl ? detailEl.textContent.trim() : ''
+  };
+}
+
+function creatorBriefText(data){
+  data = data || {};
+  var source = sourceNoteForBrief(data.sourceLane || 'rankings');
+  var lines = [
+    'AfroStream creator brief',
+    'Creator: ' + (data.name || 'Unknown creator')
+  ];
+  if(data.platform) lines.push('Platform: ' + data.platform);
+  if(data.category) lines.push('Category: ' + data.category);
+  if(data.country) lines.push('Country: ' + data.country);
+  if(data.status) lines.push('Current status: ' + data.status);
+  lines.push('Source status: ' + source.status);
+  if(source.detail) lines.push('Source date/status note: ' + source.detail);
+  lines.push('');
+  lines.push('Sponsor note template: Consider ' + (data.name || 'this creator') + ' for a brand-fit review. Confirm current audience fit, deliverables, usage rights, availability, and rates directly with the creator before outreach.');
+  return lines.join('\n');
+}
+
+function setCopyFeedback(message, button){
+  var status = document.getElementById('asCopyStatus');
+  if(status) status.textContent = message;
+  if(button){
+    var original = button.getAttribute('data-original-label') || button.textContent;
+    button.setAttribute('data-original-label', original);
+    button.classList.add('copied');
+    button.textContent = message.indexOf('Copied') === 0 ? 'Copied' : original;
+    window.setTimeout(function(){
+      button.classList.remove('copied');
+      button.textContent = original;
+    }, 1800);
+  }
+}
+
+function copyTextToClipboard(text){
+  if(navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text);
+  }
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.top = '-999px';
+  document.body.appendChild(ta);
+  ta.select();
+  var ok = document.execCommand('copy');
+  document.body.removeChild(ta);
+  return ok ? Promise.resolve() : Promise.reject(new Error('Copy command unavailable'));
+}
+
+function copyCreatorBrief(button){
+  var data = {
+    name: button.getAttribute('data-brief-name') || '',
+    platform: button.getAttribute('data-brief-platform') || '',
+    category: button.getAttribute('data-brief-category') || '',
+    country: button.getAttribute('data-brief-country') || '',
+    status: button.getAttribute('data-brief-status') || '',
+    sourceLane: button.getAttribute('data-source-lane-ref') || 'rankings'
+  };
+  var text = creatorBriefText(data);
+  return copyTextToClipboard(text).then(function(){
+    setCopyFeedback('Copied creator brief for ' + (data.name || 'creator') + '.', button);
+    return text;
+  }).catch(function(){
+    setCopyFeedback('Copy unavailable. Select and copy the generated note manually.', button);
+    return text;
+  });
+}
+
+function briefButton(label, data){
+  data = data || {};
+  return '<button type="button" class="as-brief-action" onclick="event.preventDefault();event.stopPropagation();copyCreatorBrief(this)"' +
+    ' data-brief-name="'+escapeAttr(data.name || '')+'"' +
+    ' data-brief-platform="'+escapeAttr(data.platform || '')+'"' +
+    ' data-brief-category="'+escapeAttr(data.category || '')+'"' +
+    ' data-brief-country="'+escapeAttr(data.country || '')+'"' +
+    ' data-brief-status="'+escapeAttr(data.status || '')+'"' +
+    ' data-source-lane-ref="'+escapeAttr(data.sourceLane || 'rankings')+'">' +
+    escapeHtml(label || 'Copy media kit note') +
+    '</button>';
 }
 
 function renderLive(streams){
@@ -923,7 +1285,7 @@ function renderLive(streams){
       (hasThumb
         ? '<img src="'+escapeAttr(thumbUrl)+'" alt="'+escapeAttr((s.name || 'Creator')+' live stream')+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()">'
         : '');
-    return '<a href="'+escapeAttr(href)+'"'+target+' class="as-live-card">' +
+    return '<div class="as-live-card">' +
       '<div class="'+thumbCls+'">' +
         thumbInner +
         '<span class="as-live-badge">LIVE</span>' +
@@ -938,8 +1300,19 @@ function renderLive(streams){
           '<span>'+c.flag+'</span>' +
           '<span style="color:var(--as-primary);font-weight:600;font-size:.7rem">'+fmtK(s.subs)+' followers</span>' +
         '</div>' +
+        '<div class="as-live-actions">' +
+          (s.url ? '<a href="'+escapeAttr(href)+'"'+target+' class="as-live-open">Open stream</a>' : '<span></span>') +
+          briefButton('Copy media kit note', {
+            name: s.name || 'Unknown Creator',
+            platform: p.name,
+            category: CATEGORIES[s.cat] || 'Creator',
+            country: c.name,
+            status: 'Live now',
+            sourceLane: 'streams'
+          }) +
+        '</div>' +
       '</div>' +
-    '</a>';
+    '</div>';
   }).join('');
 }
 
@@ -984,7 +1357,17 @@ function renderTopThree(creators){
       '<div class="as-creator-links">' +
         platformBadges(cr) +
       '</div>' +
-      '<a href="creator.html?id='+(cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-'))+'" class="as-profile-btn" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:980px;background:linear-gradient(135deg,#007AFF,#0063D1);color:#fff;font-size:.78rem;font-weight:600;text-decoration:none;letter-spacing:.02em;transition:all .2s;box-shadow:0 2px 8px rgba(0,122,255,.25)">View Profile <span style="font-size:.7rem;transition:transform .2s">&rarr;</span></a>' +
+      '<div class="as-card-actions">' +
+        '<a href="creator.html?id='+(cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-'))+'" class="as-profile-btn" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:980px;background:linear-gradient(135deg,#007AFF,#0063D1);color:#fff;font-size:.78rem;font-weight:600;text-decoration:none;letter-spacing:.02em;transition:all .2s;box-shadow:0 2px 8px rgba(0,122,255,.25)">View Profile <span style="font-size:.7rem;transition:transform .2s">&rarr;</span></a>' +
+        briefButton('Save creator brief', {
+          name: cr.name,
+          platform: p.name,
+          category: cr.type || CATEGORIES[cr.cat] || 'Creator',
+          country: c.name,
+          status: 'Creator ranking #' + (i + 1),
+          sourceLane: 'rankings'
+        }) +
+      '</div>' +
     '</div>';
   }).join('');
 }
@@ -1096,7 +1479,8 @@ function renderNews(){
   var shown = NEWS.slice(0,6);
   el.innerHTML = shown.map(function(n,i){
     var href = n.slug && window.AfroStreamNewsUtils ? window.AfroStreamNewsUtils.articleHref(n.slug) : (n.slug ? '/tools/afrostream/article.html?slug='+encodeURIComponent(n.slug) : 'news.html');
-    var imgUrl = n._raw && n._raw.image_url ? n._raw.image_url : '';
+    var imgUrl = normalizeThumbnailUrl(n._raw && n._raw.image_url ? n._raw.image_url : '');
+    if(imgUrl && !isAllowedMediaUrl(imgUrl)) imgUrl = '';
     var bg = catGrads[n.cat] || '';
     var thumbCls = 'as-news-thumb' + (!imgUrl && !bg ? ' '+gradClass(i) : '');
     var thumbSty = '';
@@ -1339,11 +1723,17 @@ async function init() {
   renderHeroStats();
   renderFeatures();
   renderFAQ();
+  renderSourceRail('preview');
 
-  // Try loading from Supabase via engine, fall back to hardcoded data
-  if (window.AfroStreamEngine) {
+  var loadedData = null;
+  var sourceHealth = null;
+  var sourceHealthError = null;
+
+  // Try loading from the deployed public APIs; localhost keeps a static preview.
+  if (window.AfroStreamEngine && !isStaticPreviewHost()) {
     try {
       var data = await AfroStreamEngine.loadAll();
+      loadedData = data;
 
       if (data.creators && data.creators.length) {
         CREATORS.length = 0;
@@ -1380,9 +1770,16 @@ async function init() {
 
       console.log('[AfroStream] Loaded from Supabase — ' + CREATORS.length + ' creators, ' + LIVE_STREAMS.length + ' live, ' + NEWS.length + ' news');
     } catch(e) {
-      console.warn('[AfroStream] Engine fetch failed, using demo data:', e.message);
+      loadedData = {};
+    }
+
+    try {
+      sourceHealth = await loadSourceHealth();
+    } catch(e) {
+      sourceHealthError = e;
     }
   }
+  renderSourceRail(isStaticPreviewHost() ? 'preview' : 'live', { lanes: buildSourceLanes(loadedData, sourceHealth, sourceHealthError) });
 
   STREAM_HISTORY.length = 0;
   try {

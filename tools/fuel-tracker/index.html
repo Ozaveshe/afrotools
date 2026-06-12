@@ -6,10 +6,10 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AfroFuel — Pan-African Fuel Price Tracker | AfroTools</title>
-<meta name="description" content="Latest available petrol, diesel, and LPG price snapshots for all 54 African countries. Compare fuel costs, view interactive maps, calculate generator running costs, and see data freshness.">
+<meta name="description" content="Premium fuel intelligence workspace for Africa. Compare source-labelled fuel prices and build household, generator, fleet, fare, and procurement briefs.">
 <link rel="canonical" href="https://afrotools.com/tools/fuel-tracker/">
 <meta property="og:title" content="AfroFuel — Pan-African Fuel Price Tracker">
-<meta property="og:description" content="Latest available petrol, diesel, and LPG price snapshots for all 54 African countries with freshness labels, comparison table, and generator cost calculator.">
+<meta property="og:description" content="Compare source-labelled African fuel prices and turn them into household, generator, fleet, transport fare, and procurement decision briefs.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/fuel-tracker.webp">
 <meta property="og:url" content="https://afrotools.com/tools/fuel-tracker/">
 <meta property="og:type" content="website">
@@ -74,202 +74,7 @@
 <script src="/assets/js/components/api-cta.js?v=fa76abe4" defer></script>
 <script src="/assets/js/components/chat-panel.min.js?v=1635f197" defer></script>
 
-<style>
-/* ── Reset ── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
-
-/* ── Hero ── */
-.hero{background:linear-gradient(160deg,#0d1117 0%,#0a1628 55%,#111827 100%);padding:64px 0 56px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,122,255,.15) 0%,transparent 70%);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:-120px;left:-80px;width:350px;height:350px;background:radial-gradient(circle,rgba(255,149,0,.08) 0%,transparent 70%);pointer-events:none}
-.hero-inner{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
-.breadcrumb{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:14px;flex-wrap:wrap}
-.breadcrumb a{color:rgba(255,255,255,.5);text-decoration:none}.breadcrumb a:hover{color:#60b5ff}
-.breadcrumb span{color:rgba(255,255,255,.25)}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#60b5ff;margin-bottom:14px;padding:5px 14px;background:rgba(0,122,255,.14);border:1px solid rgba(0,122,255,.25);border-radius:100px}
-.hero h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;color:#f0f6fc;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
-.hero h1 em{font-style:normal;color:#60b5ff}
-.hero-sub{font-size:.95rem;color:rgba(255,255,255,.5);max-width:600px;line-height:1.65;margin-bottom:24px}
-.hero-stats{display:flex;gap:28px;flex-wrap:wrap}
-.hero-stat{text-align:left}
-.hero-stat-val{font-size:1.4rem;font-weight:800;color:#f0f6fc;letter-spacing:-.02em}
-.hero-stat-label{font-size:.68rem;color:rgba(255,255,255,.4);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
-.last-updated{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:16px}
-
-/* ── Fuel Tabs ── */
-.fuel-tabs-wrap{max-width:1160px;margin:0 auto;padding:0 24px}
-.fuel-tabs{display:flex;gap:8px;margin-top:-22px;position:relative;z-index:2;flex-wrap:wrap}
-.fuel-tab{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:100px;font-size:.85rem;font-weight:700;border:2px solid transparent;cursor:pointer;transition:all .2s;background:#fff;color:#6e6e73;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.fuel-tab.active{background:var(--color-primary,#007AFF);color:#fff;border-color:var(--color-primary,#007AFF);box-shadow:0 4px 14px rgba(0,122,255,.3)}
-.fuel-tab:not(.active):hover{border-color:#d1d5db;color:#1d1d1f}
-
-/* ── Section ── */
-.section{max-width:1160px;margin:0 auto;padding:40px 24px}
-.section-header{margin-bottom:24px}
-.section-title{font-family:'Instrument Serif',Georgia,serif;font-size:1.6rem;color:#1d1d1f;margin-bottom:6px}
-.section-sub{font-size:.88rem;color:#6e6e73;line-height:1.5}
-
-/* ── Map Section ── */
-.map-section{background:linear-gradient(180deg,#f5f5f7 0%,#eef2f7 50%,#f5f5f7 100%);padding:48px 0}
-.map-section .section-inner{max-width:1160px;margin:0 auto;padding:0 24px}
-.map-container{background:#fff;border-radius:20px;padding:32px;box-shadow:0 2px 16px rgba(0,0,0,.06);border:1px solid #e5e7eb}
-.map-legend{display:flex;align-items:center;gap:12px;margin-top:16px;justify-content:center;font-size:.75rem;color:#6e6e73}
-.map-legend-bar{width:200px;height:10px;border-radius:5px;background:linear-gradient(90deg,#007AFF,#FFD60A,#FF3B30)}
-.map-legend-label{font-weight:600}
-
-/* ── Table ── */
-.table-section{padding-bottom:0}
-.table-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
-.table-search{flex:1;min-width:200px;max-width:360px;height:42px;border:1.5px solid #e5e7eb;border-radius:10px;padding:0 14px 0 38px;font-size:.88rem;color:#1d1d1f;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85zm-5.44 1.1a5.1 5.1 0 110-10.2 5.1 5.1 0 010 10.2z'/%3E%3C/svg%3E") 12px center no-repeat;transition:border .2s}
-.table-search:focus{outline:none;border-color:var(--color-primary,#007AFF);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
-.region-filters{display:flex;gap:6px;flex-wrap:wrap}
-.region-btn{padding:7px 14px;border-radius:100px;border:1.5px solid #e5e7eb;background:#fff;font-size:.75rem;font-weight:600;color:#6e6e73;cursor:pointer;transition:all .2s}
-.region-btn.active{background:var(--color-primary,#007AFF);color:#fff;border-color:var(--color-primary,#007AFF)}
-.region-btn:not(.active):hover{border-color:#c0c0c6;color:#1d1d1f}
-.sort-select{height:42px;border:1.5px solid #e5e7eb;border-radius:10px;padding:0 32px 0 12px;font-size:.82rem;font-weight:600;color:#374151;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239CA3AF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") right 10px center no-repeat;appearance:none;cursor:pointer}
-
-.price-table-wrap{overflow-x:auto;border-radius:16px;border:1px solid #e5e7eb;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.05)}
-.price-table{width:100%;border-collapse:collapse;font-size:.84rem}
-.price-table thead{position:sticky;top:0;z-index:5}
-.price-table th{background:#f8f9fa;padding:12px 16px;text-align:left;font-size:.7rem;font-weight:700;color:#6e6e73;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #e5e7eb;cursor:pointer;user-select:none;white-space:nowrap}
-.price-table th:hover{color:#1d1d1f}
-.price-table th .sort-arrow{font-size:.6rem;margin-left:4px;opacity:.4}
-.price-table th.sorted .sort-arrow{opacity:1;color:var(--color-primary,#007AFF)}
-.price-table td{padding:11px 16px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
-.price-table tbody tr:nth-child(even){background:#fafbfc}
-.price-table tbody tr:hover{background:#f0f6ff}
-.country-cell{display:flex;align-items:center;gap:8px;font-weight:600;white-space:nowrap}
-.country-flag{font-size:1.15rem}
-.trend-up{color:#34c759;font-weight:700;font-size:.78rem}
-.trend-down{color:#ff3b30;font-weight:700;font-size:.78rem}
-.trend-flat{color:#8e8e93;font-weight:600;font-size:.78rem}
-.badge-regulated{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-.badge-yes{background:#dcfce7;color:#16a34a}
-.badge-partial{background:#fef3c7;color:#d97706}
-.badge-no{background:#f3f4f6;color:#9ca3af}
-.sparkline-cell{width:80px}
-.table-empty{padding:40px;text-align:center;color:#9ca3af;font-size:.9rem}
-.table-count{font-size:.78rem;color:#9ca3af;margin-top:12px}
-
-/* ── Chart Section ── */
-.chart-section{padding-top:48px}
-.chart-container{background:#fff;border-radius:20px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #e5e7eb}
-.chart-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px;flex-wrap:wrap}
-.country-picker{display:flex;gap:8px;flex-wrap:wrap}
-.country-picker-btn{padding:6px 14px;border-radius:100px;border:1.5px solid #e5e7eb;background:#fff;font-size:.78rem;font-weight:600;color:#6e6e73;cursor:pointer;transition:all .2s}
-.country-picker-btn.active{border-color:var(--btn-color,#007AFF);background:var(--btn-color,#007AFF);color:#fff}
-.chart-canvas-wrap{position:relative;height:380px}
-.chart-canvas-wrap canvas{width:100%!important;height:100%!important}
-
-/* ── Generator Calculator ── */
-.calc-section{background:linear-gradient(160deg,#0a1628 0%,#0d2240 100%);padding:56px 0;margin-top:48px}
-.calc-section .section-inner{max-width:1160px;margin:0 auto;padding:0 24px}
-.calc-section .section-title{color:#f0f6fc}
-.calc-section .section-sub{color:rgba(255,255,255,.5)}
-.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:28px}
-.calc-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;backdrop-filter:blur(10px)}
-.calc-card-title{font-size:.9rem;font-weight:700;color:#f0f6fc;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.calc-form-group{margin-bottom:18px}
-.calc-label{display:block;font-size:.72rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.calc-select,.calc-input{width:100%;height:44px;border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:0 14px;font-size:.88rem;color:#f0f6fc;background:rgba(255,255,255,.06);font-family:inherit;transition:border .2s;appearance:none}
-.calc-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2360b5ff' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-.calc-select:focus,.calc-input:focus{outline:none;border-color:#60b5ff;box-shadow:0 0 0 3px rgba(96,181,255,.15)}
-.calc-select option{background:#0a1628;color:#f0f6fc}
-.range-group{margin-bottom:18px}
-.range-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.range-value{font-size:.95rem;font-weight:800;color:#60b5ff}
-.calc-range{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,.12);border-radius:3px;outline:none}
-.calc-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#007AFF;cursor:pointer;border:3px solid #f0f6fc;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.calc-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#007AFF;cursor:pointer;border:3px solid #f0f6fc;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-
-/* Results */
-.calc-results{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;backdrop-filter:blur(10px)}
-.result-hero{text-align:center;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:20px}
-.result-hero-label{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
-.result-hero-val{font-size:2.4rem;font-weight:800;color:#60b5ff;letter-spacing:-.03em;line-height:1}
-.result-hero-sub{font-size:.82rem;color:rgba(255,255,255,.4);margin-top:6px}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.result-item{background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center}
-.result-item-label{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
-.result-item-val{font-size:1.1rem;font-weight:800;color:#f0f6fc}
-.comparison-title{font-size:.78rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
-.comparison-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.84rem}
-.comparison-row:last-child{border-bottom:none}
-.comparison-label{color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
-.comparison-val{font-weight:700;color:#f0f6fc}
-.comparison-savings{font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:100px}
-.savings-positive{background:rgba(52,199,89,.15);color:#34c759}
-.savings-negative{background:rgba(255,59,48,.15);color:#ff3b30}
-.calc-btn{width:100%;height:48px;background:var(--color-primary,#007AFF);color:#fff;border:none;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:16px;font-family:inherit}
-.calc-btn:hover{background:#0063D1;transform:translateY(-1px)}
-.calc-btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:#f0f6fc}
-.calc-btn-outline:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.3)}
-
-/* ── FAQ ── */
-.faq-section{padding:56px 0}
-.faq-section .section-inner{max-width:800px;margin:0 auto;padding:0 24px}
-.faq-list{margin-top:24px}
-.faq-item{border-bottom:1px solid #e5e7eb}
-.faq-question{width:100%;padding:18px 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;font-family:inherit;font-size:.95rem;font-weight:600;color:#1d1d1f;cursor:pointer;text-align:left;gap:16px}
-.faq-question::after{content:'+';font-size:1.3rem;font-weight:300;color:#9ca3af;transition:transform .2s;flex-shrink:0}
-.faq-item.open .faq-question::after{content:'\2212'}
-.faq-answer{max-height:0;overflow:hidden;transition:max-height .3s ease}
-.faq-item.open .faq-answer{max-height:500px}
-.faq-answer-inner{padding:0 0 18px;font-size:.88rem;color:#6e6e73;line-height:1.7}
-
-/* ── Insights Cards ── */
-.insights-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.insight-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:20px;text-align:center;transition:all .2s}
-.insight-card:hover{border-color:var(--color-primary);box-shadow:0 4px 16px rgba(0,122,255,.1);transform:translateY(-2px)}
-.insight-icon{font-size:1.8rem;margin-bottom:8px}
-.insight-val{font-size:1.5rem;font-weight:800;color:#1d1d1f;letter-spacing:-.02em}
-.insight-label{font-size:.72rem;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
-.insight-change{font-size:.7rem;font-weight:700;margin-top:6px;padding:2px 8px;border-radius:100px;display:inline-block}
-.insight-up{background:#fee2e2;color:#dc2626}
-.insight-down{background:#dcfce7;color:#16a34a}
-.insight-neutral{background:#f3f4f6;color:#6b7280}
-
-/* ── News Section ── */
-.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.news-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:20px;transition:all .2s;cursor:pointer;text-decoration:none;color:inherit;display:flex;flex-direction:column}
-.news-card:hover{border-color:var(--color-primary);box-shadow:0 8px 24px rgba(0,122,255,.12);transform:translateY(-3px)}
-.news-tag{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#007AFF;margin-bottom:8px}
-.news-title{font-size:.92rem;font-weight:700;color:#1d1d1f;line-height:1.4;margin-bottom:8px}
-.news-snippet{font-size:.8rem;color:#6e6e73;line-height:1.6;flex:1;margin-bottom:12px}
-.news-meta{display:flex;align-items:center;justify-content:space-between;font-size:.68rem;color:#9ca3af;border-top:1px solid #f3f4f6;padding-top:10px}
-.news-source{font-weight:600}
-.news-live-dot{width:6px;height:6px;border-radius:50%;background:#FF3B30;display:inline-block;margin-right:4px;animation:pd 2s infinite}
-
-/* ── Responsive ── */
-@media(max-width:768px){
-  .hero{padding:48px 0 44px}
-  .hero-stats{gap:20px}
-  .fuel-tabs{gap:6px;margin-top:-18px}
-  .fuel-tab{padding:8px 16px;font-size:.8rem}
-  .table-controls{flex-direction:column;align-items:stretch}
-  .table-search{max-width:100%}
-  .price-table{font-size:.78rem}
-  .price-table th,.price-table td{padding:8px 10px}
-  .calc-grid{grid-template-columns:1fr}
-  .chart-canvas-wrap{height:260px}
-  .result-hero-val{font-size:1.8rem}
-  .result-grid{grid-template-columns:1fr}
-  .map-container{padding:20px}
-  .section{padding:28px 16px}
-  .insights-grid{grid-template-columns:1fr 1fr}
-  .news-grid{grid-template-columns:1fr}
-}
-
-/* ── Print ── */
-@media print{
-  .hero,.fuel-tabs-wrap,.map-section,.table-section,.chart-section,.faq-section,afro-navbar,afro-footer,afro-related-tools,afro-api-cta{display:none!important}
-  .calc-section{background:#fff!important;color:#000!important;padding:20px 0!important}
-  .calc-section *{color:#000!important}
-  .calc-card,.calc-results{background:#f9f9f9!important;border:1px solid #ccc!important}
-  .result-hero-val{color:#007AFF!important}
-}
-</style>
+<link rel="stylesheet" href="/tools/fuel-tracker/fuel-tracker.css">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/bundles/core.009aa1e7.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -278,7 +83,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:title" content="AfroFuel — Pan-African Fuel Price Tracker">
-<meta name="twitter:description" content="Latest available petrol, diesel, and LPG price snapshots for all 54 African countries with freshness labels, comparison table, and generator cost calculator.">
+<meta name="twitter:description" content="Compare source-labelled African fuel prices and turn them into household, generator, fleet, transport fare, and procurement decision briefs.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fuel-tracker.webp">
 <script type="application/ld+json">
 {
@@ -325,44 +130,164 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       <a href="/all-tools/">Tools</a><span>/</span>
       AfroFuel Tracker
     </nav>
-    <div class="hero-badge">Latest Available Data &bull; Weekly Review</div>
-    <h1>AfroFuel &mdash; Pan-African <em>Fuel Price</em> Tracker</h1>
-    <p class="hero-sub">Latest available petrol, diesel, and LPG price snapshots for all 54 African countries, with source and freshness labels.</p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val">54</div>
-        <div class="hero-stat-label">Countries</div>
+    <div class="fuel-hero-main">
+      <div class="hero-badge">Fuel market desk &bull; source-labelled</div>
+      <h1>AfroFuel <em>market intelligence</em> for African fuel costs</h1>
+      <p class="hero-sub">Compare petrol, diesel, and LPG snapshots across Africa, then turn a country row into a generator budget, a country spread, or a short decision brief.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">54</div>
+          <div class="hero-stat-label">Countries</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">3</div>
+          <div class="hero-stat-label">Fuel types</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val" id="avg-price">$1.14</div>
+          <div class="hero-stat-label" id="avg-price-label">Avg USD/litre</div>
+        </div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">3</div>
-        <div class="hero-stat-label">Fuel Types</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val" id="avg-price">$1.14</div>
-        <div class="hero-stat-label" id="avg-price-label">Avg USD/Litre</div>
-      </div>
+      <div class="last-updated live-data-status" id="last-updated">Checking latest available fuel prices...</div>
     </div>
-    <div class="last-updated live-data-status" id="last-updated">Checking latest available fuel prices...</div>
+    <aside class="fuel-command-panel" aria-labelledby="fuelDeskTitle">
+      <div class="fuel-command-kicker">Command desk</div>
+      <h2 id="fuelDeskTitle">Start with the decision, not the table.</h2>
+      <p>Use the latest available snapshot carefully. Every brief and generator estimate carries the current source state.</p>
+      <div class="fuel-desk-grid">
+        <div class="fuel-desk-card"><span>Coverage</span><strong id="fuelDeskCoverage">Checking</strong></div>
+        <div class="fuel-desk-card"><span>Source state</span><strong id="fuelDeskState">Checking</strong></div>
+        <div class="fuel-desk-card"><span>Cheapest now</span><strong id="fuelDeskLow">-</strong></div>
+        <div class="fuel-desk-card"><span>Highest now</span><strong id="fuelDeskHigh">-</strong></div>
+      </div>
+      <div class="fuel-command-actions">
+        <a class="fuel-command-action" href="#fuel-workspace">Open workspace</a>
+        <a class="fuel-command-action secondary" href="#generator-cost">Generator calculator</a>
+        <button class="fuel-command-action secondary" type="button" id="copyMarketBrief">Copy market brief</button>
+      </div>
+      <p class="fuel-brief-status" id="fuelBriefStatus" aria-live="polite"></p>
+    </aside>
   </div>
 </section>
 
 <!-- ── Fuel Type Tabs ── -->
 <div class="fuel-tabs-wrap">
   <div class="fuel-tabs" id="fuel-tabs">
-    <button type="button" class="fuel-tab active" data-fuel="petrol">&#9981; Petrol</button>
-    <button type="button" class="fuel-tab" data-fuel="diesel">&#128738; Diesel</button>
-    <button type="button" class="fuel-tab" data-fuel="lpg">&#128293; LPG</button>
+    <button type="button" class="fuel-tab active" data-fuel="petrol">Petrol</button>
+    <button type="button" class="fuel-tab" data-fuel="diesel">Diesel</button>
+    <button type="button" class="fuel-tab" data-fuel="lpg">LPG</button>
+  </div>
+</div>
+
+<div class="fuel-data-state" aria-live="polite">
+  <div class="fuel-state-strip is-loading" id="fuelDataState">
+    <span class="fuel-state-dot" aria-hidden="true"></span>
+    <span class="fuel-state-text"><strong id="fuelDataStateTitle">Checking fuel snapshot</strong><span id="fuelDataStateDetail">Loading the latest available source-labelled data.</span></span>
+    <span class="fuel-state-meta" id="fuelDataStateMeta">Local first</span>
   </div>
 </div>
 
 <section class="section" style="padding-top:24px;padding-bottom:0;">
-  <div style="background:linear-gradient(135deg,#eef6ff,#f8fbff);border:1.5px solid rgba(0,122,255,.16);border-radius:18px;padding:18px 20px;">
-    <div style="font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0f62fe;margin-bottom:8px;">AfroPoints Data Network</div>
-    <p style="margin:0 0 10px;font-size:.86rem;color:#334155;line-height:1.7;">Fuel prices are now part of a broader live market-data system. Track route fares, report pump prices, and compare generator or backup-power costs with verified contributor feeds.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;">
-      <a href="/tools/route-fares/" class="calc-btn" style="width:auto;height:auto;padding:10px 18px;margin-top:0;">Open Route Fares</a>
-      <a href="/tools/backup-power-costs/" class="calc-btn calc-btn-outline" style="width:auto;height:auto;padding:10px 18px;margin-top:0;">Backup Power Costs</a>
-      <a href="/tools/afropoints/contribute?cat=fuel_price" class="calc-btn calc-btn-outline" style="width:auto;height:auto;padding:10px 18px;margin-top:0;">Submit fuel price</a>
+  <div class="fuel-network-card">
+    <div>
+      <div class="fuel-network-kicker">Reviewed data workflow</div>
+      <p>Fuel prices sit inside a market-data system for route fares, backup-power budgets, and reviewed pump-price contributions. User-submitted prices go into moderation first and are not shown as live data until reviewed.</p>
+    </div>
+    <div class="fuel-network-actions">
+      <a href="/tools/route-fares/" class="fuel-mini-btn primary">Route fares</a>
+      <a href="/tools/backup-power-costs/" class="fuel-mini-btn">Backup power</a>
+      <a href="/tools/afropoints/contribute?cat=fuel_price" class="fuel-mini-btn">Submit for review</a>
+    </div>
+  </div>
+  <div class="fuel-network-card" id="fuelSourceFreshness" style="margin-top:16px;">
+    <div>
+      <div class="fuel-network-kicker">Source freshness</div>
+      <p id="fuelSourceFreshnessSummary">Checking source labels and official-source review state.</p>
+      <div class="fuel-source-list" id="fuelSourceFreshnessList" aria-live="polite"></div>
+      <div class="fuel-source-note">AfroFuel does not update a price from an announcement, page hash, or expired table alone. A row needs a current absolute price, product, currency, unit, geography, and effective period before it can be marked official.</div>
+    </div>
+    <div class="fuel-network-actions">
+      <a href="/data/fuel/official-source-workflow.json" class="fuel-mini-btn primary">Workflow JSON</a>
+      <a href="/tools/fuel-cost/" class="fuel-mini-btn">Fuel cost calculator</a>
+    </div>
+  </div>
+  <div class="fuel-verification-card" data-tool-verification-panel aria-label="AfroFuel sources and verification workflow">
+    <div>
+      <strong>Sources & verification workflow</strong>
+      <span>Use AfroFuel as a planning desk first. Treat a row as decision-ready only after the visible source state, row date, official link, and local quote or station check agree.</span>
+    </div>
+    <ol>
+      <li>Start with the current source state shown on the page.</li>
+      <li>Open the row source or official source when a link is available.</li>
+      <li>Confirm product, unit, currency, geography, and effective period.</li>
+      <li>Verify station, supplier, regulator, or procurement quote before public claims, fares, or purchase decisions.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- Fuel Intelligence Workspace -->
+<section class="section fuel-workspace" id="fuel-workspace">
+  <div class="section-header">
+    <h2 class="section-title">Fuel Intelligence Workspace</h2>
+    <p class="section-sub">Turn source-labelled country prices into monthly exposure, route pressure, procurement checks, and copyable decision briefs.</p>
+  </div>
+  <div class="workspace-shell">
+    <div class="workspace-panel">
+      <div class="workspace-mode-tabs" id="workspace-mode-tabs" aria-label="Fuel workflow modes">
+        <button type="button" class="workspace-mode-btn active" data-mode="household">Household</button>
+        <button type="button" class="workspace-mode-btn" data-mode="generator">Generator</button>
+        <button type="button" class="workspace-mode-btn" data-mode="fleet">Fleet</button>
+        <button type="button" class="workspace-mode-btn" data-mode="fare">Transport Fare</button>
+        <button type="button" class="workspace-mode-btn" data-mode="procurement">Procurement</button>
+      </div>
+      <div class="workspace-form" aria-label="Fuel intelligence controls">
+        <div class="workspace-base-grid">
+          <div class="workspace-field">
+            <label for="workspace-country">Country</label>
+            <select id="workspace-country"></select>
+          </div>
+          <div class="workspace-field">
+            <label for="workspace-compare-country">Compare with</label>
+            <select id="workspace-compare-country"></select>
+          </div>
+          <div class="workspace-field">
+            <label for="workspace-fuel">Fuel</label>
+            <select id="workspace-fuel">
+              <option value="petrol" selected>Petrol</option>
+              <option value="diesel">Diesel</option>
+              <option value="lpg">LPG</option>
+            </select>
+          </div>
+          <div class="workspace-field">
+            <span class="workspace-label">Source label</span>
+            <span class="workspace-source-pill" id="workspace-source-label">Waiting for data</span>
+          </div>
+        </div>
+        <div class="workspace-dynamic-grid" id="workspace-fields"></div>
+        <p class="workspace-help" id="workspace-help">Choose a workflow mode to model monthly fuel exposure from the selected country row.</p>
+      </div>
+    </div>
+    <div class="workspace-panel">
+      <div class="workspace-result-head">
+        <div>
+          <h3 id="workspace-title">Household fuel plan</h3>
+          <p id="workspace-subtitle">Waiting for fuel data.</p>
+        </div>
+        <span class="workspace-risk-badge" id="workspace-risk">Planning</span>
+      </div>
+      <div class="workspace-metrics">
+        <div class="workspace-metric"><span id="workspace-metric-1-label">Monthly cost</span><strong id="workspace-metric-1">Waiting</strong></div>
+        <div class="workspace-metric"><span id="workspace-metric-2-label">Fuel volume</span><strong id="workspace-metric-2">Waiting</strong></div>
+        <div class="workspace-metric"><span id="workspace-metric-3-label">Exposure</span><strong id="workspace-metric-3">Waiting</strong></div>
+        <div class="workspace-metric"><span id="workspace-metric-4-label">Comparison</span><strong id="workspace-metric-4">Waiting</strong></div>
+      </div>
+      <div class="workspace-insight" id="workspace-insight">The workspace will calculate after the fuel snapshot loads.</div>
+      <textarea class="workspace-brief" id="workspace-brief" readonly aria-label="Copyable fuel decision brief"></textarea>
+      <div class="workspace-actions">
+        <button type="button" class="workspace-action primary" id="copyWorkspaceBrief">Copy brief</button>
+        <button type="button" class="workspace-action" id="sendWorkspaceToGenerator">Open in generator calculator</button>
+      </div>
+      <div class="workspace-status" id="workspace-status" aria-live="polite"></div>
     </div>
   </div>
 </section>
@@ -420,12 +345,13 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
           <th>Diesel (local)</th>
           <th id="usd-price-header">USD/Litre</th>
           <th>Trend</th>
-          <th style="width:90px">Regulated</th>
+          <th style="width:90px">Price rule</th>
           <th style="width:80px">7d</th>
+          <th>Generator</th>
         </tr>
       </thead>
       <tbody id="price-table-body">
-          <tr><td colspan="8" class="table-empty">Checking latest available fuel prices...</td></tr>
+          <tr><td colspan="9" class="table-empty">Checking latest available fuel prices...</td></tr>
       </tbody>
     </table>
   </div>
@@ -433,6 +359,33 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 </section>
 
 <!-- ── Price Trend Chart ── -->
+<!-- Country comparison -->
+<section class="section fuel-compare-section" id="fuel-compare">
+  <div class="section-header">
+    <h2 class="section-title">Country Spread Desk</h2>
+    <p class="section-sub">Compare two countries on the active fuel type, then copy a short briefing for planning, procurement, or generator budgeting.</p>
+  </div>
+  <div class="fuel-compare-card">
+    <div class="fuel-compare-form" aria-label="Country spread controls">
+      <label for="compare-country-a">First country
+        <select id="compare-country-a"></select>
+      </label>
+      <label for="compare-country-b">Second country
+        <select id="compare-country-b"></select>
+      </label>
+      <div class="fuel-compare-actions">
+        <button type="button" class="fuel-mini-btn primary" id="swapCompareCountries">Swap countries</button>
+        <button type="button" class="fuel-mini-btn" id="copyCompareBrief">Copy comparison</button>
+      </div>
+      <p class="fuel-brief-status" id="compareBriefStatus" aria-live="polite"></p>
+    </div>
+    <div class="fuel-compare-output" id="fuelCompareOutput" aria-live="polite">
+      <h3>Comparison waiting for data</h3>
+      <p class="fuel-compare-note">The spread desk will load after the fuel snapshot is available.</p>
+    </div>
+  </div>
+</section>
+
 <section class="section chart-section">
   <div class="section-header">
     <h2 class="section-title">Price Trends</h2>
@@ -462,7 +415,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 </section>
 
 <!-- ── Generator Cost Calculator ── -->
-<section class="calc-section">
+<section class="calc-section" id="generator-cost">
   <div class="section-inner">
     <div class="section-header">
       <h2 class="section-title">Generator Cost Calculator</h2>
@@ -472,6 +425,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       <!-- Inputs -->
       <div class="calc-card">
         <div class="calc-card-title">&#9889; Generator Details</div>
+        <div class="calc-selection-note" id="calc-selection-note" aria-live="polite"></div>
 
         <div class="calc-form-group">
           <label class="calc-label" for="calc-country">Country</label>
@@ -542,11 +496,15 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
         </div>
 
         <div class="calc-form-group">
-          <label class="calc-label" id="calc-price-label">Current fuel price (per litre)</label>
+          <label class="calc-label" id="calc-price-label">Selected fuel price (per litre)</label>
           <input aria-label="Auto filled from data" type="number" class="calc-input" id="calc-price" placeholder="Auto-filled from data" step="0.01" min="0">
         </div>
 
-        <button type="button" class="calc-btn" id="calc-share-btn">&#128279; Share Results</button>
+        <div class="result-actions">
+          <button type="button" class="calc-btn" id="calc-copy-btn">Copy Result</button>
+          <button type="button" class="calc-btn calc-btn-outline" id="calc-share-btn">&#128279; Share Results</button>
+        </div>
+        <div class="calc-copy-status" id="calc-copy-status" aria-live="polite"></div>
         <button type="button" class="calc-btn calc-btn-outline" onclick="window.print()" style="margin-top:8px">&#128196; Download Report (PDF)</button>
       </div>
 
@@ -610,26 +568,75 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 <!-- ── Live Fuel News ── -->
 <section class="section news-section">
   <div class="section-header">
-    <h2 class="section-title">African Fuel News</h2>
-    <p class="section-sub">Latest developments in African energy markets and fuel pricing.</p>
+    <h2 class="section-title">Fuel Market Reading Notes</h2>
+    <p class="section-sub">Reusable context for interpreting fuel-price snapshots without treating them as filing notices, quotes, or regulator announcements.</p>
   </div>
   <div class="news-grid" id="news-grid">
     <!-- Populated by JS -->
   </div>
 </section>
 
-<!-- ── API CTA ── -->
-<afro-api-cta
-  data-api-name="AfroFuel API"
-  data-description="Latest available and historical fuel price snapshots for all 54 African countries. Source labels, freshness timestamps, JSON format."
-  data-docs-url="/docs/api/"
-  data-signup-url="/docs/api/#signup">
-</afro-api-cta>
+<!-- ── Methodology ── -->
+<section class="section" id="methodology">
+  <div class="section-header">
+    <h2 class="section-title">Methodology</h2>
+    <p class="section-sub">How AfroFuel labels each fuel row before you use it for comparison or generator budgeting.</p>
+  </div>
+  <div class="methodology-grid">
+    <div class="methodology-item">
+      <div class="methodology-label">Price Type</div>
+      <div class="methodology-text">Rows show the latest available retail fuel-price snapshot for petrol, diesel, and LPG where the data supports it. AfroFuel does not mark a row as an official regulator price unless the row is explicitly official verified and includes the exact official source used for that price.</div>
+    </div>
+    <div class="methodology-item">
+      <div class="methodology-label">Currency</div>
+      <div class="methodology-text">Local-price columns use the country currency shown beside the row. The USD column is a comparable converted snapshot and should not replace the local-currency price for budgeting.</div>
+    </div>
+    <div class="methodology-item">
+      <div class="methodology-label">Unit</div>
+      <div class="methodology-text">Petrol and diesel are shown per litre. LPG is shown per kilogram. Generator-cost shortcuts use litre-based petrol or diesel inputs only.</div>
+    </div>
+    <div class="methodology-item">
+      <div class="methodology-label">Date And Source</div>
+      <div class="methodology-text">Each country row shows a source label and row date when the snapshot provides them. If row-level dates are missing, the page uses the snapshot date and labels the row as lower-confidence.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AfroFuel Commercial Interest ── -->
+<section class="fuel-interest-block" id="afrofuel-interest">
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">AfroFuel For Teams</h2>
+      <p class="section-sub">Interested in widgets, sponsored education, or future documented data options? Start with the visible source states above and tell us what decision you need to support.</p>
+    </div>
+    <div class="fuel-interest-panel">
+      <div class="fuel-interest-grid">
+        <div>
+          <div class="methodology-label" style="color:#93c5fd;">Sample use cases</div>
+          <div class="fuel-use-cases">
+            <div class="fuel-use-case"><strong>Logistics</strong><span>Compare route fuel assumptions before quoting transport work.</span></div>
+            <div class="fuel-use-case"><strong>Generator budgeting</strong><span>Embed local fuel assumptions in monthly backup-power planning.</span></div>
+            <div class="fuel-use-case"><strong>Fare estimation</strong><span>Reference fuel snapshots when explaining fare or delivery-cost changes.</span></div>
+            <div class="fuel-use-case"><strong>Procurement</strong><span>Track reviewed price snapshots while preparing purchasing or tender assumptions.</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="fuel-interest-note">This is an interest path, not a promise of a commercial fuel-price feed. Any AfroFuel widget, sponsorship, API, or partner-data option would depend on source validation, coverage, product readiness, and documented terms. We do not expose internal APIs from this page.</p>
+          <div class="fuel-interest-actions">
+            <a href="/widgets/" class="calc-btn">Explore widgets</a>
+            <a href="/sponsored-tools/" class="calc-btn calc-btn-outline">Sponsor interest</a>
+            <a href="/business-enquiry/" class="calc-btn calc-btn-outline">Business enquiry</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ── FAQ ── -->
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The Fuel Expense Tracker lets you log every fill-up and monitor your vehicle fuel consumption over time. Record the date, litres filled, cost, and odometer reading, and the tool automatically calculates your running fuel efficiency, cost per kilometre, and monthly spending trends. It stores everything in your browser so your data is private and always available. The tracker supports multiple vehicles and exports data for further analysis. Fleet managers, ride-hail drivers, and everyday commuters across Africa use it to identify fuel waste, track rising costs, and make data-driven decisions about vehicle usage and maintenance schedules.</p>
+    <p>AfroFuel is a planning surface for comparing fuel snapshots, checking source freshness, estimating generator exposure, and preparing short country-spread briefs. It is most useful for quick budgeting, transport discussions, backup-power planning, and internal procurement notes. It does not replace official regulator notices, station prices, supplier quotes, or a live fuel-card system.</p>
   </div>
 </section>
 
@@ -645,7 +652,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     <div class="faq-list" id="faq-list">
       <div class="faq-item">
         <button type="button" class="faq-question">How often are African fuel prices updated on AfroFuel?</button>
-        <div class="faq-answer"><div class="faq-answer-inner">AfroFuel updates fuel prices on a weekly basis. Our data is sourced from national petroleum regulatory agencies, government energy ministries, and independent market data providers across all 54 African countries. For countries with regulated pricing, we update immediately when new government-mandated prices are announced. For deregulated markets, we aggregate pricing data from multiple fuel stations in major cities to provide an accurate national average.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">AfroFuel labels each page load as an API snapshot, static snapshot, stale snapshot, or unavailable fallback. Static rows may come from third-party market snapshots or reviewed internal data; we do not treat a row as an official regulator price unless the row is explicitly official verified.</div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">Why do fuel prices vary so much across African countries?</button>
@@ -653,11 +660,11 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">Which African country has the cheapest and most expensive petrol?</button>
-        <div class="faq-answer"><div class="faq-answer-inner">Libya consistently has the cheapest petrol in Africa, with prices as low as $0.03 per litre due to massive government subsidies and domestic oil production. Algeria and Egypt also rank among the cheapest. On the expensive end, countries like the Central African Republic, Malawi, and Zimbabwe often have the highest fuel prices, sometimes exceeding $1.80 per litre. Island nations like Seychelles and Comoros also tend to have elevated prices due to import dependency and limited economies of scale.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Use the current table for this answer instead of relying on a fixed claim. Subsidised oil-producing markets often appear cheaper, while landlocked, island, or import-dependent markets can be higher. AfroFuel shows the cheapest and highest countries in the command desk for the active snapshot and fuel type.</div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">How much does it cost to run a generator in Nigeria?</button>
-        <div class="faq-answer"><div class="faq-answer-inner">The cost of running a generator in Nigeria depends on generator size, fuel consumption rate, hours of operation, and current petrol prices. A typical 5 KVA generator consumes approximately 1.5 litres per hour. Running it for 8 hours daily over 26 working days would consume about 312 litres of petrol per month. At current Nigerian fuel prices, this could cost between NGN 150,000 and NGN 250,000 monthly. Our generator cost calculator above provides precise estimates based on live fuel prices and lets you compare costs against grid electricity (Band A at &#8358;68/kWh) and solar alternatives.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">The cost of running a generator in Nigeria depends on generator size, fuel consumption rate, hours of operation, and the selected fuel snapshot. A typical 5 KVA generator consumes approximately 1.5 litres per hour. Running it for 8 hours daily over 26 working days would consume about 312 litres of petrol per month. Use the generator cost calculator above with the visible source state and date before making budget decisions.</div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">What is the difference between PMS, AGO, and LPG?</button>
@@ -665,7 +672,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">Are fuel prices regulated or deregulated in Africa?</button>
-        <div class="faq-answer"><div class="faq-answer-inner">Fuel pricing regulation varies significantly across the continent. Heavily regulated markets include Nigeria (through NNPC), Egypt, Algeria, Libya, and Angola, where government-set prices keep fuel affordable but create subsidy burdens on national budgets. Market-based pricing with periodic government adjustments exists in countries like Kenya (through ERC monthly reviews), South Africa (monthly adjustments by DMRE), and Ghana (bi-weekly pricing windows). Fully deregulated markets exist in a smaller number of countries where prices respond directly to international crude oil movements. Several countries are in various stages of subsidy reform, transitioning from regulated to market-based pricing &mdash; Nigeria's ongoing deregulation is a prominent example.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Fuel pricing rules vary by country. Some markets use administered or capped prices, some use periodic review windows, and others are more market-driven. AfroFuel's regulated badge is a plain-language context label, not proof that the row came from an official regulator. Treat a country row as official regulator data only when an official source link is displayed.</div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">How does LPG cooking gas pricing work in Africa?</button>
@@ -673,7 +680,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">Can I access AfroFuel data via API for my application?</button>
-        <div class="faq-answer"><div class="faq-answer-inner">Yes, the AfroFuel API provides programmatic access to both current and historical fuel price data for all 54 African countries. The API returns JSON-formatted data including petrol, diesel, and LPG prices in both local currencies and USD equivalents. Features include historical data going back 12 months, weekly price change percentages, regional aggregates, and regulatory status flags. The API supports filtering by country, region, fuel type, and date range. Visit our API documentation page for full endpoint details, authentication setup, rate limits, and code examples in Python, JavaScript, and cURL.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">AfroFuel has an API interest path for teams that may need structured fuel-price snapshots later. Availability, source coverage, freshness, and commercial terms depend on product readiness and source validation; the public page should be treated as the visible source-of-truth unless a documented product is separately launched.</div></div>
       </div>
     </div>
   </div>
@@ -839,16 +846,74 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   let fuelData = null;
   let fuelDataSource = 'AfroTools fuel API';
   let fuelDataFallback = false;
+  let fuelDataMode = 'unavailable';
   let activeFuel = 'petrol';
   let activeRegion = 'all';
   let searchQuery = '';
   let sortMode = 'price-asc';
+  let selectedGeneratorCode = '';
+  let activeWorkspaceMode = 'household';
+  let workspacePopulated = false;
+  let latestWorkspaceResult = null;
+  let latestCalcResult = null;
   let chartInstance = null;
   let chartCountries = ['NG','ZA','KE','EG','GH'];
   let forexRatesLoaded = false;
 
   const CHART_COLORS = AfroChartColors.doughnut;
   const CHART_DEFAULTS = ['NG','ZA','KE','EG','GH'];
+  const WORKFLOW_MODES = {
+    household: {
+      title: 'Household fuel plan',
+      help: 'Model household mobility, cooking, or small backup-fuel exposure from a monthly litre assumption.',
+      fields: [
+        { id: 'litres', label: 'Monthly litres', value: 80, min: 0, step: 1 },
+        { id: 'income', label: 'Monthly household income', value: 250000, min: 0, step: 1000 },
+        { id: 'buffer', label: 'Emergency reserve days', value: 7, min: 0, step: 1 },
+        { id: 'change', label: 'Stress price rise %', value: 10, min: 0, step: 1 }
+      ]
+    },
+    generator: {
+      title: 'Generator continuity plan',
+      help: 'Estimate monthly generator fuel burn, outage exposure, and savings pressure for backup-power planning.',
+      fields: [
+        { id: 'consumption', label: 'Litres per hour', value: 1.5, min: 0, step: 0.1 },
+        { id: 'hours', label: 'Hours per day', value: 8, min: 0, step: 0.5 },
+        { id: 'days', label: 'Days per month', value: 26, min: 0, step: 1 },
+        { id: 'gridSpend', label: 'Grid spend/month', value: 45000, min: 0, step: 1000 }
+      ]
+    },
+    fleet: {
+      title: 'Fleet fuel exposure',
+      help: 'Convert vehicle count, daily distance, and consumption into monthly fuel cost and per-vehicle pressure.',
+      fields: [
+        { id: 'vehicles', label: 'Vehicles', value: 8, min: 1, step: 1 },
+        { id: 'kmDay', label: 'Km per vehicle/day', value: 90, min: 0, step: 1 },
+        { id: 'consumption100', label: 'Litres per 100 km', value: 11, min: 0, step: 0.1 },
+        { id: 'days', label: 'Operating days/month', value: 26, min: 1, step: 1 }
+      ]
+    },
+    fare: {
+      title: 'Transport fare pressure',
+      help: 'Estimate how route fuel cost flows into fare pressure for taxis, buses, delivery, or informal routes.',
+      fields: [
+        { id: 'routeKm', label: 'Route km per trip', value: 18, min: 0, step: 1 },
+        { id: 'trips', label: 'Trips per month', value: 260, min: 0, step: 1 },
+        { id: 'consumption100', label: 'Litres per 100 km', value: 12, min: 0, step: 0.1 },
+        { id: 'passengers', label: 'Avg passengers/load', value: 12, min: 1, step: 1 }
+      ]
+    },
+    procurement: {
+      title: 'Procurement buying check',
+      help: 'Size monthly litres, buffer stock, benchmark spread, and contract discount without claiming supplier quotes.',
+      fields: [
+        { id: 'litres', label: 'Monthly litres', value: 5000, min: 0, step: 10 },
+        { id: 'buffer', label: 'Buffer stock %', value: 15, min: 0, step: 1 },
+        { id: 'discount', label: 'Contract discount %', value: 3, min: 0, step: 0.5 },
+        { id: 'storageDays', label: 'Storage cover days', value: 10, min: 0, step: 1 }
+      ]
+    }
+  };
 
   /* ═══════════════════════════════════════════════════════════
      INIT
@@ -864,7 +929,14 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   function normalizeApiData(data) {
     // Handle API format: countries as array with nested petrol.usd structure
     if (data && data.countries && !isValidFuelData(data)) {
-      var normalized = {updated: data.updated || data.timestamp || new Date().toISOString(), countries: {}};
+      var normalized = {
+        updated: data.updated || data.timestamp || new Date().toISOString(),
+        source: data.source || '',
+        source_state: data.source_state || '',
+        source_note: data.source_note || '',
+        official_verified_count: data.official_verified_count || 0,
+        countries: {}
+      };
       var arr = Array.isArray(data.countries) ? data.countries : Object.values(data.countries);
       arr.forEach(function(c) {
         if (!c || !c.code) return;
@@ -880,6 +952,15 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
           petrol_unit: c.petrol ? (c.petrol.unit || 'liter') : 'liter',
           diesel_unit: c.diesel ? (c.diesel.unit || 'liter') : 'liter',
           lpg_unit: c.lpg ? (c.lpg.unit || 'kg') : 'kg',
+          source: c.source || '',
+          source_url: c.source_url || c.url || '',
+          source_state: c.source_state || data.source_state || '',
+          source_note: c.source_note || data.source_note || '',
+          official_verified: c.official_verified === true,
+          official_source_name: c.official_source_name || '',
+          official_source_url: c.official_source_url || '',
+          official_source_state: c.official_source_state || '',
+          last_updated: c.last_updated || data.updated || data.timestamp || '',
           history_petrol: generateHistory(c.petrol ? c.petrol.usd : 1, 12),
           history_diesel: generateHistory(c.diesel ? c.diesel.usd : 1, 12),
           history_lpg: generateHistory(c.lpg ? c.lpg.usd : 1, 12)
@@ -912,33 +993,65 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     }
   }
 
-  function setFuelData(data, source, fallback) {
+  function isLocalStaticPreview() {
+    var host = window.location.hostname;
+    return window.location.protocol === 'file:' ||
+      host === 'localhost' ||
+      /^127(?:\.\d{1,3}){3}$/.test(host) ||
+      host === '::1' ||
+      host === '[::1]' ||
+      host === '';
+  }
+
+  function getTimestampState(timestamp) {
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    return status ? status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) : 'unavailable';
+  }
+
+  function resolveFuelSourceState(mode, timestamp) {
+    if (mode === 'unavailable') return 'unavailable';
+    var timestampState = getTimestampState(timestamp);
+    if (timestampState === 'stale' || timestampState === 'unavailable') return timestampState;
+    if (mode === 'live') return 'live';
+    if (mode === 'static') return 'static';
+    return timestampState === 'live' ? 'live' : 'static';
+  }
+
+  function getFuelSourceMessage(state, mode) {
+    if (state === 'live') return 'Fuel API snapshot loaded';
+    if (state === 'static') return 'Static fuel snapshot loaded';
+    if (state === 'stale') {
+      return mode === 'live' ? 'Fuel API snapshot is stale' : 'Static fuel snapshot is stale';
+    }
+    return 'Fuel price data unavailable';
+  }
+
+  function setFuelData(data, source, mode) {
     fuelData = data;
     fuelDataSource = source || 'AfroTools fuel feed';
-    fuelDataFallback = !!fallback;
-    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    fuelDataMode = mode || 'unavailable';
+    fuelDataFallback = fuelDataMode !== 'live';
     var timestamp = fuelData && (fuelData.updated || fuelData.timestamp);
-    var state = fallback ? 'cached' : (status ? status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) : 'live');
-    if (fallback && status && status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) === 'stale') {
-      state = 'stale';
-    }
+    var state = resolveFuelSourceState(fuelDataMode, timestamp);
     setFuelStatus(state, {
       timestamp: timestamp,
       source: fuelDataSource,
-      message: fallback ? 'Showing latest fallback fuel snapshot' : 'Latest fuel price feed loaded'
+      message: getFuelSourceMessage(state, fuelDataMode),
+      label: state === 'stale' && fuelDataMode === 'static' ? 'Stale snapshot' : undefined
     });
     render();
   }
 
   function useGeneratedFallback(reason) {
     var fallback = generateFallbackData();
-    if (!fallback.updated) fallback.updated = new Date().toISOString();
-    console.warn('AfroFuel: using generated fallback data.', reason || '');
-    setFuelData(fallback, 'Built-in fallback estimates', true);
+    fallback.updated = '';
+    fallback.timestamp = '';
+    fallback.unavailable_reason = reason || 'Fuel source unavailable';
+    setFuelData(fallback, 'Built-in fallback estimates', 'unavailable');
   }
 
-  function loadStaticFuelFallback(reason) {
-    fetch('/data/fuel/latest.json', { cache: 'no-cache' })
+  function loadStaticFuelSnapshot(reason) {
+    return fetch('/data/fuel/latest.json', { cache: 'no-cache' })
       .then(function(res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -946,7 +1059,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       .then(function(data) {
         data = normalizeApiData(data);
         if (isValidFuelData(data)) {
-          setFuelData(data, 'Static fuel snapshot', true);
+          setFuelData(data, 'Static fuel snapshot', 'static');
         } else {
           useGeneratedFallback(reason || 'Static fallback invalid');
         }
@@ -966,6 +1079,563 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 
   function getFuelUnitShort(fuel) {
     return fuel === 'lpg' ? 'kg' : 'L';
+  }
+
+  function getGeneratorFuelFromTable() {
+    return activeFuel === 'diesel' ? 'diesel' : 'petrol';
+  }
+
+  function getFuelDisplayName(fuel) {
+    if (fuel === 'diesel') return 'diesel';
+    if (fuel === 'lpg') return 'LPG';
+    return 'petrol';
+  }
+
+  function setCopyStatus(message) {
+    var el = document.getElementById('calc-copy-status');
+    if (el) el.textContent = message || '';
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatSourceName(source) {
+    if (!source) return 'Source not provided';
+    if (String(source).toLowerCase() === 'globalpetrolprices') return 'GlobalPetrolPrices snapshot';
+    return String(source).replace(/[_-]+/g, ' ').replace(/\b\w/g, function(letter) { return letter.toUpperCase(); });
+  }
+
+  function formatSourceState(state) {
+    if (!state) return '';
+    var labels = {
+      third_party_snapshot: 'third-party snapshot',
+      static_third_party_snapshot: 'static third-party snapshot',
+      static_seed_forex_only: 'static seed; forex-only refresh',
+      mixed: 'mixed source state',
+      'official-table-found-but-latest-visible-period-not-current-on-2026-06-12': 'official page reviewed; visible table expired',
+      'official-download-page-available-parser-required-before-price-update': 'official page reviewed; parser required',
+      'official-index-current-schedule-parser-required-before-price-update': 'official index current; schedule parser required',
+      'regulator-site-available-no-current-pump-table-verified': 'regulator site reviewed; no pump table verified'
+    };
+    return labels[state] || String(state).replace(/[_-]+/g, ' ');
+  }
+
+  function formatRowDate(dateValue) {
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    if (status && status.formatDate) return status.formatDate(dateValue) || '';
+    if (!dateValue) return '';
+    var parsed = Date.parse(dateValue);
+    if (!Number.isFinite(parsed)) return '';
+    return new Date(parsed).toISOString().slice(0, 10);
+  }
+
+  function getRowFreshnessLabel(dateValue) {
+    var state = getTimestampState(dateValue);
+    if (state === 'live') return 'fresh';
+    if (state === 'cached') return 'recent';
+    if (state === 'stale') return 'stale';
+    return 'date unavailable';
+  }
+
+  function buildRowSourceLabel(row) {
+    var sourceName = formatSourceName(row.source);
+    var dateText = formatRowDate(row.price_date);
+    var freshness = getRowFreshnessLabel(row.price_date);
+    var parts = [sourceName];
+    var sourceState = formatSourceState(row.source_state);
+    if (sourceState) parts.push(sourceState);
+    if (row.official_verified) {
+      parts.push('official verified');
+    } else if (row.official_source_state) {
+      parts.push(formatSourceState(row.official_source_state));
+    }
+    parts.push(dateText || 'date unavailable');
+    parts.push(freshness);
+    return parts.join(' · ');
+  }
+
+  function getSourceStateLabel() {
+    var timestamp = fuelData && (fuelData.updated || fuelData.timestamp);
+    var state = resolveFuelSourceState(fuelDataMode, timestamp);
+    if (state === 'live') return 'API snapshot';
+    if (state === 'static') return 'Static snapshot';
+    if (state === 'stale') return 'Stale snapshot';
+    return 'Unavailable source';
+  }
+
+  function fuelUnitForBrief(fuel) {
+    return fuel === 'lpg' ? 'kg' : 'litre';
+  }
+
+  function getFuelStats() {
+    var countries = fuelData && fuelData.countries ? fuelData.countries : {};
+    var key = activeFuel + '_usd';
+    var rows = [];
+    Object.keys(countries).forEach(function(code) {
+      var country = COUNTRIES[code];
+      var row = countries[code];
+      var price = row ? Number(row[key]) : 0;
+      if (!country || !Number.isFinite(price) || price <= 0) return;
+      rows.push({ code: code, country: country, row: row, price: price });
+    });
+    rows.sort(function(a, b) { return a.price - b.price; });
+    var total = rows.reduce(function(sum, item) { return sum + item.price; }, 0);
+    return {
+      rows: rows,
+      count: rows.length,
+      average: rows.length ? total / rows.length : 0,
+      low: rows[0] || null,
+      high: rows[rows.length - 1] || null
+    };
+  }
+
+  function updateMarketDesk() {
+    var stats = getFuelStats();
+    var unit = fuelUnitForBrief(activeFuel);
+    var coverage = document.getElementById('fuelDeskCoverage');
+    var state = document.getElementById('fuelDeskState');
+    var low = document.getElementById('fuelDeskLow');
+    var high = document.getElementById('fuelDeskHigh');
+    if (coverage) coverage.textContent = stats.count ? stats.count + ' countries' : 'Unavailable';
+    if (state) state.textContent = getSourceStateLabel();
+    if (low) low.textContent = stats.low ? stats.low.country.name + ' $' + stats.low.price.toFixed(2) + '/' + unit : '-';
+    if (high) high.textContent = stats.high ? stats.high.country.name + ' $' + stats.high.price.toFixed(2) + '/' + unit : '-';
+  }
+
+  function renderDataState() {
+    var wrap = document.getElementById('fuelDataState');
+    var title = document.getElementById('fuelDataStateTitle');
+    var detail = document.getElementById('fuelDataStateDetail');
+    var meta = document.getElementById('fuelDataStateMeta');
+    if (!wrap || !title || !detail || !meta) return;
+    var timestamp = fuelData && (fuelData.updated || fuelData.timestamp);
+    var state = resolveFuelSourceState(fuelDataMode, timestamp);
+    var rowCount = fuelData && fuelData.countries ? Object.keys(fuelData.countries).length : 0;
+    var dateText = formatRowDate(timestamp);
+    var sourceState = fuelData && fuelData.source_state ? formatSourceState(fuelData.source_state) : '';
+    wrap.className = 'fuel-state-strip is-' + state;
+    if (state === 'live') {
+      title.textContent = 'API snapshot loaded';
+      detail.textContent = rowCount + ' country rows loaded. Row dates and source labels still determine freshness.';
+    } else if (state === 'static') {
+      title.textContent = 'Static snapshot loaded';
+      detail.textContent = rowCount + ' country rows loaded from the local static snapshot.';
+    } else if (state === 'stale') {
+      title.textContent = 'Stale snapshot loaded';
+      detail.textContent = rowCount + ' country rows loaded. Treat values as planning signals until a current source is verified.';
+    } else {
+      title.textContent = 'Fuel data unavailable';
+      detail.textContent = fuelData && fuelData.unavailable_reason ? fuelData.unavailable_reason : 'The page could not load a source-labelled fuel snapshot.';
+    }
+    meta.textContent = [dateText, sourceState || getSourceStateLabel()].filter(Boolean).join(' | ') || 'Source labelled';
+  }
+
+  function renderSourceFreshness() {
+    var summary = document.getElementById('fuelSourceFreshnessSummary');
+    var list = document.getElementById('fuelSourceFreshnessList');
+    if (!summary || !list || !fuelData || !fuelData.countries) return;
+
+    var countries = fuelData.countries || {};
+    var countryRows = Array.isArray(countries) ? countries : Object.keys(countries).map(function(code) {
+      return Object.assign({ code: code }, countries[code]);
+    });
+    var verifiedCount = countryRows.filter(function(row) { return row.official_verified === true; }).length;
+    var sourceState = formatSourceState(fuelData.source_state) || getSourceStateLabel().toLowerCase();
+    summary.textContent = verifiedCount + ' of ' + countryRows.length + ' rows are marked official verified. Current snapshot state: ' + sourceState + '.';
+
+    var priority = ['ZA', 'KE', 'GH', 'NG'];
+    var html = priority.map(function(code) {
+      var row = countryRows.find(function(item) { return item.code === code; }) || {};
+      var name = row.official_source_name || (COUNTRIES[code] && COUNTRIES[code].name) || code;
+      var state = row.official_verified ? 'official verified' : formatSourceState(row.official_source_state || row.source_state) || 'source state unavailable';
+      var url = row.official_source_url || row.source_url || '';
+      var link = url ? '<a href="' + escapeHtml(url) + '" rel="nofollow noopener" target="_blank">' + escapeHtml(name) + '</a>' : escapeHtml(name);
+      return '<div class="fuel-source-item"><strong>' + escapeHtml(code) + '</strong><span>' + link + ': ' + escapeHtml(state) + '</span></div>';
+    }).join('');
+    list.innerHTML = html;
+  }
+
+  function buildMarketBrief() {
+    var stats = getFuelStats();
+    var unit = fuelUnitForBrief(activeFuel);
+    return [
+      'AfroFuel market brief',
+      'Fuel: ' + getFuelDisplayName(activeFuel),
+      'Source state: ' + getSourceStateLabel(),
+      'Coverage: ' + (stats.count || 0) + ' countries',
+      'Average: ' + (stats.average ? '$' + stats.average.toFixed(2) + '/' + unit : 'Unavailable'),
+      'Lowest: ' + (stats.low ? stats.low.country.name + ' at $' + stats.low.price.toFixed(2) + '/' + unit : 'Unavailable'),
+      'Highest: ' + (stats.high ? stats.high.country.name + ' at $' + stats.high.price.toFixed(2) + '/' + unit : 'Unavailable'),
+      'Note: use this as a planning snapshot and verify regulator, station, or supplier sources before action.',
+      'Open: ' + window.location.origin + '/tools/fuel-tracker/'
+    ].join('\n');
+  }
+
+  function copyPlainText(text, statusId, successMessage) {
+    function done(ok) {
+      var status = document.getElementById(statusId);
+      if (status) status.textContent = ok ? successMessage : 'Copy unavailable. Select and copy the text manually.';
+      return ok;
+    }
+    function fallbackCopy() {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      var copied = false;
+      try {
+        copied = document.execCommand('copy');
+      } catch (err) {
+        copied = false;
+      }
+      document.body.removeChild(textarea);
+      return Promise.resolve(done(copied));
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function() {
+        return done(true);
+      }).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+
+  function populateCompareCountries() {
+    var selectA = document.getElementById('compare-country-a');
+    var selectB = document.getElementById('compare-country-b');
+    if (!selectA || !selectB || selectA.options.length) return;
+    var codes = Object.keys(COUNTRIES).sort(function(a, b) {
+      return COUNTRIES[a].name.localeCompare(COUNTRIES[b].name);
+    });
+    var html = codes.map(function(code) {
+      var c = COUNTRIES[code];
+      return '<option value="' + code + '">' + c.name + '</option>';
+    }).join('');
+    selectA.innerHTML = html;
+    selectB.innerHTML = html;
+    selectA.value = 'NG';
+    selectB.value = 'KE';
+  }
+
+  function getCountryFuelPrice(code, fuel) {
+    var data = fuelData && fuelData.countries ? fuelData.countries[code] : null;
+    if (!data) return null;
+    return {
+      usd: Number(data[fuel + '_usd']) || 0,
+      local: Number(data[fuel + '_local']) || 0,
+      source: data.source || '',
+      date: data.last_updated || data.updated || (fuelData && (fuelData.updated || fuelData.timestamp)) || ''
+    };
+  }
+
+  function localMoney(code, amount) {
+    var c = COUNTRIES[code] || {};
+    if (!amount) return 'Unavailable';
+    return (c.symbol || '') + ' ' + formatNum(amount, 2);
+  }
+
+  function getFuelRow(code) {
+    return fuelData && fuelData.countries ? fuelData.countries[code] : null;
+  }
+
+  function getWorkspacePrice(code, fuel) {
+    var row = getFuelRow(code);
+    if (!row) return null;
+    var local = Number(row[fuel + '_local']) || 0;
+    var usd = Number(row[fuel + '_usd']) || 0;
+    return {
+      local: local,
+      usd: usd,
+      unit: fuel === 'lpg' ? 'kg' : 'litre',
+      row: row,
+      date: row.last_updated || row.updated || (fuelData && (fuelData.updated || fuelData.timestamp)) || '',
+      sourceLabel: buildRowSourceLabel({
+        source: row.source || '',
+        source_state: row.source_state || (fuelData && fuelData.source_state) || '',
+        official_verified: row.official_verified === true,
+        official_source_state: row.official_source_state || '',
+        price_date: row.last_updated || row.updated || (fuelData && (fuelData.updated || fuelData.timestamp)) || ''
+      })
+    };
+  }
+
+  function populateWorkspaceCountries() {
+    var country = document.getElementById('workspace-country');
+    var compare = document.getElementById('workspace-compare-country');
+    if (!country || !compare || workspacePopulated) return;
+    var codes = Object.keys(COUNTRIES).sort(function(a, b) {
+      return COUNTRIES[a].name.localeCompare(COUNTRIES[b].name);
+    });
+    var html = codes.map(function(code) {
+      return '<option value="' + code + '">' + escapeHtml(COUNTRIES[code].name) + '</option>';
+    }).join('');
+    country.innerHTML = html;
+    compare.innerHTML = html;
+    country.value = 'NG';
+    compare.value = 'KE';
+    workspacePopulated = true;
+  }
+
+  function renderWorkspaceFields() {
+    var mode = WORKFLOW_MODES[activeWorkspaceMode] || WORKFLOW_MODES.household;
+    var fields = document.getElementById('workspace-fields');
+    var help = document.getElementById('workspace-help');
+    var title = document.getElementById('workspace-title');
+    if (!fields) return;
+    fields.innerHTML = mode.fields.map(function(field) {
+      return '<div class="workspace-field">' +
+        '<label for="workspace-field-' + escapeHtml(field.id) + '">' + escapeHtml(field.label) + '</label>' +
+        '<input type="number" id="workspace-field-' + escapeHtml(field.id) + '" data-workspace-field="' + escapeHtml(field.id) + '" value="' + escapeHtml(field.value) + '" min="' + escapeHtml(field.min) + '" step="' + escapeHtml(field.step) + '">' +
+      '</div>';
+    }).join('');
+    if (help) help.textContent = mode.help;
+    if (title) title.textContent = mode.title;
+  }
+
+  function getWorkspaceValues() {
+    var values = {};
+    document.querySelectorAll('[data-workspace-field]').forEach(function(input) {
+      values[input.dataset.workspaceField] = Number(input.value) || 0;
+    });
+    return values;
+  }
+
+  function classifyWorkspaceRisk(monthlyLocal, exposurePct) {
+    if (exposurePct >= 25) return { label: 'Critical exposure', className: 'critical' };
+    if (exposurePct >= 12 || monthlyLocal > 0 && exposurePct === 0) return { label: 'High exposure', className: 'high' };
+    return { label: 'Planning range', className: '' };
+  }
+
+  function buildWorkspaceResult() {
+    var countryEl = document.getElementById('workspace-country');
+    var compareEl = document.getElementById('workspace-compare-country');
+    var fuelEl = document.getElementById('workspace-fuel');
+    var code = countryEl ? countryEl.value : 'NG';
+    var compareCode = compareEl ? compareEl.value : 'KE';
+    var fuel = fuelEl ? fuelEl.value : 'petrol';
+    if ((activeWorkspaceMode === 'generator' || activeWorkspaceMode === 'fleet' || activeWorkspaceMode === 'fare') && fuel === 'lpg') {
+      fuel = 'petrol';
+      if (fuelEl) fuelEl.value = 'petrol';
+    }
+    var country = COUNTRIES[code] || {};
+    var compareCountry = COUNTRIES[compareCode] || {};
+    var price = getWorkspacePrice(code, fuel);
+    var comparePrice = getWorkspacePrice(compareCode, fuel);
+    var values = getWorkspaceValues();
+    if (!price || !price.local) return null;
+
+    var litres = 0;
+    var monthlyLocal = 0;
+    var metricLabels = ['Monthly cost', 'Fuel volume', 'Exposure', 'Comparison'];
+    var metricValues = ['Waiting', 'Waiting', 'Waiting', 'Waiting'];
+    var insight = '';
+    var decision = '';
+    var exposurePct = 0;
+
+    if (activeWorkspaceMode === 'generator') {
+      litres = values.consumption * values.hours * values.days;
+      monthlyLocal = litres * price.local;
+      var gridSpend = values.gridSpend || 0;
+      var backupShare = gridSpend ? monthlyLocal / gridSpend * 100 : 0;
+      metricValues = [
+        localMoney(code, monthlyLocal),
+        formatNum(litres, 0) + ' L/month',
+        gridSpend ? backupShare.toFixed(0) + '% of grid spend' : 'Grid baseline missing',
+        comparePrice ? '$' + formatNum((price.usd - comparePrice.usd) * litres, 2) + ' vs ' + (compareCountry.name || compareCode) : 'No comparison'
+      ];
+      insight = 'Generator fuel is the main cash exposure when outage hours stay high. Treat this as a monthly planning estimate and confirm the current pump price before procurement.';
+      decision = 'Check whether load reduction, solar/battery hours, or runtime scheduling can reduce litres before buying fuel.';
+    } else if (activeWorkspaceMode === 'fleet') {
+      litres = values.vehicles * values.kmDay * values.days * values.consumption100 / 100;
+      monthlyLocal = litres * price.local;
+      var perVehicle = values.vehicles ? monthlyLocal / values.vehicles : 0;
+      metricLabels = ['Fleet monthly cost', 'Fleet litres', 'Per vehicle', 'Benchmark spread'];
+      metricValues = [
+        localMoney(code, monthlyLocal),
+        formatNum(litres, 0) + ' L/month',
+        localMoney(code, perVehicle) + '/vehicle',
+        comparePrice ? '$' + formatNum((price.usd - comparePrice.usd) * litres, 2) + ' vs ' + (compareCountry.name || compareCode) : 'No comparison'
+      ];
+      insight = 'Fleet exposure moves with kilometres, consumption, and idle time. Use the spread as a pricing pressure signal, not as a supplier quote.';
+      decision = 'Review routing, vehicle mix, idle control, and quote validity window before committing margin.';
+    } else if (activeWorkspaceMode === 'fare') {
+      litres = values.routeKm * values.trips * values.consumption100 / 100;
+      monthlyLocal = litres * price.local;
+      var passengerTrips = values.trips * Math.max(1, values.passengers);
+      var perPassenger = passengerTrips ? monthlyLocal / passengerTrips : 0;
+      metricLabels = ['Route fuel/month', 'Fuel volume', 'Per passenger/load', 'Fare pressure'];
+      metricValues = [
+        localMoney(code, monthlyLocal),
+        formatNum(litres, 0) + ' L/month',
+        localMoney(code, perPassenger),
+        comparePrice ? '$' + formatNum((price.usd - comparePrice.usd) * litres, 2) + ' route spread' : 'No comparison'
+      ];
+      insight = 'Fare pressure is fuel cost divided across real passenger or delivery volume. Low load factors make fuel shocks feel sharper.';
+      decision = 'Use this to explain fare pressure, then verify local fare rules, route conditions, and current pump prices.';
+    } else if (activeWorkspaceMode === 'procurement') {
+      litres = values.litres * (1 + values.buffer / 100);
+      monthlyLocal = litres * price.local * (1 - values.discount / 100);
+      var bufferLitres = values.litres * values.buffer / 100;
+      var coverCost = values.storageDays ? monthlyLocal / Math.max(1, values.storageDays) : 0;
+      metricLabels = ['Buy plan value', 'Litres incl. buffer', 'Buffer stock', 'Daily cover value'];
+      metricValues = [
+        localMoney(code, monthlyLocal),
+        formatNum(litres, 0) + ' L',
+        formatNum(bufferLitres, 0) + ' L buffer',
+        localMoney(code, coverCost)
+      ];
+      insight = 'Procurement mode sizes a buying plan from the snapshot. It does not claim supplier quotes, taxes, delivery, or tender compliance.';
+      decision = 'Ask suppliers to quote against the verified source date, volume, delivery terms, and storage constraints.';
+    } else {
+      litres = values.litres;
+      monthlyLocal = litres * price.local;
+      exposurePct = values.income ? monthlyLocal / values.income * 100 : 0;
+      var stressCost = monthlyLocal * (1 + values.change / 100);
+      var reserveCost = values.buffer ? monthlyLocal / 30 * values.buffer : 0;
+      metricValues = [
+        localMoney(code, monthlyLocal),
+        formatNum(litres, 0) + ' ' + (fuel === 'lpg' ? 'kg' : 'L') + '/month',
+        values.income ? exposurePct.toFixed(1) + '% of income' : 'Income baseline missing',
+        localMoney(code, stressCost) + ' at +' + formatNum(values.change, 0) + '%'
+      ];
+      insight = 'Household exposure is most useful as a monthly cash-flow signal. Reserve planning adds about ' + localMoney(code, reserveCost) + ' for ' + formatNum(values.buffer, 0) + ' days.';
+      decision = 'Use the estimate to set a reserve target, then verify the latest local source before changing household budgets.';
+    }
+
+    var monthlyUSD = price.usd * litres;
+    var compareMonthlyUSD = comparePrice ? comparePrice.usd * litres : 0;
+    if (!exposurePct && activeWorkspaceMode !== 'household') exposurePct = monthlyUSD >= 1000 ? 13 : monthlyUSD >= 250 ? 8 : 4;
+    var risk = classifyWorkspaceRisk(monthlyLocal, exposurePct);
+
+    return {
+      mode: activeWorkspaceMode,
+      modeTitle: (WORKFLOW_MODES[activeWorkspaceMode] || WORKFLOW_MODES.household).title,
+      code: code,
+      countryName: country.name || code,
+      compareCode: compareCode,
+      compareName: compareCountry.name || compareCode,
+      fuel: fuel,
+      unit: price.unit,
+      price: price,
+      litres: litres,
+      monthlyLocal: monthlyLocal,
+      monthlyUSD: monthlyUSD,
+      compareMonthlyUSD: compareMonthlyUSD,
+      metricLabels: metricLabels,
+      metricValues: metricValues,
+      insight: insight,
+      decision: decision,
+      risk: risk,
+      sourceLabel: price.sourceLabel
+    };
+  }
+
+  function buildWorkspaceBrief(result) {
+    if (!result) return 'AfroFuel workspace brief unavailable until fuel data loads.';
+    return [
+      'AfroFuel decision brief',
+      'Mode: ' + result.modeTitle,
+      'Country: ' + result.countryName,
+      'Fuel: ' + getFuelDisplayName(result.fuel) + ' at ' + localMoney(result.code, result.price.local) + '/' + result.unit,
+      'Monthly cost: ' + localMoney(result.code, result.monthlyLocal) + ' ($' + formatNum(result.monthlyUSD, 2) + ')',
+      'Volume: ' + formatNum(result.litres, 0) + ' ' + (result.unit === 'kg' ? 'kg' : 'litres'),
+      'Comparison: ' + result.compareName + ' equivalent is $' + formatNum(result.compareMonthlyUSD, 2) + ' for the same volume/use pattern',
+      'Risk: ' + result.risk.label,
+      'Decision note: ' + result.decision,
+      'Source state: ' + getSourceStateLabel(),
+      'Source label: ' + result.sourceLabel,
+      'Use as a planning snapshot only. Verify current official, station, or supplier source before procurement, fares, quotes, or public claims.',
+      'Open: ' + window.location.origin + '/tools/fuel-tracker/#fuel-workspace'
+    ].join('\n');
+  }
+
+  function updateWorkspace() {
+    populateWorkspaceCountries();
+    if (!document.getElementById('workspace-fields').children.length) renderWorkspaceFields();
+    var result = buildWorkspaceResult();
+    var source = document.getElementById('workspace-source-label');
+    var subtitle = document.getElementById('workspace-subtitle');
+    var risk = document.getElementById('workspace-risk');
+    var insight = document.getElementById('workspace-insight');
+    var brief = document.getElementById('workspace-brief');
+    if (!result) {
+      if (source) source.textContent = 'Waiting for source-labelled data';
+      if (brief) brief.value = '';
+      return;
+    }
+    latestWorkspaceResult = result;
+    if (source) source.textContent = result.sourceLabel;
+    if (subtitle) subtitle.textContent = result.countryName + ' ' + getFuelDisplayName(result.fuel) + ' workspace, compared with ' + result.compareName + '.';
+    if (risk) {
+      risk.textContent = result.risk.label;
+      risk.className = 'workspace-risk-badge' + (result.risk.className ? ' ' + result.risk.className : '');
+    }
+    for (var i = 0; i < 4; i++) {
+      var label = document.getElementById('workspace-metric-' + (i + 1) + '-label');
+      var value = document.getElementById('workspace-metric-' + (i + 1));
+      if (label) label.textContent = result.metricLabels[i];
+      if (value) value.textContent = result.metricValues[i];
+    }
+    if (insight) insight.textContent = result.insight + ' ' + result.decision;
+    if (brief) brief.value = buildWorkspaceBrief(result);
+  }
+
+  function buildCompareBrief() {
+    var selectA = document.getElementById('compare-country-a');
+    var selectB = document.getElementById('compare-country-b');
+    var codeA = selectA ? selectA.value : 'NG';
+    var codeB = selectB ? selectB.value : 'KE';
+    var a = COUNTRIES[codeA] || {};
+    var b = COUNTRIES[codeB] || {};
+    var priceA = getCountryFuelPrice(codeA, activeFuel);
+    var priceB = getCountryFuelPrice(codeB, activeFuel);
+    var unit = fuelUnitForBrief(activeFuel);
+    var spread = priceA && priceB ? priceA.usd - priceB.usd : 0;
+    var pct = priceA && priceB && priceB.usd ? (spread / priceB.usd) * 100 : 0;
+    return [
+      'AfroFuel country spread brief',
+      'Fuel: ' + getFuelDisplayName(activeFuel),
+      'Source state: ' + getSourceStateLabel(),
+      (a.name || codeA) + ': ' + (priceA ? '$' + priceA.usd.toFixed(2) + '/' + unit + ' (' + localMoney(codeA, priceA.local) + ')' : 'Unavailable'),
+      (b.name || codeB) + ': ' + (priceB ? '$' + priceB.usd.toFixed(2) + '/' + unit + ' (' + localMoney(codeB, priceB.local) + ')' : 'Unavailable'),
+      'Spread: ' + (spread >= 0 ? '+' : '') + '$' + spread.toFixed(2) + '/' + unit + ' (' + (pct >= 0 ? '+' : '') + pct.toFixed(1) + '% vs ' + (b.name || codeB) + ')',
+      'Note: planning snapshot only. Verify current local source before procurement, fares, quotes, or public claims.'
+    ].join('\n');
+  }
+
+  function updateCompareOutput() {
+    populateCompareCountries();
+    var output = document.getElementById('fuelCompareOutput');
+    var selectA = document.getElementById('compare-country-a');
+    var selectB = document.getElementById('compare-country-b');
+    if (!output || !selectA || !selectB) return;
+    var codeA = selectA.value || 'NG';
+    var codeB = selectB.value || 'KE';
+    var cA = COUNTRIES[codeA] || {};
+    var cB = COUNTRIES[codeB] || {};
+    var priceA = getCountryFuelPrice(codeA, activeFuel);
+    var priceB = getCountryFuelPrice(codeB, activeFuel);
+    var unit = fuelUnitForBrief(activeFuel);
+    var spread = priceA && priceB ? priceA.usd - priceB.usd : 0;
+    var pct = priceA && priceB && priceB.usd ? (spread / priceB.usd) * 100 : 0;
+    var cheaper = priceA && priceB ? (priceA.usd <= priceB.usd ? cA.name : cB.name) : 'Unavailable';
+    output.innerHTML =
+      '<h3>' + escapeHtml((cA.name || codeA) + ' vs ' + (cB.name || codeB)) + '</h3>' +
+      '<div class="fuel-compare-metrics">' +
+        '<div class="fuel-compare-metric"><span>' + escapeHtml(cA.name || codeA) + '</span><strong>' + (priceA ? '$' + priceA.usd.toFixed(2) + '/' + unit : 'Unavailable') + '</strong></div>' +
+        '<div class="fuel-compare-metric"><span>' + escapeHtml(cB.name || codeB) + '</span><strong>' + (priceB ? '$' + priceB.usd.toFixed(2) + '/' + unit : 'Unavailable') + '</strong></div>' +
+        '<div class="fuel-compare-metric"><span>Spread</span><strong>' + (spread >= 0 ? '+' : '') + '$' + spread.toFixed(2) + '/' + unit + '</strong></div>' +
+        '<div class="fuel-compare-metric"><span>Cheaper market</span><strong>' + escapeHtml(cheaper) + '</strong></div>' +
+      '</div>' +
+      '<p class="fuel-compare-note">Compared on ' + escapeHtml(getFuelDisplayName(activeFuel)) + '. The first market is ' + (pct >= 0 ? 'higher' : 'lower') + ' by ' + Math.abs(pct).toFixed(1) + '% versus the second market. Source state: ' + escapeHtml(getSourceStateLabel()) + '.</p>';
   }
 
   function getFuelHistory(data, fuel) {
@@ -994,47 +1664,54 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   }
 
   setFuelStatus('loading', {
-    source: 'AfroTools fuel API',
-    message: 'Checking latest available fuel prices'
+    source: isLocalStaticPreview() ? 'Static fuel snapshot' : 'AfroTools fuel API',
+    message: isLocalStaticPreview() ? 'Checking static fuel snapshot' : 'Checking fuel API snapshot'
   });
 
-  const liveData = new AfroTools.LiveData('/api/fuel', {
-    refreshInterval: 6 * 60 * 60 * 1000,
-    cacheKey: 'afro-fuel-latest-v2',
-    cacheTTL: 6 * 60 * 60 * 1000,
-    onUpdate: function(data) {
-      data = normalizeApiData(data);
-      if (isValidFuelData(data)) {
-        setFuelData(data, 'AfroTools fuel API', false);
-      } else {
-        loadStaticFuelFallback('API returned invalid fuel data');
-      }
-    },
-    onError: function(err) {
-      setFuelStatus('error', {
-        source: fuelDataSource,
-        timestamp: fuelData && (fuelData.updated || fuelData.timestamp),
-        message: 'Fuel API unavailable. Checking fallback snapshot',
-        retryLabel: 'Retry',
-        onRetry: function() { liveData.refresh(); }
-      });
-      if (!isValidFuelData(fuelData)) {
-        var cached = normalizeApiData(liveData.getData && liveData.getData());
-        if (isValidFuelData(cached)) {
-          setFuelData(cached, 'Cached AfroTools fuel API response', true);
+  let liveData = null;
+  if (isLocalStaticPreview()) {
+    loadStaticFuelSnapshot('Local static preview');
+  } else if (window.AfroTools && AfroTools.LiveData) {
+    liveData = new AfroTools.LiveData('/api/fuel', {
+      refreshInterval: 6 * 60 * 60 * 1000,
+      cacheKey: 'afro-fuel-latest-v2',
+      cacheTTL: 6 * 60 * 60 * 1000,
+      onUpdate: function(data) {
+        data = normalizeApiData(data);
+        if (isValidFuelData(data)) {
+          setFuelData(data, 'AfroTools fuel API', 'live');
         } else {
-          loadStaticFuelFallback(err && err.message ? err.message : 'Fuel API unavailable');
+          loadStaticFuelSnapshot('API returned invalid fuel data');
+        }
+      },
+      onError: function(err) {
+        setFuelStatus('error', {
+          source: fuelDataSource,
+          timestamp: fuelData && (fuelData.updated || fuelData.timestamp),
+          message: 'Fuel API snapshot unavailable. Checking static snapshot',
+          retryLabel: 'Retry',
+          onRetry: function() { if (liveData) liveData.refresh(); }
+        });
+        if (!isValidFuelData(fuelData)) {
+          var cached = normalizeApiData(liveData.getData && liveData.getData());
+          if (isValidFuelData(cached)) {
+            setFuelData(cached, 'Cached AfroTools fuel API response', 'static');
+          } else {
+            loadStaticFuelSnapshot(err && err.message ? err.message : 'Fuel API unavailable');
+          }
         }
       }
-    }
-  });
-  liveData.start();
+    });
+    liveData.start();
+  } else {
+    loadStaticFuelSnapshot('Fuel API helper unavailable');
+  }
   fetchForexRates();
 
-  // If no valid data within 2s, use fallback
+  // If no valid production API data arrives quickly, fall back to the static snapshot.
   setTimeout(function() {
-    if (!isValidFuelData(fuelData)) {
-      loadStaticFuelFallback('Fuel API did not respond in time');
+    if (!isLocalStaticPreview() && !isValidFuelData(fuelData)) {
+      loadStaticFuelSnapshot('Fuel API did not respond in time');
     }
   }, 2000);
 
@@ -1045,8 +1722,13 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     if (!fuelData) return;
     updateTimestamp();
     updateAvgPrice();
+    updateMarketDesk();
+    renderDataState();
+    renderSourceFreshness();
+    updateWorkspace();
     updateMap();
     renderTable();
+    updateCompareOutput();
     renderChart();
     populateCalcCountry();
     updateCalc();
@@ -1057,15 +1739,12 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   /* ── Timestamp ── */
   function updateTimestamp() {
     var timestamp = fuelData && (fuelData.updated || fuelData.timestamp);
-    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
-    var state = fuelDataFallback ? 'cached' : (status ? status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) : 'live');
-    if (fuelDataFallback && status && status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) === 'stale') {
-      state = 'stale';
-    }
+    var state = resolveFuelSourceState(fuelDataMode, timestamp);
     setFuelStatus(state, {
       timestamp: timestamp,
       source: fuelDataSource,
-      message: fuelDataFallback ? 'Showing fallback fuel snapshot' : 'Latest fuel price feed loaded'
+      message: getFuelSourceMessage(state, fuelDataMode),
+      label: state === 'stale' && fuelDataMode === 'static' ? 'Stale snapshot' : undefined
     });
   }
 
@@ -1144,6 +1823,14 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
         lpg_usd: d.lpg_usd,
         change: d.change_pct || 0,
         regulated: c.regulated,
+        source: d.source || '',
+        source_url: d.source_url || '',
+        source_state: d.source_state || (fuelData && fuelData.source_state) || '',
+        official_verified: d.official_verified === true,
+        official_source_name: d.official_source_name || '',
+        official_source_url: d.official_source_url || '',
+        official_source_state: d.official_source_state || '',
+        price_date: d.last_updated || d.updated || (fuelData && (fuelData.updated || fuelData.timestamp)) || '',
         history: getFuelHistory(d, activeFuel)
       });
     }
@@ -1160,27 +1847,33 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     }
 
     if (rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="table-empty">No countries match your filters.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" class="table-empty"><strong>No matching countries</strong><span>Clear the search or region filter to restore the full fuel table.</span><br><button type="button" class="table-clear-btn" data-clear-table-filters="1">Clear filters</button></td></tr>';
       document.getElementById('table-count').textContent = '';
       return;
     }
 
     var html = '';
     rows.forEach(function(row, i) {
+      var generatorFuel = getGeneratorFuelFromTable();
+      var generatorPrice = row[generatorFuel + '_local'];
+      var canCalculate = generatorPrice && Number.isFinite(Number(generatorPrice));
       var trendClass = row.change > 0.5 ? 'trend-up' : row.change < -0.5 ? 'trend-down' : 'trend-flat';
       var trendSymbol = row.change > 0.5 ? '\u25B2' : row.change < -0.5 ? '\u25BC' : '\u2014';
       var regClass = row.regulated === 'yes' ? 'badge-yes' : row.regulated === 'partial' ? 'badge-partial' : 'badge-no';
-      var regLabel = row.regulated === 'yes' ? 'Yes' : row.regulated === 'partial' ? 'Partial' : 'No';
+      var regLabel = row.regulated === 'yes' ? 'Admin' : row.regulated === 'partial' ? 'Mixed' : 'Market';
+      var sourceLabel = buildRowSourceLabel(row);
+      var sourceTitle = row.official_verified ? 'Official regulator price source verified for this row.' : 'Planning snapshot. Official source may be under review, but this row is not an official price unless marked official verified.';
 
-      html += '<tr>' +
+      html += '<tr' + (selectedGeneratorCode === row.code ? ' class="generator-row-selected"' : '') + '>' +
         '<td>' + (i + 1) + '</td>' +
-        '<td><div class="country-cell"><span class="country-flag">' + row.flag + '</span>' + row.name + '</div></td>' +
+        '<td><div class="country-cell"><span class="country-flag">' + row.flag + '</span><span><span class="country-name-line">' + row.name + '</span><span class="country-source-label" title="' + escapeHtml(sourceTitle) + '">' + escapeHtml(sourceLabel) + '</span></span></div></td>' +
         '<td>' + row.symbol + ' ' + (row.petrol_local || 'Unavailable') + '</td>' +
         '<td>' + row.symbol + ' ' + (row.diesel_local || 'Unavailable') + '</td>' +
         '<td><strong>$' + (row[key] || 0).toFixed(2) + '</strong></td>' +
         '<td><span class="' + trendClass + '">' + trendSymbol + ' ' + Math.abs(row.change).toFixed(1) + '%</span></td>' +
         '<td><span class="badge-regulated ' + regClass + '">' + regLabel + '</span></td>' +
         '<td class="sparkline-cell"><canvas width="80" height="24" data-history="' + (row.history || []).join(',') + '"></canvas></td>' +
+        '<td class="table-action-cell"><button type="button" class="generator-shortcut" data-code="' + row.code + '" data-fuel="' + generatorFuel + '"' + (canCalculate ? '' : ' disabled') + '>Calculate generator cost</button></td>' +
         '</tr>';
     });
 
@@ -1374,6 +2067,59 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     }
   }
 
+  function preloadGeneratorCost(code, fuel) {
+    var d = (fuelData && fuelData.countries) ? fuelData.countries[code] : null;
+    var c = COUNTRIES[code];
+    var calcFuel = fuel === 'diesel' ? 'diesel' : 'petrol';
+    if (!d || !c) return;
+
+    populateCalcCountry();
+    selectedGeneratorCode = code;
+
+    var countrySelect = document.getElementById('calc-country');
+    var fuelSelect = document.getElementById('calc-fuel-type');
+    var displaySelect = document.getElementById('calc-display-currency');
+    var priceInput = document.getElementById('calc-price');
+    var hoursInput = document.getElementById('calc-hours');
+    var daysInput = document.getElementById('calc-days');
+    var price = d[calcFuel + '_local'];
+
+    if (countrySelect) countrySelect.value = code;
+    if (fuelSelect) fuelSelect.value = calcFuel;
+    if (displaySelect) displaySelect.value = 'local';
+    if (priceInput) priceInput.value = price || '';
+    if (hoursInput && !hoursInput.value) hoursInput.value = '8';
+    if (daysInput && !daysInput.value) daysInput.value = '26';
+    document.getElementById('hours-val').textContent = hoursInput ? hoursInput.value : '8';
+    document.getElementById('days-val').textContent = daysInput ? daysInput.value : '26';
+    document.getElementById('calc-price-label').textContent = 'Fuel price (' + c.symbol + ' per ' + getFuelUnitLabel(calcFuel) + ')';
+
+    updateCalc();
+    renderTable();
+    setCopyStatus('');
+
+    updateCalcSelectionNote();
+
+    var calc = document.getElementById('generator-cost');
+    if (calc) calc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function updateCalcSelectionNote() {
+    if (!selectedGeneratorCode) return;
+    var note = document.getElementById('calc-selection-note');
+    var c = COUNTRIES[selectedGeneratorCode];
+    if (!note || !c) return;
+    var calcFuel = document.getElementById('calc-fuel-type').value;
+    var price = document.getElementById('calc-price').value;
+    var hours = document.getElementById('calc-hours').value || '8';
+    var days = document.getElementById('calc-days').value || '26';
+    var timestamp = fuelData && (fuelData.updated || fuelData.timestamp);
+    var state = resolveFuelSourceState(fuelDataMode, timestamp);
+    var stateLabel = state === 'live' ? 'API snapshot' : state === 'static' ? 'static snapshot' : state === 'stale' ? 'stale snapshot' : 'unavailable source';
+    note.textContent = 'Loaded ' + c.name + ' ' + getFuelDisplayName(calcFuel) + ' at ' + c.symbol + ' ' + price + ' per litre from ' + stateLabel + '. Assumptions: ' + hours + ' hours/day, ' + days + ' days/month.';
+    note.classList.add('is-visible');
+  }
+
   function updateCalc() {
     var genSizeEl = document.getElementById('calc-gen-size');
     var consumption = parseFloat(genSizeEl.value);
@@ -1411,6 +2157,20 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     document.getElementById('result-kwh').textContent = sym + ' ' + formatNum(costPerKwh, 2);
     document.getElementById('result-daily').textContent = sym + ' ' + formatNum(dailyCost);
     document.getElementById('result-litres-num').textContent = formatNum(litresPerMonth, 0) + ' L';
+    latestCalcResult = {
+      countryCode: code,
+      countryName: c.name || code,
+      fuel: document.getElementById('calc-fuel-type').value,
+      symbol: sym,
+      currency: dispCurrency,
+      pricePerLitre: pricePerLitre,
+      hours: hours,
+      days: days,
+      litresPerMonth: litresPerMonth,
+      monthlyCost: monthlyCost,
+      annualCost: annualCost
+    };
+    updateCalcSelectionNote();
 
     // Grid rate: use country-specific rate or estimate from local multiplier
     var gridRateLocal = GRID_RATES[code] || (68 * (getLocalMultiplier(code) / getLocalMultiplier('NG')));
@@ -1445,6 +2205,54 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 
     // Update breakdown chart
     updateBreakdownChart(monthlyCost, gridMonthlyCost, solarMonthlyCost, sym);
+  }
+
+  function buildGeneratorResultText() {
+    if (!latestCalcResult) updateCalc();
+    var r = latestCalcResult || {};
+    var timestamp = fuelData && (fuelData.updated || fuelData.timestamp);
+    var state = resolveFuelSourceState(fuelDataMode, timestamp);
+    var stateLabel = state === 'live' ? 'API snapshot' : state === 'static' ? 'static snapshot' : state === 'stale' ? 'stale snapshot' : 'unavailable source';
+    return [
+      'AfroFuel generator cost estimate',
+      'Country: ' + (r.countryName || 'Selected country'),
+      'Fuel: ' + getFuelDisplayName(r.fuel || 'petrol') + ' at ' + (r.symbol || '') + ' ' + formatNum(r.pricePerLitre || 0, 2) + ' per litre',
+      'Usage: ' + (r.hours || 0) + ' hours/day, ' + (r.days || 0) + ' days/month',
+      'Monthly litres: ' + formatNum(r.litresPerMonth || 0, 0) + ' L',
+      'Monthly cost: ' + (r.symbol || '') + ' ' + formatNum(r.monthlyCost || 0),
+      'Annual cost: ' + (r.symbol || '') + ' ' + formatNum(r.annualCost || 0),
+      'Source state: ' + stateLabel,
+      'Calculate yours: ' + window.location.origin + '/tools/fuel-tracker/#generator-cost'
+    ].join('\n');
+  }
+
+  function copyGeneratorResult() {
+    var text = buildGeneratorResultText();
+    function fallbackCopy() {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      var copied = false;
+      try {
+        copied = document.execCommand('copy');
+      } catch (err) {
+        copied = false;
+      }
+      document.body.removeChild(textarea);
+      setCopyStatus(copied ? 'Generator result copied.' : 'Copy unavailable. Use Share Results or select the result text.');
+      return Promise.resolve(copied);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function() {
+        setCopyStatus('Generator result copied.');
+        return true;
+      }).catch(fallbackCopy);
+    }
+    return fallbackCopy();
   }
 
   function updateBreakdownChart(genCost, gridCost, solarCost, sym) {
@@ -1532,8 +2340,8 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 
     var avg = count ? totalPrice / count : 0;
 
-    function card(icon, val, label, change, changeClass) {
-      return '<div class="insight-card"><div class="insight-icon">' + icon + '</div>' +
+    function card(val, label, change, changeClass) {
+      return '<div class="insight-card">' +
         '<div class="insight-val">' + val + '</div>' +
         '<div class="insight-label">' + label + '</div>' +
         (change ? '<div class="insight-change ' + changeClass + '">' + change + '</div>' : '') + '</div>';
@@ -1543,10 +2351,10 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     var expC = expensive ? COUNTRIES[expensive.code] : null;
 
     el.innerHTML =
-      card('&#9981;', '$' + avg.toFixed(2), 'Avg ' + activeFuel + ' price/' + getFuelUnitShort(activeFuel), count + ' countries tracked', 'insight-neutral') +
-      card(cheapC ? cheapC.flag : '&#127758;', cheapest ? '$' + cheapest.price.toFixed(2) : 'Unavailable', 'Cheapest: ' + (cheapC ? cheapC.name : 'Unavailable'), '', '') +
-      card(expC ? expC.flag : '&#127758;', expensive ? '$' + expensive.price.toFixed(2) : 'Unavailable', 'Most Expensive: ' + (expC ? expC.name : 'Unavailable'), '', '') +
-      card('&#128200;', (biggestUp ? biggestUp.change.toFixed(1) : '0') + '%', 'Biggest Price Rise', biggestUp && COUNTRIES[biggestUp.code] ? COUNTRIES[biggestUp.code].name : '', 'insight-up');
+      card('$' + avg.toFixed(2), 'Avg ' + activeFuel + ' price/' + getFuelUnitShort(activeFuel), count + ' countries tracked', 'insight-neutral') +
+      card(cheapest ? '$' + cheapest.price.toFixed(2) : 'Unavailable', 'Cheapest: ' + (cheapC ? cheapC.name : 'Unavailable'), '', '') +
+      card(expensive ? '$' + expensive.price.toFixed(2) : 'Unavailable', 'Most expensive: ' + (expC ? expC.name : 'Unavailable'), '', '') +
+      card((biggestUp ? biggestUp.change.toFixed(1) : '0') + '%', 'Biggest price rise', biggestUp && COUNTRIES[biggestUp.code] ? COUNTRIES[biggestUp.code].name : '', 'insight-up');
   }
 
   /* ── News Section ── */
@@ -1554,14 +2362,14 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     var el = document.getElementById('news-grid');
     if (!el) return;
 
-    // Curated African fuel/energy news items (updated periodically)
+    // Static reading notes. Keep these generic unless a source-backed content pipeline updates them.
     var newsItems = [
-      {tag: 'Nigeria', title: 'Dangote Refinery Begins Petrol Distribution Across Nigeria', snippet: 'The 650,000 bpd Dangote refinery has started distributing refined petroleum products, potentially reducing Nigeria\'s dependence on imported fuel and stabilising petrol prices.', source: 'Reuters Africa', date: 'Mar 2026', live: true},
-      {tag: 'Kenya', title: 'Kenya ERC Announces Monthly Fuel Price Review', snippet: 'The Energy and Petroleum Regulatory Authority publishes new maximum retail prices for petroleum products, reflecting changes in global crude oil markets.', source: 'Business Daily', date: 'Mar 2026', live: true},
-      {tag: 'South Africa', title: 'SA Fuel Levy Increase Takes Effect', snippet: 'The annual fuel levy adjustment adds pressure on South African motorists, with petrol and diesel prices both climbing. The general fuel levy now stands at R4.07 per litre.', source: 'News24', date: 'Mar 2026', live: false},
-      {tag: 'Egypt', title: 'Egypt Raises Fuel Prices as Subsidy Reform Continues', snippet: 'Egypt has adjusted fuel prices upward as part of its ongoing subsidy reform programme agreed with the IMF, affecting both petrol and diesel.', source: 'Al Ahram', date: 'Feb 2026', live: false},
-      {tag: 'OPEC+', title: 'African OPEC Members Navigate Production Cuts', snippet: 'Nigeria, Angola, Algeria, Libya, and other African OPEC+ members continue to manage production quotas amid fluctuating global oil demand and price targets.', source: 'Bloomberg Africa', date: 'Mar 2026', live: true},
-      {tag: 'Continental', title: 'AfCFTA Explores Common Energy Market Framework', snippet: 'The African Continental Free Trade Area secretariat is studying harmonised fuel pricing and cross-border energy trade to reduce fuel costs across the continent.', source: 'African Union', date: 'Feb 2026', live: false}
+      {tag: 'Budgeting', title: 'Treat stale data as a planning signal, not a quote', snippet: 'Use stale or static fuel rows to size exposure, prepare questions, and compare scenarios. Confirm official pump prices or supplier quotes before procurement.', source: 'AfroFuel method', date: 'Always', live: false},
+      {tag: 'Generator cost', title: 'Fuel cost is only one part of backup power', snippet: 'A generator budget should include litres, maintenance, load, usage hours, generator efficiency, and the cost of outages. The calculator starts with fuel because it is the fastest monthly signal.', source: 'AfroFuel method', date: 'Always', live: false},
+      {tag: 'Transport', title: 'Country spread helps explain fare pressure', snippet: 'When two markets have different fuel levels, route fares, delivery quotes, and fleet margins can move differently even before wages, tolls, FX, and maintenance are considered.', source: 'AfroFuel method', date: 'Always', live: false},
+      {tag: 'Source state', title: 'Official source means linked official source', snippet: 'A country row is not treated as official regulator data unless a row-level official source link is present. The visible source state should travel with every copied brief.', source: 'AfroFuel method', date: 'Always', live: false},
+      {tag: 'FX risk', title: 'USD comparison is useful, local currency is decisive', snippet: 'USD columns make countries comparable, but local budgets should use local currency, local units, and local review dates. Exchange-rate drift can change the planning picture quickly.', source: 'AfroFuel method', date: 'Always', live: false},
+      {tag: 'Next step', title: 'Use the snapshot to ask better questions', snippet: 'The strongest workflow is: compare the snapshot, estimate monthly fuel exposure, copy the brief, then verify the latest regulator, station, or supplier source before action.', source: 'AfroFuel method', date: 'Always', live: false}
     ];
 
     var html = '';
@@ -1612,6 +2420,24 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     renderTable();
   });
 
+  document.getElementById('price-table-body').addEventListener('click', function(e) {
+    var clearBtn = e.target.closest('[data-clear-table-filters]');
+    if (clearBtn) {
+      searchQuery = '';
+      activeRegion = 'all';
+      var search = document.getElementById('table-search');
+      if (search) search.value = '';
+      document.querySelectorAll('.region-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.region === 'all');
+      });
+      renderTable();
+      return;
+    }
+    var btn = e.target.closest('.generator-shortcut');
+    if (!btn || btn.disabled) return;
+    preloadGeneratorCost(btn.dataset.code, btn.dataset.fuel);
+  });
+
   // Chart picker
   document.getElementById('chart-picker').addEventListener('click', function(e) {
     var btn = e.target.closest('.country-picker-btn');
@@ -1628,6 +2454,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 
   // Generator calculator inputs
   document.getElementById('calc-country').addEventListener('change', function() {
+    selectedGeneratorCode = this.value;
     updateCalcPrice();
     updateCalc();
   });
@@ -1648,17 +2475,91 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     updateCalc();
   });
 
+  document.getElementById('calc-copy-btn').addEventListener('click', function() {
+    copyGeneratorResult();
+  });
+
   document.getElementById('calc-share-btn').addEventListener('click', function() {
-    var code = document.getElementById('calc-country').value;
-    var c = COUNTRIES[code] || {};
-    var monthly = document.getElementById('result-monthly').textContent;
-    var text = 'My generator costs ' + monthly + '/month in ' + c.name + '! Calculate yours at AfroTools.com/tools/fuel-tracker/';
+    var text = buildGeneratorResultText();
     if (navigator.share) {
-      navigator.share({title: 'AfroFuel Generator Cost', text: text, url: window.location.href});
-    } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(function() { alert('Copied to clipboard!'); });
+      navigator.share({title: 'AfroFuel Generator Cost', text: text, url: window.location.origin + '/tools/fuel-tracker/#generator-cost'});
+    } else {
+      copyGeneratorResult();
     }
   });
+
+  var marketBriefBtn = document.getElementById('copyMarketBrief');
+  if (marketBriefBtn) {
+    marketBriefBtn.addEventListener('click', function() {
+      copyPlainText(buildMarketBrief(), 'fuelBriefStatus', 'Market brief copied.');
+    });
+  }
+
+  var compareA = document.getElementById('compare-country-a');
+  var compareB = document.getElementById('compare-country-b');
+  if (compareA) compareA.addEventListener('change', updateCompareOutput);
+  if (compareB) compareB.addEventListener('change', updateCompareOutput);
+
+  var swapCompare = document.getElementById('swapCompareCountries');
+  if (swapCompare) {
+    swapCompare.addEventListener('click', function() {
+      if (!compareA || !compareB) return;
+      var currentA = compareA.value;
+      compareA.value = compareB.value;
+      compareB.value = currentA;
+      updateCompareOutput();
+    });
+  }
+
+  var copyCompare = document.getElementById('copyCompareBrief');
+  if (copyCompare) {
+    copyCompare.addEventListener('click', function() {
+      copyPlainText(buildCompareBrief(), 'compareBriefStatus', 'Country comparison copied.');
+    });
+  }
+
+  var workspaceTabs = document.getElementById('workspace-mode-tabs');
+  if (workspaceTabs) {
+    workspaceTabs.addEventListener('click', function(e) {
+      var btn = e.target.closest('.workspace-mode-btn');
+      if (!btn) return;
+      activeWorkspaceMode = btn.dataset.mode || 'household';
+      workspaceTabs.querySelectorAll('.workspace-mode-btn').forEach(function(item) {
+        item.classList.toggle('active', item === btn);
+      });
+      renderWorkspaceFields();
+      updateWorkspace();
+    });
+  }
+
+  ['workspace-country', 'workspace-compare-country', 'workspace-fuel'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('change', updateWorkspace);
+  });
+
+  var workspaceFields = document.getElementById('workspace-fields');
+  if (workspaceFields) {
+    workspaceFields.addEventListener('input', updateWorkspace);
+  }
+
+  var copyWorkspace = document.getElementById('copyWorkspaceBrief');
+  if (copyWorkspace) {
+    copyWorkspace.addEventListener('click', function() {
+      var text = document.getElementById('workspace-brief') ? document.getElementById('workspace-brief').value : buildWorkspaceBrief(latestWorkspaceResult);
+      copyPlainText(text, 'workspace-status', 'Decision brief copied.');
+    });
+  }
+
+  var sendWorkspace = document.getElementById('sendWorkspaceToGenerator');
+  if (sendWorkspace) {
+    sendWorkspace.addEventListener('click', function() {
+      var result = latestWorkspaceResult || buildWorkspaceResult();
+      if (!result) return;
+      preloadGeneratorCost(result.code, result.fuel === 'diesel' ? 'diesel' : 'petrol');
+      var status = document.getElementById('workspace-status');
+      if (status) status.textContent = 'Loaded the selected country into the generator calculator.';
+    });
+  }
 
   document.getElementById('calc-hours').addEventListener('input', function() {
     document.getElementById('hours-val').textContent = this.value;

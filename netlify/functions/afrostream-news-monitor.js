@@ -402,8 +402,10 @@ exports.handler = async function(event) {
       }
     }
 
+    var usefulOutputCount = summary.inserted_news + summary.existing_news + summary.mentions;
+    var runStatus = summary.errors.length && usefulOutputCount === 0 ? 'error' : 'ok';
     await recordNewsMonitorRun(
-      summary.errors.length ? 'error' : 'ok',
+      runStatus,
       runSource,
       summary.inserted_news + summary.mentions,
       summary.errors.length ? summary.errors.slice(0, 12).join(' | ').slice(0, 1000) : null,

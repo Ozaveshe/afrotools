@@ -41,6 +41,15 @@
     .dz-emoji{font-size:42px;margin-bottom:16px}.dz h3{font-size:18px;font-weight:700;margin-bottom:6px;color:#111}.dz p{font-size:14px;color:#9ca3af}.dz .gr{color:var(--color-primary);font-weight:700;text-decoration:underline}
     .dz input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:5}
     .up-feats{display:flex;justify-content:center;gap:28px;margin-top:28px;flex-wrap:wrap}.uf{font-size:13px;color:#6b7280;font-weight:600;display:flex;align-items:center;gap:6px}
+    .pdf-fast-start{max-width:760px;margin:24px auto 0;padding:16px;border:1px solid #dbeafe;background:#f8fbff;border-radius:14px;text-align:left}
+    .pdf-fast-start-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+    .pdf-fast-start-title{font-size:13px;font-weight:900;color:#0f172a;text-transform:uppercase;letter-spacing:.04em}
+    .pdf-fast-start-last{font-size:12px;font-weight:800;color:#2563eb}
+    .pdf-fast-start-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .pdf-fast-start-actions button{min-height:42px;border:1px solid #c7d2fe;border-radius:9px;background:#fff;color:#1e293b;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:850;cursor:pointer}
+    .pdf-fast-start-actions button:hover,.pdf-fast-start-actions button:focus-visible{border-color:#2563eb;color:#1d4ed8;outline:2px solid rgba(37,99,235,.18);outline-offset:2px}
+    .pdf-fast-start-note{margin:10px 0 0;font-size:12px;color:#64748b;line-height:1.55}
+    @media(max-width:640px){.pdf-fast-start-actions{grid-template-columns:1fr 1fr}.pdf-fast-start{padding:14px}}
     .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}.ws.on{display:flex}
     body.pdf-workspace-active{overflow:hidden}
     body.pdf-workspace-active .up-screen,body.pdf-workspace-active #pdf-saved-section,body.pdf-workspace-active>section,body.pdf-workspace-active afro-related-tools,body.pdf-workspace-active afro-footer,body.pdf-workspace-active .result-actions{display:none!important}
@@ -476,6 +485,19 @@
     <span style="background:#EFF6FF;color:var(--color-primary);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1.5px solid #BFDBFE;">100% Private - No Upload</span>
   </div>
   <div class="dz" id="dz"><div class="dz-emoji">&#128196;</div><h3>Drop a PDF here to get started</h3><p>or <span class="gr">click to browse</span></p><input aria-label="FileIn" type="file" id="fileIn" accept=".pdf,application/pdf"></div>
+  <div class="pdf-fast-start" aria-label="PDF workflow shortcuts">
+    <div class="pdf-fast-start-head">
+      <span class="pdf-fast-start-title">Fast starts</span>
+      <span class="pdf-fast-start-last" id="pdfLastWorkflow">Last used: Organize</span>
+    </div>
+    <div class="pdf-fast-start-actions">
+      <button type="button" data-pdf-focus-mode="organize">Organize pages</button>
+      <button type="button" data-pdf-focus-mode="edit">Edit and annotate</button>
+      <button type="button" data-pdf-focus-mode="sign">Sign and stamp</button>
+      <button type="button" data-pdf-focus-mode="protect">Protect copy</button>
+    </div>
+    <p class="pdf-fast-start-note">Pick a workflow, then upload. Your file still stays in this browser.</p>
+  </div>
   <div class="up-feats"><div class="uf">&#128274; Private</div><div class="uf">&#128187; Browser-based</div><div class="uf">&#9889; Fast tools</div><div class="uf">&#128274; Works offline after load</div></div>
 </div>
 <div class="ws" id="ws">
@@ -766,6 +788,26 @@ function closeCommandSheet(){if($("cmdSecondary"))$("cmdSecondary").classList.re
 function closeCommandPalette(){
   if($("cmdPalette")){$("cmdPalette").classList.remove("on");$("cmdPalette").setAttribute("aria-hidden","true")}
 }
+function getPdfFastStartMode(){
+  try{return localStorage.getItem("afro-pdf-workspace-last-mode")||"organize"}catch(e){return"organize"}
+}
+function updatePdfFastStartLabel(mode){
+  var el=$("pdfLastWorkflow");if(!el)return;
+  var label=CMD_MODE_LABELS[mode||getPdfFastStartMode()]||"Organize";
+  el.textContent="Last used: "+label;
+}
+function initPdfFastStarts(){
+  updatePdfFastStartLabel(getPdfFastStartMode());
+  document.querySelectorAll("[data-pdf-focus-mode]").forEach(function(b){
+    b.onclick=function(){
+      var mode=b.dataset.pdfFocusMode||"organize";
+      try{localStorage.setItem("afro-pdf-workspace-last-mode",mode)}catch(e){}
+      updatePdfFastStartLabel(mode);
+      if($("ws")&&$("ws").classList.contains("on"))setCmdMode(mode,true);
+      else{toast("Upload a PDF to open "+(CMD_MODE_LABELS[mode]||mode)+" mode");var fi=$("fileIn");if(fi)fi.focus()}
+    };
+  });
+}
 function setCmdMode(mode,openSheet){
   mode=mode||"organize";
   if($("cmdBar"))$("cmdBar").setAttribute("data-mode",mode);
@@ -775,6 +817,8 @@ function setCmdMode(mode,openSheet){
   if(mode!=="edit"&&typeof setTextEditMode==="function")setTextEditMode(false,false);
   if($("cmdSheetTitle"))$("cmdSheetTitle").textContent=CMD_MODE_LABELS[mode]||mode;
   if(openSheet&&window.innerWidth<=640&&$("cmdSecondary"))$("cmdSecondary").classList.add("sheet-on");
+  try{localStorage.setItem("afro-pdf-workspace-last-mode",mode)}catch(e){}
+  updatePdfFastStartLabel(mode);
   trackPdfEvent("pdf_tool_mode_opened",{mode:mode,success:true});
   if(openSheet&&window.innerWidth<=640)trackPdfEvent("pdf_mobile_tool_sheet_opened",{mode:mode,success:true});
 }
@@ -1448,6 +1492,7 @@ function runPageOp(op){
 
 function run(){
   var dz=$("dz"),fi=$("fileIn");
+  initPdfFastStarts();
   dz.ondragover=function(e){e.preventDefault();e.stopPropagation();dz.classList.add("over")};
   dz.ondragleave=function(){dz.classList.remove("over")};
   dz.ondrop=function(e){e.preventDefault();e.stopPropagation();dz.classList.remove("over");if(e.dataTransfer.files.length)openPDF(e.dataTransfer.files[0])};
@@ -1543,7 +1588,7 @@ async function loadPDFBytes(bytes,name){
     isMob=window.innerWidth<=768;
     if(isMob){zm=Math.max(.5,Math.min(2,($("mv").clientWidth-24)/893*1.5))}
     var pct=Math.round(zm/1.5*100);if($("zl"))$("zl").textContent=pct+"%";if($("mzl"))$("mzl").textContent=pct+"%";
-    setCmdMode("organize",false);closeCommandMenus();closeCommandSheet();
+    setCmdMode(getPdfFastStartMode(),false);closeCommandMenus();closeCommandSheet();
     rSB();await rMain();hideP();updateMobPg();
     trackPdfEvent("pdf_file_uploaded",{success:true});
   }catch(e){hideP();trackPdfEvent("pdf_file_uploaded",{success:false});toast("Cannot read: "+e.message,1)}

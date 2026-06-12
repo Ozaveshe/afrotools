@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submit a Recipe — AfroKitchen | AfroTools</title>
-<meta name="description" content="Share your family's recipe with Africa. Submit your authentic African recipe to AfroKitchen.">
+<title>Submit a Recipe - AfroKitchen | AfroTools</title>
+<meta name="description" content="Submit an African family recipe to AfroKitchen for editorial review. Includes required fields, image permission guidance, and a copyable contribution checklist.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,18 +16,30 @@
 <link rel="stylesheet" href="style.css?v=32f6a027">
 <link rel="stylesheet" href="cuisine-intelligence.css?v=d0ebe756">
 <link rel="stylesheet" href="responsive-fixes.css?v=5b092a80">
+<style>
+  .ak-submit-guidance{display:grid;gap:18px;margin-bottom:28px;padding:22px;border:1px solid var(--ak-line);border-radius:var(--ak-r-lg);background:linear-gradient(135deg,#fff,#fff7ec)}
+  .ak-submit-guidance h2{margin:0;font-size:1.7rem}
+  .ak-guidance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .ak-guidance-grid article{min-width:0;padding:16px;border:1px solid var(--ak-line);border-radius:var(--ak-r);background:var(--ak-panel)}
+  .ak-guidance-grid h3{margin:0 0 10px;font-size:1.1rem}
+  .ak-guidance-grid ul{display:grid;gap:7px;margin:0;padding-left:18px;color:var(--ak-muted);line-height:1.55}
+  .ak-copy-checklist{display:grid;gap:12px}
+  .ak-checklist-textarea{width:100%;min-height:230px;padding:14px 16px;border:1px solid var(--ak-line);border-radius:var(--ak-r);background:var(--ak-panel);color:var(--ak-text);font:0.86rem/1.55 "JetBrains Mono",monospace;resize:vertical}
+  .ak-copy-checklist .ak-btn{width:100%}
+  @media (max-width:760px){.ak-guidance-grid{grid-template-columns:1fr}.ak-submit-guidance{padding:18px}.ak-checklist-textarea{min-height:260px}}
+</style>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
-<link rel="canonical" href="https://afrotools.com/tools/afrokitchen/">
-<meta property="og:title" content="Submit a Recipe — AfroKitchen | AfroTools">
-<meta property="og:description" content="Share your family's recipe with AfroKitchen and help preserve Africa's food heritage with clear ingredients, steps, and cultural context.">
+<link rel="canonical" href="https://afrotools.com/tools/afrokitchen/submit">
+<meta property="og:title" content="Submit a Recipe - AfroKitchen | AfroTools">
+<meta property="og:description" content="Submit your family recipe to AfroKitchen for editorial review with clear ingredients, steps, image permission, and cultural context.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Submit a Recipe — AfroKitchen | AfroTools">
-<meta name="twitter:description" content="Share your family's recipe with AfroKitchen and help preserve Africa's food heritage.">
+<meta name="twitter:title" content="Submit a Recipe - AfroKitchen | AfroTools">
+<meta name="twitter:description" content="Submit your family recipe to AfroKitchen for editorial review.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -48,21 +60,21 @@
         </nav>
         <div class="ak-hero-badges">
           <span class="ak-badge ak-badge-live">Community</span>
-          <span class="ak-badge ak-badge-ai">Open archive</span>
+          <span class="ak-badge ak-badge-ai">Pending review</span>
         </div>
         <div class="ak-eyebrow">COMMUNITY</div>
         <h1>Share Your Family's Recipe</h1>
-        <p class="ak-hero-sub">Every family has a dish that brings everyone together. Submit your recipe and help preserve Africa's rich food heritage for future generations.</p>
+        <p class="ak-hero-sub">Every family has a dish that brings everyone together. Send clear recipe details for editorial review; submissions are saved as pending and are not published automatically.</p>
       </div>
       <div class="ak-hero-facts">
         <div class="ak-fact-card">
           <div class="ak-fact-card-label">What happens next</div>
-          <span class="ak-fact-card-value">Review</span>
-          <p class="ak-fact-card-copy">Your submission is checked, cleaned up, and prepared for the public AfroKitchen archive.</p>
+          <span class="ak-fact-card-value">Pending</span>
+          <p class="ak-fact-card-copy">Your submission is stored for review. A recipe only appears publicly after editorial checks and static archive generation.</p>
         </div>
         <div class="ak-fact-card">
           <div class="ak-fact-card-label">Best submissions include</div>
-          <p class="ak-fact-card-copy">Clear ingredient quantities, step timing, cultural context, and the story of when the dish is served.</p>
+          <p class="ak-fact-card-copy">Recipe name, country, ingredient quantities, cooking steps, serving context, and image permission if you include photos.</p>
         </div>
       </div>
     </div>
@@ -72,6 +84,49 @@
     <div class="ak-container">
       <div class="ak-submit-layout">
       <div class="ak-form-panel">
+      <div class="ak-submit-guidance" aria-labelledby="ak-submit-guidance-title">
+        <div>
+          <div class="ak-section-kicker">Before you submit</div>
+          <h2 id="ak-submit-guidance-title">What we need to review a recipe</h2>
+        </div>
+        <div class="ak-guidance-grid">
+          <article>
+            <h3>Required</h3>
+            <ul>
+              <li>Recipe name</li>
+              <li>Country of origin</li>
+              <li>Ingredients with quantities or practical measures</li>
+              <li>Cooking steps in order, with timing where you know it</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Helpful context</h3>
+            <ul>
+              <li>Region, community, or family source</li>
+              <li>Occasion, serving style, and what to eat it with</li>
+              <li>Variations, substitutions, and texture or doneness cues</li>
+              <li>Your name and email if you want follow-up questions</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Images and license</h3>
+            <ul>
+              <li>Only share photos you took or have permission to use.</li>
+              <li>Do not send watermarked, copied, or restaurant menu images unless you own the rights.</li>
+              <li>By sharing photo links, you allow AfroKitchen to review, crop, and publish approved images with the recipe.</li>
+              <li>Leave photo links blank if you do not have image rights.</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Moderation state</h3>
+            <ul>
+              <li>Submissions are stored with a pending review status.</li>
+              <li>Editors may normalize quantities, wording, categories, and image slots before publication.</li>
+              <li>Submitting does not create an account and does not guarantee publication.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
       <form id="submit-form" onsubmit="return handleSubmit(event)">
         <div class="ak-form-group">
           <label class="ak-form-label" for="f-name">Recipe Name *</label>
@@ -163,7 +218,7 @@ Step 3: Add the tomato paste and fry for 3 minutes.
 
         <label class="ak-form-check">
           <input aria-label="F photo permission" id="f-photo-permission" type="checkbox">
-          <span>I have permission to share any photos or links I include, and AfroKitchen can contact me to clarify details before publishing.</span>
+          <span>I have permission to share any photos or links I include, and I understand image links are reviewed before any public use.</span>
         </label>
 
         <div class="ak-name-email-grid">
@@ -184,7 +239,7 @@ Step 3: Add the tomato paste and fry for 3 minutes.
         <div id="submit-success" class="ak-success-state" style="display:none">
           <div class="ak-success-mark">AK</div>
           <h3>Recipe Submitted!</h3>
-          <p>Thank you for sharing your recipe. Our team will review it and add it to AfroKitchen. If you provided your email, we'll notify you when it's live.</p>
+          <p>Thank you for sharing your recipe. It has been saved for editorial review with a pending moderation state. If you provided your email, AfroKitchen may contact you with follow-up questions; publication is not automatic.</p>
           <a href="/tools/afrokitchen/" class="ak-btn ak-btn-outline">Browse recipes</a>
         </div>
       </div>
@@ -194,18 +249,40 @@ Step 3: Add the tomato paste and fry for 3 minutes.
           <h2>Help us preserve the story, not just the steps.</h2>
         </div>
         <ul class="ak-side-list">
-          <li>Add exact ingredient amounts when possible so the recipe is easier to test and publish.</li>
+          <li>Use the required fields first: name, country, ingredients, and steps.</li>
+          <li>Add exact ingredient amounts when possible so the recipe is easier to test and review.</li>
           <li>Tell us when the dish is usually served: celebrations, weekends, family gatherings, or everyday meals.</li>
           <li>Include regional variations or substitutions if your household cooks it differently.</li>
+          <li>Only include image links when you have permission for AfroKitchen to review and publish them.</li>
         </ul>
+        <div class="ak-copy-checklist">
+          <div class="ak-section-kicker">Copyable checklist</div>
+          <textarea id="ak-contribution-checklist" class="ak-checklist-textarea" readonly>AfroKitchen recipe contribution checklist
+
+[ ] Recipe name
+[ ] Country of origin
+[ ] Region, community, or family source
+[ ] Ingredient list with quantities and units
+[ ] Cooking steps in order
+[ ] Timing, heat level, texture, and doneness cues
+[ ] Serving size or how many people it feeds
+[ ] Occasion or when the dish is usually served
+[ ] Serve-with notes
+[ ] Regional variations or substitutions
+[ ] Photo links only if I own or have permission to share them
+[ ] I understand the recipe is submitted for pending review and is not published instantly</textarea>
+          <button class="ak-btn ak-btn-outline" type="button" id="copy-checklist-btn">Copy checklist</button>
+          <p class="ak-side-note" id="copy-checklist-status" aria-live="polite"></p>
+        </div>
         <div>
           <div class="ak-section-kicker">Review flow</div>
           <ol class="ak-submit-review-flow">
+            <li>Submission is saved with pending status.</li>
             <li>We check the country, region, dish name, and serving context.</li>
             <li>Ingredients are normalized into quantities, units, pantry notes, and substitutions.</li>
             <li>Steps are edited for timing, texture cues, and realistic kitchen flow.</li>
-            <li>Image slots are assigned for hero, serving, ingredient, process, and table photos.</li>
-            <li>The recipe is generated into the static AfroKitchen archive after review.</li>
+            <li>Image links are checked for permission, quality, and fit before any public use.</li>
+            <li>Approved recipes can be generated into the static AfroKitchen archive after review.</li>
           </ol>
         </div>
         <p class="ak-side-note">If you only know the recipe informally, that is still useful. Share what you know and we can help shape it into a publishable entry.</p>
@@ -258,9 +335,62 @@ function buildEditorialContext() {
   return lines.length ? 'Editorial context\n' + lines.join('\n') : '';
 }
 
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text).catch(function () {
+      return fallbackCopyText(text);
+    });
+  }
+  return fallbackCopyText(text);
+}
+
+function fallbackCopyText(text) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'absolute';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      textarea.remove();
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function setChecklistStatus(message) {
+  var status = document.getElementById('copy-checklist-status');
+  if (status) status.textContent = message;
+}
+
+var copyChecklistButton = document.getElementById('copy-checklist-btn');
+if (copyChecklistButton) {
+  copyChecklistButton.addEventListener('click', function () {
+    var checklist = document.getElementById('ak-contribution-checklist');
+    copyText(checklist ? checklist.value : '').then(function () {
+      setChecklistStatus('Checklist copied.');
+      copyChecklistButton.textContent = 'Copied';
+      setTimeout(function () { copyChecklistButton.textContent = 'Copy checklist'; }, 1400);
+    }).catch(function () {
+      setChecklistStatus('Copy failed. Select the checklist text and copy it manually.');
+    });
+  });
+}
+
 async function handleSubmit(e) {
   e.preventDefault();
   var btn = document.getElementById('submit-btn');
+  var photoLinks = fieldValue('f-photo-links');
+  var photoPermission = document.getElementById('f-photo-permission');
+  if (photoLinks && photoPermission && !photoPermission.checked) {
+    alert('Please confirm image permission before submitting photo links, or remove the photo links.');
+    return false;
+  }
   btn.disabled = true;
   btn.textContent = 'Submitting...';
   var story = fieldValue('f-story');

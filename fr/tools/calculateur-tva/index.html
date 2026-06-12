@@ -942,7 +942,7 @@ MG:{name:'Madagascar',flag:'\u{1F1F2}\u{1F1EC}',currency:'Ar',rate:20,reduced:'0
     div.innerHTML = `
       <input aria-label="Description de l'article" type="text" class="vat-input vat-line-desc" placeholder="Description de l'article" data-field="desc">
       <input aria-label="Montant" type="text" inputmode="decimal" class="vat-input vat-line-amount" placeholder="Montant" data-field="amount">
-      <select class="vat-select vat-line-type" data-field="type" aria-label="Select option">
+      <select class="vat-select vat-line-type" data-field="type" aria-label="Choisir le type de ligne">
         <option value="standard">TVA standard</option>
         <option value="zero">Taux zéro</option>
         <option value="exempt">Exonéré</option>
@@ -1089,6 +1089,12 @@ MG:{name:'Madagascar',flag:'\u{1F1F2}\u{1F1EC}',currency:'Ar',rate:20,reduced:'0
     }
   }
 
+  function invoiceLineTypeLabel(type) {
+    if (type === 'zero') return 'taux zéro';
+    if (type === 'exempt') return 'exonéré';
+    return 'TVA standard';
+  }
+
   async function exportInvoicePdf() {
     const code = $('invoiceCountry').value;
     if (!code || !DB[code]) return;
@@ -1099,14 +1105,14 @@ MG:{name:'Madagascar',flag:'\u{1F1F2}\u{1F1EC}',currency:'Ar',rate:20,reduced:'0
     let subtotal = 0, totalVat = 0;
 
     document.querySelectorAll('.vat-line-item').forEach((item, i) => {
-      const desc = item.querySelector('[data-field="desc"]').value || 'Item ' + (i + 1);
+      const desc = item.querySelector('[data-field="desc"]').value || 'Ligne ' + (i + 1);
       const amt = parseAmt(item.querySelector('[data-field="amount"]').value);
       const type = item.querySelector('[data-field="type"]').value;
       const itemVat = type === 'standard' ? amt * rate : 0;
       subtotal += amt;
       totalVat += itemVat;
-      rows.push({ label: desc + (type !== 'standard' ? ' (' + type + ')' : ''), value: fmtC(amt, d.currency) });
-      if (type === 'standard') rows.push({ label: '  TVA @ ' + fmtPct(d.rate) + ' %', value: fmtC(itemVat, d.currency), type: 'deduction', indent: true });
+      rows.push({ label: desc + (type !== 'standard' ? ' (' + invoiceLineTypeLabel(type) + ')' : ''), value: fmtC(amt, d.currency) });
+      if (type === 'standard') rows.push({ label: '  TVA à ' + fmtPct(d.rate) + ' %', value: fmtC(itemVat, d.currency), type: 'deduction', indent: true });
     });
 
     rows.push({ label: 'Sous-total (HT)', value: fmtC(subtotal, d.currency), type: 'subtotal' });

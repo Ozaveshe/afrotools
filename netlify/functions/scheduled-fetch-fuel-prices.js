@@ -253,6 +253,9 @@ async function fetchFromGlobalPetrolPrices() {
         regulated: existing && typeof existing.regulated === 'boolean' ? existing.regulated : null,
         last_updated: lastUpdated,
         source: 'globalpetrolprices',
+        source_url: 'https://www.globalpetrolprices.com/' + c.slug + '/gasoline_prices/',
+        source_state: 'third_party_snapshot',
+        official_verified: false,
       };
     } catch (err) {
       return null;
@@ -281,11 +284,15 @@ async function fetchFromSeedWithForexUpdate() {
   var forexData = await getData('forex-latest');
   var rates = (forexData && forexData.rates) || {};
 
-  var now = new Date().toISOString().slice(0, 10);
+  var refreshedAt = new Date().toISOString();
   var countries = seed.countries.map(function(c) {
     var updated = Object.assign({}, c);
-    updated.last_updated = now;
-    updated.source = 'seed-with-forex-refresh';
+    updated.last_updated = c.last_updated || '';
+    updated.source = c.source || 'static-seed';
+    updated.source_state = 'static_seed_forex_only';
+    updated.source_note = 'Static seed reused; local fuel price date was preserved. USD equivalents may be recalculated from forex only.';
+    updated.forex_refreshed_at = refreshedAt;
+    updated.official_verified = c.official_verified === true;
 
     // Update USD prices using live forex if available
     if (rates[c.currency] && c.petrol && c.petrol.price) {
@@ -310,12 +317,70 @@ async function fetchFromSeedWithForexUpdate() {
  * Also calculates change_pct against previous data.
  */
 function transformFuelData(countries) {
+  var sources = Array.from(new Set(countries.map(function(country) {
+    return country && country.source ? country.source : 'unknown';
+  })));
+  var sourceStates = Array.from(new Set(countries.map(function(country) {
+    return country && country.source_state ? country.source_state : 'unspecified';
+  })));
+  var officialVerifiedCount = countries.filter(function(country) {
+    return country && country.official_verified === true;
+  }).length;
+
   return {
     timestamp: new Date().toISOString(),
     countries: countries,
-    source: 'globalpetrolprices',
+    source: sources.length === 1 ? sources[0] : 'mixed',
+    source_state: sourceStates.length === 1 ? sourceStates[0] : 'mixed',
+    official_verified_count: officialVerifiedCount,
+    source_note: officialVerifiedCount
+      ? 'Rows marked official_verified=true have regulator-backed source evidence.'
+      : 'No row is marked as an official regulator fuel price in this snapshot.',
     record_count: countries.length,
   };
+}
+
+function validateFuelData(nextData) {
+  if (!nextData || !Array.isArray(nextData.countries)) {
+    return { valid: false, reason: 'Fuel data must contain a countries array' };
+  }
+  if (nextData.countries.length < 20) {
+    return { valid: false, reason: 'Fuel data has too few country rows' };
+  }
+
+  var badRows = nextData.countries.filter(function(country) {
+    var petrol = country && country.petrol;
+    var diesel = country && country.diesel;
+    return !country ||
+      !country.code ||
+      !petrol ||
+      !diesel ||
+      !Number.isFinite(Number(petrol.price)) ||
+      !Number.isFinite(Number(diesel.price)) ||
+      Number(petrol.price) <= 0 ||
+      Number(diesel.price) <= 0;
+  });
+
+  if (badRows.length) {
+    return { valid: false, reason: badRows.length + ' fuel rows have missing or invalid nested prices' };
+  }
+
+  var today = new Date().toISOString().slice(0, 10);
+  var misleadingSeedRows = nextData.countries.filter(function(country) {
+    return country &&
+      country.source_state === 'static_seed_forex_only' &&
+      country.last_updated === today &&
+      country.official_verified !== true;
+  });
+
+  if (misleadingSeedRows.length) {
+    return {
+      valid: false,
+      reason: 'Seed fallback cannot stamp current dates on unverified local fuel prices',
+    };
+  }
+
+  return { valid: true };
 }
 
 exports.handler = async function(event) {
@@ -328,6 +393,7 @@ exports.handler = async function(event) {
       { name: 'SeedWithForex', fn: fetchFromSeedWithForexUpdate },
     ],
     transform: transformFuelData,
+    validate: validateFuelData,
     validateOpts: { maxChangeRatio: 5.0 },
   });
 };

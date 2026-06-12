@@ -384,6 +384,45 @@
 </section>
 
 <!-- ══════ MAIN ══════ -->
+<section class="invoice-starter" aria-labelledby="invoiceStarterTitle">
+<div class="container" style="max-width:1140px;margin:0 auto;padding:0 20px;">
+  <div class="invoice-starter-head">
+    <div>
+      <span class="eyebrow">Start here</span>
+      <h2 id="invoiceStarterTitle">Choose the fastest billing path</h2>
+    </div>
+    <p id="invoiceStarterStorageNote">Saved clients, reusable items, templates, and saved invoices use this browser's localStorage. Clearing browser data removes them from this device.</p>
+  </div>
+  <div class="invoice-starter-grid" role="list" aria-label="Invoice starter options">
+    <button type="button" class="invoice-starter-card" data-starter-action="saved-client" role="listitem">
+      <span class="invoice-starter-kicker" id="starterClientMeta">Local client list</span>
+      <strong>Use saved client</strong>
+      <span>Fill Bill To from a client saved on this browser.</span>
+    </button>
+    <button type="button" class="invoice-starter-card" data-starter-action="recent-invoice" role="listitem">
+      <span class="invoice-starter-kicker" id="starterRecentMeta">Saved invoice</span>
+      <strong>Recent invoice</strong>
+      <span>Restore your latest saved invoice draft from local storage.</span>
+    </button>
+    <button type="button" class="invoice-starter-card" data-starter-action="new-invoice" role="listitem">
+      <span class="invoice-starter-kicker">Blank form</span>
+      <strong>New invoice</strong>
+      <span>Start with a fresh invoice number, dates, and one empty line item.</span>
+    </button>
+    <button type="button" class="invoice-starter-card" data-starter-action="receipt" role="listitem">
+      <span class="invoice-starter-kicker">Paid record</span>
+      <strong>Receipt</strong>
+      <span>Use the same fields with a receipt title and paid status.</span>
+    </button>
+    <button type="button" class="invoice-starter-card" data-starter-action="estimate" role="listitem">
+      <span class="invoice-starter-kicker">Quote mode</span>
+      <strong>Quote/estimate</strong>
+      <span>Prepare a priced estimate before work is approved.</span>
+    </button>
+  </div>
+</div>
+</section>
+
 <main class="inv-main" aria-label="Invoice generator form and preview">
 <div class="container" style="max-width:1140px;margin:0 auto;padding:0 20px;">
 <div class="inv-grid">
@@ -513,6 +552,15 @@
           <label class="f-label" for="dueDate">Due Date *</label>
           <input class="f-input" id="dueDate" type="date" required>
         </div>
+      </div>
+      <div class="field">
+        <label class="f-label" for="documentType">Document Type</label>
+        <select class="f-input" id="documentType">
+          <option value="invoice" selected>Invoice</option>
+          <option value="receipt">Receipt</option>
+          <option value="estimate">Quote / estimate</option>
+        </select>
+        <span class="f-note">Changes the preview and export title. The data still stays local unless you export or save it.</span>
       </div>
       <div class="field">
         <label class="f-label" for="currency">Currency *</label>
@@ -1010,6 +1058,12 @@ const TERMS_MAP = {
   'net-30':'Net 30 days','net-45':'Net 45 days','net-60':'Net 60 days'
 };
 
+const DOCUMENT_TYPES = {
+  invoice: { label: 'INVOICE', title: 'Invoice', file: 'invoice', numberLabel: 'Invoice #' },
+  receipt: { label: 'RECEIPT', title: 'Receipt', file: 'receipt', numberLabel: 'Receipt #' },
+  estimate: { label: 'QUOTE / ESTIMATE', title: 'Quote / estimate', file: 'estimate', numberLabel: 'Estimate #' }
+};
+
 const LS_CLIENTS = 'afro_inv_clients';
 const LS_TEMPLATES = 'afro_invoice_templates';
 const LS_COUNTER = 'afro_inv_counter';
@@ -1033,6 +1087,22 @@ function toast(msg, type) {
 
 function ga4(event, params) {
   if (typeof gtag === 'function') gtag('event', event, params);
+}
+
+function getDocumentType() {
+  const selected = $('documentType') ? $('documentType').value : 'invoice';
+  return DOCUMENT_TYPES[selected] ? selected : 'invoice';
+}
+
+function getDocumentTypeInfo() {
+  return DOCUMENT_TYPES[getDocumentType()] || DOCUMENT_TYPES.invoice;
+}
+
+function updateDocumentTypeUI() {
+  const info = getDocumentTypeInfo();
+  $('previewTplTitle').textContent = info.label;
+  const numberLabel = document.querySelector('label[for="invoiceNumber"]');
+  if (numberLabel) numberLabel.textContent = info.numberLabel + ' *';
 }
 
 /* ── AUTO INVOICE NUMBER ── */
@@ -1189,7 +1259,7 @@ function applyTemplate(tpl) {
   const prev = $('invoicePreview');
   // Reset template-specific inline styles
   prev.style.cssText = '';
-  $('previewTplTitle').textContent = 'INVOICE';
+  updateDocumentTypeUI();
 
   switch(tpl) {
     case 'classic':
@@ -1206,7 +1276,7 @@ function applyTemplate(tpl) {
     case 'creative':
       prev.style.background = 'linear-gradient(135deg, #F5F9FF 0%, #f0f7ff 100%)';
       prev.style.borderColor = '#b8d4e3';
-      $('previewTplTitle').textContent = 'INVOICE';
+      updateDocumentTypeUI();
       break;
     case 'dark':
       prev.style.background = '#1a2420';
@@ -1269,8 +1339,21 @@ $('taxType').addEventListener('change', function() {
   updatePreview();
 });
 
+if ($('documentType')) {
+  $('documentType').addEventListener('change', function() {
+    if (this.value === 'receipt') {
+      $('paymentTerms').value = 'due-receipt';
+      $('markPaid').checked = true;
+    } else if (this.value === 'estimate') {
+      $('markPaid').checked = false;
+    }
+    updatePreview();
+  });
+}
+
 /* ── CORE: UPDATE PREVIEW ── */
 function updatePreview() {
+  updateDocumentTypeUI();
   const cur = $('currency').value;
   const taxType = $('taxType').value;
   const taxRate = parseFloat($('taxRate').value) || 0;
@@ -1306,6 +1389,13 @@ function updatePreview() {
   if (taxType === 'none') tax = 0;
 
   const total = subtotal - discAmt + tax;
+  if (getDocumentType() === 'receipt' && $('markPaid').checked && $('amountPaid')) {
+    const paidValue = total.toFixed(2);
+    if ($('amountPaid').value !== paidValue) {
+      $('amountPaid').value = paidValue;
+      $('amountPaid').dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  }
 
   // Summary section
   $('sumSubtotal').textContent = fmtCur(subtotal, cur);
@@ -1459,12 +1549,13 @@ $('btnPDF').addEventListener('click', () => {
 
   // Build sections for shared PDF template
   const sections = [];
+  const docInfo = getDocumentTypeInfo();
 
   // Business + Client info
   sections.push({
-    title: 'Invoice Details',
+    title: docInfo.title + ' Details',
     rows: [
-      {label:'Invoice #', value: $('invoiceNumber').value},
+      {label: docInfo.numberLabel, value: $('invoiceNumber').value},
       {label:'Date', value: $('invoiceDate').value},
       {label:'Due Date', value: $('dueDate').value},
       {label:'Payment Terms', value: TERMS_MAP[$('paymentTerms').value] || 'Net 30'},
@@ -1522,11 +1613,12 @@ $('btnPDF').addEventListener('click', () => {
   // Use shared PDF library if available, otherwise fallback to print
   if (window.AfroTools && AfroTools.pdf && AfroTools.pdf.generate) {
     AfroTools.pdf.generate({
-      title: 'Invoice ' + ($('invoiceNumber').value || ''),
+      title: docInfo.title + ' ' + ($('invoiceNumber').value || ''),
       subtitle: ($('companyName').value || 'Invoice') + ' → ' + ($('clientName').value || 'Client'),
       toolId: 'invoice-generator',
+      subtitle: ($('companyName').value || docInfo.title) + ' -> ' + ($('clientName').value || 'Client'),
       heroStats: [
-        {label:'Invoice #', value: $('invoiceNumber').value},
+        {label: docInfo.numberLabel, value: $('invoiceNumber').value},
         {label:'Total', value: $('sumTotal').textContent},
         {label:'Status', value: $('markPaid').checked ? 'PAID' : 'UNPAID'},
       ],
@@ -1551,9 +1643,10 @@ if (btnPDFMobile) {
 $('btnShare').addEventListener('click', () => {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
     const state = gatherState();
+    const docInfo = getDocumentTypeInfo();
     AfroTools.shareState.share({
-      title: 'Invoice ' + $('invoiceNumber').value,
-      text: 'Invoice from ' + ($('companyName').value || 'AfroTools'),
+      title: docInfo.title + ' ' + $('invoiceNumber').value,
+      text: docInfo.title + ' from ' + ($('companyName').value || 'AfroTools'),
       state
     });
     ga4('share_click', {tool:'invoice-generator'});
@@ -1568,6 +1661,7 @@ function gatherState() {
     bp: $('businessPhone').value, ti: $('taxID').value,
     cl: $('clientName').value, cc: $('clientCompany').value, ca: $('clientAddress').value, ce: $('clientEmail').value,
     in: $('invoiceNumber').value, id: $('invoiceDate').value, dd: $('dueDate').value,
+    dt: getDocumentType(),
     cu: $('currency').value, pt: $('paymentTerms').value, tt: $('taxType').value, tr: $('taxRate').value,
     dp: $('discountPercent').value, nt: $('notes').value, mp: $('markPaid').checked ? '1' : '0',
     tpl: $('invoicePreview').dataset.tpl,
@@ -1595,13 +1689,14 @@ function restoreState(s) {
     if (s.in !== undefined) $('invoiceNumber').value = s.in;
     if (s.id !== undefined) $('invoiceDate').value = s.id;
     if (s.dd !== undefined) $('dueDate').value = s.dd;
+    if (s.dt !== undefined && $('documentType')) $('documentType').value = DOCUMENT_TYPES[s.dt] ? s.dt : 'invoice';
     if (s.cu !== undefined) $('currency').value = s.cu;
     if (s.pt !== undefined) $('paymentTerms').value = s.pt;
     if (s.tt !== undefined) $('taxType').value = s.tt;
     if (s.tr !== undefined) $('taxRate').value = s.tr;
     if (s.dp !== undefined) $('discountPercent').value = s.dp;
     if (s.nt !== undefined) $('notes').value = s.nt;
-    if (s.mp === '1') $('markPaid').checked = true;
+    if (s.mp !== undefined) $('markPaid').checked = s.mp === '1';
     if (s.tpl) {
       qsa('.tpl-btn').forEach(b => b.classList.toggle('on', b.dataset.tpl === s.tpl));
       $('invoicePreview').dataset.tpl = s.tpl;
@@ -1693,14 +1788,20 @@ window.deleteTemplate = function(id) {
 };
 
 /* ── NEW INVOICE ── */
-$('btnNewInvoice').addEventListener('click', () => {
-  if (!confirm('Start a new invoice? Current data will be cleared.')) return;
+function startNewInvoice(options) {
+  options = options || {};
+  if (options.confirmFirst && !confirm('Start a new invoice? Current data will be cleared.')) return false;
   qsa('input[type="text"], input[type="email"], input[type="tel"], textarea').forEach(el => el.value = '');
+  if ($('documentType')) $('documentType').value = options.documentType || 'invoice';
   $('invoiceNumber').value = nextInvoiceNumber();
   $('invAutoNum').textContent = 'Auto: ' + $('invoiceNumber').value;
   initDates();
+  $('paymentTerms').value = options.documentType === 'receipt' ? 'due-receipt' : 'net-30';
   $('discountPercent').value = '0';
-  $('markPaid').checked = false;
+  $('amountPaid').value = '0';
+  $('withholdingPercent').value = '0';
+  $('paymentMethod').value = 'bank';
+  $('markPaid').checked = options.documentType === 'receipt';
   $('currency').value = 'NGN';
   $('taxRate').value = '7.5';
   $('taxType').value = 'vat';
@@ -1726,7 +1827,12 @@ $('btnNewInvoice').addEventListener('click', () => {
   applyTemplate('modern');
 
   updatePreview();
-  toast('New invoice started');
+  toast(options.toast || 'New invoice started');
+  return true;
+}
+
+$('btnNewInvoice').addEventListener('click', () => {
+  startNewInvoice({confirmFirst: true});
 });
 
 /* ── INIT ── */
@@ -1762,6 +1868,8 @@ window.AfroInvoiceState = {
   gatherState: gatherState,
   restoreState: restoreState,
   updatePreview: updatePreview,
+  startNewInvoice: startNewInvoice,
+  getDocumentTypeInfo: getDocumentTypeInfo,
   toast: toast,
   nextInvoiceNumber: nextInvoiceNumber
 };
@@ -1774,6 +1882,209 @@ init();
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script>
+(function(){
+  'use strict';
+
+  function $(id) { return document.getElementById(id); }
+  function qsa(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function toast(msg, type) {
+    var t = window.AfroTools && window.AfroTools.toast;
+    if (t && typeof t[type || 'success'] === 'function') t[type || 'success'](msg);
+  }
+  function readJson(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key) || ''); } catch (e) { return fallback; }
+  }
+  function escFile(value) {
+    return String(value || 'draft').replace(/[^a-z0-9_-]+/gi, '-').replace(/^-+|-+$/g, '') || 'draft';
+  }
+  function docInfo() {
+    var state = window.AfroInvoiceState;
+    if (state && typeof state.getDocumentTypeInfo === 'function') return state.getDocumentTypeInfo();
+    var type = $('documentType') ? $('documentType').value : 'invoice';
+    if (type === 'receipt') return { label: 'RECEIPT', title: 'Receipt', file: 'receipt', numberLabel: 'Receipt #' };
+    if (type === 'estimate') return { label: 'QUOTE / ESTIMATE', title: 'Quote / estimate', file: 'estimate', numberLabel: 'Estimate #' };
+    return { label: 'INVOICE', title: 'Invoice', file: 'invoice', numberLabel: 'Invoice #' };
+  }
+  function getSavedClients() {
+    var clients = readJson('afro_inv_clients', []);
+    return Array.isArray(clients) ? clients : [];
+  }
+  function getSavedInvoices() {
+    if (window.SaveState) return new window.SaveState('invoice-generator', { maxFree: 30 }).getAll();
+    var items = readJson('afrotools-saved-invoice-generator', []);
+    return Array.isArray(items) ? items.sort(function(a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); }) : [];
+  }
+  function scrollToField(id) {
+    var el = $(id);
+    if (!el) return;
+    var card = el.closest('.card');
+    var details = card && card.querySelector('details.advanced-panel');
+    if (details) details.open = true;
+    (card || el).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function() { el.focus(); }, 350);
+  }
+  function updateStarterState() {
+    var clients = getSavedClients();
+    var invoices = getSavedInvoices();
+    var clientMeta = $('starterClientMeta');
+    var recentMeta = $('starterRecentMeta');
+    if (clientMeta) clientMeta.textContent = clients.length ? clients.length + ' saved on this browser' : 'No saved client yet';
+    if (recentMeta) recentMeta.textContent = invoices.length ? 'Latest: ' + (invoices[0].title || 'Saved invoice') : 'No saved invoice yet';
+  }
+  function loadSavedClient() {
+    var clients = getSavedClients();
+    if (!clients.length) {
+      toast('Save a client on this browser first', 'info');
+      scrollToField('clientName');
+      return;
+    }
+    var c = clients[clients.length - 1] || {};
+    $('clientName').value = c.name || '';
+    $('clientCompany').value = c.company || '';
+    $('clientAddress').value = c.address || '';
+    $('clientEmail').value = c.email || '';
+    if (window.AfroInvoiceState && typeof window.AfroInvoiceState.updatePreview === 'function') {
+      window.AfroInvoiceState.updatePreview();
+    }
+    toast('Saved client loaded from this browser', 'info');
+    scrollToField('clientName');
+  }
+  function loadRecentInvoice() {
+    var invoices = getSavedInvoices();
+    var latest = invoices[0];
+    if (!latest) {
+      toast('No saved invoice on this browser yet', 'info');
+      var saveBtn = $('btnSaveInvoice');
+      if (saveBtn) saveBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    var data = latest.data || {};
+    var state = data.state || data;
+    if (window.AfroInvoiceState && typeof window.AfroInvoiceState.restoreState === 'function' && window.AfroInvoiceState.restoreState(state)) {
+      if (typeof window.AfroInvoiceState.updatePreview === 'function') window.AfroInvoiceState.updatePreview();
+      toast('Recent invoice restored from this browser', 'info');
+      var main = document.querySelector('.inv-main');
+      if (main) main.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      toast('That saved invoice could not be restored', 'error');
+    }
+  }
+  function startDocument(type, message) {
+    var state = window.AfroInvoiceState;
+    if (state && typeof state.startNewInvoice === 'function') {
+      state.startNewInvoice({ documentType: type, toast: message });
+      var main = document.querySelector('.inv-main');
+      if (main) main.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  function exportNonInvoicePdf(event) {
+    var info = docInfo();
+    if (info.file === 'invoice') return;
+    if (!$('btnPDF') || $('btnPDF').disabled) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      window.print();
+      return;
+    }
+    var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+    var y = 18;
+    var currency = $('currency').value || 'NGN';
+    pdf.setFillColor(15, 23, 42);
+    pdf.rect(0, 0, 210, 42, 'F');
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(18);
+    pdf.text(info.label, 16, y);
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('#' + ($('invoiceNumber').value || 'draft'), 16, y + 8);
+    pdf.text($('companyName').value || 'Your company', 194, y, { align: 'right' });
+    y = 54;
+    pdf.setTextColor(15, 23, 42);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('From', 16, y);
+    pdf.text('Bill To', 112, y);
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(8.5);
+    pdf.setTextColor(100, 116, 139);
+    pdf.text([$('companyName').value, $('businessAddress').value, $('businessEmail').value, $('businessPhone').value].filter(Boolean), 16, y + 6);
+    pdf.text([$('clientName').value, $('clientCompany').value, $('clientAddress').value, $('clientEmail').value].filter(Boolean), 112, y + 6);
+    y = 92;
+    pdf.setTextColor(15, 23, 42);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text(info.numberLabel + ': ' + ($('invoiceNumber').value || '-'), 16, y);
+    pdf.text('Date: ' + ($('invoiceDate').value || '-'), 16, y + 7);
+    pdf.text((info.file === 'estimate' ? 'Valid until: ' : 'Due date: ') + ($('dueDate').value || '-'), 112, y + 7);
+    y = 112;
+    pdf.setFillColor(0, 98, 204);
+    pdf.rect(16, y - 5, 178, 8, 'F');
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(7);
+    pdf.text('Description', 18, y);
+    pdf.text('Qty', 106, y, { align: 'right' });
+    pdf.text('Unit', 138, y, { align: 'right' });
+    pdf.text('Total', 192, y, { align: 'right' });
+    y += 8;
+    pdf.setTextColor(15, 23, 42);
+    pdf.setFont('helvetica', 'normal');
+    qsa('.line-item').forEach(function(row) {
+      var desc = row.querySelector('.li-desc').value.trim();
+      if (!desc) return;
+      if (y > 268) { pdf.addPage(); y = 18; }
+      var qty = row.querySelector('.li-qty').value || '0';
+      var price = row.querySelector('.li-price').value || '0';
+      var total = row.querySelector('.li-total').textContent || '';
+      pdf.text(pdf.splitTextToSize(desc, 82), 18, y);
+      pdf.text(qty, 106, y, { align: 'right' });
+      pdf.text(currency + ' ' + price, 138, y, { align: 'right' });
+      pdf.text(total, 192, y, { align: 'right' });
+      y += 9;
+    });
+    y = Math.max(y + 8, 160);
+    [['Subtotal', 'sumSubtotal'], ['Tax', 'sumTax'], ['Total', 'sumTotal'], ['Balance due', 'sumBalance']].forEach(function(row) {
+      pdf.setFont('helvetica', row[0] === 'Balance due' ? 'bold' : 'normal');
+      pdf.text(row[0], 118, y);
+      pdf.text(($(row[1]) && $(row[1]).textContent) || '-', 192, y, { align: 'right' });
+      y += 7;
+    });
+    if ($('notes').value) {
+      y += 8;
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Notes', 16, y);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(pdf.splitTextToSize($('notes').value, 178), 16, y + 6);
+    }
+    pdf.setFontSize(7);
+    pdf.setTextColor(100, 116, 139);
+    pdf.text('Generated locally by afrotools.com/tools/invoice-generator/', 16, 287);
+    pdf.save(info.file + '-' + escFile($('invoiceNumber').value) + '.pdf');
+    toast(info.title + ' PDF downloaded');
+  }
+  function bind() {
+    qsa('[data-starter-action]').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var action = card.getAttribute('data-starter-action');
+        if (action === 'saved-client') loadSavedClient();
+        if (action === 'recent-invoice') loadRecentInvoice();
+        if (action === 'new-invoice') startDocument('invoice', 'New invoice started');
+        if (action === 'receipt') startDocument('receipt', 'Receipt started');
+        if (action === 'estimate') startDocument('estimate', 'Quote/estimate started');
+      });
+    });
+    var pdfBtn = $('btnPDF');
+    if (pdfBtn) pdfBtn.addEventListener('click', exportNonInvoicePdf, true);
+    ['btnSaveClient', 'btnSaveInvoice'].forEach(function(id) {
+      var btn = $(id);
+      if (btn) btn.addEventListener('click', function() { setTimeout(updateStarterState, 250); });
+    });
+    updateStarterState();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script>
 <script src="/assets/js/pages/invoice-generator-enhancements.js?v=b3e86762"></script>
 <script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=47d5871b" defer></script>
 <script>

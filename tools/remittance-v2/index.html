@@ -5,13 +5,13 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Remittance Comparator Pro — Compare Money Transfer Costs</title>
-<meta name="description" content="Compare remittance costs across 10+ providers for African corridors. Find the cheapest way to send money to Nigeria, Kenya, Ghana, South Africa, and 20+ countries.">
-<meta name="keywords" content="remittance comparison, send money Africa, money transfer cost, Western Union vs Wise, cheapest remittance, diaspora money transfer">
+<title>Remittance Comparator Pro - Compare Money Transfer Costs</title>
+<meta name="description" content="Compare estimated remittance costs across 10+ providers for African corridors. Review fees, rate margins, and delivery trade-offs before checking a live quote.">
+<meta name="keywords" content="remittance comparison, send money Africa, money transfer estimate, Western Union vs Wise, remittance fees, diaspora money transfer">
 <link rel="canonical" href="https://afrotools.com/tools/remittance-v2/">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Remittance Comparator Pro — Cheapest Way to Send Money to Africa">
-<meta property="og:description" content="Compare fees, exchange rates, and delivery times across 10+ money transfer services for African corridors.">
+<meta property="og:title" content="Remittance Comparator Pro - Compare Money Transfer Costs">
+<meta property="og:description" content="Compare estimated fees, exchange rates, and delivery times across 10+ money transfer services for African corridors.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/remittance-v2/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/remittance-v2.webp">
@@ -26,7 +26,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Remittance Comparator Pro",
-  "description": "Compare remittance costs across 10+ providers for 20+ African corridors. Find the cheapest way to send money to Africa.",
+  "description": "Compare estimated remittance costs across 10+ providers for 20+ African corridors before checking a live quote.",
   "url": "https://afrotools.com/tools/remittance-v2/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
@@ -51,7 +51,7 @@
   "@type": "WebPage",
   "name": "Remittance Comparator Pro",
   "url": "https://afrotools.com/tools/remittance-v2/",
-  "description": "Compare remittance costs across 10+ providers for 20+ African corridors. Find the cheapest way to send money to Africa.",
+  "description": "Compare estimated remittance costs across 10+ providers for 20+ African corridors before checking a live quote.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -62,7 +62,7 @@
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does it cost to send money to Africa?","acceptedAnswer":{"@type":"Answer","text":"Transfer costs vary by provider and corridor. Fees range from $0 to $25, plus exchange rate margins of 0.3% to 2.5%. The total cost for a $500 transfer to Nigeria can range from $5 to $35 depending on the provider. Our tool calculates the true total cost including both fees and rate markups."}},{"@type":"Question","name":"Which remittance corridor to Africa has the lowest fees?","acceptedAnswer":{"@type":"Answer","text":"The US-to-Nigeria and UK-to-Kenya corridors tend to have the most competitive rates due to high transfer volumes. Corridors to smaller markets like Ethiopia or Senegal may have higher costs due to fewer provider options and lower competition."}},{"@type":"Question","name":"What is the cheapest way to send money to Nigeria from the US?","acceptedAnswer":{"@type":"Answer","text":"For the US-to-Nigeria corridor, Wise and LemFi typically offer the best value with low exchange rate margins. Sendwave and Chipper Cash charge zero fees but may have higher rate markups. Bank transfers are generally cheaper than cash pickup services like Western Union."}},{"@type":"Question","name":"How long do international money transfers to Africa take?","acceptedAnswer":{"@type":"Answer","text":"Mobile money transfers (M-Pesa, MTN MoMo) and cash pickups are often instant to same-day. Bank transfers typically take 1-3 business days. Card-funded transfers process faster than bank debit payments. The speed depends on the provider, corridor, and payment method."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does it cost to send money to Africa?","acceptedAnswer":{"@type":"Answer","text":"Transfer costs vary by provider, corridor, amount, payout method, explicit fee, and FX margin. This tool estimates total cost using static provider assumptions plus your entered fee and margin, not live provider quotes."}},{"@type":"Question","name":"Where can I check corridor benchmark prices?","acceptedAnswer":{"@type":"Answer","text":"Use the World Bank Remittance Prices Worldwide database as an external corridor benchmark. AfroTools links to RPW but does not hardcode current RPW corridor rates on this page."}},{"@type":"Question","name":"How should I compare providers for Nigeria from the US?","acceptedAnswer":{"@type":"Answer","text":"Enter the provider fee, FX margin, payout method, amount, and annual transfer count you want to test. Use the results as a transparent assumption comparison, then confirm the current fee, payout rate, and delivery terms with the provider."}},{"@type":"Question","name":"How long do international money transfers to Africa take?","acceptedAnswer":{"@type":"Answer","text":"Delivery speed varies by provider, corridor, payment method, payout method, and current provider operations. Confirm timing directly with the provider before sending."}}]}
 </script>
 <style>
 :root{--green:#007AFF;--green-light:#E8F2FF;--green-dark:#0063D1}
@@ -81,22 +81,38 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:1rem;align-items:end}
 @media(max-width:700px){.form-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.form-grid{grid-template-columns:1fr}}
-.pro-plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1rem}
+.pro-plan-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1rem;margin-top:1rem}
 @media(max-width:700px){.pro-plan-grid{grid-template-columns:1fr}}
+.corridor-presets{display:flex;flex-wrap:wrap;gap:.6rem;margin:0 0 1rem}
+.corridor-presets button{min-height:38px;border:1px solid #cbd5e1;border-radius:999px;background:#f8fafc;color:#1e293b;padding:0 .85rem;font:700 .86rem/1 'DM Sans',system-ui,sans-serif;cursor:pointer}
+.corridor-presets button:hover,.corridor-presets button:focus-visible{border-color:var(--green);color:var(--green);outline:none;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
 .form-group{display:flex;flex-direction:column;gap:.3rem}
 .form-group label{font-weight:600;font-size:.85rem;color:#475569}
 .form-group input,.form-group select{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
 .form-group input:focus,.form-group select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
 .btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;background:var(--green);color:#fff;transition:all .2s}
 .btn:hover{background:var(--green-dark)}
+.quote-note{max-width:220px;margin:.35rem 0 0;color:#92400e;font-size:.74rem;font-weight:700;line-height:1.35}
+.freshness-panel{background:#f8fafc;border:1px solid #cbd5e1;border-left:4px solid #f59e0b;border-radius:8px;padding:1rem;margin:0 0 1rem;color:#334155}
+.freshness-panel h3{margin:0 0 .35rem;font-size:.95rem;color:#0A1628}
+.freshness-panel p{margin:0;color:#475569;font-size:.84rem;line-height:1.55}
+.freshness-panel strong{color:#92400e}
+.freshness-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin-top:.75rem}
+.freshness-item{background:#fff;border:1px solid #e2e8f0;border-radius:7px;padding:.65rem}
+.freshness-item span{display:block;color:#64748b;font-size:.68rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.freshness-item strong{display:block;margin-top:.2rem;color:#0A1628;font-size:.86rem}
+@media(max-width:700px){.quote-note{max-width:none}.freshness-grid{grid-template-columns:1fr}}
 .provider-cards{display:grid;gap:1rem;margin-top:1rem}
 .provider-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.25rem;display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:.75rem;align-items:center;transition:all .2s}
 @media(max-width:700px){.provider-card{grid-template-columns:1fr 1fr;padding:1rem}}
 @media(max-width:480px){.provider-card{grid-template-columns:1fr 1fr;gap:.5rem;padding:.875rem}}
 .provider-card:hover{border-color:#93C5FD;box-shadow:0 2px 8px rgba(0,122,255,.1)}
 .provider-card.best{border:2px solid var(--green);background:var(--green-light)}
-.best-badge{background:var(--green);color:#fff;padding:.2rem .55rem;border-radius:4px;font-size:.75rem;font-weight:700;margin-left:.5rem}
-.provider-name{font-weight:700;font-size:1rem;color:#1e293b}
+.provider-card.user-scenario{border-color:#f59e0b;background:#fffbeb}
+.best-badge{display:inline-flex;align-items:center;background:var(--green);color:#fff;padding:.2rem .55rem;border-radius:4px;font-size:.7rem;font-weight:700;line-height:1.2;margin-left:.5rem;white-space:normal}
+.scenario-badge{display:inline-flex;align-items:center;background:#f59e0b;color:#111827;padding:.2rem .55rem;border-radius:4px;font-size:.7rem;font-weight:800;line-height:1.2}
+.provider-name{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem;font-weight:700;font-size:1rem;color:#1e293b;line-height:1.3}
+.provider-name .best-badge{margin-left:0}
 .provider-detail{font-size:.85rem;color:#475569}
 .provider-detail strong{display:block;font-size:1.05rem;color:#1e293b}
 .provider-detail .label{font-size:.75rem;color:#94a3b8;text-transform:uppercase;font-weight:600;letter-spacing:.5px}
@@ -114,6 +130,11 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .seo-section h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
 .seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
 .seo-section p{color:#475569;margin-bottom:1rem}
+.benchmark-section{max-width:800px;margin:1.5rem auto 0;padding:0 1.5rem}
+.benchmark-card{background:#fff;border:1px solid #dbe3ef;border-radius:10px;padding:1.25rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.benchmark-card h2{font-size:1.1rem;font-weight:800;color:#0A1628;margin-bottom:.6rem}
+.benchmark-card p{color:#475569;font-size:.92rem;line-height:1.65;margin-bottom:.75rem}
+.benchmark-card a{color:var(--green);font-weight:800}
 .faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
 .faq h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
 .faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
@@ -168,12 +189,18 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <afro-navbar></afro-navbar>
 <section class="hero">
 <nav class="hero-breadcrumb" aria-label="Breadcrumb"><a href="/">AfroTools</a> <span>/</span> <a href="/uniquely-african/">Uniquely African</a> <span>/</span> Remittance Comparator Pro</nav>
-<h1>Remittance Comparator Pro</h1><p>Find the cheapest way to send money to Africa. Compare fees, rates, and delivery times across 10+ providers.</p></section>
+<h1>Remittance Comparator Pro</h1><p>Compare estimated money transfer costs to Africa, then verify the live provider quote before sending.</p></section>
 <div class="container">
 <div class="card">
 <h2>Transfer Details</h2>
+<div class="corridor-presets" aria-label="Common remittance corridors">
+<button type="button" data-corridor-preset="UK:NG:500:3.00:0.8:bank:12:cost">UK to Nigeria</button>
+<button type="button" data-corridor-preset="US:KE:500:2.00:1.2:mobile:12:balanced">US to Kenya</button>
+<button type="button" data-corridor-preset="CA:GH:500:4.00:1.4:bank:12:cost">Canada to Ghana</button>
+<button type="button" data-corridor-preset="ZA_FROM:MW:2500:15.00:1.8:cash:12:speed">South Africa to Malawi</button>
+</div>
 <div class="form-grid">
-<div class="form-group"><label for="fromCountry">Send From</label><select id="fromCountry">
+<div class="form-group"><label for="fromCountry">Sending country</label><select id="fromCountry">
 <option value="US">United States (USD)</option>
 <option value="UK">United Kingdom (GBP)</option>
 <option value="CA">Canada (CAD)</option>
@@ -184,7 +211,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <option value="OM">Oman (OMR)</option>
 <option value="ZA_FROM">South Africa (ZAR)</option>
 </select></div>
-<div class="form-group"><label>Send To</label><select id="toCountry" aria-label="To Country">
+<div class="form-group"><label for="toCountry">Receiving country</label><select id="toCountry">
 <option value="NG">Nigeria (NGN)</option>
 <option value="KE">Kenya (KES)</option>
 <option value="GH">Ghana (GHS)</option>
@@ -201,28 +228,37 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <option value="MW">Malawi (MWK)</option>
 <option value="MZ">Mozambique (MZN)</option>
 </select></div>
-<div class="form-group"><label>Amount</label><input aria-label="Amount" type="number" id="amount" value="500" min="1"></div>
-<div class="form-group"><label>&nbsp;</label><button type="button" class="btn" onclick="compare()">Compare</button></div>
+<div class="form-group"><label for="amount">Amount</label><input type="number" id="amount" value="500" min="1"></div>
+<div class="form-group"><label>&nbsp;</label><button type="button" class="btn" onclick="compare()">Compare</button><p class="quote-note">Not a live quote. Estimates only.</p></div>
 </div>
 <div class="pro-plan-grid">
-<div class="form-group"><label>Transfers per Year</label><input aria-label="TransferCount" type="number" id="transferCount" value="12" min="1" max="365"></div>
-<div class="form-group"><label>Recipient Access</label><select id="recipientMethod" aria-label="Recipient Method"><option value="any">Any method</option><option value="mobile">Mobile money</option><option value="bank">Bank transfer</option><option value="cash">Cash pickup</option></select></div>
-<div class="form-group"><label>Priority</label><select id="transferPriority" aria-label="Transfer Priority"><option value="cost">Lowest annual cost</option><option value="speed">Fastest delivery</option><option value="balanced">Balanced cost and speed</option></select></div>
+<div class="form-group"><label for="providerFee">Fee</label><input type="number" id="providerFee" value="3.00" min="0" step="0.01"></div>
+<div class="form-group"><label for="fxMargin">FX margin (%)</label><input type="number" id="fxMargin" value="0.8" min="0" max="25" step="0.1"></div>
+<div class="form-group"><label for="payoutMethod">Payout method</label><select id="payoutMethod"><option value="any">Any method</option><option value="mobile">Mobile money</option><option value="bank">Bank transfer</option><option value="cash">Cash pickup</option></select></div>
+<div class="form-group"><label for="transferCount">Annual transfer count</label><input type="number" id="transferCount" value="12" min="1" max="365"></div>
+<div class="form-group"><label for="transferPriority">Priority</label><select id="transferPriority"><option value="cost">Lowest estimated annual cost</option><option value="speed">Fastest estimated delivery</option><option value="balanced">Balanced cost and speed</option></select></div>
 </div>
 </div>
 <div id="results" style="display:none">
-<div class="card"><h2>Results — Ranked by Total Cost</h2><div class="action-plan" id="decisionPlan"></div><div class="provider-cards" id="providerCards"></div><div class="savings-note" id="savingsNote"></div></div>
+<div class="card"><h2>Results - Ranked by Estimated Cost</h2><div class="freshness-panel" id="providerFreshness"><h3>Provider freshness</h3><p><strong>Not a live quote.</strong> This comparison uses static provider fee and rate-margin estimates that are manually maintained in AfroTools. No live provider API is used on this page, so ranking is a planning shortlist, not a live provider ranking.</p><div class="freshness-grid"><div class="freshness-item"><span>Provider fees</span><strong>Static estimates</strong></div><div class="freshness-item"><span>Rate margins</span><strong>Manually maintained</strong></div><div class="freshness-item"><span>Quote status</span><strong>Not live verified</strong></div></div></div><div class="action-plan" id="decisionPlan"></div><div class="provider-cards" id="providerCards"></div><div class="savings-note" id="savingsNote"></div></div>
 </div>
 </div>
 <section class="seo-section">
 <h2>Compare Remittance Costs to Africa</h2>
-<p>The African diaspora sends over $90 billion in remittances annually, making it one of the largest financial flows to the continent. Yet transfer costs remain stubbornly high — averaging 8-9% for sub-Saharan Africa, nearly double the global average. Choosing the right provider can save you hundreds of dollars per year.</p>
+<p>Remittances are one of the largest financial flows into many African countries, and transfer costs can vary sharply by corridor, payout method, fee structure, and exchange-rate margin. This page helps you compare visible assumptions before you check a live provider quote.</p>
 <h3>Why Costs Vary So Much</h3>
-<p>Remittance providers make money in two ways: explicit fees and exchange rate margins. A provider advertising "zero fees" may offer a poor exchange rate that costs you more than a provider with a flat fee but a better rate. This tool calculates the total cost (fee + exchange rate margin) so you can make a true comparison.</p>
+<p>Remittance providers make money in two ways: explicit fees and exchange rate margins. A provider advertising "zero fees" may offer a weaker exchange rate than a provider with a flat fee. This tool estimates total cost from static fee and margin assumptions so you can build a shortlist before checking live quotes.</p>
 <h3>Corridor-Specific Recommendations</h3>
-<p>The cheapest option depends on your specific corridor. Mobile money transfers to Kenya and Tanzania are often cheapest through M-Pesa-integrated providers. Bank-to-bank transfers to Nigeria may be cheaper through fintech providers like Wise or Lemfi. Cash pickup services through Western Union or MoneyGram remain important in countries with lower banking penetration.</p>
+<p>The lowest estimated option depends on your specific corridor. Mobile money transfers to Kenya and Tanzania can be competitive through M-Pesa-integrated providers. Bank-to-bank transfers to Nigeria may be competitive through fintech providers like Wise or Lemfi. Cash pickup services through Western Union or MoneyGram remain important in countries with lower banking penetration.</p>
 <h3>Speed vs Cost Trade-off</h3>
-<p>Instant transfers typically cost more than those that take 1-3 business days. If your recipient can wait, choosing a slower option can save 2-5% on the total cost. For urgent needs, mobile money and cash pickup are fastest. Bank transfers to African banks can take 1-5 business days depending on the corridor.</p>
+<p>Instant transfers may cost more than slower options, but the trade-off depends on the corridor, funding method, payout method, and provider. For urgent needs, mobile money and cash pickup can be faster, while bank transfers may suit recipients who can wait and verify settlement timing.</p>
+</section>
+<section class="benchmark-section" aria-labelledby="world-bank-benchmark-title">
+<div class="benchmark-card">
+<h2 id="world-bank-benchmark-title">World Bank benchmark reference</h2>
+<p><a href="https://remittanceprices.worldbank.org/" target="_blank" rel="noopener">Remittance Prices Worldwide</a> is the World Bank corridor price database for comparing the cost of sending relatively small amounts across sending and receiving countries.</p>
+<p>AfroTools does not hardcode current RPW corridor rates on this page. Use RPW as an external benchmark, then compare your user-entered or provider-estimate scenario here against transparent assumptions: sending country, receiving country, amount, fee, FX margin, payout method, and annual transfer count.</p>
+</div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="remittance"></wise-cta>
@@ -230,10 +266,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 
 <section class="faq">
 <h2>Frequently Asked Questions</h2>
-<details><summary>How much does it cost to send money to Africa?</summary><p>Transfer costs vary by provider and corridor. Fees range from $0 to $25, plus exchange rate margins of 0.3% to 2.5%. The total cost for a $500 transfer to Nigeria can range from $5 to $35 depending on the provider. Our tool calculates the true total cost including both fees and rate markups.</p></details>
-<details><summary>Which remittance corridor to Africa has the lowest fees?</summary><p>The US-to-Nigeria and UK-to-Kenya corridors tend to have the most competitive rates due to high transfer volumes. Corridors to smaller markets like Ethiopia or Senegal may have higher costs due to fewer provider options and lower competition.</p></details>
-<details><summary>What is the cheapest way to send money to Nigeria from the US?</summary><p>For the US-to-Nigeria corridor, Wise and LemFi typically offer the best value with low exchange rate margins. Sendwave and Chipper Cash charge zero fees but may have higher rate markups. Bank transfers are generally cheaper than cash pickup services like Western Union.</p></details>
-<details><summary>How long do international money transfers to Africa take?</summary><p>Mobile money transfers (M-Pesa, MTN MoMo) and cash pickups are often instant to same-day. Bank transfers typically take 1-3 business days. Card-funded transfers process faster than bank debit payments. The speed depends on the provider, corridor, and payment method.</p></details>
+<details><summary>How much does it cost to send money to Africa?</summary><p>Transfer costs vary by provider, corridor, amount, payout method, explicit fee, and FX margin. This tool estimates total cost using static provider assumptions plus your entered fee and margin, not live provider quotes.</p></details>
+<details><summary>Where can I check corridor benchmark prices?</summary><p>Use the World Bank Remittance Prices Worldwide database as an external corridor benchmark. AfroTools links to RPW but does not hardcode current RPW corridor rates on this page.</p></details>
+<details><summary>How should I compare providers for Nigeria from the US?</summary><p>Enter the provider fee, FX margin, payout method, amount, and annual transfer count you want to test. Use the results as a transparent assumption comparison, then confirm the current fee, payout rate, and delivery terms with the provider.</p></details>
+<details><summary>How long do international money transfers to Africa take?</summary><p>Delivery speed varies by provider, corridor, payment method, payout method, and current provider operations. Confirm timing directly with the provider before sending.</p></details>
 </section>
 <!-- AI Advisor -->
 <section style="max-width:800px;margin:0 auto;padding:32px 24px">
@@ -244,8 +280,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
   </div>
   <div style="font-size:13px;color:#9ca3af;margin-bottom:12px;line-height:1.5">Ask any question about sending money to Africa. Max 3 exchanges per session.</div>
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
-    <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:13px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">Which provider is best for UK to Nigeria?</div>
-    <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:13px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">How much will I save switching from Western Union?</div>
+    <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:13px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">How should I compare UK to Nigeria assumptions?</div>
+    <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:13px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">How do fees and FX margins change my estimate?</div>
     <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:13px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">Is it better to send weekly or monthly?</div>
   </div>
   <div id="aiChat" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth"></div>
@@ -290,12 +326,13 @@ async function askAI(preset){
 <script src="/assets/js/components/navbar.js?v=abd7df91" defer></script><script src="/assets/js/components/footer.js?v=a62a07a2" defer></script><script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
 <script src="/assets/js/components/related-tools-data.min.js?v=e4816f27" defer></script>
 <script>
-/* Fallback rates (USD base) — updated Mar 2026. */
+/* Fallback rates (USD base) - manually maintained estimates, updated Mar 2026. */
 const RATES={NG:1535,KE:129,GH:15.5,ZA:18.2,TZ:2720,UG:3750,SN:610,ET:135,CM:610,CI:610,MA:9.9,RW:1380,ZM:27.5,MW:1740,MZ:63.9};
 const FROM_RATES={US:1,UK:1.29,CA:0.73,EU:1.08,AE:0.272,AU:0.63,SA:0.267,OM:2.60,ZA_FROM:0.055};
 const SYMS={NG:'\u20a6',KE:'KSh',GH:'GH\u20b5',ZA:'R',TZ:'TSh',UG:'USh',SN:'XOF',ET:'ETB',CM:'XAF',CI:'XOF',MA:'MAD',RW:'RWF',ZM:'ZMW',MW:'MWK',MZ:'MZN'};
 const FROM_SYMS={US:'$',UK:'\u00a3',CA:'CA$',EU:'\u20ac',AE:'AED',AU:'A$',SA:'SAR',OM:'OMR',ZA_FROM:'R'};
 const TO_NAMES={NG:'Nigeria',KE:'Kenya',GH:'Ghana',ZA:'South Africa',TZ:'Tanzania',UG:'Uganda',SN:'Senegal',ET:'Ethiopia',CM:'Cameroon',CI:"Côte d'Ivoire",MA:'Morocco',RW:'Rwanda',ZM:'Zambia',MW:'Malawi',MZ:'Mozambique'};
+const PAYOUT_LABELS={any:'Any payout method',mobile:'Mobile money',bank:'Bank transfer',cash:'Cash pickup'};
 
 const PROVIDERS=[
 {name:'Wise',fee:function(a){return Math.max(2.5,a*0.006);},rateMargin:0.003,speed:'1-2 days',method:'Bank transfer',speedScore:3,rating:4.8},
@@ -320,13 +357,26 @@ function compare(){
   const from=document.getElementById('fromCountry').value;
   const to=document.getElementById('toCountry').value;
   const amount=parseFloat(document.getElementById('amount').value)||500;
+  const enteredFee=Math.max(0,parseFloat(document.getElementById('providerFee').value)||0);
+  const enteredMarginPct=Math.max(0,parseFloat(document.getElementById('fxMargin').value)||0);
   if(!RATES[to]||!FROM_RATES[from]){alert('This corridor is not yet supported.');return;}
   const baseRate=RATES[to]/FROM_RATES[from];
   const sym=FROM_SYMS[from];
   const toSym=SYMS[to];
   const destName=TO_NAMES[to]||to;
 
-  const results=PROVIDERS.map(p=>{
+  const providerInputs=PROVIDERS.concat([{
+    name:'Your entered scenario',
+    fee:function(){return enteredFee;},
+    rateMargin:enteredMarginPct/100,
+    speed:'User entered',
+    method:PAYOUT_LABELS[document.getElementById('payoutMethod').value]||'User entered payout',
+    speedScore:3,
+    rating:null,
+    userEntered:true
+  }]);
+
+  const results=providerInputs.map(p=>{
     const fee=p.fee(amount);
     const effectiveRate=baseRate*(1-p.rateMargin);
     const received=(amount-fee)*effectiveRate;
@@ -340,53 +390,106 @@ function compare(){
   const savings=worst.totalCost-best.totalCost;
   const midRate=baseRate;
   const repeat=Math.max(1,parseInt(document.getElementById('transferCount').value,10)||1);
-  const recipientMethod=document.getElementById('recipientMethod').value;
+  const payoutMethod=document.getElementById('payoutMethod').value;
   const priority=document.getElementById('transferPriority').value;
   const fastest=[...results].sort((a,b)=>b.speedScore-a.speedScore || a.totalCost-b.totalCost)[0];
-  const methodMatch=recipientMethod==='any'?null:results.find(r=>r.method.toLowerCase().includes(recipientMethod));
+  const methodMatch=payoutMethod==='any'?null:results.find(r=>r.method.toLowerCase().includes(payoutMethod));
   const balanced=[...results].sort((a,b)=>(a.totalCost/amount*100 + (5-a.speedScore))-(b.totalCost/amount*100 + (5-b.speedScore)))[0];
   const pick=methodMatch || (priority==='speed'?fastest:priority==='balanced'?balanced:best);
   const annualSaving=savings*repeat;
-  lastDecisionPlan='Remittance plan: send '+FROM_SYMS[from]+amount.toLocaleString()+' to '+destName+'. Recommended provider: '+pick.name+'. Best value: '+best.name+'. Fastest: '+fastest.name+'. Estimated annual savings versus the most expensive option: '+sym+annualSaving.toFixed(0)+' across '+repeat+' transfers. Verify live quote before sending.';
+  lastDecisionPlan='Remittance planning estimate: send '+FROM_SYMS[from]+amount.toLocaleString()+' to '+destName+'. User-entered scenario fee: '+sym+enteredFee.toFixed(2)+'. User-entered FX margin: '+enteredMarginPct.toFixed(1)+'%. Payout method: '+(PAYOUT_LABELS[payoutMethod]||payoutMethod)+'. Shortlist provider: '+pick.name+'. Lowest estimated cost: '+best.name+'. Fastest estimated delivery: '+fastest.name+'. Estimated annual upside versus the highest-cost estimate: '+sym+annualSaving.toFixed(0)+' across '+repeat+' transfers. Not a live quote. Verify current provider fees, payout rate, and delivery terms before sending.';
 
   document.getElementById('decisionPlan').innerHTML=`
     <h3>Action Plan</h3>
     <div class="action-plan-grid">
-      <div class="action-plan-card"><strong>${pick.name}</strong><span>Recommended</span></div>
-      <div class="action-plan-card"><strong>${best.name}</strong><span>Lowest cost</span></div>
-      <div class="action-plan-card"><strong>${fastest.name}</strong><span>Fastest</span></div>
+      <div class="action-plan-card"><strong>${pick.name}</strong><span>Shortlist</span></div>
+      <div class="action-plan-card"><strong>${best.name}</strong><span>Lowest estimate</span></div>
+      <div class="action-plan-card"><strong>${fastest.name}</strong><span>Fastest estimate</span></div>
       <div class="action-plan-card"><strong>${sym}${annualSaving.toFixed(0)}</strong><span>Annual upside</span></div>
     </div>
-    <div style="margin-top:.75rem">${methodMatch?methodMatch.name+' matches the recipient payout preference. ':'No specific payout method was required. '}Use this as a shortlist, then confirm the live provider quote and recipient payout method before sending.</div>
+    <div style="margin-top:.75rem">${methodMatch?methodMatch.name+' matches the payout method in this estimate. ':'No specific payout method was required. '}Your entered scenario uses ${sym}${enteredFee.toFixed(2)} fee and ${enteredMarginPct.toFixed(1)}% FX margin. Not a live quote. Use this as a shortlist, then confirm the current provider fee, payout rate, and payout method before sending.</div>
     <button type="button" class="btn" style="margin-top:.75rem;padding:.5rem 1rem;font-size:.85rem" onclick="copyDecisionPlan()">Copy Plan</button>`;
 
   document.getElementById('providerCards').innerHTML=results.map((r,i)=>`
-    <div class="provider-card ${i===0?'best':''}">
+    <div class="provider-card ${i===0?'best':''} ${r.userEntered?'user-scenario':''}">
       <div>
-        <div class="provider-name">${r.name}${i===0?'<span class="best-badge">BEST VALUE</span>':i===results.length-1?'<span style="background:#fef2f2;color:#dc2626;padding:.15rem .5rem;border-radius:4px;font-size:.7rem;font-weight:700;margin-left:.5rem">MOST EXPENSIVE</span>':''}</div>
+        <div class="provider-name">${r.name}${r.userEntered?'<span class="scenario-badge">USER ENTERED</span>':''}${i===0?'<span class="best-badge">LOWEST ESTIMATE</span>':i===results.length-1?'<span style="background:#fef2f2;color:#dc2626;padding:.15rem .5rem;border-radius:4px;font-size:.7rem;font-weight:700;margin-left:.5rem">HIGHEST ESTIMATE</span>':''}</div>
         <div style="font-size:.78rem;color:#64748b">${r.method}</div>
         <div style="font-size:.72rem;margin-top:.2rem">${speedDots(r.speedScore)} <span style="color:#64748b">${r.speed}</span></div>
       </div>
       <div class="provider-detail"><div class="label">Fee</div><strong>${sym}${r.fee.toFixed(2)}</strong></div>
       <div class="provider-detail"><div class="label">Rate</div><strong>1 ${sym.trim()} = ${toSym} ${r.effectiveRate.toFixed(1)}</strong><div style="font-size:.7rem;color:#94a3b8">Mid-market: ${toSym} ${midRate.toFixed(1)}</div></div>
       <div class="provider-detail"><div class="label">Recipient Gets</div><strong style="color:#16a34a">${toSym} ${Math.round(r.received).toLocaleString()}</strong></div>
-      <div class="provider-detail"><div class="label">True Cost</div><div class="total-cost">${sym}${r.totalCost.toFixed(2)} <span style="font-size:.75rem">(${r.pct.toFixed(1)}%)</span></div></div>
+      <div class="provider-detail"><div class="label">Est. cost</div><div class="total-cost">${sym}${r.totalCost.toFixed(2)} <span style="font-size:.75rem">(${r.pct.toFixed(1)}%)</span></div></div>
     </div>
   `).join('');
 
   document.getElementById('savingsNote').innerHTML=`
-    <strong>💡 Sending to ${destName}?</strong> Choosing <strong>${best.name}</strong> over <strong>${worst.name}</strong> saves you <strong>${sym}${savings.toFixed(2)}</strong> on this transfer.
-    Over 12 monthly transfers, that's <strong>${sym}${(savings*12).toFixed(0)}</strong> saved per year.
-    Mid-market rate: 1 ${sym.trim()} = ${toSym} ${midRate.toFixed(2)}.
+    <strong>Sending to ${destName}?</strong> In this static estimate, <strong>${best.name}</strong> is <strong>${sym}${savings.toFixed(2)}</strong> lower than <strong>${worst.name}</strong> on this transfer.
+    Across ${repeat} transfers per year, that is an estimated <strong>${sym}${annualSaving.toFixed(0)}</strong> annual upside.
+    Not a live quote. Your entered scenario uses ${sym}${enteredFee.toFixed(2)} fee, ${enteredMarginPct.toFixed(1)}% FX margin, and ${PAYOUT_LABELS[payoutMethod]||payoutMethod}. Assumed mid-market rate: 1 ${sym.trim()} = ${toSym} ${midRate.toFixed(2)}.
   `;
+  updateResultActions({
+    inputs:{fromCountry:from,toCountry:to,amount:amount,fee:enteredFee,fxMarginPct:enteredMarginPct,payoutMethod:payoutMethod,annualTransferCount:repeat,priority:priority,quoteStatus:'not-live'},
+    outputs:{shortlistProvider:pick.name,lowestEstimatedCostProvider:best.name,fastestEstimatedProvider:fastest.name,estimatedCost:sym+best.totalCost.toFixed(2),recipientGets:toSym+' '+Math.round(best.received).toLocaleString(),userScenarioFee:sym+enteredFee.toFixed(2),userScenarioFxMargin:enteredMarginPct.toFixed(1)+'%',payoutMethod:PAYOUT_LABELS[payoutMethod]||payoutMethod,quoteStatus:'Not a live quote'},
+    share:{headline:'Remittance estimate to '+destName,mainValue:toSym+' '+Math.round(best.received).toLocaleString(),subValues:[{label:'Provider',value:best.name},{label:'Estimated cost',value:sym+best.totalCost.toFixed(2)},{label:'Quote status',value:'Not live'}]}
+  });
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+function updateResultActions(payload){
+  ensureToastCallable();
+  var saveButton=document.querySelector('save-result-button[tool-slug="remittance-v2"]');
+  if(saveButton&&typeof saveButton.setData==='function'){
+    saveButton.setData({inputs:payload.inputs,outputs:payload.outputs});
+  }
+  var shareButton=document.querySelector('share-result-button[tool-slug="remittance-v2"]');
+  if(shareButton&&typeof shareButton.setResult==='function'){
+    shareButton.setResult({
+      headline:payload.share.headline,
+      mainValue:payload.share.mainValue,
+      subValues:payload.share.subValues,
+      inputs:payload.inputs,
+      brandColor:'#007AFF'
+    });
+  }
+}
+
+function ensureToastCallable(){
+  if(!window.AfroTools||!AfroTools.toast||typeof AfroTools.toast==='function')return;
+  var toastApi=AfroTools.toast;
+  var toastFn=function(message,type){
+    var variant=type||'info';
+    if(toastApi[variant])return toastApi[variant](message);
+    if(toastApi.show)return toastApi.show(message,variant);
+    return null;
+  };
+  Object.keys(toastApi).forEach(function(key){toastFn[key]=toastApi[key];});
+  AfroTools.toast=toastFn;
 }
 
 function copyDecisionPlan(){
   if(!lastDecisionPlan)compare();
   navigator.clipboard.writeText(lastDecisionPlan).catch(function(){window.prompt('Copy remittance plan',lastDecisionPlan);});
 }
+
+document.querySelectorAll('[data-corridor-preset]').forEach(function(button){
+  button.addEventListener('click',function(){
+    var parts=(button.getAttribute('data-corridor-preset')||'').split(':');
+    if(parts.length<2)return;
+    document.getElementById('fromCountry').value=parts[0];
+    document.getElementById('toCountry').value=parts[1];
+    if(parts[2])document.getElementById('amount').value=parts[2];
+    if(parts[3])document.getElementById('providerFee').value=parts[3];
+    if(parts[4])document.getElementById('fxMargin').value=parts[4];
+    if(parts[5])document.getElementById('payoutMethod').value=parts[5];
+    if(parts[6])document.getElementById('transferCount').value=parts[6];
+    if(parts[7])document.getElementById('transferPriority').value=parts[7];
+    compare();
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
 </script>
 
 <script>

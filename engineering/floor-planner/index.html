@@ -41,6 +41,7 @@
 <link rel="stylesheet" href="/engineering/floor-planner/css/fp-qa.css?v=f3f0619b">
 <link rel="stylesheet" href="/engineering/floor-planner/css/fp-action-safety.css?v=17b668b5">
 <link rel="stylesheet" href="/engineering/floor-planner/css/fp-mvp-sprint.css?v=e3c7672c">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-s-class.css?v=20260612">
 <link rel="stylesheet" href="/engineering/floor-planner/css/fp-export-print.css?v=6b153d4b">
 <script src="/assets/js/components/navbar.min.js?v=659c0b73" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
@@ -95,6 +96,151 @@
       <button type="button" id="fpTemplatesBtn" class="fp-btn fp-btn-ghost">Templates</button>
     </div>
   </div>
+  <section class="fp-starter-strip" aria-label="African floor plan starter templates">
+    <div class="fp-starter-copy">
+      <span class="fp-starter-eyebrow">Local starter templates</span>
+      <strong>Load a deterministic draft, then edit the canvas.</strong>
+      <span>AI generation stays paused in beta. These templates load local walls, rooms, openings, and furniture only.</span>
+    </div>
+    <div class="fp-starter-options">
+      <button type="button" class="fp-starter-card" data-safe-template="ng-single-room">
+        <strong>Single room</strong>
+        <span>Includes: one rental room, bed, wardrobe, desk, windows.</span>
+      </button>
+      <button type="button" class="fp-starter-card" data-safe-template="pan-kiosk-shop">
+        <strong>Kiosk/shop</strong>
+        <span>Includes: counter, display shelves, store corner, serving window.</span>
+      </button>
+      <button type="button" class="fp-starter-card" data-safe-template="pan-salon-barber">
+        <strong>Salon/barber</strong>
+        <span>Includes: chairs, mirrors, wash bay, waiting seats, small store.</span>
+      </button>
+      <button type="button" class="fp-starter-card" data-safe-template="pan-classroom">
+        <strong>Classroom</strong>
+        <span>Includes: desks, teacher area, board wall, store, cross windows.</span>
+      </button>
+      <button type="button" class="fp-starter-card" data-safe-template="pan-small-office">
+        <strong>Small office</strong>
+        <span>Includes: reception, two work desks, meeting table, file store.</span>
+      </button>
+      <button type="button" class="fp-starter-card" data-safe-template="ng-2bed-starter-home">
+        <strong>2-bed starter home</strong>
+        <span>Includes: living room, kitchen, bath, two bedrooms, veranda.</span>
+      </button>
+    </div>
+    <p class="fp-starter-hint">Customize after loading: move walls, rename rooms, adjust openings, then Save, Print/PDF, PNG, or BOQ JSON from the bottom bar.</p>
+  </section>
+
+  <section class="fp-command-center" aria-label="Planning workflow controls">
+    <div class="fp-project-strip">
+      <label>Project name
+        <input id="fpProjectName" type="text" value="Floor Plan Draft">
+      </label>
+      <label>Country and currency
+        <select id="fpProjectCountry">
+          <option value="NG">Nigeria (NGN)</option>
+          <option value="KE">Kenya (KES)</option>
+          <option value="GH">Ghana (GHS)</option>
+          <option value="ZA">South Africa (ZAR)</option>
+          <option value="TZ">Tanzania (TZS)</option>
+        </select>
+      </label>
+      <label>City or market note
+        <input id="fpProjectCity" type="text" placeholder="Optional, e.g. Lagos mainland">
+      </label>
+      <div class="fp-project-actions" aria-label="Planning actions">
+        <button type="button" id="fpSavePlanNow" class="fp-act-btn">Save local draft</button>
+        <button type="button" id="fpRestorePlan" class="fp-act-btn">Restore</button>
+        <button type="button" id="fpCopyPlanningSummary" class="fp-act-btn">Copy summary</button>
+        <button type="button" class="fp-act-btn" data-safe-template="qa-4x3-fixture">Load 4m x 3m fixture</button>
+      </div>
+    </div>
+    <div class="fp-workflow-grid">
+      <section class="fp-work-card" aria-labelledby="fpRoomBuilderTitle">
+        <div class="fp-work-card-head">
+          <h2 id="fpRoomBuilderTitle">Measured room builder</h2>
+          <output id="fpRoomBuilderStatus" aria-live="polite">0 rooms on canvas</output>
+        </div>
+        <form id="fpRoomBuilder">
+          <div class="fp-inline-fields">
+            <label>Room name
+              <input id="fpRoomType" type="text" value="Room">
+            </label>
+            <label>Width (m)
+              <input id="fpRoomWidth" type="number" min="1.2" max="18" step="0.1" value="3.6">
+            </label>
+            <label>Depth (m)
+              <input id="fpRoomDepth" type="number" min="1.2" max="18" step="0.1" value="3.0">
+            </label>
+            <label>Wall type
+              <select id="fpWallMaterial">
+                <option value="block">Block wall</option>
+                <option value="brick">Brick wall</option>
+                <option value="drywall">Drywall partition</option>
+              </select>
+            </label>
+          </div>
+          <div class="fp-inline-actions">
+            <button type="submit" class="fp-btn fp-btn-primary">Add measured room</button>
+            <button type="button" id="fpAddDoorWindow" class="fp-btn">Add door/window pair</button>
+            <button type="button" id="fpOpenFurnitureFast" class="fp-btn">Furniture</button>
+          </div>
+        </form>
+      </section>
+      <section class="fp-work-card" aria-labelledby="fpEstimateBuilderTitle">
+        <div class="fp-work-card-head">
+          <h2 id="fpEstimateBuilderTitle">Estimate assumptions</h2>
+          <output id="fpEstimateStatus" aria-live="polite">No estimate yet</output>
+        </div>
+        <form id="fpEstimateBuilder">
+          <div class="fp-inline-fields">
+            <label>Wall height (m)
+              <input id="fpWallHeight" type="number" min="2.4" max="4.5" step="0.1" value="3.0">
+            </label>
+            <label>Waste allowance (%)
+              <input id="fpWastePct" type="number" min="0" max="30" step="1" value="10">
+            </label>
+            <label>Labour allowance (%)
+              <input id="fpLabourPct" type="number" min="0" max="80" step="1" value="45">
+            </label>
+            <label>Finish rate per m2
+              <input id="fpFinishRate" type="number" min="0" step="1" value="4500">
+            </label>
+          </div>
+          <div class="fp-inline-actions">
+            <button type="submit" class="fp-btn fp-btn-primary">Apply assumptions</button>
+            <button type="button" id="fpOpenEstimateModal" class="fp-btn">Review estimate</button>
+            <button type="button" id="fpOpenPrintPack" class="fp-btn">Print pack</button>
+          </div>
+        </form>
+      </section>
+      <section class="fp-work-card fp-result-card" aria-labelledby="fpLiveSummaryTitle">
+        <div class="fp-work-card-head">
+          <h2 id="fpLiveSummaryTitle">Plan quantities</h2>
+          <span id="fpSaveState">Local only</span>
+        </div>
+        <div id="fpLiveSummary" class="fp-live-summary" aria-live="polite"></div>
+        <p class="fp-plan-note">Material estimates are planning aids, not contractor quotes. Edit unit costs in the estimate before exporting BOQ notes.</p>
+      </section>
+    </div>
+    <div class="fp-trust-row" aria-label="Planning limits">
+      <div><strong>Local calculations</strong> Area, wall length, and BOQ notes are computed from canvas objects in this browser.</div>
+      <div><strong>Editable assumptions</strong> Static fallback costs are labelled and can be changed before export.</div>
+      <div><strong>Professional check</strong> Verify rates, structure, approvals, and procurement with local professionals.</div>
+    </div>
+    <div class="fp-verification-panel" data-tool-verification-panel aria-label="Floor planner sources, verification, and limitations">
+      <div>
+        <strong>Sources & verification</strong>
+        <span>Disclaimer: this is a planning draft, not an architectural, structural, permit, valuation, or contractor quote document.</span>
+      </div>
+      <ul>
+        <li>Method: measurements, room areas, openings, and BOQ notes are calculated from the objects on this canvas.</li>
+        <li>Confirm dimensions on site before using the plan for procurement or approvals.</li>
+        <li>Review wall type, openings, structure, services, ventilation, drainage, setbacks, and local code with qualified professionals.</li>
+        <li>Use exports as briefing packs for builders, suppliers, family discussions, or first budget conversations.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- Main Layout -->
   <div class="fp-layout">
@@ -163,6 +309,12 @@
       <button type="button" id="fpExportBoq" class="fp-act-btn" title="Preview BOQ and download JSON">BOQ JSON</button>
       <button type="button" id="fpShare" class="fp-act-btn" title="Share Plan">Share</button>
     </div>
+    <aside class="fp-export-proof" aria-labelledby="fpExportProofTitle">
+      <strong id="fpExportProofTitle">Save and export proof</strong>
+      <span>Save stores the editable draft in this browser only.</span>
+      <span>PDF prints the current plan pack; PNG downloads a flat image; BOQ opens quantity-style notes for local review.</span>
+      <output id="fpExportProofStatus" class="fp-export-proof-status" role="status" aria-live="polite" aria-atomic="true">No export attempted yet.</output>
+    </aside>
   </div>
 </div>
 
@@ -233,6 +385,7 @@
 <script src="/engineering/floor-planner/js/fp-qa.js?v=0eed3842"></script>
 <script src="/engineering/floor-planner/js/fp-boq-engine.js?v=36a4d5ad"></script>
 <script src="/assets/js/lib/fp-material-pricing.js?v=2988d51e"></script>
+<script src="/engineering/floor-planner/js/fp-s-class.js?v=20260612c"></script>
 <script src="/engineering/floor-planner/js/fp-beta-safe.js?v=44d423aa"></script>
 <script src="/engineering/floor-planner/js/fp-mvp-sprint.js?v=20b23245"></script>
 <script src="/engineering/floor-planner/js/fp-ai-consent.js?v=c9b55201"></script>

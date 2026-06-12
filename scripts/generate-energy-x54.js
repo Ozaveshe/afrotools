@@ -139,7 +139,7 @@ document.getElementById("r10yr").textContent=r.roi10yr;
 document.getElementById("r25yr").textContent=r.roi25yr;
 document.getElementById("rCO2").textContent=r.co2SavedYr;`,
     seoTitle: "Solar Panel ROI Calculator",
-    seoBody: "Find out how quickly solar panels pay back in {{COUNTRY_NAME}} with our free ROI calculator. We use local sun hours, grid tariff rates, and installation costs to give you a realistic payback period and long-term savings projection.",
+    seoBody: "Find out how quickly solar panels pay back in {{COUNTRY_NAME}} with our free ROI calculator. This country page uses local sun-hour and cost assumptions from the AfroTools energy dataset for a planning estimate, not a live utility tariff, installer quote, or PVWatts model.",
     seoFact: "solar irradiance levels and electricity grid reliability"
   },
   {
@@ -227,12 +227,22 @@ ${tool.formHTML}
 ${tool.resultsHTML}
 <div class="en-observations" id="rObs"></div>
 </div>
+${tool.slug === "solar-roi" ? `<section class="en-notice en-notice-warning solar-roi-country-bridge" aria-label="Full solar ROI calculator">
+<strong>Need generator, battery, financing, outage, or editable tariff assumptions?</strong>
+<p>This country page keeps a quick bill-and-size estimate. Use the main Solar ROI calculator for country, monthly electricity spend, generator fuel spend, outage hours, system size, battery option, financing, and editable tariff, fuel, install, maintenance, and financing assumptions.</p>
+<a class="en-btn en-btn-secondary en-btn-sm" href="/tools/solar-roi/">Open full solar ROI calculator</a>
+</section>` : ""}
 <section class="en-seo">
 <h2>${seoTitle}</h2>
 <p>${seoBody}</p>
 <p>${country.name} is one of Africa's key markets for ${tool.seoFact}. Use this free tool to make informed energy decisions.</p>
-<p><strong>Disclaimer:</strong> These are estimates based on available market data and published tariff rates. Actual costs may vary. Always verify with your local utility provider.</p>
+<p><strong>Disclaimer:</strong> These are planning estimates based on AfroTools dataset assumptions and available market context. Actual tariffs, fuel prices, battery prices, and installation costs may vary. Always verify current utility, regulator, installer, and vendor pricing before buying.</p>
 </section>
+${tool.slug === "solar-roi" ? `<section class="en-seo solar-roi-source-note" aria-label="Sources and freshness">
+<h2>Sources and freshness</h2>
+<p>Default values come from the AfroTools energy country dataset, freshness: <span data-energy-freshness>2026-03</span>. They are editable planning assumptions, not verified installer quotes, not a live tariff integration, and not PVWatts output.</p>
+<p>The simple payback method is estimated system cost divided by estimated annual savings. Use the full calculator to edit tariff, fuel price, install cost, battery cost, maintenance, and financing assumptions.</p>
+</section>` : ""}
 </main>
 <afro-footer></afro-footer>
 <script src="/data/energy/country-energy-index.js"></script>

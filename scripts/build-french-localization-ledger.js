@@ -44,6 +44,7 @@ const COUNTRY_FR_TO_EN = {
   "dr-congo": "drc",
   car: "central-african-republic",
   "eq-guinea": "equatorial-guinea",
+  "guinee-equatoriale": "equatorial-guinea",
   "cabo-verde": "cape-verde",
 };
 
@@ -76,7 +77,7 @@ const PAYE_SLUG_MAP = {
   maroc: "morocco/ma-paye",
   mauritanie: "mauritania/mr-paye",
   niger: "niger/ne-paye",
-  rdc: "drc",
+  rdc: "dr-congo/cd-paye",
   senegal: "senegal/sn-paye",
   togo: "togo/tg-paye",
   tunisie: "tunisia/tn-paye",
@@ -84,17 +85,25 @@ const PAYE_SLUG_MAP = {
 
 const VAT_SLUG_MAP = {
   algerie: "algeria/dz-vat",
+  benin: "benin/bj-vat",
   "burkina-faso": "burkina-faso/bf-vat",
+  burundi: "burundi/bi-vat",
   cameroun: "cameroon/cm-vat",
+  centrafrique: "car/cf-vat",
+  chad: "chad/td-vat",
+  comores: "comoros/km-vat",
   congo: "congo/cg-vat",
   "cote-divoire": "cote-divoire/ci-vat",
   gabon: "gabon/ga-vat",
   guinee: "guinea/gn-vat",
+  madagascar: "madagascar/mg-vat",
   mali: "mali/ml-vat",
   maroc: "morocco/ma-vat",
+  mauritanie: "mauritania/mr-vat",
   niger: "niger/ne-vat",
-  rdc: "drc",
+  rdc: "dr-congo/cd-vat",
   senegal: "senegal/sn-vat",
+  tchad: "chad/td-vat",
   togo: "togo/tg-vat",
   tunisie: "tunisia/tn-vat",
 };
@@ -103,7 +112,7 @@ const COUNTRY_SLUGS = new Set([
   "algeria", "angola", "benin", "botswana", "burkina-faso", "burundi",
   "cabo-verde", "cameroon", "cape-verde", "central-african-republic",
   "chad", "comoros", "congo", "cote-divoire", "djibouti", "dr-congo",
-  "drc", "egypt", "eq-guinea", "equatorial-guinea", "eritrea", "eswatini",
+  "drc", "egypt", "eq-guinea", "equatorial-guinea", "guinee-equatoriale", "eritrea", "eswatini",
   "ethiopia", "gabon", "gambia", "ghana", "guinea", "guinea-bissau",
   "kenya", "lesotho", "liberia", "libya", "madagascar", "malawi", "mali",
   "mauritania", "mauritius", "morocco", "mozambique", "namibia", "niger",
@@ -358,6 +367,14 @@ function hasEnglishSource(source) {
   return source !== null && source !== undefined;
 }
 
+function isMappedRouteOwner(routeRecord) {
+  return hasEnglishSource(routeRecord.englishSource)
+    && !routeRecord.hasNoindex
+    && !routeRecord.redirectLike
+    && !routeRecord.redirectSource
+    && !routeRecord.classification.alias;
+}
+
 function inferFrenchSourceCandidates(filePath) {
   const relative = rel(filePath).replace(/^fr\//, "");
   const html = safeRead(filePath);
@@ -393,7 +410,7 @@ function inferFrenchSourceCandidates(filePath) {
   if (first === "eq-guinea" && fileBase === "gq-vat") addCandidate(candidates, "eq-guinea/gq-vat", "eq-guinea-tax-slug-map");
 
   if (COUNTRY_FR_TO_EN[first]) {
-    const rest = parts.slice(1).join("/").replace(/\.html$/, "").replace(/\/index$/, "");
+    const rest = parts.slice(1).join("/").replace(/\.html$/, "").replace(/\/index$/, "").replace(/^index$/, "");
     addCandidate(candidates, firstEn + (rest ? `/${rest}` : ""), "build-i18n-country-map");
   } else {
     const direct = relative.replace(/\.html$/, "").replace(/\/index$/, "");
@@ -455,7 +472,7 @@ function sectionFlags(route, source) {
   const countryRoute = normalized.replace(/^\/fr\//, "").replace(/^\//, "").replace(/\/$/, "");
   return {
     tools: /^\/fr\/tools(\/|$)/.test(normalized) || /^\/tools(\/|$)/.test(withoutFr) || /^tools\//.test(sourceRoute),
-    cars: /^\/fr\/(cars|car)(\/|$)/.test(normalized) || /^(cars|car)(\/|$)/.test(sourceRoute),
+    cars: /^\/fr\/cars(\/|$)/.test(normalized) || /^cars(\/|$)/.test(sourceRoute),
     agriculture: /^\/fr\/agriculture(\/|$)/.test(normalized) || /^agriculture(\/|$)/.test(sourceRoute),
     blog: /^\/fr\/blog(\/|$)/.test(normalized) || /^blog(\/|$)/.test(sourceRoute),
     "salary-tax": /^\/fr\/salary-tax(\/|$)/.test(normalized) || /^salary-tax(\/|$)/.test(sourceRoute) || /(^|\/)([a-z]{2}-)?paye($|\/)/i.test(sourceRoute) || /calculateur-salaire-net|salaire/i.test(normalized),
@@ -569,7 +586,7 @@ function main() {
       canonicalGroups.get(canonicalRoute).push(route);
     }
 
-    if (mappedToEnglishSource && !hasNoindex(html) && !redirectLike && !redirectSource) {
+    if (mappedToEnglishSource && !hasNoindex(html) && !redirectLike && !redirectSource && !isAlias) {
       if (!englishToFrenchRoutes.has(englishSource)) englishToFrenchRoutes.set(englishSource, []);
       englishToFrenchRoutes.get(englishSource).push(route);
     }
@@ -679,7 +696,8 @@ function main() {
   const handAuthoredFrenchPages = routes.filter((route) => route.classification.generation === "hand-authored French page");
   const unclearSourceRoutes = routes.filter((route) => route.classification.sourceOfTruth.includes("unclear source of truth"));
   const aliasRoutes = routes.filter((route) => route.classification.alias || route.classification.mapping === "duplicate or alias route");
-  const mappedEnglishCount = new Set(englishBackedRoutes.map((route) => route.englishSource)).size;
+  const mappedRouteOwners = routes.filter(isMappedRouteOwner);
+  const mappedEnglishCount = new Set(mappedRouteOwners.map((route) => route.englishSource)).size;
 
   const duplicateEnglishMappings = [...englishToFrenchRoutes.entries()]
     .filter(([, frRoutes]) => frRoutes.length > 1)
@@ -692,13 +710,14 @@ function main() {
   for (const name of SECTION_NAMES) {
     const englishSources = sourcePages.filter((source) => sectionFlags(`/${source}`, source)[name]);
     const frenchSectionRoutes = routes.filter((route) => route.classification.sections.includes(name));
-    const mappedSources = new Set(frenchSectionRoutes.filter((route) => hasEnglishSource(route.englishSource)).map((route) => route.englishSource));
+    const mappedSources = new Set(frenchSectionRoutes.filter(isMappedRouteOwner).map((route) => route.englishSource));
     const eligible = frenchSectionRoutes.filter(isRegistryEligible);
     const covered = eligible.filter((route) => registryHrefSet.has(route.route));
     sections[name] = {
       englishSourcePages: englishSources.length,
       frenchPages: frenchSectionRoutes.length,
       englishBackedFrenchPages: frenchSectionRoutes.filter((route) => hasEnglishSource(route.englishSource)).length,
+      mappedFrenchRouteOwners: frenchSectionRoutes.filter(isMappedRouteOwner).length,
       uniqueEnglishSourcesMapped: mappedSources.size,
       rawCoveragePercent: percent(frenchSectionRoutes.length, englishSources.length),
       mappedCoveragePercent: percent(mappedSources.size, englishSources.length),
@@ -835,10 +854,10 @@ function main() {
   ].filter((blocker) => blocker.count > 0).slice(0, 20);
 
   const recommendedNextImplementationBatch = [
-    "Discovery-only canonical decision batch for salary/PAYE and VAT French country routes: choose preferred URLs for normalized calculateur-* routes versus historical cc-paye/cc-vat routes, then document aliases before edits.",
-    "Registry repair batch for existing French money/tool routes only: fix missing or non-preferred registry hrefs after canonical decisions, with no translation copy edits.",
-    "Hreflang reciprocity batch on the same approved route set: repair en/fr self, x-default, and bidirectional links, then rerun validate:hreflang.",
-    "French UI leakage QA batch for top money/discovery pages: title, H1, buttons, placeholders, labels, and app result text, after the route ledger is accepted.",
+    "Optional wrapper-stabilization batch for remaining generated cc-paye/cc-vat aliases: use the existing redirect-wrapper pattern only where a preferred semantic route is live, and preserve custom wrappers that already noindex or redirect.",
+    "Registry closeout for PAYE/TVA temporary cc owners only where no semantic /fr/<country>/calculateur-* route exists; do not add registry rows for aliases.",
+    "Semantic route creation decision for temporary VAT/PAYE exceptions such as Djibouti VAT and the remaining registry-missing cc routes before any discovery expansion.",
+    "French route-owner re-gate: rerun the ledger, build:i18n validation, hreflang validation, check-links, and audit after the next money-route batch.",
   ];
 
   const report = {
@@ -857,6 +876,7 @@ function main() {
       generatedOutputRoutes: generatedOutputRoutes.length,
       handAuthoredFrenchPages: handAuthoredFrenchPages.length,
       unclearSourceOfTruthRoutes: unclearSourceRoutes.length,
+      mappedFrenchRouteOwners: mappedRouteOwners.length,
       rawPageCountCompletionPercent: percent(routes.length, sourcePages.length),
       englishBackedRouteMappingCompletionPercent: percent(mappedEnglishCount, sourcePages.length),
       frenchRegistryEntries: frRegistry.length,
@@ -915,6 +935,7 @@ function writeMarkdown(report, outputPath) {
   lines.push(`- Total French pages: ${report.totals.frenchPages}`);
   lines.push(`- Raw page-count completion: ${report.totals.rawPageCountCompletionPercent}%`);
   lines.push(`- English-backed route-mapping completion: ${report.totals.englishBackedRouteMappingCompletionPercent}%`);
+  lines.push(`- Indexable mapped French route owners: ${report.totals.mappedFrenchRouteOwners}`);
   lines.push(`- French registry coverage: ${report.totals.frenchRegistryCoveragePercent}% of registry-eligible French tool/money/PDF routes (${report.totals.frenchRegistryCoveredEligibleRoutes}/${report.totals.frenchRegistryEligibleRoutes})`);
   lines.push(`- French registry entries: ${report.totals.frenchRegistryEntries}`);
   lines.push(`- English-backed French routes: ${report.totals.englishBackedFrenchRoutes}`);
@@ -957,6 +978,7 @@ function writeMarkdown(report, outputPath) {
   lines.push("## Notes");
   lines.push("");
   lines.push("- Raw page count overstates product readiness because it includes French-only, alias, generated, and hand-authored pages together.");
+  lines.push("- The English-backed route mapping percentage counts indexable, non-alias French route owners only.");
   lines.push("- The safer completion number is the English-backed route mapping percentage plus registry coverage for tool-discovery surfaces.");
   lines.push("- Detailed per-route classification and full finding lists are in `reports/french-localization-ledger.json`.");
   fs.writeFileSync(outputPath, `${lines.join("\n")}\n`, "utf8");

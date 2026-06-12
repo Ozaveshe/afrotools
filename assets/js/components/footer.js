@@ -53,8 +53,8 @@
 
   const LINKS = {
     tools: [
-      { en: 'Salary & Tax',        fr: 'Salaire & Impôts', sw: 'Mshahara & PAYE', yo: 'Owó oṣù àti owó-orí', ha: 'Albashi da PAYE', href: '/salary-tax/', hrefSw: '/sw/mshahara-na-kodi/', hrefHa: '/ha/albashi-da-haraji/', hrefYo: '/yo/owo-osu-ati-owo-ori/' },
-      { en: 'PDF Workspace',       fr: 'Espace PDF',       sw: 'Eneo la PDF',     yo: 'Ìwé àti PDF',          ha: 'Takardu da PDF', href: '/tools/pdf-workspace/', hrefSw: '/sw/zana/nafasi-pdf/', hrefHa: '/ha/takardu-da-pdf/', hrefYo: '/yo/iwe-ati-pdf/' },
+      { en: 'Salary & Tax',        fr: 'Salaire & Impôts', sw: 'Mshahara & PAYE', yo: 'Owó oṣù àti owó-orí', ha: 'Albashi da PAYE', href: '/salary-tax/', hrefFr: '/fr/salary-tax/', hrefSw: '/sw/mshahara-na-kodi/', hrefHa: '/ha/albashi-da-haraji/', hrefYo: '/yo/owo-osu-ati-owo-ori/' },
+      { en: 'PDF Workspace',       fr: 'Espace PDF',       sw: 'Eneo la PDF',     yo: 'Ìwé àti PDF',          ha: 'Takardu da PDF', href: '/tools/pdf-workspace/', hrefFr: '/fr/document-pdf/', hrefSw: '/sw/zana/nafasi-pdf/', hrefHa: '/ha/takardu-da-pdf/', hrefYo: '/yo/iwe-ati-pdf/' },
       { en: 'Education',           ha: 'Ilimi',             href: '/education/', hrefHa: '/ha/ilimi/', haOnly: true },
       { en: 'Education',           yo: 'Ẹ̀kọ́',             href: '/education/', hrefYo: '/yo/eko/', yoOnly: true },
       { en: 'Telecom & Mobile',    yo: 'Ìbáraẹnisọrọ',     href: '/telecom/', hrefYo: '/yo/ibaraenisoro/', yoOnly: true },
@@ -62,10 +62,10 @@
       { en: 'Agriculture',         yo: 'Ọ̀gbìn',            href: '/agriculture/', hrefYo: '/yo/ogbin/', yoOnly: true },
       { en: 'Language & Translation', yo: 'Èdè àti Ìtumọ̀', href: '/language/', hrefYo: '/yo/ede-ati-itumo/', yoOnly: true },
       { en: 'Language & Translation', ha: 'Harshe da Fassara', href: '/language/', hrefHa: '/ha/harshe-da-fassara/', haOnly: true },
-      { en: 'CV Builder',          fr: 'Créer un CV',      sw: 'Tengeneza CV',     yo: 'Kọ CV - ojú ìwé Gẹẹsi',             ha: 'Mai gina CV',      href: '/tools/cv-builder/', hrefSw: '/sw/zana/mjenzi-cv/', hrefHa: '/ha/kayan-aiki/gina-cv/' },
-      { en: 'Invoice Generator',   fr: 'Facture',          sw: 'Ankara',           yo: 'Ìwé owó - ojú ìwé Gẹẹsi',      ha: 'Kirkiro takardar kudi', href: '/tools/invoice-generator/', hrefSw: '/sw/zana/kizalishaji-ankara/', hrefHa: '/ha/kayan-aiki/kirkiro-invoice/' },
-      { en: 'VAT Calculator',      fr: 'Calculateur TVA',  sw: 'Kikokotoo VAT',    yo: 'VAT àti owó-orí iṣẹ́',       ha: 'Kalkuletan VAT',  href: '/tools/vat-calculator/', hrefSw: '/sw/zana/kikokotoo-vat/', hrefHa: '/ha/kayan-aiki/kalkuletan-vat/', hrefYo: '/yo/owo-ori-owo-ise/' },
-      { en: 'Currency Converter',  fr: 'Convertisseur',    sw: 'Kubadili Sarafu',  yo: 'Iyípadà owó - ojú ìwé Gẹẹsi',       ha: 'Canjin kudi',     href: '/tools/currency-converter/', hrefSw: '/sw/zana/kibadilishaji-sarafu/', hrefHa: '/ha/kayan-aiki/canja-kudi/' },
+      { en: 'CV Builder',          fr: 'Créer un CV',      sw: 'Tengeneza CV',     yo: 'Kọ CV - ojú ìwé Gẹẹsi',             ha: 'Mai gina CV',      href: '/tools/cv-builder/', hrefFr: '/fr/tools/generateur-cv/', hrefSw: '/sw/zana/mjenzi-cv/', hrefHa: '/ha/kayan-aiki/gina-cv/' },
+      { en: 'Invoice Generator',   fr: 'Facture',          sw: 'Ankara',           yo: 'Ìwé owó - ojú ìwé Gẹẹsi',      ha: 'Kirkiro takardar kudi', href: '/tools/invoice-generator/', hrefFr: '/fr/tools/generateur-factures/', hrefSw: '/sw/zana/kizalishaji-ankara/', hrefHa: '/ha/kayan-aiki/kirkiro-invoice/' },
+      { en: 'VAT Calculator',      fr: 'Calculateur TVA',  sw: 'Kikokotoo VAT',    yo: 'VAT àti owó-orí iṣẹ́',       ha: 'Kalkuletan VAT',  href: '/tools/vat-calculator/', hrefFr: '/fr/tools/calculateur-tva/', hrefSw: '/sw/zana/kikokotoo-vat/', hrefHa: '/ha/kayan-aiki/kalkuletan-vat/', hrefYo: '/yo/owo-ori-owo-ise/' },
+      { en: 'Currency Converter',  fr: 'Convertisseur',    sw: 'Kubadili Sarafu',  yo: 'Iyípadà owó - ojú ìwé Gẹẹsi',       ha: 'Canjin kudi',     href: '/tools/currency-converter/', hrefFr: '/fr/tools/convertisseur-devises/', hrefSw: '/sw/zana/kibadilishaji-sarafu/', hrefHa: '/ha/kayan-aiki/canja-kudi/' },
     ],
     countries: [
       { en: 'All countries', ha: 'Duk kasashe - shafi na Turanci', href: '/countries/', hrefHa: '/countries/', haOnly: true },
@@ -81,9 +81,9 @@
       { en: 'Blog',        fr: 'Blog',             sw: 'Blogu',         yo: 'Blọ́ọ̀gì - ojú ìwé Gẹẹsi',          ha: 'Labaran shafi - shafi na Turanci',          href: '/blog/', hrefSw: '/sw/blogu/' },
       { en: 'Contact',     fr: 'Contact',          sw: 'Wasiliana',     yo: 'Kan sí wa - ojú ìwé Gẹẹsi',        ha: 'Tuntube mu - shafi na Turanci',    href: '/contact/', hrefSw: '/sw/wasiliana/' },
       { en: 'Changelog',   fr: 'Mises à jour',     sw: 'Mabadiliko (Kiingereza)',    yo: 'Àwọn àyípadà - ojú ìwé Gẹẹsi',    ha: 'Canje-canje - shafi na Turanci',   href: '/changelog/', hrefSw: '/changelog/' },
-      { en: 'All Tools',   fr: 'Tous les outils',  sw: 'Zana Zote',     yo: 'Gbogbo irinṣẹ',      ha: 'Duk kayan aiki',href: '/all-tools/', hrefSw: '/sw/zana-zote/', hrefHa: '/ha/kayan-aiki/', hrefYo: '/yo/awon-ise/' },
+      { en: 'All Tools',   fr: 'Tous les outils',  sw: 'Zana Zote',     yo: 'Gbogbo irinṣẹ',      ha: 'Duk kayan aiki',href: '/all-tools/', hrefFr: '/fr/all-tools/', hrefSw: '/sw/zana-zote/', hrefHa: '/ha/kayan-aiki/', hrefYo: '/yo/awon-ise/' },
       { en: 'API Docs',    fr: 'API Docs',         sw: 'API kwa Kiswahili',      yo: 'Ìwé API - ojú ìwé Gẹẹsi',         ha: 'Takardun API - shafi na Turanci',      href: '/api/', hrefSw: '/sw/api/' },
-      { en: 'Embed Tools', fr: 'Intégrer',         sw: 'Chomeka Zana (Kiingereza)',  yo: 'Fi irinṣẹ sínú - ojú ìwé Gẹẹsi',     ha: 'Saka kayan aiki - shafi na Turanci', href: '/widgets/demo/', hrefSw: '/widgets/demo/' },
+      { en: 'Embed Tools', fr: 'Intégrer',         sw: 'Chomeka Zana (Kiingereza)',  yo: 'Fi irinṣẹ sínú - ojú ìwé Gẹẹsi',     ha: 'Saka kayan aiki - shafi na Turanci', href: '/widgets/demo/', hrefFr: '/fr/widgets/', hrefSw: '/widgets/demo/' },
     ],
     legal: [
       { en: 'Privacy Policy', fr: 'Confidentialité', sw: 'Sera ya Faragha (Kiingereza)', yo: 'Ìlànà aṣírí - ojú ìwé Gẹẹsi',  ha: 'Manufar sirri - shafi na Turanci', href: '/privacy/', hrefSw: '/privacy/' },
@@ -337,6 +337,7 @@
 
     _linkHref(item) {
       var href = item && item.href ? item.href : '#';
+      if (this._lang === 'fr') return item.hrefFr || this._prefixHref(href);
       if (this._lang === 'sw') return item.hrefSw || this._prefixHref(href);
       if (this._lang === 'ha') return item.hrefHa || href;
       if (this._lang === 'yo') return item.hrefYo || href;

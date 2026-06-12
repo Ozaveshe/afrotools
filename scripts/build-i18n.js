@@ -305,6 +305,7 @@ const COUNTRY_FR_TO_EN = {
   'tunisie': 'tunisia', 'guinee': 'guinea', 'rdc': 'dr-congo',
   'dr-congo': 'dr-congo', 'car': 'central-african-republic',
   'eq-guinea': 'equatorial-guinea', 'cabo-verde': 'cape-verde',
+  'guinee-equatoriale': 'equatorial-guinea',
   'tchad': 'chad', 'centrafrique': 'central-african-republic',
   'comores': 'comoros', 'mauritanie': 'mauritania',
 };
@@ -319,6 +320,8 @@ const FRENCH_COUNTRY_SLUG_BY_EN = {
   'drc': 'rdc',
   'central-african-republic': 'centrafrique',
   'car': 'centrafrique',
+  'equatorial-guinea': 'guinee-equatoriale',
+  'eq-guinea': 'guinee-equatoriale',
   'cape-verde': 'cabo-verde',
   'chad': 'tchad',
   'comoros': 'comores',
@@ -473,7 +476,8 @@ function discoverExistingFrPages() {
         // Country slug mapping for index.html
         else if (COUNTRY_FR_TO_EN[country]) {
           const rest = parts.slice(1).join('/');
-          enPage = COUNTRY_FR_TO_EN[country] + (rest ? '/' + rest.replace('.html', '').replace(/\/index$/, '') : '');
+          const cleanRest = rest.replace('.html', '').replace(/\/index$/, '').replace(/^index$/, '');
+          enPage = COUNTRY_FR_TO_EN[country] + (cleanRest ? '/' + cleanRest : '');
         }
         // Direct match (same path in English)
         else {
@@ -972,7 +976,7 @@ function processHTML(html, lang, pagePath) {
   }
 
   // 3. Update canonical URL to point to self
-  const selfUrl = buildLangUrl(pagePath, lang);
+  const selfUrl = lang === 'fr' ? getFrenchUrl(pagePath) : buildLangUrl(pagePath, lang);
   processed = processed.replace(
     /<link\s+rel="canonical"\s+href="[^"]*"/,
     `<link rel="canonical" href="${selfUrl}"`

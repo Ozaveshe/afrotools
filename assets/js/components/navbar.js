@@ -883,7 +883,7 @@
     {
       id: 'energy', label: 'Energy & Utilities', labelFr: 'Énergie & Utilitaires', labelSw: 'Nishati na Huduma', icon: '⚡',
       desc: 'Electricity tariff, solar ROI, generator fuel, water bills', descFr: 'Tarifs électricité, ROI solaire, coût générateur', descSw: 'Umeme, jua, mafuta ya jenereta, bili ya maji',
-      href: '/energy/', color: '#FFFBEB', accent: '#F59E0B',
+      href: '/energy/', hrefFr: '/fr/energy/', color: '#FFFBEB', accent: '#F59E0B',
       tools: [
         { label: 'Electricity Tariff Calculator', href: '/tools/electricity-tariff/', emoji: '⚡', badge: 'LIVE' },
         { label: 'Solar Panel ROI Calculator', href: '/tools/solar-roi/', emoji: '☀️', badge: 'LIVE' },
@@ -906,6 +906,17 @@
         { label: 'EV Charging Cost', href: '/tools/ev-charging/', emoji: '🚗', badge: 'LIVE' },
         { label: 'Biogas Digester ROI', href: '/tools/biogas-roi/', emoji: '🐄', badge: 'LIVE' },
         { label: 'All Energy Tools →', href: '/energy/', emoji: '⚡' },
+      ],
+      toolsFr: [
+        { label: 'Hub énergie', href: '/fr/energy/', emoji: '⚡', badge: 'FR' },
+        { label: 'Calculateur solaire', href: '/fr/tools/calculateur-solaire/', emoji: '☀️', badge: 'LIVE' },
+        { label: 'Estimateur électricité', href: '/fr/tools/estimateur-electricite/', emoji: '⚡', badge: 'LIVE' },
+        { label: 'Charge électrique', href: '/fr/tools/charge-electrique/', emoji: '🔌', badge: 'LIVE' },
+        { label: 'Dimensionnement générateur', href: '/fr/tools/dimensionnement-generateur/', emoji: 'GEN', badge: 'LIVE' },
+        { label: 'Carburant générateur', href: '/fr/tools/carburant-generateur/', emoji: '⛽', badge: 'LIVE' },
+        { label: 'Coût carburant', href: '/fr/tools/cout-carburant/', emoji: '⛽', badge: 'LIVE' },
+        { label: 'Coût forage', href: '/fr/tools/cout-forage/', emoji: '💧', badge: 'LIVE' },
+        { label: 'Tous les outils énergie →', href: '/fr/energy/', emoji: '⚡' },
       ]
     },
     {
@@ -1004,7 +1015,7 @@
       desc: 'Fuel, vehicle import, ride fares, boda-boda — 54 countries',
       descFr: 'Carburant, importation véhicule, tarifs taxi, logistique — 54 pays',
       descSw: 'Mafuta, gari, nauli, boda-boda — nchi 54',
-      href: '/transport/', color: '#fef3c7', accent: '#d97706',
+      href: '/transport/', hrefFr: '/fr/transport/', color: '#fef3c7', accent: '#d97706',
       tools: [
         { label: 'Fuel Cost per Trip Calculator', href: '/tools/fuel-cost/', emoji: '⛽', badge: 'LIVE' },
         { label: 'Import Duty & Landed Cost Calculator', href: '/tools/import-duty/', emoji: 'BOX', badge: 'LIVE' },
@@ -1017,6 +1028,17 @@
         { label: 'Road Worthiness Checklist', href: '/tools/roadworthiness/', emoji: '✅', badge: 'LIVE' },
         { label: 'Vehicle Depreciation Calc', href: '/tools/vehicle-depreciation/', emoji: '📉', badge: 'NEW' },
         { label: 'All Transport Tools →', href: '/transport/', emoji: '🚛' },
+      ],
+      toolsFr: [
+        { label: 'Hub transport', href: '/fr/transport/', emoji: '🚛', badge: 'FR' },
+        { label: 'Voitures, prix et import', href: '/fr/cars/', emoji: '🚗', badge: 'LIVE' },
+        { label: 'Commerce et import', href: '/fr/trade/', emoji: 'BOX', badge: 'LIVE' },
+        { label: 'Coût carburant', href: '/fr/tools/cout-carburant/', emoji: '⛽', badge: 'LIVE' },
+        { label: 'Carburant générateur', href: '/fr/tools/carburant-generateur/', emoji: 'GEN', badge: 'LIVE' },
+        { label: 'Calculateur d’expédition', href: '/fr/tools/calculateur-expedition/', emoji: '📦', badge: 'LIVE' },
+        { label: 'Estimateur de fret', href: '/fr/tools/estimateur-fret/', emoji: '🚢', badge: 'LIVE' },
+        { label: 'Droits de douane', href: '/fr/tools/droits-douane/', emoji: '🧾', badge: 'LIVE' },
+        { label: 'Tous les outils transport →', href: '/fr/transport/', emoji: '🚛' },
       ]
     },
     {

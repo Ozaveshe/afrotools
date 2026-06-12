@@ -4053,7 +4053,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "african-proverbs"
       }
     ],
     "en::agriculture": [
@@ -4879,7 +4880,8 @@
         "lang": "en",
         "priority": 55,
         "estTraffic": 450,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "boq-gen"
       },
       {
         "id": "home-renovation-cost",
@@ -4891,7 +4893,8 @@
         "lang": "en",
         "priority": 48,
         "estTraffic": 400,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "home-renovation-cost"
       }
     ],
     "en::data-productivity": [
@@ -5566,7 +5569,7 @@
         "id": "generateur-nom-entreprise-fr",
         "name": "Générateur de nom d'entreprise",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour ventes, stock ...",
+        "desc": "Générez et comparez des pistes de nom, puis véri...",
         "href": "/fr/tools/generateur-nom-entreprise",
         "category": "ecommerce",
         "lang": "fr",
@@ -5580,7 +5583,7 @@
         "id": "gestion-stocks-fr",
         "name": "Gestion des stocks",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour ventes, stock ...",
+        "desc": "Suivez produits, quantités et alertes de stock p...",
         "href": "/fr/tools/gestion-stocks",
         "category": "ecommerce",
         "lang": "fr",
@@ -5648,7 +5651,7 @@
       },
       {
         "id": "marge-beneficiaire-fr",
-        "name": "Marge beneficiaire",
+        "name": "Marge bénéficiaire",
         "icon": "%",
         "desc": "Calculez marge, majoration et prix de vente pour...",
         "href": "/fr/tools/marge-beneficiaire",
@@ -5700,9 +5703,10 @@
         "lang": "fr",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
+        "imageExt": "webp",
         "sourceId": "50-30-20-budget",
-        "imageId": "50-30-20-budget"
+        "imageId": "50-30-20-budget",
+        "imageKey": "50-30-20-budget"
       },
       {
         "id": "planificateur-budget-fr",
@@ -5825,10 +5829,25 @@
         "imageKey": "burn-rate"
       },
       {
+        "id": "generateur-business-plan-fr",
+        "name": "Générateur de plan d'affaires",
+        "icon": "FR",
+        "desc": "Construisez un plan d'affaires guidé avec sectio...",
+        "href": "/fr/tools/generateur-business-plan",
+        "category": "small-business",
+        "lang": "fr",
+        "priority": 58,
+        "estTraffic": 0,
+        "imageExt": "svg",
+        "sourceId": "business-plan-builder",
+        "imageId": "business-plan-builder",
+        "imageKey": "business-plan-builder"
+      },
+      {
         "id": "plan-affaires-fr",
-        "name": "Plan d affaires",
+        "name": "Plan d'affaires",
         "icon": "#",
-        "desc": "Preparez une structure de business plan utilisab...",
+        "desc": "Préparez une structure de business plan utilisab...",
         "href": "/fr/tools/plan-affaires",
         "category": "small-business",
         "lang": "fr",
@@ -5840,9 +5859,9 @@
       },
       {
         "id": "evaluation-startup-fr",
-        "name": "Evaluation startup",
-        "icon": "$",
-        "desc": "Estimez une valorisation de startup avec hypothe...",
+        "name": "Évaluation startup",
+        "icon": "📊",
+        "desc": "Comparez plusieurs méthodes de valorisation comm...",
         "href": "/fr/tools/evaluation-startup",
         "category": "small-business",
         "lang": "fr",
@@ -5854,9 +5873,9 @@
       },
       {
         "id": "etude-faisabilite-fr",
-        "name": "Etude de faisabilite",
+        "name": "Étude de faisabilité",
         "icon": "#",
-        "desc": "Structurez une premiere analyse de faisabilite p...",
+        "desc": "Structurez une première analyse de faisabilité p...",
         "href": "/fr/tools/etude-faisabilite",
         "category": "small-business",
         "lang": "fr",
@@ -5871,7 +5890,7 @@
         "id": "planificateur-entreprise-fr",
         "name": "Planificateur entreprise",
         "icon": "#",
-        "desc": "Clarifiez objectifs, operations et priorites pou...",
+        "desc": "Clarifiez objectifs, opérations et priorités pou...",
         "href": "/fr/tools/planificateur-entreprise",
         "category": "small-business",
         "lang": "fr",
@@ -6195,6 +6214,19 @@
         "imageKey": "public-holidays"
       },
       {
+        "id": "business-roi-fr",
+        "name": "Outils business et ROI",
+        "icon": "$",
+        "desc": "Hub français pour budget, ROI, coût de réunion, ...",
+        "href": "/fr/business-roi",
+        "category": "data-productivity",
+        "lang": "fr",
+        "priority": 62,
+        "estTraffic": 0,
+        "imageExt": "",
+        "imageId": "business-roi"
+      },
+      {
         "id": "minuteur-pomodoro-fr",
         "name": "Minuteur Pomodoro",
         "icon": "FR",
@@ -6252,9 +6284,9 @@
       },
       {
         "id": "editeur-markdown-fr",
-        "name": "Editeur Markdown",
+        "name": "Éditeur Markdown",
         "icon": "✍️",
-        "desc": "Redigez et previsualisez du Markdown pour notes,...",
+        "desc": "Rédigez et prévisualisez du Markdown pour notes,...",
         "href": "/fr/tools/editeur-markdown",
         "category": "data-productivity",
         "lang": "fr",
@@ -6340,7 +6372,7 @@
         "id": "formateur-json-fr",
         "name": "Formateur JSON",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour formats, tests...",
+        "desc": "Formatez, minifiez et validez du JSON côté navig...",
         "href": "/fr/tools/formateur-json",
         "category": "developer",
         "lang": "fr",
@@ -6366,9 +6398,9 @@
       },
       {
         "id": "encodeur-base64-fr",
-        "name": "Encodeur/Decodeur Base64",
+        "name": "Encodeur/décodeur Base64",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour formats, tests...",
+        "desc": "Encodez ou décodez texte et fichiers Base64 dans...",
         "href": "/fr/tools/encodeur-base64",
         "category": "developer",
         "lang": "fr",
@@ -6394,9 +6426,9 @@
       },
       {
         "id": "encodeur-url-fr",
-        "name": "Encodeur/Decodeur d'URL",
+        "name": "Encodeur/décodeur d'URL",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour formats, tests...",
+        "desc": "Encodez, décodez et vérifiez URL, paramètres API...",
         "href": "/fr/tools/encodeur-url",
         "category": "developer",
         "lang": "fr",
@@ -6408,9 +6440,9 @@
       },
       {
         "id": "decodeur-jwt-fr",
-        "name": "Decodeur JWT",
+        "name": "Décodeur JWT",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour formats, tests...",
+        "desc": "Inspectez l'en-tête, le payload et les dates d'u...",
         "href": "/fr/tools/decodeur-jwt",
         "category": "developer",
         "lang": "fr",
@@ -6424,7 +6456,7 @@
         "id": "formateur-sql-fr",
         "name": "Formateur SQL",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour formats, tests...",
+        "desc": "Indentez et relisez des requêtes SQL sans change...",
         "href": "/fr/tools/formateur-sql",
         "category": "developer",
         "lang": "fr",
@@ -6436,9 +6468,9 @@
       },
       {
         "id": "generateur-uuid-fr",
-        "name": "Generateur UUID",
+        "name": "Générateur UUID",
         "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour formats, tests...",
+        "desc": "Générez, validez et normalisez des UUID localeme...",
         "href": "/fr/tools/generateur-uuid",
         "category": "developer",
         "lang": "fr",
@@ -6449,10 +6481,24 @@
         "imageKey": "uuid-generator"
       },
       {
+        "id": "generateur-sitemap-fr",
+        "name": "Générateur de sitemap",
+        "icon": "FR",
+        "desc": "Générez un sitemap XML avec priorités, fréquence...",
+        "href": "/fr/tools/generateur-sitemap",
+        "category": "developer",
+        "lang": "fr",
+        "priority": 57,
+        "estTraffic": 0,
+        "imageExt": "svg",
+        "imageId": "sitemap-gen",
+        "imageKey": "sitemap-gen"
+      },
+      {
         "id": "contraste-couleurs-fr",
         "name": "Vérificateur de contraste",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour formats, tests...",
+        "icon": "♿",
+        "desc": "Vérifiez les contrastes texte/fond avec seuils W...",
         "href": "/fr/tools/contraste-couleurs",
         "category": "developer",
         "lang": "fr",
@@ -6461,6 +6507,20 @@
         "imageExt": "svg",
         "imageId": "color-contrast",
         "imageKey": "color-contrast"
+      },
+      {
+        "id": "generateur-robots-txt-fr",
+        "name": "Générateur robots.txt",
+        "icon": "FR",
+        "desc": "Créez un robots.txt clair pour guider l'explorat...",
+        "href": "/fr/tools/generateur-robots-txt",
+        "category": "developer",
+        "lang": "fr",
+        "priority": 56,
+        "estTraffic": 0,
+        "imageExt": "svg",
+        "imageId": "robots-txt",
+        "imageKey": "robots-txt"
       },
       {
         "id": "entites-html-fr",
@@ -6494,7 +6554,7 @@
         "id": "constructeur-cron-fr",
         "name": "Constructeur Cron",
         "icon": "⏱️",
-        "desc": "Composez et verifiez des expressions cron pour v...",
+        "desc": "Composez et vérifiez des expressions cron pour v...",
         "href": "/fr/tools/constructeur-cron",
         "category": "developer",
         "lang": "fr",
@@ -6542,8 +6602,9 @@
         "lang": "fr",
         "priority": 42,
         "estTraffic": 0,
-        "imageExt": "",
-        "imageId": "dev-tools"
+        "imageExt": "webp",
+        "imageId": "dev-tools",
+        "imageKey": "dev-tools"
       }
     ],
     "fr::telecom": [
@@ -6940,7 +7001,7 @@
         "id": "comparateur-paiements-fr",
         "name": "Comparateur de paiements B2B",
         "icon": "💸",
-        "desc": "Comparaison des frais de paiement B2B transfront...",
+        "desc": "Comparez des ordres de grandeur pour paiements B...",
         "href": "/fr/tools/comparateur-paiements",
         "category": "trade",
         "lang": "fr",
@@ -6954,7 +7015,7 @@
         "id": "facture-proforma-fr",
         "name": "Facture proforma",
         "icon": "FR",
-        "desc": "Preparez une facture proforma pour devis import-...",
+        "desc": "Préparez une facture proforma pour devis import-...",
         "href": "/fr/tools/facture-proforma",
         "category": "trade",
         "lang": "fr",
@@ -7151,8 +7212,8 @@
       {
         "id": "frais-service-fr",
         "name": "Calculateur de frais de service",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne ? relire selon le c...",
+        "icon": "🏠",
+        "desc": "Estimez charges de copropriété et frais de servi...",
         "href": "/fr/tools/frais-service",
         "category": "legal",
         "lang": "fr",
@@ -7275,18 +7336,17 @@
         "imageKey": "tenancy-deposit"
       },
       {
-        "id": "contrat-location-fr",
-        "name": "Contrat de location",
-        "icon": "📄",
-        "desc": "Préparez un projet de contrat de location à adap...",
-        "href": "/fr/tools/contrat-location",
+        "id": "generateur-contrat-fr",
+        "name": "Générateur de contrat",
+        "icon": "📑",
+        "desc": "Générez une base de contrat à relire avant signa...",
+        "href": "/fr/tools/generateur-contrat",
         "category": "legal",
         "lang": "fr",
         "priority": 57,
         "estTraffic": 0,
-        "imageExt": "webp",
-        "imageId": "tenancy-agreement",
-        "imageKey": "tenancy-agreement"
+        "imageExt": "",
+        "imageId": "contract-generator"
       }
     ],
     "fr::education": [
@@ -7891,8 +7951,8 @@
       {
         "id": "calculateur-microfinance-fr",
         "name": "Calculateur microfinance",
-        "icon": "$",
-        "desc": "Comparez montant emprunte, frais, interets et re...",
+        "icon": "🤝",
+        "desc": "Estimez mensualité, frais et coût total d’un prê...",
         "href": "/fr/tools/calculateur-microfinance",
         "category": "fintech",
         "lang": "fr",
@@ -7905,8 +7965,8 @@
       {
         "id": "calculateur-paystack-fr",
         "name": "Calculateur Paystack",
-        "icon": "$",
-        "desc": "Estimez les frais de paiement et le montant net ...",
+        "icon": "💳",
+        "desc": "Estimez les frais Paystack et le net reçu comme ...",
         "href": "/fr/tools/calculateur-paystack",
         "category": "fintech",
         "lang": "fr",
@@ -10086,8 +10146,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "pwa-manifest"
+        "imageExt": "webp",
+        "sourceId": "pwa-manifest",
+        "imageKey": "pwa-manifest"
       },
       {
         "id": "zana-kizalishaji-robots-txt-sw-wave8",
@@ -10908,8 +10969,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "influencer-rate"
+        "imageExt": "webp",
+        "sourceId": "influencer-rate",
+        "imageKey": "influencer-rate"
       },
       {
         "id": "zana-bio-za-mitandao-sw",
@@ -10935,8 +10997,9 @@
         "lang": "sw",
         "priority": 63,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "linkedin-optimizer"
+        "imageExt": "webp",
+        "sourceId": "linkedin-optimizer",
+        "imageKey": "linkedin-optimizer"
       },
       {
         "id": "zana-brand-kit-ya-mtayarishi-sw",
@@ -11257,7 +11320,9 @@
         "priority": 72,
         "estTraffic": 0,
         "imageExt": "webp",
-        "imageKey": "zana-alama-ya-kaboni-ya-nishati-sw"
+        "sourceId": "carbon-footprint-energy",
+        "imageId": "carbon-footprint-energy",
+        "imageKey": "carbon-footprint-energy"
       },
       {
         "id": "zana-gharama-za-gesi-lpg-sw",
@@ -11583,8 +11648,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "parking-fee"
+        "imageExt": "webp",
+        "sourceId": "parking-fee",
+        "imageKey": "parking-fee"
       },
       {
         "id": "zana-ada-za-toll-sw",
@@ -11609,8 +11675,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "fleet-fuel"
+        "imageExt": "webp",
+        "sourceId": "fleet-fuel",
+        "imageKey": "fleet-fuel"
       },
       {
         "id": "zana-gharama-uendeshaji-gari-sw",
@@ -12282,8 +12349,9 @@
         "lang": "sw",
         "priority": 64,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "boq-gen"
+        "imageExt": "webp",
+        "sourceId": "boq-gen",
+        "imageKey": "boq-gen"
       },
       {
         "id": "zana-uhamishaji-data-mpaka-sw",
@@ -12827,7 +12895,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "cross-border-data"
       },
       {
         "id": "customs-time",
@@ -12839,7 +12908,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "customs-time"
       },
       {
         "id": "shipping-weight",
@@ -12982,7 +13052,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "crop-insurance-calc"
       },
       {
         "id": "fire-insurance",
@@ -12994,7 +13065,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "fire-insurance"
       },
       {
         "id": "claim-tracker",
@@ -13006,7 +13078,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "claim-tracker"
       },
       {
         "id": "insurance-fraud-checker",
@@ -13018,7 +13091,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "insurance-fraud-checker"
       },
       {
         "id": "marine-insurance",
@@ -13030,7 +13104,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "marine-insurance"
       },
       {
         "id": "microinsurance",
@@ -13211,7 +13286,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "asset-finance"
       },
       {
         "id": "bill-split",
@@ -13235,7 +13311,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "credit-score"
       },
       {
         "id": "b2b-payment",
@@ -13247,7 +13324,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "b2b-payment"
       },
       {
         "id": "debt-snowball",
@@ -13759,7 +13837,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "fleet-fuel"
       },
       {
         "id": "last-mile-delivery",
@@ -13771,7 +13850,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "last-mile-delivery"
       },
       {
         "id": "route-cost",
@@ -13783,7 +13863,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "route-cost"
       },
       {
         "id": "parking-fee",
@@ -13795,7 +13876,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "parking-fee"
       },
       {
         "id": "toll-calc",
@@ -13873,7 +13955,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "career-growth"
       },
       {
         "id": "career-switch",
@@ -13885,7 +13968,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "career-switch"
       },
       {
         "id": "retirement-readiness",
@@ -13897,7 +13981,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "retirement-readiness"
       },
       {
         "id": "salary-negotiation",
@@ -13909,7 +13994,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "salary-negotiation"
       }
     ],
     "en::climate": [
@@ -14094,7 +14180,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "african-palette"
       },
       {
         "id": "afrostream",
@@ -14119,7 +14206,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "art-commission"
       },
       {
         "id": "creator-bios",
@@ -14144,7 +14232,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "book-publishing-cost"
       },
       {
         "id": "creator-captions",
@@ -14221,7 +14310,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "creator-canvas"
       },
       {
         "id": "creator-clip",
@@ -14233,7 +14323,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "creator-clip"
       },
       {
         "id": "creator-club",
@@ -14245,7 +14336,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "creator-club"
       },
       {
         "id": "creator-course",
@@ -14270,7 +14362,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "creator-desk"
       },
       {
         "id": "creator-invoice",
@@ -14308,7 +14401,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "creator-mail"
       }
     ],
     "en::diaspora": [
@@ -14348,7 +14442,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "kenya-dpa"
       },
       {
         "id": "work-permit-cost",
@@ -14374,7 +14469,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "contractor-vs-employee"
       },
       {
         "id": "domestic-worker",
@@ -14386,7 +14482,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "domestic-worker"
       },
       {
         "id": "employee-cost",
@@ -14398,7 +14495,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "employee-cost"
       },
       {
         "id": "gratuity-calculator",
@@ -14410,7 +14508,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "gratuity-calculator"
       },
       {
         "id": "maternity-leave",
@@ -14422,7 +14521,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "maternity-leave"
       },
       {
         "id": "retrenchment-calculator",
@@ -14434,7 +14534,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "retrenchment-calculator"
       }
     ],
     "en::personal-finance": [
@@ -14448,7 +14549,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "50-30-20-budget"
       },
       {
         "id": "side-hustle-ranker",
@@ -14472,7 +14574,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "album-budget"
       },
       {
         "id": "film-budget",
@@ -14510,7 +14613,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "cctv-cost"
       },
       {
         "id": "cybersecurity-assessment",
@@ -14522,7 +14626,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "cybersecurity-assessment"
       },
       {
         "id": "data-breach-cost",
@@ -14534,7 +14639,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "data-breach-cost"
       },
       {
         "id": "fire-safety-checklist",
@@ -14546,7 +14652,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "fire-safety-checklist"
       },
       {
         "id": "home-security-cost",
@@ -14558,7 +14665,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "home-security-cost"
       },
       {
         "id": "password-strength",
@@ -14582,7 +14690,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "phishing-quiz"
       }
     ],
     "en::small-business": [
@@ -14596,7 +14705,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "brand-collab-roi"
       },
       {
         "id": "business-continuity",
@@ -14621,7 +14731,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "event-decoration-cost"
       },
       {
         "id": "factory-setup-cost",
@@ -14633,7 +14744,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "factory-setup-cost"
       },
       {
         "id": "fashion-brand-startup",
@@ -14645,7 +14757,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "fashion-brand-startup"
       },
       {
         "id": "freelance-contract",
@@ -14657,7 +14770,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "freelance-contract"
       },
       {
         "id": "freelancer-rate",
@@ -14669,7 +14783,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "freelancer-rate"
       },
       {
         "id": "graphic-design-pricing",
@@ -14681,7 +14796,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "graphic-design-pricing"
       },
       {
         "id": "guard-service-cost",
@@ -14693,7 +14809,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "guard-service-cost"
       },
       {
         "id": "influencer-rate",
@@ -14705,7 +14822,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "influencer-rate"
       },
       {
         "id": "made-in-africa-label",
@@ -14717,7 +14835,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "made-in-africa-label"
       },
       {
         "id": "oee-calculator",
@@ -14729,7 +14848,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "oee-calculator"
       },
       {
         "id": "packaging-cost",
@@ -14741,7 +14861,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "packaging-cost"
       },
       {
         "id": "nafdac-registration",
@@ -14753,7 +14874,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "nafdac-registration"
       },
       {
         "id": "production-cost",
@@ -14765,7 +14887,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "production-cost"
       },
       {
         "id": "quality-sampling",
@@ -14777,7 +14900,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "quality-sampling"
       },
       {
         "id": "tailoring-pricing",
@@ -14971,7 +15095,8 @@
         "lang": "en",
         "priority": 56,
         "estTraffic": 1200,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "nollywood-box-office"
       },
       {
         "id": "match-tickets",
@@ -14983,7 +15108,8 @@
         "lang": "en",
         "priority": 54,
         "estTraffic": 1100,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "match-tickets"
       },
       {
         "id": "athlete-earnings",
@@ -14995,7 +15121,8 @@
         "lang": "en",
         "priority": 54,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "athlete-earnings"
       }
     ],
     "en::travel-tourism": [
@@ -15009,7 +15136,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "africa-flight"
       },
       {
         "id": "beach-holiday-budget",
@@ -15021,7 +15149,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "beach-holiday-budget"
       },
       {
         "id": "festival-travel-budget",
@@ -15033,7 +15162,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "festival-travel-budget"
       },
       {
         "id": "safari-cost",
@@ -15045,7 +15175,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "safari-cost"
       },
       {
         "id": "airbnb-vs-hotel",
@@ -15057,7 +15188,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "airbnb-vs-hotel"
       },
       {
         "id": "airport-transfer",
@@ -15069,7 +15201,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "airport-transfer"
       },
       {
         "id": "hotel-star-guide",
@@ -15081,7 +15214,8 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
-        "imageExt": ""
+        "imageExt": "webp",
+        "imageKey": "hotel-star-guide"
       },
       {
         "id": "travel-packing-list",
@@ -15112,8 +15246,8 @@
       {
         "id": "compresser-image-fr",
         "name": "Compresser une image",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour cr?er, convert...",
+        "icon": "🗜️",
+        "desc": "Réduisez le poids d’une image localement avec ap...",
         "href": "/fr/tools/compresser-image",
         "category": "image-design",
         "lang": "fr",
@@ -15125,9 +15259,9 @@
       },
       {
         "id": "convertir-format-image-fr",
-        "name": "Convertir le format d&#39;image",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour cr?er, convert...",
+        "name": "Convertir le format d’image",
+        "icon": "🔄",
+        "desc": "Convertissez une image en PNG, JPEG ou WebP avec...",
         "href": "/fr/tools/convertir-format-image",
         "category": "image-design",
         "lang": "fr",
@@ -15154,8 +15288,8 @@
       {
         "id": "createur-flyer-fr",
         "name": "Créateur de flyers et affiches",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour cr?er, convert...",
+        "icon": "📰",
+        "desc": "Composez un flyer ou une affiche avec modèles, c...",
         "href": "/fr/tools/createur-flyer",
         "category": "image-design",
         "lang": "fr",
@@ -15168,8 +15302,8 @@
       {
         "id": "createur-logo-fr",
         "name": "Créateur de logo",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour cr?er, convert...",
+        "icon": "🏷️",
+        "desc": "Préparez un concept de logo exportable avec pale...",
         "href": "/fr/tools/createur-logo",
         "category": "image-design",
         "lang": "fr",
@@ -15182,8 +15316,8 @@
       {
         "id": "createur-miniatures-fr",
         "name": "Créateur de miniatures",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour cr?er, convert...",
+        "icon": "🖼️",
+        "desc": "Créez une miniature pour YouTube ou réseaux soci...",
         "href": "/fr/tools/createur-miniatures",
         "category": "image-design",
         "lang": "fr",
@@ -15196,8 +15330,8 @@
       {
         "id": "filtres-image-fr",
         "name": "Filtres photo",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour cr?er, convert...",
+        "icon": "✨",
+        "desc": "Ajustez une photo localement avec filtres, compa...",
         "href": "/fr/tools/filtres-image",
         "category": "image-design",
         "lang": "fr",
@@ -15224,8 +15358,8 @@
       {
         "id": "filigrane-images-fr",
         "name": "Filigrane en lot",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne pour cr?er, convert...",
+        "icon": "💧",
+        "desc": "Ajoutez texte ou logo en filigrane sur plusieurs...",
         "href": "/fr/tools/filigrane-images",
         "category": "image-design",
         "lang": "fr",
@@ -15261,8 +15395,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "african-proverbs"
+        "imageExt": "webp",
+        "sourceId": "african-proverbs",
+        "imageKey": "african-proverbs"
       },
       {
         "id": "zana-mtafsiri-wa-kiamhari-sw-wave8",
@@ -15425,8 +15560,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "career-switch"
+        "imageExt": "webp",
+        "sourceId": "career-switch",
+        "imageKey": "career-switch"
       },
       {
         "id": "zana-tathmini-ya-ofa-ya-kazi-sw-wave8",
@@ -15452,8 +15588,9 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "career-growth"
+        "imageExt": "webp",
+        "sourceId": "career-growth",
+        "imageKey": "career-growth"
       },
       {
         "id": "zana-orodha-ya-side-hustle-sw-finish",
@@ -15478,8 +15615,9 @@
         "lang": "sw",
         "priority": 60,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "personal-brand-audit"
+        "imageExt": "webp",
+        "sourceId": "personal-brand-audit",
+        "imageKey": "personal-brand-audit"
       },
       {
         "id": "zana-viwango-vya-freelancer-sw-finish",

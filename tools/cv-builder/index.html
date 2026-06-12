@@ -3,7 +3,6 @@
 <head>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Free CV Builder Africa | ATS Resume Templates | AfroTools</title>
 <meta name="description" content="Create an ATS-ready CV for African job markets. Free PDF, no watermark, country guidance, cover letters, LinkedIn kit and job tracker.">
@@ -44,6 +43,46 @@
 <link rel="stylesheet" href="/tools/cv-builder/css/cv-country-advisor-compact.css?v=6cacc450">
 <link rel="stylesheet" href="/tools/cv-builder/css/cv-form-spacing-fix.css?v=49ea1f5e">
 <link rel="stylesheet" href="/tools/cv-builder/css/cv-next-steps-polish.css?v=d6e94385">
+<style>
+.cv-ats-proof{max-width:640px;margin:16px 0 0;padding:14px 16px;border:1px solid var(--color-border,#e5e7eb);border-radius:10px;background:#fff;color:var(--color-text,#111);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.cv-ats-proof-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.cv-ats-proof strong{font-size:.9rem;font-weight:900;display:block;margin-bottom:2px}
+.cv-ats-proof span,.cv-ats-proof li{font-size:.78rem;color:#64748b;line-height:1.5}
+.cv-ats-proof ul{display:grid;gap:6px;margin:0;padding-left:18px}
+.cv-ats-proof-icon{width:28px;height:28px;border-radius:8px;background:#eff6ff;color:#2563eb;display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 auto}
+.cv-export-modal-overlay.open{z-index:2147483600!important}
+.cv-sample-status{min-height:20px;margin:10px 0 0;color:#475569;font-size:.78rem;font-weight:800;line-height:1.4}
+.cv-start-card small{display:block;margin-top:6px;color:#475569;font-size:.72rem;font-weight:800;line-height:1.35}
+.cv-start-card.is-active{border-color:#2563eb;background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.cv-starter-guidance-panel{margin:0 0 14px;padding:14px;border:1px solid #dbeafe;border-radius:10px;background:#f8fbff;color:#0f172a}
+.cv-starter-guidance-panel strong{display:block;margin-bottom:4px;font-size:.88rem;font-weight:900}
+.cv-starter-guidance-panel p{margin:0 0 8px;color:#475569;font-size:.78rem;line-height:1.45}
+.cv-starter-guidance-panel ul{display:grid;gap:5px;margin:0;padding-left:18px;color:#334155;font-size:.76rem;line-height:1.4}
+.cv-section.cv-starter-priority{border-color:#bfdbfe;box-shadow:0 0 0 2px rgba(37,99,235,.08)}
+.cv-section.cv-starter-support{border-color:#d1fae5}
+.cv-handoff-panel{max-width:1180px;margin:18px auto 0;padding:18px;border:1px solid #d7e1ea;border-radius:18px;background:#fff;box-shadow:0 16px 44px rgba(15,23,42,.08);display:grid;gap:14px}
+.cv-handoff-copy{display:grid;gap:6px}.cv-handoff-kicker{color:#087f5b;font-size:11px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}.cv-handoff-copy h2{margin:0;color:#071426;font-size:clamp(20px,2vw,26px);font-weight:950;line-height:1.12;letter-spacing:0}.cv-handoff-copy p{margin:0;color:#536172;font-size:13px;font-weight:750;line-height:1.5}.cv-handoff-note{color:#0f766e!important}
+.cv-handoff-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.cv-handoff-cta{display:flex;align-items:center;justify-content:center;min-height:46px;padding:10px 12px;border:1px solid #cbd8e6;border-radius:10px;background:#f8fbff;color:#102033;text-align:center;text-decoration:none;font-size:13px;font-weight:950;line-height:1.25}.cv-handoff-cta:hover,.cv-handoff-cta:focus-visible{border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.16);outline:none;text-decoration:none}.cv-handoff-cta[aria-disabled="true"]{opacity:.55;cursor:not-allowed}
+.cv-handoff-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cv-handoff-tools button{min-height:40px;padding:8px 12px;border:1px solid #cbd8e6;border-radius:10px;background:#fff;color:#102033;font:inherit;font-size:12px;font-weight:900;cursor:pointer}.cv-handoff-tools button:disabled{opacity:.55;cursor:not-allowed}.cv-handoff-tools button:hover:not(:disabled),.cv-handoff-tools button:focus-visible{border-color:#087f5b;box-shadow:0 0 0 3px rgba(8,127,91,.14);outline:none}.cv-handoff-tools span{color:#64748b;font-size:12px;font-weight:800;line-height:1.4}
+.cv-readiness-strip{max-width:1180px;margin:16px auto 0;padding:12px 14px;border:1px solid #dbeafe;border-radius:14px;background:#f8fbff;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;color:#0f172a}
+.cv-readiness-item{min-height:56px;padding:10px;border:1px solid rgba(37,99,235,.12);border-radius:10px;background:#fff}
+.cv-readiness-item strong{display:block;margin-bottom:3px;font-size:.78rem;font-weight:950;color:#102033}
+.cv-readiness-item span{display:block;color:#526173;font-size:.72rem;font-weight:750;line-height:1.35}
+@media(max-width:860px){.cv-handoff-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:860px){.cv-readiness-strip{grid-template-columns:repeat(2,minmax(0,1fr));margin-left:12px;margin-right:12px}}
+@media(max-width:720px){.cv-ats-proof{margin-left:auto;margin-right:auto}.cv-quick-start{grid-template-columns:1fr}.cv-start-card small{font-size:.7rem}.cv-handoff-panel{margin:14px 12px 0;padding:14px;border-radius:16px}.cv-handoff-actions{grid-template-columns:1fr}.cv-handoff-tools{display:grid;grid-template-columns:1fr}.cv-handoff-tools span{grid-column:1}.cv-readiness-strip{grid-template-columns:1fr}}
+@media print{.cv-handoff-panel{display:none!important}}
+</style>
+<script>
+window.addEventListener('unhandledrejection', function (event) {
+  var reason = event.reason;
+  var message = reason && reason.message ? reason.message : String(reason || '');
+  if (message.indexOf('Transition was skipped') !== -1) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+}, true);
+</script>
 <link rel="stylesheet" href="/tools/cv-builder/css/cv-related-tools.css?v=31a377c4">
 
 <!-- Components -->
@@ -56,9 +95,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&display=swap"></noscript>
 
-<!-- Lazy-load PDF libs -->
-<link rel="preload" href="/assets/vendor/html2canvas/html2canvas.min.js?v=d7530aa0" as="script">
-<link rel="preload" href="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" as="script">
+<!-- Lazy-load PDF libs only when exporting -->
 <script>
 window._pdfLibsLoaded=false;
 window._pdfLibsPromise=null;
@@ -241,14 +278,32 @@ window.loadPdfLibs=function(){
       <p class="cv-landing-subheadline">Create a clean, country-aware CV with templates, ATS checks, cover letter tools, and PDF export.</p>
       <div class="cv-landing-cta-row">
         <button type="button" class="cv-landing-cta primary" data-cv-entry="build">Build My CV</button>
+        <button type="button" class="cv-landing-cta secondary" data-cv-sample>Try sample CV</button>
         <button type="button" class="cv-landing-cta secondary" data-action="import">Import Existing CV</button>
+        <button type="button" class="cv-landing-cta secondary" data-cv-reset>Reset to blank</button>
       </div>
+      <p class="cv-sample-status" data-cv-sample-status aria-live="polite">Sample mode uses fake demo data and is not saved unless you choose Save.</p>
       <div class="cv-trust-chips" aria-label="CV Builder highlights">
         <span>Africa-first CV guidance</span>
         <span>ATS-friendly templates</span>
         <span>PDF export</span>
         <span>Cover letter support</span>
         <span>Local save</span>
+      </div>
+      <div class="cv-ats-proof" aria-label="ATS and parser proof notes">
+        <div class="cv-ats-proof-head">
+          <span class="cv-ats-proof-icon" aria-hidden="true">A</span>
+          <div>
+            <strong>ATS/parser proof, not a promise</strong>
+            <span>Verified with synthetic fixture data only; your private CV content stays in your browser.</span>
+          </div>
+        </div>
+        <ul>
+          <li>Text-based PDF path: ATS Plain PDF is generated from readable text, not a screenshot-first canvas.</li>
+          <li>Print path: browser print opens the rendered CV preview so you can save or print locally.</li>
+          <li>Import limits: pasted text and TXT import are local; PDF/DOCX import only works when compatible parsers are already loaded.</li>
+          <li>No guarantee: employer portals and ATS vendors differ, so this cannot promise interviews, rankings, or perfect parsing everywhere.</li>
+        </ul>
       </div>
     </div>
 
@@ -301,26 +356,42 @@ window.loadPdfLibs=function(){
     <button type="button" class="cv-start-card" data-cv-preset="graduate">
       <strong>Graduate / No Experience</strong>
       <span>Skills-first CV for internships and entry roles</span>
+      <small>Best for: first CVs, internships, NYSC or national-service applications.</small>
     </button>
     <button type="button" class="cv-start-card" data-cv-preset="professional">
       <strong>Professional</strong>
       <span>Experience-led CV for private sector roles</span>
+      <small>Best for: mid-career roles where recent work proof matters most.</small>
     </button>
     <button type="button" class="cv-start-card" data-cv-preset="tech">
       <strong>Tech / Developer</strong>
       <span>Projects, GitHub, tools, and product evidence</span>
+      <small>Best for: developers, data, product, QA, cloud, and support roles.</small>
     </button>
     <button type="button" class="cv-start-card" data-cv-preset="government">
       <strong>Government / NGO</strong>
       <span>Formal format for public sector and development roles</span>
+      <small>Best for: public service, NGO, donor, M&E, and programme roles.</small>
     </button>
     <button type="button" class="cv-start-card" data-cv-preset="diaspora">
       <strong>Diaspora / International</strong>
       <span>Global compact CV with transferable proof</span>
+      <small>Best for: remote, relocation, scholarship, and international applications.</small>
+    </button>
+    <button type="button" class="cv-start-card" data-cv-preset="trade">
+      <strong>Trade / Apprenticeship</strong>
+      <span>Practical skills, tools, safety, training, and references</span>
+      <small>Best for: artisans, technicians, apprentices, drivers, and skilled trades.</small>
     </button>
   </div>
 
   <p class="cv-privacy-note">Your CV stays in your browser unless you choose to save or sign in.</p>
+  <div class="cv-readiness-strip" data-tool-verification-panel aria-label="CV Builder sources, verification, privacy, and export readiness">
+    <div class="cv-readiness-item"><strong>Sources & verification</strong><span>Methodology: start from your typed CV, pasted text, or TXT upload; verify names, dates, roles, and claims before export.</span></div>
+    <div class="cv-readiness-item"><strong>Local-first draft</strong><span>Resume text is not placed in the URL and is not sent for AI unless you choose an AI action.</span></div>
+    <div class="cv-readiness-item"><strong>ATS plain path</strong><span>Use the plain PDF/export path when a job portal prefers readable text over graphic layout.</span></div>
+    <div class="cv-readiness-item"><strong>No hiring promise</strong><span>Checks improve structure and readability, but employer systems and rankings differ.</span></div>
+  </div>
 </section>
 
 <!-- Saved CVs Section -->
@@ -340,7 +411,7 @@ window.loadPdfLibs=function(){
   <div class="cv-toolbar">
     <div class="cv-toolbar-left">
       <div class="cv-tool-brand">
-        <span class="cv-brand-icon">📄</span>CV Builder
+        <span class="cv-brand-icon">CV</span>CV Builder
         <span class="cv-tool-sub">- 8 export-ready templates for African job markets</span>
       </div>
     </div>
@@ -353,15 +424,15 @@ window.loadPdfLibs=function(){
         <option value="pt">PT</option>
         <option value="sw">SW</option>
       </select>
-      <button type="button" class="cv-btn cv-btn-ghost" data-action="save" title="Save CV">💾 Save</button>
-      <button type="button" class="cv-btn cv-btn-ghost" data-action="print" title="Print">🖨️ Print</button>
-      <button type="button" class="cv-btn cv-btn-primary" data-action="pdf" title="Download PDF">📥 PDF</button>
-      <button type="button" class="cv-btn cv-btn-ghost" data-action="import" title="Import CV" style="font-size:11px">📤 Import</button>
-      <button type="button" class="cv-btn cv-btn-ghost" data-action="ats" title="ATS Simulator" style="font-size:11px">🔍 ATS</button>
-      <button type="button" class="cv-btn cv-btn-ghost" data-action="coverletter" title="Cover Letter" style="font-size:11px">✉️ Cover Letter</button>
-      <button type="button" class="cv-btn cv-btn-ghost" data-action="history" title="Version History" style="font-size:11px">🕐 History</button>
-      <button type="button" class="cv-btn cv-btn-ai" data-action="analyze" title="AI CV Analysis">✨ Analyze</button>
-      <button type="button" class="cv-btn cv-btn-ai" data-action="chat" title="AI Chat Advisor" style="background:linear-gradient(135deg,#6366f1,#007AFF)">💬 Advisor</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="save" title="Save CV">Save</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="print" title="Print">Print</button>
+      <button type="button" class="cv-btn cv-btn-primary" data-action="pdf" title="Download PDF">PDF</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="import" title="Import CV" style="font-size:11px">Import</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="ats" title="ATS Simulator" style="font-size:11px">ATS</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="coverletter" title="Cover Letter" style="font-size:11px">Cover Letter</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="history" title="Version History" style="font-size:11px">History</button>
+      <button type="button" class="cv-btn cv-btn-ai" data-action="analyze" title="AI CV Analysis">Analyze</button>
+      <button type="button" class="cv-btn cv-btn-ai" data-action="chat" title="AI Chat Advisor" style="background:linear-gradient(135deg,#6366f1,#007AFF)">Advisor</button>
     </div>
   </div>
 
@@ -406,10 +477,10 @@ window.loadPdfLibs=function(){
 
   <!-- Mobile Action Bar -->
   <div class="cv-action-bar">
-    <button type="button" class="cv-btn cv-btn-ghost" data-action="save" style="color:var(--color-text);border:1px solid var(--color-border)">💾 Save</button>
-    <button type="button" class="cv-btn cv-btn-primary" data-action="pdf">📥 PDF</button>
-    <button type="button" class="cv-btn cv-btn-ai" data-action="analyze">✨ Score</button>
-    <button type="button" class="cv-btn cv-btn-ghost" data-action="ats" style="color:var(--color-text);border:1px solid var(--color-border);font-size:12px">🔍 ATS</button>
+    <button type="button" class="cv-btn cv-btn-ghost" data-action="save" style="color:var(--color-text);border:1px solid var(--color-border)">Save</button>
+    <button type="button" class="cv-btn cv-btn-primary" data-action="pdf">PDF</button>
+    <button type="button" class="cv-btn cv-btn-ai" data-action="analyze">Score</button>
+    <button type="button" class="cv-btn cv-btn-ghost" data-action="ats" style="color:var(--color-text);border:1px solid var(--color-border);font-size:12px">ATS</button>
   </div>
 </div>
 
@@ -645,6 +716,9 @@ window.loadPdfLibs=function(){
 <script src="/tools/cv-builder/js/cv-ats-plain-pdf-fix.js?v=df1bd4a3"></script>
 <script src="/tools/cv-builder/js/cv-design-foundation.js?v=50609f44"></script>
 <script src="/tools/cv-builder/js/cv-next-steps-polish.js?v=cd54b051"></script>
+<script src="/tools/cv-builder/js/cv-sample-mode.js?v=20260612"></script>
+<script src="/tools/cv-builder/js/cv-starter-paths.js?v=20260612"></script>
+<script src="/tools/cv-builder/js/cv-privacy-handoff.js?v=20260612"></script>
 <!-- cv-ai.js is lazy-loaded when user clicks AI buttons -->
 
 <script>
@@ -656,44 +730,6 @@ window.loadPdfLibs=function(){
 
   ready(function(){
     var appEl = document.querySelector('.cv-app');
-    var presets = {
-      graduate: {
-        title: 'Graduate Trainee',
-        template: 'accra',
-        country: 'NG',
-        summary: 'Recent graduate building practical workplace experience with strong communication, research, Microsoft Office, and problem-solving skills.',
-        role: 'Graduate trainee'
-      },
-      professional: {
-        title: 'Operations Manager',
-        template: 'lagos',
-        country: 'NG',
-        summary: 'Results-focused professional with experience coordinating teams, improving processes, and delivering measurable business outcomes.',
-        role: 'Operations manager'
-      },
-      tech: {
-        title: 'Software Developer',
-        template: 'kigali',
-        country: 'RW',
-        summary: 'Software developer with practical experience building web applications, APIs, dashboards, and user-focused digital products.',
-        role: 'Software developer'
-      },
-      government: {
-        title: 'Programme Officer',
-        template: 'abuja',
-        country: 'NG',
-        summary: 'Programme officer with experience supporting stakeholder coordination, reporting, community engagement, and public-sector documentation.',
-        role: 'Government or NGO programme officer'
-      },
-      diaspora: {
-        title: 'International Candidate',
-        template: 'diaspora',
-        country: 'INTL',
-        summary: 'Adaptable professional translating African market experience into international roles with clear achievements and transferable skills.',
-        role: 'International candidate'
-      }
-    };
-
     function scrollToBuilder(){
       if(!appEl) return;
       var productHeader = document.querySelector('.cv-product-header');
@@ -747,26 +783,11 @@ window.loadPdfLibs=function(){
 
     document.querySelectorAll('[data-cv-preset]').forEach(function(card){
       card.addEventListener('click', function(){
-        var preset = presets[card.dataset.cvPreset];
-        if(!preset || typeof CVApp === 'undefined') return scrollToBuilder();
-
-        if(typeof CVApp.updateData === 'function'){
-          CVApp.updateData('title', preset.title);
-          CVApp.updateData('summary', preset.summary);
-          if(card.dataset.cvPreset === 'tech') CVApp.updateData('showProjs', true);
+        if(window.CVStarterPaths && typeof window.CVStarterPaths.applyStarter === 'function'){
+          window.CVStarterPaths.applyStarter(card.dataset.cvPreset);
+        } else {
+          scrollToBuilder();
         }
-        if(typeof CVApp.setTopState === 'function'){
-          CVApp.setTopState('country', preset.country);
-          CVApp.setTopState('template', preset.template);
-        }
-        if(typeof CVApp.renderAll === 'function') CVApp.renderAll();
-
-        try { localStorage.setItem('afro_cv_copilot_target', preset.role); } catch(err) {}
-        var role = document.getElementById('cv-copilot-role');
-        if(role) role.value = preset.role;
-        if(typeof CVCareerCopilot !== 'undefined' && typeof CVCareerCopilot.render === 'function') CVCareerCopilot.render();
-        if(typeof CVApp.showToast === 'function') CVApp.showToast('Starter path applied: ' + card.querySelector('strong').textContent);
-        scrollToBuilder();
       });
     });
   });

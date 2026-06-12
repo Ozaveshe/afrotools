@@ -1311,3 +1311,91 @@ Next 10 recommended sets, based on the current ledger:
 8. Set 91 cars generator safety wave: add a small generator-owned cars slice only after verifying price-intelligence data, import-cost rule packs, French country slugs, estimate language, canonical, and reciprocal hreflang.
 9. Set 92 widget parent wave: select 5-8 more real French widget parent pages from high-value iframe tools, keeping raw iframes `noindex` and out of French registry promotion.
 10. Set 93 readiness re-gate: rerun the ledger and full validation after Sets 84-92, then decide whether the next phase is another controlled category wave or a narrow source-truth repair pass.
+
+## Salary/PAYE And VAT Source-Truth Cleanup As Of June 11, 2026
+
+This cleanup implemented the Set 79 salary/VAT alias guardrail without adding French pages, deleting alias files, or adding registry rows. It changed the ledger definition of mapped completion so only indexable, non-alias French route owners count as mapped English-backed sources.
+
+Current regenerated ledger:
+
+| Metric | Before checked-in ledger | After regenerated ledger | Decision |
+| --- | ---: | ---: | --- |
+| Total English source pages | `5,759` | `5,769` | The source inventory refreshed from the current checkout. |
+| French pages | `1,707` | `1,707` | No French pages were added or removed. |
+| Global mapped completion | `27.19%` | `26.61%` | Aliases and wrappers no longer inflate mapped completion. |
+| Global registry coverage | `78.28%` | `78.28%` | No registry rows were added. |
+| Salary/PAYE mapped coverage | `64/66` (`96.97%`) | `61/66` (`92.42%`) | Salary aliases no longer count as mapped owners. |
+| VAT/business-tax mapped coverage | `57/56` (`101.79%`) | `55/56` (`98.21%`) | VAT aliases no longer push coverage above 100%. |
+| Salary/VAT alias routes | `65` | `65` | Aliases were preserved, not deleted. |
+| Salary/VAT registry-missing routes | `81` | `81` | Missing registry rows remain blocked unless the route is a preferred live owner. |
+
+Concise decision table:
+
+| Route family | Preferred route | Alias or exception rule | Implementation state |
+| --- | --- | --- | --- |
+| French salary/PAYE with semantic route live | `/fr/<french-country-slug>/calculateur-salaire-net` | `cc-paye` paths stay aliases or wrappers and stay out of registry discovery. | `scripts/build-french-localization-ledger.js` now counts only non-alias route owners for mapped completion. |
+| French VAT with semantic route live | `/fr/<french-country-slug>/calculateur-tva` | `cc-vat` paths stay aliases or wrappers and stay out of registry discovery. | VAT semantic slug mapping was aligned for Benin, Burundi, Centrafrique, Chad/Tchad, Comoros/Comores, Madagascar, Mauritanie, and RDC. |
+| RDC salary and VAT | `/fr/rdc/calculateur-salaire-net`, `/fr/rdc/calculateur-tva` | `/fr/dr-congo/cd-paye` and `/fr/dr-congo/cd-vat` stay aliases. | Ledger PAYE/VAT source maps now point to `dr-congo/cd-paye` and `dr-congo/cd-vat` instead of falling back to the country hub. |
+| Central African Republic `car` tax aliases | `/fr/centrafrique/calculateur-salaire-net`, `/fr/centrafrique/calculateur-tva` | `/fr/car/cf-paye` and `/fr/car/cf-vat` stay aliases. | The ledger no longer classifies `/fr/car/**` tax aliases as cars routes. |
+| Temporary `cc-paye` or `cc-vat` owners with no semantic route | Current live `cc-*` route only until a semantic route exists. | Do not add or repoint registry rows unless no semantic route exists and the exception is documented. | Existing exceptions such as Djibouti VAT and the remaining registry-missing PAYE/TVA routes remain carried debt, not automatic discovery rows. |
+| Future generated French PAYE/VAT output | Preferred semantic URL when live. | Generated historical aliases must not regain self-canonical ownership. | `scripts/build-i18n.js` now uses the preferred French URL for French canonical tags when one exists. |
+
+Wrappers preserved:
+
+- No alias files were deleted.
+- Existing noindex/redirect wrappers remain in place.
+- Eight generated `cc-paye` HTML files still self-canonicalize behind `_redirects`: `/fr/benin/bj-paye`, `/fr/burkina-faso/bf-paye`, `/fr/cameroon/cm-paye`, `/fr/cote-divoire/ci-paye`, `/fr/mali/ml-paye`, `/fr/morocco/ma-paye`, `/fr/senegal/sn-paye`, and `/fr/tunisia/tn-paye`.
+- Those eight routes are now carried wrapper-stabilization debt only. They do not count as mapped owners and should not receive registry rows.
+
+Next safe batch:
+
+1. Use the existing redirect-wrapper pattern to stabilize only the remaining generated self-canonical `cc-paye` aliases where the semantic route is live.
+2. Keep custom wrappers that already have `noindex, follow`, canonical-to-semantic, and redirect behavior.
+3. Add registry rows only for live temporary `cc-*` owners where the semantic route does not exist and the exception remains documented.
+
+## Generated PAYE/TVA Registry Closeout As Of June 11, 2026
+
+This batch reduced the remaining generated salary/VAT registry-missing queue without changing route ownership or counting aliases as mapped completion. The ledger's `frenchPagesNotRepresentedInRegistry` list had `17` salary/VAT candidates before the edit: `15` live, indexable country calculators and `2` VAT docs/API routes.
+
+Registry decision table:
+
+| Candidate group | Count | Decision |
+| --- | ---: | --- |
+| Live generated PAYE pages with no semantic French route in the current checkout | `7` | Added French registry rows using deterministic `cc-paye-fr` ids. |
+| Live generated TVA pages with no semantic French route in the current checkout | `8` | Added French registry rows using deterministic `cc-tva-fr` ids. |
+| `/fr/docs/api/vat` and `/fr/docs/api/vat/calculate` | `2` | Skipped because docs/API routes are not ordinary tool discovery rows. |
+| Alias, wrapper, noindex, duplicate country-code, or missing semantic routes | `0` added | Kept out of discovery; no rows were added to pad the batch size. |
+
+Rows added in `assets/js/components/tool-registry.js`:
+
+| Family | Registry ids |
+| --- | --- |
+| PAYE | `sc-paye-fr`, `sl-paye-fr`, `so-paye-fr`, `ss-paye-fr`, `sd-paye-fr`, `zm-paye-fr`, `zw-paye-fr` |
+| TVA | `dj-tva-fr`, `sc-tva-fr`, `sl-tva-fr`, `so-tva-fr`, `ss-tva-fr`, `sd-tva-fr`, `zm-tva-fr`, `zw-tva-fr` |
+
+Coverage movement:
+
+| Metric | Before | After | Movement |
+| --- | ---: | ---: | ---: |
+| French registry entries | `379` | `394` | `+15` |
+| French registry coverage | `78.28%` (`364/465`) | `81.51%` (`379/465`) | `+3.23 pp` |
+| Missing registry-eligible French routes | `101` | `86` | `-15` |
+| Salary/PAYE registry coverage | `88.52%` (`54/61`) | `100%` (`61/61`) | `+11.48 pp` |
+| VAT/business-tax registry coverage | `82.46%` (`47/57`) | `96.49%` (`55/57`) | `+14.03 pp` |
+| Salary/VAT missing registry subset | `17` total, `15` eligible | `0` eligible | Cleared without promoting docs/API. |
+| Global mapped completion | `26.61%` | `26.61%` | unchanged |
+
+Validation:
+
+- `npm run tools:directory` passed and rebuilt the tool directory, search index, and salary-tax index.
+- `npm run audit` passed with `2,498` registry rows and `0` missing live/new registry pages.
+- `npm run check-links` passed with no broken internal links across `81,236` internal links.
+- `node scripts/build-french-localization-ledger.js` passed and reported `26.61%` mapped completion and `81.51%` registry coverage.
+- `npm run build:i18n:validate` passed for `fr`, `sw`, `yo`, and `ha`.
+- `npm run validate:hreflang` passed with `0` errors across `20,871` hreflang pairs.
+
+Carried debt:
+
+- The global French registry-missing queue is still `86`, but the salary/VAT subset is cleared under the current eligibility rule.
+- The two VAT docs/API routes remain intentionally unregistered.
+- Future salary/VAT registry work should only happen after a new preferred live route appears or an explicitly documented temporary `cc-*` ownership exception is accepted.

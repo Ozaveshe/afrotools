@@ -174,16 +174,35 @@ body {
 .fx-section {
   padding: 48px 0;
 }
+.fx-section-heading,
+.fx-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
 .fx-section-title {
   font-family: var(--fx-font-heading);
   font-size: 1.6rem;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin: 0;
 }
 .fx-section-subtitle {
   font-size: 0.9rem;
   color: var(--fx-text-muted);
   margin-bottom: 28px;
+}
+.fx-section-status {
+  max-width: 100%;
+}
+.fx-section-status.live-data-status {
+  font-size: 0.72rem;
+}
+.fx-section-status .live-data-status__meta,
+.fx-section-status .live-data-status__source {
+  font-size: 0.72rem;
 }
 
 /* ── Card ────────────────────────────────────────────────── */
@@ -204,6 +223,16 @@ body {
 }
 @media (max-width: 900px) {
   .fx-main-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .fx-section-heading,
+  .fx-card-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .fx-section-status.live-data-status {
+    width: 100%;
+  }
 }
 
 /* ── Converter ───────────────────────────────────────────── */
@@ -433,9 +462,13 @@ body {
 .fx-table-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100%;
+  overscroll-behavior-x: contain;
 }
 .fx-table {
   width: 100%;
+  min-width: 0;
   border-collapse: collapse;
   font-size: 0.88rem;
 }
@@ -470,6 +503,86 @@ body {
 .fx-table .change-down { color: var(--fx-down); font-weight: 600; }
 .fx-table .change-flat { color: var(--fx-neutral); }
 .fx-table .sparkline-cell canvas { width: 80px; height: 28px; }
+
+@media (max-width: 640px) {
+  .fx-table-wrap {
+    overflow-x: visible;
+  }
+  .fx-table,
+  .fx-table tbody,
+  .fx-table tr,
+  .fx-table td {
+    display: block;
+    width: 100%;
+  }
+  .fx-table thead {
+    display: none;
+  }
+  .fx-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+  .fx-table tr {
+    border: 1px solid var(--fx-border);
+    border-radius: var(--fx-radius-sm);
+    padding: 8px 12px;
+    background: var(--fx-card-bg);
+  }
+  .fx-table tbody tr:nth-child(even),
+  .fx-table tbody tr:hover {
+    background: var(--fx-card-bg);
+  }
+  .fx-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .fx-table td:not(:last-child) {
+    border-bottom: 1px solid var(--fx-border);
+  }
+  .fx-table td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    color: var(--fx-text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .fx-table .sparkline-cell canvas {
+    flex: 0 0 auto;
+  }
+}
+
+.fx-preset-row {
+  max-width: var(--fx-container);
+  margin: 18px auto 0;
+  padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.fx-preset-row button {
+  min-height: 38px;
+  border: 1px solid var(--fx-border);
+  border-radius: 999px;
+  background: var(--fx-card-bg);
+  color: var(--fx-text);
+  font: 700 .84rem/1 var(--fx-font);
+  padding: 0 13px;
+  cursor: pointer;
+  box-shadow: var(--fx-shadow-sm);
+}
+.fx-preset-row button:hover,
+.fx-preset-row button:focus-visible {
+  border-color: var(--fx-primary);
+  color: var(--fx-primary);
+  outline: none;
+}
 
 /* ── CBN / Parallel ──────────────────────────────────────── */
 .cbn-grid {
@@ -710,7 +823,7 @@ body {
 <!-- ═══════════════════════════════════════════════════════════════════
      2. RATE TICKER
      ═══════════════════════════════════════════════════════════════════ -->
-<afro-rate-ticker data-source="/api/forex?base=USD"></afro-rate-ticker>
+<afro-rate-ticker data-source="/data/forex/latest.json"></afro-rate-ticker>
 
 <!-- ═══════════════════════════════════════════════════════════════════
      3. HERO
@@ -723,6 +836,12 @@ body {
     <span class="dot-live"></span>
     <span id="updatedText" class="live-data-status">Checking latest available rates from AfroTools FX feed...</span>
   </div>
+  <div class="fx-preset-row" aria-label="Common currency pairs">
+    <button type="button" data-fx-preset="USD:NGN:100" onclick="window.applyFxPreset(this)">USD to NGN</button>
+    <button type="button" data-fx-preset="GBP:KES:100" onclick="window.applyFxPreset(this)">GBP to KES</button>
+    <button type="button" data-fx-preset="EUR:XOF:100" onclick="window.applyFxPreset(this)">EUR to XOF</button>
+    <button type="button" data-fx-preset="ZAR:GHS:1000" onclick="window.applyFxPreset(this)">ZAR to GHS</button>
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════
@@ -733,6 +852,10 @@ body {
     <div class="fx-main-grid">
       <!-- LEFT: Converter -->
       <div class="fx-card" id="converterCard">
+        <div class="fx-card-heading">
+          <h2 class="fx-section-title">Converter</h2>
+          <span id="fxBadgeConverter" class="fx-section-status live-data-status">Checking rates...</span>
+        </div>
         <div class="converter-label">From</div>
         <div class="converter-select-wrap">
           <select id="fromCurrency" aria-label="From currency"></select>
@@ -788,7 +911,10 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Currency Heatmap</h2>
+    <div class="fx-section-heading">
+      <h2 class="fx-section-title">Currency Heatmap</h2>
+      <span id="fxBadgeHeatmap" class="fx-section-status live-data-status">Checking rates...</span>
+    </div>
     <p class="fx-section-subtitle">24-hour performance of all 42 African currencies vs USD. Click any cell to load it in the converter.</p>
     <div class="heatmap-grid" id="heatmapGrid">
       <!-- Populated by JS -->
@@ -801,7 +927,10 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Popular Pairs</h2>
+    <div class="fx-section-heading">
+      <h2 class="fx-section-title">Popular Pairs</h2>
+      <span id="fxBadgePairs" class="fx-section-status live-data-status">Checking rates...</span>
+    </div>
     <p class="fx-section-subtitle">Most-traded African currency pairs with rate trends.</p>
     <div class="fx-card">
       <div class="fx-table-wrap">
@@ -830,7 +959,10 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">USD/NGN Snapshot</h2>
+    <div class="fx-section-heading">
+      <h2 class="fx-section-title">USD/NGN Snapshot</h2>
+      <span id="fxBadgeSnapshot" class="fx-section-status live-data-status">Checking rates...</span>
+    </div>
     <p class="fx-section-subtitle">Indicative NGN cross-rates derived from the latest mid-market FX dataset. This tool does not publish a separate official-versus-parallel market feed.</p>
     <div class="cbn-grid" id="cbnGrid">
       <div class="cbn-card">
@@ -857,7 +989,10 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Crypto in Local Currency</h2>
+    <div class="fx-section-heading">
+      <h2 class="fx-section-title">Crypto in Local Currency</h2>
+      <span id="fxBadgeCrypto" class="fx-section-status live-data-status">Checking rates...</span>
+    </div>
     <p class="fx-section-subtitle">Bitcoin, Ethereum, and USDT prices converted to your chosen African currency.</p>
     <div class="crypto-selector">
       <label for="cryptoCurrency">Display in:</label>
@@ -891,8 +1026,11 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Cross-Rate Matrix</h2>
-    <p class="fx-section-subtitle">Live cross rates between the top 10 African currencies and 3 major global currencies.</p>
+    <div class="fx-section-heading">
+      <h2 class="fx-section-title">Cross-Rate Matrix</h2>
+      <span id="fxBadgeMatrix" class="fx-section-status live-data-status">Checking rates...</span>
+    </div>
+    <p class="fx-section-subtitle">Cross rates between the top 10 African currencies and 3 major global currencies.</p>
     <div class="fx-card">
       <div class="matrix-wrap">
         <table class="matrix-table" id="matrixTable">
@@ -1082,6 +1220,7 @@ body {
   let crypto = {};
   let dataTimestamp = null;
   let dataSource = 'AfroTools FX feed';
+  let dataSourceKind = 'unavailable';
   let dataStatusState = 'loading';
   let chartInstance = null;
   let activeTimeframe = '30d';
@@ -1089,6 +1228,15 @@ body {
   let sortDir = 1;
   let updateTimer = null;
   let favorites = [];
+
+  const FX_BADGE_TARGETS = [
+    { id: 'fxBadgeConverter', message: 'Used for conversions' },
+    { id: 'fxBadgePairs', message: 'Pair table rates' },
+    { id: 'fxBadgeHeatmap', message: 'Heatmap uses the FX snapshot' },
+    { id: 'fxBadgeSnapshot', message: 'Indicative mid-market snapshot, not sourced from a central bank' },
+    { id: 'fxBadgeCrypto', message: 'Crypto USD prices converted with FX rates' },
+    { id: 'fxBadgeMatrix', message: 'Matrix rates use the FX snapshot' }
+  ];
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      HELPERS
@@ -1168,11 +1316,78 @@ body {
     } catch (e) { /* ignore */ }
   }
 
+  function buildFxStatusCopy(state, options) {
+    options = options || {};
+    const sourceKind = options.sourceKind || dataSourceKind;
+    const isStatic = sourceKind === 'static';
+    const isApi = sourceKind === 'api';
+    const source = options.source || dataSource || (isStatic ? 'Static forex snapshot' : 'AfroTools FX feed');
+    let label = options.label || 'Unavailable';
+    let message = options.message || 'Rates unavailable';
+
+    if (state === 'loading') {
+      label = 'Checking';
+      message = options.message || 'Checking latest available rates';
+    } else if (state === 'error' || state === 'unavailable' || sourceKind === 'unavailable') {
+      label = 'Unavailable';
+      message = options.message || 'Rates unavailable';
+    } else if (isStatic && state === 'stale') {
+      label = 'Stale snapshot';
+      message = options.message || 'Showing stale static snapshot';
+    } else if (isStatic) {
+      label = 'Static snapshot';
+      message = options.message || 'Showing static snapshot';
+    } else if (isApi && state === 'live') {
+      label = 'Live API';
+      message = options.message || 'Live API rates loaded';
+    } else if (isApi && state === 'cached') {
+      label = 'Cached API';
+      message = options.message || 'Showing cached API rates';
+    } else if (isApi && state === 'stale') {
+      label = 'Stale API';
+      message = options.message || 'Showing stale API rates';
+    }
+
+    return {
+      label: label,
+      message: message,
+      source: source
+    };
+  }
+
+  function updateFxSectionBadges(state, options) {
+    options = options || {};
+    const status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    const timestamp = options.timestamp || dataTimestamp;
+    const copy = buildFxStatusCopy(state, options);
+    FX_BADGE_TARGETS.forEach(function (target) {
+      const el = document.getElementById(target.id);
+      if (!el) return;
+      const message = state === 'error' || state === 'unavailable'
+        ? (options.message || 'Rates unavailable')
+        : target.message;
+      if (status) {
+        status.update(el, {
+          state: state,
+          label: copy.label,
+          timestamp: timestamp,
+          source: copy.source,
+          message: message,
+          ageLabel: options.ageLabel,
+          dateLabel: options.dateLabel
+        });
+      } else {
+        el.textContent = copy.label + ': ' + message;
+      }
+    });
+  }
+
   function setFxStatus(state, options) {
     options = options || {};
     dataStatusState = state;
     const source = options.source || dataSource || 'AfroTools FX feed';
     const timestamp = options.timestamp || dataTimestamp;
+    const copy = buildFxStatusCopy(state, options);
     const status = window.AfroTools && window.AfroTools.LiveDataStatus;
     const el = document.getElementById('updatedText');
     const bar = document.getElementById('updatedBar');
@@ -1182,19 +1397,28 @@ body {
     if (status && el) {
       status.update(el, {
         state: state,
+        label: copy.label,
         timestamp: timestamp,
-        source: source,
-        message: options.message,
+        source: copy.source || source,
+        message: copy.message,
         ageLabel: options.ageLabel,
         dateLabel: options.dateLabel,
         retryLabel: options.retryLabel,
         onRetry: options.onRetry
       });
+      updateFxSectionBadges(state, Object.assign({}, options, {
+        source: copy.source || source,
+        message: copy.message
+      }));
       return;
     }
     if (el) {
-      el.textContent = options.message || (state === 'live' ? 'Latest rates loaded' : 'Rates temporarily unavailable');
+      el.textContent = copy.message || (state === 'live' ? 'Latest rates loaded' : 'Rates temporarily unavailable');
     }
+    updateFxSectionBadges(state, Object.assign({}, options, {
+      source: copy.source || source,
+      message: copy.message
+    }));
   }
 
   async function loadRatesFrom(url, sourceLabel) {
@@ -1202,7 +1426,26 @@ body {
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const data = await resp.json();
     if (!data || !data.rates) throw new Error('Missing rates');
-    return { data: data, source: data.source || sourceLabel };
+    return {
+      data: data,
+      source: sourceLabel,
+      kind: url.indexOf('/api/') === 0 ? 'api' : 'static'
+    };
+  }
+
+  function isStaticPreviewHost() {
+    return /^(localhost|127\.0\.0\.1|\[?::1\]?)$/i.test(location.hostname || '');
+  }
+
+  function shouldUseStaticPreviewOnly() {
+    const params = new URLSearchParams(location.search || '');
+    return isStaticPreviewHost() && params.get('fx-source') !== 'api';
+  }
+
+  function getRateSources() {
+    const staticSource = { url: '/data/forex/latest.json', label: 'Static forex snapshot' };
+    const liveSource = { url: '/api/forex?base=USD', label: 'AfroTools FX API' };
+    return shouldUseStaticPreviewOnly() ? [staticSource] : [liveSource, staticSource];
   }
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1210,34 +1453,45 @@ body {
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   async function fetchRates() {
     setFxStatus('loading', {
-      source: 'AfroTools FX API',
+      source: shouldUseStaticPreviewOnly() ? 'Static forex snapshot' : 'AfroTools FX API',
       message: 'Checking latest available rates'
     });
     try {
       let loaded;
-      try {
-        loaded = await loadRatesFrom('/api/forex?base=USD', 'AfroTools FX API');
-      } catch (apiErr) {
-        console.warn('AfroFX: live API unavailable, trying static fallback', apiErr);
-        loaded = await loadRatesFrom('/data/forex/latest.json', 'Static forex snapshot');
+      let lastErr;
+      const sources = getRateSources();
+      for (const source of sources) {
+        try {
+          loaded = await loadRatesFrom(source.url, source.label);
+          break;
+        } catch (err) {
+          lastErr = err;
+        }
       }
+      if (!loaded) throw lastErr || new Error('No forex rate source loaded');
       const data = loaded.data;
       if (data.rates) rates = data.rates;
       if (data.crypto) crypto = data.crypto;
       if (data.timestamp) dataTimestamp = new Date(data.timestamp);
       dataSource = loaded.source;
+      dataSourceKind = loaded.kind;
       const status = window.AfroTools && window.AfroTools.LiveDataStatus;
       const state = status ? status.stateForTimestamp(dataTimestamp, { liveMinutes: 60, staleMinutes: 36 * 60 }) : 'live';
       setFxStatus(state, {
         source: dataSource,
+        sourceKind: dataSourceKind,
         timestamp: dataTimestamp,
-        message: state === 'live' ? 'Latest rates loaded' : 'Showing latest available rates'
+        message: state === 'live'
+          ? 'Latest rates loaded'
+          : (dataSourceKind === 'static' ? 'Showing static fallback rates' : 'Showing latest available rates')
       });
       onDataLoaded();
     } catch (e) {
       console.warn('AfroFX: Failed to fetch rates', e);
+      if (!dataTimestamp) dataSourceKind = 'unavailable';
       setFxStatus('error', {
         source: dataSource,
+        sourceKind: dataSourceKind,
         timestamp: dataTimestamp,
         message: dataTimestamp ? 'Rates unavailable. Last successful update shown' : 'Rates unavailable. No successful update yet',
         retryLabel: 'Retry',
@@ -1315,10 +1569,11 @@ body {
     }
     setFxStatus(state, {
       source: dataSource,
+      sourceKind: dataSourceKind,
       timestamp: dataTimestamp,
-      message: state === 'live'
-        ? 'Latest rates loaded'
-        : 'Showing latest available rates',
+      message: dataSourceKind === 'static'
+        ? (state === 'stale' ? 'Showing stale static snapshot' : 'Showing static fallback rates')
+        : (state === 'live' ? 'Latest rates loaded' : 'Showing latest available rates'),
       ageLabel: mins > 0 ? 'updated ' + mins + 'm ' + secs + 's ago' : 'updated ' + secs + 's ago'
     });
   }
@@ -1443,6 +1698,26 @@ body {
       });
     });
   }
+
+  function applyPairPreset(button) {
+    const raw = button && button.getAttribute('data-fx-preset');
+    if (!raw) return;
+    const parts = raw.split(':');
+    if (parts.length < 2) return;
+    const fromSel = document.getElementById('fromCurrency');
+    const toSel = document.getElementById('toCurrency');
+    const amount = document.getElementById('fromAmount');
+    if (!fromSel || !toSel || !amount) return;
+    fromSel.value = parts[0];
+    toSel.value = parts[1];
+    if (parts[2]) amount.value = parts[2];
+    doConvert();
+    loadChart();
+    renderFavorites();
+    document.getElementById('converterCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  window.applyFxPreset = applyPairPreset;
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      CHART
@@ -1612,12 +1887,12 @@ body {
     let html = '';
     data.forEach(row => {
       html += '<tr>' +
-        '<td><strong>' + row.pairDisplay + '</strong></td>' +
-        '<td>' + formatRate(row.rate) + '</td>' +
-        '<td class="' + changeClass(row.change24h) + '">' + changeText(row.change24h) + '</td>' +
-        '<td class="' + changeClass(row.change7d) + '">' + changeText(row.change7d) + '</td>' +
-        '<td class="' + changeClass(row.change30d) + '">' + changeText(row.change30d) + '</td>' +
-        '<td class="sparkline-cell"><canvas data-pair="' + row.pair + '" width="80" height="28"></canvas></td>' +
+        '<td data-label="Pair"><strong>' + row.pairDisplay + '</strong></td>' +
+        '<td data-label="Rate">' + formatRate(row.rate) + '</td>' +
+        '<td data-label="24h change" class="' + changeClass(row.change24h) + '">' + changeText(row.change24h) + '</td>' +
+        '<td data-label="7d change" class="' + changeClass(row.change7d) + '">' + changeText(row.change7d) + '</td>' +
+        '<td data-label="30d change" class="' + changeClass(row.change30d) + '">' + changeText(row.change30d) + '</td>' +
+        '<td data-label="Trend" class="sparkline-cell"><canvas data-pair="' + row.pair + '" width="80" height="28"></canvas></td>' +
         '</tr>';
     });
     tbody.innerHTML = html;

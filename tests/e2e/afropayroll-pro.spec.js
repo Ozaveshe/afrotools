@@ -4,6 +4,11 @@ const DESKTOP = { name: "desktop", width: 1366, height: 900 };
 const MOBILE = { name: "mobile", width: 390, height: 844 };
 const VIEWPORTS = [DESKTOP, MOBILE];
 
+const PUBLIC_ROUTES = [
+  { label: "public hub", path: "/tools/afropayroll-os/", marker: "Start payroll run" },
+  { label: "guided flow", path: "/tools/afropayroll-os/flow.html", marker: "#apo-start-btn" },
+];
+
 const ROUTES = [
   { label: "dashboard", path: "/pro/apps/payroll/", button: "#syncDraftBtn" },
   { label: "workspace", path: "/tools/afropayroll-os/workspace.html", button: "#addRowBtn" },
@@ -13,11 +18,15 @@ const ROUTES = [
 
 const REQUIRED_LABELS = [
   /Save run to account/i,
+  /Account-backed Pro/i,
   /Saved payroll runs/i,
   /Employee records/i,
   /Import payroll(?: data)?|Import file/i,
   /Approval history/i,
   /Review pack/i,
+  /Payroll source freshness/i,
+  /Minimum wage/i,
+  /Social security/i,
   /Payment file draft/i,
   /Accounting journal/i,
   /Secure invite link/i,
@@ -25,7 +34,6 @@ const REQUIRED_LABELS = [
 
 const INTERNAL_WORDING = [
   /Supabase actions/i,
-  /\baccount-backed\b/i,
   /\bshell\b/i,
   /token route/i,
   /service[- ]role/i,
@@ -238,8 +246,9 @@ async function stubPayrollApp(page, options = {}) {
 async function gotoRoute(page, route, viewport, options = {}) {
   await page.setViewportSize({ width: viewport.width, height: viewport.height });
   await stubPayrollApp(page, options);
-  await page.goto(route, { waitUntil: "domcontentloaded" });
+  const response = await page.goto(route, { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(250);
+  return response;
 }
 
 async function visibleText(page) {
@@ -283,7 +292,8 @@ test.describe("AfroPayroll Pro browser regression pack", () => {
         const target = route.path.includes("employee.html")
           ? route.path + "?token=bad-token"
           : route.path;
-        await gotoRoute(page, target, viewport, { signedIn: true, scenario: "saved" });
+        const response = await gotoRoute(page, target, viewport, { signedIn: true, scenario: "saved" });
+        expect(response && response.status(), `${route.label} route status`).toBeLessThan(400);
         await expect(page.locator(route.button)).toBeVisible();
         await expectNoInternalWording(page, `${route.label} ${viewport.name}`);
         await expectNoHorizontalOverflow(page, `${route.label} ${viewport.name}`);
@@ -291,6 +301,48 @@ test.describe("AfroPayroll Pro browser regression pack", () => {
       });
     }
   }
+
+  for (const viewport of VIEWPORTS) {
+    for (const route of PUBLIC_ROUTES) {
+      test(`${route.label} public route is reachable on ${viewport.name}`, async ({ page }) => {
+        await page.setViewportSize({ width: viewport.width, height: viewport.height });
+        const response = await page.goto(route.path, { waitUntil: "domcontentloaded" });
+        await page.waitForTimeout(250);
+        expect(response && response.status(), `${route.label} route status`).toBeLessThan(400);
+        if (route.marker.startsWith("#")) {
+          await expect(page.locator(route.marker)).toBeVisible();
+        } else {
+          await expect(page.getByText(route.marker).first()).toBeVisible();
+        }
+        await expectNoHorizontalOverflow(page, `${route.label} ${viewport.name}`);
+      });
+    }
+  }
+
+  test("public payroll hub CTA and resume card explain save source", async ({ page }) => {
+    await page.setViewportSize({ width: DESKTOP.width, height: DESKTOP.height });
+    await page.addInitScript(() => {
+      localStorage.setItem("apo_journey_new-hire", JSON.stringify({
+        country: "NG",
+        currentStep: 1,
+        totalSteps: 7,
+        carryData: { country: "NG", salary: "125000" },
+        stepStatuses: ["done", "pending", "pending", "pending", "pending", "pending", "pending"],
+        updatedAt: Date.now(),
+      }));
+    });
+    const response = await page.goto("/tools/afropayroll-os/", { waitUntil: "domcontentloaded" });
+    expect(response && response.status(), "public hub route status").toBeLessThan(400);
+    await expect(page.getByRole("link", { name: /Start payroll run/i })).toHaveAttribute("href", "workspace.html");
+    await expect(page.getByRole("link", { name: /Plan workflow/i })).toHaveAttribute("href", "flow.html");
+    await expect(page.getByRole("link", { name: /Compare workflows/i })).toHaveAttribute("href", "#apo-journeys");
+    await expect(page.locator("#apo-resume-wrap")).toBeVisible();
+    await expect(page.locator("#apo-resume-source")).toHaveText(/Device progress/i);
+    await expect(page.locator("#apo-resume-btn")).toHaveAttribute("href", /flow\.html\?journey=new-hire&resume=1/);
+    await expect(page.locator("body")).toContainText(/Account-backed Pro/i);
+    await expect(page.locator("body")).toContainText(/does not file returns/i);
+    await expectNoHorizontalOverflow(page, "public hub with resume");
+  });
 
   test("customer-facing payroll language stays present across the product", async ({ page }) => {
     const routeTexts = [];
@@ -330,6 +382,16 @@ test.describe("AfroPayroll Pro browser regression pack", () => {
 
   test("workspace supports local setup, employee records, run rows, import mapper, and approval gates", async ({ page }) => {
     await gotoRoute(page, "/tools/afropayroll-os/workspace.html", DESKTOP, { signedIn: false });
+    await expect(page.locator("#saveStatusDeviceText")).toContainText(/autosave|device snapshot/i);
+    await expect(page.locator("#saveStatusAccountText")).toContainText(/Sign in to Pro|salary inputs and snapshots stay on this device/i);
+    await expect(page.locator("#saveStatusFilingText")).toContainText(/does not file returns with authorities/i);
+    await expect(page.locator("#sourceFreshnessList")).toContainText(/PAYE/i);
+    await expect(page.locator("#sourceFreshnessList")).toContainText(/Minimum wage/i);
+    await expect(page.locator("#sourceFreshnessList")).toContainText(/Pension/i);
+    await expect(page.locator("#sourceFreshnessList")).toContainText(/Leave/i);
+    await expect(page.locator("#sourceFreshnessList")).toContainText(/Social security/i);
+    await expect(page.locator("#sourceFreshnessList")).toContainText(/Payslip assumptions/i);
+    await expect(page.locator("#sourceFreshnessStatus")).toContainText(/No rates are changed here|official source verification/i);
 
     await page.locator("#companyName").fill("Regression Payroll Sandbox");
     await page.locator("#setupCurrency").fill("NGN");
@@ -340,6 +402,7 @@ test.describe("AfroPayroll Pro browser regression pack", () => {
     await page.locator("#setupWorkingDays").fill("22");
     await page.locator("#saveSetupBtn").click();
     await expect(page.locator("#setupStatus")).toContainText(/Saved on this device|ready/i);
+    await expect(page.locator("#saveStatusDeviceText")).toContainText(/autosave|device snapshot/i);
 
     await expect(page.locator("#approveRunBtn")).toBeDisabled();
 

@@ -105,8 +105,8 @@
 <!-- ══════ HERO ══════ -->
 <section class="inv-hero">
 <div class="container" style="max-width:1140px;margin:0 auto;padding:0 20px;">
-  <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span>Générateur de Factures</nav>
-  <h1>Africain <em>Générateur de Factures</em></h1>
+  <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span>Générateur de Factures</nav>
+  <h1>Générateur de factures <em>africain</em></h1>
   <p class="inv-hero-sub">Créez des factures professionnelles pour votre entreprise africaine en quelques secondes. Multi-devises, calcul de TVA, base de données clients, 6 modèles et export PDF réel.</p>
   <div class="hero-badges">
     <span class="badge badge-green">GRATUIT &amp; ILLIMITÉ</span>
@@ -490,7 +490,7 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
     <p>Le Générateur de Factures crée des factures professionnelles prêtes à imprimer en quelques secondes, sans inscription ni installation de logiciel. Remplissez les informations de votre entreprise, ajoutez des articles avec descriptions, quantités et tarifs, et l'outil calcule automatiquement les sous-totaux, taxes et remises. Il prend en charge de nombreuses devises africaines et vous permet d'ajouter votre logo, vos conditions de paiement et vos coordonnées bancaires. Téléchargez la facture en PDF ou imprimez-la directement depuis votre navigateur. Indépendants, TPE et prestataires à travers l'Afrique utilisent cet outil pour facturer leurs clients de manière professionnelle.</p>
-    <p style="margin-top:12px;padding:12px 16px;background:#EFF6FF;border-left:4px solid #007AFF;border-radius:6px;"><strong>📋 Mentions obligatoires sur une facture française :</strong> numéro de facture unique et séquentiel, date d'émission, coordonnées complètes du vendeur et de l'acheteur, numéro SIRET/SIREN, numéro de TVA intracommunautaire, description des biens ou services, prix unitaire HT, taux de TVA applicable, montant total HT et TTC, conditions et délais de paiement, pénalités de retard. Ces mentions sont requises par la législation française (Code de commerce, article L441-9).</p>
+    <p style="margin-top:12px;padding:12px 16px;background:#EFF6FF;border-left:4px solid #007AFF;border-radius:6px;"><strong>📋 Mentions à vérifier :</strong> selon le pays et le statut fiscal, une facture peut devoir préciser numéro unique, date d'émission, coordonnées vendeur/acheteur, identifiant fiscal, description, prix unitaire, taxe, total et conditions de paiement. Confirmez les mentions obligatoires avec votre comptable, l'administration fiscale locale ou un conseiller qualifié avant usage officiel.</p>
   </div>
 </section>
 <section class="faq-sec">
@@ -929,7 +929,7 @@ function validateForm() {
 
   // Check at least one item has a description
   const hasItem = Array.from(qsa('.line-item')).some(r => r.querySelector('.li-desc').value.trim());
-  if (!hasItem) errors.push('Add at least one line item with a description.');
+  if (!hasItem) errors.push('Ajoutez au moins une ligne avec une description.');
 
   // Highlight first invalid required field
   const requiredFields = ['companyName','clientName','invoiceNumber','invoiceDate','dueDate'];
@@ -973,7 +973,7 @@ $('btnPDF').addEventListener('click', () => {
     items.push([desc, String(qty), fmtCur(price, cur), itax > 0 ? itax + '%' : '-', fmtCur(lineSub + lineTax, cur)]);
   });
 
-  if (items.length === 0) { toast('Add at least one line item with a description', 'error'); return; }
+  if (items.length === 0) { toast('Ajoutez au moins une ligne avec une description', 'error'); return; }
 
   // Build sections for shared PDF template
   const sections = [];
@@ -1125,10 +1125,10 @@ function restoreState(s) {
         const tr = document.createElement('tr');
         tr.className = 'line-item';
         tr.innerHTML = `
-          <td><input aria-label="Li desc" type="text" class="li-desc" value="${escapeHtml(it.d||'')}"></td>
-          <td><input aria-label="Li qty" type="number" class="li-qty" value="${it.q||1}" min="0" step="0.01"></td>
-          <td><input aria-label="Li price" type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
-          <td><input aria-label="Li tax" type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
+          <td><input aria-label="Description de la ligne" type="text" class="li-desc" value="${escapeHtml(it.d||'')}"></td>
+          <td><input aria-label="Quantité" type="number" class="li-qty" value="${it.q||1}" min="0" step="0.01"></td>
+          <td><input aria-label="Prix unitaire" type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
+          <td><input aria-label="Pourcentage de taxe" type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
           <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
           <td><button type="button" class="btn-remove js-remove-item" aria-label="Supprimer cet article">&times;</button></td>
         `;
@@ -1155,7 +1155,7 @@ $('btnSaveTemplate').addEventListener('click', () => {
   while (templates.length > 20) templates.shift();
   localStorage.setItem(LS_TEMPLATES, JSON.stringify(templates));
   renderTemplates();
-  toast('Modele enregistre !');
+  toast('Modèle enregistré !');
 });
 
 function renderTemplates() {
@@ -1190,22 +1190,22 @@ window.loadTemplate = function(id) {
     $('invoiceNumber').value = newNum;
     initDates();
     updatePreview();
-    toast('Modele charge avec le nouveau numero de facture' + newNum);
+    toast('Modèle chargé avec le nouveau numéro de facture ' + newNum);
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 };
 
 window.deleteTemplate = function(id) {
-  if (!confirm('Delete this template?')) return;
+  if (!confirm('Supprimer ce modèle ?')) return;
   const templates = JSON.parse(localStorage.getItem(LS_TEMPLATES) || '[]').filter(t => t.id !== id);
   localStorage.setItem(LS_TEMPLATES, JSON.stringify(templates));
   renderTemplates();
-  toast('Modele supprime');
+  toast('Modèle supprimé');
 };
 
 /* ── NEW INVOICE ── */
 $('btnNewInvoice').addEventListener('click', () => {
-  if (!confirm('Start a new invoice? Current data will be cleared.')) return;
+  if (!confirm('Créer une nouvelle facture ? Les données actuelles seront effacées.')) return;
   qsa('input[type="text"], input[type="email"], input[type="tel"], textarea').forEach(el => el.value = '');
   $('invoiceNumber').value = nextInvoiceNumber();
   $('invAutoNum').textContent = 'Auto: ' + $('invoiceNumber').value;
@@ -1222,10 +1222,10 @@ $('btnNewInvoice').addEventListener('click', () => {
   // Reset to one empty line item
   const tbody = $('lineItemsBody');
   tbody.innerHTML = `<tr class="line-item">
-    <td><input aria-label="Service or product" type="text" class="li-desc" placeholder="Service or product"></td>
-    <td><input aria-label="Li qty" type="number" class="li-qty" value="1" min="0" step="0.01"></td>
-    <td><input aria-label="Li price" type="number" class="li-price" value="0" min="0" step="0.01"></td>
-    <td><input aria-label="Li tax" type="number" class="li-tax" value="0" min="0" max="100" step="0.01"></td>
+    <td><input aria-label="Service ou produit" type="text" class="li-desc" placeholder="Service ou produit"></td>
+    <td><input aria-label="Quantité" type="number" class="li-qty" value="1" min="0" step="0.01"></td>
+    <td><input aria-label="Prix unitaire" type="number" class="li-price" value="0" min="0" step="0.01"></td>
+    <td><input aria-label="Pourcentage de taxe" type="number" class="li-tax" value="0" min="0" max="100" step="0.01"></td>
     <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
     <td><button type="button" class="btn-remove js-remove-item" aria-label="Supprimer cet article">&times;</button></td>
   </tr>`;
@@ -1262,7 +1262,7 @@ function init() {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.decode) {
     const shared = AfroTools.shareState.decode();
     if (shared && restoreState(shared)) {
-      toast('Shared invoice loaded!', 'info');
+      toast('Facture partagée chargée !', 'info');
     }
   }
 
@@ -1284,7 +1284,7 @@ init();
   if(!section||!grid)return;
 
   function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
-  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
+  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return"a l'instant";if(s<3600)return'il y a '+Math.floor(s/60)+' min';if(s<86400)return'il y a '+Math.floor(s/3600)+' h';var d=Math.floor(s/86400);if(d<30)return'il y a '+d+' j';return new Date(ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});}
 
   function render(){
     var items=ss.getAll();
@@ -1298,12 +1298,12 @@ init();
         (d.total?'<div style="font-size:.78rem;font-weight:800;color:#007AFF;margin-top:4px;">'+esc(d.total)+'</div>':'')+
         '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
         '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
-        '<button type="button" onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
+        '<button type="button" onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Supprimer</button>'+
         '</div></div>';
     }).join('');
   }
 
-  window.invDelSaved=function(id){if(confirm('Delete this saved invoice?')){ss.delete(id);render();}};
+  window.invDelSaved=function(id){if(confirm('Supprimer cette facture enregistrée ?')){ss.delete(id);render();}};
   window.invSaveCurrentInvoice=function(){
     var name=prompt('Nommez cette facture (ex. : Facture 001 - Client) :');
     if(!name)return;

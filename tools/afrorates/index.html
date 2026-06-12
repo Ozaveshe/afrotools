@@ -66,6 +66,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  overflow-x: clip;
+}
+
+body.afrorates-page {
+  max-width: 100%;
 }
 
 /* ── Hero ───────────────────────────────────────────────────── */
@@ -202,6 +207,8 @@ body {
   display: flex;
   animation: ticker-scroll 35s linear infinite;
   width: max-content;
+  max-width: none;
+  will-change: transform;
 }
 
 .ticker-track:hover {
@@ -244,6 +251,8 @@ body {
   max-width: 1120px;
   margin: 0 auto;
   padding: 28px 24px 64px;
+  min-width: 0;
+  overflow: clip;
 }
 
 /* ── Summary Stat Cards ─────────────────────────────────────── */
@@ -261,6 +270,7 @@ body {
   padding: 18px 18px;
   transition: box-shadow .2s, transform .2s;
   box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
 }
 
 .stat-card:hover {
@@ -316,6 +326,7 @@ body {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 .jump-link {
@@ -341,6 +352,8 @@ body {
 }
 
 .utility-note {
+  flex: 1 1 240px;
+  min-width: 0;
   font-size: .78rem;
   color: #64748b;
   line-height: 1.5;
@@ -363,6 +376,7 @@ body {
   flex-direction: column;
   gap: 8px;
   box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
 }
 
 .highlight-card.is-positive {
@@ -468,9 +482,12 @@ body {
   border-radius: 18px;
   box-shadow: 0 18px 40px rgba(10,22,40,.04);
   backdrop-filter: blur(12px);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .search-box {
+  width: 100%;
   height: 40px;
   border: 1.5px solid #e5e7eb;
   border-radius: 10px;
@@ -478,7 +495,7 @@ body {
   font-size: .85rem;
   color: #1d1d1f;
   background: #fff;
-  min-width: 240px;
+  min-width: 0;
   transition: border .2s, box-shadow .2s;
   font-family: inherit;
 }
@@ -498,9 +515,11 @@ body {
   gap: 6px;
   flex-wrap: wrap;
   min-width: 0;
+  width: 100%;
 }
 
 .filter-btn {
+  flex: 0 1 auto;
   height: 36px;
   padding: 0 14px;
   border: 1.5px solid #e5e7eb;
@@ -526,6 +545,8 @@ body {
 }
 
 .sort-select {
+  width: 100%;
+  min-width: 0;
   height: 40px;
   border: 1.5px solid #e5e7eb;
   border-radius: 12px;
@@ -544,6 +565,7 @@ body {
   display: flex;
   gap: 8px;
   justify-self: end;
+  min-width: 0;
 }
 
 .toolbar-btn {
@@ -586,6 +608,8 @@ body {
   border: 1px solid #e5e7eb;
   overflow: auto;
   box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  max-width: 100%;
+  overscroll-behavior-x: contain;
 }
 
 .rate-table {
@@ -765,10 +789,14 @@ body {
   padding: 18px;
   min-height: 0;
   box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  max-width: 100%;
+  overflow: hidden;
 }
 
 #inflation-map {
   display: block;
+  width: 100%;
+  max-width: 100%;
   min-height: 330px;
 }
 
@@ -782,11 +810,12 @@ body {
 
 .map-legend-inner {
   text-align: center;
+  max-width: 100%;
 }
 
 .map-legend-bar {
   height: 12px;
-  width: 240px;
+  width: min(240px, 100%);
   border-radius: 6px;
   background: linear-gradient(90deg, #3b82f6 0%, #eab308 35%, #f97316 65%, #ef4444 100%);
 }
@@ -794,7 +823,7 @@ body {
 .map-legend-labels {
   display: flex;
   justify-content: space-between;
-  width: 240px;
+  width: min(240px, 100%);
   margin-top: 4px;
 }
 
@@ -814,6 +843,8 @@ body {
   border-radius: 18px;
   padding: 16px 18px;
   box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .map-selection-card.is-empty {
@@ -945,15 +976,19 @@ body {
   border: 1px solid #e5e7eb;
   overflow: hidden;
   box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .chart-header {
   padding: 18px 20px 14px;
   border-bottom: 1px solid #f3f4f6;
+  min-width: 0;
 }
 
 .chart-body {
   padding: 14px 20px 20px;
+  min-width: 0;
 }
 
 .chart-controls {
@@ -961,9 +996,11 @@ body {
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 12px;
+  min-width: 0;
 }
 
 .country-chip {
+  max-width: 100%;
   height: 30px;
   padding: 0 12px;
   border: 1.5px solid #e5e7eb;
@@ -1013,6 +1050,8 @@ body {
   color: #64748b;
   font-size: .72rem;
   font-weight: 700;
+  max-width: 100%;
+  white-space: normal;
 }
 
 .comparison-layout {
@@ -1020,11 +1059,13 @@ body {
   grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
   gap: 16px;
   align-items: start;
+  min-width: 0;
 }
 
 .comparison-overview {
   display: grid;
   gap: 12px;
+  min-width: 0;
 }
 
 .comparison-overview-card {
@@ -1033,6 +1074,7 @@ body {
   border-radius: 18px;
   padding: 16px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+  min-width: 0;
 }
 
 .comparison-overview-kicker {
@@ -1062,6 +1104,7 @@ body {
 .comparison-bars {
   display: grid;
   gap: 10px;
+  min-width: 0;
 }
 
 .comparison-item {
@@ -1069,6 +1112,8 @@ body {
   border: 1px solid #e5e7eb;
   border-radius: 18px;
   padding: 14px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .comparison-top {
@@ -1076,6 +1121,11 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
+}
+
+.comparison-top > div {
+  min-width: 0;
 }
 
 .comparison-country {
@@ -1089,6 +1139,7 @@ body {
   font-size: .76rem;
   line-height: 1.55;
   color: #64748b;
+  overflow-wrap: anywhere;
 }
 
 .comparison-rate {
@@ -1115,6 +1166,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 14px;
+  min-width: 0;
 }
 
 .comparison-metric {
@@ -1270,6 +1322,7 @@ body {
   border: 1px solid #e5e7eb;
   padding: 18px;
   box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  min-width: 0;
 }
 
 .realrate-panel-header {
@@ -1305,6 +1358,7 @@ body {
   align-items: start;
   padding-top: 10px;
   border-top: 1px solid #eef2f7;
+  min-width: 0;
 }
 
 .realrate-item:first-child {
@@ -1463,8 +1517,9 @@ body {
 
 .partner-layout {
   display: grid;
-  grid-template-columns: minmax(320px, 1.3fr) minmax(240px, .9fr);
+  grid-template-columns: minmax(0, 1.3fr) minmax(240px, .9fr);
   align-items: stretch;
+  min-width: 0;
 }
 
 .partner-primary {
@@ -1630,13 +1685,47 @@ body {
 }
 
 @media (max-width: 768px) {
+  .hero {
+    padding: 48px 0 42px;
+  }
+
+  .hero-inner,
+  .page-wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .ticker-wrap::before,
+  .ticker-wrap::after {
+    width: 28px;
+  }
+
+  .ticker-item {
+    padding: 10px 18px;
+  }
+
   .table-controls {
     grid-template-columns: 1fr;
     align-items: stretch;
+    padding: 12px;
+    border-radius: 14px;
   }
 
   .search-box {
-    min-width: 100%;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sort-select {
+    width: 100%;
+  }
+
+  .filter-pills {
+    align-items: stretch;
+  }
+
+  .filter-btn {
+    min-width: 0;
   }
 
   .toolbar-actions {
@@ -1653,8 +1742,24 @@ body {
     -webkit-overflow-scrolling: touch;
   }
 
-  .rate-table {
-    min-width: 750px;
+  table.rate-table {
+    display: block !important;
+    width: 750px !important;
+    max-width: none !important;
+    min-width: 750px !important;
+    margin-left: max(0px, calc(750px - 100vw + 40px)) !important;
+    overflow: visible;
+  }
+
+  .map-container,
+  .chart-header,
+  .chart-body {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .map-legend-inner {
+    width: 100%;
   }
 
   .mpc-grid {
@@ -1678,6 +1783,16 @@ body {
   .utility-bar {
     flex-direction: column;
     align-items: flex-start;
+    overflow: hidden;
+  }
+
+  .utility-note {
+    flex-basis: auto;
+  }
+
+  .utility-links,
+  .jump-link {
+    max-width: 100%;
   }
 
   .highlights-grid {
@@ -1707,13 +1822,23 @@ body {
     font-size: 1.8rem;
   }
 
+  .page-wrap {
+    padding-top: 22px;
+    padding-bottom: 48px;
+  }
+
   .yields-grid {
     grid-template-columns: 1fr;
   }
 
   .filter-btn {
-    padding: 0 10px;
+    flex: 1 1 calc(33.333% - 6px);
+    padding: 0 8px;
     font-size: .72rem;
+  }
+
+  .toolbar-actions {
+    flex-wrap: wrap;
   }
 
   .faq-list {
@@ -1737,8 +1862,20 @@ body {
     gap: 8px 10px;
   }
 
+  .comparison-top {
+    flex-wrap: wrap;
+  }
+
+  .comparison-rate {
+    margin-left: auto;
+  }
+
   .map-selection-stats {
     grid-template-columns: 1fr;
+  }
+
+  .map-action-btn {
+    flex: 1 1 100%;
   }
 }
 </style>

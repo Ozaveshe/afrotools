@@ -22,6 +22,10 @@
 <script src="/assets/js/afro-auth.js?v=3978e101"></script>
 <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
 <script src="/data/hr/afropayroll-country-packs.js?v=068067a6"></script>
+<script src="/data/hr/minimum-wages.js"></script>
+<script src="/data/hr/pension-systems.js"></script>
+<script src="/data/hr/leave-entitlements.js"></script>
+<script src="/data/hr/social-security-rates.js"></script>
 <script src="/assets/js/lib/afropayroll-country-packs.js?v=d700aeb1"></script>
 <script src="/assets/js/lib/afropayroll-language-packs.js?v=07c3c44e"></script>
 <script src="/assets/js/lib/afropayroll-import-mapper.js?v=9fab5980"></script>
@@ -61,6 +65,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .apw-lifecycle-pill.locked{border-color:#fecaca;background:#fef2f2;color:var(--ap-red)}
 .apw-lifecycle-pill.open{border-color:#bbf7d0;background:#ecfdf5;color:#047857}
 .apw-lifecycle-copy{font-size:.72rem;color:var(--ap-muted);line-height:1.4}
+.apw-save-status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px;max-width:920px}
+.apw-save-status-card{border:1px solid var(--ap-line);border-radius:10px;background:#fff;padding:10px 11px;font-size:.7rem;line-height:1.45;color:var(--ap-muted)}
+.apw-save-status-card strong{display:block;margin-bottom:3px;color:var(--ap-text);font-size:.7rem;font-weight:950;letter-spacing:.05em;text-transform:uppercase}
+.apw-save-status-card.ok{border-color:#bbf7d0;background:#f0fdf4}
+.apw-save-status-card.warn{border-color:#fde68a;background:#fffbeb;color:#78350f}
+.apw-save-status-card.stop{border-color:#fecaca;background:#fef2f2;color:#7f1d1d}
 .apw-top-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
 .apw-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;border-radius:9px;border:1px solid transparent;padding:9px 13px;background:#fff;color:var(--ap-text);font-size:.8rem;font-weight:900;text-decoration:none;cursor:pointer;white-space:nowrap}
 .apw-btn.primary{background:var(--ap-blue);color:#fff}
@@ -205,6 +215,21 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .apw-source-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .apw-source-list a{font-size:.66rem;font-weight:800;color:var(--ap-blue);text-decoration:none}
 .apw-source-list a:hover{text-decoration:underline}
+.apw-source-freshness-grid{display:grid;gap:10px}
+.apw-source-country{border:1px solid #dbe4f0;border-radius:10px;background:#fbfdff;padding:11px}
+.apw-source-country-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px}
+.apw-source-country-title strong{display:block;font-size:.78rem;line-height:1.25;color:var(--ap-text)}
+.apw-source-country-title span{display:block;margin-top:3px;font-size:.66rem;line-height:1.35;color:var(--ap-muted)}
+.apw-source-family-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.apw-source-family{border:1px solid #edf2f7;border-radius:9px;background:#fff;padding:9px;min-width:0}
+.apw-source-family-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px}
+.apw-source-family h3{font-size:.72rem;line-height:1.25;margin:0;color:var(--ap-text)}
+.apw-source-family p{font-size:.66rem;line-height:1.42;color:var(--ap-muted);margin:0 0 6px}
+.apw-source-family .apw-source-fallback{color:#78350f}
+.apw-source-family-links{display:flex;flex-wrap:wrap;gap:5px}
+.apw-source-family-links a{font-size:.62rem;font-weight:800;color:var(--ap-blue);text-decoration:none}
+.apw-source-family-links a:hover{text-decoration:underline}
+.apw-source-family-links span{font-size:.62rem;font-weight:800;color:#78350f}
 .apw-status-note{font-size:.72rem;line-height:1.45;color:var(--ap-muted);margin:9px 0 0}
 .apw-status-note.warn{color:#78350f}
 .apw-audit-list{display:grid;gap:7px;margin-top:10px}
@@ -330,6 +355,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   .apw-variance-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
   .apw-workqueue-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
   .apw-pro-grid .wide{grid-column:span 2}
+  .apw-save-status{grid-template-columns:1fr}
+  .apw-source-family-grid{grid-template-columns:1fr}
 }
 @media(max-width:720px){
   .apw-wrap{padding:0 14px}
@@ -351,6 +378,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   .apw-accounting-grid{grid-template-columns:1fr}
   .apw-pro-grid .wide{grid-column:span 1}
   .apw-mini-row{grid-template-columns:1fr}
+  .apw-source-country-title{display:block}
+  .apw-source-country-title .apw-mini-badge{margin-top:8px}
   .apw-table{min-width:1450px}
   .apw-employee-table-wrap{display:none}
   .apw-employee-cards{display:grid}
@@ -373,6 +402,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         <div class="apw-lifecycle-strip" id="lifecycleBadge" role="status" aria-live="polite">
           <span class="apw-lifecycle-pill open" id="lifecycleStatePill">Draft</span>
           <span class="apw-lifecycle-copy" id="lifecycleStateCopy">Rows are editable.</span>
+        </div>
+        <div class="apw-save-status" aria-label="Save and filing status">
+          <div class="apw-save-status-card" id="saveStatusDevice"><strong>Device save</strong><span id="saveStatusDeviceText">Draft autosaves in this browser.</span></div>
+          <div class="apw-save-status-card" id="saveStatusAccount"><strong>Account-backed Pro</strong><span id="saveStatusAccountText">Sign in and save to account for cross-device runs, roles, approvals, and audit records.</span></div>
+          <div class="apw-save-status-card stop" id="saveStatusFiling"><strong>No authority filing</strong><span id="saveStatusFilingText">Review files only. AfroPayroll does not file returns, remit statutory deductions, or move salary funds.</span></div>
         </div>
       </div>
       <div class="apw-top-actions" aria-label="Payroll run actions" data-ap-aria-key="actions.aria">
@@ -1165,6 +1199,20 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
           </div>
           <div class="apw-section-body">
             <div class="apw-review-list" id="reviewList"></div>
+          </div>
+        </section>
+
+        <section class="apw-section" aria-labelledby="source-freshness-title">
+          <div class="apw-section-head">
+            <div>
+              <div class="apw-kicker" id="sourceFreshnessKicker">Source freshness</div>
+              <h2 class="apw-h2" id="source-freshness-title">Payroll source freshness</h2>
+              <p class="apw-note" id="sourceFreshnessNote">PAYE, minimum wage, pension, leave, social security, and payslip assumptions are shown from existing ledgers.</p>
+            </div>
+          </div>
+          <div class="apw-section-body">
+            <div class="apw-source-freshness-grid" id="sourceFreshnessList"></div>
+            <p class="apw-status-note warn" id="sourceFreshnessStatus">No rates are changed here. Verify official government or statutory sources before updating assumptions.</p>
           </div>
         </section>
 
@@ -2040,6 +2088,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       "lifecycleBadge",
       "lifecycleStatePill",
       "lifecycleStateCopy",
+      "saveStatusDevice",
+      "saveStatusDeviceText",
+      "saveStatusAccount",
+      "saveStatusAccountText",
+      "saveStatusFiling",
+      "saveStatusFilingText",
       "payPeriod",
       "payDate",
       "defaultCountry",
@@ -2368,6 +2422,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       "auditList",
       "auditStatus",
       "reviewList",
+      "sourceFreshnessKicker",
+      "sourceFreshnessNote",
+      "sourceFreshnessList",
+      "sourceFreshnessStatus",
       "packSummary"
     ].forEach(function (id) {
       elements[id] = document.getElementById(id);
@@ -4109,11 +4167,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     renderRows();
     renderTotals();
     renderReviews();
+    renderSourceFreshness();
     renderHistory();
     renderPacks();
     renderExportControls();
     renderMeta();
     renderLifecycleState();
+    renderSaveStatus();
     renderCloudSync();
     renderProDashboard();
     renderRecurringPayroll();
@@ -4425,6 +4485,212 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
           + "</div>";
       }).join("")
       : "<div class=\"apw-empty\">" + escapeHtml(t("warnings.noActiveRows")) + "</div>";
+  }
+
+  function renderSourceFreshness() {
+    if (!elements.sourceFreshnessList) return;
+    var countries = selectedSourceFreshnessCountries();
+    elements.sourceFreshnessList.innerHTML = countries.length
+      ? countries.map(renderSourceFreshnessCountry).join("")
+      : "<div class=\"apw-empty\">Choose a payroll country to see source freshness.</div>";
+    if (elements.sourceFreshnessStatus) {
+      elements.sourceFreshnessStatus.textContent = "Uses existing country packs and HR ledgers. No rates are changed here; official source verification is required before updating rates, thresholds, leave rules, contribution assumptions, or filing claims.";
+    }
+  }
+
+  function selectedSourceFreshnessCountries() {
+    var countries = [];
+    function add(code) {
+      code = String(code || "").toUpperCase();
+      if (code && countries.indexOf(code) < 0) countries.push(code);
+    }
+    getActiveRows().forEach(function (row) { add(row.country || state.defaultCountry); });
+    add(state.defaultCountry);
+    return countries.slice(0, 4);
+  }
+
+  function renderSourceFreshnessCountry(country) {
+    var pack = getPack(country);
+    var stateInfo = sourceFreshnessState(pack);
+    var meta = [
+      pack && pack.lastVerified ? "last verified " + pack.lastVerified : "",
+      pack && pack.nextReview ? "next review " + pack.nextReview : "",
+      pack ? getStatusLabel(pack) : "No country pack"
+    ].filter(Boolean).join(" | ");
+    return "<article class=\"apw-source-country\">"
+      + "<div class=\"apw-source-country-title\"><div><strong>" + escapeHtml(pack && pack.country || country) + " source freshness</strong><span>" + escapeHtml(meta || "No source ledger metadata found for this country.") + "</span></div>" + badge(stateInfo.label, stateInfo.className) + "</div>"
+      + "<div class=\"apw-source-family-grid\">"
+      + sourceFreshnessCards(country, pack, stateInfo).map(renderSourceFreshnessCard).join("")
+      + "</div>"
+      + "</article>";
+  }
+
+  function sourceFreshnessCards(country, pack, stateInfo) {
+    var minimumWage = sourceLedger("minimumWage", country);
+    var pension = sourceLedger("pension", country);
+    var leave = sourceLedger("leave", country);
+    var social = sourceLedger("social", country);
+    return [
+      {
+        title: "PAYE",
+        status: stateInfo,
+        detail: pack
+          ? "Country pack " + getStatusLabel(pack).toLowerCase() + "; " + supportedDeductionSummary(pack, ["paye", "salary_tax"], "PAYE support is not listed in the pack.")
+          : "No country pack found; PAYE assumptions need source verification before use.",
+        links: statutorySourceLinks(pack, ["paye"])
+      },
+      {
+        title: "Minimum wage",
+        status: ledgerStatus(minimumWage, stateInfo),
+        detail: minimumWageSummary(minimumWage),
+        links: []
+      },
+      {
+        title: "Pension",
+        status: ledgerStatus(pension, stateInfo),
+        detail: pensionSummary(pension),
+        links: statutorySourceLinks(pack, ["pension_social_security"])
+      },
+      {
+        title: "Leave",
+        status: ledgerStatus(leave, stateInfo),
+        detail: leaveSummary(leave),
+        links: []
+      },
+      {
+        title: "Social security",
+        status: ledgerStatus(social, stateInfo),
+        detail: socialSecuritySummary(social),
+        links: statutorySourceLinks(pack, ["pension_social_security", "employer_contribution"])
+      },
+      {
+        title: "Payslip assumptions",
+        status: stateInfo,
+        detail: pack
+          ? supportedDeductionSummary(pack, ["payslip"], "Payslip support is not listed in the pack.") + " This is an export workflow only; AfroPayroll does not file, remit, or move salary funds."
+          : "No country pack found; payslip wording and deductions need review before client use.",
+        links: sourceLinksForPack(pack).slice(0, 2)
+      }
+    ];
+  }
+
+  function renderSourceFreshnessCard(card) {
+    var links = card.links && card.links.length
+      ? "<div class=\"apw-source-family-links\">" + sourceLinksHtml(card.links.slice(0, 3)) + "</div>"
+      : "<div class=\"apw-source-family-links\"><span>No direct source URL in this ledger</span></div>";
+    return "<article class=\"apw-source-family\">"
+      + "<div class=\"apw-source-family-head\"><h3>" + escapeHtml(card.title) + "</h3>" + badge(card.status.label, card.status.className) + "</div>"
+      + "<p>" + escapeHtml(card.detail) + "</p>"
+      + (card.links && card.links.length ? links : links + "<p class=\"apw-source-fallback\">Use official source verification before changing this assumption.</p>")
+      + "</article>";
+  }
+
+  function sourceFreshnessState(pack) {
+    if (!pack) return { code: "missing", label: "Needs source", className: "stop" };
+    var code = "current";
+    if (packApi && typeof packApi.reviewWorkflowState === "function") {
+      code = packApi.reviewWorkflowState(pack);
+    } else if (isReviewDateStale(pack.nextReview)) {
+      code = "review_overdue";
+    }
+    var labels = {
+      current: "Current",
+      review_due_soon: "Review due soon",
+      review_overdue: "Review overdue",
+      source_changed: "Source changed",
+      engine_sync_needed: "Engine sync needed",
+      next_pack_candidate: "Next pack candidate",
+      missing: "Needs source"
+    };
+    return { code: code, label: labels[code] || "Review needed", className: sourceFreshnessClass(code) };
+  }
+
+  function sourceFreshnessClass(code) {
+    if (code === "current") return "ok";
+    if (code === "review_due_soon" || code === "next_pack_candidate") return "warn";
+    return "stop";
+  }
+
+  function ledgerStatus(ledger, stateInfo) {
+    if (!ledger) return { code: "missing", label: "Ledger missing", className: "stop" };
+    if (!stateInfo || stateInfo.code === "current") return { code: "ledger_present", label: "Ledger present", className: "ok" };
+    return { code: stateInfo.code, label: stateInfo.label, className: stateInfo.className };
+  }
+
+  function sourceLedger(kind, country) {
+    var ledgers = {
+      minimumWage: window.MINIMUM_WAGES,
+      pension: window.PENSION_SYSTEMS,
+      leave: window.LEAVE_ENTITLEMENTS,
+      social: window.SOCIAL_SECURITY
+    };
+    var ledger = ledgers[kind];
+    return ledger && ledger[String(country || "").toUpperCase()] || null;
+  }
+
+  function statutorySourceLinks(pack, categories) {
+    var wanted = {};
+    categories.forEach(function (category) { wanted[category] = true; });
+    var links = [];
+    var seen = {};
+    statutoryItemsForPack(pack).forEach(function (item) {
+      if (!wanted[item.category]) return;
+      (item.sourceUrls || []).forEach(function (source) {
+        var url = source && (source.url || source);
+        if (!url || seen[url]) return;
+        seen[url] = true;
+        links.push(typeof source === "string" ? { label: source, url: source } : source);
+      });
+    });
+    return links;
+  }
+
+  function supportedDeductionSummary(pack, needles, fallback) {
+    var deductions = pack && (pack.supportedDeductions || pack.supported_deductions) || [];
+    var matches = deductions.filter(function (item) {
+      var text = String([item.code, item.label, item.support].filter(Boolean).join(" ")).toLowerCase();
+      return needles.some(function (needle) { return text.indexOf(needle) >= 0; });
+    }).map(function (item) {
+      return [item.label || item.code, item.support ? String(item.support).replace(/_/g, " ") : ""].filter(Boolean).join(" - ");
+    });
+    return matches.length ? matches.join("; ") + "." : fallback;
+  }
+
+  function minimumWageSummary(ledger) {
+    if (!ledger) return "No minimum-wage ledger row for this country.";
+    var national = ledger.nationalMinimum || {};
+    var parts = [];
+    if (ledger.noMinimumWage) parts.push("Ledger says no universal national minimum wage.");
+    if (national.law) parts.push("Law: " + national.law + ".");
+    if (national.effectiveDate) parts.push("Effective date in ledger: " + national.effectiveDate + ".");
+    return parts.join(" ") || "Minimum-wage ledger row present; verify official source before changing rates.";
+  }
+
+  function pensionSummary(ledger) {
+    if (!ledger) return "No pension ledger row for this country.";
+    var parts = [];
+    if (ledger.pensionType) parts.push("Type: " + ledger.pensionType + ".");
+    if (ledger.retirementAge) parts.push("Retirement age assumption: " + ledger.retirementAge + ".");
+    return parts.join(" ") || "Pension ledger row present; verify official source before changing contribution assumptions.";
+  }
+
+  function leaveSummary(ledger) {
+    if (!ledger) return "No leave ledger row for this country.";
+    var annual = ledger.annualLeave || {};
+    var parts = [];
+    if (annual.law) parts.push("Annual leave law: " + annual.law + ".");
+    if (annual.days != null) parts.push("Annual leave day assumption is present.");
+    if (ledger.publicHolidays != null) parts.push("Public-holiday assumption is present.");
+    return parts.join(" ") || "Leave ledger row present; verify official source before changing leave assumptions.";
+  }
+
+  function socialSecuritySummary(ledger) {
+    if (!ledger) return "No social-security ledger row for this country.";
+    var schemes = Array.isArray(ledger.schemes) ? ledger.schemes : [];
+    var names = schemes.slice(0, 3).map(function (scheme) { return scheme.name; }).filter(Boolean);
+    return schemes.length
+      ? schemes.length + " scheme line" + (schemes.length === 1 ? "" : "s") + " in ledger: " + names.join(", ") + "."
+      : "Social-security ledger row present; verify official source before changing contribution assumptions.";
   }
 
   function selectedComplianceCountries() {
@@ -4786,6 +5052,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
   function renderHistory() {
     var activeRows = getActiveRows();
     if (elements.saveRunBtn) elements.saveRunBtn.disabled = activeRows.length === 0;
+    renderSaveStatus();
     if (!elements.historySummary || !elements.historyList) return;
     elements.historySummary.textContent = savedRuns.length
       ? t("history.summary", { count: savedRuns.length, date: formatHistoryDate(savedRuns[0].savedAt) })
@@ -5785,6 +6052,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     var signedIn = isCloudSignedIn();
     var user = getAccountUser();
     var activeCount = getActiveRows().length;
+    renderSaveStatus();
     if (elements.cloudKicker) elements.cloudKicker.textContent = cloudText("kicker");
     if (document.getElementById("cloud-sync-title")) document.getElementById("cloud-sync-title").textContent = cloudText("title");
     if (elements.cloudNote) elements.cloudNote.textContent = cloudText("note");
@@ -5871,6 +6139,32 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     if (normalized === "approved" || normalized === "finalized" || normalized === "exported") return "full";
     if (normalized === "review") return "estimate";
     return "verify";
+  }
+
+  function renderSaveStatus() {
+    if (!elements.saveStatusDeviceText || !elements.saveStatusAccountText || !elements.saveStatusFilingText) return;
+    var signedIn = isCloudSignedIn();
+    var deviceRun = state && state.currentRunId
+      ? savedRuns.find(function (run) { return run.id === state.currentRunId; })
+      : null;
+    var deviceDate = deviceRun && deviceRun.savedAt ? formatHistoryDate(deviceRun.savedAt) : "";
+    var activeRows = getActiveRows().length;
+    elements.saveStatusDeviceText.textContent = deviceRun
+      ? "Saved on this device as a monthly snapshot" + (deviceDate ? " on " + deviceDate : "") + ". Current edits also autosave in this browser."
+      : activeRows
+        ? "Current edits autosave in this browser. Use Save run to keep a monthly device snapshot."
+        : "Draft setup autosaves in this browser. Add rows, then Save run for a monthly device snapshot.";
+    elements.saveStatusDevice.classList.toggle("ok", Boolean(deviceRun));
+    elements.saveStatusDevice.classList.toggle("warn", !deviceRun);
+
+    elements.saveStatusAccountText.textContent = state && state.cloudRunId
+      ? "This run is linked to your AfroTools account. Account-backed Pro enables cross-device run history, roles, approvals, employee records, and audit events."
+      : signedIn
+        ? "You are signed in. Use Save run to account to create account-backed Pro history, roles, approvals, employee records, and audit events."
+        : "Sign in to Pro before saving across devices. Until then, salary inputs and snapshots stay on this device.";
+    elements.saveStatusAccount.classList.toggle("ok", Boolean(state && state.cloudRunId));
+    elements.saveStatusAccount.classList.toggle("warn", !(state && state.cloudRunId));
+    elements.saveStatusFilingText.textContent = "Review files only. AfroPayroll does not file returns with authorities, remit statutory deductions, certify compliance, or move salary funds.";
   }
 
   function saveCurrentRunToCloud() {

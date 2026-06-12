@@ -69,6 +69,10 @@ The `/document-pdf/` hub is a workflow surface, not only a grid of PDF tools. It
 
 The public `/document-pdf/` category page should expose the planner and recommended route only. Do not auto-mount the saved plan/checklist readiness workspace on the public hub; detailed saved state belongs in the dashboard `PDF Workspace` tab or in explicit metadata-only exports.
 
+## French Surface Guardrail
+
+The promoted French parent route is `/fr/document-pdf/`. Keep French iframe-wrapper routes such as `/fr/tools/espace-pdf/`, `/fr/tools/workflow-pdf/`, and `/fr/tools/editeur-pdf/` out of homepage, navbar, registry, and hub promotion until they have clear source ownership and product-quality French copy. If these wrappers remain accessible for compatibility, mark them `noindex, follow` and route users back to `/fr/document-pdf/`.
+
 The report-sync layer listens for `afro-pdf-gate-passed` and `afro-pdf-generated` on PDF-category tools. It saves metadata-only export trails under `afro_document_pdf_reports_v1` and, when a signed-in workspace is available, syncs the metadata as `item_type = 'document-pdf-report'`.
 
 The category planner saves:
