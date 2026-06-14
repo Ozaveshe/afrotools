@@ -17,16 +17,34 @@
     }, null, { allowHiddenFields: true, setAllSelectors: true }),
     config("import-duty", ["/tools/import-duty/"], {
       destinationCountry: ["goodsCountry", "carCountry"],
+      productCategory: ["goodsCategory"],
       itemCategory: ["goodsItemName"],
       currency: ["goodsCurrency", "carCurrency"],
       year: ["carYear", "carImportYear"],
       make: ["carMake", "carImportMake"],
       model: ["carModel", "carImportModel"],
+      vehicleType: ["carVehicleType"],
       engineCc: ["carEngineSize", "carImportEngineCc"],
       shippingCost: ["goodsShipping", "carShipping", "carImportFreight"],
+      insuranceCost: ["goodsInsurance", "carInsurance"],
+      originCountry: ["goodsOrigin", "carOrigin"],
+      port: ["goodsPort", "carPort"],
+      fxRate: ["goodsFxRate", "carFxRate"],
+      purchasePrice: ["goodsValue", "carPurchasePrice"],
       itemValue: ["goodsValue", "carPurchasePrice"],
     }, activateImportMode, { quietFields: true, afterApply: resetImportResult }),
-    config("solar-roi", ["/tools/solar-roi/"], {}),
+    config("solar-roi", ["/tools/solar-roi/"], {
+      monthlyBill: ["monthlyBill"],
+      monthlyGeneratorSpend: ["generatorSpend"],
+      generatorSpend: ["generatorSpend"],
+      outageHours: ["outageHours"],
+      backupHours: ["outageHours"],
+      loadSizeKw: ["systemKW"],
+      systemKW: ["systemKW"],
+      fuelPrice: ["fuelPrice"],
+      installCostPerKw: ["installCostPerKw"],
+      budgetAmount: ["solarBudget"],
+    }, null, { quietFields: true }),
     config("fuel-tracker", ["/tools/fuel-tracker/"], {
       country: ["calc-country"],
       fuelType: ["calc-fuel-type"],
@@ -41,7 +59,8 @@
       taxRate: ["taxRate", ".li-tax"],
       lineItemDescription: [".li-desc"],
     }),
-    config("paye-calculator", ["/tools/paye-calculator"], {}),
+    config("vat-calc-pan-african", ["/tools/vat-calculator/"], {}, applyVatPrefill),
+    config("paye-calculator", ["/tools/paye-calculator/", "/kenya/ke-paye", "/ghana/gh-paye", "/nigeria/ng-salary-tax", "/south-africa/za-paye"], {}, applyPayePrefill),
     config("pdf-workspace", ["/tools/pdf-workspace/"], {}, focusPdfWorkflow),
   ];
 
@@ -162,6 +181,12 @@
     return "";
   }
 
+  function formatNumber(value) {
+    var num = Number(value);
+    if (!Number.isFinite(num)) return "";
+    return String(Math.round(num));
+  }
+
   function applyCvBuilderPrefill(payload) {
     var inputs = payload.normalizedInputs || {};
     var app = root.CVApp;
@@ -171,11 +196,27 @@
     var applied = [];
     var code = countryCode(inputs.country);
 
+    if (inputs.starterId && root.CVStarterPaths && typeof root.CVStarterPaths.applyStarter === "function") {
+      try {
+        root.CVStarterPaths.applyStarter(inputs.starterId, { silent: true, noScroll: true });
+        state = app.getState() || state;
+        data = state.data || data;
+        applied.push("starterId");
+      } catch (err) {}
+    }
+
     if (code) {
       if (typeof app.setTopState === "function") app.setTopState("country", code);
       else state.country = code;
       setField(".cv-country-sel", code);
       applied.push("country");
+    }
+
+    if (inputs.templateId) {
+      if (typeof app.setTopState === "function") app.setTopState("template", String(inputs.templateId));
+      else state.template = String(inputs.templateId);
+      setField(".cv-workspace-template-select", inputs.templateId);
+      applied.push("templateId");
     }
 
     if (inputs.targetRole && !data.title) {
@@ -193,12 +234,60 @@
       applied.push("skills");
     }
 
+    if (inputs.languagePreference && data.langs && Array.isArray(data.langs) && !data.langs.some(function (item) { return item && item.l; })) {
+      data.langs[0] = Object.assign({}, data.langs[0] || {}, { l: String(inputs.languagePreference), lv: data.langs[0] && data.langs[0].lv || "Professional" });
+      applied.push("languagePreference");
+    }
+
+    if (inputs.starterProfile && inputs.starterProfile.generatedWithConsent === true && inputs.starterProfile.summary && !data.summary) {
+      data.summary = String(inputs.starterProfile.summary).slice(0, 420);
+      applied.push("starterProfile");
+    }
+
     if (typeof app.renderAll === "function") app.renderAll();
     else {
       if (typeof app.renderEditor === "function") app.renderEditor();
       if (typeof app.renderPreview === "function") app.renderPreview();
     }
+    markCvAgentSession(inputs, applied);
     return applied;
+  }
+
+  function trackCvAgentEvent(eventName, params) {
+    var safe = Object.assign({ source: "ask", tool_id: "cv-builder" }, params || {});
+    try {
+      if (root.CVAnalytics && typeof root.CVAnalytics.track === "function") {
+        root.CVAnalytics.track(eventName, safe);
+      } else if (root.AfroTools && root.AfroTools.analytics && typeof root.AfroTools.analytics.track === "function") {
+        root.AfroTools.analytics.track(eventName, safe);
+      }
+    } catch (err) {}
+  }
+
+  function markCvAgentSession(inputs, applied) {
+    if (!inputs || (!inputs.targetRole && !inputs.templateId && !inputs.starterId)) return;
+    try {
+      root.sessionStorage.setItem("afrotools.cvAgentActive", JSON.stringify({
+        source: "ask",
+        templateId: inputs.templateId || "",
+        starterId: inputs.starterId || "",
+        country: inputs.country || "",
+        createdAt: Date.now()
+      }));
+    } catch (err) {}
+    trackCvAgentEvent("cv_agent_start", {
+      country_code: countryCode(inputs.country),
+      template_id: inputs.templateId || "",
+      action: "prefill_received",
+      section_count: Array.isArray(applied) ? applied.length : 0
+    });
+    if (inputs.templateId) {
+      trackCvAgentEvent("cv_agent_template_suggestion", {
+        country_code: countryCode(inputs.country),
+        template_id: inputs.templateId,
+        source: "ask_prefill"
+      });
+    }
   }
 
   function activateImportMode(payload) {
@@ -234,6 +323,50 @@
     if (!shell) return [];
     shell.innerHTML = '<div class="result-empty"><div><strong>Review landed-cost estimate</strong><p>Enter values and calculate to see CIF, duty/tax estimates, clearing costs, confidence labels, save/share actions and next steps.</p><p class="muted">Import costs can change. AfroTools provides planning estimates only. Always confirm final customs duty, taxes, levies, port charges, exchange rates, and clearing costs with official authorities or licensed professionals before making financial decisions.</p></div></div>';
     return [];
+  }
+
+  function applyVatPrefill(payload) {
+    var inputs = payload.normalizedInputs || {};
+    var applied = [];
+    var code = inputs.countryCode || countryCode(inputs.country);
+    var amount = inputs.invoiceAmount || inputs.amount;
+    var treatment = String(inputs.vatTreatment || "standard").toLowerCase().replace(/\s+/g, "-");
+    if (code && setField("countrySelect", code, { quiet: true })) applied.push("country");
+    if (amount !== undefined && amount !== null && setField("amountInput", amount, { quiet: true })) applied.push("amount");
+    if (code && setField("invoiceCountry", code, { quiet: true })) applied.push("invoiceCountry");
+    if (amount !== undefined && amount !== null && setField(".vat-line-amount", amount, { quiet: true })) applied.push("invoiceAmount");
+    if (inputs.lineItemDescription && setField(".vat-line-desc", inputs.lineItemDescription, { quiet: true })) applied.push("lineItemDescription");
+    if (treatment && setField(".vat-line-type", treatment, { quiet: true })) applied.push("vatTreatment");
+    if (code && setField("whCountry", code, { quiet: true })) applied.push("withholdingCountry");
+    if (amount !== undefined && amount !== null && setField("whAmount", amount, { quiet: true })) applied.push("withholdingAmount");
+    return applied;
+  }
+
+  function applyPayePrefill(payload) {
+    var inputs = payload.normalizedInputs || {};
+    var applied = [];
+    var path = normalizePath(root.location.pathname || "");
+    var gross = Number(inputs.grossPay);
+    if (!Number.isFinite(gross)) return applied;
+    var period = String(inputs.payPeriod || "monthly").toLowerCase();
+    var monthly = Number(inputs.grossPayMonthly);
+    var annual = Number(inputs.grossPayAnnual);
+    if (!Number.isFinite(monthly)) monthly = period === "annual" ? gross / 12 : gross;
+    if (!Number.isFinite(annual)) annual = period === "annual" ? gross : gross * 12;
+    var valueForPage = path.indexOf("/kenya/ke-paye") === 0 ? monthly : annual;
+    var inputId = path.indexOf("/nigeria/ng-salary-tax") === 0 ? "grossSalary" : "salaryInput";
+    if (setField(inputId, formatNumber(valueForPage), { quiet: true })) applied.push("grossPay");
+    var slider = document.getElementById("salarySlider");
+    if (slider) {
+      var min = Number(slider.min || 0);
+      var max = Number(slider.max || valueForPage);
+      var clamped = Math.max(min || 0, Math.min(max || valueForPage, valueForPage));
+      slider.value = formatNumber(clamped);
+      applied.push("salarySlider");
+    }
+    var sliderVal = document.getElementById("sliderVal");
+    if (sliderVal) sliderVal.textContent = formatNumber(valueForPage);
+    return applied;
   }
 
   function applyPayload(config, payload) {

@@ -42,16 +42,22 @@ assert.ok(prefill.getPrefillAdapter("cv-builder"));
 assert.ok(prefill.getPrefillAdapter("scholarship-finder"));
 assert.ok(prefill.getPrefillAdapter("import-duty"));
 assert.ok(prefill.getPrefillAdapter("solar-roi"));
+assert.ok(prefill.getPrefillAdapter("vat-calc-pan-african"));
 assert.ok(prefill.getPrefillAdapter("invoice-generator"));
 assert.ok(prefill.getPrefillAdapter("paye-calculator"));
 
 const importLaunch = prefill.buildSafeLaunch("import-duty", {
   destinationCountry: "Nigeria",
   itemCategory: "Toyota Axio",
+  productCategory: "vehicle",
   year: "2016",
-  itemValue: 8500,
+  purchasePrice: 8500,
   engineCc: 1500,
   shippingCost: 1200,
+  insuranceCost: 250,
+  originCountry: "Japan",
+  port: "tin-can",
+  fxRate: 1600,
   currency: "USD",
 });
 assert.strictEqual(importLaunch.supported, true);
@@ -60,32 +66,49 @@ assert.strictEqual(importLaunch.launchUrl, "/tools/import-duty/?source=ask&prefi
 assert.deepStrictEqual(importLaunch.missingInputs, []);
 assert.strictEqual(importLaunch.validation.valid, true);
 assert.strictEqual(importLaunch.payload.normalizedInputs.mode, "car");
+assert.strictEqual(importLaunch.payload.normalizedInputs.productCategory, "vehicle");
 assert.strictEqual(importLaunch.payload.normalizedInputs.make, "Toyota");
 assert.strictEqual(importLaunch.payload.normalizedInputs.model, "Axio");
 assert.strictEqual(importLaunch.payload.normalizedInputs.engineCc, 1500);
 assert.strictEqual(importLaunch.payload.normalizedInputs.shippingCost, 1200);
-assertUrlDoesNotLeak(importLaunch, ["Nigeria", "Toyota", "Axio", "2016", "8500", "1500", "1200"]);
+assert.strictEqual(importLaunch.payload.normalizedInputs.insuranceCost, 250);
+assert.strictEqual(importLaunch.payload.normalizedInputs.originCountry, "Japan");
+assert.strictEqual(importLaunch.payload.normalizedInputs.port, "tin-can");
+assert.strictEqual(importLaunch.payload.normalizedInputs.fxRate, 1600);
+assertUrlDoesNotLeak(importLaunch, ["Nigeria", "Toyota", "Axio", "2016", "8500", "1500", "1200", "Japan", "1600"]);
 
 const importMissing = prefill.buildSafeLaunch("car-import-cost", {
   destinationCountry: "Ghana",
   itemCategory: "Honda Fit",
 });
-assert.deepStrictEqual(importMissing.missingInputs, ["itemValue"]);
+assert.deepStrictEqual(importMissing.missingInputs, ["purchasePrice", "shippingCost", "fxRate"]);
 assert.strictEqual(importMissing.validation.valid, true);
 
 const cvLaunch = prefill.buildSafeLaunch("cv-jobs", {
   country: "Ghana",
   targetRole: "electrical engineer",
+  careerStage: "professional",
   experienceYears: 4,
-  industry: "energy",
+  sector: "engineering",
   skills: "solar installation, maintenance",
+  languagePreference: "English",
+  templateId: "trade-skills",
+  starterId: "trade",
 });
 assert.strictEqual(cvLaunch.toolId, "cv-builder");
 assert.deepStrictEqual(cvLaunch.missingInputs, []);
 assert.ok(cvLaunch.userFacingSummary.includes("electrical engineer"));
 assert.strictEqual(cvLaunch.payload.normalizedInputs.experienceYears, 4);
-assert.strictEqual(cvLaunch.payload.normalizedInputs.industry, "energy");
+assert.strictEqual(cvLaunch.payload.normalizedInputs.sector, "engineering");
+assert.strictEqual(cvLaunch.payload.normalizedInputs.templateId, "trade-skills");
+assert.strictEqual(cvLaunch.payload.normalizedInputs.starterId, "trade");
+assert.strictEqual(cvLaunch.payload.normalizedInputs.languagePreference, "English");
 assertUrlDoesNotLeak(cvLaunch, ["Ghana", "electrical engineer", "solar"]);
+
+const cvMissing = prefill.buildSafeLaunch("cv-builder", {
+  targetRole: "data analyst",
+});
+assert.deepStrictEqual(cvMissing.missingInputs, ["country"]);
 
 const scholarshipLaunch = prefill.buildSafeLaunch("scholarships", {
   country: "Cameroon",
@@ -118,6 +141,23 @@ assert.strictEqual(solarLaunch.payload.normalizedInputs.loadSizeKw, 5);
 assert.strictEqual(solarLaunch.payload.normalizedInputs.backupHours, 6);
 assertUrlDoesNotLeak(solarLaunch, ["Nigeria", "Lagos", "120000"]);
 
+const solarCountryLaunch = prefill.buildSafeLaunch("solar-roi", {
+  country: "Nigeria",
+  countrySlug: "nigeria",
+  city: "Lagos",
+  userType: "shop",
+  monthlyBill: 120000,
+  monthlyGeneratorSpend: 95000,
+  loadSizeKw: 5,
+  outageHours: 6,
+});
+assert.strictEqual(solarCountryLaunch.toolId, "solar-roi");
+assert.strictEqual(solarCountryLaunch.route, "/tools/solar-roi/nigeria/");
+assert.strictEqual(solarCountryLaunch.launchUrl, "/tools/solar-roi/nigeria/?source=ask&prefill=1");
+assert.strictEqual(solarCountryLaunch.payload.normalizedInputs.monthlyGeneratorSpend, 95000);
+assert.strictEqual(solarCountryLaunch.payload.normalizedInputs.userType, "shop");
+assertUrlDoesNotLeak(solarCountryLaunch, ["Lagos", "120000", "95000"]);
+
 const generatorLaunch = prefill.buildSafeLaunch("fuel-tracker", {
   country: "Kenya",
   fuelType: "diesel",
@@ -139,6 +179,19 @@ assert.strictEqual(invoiceLaunch.toolId, "invoice-generator");
 assert.deepStrictEqual(invoiceLaunch.missingInputs, []);
 assertUrlDoesNotLeak(invoiceLaunch, ["Amina", "45000", "consulting"]);
 
+const vatLaunch = prefill.buildSafeLaunch("vat-calc-pan-african", {
+  country: "South Africa",
+  amount: 10000,
+  vatTreatment: "standard",
+  lineItemDescription: "consulting",
+});
+assert.strictEqual(vatLaunch.toolId, "vat-calc-pan-african");
+assert.strictEqual(vatLaunch.route, "/tools/vat-calculator/");
+assert.strictEqual(vatLaunch.payload.normalizedInputs.countryCode, "ZA");
+assert.strictEqual(vatLaunch.payload.normalizedInputs.vatRate, 15);
+assert.deepStrictEqual(vatLaunch.missingInputs, []);
+assertUrlDoesNotLeak(vatLaunch, ["South Africa", "10000", "consulting"]);
+
 const payeLaunch = prefill.buildSafeLaunch("payroll-tax", {
   country: "Kenya",
   grossPay: 250000,
@@ -146,8 +199,12 @@ const payeLaunch = prefill.buildSafeLaunch("payroll-tax", {
   employeeCount: 5,
 });
 assert.strictEqual(payeLaunch.toolId, "paye-calculator");
+assert.strictEqual(payeLaunch.route, "/kenya/ke-paye");
+assert.strictEqual(payeLaunch.launchUrl, "/kenya/ke-paye?source=ask&prefill=1");
+assert.strictEqual(payeLaunch.payload.normalizedInputs.countryCode, "KE");
+assert.strictEqual(payeLaunch.payload.normalizedInputs.grossPayAnnual, 3000000);
 assert.deepStrictEqual(payeLaunch.missingInputs, []);
-assertUrlDoesNotLeak(payeLaunch, ["Kenya", "250000", "5"]);
+assertUrlDoesNotLeak(payeLaunch, ["250000", "5"]);
 
 const payeMissing = prefill.buildSafeLaunch("paye-calculator", {
   country: "Kenya",

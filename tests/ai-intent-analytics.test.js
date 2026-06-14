@@ -83,6 +83,127 @@ assert.strictEqual(report.topRoutedCategories[0].name, "finance");
 assert.strictEqual(report.topCountriesDetected[0].name, "Nigeria");
 assert(report.topMissingInputs.some((item) => item.name === "engineCc"));
 
+analytics.reset();
+const promptPayload = analytics.record("ai_prompt_submitted", sampleState({
+  originalQuery: "Write a CV for an electrical engineer in Ghana. Phone 555-0100."
+}), {
+  query: "Write a CV for an electrical engineer in Ghana. Phone 555-0100.",
+  queryLength: 65,
+  source: "homepage_input"
+});
+assert.strictEqual(promptPayload.query_length_bucket, "61-140");
+assert.strictEqual(promptPayload.safe_prompt_example, "import-duty / Nigeria / length:61-140");
+assert.strictEqual(Object.prototype.hasOwnProperty.call(promptPayload, "raw_query"), false);
+
+analytics.record("ai_intent_detected", sampleState({
+  originalQuery: "Should I install solar for my shop in Lagos?",
+  selectedToolId: "solar-roi",
+  confidence: 0.78,
+  extractedInputs: { country: "Nigeria", city: "Lagos" },
+  missingInputs: ["monthlyElectricitySpend"]
+}), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor"
+});
+analytics.record("ai_clarification_shown", sampleState({
+  selectedToolId: "solar-roi",
+  missingInputs: ["monthlyElectricitySpend"]
+}), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor",
+  missingInputs: ["monthlyElectricitySpend"]
+});
+analytics.record("ai_clarification_answered", sampleState({
+  selectedToolId: "solar-roi",
+  missingInputs: []
+}), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor",
+  missingInputs: []
+});
+analytics.record("ai_tool_opened", sampleState({
+  selectedToolId: "solar-roi",
+  missingInputs: []
+}), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor",
+  toolOpenClicked: true,
+  missingInputs: []
+});
+analytics.record("ai_prefill_success", sampleState({ selectedToolId: "solar-roi" }), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor",
+  prefillStatus: "success"
+});
+analytics.record("ai_prefill_failed", sampleState({ selectedToolId: "invoice-generator" }), {
+  intentCategory: "business",
+  selectedToolId: "invoice-generator",
+  workflowType: "sme_finance",
+  prefillStatus: "unsupported"
+});
+analytics.record("ai_export_generated", sampleState({ selectedToolId: "solar-roi" }), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor",
+  exportType: "pdf"
+});
+analytics.record("ai_project_saved", sampleState({ selectedToolId: "solar-roi" }), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor"
+});
+analytics.record("ai_signup_prompt_shown", sampleState({ selectedToolId: "solar-roi" }), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  conversionType: "signup"
+});
+analytics.record("ai_pro_upgrade_clicked", sampleState({ selectedToolId: "solar-roi" }), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  conversionType: "pro"
+});
+analytics.record("sponsor_lead_optin_submitted", sampleState({ selectedToolId: "solar-roi" }), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  conversionType: "sponsor_lead"
+});
+analytics.record("ai_intent_fallback", sampleState({
+  originalQuery: "unclear local task",
+  selectedToolId: "tool-search",
+  extractedInputs: {},
+  missingInputs: [],
+  source: "fallback",
+  intentCategory: "unknown"
+}), {
+  selectedToolId: "tool-search",
+  fallbackUsed: true,
+  routerSource: "no_keyword_match",
+  noMatchCategory: "no_keyword_match"
+});
+
+report = analytics.getReport();
+assert.strictEqual(report.totals.promptsSubmitted, 1);
+assert.strictEqual(report.totals.intentsDetected, 1);
+assert.strictEqual(report.totals.toolOpen, 1);
+assert.strictEqual(report.totals.prefillSuccess, 1);
+assert.strictEqual(report.totals.prefillFailed, 1);
+assert.strictEqual(report.totals.exportsGenerated, 1);
+assert.strictEqual(report.totals.projectsSaved, 1);
+assert.strictEqual(report.totals.signupPromptShown, 1);
+assert.strictEqual(report.totals.proUpgradeClicked, 1);
+assert.strictEqual(report.totals.sponsorLeadOptinSubmitted, 1);
+assert.strictEqual(report.prefillSuccessRate, 50);
+assert(report.topWorkflows.some((item) => item.name === "energy_advisor"));
+assert(report.exportTypes.some((item) => item.name === "pdf"));
+assert(report.noMatchCategories.some((item) => item.name === "no_keyword_match"));
+assert(report.safePromptExamples.every((item) => !/555-0100|electrical engineer/i.test(item.name)));
+
+analytics.reset();
 analytics.record("ai_intent_fallback", sampleState({
   originalQuery: "unclear",
   selectedToolId: "tool-search",

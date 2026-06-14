@@ -173,17 +173,21 @@ Metrics to track with metadata only:
 - `ai_command_query_submit`: query presence and length
 - `ai_command_tool_open`: selected tool id, route, and prefill availability
 - `ai_command_fallback_used`: fallback reason and query length
-- `ai_clarification_shown`: selected tool id, missing-field count, and routing source
-- `ai_clarification_answered`: selected tool id, answered-field count, and remaining missing-field count
+- `ai_clarification_shown`: selected tool id, missing-field count, missing-field types, workflow type, and routing source
+- `ai_clarification_answered`: selected tool id, answered-field count, remaining missing-field types, and workflow type
 - `ai_prefill_payload_created`: selected tool id and missing-field count
 - `ai_prefill_open_tool`: selected tool id, route, prefill support, and save outcome
 - `ai_consent_requested`, `ai_consent_accepted`, `ai_consent_declined`: prompt presence and length only
 - `ai_continue_without_ai`: selected tool id or fallback context
-- Privacy-safe intent events:
-  - `ai_intent_routed`: detected category, selected tool id, detected country bucket, missing input types, query length bucket, entry source, routing source, and confidence bucket.
-  - `ai_intent_fallback`: fallback reason, selected fallback target, query length bucket, and entry source.
-  - `ai_intent_tool_open`: selected tool id, prefill/open outcome metadata, fallback flag, query length bucket, and entry source.
-  - `ai_intent_clarification_shown`, `ai_intent_clarification_answered`, `ai_intent_clarification_abandoned`: selected tool id, missing input types, source, and count/rate metadata.
+- Privacy-safe traction events:
+  - `ai_prompt_submitted`: entry source, query length bucket, consent state, and anonymized safe prompt example.
+  - `ai_intent_detected`: detected category, selected tool id, workflow type, detected country, missing input types, routing source, fallback flag, and confidence bucket.
+  - `ai_tool_opened`: selected tool id, workflow type, prefill/open metadata, fallback flag, query length bucket, and entry source.
+  - `ai_prefill_success`, `ai_prefill_failed`: selected tool id, workflow type, missing input types, and prefill status.
+  - `ai_export_generated`: workflow type, selected tool id, export type, source, and confidence bucket.
+  - `ai_project_saved`: workflow type, selected tool id, local/account storage metadata, source, and confidence bucket.
+  - `ai_signup_prompt_shown`, `ai_pro_upgrade_clicked`, `sponsor_lead_optin_submitted`: conversion type, workflow type, selected tool id, source, and country/category metadata.
+  - Compatibility events such as `ai_intent_fallback` and `ai_intent_clarification_abandoned` remain accepted by the local helper for fallback/no-match and abandonment reporting.
 
 Do not log raw prompts, CVs, document text, financial details, profile data, or other sensitive content from this surface.
 
@@ -194,7 +198,7 @@ Implementation notes:
 - Query text is never included in analytics payloads by default. The payload uses `query_length_bucket` such as `1-20`, `21-60`, `61-140`, `141-280`, or `281+`.
 - Raw query logging is only allowed when `NEXT_PUBLIC_AFROTOOLS_AI_RAW_QUERY_LOGGING` is explicitly enabled through runtime flags or local development storage. This is for controlled debugging only and should stay off in production because prompts may contain personal, career, document, financial, legal, or education-profile details.
 - Local debug mode is available with `/ai/?ai_debug=intent` or `localStorage.setItem("afrotools.aiIntentDebug", "intent")`. It renders parsed state in the browser without sending raw query text from the debug panel.
-- Local aggregate reporting is available at `/ai/intent-report.html`. The report is `noindex,nofollow`, reads only the current browser's aggregate counters, and summarizes top routed categories, top countries detected, top missing inputs, fallback rate, tool open rate, clarification completion rate, selected tools, query length buckets, and source breakdown.
+- Local aggregate reporting is available at `/ai/intent-report.html`. The report is `noindex,nofollow`, reads only the current browser's aggregate counters, and summarizes prompts submitted, routed intents, top workflows, top categories, top countries, selected tools, missing inputs, fallback rate, tool open rate, prefill success rate, clarification completion rate, export counts, saved projects, conversion signals, query length buckets, anonymized safe prompt examples, no-match categories, and source breakdown.
 
 ### Current `/ai/` Workflow Launcher
 
@@ -218,16 +222,80 @@ The `/ai/` command page now keeps a structured workflow state with the original 
 
 Pilot clarification coverage: CV Builder, Scholarship Finder, Study Abroad Planner, Import Duty, Solar/Fuel, PAYE, Invoice Generator, and PDF Workspace.
 
+### Saved AI Projects and History
+
+The `/ai/` command page now supports saved AI-assisted workflow projects without turning the page into a chat inbox.
+
+- Local saving is the default for unauthenticated users. `assets/js/ai/saved-projects.js` stores sanitized project summaries in browser `localStorage` under `afrotools.aiSavedProjects.v1`.
+- Saved projects include `projectId`, local anonymous storage key, workflow type, title, non-sensitive summary, sanitized structured inputs, a result summary, export links where available, and timestamps.
+- Raw prompts are not saved in the project model. CV text, resume text, PDF/document contents, profile paragraphs, emails, phone numbers, addresses, names, client/customer names, employers, company names, identity numbers, and similar private fields are stripped before storage or sync.
+- `/ai/?project=<projectId>` restores a local project into the workflow-card view so users can continue from the selected tool and editable structured inputs.
+- Account sync is explicit. The page uses the existing `window.AfroWorkspace.upsert()` bridge with `itemType: "ai-project"` only when the user clicks Sync, and the payload is still the sanitized project model.
+- No new Supabase table or server endpoint is introduced in this first pass. If account-synced AI projects need a dedicated dashboard later, reuse the workspace item APIs or add a migration only after inspecting live schema with the configured AfroTools Supabase target.
+- Analytics should record project metadata only, such as workflow type, storage mode, save/sync/delete/continue outcome, and sync failure reason. Do not log raw project text or raw query strings.
+
+### Reusable AI Workflow Exports
+
+`assets/js/ai/workflow-export.js` defines the reusable export contract for AI-assisted workflow reports. It accepts deterministic workflow plans and produces a sanitized report with:
+
+- title
+- user goal
+- inputs used
+- result summary
+- assumptions
+- source, freshness, and confidence
+- next steps
+- disclaimer
+
+Supported first outputs:
+
+- PDF brief through the existing `window.AfroTools.pdf.generate()` template, loaded lazily when needed.
+- Copyable checklist through `navigator.clipboard`.
+- WhatsApp-friendly summary using a `wa.me` share URL.
+- Downloadable JSON report.
+- Email-ready text through a `mailto:` draft URL.
+
+Privacy rules:
+
+- Export reports must not include hidden raw prompts, raw query fields, tokens, auth/session values, internal trace IDs, private diagnostics, emails, phone numbers, addresses, CV/resume/PDF/document bodies, profile text, or private names.
+- Report JSON should contain only the normalized export model, not the whole workflow state or router payload.
+- PDF/copy/WhatsApp/email outputs use the same sanitized report object as JSON.
+
+Integrated first workflows:
+
+- Import Advisor: PDF brief, copy checklist, WhatsApp summary, JSON, and email text from the import planning estimate and customs verification checklist.
+- Solar and Generator Advisor: PDF brief, copy checklist, WhatsApp summary, JSON, and email text from the decision brief, installer questions, source state, and planning warning.
+
+### Education AI Workflow
+
+The first education workflow is `assets/js/ai/education-workflow.js`. It is deterministic-first and renders inside `/ai/` when the selected workflow is Scholarship Finder or Study Abroad Planner.
+
+It normalizes `originCountry`, `targetCountry`, `budgetAmount`, `currency`, `studyLevel`, `field`, `gpa` or grade band, optional `ieltsScore`, and `intakeTimeline`. The command page uses those fields to summarize the user goal, ask missing profile inputs through the existing clarification card, show Study Abroad Cost, Scholarship Finder, GPA, IELTS, and Education Hub cards, generate a practical checklist, and open Scholarship Finder with a short-lived session prefill payload.
+
+The workflow does not claim guaranteed admission, funding, visa success, or official cost accuracy. It shows source/freshness warnings for scholarship eligibility, deadlines, visa/proof-of-funds rules, costs, and FX assumptions. The optional study-plan brief stays behind the existing consent gate and should not send education-profile content to a model without explicit consent.
+
+### Career AI Workflow
+
+The first career workflow is `assets/js/ai/career-workflow.js`. It is deterministic-first and renders inside `/ai/` when the selected workflow is CV Builder or Cover Letter Generator.
+
+It normalizes `country`, `targetRole`, `careerStage`, `sector`, `skills`, `education`, `experienceYears`, `experienceLevel`, and `languagePreference`. The command page uses those fields to summarize the user's career goal, ask for missing role/country inputs, show CV Builder, Cover Letter Generator, LinkedIn Optimizer, ATS guidance, and Job Tracker cards, and open CV Builder with a short-lived session prefill payload.
+
+The workflow suggests a CV Builder starter path and template id, but it does not generate private profile text by default. It only preloads safe, editable hints such as target role, country/market, skills keywords, language preference, starter path, and template. A user must still fill real employers, degrees, certifications, dates, contact details, achievements, and references manually. The optional "Generate starter profile with AI" action stays behind the existing consent gate and must not send CV/profile/document content to a model without explicit consent.
+
+Career analytics are metadata-only by default: `cv_agent_start`, `cv_agent_template_suggestion`, `cv_agent_ai_consent_accepted`, `cv_agent_ai_consent_declined`, and `cv_agent_export` should record source, country code, template id, export format, and high-level action metadata, not raw CV text, names, employers, job descriptions, or profile content.
+
 Supported first prefill receivers:
 
-- CV Builder: receives target role, country/market, location hint, and explicit skills when present through `window.CVApp`; full CV text stays local unless a separate AI action asks for consent.
+- CV Builder: receives target role, country/market, location hint, explicit skills, language preference, starter path, and template suggestion through `window.CVApp`; full CV text stays local unless a separate AI action asks for consent.
 - Scholarship Finder: receives study level, field, destination, GPA/score, and filter/profile controls where fields exist. Nationality/home country is retained in the notice summary because the current finder has no dedicated nationality field.
 - Import Duty Calculator: receives general goods or car import values, destination, item/vehicle, purchase/CIF value, shipping cost, year, make/model when catalog options are available, and engine size. It leaves calculation to a user click.
+- PAYE calculators: receive country, period, employee count, and gross-pay hints through session handoff; country-specific PAYE pages are still the calculation surface and do not auto-calculate from `/ai/`.
+- VAT Calculator and Invoice Generator: receive country/currency, amount, VAT treatment, tax-rate hints, and line-item description where safe; client names and financial values stay out of URLs.
 
 Known limitations in the current `/ai/` shell:
 
 - Clarification is rule-based and limited to the first three missing inputs per workflow.
-- Prefill support is strongest for CV Builder, Scholarship Finder, and Import Duty; other pilot adapters may route only or partially fill stable fields.
+- Prefill support is strongest for CV Builder, Scholarship Finder, Import Duty, Solar/Fuel, PAYE, VAT, and Invoice Generator; career starter/template handoff is limited to safe editable hints and does not create fabricated CV content.
 - The command page still has inline controller code. Extract it later only when a second command surface needs the same behavior.
 - Provider/model quality depends on the existing router function and environment configuration; deterministic routing must remain the dependable baseline.
 - Session handoff expires quickly and is browser-tab scoped, so a copied `prefill=1` URL alone cannot recreate private payload values.
@@ -367,6 +435,90 @@ Design rules:
 - Keep Pro and account features optional. Do not move free calculator value behind auth.
 
 ## Smallest 10 PRs
+
+## Implemented Pilot: AI Import Advisor
+
+The `/ai/` command page now includes an import-advisor workflow for prompts such as "How much duty will I pay to import a 2016 Toyota Axio into Nigeria?" The workflow stays deterministic by default and routes into the existing Import Duty Calculator rather than replacing it.
+
+Flow:
+
+- Extracts `destinationCountry`, product or vehicle mode, make/model/year, purchase price, currency, shipping/freight, insurance, origin country, arrival port, engine size, and user FX rate where present.
+- Asks for missing practical inputs before launch, prioritizing purchase price, shipping/freight, and FX rate.
+- Builds a short-lived `sessionStorage` prefill payload for `/tools/import-duty/` so private or financial values are not placed in the URL.
+- Uses the existing Nigeria import-duty engine when available to produce a planning estimate panel with CIF, duty/tax estimate, port/clearing estimate, total landed cost, assumptions, source confidence, and an official verification checklist.
+- Links to the car import workspace and car price directory for vehicle-specific planning, while keeping the flagship calculator as the final calculation surface.
+- Keeps consent behavior unchanged: no model/provider call is needed for the deterministic import advisor, and AI assist remains opt-in.
+
+Source and confidence rules:
+
+- Import advisor copy uses "reviewed planning assumptions" and "planning estimate" language.
+- It does not call stored import rates official unless source metadata supports that claim.
+- It warns that final customs assessment may differ and directs users to customs or a licensed clearing professional before payment.
+
+Supported first scenarios:
+
+- Vehicle import examples such as Toyota Axio into Nigeria.
+- Electronics, clothing/textiles, machinery, household goods, food/agriculture, and unknown-product prompts.
+- Unknown products fall back to cautious copy and ask for item/category detail before prefill.
+
+## Implemented Pilot: AI Solar And Generator Advisor
+
+The `/ai/` command page now includes a deterministic energy advisor for prompts such as "Should I install solar for my shop in Lagos?" It routes into existing Solar ROI and generator/fuel workflows instead of becoming a general chat tool.
+
+Flow:
+
+- Extracts `country`, `city`, user type, monthly electricity bill, generator/fuel spend, generator size, generator hours/day, fuel type, load/system size, outage hours, budget amount, and appliance hints where present.
+- Asks for missing practical inputs before launch, prioritizing country, user type, current bill or generator spend, generator hours, and load/system size.
+- Uses `data/energy/solar-roi-country-dataset.js` and `assets/js/engines/solar-roi-engine.js` to create a calculator-first decision brief with monthly generator cost, annual fuel exposure, rough solar system size, payback estimate, installer questions, and risks.
+- Builds short-lived `sessionStorage` prefill payloads for Solar ROI country pages and the generator/fuel route so bills, budgets, and fuel-spend values stay out of the URL.
+- Exports a decision brief through the shared PDF helper when it is available, with a text-download fallback.
+- Keeps consent behavior unchanged: no model/provider call is needed for the deterministic energy advisor, and "Use AI to improve brief" opens the existing opt-in consent path.
+
+Source and confidence rules:
+
+- Tariff, fuel, solar-yield, install-cost, and battery assumptions are shown as planning defaults with freshness and confidence from the energy dataset.
+- Fuel and tariff values are not described as live or official unless the source metadata supports that claim.
+- The advisor warns that final installer quotes, site conditions, fuel prices, tariff bands, and battery specs may differ.
+
+Supported first scenarios:
+
+- Lagos shop with generator exposure and monthly bill.
+- Nairobi home backup planning.
+- Accra office with fuel spend.
+- Johannesburg small business with long outage hours.
+
+## Implemented Pilot: AI SME Finance Assistant
+
+The `/ai/` command page now includes a deterministic SME finance assistant for prompts such as "Help me calculate payroll for 5 employees in Kenya" and "Create a VAT invoice in Ghana." It routes into existing PAYE, VAT, invoice, and business/compliance tools rather than adding a new tax engine or filing product.
+
+Current behavior:
+
+- Extracts `country`, `numberOfEmployees`, gross salary or salary band, `payPeriod`, optional deductions/benefits, invoice amount, currency, VAT treatment, line-item description, and business type where present.
+- Routes payroll/PAYE prompts to the public PAYE calculator, using country-specific PAYE routes for Nigeria, Kenya, Ghana, and South Africa when available.
+- Routes "create invoice" prompts to Invoice Generator and "calculate VAT" prompts to VAT Calculator, including VAT-aware invoice prompts.
+- Shows a compact SME finance panel with key planning metrics, checklist, source/confidence notes, high-stakes warning language, sponsor-safe partner copy, next-tool links, copy action, and text decision-brief export.
+- Builds short-lived `sessionStorage` prefill payloads for PAYE, VAT, and Invoice Generator so salaries, invoice amounts, and client/business details stay out of query strings.
+- Keeps deterministic routing available without model consent. "Use AI to improve brief" opens the existing opt-in consent path and does not send business or financial content by default.
+
+Compliance and monetization boundaries:
+
+- Outputs are planning estimates only, not tax, legal, payroll, accounting, or compliance advice.
+- Users are directed to the relevant revenue authority or a qualified accountant before filing, paying, issuing compliance documents, or relying on exemptions.
+- Partner/accounting placements must be clearly labeled, must not alter formulas or workflow routing, and any lead handoff requires opt-in.
+
+Supported first scenarios:
+
+- Kenya payroll for multiple employees.
+- Ghana PAYE planning.
+- Nigeria VAT-aware invoice drafts.
+- South Africa VAT calculations.
+- Ghana TIN/business-registration checklist.
+
+Known limitations:
+
+- The SME assistant does not calculate final PAYE, VAT filings, penalties, or statutory submissions inside `/ai/`; it launches existing tools with editable prefill.
+- Country-specific PAYE prefill currently covers the stable Nigeria, Kenya, Ghana, and South Africa selectors first.
+- VAT rate hints are cautious defaults for planning. They should be verified against current revenue-authority guidance before production filing or invoice issuance.
 
 1. Documentation and contracts
    - Add this transformation map.

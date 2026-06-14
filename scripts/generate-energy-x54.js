@@ -1200,6 +1200,8 @@ ${related}
 </div>
 <afro-footer></afro-footer>
 <script src="/assets/js/engines/solar-roi-engine.js"></script>
+<script src="/assets/js/ai/prefill-adapters.js"></script>
+<script src="/assets/js/ai/prefill-consumer.js"></script>
 <script>
 !function(){
 "use strict";

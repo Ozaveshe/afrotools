@@ -24,6 +24,21 @@
   var PREFILL_STORAGE_KEY = "afrotools.aiPrefillDraft";
   var PREFILL_TTL_MS = 20 * 60 * 1000;
   var PAY_PERIODS = ["monthly", "annual", "weekly", "daily"];
+  var SME_COUNTRY_META = {
+    nigeria: { country: "Nigeria", code: "NG", currency: "NGN", payeRoute: "/nigeria/ng-salary-tax", vatRate: 7.5 },
+    ng: { country: "Nigeria", code: "NG", currency: "NGN", payeRoute: "/nigeria/ng-salary-tax", vatRate: 7.5 },
+    lagos: { country: "Nigeria", code: "NG", currency: "NGN", payeRoute: "/nigeria/ng-salary-tax", vatRate: 7.5 },
+    kenya: { country: "Kenya", code: "KE", currency: "KES", payeRoute: "/kenya/ke-paye", vatRate: 16 },
+    ke: { country: "Kenya", code: "KE", currency: "KES", payeRoute: "/kenya/ke-paye", vatRate: 16 },
+    nairobi: { country: "Kenya", code: "KE", currency: "KES", payeRoute: "/kenya/ke-paye", vatRate: 16 },
+    ghana: { country: "Ghana", code: "GH", currency: "GHS", payeRoute: "/ghana/gh-paye", vatRate: 20 },
+    gh: { country: "Ghana", code: "GH", currency: "GHS", payeRoute: "/ghana/gh-paye", vatRate: 20 },
+    accra: { country: "Ghana", code: "GH", currency: "GHS", payeRoute: "/ghana/gh-paye", vatRate: 20 },
+    "south africa": { country: "South Africa", code: "ZA", currency: "ZAR", payeRoute: "/south-africa/za-paye", vatRate: 15 },
+    za: { country: "South Africa", code: "ZA", currency: "ZAR", payeRoute: "/south-africa/za-paye", vatRate: 15 },
+    johannesburg: { country: "South Africa", code: "ZA", currency: "ZAR", payeRoute: "/south-africa/za-paye", vatRate: 15 },
+    joburg: { country: "South Africa", code: "ZA", currency: "ZAR", payeRoute: "/south-africa/za-paye", vatRate: 15 },
+  };
 
   function text(value) {
     return String(value || "").replace(/\s+/g, " ").trim();
@@ -63,6 +78,19 @@
       if (value !== undefined && value !== null && value !== "") return value;
     }
     return "";
+  }
+
+  function countryMeta(countryValue, codeValue) {
+    var raw = lower(countryValue || codeValue);
+    var code = lower(codeValue);
+    if (SME_COUNTRY_META[raw]) return SME_COUNTRY_META[raw];
+    if (SME_COUNTRY_META[code]) return SME_COUNTRY_META[code];
+    var keys = Object.keys(SME_COUNTRY_META);
+    for (var i = 0; i < keys.length; i += 1) {
+      var meta = SME_COUNTRY_META[keys[i]];
+      if (lower(meta.country) === raw || lower(meta.code) === raw || lower(meta.code) === code) return meta;
+    }
+    return {};
   }
 
   function currency(value, fallback) {
@@ -245,10 +273,17 @@
       return {
         country: text(firstValue(inputs, ["country", "market"])),
         targetRole: text(firstValue(inputs, ["targetRole", "role", "jobTitle"])),
+        careerStage: text(firstValue(inputs, ["careerStage", "stage"])),
         experienceYears: positiveNumber(firstValue(inputs, ["experienceYears", "yearsExperience", "yearsOfExperience"])),
         experienceLevel: text(firstValue(inputs, ["experienceLevel", "seniority"])),
+        sector: text(firstValue(inputs, ["sector", "industry"])),
         industry: text(firstValue(inputs, ["industry", "sector"])),
         skills: array(firstValue(inputs, ["skills", "keywords"])),
+        education: text(firstValue(inputs, ["education", "qualification", "degree"])),
+        languagePreference: text(firstValue(inputs, ["languagePreference", "language", "locale"])),
+        templateId: text(firstValue(inputs, ["templateId", "template"])),
+        starterId: text(firstValue(inputs, ["starterId", "starterPath"])),
+        starterProfile: firstValue(inputs, ["starterProfile", "profileStarter"]) || null,
       };
     },
     validateInputs: function validateCv(normalized) {
@@ -258,15 +293,18 @@
       return makeValidation(errors);
     },
     getMissingInputs: function getMissingCv(normalized) {
-      return missing(normalized, ["targetRole"]);
+      return missing(normalized, ["targetRole", "country"]);
     },
     getUserFacingSummary: function summarizeCv(normalized) {
       return summaryList([
         normalized.targetRole ? "CV target role: " + normalized.targetRole : "",
         normalized.country ? "Market: " + normalized.country : "",
+        normalized.careerStage ? "Career stage: " + normalized.careerStage : "",
         normalized.experienceYears !== null ? "Experience: " + normalized.experienceYears + " years" : "",
         normalized.experienceLevel ? "Experience: " + normalized.experienceLevel : "",
-        normalized.industry ? "Industry: " + normalized.industry : "",
+        normalized.sector ? "Sector: " + normalized.sector : "",
+        normalized.templateId ? "Suggested template: " + normalized.templateId : "",
+        normalized.starterId ? "Starter path: " + normalized.starterId : "",
       ]) || "Open CV Builder and choose a template.";
     },
   });
@@ -310,7 +348,8 @@
     route: "/tools/import-duty/",
     privacyNote: "Import prefill is stored briefly in this browser session. Item values stay out of the URL.",
     normalizeInputs: function normalizeImport(inputs) {
-      var itemCategory = text(firstValue(inputs, ["itemCategory", "vehicle", "item", "goodsCategory"]));
+      var productCategory = lower(firstValue(inputs, ["productCategory", "goodsCategory", "category"]));
+      var itemCategory = text(firstValue(inputs, ["itemCategory", "vehicle", "item", "goodsCategory", "productName"]));
       var vehicleMake = text(firstValue(inputs, ["make", "vehicleMake"]));
       var vehicleModel = text(firstValue(inputs, ["model", "vehicleModel"]));
       var vehicleFromCategory = itemCategory.match(/^(toyota|honda|mazda|nissan|hyundai|kia|lexus|bmw|mercedes|ford|volkswagen|vw)\s+(.+)$/i);
@@ -318,42 +357,57 @@
         if (!vehicleMake) vehicleMake = vehicleFromCategory[1];
         if (!vehicleModel) vehicleModel = vehicleFromCategory[2];
       }
-      var itemValue = positiveNumber(firstValue(inputs, ["itemValue", "value", "purchasePrice", "purchasePriceUsd", "budget", "cifValue", "cifUsd"]));
+      var itemValue = positiveNumber(firstValue(inputs, ["itemValue", "value", "purchasePrice", "purchasePriceUsd", "budget", "cifValue", "cifUsd", "fobValue"]));
       var shippingCost = positiveNumber(firstValue(inputs, ["shippingCost", "freight", "freightUsd", "shipping", "shippingUsd"]));
+      var insuranceCost = positiveNumber(firstValue(inputs, ["insuranceCost", "insurance", "insuranceUsd"]));
       var engineCc = positiveNumber(firstValue(inputs, ["engineCc", "engineSize", "engineSizeCc"]));
+      var fxRate = positiveNumber(firstValue(inputs, ["fxRate", "userFxRate", "exchangeRate"]));
       var mode = lower(firstValue(inputs, ["mode", "importMode"]));
-      if (!mode && (vehicleMake || vehicleModel || /\b(toyota|honda|mazda|nissan|hyundai|kia|lexus|bmw|mercedes|ford)\b/i.test(itemCategory))) {
+      if (!mode && (productCategory === "vehicle" || vehicleMake || vehicleModel || /\b(toyota|honda|mazda|nissan|hyundai|kia|lexus|bmw|mercedes|ford)\b/i.test(itemCategory))) {
         mode = "car";
       }
+      if (!productCategory && (mode === "car" || mode === "vehicle")) productCategory = "vehicle";
       return {
         mode: mode === "car" || mode === "vehicle" ? "car" : "goods",
         destinationCountry: text(firstValue(inputs, ["destinationCountry", "country"])),
+        productCategory: productCategory || "other",
         itemCategory: itemCategory || summaryList([vehicleMake, vehicleModel]),
         itemValue: itemValue,
-        currency: currency(firstValue(inputs, ["currency", "itemCurrency"]), ""),
+        purchasePrice: itemValue,
+        currency: currency(firstValue(inputs, ["currency", "itemCurrency", "purchaseCurrency"]), ""),
         year: text(firstValue(inputs, ["year", "vehicleYear"])),
         make: vehicleMake,
         model: vehicleModel,
+        vehicleType: lower(firstValue(inputs, ["vehicleType", "bodyType"])) || "",
         engineCc: engineCc,
         shippingCost: shippingCost,
+        insuranceCost: insuranceCost,
+        originCountry: text(firstValue(inputs, ["originCountry", "origin", "sourceCountry"])),
+        port: lower(firstValue(inputs, ["port", "arrivalPort", "destinationPort"])),
+        fxRate: fxRate,
       };
     },
     validateInputs: function validateImport(normalized) {
-      var errors = validateNumbers(normalized, ["itemValue", "engineCc", "shippingCost"]);
+      var errors = validateNumbers(normalized, ["itemValue", "purchasePrice", "engineCc", "shippingCost", "insuranceCost", "fxRate"]);
       if (normalized.year && !/^(19[8-9]\d|20[0-3]\d)$/.test(String(normalized.year))) errors.push("year is outside the supported vehicle range");
       return makeValidation(errors);
     },
     getMissingInputs: function getMissingImport(normalized) {
-      return missing(normalized, ["destinationCountry", "itemCategory", "itemValue"]);
+      return missing(normalized, ["destinationCountry", "itemCategory", "purchasePrice", "shippingCost", "fxRate"]);
     },
     getUserFacingSummary: function summarizeImport(normalized) {
       return summaryList([
         normalized.destinationCountry ? "Destination: " + normalized.destinationCountry : "",
+        normalized.productCategory ? "Category: " + normalized.productCategory : "",
         normalized.itemCategory ? "Item: " + normalized.itemCategory : "",
         normalized.year ? "Year: " + normalized.year : "",
         normalized.engineCc !== null ? "Engine: " + normalized.engineCc + " cc" : "",
         normalized.itemValue !== null ? "Value captured for local prefill" : "",
         normalized.shippingCost !== null ? "Shipping captured for local prefill" : "",
+        normalized.insuranceCost !== null ? "Insurance captured for local prefill" : "",
+        normalized.fxRate !== null ? "FX rate captured for local prefill" : "",
+        normalized.originCountry ? "Origin: " + normalized.originCountry : "",
+        normalized.port ? "Arrival: " + normalized.port : "",
       ]) || "Open Import Duty Calculator and add item details.";
     },
   });
@@ -368,41 +422,58 @@
       var generatorHours = positiveNumber(firstValue(inputs, ["generatorHoursPerDay", "generatorHours", "hoursPerDay"]));
       var generatorSize = positiveNumber(firstValue(inputs, ["generatorSizeKva", "generatorSize", "kva"]));
       var monthlyBill = positiveNumber(firstValue(inputs, ["monthlyBill", "powerBill", "budget", "electricityBill"]));
+      var monthlyGeneratorSpend = positiveNumber(firstValue(inputs, ["monthlyGeneratorSpend", "generatorSpend", "fuelSpend"]));
       var loadSizeKw = positiveNumber(firstValue(inputs, ["loadSizeKw", "loadSize", "systemKW", "systemSizeKw"]));
-      var backupHours = positiveNumber(firstValue(inputs, ["backupHours", "outageHours", "backupHoursPerDay"]));
+      var outageHours = positiveNumber(firstValue(inputs, ["outageHours", "backupHours", "backupHoursPerDay"]));
+      var budgetAmount = positiveNumber(firstValue(inputs, ["budgetAmount", "budgetRange", "budget"]));
       var mode = lower(firstValue(inputs, ["mode", "energyMode"]));
-      if (!mode && (fuelType || generatorHours !== null || generatorSize !== null)) mode = "generator";
+      if (!mode && (fuelType || generatorHours !== null || generatorSize !== null) && monthlyBill === null) mode = "generator";
       return {
         mode: mode === "generator" || mode === "fuel" ? "generator" : "solar",
         country: text(firstValue(inputs, ["country"])),
+        countryCode: text(firstValue(inputs, ["countryCode"])),
+        countrySlug: text(firstValue(inputs, ["countrySlug"])),
         city: text(firstValue(inputs, ["city", "location"])),
+        userType: lower(firstValue(inputs, ["userType", "customerType"])),
         monthlyBill: monthlyBill,
+        monthlyGeneratorSpend: monthlyGeneratorSpend,
         loadSizeKw: loadSizeKw,
-        backupHours: backupHours,
+        backupHours: outageHours,
+        outageHours: outageHours,
+        budgetAmount: budgetAmount,
+        currency: currency(firstValue(inputs, ["currency"]), ""),
+        fuelPrice: positiveNumber(firstValue(inputs, ["fuelPrice", "fuelPricePerLitre"])),
         fuelType: fuelType,
         generatorHoursPerDay: generatorHours,
         generatorSizeKva: generatorSize,
       };
     },
     validateInputs: function validateEnergy(normalized) {
-      return makeValidation(validateNumbers(normalized, ["monthlyBill", "loadSizeKw", "backupHours", "generatorHoursPerDay", "generatorSizeKva"]));
+      return makeValidation(validateNumbers(normalized, ["monthlyBill", "monthlyGeneratorSpend", "loadSizeKw", "backupHours", "outageHours", "budgetAmount", "fuelPrice", "generatorHoursPerDay", "generatorSizeKva"]));
     },
     getMissingInputs: function getMissingEnergy(normalized) {
       if (normalized.mode === "generator") return missing(normalized, ["country"]);
-      return missing(normalized, ["country", "monthlyBill"]);
+      var required = ["country"];
+      if (normalized.monthlyBill === null && normalized.monthlyGeneratorSpend === null) required.push("monthlyBill");
+      if (normalized.loadSizeKw === null && normalized.generatorSizeKva === null) required.push("loadSizeKw");
+      return missing(normalized, required);
     },
     getUserFacingSummary: function summarizeEnergy(normalized) {
       return summaryList([
         normalized.mode === "generator" ? "Generator/fuel workflow" : "Solar ROI workflow",
         normalized.country ? "Country: " + normalized.country : "",
         normalized.city ? "City: " + normalized.city : "",
+        normalized.userType ? "Use case: " + normalized.userType : "",
         normalized.monthlyBill !== null ? "Monthly spend captured for local prefill" : "",
+        normalized.monthlyGeneratorSpend !== null ? "Generator spend captured for local prefill" : "",
         normalized.loadSizeKw !== null ? "Load/system size: " + normalized.loadSizeKw + " kW" : "",
         normalized.backupHours !== null ? "Backup target: " + normalized.backupHours + " hours" : "",
+        normalized.generatorHoursPerDay !== null ? "Generator use: " + normalized.generatorHoursPerDay + " hours/day" : "",
       ]);
     },
     routeFor: function routeForEnergy(normalized) {
-      return normalized && normalized.mode === "generator" ? "/tools/fuel-tracker/#generator-cost" : "/tools/solar-roi/";
+      if (normalized && normalized.mode === "generator") return "/tools/fuel-tracker/#generator-cost";
+      return normalized && normalized.countrySlug ? "/tools/solar-roi/" + normalized.countrySlug + "/" : "/tools/solar-roi/";
     },
   });
 
@@ -413,12 +484,16 @@
     route: "/tools/invoice-generator/",
     privacyNote: "Invoice prefill is stored briefly in this browser session. Client names and amounts stay out of the URL.",
     normalizeInputs: function normalizeInvoice(inputs) {
+      var meta = countryMeta(firstValue(inputs, ["country"]), firstValue(inputs, ["countryCode"]));
       return {
         clientName: text(firstValue(inputs, ["clientName", "client", "customerName"])),
         clientCompany: text(firstValue(inputs, ["clientCompany", "company"])),
-        currency: currency(firstValue(inputs, ["currency"]), ""),
-        amount: positiveNumber(firstValue(inputs, ["amount", "itemValue", "total", "budget"])),
-        taxRate: positiveNumber(firstValue(inputs, ["taxRate", "vatRate"])),
+        country: meta.country || text(firstValue(inputs, ["country"])),
+        countryCode: meta.code || text(firstValue(inputs, ["countryCode"])),
+        currency: currency(firstValue(inputs, ["currency"]), meta.currency || ""),
+        amount: positiveNumber(firstValue(inputs, ["amount", "invoiceAmount", "itemValue", "total", "budget"])),
+        taxRate: positiveNumber(firstValue(inputs, ["taxRate", "vatRate"])) !== null ? positiveNumber(firstValue(inputs, ["taxRate", "vatRate"])) : (meta.vatRate !== undefined ? meta.vatRate : null),
+        vatTreatment: text(firstValue(inputs, ["vatTreatment", "taxTreatment"])),
         lineItemDescription: text(firstValue(inputs, ["lineItemDescription", "description", "service"])),
       };
     },
@@ -428,7 +503,7 @@
       return makeValidation(errors);
     },
     getMissingInputs: function getMissingInvoice(normalized) {
-      return missing(normalized, ["clientName", "amount"]);
+      return missing(normalized, ["amount"]);
     },
     getUserFacingSummary: function summarizeInvoice(normalized) {
       return summaryList([
@@ -442,16 +517,26 @@
   var payeAdapter = createAdapter({
     id: "paye-calculator-prefill",
     primaryToolId: "paye-calculator",
-    aliases: ["payroll-tax", "salary-tax", "paye"],
-    route: "/tools/paye-calculator",
+    aliases: ["payroll-tax", "salary-tax", "paye", "payroll", "afropayroll", "employee-cost"],
+    route: "/tools/paye-calculator/",
     privacyNote: "PAYE prefill is stored briefly in this browser session. Salary amounts stay out of the URL.",
     normalizeInputs: function normalizePaye(inputs) {
+      var meta = countryMeta(firstValue(inputs, ["country"]), firstValue(inputs, ["countryCode"]));
+      var gross = positiveNumber(firstValue(inputs, ["grossPay", "salary", "income", "budget", "grossSalary"]));
+      var period = payPeriod(firstValue(inputs, ["payPeriod", "period"])) || "monthly";
+      var monthly = period === "annual" && gross !== null ? gross / 12 : gross;
+      var annual = period === "annual" ? gross : (gross !== null ? gross * 12 : null);
       return {
-        country: text(firstValue(inputs, ["country"])),
-        grossPay: positiveNumber(firstValue(inputs, ["grossPay", "salary", "income", "budget"])),
-        payPeriod: payPeriod(firstValue(inputs, ["payPeriod", "period"])) || "monthly",
-        employeeCount: positiveNumber(firstValue(inputs, ["employeeCount", "employees", "staffCount"])),
-        currency: currency(firstValue(inputs, ["currency"]), ""),
+        country: meta.country || text(firstValue(inputs, ["country"])),
+        countryCode: meta.code || text(firstValue(inputs, ["countryCode"])),
+        grossPay: gross,
+        grossPayMonthly: monthly,
+        grossPayAnnual: annual,
+        payPeriod: period,
+        employeeCount: positiveNumber(firstValue(inputs, ["employeeCount", "numberOfEmployees", "employees", "staffCount"])),
+        numberOfEmployees: positiveNumber(firstValue(inputs, ["numberOfEmployees", "employeeCount", "employees", "staffCount"])),
+        currency: currency(firstValue(inputs, ["currency"]), meta.currency || ""),
+        deductionsBenefits: text(firstValue(inputs, ["deductionsBenefits", "deductions", "benefits"])),
       };
     },
     validateInputs: function validatePaye(normalized) {
@@ -469,6 +554,46 @@
         normalized.payPeriod ? "Period: " + normalized.payPeriod : "",
         normalized.employeeCount !== null ? "Employees: " + normalized.employeeCount : "",
       ]) || "Open PAYE calculator and add payroll details.";
+    },
+    routeFor: function routeForPaye(normalized) {
+      return countryMeta(normalized && normalized.country, normalized && normalized.countryCode).payeRoute || "/tools/paye-calculator/";
+    },
+  });
+
+  var vatAdapter = createAdapter({
+    id: "vat-calculator-prefill",
+    primaryToolId: "vat-calc-pan-african",
+    aliases: ["vat-calculator", "vat", "business-vat"],
+    route: "/tools/vat-calculator/",
+    privacyNote: "VAT prefill is stored briefly in this browser session. Invoice amounts and descriptions stay out of the URL.",
+    normalizeInputs: function normalizeVat(inputs) {
+      var meta = countryMeta(firstValue(inputs, ["country"]), firstValue(inputs, ["countryCode"]));
+      return {
+        country: meta.country || text(firstValue(inputs, ["country"])),
+        countryCode: meta.code || text(firstValue(inputs, ["countryCode"])),
+        amount: positiveNumber(firstValue(inputs, ["amount", "invoiceAmount", "itemValue", "total", "budget"])),
+        invoiceAmount: positiveNumber(firstValue(inputs, ["invoiceAmount", "amount", "itemValue", "total", "budget"])),
+        currency: currency(firstValue(inputs, ["currency"]), meta.currency || ""),
+        vatRate: positiveNumber(firstValue(inputs, ["vatRate", "taxRate"])) !== null ? positiveNumber(firstValue(inputs, ["vatRate", "taxRate"])) : (meta.vatRate !== undefined ? meta.vatRate : null),
+        vatTreatment: text(firstValue(inputs, ["vatTreatment", "taxTreatment"])) || "standard",
+        lineItemDescription: text(firstValue(inputs, ["lineItemDescription", "description", "service"])),
+        workflowKind: text(firstValue(inputs, ["workflowKind", "businessTask"])),
+      };
+    },
+    validateInputs: function validateVat(normalized) {
+      var errors = validateNumbers(normalized, ["amount", "invoiceAmount", "vatRate"]);
+      if (normalized.vatRate !== null && normalized.vatRate > 100) errors.push("vatRate cannot exceed 100");
+      return makeValidation(errors);
+    },
+    getMissingInputs: function getMissingVat(normalized) {
+      return missing(normalized, ["country", "amount", "vatTreatment"]);
+    },
+    getUserFacingSummary: function summarizeVat(normalized) {
+      return summaryList([
+        normalized.country ? "Country: " + normalized.country : "",
+        normalized.amount !== null ? "Amount captured for local prefill" : "",
+        normalized.vatTreatment ? "VAT treatment: " + normalized.vatTreatment : "",
+      ]) || "Open VAT Calculator and add business tax details.";
     },
   });
 
@@ -501,6 +626,7 @@
     scholarshipAdapter,
     importDutyAdapter,
     energyAdapter,
+    vatAdapter,
     invoiceAdapter,
     payeAdapter,
     pdfWorkspaceAdapter,

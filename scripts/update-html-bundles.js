@@ -103,7 +103,7 @@ for (const htmlPath of htmlFiles) {
   for (const [bundleName, info] of Object.entries(manifest)) {
     // Match any old bundle reference for this bundle name (any hash)
     const oldBundleRegex = new RegExp(
-      `<script\\s+[^>]*src=["']/assets/js/bundles/${bundleName}\\.[a-f0-9]+\\.min\\.js["'][^>]*></script>`,
+      `<script\\s+[^>]*src=["'][^"']*/assets/js/bundles/${bundleName}\\.[a-f0-9]+\\.min\\.js(?:\\?[^"']*)?["'][^>]*></script>`,
       'g'
     );
     html = html.replace(oldBundleRegex, `<script src="${info.path}" defer></script>`);

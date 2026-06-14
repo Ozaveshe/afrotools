@@ -6,6 +6,8 @@ const sourceConfidence = require("../assets/js/lib/source-confidence.js");
 
 const registryPath = path.join(__dirname, "..", "data", "source-registry.json");
 const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
+const schemaPath = path.join(__dirname, "..", "data", "source-registry.schema.json");
+const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
 
 function test(name, fn) {
   try {
@@ -17,6 +19,41 @@ function test(name, fn) {
   }
 }
 
+test("DataSourceMeta schema exposes the shared source and confidence contract", function () {
+  const dataSourceMeta = schema.$defs.DataSourceMeta;
+  assert.ok(dataSourceMeta, "DataSourceMeta schema required");
+  for (const field of [
+    "id",
+    "sourceName",
+    "sourceType",
+    "countryCodes",
+    "appliesTo",
+    "freshnessStatus",
+    "confidence",
+    "displayDisclaimer"
+  ]) {
+    assert.ok(dataSourceMeta.required.includes(field), field + " should be required");
+  }
+  for (const sourceType of [
+    "official",
+    "regulator",
+    "central_bank",
+    "university",
+    "foundation",
+    "reviewed_dataset",
+    "third_party_snapshot",
+    "user_input",
+    "estimate"
+  ]) {
+    assert.ok(dataSourceMeta.properties.sourceType.enum.includes(sourceType), sourceType + " sourceType supported");
+    assert.ok(sourceConfidence.SOURCE_TYPES.includes(sourceType), sourceType + " helper sourceType supported");
+  }
+  for (const confidence of ["official_verified", "reviewed", "estimated", "low_confidence", "user_entered"]) {
+    assert.ok(dataSourceMeta.properties.confidence.enum.includes(confidence), confidence + " confidence supported");
+    assert.ok(sourceConfidence.CONFIDENCE_LEVELS.includes(confidence), confidence + " helper confidence supported");
+  }
+});
+
 test("source registry entries satisfy the DataSourceMeta schema", function () {
   assert.strictEqual(registry.schemaVersion, 1);
   assert.ok(Array.isArray(registry.sources));
@@ -26,7 +63,11 @@ test("source registry entries satisfy the DataSourceMeta schema", function () {
     assert.ok(source.id, "source id required");
     assert.ok(!ids.has(source.id), "duplicate source id: " + source.id);
     ids.add(source.id);
+    for (const field of schema.$defs.DataSourceMeta.required) {
+      assert.ok(Object.prototype.hasOwnProperty.call(source, field), source.id + " " + field + " required");
+    }
     assert.ok(source.sourceName, source.id + " sourceName required");
+    assert.ok(schema.$defs.DataSourceMeta.properties.sourceType.enum.includes(source.sourceType), source.id + " sourceType valid against schema");
     assert.ok(sourceConfidence.SOURCE_TYPES.includes(source.sourceType), source.id + " sourceType valid");
     assert.ok(Array.isArray(source.countryCodes) && source.countryCodes.length, source.id + " countryCodes required");
     assert.ok(Array.isArray(source.appliesTo) && source.appliesTo.length, source.id + " appliesTo required");
@@ -67,6 +108,24 @@ test("stale warning behavior flags stale, unknown, unavailable, and low confiden
   assert.strictEqual(sourceConfidence.shouldShowStaleWarning({ freshnessStatus: "fresh", confidence: "low_confidence" }, "2026-06-14"), true);
 });
 
+test("source badge helpers render cautious, reusable UI fragments", function () {
+  const source = {
+    sourceName: "Example reviewed source",
+    sourceType: "reviewed_dataset",
+    countryCodes: ["NG"],
+    appliesTo: ["tax"],
+    freshnessStatus: "stale",
+    confidence: "reviewed",
+    lastCheckedAt: "2025-01-01",
+    displayDisclaimer: "Review current authority guidance before filing."
+  };
+
+  assert.match(sourceConfidence.SourceBadge(source), /Reviewed source/);
+  assert.match(sourceConfidence.FreshnessBadge(source, "2026-06-14"), /Stale/);
+  assert.match(sourceConfidence.ConfidenceNotice(source), /Review current authority guidance/);
+  assert.match(sourceConfidence.StaleDataWarning(source, "2026-06-14"), /Verify before making a high-stakes decision/);
+});
+
 test("merged result source keeps the most cautious state", function () {
   const merged = sourceConfidence.mergeSourceMetaForResult([
     { id: "a", sourceName: "A", sourceType: "reviewed_dataset", countryCodes: ["NG"], appliesTo: ["tax"], freshnessStatus: "fresh", confidence: "reviewed", displayDisclaimer: "Reviewed source." },
@@ -93,5 +152,19 @@ test("migrated flagship entries do not overclaim official verification", functio
     assert.notStrictEqual(source.confidence, "official_verified", id + " should not be official_verified");
     const badge = sourceConfidence.getSourceBadgeProps(source);
     assert.notStrictEqual(badge.label, "Official verified", id + " badge should not say official verified");
+  }
+});
+
+test("migrated data-heavy tools include source registry UI hooks", function () {
+  const pages = [
+    ["tools/import-duty/index.html", "import-duty-planning-rates"],
+    ["tools/fuel-tracker/index.html", "afrofuel-static-snapshot"],
+    ["tools/paye-calculator/index.html", "paye-tax-engine-country-packs"]
+  ];
+
+  for (const [file, sourceId] of pages) {
+    const html = fs.readFileSync(path.join(__dirname, "..", file), "utf8");
+    assert.match(html, /source-confidence\.js/, file + " should load source-confidence helper");
+    assert.ok(html.includes('data-source-meta-id="' + sourceId + '"'), file + " should render " + sourceId);
   }
 });

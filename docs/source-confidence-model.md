@@ -6,17 +6,19 @@ AfroTools AI should route users into practical tools, but the trust layer comes 
 
 Registry file: `data/source-registry.json`
 
+Schema file: `data/source-registry.schema.json`
+
 Reusable helper: `assets/js/lib/source-confidence.js`
 
 Required fields:
 
 - `id`: stable source id used by tools and AI workflow cards.
 - `sourceName`: human-readable source label.
-- `sourceType`: one of `official`, `regulator`, `central_bank`, `tax_authority`, `university`, `foundation`, `government`, `reviewed_dataset`, `third_party_snapshot`, `partner`, `user_input`, `estimate`, or `unknown`.
+- `sourceType`: one of `official`, `regulator`, `central_bank`, `tax_authority`, `university`, `foundation`, `government`, `reviewed_dataset`, `third_party_snapshot`, `partner`, `user_input`, `estimate`, or `unknown`. The core public contract is official/regulator/central-bank/university/foundation/reviewed-dataset/third-party/user-input/estimate; `tax_authority`, `government`, `partner`, and `unknown` are repo-specific refinements or fallbacks.
 - `countryCodes`: ISO-style country codes, or `ALL` for pan-African/general metadata.
 - `appliesTo`: one or more of `tax`, `fuel`, `fx`, `import_duty`, `scholarships`, `education`, `salary`, `business`, `energy`, `country_profile`, `documents`, or `other`.
 - `freshnessStatus`: `fresh`, `acceptable`, `stale`, `unknown`, or `unavailable`.
-- `confidence`: `official_verified`, `reviewed`, `estimated`, `low_confidence`, `user_entered`, or `unavailable`.
+- `confidence`: `official_verified`, `reviewed`, `estimated`, `low_confidence`, `user_entered`, or `unavailable`. `unavailable` is an internal fallback for unknown or unmigrated data.
 
 Optional fields:
 
@@ -75,6 +77,7 @@ If no usable date exists, the helper falls back to the registry's explicit statu
 - Import Duty Calculator: `import-duty-planning-rates`, confidence `reviewed`.
 - Scholarship Finder: `scholarship-provider-feed`, confidence `reviewed`.
 - AfroFuel/Fuel Tracker: `afrofuel-static-snapshot`, confidence `estimated`.
+- PAYE Calculator: `paye-tax-engine-country-packs`, confidence `reviewed`.
 - `/ai/` workflow cards: cautious source hints for import duty, scholarships, fuel/energy, and PAYE workflows.
 
 ## Migration Checklist

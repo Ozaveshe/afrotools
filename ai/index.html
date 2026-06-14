@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
   <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-  <script src="/assets/js/bundles/core.faad4978.min.js" defer></script>
+  <script src="/assets/js/bundles/core.2e773d12.min.js" defer></script>
   <style>
     :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5}
     body{margin:0;background:var(--ai-bg);color:var(--ai-text);font-family:"DM Sans",system-ui,sans-serif}
@@ -35,6 +35,17 @@
     .ai-run{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border:1px solid var(--ai-primary);border-radius:12px;background:var(--ai-primary);color:#fff;font:inherit;font-size:.88rem;font-weight:900;cursor:pointer}
     .ai-run:hover,.ai-run:focus-visible{background:var(--ai-primary-dark);border-color:var(--ai-primary-dark)}
     .ai-trust{margin:0;border:1px solid #fde68a;border-radius:12px;background:var(--ai-warn-bg);color:var(--ai-warn);padding:12px 14px;font-size:.82rem;line-height:1.55}
+    .ai-projects{max-width:860px;margin:14px auto 0;border:1px solid #dbe6f4;border-radius:13px;background:#fbfdff;padding:12px}
+    .ai-projects[hidden]{display:none}
+    .ai-projects-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:9px}
+    .ai-projects h3{margin:0;color:#0f172a;font-size:.9rem;font-weight:900}
+    .ai-projects p{margin:3px 0 0;color:#64748b;font-size:.76rem;line-height:1.45}
+    .ai-project-list{display:grid;gap:8px}
+    .ai-project-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid #e2e8f0;border-radius:11px;background:#fff;padding:10px}
+    .ai-project-item strong{display:block;color:#0f172a;font-size:.82rem;line-height:1.25}
+    .ai-project-item span{display:block;margin-top:3px;color:#64748b;font-size:.73rem;line-height:1.35}
+    .ai-project-actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+    .ai-project-status{margin-top:8px;color:#475569;font-size:.76rem;font-weight:800;line-height:1.45}
     .ai-state{max-width:860px;margin:16px auto 0}
     .ai-state[hidden]{display:none}
     .ai-status{border:1px solid var(--ai-border);border-radius:12px;background:#fbfdff;color:#334155;padding:13px 14px;font-size:.85rem;line-height:1.55}
@@ -80,6 +91,86 @@
     .ai-consent-check{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:flex-start;gap:9px;margin-top:10px;color:#334155;font-size:.8rem;line-height:1.45;font-weight:800}
     .ai-consent-check input{width:18px;height:18px;margin-top:1px}
     .ai-model-status{margin:8px 0 0;color:#475569;font-size:.76rem;line-height:1.45}
+    .ai-education-plan{display:grid;gap:12px;border:1px solid #bfdbfe;border-radius:13px;background:#f8fbff;padding:13px}
+    .ai-education-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .ai-education-head h4{margin:0;color:#0f172a;font-size:.95rem;font-weight:900}
+    .ai-education-head p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.5}
+    .ai-education-head span{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;background:#e0f2fe;color:#075985;padding:4px 9px;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+    .ai-education-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+    .ai-education-grid>div,.ai-education-section{border:1px solid #dbeafe;border-radius:11px;background:#fff;padding:10px}
+    .ai-education-plan strong{display:block;color:#1e3a8a;font-size:.76rem;font-weight:900;margin-bottom:5px}
+    .ai-education-plan p{margin:0 0 6px;color:#334155;font-size:.78rem;line-height:1.45}
+    .ai-education-plan ul,.ai-education-plan ol{margin:0;padding-left:18px;color:#475569;font-size:.76rem;line-height:1.5}
+    .ai-education-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .ai-education-tool{display:grid;gap:4px;border:1px solid #dbeafe;border-radius:10px;background:#f8fbff;color:inherit;text-decoration:none;padding:9px}
+    .ai-education-tool strong{margin:0;color:#0f172a;font-size:.78rem}
+    .ai-education-tool span{color:#64748b;font-size:.72rem;line-height:1.38}
+    .ai-education-warning{background:#fffbeb;border-color:#fde68a}
+    .ai-education-warning strong{color:#92400e}
+    .ai-education-actions{display:flex;flex-wrap:wrap;gap:8px}
+    .ai-career-plan{display:grid;gap:12px;border:1px solid #bbf7d0;border-radius:13px;background:#f7fef9;padding:13px}
+    .ai-career-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .ai-career-head h4{margin:0;color:#0f172a;font-size:.95rem;font-weight:900}
+    .ai-career-head p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.5}
+    .ai-career-head span{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;background:#dcfce7;color:#166534;padding:4px 9px;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+    .ai-career-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+    .ai-career-grid>div,.ai-career-section{border:1px solid #d9f99d;border-radius:11px;background:#fff;padding:10px}
+    .ai-career-plan strong{display:block;color:#166534;font-size:.76rem;font-weight:900;margin-bottom:5px}
+    .ai-career-plan p{margin:0 0 6px;color:#334155;font-size:.78rem;line-height:1.45}
+    .ai-career-plan ul,.ai-career-plan ol{margin:0;padding-left:18px;color:#475569;font-size:.76rem;line-height:1.5}
+    .ai-career-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .ai-career-tool{display:grid;gap:4px;border:1px solid #dcfce7;border-radius:10px;background:#f8fff9;color:inherit;text-decoration:none;padding:9px}
+    .ai-career-tool strong{margin:0;color:#0f172a;font-size:.78rem}
+    .ai-career-tool span{color:#64748b;font-size:.72rem;line-height:1.38}
+    .ai-career-warning{background:#fffbeb;border-color:#fde68a}
+    .ai-career-warning strong{color:#92400e}
+    .ai-career-actions{display:flex;flex-wrap:wrap;gap:8px}
+    .ai-import-plan{display:grid;gap:12px;border:1px solid #fed7aa;border-radius:13px;background:#fffaf5;padding:13px}
+    .ai-import-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .ai-import-head h4{margin:0;color:#0f172a;font-size:.95rem;font-weight:900}
+    .ai-import-head p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.5}
+    .ai-import-head span{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;background:#ffedd5;color:#9a3412;padding:4px 9px;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+    .ai-import-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+    .ai-import-grid>div,.ai-import-section{border:1px solid #fed7aa;border-radius:11px;background:#fff;padding:10px}
+    .ai-import-plan strong{display:block;color:#9a3412;font-size:.76rem;font-weight:900;margin-bottom:5px}
+    .ai-import-plan p{margin:0 0 6px;color:#334155;font-size:.78rem;line-height:1.45}
+    .ai-import-plan ul,.ai-import-plan ol{margin:0;padding-left:18px;color:#475569;font-size:.76rem;line-height:1.5}
+    .ai-import-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .ai-import-tool{display:grid;gap:4px;border:1px solid #fed7aa;border-radius:10px;background:#fffaf5;color:inherit;text-decoration:none;padding:9px}
+    .ai-import-tool strong{margin:0;color:#0f172a;font-size:.78rem}
+    .ai-import-tool span{color:#64748b;font-size:.72rem;line-height:1.38}
+    .ai-import-warning{background:#fffbeb;border-color:#fde68a}
+    .ai-import-warning strong{color:#92400e}
+    .ai-import-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+    .ai-import-note{color:#92400e;font-size:.76rem;font-weight:800;line-height:1.45}
+    .ai-energy-plan{display:grid;gap:12px;border:1px solid #bbf7d0;border-radius:13px;background:#f7fef9;padding:13px}
+    .ai-energy-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .ai-energy-head h4{margin:0;color:#0f172a;font-size:.95rem;font-weight:900}
+    .ai-energy-head p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.5}
+    .ai-panel-eyebrow{display:block;color:#166534;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+    .ai-energy-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+    .ai-energy-metrics>div,.ai-energy-grid>div{border:1px solid #bbf7d0;border-radius:11px;background:#fff;padding:10px}
+    .ai-energy-metrics span{display:block;color:#64748b;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+    .ai-energy-metrics strong{display:block;color:#0f172a;font-size:.92rem;font-weight:900;margin-top:4px}
+    .ai-energy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .ai-energy-plan strong{display:block;color:#166534;font-size:.76rem;font-weight:900;margin-bottom:5px}
+    .ai-energy-plan p{margin:0 0 6px;color:#334155;font-size:.78rem;line-height:1.45}
+    .ai-energy-plan ul,.ai-energy-plan ol{margin:0;padding-left:18px;color:#475569;font-size:.76rem;line-height:1.5}
+    .ai-energy-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+    .ai-finance-plan{display:grid;gap:12px;border:1px solid #bae6fd;border-radius:13px;background:#f7fcff;padding:13px}
+    .ai-finance-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .ai-finance-head h4{margin:0;color:#0f172a;font-size:.95rem;font-weight:900}
+    .ai-finance-head p{margin:4px 0 0;color:#475569;font-size:.8rem;line-height:1.5}
+    .ai-finance-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+    .ai-finance-metrics>div,.ai-finance-grid>div{border:1px solid #bae6fd;border-radius:11px;background:#fff;padding:10px}
+    .ai-finance-metrics span{display:block;color:#64748b;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+    .ai-finance-metrics strong{display:block;color:#0f172a;font-size:.92rem;font-weight:900;margin-top:4px}
+    .ai-finance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .ai-finance-plan strong{display:block;color:#075985;font-size:.76rem;font-weight:900;margin-bottom:5px}
+    .ai-finance-plan p{margin:0 0 6px;color:#334155;font-size:.78rem;line-height:1.45}
+    .ai-finance-plan ul,.ai-finance-plan ol{margin:0;padding-left:18px;color:#475569;font-size:.76rem;line-height:1.5}
+    .ai-finance-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+    .ai-panel-status{color:#475569;font-size:.76rem;font-weight:800;line-height:1.45}
     .ai-debug-panel{max-width:860px;margin:12px auto 0;border:1px dashed #94a3b8;border-radius:12px;background:#fff;color:#334155;padding:11px 12px;font-size:.76rem;line-height:1.45}
     .ai-debug-panel[hidden]{display:none}
     .ai-debug-panel summary{cursor:pointer;color:#0f172a;font-weight:900}
@@ -98,8 +189,8 @@
     .ai-fallback-card em{align-self:end;color:var(--ai-primary);font-style:normal;font-size:.78rem;font-weight:900}
     .ai-fallback-card:hover,.ai-fallback-card:focus-visible{border-color:#9fc4ff;background:#f8fbff}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media(max-width:760px){.ai-main{padding:34px 12px 44px}.ai-header{text-align:left}.ai-command{padding:14px}.ai-input-row{grid-template-columns:1fr}.ai-run{width:100%}.ai-card-head{display:grid}.ai-card-body,.ai-clarification-grid{grid-template-columns:1fr}.ai-actions,.ai-clarification-actions,.ai-consent-actions{display:grid}.ai-open,.ai-browse,.ai-small-button{width:100%}.ai-fallback-grid{grid-template-columns:1fr}}
-    @media(min-width:761px) and (max-width:980px){.ai-fallback-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.ai-main{padding:34px 12px 44px}.ai-header{text-align:left}.ai-command{padding:14px}.ai-input-row{grid-template-columns:1fr}.ai-run{width:100%}.ai-card-head,.ai-projects-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{justify-content:stretch}.ai-card-body,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics{grid-template-columns:1fr}.ai-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions{display:grid}.ai-open,.ai-browse,.ai-small-button{width:100%}.ai-fallback-grid{grid-template-columns:1fr}}
+    @media(min-width:761px) and (max-width:980px){.ai-fallback-grid,.ai-education-tools,.ai-career-tools,.ai-import-tools{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-education-grid,.ai-career-grid,.ai-import-grid,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics{grid-template-columns:1fr 1fr}}
     @media(prefers-reduced-motion:reduce){.ai-spinner{animation:none}}
   </style>
   <meta property="og:url" content="https://afrotools.com/ai/">
@@ -136,6 +227,18 @@
           </div>
           <p class="ai-trust">Some AfroTools workflows run in your browser. AI-assisted workflows ask before sending private content. This page may send your prompt to the AfroTools routing endpoint to choose a workflow, but it does not require login and does not store raw queries in analytics.</p>
         </form>
+
+        <section class="ai-projects" id="aiSavedProjects" aria-labelledby="aiSavedProjectsTitle" hidden>
+          <div class="ai-projects-head">
+            <div>
+              <h3 id="aiSavedProjectsTitle">Recent AI projects</h3>
+              <p>Saved on this device by default. Account sync is optional and uses sanitized project summaries only.</p>
+            </div>
+            <button class="ai-small-button secondary" type="button" id="aiRefreshProjects">Refresh</button>
+          </div>
+          <div class="ai-project-list" id="aiSavedProjectList"></div>
+          <p class="ai-project-status" id="aiProjectStatus" aria-live="polite"></p>
+        </section>
 
         <div class="ai-state" id="aiEmptyState">
           <div class="ai-status">
@@ -198,8 +301,18 @@
   </main>
   <afro-footer></afro-footer>
 
-  <script src="/assets/js/ai/intent-analytics.js?v=dd455934"></script>
-  <script src="/assets/js/ai/prefill-adapters.js?v=08bdd5f8"></script>
+  <script src="/assets/js/ai/intent-analytics.js?v=289255ec"></script>
+  <script src="/assets/js/engines/import-duty-nigeria-engine.js?v=a600bc86"></script>
+  <script src="/data/energy/solar-roi-country-dataset.js?v=c61d25bf"></script>
+  <script src="/assets/js/engines/solar-roi-engine.js?v=d159370b"></script>
+  <script src="/assets/js/ai/import-advisor-workflow.js?v=c243b074"></script>
+  <script src="/assets/js/ai/education-workflow.js?v=8ef806d1"></script>
+  <script src="/assets/js/ai/career-workflow.js?v=8780d010"></script>
+  <script src="/assets/js/ai/energy-advisor-workflow.js?v=fc442bec"></script>
+  <script src="/assets/js/ai/sme-finance-workflow.js?v=42a51fa9"></script>
+  <script src="/assets/js/ai/workflow-export.js?v=a0c5358d"></script>
+  <script src="/assets/js/ai/saved-projects.js?v=a1eb6b68"></script>
+  <script src="/assets/js/ai/prefill-adapters.js?v=09c1e089"></script>
   <script src="/assets/js/lib/source-confidence.js?v=093904c5"></script>
   <script>
   (function () {
@@ -227,9 +340,20 @@
     var modelStatus = document.getElementById("aiModelStatus");
     var intentDebugPanel = document.getElementById("aiIntentDebugPanel");
     var intentDebugOutput = document.getElementById("aiIntentDebugOutput");
+    var savedProjectsPanel = document.getElementById("aiSavedProjects");
+    var savedProjectList = document.getElementById("aiSavedProjectList");
+    var projectStatus = document.getElementById("aiProjectStatus");
+    var refreshProjectsButton = document.getElementById("aiRefreshProjects");
     var workflowState = createEmptyWorkflowState();
     var activeMatch = null;
     var prefillAdapters = window.AfroToolsAIPrefillAdapters || null;
+    var importAdvisorWorkflow = window.AfroToolsAIImportAdvisorWorkflow || null;
+    var educationWorkflow = window.AfroToolsAIEducationWorkflow || null;
+    var careerWorkflow = window.AfroToolsAICareerWorkflow || null;
+    var energyWorkflow = window.AfroToolsAIEnergyAdvisorWorkflow || null;
+    var smeFinanceWorkflow = window.AfroToolsAISmeFinanceWorkflow || null;
+    var workflowExport = window.AfroToolsAIWorkflowExport || null;
+    var savedProjects = window.AfroToolsAISavedProjects || null;
     var intentAnalytics = window.AfroToolsAIIntentAnalytics || null;
     var entrySource = getEntrySource();
     var lastConsentRequestKey = "";
@@ -245,12 +369,12 @@
       card("import-duty", "Import Duty Calculator", "/tools/import-duty/", "Estimate customs duty, CIF, landed cost, and import assumptions.", ["import duty", "car import", "customs", "cif", "landed cost", "toyota", "vehicle import"], ["Destination country", "Item or vehicle", "Value"], "finance", "browser_local"),
       card("solar-roi", "Solar ROI Calculator", "/tools/solar-roi/", "Compare solar payback, generator savings, and power-cost assumptions.", ["solar", "electricity", "power", "inverter", "battery"], ["Country or city", "Monthly bill"], "energy", "browser_local"),
       card("fuel-tracker", "Fuel Tracker", "/tools/fuel-tracker/", "Check petrol, diesel, LPG, and generator-cost workflows.", ["generator", "fuel", "petrol", "diesel", "kerosene"], ["Country", "Fuel type"], "energy", "browser_local"),
-      card("paye-calculator", "PAYE Calculator", "/tools/paye-calculator/", "Estimate payroll, PAYE, salary tax, and take-home pay.", ["paye", "payroll", "salary", "income tax", "tax", "net pay"], ["Country", "Gross pay", "Pay period"], "tax", "browser_local"),
-      card("vat-calc-pan-african", "VAT Calculator", "/tools/vat-calculator/", "Calculate VAT and business tax amounts as planning estimates.", ["vat", "value added tax", "sales tax"], ["Country", "Amount"], "tax", "browser_local"),
-      card("invoice-generator", "Invoice Generator", "/tools/invoice-generator/", "Create invoice or receipt drafts with export options.", ["invoice", "receipt", "bill client", "business invoice"], ["Client", "Currency", "Amount"], "finance", "browser_local"),
+      card("paye-calculator", "PAYE Calculator", "/tools/paye-calculator/", "Estimate payroll, PAYE, salary tax, and take-home pay.", ["paye", "payroll", "salary", "income tax", "tax", "net pay", "employees", "staff", "workers", "employee cost", "payslip"], ["Country", "Gross pay", "Pay period"], "tax", "browser_local"),
+      card("vat-calc-pan-african", "VAT Calculator", "/tools/vat-calculator/", "Calculate VAT and business tax amounts as planning estimates.", ["vat", "value added tax", "sales tax", "vat invoice", "vat treatment", "vat inclusive", "vat exclusive", "withholding vat"], ["Country", "Amount"], "tax", "browser_local"),
+      card("invoice-generator", "Invoice Generator", "/tools/invoice-generator/", "Create invoice or receipt drafts with export options.", ["invoice", "receipt", "bill client", "business invoice", "vat invoice", "proforma", "quote"], ["Currency", "Amount"], "finance", "browser_local"),
       card("pdf-workspace", "PDF Workspace", "/tools/pdf-workspace/", "Merge, compress, convert, split, watermark, and protect PDFs in the browser.", ["pdf", "merge", "compress", "convert", "split", "watermark", "document"], ["Document task"], "none", "browser_local"),
       card("afroplan-floor-planner", "Floor Planner", "/engineering/floor-planner/", "Plan rooms, layouts, construction notes, and BOQ-oriented exports.", ["floor plan", "floor planner", "construction", "boq", "building", "room layout"], ["Room size", "Room type"], "none", "ai_optional"),
-      card("business-planner", "Business Tools", "/vat-business-tax/", "Open business, VAT, registration, receipt, and local compliance workflows.", ["business", "company", "tin", "registration", "sme"], ["Country", "Business task"], "finance", "browser_local")
+      card("business-planner", "Business Tools", "/vat-business-tax/", "Open business, VAT, registration, receipt, and local compliance workflows.", ["business", "company", "tin", "tax id", "registration", "business registration", "register business", "cashflow", "cash flow", "sme"], ["Country", "Business task"], "finance", "browser_local")
     ];
 
     var FALLBACK_IDS = [
@@ -268,25 +392,41 @@
     var SOURCE_HINTS = {
       "import-duty": "Uses reviewed import-duty planning assumptions. Confirm with customs or a licensed clearing professional before payment.",
       "scholarship-finder": "Scholarship details can change. Verify eligibility and deadlines on the official provider page.",
+      "study-abroad-cost": "Study-abroad cost and visa data are planning estimates. Confirm fees, proof-of-funds rules, and deadlines with official schools and government sources.",
       "fuel-tracker": "Fuel prices may vary by city, station, supplier, and timing. Verify locally before buying or quoting.",
       "solar-roi": "Energy inputs are planning estimates. Confirm tariffs, equipment quotes, and site conditions before buying.",
-      "paye-calculator": "Uses reviewed tax-engine assumptions. Confirm filing decisions with the relevant tax authority or payroll professional."
+      "paye-calculator": "Uses reviewed tax-engine assumptions. Confirm filing decisions with the relevant tax authority or payroll professional.",
+      "vat-calc-pan-african": "VAT outputs are planning estimates. Confirm rates, exemptions, withholding, and filing treatment with the revenue authority or accountant.",
+      "invoice-generator": "Invoice details are user-entered. AfroTools can draft documents, but compliance-sensitive wording should be reviewed before sending.",
+      "business-planner": "Business registration and TIN checklists are planning aids. Use official portals or qualified professionals for actual filings.",
+      "cv-builder": "CV Builder is browser-local by default. AI help for profile text requires explicit consent, and you should only include truthful, verifiable details."
     };
 
     var CLARIFICATION_FIELDS = {
       "import-duty": [
         field("destinationCountry", "Destination country", "select", "", ["Nigeria", "Kenya", "Ghana", "Uganda", "Tanzania", "Zambia"]),
-        field("itemCategory", "Vehicle or item", "text", "Toyota Axio, phones, generator"),
-        field("itemValue", "CIF or item value", "number", "8500", null, true),
+        field("itemCategory", "Vehicle or item", "text", "Toyota Axio, laptops, textiles, machinery"),
+        field("productCategory", "Product category", "select", "", ["vehicle", "electronics", "clothing", "machinery", "household", "food", "other"]),
+        field("purchasePrice", "Purchase price / FOB value", "number", "8500", null, true),
+        field("itemValue", "Item value", "number", "8500", null, true),
+        field("currency", "Currency", "select", "", ["USD", "NGN", "KES", "GHS", "ZAR"]),
+        field("shippingCost", "Shipping / freight cost", "number", "1200", null, true),
+        field("insuranceCost", "Insurance cost", "number", "250", null, true),
+        field("fxRate", "User FX rate", "number", "1600", null, true),
+        field("originCountry", "Origin country", "text", "Japan, China, USA, UAE"),
+        field("port", "Port / arrival point", "select", "", ["tin-can", "apapa", "onneh", "airport-lagos", "other-ng"]),
         field("year", "Vehicle year", "number", "2016"),
-        field("engineCc", "Engine size (cc)", "number", "1500"),
-        field("shippingCost", "Shipping cost", "number", "1200", null, true)
+        field("engineCc", "Engine size (cc)", "number", "1500")
       ],
       "cv-builder": [
         field("country", "Target country/market", "select", "", ["Nigeria", "Ghana", "Kenya", "South Africa", "Cameroon"]),
         field("targetRole", "Target role", "text", "Electrical engineer"),
+        field("careerStage", "Career stage", "select", "", ["graduate", "professional", "mid", "senior", "executive"]),
+        field("sector", "Sector", "text", "Energy, finance, NGO"),
         field("experienceYears", "Years of experience", "number", "4"),
-        field("industry", "Industry", "text", "Energy, finance, NGO")
+        field("experienceLevel", "Experience level", "select", "", ["entry", "mid", "senior", "executive"]),
+        field("languagePreference", "Language preference", "select", "", ["English", "French", "Arabic", "Swahili"]),
+        field("education", "Education or qualification", "text", "BSc Electrical Engineering", null, true)
       ],
       "scholarship-finder": [
         field("country", "Nationality/home country", "select", "", ["Nigeria", "Cameroon", "Ghana", "Kenya", "South Africa"]),
@@ -294,38 +434,68 @@
         field("field", "Field of study", "text", "Engineering, health, business"),
         field("targetCountry", "Destination country", "select", "", ["Canada", "United Kingdom", "United States", "Germany", "Australia"]),
         field("gpa", "GPA or score", "number", "3.5", null, true),
-        field("budget", "Available budget", "number", "8000", null, true)
+        field("ieltsScore", "IELTS/English score", "number", "6.5", null, true),
+        field("budget", "Available budget", "number", "8000", null, true),
+        field("intakeTimeline", "Intake timeline", "text", "September 2027")
       ],
       "study-abroad-cost": [
         field("country", "Origin country", "select", "", ["Nigeria", "Ghana", "Kenya", "Cameroon", "South Africa"]),
         field("targetCountry", "Destination country", "select", "", ["Canada", "United Kingdom", "United States", "Germany", "Australia"]),
         field("studyLevel", "Study level", "select", "", ["undergraduate", "masters", "phd", "diploma"]),
-        field("budget", "Available budget", "number", "8000", null, true)
+        field("field", "Field of study", "text", "Engineering, health, business"),
+        field("gpa", "GPA or grade band", "text", "3.5 or second class upper", null, true),
+        field("ieltsScore", "IELTS/English score", "number", "6.5", null, true),
+        field("budget", "Available budget", "number", "8000", null, true),
+        field("intakeTimeline", "Intake timeline", "text", "September 2027")
       ],
       "solar-roi": [
         field("country", "Country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
         field("city", "City or location", "text", "Lagos"),
-        field("monthlyBill", "Monthly electricity or fuel spend", "number", "120000", null, true),
+        field("userType", "User type", "select", "", ["household", "shop", "office", "farm", "school", "small business"]),
+        field("monthlyBill", "Monthly electricity bill", "number", "120000", null, true),
+        field("monthlyGeneratorSpend", "Monthly generator fuel spend", "number", "90000", null, true),
+        field("generatorSizeKva", "Generator size (kVA)", "number", "5"),
+        field("generatorHoursPerDay", "Generator hours/day", "number", "6"),
+        field("fuelType", "Fuel type", "select", "", ["petrol", "diesel", "lpg", "kerosene"]),
         field("loadSizeKw", "Load or system size (kW)", "number", "5"),
-        field("backupHours", "Backup hours needed", "number", "6")
+        field("outageHours", "Outage hours/day", "number", "6"),
+        field("budgetAmount", "Budget range", "number", "3000000", null, true)
       ],
       "fuel-tracker": [
         field("country", "Country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
+        field("city", "City or location", "text", "Lagos"),
+        field("userType", "User type", "select", "", ["household", "shop", "office", "farm", "school", "small business"]),
         field("fuelType", "Fuel type", "select", "", ["petrol", "diesel", "lpg", "kerosene"]),
         field("generatorHoursPerDay", "Generator hours/day", "number", "6"),
-        field("generatorSizeKva", "Generator size (kVA)", "number", "5")
+        field("generatorSizeKva", "Generator size (kVA)", "number", "5"),
+        field("monthlyGeneratorSpend", "Monthly generator fuel spend", "number", "90000", null, true),
+        field("loadSizeKw", "Load size (kW)", "number", "5"),
+        field("outageHours", "Outage hours/day", "number", "6")
       ],
       "paye-calculator": [
         field("country", "Payroll country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
+        field("numberOfEmployees", "Number of employees", "number", "5"),
         field("grossPay", "Gross salary", "number", "250000", null, true),
         field("payPeriod", "Pay period", "select", "", ["monthly", "annual", "weekly", "daily"]),
-        field("employeeCount", "Number of employees", "number", "5")
+        field("deductionsBenefits", "Deductions or benefits", "text", "Pension, NHIF, allowances", null, true)
+      ],
+      "vat-calc-pan-african": [
+        field("country", "VAT country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
+        field("invoiceAmount", "Invoice or supply amount", "number", "500000", null, true),
+        field("vatTreatment", "VAT treatment", "select", "", ["standard", "zero-rated", "exempt", "withholding", "inclusive", "exclusive"]),
+        field("lineItemDescription", "Service or item", "text", "Consulting")
       ],
       "invoice-generator": [
-        field("clientName", "Client name", "text", "Client or company", null, true),
-        field("amount", "Invoice amount", "number", "45000", null, true),
+        field("country", "Business country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
+        field("invoiceAmount", "Invoice amount", "number", "45000", null, true),
         field("currency", "Currency", "select", "", ["NGN", "KES", "GHS", "ZAR", "USD"]),
+        field("vatTreatment", "VAT treatment", "select", "", ["standard", "zero-rated", "exempt", "withholding", "inclusive", "exclusive"]),
         field("lineItemDescription", "Service or item", "text", "Consulting")
+      ],
+      "business-planner": [
+        field("country", "Business country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
+        field("businessType", "Business type", "select", "", ["shop", "retail", "consulting", "agency", "restaurant", "school", "clinic", "startup", "company", "freelancer"]),
+        field("businessTask", "Business task", "select", "", ["registration", "tin", "cashflow", "vat", "invoice", "compliance"])
       ],
       "pdf-workspace": [
         field("pdfAction", "PDF action", "select", "", ["merge", "compress", "convert", "split", "sign", "protect", "watermark", "organize"])
@@ -540,7 +710,9 @@
         senegal: "Senegal",
         lagos: "Nigeria",
         accra: "Ghana",
-        nairobi: "Kenya"
+        nairobi: "Kenya",
+        johannesburg: "South Africa",
+        joburg: "South Africa"
       };
       var destinations = {
         canada: "Canada",
@@ -559,13 +731,25 @@
       var year = original.match(/\b(19[8-9]\d|20[0-3]\d)\b/);
       var employees = original.match(/\b([1-9][0-9]?)\s+(?:employees|staff|workers)\b/i);
       var studyLevel = original.match(/\b(undergraduate|bachelor'?s?|masters?|master'?s?|phd|doctorate|diploma|mba)\b/i);
+      var fieldMatch = original.match(/\b(engineering|computer science|software|data science|business|finance|accounting|medicine|nursing|public health|law|agriculture|climate|environment|arts|media)\b/i);
+      var gpaMatch = original.match(/\b(?:gpa|cgpa)\s*(?:of|is|:)?\s*([0-5](?:\.\d+)?)\b/i) || original.match(/\b([0-5](?:\.\d+)?)\s*\/\s*5(?:\.0)?\b/i);
+      var gradeBand = original.match(/\b(first class|second class upper|2:1|upper second|distinction|merit|credit)\b/i);
+      var ielts = original.match(/\b(?:ielts|english)\s*(?:band|score)?\s*(?:of|is|:)?\s*([4-9](?:\.\d)?)\b/i);
+      var intake = original.match(/\b(?:jan|january|may|sep|sept|september|fall|spring|summer|winter)\s*(?:intake)?\s*(20[2-3]\d)?\b/i);
       var role = original.match(/\b(?:for|as|role|job)\s+(?:an?\s+)?([a-z][a-z\s-]{2,60})(?:\s+in\s+|\s+with\s+|$)/i);
       var vehicle = original.match(/\b(toyota|honda|mazda|nissan|hyundai|kia|mercedes|bmw|volkswagen|vw|ford|lexus)\s+([a-z0-9 -]{2,40}?)(?:\s+(?:worth|valued|costing|into|to|in|for)\b|[?.!,]|$)/i);
       var engineCc = original.match(/\b([1-5][0-9]{2,3})\s?cc\b/i);
       var engineLitres = original.match(/\b([1-6](?:\.\d)?)\s?l(?:itre|iter)?\b/i);
       var hours = original.match(/\b([0-9]{1,2}(?:\.\d+)?)\s*(?:hours|hrs|h)\s*(?:per|\/)?\s*(?:day|daily)?\b/i);
+      var kva = original.match(/\b([0-9]{1,2}(?:\.\d+)?)\s*kva\b/i);
+      var kw = original.match(/\b([0-9]{1,2}(?:\.\d+)?)\s*kw\b/i);
+      var fuelType = original.match(/\b(petrol|diesel|lpg|kerosene|gasoline)\b/i);
+      var userType = original.match(/\b(household|home|shop|office|farm|school|clinic|small business|business)\b/i);
       var experienceYears = original.match(/\b([0-9]{1,2})\+?\s*(?:years|yrs)\s+(?:of\s+)?experience\b/i);
       var pdfTask = original.match(/\b(merge|compress|convert|split|sign|protect|watermark|organize|reorder)\b/i);
+      var careerStage = original.match(/\b(graduate|entry-level|entry level|junior|professional|mid-level|mid level|senior|lead|manager|executive|director)\b/i);
+      var language = original.match(/\b(english|french|arabic|swahili|kiswahili)\b/i);
+      var education = original.match(/\b(bsc|b\.sc|ba|b\.a|hnd|ond|msc|m\.sc|mba|phd|diploma|certificate|degree)\s+([a-z][a-z\s-]{2,60})\b/i);
 
       if (country) inputs.country = country;
       if (targetCountry) inputs.targetCountry = targetCountry;
@@ -573,9 +757,17 @@
       if (year) inputs.year = year[1];
       if (employees) inputs.employeeCount = Number(employees[1]);
       if (studyLevel) inputs.studyLevel = studyLevel[1].replace(/'?s$/i, "");
+      if (fieldMatch) inputs.field = fieldMatch[1];
+      if (gpaMatch) inputs.gpa = Number(gpaMatch[1]);
+      if (!inputs.gpa && gradeBand) inputs.gpa = gradeBand[1].toLowerCase();
+      if (ielts) inputs.ieltsScore = Number(ielts[1]);
+      if (intake) inputs.intakeTimeline = intake[0];
       if (role) inputs.targetRole = role[1].trim();
       if (experienceYears) inputs.experienceYears = Number(experienceYears[1]);
-      if (country && /lagos|accra|nairobi/i.test(original)) inputs.city = /lagos/i.test(original) ? "Lagos" : (/accra/i.test(original) ? "Accra" : "Nairobi");
+      if (country && /lagos|accra|nairobi|johannesburg|joburg/i.test(original)) inputs.city = /lagos/i.test(original) ? "Lagos" : (/accra/i.test(original) ? "Accra" : (/nairobi/i.test(original) ? "Nairobi" : "Johannesburg"));
+      if (careerStage) inputs.careerStage = careerStage[1].replace(/-level|\slevel/i, "").toLowerCase();
+      if (language) inputs.languagePreference = language[1].charAt(0).toUpperCase() + language[1].slice(1).toLowerCase();
+      if (education) inputs.education = (education[1] + " " + education[2]).replace(/\s+/g, " ").trim();
 
       if (workflow && workflow.id === "import-duty") {
         if (country) inputs.destinationCountry = country;
@@ -583,10 +775,33 @@
         if (money !== null) inputs.itemValue = money;
         if (engineCc) inputs.engineCc = Number(engineCc[1]);
         if (engineLitres) inputs.engineCc = Math.round(Number(engineLitres[1]) * 1000);
+        var importInputs = importAdvisorWorkflow && typeof importAdvisorWorkflow.normalizeInputs === "function"
+          ? importAdvisorWorkflow.normalizeInputs(original, inputs)
+          : null;
+        if (importInputs) {
+          Object.keys(importInputs).forEach(function (key) {
+            if (hasValue(importInputs[key]) || !hasValue(inputs[key])) inputs[key] = importInputs[key];
+          });
+        }
       }
-      if (workflow && workflow.id === "solar-roi") {
-        if (money !== null) inputs.monthlyBill = money;
-        if (hours) inputs.backupHours = Number(hours[1]);
+      if (workflow && (workflow.id === "solar-roi" || workflow.id === "fuel-tracker")) {
+        if (money !== null && !/\bbudget|can spend|afford\b/i.test(original)) inputs.monthlyBill = money;
+        if (hours) {
+          inputs.backupHours = Number(hours[1]);
+          inputs.outageHours = Number(hours[1]);
+        }
+        if (kva) inputs.generatorSizeKva = Number(kva[1]);
+        if (kw) inputs.loadSizeKw = Number(kw[1]);
+        if (fuelType) inputs.fuelType = fuelType[1].toLowerCase() === "gasoline" ? "petrol" : fuelType[1].toLowerCase();
+        if (userType) inputs.userType = userType[1].toLowerCase() === "home" ? "household" : userType[1].toLowerCase();
+        var energyInputs = energyWorkflow && typeof energyWorkflow.normalizeInputs === "function"
+          ? energyWorkflow.normalizeInputs(original, inputs)
+          : null;
+        if (energyInputs) {
+          Object.keys(energyInputs).forEach(function (key) {
+            if (hasValue(energyInputs[key]) || !hasValue(inputs[key])) inputs[key] = energyInputs[key];
+          });
+        }
       }
       if (workflow && workflow.id === "fuel-tracker") {
         if (hours) inputs.generatorHoursPerDay = Number(hours[1]);
@@ -598,8 +813,27 @@
       if (workflow && workflow.id === "invoice-generator") {
         if (money !== null) inputs.amount = money;
       }
+      if (workflow && isSmeFinanceWorkflow(workflow.id) && smeFinanceWorkflow && typeof smeFinanceWorkflow.normalizeInputs === "function") {
+        var smeInputs = smeFinanceWorkflow.normalizeInputs(original, inputs);
+        Object.keys(smeInputs || {}).forEach(function (key) {
+          if (hasValue(smeInputs[key]) || !hasValue(inputs[key])) inputs[key] = smeInputs[key];
+        });
+      }
       if (workflow && workflow.id === "pdf-workspace" && pdfTask) {
         inputs.pdfAction = pdfTask[1].toLowerCase();
+      }
+      if (workflow && (workflow.id === "cv-builder" || workflow.id === "cover-letter")) {
+        var careerInputs = careerWorkflow && typeof careerWorkflow.normalizeInputs === "function"
+          ? careerWorkflow.normalizeInputs(original, inputs)
+          : null;
+        if (careerInputs) {
+          Object.keys(careerInputs).forEach(function (key) {
+            if (hasValue(careerInputs[key]) && !hasValue(inputs[key])) inputs[key] = careerInputs[key];
+          });
+          if (Array.isArray(careerInputs.skills) && careerInputs.skills.length && !inputs.skills) inputs.skills = careerInputs.skills;
+          if (careerInputs.sector && !inputs.sector) inputs.sector = careerInputs.sector;
+          if (careerInputs.experienceLevel && !inputs.experienceLevel) inputs.experienceLevel = careerInputs.experienceLevel;
+        }
       }
       return inputs;
     }
@@ -634,6 +868,12 @@
         }, 0);
         if (score > 0 && (!best || score > best.score)) best = { workflow: workflow, score: score };
       });
+      if (/\b(invoice|receipt|quote|proforma)\b/.test(text) && /\b(create|make|generate|draft|issue|write)\b/.test(text)) {
+        best = { workflow: byId("invoice-generator"), score: Math.max(best && best.score || 0, 8) };
+      }
+      if (/\b(vat|value added tax|sales tax)\b/.test(text) && /\b(calculate|check|compute|how much)\b/.test(text)) {
+        best = { workflow: byId("vat-calc-pan-african"), score: Math.max(best && best.score || 0, 8) };
+      }
       if (!best) return null;
       var extracted = extractInputs(query, best.workflow);
       return {
@@ -652,19 +892,28 @@
     }
 
     function missingFor(workflow, inputs) {
+      if (workflow && workflow.id === "import-duty" && importAdvisorWorkflow && typeof importAdvisorWorkflow.getMissingInputs === "function") {
+        return importAdvisorWorkflow.getMissingInputs(importAdvisorWorkflow.normalizeInputs("", inputs || {}));
+      }
+      if (workflow && (workflow.id === "solar-roi" || workflow.id === "fuel-tracker") && energyWorkflow && typeof energyWorkflow.getMissingInputs === "function") {
+        return energyWorkflow.getMissingInputs(energyWorkflow.normalizeInputs("", inputs || {}));
+      }
+      if (workflow && isSmeFinanceWorkflow(workflow.id) && smeFinanceWorkflow && typeof smeFinanceWorkflow.getMissingInputs === "function") {
+        return smeFinanceWorkflow.getMissingInputs(smeFinanceWorkflow.normalizeInputs("", inputs || {}));
+      }
       var requiredByTool = {
-        "cv-builder": ["targetRole"],
-        "cover-letter": ["targetRole"],
+        "cv-builder": ["targetRole", "country"],
+        "cover-letter": ["targetRole", "country"],
         "scholarship-finder": ["country", "studyLevel"],
-        "study-abroad-cost": ["country", "targetCountry", "studyLevel"],
+        "study-abroad-cost": ["country", "targetCountry", "budget", "studyLevel", "field", "gpa", "intakeTimeline"],
         "ielts-calculator": [],
         "gpa-calculator": [],
-        "import-duty": ["destinationCountry", "itemCategory", "itemValue"],
-        "solar-roi": ["country", "monthlyBill"],
-        "fuel-tracker": ["country"],
+        "import-duty": ["destinationCountry", "itemCategory", "purchasePrice", "shippingCost", "fxRate"],
+        "solar-roi": ["country", "monthlyBill", "generatorHoursPerDay", "loadSizeKw"],
+        "fuel-tracker": ["country", "generatorHoursPerDay"],
         "paye-calculator": ["country", "grossPay", "payPeriod"],
         "vat-calc-pan-african": ["country"],
-        "invoice-generator": ["clientName", "amount"],
+        "invoice-generator": ["amount"],
         "pdf-workspace": ["pdfAction"],
         "afroplan-floor-planner": ["roomSize"],
         "business-planner": ["country"]
@@ -770,6 +1019,120 @@
       return null;
     }
 
+    function getWorkflowTitle(toolId) {
+      var workflow = byId(toolId);
+      return workflow ? workflow.title : prettyKey(toolId || "AI workflow");
+    }
+
+    function projectContinueUrl(project) {
+      return "/ai/?project=" + encodeURIComponent(project && project.projectId || "");
+    }
+
+    function createSavedProjectFromCurrentState() {
+      if (!savedProjects || !workflowState.selectedToolId) return null;
+      var project = savedProjects.createProjectFromState(workflowState, {
+        workflowTitle: getWorkflowTitle(workflowState.selectedToolId),
+        continueUrl: workflowState.selectedToolRoute || "/ai/",
+        exportLinks: collectProjectExportLinks(workflowState)
+      });
+      project.continueUrl = projectContinueUrl(project);
+      return project;
+    }
+
+    function collectProjectExportLinks(state) {
+      var links = [];
+      if (state && state.selectedToolRoute) links.push({ label: "Open workflow", href: state.selectedToolRoute, type: "tool" });
+      if (state && state.prefillPayload && state.prefillPayload.route) links.push({ label: "Open prefilled tool", href: state.prefillPayload.route, type: "prefill" });
+      return links;
+    }
+
+    function setProjectStatus(message) {
+      if (projectStatus) projectStatus.textContent = message || "";
+    }
+
+    function renderSavedProjects() {
+      if (!savedProjects || !savedProjectsPanel || !savedProjectList) return;
+      var projects = savedProjects.listLocal({ limit: 6 });
+      savedProjectsPanel.hidden = projects.length === 0;
+      if (!projects.length) {
+        savedProjectList.innerHTML = "";
+        return;
+      }
+      savedProjectList.innerHTML = projects.map(function (project) {
+        var date = project.updatedAt ? new Date(project.updatedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "";
+        return '<article class="ai-project-item" data-ai-project-id="' + escapeHtml(project.projectId) + '">' +
+          '<div><strong>' + escapeHtml(project.title || "Saved AI project") + '</strong><span>' + escapeHtml(project.nonSensitiveSummary || "Saved on this device.") + (date ? " - " + escapeHtml(date) : "") + '</span></div>' +
+          '<div class="ai-project-actions">' +
+          '<a class="ai-small-button primary" href="' + escapeHtml(projectContinueUrl(project)) + '" data-project-open="' + escapeHtml(project.projectId) + '">Continue</a>' +
+          '<button class="ai-small-button secondary" type="button" data-project-sync="' + escapeHtml(project.projectId) + '">Sync</button>' +
+          '<button class="ai-small-button secondary" type="button" data-project-delete="' + escapeHtml(project.projectId) + '">Delete</button>' +
+          '</div></article>';
+      }).join("");
+    }
+
+    function saveCurrentProjectLocal() {
+      if (!savedProjects || !workflowState.selectedToolId) return null;
+      var project = createSavedProjectFromCurrentState();
+      var saved = savedProjects.saveLocal(project);
+      renderSavedProjects();
+      track("ai_project_saved_local", {
+        tool_id: workflowState.selectedToolId,
+        workflow_type: project && project.workflowType || "",
+        storage_mode: "local"
+      });
+      if (saved) {
+        recordIntent("ai_project_saved", {
+          selectedToolId: workflowState.selectedToolId,
+          workflowType: project && project.workflowType || workflowState.selectedToolId,
+          storageMode: "local"
+        });
+      }
+      return saved;
+    }
+
+    function syncProjectToAccount(project) {
+      if (!savedProjects || !project) return Promise.resolve({ synced: false, reason: "unavailable" });
+      return savedProjects.syncProject(project, { explicitConsent: true }).then(function (result) {
+        track(result.synced ? "ai_project_synced_account" : "ai_project_sync_failed", {
+          workflow_type: project.workflowType || "",
+          reason: result.reason || ""
+        });
+        return result;
+      });
+    }
+
+    function restoreProject(projectId) {
+      if (!savedProjects || !projectId) return false;
+      var project = savedProjects.listLocal({ limit: savedProjects.MAX_LOCAL_PROJECTS }).filter(function (item) {
+        return item.projectId === projectId;
+      })[0];
+      if (!project) return false;
+      var toolId = project.workflowType || project.resultSummary && project.resultSummary.selectedToolId || "";
+      var workflow = byId(toolId) || workflowFromDecision({ selectedToolId: toolId, selectedRoute: project.resultSummary && project.resultSummary.selectedToolRoute || "/tools/", safetyDomain: "none", privacyMode: "browser_local" });
+      var match = {
+        source: "saved_project",
+        confidence: project.resultSummary && Number(project.resultSummary.confidence || 0) || 0.75,
+        workflow: workflow,
+        reason: "Continued from a saved AfroTools AI project on this device.",
+        extractedInputs: project.structuredInputs || {},
+        missingInputs: Array.isArray(project.resultSummary && project.resultSummary.missingInputs) ? project.resultSummary.missingInputs : missingFor(workflow, project.structuredInputs || {}),
+        privacyMode: workflow.privacyMode,
+        safetyDomain: workflow.domain,
+        intentCategory: workflow.domain || "unknown",
+        selectedToolId: workflow.id,
+        selectedRoute: project.resultSummary && project.resultSummary.selectedToolRoute || workflow.route,
+        query: ""
+      };
+      workflowState = createWorkflowState(match, "", false);
+      workflowState.source = "saved_project";
+      renderMatches(resultCards, [match], "", true);
+      setState("result");
+      showConsentCard(true);
+      setProjectStatus("Loaded saved project: " + project.title + ".");
+      track("ai_project_continue", { workflow_type: project.workflowType || "", storage_mode: project.storageMode || "local" });
+      return true;
+    }
+
     function hasValue(value) {
       return !(value === undefined || value === null || value === "" || Array.isArray(value) && value.length === 0);
     }
@@ -828,10 +1191,11 @@
           missing_count: fields.length,
           source: state.source
         });
-        recordIntent("ai_intent_clarification_shown", {
+        recordIntent("ai_clarification_shown", {
           selectedToolId: workflow.id,
           intentCategory: workflow.domain,
-          missingInputs: fields.map(function (field) { return field.name; })
+          missingInputs: fields.map(function (field) { return field.name; }),
+          workflowType: workflow.id
         });
         lastClarificationShownKey = clarificationKey;
       }
@@ -878,6 +1242,317 @@
       return SOURCE_HINTS[toolId] || "";
     }
 
+    function isEducationWorkflow(toolId) {
+      return toolId === "scholarship-finder" || toolId === "study-abroad-cost";
+    }
+
+    function isCareerWorkflow(toolId) {
+      return toolId === "cv-builder" || toolId === "cover-letter";
+    }
+
+    function isImportWorkflow(toolId) {
+      return toolId === "import-duty" || toolId === "car-import" || toolId === "car-import-cost";
+    }
+
+    function isEnergyWorkflow(toolId) {
+      return toolId === "solar-roi" || toolId === "fuel-tracker" || toolId === "generator-cost" || toolId === "generator-fuel";
+    }
+
+    function isSmeFinanceWorkflow(toolId) {
+      return toolId === "paye-calculator" || toolId === "vat-calc-pan-african" || toolId === "invoice-generator" || toolId === "business-planner";
+    }
+
+    function renderImportAdvisorPanel(match, state, launch, query) {
+      var toolId = match && (match.selectedToolId || match.workflow && match.workflow.id);
+      if (!importAdvisorWorkflow || !isImportWorkflow(toolId) || typeof importAdvisorWorkflow.buildAdvisorPlan !== "function") return "";
+      var mergedInputs = mergeInputs(state.extractedInputs, state.clarificationAnswers);
+      var plan = importAdvisorWorkflow.buildAdvisorPlan(mergedInputs, {
+        query: query,
+        source: state.source,
+        consentToModel: state.consentToModel
+      });
+      state.importAdvisorPlan = plan;
+      if (launch && launch.payload && plan.importPrefillInputs) {
+        var normalized = launch.payload.normalizedInputs || {};
+        Object.keys(normalized).forEach(function (key) {
+          if (hasValue(normalized[key])) plan.importPrefillInputs[key] = normalized[key];
+        });
+      }
+      return importAdvisorWorkflow.renderImportAdvisorPanel(plan);
+    }
+
+    function renderEducationWorkflowPanel(match, state, launch, query) {
+      var toolId = match && (match.selectedToolId || match.workflow && match.workflow.id);
+      if (!educationWorkflow || !isEducationWorkflow(toolId) || typeof educationWorkflow.buildEducationPlan !== "function") return "";
+      var mergedInputs = mergeInputs(state.extractedInputs, state.clarificationAnswers);
+      var planInputs = Object.assign({}, mergedInputs, {
+        originCountry: mergedInputs.originCountry || mergedInputs.country,
+        budgetAmount: mergedInputs.budgetAmount || mergedInputs.budget,
+        currency: mergedInputs.currency || "USD"
+      });
+      var plan = educationWorkflow.buildEducationPlan(planInputs, {
+        query: query,
+        source: state.source,
+        consentToModel: state.consentToModel
+      });
+      state.educationPlan = plan;
+      if (launch && launch.payload && plan.scholarshipPrefillInputs) {
+        plan.scholarshipPrefillInputs = Object.assign({}, plan.scholarshipPrefillInputs, launch.payload.normalizedInputs || {});
+      }
+      return educationWorkflow.renderEducationPanel(plan);
+    }
+
+    function renderCareerWorkflowPanel(match, state, launch, query) {
+      var toolId = match && (match.selectedToolId || match.workflow && match.workflow.id);
+      if (!careerWorkflow || !isCareerWorkflow(toolId) || typeof careerWorkflow.buildCareerWorkflow !== "function") return "";
+      var mergedInputs = mergeInputs(state.extractedInputs, state.clarificationAnswers);
+      var plan = careerWorkflow.buildCareerWorkflow(mergedInputs, {
+        query: query,
+        source: state.source,
+        consentToModel: state.consentToModel
+      });
+      state.careerWorkflow = plan;
+      if (launch && launch.payload && plan.cvPrefillInputs) {
+        var normalized = launch.payload.normalizedInputs || {};
+        Object.keys(normalized).forEach(function (key) {
+          if (hasValue(normalized[key])) plan.cvPrefillInputs[key] = normalized[key];
+        });
+      }
+      return careerWorkflow.renderCareerPanel(plan);
+    }
+
+    function renderEnergyWorkflowPanel(match, state, launch, query) {
+      var toolId = match && (match.selectedToolId || match.workflow && match.workflow.id);
+      if (!energyWorkflow || !isEnergyWorkflow(toolId) || typeof energyWorkflow.buildAdvisorPlan !== "function") return "";
+      var mergedInputs = mergeInputs(state.extractedInputs, state.clarificationAnswers);
+      var plan = energyWorkflow.buildAdvisorPlan(mergedInputs, {
+        query: query,
+        source: state.source,
+        consentToModel: state.consentToModel
+      });
+      state.energyAdvisorPlan = plan;
+      if (launch && launch.payload && plan.solarPrefillInputs) {
+        var normalized = launch.payload.normalizedInputs || {};
+        Object.keys(normalized).forEach(function (key) {
+          if (hasValue(normalized[key])) plan.solarPrefillInputs[key] = normalized[key];
+        });
+      }
+      return energyWorkflow.renderEnergyPanel(plan);
+    }
+
+    function renderSmeFinancePanel(match, state, launch, query) {
+      var toolId = match && (match.selectedToolId || match.workflow && match.workflow.id);
+      if (!smeFinanceWorkflow || !isSmeFinanceWorkflow(toolId) || typeof smeFinanceWorkflow.buildFinancePlan !== "function") return "";
+      var mergedInputs = mergeInputs(state.extractedInputs, state.clarificationAnswers);
+      var plan = smeFinanceWorkflow.buildFinancePlan(mergedInputs, {
+        query: query,
+        source: state.source,
+        consentToModel: state.consentToModel
+      });
+      state.smeFinancePlan = plan;
+      if (launch && launch.payload && plan.inputs) {
+        var normalized = launch.payload.normalizedInputs || {};
+        Object.keys(normalized).forEach(function (key) {
+          if (hasValue(normalized[key])) plan.inputs[key] = normalized[key];
+        });
+      }
+      return typeof smeFinanceWorkflow.renderFinancePanel === "function" ? smeFinanceWorkflow.renderFinancePanel(plan) : "";
+    }
+
+    function downloadEnergyDecisionBrief(plan, status) {
+      if (!plan) return;
+      var text = plan.decisionBriefText || "AfroTools solar and generator decision brief.";
+      if (window.AfroTools && window.AfroTools.pdf && typeof window.AfroTools.pdf.generate === "function") {
+        window.AfroTools.pdf.generate({
+          title: "Solar and Generator Decision Brief",
+          subtitle: plan.goalSummary,
+          toolId: "solar-roi",
+          category: "energy",
+          country: plan.countryData && plan.countryData.countryName || "",
+          countryCode: plan.countryData && plan.countryData.code || "",
+          currency: plan.countryData && plan.countryData.currency || "",
+          heroStats: [
+            { label: "Generator / month", value: plan.formatted.monthlyGeneratorCost },
+            { label: "Solar size", value: plan.estimates.roughSystemKw + " kW" },
+            { label: "Payback", value: plan.formatted.payback }
+          ],
+          sections: [
+            {
+              title: "Decision summary",
+              rows: [
+                { label: "Recommendation", value: plan.decision && plan.decision.headline || "Quote needed before decision" },
+                { label: "Annual fuel exposure", value: plan.formatted.annualFuelExposure },
+                { label: "Estimated system cost", value: plan.formatted.systemCost },
+                { label: "Ten-year net savings", value: plan.formatted.tenYearNetSavings }
+              ]
+            },
+            {
+              title: "Installer questions",
+              rows: plan.installerQuestions.map(function (item, index) {
+                return { label: "Question " + (index + 1), value: item };
+              })
+            },
+            {
+              title: "Risks",
+              rows: plan.risks.map(function (item, index) {
+                return { label: "Risk " + (index + 1), value: item };
+              })
+            }
+          ],
+          source: "Tariff: " + plan.sourceState.tariff.label + "; Fuel: " + plan.sourceState.fuel.label + "; Solar yield: " + plan.sourceState.solarYield.label,
+          disclaimer: plan.warning,
+          noGate: true
+        }).then(function () {
+          if (status) status.textContent = "PDF decision brief downloaded.";
+        }).catch(function () {
+          fallbackTextDownload(text, "afrotools-solar-generator-brief.txt", status);
+        });
+        return;
+      }
+      fallbackTextDownload(text, "afrotools-solar-generator-brief.txt", status);
+    }
+
+    function fallbackTextDownload(text, fileName, status) {
+      var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      var link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(function () {
+        URL.revokeObjectURL(link.href);
+        link.remove();
+      }, 0);
+      if (status) status.textContent = "Decision brief downloaded as text.";
+    }
+
+    function downloadSmeFinanceBrief(plan, status) {
+      if (!plan) return;
+      fallbackTextDownload(plan.decisionBriefText || "AfroTools SME finance planning brief.", "afrotools-sme-finance-brief.txt", status);
+    }
+
+    function copySmeFinanceBrief(plan, status) {
+      if (!plan) return;
+      var text = plan.decisionBriefText || "AfroTools SME finance planning brief.";
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        navigator.clipboard.writeText(text).then(function () {
+          if (status) status.textContent = "Finance brief copied.";
+        }).catch(function () {
+          if (status) status.textContent = "Copy failed. Use download instead.";
+        });
+        return;
+      }
+      if (status) status.textContent = "Copy is unavailable in this browser. Use download instead.";
+    }
+
+    function workflowReportFor(kind) {
+      if (!workflowExport) return null;
+      if (kind === "import" && workflowState.importAdvisorPlan && typeof workflowExport.fromImportAdvisorPlan === "function") {
+        return workflowExport.fromImportAdvisorPlan(workflowState.importAdvisorPlan);
+      }
+      if (kind === "energy" && workflowState.energyAdvisorPlan && typeof workflowExport.fromEnergyAdvisorPlan === "function") {
+        return workflowExport.fromEnergyAdvisorPlan(workflowState.energyAdvisorPlan);
+      }
+      return null;
+    }
+
+    function setWorkflowExportStatus(status, message) {
+      if (status) status.textContent = message || "";
+    }
+
+    function handleWorkflowExport(kind, action, status) {
+      var report = workflowReportFor(kind);
+      if (!workflowExport || !report) {
+        setWorkflowExportStatus(status, "Export is not ready yet. Add details and rerun the workflow.");
+        return;
+      }
+      var trackPayload = {
+        workflow_type: report.workflowType || kind,
+        export_type: action,
+        selected_tool_id: workflowState.selectedToolId || ""
+      };
+      track("ai_workflow_export_started", trackPayload);
+      if (action === "pdf") {
+        setWorkflowExportStatus(status, "Preparing PDF brief...");
+        workflowExport.downloadPdfReport(report, {
+          toolId: kind === "import" ? "import-duty" : "solar-roi",
+          category: kind === "import" ? "trade" : "energy",
+          fileName: kind === "import" ? "afrotools-import-advisor-brief" : "afrotools-solar-generator-brief"
+        }).then(function (result) {
+          setWorkflowExportStatus(status, result && result.fallback === "text" ? "PDF utility unavailable; text brief downloaded." : "PDF brief downloaded.");
+          track("ai_workflow_export_completed", trackPayload);
+          recordIntent("ai_export_generated", {
+            selectedToolId: workflowState.selectedToolId || trackPayload.selected_tool_id,
+            workflowType: trackPayload.workflow_type,
+            exportType: action
+          });
+        }).catch(function () {
+          setWorkflowExportStatus(status, "PDF export failed. Try JSON or copy instead.");
+          track("ai_workflow_export_failed", trackPayload);
+        });
+        return;
+      }
+      if (action === "copy") {
+        workflowExport.copyToClipboard(report, { mode: "checklist" }).then(function (result) {
+          setWorkflowExportStatus(status, result && result.copied ? "Checklist copied." : "Copy unavailable. Use JSON or email text instead.");
+          track(result && result.copied ? "ai_workflow_export_completed" : "ai_workflow_export_failed", trackPayload);
+          if (result && result.copied) {
+            recordIntent("ai_export_generated", {
+              selectedToolId: workflowState.selectedToolId || trackPayload.selected_tool_id,
+              workflowType: trackPayload.workflow_type,
+              exportType: action
+            });
+          }
+        });
+        return;
+      }
+      if (action === "json") {
+        if (workflowExport.downloadJson(report, kind === "import" ? "afrotools-import-advisor-brief.json" : "afrotools-solar-generator-brief.json")) {
+          setWorkflowExportStatus(status, "JSON report downloaded.");
+          track("ai_workflow_export_completed", trackPayload);
+          recordIntent("ai_export_generated", {
+            selectedToolId: workflowState.selectedToolId || trackPayload.selected_tool_id,
+            workflowType: trackPayload.workflow_type,
+            exportType: action
+          });
+        } else {
+          setWorkflowExportStatus(status, "JSON download is unavailable in this browser.");
+          track("ai_workflow_export_failed", trackPayload);
+        }
+        return;
+      }
+      if (action === "whatsapp") {
+        var whatsAppUrl = workflowExport.buildWhatsAppUrl(report);
+        setWorkflowExportStatus(status, "Opening WhatsApp-friendly summary.");
+        track("ai_workflow_export_completed", trackPayload);
+        recordIntent("ai_export_generated", {
+          selectedToolId: workflowState.selectedToolId || trackPayload.selected_tool_id,
+          workflowType: trackPayload.workflow_type,
+          exportType: action
+        });
+        window.open(whatsAppUrl, "_blank", "noopener");
+        return;
+      }
+      if (action === "email") {
+        setWorkflowExportStatus(status, "Opening email-ready text.");
+        track("ai_workflow_export_completed", trackPayload);
+        recordIntent("ai_export_generated", {
+          selectedToolId: workflowState.selectedToolId || trackPayload.selected_tool_id,
+          workflowType: trackPayload.workflow_type,
+          exportType: action
+        });
+        window.location.href = workflowExport.buildEmailUrl(report);
+      }
+    }
+
+    function financeLaunchForPlan(plan, toolId) {
+      if (!plan) return null;
+      if (toolId === "paye-calculator") return buildToolPrefillUrl("paye-calculator", plan.payrollPrefillInputs || plan.inputs, {}, plan.inputs && plan.inputs.payeRoute || plan.selectedRoute || "/tools/paye-calculator/");
+      if (toolId === "vat-calc-pan-african") return buildToolPrefillUrl("vat-calc-pan-african", plan.vatPrefillInputs || plan.inputs, {}, "/tools/vat-calculator/");
+      if (toolId === "invoice-generator") return buildToolPrefillUrl("invoice-generator", plan.invoicePrefillInputs || plan.inputs, {}, "/tools/invoice-generator/");
+      return { supported: false, launchUrl: plan.selectedRoute || "/vat-business-tax/" };
+    }
+
     function renderCard(match, options) {
       var primary = options && options.primary;
       var workflow = match.workflow;
@@ -897,12 +1572,22 @@
       var confidence = Number(match.confidence || 0);
       var confidenceLabel = confidence > 0 ? Math.round(confidence * 100) + "% match" : "Browse";
       var clarification = primary ? renderClarification(match, state, launch, options && options.query) : "";
+      var importPanel = primary ? renderImportAdvisorPanel(match, state, launch, options && options.query) : "";
+      var educationPanel = primary ? renderEducationWorkflowPanel(match, state, launch, options && options.query) : "";
+      var careerPanel = primary ? renderCareerWorkflowPanel(match, state, launch, options && options.query) : "";
+      var energyPanel = primary ? renderEnergyWorkflowPanel(match, state, launch, options && options.query) : "";
+      var financePanel = primary ? renderSmeFinancePanel(match, state, launch, options && options.query) : "";
       var html = '<article class="ai-workflow-card" data-workflow-card data-tool-id="' + escapeHtml(workflow.id) + '" data-primary="' + (primary ? "true" : "false") + '">' +
         '<div class="ai-card-head"><div><h3 class="ai-card-title">' + escapeHtml(workflow.title) + '</h3><p class="ai-card-reason">' + escapeHtml(match.reason || workflow.reason) + '</p></div><span class="ai-chip">' + escapeHtml(confidenceLabel) + '</span></div>' +
         '<div class="ai-card-body"><div class="ai-mini-panel"><strong>Inputs already detected</strong>' + inputList(mergedInputs) + '</div><div class="ai-mini-panel"><strong>Missing required inputs</strong>' + missingList(launch.missingInputs || state.missingInputs) + '</div></div>' +
         clarification +
+        importPanel +
+        educationPanel +
+        careerPanel +
+        energyPanel +
+        financePanel +
         '<div class="ai-notice"><strong>Privacy and confidence</strong>' + escapeHtml(privacy) + (sourceHint ? '<span class="ai-source-hint">' + escapeHtml(sourceHint) + '</span>' : '') + '</div>' +
-        '<div class="ai-actions"><a class="ai-open" data-open-tool data-tool-id="' + escapeHtml(workflow.id) + '" data-supported="' + (launch.supported ? "true" : "false") + '" href="' + escapeHtml(launch.launchUrl || workflow.route) + '">Open tool</a><a class="ai-browse" href="' + escapeHtml(search) + '">Continue browsing</a></div>' +
+        '<div class="ai-actions"><a class="ai-open" data-open-tool data-tool-id="' + escapeHtml(workflow.id) + '" data-supported="' + (launch.supported ? "true" : "false") + '" href="' + escapeHtml(launch.launchUrl || workflow.route) + '">Open tool</a><a class="ai-browse" href="' + escapeHtml(search) + '">Continue browsing</a><button class="ai-small-button secondary" type="button" data-save-project>Save project</button><button class="ai-small-button secondary" type="button" data-sync-current-project>Sync to account</button><span class="ai-panel-status" data-project-card-status aria-live="polite"></span></div>' +
         '</article>';
       return { html: html, launch: launch, workflow: workflow };
     }
@@ -949,17 +1634,24 @@
           missing_count: launch.missingInputs ? launch.missingInputs.length : 0
         });
       }
+      recordIntent(saved ? "ai_prefill_success" : "ai_prefill_failed", {
+        selectedToolId: toolId,
+        missingInputs: launch && launch.missingInputs || workflowState.missingInputs,
+        prefillStatus: saved ? "success" : (launch && launch.supported ? "failed" : "unsupported"),
+        workflowType: toolId
+      });
       trackMany(["ai_prefill_open_tool", "ai_command_tool_open"], Object.assign({
         tool_id: toolId,
         route: launch && launch.launchUrl || "",
         prefill_supported: Boolean(launch && launch.supported),
         prefill_saved: saved
       }, meta || {}));
-      recordIntent("ai_intent_tool_open", {
+      recordIntent("ai_tool_opened", {
         selectedToolId: toolId,
         toolOpenClicked: true,
         missingInputs: launch && launch.missingInputs || workflowState.missingInputs,
-        fallbackUsed: workflowState.source === "fallback" || workflowState.source === "deterministic"
+        fallbackUsed: workflowState.source === "fallback" || workflowState.source === "deterministic",
+        workflowType: toolId
       });
       window.location.href = launch && launch.launchUrl || (activeMatch && activeMatch.selectedRoute) || "/tools/";
     }
@@ -1004,11 +1696,47 @@
             answered_count: Object.keys(workflowState.clarificationAnswers).length,
             missing_count: workflowState.missingInputs.length
           });
-          recordIntent("ai_intent_clarification_answered", {
+          recordIntent("ai_clarification_answered", {
             selectedToolId: workflowState.selectedToolId,
-            missingInputs: workflowState.missingInputs
+            missingInputs: workflowState.missingInputs,
+            workflowType: workflowState.selectedToolId
           });
           renderMatches(target, [activeMatch], query, true, true);
+        });
+      });
+      target.querySelectorAll("[data-save-project]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var status = button.closest("[data-workflow-card]") && button.closest("[data-workflow-card]").querySelector("[data-project-card-status]");
+          var saved = saveCurrentProjectLocal();
+          if (status) status.textContent = saved ? "Saved on this device." : "Could not save on this device.";
+          setProjectStatus(saved ? "Saved project locally. Account sync is optional." : "Project save is unavailable in this browser.");
+        });
+      });
+      target.querySelectorAll("[data-sync-current-project]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var status = button.closest("[data-workflow-card]") && button.closest("[data-workflow-card]").querySelector("[data-project-card-status]");
+          var saved = saveCurrentProjectLocal();
+          if (!saved) {
+            if (status) status.textContent = "Could not prepare a sanitized project summary.";
+            return;
+          }
+          if (status) status.textContent = "Syncing sanitized project summary...";
+          syncProjectToAccount(saved).then(function (result) {
+            if (result && result.synced) {
+              if (status) status.textContent = "Synced to your AfroTools account.";
+              setProjectStatus("Synced sanitized project summary to your account.");
+              renderSavedProjects();
+              return;
+            }
+            var message = result && result.reason === "not_signed_in"
+              ? "Sign in first. Your project remains saved on this device."
+              : "Could not sync. Local copy remains available.";
+            if (status) status.textContent = message;
+            setProjectStatus(message);
+          }).catch(function () {
+            if (status) status.textContent = "Could not sync. Local copy remains available.";
+            setProjectStatus("Could not sync. Local copy remains available.");
+          });
         });
       });
       target.querySelectorAll("[data-answer-chip]").forEach(function (chip) {
@@ -1038,6 +1766,255 @@
           storeAndOpen(toolId, launch, { skipped_clarification: true });
         });
       });
+      target.querySelectorAll("[data-import-duty-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var plan = workflowState.importAdvisorPlan || null;
+          var inputs = plan && plan.importPrefillInputs || mergeInputs(workflowState.extractedInputs, workflowState.clarificationAnswers);
+          var launch = buildToolPrefillUrl("import-duty", inputs, {}, "/tools/import-duty/");
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          trackMany(["ai_prefill_payload_created", "ai_prefill_open_tool"], {
+            tool_id: "import-duty",
+            source_tool_id: workflowState.selectedToolId,
+            context: "import_advisor"
+          });
+          storeAndOpen("import-duty", launch, { context: "import_advisor" });
+        });
+      });
+      target.querySelectorAll("[data-car-import-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          var plan = workflowState.importAdvisorPlan || null;
+          if (!plan || !plan.importPrefillInputs || plan.importPrefillInputs.mode !== "car") return;
+          event.preventDefault();
+          var launch = buildToolPrefillUrl("car-import-cost", plan.importPrefillInputs, {}, "/tools/import-duty/");
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          trackMany(["ai_prefill_payload_created", "ai_prefill_open_tool"], {
+            tool_id: "car-import-cost",
+            source_tool_id: workflowState.selectedToolId,
+            context: "import_advisor_car_mode"
+          });
+          storeAndOpen("import-duty", launch, { context: "import_advisor_car_mode" });
+        });
+      });
+      target.querySelectorAll("[data-education-scholarship-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var plan = workflowState.educationPlan || null;
+          var launch = buildToolPrefillUrl("scholarship-finder", plan && plan.scholarshipPrefillInputs || mergeInputs(workflowState.extractedInputs, workflowState.clarificationAnswers), {}, "/tools/scholarship-finder/");
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          trackMany(["ai_prefill_payload_created", "ai_prefill_open_tool"], {
+            tool_id: "scholarship-finder",
+            source_tool_id: workflowState.selectedToolId,
+            context: "education_plan"
+          });
+          storeAndOpen("scholarship-finder", launch, { context: "education_plan" });
+        });
+      });
+      target.querySelectorAll("[data-education-ai-brief]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var status = button.closest("[data-education-plan]") && button.closest("[data-education-plan]").querySelector("[data-education-brief-status]");
+          trackMany(["ai_consent_requested", "ai_continue_without_ai"], {
+            tool_id: workflowState.selectedToolId,
+            context: "education_ai_brief"
+          });
+          showConsentCard(true);
+          if (status) {
+            status.textContent = modelConsent && modelConsent.checked
+              ? "AI study-plan brief requires a configured provider. The deterministic checklist is available now."
+              : "AI study-plan brief is optional. Tick the consent box below before any model-assisted routing or brief generation.";
+          }
+          if (consentCard && typeof consentCard.scrollIntoView === "function") {
+            consentCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }
+        });
+      });
+      target.querySelectorAll("[data-career-cv-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var plan = workflowState.careerWorkflow || null;
+          var inputs = plan && plan.cvPrefillInputs || mergeInputs(workflowState.extractedInputs, workflowState.clarificationAnswers);
+          var launch = buildToolPrefillUrl("cv-builder", inputs, {}, "/tools/cv-builder/");
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          trackMany(["cv_agent_start", "ai_prefill_payload_created", "ai_prefill_open_tool"], {
+            tool_id: "cv-builder",
+            source_tool_id: workflowState.selectedToolId,
+            context: "career_agent",
+            template_id: plan && plan.templateSuggestion && plan.templateSuggestion.templateId || ""
+          });
+          if (plan && plan.templateSuggestion) {
+            track("cv_agent_template_suggestion", {
+              tool_id: "cv-builder",
+              template_id: plan.templateSuggestion.templateId,
+              context: "career_agent"
+            });
+          }
+          storeAndOpen("cv-builder", launch, { context: "career_agent" });
+        });
+      });
+      target.querySelectorAll("[data-career-ai-profile]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var status = button.closest("[data-career-plan]") && button.closest("[data-career-plan]").querySelector("[data-career-profile-status]");
+          trackMany(["ai_consent_requested", "ai_continue_without_ai"], {
+            tool_id: workflowState.selectedToolId,
+            context: "career_ai_profile"
+          });
+          showConsentCard(true);
+          if (status) {
+            status.textContent = modelConsent && modelConsent.checked
+              ? "AI starter profile requires a configured provider. Manual CV templates and ATS guidance are ready now."
+              : "AI starter profile is optional. Tick the consent box below before any CV/profile content is sent to a model.";
+          }
+          if (consentCard && typeof consentCard.scrollIntoView === "function") {
+            consentCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }
+        });
+      });
+      target.querySelectorAll("[data-energy-solar-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var plan = workflowState.energyAdvisorPlan || null;
+          var inputs = plan && plan.solarPrefillInputs || mergeInputs(workflowState.extractedInputs, workflowState.clarificationAnswers);
+          var launch = buildToolPrefillUrl("solar-roi", inputs, {}, plan && plan.solarRoute || "/tools/solar-roi/");
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          trackMany(["ai_prefill_payload_created", "ai_prefill_open_tool"], {
+            tool_id: "solar-roi",
+            source_tool_id: workflowState.selectedToolId,
+            context: "energy_advisor"
+          });
+          storeAndOpen("solar-roi", launch, { context: "energy_advisor" });
+        });
+      });
+      target.querySelectorAll("[data-energy-generator-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var plan = workflowState.energyAdvisorPlan || null;
+          var inputs = plan && plan.generatorPrefillInputs || mergeInputs(workflowState.extractedInputs, workflowState.clarificationAnswers);
+          var launch = buildToolPrefillUrl("fuel-tracker", inputs, {}, "/tools/fuel-tracker/#generator-cost");
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          trackMany(["ai_prefill_payload_created", "ai_prefill_open_tool"], {
+            tool_id: "fuel-tracker",
+            source_tool_id: workflowState.selectedToolId,
+            context: "energy_advisor_generator"
+          });
+          storeAndOpen("fuel-tracker", launch, { context: "energy_advisor_generator" });
+        });
+      });
+      target.querySelectorAll("[data-energy-brief-download]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var plan = workflowState.energyAdvisorPlan || null;
+          var status = button.closest("[data-energy-advisor]") && button.closest("[data-energy-advisor]").querySelector("[data-energy-brief-status]");
+          track("ai_energy_decision_brief_export", {
+            tool_id: workflowState.selectedToolId,
+            context: "energy_advisor"
+          });
+          downloadEnergyDecisionBrief(plan, status);
+        });
+      });
+      target.querySelectorAll("[data-energy-ai-brief]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var status = button.closest("[data-energy-advisor]") && button.closest("[data-energy-advisor]").querySelector("[data-energy-brief-status]");
+          trackMany(["ai_consent_requested", "ai_continue_without_ai"], {
+            tool_id: workflowState.selectedToolId,
+            context: "energy_ai_brief"
+          });
+          showConsentCard(true);
+          if (status) {
+            status.textContent = modelConsent && modelConsent.checked
+              ? "AI decision-brief improvement requires a configured provider. The deterministic brief is ready now."
+              : "AI brief improvement is optional. Tick the consent box below before any prompt is sent to a model.";
+          }
+          if (consentCard && typeof consentCard.scrollIntoView === "function") {
+            consentCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }
+        });
+      });
+      target.querySelectorAll("[data-sme-primary-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var plan = workflowState.smeFinancePlan || null;
+          var kind = plan && plan.inputs && plan.inputs.workflowKind || "";
+          var toolId = kind === "payroll" ? "paye-calculator"
+            : kind === "vat" ? "vat-calc-pan-african"
+            : kind === "invoice" ? "invoice-generator"
+            : workflowState.selectedToolId;
+          var launch = financeLaunchForPlan(plan, toolId) || { launchUrl: link.getAttribute("href") || "" };
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          trackMany(["ai_prefill_payload_created", "ai_prefill_open_tool"], {
+            tool_id: toolId,
+            source_tool_id: workflowState.selectedToolId,
+            context: "sme_finance_assistant"
+          });
+          storeAndOpen(toolId, launch, { context: "sme_finance_assistant" });
+        });
+      });
+      target.querySelectorAll("[data-sme-vat-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var plan = workflowState.smeFinancePlan || null;
+          var launch = financeLaunchForPlan(plan, "vat-calc-pan-african") || { launchUrl: link.getAttribute("href") || "" };
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          storeAndOpen("vat-calc-pan-african", launch, { context: "sme_finance_vat" });
+        });
+      });
+      target.querySelectorAll("[data-sme-invoice-link]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var plan = workflowState.smeFinancePlan || null;
+          var launch = financeLaunchForPlan(plan, "invoice-generator") || { launchUrl: link.getAttribute("href") || "" };
+          workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
+          storeAndOpen("invoice-generator", launch, { context: "sme_finance_invoice" });
+        });
+      });
+      target.querySelectorAll("[data-sme-registration-link]").forEach(function (link) {
+        link.addEventListener("click", function () {
+          trackMany(["ai_prefill_open_tool", "ai_command_tool_open"], {
+            tool_id: "business-planner",
+            route: link.getAttribute("href") || "",
+            context: "sme_finance_registration",
+            prefill_supported: false
+          });
+        });
+      });
+      target.querySelectorAll("[data-sme-brief-download]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var plan = workflowState.smeFinancePlan || null;
+          var status = button.closest("[data-sme-finance]") && button.closest("[data-sme-finance]").querySelector("[data-sme-brief-status]");
+          track("ai_sme_finance_brief_export", {
+            tool_id: workflowState.selectedToolId,
+            context: "sme_finance_assistant"
+          });
+          downloadSmeFinanceBrief(plan, status);
+        });
+      });
+      target.querySelectorAll("[data-sme-brief-copy]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var plan = workflowState.smeFinancePlan || null;
+          var status = button.closest("[data-sme-finance]") && button.closest("[data-sme-finance]").querySelector("[data-sme-brief-status]");
+          track("ai_sme_finance_brief_copy", {
+            tool_id: workflowState.selectedToolId,
+            context: "sme_finance_assistant"
+          });
+          copySmeFinanceBrief(plan, status);
+        });
+      });
+      target.querySelectorAll("[data-sme-ai-brief]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var status = button.closest("[data-sme-finance]") && button.closest("[data-sme-finance]").querySelector("[data-sme-brief-status]");
+          trackMany(["ai_consent_requested", "ai_continue_without_ai"], {
+            tool_id: workflowState.selectedToolId,
+            context: "sme_finance_ai_brief"
+          });
+          showConsentCard(true);
+          if (status) {
+            status.textContent = modelConsent && modelConsent.checked
+              ? "AI finance-brief improvement requires a configured provider. The deterministic planning brief is ready now."
+              : "AI brief improvement is optional. Tick the consent box below before any business or financial prompt is sent to a model.";
+          }
+          if (consentCard && typeof consentCard.scrollIntoView === "function") {
+            consentCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }
+        });
+      });
       target.querySelectorAll("[data-browse-instead]").forEach(function (link) {
         link.addEventListener("click", function () {
           track("ai_continue_without_ai", {
@@ -1049,6 +2026,16 @@
             clarificationAbandoned: true,
             missingInputs: workflowState.missingInputs
           });
+        });
+      });
+      target.querySelectorAll("[data-workflow-export]").forEach(function (control) {
+        control.addEventListener("click", function (event) {
+          event.preventDefault();
+          var action = control.getAttribute("data-workflow-export") || "";
+          var kind = control.getAttribute("data-workflow-export-kind") || "";
+          var container = control.closest("[data-import-advisor]") || control.closest("[data-energy-advisor]") || control.closest("[data-workflow-card]");
+          var status = container && container.querySelector("[data-workflow-export-status]");
+          handleWorkflowExport(kind, action, status);
         });
       });
     }
@@ -1072,7 +2059,15 @@
         intentCategory: "unknown",
         selectedToolId: "tool-search",
         fallbackUsed: true,
-        routerSource: "low_confidence_or_empty"
+        routerSource: "low_confidence_or_empty",
+        noMatchCategory: "low_confidence_or_empty"
+      });
+      recordIntent("ai_intent_detected", {
+        intentCategory: "unknown",
+        selectedToolId: "tool-search",
+        fallbackUsed: true,
+        routerSource: "low_confidence_or_empty",
+        noMatchCategory: "low_confidence_or_empty"
       });
       setState("noMatch");
       showConsentCard(true);
@@ -1091,6 +2086,12 @@
       }
       setState("loading");
       track("ai_command_query_submit", { has_query: true, query_length: clean.length, consent_to_model: consentToModel });
+      recordIntent("ai_prompt_submitted", {
+        query: clean,
+        queryLength: clean.length,
+        source: entrySource,
+        consentToModel: consentToModel
+      });
       callRouter(clean, consentToModel).then(function (payload) {
         var match = fromServerDecision(payload, clean);
         if (!match || !match.workflow || match.workflow.id === "tool-search" || Number(match.confidence || 0) < LOW_CONFIDENCE) {
@@ -1100,12 +2101,14 @@
         match.source = consentToModel ? "router" : match.source;
         workflowState = createWorkflowState(match, clean, consentToModel);
         renderMatches(resultCards, [match], clean, true);
-        recordIntent("ai_intent_routed", {
+        recordIntent("ai_intent_detected", {
           intentCategory: match.intentCategory || match.safetyDomain || match.workflow.domain,
           selectedToolId: match.selectedToolId || match.workflow.id,
           missingInputs: workflowState.missingInputs,
+          confidence: workflowState.confidence,
           fallbackUsed: workflowState.source === "fallback",
-          routerSource: workflowState.source
+          routerSource: workflowState.source,
+          workflowType: match.selectedToolId || match.workflow.id
         });
         setState("result");
         showConsentCard(true);
@@ -1123,7 +2126,15 @@
             intentCategory: "unknown",
             selectedToolId: "tool-search",
             fallbackUsed: true,
-            routerSource: "router_failure"
+            routerSource: "router_failure",
+            noMatchCategory: "router_failure"
+          });
+          recordIntent("ai_intent_detected", {
+            intentCategory: "unknown",
+            selectedToolId: "tool-search",
+            fallbackUsed: true,
+            routerSource: "router_failure",
+            noMatchCategory: "router_failure"
           });
           setState("error");
           showConsentCard(true);
@@ -1132,12 +2143,14 @@
         workflowState = createWorkflowState(fallback, clean, false);
         errorText.textContent = (err && err.message ? err.message + ". " : "") + "Using deterministic routing instead.";
         renderMatches(errorCards, [Object.assign({ query: clean }, fallback)], clean, true);
-        recordIntent("ai_intent_routed", {
+        recordIntent("ai_intent_detected", {
           intentCategory: fallback.intentCategory || fallback.safetyDomain || fallback.workflow.domain,
           selectedToolId: fallback.selectedToolId || fallback.workflow.id,
           missingInputs: workflowState.missingInputs,
+          confidence: workflowState.confidence,
           fallbackUsed: true,
-          routerSource: "deterministic_after_router_failure"
+          routerSource: "deterministic_after_router_failure",
+          workflowType: fallback.selectedToolId || fallback.workflow.id
         });
         setState("error");
         showConsentCard(true);
@@ -1176,6 +2189,13 @@
           has_query: Boolean(input.value.trim()),
           query_length: input.value.trim().length
         });
+        if (workflowState.selectedToolId === "cv-builder" || workflowState.selectedToolId === "cover-letter") {
+          track(modelConsent.checked ? "cv_agent_ai_consent_accepted" : "cv_agent_ai_consent_declined", {
+            has_query: Boolean(input.value.trim()),
+            query_length: input.value.trim().length,
+            tool_id: workflowState.selectedToolId || "cv-builder"
+          });
+        }
       });
       modelRetry.addEventListener("click", function () {
         if (!modelConsent.checked) return;
@@ -1185,6 +2205,13 @@
           has_query: Boolean(input.value.trim()),
           query_length: input.value.trim().length
         });
+        if (workflowState.selectedToolId === "cv-builder" || workflowState.selectedToolId === "cover-letter") {
+          track("cv_agent_ai_consent_accepted", {
+            has_query: Boolean(input.value.trim()),
+            query_length: input.value.trim().length,
+            tool_id: workflowState.selectedToolId || "cv-builder"
+          });
+        }
         routeQuery(input.value, { consentToModel: true });
       });
     }
@@ -1201,6 +2228,7 @@
     }
 
     renderFallbackGrid();
+    renderSavedProjects();
     fallbackGrid.addEventListener("click", function (event) {
       var link = event.target.closest("[data-fallback-card]");
       if (!link) return;
@@ -1212,26 +2240,82 @@
       workflowState.selectedToolId = link.getAttribute("data-fallback-card") || "";
       workflowState.selectedToolRoute = link.getAttribute("href") || "";
       workflowState.source = "fallback";
-      recordIntent("ai_intent_tool_open", {
+      recordIntent("ai_tool_opened", {
         selectedToolId: workflowState.selectedToolId,
         toolOpenClicked: true,
-        fallbackUsed: true
+        fallbackUsed: true,
+        workflowType: workflowState.selectedToolId
       });
     });
+
+    if (refreshProjectsButton) {
+      refreshProjectsButton.addEventListener("click", function () {
+        renderSavedProjects();
+        setProjectStatus("Recent projects refreshed.");
+      });
+    }
+
+    if (savedProjectList) {
+      savedProjectList.addEventListener("click", function (event) {
+        var deleteButton = event.target.closest("[data-project-delete]");
+        var syncButton = event.target.closest("[data-project-sync]");
+        var openLink = event.target.closest("[data-project-open]");
+        if (openLink) {
+          track("ai_project_continue_click", { storage_mode: "local" });
+          return;
+        }
+        if (deleteButton) {
+          var deleteId = deleteButton.getAttribute("data-project-delete") || "";
+          if (savedProjects && savedProjects.deleteLocal(deleteId)) {
+            renderSavedProjects();
+            setProjectStatus("Deleted saved project from this device.");
+            track("ai_project_deleted_local", { storage_mode: "local" });
+          }
+          return;
+        }
+        if (syncButton) {
+          var syncId = syncButton.getAttribute("data-project-sync") || "";
+          var project = savedProjects && savedProjects.listLocal({ limit: savedProjects.MAX_LOCAL_PROJECTS }).filter(function (item) {
+            return item.projectId === syncId;
+          })[0];
+          if (!project) {
+            setProjectStatus("Saved project was not found on this device.");
+            return;
+          }
+          setProjectStatus("Syncing sanitized project summary...");
+          syncProjectToAccount(project).then(function (result) {
+            setProjectStatus(result && result.synced ? "Synced sanitized project summary to your account." : result && result.reason === "not_signed_in" ? "Sign in first. Your project remains saved on this device." : "Could not sync. Local copy remains available.");
+          }).catch(function () {
+            setProjectStatus("Could not sync. Local copy remains available.");
+          });
+        }
+      });
+    }
 
     window.AfroToolsAICommandPage = {
       getState: function () { return clone(workflowState); },
       buildToolPrefillUrl: buildToolPrefillUrl,
       saveToolPrefillPayload: saveToolPrefillPayload,
-      readToolPrefillPayload: readToolPrefillPayload
+      readToolPrefillPayload: readToolPrefillPayload,
+      saveCurrentProjectLocal: saveCurrentProjectLocal,
+      renderSavedProjects: renderSavedProjects,
+      restoreProject: restoreProject
     };
 
     var params = new URLSearchParams(window.location.search);
     var initial = params.get("q") || "";
+    var initialProject = params.get("project") || "";
     input.value = initial;
-    track("ai_command_page_view", { has_query: !!initial, query_length: initial.length });
+    track("ai_command_page_view", { has_query: !!initial, query_length: initial.length, has_project: !!initialProject });
     updateIntentDebug();
-    if (initial) routeQuery(initial);
+    if (initialProject && restoreProject(initialProject)) {
+      renderSavedProjects();
+    } else if (initialProject) {
+      setProjectStatus("Saved project was not found on this device.");
+      if (initial) routeQuery(initial);
+    } else if (initial) {
+      routeQuery(initial);
+    }
   })();
   </script>
 </body>
