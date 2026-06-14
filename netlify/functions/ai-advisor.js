@@ -19,6 +19,7 @@ const ANTHROPIC_INPUT_CHAR_LIMIT = Math.max(
     Number(process.env.ANTHROPIC_INPUT_CHAR_LIMIT || DEFAULT_ANTHROPIC_INPUT_CHAR_LIMIT)
   )
 );
+const { rejectSensitivePayloadWithoutConsent } = require('./_shared/ai-consent-guard');
 
 // In-memory rate limit store (per instance — Netlify Blobs for persistence)
 let _rateStore;
@@ -1074,7 +1075,7 @@ exports.handler = async function(event) {
 
   const headers = {
     "Access-Control-Allow-Origin": corsOrigin,
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-AfroTools-AI-Consent",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-AfroTools-AI-Consent, X-AfroTools-AI-Content-Consent",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Content-Type": "application/json",
     "Vary": "Origin"
@@ -1094,6 +1095,9 @@ exports.handler = async function(event) {
   if (!hasAiAdvisorConsent(event, body)) {
     return aiConsentRequiredResponse(headers);
   }
+
+  const contentConsentRejection = rejectSensitivePayloadWithoutConsent(event, body, headers);
+  if (contentConsentRejection) return contentConsentRejection;
 
   if (!ANTHROPIC_API_KEY) {
     return {
