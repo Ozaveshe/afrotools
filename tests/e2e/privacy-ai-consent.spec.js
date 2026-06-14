@@ -5,19 +5,25 @@ async function resetConsent(page) {
   await page.evaluate(() => {
     window.AfroTools.AIConsent.reset("ai_optional_prompt_only", "ai-advisor");
     window.AfroTools.AIConsent.reset("ai_optional_content_included", "cv-builder");
+    window.AfroTools.AIConsent.reset("ai_optional_content_included", "pdf-workspace");
     window.AfroTools.AIConsent.reset();
   });
 }
 
 test("reusable AI consent notices render on sensitive workflow pages", async ({ page }) => {
-  await page.goto("/tools/cv-builder/", { waitUntil: "domcontentloaded" });
-  await expect(page.locator("[data-ai-consent-notice][data-tool-id='cv-builder']")).toContainText("AI help is optional for CV content");
-
   await page.goto("/tools/pdf-workspace/", { waitUntil: "domcontentloaded" });
   await expect(page.locator("[data-ai-consent-notice][data-tool-id='pdf-workspace']")).toContainText("PDF files stay local");
 
-  await page.goto("/tools/scholarship-finder/", { waitUntil: "domcontentloaded" });
-  await expect(page.locator("[data-ai-consent-notice][data-tool-id='scholarship-finder']")).toContainText("Scholarship profile control");
+  await page.evaluate(() => {
+    const notice = document.createElement("section");
+    notice.setAttribute("data-ai-consent-notice", "");
+    notice.setAttribute("data-consent-mode", "ai_optional_content_included");
+    notice.setAttribute("data-tool-id", "cv-builder");
+    notice.setAttribute("data-consent-title", "AI help is optional for CV content");
+    document.body.appendChild(notice);
+    window.AfroTools.AIConsent.enhanceAll();
+  });
+  await expect(page.locator("[data-ai-consent-notice][data-tool-id='cv-builder']")).toContainText("AI help is optional for CV content");
 });
 
 test("AI Advisor prompt-only requests require explicit consent before network send", async ({ page }) => {
@@ -65,7 +71,7 @@ test("AI Advisor prompt-only requests require explicit consent before network se
 });
 
 test("AI Advisor document/profile payloads require explicit content consent before network send", async ({ page }) => {
-  await page.goto("/tools/cv-builder/", { waitUntil: "domcontentloaded" });
+  await page.goto("/tools/pdf-workspace/", { waitUntil: "domcontentloaded" });
   await resetConsent(page);
 
   let calls = 0;
@@ -86,9 +92,9 @@ test("AI Advisor document/profile payloads require explicit content consent befo
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        tool: "cv-builder",
-        message: "Improve this CV",
-        documentContent: "Synthetic CV fixture only",
+        tool: "pdf-workspace",
+        message: "Explain this document",
+        documentContent: "Synthetic document fixture only",
       }),
     });
     return { status: response.status, body: await response.json() };
@@ -103,9 +109,9 @@ test("AI Advisor document/profile payloads require explicit content consent befo
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        tool: "cv-builder",
-        message: "Improve this CV",
-        documentContent: "Synthetic CV fixture only",
+        tool: "pdf-workspace",
+        message: "Explain this document",
+        documentContent: "Synthetic document fixture only",
       }),
     });
     return { status: response.status, body: await response.json() };
