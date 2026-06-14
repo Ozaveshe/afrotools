@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const IGNORE = ['.claude', 'node_modules', 'afrotools-deploy', '.git', 'dist'];
+const IGNORE = ['.claude', 'node_modules', 'afrotools-deploy', '.git', 'dist', 'test-results', 'playwright-report'];
 const LINK_RESOLUTION_CACHE = new Map();
 
 function escapeRegex(value) {

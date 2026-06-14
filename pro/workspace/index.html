@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,8 +19,8 @@
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
   <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
   <script src="/assets/js/lib/analytics.js?v=776bf234"></script>
-  <script src="/assets/js/lib/pro-app-registry.js?v=ea108ef8"></script>
-  <script src="/assets/js/lib/pro-daily-os-registry.js?v=07383191"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=ac89b1a7"></script>
+  <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
   <script src="/assets/js/lib/pro-architecture.js?v=921b3113"></script>
   <style>
     :root{
@@ -142,9 +142,10 @@
     .pc-progress span{display:block;height:100%;background:var(--pc-blue);border-radius:999px}
     .pc-app-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}
     .pc-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .pc-layout > *,.pc-command-grid > *{min-width:0}
     .pc-panel{overflow:hidden;margin-bottom:12px}
     .pc-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--pc-line);background:#fff}
-    .pc-panel-body{padding:12px 13px}
+    .pc-panel-body{padding:12px 13px;min-width:0}
     .pc-activity-list,.pc-queue-list,.pc-vault-list{display:grid;gap:8px}
     .pc-activity,.pc-queue-item,.pc-vault-row{padding:10px 11px}
     .pc-activity{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
@@ -154,8 +155,8 @@
     .pc-queue-item{display:grid;gap:7px}
     .pc-queue-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
     .pc-queue-copy{font-size:12px;line-height:1.45;color:var(--pc-muted);margin:0}
-    .pc-table-wrap{overflow:auto;border:1px solid var(--pc-line);border-radius:var(--pc-radius);background:#fff}
-    .pc-table{width:100%;border-collapse:collapse;min-width:780px}
+    .pc-table-wrap{display:block;width:100%;max-width:100%;overflow:auto;border:1px solid var(--pc-line);border-radius:var(--pc-radius);background:#fff}
+    .pc-table{display:table;width:100%;border-collapse:collapse;min-width:780px}
     .pc-table th,.pc-table td{padding:9px 10px;border-bottom:1px solid var(--pc-line);text-align:left;vertical-align:top;font-size:12px}
     .pc-table th{background:var(--pc-surface-soft);color:#475569;font-size:11px;font-weight:900}
     .pc-table tr:last-child td{border-bottom:0}
@@ -197,8 +198,8 @@
     }
   </style>
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
-<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=0533540f">
+<script src="/assets/js/lib/dark-mode.js?v=dc870218" defer></script>
 </head>
 <body>
   <main class="pc-shell pro-gated-content">
@@ -492,9 +493,9 @@
     var els = {};
     var appNavOverrides = {
       payroll: { routeStatus: "active", shellState: "Active", statusTone: "ready", routeExists: true },
-      "tax-compliance": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      books: { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
-      hr: { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
+      "tax-compliance": { routeStatus: "active", shellState: "Active", statusTone: "ready", routeExists: true },
+      books: { routeStatus: "active", shellState: "Active", statusTone: "ready", routeExists: true },
+      hr: { routeStatus: "active", shellState: "Active", statusTone: "ready", routeExists: true },
       "trade-desk": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
       "legal-desk": {
         route: "/pro/apps/legal-desk/",
@@ -503,8 +504,8 @@
         shellState: "Workspace preview",
         statusTone: "shell",
         routeExists: true,
-        buildStatus: "Legal workspace opens from the current /pro/apps/legal/ route.",
-        dataModel: "Saved legal workspace data on this device; no shared legal workspace schema yet."
+        buildStatus: "Legal workspace opens the current document and review workspace.",
+        dataModel: "Saved legal workspace data on this device while account save is planned."
       },
       "grants-tenders": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },
       "creator-studio": { routeStatus: "shell", shellState: "Workspace preview", statusTone: "shell", routeExists: true },

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
   <meta property="og:title" content="Seswaa Recipe | Botswana | AfroKitchen">
   <meta property="og:description" content="Botswana&#39;s national dish: beef slow-boiled until falling apart, then shredded and pounded to a tender pulled-meat texture with simple salt-forward seasoning.">
   <meta property="og:image" content="https://afrotools.com/assets/img/kitchen/seswaa-bw.webp">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,15 +25,15 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=32f6a027">
+  <link rel="stylesheet" href="/tools/afrokitchen/icon-system.css?v=e947352b">
   <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=d0ebe756">
-  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=5b092a80">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=f72d0d62">
   <style>
     .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
-    .ak-static-page .ak-static-helper-note,
-    .ak-static-page .ak-static-related-card { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
+    .ak-static-page .ak-static-helper-note { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
     .ak-static-page .ak-static-hero-card { padding: 24px; align-self: stretch; display: grid; gap: 16px; color: var(--ak-text); }
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
@@ -89,6 +89,7 @@
     .ak-static-page .ak-step-title { font-family: var(--font-body); font-size: 1.05rem; font-weight: 800; line-height: 1.25; }
     .ak-static-page .ak-step-text { max-width: 70ch; color: var(--ak-muted); font-size: 1.02rem; line-height: 1.7; }
     .ak-static-page .ak-step-tip { max-width: 68ch; border-radius: 18px; background: linear-gradient(180deg, var(--ak-accent-soft), #fff7df); }
+    .ak-static-page .ak-step-tip::before { content: none; }
     .ak-static-page .ak-static-step-actions { display: grid; gap: 10px; margin-top: 16px; }
     .ak-static-page .ak-static-timer-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; background: var(--ak-surface-soft); color: var(--ak-dark); width: fit-content; }
     .ak-static-page .ak-static-timer-label { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ak-subtle); }
@@ -99,14 +100,47 @@
     .ak-static-page .ak-static-helper-note p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-related { margin-top: 36px; }
     .ak-static-page .ak-static-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .ak-static-page .ak-static-related-card { padding: 20px; text-decoration: none; display: grid; gap: 10px; }
-    .ak-static-page .ak-static-related-card h3 { margin: 0; color: var(--ak-dark); font-size: 1.2rem; }
-    .ak-static-page .ak-static-related-card p { margin: 0; color: var(--ak-muted); line-height: 1.65; }
-    .ak-static-page .ak-static-card-meta { color: var(--ak-subtle); font-size: .92rem; }
+    .ak-static-page .ak-internal-link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .ak-static-page .ak-internal-link-group { min-width: 0; padding: 18px; border-radius: 20px; background: var(--ak-panel); border: 1px solid var(--ak-line); box-shadow: var(--ak-shadow-sm); }
+    .ak-static-page .ak-internal-link-group p { margin: 6px 0 14px; color: var(--ak-muted); line-height: 1.6; }
+    .ak-static-page .ak-internal-link-list { display: grid; gap: 9px; }
+    .ak-static-page .ak-internal-link { display: grid; gap: 3px; padding: 11px 12px; border-radius: 14px; background: var(--ak-bg); border: 1px solid var(--ak-line); color: var(--ak-dark); text-decoration: none; }
+    .ak-static-page .ak-internal-link span { font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+    .ak-static-page .ak-internal-link small { color: var(--ak-muted); line-height: 1.35; }
+    .ak-static-page .ak-internal-link:hover,
+    .ak-static-page .ak-internal-link:focus-visible { border-color: var(--ak-primary-border); color: var(--ak-primary-deep); outline: none; }
+    .ak-static-page .ak-static-recipe-card { min-width: 0; display: grid; grid-template-columns: minmax(112px, .34fr) minmax(0, 1fr); overflow: hidden; text-decoration: none; color: var(--ak-text); background: #fffdfa; border: 1px solid rgba(82,50,28,.14); border-radius: 18px; box-shadow: 0 12px 28px rgba(36,21,10,.06); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+    .ak-static-page .ak-static-recipe-card:not(.has-thumb) { grid-template-columns: 1fr; }
+    .ak-static-page .ak-static-recipe-card:hover,
+    .ak-static-page .ak-static-recipe-card:focus-visible { transform: translateY(-3px); border-color: rgba(199,62,29,.34); box-shadow: 0 18px 34px rgba(36,21,10,.1); outline: none; }
+    .ak-static-page .ak-static-recipe-card:focus-visible { box-shadow: 0 0 0 4px rgba(199,62,29,.16), 0 18px 34px rgba(36,21,10,.1); }
+    .ak-static-page .ak-static-recipe-card-thumb { min-width: 0; min-height: 100%; background: var(--ak-surface-soft); overflow: hidden; }
+    .ak-static-page .ak-static-recipe-card-thumb img { display: block; width: 100%; height: 100%; min-height: 188px; object-fit: cover; }
+    .ak-static-page .ak-static-recipe-card-fallback { min-height: 156px; display: grid; align-content: end; gap: 12px; padding: 18px; background:
+      radial-gradient(circle at 18% 20%, rgba(15,123,67,.18), transparent 28%),
+      linear-gradient(135deg, #fff7ec, #f6eadb 58%, #eef6e7); border-bottom: 1px solid rgba(82,50,28,.12); }
+    .ak-static-page .ak-fallback-mark { width: 44px; height: 44px; display: inline-grid; place-items: center; border-radius: 50%; background: #2d1b12; color: #fff8ef; font-weight: 900; letter-spacing: .06em; }
+    .ak-static-page .ak-fallback-copy { display: grid; gap: 4px; min-width: 0; }
+    .ak-static-page .ak-fallback-copy strong { color: #2d1b12; line-height: 1.12; overflow-wrap: anywhere; }
+    .ak-static-page .ak-fallback-copy small { color: #6c503b; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-body { min-width: 0; display: grid; align-content: start; gap: 12px; padding: 18px; }
+    .ak-static-page .ak-static-recipe-card-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ak-static-page .ak-static-recipe-badge { display: inline-flex; align-items: center; min-height: 28px; max-width: 100%; padding: 0 10px; border-radius: 999px; background: #fff4e6; border: 1px solid rgba(82,50,28,.12); color: #573723; font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ak-static-page .ak-static-recipe-badge:first-child { background: #f4fbef; border-color: rgba(15,123,67,.16); color: #245b35; }
+    .ak-static-page .ak-static-recipe-card-title { color: var(--ak-dark); font-family: var(--font-display); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.02; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; color: var(--ak-muted); line-height: 1.58; font-size: .93rem; }
+    .ak-static-page .ak-static-recipe-card-meta { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+    .ak-static-page .ak-static-recipe-card-meta > span { gap: 7px; min-width: 0; max-width: 100%; padding: 7px 9px; border-radius: 12px; background: #fff6ea; border: 1px solid rgba(82,50,28,.1); color: #4c3322; font-size: .76rem; }
+    .ak-static-page .ak-static-recipe-card-meta small { display: block; color: #8b6e58; font-size: .62rem; font-weight: 850; letter-spacing: .08em; line-height: 1.1; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-meta strong { display: block; min-width: 0; color: #2b1b12; line-height: 1.2; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-cta { display: inline-flex; align-items: center; gap: 7px; justify-self: start; margin-top: 2px; color: var(--ak-primary-deep); font-size: .78rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card:hover .ak-static-recipe-card-cta,
+    .ak-static-page .ak-static-recipe-card:focus-visible .ak-static-recipe-card-cta { color: var(--ak-primary); }
     .ak-static-page .ak-static-credit { font-size: .88rem; color: var(--ak-subtle); }
     @media (max-width: 960px) {
       .ak-static-page .ak-static-summary-grid,
       .ak-static-page .ak-static-related-grid,
+      .ak-static-page .ak-internal-link-grid,
       .ak-static-page .ak-photo-gallery-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
       .ak-static-page .ak-photo-gallery-head { align-items: start; flex-direction: column; }
@@ -128,14 +162,15 @@
       .ak-static-page .ak-photo-thumbs { grid-template-columns: 1fr; }
       .ak-static-page .ak-photo-thumbs figure { aspect-ratio: 4 / 3; }
       .ak-static-page .ak-nutrition { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card.has-thumb { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card-thumb img { min-height: 180px; }
       .ak-static-page .ak-step { padding: 76px 20px 22px; }
       .ak-static-page .ak-step-num { left: 20px; top: 20px; }
     }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Seswaa","description":"Botswana's national dish: beef slow-boiled until falling apart, then shredded and pounded to a tender pulled-meat texture with simple salt-forward seasoning.","image":["https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"],"author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT15M","cookTime":"PT180M","totalTime":"PT195M","recipeYield":"8 servings","recipeCategory":"Main Course","recipeCuisine":"Botswana, Southern Africa","nutrition":{"@type":"NutritionInformation","calories":"380 calories","proteinContent":"42g","carbohydrateContent":"1g","fatContent":"22g","fiberContent":"0g"},"recipeIngredient":["1½ kg beef shin or chuck, bone-in, cut into large pieces","1 whole onion, quartered","2 tsp salt","1 tsp black pepper, ground","2 litres water"],"recipeInstructions":[{"@type":"HowToStep","name":"Boil the meat","text":"Place the beef pieces and quartered onion in a large heavy pot. Add enough water to cover the meat by about 5cm. Bring to a boil over high heat.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"},{"@type":"HowToStep","name":"Skim and simmer","text":"Skim off any foam that rises to the surface. Reduce heat to low, cover, and simmer gently for about 3 hours until the meat is completely tender and falling off the bone.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"},{"@type":"HowToStep","name":"Remove bones","text":"Remove the meat from the pot and discard all bones. Reserve the cooking broth. Place the meat on a large wooden board or in a mortar.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"},{"@type":"HowToStep","name":"Pound and shred","text":"Using two forks or a wooden pestle, pound and shred the meat until it has a fine, pulled texture. Season with salt and pepper.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"},{"@type":"HowToStep","name":"Moisten and serve","text":"Return the shredded meat to the pot and add a few ladles of the reserved broth to keep it moist. Heat through and serve with bogobe, pap, or dumplings.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","keywords":"national dish, beef, slow-cooked, traditional, tswana, gluten-free, dairy-free, nut-free, halal, Celebrations and weddings","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Seswaa","description":"Botswana's national dish: beef slow-boiled until falling apart, then shredded and pounded to a tender pulled-meat texture with simple salt-forward seasoning.","image":["https://afrotools.com/assets/img/kitchen/seswaa-bw.webp","https://afrotools.com/assets/img/kitchen/seswaa-bw-2.webp","https://afrotools.com/assets/img/kitchen/seswaa-bw-3.webp","https://afrotools.com/assets/img/kitchen/seswaa-bw-5.webp"],"author":{"@type":"Organization","name":"AfroKitchen"},"datePublished":"2026-03-18","prepTime":"PT15M","cookTime":"PT180M","totalTime":"PT195M","recipeYield":"8 servings","recipeCategory":"Main dish","recipeCuisine":"Botswana, Southern Africa","nutrition":{"@type":"NutritionInformation","calories":"380 calories","proteinContent":"42g","carbohydrateContent":"1g","fatContent":"22g","fiberContent":"0g"},"recipeIngredient":["1½ kg beef shin or chuck, bone-in, cut into large pieces","1 whole onion, quartered","2 tsp salt","1 tsp black pepper, ground","2 litres water"],"recipeInstructions":[{"@type":"HowToStep","name":"Boil the meat","text":"Place the beef pieces and quartered onion in a large heavy pot. Add enough water to cover the meat by about 5cm. Bring to a boil over high heat.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"},{"@type":"HowToStep","name":"Skim and simmer","text":"Skim off any foam that rises to the surface. Reduce heat to low, cover, and simmer gently for about 3 hours until the meat is completely tender and falling off the bone.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"},{"@type":"HowToStep","name":"Remove bones","text":"Remove the meat from the pot and discard all bones. Reserve the cooking broth. Place the meat on a large wooden board or in a mortar.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"},{"@type":"HowToStep","name":"Pound and shred","text":"Using two forks or a wooden pestle, pound and shred the meat until it has a fine, pulled texture. Season with salt and pepper.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"},{"@type":"HowToStep","name":"Moisten and serve","text":"Return the shredded meat to the pot and add a few ladles of the reserved broth to keep it moist. Heat through and serve with bogobe, pap, or dumplings.","url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","image":"https://afrotools.com/assets/img/kitchen/seswaa-bw.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/","publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"dateModified":"2026-05-16","isAccessibleForFree":true,"keywords":"national dish, beef, slow-cooked, traditional, tswana, gluten-free, dairy-free, nut-free, halal, Celebrations and weddings","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/"}}</script>
+
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Botswana","item":"https://afrotools.com/tools/afrokitchen/countries/botswana/"},{"@type":"ListItem","position":5,"name":"Seswaa","item":"https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/"}]}</script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/recipes/seswaa-bw/" />
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -157,8 +192,8 @@
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">easy</div></div>
         </div>
         <div class="ak-hero-actions">
-          <a href="/tools/afrokitchen/countries/botswana/" class="ak-btn ak-btn-secondary">Explore Botswana recipes</a>
-          <a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary">Browse AfroKitchen</a>
+          <a href="/tools/afrokitchen/countries/botswana/" class="ak-btn ak-btn-secondary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Explore Botswana recipes</span></a>
+          <a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9h12l-1 10H7L6 9Z"></path><path d="M9 9a3 3 0 0 1 6 0"></path></svg><span>Browse AfroKitchen</span></a>
         </div>
       </div>
       <aside class="ak-static-hero-card">
@@ -190,7 +225,7 @@
           </div>
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>Best for Celebrations and weddings, with a easy cooking level and about 195 minutes total.</p>
+            <p>Best for Celebrations and weddings. Plan on a easy cook and about 195 minutes total.</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
@@ -199,7 +234,7 @@
 
           <div class="ak-static-summary-card ak-intel-card">
             <strong>Regional lane</strong>
-            <p>Botswana national table. A verified Botswana dish in the AfroKitchen archive.</p>
+            <p>Botswana national table. A structured Botswana dish in the AfroKitchen archive.</p>
           </div>
           <div class="ak-static-summary-card ak-intel-card">
             <strong>Chef watch-outs</strong>
@@ -221,12 +256,21 @@
           </div>
           <p>Each recipe supports one main image and up to four extra prep, serving, or step photos when they are available.</p>
         </div>
-        <div class="ak-photo-gallery-grid is-single">
+        <div class="ak-photo-gallery-grid">
           <figure class="ak-photo-main">
-            <img src="/assets/img/kitchen/seswaa-bw.webp" alt="Seswaa recipe image" loading="lazy" decoding="async">
+            <img src="/assets/img/kitchen/seswaa-bw.webp" alt="Seswaa recipe from Botswana" loading="lazy" decoding="async" width="1200" height="750">
             <figcaption>Seswaa finished dish</figcaption>
           </figure>
-
+          <div class="ak-photo-thumbs"><figure>
+            <img src="/assets/img/kitchen/seswaa-bw-2.webp" alt="Seswaa ingredients/prep step" loading="lazy" decoding="async" width="640" height="640">
+            <figcaption>Seswaa ingredients/prep step</figcaption>
+          </figure><figure>
+            <img src="/assets/img/kitchen/seswaa-bw-3.webp" alt="Seswaa cooking/process step" loading="lazy" decoding="async" width="640" height="640">
+            <figcaption>Seswaa cooking/process step</figcaption>
+          </figure><figure>
+            <img src="/assets/img/kitchen/seswaa-bw-5.webp" alt="Seswaa serving/detail image" loading="lazy" decoding="async" width="640" height="640">
+            <figcaption>Seswaa serving/detail image</figcaption>
+          </figure></div>
         </div>
 
       </section>
@@ -254,9 +298,9 @@
         <div class="ak-static-serving-bar">
           <div class="ak-servings">
             <span class="ak-servings-label">Servings</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)">-</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease servings">-</button>
             <span class="ak-servings-val" id="ak-static-servings">8</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)">+</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase servings">+</button>
           </div>
           <p class="ak-static-serving-note">Scale the dish before you shop, then use the checklist while you cook.</p>
         </div>
@@ -312,12 +356,14 @@
                 <h2 class="ak-panel-title">Step-by-step method</h2>
                 <p class="ak-method-sub">Keep the rhythm calm, watch the texture, and adjust seasoning at the end.</p>
               </div>
-              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/botswana/">Back to Botswana</a>
+              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/botswana/"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Back to Botswana</span></a>
             </div>
             <div class="ak-method-stat-row">
-              <span>5 steps</span>
-              <span>195 min total</span>
-              <span>easy</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg>5 steps</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>15 min prep</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>180 min cook</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>195 min total</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg>easy</span>
             </div>
             <div class="ak-steps"><article class="ak-step" id="step-1">
         <div class="ak-step-header">
@@ -325,15 +371,16 @@
           <div class="ak-step-title">Boil the meat</div>
         </div>
         <div class="ak-step-text">Place the beef pieces and quartered onion in a large heavy pot. Add enough water to cover the meat by about 5cm. Bring to a boil over high heat.</div>
-        <div class="ak-step-tip">Bone-in cuts give the broth more flavor and body.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Bone-in cuts give the broth more flavor and body.</span></div>
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Bring to boil</span>
               <strong id="ak-timer-display-1">10:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-1" onclick="AKStaticRecipePage.toggleTimer(1, 600)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(1, 600)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-1" onclick="AKStaticRecipePage.toggleTimer(1, 600)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(1, 600)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-1" style="width:100%"></div></div>
           </div>
@@ -344,15 +391,16 @@
           <div class="ak-step-title">Skim and simmer</div>
         </div>
         <div class="ak-step-text">Skim off any foam that rises to the surface. Reduce heat to low, cover, and simmer gently for about 3 hours until the meat is completely tender and falling off the bone.</div>
-        <div class="ak-step-tip">Check occasionally and add more water if the level drops below the meat.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Check occasionally and add more water if the level drops below the meat.</span></div>
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Slow simmer</span>
               <strong id="ak-timer-display-2">180:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-2" onclick="AKStaticRecipePage.toggleTimer(2, 10800)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(2, 10800)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-2" onclick="AKStaticRecipePage.toggleTimer(2, 10800)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(2, 10800)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-2" style="width:100%"></div></div>
           </div>
@@ -372,7 +420,7 @@
           <div class="ak-step-title">Pound and shred</div>
         </div>
         <div class="ak-step-text">Using two forks or a wooden pestle, pound and shred the meat until it has a fine, pulled texture. Season with salt and pepper.</div>
-        <div class="ak-step-tip">Traditionally this is done with a wooden pole in the pot itself — the pounding action is what gives seswaa its name.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Traditionally this is done with a wooden pole in the pot itself — the pounding action is what gives seswaa its name.</span></div>
 
       </article>
 <article class="ak-step" id="step-5">
@@ -381,46 +429,186 @@
           <div class="ak-step-title">Moisten and serve</div>
         </div>
         <div class="ak-step-text">Return the shredded meat to the pot and add a few ladles of the reserved broth to keep it moist. Heat through and serve with bogobe, pap, or dumplings.</div>
-        <div class="ak-step-tip">The cooking broth is precious — serve some on the side as a gravy.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">The cooking broth is precious — serve some on the side as a gravy.</span></div>
 
       </article></div>
             <div class="ak-static-helper-note">
-              <p>Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.</p>
+              <p><svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3 22 20H2L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><span>Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.</span></p>
             </div>
           </section>
         </div>
       </div>
 
-      <section class="ak-section ak-static-related">
+      <section class="ak-section ak-static-related ak-internal-link-section">
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
-      <h2 class="ak-section-title">More AfroKitchen dishes from the same food atlas</h2>
-      <p class="ak-section-sub">Try another dish from the same country, region, or cooking mood.</p>
+      <h2 class="ak-section-title">Cook around Seswaa</h2>
+      <p class="ak-section-sub">Follow country, category, collection, time, and pairing paths without turning the recipe page into a link farm.</p>
     </div>
-    <div class="ak-static-related-grid"><a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/bogobe-jwa-lerotse-bw/">
-        <div class="ak-support-label">Botswana | Breakfast</div>
-        <h3>Bogobe Jwa Lerotse</h3>
-        <p>Botswana sorghum porridge cooked with lerotse melon for a lightly sweet traditional staple.</p>
-        <div class="ak-static-card-meta">60 min | Breakfast</div>
+    <div class="ak-static-related-grid"><a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/dikgobe-bw/" aria-label="Open recipe: Dikgobe">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/dikgobe-bw.webp" alt="Dikgobe recipe from Botswana" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Botswana</span>
+        <span class="ak-static-recipe-badge">Main dish</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Dikgobe</span>
+      <span class="ak-static-recipe-card-desc">Botswana samp, beans, and peanuts cooked together into a hearty grain-and-legume dish.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>150 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Vegan</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>Southern Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/vetkoek-bw/" aria-label="Open recipe: Vetkoek with Mince">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/vetkoek-bw.webp" alt="Vetkoek with Mince recipe from Botswana" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Botswana</span>
+        <span class="ak-static-recipe-badge">Snack</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Vetkoek with Mince</span>
+      <span class="ak-static-recipe-card-desc">Golden deep-fried bread rolls with a crispy exterior and soft, fluffy interior, split open and filled with savory spiced mi...</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>115 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 8</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Nut Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>Southern Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/bogobe-jwa-lerotse-bw/" aria-label="Open recipe: Bogobe Jwa Lerotse">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/bogobe-jwa-lerotse-bw.webp" alt="Bogobe Jwa Lerotse recipe from Botswana" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Botswana</span>
+        <span class="ak-static-recipe-badge">Breakfast</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Bogobe Jwa Lerotse</span>
+      <span class="ak-static-recipe-card-desc">Botswana sorghum porridge cooked with lerotse melon for a lightly sweet traditional staple.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>60 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Vegan</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>Southern Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/phane-bw/" aria-label="Open recipe: Phane">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/phane-bw.webp" alt="Phane recipe from Botswana" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Botswana</span>
+        <span class="ak-static-recipe-badge">Main dish</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Phane</span>
+      <span class="ak-static-recipe-card-desc">Botswana mopane worms simmered, then fried with onion, tomato, chili, and salt until savory.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>50 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 4</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Gluten Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>Southern Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a></div>
+    <div class="ak-internal-link-grid"><article class="ak-internal-link-group">
+        <div class="ak-support-label">More Botswana recipes</div>
+        <p>Stay inside the Botswana country hub.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/dikgobe-bw/">
+        <span>Dikgobe</span>
+        <small>Botswana - Main dish - 150 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/dikgobe-bw/">
-        <div class="ak-support-label">Botswana | Main dish</div>
-        <h3>Dikgobe</h3>
-        <p>Botswana samp, beans, and peanuts cooked together into a hearty grain-and-legume dish.</p>
-        <div class="ak-static-card-meta">150 min | Main dish</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/vetkoek-bw/">
+        <span>Vetkoek with Mince</span>
+        <small>Botswana - Snack - 115 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/morogo-bw/">
-        <div class="ak-support-label">Botswana | Side</div>
-        <h3>Morogo</h3>
-        <p>Traditional wild spinach greens cooked with tomatoes, onions, and peanut powder — a nutritious everyday dish that connects Bats...</p>
-        <div class="ak-static-card-meta">35 min | Side</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/bogobe-jwa-lerotse-bw/">
+        <span>Bogobe Jwa Lerotse</span>
+        <small>Botswana - Breakfast - 60 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/phane-bw/">
-        <div class="ak-support-label">Botswana | Main dish</div>
-        <h3>Phane</h3>
-        <p>Botswana mopane worms simmered, then fried with onion, tomato, chili, and salt until savory.</p>
-        <div class="ak-static-card-meta">50 min | Main dish</div>
-      </a></div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/phane-bw/">
+        <span>Phane</span>
+        <small>Botswana - Main dish - 50 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">More main dish recipes</div>
+        <p>Compare dishes in the same course or cooking style.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/koklo-meme-tg/">
+        <span>Koklo Meme</span>
+        <small>Togo - Main dish - 190 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/thieboudienne-sn/">
+        <span>Thieboudienne</span>
+        <small>Senegal - Main dish - 135 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/bazin-ly/">
+        <span>Bazin</span>
+        <small>Libya - Main dish - 120 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/chicken-tagine-preserved-lemons-ma/">
+        <span>Chicken Tagine with Preserved Lemons &amp; Olives</span>
+        <small>Morocco - Main dish - 120 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Similar cooking time</div>
+        <p>Pick another dish with a nearby time commitment.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/potjiekos-na/">
+        <span>Potjiekos</span>
+        <small>Namibia - Stew - 195 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/koklo-meme-tg/">
+        <span>Koklo Meme</span>
+        <small>Togo - Main dish - 190 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/sahrawi-camel-stew-eh/">
+        <span>Sahrawi Camel Meat Stew</span>
+        <small>Western Sahara - Stew - 190 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/yassa-poulet-sn/">
+        <span>Chicken Yassa</span>
+        <small>Senegal - Main dish - 205 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Build a fuller table</div>
+        <p>Pair a main, side, drink, or dessert where the atlas has a useful match.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/phane-bw/">
+        <span>Phane</span>
+        <small>Botswana - Main dish - 50 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/morogo-bw/">
+        <span>Morogo</span>
+        <small>Botswana - Side - 35 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/incwancwa-sz/">
+        <span>Incwancwa</span>
+        <small>Eswatini - Drink - 35 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/malva-pudding-za/">
+        <span>Malva Pudding</span>
+        <small>South Africa - Dessert - 60 min</small>
+      </a>
+        </div>
+      </article></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
       <a href="/tools/afrokitchen/countries/botswana/" class="ak-btn ak-btn-outline">Explore Botswana recipes</a>
@@ -430,10 +618,10 @@
   </section>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/engines/afrokitchen-engine.js?v=b9ee3f19"></script>
-<script>window.__AK_STATIC_RECIPE = {"slug":"seswaa-bw","name":"Seswaa","description":"Botswana's national dish: beef slow-boiled until falling apart, then shredded and pounded to a tender pulled-meat texture with simple salt-forward seasoning.","story":"Seswaa is the pride of Botswana, served at weddings, funerals, national celebrations, and important family gatherings. The traditional heart of the dish is restrained: meat, water, salt, and patient cooking, with some home versions adding onion or pepper. The simplicity lets Botswana's beef or goat shine.","default_servings":8,"serving_unit":"servings","country_name":"Botswana","country_code":"BW","region":"Southern Africa","difficulty":"easy","category":"main","calories":380,"protein_g":42,"carbs_g":1,"fat_g":22,"fiber_g":null,"ingredients":[{"id":"09cf0d20-d438-432e-b78b-967d29190451","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":1,"group_name":null,"amount":1.5,"unit":"kg","name":"beef shin or chuck","prep_note":"bone-in, cut into large pieces","is_optional":false,"substitution":"goat meat","created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"bae1917e-1ccf-4d53-985b-04ebd01456ab","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":2,"group_name":null,"amount":1,"unit":"whole","name":"onion","prep_note":"quartered","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"de324c93-60a3-439f-a1e6-52b737d2ee80","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":3,"group_name":null,"amount":2,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"0cb86600-8791-4805-853f-d92796294d26","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":4,"group_name":null,"amount":1,"unit":"tsp","name":"black pepper","prep_note":"ground","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"9f49d8e0-ef38-43a0-8160-a0f9d0136141","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":5,"group_name":null,"amount":2,"unit":"litres","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:05.524847+00:00"}],"steps":[{"id":"d921b945-ec82-4655-8ec4-e4669d5d5119","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":1,"title":"Boil the meat","instruction":"Place the beef pieces and quartered onion in a large heavy pot. Add enough water to cover the meat by about 5cm. Bring to a boil over high heat.","timer_seconds":600,"timer_label":"Bring to boil","tip":"Bone-in cuts give the broth more flavor and body.","image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"ccd09ff5-9ad3-49b0-9970-19c85d563ca3","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":2,"title":"Skim and simmer","instruction":"Skim off any foam that rises to the surface. Reduce heat to low, cover, and simmer gently for about 3 hours until the meat is completely tender and falling off the bone.","timer_seconds":10800,"timer_label":"Slow simmer","tip":"Check occasionally and add more water if the level drops below the meat.","image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"04e168ec-4c98-4775-9cbf-c1741b3f68ab","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":3,"title":"Remove bones","instruction":"Remove the meat from the pot and discard all bones. Reserve the cooking broth. Place the meat on a large wooden board or in a mortar.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"f491f002-1f11-43e8-a1e8-eb6ce6288905","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":4,"title":"Pound and shred","instruction":"Using two forks or a wooden pestle, pound and shred the meat until it has a fine, pulled texture. Season with salt and pepper.","timer_seconds":null,"timer_label":null,"tip":"Traditionally this is done with a wooden pole in the pot itself — the pounding action is what gives seswaa its name.","image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"139c82b0-de3b-439a-94ee-0a57802e6963","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":5,"title":"Moisten and serve","instruction":"Return the shredded meat to the pot and add a few ladles of the reserved broth to keep it moist. Heat through and serve with bogobe, pap, or dumplings.","timer_seconds":null,"timer_label":null,"tip":"The cooking broth is precious — serve some on the side as a gravy.","image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"}],"gallery_images":[{"src":"/assets/img/kitchen/seswaa-bw.webp","alt":"Seswaa recipe image","caption":"Seswaa finished dish","credit":null}],"region_lens":{"slug":"national-table","name":"Botswana national table","description":"A verified Botswana dish in the AfroKitchen archive.","confidence":"medium","match_reason":"country-level fallback"},"chef_notes":{"common_mistakes":["Rushing the base before the raw edge has cooked out.","Adding all seasoning early and forgetting to adjust at the end.","Cooking on heat that is too high once the dish should be steaming or simmering."],"readiness_cues":["The aroma should smell rounded rather than raw or sharp.","Oil, sauce, broth, or steam should look settled and deliberate.","The final texture should match the dish style before you plate it."],"pantry_notes":[],"technique_notes":[],"serve_with":"Bogobe (sorghum porridge) or pap"},"image_status":{"status":"hero-ready","gallery_count":1,"hero_ready":true,"hero_src":"/assets/img/kitchen/seswaa-bw.webp","local_image_count":1,"sources":["/assets/img/kitchen/seswaa-bw.webp"],"missing_roles":["serving","ingredients","process","table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"seswaa-bw.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, a Botswana main, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"seswaa-bw-2.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, a Botswana main, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"seswaa-bw-3.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, a Botswana main, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"seswaa-bw-4.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, a Botswana main, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"seswaa-bw-5.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, a Botswana main, dish on table with realistic accompaniments and serving utensils."}]}};</script>
-<script src="/tools/afrokitchen/static-recipe-runtime.js?v=6efc4827" defer></script>
+<script>window.__AK_STATIC_RECIPE = {"slug":"seswaa-bw","name":"Seswaa","description":"Botswana's national dish: beef slow-boiled until falling apart, then shredded and pounded to a tender pulled-meat texture with simple salt-forward seasoning.","story":"Seswaa is the pride of Botswana, served at weddings, funerals, national celebrations, and important family gatherings. The traditional heart of the dish is restrained: meat, water, salt, and patient cooking, with some home versions adding onion or pepper. The simplicity lets Botswana's beef or goat shine.","default_servings":8,"serving_unit":"servings","country_name":"Botswana","country_code":"BW","region":"Southern Africa","difficulty":"easy","category":"main","calories":380,"protein_g":42,"carbs_g":1,"fat_g":22,"fiber_g":null,"ingredients":[{"id":"09cf0d20-d438-432e-b78b-967d29190451","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":1,"group_name":null,"amount":1.5,"unit":"kg","name":"beef shin or chuck","prep_note":"bone-in, cut into large pieces","is_optional":false,"substitution":"goat meat","created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"bae1917e-1ccf-4d53-985b-04ebd01456ab","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":2,"group_name":null,"amount":1,"unit":"whole","name":"onion","prep_note":"quartered","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"de324c93-60a3-439f-a1e6-52b737d2ee80","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":3,"group_name":null,"amount":2,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"0cb86600-8791-4805-853f-d92796294d26","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":4,"group_name":null,"amount":1,"unit":"tsp","name":"black pepper","prep_note":"ground","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"9f49d8e0-ef38-43a0-8160-a0f9d0136141","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","ingredient_id":null,"sort_order":5,"group_name":null,"amount":2,"unit":"litres","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:05.524847+00:00"}],"steps":[{"id":"d921b945-ec82-4655-8ec4-e4669d5d5119","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":1,"title":"Boil the meat","instruction":"Place the beef pieces and quartered onion in a large heavy pot. Add enough water to cover the meat by about 5cm. Bring to a boil over high heat.","timer_seconds":600,"timer_label":"Bring to boil","tip":"Bone-in cuts give the broth more flavor and body.","image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"ccd09ff5-9ad3-49b0-9970-19c85d563ca3","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":2,"title":"Skim and simmer","instruction":"Skim off any foam that rises to the surface. Reduce heat to low, cover, and simmer gently for about 3 hours until the meat is completely tender and falling off the bone.","timer_seconds":10800,"timer_label":"Slow simmer","tip":"Check occasionally and add more water if the level drops below the meat.","image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"04e168ec-4c98-4775-9cbf-c1741b3f68ab","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":3,"title":"Remove bones","instruction":"Remove the meat from the pot and discard all bones. Reserve the cooking broth. Place the meat on a large wooden board or in a mortar.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"f491f002-1f11-43e8-a1e8-eb6ce6288905","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":4,"title":"Pound and shred","instruction":"Using two forks or a wooden pestle, pound and shred the meat until it has a fine, pulled texture. Season with salt and pepper.","timer_seconds":null,"timer_label":null,"tip":"Traditionally this is done with a wooden pole in the pot itself — the pounding action is what gives seswaa its name.","image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"},{"id":"139c82b0-de3b-439a-94ee-0a57802e6963","recipe_id":"b9ef4834-7b05-4493-b747-d9ba6f112166","step_number":5,"title":"Moisten and serve","instruction":"Return the shredded meat to the pot and add a few ladles of the reserved broth to keep it moist. Heat through and serve with bogobe, pap, or dumplings.","timer_seconds":null,"timer_label":null,"tip":"The cooking broth is precious — serve some on the side as a gravy.","image_url":null,"created_at":"2026-03-18T00:26:05.524847+00:00"}],"gallery_images":[{"src":"/assets/img/kitchen/seswaa-bw.webp","alt":"Seswaa recipe from Botswana","caption":"Seswaa finished dish","credit":null},{"src":"/assets/img/kitchen/seswaa-bw-2.webp","alt":"Seswaa ingredients/prep step","caption":"Seswaa ingredients/prep step","credit":null},{"src":"/assets/img/kitchen/seswaa-bw-3.webp","alt":"Seswaa cooking/process step","caption":"Seswaa cooking/process step","credit":null},{"src":"/assets/img/kitchen/seswaa-bw-5.webp","alt":"Seswaa serving/detail image","caption":"Seswaa serving/detail image","credit":null}],"region_lens":{"slug":"national-table","name":"Botswana national table","description":"A structured Botswana dish in the AfroKitchen archive.","confidence":"medium","match_reason":"country-level fallback"},"chef_notes":{"common_mistakes":["Rushing the base before the raw edge has cooked out.","Adding all seasoning early and forgetting to adjust at the end.","Cooking on heat that is too high once the dish should be steaming or simmering."],"readiness_cues":["The aroma should smell rounded rather than raw or sharp.","Oil, sauce, broth, or steam should look settled and deliberate.","The final texture should match the dish style before you plate it."],"pantry_notes":[],"technique_notes":[],"serve_with":"Bogobe (sorghum porridge) or pap"},"image_status":{"status":"gallery-ready","gallery_count":4,"hero_ready":true,"hero_src":"/assets/img/kitchen/seswaa-bw.webp","local_image_count":4,"sources":["/assets/img/kitchen/seswaa-bw.webp","/assets/img/kitchen/seswaa-bw-2.webp","/assets/img/kitchen/seswaa-bw-3.webp","/assets/img/kitchen/seswaa-bw-5.webp"],"missing_roles":["table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"seswaa-bw.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, main from Botswana, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"seswaa-bw-2.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, main from Botswana, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"seswaa-bw-3.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, main from Botswana, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"seswaa-bw-4.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, main from Botswana, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"seswaa-bw-5.webp","route_path":"/tools/afrokitchen/recipes/seswaa-bw/","prompt":"Finished Seswaa, main from Botswana, dish on table with realistic accompaniments and serving utensils."}]}};</script>
+<script src="/tools/afrokitchen/static-recipe-runtime.js?v=a7d9608d" defer></script>
 </body>
 </html>

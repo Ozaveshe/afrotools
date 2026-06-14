@@ -55,3 +55,41 @@ test("tool search finds Nigeria PAYE and PDF Workspace, then clears back to full
     expect(resetCount).toBeGreaterThanOrEqual(100);
   }).toPass();
 });
+
+test("/search/ finds flagship apps and exposes all registry category filters", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  await page.goto("/search/?q=afrofuel", { waitUntil: "domcontentloaded" });
+  await expect(page.getByRole("link", { name: /afrofuel/i })).toHaveAttribute("href", "/tools/fuel-tracker/");
+
+  await page.locator("#search-input").fill("gasoline");
+  await expect(page.getByRole("link", { name: /afrofuel/i })).toBeVisible();
+
+  await page.locator("#search-input").fill("finance market data");
+  await expect(page.locator(".result-card").first()).toBeVisible();
+
+  await page.locator("#search-input").fill("ivory coast tax");
+  await expect(page.getByRole("link", { name: /côte|cote|ivoire/i }).first()).toBeVisible();
+
+  await page.locator("#more-filters summary").click();
+  await expect(page.getByRole("button", { name: /transport & logistics/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /government & civic/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /creative economy/i })).toBeVisible();
+
+  await page.getByRole("button", { name: /creative economy/i }).click();
+  await page.locator("#search-input").fill("AfroStream");
+  await expect(page.getByRole("link", { name: /afrostream/i })).toBeVisible();
+});
+
+test("/tools/ directory search uses category and synonym terms", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  await page.goto("/tools/", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("#tools-container a[href]").first()).toBeVisible();
+
+  await page.locator("#tool-search").fill("gasoline");
+  await expect(page.getByRole("link", { name: /afrofuel/i })).toBeVisible();
+
+  await page.locator("#tool-search").fill("government civic");
+  await expect(page.getByRole("link", { name: /passport|national id|voter|government/i }).first()).toBeVisible();
+});

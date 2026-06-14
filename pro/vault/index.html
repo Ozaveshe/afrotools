@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -138,8 +138,8 @@
     }
   </style>
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
-<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=0533540f">
+<script src="/assets/js/lib/dark-mode.js?v=dc870218" defer></script>
 </head>
 <body>
   <main class="pb-shell pro-gated-content">
@@ -161,7 +161,7 @@
       </nav>
       <div class="pb-side-box">
         <strong>Vault coverage</strong>
-        <p>Shows saved workspace records and account status. Account-backed vault storage is marked not connected until sync is available.</p>
+        <p>Shows saved workspace records and account status. Account vault storage is shown as coming soon until available.</p>
       </div>
       <div class="pb-side-box">
         <strong>Workspace preview preference</strong>
@@ -210,7 +210,7 @@
             </div>
             <div class="pb-row-actions">
               <span class="pb-pill local">device scan</span>
-              <span class="pb-pill schema">vault sync pending</span>
+              <span class="pb-pill schema">account save coming</span>
               <span class="pb-pill pro">Pro gated</span>
             </div>
           </div>
@@ -227,7 +227,7 @@
         <section class="pb-metrics" aria-label="Vault metrics">
           <div class="pb-metric"><strong id="metricSources">0</strong><span>Device sources with data</span><small>Detected from saved workspace data</small></div>
           <div class="pb-metric"><strong id="metricRecords">0</strong><span>Device record groups</span><small>Arrays or object groups found on this device</small></div>
-          <div class="pb-metric"><strong id="metricCloud">0</strong><span>Account vault records</span><small>Account vault sync is not connected yet</small></div>
+          <div class="pb-metric"><strong id="metricCloud">0</strong><span>Account vault records</span><small>Account vault coming soon</small></div>
           <div class="pb-metric"><strong id="metricLanes">0</strong><span>Vault lanes</span><small>Packets, docs, payslips, compliance, invoices</small></div>
           <div class="pb-metric"><strong id="metricMode">Device</strong><span>Storage mode</span><small>Preference labels are saved here</small></div>
         </section>
@@ -289,8 +289,8 @@
                     <div class="pb-row-actions"><span class="pb-pill local">device</span></div>
                   </article>
                   <article class="pb-row">
-                    <div><h3 class="pb-row-title">Account-backed</h3><div class="pb-row-meta">Reserved for future account-synced vault records. No account-backed records are shown until sync is connected.</div></div>
-                    <div class="pb-row-actions"><span class="pb-pill schema">not connected</span></div>
+                    <div><h3 class="pb-row-title">Account vault</h3><div class="pb-row-meta">Reserved for future account-saved vault records. Account vault records will appear after account save is available.</div></div>
+                    <div class="pb-row-actions"><span class="pb-pill schema">coming soon</span></div>
                   </article>
                   <article class="pb-row">
                     <div><h3 class="pb-row-title">Export packet</h3><div class="pb-row-meta">Browser download built from detected device metadata. It is not uploaded.</div></div>
@@ -309,14 +309,14 @@
               </div>
               <div class="pb-panel-body">
                 <div class="pb-list">
-                  <a class="pb-row" href="/pro/team/"><span><strong class="pb-row-title">Team and clients</strong><span class="pb-row-meta">Roles, members, invites, and permission model setup.</span></span><span class="pb-pill shell">open</span></a>
+                  <a class="pb-row" href="/pro/team/"><span><strong class="pb-row-title">Team and clients</strong><span class="pb-row-meta">Roles, members, invites, and team access setup.</span></span><span class="pb-pill shell">open</span></a>
                   <a class="pb-row" href="/pro/settings/"><span><strong class="pb-row-title">Settings</strong><span class="pb-row-meta">Language, country, currency, account, and privacy preferences.</span></span><span class="pb-pill shell">open</span></a>
                   <a class="pb-row" href="/pro/apps/"><span><strong class="pb-row-title">App directory</strong><span class="pb-row-meta">Workspace view for the Pro app suite.</span></span><span class="pb-pill ready">open</span></a>
                 </div>
               </div>
             </section>
 
-            <div class="pb-warning">No payslips, invoices, compliance packs, or documents are claimed as account-backed until vault sync is connected.</div>
+            <div class="pb-warning">No payslips, invoices, compliance packs, or documents are claimed as saved to the account until vault sync is available.</div>
           </aside>
         </section>
       </div>
@@ -448,7 +448,7 @@
           top.appendChild(pill(row.localSources ? "Device data" : "Empty", row.localSources ? "local" : "shell"));
           card.appendChild(top);
           card.appendChild(create("p", "", row.localSources ? row.localSources + " device source(s), " + row.count + " detected record group(s)." : "No device records detected in this browser."));
-          card.appendChild(create("p", "pb-code", "Account-backed lane: not connected yet"));
+          card.appendChild(create("p", "pb-code", "Account vault lane: coming soon"));
           grid.appendChild(card);
         });
         if (!grid.children.length) grid.appendChild(create("div", "pb-warning", "No lanes match the selected filter."));
@@ -480,7 +480,7 @@
         if (filter === "cloud") {
           cloudLabels.forEach(function(item){
             var tr = document.createElement("tr");
-            [item.label, item.lane, "account_setup_pending", "0 account records", "Not connected yet"].forEach(function(value, index){
+            [item.label, item.lane, "account save coming", "0 account records", "Coming soon"].forEach(function(value, index){
               var td = create("td", index === 2 ? "pb-code" : "", value);
               tr.appendChild(td);
             });
@@ -508,7 +508,7 @@
       function exportIndex(){
         var payload = {
           exportedAt: new Date().toISOString(),
-          boundary: "Device metadata index only. No upload and no shared Pro vault sync yet.",
+          boundary: "Device metadata index only. No upload and no shared Pro vault save yet.",
           sources: detectSources().map(function(item){
             return { label: item.label, lane: item.lane, key: item.key, detected: item.detected, count: item.count, route: item.route };
           })

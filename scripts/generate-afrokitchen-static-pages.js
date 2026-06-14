@@ -13,16 +13,21 @@ const {
   DEFAULT_WAVE_STRATEGY,
   SITE_ORIGIN,
   TOOL_OG_IMAGE,
+  RECIPE_FALLBACK_IMAGE,
+  RECIPE_FALLBACK_OG_IMAGE,
   escapeHtml,
   safeJson,
   ensureDir,
   writeTextFileSync,
   excerpt,
+  humanList,
   slugify,
   countryUrl,
   loadAfroKitchenEngine,
   loadRecipeImages,
   resolveRecipeMedia,
+  isGenericRecipeImage,
+  isUsableRecipeImage,
   buildManifest,
   writeManifest,
   writeStaticRoutes
@@ -73,6 +78,21 @@ const LEGACY_RECIPE_ALIASES = [
     reason: "This older Dovi link now opens the richer Zimbabwe Dovi recipe."
   }
 ];
+const RECIPE_TITLE_QUALIFIERS = {
+  "bamia-south-sudan-ss": "Okra and Lamb",
+  "caldo-chabeu-gw": "Palm Fruit Stew",
+  "caldo-mancarra-gw": "Peanut Stew",
+  "chikanda-zm": "Peanut Snack",
+  "dholl-puri-mu": "Split Pea Flatbread",
+  "fah-fah-dj": "Goat Soup",
+  "fouti-guinea-gn": "Fonio Porridge",
+  "groundnut-stew-sierra-leone-sl": "Rice Stew",
+  "isombe-rw": "Cassava Leaf Stew",
+  "kondowole-mw": "Cassava Starch",
+  "ladob-sc": "Coconut Plantain Dessert",
+  "langouste-vanille-km": "Vanilla Seafood",
+  "matapa-mz": "Cassava Leaf Seafood Stew"
+};
 
 function readFlag(flagName) {
   const index = process.argv.indexOf(flagName);
@@ -103,6 +123,11 @@ function categoryLabel(recipe) {
     starter: "Starter"
   };
   return labels[recipe.category] || "Recipe";
+}
+
+function recipeSeoName(recipe) {
+  const qualifier = RECIPE_TITLE_QUALIFIERS[recipe.slug];
+  return qualifier ? `${recipe.name} (${qualifier})` : recipe.name;
 }
 
 function loadRecipeResearchAudit() {
@@ -216,6 +241,29 @@ function applyRecipeResearchPatch(recipe, researchAudit) {
   return next;
 }
 
+function cleanGeneratedCopyText(value) {
+  return String(value || "")
+    .replace(/\bfills a real AfroKitchen gap\b/gi, "adds practical cooking context")
+    .replace(/\ba table built around\b/gi, "served with")
+    .replace(/\btable built around\b/gi, "served with")
+    .replace(/\bbuilt around\b/gi, "made with")
+    .replace(/\bserving logic of\b/gi, "served with")
+    .replace(/\ba Eswatini\b/g, "an Eswatini")
+    .replace(/\bverified ([A-Z][A-Za-z -]+) dish in the AfroKitchen archive\b/g, "structured $1 dish in the AfroKitchen archive");
+}
+
+function cleanPatchedRecipeCopy(recipe) {
+  return {
+    ...recipe,
+    description: cleanGeneratedCopyText(recipe.description),
+    story: cleanGeneratedCopyText(recipe.story),
+    occasion: cleanGeneratedCopyText(recipe.occasion),
+    best_served_with: cleanGeneratedCopyText(recipe.best_served_with),
+    regional_variations: cleanGeneratedCopyText(recipe.regional_variations),
+    image_alt: cleanGeneratedCopyText(recipe.image_alt)
+  };
+}
+
 function renderIngredientsHtml(engine, recipe, servings) {
   const ingredients = engine.scaleIngredients(
     recipe.ingredients || [],
@@ -277,12 +325,13 @@ function renderStepsHtml(recipe) {
       const timerHtml = step.timer_seconds
         ? `<div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              ${akIcon("timer", "ak-icon-sm ak-icon-accent")}
               <span class="ak-static-timer-label">${escapeHtml(step.timer_label || "Cooking timer")}</span>
               <strong id="ak-timer-display-${step.step_number}">${formatTime(step.timer_seconds)}</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-${step.step_number}" onclick="AKStaticRecipePage.toggleTimer(${step.step_number}, ${step.timer_seconds})">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(${step.step_number}, ${step.timer_seconds})">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-${step.step_number}" onclick="AKStaticRecipePage.toggleTimer(${step.step_number}, ${step.timer_seconds})">${akIcon("timer", "ak-icon-sm")}<span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(${step.step_number}, ${step.timer_seconds})">${akIcon("check", "ak-icon-sm")}<span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-${step.step_number}" style="width:100%"></div></div>
           </div>`
@@ -294,55 +343,291 @@ function renderStepsHtml(recipe) {
           <div class="ak-step-title">${escapeHtml(step.title)}</div>
         </div>
         <div class="ak-step-text">${escapeHtml(step.instruction)}</div>
-        ${step.tip ? `<div class="ak-step-tip">${escapeHtml(step.tip)}</div>` : ""}
+        ${step.tip ? `<div class="ak-step-tip"><span class="ak-step-tip-label">${akIcon("note", "ak-icon-sm")}<span>Kitchen note</span></span><span class="ak-step-tip-copy">${escapeHtml(step.tip)}</span></div>` : ""}
         ${timerHtml}
       </article>`;
     })
     .join("\n");
 }
 
-function pickRelatedRecipes(currentRecipe, manifest) {
-  const pool = manifest.recipes.filter((recipe) => recipe.slug !== currentRecipe.slug);
-  const sameCountry = pool
-    .filter((recipe) => recipe.country_code === currentRecipe.country_code)
-    .sort((left, right) => (right.view_count || 0) - (left.view_count || 0));
-  const sameRegion = pool
-    .filter(
-      (recipe) =>
-        recipe.country_code !== currentRecipe.country_code && recipe.region === currentRecipe.region
-    )
-    .sort((left, right) => (right.view_count || 0) - (left.view_count || 0));
-  const fallback = pool
-    .filter((recipe) => recipe.region !== currentRecipe.region)
-    .sort((left, right) => (right.view_count || 0) - (left.view_count || 0));
-
-  return [...sameCountry, ...sameRegion, ...fallback].slice(0, 4);
-}
-
 function resolveRecipeHref(recipe) {
   return recipe.generated_in_wave ? recipe.route_path : recipe.fallback_path;
 }
 
-function renderRelatedHtml(recipe, relatedRecipes) {
-  const cards = relatedRecipes
-    .map((entry) => {
-      const modeLabel = `${entry.country_name} | ${categoryLabel(entry)}`;
-      return `<a class="ak-support-card ak-static-related-card" href="${resolveRecipeHref(entry)}">
-        <div class="ak-support-label">${escapeHtml(modeLabel)}</div>
-        <h3>${escapeHtml(entry.name)}</h3>
-        <p>${escapeHtml(excerpt(entry.description, 130))}</p>
-        <div class="ak-static-card-meta">${escapeHtml(String(entry.total_time_minutes || 0))} min | ${escapeHtml(categoryLabel(entry))}</div>
-      </a>`;
+function uniqueRecipesBySlug(recipes) {
+  const seen = new Set();
+  return (recipes || []).filter((recipe) => {
+    if (!recipe || !recipe.slug || seen.has(recipe.slug)) return false;
+    seen.add(recipe.slug);
+    return true;
+  });
+}
+
+function sortRecipeCandidates(currentRecipe, recipes) {
+  return uniqueRecipesBySlug(recipes).sort(
+    (left, right) =>
+      Number(Boolean(right.generated_in_wave)) - Number(Boolean(left.generated_in_wave)) ||
+      Number(Boolean(right.is_featured)) - Number(Boolean(left.is_featured)) ||
+      Math.abs((left.total_time_minutes || 9999) - (currentRecipe.total_time_minutes || 9999)) -
+        Math.abs((right.total_time_minutes || 9999) - (currentRecipe.total_time_minutes || 9999)) ||
+      (right.view_count || 0) - (left.view_count || 0) ||
+      left.name.localeCompare(right.name)
+  );
+}
+
+function recipesFromCollectionMemberships(recipe, manifest) {
+  const collectionSlugs = new Set((recipe.collection_slugs || []).filter(Boolean));
+  if (!collectionSlugs.size) return [];
+  const collectionRecipeSlugs = new Set();
+  (manifest.collections || [])
+    .filter((collection) => collectionSlugs.has(collection.slug))
+    .forEach((collection) => {
+      (collection.recipes || []).forEach((entry) => {
+        if (entry.slug !== recipe.slug) collectionRecipeSlugs.add(entry.slug);
+      });
+    });
+  return (manifest.recipes || []).filter((entry) => collectionRecipeSlugs.has(entry.slug));
+}
+
+function pickComplementaryRecipes(currentRecipe, manifest) {
+  const wantedCategories = ["main", "side", "drink", "dessert"];
+  const pool = (manifest.recipes || []).filter((recipe) => recipe.slug !== currentRecipe.slug);
+  const collectionSlugs = new Set((currentRecipe.collection_slugs || []).filter(Boolean));
+
+  return wantedCategories
+    .map((category) => {
+      const categoryPool = pool.filter((recipe) => recipe.category === category);
+      const ranked = categoryPool
+        .map((recipe) => {
+          const sameCountry = recipe.country_code === currentRecipe.country_code ? 8 : 0;
+          const sameRegion = recipe.region === currentRecipe.region ? 4 : 0;
+          const sameCollection = (recipe.collection_slugs || []).some((slug) => collectionSlugs.has(slug)) ? 3 : 0;
+          const generated = recipe.generated_in_wave ? 2 : 0;
+          return {
+            recipe,
+            score: sameCountry + sameRegion + sameCollection + generated + Number(Boolean(recipe.is_featured))
+          };
+        })
+        .sort(
+          (left, right) =>
+            right.score - left.score ||
+            (left.recipe.total_time_minutes || 9999) - (right.recipe.total_time_minutes || 9999) ||
+            left.recipe.name.localeCompare(right.recipe.name)
+        );
+      return ranked[0] ? ranked[0].recipe : null;
     })
+    .filter(Boolean);
+}
+
+function pickRecipeInternalLinkGroups(currentRecipe, manifest) {
+  const pool = (manifest.recipes || []).filter((recipe) => recipe.slug !== currentRecipe.slug);
+  const sameCountry = sortRecipeCandidates(
+    currentRecipe,
+    pool.filter((recipe) => recipe.country_code === currentRecipe.country_code)
+  ).slice(0, 4);
+  const sameCategory = sortRecipeCandidates(
+    currentRecipe,
+    pool.filter((recipe) => recipe.category === currentRecipe.category)
+  ).slice(0, 4);
+  const sameCollection = sortRecipeCandidates(currentRecipe, recipesFromCollectionMemberships(currentRecipe, manifest)).slice(0, 4);
+  const similarTime = sortRecipeCandidates(
+    currentRecipe,
+    pool.filter((recipe) => {
+      if (!recipe.total_time_minutes || !currentRecipe.total_time_minutes) return false;
+      return Math.abs(recipe.total_time_minutes - currentRecipe.total_time_minutes) <= 20;
+    })
+  ).slice(0, 4);
+  const complementary = uniqueRecipesBySlug(pickComplementaryRecipes(currentRecipe, manifest)).slice(0, 4);
+
+  return [
+    {
+      key: "same-country",
+      title: `More ${currentRecipe.country_name} recipes`,
+      intro: `Stay inside the ${currentRecipe.country_name} country hub.`,
+      recipes: sameCountry
+    },
+    {
+      key: "same-category",
+      title: `More ${categoryLabel(currentRecipe).toLowerCase()} recipes`,
+      intro: `Compare dishes in the same course or cooking style.`,
+      recipes: sameCategory
+    },
+    {
+      key: "same-collection",
+      title: "From the same collection",
+      intro: currentRecipe.primary_collection_name
+        ? `Continue through ${currentRecipe.primary_collection_name}.`
+        : "Follow the collection lane this recipe belongs to.",
+      recipes: sameCollection
+    },
+    {
+      key: "similar-time",
+      title: "Similar cooking time",
+      intro: "Pick another dish with a nearby time commitment.",
+      recipes: similarTime
+    },
+    {
+      key: "complementary",
+      title: "Build a fuller table",
+      intro: "Pair a main, side, drink, or dessert where the atlas has a useful match.",
+      recipes: complementary
+    }
+  ].filter((group) => group.recipes && group.recipes.length);
+}
+
+function titleCaseLabel(value) {
+  return String(value || "")
+    .replace(/[_-]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+    .join(" ");
+}
+
+function normalizeRecipeTags(value) {
+  if (Array.isArray(value)) return value.filter(Boolean).map((tag) => String(tag).trim()).filter(Boolean);
+  if (typeof value === "string") {
+    return value
+      .split(/[|,]/)
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+function recipeDietLabel(recipe) {
+  const tags = normalizeRecipeTags(recipe.diet_tags);
+  return tags.length ? titleCaseLabel(tags[0]) : "";
+}
+
+const AK_ICON_PATHS = {
+  action: '<path d="M7 17 17 7"></path><path d="M9 7h8v8"></path>',
+  category: '<path d="M5 6h14"></path><path d="M5 12h14"></path><path d="M5 18h9"></path>',
+  check: '<circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path>',
+  copy: '<rect x="8" y="8" width="10" height="10" rx="2"></rect><path d="M6 14H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v1"></path>',
+  country: '<path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path>',
+  diet: '<path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path>',
+  difficulty: '<path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path>',
+  note: '<path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path>',
+  print: '<path d="M7 8V4h10v4"></path><path d="M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"></path><path d="M7 14h10v6H7z"></path>',
+  servings: '<path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path>',
+  share: '<path d="M8 12h8"></path><path d="M13 7l5 5-5 5"></path><path d="M6 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h1"></path>',
+  shopping: '<path d="M6 9h12l-1 10H7L6 9Z"></path><path d="M9 9a3 3 0 0 1 6 0"></path>',
+  source: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 1 4 16.5z"></path><path d="M8 7h8"></path><path d="M8 11h7"></path>',
+  time: '<circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path>',
+  timer: '<circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path>',
+  warning: '<path d="M12 3 22 20H2L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path>'
+};
+
+function akIcon(name, className) {
+  const classes = ["ak-icon", className || ""].filter(Boolean).join(" ");
+  return `<svg class="${classes}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${AK_ICON_PATHS[name] || AK_ICON_PATHS.category}</svg>`;
+}
+
+function staticCardMeta(icon, label, value) {
+  if (!value) return "";
+  return `<span>${akIcon(icon, "ak-static-card-icon")}<span><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></span></span>`;
+}
+
+function imageSizeAttributes(width, height) {
+  return ` width="${Number(width) || 1200}" height="${Number(height) || 900}"`;
+}
+
+function recipeImageAlt(recipe, role) {
+  if (role === "prep") return `${recipe.name} ingredients/prep step`;
+  if (role === "process") return `${recipe.name} cooking/process step`;
+  if (role === "serving") return `${recipe.name} serving/detail image`;
+  return `${recipe.name} recipe from ${recipe.country_name || "AfroKitchen"}`;
+}
+
+function renderRecipeFallbackMarkup(recipe, compact) {
+  const category = categoryLabel(recipe);
+  const country = recipe.country_name || "AfroKitchen";
+  return `<span class="${compact ? "ak-static-recipe-card-fallback" : "ak-recipe-image-fallback"}" aria-hidden="true">
+    <span class="ak-fallback-mark">${escapeHtml(String(recipe.country_code || "AK").slice(0, 2).toUpperCase())}</span>
+    <span class="ak-fallback-copy"><strong>${escapeHtml(recipe.name || "AfroKitchen recipe")}</strong><small>${escapeHtml(country)} - ${escapeHtml(category)}</small></span>
+  </span>`;
+}
+
+function renderStaticRecipeCard(recipe, recipeImages) {
+  const media = resolveRecipeMedia(recipe, recipeImages);
+  const imageSrc = media && media.pageImage ? String(media.pageImage) : "";
+  const hasImage = Boolean(isUsableRecipeImage(imageSrc));
+  const href = resolveRecipeHref(recipe);
+  const category = categoryLabel(recipe);
+  const country = recipe.country_name || "Africa";
+  const diet = recipeDietLabel(recipe);
+  const region = recipe.region || "";
+  const time = recipe.total_time_minutes ? `${recipe.total_time_minutes} min` : "Time varies";
+  const servings = recipe.default_servings ? `Serves ${recipe.default_servings}` : "";
+  const imageAlt = recipeImageAlt(recipe);
+  const thumb = hasImage
+    ? `<span class="ak-static-recipe-card-thumb"><img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" decoding="async"${imageSizeAttributes(640, 480)}></span>`
+    : renderRecipeFallbackMarkup(recipe, true);
+
+  return `<a class="ak-static-recipe-card${hasImage ? " has-thumb" : " has-fallback"}" href="${escapeHtml(href)}" aria-label="Open recipe: ${escapeHtml(recipe.name)}">
+    ${thumb}
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">${escapeHtml(country)}</span>
+        <span class="ak-static-recipe-badge">${escapeHtml(category)}</span>
+      </span>
+      <span class="ak-static-recipe-card-title">${escapeHtml(recipe.name)}</span>
+      <span class="ak-static-recipe-card-desc">${escapeHtml(excerpt(recipe.description, 126))}</span>
+      <span class="ak-static-recipe-card-meta">
+        ${staticCardMeta("time", "Time", time)}
+        ${staticCardMeta("servings", "Servings", servings)}
+        ${staticCardMeta("difficulty", "Difficulty", titleCaseLabel(recipe.difficulty || "medium"))}
+        ${staticCardMeta("diet", "Diet", diet)}
+        ${staticCardMeta("country", "Region", region)}
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe ${akIcon("action", "ak-static-card-icon")}</span>
+    </span>
+  </a>`;
+}
+
+function renderCompactRecipeLink(recipe, contextLabel) {
+  const meta = [
+    recipe.country_name,
+    categoryLabel(recipe),
+    recipe.total_time_minutes ? `${recipe.total_time_minutes} min` : ""
+  ]
+    .filter(Boolean)
+    .join(" - ");
+  return `<a class="ak-internal-link" href="${escapeHtml(resolveRecipeHref(recipe))}">
+        <span>${escapeHtml(recipe.name)}</span>
+        <small>${escapeHtml(contextLabel || meta)}</small>
+      </a>`;
+}
+
+function renderRelatedHtml(recipe, linkGroups, recipeImages) {
+  const primaryCards = (linkGroups[0] ? linkGroups[0].recipes : [])
+    .slice(0, 4)
+    .map((entry) => renderStaticRecipeCard(entry, recipeImages))
+    .join("\n");
+  const compactGroups = linkGroups
+    .map(
+      (group) => `<article class="ak-internal-link-group">
+        <div class="ak-support-label">${escapeHtml(group.title)}</div>
+        <p>${escapeHtml(group.intro)}</p>
+        <div class="ak-internal-link-list">
+          ${group.recipes
+            .slice(0, 4)
+            .map((entry) => renderCompactRecipeLink(entry))
+            .join("\n")}
+        </div>
+      </article>`
+    )
     .join("\n");
 
-  return `<section class="ak-section ak-static-related">
+  return `<section class="ak-section ak-static-related ak-internal-link-section">
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
-      <h2 class="ak-section-title">More AfroKitchen dishes from the same food atlas</h2>
-      <p class="ak-section-sub">Try another dish from the same country, region, or cooking mood.</p>
+      <h2 class="ak-section-title">Cook around ${escapeHtml(recipe.name)}</h2>
+      <p class="ak-section-sub">Follow country, category, collection, time, and pairing paths without turning the recipe page into a link farm.</p>
     </div>
-    <div class="ak-static-related-grid">${cards}</div>
+    ${primaryCards ? `<div class="ak-static-related-grid">${primaryCards}</div>` : ""}
+    <div class="ak-internal-link-grid">${compactGroups}</div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
       <a href="${recipe.country_route_path}" class="ak-btn ak-btn-outline">Explore ${escapeHtml(recipe.country_name)} recipes</a>
@@ -622,7 +907,7 @@ function findLocalGalleryImage(stem) {
 
 function addGalleryImage(images, seen, src, alt, caption, credit) {
   const input = String(src || "").trim();
-  if (!input) return;
+  if (!input || isGenericRecipeImage(input)) return;
 
   const key = input.replace(/\?.*$/, "");
   if (seen.has(key)) return;
@@ -636,10 +921,29 @@ function addGalleryImage(images, seen, src, alt, caption, credit) {
   });
 }
 
+function cleanGalleryCaption(caption, recipe, fallback) {
+  const input = String(caption || "").trim();
+  if (
+    !input ||
+    /Fallback collection artwork pending recipe-specific media/i.test(input) ||
+    /^Photo \d+$/i.test(input) ||
+    /^Prep or serving detail$/i.test(input)
+  ) {
+    return fallback || `${recipe.name} photo`;
+  }
+
+  return cleanGeneratedCopyText(input);
+}
+
+function recipeOccasionText(recipe) {
+  const occasion = String(recipe.occasion || "").trim().replace(/^best\s+for\s+/i, "");
+  return occasion || "everyday meals";
+}
+
 function collectRecipeGalleryImages(recipe, media, recipeImages) {
   const images = [];
   const seen = new Set();
-  const baseAlt = recipe.image_alt || `${recipe.name} recipe from ${recipe.country_name}`;
+  const baseAlt = recipeImageAlt(recipe);
 
   addGalleryImage(
     images,
@@ -650,29 +954,41 @@ function collectRecipeGalleryImages(recipe, media, recipeImages) {
     media.credit
   );
 
-  if (recipe.image_url) {
+  if (isUsableRecipeImage(recipe.image_url)) {
     addGalleryImage(images, seen, recipe.image_url, baseAlt, `${recipe.name} finished dish`);
   }
 
   const manifestEntry = recipeImages && recipeImages[recipe.slug] ? recipeImages[recipe.slug] : {};
-  const manifestGallery = []
-    .concat(Array.isArray(manifestEntry.images) ? manifestEntry.images : [])
-    .concat(Array.isArray(manifestEntry.gallery) ? manifestEntry.gallery : [])
+  const manifestGallery = manifestEntry.manual_override
+    ? []
+      .concat(Array.isArray(manifestEntry.images) ? manifestEntry.images : [])
+      .concat(Array.isArray(manifestEntry.gallery) ? manifestEntry.gallery : [])
+    : [];
+  const sourceGallery = manifestGallery
     .concat(Array.isArray(recipe.media) ? recipe.media : [])
     .concat(Array.isArray(recipe.recipe_media) ? recipe.recipe_media : []);
 
-  manifestGallery.forEach((entry, index) => {
+  sourceGallery.forEach((entry, index) => {
     if (typeof entry === "string") {
-      addGalleryImage(images, seen, entry, baseAlt, `Photo ${index + 1}`);
+      addGalleryImage(images, seen, entry, baseAlt, `${recipe.name} cooking detail`);
       return;
     }
+
+    const role = String(entry.role || "").toLowerCase();
+    const roleAlt = role.includes("prep") || role.includes("ingredient")
+      ? recipeImageAlt(recipe, "prep")
+      : role.includes("process") || role.includes("cook")
+        ? recipeImageAlt(recipe, "process")
+        : role.includes("serving") || role.includes("detail") || role.includes("table")
+          ? recipeImageAlt(recipe, "serving")
+          : baseAlt;
 
     addGalleryImage(
       images,
       seen,
       entry.full || entry.url || entry.src || entry.image_url,
-      entry.alt || entry.alt_text || baseAlt,
-      entry.caption || `Photo ${index + 1}`,
+      entry.alt || entry.alt_text || roleAlt,
+      cleanGalleryCaption(entry.caption, recipe, index === 0 ? `${recipe.name} finished dish` : `${recipe.name} cooking detail`),
       entry.photographer
         ? {
             source: entry.source || "image source",
@@ -692,12 +1008,13 @@ function collectRecipeGalleryImages(recipe, media, recipeImages) {
   for (let index = 2; index <= 5; index += 1) {
     const localImage = findLocalGalleryImage(`${recipe.slug}-${index}`);
     if (localImage) {
+      const role = index === 2 ? "prep" : index === 3 ? "process" : "serving";
       addGalleryImage(
         images,
         seen,
         localImage,
-        `${recipe.name} photo ${index}`,
-        index === 2 ? "Prep or serving detail" : `Photo ${index}`
+        recipeImageAlt(recipe, role),
+        index === 2 ? `${recipe.name} ingredients/prep step` : index === 3 ? `${recipe.name} cooking/process step` : `${recipe.name} serving/detail image`
       );
     }
   }
@@ -707,7 +1024,7 @@ function collectRecipeGalleryImages(recipe, media, recipeImages) {
       images,
       seen,
       step.image_url,
-      `${recipe.name}: ${step.title || `step ${step.step_number}`}`,
+      recipeImageAlt(recipe, "process"),
       step.title || `Step ${step.step_number}`
     );
   });
@@ -731,7 +1048,7 @@ function renderRecipePhotoGallery(recipe, galleryImages) {
         </div>
         <div class="ak-photo-gallery-grid${supporting.length ? "" : " is-single"}">
           <figure class="ak-photo-main">
-            <img src="${escapeHtml(featured.src)}" alt="${escapeHtml(featured.alt)}" loading="lazy" decoding="async">
+            <img src="${escapeHtml(featured.src)}" alt="${escapeHtml(featured.alt)}" loading="lazy" decoding="async"${imageSizeAttributes(1200, 750)}>
             ${featured.caption ? `<figcaption>${escapeHtml(featured.caption)}</figcaption>` : ""}
           </figure>
           ${
@@ -739,7 +1056,7 @@ function renderRecipePhotoGallery(recipe, galleryImages) {
               ? `<div class="ak-photo-thumbs">${supporting
                   .map(
                     (image) => `<figure>
-            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async">
+            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async"${imageSizeAttributes(640, 640)}>
             ${image.caption ? `<figcaption>${escapeHtml(image.caption)}</figcaption>` : ""}
           </figure>`
                   )
@@ -783,6 +1100,61 @@ function buildRecipeKeywords(recipe) {
   );
 
   return keywords.length ? keywords.join(", ") : "";
+}
+
+function metaDescription(value, limit) {
+  return excerpt(value, limit || 155);
+}
+
+function buildCountryMetaDescription(country) {
+  const names = humanList((country.top_recipe_names || []).filter(Boolean), 1);
+  return metaDescription(
+    `${country.country_name} recipes: ${country.total_recipes} dishes${names ? ` including ${names}` : ""}. Browse categories, country context, and ready-to-cook links.`,
+    158
+  );
+}
+
+function buildCollectionMetaDescription(collection) {
+  return metaDescription(buildCollectionShareText(collection), 158);
+}
+
+function isoDate(value) {
+  const input = String(value || "").trim();
+  if (!input) return "";
+  const date = new Date(input);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toISOString().slice(0, 10);
+}
+
+function isoDurationFromMinutes(value) {
+  const minutes = Number(value);
+  if (!Number.isFinite(minutes) || minutes < 0) return "";
+  return `PT${Math.round(minutes)}M`;
+}
+
+function isUsableSchemaText(value) {
+  return Boolean(String(value || "").trim());
+}
+
+function collectRecipeSchemaBlockers(recipe, schemaImages, schemaIngredients) {
+  const blockers = [];
+  const steps = Array.isArray(recipe.steps) ? recipe.steps : [];
+
+  if (!isUsableSchemaText(recipe.name)) blockers.push("missing_name");
+  if (!isUsableSchemaText(recipe.description)) blockers.push("missing_description");
+  if (!Array.isArray(schemaImages) || !schemaImages.length) blockers.push("missing_image");
+  if (!isUsableSchemaText(recipe.country_name)) blockers.push("missing_cuisine");
+  if (!isUsableSchemaText(recipe.category)) blockers.push("missing_category");
+  if (!isoDurationFromMinutes(recipe.prep_time_minutes)) blockers.push("missing_prep_time");
+  if (!isoDurationFromMinutes(recipe.cook_time_minutes)) blockers.push("missing_cook_time");
+  if (!isoDurationFromMinutes(recipe.total_time_minutes)) blockers.push("missing_total_time");
+  if (!recipe.default_servings) blockers.push("missing_yield");
+  if (!Array.isArray(schemaIngredients) || !schemaIngredients.length) blockers.push("missing_ingredients");
+  if (!steps.length || steps.some((step) => !isUsableSchemaText(step.title) || !isUsableSchemaText(step.instruction))) {
+    blockers.push("missing_instructions");
+  }
+
+  return blockers;
 }
 
 function canUseSchemaImage(value) {
@@ -834,26 +1206,52 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
     .scaleIngredients(recipe.ingredients || [], recipe.default_servings || 1, recipe.default_servings || 1)
     .map((ingredient) => formatSchemaIngredient(engine, ingredient));
   const normalizedSocialImage = toAbsoluteSchemaUrl(socialImage || TOOL_OG_IMAGE) || TOOL_OG_IMAGE;
-  const schemaImages = (galleryImages || [])
+  let schemaImages = (galleryImages || [])
     .map((image) => toAbsoluteSchemaUrl(image.src))
     .filter((src) => canUseSchemaImage(src));
-  const keywords = buildRecipeKeywords(recipe);
-
-  recipeSchema.image = schemaImages.length ? schemaImages : normalizedSocialImage;
-  recipeSchema.url = pageUrl;
-  recipeSchema.recipeIngredient = schemaIngredients;
-  recipeSchema.recipeInstructions = buildRecipeInstructionSchemas(
-    recipe,
-    pageUrl,
-    normalizedSocialImage
-  );
-  if (keywords) {
-    recipeSchema.keywords = keywords;
+  if (!schemaImages.length && canUseSchemaImage(normalizedSocialImage)) {
+    schemaImages = [normalizedSocialImage];
   }
-  recipeSchema.mainEntityOfPage = {
-    "@type": "WebPage",
-    "@id": pageUrl
-  };
+  const keywords = buildRecipeKeywords(recipe);
+  const schemaBlockers = collectRecipeSchemaBlockers(recipe, schemaImages, schemaIngredients);
+
+  if (!schemaBlockers.length) {
+    recipeSchema.image = schemaImages;
+    recipeSchema.url = pageUrl;
+    recipeSchema.author = {
+      "@type": "Organization",
+      name: "AfroKitchen"
+    };
+    recipeSchema.publisher = {
+      "@type": "Organization",
+      name: "AfroTools",
+      url: SITE_ORIGIN
+    };
+    recipeSchema.datePublished = isoDate(recipe.created_at) || undefined;
+    recipeSchema.dateModified = isoDate(recipe.updated_at) || undefined;
+    recipeSchema.prepTime = isoDurationFromMinutes(recipe.prep_time_minutes);
+    recipeSchema.cookTime = isoDurationFromMinutes(recipe.cook_time_minutes);
+    recipeSchema.totalTime = isoDurationFromMinutes(recipe.total_time_minutes);
+    recipeSchema.recipeCuisine = [recipe.country_name, recipe.region].filter(Boolean).join(", ");
+    recipeSchema.recipeCategory = categoryLabel(recipe);
+    recipeSchema.recipeYield = `${recipe.default_servings} ${recipe.serving_unit || "servings"}`;
+    recipeSchema.recipeIngredient = schemaIngredients;
+    recipeSchema.recipeInstructions = buildRecipeInstructionSchemas(
+      recipe,
+      pageUrl,
+      normalizedSocialImage
+    );
+    recipeSchema.isAccessibleForFree = true;
+    delete recipeSchema.aggregateRating;
+    delete recipeSchema.review;
+    if (keywords) {
+      recipeSchema.keywords = keywords;
+    }
+    recipeSchema.mainEntityOfPage = {
+      "@type": "WebPage",
+      "@id": pageUrl
+    };
+  }
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -892,23 +1290,31 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
     ]
   };
 
-  return { recipeSchema, breadcrumbSchema };
+  return {
+    recipeSchema: schemaBlockers.length ? null : recipeSchema,
+    breadcrumbSchema,
+    schemaBlockers
+  };
 }
 
 function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, cuisineIntelligence) {
-  recipe = applyRecipeResearchPatch(recipe, researchAudit);
+  recipe = cleanPatchedRecipeCopy(applyRecipeResearchPatch(recipe, researchAudit));
   const recipeInsight = getRecipeInsight(recipe, cuisineIntelligence);
-  const relatedRecipes = pickRelatedRecipes(recipe, manifest);
+  const recipeInternalLinkGroups = pickRecipeInternalLinkGroups(recipe, manifest);
   const media = resolveRecipeMedia(recipe, recipeImages);
   const galleryImages = collectRecipeGalleryImages(recipe, media, recipeImages);
-  const title = `${recipe.name} Recipe | ${recipe.country_name} | AfroKitchen`;
+  const title = `${recipeSeoName(recipe)} Recipe | ${recipe.country_name} | AfroKitchen`;
   const description = excerpt(recipe.description, 158);
-  const { recipeSchema, breadcrumbSchema } = buildRecipeSchemas(
+  const { recipeSchema, breadcrumbSchema, schemaBlockers } = buildRecipeSchemas(
     recipe,
     engine,
     media.socialImage,
     galleryImages
   );
+  const robotsContent = recipeSchema ? "index, follow" : "noindex, follow";
+  const recipeSchemaScript = recipeSchema
+    ? `  <script type="application/ld+json">${safeJson(recipeSchema)}</script>\n`
+    : "";
   const renderedIngredients = renderIngredientsHtml(engine, recipe, recipe.default_servings || 1);
   const renderedNutrition = renderNutritionHtml(engine, recipe);
   const renderedSteps = renderStepsHtml(recipe);
@@ -916,10 +1322,11 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const renderedInsightCards = renderRecipeIntelligenceCards(recipe, recipeInsight);
   const renderedPairingRail = renderRecipePairingRail(recipe, recipeInsight);
   const renderedSocialPlate = renderRecipeSocialPlate(recipe, recipeInsight);
-  const relatedSection = renderRelatedHtml(recipe, relatedRecipes);
+  const relatedSection = renderRelatedHtml(recipe, recipeInternalLinkGroups, recipeImages);
   const storyLead = recipe.story ? excerpt(recipe.story, 420) : description;
-  const heroStyle = media.pageImage
-    ? ` style="background-image:linear-gradient(140deg,rgba(36,18,8,.9),rgba(123,31,12,.72) 46%,rgba(199,62,29,.58)),url('${escapeHtml(media.pageImage)}')"`
+  const heroImage = media.pageImage || RECIPE_FALLBACK_IMAGE;
+  const heroStyle = heroImage
+    ? ` style="background-image:linear-gradient(140deg,rgba(36,18,8,.9),rgba(123,31,12,.72) 46%,rgba(199,62,29,.58)),url('${escapeHtml(heroImage)}')"`
     : "";
 
   const recipeData = {
@@ -956,11 +1363,11 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${recipe.route_url}">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="${robotsContent}">
   <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:image" content="${escapeHtml(media.socialImage || TOOL_OG_IMAGE)}">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="${recipe.route_url}">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
@@ -974,6 +1381,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/icon-system.css?v=20260612a">
   <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=20260501a">
   <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
@@ -981,8 +1389,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
-    .ak-static-page .ak-static-helper-note,
-    .ak-static-page .ak-static-related-card { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
+    .ak-static-page .ak-static-helper-note { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
     .ak-static-page .ak-static-hero-card { padding: 24px; align-self: stretch; display: grid; gap: 16px; color: var(--ak-text); }
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
@@ -1038,6 +1445,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     .ak-static-page .ak-step-title { font-family: var(--font-body); font-size: 1.05rem; font-weight: 800; line-height: 1.25; }
     .ak-static-page .ak-step-text { max-width: 70ch; color: var(--ak-muted); font-size: 1.02rem; line-height: 1.7; }
     .ak-static-page .ak-step-tip { max-width: 68ch; border-radius: 18px; background: linear-gradient(180deg, var(--ak-accent-soft), #fff7df); }
+    .ak-static-page .ak-step-tip::before { content: none; }
     .ak-static-page .ak-static-step-actions { display: grid; gap: 10px; margin-top: 16px; }
     .ak-static-page .ak-static-timer-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; background: var(--ak-surface-soft); color: var(--ak-dark); width: fit-content; }
     .ak-static-page .ak-static-timer-label { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ak-subtle); }
@@ -1048,14 +1456,47 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     .ak-static-page .ak-static-helper-note p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-related { margin-top: 36px; }
     .ak-static-page .ak-static-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .ak-static-page .ak-static-related-card { padding: 20px; text-decoration: none; display: grid; gap: 10px; }
-    .ak-static-page .ak-static-related-card h3 { margin: 0; color: var(--ak-dark); font-size: 1.2rem; }
-    .ak-static-page .ak-static-related-card p { margin: 0; color: var(--ak-muted); line-height: 1.65; }
-    .ak-static-page .ak-static-card-meta { color: var(--ak-subtle); font-size: .92rem; }
+    .ak-static-page .ak-internal-link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .ak-static-page .ak-internal-link-group { min-width: 0; padding: 18px; border-radius: 20px; background: var(--ak-panel); border: 1px solid var(--ak-line); box-shadow: var(--ak-shadow-sm); }
+    .ak-static-page .ak-internal-link-group p { margin: 6px 0 14px; color: var(--ak-muted); line-height: 1.6; }
+    .ak-static-page .ak-internal-link-list { display: grid; gap: 9px; }
+    .ak-static-page .ak-internal-link { display: grid; gap: 3px; padding: 11px 12px; border-radius: 14px; background: var(--ak-bg); border: 1px solid var(--ak-line); color: var(--ak-dark); text-decoration: none; }
+    .ak-static-page .ak-internal-link span { font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+    .ak-static-page .ak-internal-link small { color: var(--ak-muted); line-height: 1.35; }
+    .ak-static-page .ak-internal-link:hover,
+    .ak-static-page .ak-internal-link:focus-visible { border-color: var(--ak-primary-border); color: var(--ak-primary-deep); outline: none; }
+    .ak-static-page .ak-static-recipe-card { min-width: 0; display: grid; grid-template-columns: minmax(112px, .34fr) minmax(0, 1fr); overflow: hidden; text-decoration: none; color: var(--ak-text); background: #fffdfa; border: 1px solid rgba(82,50,28,.14); border-radius: 18px; box-shadow: 0 12px 28px rgba(36,21,10,.06); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+    .ak-static-page .ak-static-recipe-card:not(.has-thumb) { grid-template-columns: 1fr; }
+    .ak-static-page .ak-static-recipe-card:hover,
+    .ak-static-page .ak-static-recipe-card:focus-visible { transform: translateY(-3px); border-color: rgba(199,62,29,.34); box-shadow: 0 18px 34px rgba(36,21,10,.1); outline: none; }
+    .ak-static-page .ak-static-recipe-card:focus-visible { box-shadow: 0 0 0 4px rgba(199,62,29,.16), 0 18px 34px rgba(36,21,10,.1); }
+    .ak-static-page .ak-static-recipe-card-thumb { min-width: 0; min-height: 100%; background: var(--ak-surface-soft); overflow: hidden; }
+    .ak-static-page .ak-static-recipe-card-thumb img { display: block; width: 100%; height: 100%; min-height: 188px; object-fit: cover; }
+    .ak-static-page .ak-static-recipe-card-fallback { min-height: 156px; display: grid; align-content: end; gap: 12px; padding: 18px; background:
+      radial-gradient(circle at 18% 20%, rgba(15,123,67,.18), transparent 28%),
+      linear-gradient(135deg, #fff7ec, #f6eadb 58%, #eef6e7); border-bottom: 1px solid rgba(82,50,28,.12); }
+    .ak-static-page .ak-fallback-mark { width: 44px; height: 44px; display: inline-grid; place-items: center; border-radius: 50%; background: #2d1b12; color: #fff8ef; font-weight: 900; letter-spacing: .06em; }
+    .ak-static-page .ak-fallback-copy { display: grid; gap: 4px; min-width: 0; }
+    .ak-static-page .ak-fallback-copy strong { color: #2d1b12; line-height: 1.12; overflow-wrap: anywhere; }
+    .ak-static-page .ak-fallback-copy small { color: #6c503b; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-body { min-width: 0; display: grid; align-content: start; gap: 12px; padding: 18px; }
+    .ak-static-page .ak-static-recipe-card-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ak-static-page .ak-static-recipe-badge { display: inline-flex; align-items: center; min-height: 28px; max-width: 100%; padding: 0 10px; border-radius: 999px; background: #fff4e6; border: 1px solid rgba(82,50,28,.12); color: #573723; font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ak-static-page .ak-static-recipe-badge:first-child { background: #f4fbef; border-color: rgba(15,123,67,.16); color: #245b35; }
+    .ak-static-page .ak-static-recipe-card-title { color: var(--ak-dark); font-family: var(--font-display); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.02; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; color: var(--ak-muted); line-height: 1.58; font-size: .93rem; }
+    .ak-static-page .ak-static-recipe-card-meta { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+    .ak-static-page .ak-static-recipe-card-meta > span { gap: 7px; min-width: 0; max-width: 100%; padding: 7px 9px; border-radius: 12px; background: #fff6ea; border: 1px solid rgba(82,50,28,.1); color: #4c3322; font-size: .76rem; }
+    .ak-static-page .ak-static-recipe-card-meta small { display: block; color: #8b6e58; font-size: .62rem; font-weight: 850; letter-spacing: .08em; line-height: 1.1; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-meta strong { display: block; min-width: 0; color: #2b1b12; line-height: 1.2; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-cta { display: inline-flex; align-items: center; gap: 7px; justify-self: start; margin-top: 2px; color: var(--ak-primary-deep); font-size: .78rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card:hover .ak-static-recipe-card-cta,
+    .ak-static-page .ak-static-recipe-card:focus-visible .ak-static-recipe-card-cta { color: var(--ak-primary); }
     .ak-static-page .ak-static-credit { font-size: .88rem; color: var(--ak-subtle); }
     @media (max-width: 960px) {
       .ak-static-page .ak-static-summary-grid,
       .ak-static-page .ak-static-related-grid,
+      .ak-static-page .ak-internal-link-grid,
       .ak-static-page .ak-photo-gallery-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
       .ak-static-page .ak-photo-gallery-head { align-items: start; flex-direction: column; }
@@ -1077,11 +1518,13 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
       .ak-static-page .ak-photo-thumbs { grid-template-columns: 1fr; }
       .ak-static-page .ak-photo-thumbs figure { aspect-ratio: 4 / 3; }
       .ak-static-page .ak-nutrition { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card.has-thumb { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card-thumb img { min-height: 180px; }
       .ak-static-page .ak-step { padding: 76px 20px 22px; }
       .ak-static-page .ak-step-num { left: 20px; top: 20px; }
     }
   </style>
-  <script type="application/ld+json">${safeJson(recipeSchema)}</script>
+${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema-blockers" content="${escapeHtml(schemaBlockers.join(","))}">\n` : ""}
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
 </head>
 <body>
@@ -1104,8 +1547,8 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">${escapeHtml(recipe.difficulty || "medium")}</div></div>
         </div>
         <div class="ak-hero-actions">
-          <a href="${recipe.country_route_path}" class="ak-btn ak-btn-secondary">Explore ${escapeHtml(recipe.country_name)} recipes</a>
-          ${recipe.primary_collection_route_path ? `<a href="${recipe.primary_collection_route_path}" class="ak-btn ak-btn-primary">Open ${escapeHtml(recipe.primary_collection_name)}</a>` : `<a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary">Browse AfroKitchen</a>`}
+          <a href="${recipe.country_route_path}" class="ak-btn ak-btn-secondary">${akIcon("country", "ak-icon-sm")}<span>Explore ${escapeHtml(recipe.country_name)} recipes</span></a>
+          ${recipe.primary_collection_route_path ? `<a href="${recipe.primary_collection_route_path}" class="ak-btn ak-btn-primary">${akIcon("category", "ak-icon-sm")}<span>Open ${escapeHtml(recipe.primary_collection_name)}</span></a>` : `<a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary">${akIcon("shopping", "ak-icon-sm")}<span>Browse AfroKitchen</span></a>`}
         </div>
       </div>
       <aside class="ak-static-hero-card">
@@ -1119,7 +1562,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
           <div><span>Country hub</span><strong><a href="${recipe.country_route_path}">${escapeHtml(recipe.country_name)} cuisine hub</a></strong></div>
           ${recipe.primary_collection_slug ? `<div><span>Collection</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
         </div>
-        ${media.credit ? `<div class="ak-static-credit">Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.</div>` : ""}
+        ${media.credit ? `<div class="ak-static-credit">${akIcon("source", "ak-icon-sm ak-icon-muted")}<span>Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.</span></div>` : ""}
       </aside>
     </div>
   </section>
@@ -1137,7 +1580,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
           </div>
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>Best for ${escapeHtml(recipe.occasion || "everyday meals")}, with a ${escapeHtml(recipe.difficulty || "medium")} cooking level and about ${escapeHtml(String(recipe.total_time_minutes || 0))} minutes total.</p>
+            <p>Best for ${escapeHtml(recipeOccasionText(recipe))}. Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook and about ${escapeHtml(String(recipe.total_time_minutes || 0))} minutes total.</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
@@ -1156,9 +1599,9 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
         <div class="ak-static-serving-bar">
           <div class="ak-servings">
             <span class="ak-servings-label">Servings</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)">-</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease servings">-</button>
             <span class="ak-servings-val" id="ak-static-servings">${escapeHtml(String(recipe.default_servings || 1))}</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)">+</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase servings">+</button>
           </div>
           <p class="ak-static-serving-note">Scale the dish before you shop, then use the checklist while you cook.</p>
         </div>
@@ -1183,16 +1626,18 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
                 <h2 class="ak-panel-title">Step-by-step method</h2>
                 <p class="ak-method-sub">Keep the rhythm calm, watch the texture, and adjust seasoning at the end.</p>
               </div>
-              <a class="ak-btn ak-btn-outline" href="${recipe.country_route_path}">Back to ${escapeHtml(recipe.country_name)}</a>
+              <a class="ak-btn ak-btn-outline" href="${recipe.country_route_path}">${akIcon("country", "ak-icon-sm")}<span>Back to ${escapeHtml(recipe.country_name)}</span></a>
             </div>
             <div class="ak-method-stat-row">
-              <span>${escapeHtml(String((recipe.steps || []).length))} steps</span>
-              <span>${escapeHtml(String(recipe.total_time_minutes || 0))} min total</span>
-              <span>${escapeHtml(recipe.difficulty || "medium")}</span>
+              <span>${akIcon("check", "ak-icon-sm")}${escapeHtml(String((recipe.steps || []).length))} steps</span>
+              <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(String(recipe.prep_time_minutes || 0))} min prep</span>
+              <span>${akIcon("timer", "ak-icon-sm")}${escapeHtml(String(recipe.cook_time_minutes || 0))} min cook</span>
+              <span>${akIcon("time", "ak-icon-sm")}${escapeHtml(String(recipe.total_time_minutes || 0))} min total</span>
+              <span>${akIcon("difficulty", "ak-icon-sm")}${escapeHtml(recipe.difficulty || "medium")}</span>
             </div>
             <div class="ak-steps">${renderedSteps}</div>
             <div class="ak-static-helper-note">
-              <p>${escapeHtml(recipe.regional_variations || "Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.")}</p>
+              <p>${akIcon("warning", "ak-icon-sm ak-icon-accent")}<span>${escapeHtml(recipe.regional_variations || "Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.")}</span></p>
             </div>
           </section>
         </div>
@@ -1207,18 +1652,19 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 <script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = ${safeJson(recipeData)};</script>
-<script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260427a" defer></script>
+<script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260612a" defer></script>
 </body>
 </html>
 `;
 }
 
 function buildCountrySchemas(country) {
+  const faqPageSchema = buildCountryFaqSchema(country);
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${country.country_name} Recipes & Traditional Dishes | AfroKitchen`,
-    description: country.description,
+    name: `${country.country_name} Recipes | Traditional Dishes & Food Guide | AfroKitchen`,
+    description: buildCountryMetaDescription(country),
     url: country.route_url,
     isPartOf: {
       "@type": "WebSite",
@@ -1276,15 +1722,16 @@ function buildCountrySchemas(country) {
     ]
   };
 
-  return { collectionPageSchema, itemListSchema, breadcrumbSchema };
+  return { collectionPageSchema, itemListSchema, breadcrumbSchema, faqPageSchema };
 }
 
 function buildCollectionSchemas(collection) {
+  const description = buildCollectionMetaDescription(collection);
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: `${collection.name} Recipes Collection | AfroKitchen`,
-    description: collection.description,
+    description,
     url: collection.route_url,
     isPartOf: {
       "@type": "WebSite",
@@ -1354,18 +1801,9 @@ function pickNeighborCountries(country, manifest) {
     .slice(0, 4);
 }
 
-function renderCountryRecipeCards(country) {
+function renderCountryRecipeCards(country, recipeImages) {
   return country.recipes
-    .map((recipe) => {
-      const modeLabel = `${categoryLabel(recipe)} | ${recipe.difficulty || "medium"}`;
-      const href = recipe.generated_in_wave ? recipe.route_path : recipe.fallback_path;
-      return `<a class="ak-country-hub-card" href="${href}">
-        <div class="ak-support-label">${escapeHtml(modeLabel)}</div>
-        <h3>${escapeHtml(recipe.name)}</h3>
-        <p>${escapeHtml(excerpt(recipe.description, 128))}</p>
-        <div class="ak-static-card-meta">${escapeHtml(String(recipe.total_time_minutes || 0))} min | ${escapeHtml(categoryLabel(recipe))}</div>
-      </a>`;
-    })
+    .map((recipe) => renderStaticRecipeCard(recipe, recipeImages))
     .join("\n");
 }
 
@@ -1411,18 +1849,243 @@ function renderCountryCollectionLinks(country) {
   </section>`;
 }
 
-function renderCollectionRecipeCards(collection) {
+const COUNTRY_CATEGORY_ORDER = [
+  "main",
+  "stew",
+  "breakfast",
+  "snack",
+  "dessert",
+  "drink",
+  "side",
+  "soup",
+  "rice",
+  "street_food",
+  "sauce",
+  "soup_stew",
+  "starter"
+];
+
+function countryFeaturedRecipes(country, limit) {
+  return (country.recipes || [])
+    .slice()
+    .sort(
+      (left, right) =>
+        Number(Boolean(right.is_featured)) - Number(Boolean(left.is_featured)) ||
+        Number(Boolean(right.generated_in_wave)) - Number(Boolean(left.generated_in_wave)) ||
+        (left.total_time_minutes || 9999) - (right.total_time_minutes || 9999) ||
+        left.name.localeCompare(right.name)
+    )
+    .slice(0, limit || 4);
+}
+
+function countryCategoryGroups(country) {
+  const groups = new Map();
+  (country.recipes || []).forEach((recipe) => {
+    const key = recipe.category || "recipe";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(recipe);
+  });
+
+  return Array.from(groups.entries())
+    .map(([category, recipes]) => ({
+      category,
+      label: categoryLabel({ category }),
+      recipes: recipes
+        .slice()
+        .sort(
+          (left, right) =>
+            Number(Boolean(right.is_featured)) - Number(Boolean(left.is_featured)) ||
+            Number(Boolean(right.generated_in_wave)) - Number(Boolean(left.generated_in_wave)) ||
+            (left.total_time_minutes || 9999) - (right.total_time_minutes || 9999) ||
+            left.name.localeCompare(right.name)
+        )
+    }))
+    .sort((left, right) => {
+      const leftIndex = COUNTRY_CATEGORY_ORDER.indexOf(left.category);
+      const rightIndex = COUNTRY_CATEGORY_ORDER.indexOf(right.category);
+      const normalizedLeft = leftIndex === -1 ? COUNTRY_CATEGORY_ORDER.length : leftIndex;
+      const normalizedRight = rightIndex === -1 ? COUNTRY_CATEGORY_ORDER.length : rightIndex;
+      return normalizedLeft - normalizedRight || right.recipes.length - left.recipes.length || left.label.localeCompare(right.label);
+    });
+}
+
+function commonCountryIngredients(country, limit) {
+  const counts = new Map();
+  (country.recipes || []).forEach((recipe) => {
+    (recipe.ingredients || []).forEach((ingredient) => {
+      const name = String(ingredient && ingredient.name ? ingredient.name : "").trim();
+      if (!name) return;
+      const key = name.toLowerCase();
+      const current = counts.get(key) || { name, count: 0 };
+      current.count += 1;
+      counts.set(key, current);
+    });
+  });
+
+  return Array.from(counts.values())
+    .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name))
+    .slice(0, limit || 8)
+    .map((entry) => entry.name);
+}
+
+function buildCountryIntroParagraph(country) {
+  const categoryNames = humanList(countryCategoryGroups(country).map((group) => group.label.toLowerCase()), 4);
+  const dishNames = humanList(countryFeaturedRecipes(country, 3).map((recipe) => recipe.name), 3);
+  const ingredientNames = humanList(commonCountryIngredients(country, 4), 4);
+  const categoryCopy = categoryNames ? ` across ${categoryNames}` : "";
+  const dishCopy = dishNames ? ` Good starting points include ${dishNames}.` : "";
+  const ingredientCopy = ingredientNames ? ` The stored recipes often use ingredients such as ${ingredientNames}.` : "";
+
+  return `This ${country.region || "African"} country hub organizes ${country.total_recipes} ${country.country_name} recipes from the AfroKitchen atlas${categoryCopy}. Use it to compare dishes, cooking time, difficulty, and practical recipe links without leaving the country page.${dishCopy}${ingredientCopy}`;
+}
+
+function firstCountryRecipeToCook(country) {
+  return (country.recipes || [])
+    .slice()
+    .sort(
+      (left, right) =>
+        Number(Boolean(right.generated_in_wave)) - Number(Boolean(left.generated_in_wave)) ||
+        Number(String(right.difficulty || "").toLowerCase() === "easy") -
+          Number(String(left.difficulty || "").toLowerCase() === "easy") ||
+        (left.total_time_minutes || 9999) - (right.total_time_minutes || 9999) ||
+        Number(Boolean(right.is_featured)) - Number(Boolean(left.is_featured)) ||
+        left.name.localeCompare(right.name)
+    )[0];
+}
+
+function buildCountryFaqItems(country) {
+  const featuredNames = humanList(countryFeaturedRecipes(country, 5).map((recipe) => recipe.name), 5);
+  const ingredients = humanList(commonCountryIngredients(country, 8), 8);
+  const firstRecipe = firstCountryRecipeToCook(country);
+  const firstRecipeCopy = firstRecipe
+    ? `${firstRecipe.name} is a practical first pick from this hub${firstRecipe.total_time_minutes ? ` at about ${firstRecipe.total_time_minutes} minutes` : ""}.`
+    : `Start with the shortest complete recipe in the ${country.country_name} hub, then use the category lanes to choose another dish.`;
+
+  return [
+    {
+      question: `What are popular dishes from ${country.country_name}?`,
+      answer: featuredNames
+        ? `Popular starting points in this AfroKitchen country hub include ${featuredNames}.`
+        : `Use the recipe list on this page to compare available ${country.country_name} dishes.`
+    },
+    {
+      question: `What ingredients are common in ${country.country_name} cooking?`,
+      answer: ingredients
+        ? `In the stored ${country.country_name} recipes, common ingredients include ${ingredients}.`
+        : `Open the listed recipes to compare their ingredient lists.`
+    },
+    {
+      question: `What can I cook first from ${country.country_name}?`,
+      answer: firstRecipeCopy
+    }
+  ];
+}
+
+function buildCountryFaqSchema(country) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: buildCountryFaqItems(country).map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer
+      }
+    }))
+  };
+}
+
+function renderCountryFeaturedDishes(country, recipeImages) {
+  const recipes = countryFeaturedRecipes(country, 4);
+  if (!recipes.length) return "";
+
+  return `<section class="ak-section ak-static-related ak-country-featured-section">
+    <div class="ak-section-head rv visible">
+      <div class="ak-section-eyebrow">Featured dishes</div>
+      <h2 class="ak-section-title">Start with these ${escapeHtml(country.country_name)} recipes</h2>
+      <p class="ak-section-sub">These cards are selected from the stored country hub, prioritizing featured and ready-to-cook recipes.</p>
+    </div>
+    <div class="ak-static-related-grid">${recipes.map((recipe) => renderStaticRecipeCard(recipe, recipeImages)).join("\n")}</div>
+  </section>`;
+}
+
+function renderCountryCategoryLanes(country) {
+  const groups = countryCategoryGroups(country);
+  if (!groups.length) return "";
+
+  return `<section class="ak-section ak-country-category-section">
+    <div class="ak-section-head rv visible">
+      <div class="ak-section-eyebrow">Recipe categories</div>
+      <h2 class="ak-section-title">Browse ${escapeHtml(country.country_name)} dishes by course</h2>
+      <p class="ak-section-sub">Jump into the category that matches the way you want to cook: main dishes, stews, soups, snacks, sides, breakfast, desserts, drinks, and more where available.</p>
+    </div>
+    <div class="ak-country-category-grid">
+      ${groups
+        .map(
+          (group) => `<article class="ak-country-category-card">
+        <div class="ak-support-label">${escapeHtml(String(group.recipes.length))} ${group.recipes.length === 1 ? "recipe" : "recipes"}</div>
+        <h3 id="category-${escapeHtml(group.category)}">${escapeHtml(group.label)}</h3>
+        <div class="ak-region-recipe-list">
+          ${group.recipes
+            .slice(0, 6)
+            .map((recipe) => `<a href="${escapeHtml(resolveRecipeHref(recipe))}">${escapeHtml(recipe.name)}</a>`)
+            .join("")}
+        </div>
+      </article>`
+        )
+        .join("\n")}
+    </div>
+  </section>`;
+}
+
+function renderCountryPopularCategoryLinks(country) {
+  const groups = countryCategoryGroups(country).slice(0, 6);
+  if (!groups.length) return "";
+
+  return `<section class="ak-section ak-country-category-links">
+    <div class="ak-section-head rv visible">
+      <div class="ak-section-eyebrow">Popular category links</div>
+      <h2 class="ak-section-title">Quick paths through ${escapeHtml(country.country_name)} recipes</h2>
+      <p class="ak-section-sub">Jump by dish type, then open a specific recipe card with full ingredients and method.</p>
+    </div>
+    <div class="ak-hero-route-grid">
+      ${groups
+        .map(
+          (group) =>
+            `<a class="ak-support-link" href="#category-${escapeHtml(group.category)}">${akIcon("category", "ak-icon-sm")}<span>${escapeHtml(group.label)} recipes from ${escapeHtml(country.country_name)} (${escapeHtml(String(group.recipes.length))})</span></a>`
+        )
+        .join("\n")}
+    </div>
+  </section>`;
+}
+
+function renderCountryFaq(country) {
+  const items = buildCountryFaqItems(country);
+  if (!items.length) return "";
+
+  return `<section class="ak-section ak-country-faq-section">
+    <div class="ak-section-head rv visible">
+      <div class="ak-section-eyebrow">Country FAQ</div>
+      <h2 class="ak-section-title">Cooking ${escapeHtml(country.country_name)} from the AfroKitchen atlas</h2>
+      <p class="ak-section-sub">Short answers based on the recipes currently stored in this country hub.</p>
+    </div>
+    <div class="ak-country-faq-list">
+      ${items
+        .map(
+          (item) => `<article class="ak-country-faq-card">
+        <h3>${escapeHtml(item.question)}</h3>
+        <p>${escapeHtml(item.answer)}</p>
+      </article>`
+        )
+        .join("\n")}
+    </div>
+  </section>`;
+}
+
+function renderCollectionRecipeCards(collection, recipeImages) {
   return collection.recipes
-    .map((recipe) => {
-      const modeLabel = `${recipe.country_name} | ${categoryLabel(recipe)}`;
-      const href = recipe.generated_in_wave ? recipe.route_path : recipe.fallback_path;
-      return `<a class="ak-country-hub-card" href="${href}">
-        <div class="ak-support-label">${escapeHtml(modeLabel)}</div>
-        <h3>${escapeHtml(recipe.name)}</h3>
-        <p>${escapeHtml(excerpt(recipe.description, 128))}</p>
-        <div class="ak-static-card-meta">${escapeHtml(String(recipe.total_time_minutes || 0))} min | ${escapeHtml(categoryLabel(recipe))}</div>
-      </a>`;
-    })
+    .map((recipe) => renderStaticRecipeCard(recipe, recipeImages))
     .join("\n");
 }
 
@@ -1441,7 +2104,7 @@ function renderCollectionCountryLinks(collection) {
       ${visibleCountries
         .map(
           (country) =>
-            `<a class="ak-support-link" href="${country.route_path}">${escapeHtml(country.country_name)} (${escapeHtml(String(country.recipe_count))})</a>`
+            `<a class="ak-support-link" href="${country.route_path}">${akIcon("country", "ak-icon-sm")}<span>${escapeHtml(country.country_name)} (${escapeHtml(String(country.recipe_count))})</span></a>`
         )
         .join("\n")}
     </div>
@@ -1449,12 +2112,256 @@ function renderCollectionCountryLinks(collection) {
   </section>`;
 }
 
-function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
-  const { collectionPageSchema, itemListSchema, breadcrumbSchema } = buildCountrySchemas(country);
-  const title = `${country.country_name} Recipes & Traditional Dishes | AfroKitchen`;
-  const description = excerpt(country.description, 158);
+const COLLECTION_EDITORIAL_COPY = {
+  "quick-and-easy": {
+    intro: "A weeknight-friendly collection for African dishes with shorter cooking windows, simple serving logic, and direct recipe paths.",
+    bestFor: "Busy weeknights, first-time AfroKitchen browsing, and quick sides, drinks, snacks, or mains when time is tight."
+  },
+  "vegetarian-africa": {
+    intro: "A vegetable, bean, grain, and sauce-forward path through the AfroKitchen atlas, built from recipes that do not need meat to carry the table.",
+    bestFor: "Meat-free planning, fasting-style meals where data supports it, vegetable sides, legumes, grains, and lighter shared plates."
+  },
+  "one-pot-wonders": {
+    intro: "A practical collection for rice dishes, stews, soups, and simmered meals where one pot does most of the work.",
+    bestFor: "Batch cooking, family meals, low-cleanup weekends, and dishes that build flavor in one pot or pan."
+  },
+  "street-food": {
+    intro: "A market-food route through snacks, grills, fritters, breads, and handheld dishes from the AfroKitchen atlas.",
+    bestFor: "Casual hosting, snack boards, small plates, and fast-moving dishes with clear country links."
+  },
+  "sunday-specials": {
+    intro: "A slower-cooking collection for stews, soups, mains, and shared dishes that suit a longer weekend table.",
+    bestFor: "Sunday lunch, family cooking, celebratory mains, and recipes where time and serving sides matter."
+  },
+  "breakfast-and-tea-table": {
+    intro: "A breakfast and tea-table collection for porridges, breads, drinks, fritters, and morning-friendly dishes.",
+    bestFor: "Breakfast planning, tea service, weekend brunch, and gentle entry points into country hubs."
+  },
+  "across-africa-showstoppers": {
+    intro: "A showcase board for visually strong, table-centering dishes from across the AfroKitchen atlas.",
+    bestFor: "Party tables, photo-ready finished dishes, celebratory cooking, and browsing standout recipes across countries."
+  },
+  "nigerian-regional-table": {
+    intro: "A Nigeria-focused collection that keeps regional dishes, soups, swallows, street foods, and party plates connected.",
+    bestFor: "Exploring Nigeria by region, building a fuller table, and moving from one Nigerian dish to the next with context."
+  },
+  "west-african-street-food": {
+    intro: "A West African street-food collection for grills, fritters, fried snacks, drinks, and market-style plates.",
+    bestFor: "Snack nights, casual parties, street-food boards, and quick links into West African country hubs."
+  }
+};
+
+function collectionCategoryGroups(collection) {
+  const groups = new Map();
+  (collection.recipes || []).forEach((recipe) => {
+    const key = recipe.category || "recipe";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(recipe);
+  });
+
+  return Array.from(groups.entries())
+    .map(([category, recipes]) => ({
+      category,
+      label: categoryLabel({ category }),
+      recipes: recipes.slice().sort((left, right) => left.name.localeCompare(right.name))
+    }))
+    .sort((left, right) => right.recipes.length - left.recipes.length || left.label.localeCompare(right.label));
+}
+
+function collectionCountryNames(collection, limit) {
+  return (collection.related_countries || [])
+    .slice(0, limit || 5)
+    .map((country) => country.country_name);
+}
+
+function collectionCategoryNames(collection, limit) {
+  return collectionCategoryGroups(collection)
+    .slice(0, limit || 4)
+    .map((group) => group.label.toLowerCase());
+}
+
+function collectionTimeSummary(collection) {
+  const times = (collection.recipes || [])
+    .map((recipe) => Number(recipe.total_time_minutes || 0))
+    .filter((value) => value > 0)
+    .sort((left, right) => left - right);
+  if (!times.length) return "";
+  const min = times[0];
+  const max = times[times.length - 1];
+  return min === max ? `${min} minutes` : `${min}-${max} minutes`;
+}
+
+function getCollectionEditorialCopy(collection) {
+  const custom = COLLECTION_EDITORIAL_COPY[collection.slug];
+  if (custom) return custom;
+
+  const categories = humanList(collectionCategoryNames(collection, 3), 3);
+  const countries = humanList(collectionCountryNames(collection, 3), 3);
+  const intro = `${collection.name} gathers ${collection.total_recipes} AfroKitchen recipes${categories ? ` across ${categories}` : ""}${countries ? `, with country links for ${countries}` : ""}.`;
+  const bestFor = `Use it when you want a focused cooking lane from the AfroKitchen atlas instead of browsing every country hub one by one.`;
+  return { intro, bestFor };
+}
+
+function buildCollectionIntroParagraph(collection) {
+  const copy = getCollectionEditorialCopy(collection);
+  const countries = humanList(collectionCountryNames(collection, 4), 4);
+  const categories = humanList(collectionCategoryNames(collection, 4), 4);
+  const time = collectionTimeSummary(collection);
+  const pieces = [copy.intro];
+  if (countries) pieces.push(`It currently spans ${countries}.`);
+  if (categories) pieces.push(`Recipe types include ${categories}.`);
+  if (time) pieces.push(`Cooking times in this collection run about ${time}.`);
+  return pieces.join(" ");
+}
+
+function buildCollectionBestForCopy(collection) {
+  return getCollectionEditorialCopy(collection).bestFor;
+}
+
+function buildCollectionShareText(collection) {
+  const countries = humanList(collectionCountryNames(collection, 2), 2);
+  return `${collection.name} - ${collection.total_recipes} African recipes${countries ? ` from ${countries} and more` : ""} on AfroKitchen`;
+}
+
+function renderCollectionBestForPanel(collection) {
+  const categories = collectionCategoryGroups(collection).slice(0, 5);
+  const time = collectionTimeSummary(collection);
+
+  return `<section class="ak-intel-panel ak-collection-best-panel">
+    <div>
+      <div class="ak-section-kicker">Best for</div>
+      <h2 class="ak-section-title">When to use ${escapeHtml(collection.name)}</h2>
+      <p class="ak-section-sub">${escapeHtml(buildCollectionBestForCopy(collection))}</p>
+    </div>
+    <div class="ak-intel-split">
+      <div class="ak-intel-mini">
+        <strong>Cooking lane</strong>
+        <p>${escapeHtml(categories.length ? humanList(categories.map((group) => group.label.toLowerCase()), 4) : "A focused recipe set from the AfroKitchen atlas")}</p>
+      </div>
+      <div class="ak-intel-mini">
+        <strong>Time window</strong>
+        <p>${escapeHtml(time || "Open each card for its stored cooking time.")}</p>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderCollectionShareIntro(collection) {
+  const shareText = buildCollectionShareText(collection);
+  const encodedUrl = encodeURIComponent(collection.route_url);
+  const encodedText = encodeURIComponent(shareText);
+
+  return `<section class="ak-section ak-collection-share-section">
+    <div class="ak-collection-share-card rv visible">
+      <div>
+        <div class="ak-section-eyebrow">Shareable intro</div>
+        <h2 class="ak-section-title">${escapeHtml(collection.name)} on AfroKitchen</h2>
+        <p>${escapeHtml(shareText)}</p>
+      </div>
+      <div class="ak-collection-share-actions">
+        <a class="ak-support-link" href="https://wa.me/?text=${encodedText}%20${encodedUrl}" target="_blank" rel="noopener">${akIcon("share", "ak-icon-sm")}<span>Share on WhatsApp</span></a>
+        <a class="ak-support-link" href="https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}" target="_blank" rel="noopener">${akIcon("share", "ak-icon-sm")}<span>Share on X</span></a>
+        <a class="ak-support-link" href="${collection.route_path}">${akIcon("source", "ak-icon-sm")}<span>Open canonical link</span></a>
+      </div>
+    </div>
+  </section>`;
+}
+
+function pickRelatedCollections(collection, manifest) {
+  const currentCategories = new Set((collection.recipes || []).map((recipe) => recipe.category).filter(Boolean));
+  const currentCountries = new Set((collection.related_countries || []).map((country) => country.country_code).filter(Boolean));
+  return (manifest.collections || [])
+    .filter((entry) => entry.slug !== collection.slug)
+    .map((entry) => {
+      const categoryOverlap = (entry.recipes || []).filter((recipe) => currentCategories.has(recipe.category)).length;
+      const countryOverlap = (entry.related_countries || []).filter((country) => currentCountries.has(country.country_code)).length;
+      const score = categoryOverlap * 2 + countryOverlap + Number(Boolean(entry.is_featured));
+      return { ...entry, related_score: score };
+    })
+    .sort(
+      (left, right) =>
+        (right.related_score || 0) - (left.related_score || 0) ||
+        Number(Boolean(right.is_featured)) - Number(Boolean(left.is_featured)) ||
+        left.name.localeCompare(right.name)
+    )
+    .slice(0, 4);
+}
+
+function renderRelatedCollectionLinks(collection, manifest) {
+  const related = pickRelatedCollections(collection, manifest);
+  if (!related.length) return "";
+
+  return `<section class="ak-section ak-static-related">
+    <div class="ak-section-head rv visible">
+      <div class="ak-section-eyebrow">Related collections</div>
+      <h2 class="ak-section-title">Keep cooking after ${escapeHtml(collection.name)}</h2>
+      <p class="ak-section-sub">Move into another focused lane without losing the country and recipe context behind this collection.</p>
+    </div>
+    <div class="ak-collection-related-grid">
+      ${related
+        .map((entry) => {
+          const countries = humanList(collectionCountryNames(entry, 2), 2);
+          return `<a class="ak-collection-related-card" href="${entry.route_path}">
+        <span class="ak-support-label">${akIcon("category", "ak-icon-sm")}${escapeHtml(String(entry.total_recipes))} recipes</span>
+        <strong>${escapeHtml(entry.name)}</strong>
+        <small>${escapeHtml(countries || "AfroKitchen collection")}</small>
+      </a>`;
+        })
+        .join("\n")}
+    </div>
+  </section>`;
+}
+
+function renderCollectionEmptyState(collection, manifest) {
+  const countries = (collection.related_countries || []).slice(0, 3);
+  const related = pickRelatedCollections(collection, manifest).slice(0, 3);
+  return `<div class="ak-collection-empty-state">
+    <div class="ak-section-kicker">Small collection</div>
+    <h2>${escapeHtml(collection.name)} is still a short shelf</h2>
+    <p>This collection has ${escapeHtml(String(collection.total_recipes))} ${collection.total_recipes === 1 ? "recipe" : "recipes"} right now. Use the country and related collection links while more recipes are reviewed into this lane.</p>
+    <div class="ak-hero-route-grid">
+      ${countries.map((country) => `<a class="ak-support-link" href="${country.route_path}">${akIcon("country", "ak-icon-sm")}<span>${escapeHtml(country.country_name)} recipes</span></a>`).join("")}
+      ${related.map((entry) => `<a class="ak-support-link" href="${entry.route_path}">${akIcon("category", "ak-icon-sm")}<span>${escapeHtml(entry.name)}</span></a>`).join("")}
+      <a class="ak-support-link" href="/tools/afrokitchen/">${akIcon("shopping", "ak-icon-sm")}<span>Browse all AfroKitchen recipes</span></a>
+    </div>
+  </div>`;
+}
+
+function renderCollectionArchive(collection, manifest, recipeImages) {
+  const isSmall = collection.total_recipes < 3;
+  const cards = renderCollectionRecipeCards(collection, recipeImages);
+
+  return `<div class="ak-country-hub-shell rv visible">
+        <div class="ak-section-kicker">Collection archive</div>
+        <h2 class="ak-section-title">Dishes inside ${escapeHtml(collection.name)}</h2>
+        <p class="ak-section-sub">${escapeHtml(
+          isSmall
+            ? "This collection is intentionally small today, so the page points you toward nearby country hubs and related collections."
+            : "Open any dish below for ingredients, story, timing, serving notes, and pairings."
+        )}</p>
+        ${
+          isSmall
+            ? `${renderCollectionEmptyState(collection, manifest)}
+        ${cards ? `<div class="ak-country-hub-grid">${cards}</div>` : ""}`
+            : `<div class="ak-country-hub-grid">${cards}</div>
+        <div class="ak-country-archive-note">
+          <p>${collection.generated_recipe_count < collection.total_recipes ? `${escapeHtml(collection.name)} has ${escapeHtml(String(collection.total_recipes - collection.generated_recipe_count))} more dishes queued for deeper cooking pages.` : `Every recipe linked from ${escapeHtml(collection.name)} is ready to open from the card above.`}</p>
+        </div>`
+        }
+      </div>`;
+}
+
+function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImages) {
+  const { collectionPageSchema, itemListSchema, breadcrumbSchema, faqPageSchema } = buildCountrySchemas(country);
+  const title = `${country.country_name} Recipes | Traditional Dishes & Food Guide | AfroKitchen`;
+  const description = buildCountryMetaDescription(country);
+  const introParagraph = buildCountryIntroParagraph(country);
+  const featuredDishes = renderCountryFeaturedDishes(country, recipeImages);
+  const popularCategoryLinks = renderCountryPopularCategoryLinks(country);
+  const categoryLanes = renderCountryCategoryLanes(country);
   const countryRegionalAtlas = renderCountryRegionalAtlas(country, cuisineIntelligence);
   const countryPantryGuide = renderCountryPantryGuide(country, cuisineIntelligence);
+  const countryFaq = renderCountryFaq(country);
   const generatedRecipeLead =
     country.generated_recipe_count === country.total_recipes
       ? `${country.total_recipes} dishes are ready to open and cook`
@@ -1493,6 +2400,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/icon-system.css?v=20260612a">
   <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=20260501a">
   <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
@@ -1504,16 +2412,28 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
     .ak-country-static-page .ak-country-hub-card { padding: 20px; text-decoration: none; display: grid; gap: 10px; }
     .ak-country-static-page .ak-country-hub-card h3 { margin: 0; color: var(--ak-dark); font-size: 1.2rem; }
     .ak-country-static-page .ak-country-hub-card p { margin: 0; color: var(--ak-muted); line-height: 1.65; }
+    .ak-country-static-page .ak-country-intro-panel { margin-top: 26px; padding: 24px; border-radius: 24px; background: rgba(255,255,255,.76); border: 1px solid var(--ak-line); box-shadow: var(--ak-shadow-sm); }
+    .ak-country-static-page .ak-country-intro-panel p { margin: 0; max-width: 78ch; color: var(--ak-muted); font-size: 1.02rem; line-height: 1.75; }
+    .ak-country-static-page .ak-country-category-grid,
+    .ak-country-static-page .ak-country-faq-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .ak-country-static-page .ak-country-category-card,
+    .ak-country-static-page .ak-country-faq-card { min-width: 0; padding: 20px; border-radius: 22px; background: var(--ak-panel); border: 1px solid var(--ak-line); box-shadow: var(--ak-shadow-card); }
+    .ak-country-static-page .ak-country-category-card h3,
+    .ak-country-static-page .ak-country-faq-card h3 { margin: 0 0 12px; color: var(--ak-dark); font-family: var(--font-display); font-size: 1.35rem; line-height: 1.05; }
+    .ak-country-static-page .ak-country-faq-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-country-static-page .ak-country-archive-note { padding: 22px; margin-top: 26px; }
     .ak-country-static-page .ak-country-archive-note p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     @media (max-width: 960px) {
-      .ak-country-static-page .ak-country-hub-grid { grid-template-columns: 1fr; }
+      .ak-country-static-page .ak-country-hub-grid,
+      .ak-country-static-page .ak-country-category-grid,
+      .ak-country-static-page .ak-country-faq-list { grid-template-columns: 1fr; }
       .ak-country-static-page .ak-country-hub-shell { margin-top: 24px; }
     }
   </style>
   <script type="application/ld+json">${safeJson(collectionPageSchema)}</script>
   <script type="application/ld+json">${safeJson(itemListSchema)}</script>
   <script type="application/ld+json">${safeJson(breadcrumbSchema)}</script>
+  <script type="application/ld+json">${safeJson(faqPageSchema)}</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -1526,11 +2446,11 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
         </nav>
         <div class="ak-hero-badges">
           <span class="ak-badge ak-badge-live">Country hub</span>
-          <span class="ak-badge ak-badge-ai">${escapeHtml(country.region)}</span>
+          <span class="ak-badge ak-badge-atlas">${escapeHtml(country.region)}</span>
         </div>
         <div class="ak-eyebrow">${escapeHtml(country.region)}</div>
-        <h1>${escapeHtml(country.country_name)} Recipes & Traditional Dishes</h1>
-        <p class="ak-hero-sub">${escapeHtml(country.description)}</p>
+        <h1>${escapeHtml(country.country_name)} Recipes</h1>
+        <p class="ak-hero-sub">${escapeHtml(introParagraph)}</p>
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent">${escapeHtml(String(country.total_recipes))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Featured dishes</div><div class="ak-stat-val">${escapeHtml(String(country.featured_recipes))}</div></div>
@@ -1545,7 +2465,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
         <div class="ak-fact-card">
           <div class="ak-fact-card-label">Country table</div>
           <span class="ak-fact-card-value">${escapeHtml(String(country.total_recipes))}</span>
-          <p class="ak-fact-card-copy">A small set of dishes to start cooking from ${escapeHtml(country.country_name)}.</p>
+          <p class="ak-fact-card-copy">${escapeHtml(humanList(countryFeaturedRecipes(country, 3).map((recipe) => recipe.name), 3) || `Dishes from ${country.country_name}`)}</p>
         </div>
         <div class="ak-fact-card">
           <div class="ak-fact-card-label">What to expect</div>
@@ -1557,12 +2477,20 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
 
   <section class="ak-section">
     <div class="ak-container">
+      <div class="ak-country-intro-panel rv visible">
+        <p>${escapeHtml(introParagraph)}</p>
+      </div>
+
+      ${featuredDishes}
+      ${popularCategoryLinks}
+      ${categoryLanes}
+
       <div class="ak-country-hub-shell rv visible">
         <div class="ak-section-kicker">Country archive</div>
-        <h2 class="ak-section-title">Every ${escapeHtml(country.country_name)} dish in one place</h2>
+        <h2 class="ak-section-title">All ${escapeHtml(country.country_name)} recipes in one place</h2>
         <p class="ak-section-sub">${escapeHtml(recipeListCopy)}</p>
         <div class="ak-country-hub-grid">
-          ${renderCountryRecipeCards(country)}
+          ${renderCountryRecipeCards(country, recipeImages)}
         </div>
         <div class="ak-country-archive-note">
           <p>${country.generated_recipe_count < country.total_recipes ? `${escapeHtml(country.country_name)} has ${escapeHtml(String(country.total_recipes - country.generated_recipe_count))} more dishes queued for deeper cooking pages.` : `Every ${escapeHtml(country.country_name)} recipe in this country hub is ready to open from the card above.`}</p>
@@ -1573,6 +2501,7 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
       ${countryRegionalAtlas}
       ${renderCountryCollectionLinks(country)}
       ${renderNeighborCountryLinks(country, manifest)}
+      ${countryFaq}
     </div>
   </section>
 </div>
@@ -1584,11 +2513,16 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
 `;
 }
 
-function buildCollectionPageHtml(collection, cuisineIntelligence) {
+function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, recipeImages) {
   const { collectionPageSchema, itemListSchema, breadcrumbSchema } =
     buildCollectionSchemas(collection);
-  const title = `${collection.name} Recipes Collection | AfroKitchen`;
-  const description = excerpt(collection.description, 158);
+  const title = `${collection.name} | African Recipe Collection | AfroKitchen`;
+  const description = buildCollectionMetaDescription(collection);
+  const introParagraph = buildCollectionIntroParagraph(collection);
+  const bestForPanel = renderCollectionBestForPanel(collection);
+  const shareIntro = renderCollectionShareIntro(collection);
+  const collectionArchive = renderCollectionArchive(collection, manifest, recipeImages);
+  const relatedCollections = renderRelatedCollectionLinks(collection, manifest);
   const collectionIntelligence = renderCollectionIntelligence(collection, cuisineIntelligence);
   const collectionSocialShowcase = renderCollectionSocialShowcase(collection, cuisineIntelligence);
   const generatedRecipeLead =
@@ -1629,6 +2563,7 @@ function buildCollectionPageHtml(collection, cuisineIntelligence) {
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/icon-system.css?v=20260612a">
   <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=20260501a">
   <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
@@ -1640,10 +2575,29 @@ function buildCollectionPageHtml(collection, cuisineIntelligence) {
     .ak-collection-static-page .ak-country-hub-card { padding: 20px; text-decoration: none; display: grid; gap: 10px; }
     .ak-collection-static-page .ak-country-hub-card h3 { margin: 0; color: var(--ak-dark); font-size: 1.2rem; }
     .ak-collection-static-page .ak-country-hub-card p { margin: 0; color: var(--ak-muted); line-height: 1.65; }
+    .ak-collection-static-page .ak-collection-intro-panel,
+    .ak-collection-static-page .ak-collection-share-card,
+    .ak-collection-static-page .ak-collection-empty-state,
+    .ak-collection-static-page .ak-collection-related-card { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
+    .ak-collection-static-page .ak-collection-intro-panel { margin-top: 26px; padding: 24px; }
+    .ak-collection-static-page .ak-collection-intro-panel p { margin: 0; max-width: 78ch; color: var(--ak-muted); font-size: 1.02rem; line-height: 1.75; }
+    .ak-collection-static-page .ak-collection-share-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, auto); gap: 22px; align-items: center; padding: 24px; }
+    .ak-collection-static-page .ak-collection-share-card p { margin: 8px 0 0; max-width: 68ch; color: var(--ak-muted); line-height: 1.65; }
+    .ak-collection-static-page .ak-collection-share-actions,
+    .ak-collection-static-page .ak-collection-related-grid { display: grid; gap: 10px; }
+    .ak-collection-static-page .ak-collection-related-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .ak-collection-static-page .ak-collection-related-card { min-width: 0; padding: 18px; text-decoration: none; display: grid; gap: 8px; color: var(--ak-text); }
+    .ak-collection-static-page .ak-collection-related-card strong { color: var(--ak-dark); font-family: var(--font-display); font-size: 1.3rem; line-height: 1.05; }
+    .ak-collection-static-page .ak-collection-related-card small { color: var(--ak-muted); line-height: 1.45; }
+    .ak-collection-static-page .ak-collection-empty-state { padding: 24px; margin-top: 20px; }
+    .ak-collection-static-page .ak-collection-empty-state h2 { margin: 0 0 10px; color: var(--ak-dark); font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1; }
+    .ak-collection-static-page .ak-collection-empty-state p { margin: 0 0 18px; max-width: 68ch; color: var(--ak-muted); line-height: 1.7; }
     .ak-collection-static-page .ak-country-archive-note { padding: 22px; margin-top: 26px; }
     .ak-collection-static-page .ak-country-archive-note p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     @media (max-width: 960px) {
-      .ak-collection-static-page .ak-country-hub-grid { grid-template-columns: 1fr; }
+      .ak-collection-static-page .ak-country-hub-grid,
+      .ak-collection-static-page .ak-collection-share-card,
+      .ak-collection-static-page .ak-collection-related-grid { grid-template-columns: 1fr; }
       .ak-collection-static-page .ak-country-hub-shell { margin-top: 24px; }
     }
   </style>
@@ -1662,11 +2616,11 @@ function buildCollectionPageHtml(collection, cuisineIntelligence) {
         </nav>
         <div class="ak-hero-badges">
           <span class="ak-badge ak-badge-live">Collection hub</span>
-          <span class="ak-badge ak-badge-ai">${collection.is_featured ? "Featured" : "Curated"}</span>
+          <span class="ak-badge ak-badge-atlas">${collection.is_featured ? "Featured" : "Curated"}</span>
         </div>
         <div class="ak-eyebrow">Curated collection</div>
         <h1>${escapeHtml(collection.name)}</h1>
-        <p class="ak-hero-sub">${escapeHtml(collection.description)}</p>
+        <p class="ak-hero-sub">${escapeHtml(introParagraph)}</p>
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent">${escapeHtml(String(collection.total_recipes))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Country hubs</div><div class="ak-stat-val">${escapeHtml(String(collection.country_count))}</div></div>
@@ -1681,7 +2635,7 @@ function buildCollectionPageHtml(collection, cuisineIntelligence) {
         <div class="ak-fact-card">
           <div class="ak-fact-card-label">Collection table</div>
           <span class="ak-fact-card-value">${escapeHtml(String(collection.total_recipes))}</span>
-          <p class="ak-fact-card-copy">A focused set of dishes for this craving, occasion, or cooking style.</p>
+          <p class="ak-fact-card-copy">${escapeHtml(buildCollectionBestForCopy(collection))}</p>
         </div>
         <div class="ak-fact-card">
           <div class="ak-fact-card-label">What to expect</div>
@@ -1693,21 +2647,17 @@ function buildCollectionPageHtml(collection, cuisineIntelligence) {
 
   <section class="ak-section">
     <div class="ak-container">
-      <div class="ak-country-hub-shell rv visible">
-        <div class="ak-section-kicker">Collection archive</div>
-        <h2 class="ak-section-title">Dishes inside ${escapeHtml(collection.name)}</h2>
-        <p class="ak-section-sub">${escapeHtml(recipeListCopy)}</p>
-        <div class="ak-country-hub-grid">
-          ${renderCollectionRecipeCards(collection)}
-        </div>
-        <div class="ak-country-archive-note">
-          <p>${collection.generated_recipe_count < collection.total_recipes ? `${escapeHtml(collection.name)} has ${escapeHtml(String(collection.total_recipes - collection.generated_recipe_count))} more dishes queued for deeper cooking pages.` : `Every recipe linked from ${escapeHtml(collection.name)} is ready to open from the card above.`}</p>
-        </div>
+      <div class="ak-collection-intro-panel rv visible">
+        <p>${escapeHtml(introParagraph)}</p>
       </div>
 
+      ${bestForPanel}
+      ${shareIntro}
+      ${collectionArchive}
       ${collectionIntelligence}
       ${collectionSocialShowcase}
       ${renderCollectionCountryLinks(collection)}
+      ${relatedCollections}
     </div>
   </section>
 </div>
@@ -1967,7 +2917,7 @@ function updateLandingInventoryCopy(content, manifest) {
       faqAnswer
     )
     .replace(/<span class="ak-badge ak-badge-live">\d+\+? recipes<\/span>/, `<span class="ak-badge ak-badge-live">${recipeCount} recipes</span>`)
-    .replace(/<span class="ak-badge ak-badge-ai">\d+ (?:countries|country hubs)<\/span>/, `<span class="ak-badge ak-badge-ai">${countryHubCount} country hubs</span>`)
+    .replace(/<span class="ak-badge ak-badge-(?:ai|atlas)">\d+ (?:countries|country hubs)<\/span>/, `<span class="ak-badge ak-badge-atlas">${countryHubCount} country hubs</span>`)
     .replace(/(<div class="ak-stat-val accent" id="recipe-total">)\d+(\<\/div>)/, `$1${recipeCount}$2`)
     .replace(
       /<div class="ak-stat-lbl">(?:Countries|Country hubs)<\/div><div class="ak-stat-val">\d+<\/div>/,
@@ -2052,12 +3002,12 @@ async function main() {
     });
 
   manifest.countries.forEach((country) => {
-    const html = buildCountryPageHtml(country, manifest, cuisineIntelligence);
+    const html = buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImages);
     writeHtmlPage(path.join(COUNTRIES_DIR, country.country_slug), html);
   });
 
   (manifest.collections || []).forEach((collection) => {
-    const html = buildCollectionPageHtml(collection, cuisineIntelligence);
+    const html = buildCollectionPageHtml(collection, manifest, cuisineIntelligence, recipeImages);
     writeHtmlPage(path.join(COLLECTIONS_DIR, collection.slug), html);
   });
 

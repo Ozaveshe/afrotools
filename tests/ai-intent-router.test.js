@@ -1,0 +1,97 @@
+#!/usr/bin/env node
+
+const assert = require("assert");
+const router = require("../assets/js/ai/intent-router.js");
+const manifestApi = require("../assets/js/ai/tool-manifest.js");
+const api = require("../netlify/functions/ai-route-intent.js");
+
+const manifest = manifestApi.getToolManifestForRouter();
+
+const cases = [
+  ["Write a CV for an electrical engineer in Ghana", "cv-builder", "employment"],
+  ["Build my resume for an NGO job", "cv-builder", "employment"],
+  ["Find scholarships for a Cameroonian student", "scholarship-finder", "education"],
+  ["Scholarships for masters in Canada from Nigeria", "scholarship-finder", "education"],
+  ["Calculate payroll for 5 employees in Kenya", "paye-calculator", "tax"],
+  ["PAYE on 250000 KES monthly salary", "paye-calculator", "tax"],
+  ["How much duty to import a 2016 Toyota Axio into Nigeria?", "import-duty", "finance"],
+  ["Car import landed cost for Honda Fit to Ghana", "import-duty", "finance"],
+  ["Should I install solar for my shop in Lagos?", "solar-roi", "energy"],
+  ["Compare solar battery payback for a shop in Ghana", "solar-roi", "energy"],
+  ["Generator fuel cost for my restaurant", "fuel-tracker", "energy"],
+  ["Current petrol price context in Kenya", "fuel-tracker", "energy"],
+  ["Create an invoice for a client in Accra", "invoice-generator", "finance"],
+  ["VAT calculator for a small business in Rwanda", "vat-calc-pan-african", "tax"],
+  ["Merge PDF files locally", "pdf-workspace", "none"],
+  ["Calculate my GPA for university", "gpa-calculator", "education"],
+  ["IELTS band score for Canada study", "ielts-calculator", "education"],
+  ["I want to study in Canada from Nigeria with $8,000", "study-abroad-cost", "education"],
+  ["Japa cost to move to the UK", "japa-calculator", "immigration"],
+  ["Draw a floor plan for a two bedroom house", "afroplan-floor-planner", "none"],
+];
+
+for (const [query, expectedTool, expectedDomain] of cases) {
+  const decision = router.routeDeterministically(query, { manifest });
+  const validation = router.validateRouterOutput(decision);
+  assert.deepStrictEqual(validation.errors, [], query);
+  assert.strictEqual(decision.selectedToolId, expectedTool, query);
+  assert.strictEqual(decision.safetyDomain, expectedDomain, query);
+  assert.ok(decision.selectedRoute.startsWith("/"), query);
+  assert.ok(decision.confidence >= 0 && decision.confidence <= 1, query);
+  assert.ok(Array.isArray(decision.suggestedNextActions) && decision.suggestedNextActions.length > 0, query);
+}
+
+const noMatch = router.routeDeterministically("blue sky weekend vibes", { manifest });
+assert.strictEqual(noMatch.selectedToolId, "tool-search");
+assert.strictEqual(noMatch.selectedRoute, "/search/?source=ask");
+assert.strictEqual(noMatch.canPrefill, false);
+
+const invalid = router.validateRouterOutput({ selectedToolId: "cv-builder" });
+assert.strictEqual(invalid.valid, false);
+assert.ok(invalid.errors.length > 3);
+
+async function runApiTests() {
+  const response = await api.handler({
+    httpMethod: "POST",
+    headers: { origin: "https://afrotools.com", "x-forwarded-for": "203.0.113.10" },
+    body: JSON.stringify({ query: "Calculate PAYE for 500000 NGN monthly in Nigeria" }),
+  });
+  assert.strictEqual(response.statusCode, 200);
+  const payload = JSON.parse(response.body);
+  assert.strictEqual(payload.ok, true);
+  assert.strictEqual(payload.decision.selectedToolId, "paye-calculator");
+  assert.strictEqual(payload.decision.safetyDomain, "tax");
+  assert.strictEqual(payload.decision.extractedInputs.country, "Nigeria");
+  assert.ok(payload.decision.extractedInputs.grossPay);
+  assert.ok(payload.fallbackReason === "provider_key_not_configured" || payload.fallbackReason === "model_consent_not_provided");
+
+  const tooLarge = await api.handler({
+    httpMethod: "POST",
+    headers: { origin: "https://afrotools.com", "x-forwarded-for": "203.0.113.11" },
+    body: JSON.stringify({ query: "x".repeat(2000) }),
+  });
+  assert.strictEqual(tooLarge.statusCode, 413);
+
+  const invalidJson = await api.handler({
+    httpMethod: "POST",
+    headers: { origin: "https://afrotools.com", "x-forwarded-for": "203.0.113.12" },
+    body: "{",
+  });
+  assert.strictEqual(invalidJson.statusCode, 400);
+
+  const method = await api.handler({
+    httpMethod: "GET",
+    headers: { origin: "https://afrotools.com", "x-forwarded-for": "203.0.113.13" },
+    body: "",
+  });
+  assert.strictEqual(method.statusCode, 405);
+}
+
+runApiTests()
+  .then(() => {
+    console.log("AI intent router validated: " + cases.length + " deterministic samples plus API guardrails.");
+  })
+  .catch((err) => {
+    console.error(err);
+    process.exitCode = 1;
+  });

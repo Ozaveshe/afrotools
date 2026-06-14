@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask AfroTools AI | AfroTools</title>
+  <meta name="description" content="Ask AfroTools AI routes natural-language tasks into AfroTools calculators, document workflows, exports, and local planning tools.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://afrotools.com/ask/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=optional" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=optional"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script src="/assets/js/bundles/core.e1f95073.min.js" defer></script>
+  <style>
+    :root{--ask-bg:#f8fafc;--ask-surface:#fff;--ask-text:#0f172a;--ask-muted:#52637a;--ask-soft:#eef6ff;--ask-border:#dbe6f4;--ask-primary:#0062cc;--ask-primary-dark:#004c9f;--ask-warn:#92400e;--ask-warn-bg:#fffbeb;--ask-success:#065f46;--ask-success-bg:#ecfdf5}
+    body{margin:0;background:var(--ask-bg);color:var(--ask-text);font-family:"DM Sans",system-ui,sans-serif}
+    .ask-main{min-height:calc(100vh - 160px);padding:54px 18px 56px}
+    .ask-wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,390px);gap:22px;align-items:start}
+    .ask-header{max-width:760px;margin-bottom:18px}
+    .ask-title{margin:0 0 10px;color:var(--ask-text);font-size:clamp(2rem,4.5vw,3.55rem);line-height:1.02;font-weight:900;letter-spacing:0}
+    .ask-copy{max-width:720px;margin:0;color:var(--ask-muted);font-size:1rem;line-height:1.68}
+    .ask-workspace{border:1px solid var(--ask-border);border-radius:16px;background:var(--ask-surface);box-shadow:0 18px 44px rgba(15,23,42,.07);padding:18px}
+    .ask-form{display:grid;gap:12px}
+    .ask-field{display:grid;gap:8px}
+    .ask-field label{font-size:.8rem;font-weight:900;color:#334155}
+    .ask-input-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;border:1px solid #d5e2f2;border-radius:14px;background:#fbfdff;padding:7px}
+    .ask-input-row:focus-within{border-color:#8bb8f4;box-shadow:0 0 0 4px rgba(0,98,204,.09)}
+    .ask-input-row input{min-width:0;border:0;outline:0;background:transparent;color:var(--ask-text);font:inherit;font-size:1rem;padding:11px 10px}
+    .ask-run{border:0;border-radius:11px;background:var(--ask-primary);color:#fff;font:inherit;font-size:.88rem;font-weight:900;min-height:44px;padding:0 18px;cursor:pointer}
+    .ask-run:hover{background:var(--ask-primary-dark)}
+    .ask-examples{display:flex;flex-wrap:wrap;gap:8px}
+    .ask-example{border:1px solid var(--ask-border);border-radius:999px;background:#fff;color:#1e3a5f;min-height:34px;padding:7px 12px;font:inherit;font-size:.74rem;font-weight:800;line-height:1.35;text-align:left;cursor:pointer}
+    .ask-example:hover,.ask-example:focus-visible{border-color:#9fc4ff;background:#eff6ff}
+    .ask-privacy{border:1px solid #fde68a;border-radius:12px;background:var(--ask-warn-bg);color:var(--ask-warn);padding:12px 14px;font-size:.82rem;line-height:1.55}
+    .ask-state{margin-top:16px;display:grid;gap:12px}
+    .ask-state[hidden]{display:none}
+    .ask-status{border:1px solid var(--ask-border);border-radius:12px;background:#fbfdff;padding:12px 14px;color:#334155;font-size:.84rem;line-height:1.55}
+    .ask-status strong{display:block;color:var(--ask-text);font-size:.88rem;margin-bottom:2px}
+    .ask-loading{display:flex;align-items:center;gap:10px}
+    .ask-spinner{width:18px;height:18px;border-radius:50%;border:3px solid #bfdbfe;border-top-color:var(--ask-primary);animation:ask-spin .8s linear infinite}
+    @keyframes ask-spin{to{transform:rotate(360deg)}}
+    .ask-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .ask-panel{border:1px solid var(--ask-border);border-radius:13px;background:#fff;padding:14px}
+    .ask-panel h2,.ask-panel h3{margin:0 0 8px;color:var(--ask-text);font-size:.95rem;font-weight:900}
+    .ask-panel p{margin:0;color:#64748b;font-size:.82rem;line-height:1.55}
+    .intent-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+    .intent-pill{display:inline-flex;align-items:center;min-height:28px;padding:4px 9px;border-radius:999px;background:var(--ask-success-bg);color:var(--ask-success);font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+    .tool-card{display:grid;gap:9px}
+    .tool-card-title{font-size:1.05rem;font-weight:900;color:var(--ask-text);line-height:1.2}
+    .tool-card-desc{color:#64748b;font-size:.84rem;line-height:1.55}
+    .tool-meta{display:flex;flex-wrap:wrap;gap:6px}
+    .tool-meta span{display:inline-flex;align-items:center;min-height:25px;padding:4px 8px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:.68rem;font-weight:800}
+    .tool-prefill{border:1px solid #bfdbfe;border-radius:11px;background:#f8fbff;color:#334155;padding:10px 11px;font-size:.78rem;line-height:1.5}
+    .tool-prefill strong{display:block;color:#0f172a;font-size:.8rem;margin-bottom:2px}
+    .tool-prefill ul{margin:7px 0 0;padding-left:18px}
+    .tool-prefill li{margin:3px 0}
+    .ask-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+    .ask-cta,.ask-fallback{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:11px;padding:0 14px;text-decoration:none;font-size:.82rem;font-weight:900}
+    .ask-cta{background:var(--ask-primary);color:#fff}
+    .ask-cta:hover{background:var(--ask-primary-dark)}
+    .ask-fallback{border:1px solid var(--ask-border);background:#fff;color:var(--ask-primary)}
+    .question-list{display:grid;gap:7px;margin-top:8px}
+    .question-list div{border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;padding:9px 10px;color:#334155;font-size:.8rem;font-weight:700;line-height:1.4}
+    .shell-side{display:grid;gap:12px}
+    .side-card{border:1px solid var(--ask-border);border-radius:14px;background:#fff;padding:16px;box-shadow:0 12px 34px rgba(15,23,42,.05)}
+    .side-card h2{margin:0 0 8px;font-size:1rem;color:var(--ask-text);font-weight:900}
+    .side-card p{margin:0;color:#64748b;font-size:.84rem;line-height:1.55}
+    .route-list{display:grid;gap:8px;margin-top:12px}
+    .route-list a{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:40px;border:1px solid var(--ask-border);border-radius:10px;background:#fbfdff;color:var(--ask-text);text-decoration:none;font-weight:900;padding:9px 10px}
+    .route-list a span{color:var(--ask-primary);font-size:.74rem;white-space:nowrap}
+    .route-list a:hover,.route-list a:focus-visible{border-color:#9fc4ff;background:#eff6ff}
+    .empty-illustration{border:1px dashed #bfdbfe;border-radius:13px;background:#f8fbff;padding:14px;color:#64748b;font-size:.82rem;line-height:1.6}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:920px){.ask-wrap{grid-template-columns:1fr}.ask-main{padding-top:38px}.ask-grid{grid-template-columns:1fr}}
+    @media(max-width:560px){.ask-main{padding-left:12px;padding-right:12px}.ask-workspace,.side-card{padding:14px}.ask-input-row{grid-template-columns:1fr}.ask-run{width:100%}.ask-actions{display:grid}.ask-cta,.ask-fallback{width:100%}}
+    @media(prefers-reduced-motion:reduce){.ask-spinner{animation:none}}
+  </style>
+  <meta property="og:url" content="https://afrotools.com/ask/">
+  <meta property="og:title" content="Ask AfroTools AI | AfroTools">
+  <meta property="og:description" content="A focused command page for routing tasks into AfroTools calculators, document workflows, exports, and planning tools.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ask AfroTools AI | AfroTools">
+  <meta name="twitter:description" content="Route a practical task into AfroTools workflows, with search fallback and privacy-aware AI boundaries.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/ask/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/ask/">
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+  <main class="ask-main">
+    <div class="ask-wrap">
+      <section aria-labelledby="ask-title">
+        <div class="ask-header">
+          <h1 class="ask-title" id="ask-title">Ask AfroTools AI</h1>
+          <p class="ask-copy">Enter a task in normal language, review the detected workflow, answer any missing context, then continue into the right AfroTools tool.</p>
+        </div>
+
+        <div class="ask-workspace">
+          <form class="ask-form" id="askCommandForm" action="/search/" method="get" role="search">
+            <div class="ask-field">
+              <label for="askPrompt">What do you want to calculate, compare, write, or plan?</label>
+              <div class="ask-input-row">
+                <input id="askPrompt" name="q" type="text" placeholder="Example: Calculate payroll for 5 employees in Kenya" autocomplete="off" spellcheck="false">
+                <button class="ask-run" type="submit">Detect workflow</button>
+              </div>
+            </div>
+            <div class="ask-examples" aria-label="Example prompts">
+              <button class="ask-example" type="button" data-example="I want to study in Canada from Nigeria with $8,000">Study in Canada from Nigeria with $8,000</button>
+              <button class="ask-example" type="button" data-example="How much duty to import a 2016 Toyota Axio into Nigeria?">Import a Toyota Axio into Nigeria</button>
+              <button class="ask-example" type="button" data-example="Write a CV for an electrical engineer in Ghana">Write an electrical engineer CV</button>
+              <button class="ask-example" type="button" data-example="Should I install solar for my shop in Lagos?">Plan solar for a Lagos shop</button>
+              <button class="ask-example" type="button" data-example="Calculate payroll for 5 employees in Kenya">Calculate payroll in Kenya</button>
+              <button class="ask-example" type="button" data-example="Find scholarships for a Cameroonian student">Find scholarships for Cameroon</button>
+            </div>
+            <p class="ask-privacy">Privacy notice: AfroTools AI routes first with local workflow matching. Optional AI assist may send your prompt to AfroTools servers or a model provider only after you choose to continue.</p>
+          </form>
+
+          <div class="ask-state" id="stateEmpty">
+            <div class="empty-illustration">
+              <strong>Detected intent will appear here.</strong><br>
+              Start with a practical task. The current adapter is a local mock router, so it can recommend a workflow without sending your prompt anywhere.
+            </div>
+          </div>
+
+          <div class="ask-state" id="stateLoading" hidden>
+            <div class="ask-status ask-loading" role="status" aria-live="polite">
+              <span class="ask-spinner" aria-hidden="true"></span>
+              <span><strong>Checking matching workflows</strong> Comparing your task against the local AfroTools router map.</span>
+            </div>
+          </div>
+
+          <div class="ask-state" id="stateError" hidden>
+            <div class="ask-status" role="alert">
+              <strong>Router unavailable</strong>
+              <span id="errorCopy">Use search while the AI router is unavailable.</span>
+            </div>
+            <div class="ask-actions">
+              <a class="ask-fallback" id="errorSearchLink" href="/search/">I only want to search tools</a>
+            </div>
+          </div>
+
+          <div class="ask-state" id="stateNoMatch" hidden>
+            <div class="ask-status" role="status" aria-live="polite">
+              <strong>No clear workflow match yet</strong>
+              Try adding a country, document type, amount, destination, or sector. You can still search the full tool directory.
+            </div>
+            <div class="ask-actions">
+              <a class="ask-fallback" id="noMatchSearchLink" href="/search/">I only want to search tools</a>
+            </div>
+          </div>
+
+          <div class="ask-state" id="stateResult" hidden>
+            <div class="ask-grid">
+              <section class="ask-panel" aria-labelledby="intentHeading">
+                <h2 id="intentHeading">Detected intent</h2>
+                <p id="intentSummary">Waiting for a task.</p>
+                <div class="intent-line">
+                  <span class="intent-pill" id="confidencePill">Local router</span>
+                  <span class="intent-pill" id="riskPill">Planning estimate</span>
+                </div>
+              </section>
+
+              <section class="ask-panel" aria-labelledby="questionsHeading">
+                <h2 id="questionsHeading">Clarifying questions</h2>
+                <p id="questionsIntro">Answer these in the tool if they matter.</p>
+                <div class="question-list" id="questionList"></div>
+              </section>
+            </div>
+
+            <section class="ask-panel tool-card" aria-labelledby="toolHeading">
+              <h2 class="sr-only" id="toolHeading">Recommended tool</h2>
+              <div class="tool-card-title" id="toolTitle">Recommended tool</div>
+              <div class="tool-card-desc" id="toolDescription"></div>
+              <div class="tool-meta" id="toolMeta"></div>
+              <div class="tool-prefill" id="prefillSummary" hidden></div>
+              <div class="ask-actions">
+                <a class="ask-cta" id="openToolLink" href="/tools/">Open tool with prefill</a>
+                <a class="ask-fallback" id="resultSearchLink" href="/search/">I only want to search tools</a>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <aside class="shell-side" aria-label="Ask AfroTools AI workflow notes">
+        <section class="side-card">
+          <h2>How this page works</h2>
+          <p>Ask AfroTools AI matches your request to practical tools, prepares safe prefill details, and keeps model-assisted routing behind explicit consent.</p>
+        </section>
+        <section class="side-card">
+          <h2>Common workflows</h2>
+          <div class="route-list">
+            <a href="/tools/study-abroad-cost/">Study abroad <span>Costs</span></a>
+            <a href="/tools/cv-builder/">CV &amp; jobs <span>Career</span></a>
+            <a href="/tools/import-duty/">Import duty <span>Trade</span></a>
+            <a href="/vat-business-tax/">Business &amp; tax <span>SME</span></a>
+            <a href="/energy/">Solar &amp; energy <span>Power</span></a>
+            <a href="/tools/scholarship-finder/">Scholarships <span>Funding</span></a>
+          </div>
+        </section>
+        <section class="side-card">
+          <h2>Fallback</h2>
+          <p>If routing is disabled or no clear workflow matches, AfroTools sends you to the existing search directory with your query.</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/ai/prefill-adapters.js?v=08bdd5f8"></script>
+  <script>
+  (function(){
+    "use strict";
+
+    var form = document.getElementById("askCommandForm");
+    var input = document.getElementById("askPrompt");
+    var states = {
+      empty: document.getElementById("stateEmpty"),
+      loading: document.getElementById("stateLoading"),
+      error: document.getElementById("stateError"),
+      noMatch: document.getElementById("stateNoMatch"),
+      result: document.getElementById("stateResult")
+    };
+    var els = {
+      intentSummary: document.getElementById("intentSummary"),
+      confidencePill: document.getElementById("confidencePill"),
+      riskPill: document.getElementById("riskPill"),
+      questionsIntro: document.getElementById("questionsIntro"),
+      questionList: document.getElementById("questionList"),
+      toolTitle: document.getElementById("toolTitle"),
+      toolDescription: document.getElementById("toolDescription"),
+      toolMeta: document.getElementById("toolMeta"),
+      prefillSummary: document.getElementById("prefillSummary"),
+      openToolLink: document.getElementById("openToolLink"),
+      resultSearchLink: document.getElementById("resultSearchLink"),
+      noMatchSearchLink: document.getElementById("noMatchSearchLink"),
+      errorSearchLink: document.getElementById("errorSearchLink"),
+      errorCopy: document.getElementById("errorCopy")
+    };
+
+    var WORKFLOWS = [
+      workflow("study-abroad", "Study abroad cost planner", "/tools/study-abroad-cost/", "Estimate tuition, living costs, visa costs, country gaps, and budget pressure for African students.", ["study", "canada", "uk", "university", "tuition", "visa", "japa"], ["Origin country", "Destination country", "Study level", "Available budget"], "education", "estimated"),
+      workflow("cv-jobs", "CV Builder", "/tools/cv-builder/", "Create a structured CV, choose a template, check readiness, and export a private local document.", ["cv", "resume", "job", "career", "engineer", "cover letter"], ["Target role", "Country or market", "Experience level"], "employment", "user input"),
+      workflow("import-duty", "Import Duty Calculator", "/tools/import-duty/", "Estimate landed cost with customs duty, levies, FX, and planning-estimate labels.", ["import", "duty", "customs", "vehicle", "toyota", "axio", "landed cost"], ["Destination country", "Item or vehicle", "Item value", "Year or HS category"], "finance", "mixed"),
+      workflow("solar-energy", "Solar ROI Calculator", "/tools/solar-roi/", "Compare solar payback, generator savings, outage cost, and battery planning assumptions.", ["solar", "generator", "electricity", "power", "shop", "lagos", "energy"], ["Country or city", "Monthly bill", "Outage hours", "System quote"], "energy", "mixed"),
+      workflow("payroll-tax", "Salary and PAYE tools", "/salary-tax/", "Estimate payroll, PAYE, deductions, and take-home pay as planning guidance.", ["payroll", "employee", "employees", "salary", "paye", "tax", "kenya"], ["Country", "Gross pay", "Pay period", "Employee count"], "tax", "mixed"),
+      workflow("scholarships", "Scholarship Finder", "/tools/scholarship-finder/", "Search funding options, compare fit, and organize deadlines with source-aware notes.", ["scholarship", "funding", "grant", "cameroon", "student"], ["Home country", "Study level", "Field", "Destination"], "education", "mixed"),
+      workflow("invoice-generator", "Invoice Generator", "/tools/invoice-generator/", "Prepare a browser-local invoice draft with client, currency, line item, tax, and export options.", ["invoice", "receipt", "bill client", "client invoice"], ["Client name", "Currency", "Line item", "Amount"], "finance", "user input"),
+      workflow("documents", "PDF Workspace", "/document-pdf/", "Open browser-local document and PDF workflows such as merge, split, compress, watermark, and convert.", ["pdf", "document", "merge", "compress", "watermark", "file"], ["Document task", "Output format"], "none", "user input"),
+      workflow("business-tax", "VAT and business tax hub", "/vat-business-tax/", "Open VAT, business registration, and tax workflow tools.", ["business", "vat", "tin", "company", "tax"], ["Country", "Business type", "Tax task"], "tax", "mixed"),
+      workflow("floor-planner", "Floor Planner", "/engineering/floor-planner/", "Plan rooms, furniture, measurements, materials, and exportable project notes.", ["floor", "room", "house", "construction", "layout", "building"], ["Room size", "Room type", "Furniture list"], "none", "user input"),
+      workflow("agriculture", "Agriculture tools", "/agriculture/", "Open farm planning, crop yield, fertilizer, loans, input prices, and export document workflows.", ["farm", "crop", "agriculture", "fertilizer", "yield", "cassava"], ["Country", "Crop or farm type", "Planning task"], "finance", "mixed")
+    ];
+
+    function workflow(id, title, route, description, keywords, questions, domain, sourcePolicy) {
+      return { id: id, title: title, route: route, description: description, keywords: keywords, questions: questions, domain: domain, sourcePolicy: sourcePolicy };
+    }
+
+    function normalize(value) {
+      return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9$]+/g, " ").trim();
+    }
+
+    function searchUrl(prompt) {
+      var query = String(prompt || "").trim();
+      return query ? "/search/?q=" + encodeURIComponent(query) : "/search/";
+    }
+
+    function setState(name) {
+      Object.keys(states).forEach(function(key) {
+        states[key].hidden = key !== name;
+      });
+    }
+
+    function routerEnabled() {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get("router") === "off") return false;
+      return true;
+    }
+
+    function mockRoute(prompt) {
+      // TODO: Replace with server-validated JSON router output when the AI endpoint exists.
+      if (!routerEnabled()) {
+        return { type: "error", message: "AI routing is disabled for this session." };
+      }
+      var text = normalize(prompt);
+      if (!text) return { type: "empty" };
+      if (text === "router error") {
+        return { type: "error", message: "The workflow matcher could not prepare a route for that request." };
+      }
+      var best = null;
+      WORKFLOWS.forEach(function(flow) {
+        var score = flow.keywords.reduce(function(total, keyword) {
+          return total + (text.indexOf(normalize(keyword)) !== -1 ? 1 : 0);
+        }, 0);
+        if (!best || score > best.score) best = { flow: flow, score: score };
+      });
+      if (!best || best.score === 0) return { type: "no-match" };
+      return {
+        type: "match",
+        workflow: best.flow,
+        confidence: Math.min(96, 54 + best.score * 12),
+        prompt: prompt
+      };
+    }
+
+    function extractPromptInputs(prompt, flow) {
+      var original = String(prompt || "");
+      var text = normalize(original);
+      var extracted = {};
+      var country = extractCountry(text, {
+        "south africa": "South Africa",
+        nigeria: "Nigeria",
+        ghana: "Ghana",
+        kenya: "Kenya",
+        cameroon: "Cameroon",
+        uganda: "Uganda",
+        tanzania: "Tanzania",
+        rwanda: "Rwanda",
+        zambia: "Zambia",
+        zimbabwe: "Zimbabwe",
+        egypt: "Egypt",
+        morocco: "Morocco",
+        senegal: "Senegal",
+        lagos: "Nigeria",
+        accra: "Ghana",
+        nairobi: "Kenya"
+      });
+      var targetCountry = extractCountry(text, {
+        "united kingdom": "United Kingdom",
+        canada: "Canada",
+        uk: "United Kingdom",
+        usa: "United States",
+        "united states": "United States",
+        germany: "Germany",
+        france: "France",
+        australia: "Australia",
+        ireland: "Ireland"
+      });
+      var money = extractMoney(original);
+      var yearMatch = original.match(/\b(19[8-9]\d|20[0-3]\d)\b/);
+      var employees = original.match(/\b([1-9][0-9]?)\s+(?:employees|staff|workers)\b/i);
+      var vehicle = original.match(/\b(toyota|honda|mazda|nissan|hyundai|kia|mercedes|bmw|volkswagen|vw|ford|lexus)\s+([a-z0-9 -]{2,40}?)(?:\s+(?:worth|valued|costing|into|to|in|for)\b|[?.!,]|$)/i);
+      var role = original.match(/\b(?:for|as|role|job)\s+(?:an?\s+)?([a-z][a-z\s-]{2,60})(?:\s+in\s+|\s+with\s+|$)/i);
+      var studyLevel = original.match(/\b(undergraduate|bachelor'?s?|masters?|master'?s?|phd|doctorate|diploma|mba)\b/i);
+      var client = original.match(/\b(?:for|to)\s+(?:a\s+)?(?:client|customer)\s+([a-z][a-z\s&.-]{1,60})(?:\s+for\s+|\s+in\s+|$)/i);
+
+      if (country) extracted.country = country;
+      if (targetCountry) extracted.targetCountry = targetCountry;
+      if (money !== null) extracted.budget = money;
+      if (yearMatch) extracted.year = yearMatch[1];
+      if (employees) extracted.employeeCount = Number(employees[1]);
+      if (studyLevel) extracted.studyLevel = studyLevel[1];
+
+      if (flow.id === "cv-jobs") {
+        if (role) extracted.targetRole = role[1].trim();
+      }
+      if (flow.id === "import-duty") {
+        extracted.destinationCountry = country || "";
+        if (vehicle) extracted.itemCategory = (vehicle[1] + " " + vehicle[2]).trim();
+        if (money !== null) extracted.itemValue = money;
+      }
+      if (flow.id === "solar-energy") {
+        if (money !== null) extracted.monthlyBill = money;
+        if (/\b(generator|diesel|petrol|fuel)\b/i.test(original)) extracted.mode = "generator";
+        if (/\bdiesel\b/i.test(original)) extracted.fuelType = "diesel";
+        if (/\bpetrol\b/i.test(original)) extracted.fuelType = "petrol";
+      }
+      if (flow.id === "payroll-tax") {
+        if (money !== null) extracted.grossPay = money;
+        extracted.payPeriod = /\b(annual|yearly|per year)\b/i.test(original) ? "annual" : "monthly";
+      }
+      if (flow.id === "scholarships") {
+        if (targetCountry) extracted.destinationCountry = targetCountry;
+      }
+      if (flow.id === "invoice-generator") {
+        if (client) extracted.clientName = client[1].trim();
+        if (money !== null) extracted.amount = money;
+      }
+
+      return extracted;
+    }
+
+    function extractCountry(text, map) {
+      var keys = Object.keys(map).sort(function(a, b) { return b.length - a.length; });
+      for (var i = 0; i < keys.length; i += 1) {
+        var key = keys[i];
+        if (text.indexOf(key) !== -1) return map[key];
+      }
+      return "";
+    }
+
+    function extractMoney(value) {
+      var inputText = String(value || "");
+      var match = inputText.match(/(?:\$|usd\s*)\s?([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m))?/i) ||
+        inputText.match(/\b([0-9][0-9,]*(?:\.\d+)?)\s?(usd|dollars|naira|ngn|kes|ghs|zar|xaf|xof)\b/i);
+      if (!match) return null;
+      var amount = Number(String(match[1]).replace(/,/g, ""));
+      if (!Number.isFinite(amount)) return null;
+      if (match[2] && String(match[2]).toLowerCase() === "k") amount *= 1000;
+      if (match[2] && String(match[2]).toLowerCase() === "m") amount *= 1000000;
+      return amount;
+    }
+
+    function buildLaunch(result) {
+      var flow = result.workflow;
+      var adapters = window.AfroToolsAIPrefillAdapters;
+      if (!adapters || typeof adapters.buildSafeLaunch !== "function") {
+        return {
+          supported: false,
+          launchUrl: flow.route + (flow.route.indexOf("?") === -1 ? "?" : "&") + "source=ask",
+          payload: null,
+          missingInputs: [],
+          validation: { valid: true, errors: [] },
+          userFacingSummary: "Open the selected AfroTools workflow.",
+          privacyNote: "Prefill adapters are unavailable, so no prefill payload will be created."
+        };
+      }
+      return adapters.buildSafeLaunch(flow.id, extractPromptInputs(result.prompt, flow), { selectedRoute: flow.route });
+    }
+
+    function renderPrefillSummary(launch) {
+      if (!els.prefillSummary) return;
+      if (!launch) {
+        els.prefillSummary.hidden = true;
+        els.prefillSummary.innerHTML = "";
+        return;
+      }
+      var missingItems = (launch.missingInputs || []).map(function(item) {
+        return "<li>Missing: " + escapeHtml(item) + "</li>";
+      }).join("");
+      var errors = launch.validation && launch.validation.errors ? launch.validation.errors.map(function(item) {
+        return "<li>Check: " + escapeHtml(item) + "</li>";
+      }).join("") : "";
+      els.prefillSummary.innerHTML = "<strong>" + (launch.supported ? "Prefill ready" : "Route-only handoff") + "</strong>" +
+        "<span>" + escapeHtml(launch.userFacingSummary || "") + "</span>" +
+        (missingItems || errors ? "<ul>" + missingItems + errors + "</ul>" : "") +
+        "<p>" + escapeHtml(launch.privacyNote || "") + "</p>";
+      els.prefillSummary.hidden = false;
+    }
+
+    function renderMatch(result) {
+      var flow = result.workflow;
+      var launch = buildLaunch(result);
+      els.intentSummary.textContent = "Looks like a " + flow.title.toLowerCase() + " task. This is a local router preview, not a model result.";
+      els.confidencePill.textContent = result.confidence + "% local match";
+      els.riskPill.textContent = flow.domain === "none" ? "Local workflow" : flow.domain + " planning estimate";
+      els.questionsIntro.textContent = "These are the inputs the destination tool may need.";
+      els.questionList.innerHTML = flow.questions.map(function(question) {
+        return "<div>" + escapeHtml(question) + "</div>";
+      }).join("");
+      els.toolTitle.textContent = flow.title;
+      els.toolDescription.textContent = flow.description;
+      els.toolMeta.innerHTML = [
+        flow.domain === "none" ? "general" : flow.domain,
+        "source: " + flow.sourcePolicy,
+        "mock router"
+      ].map(function(label) {
+        return "<span>" + escapeHtml(label) + "</span>";
+      }).join("");
+      renderPrefillSummary(launch);
+      els.openToolLink.textContent = launch.supported ? "Open tool with prefill" : "Open selected tool";
+      els.openToolLink.href = launch.launchUrl;
+      els.resultSearchLink.href = searchUrl(result.prompt);
+      els.openToolLink.onclick = function() {
+        if (!launch.supported || !window.AfroToolsAIPrefillAdapters) return;
+        try { window.AfroToolsAIPrefillAdapters.storeLaunchPayload(launch); } catch (err) {}
+      };
+      setState("result");
+    }
+
+    function routePrompt(prompt) {
+      var trimmed = String(prompt || "").trim();
+      els.noMatchSearchLink.href = searchUrl(trimmed);
+      els.errorSearchLink.href = searchUrl(trimmed);
+      if (!trimmed) {
+        setState("empty");
+        return;
+      }
+      setState("loading");
+      window.setTimeout(function() {
+        var result = mockRoute(trimmed);
+        if (result.type === "match") {
+          renderMatch(result);
+        } else if (result.type === "no-match") {
+          setState("noMatch");
+        } else if (result.type === "error") {
+          els.errorCopy.textContent = result.message || "Use search while the AI router is unavailable.";
+          setState("error");
+        } else {
+          setState("empty");
+        }
+      }, 220);
+    }
+
+    function escapeHtml(value) {
+      return String(value || "").replace(/[&<>"']/g, function(ch) {
+        return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+      });
+    }
+
+    function hydratePrompt() {
+      var params = new URLSearchParams(window.location.search);
+      var fromQuery = params.get("q") || "";
+      var fromSession = "";
+      try {
+        var raw = sessionStorage.getItem("afrotools.aiFrontdoorDraft");
+        var draft = raw ? JSON.parse(raw) : null;
+        if (draft && typeof draft.prompt === "string") fromSession = draft.prompt;
+      } catch (err) {}
+      var value = fromQuery || fromSession;
+      if (value) {
+        input.value = value;
+        routePrompt(value);
+      } else {
+        setState("empty");
+      }
+    }
+
+    if (!form || !input) return;
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      routePrompt(input.value);
+    });
+
+    document.querySelectorAll("[data-example]").forEach(function(button) {
+      button.addEventListener("click", function() {
+        input.value = button.getAttribute("data-example") || "";
+        input.focus();
+        routePrompt(input.value);
+      });
+    });
+
+    hydratePrompt();
+  })();
+  </script>
+</body>
+</html>

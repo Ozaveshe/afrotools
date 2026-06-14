@@ -17,6 +17,7 @@ const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
 const TODAY = new Date().toISOString().slice(0, 10);
 const EXTRA_SITEMAPS = ['sitemap-cars.xml', 'jamb/sitemap.xml'];
+const AFROKITCHEN_MANIFEST_PATH = path.join(ROOT, 'tools', 'afrokitchen', 'seo-manifest.json');
 const EXPLICIT_SITEMAP_HTML = [
   'api/docs/index.html',
   'widgets/index.html',
@@ -98,6 +99,100 @@ function readExistingUrlLastmods() {
 const EXISTING_URL_LASTMODS = readExistingUrlLastmods();
 const EXISTING_INDEX_LASTMODS = readXmlLastmods(path.join(ROOT, 'sitemap-index.xml'), 'sitemap');
 
+function xmlEscape(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function asIsoDate(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '' : date.toISOString().slice(0, 10);
+}
+
+function maxDate(values) {
+  return values.map(asIsoDate).filter(Boolean).sort().slice(-1)[0] || '';
+}
+
+function toAbsoluteSiteUrl(value) {
+  const input = String(value || '').trim();
+  if (!input) return '';
+  if (/^https?:\/\//i.test(input)) return input;
+  if (input.startsWith('/')) return `${BASE_URL}${input}`;
+  return '';
+}
+
+function uniqueImages(images) {
+  const seen = new Set();
+  return images
+    .map((image) => ({
+      loc: toAbsoluteSiteUrl(image.loc || image.url || image.src || image),
+      title: String(image.title || '').trim(),
+      caption: String(image.caption || '').trim()
+    }))
+    .filter((image) => {
+      if (!image.loc || seen.has(image.loc)) return false;
+      seen.add(image.loc);
+      return true;
+    });
+}
+
+function loadAfroKitchenSitemapMetadata() {
+  if (!fs.existsSync(AFROKITCHEN_MANIFEST_PATH)) return new Map();
+
+  try {
+    const manifest = JSON.parse(fs.readFileSync(AFROKITCHEN_MANIFEST_PATH, 'utf8'));
+    const metadata = new Map();
+    const recipeBySlug = new Map((manifest.recipes || []).map((recipe) => [recipe.slug, recipe]));
+    const generatedRecipes = (manifest.recipes || []).filter((recipe) => recipe.generated_in_wave);
+
+    for (const recipe of generatedRecipes) {
+      metadata.set(recipe.route_url, {
+        lastmod: normalizeSitemapLastmod(maxDate([recipe.updated_at, recipe.created_at]) || manifest.generated_at),
+        images: uniqueImages([
+          { loc: recipe.social_image || recipe.page_image || recipe.image_url, title: `${recipe.name} recipe from ${recipe.country_name}` }
+        ])
+      });
+    }
+
+    for (const country of manifest.countries || []) {
+      const recipes = (country.generated_recipe_slugs || country.recipes || [])
+        .map((entry) => (typeof entry === 'string' ? recipeBySlug.get(entry) : recipeBySlug.get(entry.slug)))
+        .filter(Boolean);
+      metadata.set(country.route_url, {
+        lastmod: normalizeSitemapLastmod(maxDate(recipes.flatMap((recipe) => [recipe.updated_at, recipe.created_at])) || manifest.generated_at),
+        images: uniqueImages([{ loc: `${BASE_URL}/assets/img/tools/afrokitchen.webp`, title: `${country.country_name} recipes` }])
+      });
+    }
+
+    for (const collection of manifest.collections || []) {
+      const recipes = (collection.generated_recipe_slugs || collection.recipes || [])
+        .map((entry) => (typeof entry === 'string' ? recipeBySlug.get(entry) : recipeBySlug.get(entry.slug)))
+        .filter(Boolean);
+      metadata.set(collection.route_url, {
+        lastmod: normalizeSitemapLastmod(maxDate(recipes.flatMap((recipe) => [recipe.updated_at, recipe.created_at])) || manifest.generated_at),
+        images: uniqueImages([{ loc: toAbsoluteSiteUrl(collection.image_url) || `${BASE_URL}/assets/img/tools/afrokitchen.webp`, title: `${collection.name} recipe collection` }])
+      });
+    }
+
+    metadata.set(`${BASE_URL}/tools/afrokitchen/`, {
+      lastmod: asIsoDate(manifest.generated_at),
+      images: uniqueImages([{ loc: `${BASE_URL}/assets/img/tools/afrokitchen.webp`, title: 'AfroKitchen African recipe atlas' }])
+    });
+
+    return metadata;
+  } catch (error) {
+    console.warn(`Unable to load AfroKitchen sitemap metadata: ${error.message}`);
+    return new Map();
+  }
+}
+
+const AFROKITCHEN_SITEMAP_METADATA = loadAfroKitchenSitemapMetadata();
+
 /**
  * Recursively find all .html files
  */
@@ -141,6 +236,73 @@ function stableSitemapLastmod(loc, fallbackDate) {
   }
 
   return normalizeSitemapLastmod(fallbackDate);
+}
+
+function extractMetaContent(html, propertyName) {
+  const propertyPattern = new RegExp(
+    `<meta\\b(?=[^>]*\\bproperty=["']${propertyName}["'])(?=[^>]*\\bcontent=["']([^"']+)["'])[^>]*>`,
+    'i'
+  );
+  const namePattern = new RegExp(
+    `<meta\\b(?=[^>]*\\bname=["']${propertyName}["'])(?=[^>]*\\bcontent=["']([^"']+)["'])[^>]*>`,
+    'i'
+  );
+  const match = html.match(propertyPattern) || html.match(namePattern);
+  return match ? match[1] : '';
+}
+
+function extractJsonLdImages(html) {
+  const images = [];
+  const scriptPattern = /<script\b([^>]*type=["']application\/ld\+json["'][^>]*)>([\s\S]*?)<\/script>/gi;
+  let match;
+
+  function collect(value) {
+    if (!value) return;
+    if (typeof value === 'string') {
+      images.push({ loc: value });
+      return;
+    }
+    if (Array.isArray(value)) {
+      value.forEach(collect);
+      return;
+    }
+    if (typeof value === 'object') {
+      if (value.url) images.push({ loc: value.url, title: value.name || '' });
+      if (value.contentUrl) images.push({ loc: value.contentUrl, title: value.name || '' });
+      if (value.image) collect(value.image);
+    }
+  }
+
+  while ((match = scriptPattern.exec(html)) !== null) {
+    try {
+      const parsed = JSON.parse(match[2].trim());
+      const nodes = Array.isArray(parsed && parsed['@graph']) ? parsed['@graph'] : [parsed];
+      nodes.forEach((node) => collect(node && node.image));
+    } catch {
+      // Ignore non-JSON or malformed schema blocks; page-level metadata still applies.
+    }
+  }
+
+  return images;
+}
+
+function extractPageImages(html) {
+  const ogImage = extractMetaContent(html, 'og:image');
+  const twitterImage = extractMetaContent(html, 'twitter:image');
+  const title = extractMetaContent(html, 'og:title') || extractMetaContent(html, 'twitter:title');
+  return uniqueImages([
+    { loc: ogImage, title },
+    { loc: twitterImage, title },
+    ...extractJsonLdImages(html)
+  ]);
+}
+
+function isAfroKitchenUrl(url) {
+  try {
+    return new URL(url).pathname.startsWith('/tools/afrokitchen/');
+  } catch {
+    return false;
+  }
 }
 
 function extractCanonicalHref(html) {
@@ -193,11 +355,18 @@ function inspectHtmlFile(filePath) {
     /location\.href\s*=\s*['"][^'"]+['"]/i.test(snippet);
   const noindex = hasNoindex(html);
   const canonicalMismatch = canonicalPath && canonicalPath !== currentPath;
+  const manifestMetadata = AFROKITCHEN_SITEMAP_METADATA.get(url);
+  const images = manifestMetadata && manifestMetadata.images && manifestMetadata.images.length
+    ? manifestMetadata.images
+    : isAfroKitchenUrl(url) ? extractPageImages(html) : [];
 
   return {
     url,
     normalizedKey: currentPath,
-    lastmod: stableSitemapLastmod(url, fs.statSync(filePath).mtime),
+    lastmod: manifestMetadata && manifestMetadata.lastmod
+      ? manifestMetadata.lastmod
+      : stableSitemapLastmod(url, fs.statSync(filePath).mtime),
+    images,
     exclude: redirectLike || canonicalMismatch || noindex,
   };
 }
@@ -243,12 +412,19 @@ function categorize(relPath) {
  * Generate XML for a single sitemap
  */
 function generateSitemap(entriesByUrl) {
-  const entries = entriesByUrl.map(entry =>
-    `  <url>\n    <loc>${entry.url}</loc>\n    <lastmod>${entry.lastmod}</lastmod>\n  </url>`
-  ).join('\n');
+  const hasImages = entriesByUrl.some(entry => Array.isArray(entry.images) && entry.images.length);
+  const entries = entriesByUrl.map(entry => {
+    const imageXml = (entry.images || []).map((image) => {
+      const titleXml = image.title ? `\n      <image:title>${xmlEscape(image.title)}</image:title>` : '';
+      const captionXml = image.caption ? `\n      <image:caption>${xmlEscape(image.caption)}</image:caption>` : '';
+      return `    <image:image>\n      <image:loc>${xmlEscape(image.loc)}</image:loc>${titleXml}${captionXml}\n    </image:image>`;
+    }).join('\n');
+
+    return `  <url>\n    <loc>${xmlEscape(entry.url)}</loc>\n    <lastmod>${entry.lastmod}</lastmod>${imageXml ? `\n${imageXml}` : ''}\n  </url>`;
+  }).join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"${hasImages ? '\n        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"' : ''}>
 ${entries}
 </urlset>
 `;

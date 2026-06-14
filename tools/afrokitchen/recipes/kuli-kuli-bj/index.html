@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
   <meta property="og:title" content="Kuli-Kuli Recipe | Benin | AfroKitchen">
   <meta property="og:description" content="Crunchy groundnut crackers made by extracting the oil from peanut paste, then shaping and deep-frying the remaining cake. A beloved protein-rich snack.">
   <meta property="og:image" content="https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,15 +25,15 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=32f6a027">
+  <link rel="stylesheet" href="/tools/afrokitchen/icon-system.css?v=e947352b">
   <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=d0ebe756">
-  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=5b092a80">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=f72d0d62">
   <style>
     .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
-    .ak-static-page .ak-static-helper-note,
-    .ak-static-page .ak-static-related-card { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
+    .ak-static-page .ak-static-helper-note { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
     .ak-static-page .ak-static-hero-card { padding: 24px; align-self: stretch; display: grid; gap: 16px; color: var(--ak-text); }
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
@@ -89,6 +89,7 @@
     .ak-static-page .ak-step-title { font-family: var(--font-body); font-size: 1.05rem; font-weight: 800; line-height: 1.25; }
     .ak-static-page .ak-step-text { max-width: 70ch; color: var(--ak-muted); font-size: 1.02rem; line-height: 1.7; }
     .ak-static-page .ak-step-tip { max-width: 68ch; border-radius: 18px; background: linear-gradient(180deg, var(--ak-accent-soft), #fff7df); }
+    .ak-static-page .ak-step-tip::before { content: none; }
     .ak-static-page .ak-static-step-actions { display: grid; gap: 10px; margin-top: 16px; }
     .ak-static-page .ak-static-timer-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; background: var(--ak-surface-soft); color: var(--ak-dark); width: fit-content; }
     .ak-static-page .ak-static-timer-label { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ak-subtle); }
@@ -99,14 +100,47 @@
     .ak-static-page .ak-static-helper-note p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-related { margin-top: 36px; }
     .ak-static-page .ak-static-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .ak-static-page .ak-static-related-card { padding: 20px; text-decoration: none; display: grid; gap: 10px; }
-    .ak-static-page .ak-static-related-card h3 { margin: 0; color: var(--ak-dark); font-size: 1.2rem; }
-    .ak-static-page .ak-static-related-card p { margin: 0; color: var(--ak-muted); line-height: 1.65; }
-    .ak-static-page .ak-static-card-meta { color: var(--ak-subtle); font-size: .92rem; }
+    .ak-static-page .ak-internal-link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .ak-static-page .ak-internal-link-group { min-width: 0; padding: 18px; border-radius: 20px; background: var(--ak-panel); border: 1px solid var(--ak-line); box-shadow: var(--ak-shadow-sm); }
+    .ak-static-page .ak-internal-link-group p { margin: 6px 0 14px; color: var(--ak-muted); line-height: 1.6; }
+    .ak-static-page .ak-internal-link-list { display: grid; gap: 9px; }
+    .ak-static-page .ak-internal-link { display: grid; gap: 3px; padding: 11px 12px; border-radius: 14px; background: var(--ak-bg); border: 1px solid var(--ak-line); color: var(--ak-dark); text-decoration: none; }
+    .ak-static-page .ak-internal-link span { font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+    .ak-static-page .ak-internal-link small { color: var(--ak-muted); line-height: 1.35; }
+    .ak-static-page .ak-internal-link:hover,
+    .ak-static-page .ak-internal-link:focus-visible { border-color: var(--ak-primary-border); color: var(--ak-primary-deep); outline: none; }
+    .ak-static-page .ak-static-recipe-card { min-width: 0; display: grid; grid-template-columns: minmax(112px, .34fr) minmax(0, 1fr); overflow: hidden; text-decoration: none; color: var(--ak-text); background: #fffdfa; border: 1px solid rgba(82,50,28,.14); border-radius: 18px; box-shadow: 0 12px 28px rgba(36,21,10,.06); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+    .ak-static-page .ak-static-recipe-card:not(.has-thumb) { grid-template-columns: 1fr; }
+    .ak-static-page .ak-static-recipe-card:hover,
+    .ak-static-page .ak-static-recipe-card:focus-visible { transform: translateY(-3px); border-color: rgba(199,62,29,.34); box-shadow: 0 18px 34px rgba(36,21,10,.1); outline: none; }
+    .ak-static-page .ak-static-recipe-card:focus-visible { box-shadow: 0 0 0 4px rgba(199,62,29,.16), 0 18px 34px rgba(36,21,10,.1); }
+    .ak-static-page .ak-static-recipe-card-thumb { min-width: 0; min-height: 100%; background: var(--ak-surface-soft); overflow: hidden; }
+    .ak-static-page .ak-static-recipe-card-thumb img { display: block; width: 100%; height: 100%; min-height: 188px; object-fit: cover; }
+    .ak-static-page .ak-static-recipe-card-fallback { min-height: 156px; display: grid; align-content: end; gap: 12px; padding: 18px; background:
+      radial-gradient(circle at 18% 20%, rgba(15,123,67,.18), transparent 28%),
+      linear-gradient(135deg, #fff7ec, #f6eadb 58%, #eef6e7); border-bottom: 1px solid rgba(82,50,28,.12); }
+    .ak-static-page .ak-fallback-mark { width: 44px; height: 44px; display: inline-grid; place-items: center; border-radius: 50%; background: #2d1b12; color: #fff8ef; font-weight: 900; letter-spacing: .06em; }
+    .ak-static-page .ak-fallback-copy { display: grid; gap: 4px; min-width: 0; }
+    .ak-static-page .ak-fallback-copy strong { color: #2d1b12; line-height: 1.12; overflow-wrap: anywhere; }
+    .ak-static-page .ak-fallback-copy small { color: #6c503b; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-body { min-width: 0; display: grid; align-content: start; gap: 12px; padding: 18px; }
+    .ak-static-page .ak-static-recipe-card-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ak-static-page .ak-static-recipe-badge { display: inline-flex; align-items: center; min-height: 28px; max-width: 100%; padding: 0 10px; border-radius: 999px; background: #fff4e6; border: 1px solid rgba(82,50,28,.12); color: #573723; font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ak-static-page .ak-static-recipe-badge:first-child { background: #f4fbef; border-color: rgba(15,123,67,.16); color: #245b35; }
+    .ak-static-page .ak-static-recipe-card-title { color: var(--ak-dark); font-family: var(--font-display); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.02; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; color: var(--ak-muted); line-height: 1.58; font-size: .93rem; }
+    .ak-static-page .ak-static-recipe-card-meta { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+    .ak-static-page .ak-static-recipe-card-meta > span { gap: 7px; min-width: 0; max-width: 100%; padding: 7px 9px; border-radius: 12px; background: #fff6ea; border: 1px solid rgba(82,50,28,.1); color: #4c3322; font-size: .76rem; }
+    .ak-static-page .ak-static-recipe-card-meta small { display: block; color: #8b6e58; font-size: .62rem; font-weight: 850; letter-spacing: .08em; line-height: 1.1; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-meta strong { display: block; min-width: 0; color: #2b1b12; line-height: 1.2; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-cta { display: inline-flex; align-items: center; gap: 7px; justify-self: start; margin-top: 2px; color: var(--ak-primary-deep); font-size: .78rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card:hover .ak-static-recipe-card-cta,
+    .ak-static-page .ak-static-recipe-card:focus-visible .ak-static-recipe-card-cta { color: var(--ak-primary); }
     .ak-static-page .ak-static-credit { font-size: .88rem; color: var(--ak-subtle); }
     @media (max-width: 960px) {
       .ak-static-page .ak-static-summary-grid,
       .ak-static-page .ak-static-related-grid,
+      .ak-static-page .ak-internal-link-grid,
       .ak-static-page .ak-photo-gallery-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
       .ak-static-page .ak-photo-gallery-head { align-items: start; flex-direction: column; }
@@ -128,14 +162,15 @@
       .ak-static-page .ak-photo-thumbs { grid-template-columns: 1fr; }
       .ak-static-page .ak-photo-thumbs figure { aspect-ratio: 4 / 3; }
       .ak-static-page .ak-nutrition { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card.has-thumb { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card-thumb img { min-height: 180px; }
       .ak-static-page .ak-step { padding: 76px 20px 22px; }
       .ak-static-page .ak-step-num { left: 20px; top: 20px; }
     }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Kuli-Kuli","description":"Crunchy groundnut crackers made by extracting the oil from peanut paste, then shaping and deep-frying the remaining cake. A beloved protein-rich snack.","image":["https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp","https://afrotools.com/assets/img/kitchen/kuli-kuli-bj-2.webp"],"author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT30M","cookTime":"PT15M","totalTime":"PT45M","recipeYield":"8 servings","recipeCategory":"snack","recipeCuisine":"Benin, West Africa","nutrition":{"@type":"NutritionInformation","calories":"320 calories","proteinContent":"16g","carbohydrateContent":"10g","fatContent":"26g","fiberContent":"4g"},"recipeIngredient":["3 cups roasted peanuts, skins removed","1 tsp salt","½ tsp cayenne pepper","2 cups vegetable oil, for frying"],"recipeInstructions":[{"@type":"HowToStep","name":"Grind the peanuts","text":"Blend roasted peanuts in a food processor until they form a thick paste, similar to peanut butter.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"},{"@type":"HowToStep","name":"Extract the oil","text":"Knead the paste vigorously, squeezing out as much oil as possible. The paste should become crumbly and dry. Reserve the extracted oil.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"},{"@type":"HowToStep","name":"Season and shape","text":"Mix salt and cayenne into the paste. Shape into small sticks, rings, or flat rounds about 1cm thick.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"},{"@type":"HowToStep","name":"Fry","text":"Heat oil to 170C. Fry in batches until deep golden brown and very crunchy, about 4-5 minutes per batch.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"},{"@type":"HowToStep","name":"Drain and cool","text":"Drain on paper towels. Let cool completely — they crisp up more as they cool. Store in an airtight container.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","keywords":"peanut, fried, protein, snack, benin, vegan, gluten-free, dairy-free, Snack","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Kuli-Kuli","description":"Crunchy groundnut crackers made by extracting the oil from peanut paste, then shaping and deep-frying the remaining cake. A beloved protein-rich snack.","image":["https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp","https://afrotools.com/assets/img/kitchen/kuli-kuli-bj-2.webp","https://afrotools.com/assets/img/kitchen/kuli-kuli-bj-3.webp","https://afrotools.com/assets/img/kitchen/kuli-kuli-bj-5.webp"],"author":{"@type":"Organization","name":"AfroKitchen"},"datePublished":"2026-03-18","prepTime":"PT30M","cookTime":"PT15M","totalTime":"PT45M","recipeYield":"8 servings","recipeCategory":"Snack","recipeCuisine":"Benin, West Africa","nutrition":{"@type":"NutritionInformation","calories":"320 calories","proteinContent":"16g","carbohydrateContent":"10g","fatContent":"26g","fiberContent":"4g"},"recipeIngredient":["3 cups roasted peanuts, skins removed","1 tsp salt","½ tsp cayenne pepper","2 cups vegetable oil, for frying"],"recipeInstructions":[{"@type":"HowToStep","name":"Grind the peanuts","text":"Blend roasted peanuts in a food processor until they form a thick paste, similar to peanut butter.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"},{"@type":"HowToStep","name":"Extract the oil","text":"Knead the paste vigorously, squeezing out as much oil as possible. The paste should become crumbly and dry. Reserve the extracted oil.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"},{"@type":"HowToStep","name":"Season and shape","text":"Mix salt and cayenne into the paste. Shape into small sticks, rings, or flat rounds about 1cm thick.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"},{"@type":"HowToStep","name":"Fry","text":"Heat oil to 170C. Fry in batches until deep golden brown and very crunchy, about 4-5 minutes per batch.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"},{"@type":"HowToStep","name":"Drain and cool","text":"Drain on paper towels. Let cool completely — they crisp up more as they cool. Store in an airtight container.","url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","image":"https://afrotools.com/assets/img/kitchen/kuli-kuli-bj.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/","publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"dateModified":"2026-05-16","isAccessibleForFree":true,"keywords":"peanut, fried, protein, snack, benin, vegan, gluten-free, dairy-free, Snack","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/"}}</script>
+
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Benin","item":"https://afrotools.com/tools/afrokitchen/countries/benin/"},{"@type":"ListItem","position":5,"name":"Kuli-Kuli","item":"https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/"}]}</script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/recipes/kuli-kuli-bj/" />
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -157,8 +192,8 @@
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">medium</div></div>
         </div>
         <div class="ak-hero-actions">
-          <a href="/tools/afrokitchen/countries/benin/" class="ak-btn ak-btn-secondary">Explore Benin recipes</a>
-          <a href="/tools/afrokitchen/collections/vegetarian-africa/" class="ak-btn ak-btn-primary">Open Vegetarian Africa</a>
+          <a href="/tools/afrokitchen/countries/benin/" class="ak-btn ak-btn-secondary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Explore Benin recipes</span></a>
+          <a href="/tools/afrokitchen/collections/vegetarian-africa/" class="ak-btn ak-btn-primary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 6h14"></path><path d="M5 12h14"></path><path d="M5 18h9"></path></svg><span>Open Vegetarian Africa</span></a>
         </div>
       </div>
       <aside class="ak-static-hero-card">
@@ -190,7 +225,7 @@
           </div>
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>Best for Snack, with a medium cooking level and about 45 minutes total.</p>
+            <p>Best for Snack. Plan on a medium cook and about 45 minutes total.</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
@@ -202,7 +237,7 @@
           </div>
           <div class="ak-static-summary-card ak-intel-card">
             <strong>Regional lane</strong>
-            <p>Benin national table. A verified Benin dish in the AfroKitchen archive.</p>
+            <p>Benin national table. A structured Benin dish in the AfroKitchen archive.</p>
           </div>
           <div class="ak-static-summary-card ak-intel-card">
             <strong>Chef watch-outs</strong>
@@ -226,12 +261,18 @@
         </div>
         <div class="ak-photo-gallery-grid">
           <figure class="ak-photo-main">
-            <img src="/assets/img/kitchen/kuli-kuli-bj.webp" alt="Kuli-Kuli recipe image" loading="lazy" decoding="async">
+            <img src="/assets/img/kitchen/kuli-kuli-bj.webp" alt="Kuli-Kuli recipe from Benin" loading="lazy" decoding="async" width="1200" height="750">
             <figcaption>Kuli-Kuli finished dish</figcaption>
           </figure>
           <div class="ak-photo-thumbs"><figure>
-            <img src="/assets/img/kitchen/kuli-kuli-bj-2.webp" alt="Kuli-Kuli photo 2" loading="lazy" decoding="async">
-            <figcaption>Prep or serving detail</figcaption>
+            <img src="/assets/img/kitchen/kuli-kuli-bj-2.webp" alt="Kuli-Kuli ingredients/prep step" loading="lazy" decoding="async" width="640" height="640">
+            <figcaption>Kuli-Kuli ingredients/prep step</figcaption>
+          </figure><figure>
+            <img src="/assets/img/kitchen/kuli-kuli-bj-3.webp" alt="Kuli-Kuli cooking/process step" loading="lazy" decoding="async" width="640" height="640">
+            <figcaption>Kuli-Kuli cooking/process step</figcaption>
+          </figure><figure>
+            <img src="/assets/img/kitchen/kuli-kuli-bj-5.webp" alt="Kuli-Kuli serving/detail image" loading="lazy" decoding="async" width="640" height="640">
+            <figcaption>Kuli-Kuli serving/detail image</figcaption>
           </figure></div>
         </div>
 
@@ -260,9 +301,9 @@
         <div class="ak-static-serving-bar">
           <div class="ak-servings">
             <span class="ak-servings-label">Servings</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)">-</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease servings">-</button>
             <span class="ak-servings-val" id="ak-static-servings">8</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)">+</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase servings">+</button>
           </div>
           <p class="ak-static-serving-note">Scale the dish before you shop, then use the checklist while you cook.</p>
         </div>
@@ -313,12 +354,14 @@
                 <h2 class="ak-panel-title">Step-by-step method</h2>
                 <p class="ak-method-sub">Keep the rhythm calm, watch the texture, and adjust seasoning at the end.</p>
               </div>
-              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/benin/">Back to Benin</a>
+              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/benin/"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Back to Benin</span></a>
             </div>
             <div class="ak-method-stat-row">
-              <span>5 steps</span>
-              <span>45 min total</span>
-              <span>medium</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg>5 steps</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>30 min prep</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>15 min cook</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>45 min total</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg>medium</span>
             </div>
             <div class="ak-steps"><article class="ak-step" id="step-1">
         <div class="ak-step-header">
@@ -335,7 +378,7 @@
           <div class="ak-step-title">Extract the oil</div>
         </div>
         <div class="ak-step-text">Knead the paste vigorously, squeezing out as much oil as possible. The paste should become crumbly and dry. Reserve the extracted oil.</div>
-        <div class="ak-step-tip">This step is crucial — the drier the paste, the crunchier the kuli-kuli.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">This step is crucial — the drier the paste, the crunchier the kuli-kuli.</span></div>
 
       </article>
 <article class="ak-step" id="step-3">
@@ -353,15 +396,16 @@
           <div class="ak-step-title">Fry</div>
         </div>
         <div class="ak-step-text">Heat oil to 170C. Fry in batches until deep golden brown and very crunchy, about 4-5 minutes per batch.</div>
-        <div class="ak-step-tip">Keep the heat moderate to fry through without burning.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Keep the heat moderate to fry through without burning.</span></div>
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Fry kuli-kuli</span>
               <strong id="ak-timer-display-4">05:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-4" onclick="AKStaticRecipePage.toggleTimer(4, 300)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(4, 300)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-4" onclick="AKStaticRecipePage.toggleTimer(4, 300)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(4, 300)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-4" style="width:100%"></div></div>
           </div>
@@ -376,42 +420,204 @@
 
       </article></div>
             <div class="ak-static-helper-note">
-              <p>Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.</p>
+              <p><svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3 22 20H2L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><span>Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.</span></p>
             </div>
           </section>
         </div>
       </div>
 
-      <section class="ak-section ak-static-related">
+      <section class="ak-section ak-static-related ak-internal-link-section">
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
-      <h2 class="ak-section-title">More AfroKitchen dishes from the same food atlas</h2>
-      <p class="ak-section-sub">Try another dish from the same country, region, or cooking mood.</p>
+      <h2 class="ak-section-title">Cook around Kuli-Kuli</h2>
+      <p class="ak-section-sub">Follow country, category, collection, time, and pairing paths without turning the recipe page into a link farm.</p>
     </div>
-    <div class="ak-static-related-grid"><a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/amiwo-bj/">
-        <div class="ak-support-label">Benin | Main dish</div>
-        <h3>Amiwo</h3>
-        <p>A savoury red corn porridge cooked in a rich tomato and crab sauce. The cornmeal absorbs the tomato colour and flavour, turning...</p>
-        <div class="ak-static-card-meta">60 min | Main dish</div>
+    <div class="ak-static-related-grid"><a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/amiwo-bj/" aria-label="Open recipe: Amiwo">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/amiwo-bj.webp" alt="Amiwo recipe from Benin" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Benin</span>
+        <span class="ak-static-recipe-badge">Main dish</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Amiwo</span>
+      <span class="ak-static-recipe-card-desc">A savoury red corn porridge cooked in a rich tomato and crab sauce. The cornmeal absorbs the tomato colour and flavour, tur...</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>60 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Gluten Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>West Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/poisson-moyo-bj/" aria-label="Open recipe: Poisson au Moyo">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/poisson-moyo-bj.webp" alt="Poisson au Moyo recipe from Benin" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Benin</span>
+        <span class="ak-static-recipe-badge">Recipe</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Poisson au Moyo</span>
+      <span class="ak-static-recipe-card-desc">Beninese grilled fish with a bright raw-style tomato, onion, lemon, herb, and chili moyo sauce.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>55 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 4</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Gluten Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>West Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/dakouin-bj/" aria-label="Open recipe: Dakouin">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/dakouin-bj.webp" alt="Dakouin recipe from Benin" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Benin</span>
+        <span class="ak-static-recipe-badge">Main dish</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Dakouin</span>
+      <span class="ak-static-recipe-card-desc">Mono-region Beninese fish, tomato, and gari dish where cassava granules thicken a deeply seasoned fish broth.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>65 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 5</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Gluten Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>West Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/wagasi-grille-bj/" aria-label="Open recipe: Grilled Wagasi">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/wagasi-grille-bj.webp" alt="Grilled Wagasi recipe from Benin" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Benin</span>
+        <span class="ak-static-recipe-badge">Snack</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Grilled Wagasi</span>
+      <span class="ak-static-recipe-card-desc">Beninese soft white cheese grilled until golden and served with a spicy piment sauce. A unique West African cheese snack wi...</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>20 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 4</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Gluten Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>West Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a></div>
+    <div class="ak-internal-link-grid"><article class="ak-internal-link-group">
+        <div class="ak-support-label">More Benin recipes</div>
+        <p>Stay inside the Benin country hub.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/amiwo-bj/">
+        <span>Amiwo</span>
+        <small>Benin - Main dish - 60 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/atassi-watche-bj/">
-        <div class="ak-support-label">Benin | Main dish</div>
-        <h3>Atassi Watche</h3>
-        <p>Beninese rice and beans cooked tender and served with a concentrated tomato dja sauce, eggs, fish, or wagasi.</p>
-        <div class="ak-static-card-meta">105 min | Main dish</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/poisson-moyo-bj/">
+        <span>Poisson au Moyo</span>
+        <small>Benin - Recipe - 55 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/dakouin-bj/">
-        <div class="ak-support-label">Benin | Main dish</div>
-        <h3>Dakouin</h3>
-        <p>Mono-region Beninese fish, tomato, and gari dish where cassava granules thicken a deeply seasoned fish broth.</p>
-        <div class="ak-static-card-meta">65 min | Main dish</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/dakouin-bj/">
+        <span>Dakouin</span>
+        <small>Benin - Main dish - 65 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/wagasi-grille-bj/">
-        <div class="ak-support-label">Benin | Snack</div>
-        <h3>Grilled Wagasi</h3>
-        <p>Beninese soft white cheese grilled until golden and served with a spicy piment sauce. A unique West African cheese snack with a...</p>
-        <div class="ak-static-card-meta">20 min | Snack</div>
-      </a></div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/wagasi-grille-bj/">
+        <span>Grilled Wagasi</span>
+        <small>Benin - Snack - 20 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">More snack recipes</div>
+        <p>Compare dishes in the same course or cooking style.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/badjia-mz/">
+        <span>Badjia</span>
+        <small>Mozambique - Snack - 50 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/chikanda-zm/">
+        <span>Chikanda</span>
+        <small>Zambia - Snack - 50 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/fangasou-td/">
+        <span>Fangasou</span>
+        <small>Chad - Snack - 50 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/gateaux-piments-mu/">
+        <span>Gateaux Piments</span>
+        <small>Mauritius - Snack - 50 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">From the same collection</div>
+        <p>Continue through Vegetarian Africa.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/papa-le-moroho-ls/">
+        <span>Papa le Moroho</span>
+        <small>Lesotho - Main dish - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/ugali-na-sukuma-wiki/">
+        <span>Ugali na Sukuma Wiki</span>
+        <small>Kenya - Main dish - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/umbhidvo-wetintsanga-sz/">
+        <span>Umbhidvo Wetintsanga</span>
+        <small>Eswatini - Side - 40 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/attieke-poisson-ci/">
+        <span>Attiéké with Grilled Fish</span>
+        <small>Ivory Coast - Main dish - 55 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Similar cooking time</div>
+        <p>Pick another dish with a nearby time commitment.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/papa-le-moroho-ls/">
+        <span>Papa le Moroho</span>
+        <small>Lesotho - Main dish - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/ugali-na-sukuma-wiki/">
+        <span>Ugali na Sukuma Wiki</span>
+        <small>Kenya - Main dish - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/umbhidvo-wetintsanga-sz/">
+        <span>Umbhidvo Wetintsanga</span>
+        <small>Eswatini - Side - 40 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/attieke-poisson-ci/">
+        <span>Attiéké with Grilled Fish</span>
+        <small>Ivory Coast - Main dish - 55 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Build a fuller table</div>
+        <p>Pair a main, side, drink, or dessert where the atlas has a useful match.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/amiwo-bj/">
+        <span>Amiwo</span>
+        <small>Benin - Main dish - 60 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/fouti-gn/">
+        <span>Fouti</span>
+        <small>Guinea - Side - 25 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/chocolate-quente-st/">
+        <span>Sao Tomean Hot Chocolate</span>
+        <small>São Tomé and Príncipe - Drink - 17 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/lakh-mr/">
+        <span>Lakh</span>
+        <small>Mauritania - Dessert - 40 min</small>
+      </a>
+        </div>
+      </article></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
       <a href="/tools/afrokitchen/countries/benin/" class="ak-btn ak-btn-outline">Explore Benin recipes</a>
@@ -421,10 +627,10 @@
   </section>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/engines/afrokitchen-engine.js?v=b9ee3f19"></script>
-<script>window.__AK_STATIC_RECIPE = {"slug":"kuli-kuli-bj","name":"Kuli-Kuli","description":"Crunchy groundnut crackers made by extracting the oil from peanut paste, then shaping and deep-frying the remaining cake. A beloved protein-rich snack.","story":"Kuli-Kuli are the crunch of Beninese markets. Vendors shape the groundnut paste into sticks, rings, or balls before frying. They are eaten as snacks, crumbled into salads, or ground back into powder for soups.","default_servings":8,"serving_unit":"servings","country_name":"Benin","country_code":"BJ","region":"West Africa","difficulty":"medium","category":"snack","calories":320,"protein_g":16,"carbs_g":10,"fat_g":26,"fiber_g":4,"ingredients":[{"id":"9b79bac1-5942-4023-b122-3ccc259f6b7c","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","ingredient_id":null,"sort_order":1,"group_name":null,"amount":3,"unit":"cups","name":"roasted peanuts","prep_note":"skins removed","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"bb07312b-9e8f-48d5-b772-6a9095c5e470","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","ingredient_id":null,"sort_order":2,"group_name":null,"amount":1,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"6655159a-75e4-4116-8b25-7becaf1df664","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"cayenne pepper","prep_note":null,"is_optional":true,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"6a2d2394-0fe8-4a59-8e81-7a782b936081","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","ingredient_id":null,"sort_order":4,"group_name":null,"amount":2,"unit":"cups","name":"vegetable oil","prep_note":"for frying","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"ba9623ea-00bd-451b-ab91-680745734078","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":1,"title":"Grind the peanuts","instruction":"Blend roasted peanuts in a food processor until they form a thick paste, similar to peanut butter.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"a8caa615-d909-45f2-af3a-54375f2aa964","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":2,"title":"Extract the oil","instruction":"Knead the paste vigorously, squeezing out as much oil as possible. The paste should become crumbly and dry. Reserve the extracted oil.","timer_seconds":null,"timer_label":null,"tip":"This step is crucial — the drier the paste, the crunchier the kuli-kuli.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"4e0d8063-72b5-460d-987a-6e647cb29170","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":3,"title":"Season and shape","instruction":"Mix salt and cayenne into the paste. Shape into small sticks, rings, or flat rounds about 1cm thick.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"c2f6afb0-1146-402f-8e71-a9504c903de8","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":4,"title":"Fry","instruction":"Heat oil to 170C. Fry in batches until deep golden brown and very crunchy, about 4-5 minutes per batch.","timer_seconds":300,"timer_label":"Fry kuli-kuli","tip":"Keep the heat moderate to fry through without burning.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"6eca7f7c-fd7b-4e53-b18d-bf318a8f809a","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":5,"title":"Drain and cool","instruction":"Drain on paper towels. Let cool completely — they crisp up more as they cool. Store in an airtight container.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"gallery_images":[{"src":"/assets/img/kitchen/kuli-kuli-bj.webp","alt":"Kuli-Kuli recipe image","caption":"Kuli-Kuli finished dish","credit":null},{"src":"/assets/img/kitchen/kuli-kuli-bj-2.webp","alt":"Kuli-Kuli photo 2","caption":"Prep or serving detail","credit":null}],"region_lens":{"slug":"national-table","name":"Benin national table","description":"A verified Benin dish in the AfroKitchen archive.","confidence":"medium","match_reason":"country-level fallback"},"chef_notes":{"common_mistakes":["Stopping the base before the pepper, onion, or spice edge has mellowed.","Thinning the pot before the body of the soup or stew has developed.","Rushing the base before the raw edge has cooked out.","Adding all seasoning early and forgetting to adjust at the end."],"readiness_cues":["The sauce should coat the spoon and taste rounded, not watery or raw.","The aroma should smell rounded rather than raw or sharp.","Oil, sauce, broth, or steam should look settled and deliberate.","The final texture should match the dish style before you plate it."],"pantry_notes":[],"technique_notes":[],"serve_with":"On its own or crumbled over salads"},"image_status":{"status":"hero-ready","gallery_count":2,"hero_ready":true,"hero_src":"/assets/img/kitchen/kuli-kuli-bj.webp","local_image_count":2,"sources":["/assets/img/kitchen/kuli-kuli-bj.webp","/assets/img/kitchen/kuli-kuli-bj-2.webp"],"missing_roles":["ingredients","process","table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"kuli-kuli-bj.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, a Benin snack, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"kuli-kuli-bj-2.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, a Benin snack, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"kuli-kuli-bj-3.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, a Benin snack, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"kuli-kuli-bj-4.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, a Benin snack, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"kuli-kuli-bj-5.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, a Benin snack, dish on table with realistic accompaniments and serving utensils."}]}};</script>
-<script src="/tools/afrokitchen/static-recipe-runtime.js?v=6efc4827" defer></script>
+<script>window.__AK_STATIC_RECIPE = {"slug":"kuli-kuli-bj","name":"Kuli-Kuli","description":"Crunchy groundnut crackers made by extracting the oil from peanut paste, then shaping and deep-frying the remaining cake. A beloved protein-rich snack.","story":"Kuli-Kuli are the crunch of Beninese markets. Vendors shape the groundnut paste into sticks, rings, or balls before frying. They are eaten as snacks, crumbled into salads, or ground back into powder for soups.","default_servings":8,"serving_unit":"servings","country_name":"Benin","country_code":"BJ","region":"West Africa","difficulty":"medium","category":"snack","calories":320,"protein_g":16,"carbs_g":10,"fat_g":26,"fiber_g":4,"ingredients":[{"id":"9b79bac1-5942-4023-b122-3ccc259f6b7c","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","ingredient_id":null,"sort_order":1,"group_name":null,"amount":3,"unit":"cups","name":"roasted peanuts","prep_note":"skins removed","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"bb07312b-9e8f-48d5-b772-6a9095c5e470","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","ingredient_id":null,"sort_order":2,"group_name":null,"amount":1,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"6655159a-75e4-4116-8b25-7becaf1df664","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"cayenne pepper","prep_note":null,"is_optional":true,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"6a2d2394-0fe8-4a59-8e81-7a782b936081","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","ingredient_id":null,"sort_order":4,"group_name":null,"amount":2,"unit":"cups","name":"vegetable oil","prep_note":"for frying","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"ba9623ea-00bd-451b-ab91-680745734078","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":1,"title":"Grind the peanuts","instruction":"Blend roasted peanuts in a food processor until they form a thick paste, similar to peanut butter.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"a8caa615-d909-45f2-af3a-54375f2aa964","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":2,"title":"Extract the oil","instruction":"Knead the paste vigorously, squeezing out as much oil as possible. The paste should become crumbly and dry. Reserve the extracted oil.","timer_seconds":null,"timer_label":null,"tip":"This step is crucial — the drier the paste, the crunchier the kuli-kuli.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"4e0d8063-72b5-460d-987a-6e647cb29170","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":3,"title":"Season and shape","instruction":"Mix salt and cayenne into the paste. Shape into small sticks, rings, or flat rounds about 1cm thick.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"c2f6afb0-1146-402f-8e71-a9504c903de8","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":4,"title":"Fry","instruction":"Heat oil to 170C. Fry in batches until deep golden brown and very crunchy, about 4-5 minutes per batch.","timer_seconds":300,"timer_label":"Fry kuli-kuli","tip":"Keep the heat moderate to fry through without burning.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"6eca7f7c-fd7b-4e53-b18d-bf318a8f809a","recipe_id":"9f5f7de3-72e3-4f6a-beda-f697a89d52b3","step_number":5,"title":"Drain and cool","instruction":"Drain on paper towels. Let cool completely — they crisp up more as they cool. Store in an airtight container.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"gallery_images":[{"src":"/assets/img/kitchen/kuli-kuli-bj.webp","alt":"Kuli-Kuli recipe from Benin","caption":"Kuli-Kuli finished dish","credit":null},{"src":"/assets/img/kitchen/kuli-kuli-bj-2.webp","alt":"Kuli-Kuli ingredients/prep step","caption":"Kuli-Kuli ingredients/prep step","credit":null},{"src":"/assets/img/kitchen/kuli-kuli-bj-3.webp","alt":"Kuli-Kuli cooking/process step","caption":"Kuli-Kuli cooking/process step","credit":null},{"src":"/assets/img/kitchen/kuli-kuli-bj-5.webp","alt":"Kuli-Kuli serving/detail image","caption":"Kuli-Kuli serving/detail image","credit":null}],"region_lens":{"slug":"national-table","name":"Benin national table","description":"A structured Benin dish in the AfroKitchen archive.","confidence":"medium","match_reason":"country-level fallback"},"chef_notes":{"common_mistakes":["Stopping the base before the pepper, onion, or spice edge has mellowed.","Thinning the pot before the body of the soup or stew has developed.","Rushing the base before the raw edge has cooked out.","Adding all seasoning early and forgetting to adjust at the end."],"readiness_cues":["The sauce should coat the spoon and taste rounded, not watery or raw.","The aroma should smell rounded rather than raw or sharp.","Oil, sauce, broth, or steam should look settled and deliberate.","The final texture should match the dish style before you plate it."],"pantry_notes":[],"technique_notes":[],"serve_with":"On its own or crumbled over salads"},"image_status":{"status":"gallery-ready","gallery_count":4,"hero_ready":true,"hero_src":"/assets/img/kitchen/kuli-kuli-bj.webp","local_image_count":4,"sources":["/assets/img/kitchen/kuli-kuli-bj.webp","/assets/img/kitchen/kuli-kuli-bj-2.webp","/assets/img/kitchen/kuli-kuli-bj-3.webp","/assets/img/kitchen/kuli-kuli-bj-5.webp"],"missing_roles":["table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"kuli-kuli-bj.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, snack from Benin, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"kuli-kuli-bj-2.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, snack from Benin, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"kuli-kuli-bj-3.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, snack from Benin, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"kuli-kuli-bj-4.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, snack from Benin, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"kuli-kuli-bj-5.webp","route_path":"/tools/afrokitchen/recipes/kuli-kuli-bj/","prompt":"Finished Kuli-Kuli, snack from Benin, dish on table with realistic accompaniments and serving utensils."}]}};</script>
+<script src="/tools/afrokitchen/static-recipe-runtime.js?v=a7d9608d" defer></script>
 </body>
 </html>

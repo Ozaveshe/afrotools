@@ -10,6 +10,9 @@ const galleryPath = path.join(root, "tools", "cv-builder", "js", "cv-template-ga
 const legacyTemplatesPath = path.join(root, "tools", "cv-builder", "js", "cv-templates.js");
 const studioTemplatesPath = path.join(root, "tools", "cv-builder", "js", "cv-template-studio.js");
 const productionTemplatesPath = path.join(root, "tools", "cv-builder", "js", "cv-pdf-templates.js");
+const studioRegistryPath = path.join(root, "tools", "cv-builder", "js", "cv-template-registry-studio.js");
+const expandedRenderersPath = path.join(root, "tools", "cv-builder", "js", "cv-template-expanded-renderers.js");
+const expandedRegistryPath = path.join(root, "tools", "cv-builder", "js", "cv-template-registry-expanded.js");
 
 const { templates } = require(registryPath);
 
@@ -38,6 +41,9 @@ const validLayouts = new Set(["one-column", "two-column", "sidebar", "executive"
 const legacySource = fs.readFileSync(legacyTemplatesPath, "utf8");
 const studioSource = fs.readFileSync(studioTemplatesPath, "utf8");
 const productionSource = fs.readFileSync(productionTemplatesPath, "utf8");
+const studioRegistrySource = fs.readFileSync(studioRegistryPath, "utf8");
+const expandedRenderersSource = fs.readFileSync(expandedRenderersPath, "utf8");
+const expandedRegistrySource = fs.readFileSync(expandedRegistryPath, "utf8");
 const gallerySource = fs.readFileSync(galleryPath, "utf8");
 const productionSandbox = {
   CVTemplates: {},
@@ -111,4 +117,83 @@ hiddenIds.forEach((id) => {
   if (advertisedCard) fail(`hidden template ${id} is hardcoded into the gallery`);
 });
 
-console.log(`CV template registry verified: ${templates.length} registered, ${visible.length} visible export-ready templates, ${templates.length - visible.length} hidden.`);
+const expandedSandbox = {
+  CVTemplates: {},
+  CVApp: {},
+  console,
+  globalThis: null
+};
+expandedSandbox.window = expandedSandbox;
+expandedSandbox.globalThis = expandedSandbox;
+vm.runInNewContext(productionSource, expandedSandbox, { filename: productionTemplatesPath });
+vm.runInNewContext(registrySource(), expandedSandbox, { filename: registryPath });
+vm.runInNewContext(expandedRenderersSource, expandedSandbox, { filename: expandedRenderersPath });
+vm.runInNewContext(expandedRegistrySource, expandedSandbox, { filename: expandedRegistryPath });
+
+function registrySource() {
+  return fs.readFileSync(registryPath, "utf8");
+}
+
+const expandedRegistry = expandedSandbox.CVTemplateRegistry;
+if (!expandedRegistry || typeof expandedRegistry.visible !== "function") fail("expanded registry did not install");
+const expandedVisible = expandedRegistry.visible();
+const requiredExpandedIds = [
+  "pan-african-minimal",
+  "ats-plain",
+  "global-compact",
+  "lagos-corporate",
+  "nairobi-tech",
+  "accra-graduate",
+  "cape-town-modern",
+  "abuja-government",
+  "kigali-developer",
+  "cairo-bilingual",
+  "francophone-standard",
+  "morocco-french-arabic",
+  "boardroom-executive",
+  "ngo-impact",
+  "me-officer",
+  "teacher-education",
+  "healthcare-clinical",
+  "finance-admin",
+  "sales-retail",
+  "customer-support",
+  "hospitality",
+  "trade-skills",
+  "driver-logistics",
+  "construction-hse",
+  "oil-gas-technical",
+  "remote-assistant",
+  "scholarship-academic",
+  "creative-portfolio",
+  "founder-consultant",
+  "diaspora-relocation"
+];
+
+if (expandedVisible.length !== 30) fail(`expected exactly 30 expanded visible templates, found ${expandedVisible.length}`);
+const expandedIds = new Set(expandedVisible.map((template) => template.id));
+requiredExpandedIds.forEach((id) => {
+  if (!expandedIds.has(id)) fail(`expanded registry is missing ${id}`);
+});
+expandedVisible.forEach((template) => {
+  if (template.status !== "ready") fail(`${template.id} is not ready`);
+  if (template.pdfRenderer !== "print-class") fail(`${template.id} does not use print-class PDF export`);
+  if (!template.printClass) fail(`${template.id} is missing printClass`);
+  if (!expandedRegistry.hasRenderer(template.id)) fail(`${template.id} has no expanded renderer`);
+  const rendered = expandedRegistry.render(template.id, {
+    fn: "Longlonglong",
+    ln: "Applicant-Name-Example",
+    email: "very.long.email.address@examplecareers.africa",
+    phone: "+234 812 345 6789 / +254 712 345 678",
+    summary: "Synthetic verification profile for export renderer checks.",
+    exps: [{ t: "Role", c: "Company", d: "Improved reporting by 30%." }]
+  });
+  if (!rendered || !rendered.includes("cv-expanded-template")) fail(`${template.id} renderer returned unexpected output`);
+});
+
+if (!expandedRegistry.render("ats-plain", {}).includes('data-layout="text-first"')) fail("ATS Plain must render as text-first");
+if (!expandedRegistry.render("global-compact", {}).includes('data-layout="text-first"')) fail("Global Compact must render as text-first");
+const creativeTemplate = expandedRegistry.get("creative-portfolio");
+if (!creativeTemplate || !creativeTemplate.warnings.join(" ").includes("Less ATS-safe")) fail("Creative Portfolio is not labeled less ATS-safe");
+
+console.log(`CV template registry verified: base ${templates.length} registered, expanded ${expandedVisible.length} visible export-ready templates.`);

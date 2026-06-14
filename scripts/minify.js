@@ -220,6 +220,8 @@ async function run() {
   function walkAll(dir) {
     const results = [];
     if (!fs.existsSync(dir)) return results;
+    const aiSourceDir = path.join(ROOT, 'assets', 'js', 'ai');
+    if (path.resolve(dir) === aiSourceDir) return results;
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const fullPath = path.join(dir, entry.name);
       if (entry.isDirectory()) {

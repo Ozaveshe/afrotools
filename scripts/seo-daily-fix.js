@@ -173,17 +173,20 @@ function normalizeKnownSiteUrl(url) {
   return preferred || url;
 }
 
-function normalizeJsonLdValue(value) {
+function normalizeJsonLdValue(value, key = '') {
   if (Array.isArray(value)) {
-    return value.map(normalizeJsonLdValue);
+    return value.map((item) => normalizeJsonLdValue(item, key));
   }
 
   if (!value || typeof value !== 'object') {
+    if (key === 'urlTemplate' && typeof value === 'string' && value.includes('{search_term_string}')) {
+      return value;
+    }
     return typeof value === 'string' ? normalizeKnownSiteUrl(value) : value;
   }
 
   for (const key of Object.keys(value)) {
-    value[key] = normalizeJsonLdValue(value[key]);
+    value[key] = normalizeJsonLdValue(value[key], key);
   }
 
   return value;

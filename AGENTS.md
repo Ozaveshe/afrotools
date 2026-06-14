@@ -2,7 +2,9 @@
 
 ## Mission
 
-AfroTools is a static-first, multi-surface product for African tools, country hubs, blogs, widgets, Pro apps, and data-driven pages. Prefer safe, repeatable source changes with clear validation over clever one-off edits.
+AfroTools is a practical African utility platform for local decisions, calculators, documents, exports, country hubs, widgets, Pro apps, and data-driven pages. It is evolving into AfroTools AI: a central AI front door that helps users find the right workflow, prefill existing tools, understand results, and export useful outputs without breaking the static-first product that already works.
+
+Prefer safe, repeatable source changes with clear validation over clever one-off edits.
 
 Future agents should inspect first, keep diffs scoped, preserve unrelated dirty work, and report exactly what was verified.
 
@@ -18,7 +20,8 @@ Future agents should inspect first, keep diffs scoped, preserve unrelated dirty 
 8. `docs/design-doctrine.md`
 9. `docs/codex-playbook.md`
 10. `docs/known-traps.md`
-11. Relevant workflow docs such as `docs/PDF-CATEGORY-WORKFLOW.md`, `docs/CONTENT-PUBLISHING-WORKFLOW.md`, `docs/MOBILE-AUDIT-WORKFLOW.md`, or `docs/release-checklist.md`
+11. `docs/afrotools-ai-transformation-map.md` when touching AI routing, assistant behavior, prefill handoff, source labels, or exports
+12. Relevant workflow docs such as `docs/PDF-CATEGORY-WORKFLOW.md`, `docs/CONTENT-PUBLISHING-WORKFLOW.md`, `docs/MOBILE-AUDIT-WORKFLOW.md`, or `docs/release-checklist.md`
 
 ## Repo Layout
 
@@ -39,7 +42,7 @@ Future agents should inspect first, keep diffs scoped, preserve unrelated dirty 
 
 ## Commands
 
-There is no `npm run dev` or `npm run lint` script in the current `package.json`.
+There is no `npm run dev`, `npm run lint`, or `npm run type-check` script in the current `package.json`. If a future PR adds those scripts, run them for touched TypeScript or build surfaces.
 
 Local serving:
 
@@ -79,8 +82,13 @@ Specialized validation:
 - i18n: `npm run build:i18n:validate`, `npm run validate:hreflang`, or `npm run build:i18n:full`
 - Pro apps: `npm run pro:verify`
 - Category workflows: `npm run category-workflow:verify`
+- Widgets: `npm run widgets:build`, then `npm run seo:widgets` when iframe/widget SEO metadata changes
+- Blog/content publishing: `npm run blog:feed`, `npm run blog:feed:check`, `npm run blog:verify`
 - Legal, tax, and VAT workflows: `npm run legal-workflow:verify`, `npm run salary-tax:verify`, `npm run vat-business-tax:verify`
 - Cars: `npm run cars:catalog:refresh`
+- Study abroad and scholarships: `npm run study-abroad:source-gaps`, `npm run scholarships:source-recon`
+- Energy/live data: `npm run fuel:sources:check`, `npm run solar-roi:data:check`, `npm run test:live-data-status`
+- AfroStream: `npm run afrostream:media:audit`
 - Government and transport source ledgers: `npm run government:sources:check`, `npm run transport:sources:check`
 - Privacy/AI consent: `npm run test:privacy-ai-consent`
 
@@ -99,10 +107,21 @@ Run the narrowest meaningful checks for the files you touched. For release, Netl
 - Do not invent AI, live-data, compliance, official-source, filing, delivery, or integration claims unless the backing implementation and validation exist.
 - Preserve existing analytics event names unless the task explicitly changes measurement behavior.
 
+## Engineering Discipline
+
+- Preserve current public routes, canonicals, redirects, and SEO metadata unless the task explicitly changes routing.
+- Keep tools mobile-first and check small-width layouts for overflow, clipped controls, sticky CTA collisions, and tap target size.
+- Avoid unrelated refactors. Keep PRs small, reversible, and tied to the requested workflow.
+- Prefer source files, registries, and scripts over generated output. Do not hand-edit `dist/`, generated localized pages, minified bundles, or sitemap files unless the task explicitly requires it.
+- When adding a new tool or AI handoff, keep the existing tool route as the canonical calculator/workflow route; AI should route into tools, not replace them.
+- Run the narrowest meaningful tests for touched files. For release, Netlify, redirects, functions, or publish-surface changes, run the broader build/audit/security stack.
+
 ## Frontend And Accessibility
 
 - Reuse `assets/css/design-system.css`, `style-guide.html`, and `docs/design-doctrine.md` before adding new visual language.
 - Keep interfaces calm, dense, and task-focused. Avoid unnecessary cards, decorative gradients, and text that explains obvious UI.
+- Do not ship a giant generic chatbot that buries the tool catalog. AI should be quiet, workflow-driven, and designed to route, prefill, clarify, explain, and export.
+- Reuse existing components such as `tool-registry.js`, `tool-search.js`, `country-selector.js`, `related-tools.js`, `business-cta.js`, `save-result-button.js`, `save-to-vault-button.js`, and `pdf-export.js` before adding new UI primitives.
 - Every input must have a real visible label or accessible name that describes the field, not example content.
 - Buttons and links must be keyboard reachable, visible on focus, and have stable labels.
 - Modals/drawers need focus management, Escape/close behavior, and `aria-modal`/labeling where appropriate.
@@ -119,6 +138,7 @@ This section applies to tools that process CVs, resumes, job descriptions, cover
 - Do not store sensitive content in analytics, reports, console output, URL query strings, screenshots, test artifacts, server logs, or Supabase unless the feature explicitly requires it and consent is implemented.
 - Analytics may record non-PII metadata only, such as tool id, export format, consent state, score band, template id, country code, or count buckets.
 - Any AI or network call that sends user-entered sensitive content must require explicit user consent, must show what will be sent, and must provide a local-only alternative.
+- Never silently send CVs, PDFs, uploaded documents, pasted document text, invoices, financial data, profile data, workspace data, or personal identifiers to AI endpoints.
 - Do not claim "AI-powered" unless actual AI functionality exists and the consent boundary is verified.
 - Prefer `localStorage` or IndexedDB only for local drafts. Provide JSON/TXT export and import backup for portability.
 - For share links, avoid embedding raw sensitive text by default. If a task requires shareable state, make the sensitivity obvious and minimize the payload.
@@ -135,6 +155,31 @@ The Cover Letter Generator at `tools/cover-letter-generator/` and `tools/cover-l
 - Do not route its primary exports through registration, email capture, or account gates unless the task explicitly changes the product contract.
 - If adding AI Assist, require explicit consent, show the exact content or fields to be sent, and keep deterministic local generation available.
 - When testing ATS-safe PDF or document exports, verify parser compatibility separately; a browser download alone is not enough.
+
+## Source, Freshness, And Confidence
+
+- Data-driven tools must show source, freshness, assumptions, and confidence where the workflow depends on changing rates, fees, rules, deadlines, or external availability.
+- Use "planning estimate" or equivalent disclaimers for calculations that are not official filings, quotes, legal advice, immigration advice, medical advice, financial advice, or guaranteed outcomes.
+- Prefer existing source ledgers and metadata in `data/_meta.json`, `data/government/`, `data/transport/`, `data/scholarships/`, `data/fuel/`, `data/rates/`, and related workflow docs.
+- Treat changed source hashes or scraper output as review signals, not automatic proof that public copy should change.
+- If live Supabase truth, logs, schema, SQL, or generated types are required, use the configured AfroTools Supabase MCP first and report live-state actions separately from repo edits.
+
+## AI Architecture Rules
+
+- Start from deterministic routing and existing tools. AI should select, clarify, prefill, explain, and export around existing engines rather than inventing new calculation logic.
+- Use structured JSON schemas for intent routing, clarification questions, tool-prefill outputs, source labels, and export plans.
+- Validate model output server-side before trusting tool ids, route paths, source labels, export formats, account actions, or user-visible claims.
+- Keep model output constrained to known route ids from `assets/js/components/tool-registry.js` and generated/search indexes.
+- Prefer repo-native files such as `data/ai/tool-intents.json`, `data/ai/tool-prefill-contracts.json`, `assets/js/ai/`, and `assets/js/pages/` if implementing the Ask AfroTools AI architecture.
+- Add tests for routing matches, unknown-intent fallbacks, missing-field clarification, consent boundaries, sensitive-data blocking, stale-source labels, and export safety labels.
+- Do not add a new AI provider, package, or external service unless the task explicitly calls for it and the consent, cost, and failure modes are documented.
+
+## Monetization And Partner Rules
+
+- Sponsor, partner, affiliate, and business lead placements must be clearly labeled.
+- Calculation logic, rankings, eligibility checks, estimates, and source labels must remain independent of sponsorship.
+- Lead handoff, partner contact, quote requests, email capture, and account follow-up must require an explicit user action or opt-in.
+- Do not put registration, lead capture, or sponsor gates in the primary export path for local-first sensitive tools unless the task explicitly asks for that product change.
 
 ## Supabase Work
 
@@ -170,6 +215,36 @@ Every PR or handoff should state:
 - Which commands were run, with pass/fail status.
 - Which checks were not run and why.
 - Any privacy, accessibility, SEO, analytics, or generated-output impact.
+
+Use this PR summary template:
+
+```md
+## Changed Files
+- TBD
+
+## User-Facing Changes
+- TBD
+
+## Tests Run
+- [ ] `git diff --check`
+- [ ] Relevant targeted tests:
+- [ ] Build/release checks, if needed:
+
+## Screenshots Needed
+- TBD
+
+## Risk Notes
+- Privacy:
+- Accessibility:
+- SEO/routes:
+- Analytics:
+- Source freshness/confidence:
+- Generated output:
+
+## Rollout Flag
+- Flag/config:
+- Rollback path:
+```
 
 Done means:
 

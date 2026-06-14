@@ -73,6 +73,16 @@ const CLAIM_PATTERNS = [
     pattern: /\bfully\s+automated\b/gi
   },
   {
+    key: 'unsupported_superlative',
+    label: 'unsupported superlative',
+    pattern: /\b(Africa['’]s\s+#1|best\s+in\s+Africa|most\s+trusted\s+(platform|tool|calculator|app|brand|financial\s+calculator))\b/gi
+  },
+  {
+    key: 'government_endorsement',
+    label: 'government endorsement',
+    pattern: /\b(government[-\s]?approved|officially\s+approved|regulator[-\s]?approved|approved\s+by\s+(the\s+)?government)\b/gi
+  },
+  {
     key: 'source_ledger_claims',
     label: 'source-ledger public claims',
     pattern: /\b(\d+\s+linked\s+workflows?|\d+\s+official\s+sources\s+referenced|last\s+source\s+review|official[-\s]?source\s+links?)\b/gi
@@ -259,8 +269,24 @@ function hasPlatformMarker(line, relativeFile, index, length) {
   return markers.some((marker) => marker.test(window));
 }
 
+function isIgnorableEducationalClaim(relativeFile, line, claimKey, matchIndex, matchLength) {
+  if (relativeFile.startsWith('data/jamb/')) {
+    return true;
+  }
+
+  if (claimKey !== 'thousands') {
+    return false;
+  }
+
+  const window = contextWindow(line, matchIndex, matchLength);
+  return /\b(amounts?\s+in\s+words|written\s+form|cheques?|kobo|naira|cedi|groupings?|hundred\s+thousand|millions?\s+and\s+thousands?)\b/i.test(window);
+}
+
 function isGeneralEducationalContext(relativeFile, line, claimKey, matchIndex, matchLength) {
   const inBlog = relativeFile.startsWith('blog/');
+  if (claimKey === 'government_endorsement') {
+    return !/\b(afrotools|our\s+(tool|calculator|app|platform)|this\s+(tool|calculator|app|platform))\b/i.test(contextWindow(line, matchIndex, matchLength));
+  }
   if (inBlog && claimKey === 'thousands' && /\bCanva\b/i.test(contextWindow(line, matchIndex, matchLength))) {
     return true;
   }
@@ -350,6 +376,10 @@ function audit() {
               increment(registeredCounts, claim.claim_id);
               increment(ownerCounts, claim.owner_automation);
             }
+            continue;
+          }
+
+          if (isIgnorableEducationalClaim(relativeFile, line, claimPattern.key, match.index, match[0].length)) {
             continue;
           }
 

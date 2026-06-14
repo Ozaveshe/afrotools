@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cameroon Electricity Tariff Calculator | AfroTools</title>
@@ -13,16 +13,14 @@
 <meta property="og:url" content="https://afrotools.com/tools/electricity-tariff/cameroon/">
 <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Cameroon Electricity Tariff Calculator | AfroTools","description":"Calculate your electricity bill in Cameroon. Check current electricity tariff rates, tier pricing, and monthly cost estimates for residential, commercial, and industrial customers.","url":"https://afrotools.com/tools/electricity-tariff/cameroon/","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Electricity Tariff Calculator","item":"https://afrotools.com/tools/electricity-tariff/"},{"@type":"ListItem","position":4,"name":"Cameroon","item":"https://afrotools.com/tools/electricity-tariff/cameroon/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Cameroon Electricity Tariff Calculator | AfroTools","description":"Calculate your electricity bill in Cameroon. Check current electricity tariff rates, tier pricing, and monthly cost estimates for residential, commercial, and industrial customers.","url":"https://afrotools.com/tools/electricity-tariff/cameroon","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Electricity Tariff Calculator","item":"https://afrotools.com/tools/electricity-tariff/"},{"@type":"ListItem","position":4,"name":"Cameroon","item":"https://afrotools.com/tools/electricity-tariff/cameroon"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/electricity-tariff/cameroon/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/electricity-tariff/cameroon/" />
 </head>
 <body>
 <afro-navbar theme="dark" active="energy"></afro-navbar>
@@ -49,12 +47,14 @@
 <div class="en-tip" id="rTip"></div>
 <div class="en-observations" id="rObs"></div>
 </div>
+
 <section class="en-seo">
 <h2>Cameroon Electricity Tariff Calculator — What You Need to Know</h2>
 <p>Check current electricity tariff rates in Cameroon and calculate your monthly bill. Our calculator covers residential, commercial, and industrial tariff bands, giving you an accurate cost estimate based on actual consumption.</p>
-<p>Cameroon is one of Africa's key markets for electricity access rates and grid infrastructure. Use this free tool to make informed energy decisions.</p>
-<p><strong>Disclaimer:</strong> These are estimates based on available market data and published tariff rates. Actual costs may vary. Always verify with your local utility provider.</p>
+<p>Use the result as a quote-checking brief, not as a promise that a system will perform exactly this way. If the numbers are close, ask installers to quote the same system size, battery capacity, inverter rating, warranty, and maintenance terms.</p>
+<p><strong>Disclaimer:</strong> These are planning estimates based on AfroTools dataset assumptions and available market context. Actual tariffs, fuel prices, battery prices, and installation costs may vary. Always verify current utility, regulator, installer, and vendor pricing before buying.</p>
 </section>
+
 </main>
 <afro-footer></afro-footer>
 <script src="/data/energy/country-energy-index.js?v=5083c43c"></script>
@@ -80,7 +80,11 @@ document.getElementById("rAnnual").textContent=r.annualBill;
 document.getElementById("rRate").textContent=r.avgRate;
 var tip=document.getElementById("rTip");if(r.savingTip){tip.textContent="💡 "+r.savingTip;tip.style.display="block";}
 var obs=document.getElementById("rObs");
-if(r.observations&&r.observations.length&&window.AfroEnergyTools&&window.AfroEnergyTools.renderObservations){window.AfroEnergyTools.renderObservations(obs,r.observations,"Calculation Notes");}
+if(r.observations&&r.observations.length){
+  if(window.AfroEnergyTools&&window.AfroEnergyTools.renderObservations){
+    window.AfroEnergyTools.renderObservations(obs,r.observations,"Calculation Notes");
+  }
+}
 document.getElementById("results").classList.add("on");
 document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
 });

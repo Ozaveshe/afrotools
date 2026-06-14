@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,8 +30,8 @@
     @media (max-width:520px){.seller-title{font-size:20px}.seller-metrics{grid-template-columns:1fr}.seller-row{grid-template-columns:1fr}.seller-panel-head{flex-direction:column}.seller-actions>.btn,.seller-actions>a,.seller-list>.btn{width:100%}.table-actions .btn{width:auto}}
   </style>
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
-<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=0533540f">
+<script src="/assets/js/lib/dark-mode.js?v=dc870218" defer></script>
 </head>
 <body>
   <main class="seller-shell pro-gated-content">
@@ -69,7 +69,7 @@
         </div>
         <div class="seller-actions">
           <button class="btn" type="button" id="saveNowBtn">Save on this device</button>
-          <button class="btn" type="button" id="resetDemoBtn">Load sample shop</button>
+          <button class="btn" type="button" id="resetDemoBtn">Load starter shop</button>
           <a class="btn primary" href="#setup">Start shop setup</a>
         </div>
       </header>
@@ -124,7 +124,7 @@
                     <div class="field"><label for="cloudBusinessSelect">Account shop</label><select id="cloudBusinessSelect" name="cloudBusinessSelect"></select><span class="field-help">Only shops your signed-in account can access appear here.</span></div>
                     <div class="field"><label>&nbsp;</label><div class="btn-row"><button class="btn primary" type="button" id="importLocalBtn">Save to account</button><button class="btn" type="button" id="pullCloudBtn">Load from account</button></div></div>
                   </div>
-                  <div class="seller-note warn">Account save can store shop, product, order, customer, delivery note, payment record, and stock rows. Product photos, proof images, live payment collection, storefront publishing, WhatsApp API sending, and delivery booking are not connected yet.</div>
+                  <div class="seller-note warn">Account save can store shop, product, order, customer, delivery note, payment record, and stock rows. Product photos, proof images, live payment collection, storefront publishing, WhatsApp API sending, and delivery booking are coming later.</div>
                 </div>
               </div>
             </section>
@@ -147,7 +147,7 @@
                     <div class="field"><label for="productVariant">Size/color/variant</label><input id="productVariant" name="productVariant" placeholder="Black, medium, 3-pack"></div>
                     <div class="field"><label for="productSupplier">Supplier</label><input id="productSupplier" name="productSupplier" placeholder="Balogun Market supplier"></div>
                     <div class="field"><label for="stockLocation">Location/bin</label><input id="stockLocation" name="stockLocation" placeholder="Shop shelf, home store, rider bag"></div>
-                    <div class="field"><label for="photoUrl">Product photo placeholder</label><input id="photoUrl" name="photoUrl" type="url" placeholder="https://..."><span class="field-help">Paste an image link for now. Photo upload is not connected yet.</span></div>
+                    <div class="field"><label for="photoUrl">Product photo placeholder</label><input id="photoUrl" name="photoUrl" type="url" placeholder="https://..."><span class="field-help">Paste an image link for now. Photo upload is coming later.</span></div>
                     <div class="field"><label for="costPrice">Cost price</label><input id="costPrice" name="costPrice" type="number" min="0" step="0.01"></div>
                     <div class="field"><label for="sellingPrice">Selling price</label><input id="sellingPrice" name="sellingPrice" type="number" min="0" step="0.01"></div>
                     <div class="field"><label for="stockOnHand">Stock on hand</label><input id="stockOnHand" name="stockOnHand" type="number" min="0" step="1"></div>
@@ -337,7 +337,7 @@
                   <button class="btn" type="button" id="exportInventoryMovementBtnSide">Inventory movement CSV</button>
                   <button class="btn primary" type="button" id="exportHandoffBtn">Branded receipt .md</button>
                 </div>
-                <div class="seller-note" style="margin-top:10px">Saved on this device. Use Load sample shop only when you want demo data on this device.</div>
+                <div class="seller-note" style="margin-top:10px">Saved on this device. Use Load starter shop only when you want example shop records on this device.</div>
               </div>
             </section>
           </aside>
@@ -804,8 +804,7 @@
       function catalogMarkdownLines() { var products = selectedCatalogProducts(); var settings = catalogSettings(); var lines = ["# " + (catalogShopName() || "Shop catalog preview"), "", "**Country:** " + (settings.country || state.business.country || "Not saved"), "**Currency:** " + catalogCurrency(), "**Contact:** " + (catalogShopPhone() || "Not saved"), "", "This is a shareable catalog draft. It is not a hosted storefront, checkout, payment collection page, or delivery quote engine.", ""]; products.forEach(function (product) { lines.push("## " + product.name, "- Category: " + (product.category || "Not saved"), "- Variant: " + productVariantLabel(product), "- Price: " + catalogPrice(product), "- Availability: " + catalogAvailability(product), "- Inquiry: contact " + (catalogShopPhone() || "the seller") + " to confirm details.", ""); }); return lines; }
       function exportCatalogMarkdown() { if (!selectedCatalogProducts().length) return setStatus("Add products before exporting a catalog preview."); downloadFile("afroseller-catalog-preview-" + slug(catalogShopName() || state.business.name) + ".md", catalogMarkdownLines().join("\n"), "text/markdown;charset=utf-8"); }
       function exportCatalogCsv() { var products = selectedCatalogProducts(); if (!products.length) return setStatus("Add products before exporting a customer catalog."); var csv = toCsv(["shop_name", "shop_phone_whatsapp", "country", "currency", "product_name", "category", "variant", "price", "availability", "inquiry_cta"], products.map(function (p) { return [catalogShopName(), catalogShopPhone(), catalogSettings().country, catalogCurrency(), p.name, p.category, productVariantLabel(p), catalogPrice(p), catalogAvailability(p), catalogShopPhone() ? "Ask on WhatsApp" : "Contact seller"]; })); downloadFile("afroseller-customer-catalog-" + slug(catalogShopName() || state.business.name) + ".csv", csv, "text/csv;charset=utf-8"); }
-      function printableCatalogHtml() { var settings = catalogSettings(); var brand = settings.brandColor || "#1455b8"; var cards = selectedCatalogProducts().map(function (product) { var image = product.photoUrl ? "<img src=\"" + escapeHtml(product.photoUrl) + "\" alt=\"\" style=\"width:100%;height:150px;object-fit:cover;border-radius:8px\">" : "<div style=\"height:150px;border:1px solid #d9e2ee;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;color:" + escapeHtml(brand) + ";font-weight:800\">Product image placeholder</div>"; return "<article style=\"border:1px solid #d9e2ee;border-radius:8px;padding:12px;break-inside:avoid\">" + image + "<h2 style=\"font-size:18px;margin:12px 0 4px\">" + escapeHtml(product.name) + "</h2><p style=\"margin:0 0 6px;color:#607086\">" + escapeHtml(product.category || "Uncategorised") + " | " + escapeHtml(productVariantLabel(product)) + "</p><p style=\"font-weight:800;margin:0 0 6px\">" + escapeHtml(catalogPrice(product)) + "</p><p style=\"margin:0;color:#607086\">" + escapeHtml(catalogAvailability(product)) + "</p></article>"; }).join(""); return "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow\"><title>" + escapeHtml(catalogShopName() || "Catalog preview") + "</title></head><body style=\"font-family:Arial,sans-serif;margin:24px;color:#102033\"><header style=\"border-bottom:4px solid " + escapeHtml(brand) + ";padding-bottom:12px;margin-bottom:18px\"><h1 style=\"margin:0\">" + escapeHtml(catalogShopName() || "Shop catalog preview") + "</h1><p style=\"margin:6px 0 0;color:#607086\">" + escapeHtml(settings.country || state.business.country || "Country not saved") + " | " + escapeHtml(catalogCurrency()) + " | " + escapeHtml(catalogShopPhone() || "Contact not saved") + "</p><p style=\"margin:6px 0 0;color:#607086\">Customer catalog export only. No hosted storefront, checkout, payment collection, or delivery quote engine.</p></header><main style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px\">" + cards + "</main><script src="/assets/js/components/pro-waitlist.js?v=1be0fd08"></script>
-</body></html>"; }
+      function printableCatalogHtml() { var settings = catalogSettings(); var brand = settings.brandColor || "#1455b8"; var cards = selectedCatalogProducts().map(function (product) { var image = product.photoUrl ? "<img src=\"" + escapeHtml(product.photoUrl) + "\" alt=\"\" style=\"width:100%;height:150px;object-fit:cover;border-radius:8px\">" : "<div style=\"height:150px;border:1px solid #d9e2ee;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;color:" + escapeHtml(brand) + ";font-weight:800\">Product image placeholder</div>"; return "<article style=\"border:1px solid #d9e2ee;border-radius:8px;padding:12px;break-inside:avoid\">" + image + "<h2 style=\"font-size:18px;margin:12px 0 4px\">" + escapeHtml(product.name) + "</h2><p style=\"margin:0 0 6px;color:#607086\">" + escapeHtml(product.category || "Uncategorised") + " | " + escapeHtml(productVariantLabel(product)) + "</p><p style=\"font-weight:800;margin:0 0 6px\">" + escapeHtml(catalogPrice(product)) + "</p><p style=\"margin:0;color:#607086\">" + escapeHtml(catalogAvailability(product)) + "</p></article>"; }).join(""); return "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow\"><title>" + escapeHtml(catalogShopName() || "Catalog preview") + "</title></head><body style=\"font-family:Arial,sans-serif;margin:24px;color:#102033\"><header style=\"border-bottom:4px solid " + escapeHtml(brand) + ";padding-bottom:12px;margin-bottom:18px\"><h1 style=\"margin:0\">" + escapeHtml(catalogShopName() || "Shop catalog preview") + "</h1><p style=\"margin:6px 0 0;color:#607086\">" + escapeHtml(settings.country || state.business.country || "Country not saved") + " | " + escapeHtml(catalogCurrency()) + " | " + escapeHtml(catalogShopPhone() || "Contact not saved") + "</p><p style=\"margin:6px 0 0;color:#607086\">Customer catalog export only. No hosted storefront, checkout, payment collection, or delivery quote engine.</p></header><main style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px\">" + cards + "</main></body></html>"; }
       function exportCatalogHtml() { if (!selectedCatalogProducts().length) return setStatus("Add products before exporting printable catalog HTML."); downloadFile("afroseller-printable-catalog-" + slug(catalogShopName() || state.business.name) + ".html", printableCatalogHtml(), "text/html;charset=utf-8"); }
       function catalogWhatsAppMessage() { var products = selectedCatalogProducts(); var lines = [(catalogShopName() || "Shop") + " catalog preview", "Contact: " + (catalogShopPhone() || "Not saved"), ""]; products.slice(0, 12).forEach(function (product, index) { lines.push((index + 1) + ". " + product.name + " - " + catalogPrice(product) + " - " + catalogAvailability(product) + " - " + productVariantLabel(product)); }); lines.push("", "Reply with the product name to ask questions. This catalog draft does not collect checkout payments or submit orders automatically."); return lines.join("\n"); }
       function copyCatalogMessage() { if (!selectedCatalogProducts().length) return setStatus("Add products before copying a catalog message."); copyText(catalogWhatsAppMessage(), "WhatsApp catalog message copied. Paste it manually where you want to share it."); }
@@ -856,7 +855,7 @@
         els.pullCloudBtn.addEventListener("click", pullCloudWorkspace);
         els.openWaLinkBtn.addEventListener("click", function (event) { if (els.openWaLinkBtn.getAttribute("aria-disabled") === "true") event.preventDefault(); });
         els.saveNowBtn.addEventListener("click", function () { readBusinessForm(); readCatalogSettingsForm(); saveState(); renderAll(); });
-        els.resetDemoBtn.addEventListener("click", function () { state = normalizeState(clone(demoState)); resetProductForm(); resetOrderForm(); resetCustomerForm(); saveState(); syncBusinessForm(); syncCatalogSettingsForm(); syncFinanceCloseForm(); renderAll(); setStatus("Sample workspace reset and saved on this device."); });
+        els.resetDemoBtn.addEventListener("click", function () { state = normalizeState(clone(demoState)); resetProductForm(); resetOrderForm(); resetCustomerForm(); saveState(); syncBusinessForm(); syncCatalogSettingsForm(); syncFinanceCloseForm(); renderAll(); setStatus("Starter workspace reset and saved on this device."); });
         [els.exportProductsBtn, els.exportProductsBtnSide].forEach(function (button) { button.addEventListener("click", exportProducts); });
         [els.exportInventoryValueBtn, els.exportInventoryValueBtnSide].forEach(function (button) { button.addEventListener("click", exportInventoryValue); });
         [els.exportReorderListBtn, els.exportReorderListBtnSide].forEach(function (button) { button.addEventListener("click", exportReorderList); });

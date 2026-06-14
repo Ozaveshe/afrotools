@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
   <meta property="og:title" content="Caril de Camarao Recipe | Mozambique | AfroKitchen">
   <meta property="og:description" content="Mozambican caril de camarão, prawns simmered briefly in coconut milk, tomato, curry spice, garlic, ginger, and piri-piri.">
   <meta property="og:image" content="https://afrotools.com/assets/img/kitchen-category-banner.webp">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,15 +25,15 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=32f6a027">
+  <link rel="stylesheet" href="/tools/afrokitchen/icon-system.css?v=e947352b">
   <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=d0ebe756">
-  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=5b092a80">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=f72d0d62">
   <style>
     .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
-    .ak-static-page .ak-static-helper-note,
-    .ak-static-page .ak-static-related-card { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
+    .ak-static-page .ak-static-helper-note { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
     .ak-static-page .ak-static-hero-card { padding: 24px; align-self: stretch; display: grid; gap: 16px; color: var(--ak-text); }
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
@@ -89,6 +89,7 @@
     .ak-static-page .ak-step-title { font-family: var(--font-body); font-size: 1.05rem; font-weight: 800; line-height: 1.25; }
     .ak-static-page .ak-step-text { max-width: 70ch; color: var(--ak-muted); font-size: 1.02rem; line-height: 1.7; }
     .ak-static-page .ak-step-tip { max-width: 68ch; border-radius: 18px; background: linear-gradient(180deg, var(--ak-accent-soft), #fff7df); }
+    .ak-static-page .ak-step-tip::before { content: none; }
     .ak-static-page .ak-static-step-actions { display: grid; gap: 10px; margin-top: 16px; }
     .ak-static-page .ak-static-timer-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; background: var(--ak-surface-soft); color: var(--ak-dark); width: fit-content; }
     .ak-static-page .ak-static-timer-label { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ak-subtle); }
@@ -99,14 +100,47 @@
     .ak-static-page .ak-static-helper-note p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-related { margin-top: 36px; }
     .ak-static-page .ak-static-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .ak-static-page .ak-static-related-card { padding: 20px; text-decoration: none; display: grid; gap: 10px; }
-    .ak-static-page .ak-static-related-card h3 { margin: 0; color: var(--ak-dark); font-size: 1.2rem; }
-    .ak-static-page .ak-static-related-card p { margin: 0; color: var(--ak-muted); line-height: 1.65; }
-    .ak-static-page .ak-static-card-meta { color: var(--ak-subtle); font-size: .92rem; }
+    .ak-static-page .ak-internal-link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .ak-static-page .ak-internal-link-group { min-width: 0; padding: 18px; border-radius: 20px; background: var(--ak-panel); border: 1px solid var(--ak-line); box-shadow: var(--ak-shadow-sm); }
+    .ak-static-page .ak-internal-link-group p { margin: 6px 0 14px; color: var(--ak-muted); line-height: 1.6; }
+    .ak-static-page .ak-internal-link-list { display: grid; gap: 9px; }
+    .ak-static-page .ak-internal-link { display: grid; gap: 3px; padding: 11px 12px; border-radius: 14px; background: var(--ak-bg); border: 1px solid var(--ak-line); color: var(--ak-dark); text-decoration: none; }
+    .ak-static-page .ak-internal-link span { font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+    .ak-static-page .ak-internal-link small { color: var(--ak-muted); line-height: 1.35; }
+    .ak-static-page .ak-internal-link:hover,
+    .ak-static-page .ak-internal-link:focus-visible { border-color: var(--ak-primary-border); color: var(--ak-primary-deep); outline: none; }
+    .ak-static-page .ak-static-recipe-card { min-width: 0; display: grid; grid-template-columns: minmax(112px, .34fr) minmax(0, 1fr); overflow: hidden; text-decoration: none; color: var(--ak-text); background: #fffdfa; border: 1px solid rgba(82,50,28,.14); border-radius: 18px; box-shadow: 0 12px 28px rgba(36,21,10,.06); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+    .ak-static-page .ak-static-recipe-card:not(.has-thumb) { grid-template-columns: 1fr; }
+    .ak-static-page .ak-static-recipe-card:hover,
+    .ak-static-page .ak-static-recipe-card:focus-visible { transform: translateY(-3px); border-color: rgba(199,62,29,.34); box-shadow: 0 18px 34px rgba(36,21,10,.1); outline: none; }
+    .ak-static-page .ak-static-recipe-card:focus-visible { box-shadow: 0 0 0 4px rgba(199,62,29,.16), 0 18px 34px rgba(36,21,10,.1); }
+    .ak-static-page .ak-static-recipe-card-thumb { min-width: 0; min-height: 100%; background: var(--ak-surface-soft); overflow: hidden; }
+    .ak-static-page .ak-static-recipe-card-thumb img { display: block; width: 100%; height: 100%; min-height: 188px; object-fit: cover; }
+    .ak-static-page .ak-static-recipe-card-fallback { min-height: 156px; display: grid; align-content: end; gap: 12px; padding: 18px; background:
+      radial-gradient(circle at 18% 20%, rgba(15,123,67,.18), transparent 28%),
+      linear-gradient(135deg, #fff7ec, #f6eadb 58%, #eef6e7); border-bottom: 1px solid rgba(82,50,28,.12); }
+    .ak-static-page .ak-fallback-mark { width: 44px; height: 44px; display: inline-grid; place-items: center; border-radius: 50%; background: #2d1b12; color: #fff8ef; font-weight: 900; letter-spacing: .06em; }
+    .ak-static-page .ak-fallback-copy { display: grid; gap: 4px; min-width: 0; }
+    .ak-static-page .ak-fallback-copy strong { color: #2d1b12; line-height: 1.12; overflow-wrap: anywhere; }
+    .ak-static-page .ak-fallback-copy small { color: #6c503b; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-body { min-width: 0; display: grid; align-content: start; gap: 12px; padding: 18px; }
+    .ak-static-page .ak-static-recipe-card-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ak-static-page .ak-static-recipe-badge { display: inline-flex; align-items: center; min-height: 28px; max-width: 100%; padding: 0 10px; border-radius: 999px; background: #fff4e6; border: 1px solid rgba(82,50,28,.12); color: #573723; font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ak-static-page .ak-static-recipe-badge:first-child { background: #f4fbef; border-color: rgba(15,123,67,.16); color: #245b35; }
+    .ak-static-page .ak-static-recipe-card-title { color: var(--ak-dark); font-family: var(--font-display); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.02; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; color: var(--ak-muted); line-height: 1.58; font-size: .93rem; }
+    .ak-static-page .ak-static-recipe-card-meta { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+    .ak-static-page .ak-static-recipe-card-meta > span { gap: 7px; min-width: 0; max-width: 100%; padding: 7px 9px; border-radius: 12px; background: #fff6ea; border: 1px solid rgba(82,50,28,.1); color: #4c3322; font-size: .76rem; }
+    .ak-static-page .ak-static-recipe-card-meta small { display: block; color: #8b6e58; font-size: .62rem; font-weight: 850; letter-spacing: .08em; line-height: 1.1; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-meta strong { display: block; min-width: 0; color: #2b1b12; line-height: 1.2; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-cta { display: inline-flex; align-items: center; gap: 7px; justify-self: start; margin-top: 2px; color: var(--ak-primary-deep); font-size: .78rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card:hover .ak-static-recipe-card-cta,
+    .ak-static-page .ak-static-recipe-card:focus-visible .ak-static-recipe-card-cta { color: var(--ak-primary); }
     .ak-static-page .ak-static-credit { font-size: .88rem; color: var(--ak-subtle); }
     @media (max-width: 960px) {
       .ak-static-page .ak-static-summary-grid,
       .ak-static-page .ak-static-related-grid,
+      .ak-static-page .ak-internal-link-grid,
       .ak-static-page .ak-photo-gallery-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
       .ak-static-page .ak-photo-gallery-head { align-items: start; flex-direction: column; }
@@ -128,14 +162,15 @@
       .ak-static-page .ak-photo-thumbs { grid-template-columns: 1fr; }
       .ak-static-page .ak-photo-thumbs figure { aspect-ratio: 4 / 3; }
       .ak-static-page .ak-nutrition { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card.has-thumb { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card-thumb img { min-height: 180px; }
       .ak-static-page .ak-step { padding: 76px 20px 22px; }
       .ak-static-page .ak-step-num { left: 20px; top: 20px; }
     }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Caril de Camarao","description":"Mozambican caril de camarão, prawns simmered briefly in coconut milk, tomato, curry spice, garlic, ginger, and piri-piri.","image":["https://afrotools.com/assets/img/kitchen-category-banner.webp"],"author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT20M","cookTime":"PT30M","totalTime":"PT50M","recipeYield":"4 servings","recipeCategory":"Main Course","recipeCuisine":"Mozambique, East Africa","nutrition":{"@type":"NutritionInformation","calories":"320 calories","proteinContent":"28g","carbohydrateContent":"12g","fatContent":"18g","fiberContent":"2g"},"recipeIngredient":["800 g large prawns, peeled, deveined","1 whole onion, diced","3 cloves garlic, minced","1 inch ginger, grated","3 whole tomatoes, chopped","400 ml coconut milk","1 tbsp curry powder","½ tsp turmeric","1 whole red chili, sliced","2 tbsp olive oil","1 tsp salt","¼ cup fresh cilantro, chopped","1 whole lime, wedged"],"recipeInstructions":[{"@type":"HowToStep","name":"Saute Aromatics","text":"Heat olive oil in a wide pan. Saute onion, garlic, and ginger until soft and fragrant.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Build Sauce","text":"Add curry powder, turmeric, and chili. Stir for 30 seconds. Add chopped tomatoes and cook until they break down into a sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Add Coconut Milk","text":"Pour in coconut milk and stir well. Bring to a gentle simmer and cook for 5 minutes to meld flavors.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Cook Prawns","text":"Add prawns to the sauce in a single layer. Cook for 2-3 minutes per side until pink and curled. Do not overcook.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Serve","text":"Garnish with fresh cilantro and lime wedges. Serve over steamed rice or with crusty bread to soak up the sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","keywords":"caril-de-camarao, prawn-curry, coconut, mozambique, coastal, gluten-free, dairy-free, nut-free, pescatarian, Caril de Camarão","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Caril de Camarao","description":"Mozambican caril de camarão, prawns simmered briefly in coconut milk, tomato, curry spice, garlic, ginger, and piri-piri.","image":["https://afrotools.com/assets/img/kitchen-category-banner.webp"],"author":{"@type":"Organization","name":"AfroKitchen"},"datePublished":"2026-03-18","prepTime":"PT20M","cookTime":"PT30M","totalTime":"PT50M","recipeYield":"4 servings","recipeCategory":"Main dish","recipeCuisine":"Mozambique, East Africa","nutrition":{"@type":"NutritionInformation","calories":"320 calories","proteinContent":"28g","carbohydrateContent":"12g","fatContent":"18g","fiberContent":"2g"},"recipeIngredient":["800 g large prawns, peeled, deveined","1 whole onion, diced","3 cloves garlic, minced","1 inch ginger, grated","3 whole tomatoes, chopped","400 ml coconut milk","1 tbsp curry powder","½ tsp turmeric","1 whole red chili, sliced","2 tbsp olive oil","1 tsp salt","¼ cup fresh cilantro, chopped","1 whole lime, wedged"],"recipeInstructions":[{"@type":"HowToStep","name":"Saute Aromatics","text":"Heat olive oil in a wide pan. Saute onion, garlic, and ginger until soft and fragrant.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Build Sauce","text":"Add curry powder, turmeric, and chili. Stir for 30 seconds. Add chopped tomatoes and cook until they break down into a sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Add Coconut Milk","text":"Pour in coconut milk and stir well. Bring to a gentle simmer and cook for 5 minutes to meld flavors.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Cook Prawns","text":"Add prawns to the sauce in a single layer. Cook for 2-3 minutes per side until pink and curled. Do not overcook.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Serve","text":"Garnish with fresh cilantro and lime wedges. Serve over steamed rice or with crusty bread to soak up the sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/","publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"dateModified":"2026-05-16","isAccessibleForFree":true,"keywords":"caril-de-camarao, prawn-curry, coconut, mozambique, coastal, gluten-free, dairy-free, nut-free, pescatarian, Caril de Camarão","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/"}}</script>
+
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Mozambique","item":"https://afrotools.com/tools/afrokitchen/countries/mozambique/"},{"@type":"ListItem","position":5,"name":"Caril de Camarao","item":"https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/"}]}</script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/recipes/caril-de-camarao/" />
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -157,8 +192,8 @@
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">easy</div></div>
         </div>
         <div class="ak-hero-actions">
-          <a href="/tools/afrokitchen/countries/mozambique/" class="ak-btn ak-btn-secondary">Explore Mozambique recipes</a>
-          <a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary">Browse AfroKitchen</a>
+          <a href="/tools/afrokitchen/countries/mozambique/" class="ak-btn ak-btn-secondary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Explore Mozambique recipes</span></a>
+          <a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9h12l-1 10H7L6 9Z"></path><path d="M9 9a3 3 0 0 1 6 0"></path></svg><span>Browse AfroKitchen</span></a>
         </div>
       </div>
       <aside class="ak-static-hero-card">
@@ -190,7 +225,7 @@
           </div>
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>Best for everyday meals, with a easy cooking level and about 50 minutes total.</p>
+            <p>Best for everyday meals. Plan on a easy cook and about 50 minutes total.</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
@@ -199,7 +234,7 @@
 
           <div class="ak-static-summary-card ak-intel-card">
             <strong>Regional lane</strong>
-            <p>Mozambique national table. A verified Mozambique dish in the AfroKitchen archive.</p>
+            <p>Mozambique national table. A structured Mozambique dish in the AfroKitchen archive.</p>
           </div>
           <div class="ak-static-summary-card ak-intel-card">
             <strong>Chef watch-outs</strong>
@@ -213,23 +248,7 @@
         </div>
       </div>
 
-      <section class="ak-photo-gallery" aria-label="Caril de Camarao photos">
-        <div class="ak-photo-gallery-head">
-          <div>
-            <div class="ak-section-kicker">Recipe photos</div>
-            <h2 class="ak-section-title">See the dish before you cook</h2>
-          </div>
-          <p>Each recipe supports one main image and up to four extra prep, serving, or step photos when they are available.</p>
-        </div>
-        <div class="ak-photo-gallery-grid is-single">
-          <figure class="ak-photo-main">
-            <img src="/assets/img/kitchen-category-banner.webp" alt="AfroKitchen recipe collection artwork for Caril de Camarao" loading="lazy" decoding="async">
-            <figcaption>Caril de Camarao finished dish</figcaption>
-          </figure>
 
-        </div>
-
-      </section>
       <section class="ak-intel-panel ak-recipe-intel-panel">
     <div>
       <div class="ak-section-kicker">Chef board</div>
@@ -253,9 +272,9 @@
         <div class="ak-static-serving-bar">
           <div class="ak-servings">
             <span class="ak-servings-label">Servings</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)">-</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease servings">-</button>
             <span class="ak-servings-val" id="ak-static-servings">4</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)">+</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase servings">+</button>
           </div>
           <p class="ak-static-serving-note">Scale the dish before you shop, then use the checklist while you cook.</p>
         </div>
@@ -351,12 +370,14 @@
                 <h2 class="ak-panel-title">Step-by-step method</h2>
                 <p class="ak-method-sub">Keep the rhythm calm, watch the texture, and adjust seasoning at the end.</p>
               </div>
-              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/mozambique/">Back to Mozambique</a>
+              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/mozambique/"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Back to Mozambique</span></a>
             </div>
             <div class="ak-method-stat-row">
-              <span>5 steps</span>
-              <span>50 min total</span>
-              <span>easy</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg>5 steps</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>20 min prep</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>30 min cook</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>50 min total</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg>easy</span>
             </div>
             <div class="ak-steps"><article class="ak-step" id="step-1">
         <div class="ak-step-header">
@@ -367,12 +388,13 @@
 
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Saute</span>
               <strong id="ak-timer-display-1">08:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-1" onclick="AKStaticRecipePage.toggleTimer(1, 480)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(1, 480)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-1" onclick="AKStaticRecipePage.toggleTimer(1, 480)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(1, 480)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-1" style="width:100%"></div></div>
           </div>
@@ -383,15 +405,16 @@
           <div class="ak-step-title">Build Sauce</div>
         </div>
         <div class="ak-step-text">Add curry powder, turmeric, and chili. Stir for 30 seconds. Add chopped tomatoes and cook until they break down into a sauce.</div>
-        <div class="ak-step-tip">Toast the spices briefly before adding tomatoes to deepen their flavor.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Toast the spices briefly before adding tomatoes to deepen their flavor.</span></div>
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Cook tomatoes</span>
               <strong id="ak-timer-display-2">10:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-2" onclick="AKStaticRecipePage.toggleTimer(2, 600)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(2, 600)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-2" onclick="AKStaticRecipePage.toggleTimer(2, 600)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(2, 600)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-2" style="width:100%"></div></div>
           </div>
@@ -405,12 +428,13 @@
 
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Simmer</span>
               <strong id="ak-timer-display-3">05:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-3" onclick="AKStaticRecipePage.toggleTimer(3, 300)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(3, 300)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-3" onclick="AKStaticRecipePage.toggleTimer(3, 300)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(3, 300)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-3" style="width:100%"></div></div>
           </div>
@@ -421,15 +445,16 @@
           <div class="ak-step-title">Cook Prawns</div>
         </div>
         <div class="ak-step-text">Add prawns to the sauce in a single layer. Cook for 2-3 minutes per side until pink and curled. Do not overcook.</div>
-        <div class="ak-step-tip">Prawns cook quickly — remove from heat as soon as they turn pink to keep them tender.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Prawns cook quickly — remove from heat as soon as they turn pink to keep them tender.</span></div>
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Cook prawns</span>
               <strong id="ak-timer-display-4">06:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-4" onclick="AKStaticRecipePage.toggleTimer(4, 360)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(4, 360)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-4" onclick="AKStaticRecipePage.toggleTimer(4, 360)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(4, 360)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-4" style="width:100%"></div></div>
           </div>
@@ -440,46 +465,198 @@
           <div class="ak-step-title">Serve</div>
         </div>
         <div class="ak-step-text">Garnish with fresh cilantro and lime wedges. Serve over steamed rice or with crusty bread to soak up the sauce.</div>
-        <div class="ak-step-tip">This curry is best served immediately — prawns toughen if left sitting in hot sauce.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">This curry is best served immediately — prawns toughen if left sitting in hot sauce.</span></div>
 
       </article></div>
             <div class="ak-static-helper-note">
-              <p>Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.</p>
+              <p><svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3 22 20H2L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><span>Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.</span></p>
             </div>
           </section>
         </div>
       </div>
 
-      <section class="ak-section ak-static-related">
+      <section class="ak-section ak-static-related ak-internal-link-section">
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
-      <h2 class="ak-section-title">More AfroKitchen dishes from the same food atlas</h2>
-      <p class="ak-section-sub">Try another dish from the same country, region, or cooking mood.</p>
+      <h2 class="ak-section-title">Cook around Caril de Camarao</h2>
+      <p class="ak-section-sub">Follow country, category, collection, time, and pairing paths without turning the recipe page into a link farm.</p>
     </div>
-    <div class="ak-static-related-grid"><a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/badjia-mz/">
-        <div class="ak-support-label">Mozambique | Snack</div>
-        <h3>Badjia</h3>
-        <p>Badjia is a Mozambique snack built around black-eyed pea paste, onion and chili, and the serving logic of piri piri sauce.</p>
-        <div class="ak-static-card-meta">50 min | Snack</div>
+    <div class="ak-static-related-grid"><a class="ak-static-recipe-card has-fallback" href="/tools/afrokitchen/recipes/badjia-mz/" aria-label="Open recipe: Badjia">
+    <span class="ak-static-recipe-card-fallback" aria-hidden="true">
+    <span class="ak-fallback-mark">MZ</span>
+    <span class="ak-fallback-copy"><strong>Badjia</strong><small>Mozambique - Snack</small></span>
+  </span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Mozambique</span>
+        <span class="ak-static-recipe-badge">Snack</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Badjia</span>
+      <span class="ak-static-recipe-card-desc">Badjia is a snack with black-eyed pea paste, onion and chili. Serve</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>50 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Dairy Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>East Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-fallback" href="/tools/afrokitchen/recipes/xima-mz/" aria-label="Open recipe: Xima">
+    <span class="ak-static-recipe-card-fallback" aria-hidden="true">
+    <span class="ak-fallback-mark">MZ</span>
+    <span class="ak-fallback-copy"><strong>Xima</strong><small>Mozambique - Recipe</small></span>
+  </span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Mozambique</span>
+        <span class="ak-static-recipe-badge">Recipe</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Xima</span>
+      <span class="ak-static-recipe-card-desc">Xima is a starch with maize meal, water and salt. Serve</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>50 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Dairy Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>East Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-fallback" href="/tools/afrokitchen/recipes/sumo-de-caju-mz/" aria-label="Open recipe: Sumo de Caju">
+    <span class="ak-static-recipe-card-fallback" aria-hidden="true">
+    <span class="ak-fallback-mark">MZ</span>
+    <span class="ak-fallback-copy"><strong>Sumo de Caju</strong><small>Mozambique - Recipe</small></span>
+  </span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Mozambique</span>
+        <span class="ak-static-recipe-badge">Recipe</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Sumo de Caju</span>
+      <span class="ak-static-recipe-card-desc">Sumo de Caju is a drink with cashew fruit pulp, lime and sugar. Serve</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>35 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 8</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Vegetarian</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>East Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-fallback" href="/tools/afrokitchen/recipes/bolo-polanna-mz/" aria-label="Open recipe: Bolo Polana">
+    <span class="ak-static-recipe-card-fallback" aria-hidden="true">
+    <span class="ak-fallback-mark">MZ</span>
+    <span class="ak-fallback-copy"><strong>Bolo Polana</strong><small>Mozambique - Dessert</small></span>
+  </span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Mozambique</span>
+        <span class="ak-static-recipe-badge">Dessert</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Bolo Polana</span>
+      <span class="ak-static-recipe-card-desc">Bolo Polana is a dessert with cashew nuts and potato, citrus and vanilla. Serve</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>75 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Dairy Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>East Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a></div>
+    <div class="ak-internal-link-grid"><article class="ak-internal-link-group">
+        <div class="ak-support-label">More Mozambique recipes</div>
+        <p>Stay inside the Mozambique country hub.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/badjia-mz/">
+        <span>Badjia</span>
+        <small>Mozambique - Snack - 50 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/bolo-polanna-mz/">
-        <div class="ak-support-label">Mozambique | Dessert</div>
-        <h3>Bolo Polana</h3>
-        <p>Bolo Polana is a Mozambique dessert built around cashew nuts and potato, citrus and vanilla, and the serving logic of tea or co...</p>
-        <div class="ak-static-card-meta">75 min | Dessert</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/xima-mz/">
+        <span>Xima</span>
+        <small>Mozambique - Recipe - 50 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/matapa/">
-        <div class="ak-support-label">Mozambique | Stew</div>
-        <h3>Matapa</h3>
-        <p>Mozambican matapa, pounded cassava leaves simmered with ground peanuts, coconut milk, garlic, piri-piri, and shrimp.</p>
-        <div class="ak-static-card-meta">105 min | Stew</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/sumo-de-caju-mz/">
+        <span>Sumo de Caju</span>
+        <small>Mozambique - Recipe - 35 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/matapa-mz/">
-        <div class="ak-support-label">Mozambique | Stew</div>
-        <h3>Matapa</h3>
-        <p>Matapa is a Mozambique stew built around cassava leaves, peanut, coconut, and seafood, and the serving logic of xima or rice.</p>
-        <div class="ak-static-card-meta">95 min | Stew</div>
-      </a></div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/bolo-polanna-mz/">
+        <span>Bolo Polana</span>
+        <small>Mozambique - Dessert - 75 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">More main dish recipes</div>
+        <p>Compare dishes in the same course or cooking style.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/attieke-poisson-ci/">
+        <span>Attiéké with Grilled Fish</span>
+        <small>Ivory Coast - Main dish - 55 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/papa-le-moroho-ls/">
+        <span>Papa le Moroho</span>
+        <small>Lesotho - Main dish - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/ugali-na-sukuma-wiki/">
+        <span>Ugali na Sukuma Wiki</span>
+        <small>Kenya - Main dish - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/amiwo-bj/">
+        <span>Amiwo</span>
+        <small>Benin - Main dish - 60 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Similar cooking time</div>
+        <p>Pick another dish with a nearby time commitment.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/attieke-poisson-ci/">
+        <span>Attiéké with Grilled Fish</span>
+        <small>Ivory Coast - Main dish - 55 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/kuli-kuli-bj/">
+        <span>Kuli-Kuli</span>
+        <small>Benin - Snack - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/papa-le-moroho-ls/">
+        <span>Papa le Moroho</span>
+        <small>Lesotho - Main dish - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/ugali-na-sukuma-wiki/">
+        <span>Ugali na Sukuma Wiki</span>
+        <small>Kenya - Main dish - 45 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Build a fuller table</div>
+        <p>Pair a main, side, drink, or dessert where the atlas has a useful match.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/piri-piri-chicken/">
+        <span>Piri Piri Chicken</span>
+        <small>Mozambique - Main dish - 305 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/asida/">
+        <span>Asida</span>
+        <small>South Sudan - Side - 25 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/chocolate-quente-st/">
+        <span>Sao Tomean Hot Chocolate</span>
+        <small>São Tomé and Príncipe - Drink - 17 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/bolo-polanna-mz/">
+        <span>Bolo Polana</span>
+        <small>Mozambique - Dessert - 75 min</small>
+      </a>
+        </div>
+      </article></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
       <a href="/tools/afrokitchen/countries/mozambique/" class="ak-btn ak-btn-outline">Explore Mozambique recipes</a>
@@ -489,10 +666,10 @@
   </section>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/engines/afrokitchen-engine.js?v=b9ee3f19"></script>
-<script>window.__AK_STATIC_RECIPE = {"slug":"caril-de-camarao","name":"Caril de Camarao","description":"Mozambican caril de camarão, prawns simmered briefly in coconut milk, tomato, curry spice, garlic, ginger, and piri-piri.","story":"The sauce can take its time, but the prawns cannot. Build the curry first, then add seafood at the end and stop as soon as it curls.","default_servings":4,"serving_unit":"servings","country_name":"Mozambique","country_code":"MZ","region":"East Africa","difficulty":"easy","category":"main","calories":320,"protein_g":28,"carbs_g":12,"fat_g":18,"fiber_g":2,"ingredients":[{"id":"3bd4c638-f999-4b9f-ae6d-68c4819a6da4","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":1,"group_name":"Prawns","amount":800,"unit":"g","name":"large prawns","prep_note":"peeled, deveined","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3ea38e2d-5019-4c50-9881-7064e1b10926","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":2,"group_name":"Curry","amount":1,"unit":"whole","name":"onion","prep_note":"diced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"e31b608b-c249-4c51-817c-8ade6ad7cc16","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":3,"group_name":"Curry","amount":3,"unit":"cloves","name":"garlic","prep_note":"minced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"a4ac7544-880d-477d-8f5a-29bee6b65c6a","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":4,"group_name":"Curry","amount":1,"unit":"inch","name":"ginger","prep_note":"grated","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"c2d3d71d-9840-4aea-8f12-bffe62112ac1","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":5,"group_name":"Curry","amount":3,"unit":"whole","name":"tomatoes","prep_note":"chopped","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"c27be22c-87da-423d-9f61-1d998b44f671","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":6,"group_name":"Curry","amount":400,"unit":"ml","name":"coconut milk","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"92ba5b18-b52a-48c7-90f3-72e3a0362279","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":7,"group_name":"Curry","amount":1,"unit":"tbsp","name":"curry powder","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"4714a8bd-fba0-4201-9827-f2ee88071fdc","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":8,"group_name":"Curry","amount":0.5,"unit":"tsp","name":"turmeric","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"73a982e8-514f-40d6-88ad-5c250b7ac855","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":9,"group_name":"Curry","amount":1,"unit":"whole","name":"red chili","prep_note":"sliced","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"71725fad-794d-4621-aa4f-3407bd29213c","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":10,"group_name":"Curry","amount":2,"unit":"tbsp","name":"olive oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"a0adfb1c-5822-436b-9c11-dd0b8e686871","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":11,"group_name":"Curry","amount":1,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3c851eaa-a11e-4493-9c40-58a610d3e9be","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":12,"group_name":"Garnish","amount":0.25,"unit":"cup","name":"fresh cilantro","prep_note":"chopped","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"6a4612cb-8fb0-42fb-8c3a-5453ef88a37b","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":13,"group_name":"Garnish","amount":1,"unit":"whole","name":"lime","prep_note":"wedged","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"steps":[{"id":"92074151-a275-4396-9be4-710b59fbfe72","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":1,"title":"Saute Aromatics","instruction":"Heat olive oil in a wide pan. Saute onion, garlic, and ginger until soft and fragrant.","timer_seconds":480,"timer_label":"Saute","tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"b345232d-9a27-462c-8223-f4799dd48fe4","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":2,"title":"Build Sauce","instruction":"Add curry powder, turmeric, and chili. Stir for 30 seconds. Add chopped tomatoes and cook until they break down into a sauce.","timer_seconds":600,"timer_label":"Cook tomatoes","tip":"Toast the spices briefly before adding tomatoes to deepen their flavor.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"741fde7a-c3de-45aa-9d1a-7a619ef89944","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":3,"title":"Add Coconut Milk","instruction":"Pour in coconut milk and stir well. Bring to a gentle simmer and cook for 5 minutes to meld flavors.","timer_seconds":300,"timer_label":"Simmer","tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"8d6da968-2406-45ea-b68c-1738bdb50e49","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":4,"title":"Cook Prawns","instruction":"Add prawns to the sauce in a single layer. Cook for 2-3 minutes per side until pink and curled. Do not overcook.","timer_seconds":360,"timer_label":"Cook prawns","tip":"Prawns cook quickly — remove from heat as soon as they turn pink to keep them tender.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"b111ad2a-f7f1-45e4-841e-a0d10d5b9256","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":5,"title":"Serve","instruction":"Garnish with fresh cilantro and lime wedges. Serve over steamed rice or with crusty bread to soak up the sauce.","timer_seconds":null,"timer_label":null,"tip":"This curry is best served immediately — prawns toughen if left sitting in hot sauce.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"gallery_images":[{"src":"/assets/img/kitchen-category-banner.webp","alt":"AfroKitchen recipe collection artwork for Caril de Camarao","caption":"Caril de Camarao finished dish","credit":null}],"region_lens":{"slug":"national-table","name":"Mozambique national table","description":"A verified Mozambique dish in the AfroKitchen archive.","confidence":"medium","match_reason":"country-level fallback"},"chef_notes":{"common_mistakes":["Rushing the base before the raw edge has cooked out.","Adding all seasoning early and forgetting to adjust at the end.","Cooking on heat that is too high once the dish should be steaming or simmering."],"readiness_cues":["The aroma should smell rounded rather than raw or sharp.","Oil, sauce, broth, or steam should look settled and deliberate.","The final texture should match the dish style before you plate it."],"pantry_notes":[],"technique_notes":[],"serve_with":"White rice, xima, lemon wedges, or simple tomato salad"},"image_status":{"status":"hero-ready","gallery_count":1,"hero_ready":true,"hero_src":"/assets/img/kitchen-category-banner.webp","local_image_count":0,"sources":["/assets/img/kitchen-category-banner.webp"],"missing_roles":["serving","ingredients","process","table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"caril-de-camarao.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, a Mozambique main, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"caril-de-camarao-2.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, a Mozambique main, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"caril-de-camarao-3.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, a Mozambique main, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"caril-de-camarao-4.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, a Mozambique main, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"caril-de-camarao-5.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, a Mozambique main, dish on table with realistic accompaniments and serving utensils."}]}};</script>
-<script src="/tools/afrokitchen/static-recipe-runtime.js?v=6efc4827" defer></script>
+<script>window.__AK_STATIC_RECIPE = {"slug":"caril-de-camarao","name":"Caril de Camarao","description":"Mozambican caril de camarão, prawns simmered briefly in coconut milk, tomato, curry spice, garlic, ginger, and piri-piri.","story":"The sauce can take its time, but the prawns cannot. Build the curry first, then add seafood at the end and stop as soon as it curls.","default_servings":4,"serving_unit":"servings","country_name":"Mozambique","country_code":"MZ","region":"East Africa","difficulty":"easy","category":"main","calories":320,"protein_g":28,"carbs_g":12,"fat_g":18,"fiber_g":2,"ingredients":[{"id":"3bd4c638-f999-4b9f-ae6d-68c4819a6da4","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":1,"group_name":"Prawns","amount":800,"unit":"g","name":"large prawns","prep_note":"peeled, deveined","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3ea38e2d-5019-4c50-9881-7064e1b10926","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":2,"group_name":"Curry","amount":1,"unit":"whole","name":"onion","prep_note":"diced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"e31b608b-c249-4c51-817c-8ade6ad7cc16","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":3,"group_name":"Curry","amount":3,"unit":"cloves","name":"garlic","prep_note":"minced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"a4ac7544-880d-477d-8f5a-29bee6b65c6a","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":4,"group_name":"Curry","amount":1,"unit":"inch","name":"ginger","prep_note":"grated","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"c2d3d71d-9840-4aea-8f12-bffe62112ac1","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":5,"group_name":"Curry","amount":3,"unit":"whole","name":"tomatoes","prep_note":"chopped","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"c27be22c-87da-423d-9f61-1d998b44f671","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":6,"group_name":"Curry","amount":400,"unit":"ml","name":"coconut milk","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"92ba5b18-b52a-48c7-90f3-72e3a0362279","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":7,"group_name":"Curry","amount":1,"unit":"tbsp","name":"curry powder","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"4714a8bd-fba0-4201-9827-f2ee88071fdc","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":8,"group_name":"Curry","amount":0.5,"unit":"tsp","name":"turmeric","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"73a982e8-514f-40d6-88ad-5c250b7ac855","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":9,"group_name":"Curry","amount":1,"unit":"whole","name":"red chili","prep_note":"sliced","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"71725fad-794d-4621-aa4f-3407bd29213c","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":10,"group_name":"Curry","amount":2,"unit":"tbsp","name":"olive oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"a0adfb1c-5822-436b-9c11-dd0b8e686871","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":11,"group_name":"Curry","amount":1,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3c851eaa-a11e-4493-9c40-58a610d3e9be","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":12,"group_name":"Garnish","amount":0.25,"unit":"cup","name":"fresh cilantro","prep_note":"chopped","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"6a4612cb-8fb0-42fb-8c3a-5453ef88a37b","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","ingredient_id":null,"sort_order":13,"group_name":"Garnish","amount":1,"unit":"whole","name":"lime","prep_note":"wedged","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"steps":[{"id":"92074151-a275-4396-9be4-710b59fbfe72","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":1,"title":"Saute Aromatics","instruction":"Heat olive oil in a wide pan. Saute onion, garlic, and ginger until soft and fragrant.","timer_seconds":480,"timer_label":"Saute","tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"b345232d-9a27-462c-8223-f4799dd48fe4","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":2,"title":"Build Sauce","instruction":"Add curry powder, turmeric, and chili. Stir for 30 seconds. Add chopped tomatoes and cook until they break down into a sauce.","timer_seconds":600,"timer_label":"Cook tomatoes","tip":"Toast the spices briefly before adding tomatoes to deepen their flavor.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"741fde7a-c3de-45aa-9d1a-7a619ef89944","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":3,"title":"Add Coconut Milk","instruction":"Pour in coconut milk and stir well. Bring to a gentle simmer and cook for 5 minutes to meld flavors.","timer_seconds":300,"timer_label":"Simmer","tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"8d6da968-2406-45ea-b68c-1738bdb50e49","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":4,"title":"Cook Prawns","instruction":"Add prawns to the sauce in a single layer. Cook for 2-3 minutes per side until pink and curled. Do not overcook.","timer_seconds":360,"timer_label":"Cook prawns","tip":"Prawns cook quickly — remove from heat as soon as they turn pink to keep them tender.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"b111ad2a-f7f1-45e4-841e-a0d10d5b9256","recipe_id":"48a50381-b92e-4fba-b739-a78b57cb291c","step_number":5,"title":"Serve","instruction":"Garnish with fresh cilantro and lime wedges. Serve over steamed rice or with crusty bread to soak up the sauce.","timer_seconds":null,"timer_label":null,"tip":"This curry is best served immediately — prawns toughen if left sitting in hot sauce.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"gallery_images":[],"region_lens":{"slug":"national-table","name":"Mozambique national table","description":"A structured Mozambique dish in the AfroKitchen archive.","confidence":"medium","match_reason":"country-level fallback"},"chef_notes":{"common_mistakes":["Rushing the base before the raw edge has cooked out.","Adding all seasoning early and forgetting to adjust at the end.","Cooking on heat that is too high once the dish should be steaming or simmering."],"readiness_cues":["The aroma should smell rounded rather than raw or sharp.","Oil, sauce, broth, or steam should look settled and deliberate.","The final texture should match the dish style before you plate it."],"pantry_notes":[],"technique_notes":[],"serve_with":"White rice, xima, lemon wedges, or simple tomato salad"},"image_status":{"status":"missing","gallery_count":0,"hero_ready":false,"hero_src":"","local_image_count":0,"sources":[],"missing_roles":["hero","serving","ingredients","process","table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"caril-de-camarao.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, main from Mozambique, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"caril-de-camarao-2.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, main from Mozambique, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"caril-de-camarao-3.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, main from Mozambique, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"caril-de-camarao-4.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, main from Mozambique, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"caril-de-camarao-5.webp","route_path":"/tools/afrokitchen/recipes/caril-de-camarao/","prompt":"Finished Caril de Camarao, main from Mozambique, dish on table with realistic accompaniments and serving utensils."}]}};</script>
+<script src="/tools/afrokitchen/static-recipe-runtime.js?v=a7d9608d" defer></script>
 </body>
 </html>

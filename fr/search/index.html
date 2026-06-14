@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -22,9 +22,9 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<script src="/assets/js/components/tool-registry.min.js?v=eeae581c" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=c844e41b" defer></script>
 <style>
 body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);margin:0;-webkit-font-smoothing:antialiased}
 .wrap{max-width:800px;margin:0 auto;padding:0 24px}
@@ -59,8 +59,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--col
 function _initSearchFr(){
 var input=document.getElementById('q');var container=document.getElementById('results');if(!input||!container)return;
 if(typeof getPublicToolStats==='function'){input.placeholder='Rechercher parmi '+getPublicToolStats('fr').display.liveToolsPlus+' outils...';}
-input.addEventListener('input',function(){var q=this.value.trim().toLowerCase();if(!q){container.innerHTML='<div class="no-query">Tapez pour rechercher parmi tous les outils AfroTools.</div>';return;}
-var matches=AFRO_TOOLS.filter(function(t){return(t.name||'').toLowerCase().includes(q)||(t.desc||'').toLowerCase().includes(q)||(t.id||'').toLowerCase().includes(q);});
+var CATEGORY_ALIASES={'financial':'finance argent salaire taxe paye impot taux prix carburant marche','document-pdf':'documents pdf fichiers bureau cv lettre','government':'gouvernement officiel civique passeport identite','energy':'energie electricite solaire carburant essence diesel','transport':'transport logistique vehicule trajet carburant','creative':'createur media streaming contenu musique film','trade':'commerce import export douane livraison','career':'emploi cv resume lettre carriere','ecommerce':'tva taxe entreprise facture','agriculture':'agriculture ferme recolte prix alimentaires betail','telecom':'mobile donnees internet ussd airtime','health':'sante medical clinique hopital'};
+var COUNTRY_LABELS={'NG':'Nigeria','KE':'Kenya','GH':'Ghana','ZA':'Afrique du Sud South Africa','EG':'Egypte Egypt','TZ':'Tanzanie Tanzania','CI':"Cote d'Ivoire Ivory Coast",'CM':'Cameroun Cameroon','SN':'Senegal','MA':'Maroc Morocco','DZ':'Algerie Algeria','ALL':'Afrique pays africains pan africain'};
+function norm(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+function genAliases(t){var raw=[t.id,t.name,t.desc,t.href,t.category,Array.isArray(t.tags)?t.tags.join(' '):(t.tags||'')].join(' ').toLowerCase();var terms=[];if(/\bfuel\b|petrol|diesel|gasoline|carburant/.test(raw))terms.push('fuel tracker prix carburant essence diesel gasoline');if(/\btax\b|paye|vat|wht|cit|cgt|duty/.test(raw))terms.push('taxe impot fiscal salaire tva');if(/stream|creator|content|media|music|video/.test(raw))terms.push('economie createur streaming contenu media');return terms.join(' ');}
+function haystack(t){var countries=Array.isArray(t.countries)?t.countries:[];var tags=Array.isArray(t.tags)?t.tags.join(' '):(t.tags||'');var cat=(typeof AFRO_CATEGORIES!=='undefined'&&AFRO_CATEGORIES[t.category])?AFRO_CATEGORIES[t.category]:{};return norm([t.id,t.name,t.desc,t.category,t.href,t.status,t.phase,t.revenue,tags,countries.join(' '),countries.map(function(c){return COUNTRY_LABELS[c]||c;}).join(' '),cat.name,cat.desc,CATEGORY_ALIASES[t.category]||'',genAliases(t)].join(' '));}
+function score(t,tokens){var name=norm(t.name);var id=norm((t.id||'')+' '+(t.href||''));var text=haystack(t);var s=0;var matched=0;tokens.forEach(function(tok){var ts=0;if(name.split(' ').indexOf(tok)!==-1)ts=40;else if(name.indexOf(tok)===0)ts=30;else if(name.indexOf(tok)!==-1)ts=20;else if(id.indexOf(tok)!==-1)ts=12;else if(text.indexOf(tok)!==-1)ts=5;if(ts>0){matched++;s+=ts;}});return matched===tokens.length?s:0;}
+input.addEventListener('input',function(){var q=this.value.trim();var tokens=norm(q).split(/\s+/).filter(Boolean);if(!tokens.length){container.innerHTML='<div class="no-query">Tapez pour rechercher parmi tous les outils AfroTools.</div>';return;}
+var matches=AFRO_TOOLS.map(function(t){return{tool:t,score:score(t,tokens)};}).filter(function(r){return r.score>0;}).sort(function(a,b){if(b.score!==a.score)return b.score-a.score;return(b.tool.priority||0)-(a.tool.priority||0);}).map(function(r){return r.tool;});
 if(!matches.length){container.innerHTML='<div class="no-query">Aucun outil trouve pour <strong>"'+q+'"</strong>.</div>';return;}
 var html='<p style="font-size:.85rem;color:#6b7280;margin-bottom:16px">'+matches.length+' resultat'+(matches.length!==1?'s':'')+' pour "'+q+'"</p>';
 html+='<div style="display:flex;flex-direction:column;gap:8px">';

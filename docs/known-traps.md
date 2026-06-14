@@ -29,6 +29,9 @@
 ## SEO Footguns
 
 - Avoid manual mass edits when a script already exists.
+- When public copy uses scale, coverage, official-source, AI, privacy, sponsor,
+  or superlative language, check `docs/public-claim-rules.md` and run
+  `npm run audit:public-claims`.
 - Re-run validation after canonical, OG, internal link, or alias changes.
 - Hausa and Yoruba are route-first language surfaces with dedicated generated
   sitemaps. Keep `/ha/` and `/yo/` out of `sitemap-misc.xml`; the root

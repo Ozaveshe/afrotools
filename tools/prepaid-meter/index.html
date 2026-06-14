@@ -1,630 +1,273 @@
 <!DOCTYPE html>
-<html lang="en" data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prepaid Meter Calculator | AfroTools</title>
-<meta name="description" content="Estimate prepaid electricity units, token value, days of power, load usage, backup cost, solar offset, and affordability with user-entered tariff assumptions.">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prepaid Meter Unit Calculator — All 54 African Countries | AfroTools</title>
+<meta name="description" content="Free Prepaid Meter Unit Calculator for all 54 African countries. Select your country to calculate with local rates and data.">
 <link rel="canonical" href="https://afrotools.com/tools/prepaid-meter/">
-<meta name="tool-id" content="prepaid-meter">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="Prepaid Meter Calculator | AfroTools">
-<meta property="og:description" content="A practical prepaid electricity planning tool for African households, shops, clinics, offices, and landlords using editable tariff and load assumptions.">
+
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/prepaid-meter/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compteur-prepaye/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-luku-ya-umeme/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/prepaid-meter/">
+<meta property="og:title" content="Prepaid Meter Unit Calculator — All 54 African Countries | AfroTools">
+<meta property="og:description" content="Free Prepaid Meter Unit Calculator for all 54 African countries. Select your country to calculate with local rates and data.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/prepaid-meter.webp">
 <meta property="og:url" content="https://afrotools.com/tools/prepaid-meter/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="article:modified_time" content="2026-05-18">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Prepaid Meter Calculator | AfroTools">
-<meta name="twitter:description" content="Estimate prepaid token units, usage risk, backup and solar scenarios, and copy a planning summary.">
+<meta name="twitter:title" content="Prepaid Meter Unit Calculator — All 54 African Countries | AfroTools">
+<meta name="twitter:description" content="Free Prepaid Meter Unit Calculator for all 54 African countries. Select your country to calculate with local rates and data.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/prepaid-meter.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
-<link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Prepaid Meter Calculator",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Web",
+  "@type": "WebPage",
+  "name": "Prepaid Meter Unit Calculator — All 54 African Countries | AfroTools",
+  "description": "Free Prepaid Meter Unit Calculator for all 54 African countries. Select your country to calculate with local rates and data.",
   "url": "https://afrotools.com/tools/prepaid-meter/",
-  "inLanguage": "en",
-  "description": "Prepaid electricity token calculator with user-entered tariff assumptions, appliance loads, backup cost, solar offset, affordability checks, and exportable summary.",
-  "dateModified": "2026-05-18",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
   "image": "https://afrotools.com/assets/img/tools/prepaid-meter.webp"
 }
 </script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Prepaid Meter Calculator","item":"https://afrotools.com/tools/prepaid-meter/"}]}
-</script>
-<style>
-*,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:#f6f8fb;color:#101828;font-family:"DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-.pm-hero{background:#12233a;color:#fff;padding:42px 0 34px}
-.pm-shell{max-width:1180px;margin:0 auto;padding:0 22px}
-.pm-breadcrumb{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;color:#c6d3e5;font-size:.82rem}
-.pm-breadcrumb a{color:#eef6ff}
-.pm-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:end}
-.pm-hero h1{margin:0 0 10px;font-size:clamp(2rem,5vw,3.35rem);line-height:1.04;font-weight:800;letter-spacing:0;color:#fff}
-.pm-hero p{margin:0;max-width:780px;color:#dce7f5;line-height:1.7}
-.pm-stamps{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
-.pm-stamp{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);border-radius:999px;padding:8px 11px;color:#fff;font-size:.76rem;font-weight:800}
-.pm-main{padding:28px 0 58px}
-.pm-layout{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:22px;align-items:start}
-.pm-panel,.pm-card,.pm-summary{background:#fff;border:1px solid #d9e2ef;border-radius:12px;box-shadow:0 1px 10px rgba(16,24,40,.05)}
-.pm-head{padding:18px 20px;border-bottom:1px solid #e6edf6;display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
-.pm-head h2,.pm-card h2{margin:0 0 7px;color:#101828;font-size:1.05rem;letter-spacing:0}
-.pm-head p,.pm-card p{margin:0;color:#5d6b82;font-size:.88rem;line-height:1.55}
-.pm-body{padding:20px}
-.pm-form{display:grid;gap:18px}
-.pm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.pm-field{display:grid;gap:7px}
-.pm-field.full{grid-column:1/-1}
-.pm-field label{font-size:.76rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#344054}
-.pm-field small{font-size:.78rem;color:#667085;line-height:1.45}
-.pm-field input,.pm-field select,.pm-field textarea{width:100%;min-height:46px;border:1.5px solid #cbd5e1;border-radius:9px;background:#fff;color:#101828;font:600 1rem "DM Sans",system-ui,sans-serif;padding:10px 12px}
-.pm-field textarea{min-height:94px;resize:vertical;line-height:1.45}
-.pm-field input:focus,.pm-field select:focus,.pm-field textarea:focus{outline:0;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
-.pm-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.pm-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:1.5px solid #cbd5e1;border-radius:999px;background:#fff;color:#101828;font:800 .9rem "DM Sans",system-ui,sans-serif;padding:9px 15px;cursor:pointer}
-.pm-btn.primary{background:#1d4ed8;border-color:#1d4ed8;color:#fff}
-.pm-btn.success{background:#0f766e;border-color:#0f766e;color:#fff}
-.pm-btn:focus-visible{outline:3px solid rgba(37,99,235,.22);outline-offset:2px}
-.pm-status{min-height:20px;color:#475467;font-size:.84rem;font-weight:700}
-.pm-summary{position:sticky;top:18px}
-.pm-total{border-radius:12px;background:#12233a;color:#fff;padding:18px;margin-bottom:14px}
-.pm-total span{display:block;color:#cbd8eb;font-size:.78rem;font-weight:800}
-.pm-total strong{display:block;margin-top:6px;font-size:2rem;line-height:1.1}
-.pm-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.pm-metric{border:1px solid #d9e2ef;border-radius:10px;background:#f9fbff;padding:12px}
-.pm-metric span{display:block;color:#667085;font-size:.75rem;font-weight:900}
-.pm-metric strong{display:block;margin-top:5px;color:#101828}
-.pm-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
-.pm-result{border:1px solid #d9e2ef;border-radius:10px;background:#fbfdff;padding:14px}
-.pm-result strong{display:block;margin-bottom:8px}
-.pm-result ul{margin:0 0 0 18px;padding:0;color:#344054;line-height:1.55}
-.pm-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.9rem}
-.pm-table th,.pm-table td{border-bottom:1px solid #e3eaf3;padding:10px;text-align:left;vertical-align:top}
-.pm-table th{background:#f3f7fc;color:#344054}
-.pm-note{border-left:4px solid #2563eb;background:#eff6ff;border-radius:8px;padding:13px;color:#24415f;line-height:1.6}
-.pm-note.warn{border-color:#f59e0b;background:#fff7ed;color:#78350f}
-.pm-note.danger{border-color:#dc2626;background:#fff4f2;color:#7f1d1d}
-.pm-brief{background:#101828;color:#e7edf7;border-radius:10px;padding:14px;white-space:pre-wrap;overflow:auto;max-height:390px;font-size:.84rem;line-height:1.55}
-.pm-sources,.pm-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.pm-sources a,.pm-links a{border:1px solid #d9e2ef;border-radius:10px;background:#fff;padding:13px;color:#12324f;font-weight:900}
-.pm-sources span,.pm-links span{display:block;margin-top:5px;color:#667085;font-size:.78rem;font-weight:500;line-height:1.45}
-.pm-loads{display:grid;grid-template-columns:1.15fr repeat(3,minmax(78px,.45fr));gap:10px;align-items:end}
-.pm-loads .pm-field label{font-size:.7rem}
-.pm-risk{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:.78rem;font-weight:900}
-.pm-risk.good{background:#e8f7ef;color:#087f5b}
-.pm-risk.warn{background:#fff7ed;color:#9a5b00}
-.pm-risk.bad{background:#fff4f2;color:#b42318}
-.sr-scorecard{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-@media(max-width:960px){.pm-hero-grid,.pm-layout{grid-template-columns:1fr}.pm-stamps{justify-content:flex-start}.pm-summary{position:static}.pm-results,.pm-sources,.pm-links{grid-template-columns:1fr}}
-@media(max-width:700px){.pm-grid,.pm-metrics{grid-template-columns:1fr}.pm-head{display:block}.pm-btn{width:100%}.pm-loads{grid-template-columns:1fr 1fr}.pm-table{font-size:.82rem}}
-</style>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/prepaid-meter/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compteur-prepaye/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-luku-ya-umeme/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/prepaid-meter/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 </head>
 <body>
-<main>
-<section class="pm-hero">
-  <div class="pm-shell pm-hero-grid">
-    <div>
-      <nav class="pm-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/energy/">Energy &amp; Utilities</a><span>/</span><span>Prepaid Meter Calculator</span></nav>
-      <h1>Prepaid Meter Calculator</h1>
-      <p>Plan a prepaid electricity top-up before you buy a token. Enter your own tariff, fees, debt recovery, appliance load, outage pattern, backup option, and solar estimate to see units, days of supply, risk, payback, and an exportable household or shop summary.</p>
-    </div>
-    <div class="pm-stamps" aria-label="Key capabilities">
-      <span class="pm-stamp">Token units</span>
-      <span class="pm-stamp">Appliance loads</span>
-      <span class="pm-stamp">Backup scenario</span>
-      <span class="pm-stamp">Solar offset</span>
-      <span class="pm-stamp">Copy summary</span>
-    </div>
-  </div>
-</section>
-
-<section class="pm-main">
-  <div class="pm-shell pm-layout">
-    <div>
-      <section class="pm-panel" aria-labelledby="input-title">
-        <div class="pm-head">
-          <div>
-            <h2 id="input-title">Token and tariff inputs</h2>
-            <p>Use the tariff on your utility notice, vending app, regulator schedule, or recent receipt. The example numbers are editable and are not live statutory tariffs.</p>
-          </div>
-          <button class="pm-btn primary" type="button" id="calculate">Calculate</button>
-        </div>
-        <div class="pm-body">
-          <form id="meterForm" class="pm-form" novalidate>
-            <div class="pm-grid">
-              <div class="pm-field">
-                <label for="country">Country or market</label>
-                <select id="country">
-                  <option value="ng">Nigeria</option>
-                  <option value="ke">Kenya</option>
-                  <option value="za">South Africa</option>
-                  <option value="gh">Ghana</option>
-                  <option value="ci">Cote d'Ivoire / UEMOA</option>
-                  <option value="other">Other African market</option>
-                </select>
-              </div>
-              <div class="pm-field">
-                <label for="currency">Currency</label>
-                <select id="currency">
-                  <option value="NGN">NGN</option>
-                  <option value="KES">KES</option>
-                  <option value="ZAR">ZAR</option>
-                  <option value="GHS">GHS</option>
-                  <option value="XOF">XOF</option>
-                  <option value="USD">USD</option>
-                </select>
-              </div>
-              <div class="pm-field">
-                <label for="customerType">Customer type</label>
-                <select id="customerType">
-                  <option>Residential prepaid</option>
-                  <option>Small shop or office</option>
-                  <option>Compound or shared meter</option>
-                  <option>Clinic, school, or cold storage</option>
-                  <option>Light industrial user</option>
-                </select>
-              </div>
-              <div class="pm-field">
-                <label for="meterClass">Meter or supply class</label>
-                <select id="meterClass">
-                  <option>Single phase</option>
-                  <option>Three phase</option>
-                  <option>Lifeline or low-consumption band</option>
-                  <option>Time-of-use or peak tariff</option>
-                  <option>Mini-grid or estate tariff</option>
-                </select>
-              </div>
-              <div class="pm-field">
-                <label for="tokenAmount">Top-up amount</label>
-                <input id="tokenAmount" type="number" min="0" max="100000000" step="1" value="50000">
-              </div>
-              <div class="pm-field">
-                <label for="currentBalance">Current prepaid balance</label>
-                <input id="currentBalance" type="number" min="0" max="100000000" step="1" value="120">
-                <small>Enter remaining kWh on the meter, not money.</small>
-              </div>
-              <div class="pm-field">
-                <label for="unitRate">Tariff per kWh</label>
-                <input id="unitRate" type="number" min="0" max="100000" step="0.01" value="225">
-              </div>
-              <div class="pm-field">
-                <label for="fixedCharge">Fixed or service charge</label>
-                <input id="fixedCharge" type="number" min="0" max="100000000" step="1" value="2500">
-              </div>
-              <div class="pm-field">
-                <label for="tokenFee">Vending or token fee</label>
-                <input id="tokenFee" type="number" min="0" max="100000000" step="1" value="100">
-              </div>
-              <div class="pm-field">
-                <label for="debtPct">Debt recovery %</label>
-                <input id="debtPct" type="number" min="0" max="100" step="0.1" value="0">
-                <small>Some meters deduct arrears before issuing units.</small>
-              </div>
-              <div class="pm-field">
-                <label for="taxPct">VAT, levy, or surcharge %</label>
-                <input id="taxPct" type="number" min="0" max="100" step="0.1" value="7.5">
-              </div>
-              <div class="pm-field">
-                <label for="targetDays">Target days of supply</label>
-                <input id="targetDays" type="number" min="1" max="120" step="1" value="30">
-              </div>
-              <div class="pm-field">
-                <label for="manualKwh">Known daily kWh use</label>
-                <input id="manualKwh" type="number" min="0" max="10000" step="0.1" value="14">
-                <small>Leave as your meter average, or use the appliance estimate below.</small>
-              </div>
-              <div class="pm-field">
-                <label for="usagePattern">Usage pattern</label>
-                <select id="usagePattern">
-                  <option value="steady">Steady day and night use</option>
-                  <option value="evening">Evening-heavy household</option>
-                  <option value="business">Business hours shop or office</option>
-                  <option value="cold">Cold chain or always-on equipment</option>
-                </select>
-              </div>
-              <div class="pm-field">
-                <label for="monthlyIncome">Monthly income or budget</label>
-                <input id="monthlyIncome" type="number" min="0" max="1000000000" step="1" value="350000">
-              </div>
-              <div class="pm-field">
-                <label for="budgetShare">Comfortable energy share %</label>
-                <input id="budgetShare" type="number" min="1" max="80" step="1" value="10">
-              </div>
-            </div>
-
-            <div class="pm-card">
-              <div class="pm-head">
-                <div>
-                  <h2>Appliance and load estimate</h2>
-                  <p>Use this when the meter history is not clear. It estimates daily kWh from watts, quantity, and hours.</p>
-                </div>
-                <button class="pm-btn" type="button" id="useLoads">Use load estimate</button>
-              </div>
-              <div class="pm-body">
-                <div class="pm-loads" aria-label="Appliance load rows">
-                  <div class="pm-field"><label for="load1Name">Load</label><input id="load1Name" value="Fridge or freezer"></div>
-                  <div class="pm-field"><label for="load1Watts">Watts</label><input id="load1Watts" type="number" min="0" step="1" value="180"></div>
-                  <div class="pm-field"><label for="load1Qty">Qty</label><input id="load1Qty" type="number" min="0" step="1" value="1"></div>
-                  <div class="pm-field"><label for="load1Hours">Hours/day</label><input id="load1Hours" type="number" min="0" max="24" step="0.5" value="12"></div>
-
-                  <div class="pm-field"><label for="load2Name">Load</label><input id="load2Name" value="Lights"></div>
-                  <div class="pm-field"><label for="load2Watts">Watts</label><input id="load2Watts" type="number" min="0" step="1" value="12"></div>
-                  <div class="pm-field"><label for="load2Qty">Qty</label><input id="load2Qty" type="number" min="0" step="1" value="8"></div>
-                  <div class="pm-field"><label for="load2Hours">Hours/day</label><input id="load2Hours" type="number" min="0" max="24" step="0.5" value="6"></div>
-
-                  <div class="pm-field"><label for="load3Name">Load</label><input id="load3Name" value="Fans or AC"></div>
-                  <div class="pm-field"><label for="load3Watts">Watts</label><input id="load3Watts" type="number" min="0" step="1" value="70"></div>
-                  <div class="pm-field"><label for="load3Qty">Qty</label><input id="load3Qty" type="number" min="0" step="1" value="3"></div>
-                  <div class="pm-field"><label for="load3Hours">Hours/day</label><input id="load3Hours" type="number" min="0" max="24" step="0.5" value="8"></div>
-
-                  <div class="pm-field"><label for="load4Name">Load</label><input id="load4Name" value="TV, pump, POS, or tools"></div>
-                  <div class="pm-field"><label for="load4Watts">Watts</label><input id="load4Watts" type="number" min="0" step="1" value="250"></div>
-                  <div class="pm-field"><label for="load4Qty">Qty</label><input id="load4Qty" type="number" min="0" step="1" value="1"></div>
-                  <div class="pm-field"><label for="load4Hours">Hours/day</label><input id="load4Hours" type="number" min="0" max="24" step="0.5" value="5"></div>
-                </div>
-                <p class="pm-note" id="loadNote">Appliance estimate: 5.7 kWh/day. Click "Use load estimate" to copy it into daily use.</p>
-              </div>
-            </div>
-
-            <div class="pm-card">
-              <div class="pm-head">
-                <div>
-                  <h2>Backup and solar scenario</h2>
-                  <p>Compare token dependence with generator, battery, inverter, or solar offset. Use local quotes and fuel prices.</p>
-                </div>
-              </div>
-              <div class="pm-body">
-                <div class="pm-grid">
-                  <div class="pm-field">
-                    <label for="outageHours">Expected outage hours/day</label>
-                    <input id="outageHours" type="number" min="0" max="24" step="0.5" value="4">
-                  </div>
-                  <div class="pm-field">
-                    <label for="backupCost">Backup cost per kWh</label>
-                    <input id="backupCost" type="number" min="0" max="100000" step="1" value="420">
-                  </div>
-                  <div class="pm-field">
-                    <label for="solarKwh">Solar or battery kWh/day</label>
-                    <input id="solarKwh" type="number" min="0" max="10000" step="0.1" value="4">
-                  </div>
-                  <div class="pm-field">
-                    <label for="solarCost">Solar or battery setup cost</label>
-                    <input id="solarCost" type="number" min="0" max="1000000000" step="1" value="950000">
-                  </div>
-                  <div class="pm-field full">
-                    <label for="notes">Local context notes</label>
-                    <textarea id="notes">Verify tariff band, meter debt deductions, vending fees, and any regulator-approved changes before buying a large token.</textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="pm-actions">
-              <button class="pm-btn primary" type="button" id="recalculate">Update results</button>
-              <button class="pm-btn" type="button" id="sample">Load shop example</button>
-              <button class="pm-btn" type="reset" id="clear">Clear</button>
-              <button class="pm-btn success" type="button" id="copySummary">Copy summary</button>
-              <button class="pm-btn" type="button" id="exportSummary">Export summary</button>
-              <span class="pm-status" id="status" role="status" aria-live="polite">Ready.</span>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <section class="pm-card" style="margin-top:18px" aria-labelledby="method-title">
-        <div class="pm-head">
-          <div>
-            <h2 id="method-title">Methodology and assumptions</h2>
-            <p>Prepaid systems differ by utility, meter class, country, and customer band. This calculator separates the moving parts instead of pretending there is one universal token formula.</p>
-          </div>
-        </div>
-        <div class="pm-body">
-          <div class="pm-results">
-            <div class="pm-result">
-              <strong>Token units</strong>
-              <ul>
-                <li>Net energy money equals top-up minus token fees, fixed charges, debt deductions, and taxes.</li>
-                <li>Estimated kWh equals net energy money divided by the entered tariff per kWh.</li>
-                <li>Days of supply equals total kWh available divided by daily kWh use.</li>
-              </ul>
-            </div>
-            <div class="pm-result">
-              <strong>Risk and affordability</strong>
-              <ul>
-                <li>Risk rises when projected days fall below the target period or outages shift demand to backup power.</li>
-                <li>Affordability compares total monthly energy cost with the budget share you set.</li>
-                <li>Shared meters need extra care because one tenant's load can drain the token for everyone.</li>
-              </ul>
-            </div>
-            <div class="pm-result">
-              <strong>Solar and backup</strong>
-              <ul>
-                <li>Solar savings use the smaller of daily kWh demand and solar kWh entered.</li>
-                <li>Payback is setup cost divided by monthly avoided grid or backup spend.</li>
-                <li>Use supplier quotes for battery size, inverter surge load, installation, and maintenance.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="pm-card" style="margin-top:18px" aria-labelledby="source-title">
-        <div class="pm-head">
-          <div>
-            <h2 id="source-title">Source and freshness notes</h2>
-            <p>Last reviewed: 18 May 2026. Tariffs are not live in this page. Replace all example figures with the latest official tariff, vending receipt, or utility notice for your location.</p>
-          </div>
-        </div>
-        <div class="pm-body">
-          <div class="pm-sources">
-            <a href="https://nerc.gov.ng/" rel="noopener">NERC Nigeria<span>Official Nigerian electricity regulator. Check current tariff orders and customer notices.</span></a>
-            <a href="https://www.epra.go.ke/index.php/electricity-tariff-registers" rel="noopener">EPRA Kenya<span>Electricity tariff registers and sector tariff documents for Kenya.</span></a>
-            <a href="https://www.nersa.org.za/electricity/pricing" rel="noopener">NERSA South Africa<span>Pricing and tariff approval information for regulated electricity markets.</span></a>
-            <a href="https://www.ecg.com.gh/index.php/en/services/billing-centre/current-tariff" rel="noopener">ECG Ghana<span>Current tariff guidance based on PURC-approved rates for ECG customers.</span></a>
-          </div>
-          <p class="pm-note warn" style="margin-top:14px">Utility disclaimer: this is an estimator for planning. Actual token units can vary because of tariff bands, taxes, lifeline blocks, arrears deductions, meter configuration, vending platform fees, exchange rates, and regulator updates. Confirm with your utility, licensed electrician, solar installer, or local regulator before making payment or equipment decisions.</p>
-        </div>
-      </section>
-
-      <section class="pm-card" style="margin-top:18px" aria-labelledby="links-title">
-        <div class="pm-head">
-          <div>
-            <h2 id="links-title">Related planning tools</h2>
-            <p>Continue from a token estimate into bill checking, backup sizing, and household budgeting.</p>
-          </div>
-        </div>
-        <div class="pm-body">
-          <div class="pm-links">
-            <a href="/tools/electricity-tariff/">Electricity Tariff Calculator<span>Model fixed charges, taxes, peak rates, backup cost, and solar payback.</span></a>
-            <a href="/tools/electricity-bill-verify/">Electricity Bill Checker<span>Check bill line items and spot possible billing issues.</span></a>
-            <a href="/tools/generator-fuel/">Generator Fuel Calculator<span>Estimate generator fuel cost for outages and backup planning.</span></a>
-            <a href="/tools/solar-sizing/">Solar Sizing Calculator<span>Estimate inverter, battery, and panel needs from your load.</span></a>
-            <a href="/tools/outage-cost/">Outage Cost Calculator<span>Estimate business losses from power cuts and downtime.</span></a>
-            <a href="/tools/budget-planner/">Budget Planner<span>Compare energy spend with rent, transport, food, savings, and debt.</span></a>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <aside class="pm-summary" aria-labelledby="result-title">
-      <div class="pm-body">
-        <h2 id="result-title">Prepaid result</h2>
-        <div class="pm-total">
-          <span>Estimated token units</span>
-          <strong id="tokenUnits">0 kWh</strong>
-        </div>
-        <div class="pm-metrics">
-          <div class="pm-metric"><span>Days of supply</span><strong id="daysSupply">0 days</strong></div>
-          <div class="pm-metric"><span>Top-up efficiency</span><strong id="efficiency">0%</strong></div>
-          <div class="pm-metric"><span>Monthly spend</span><strong id="monthlySpend">NGN 0</strong></div>
-          <div class="pm-metric"><span>Affordability</span><strong id="affordability">Check inputs</strong></div>
-          <div class="pm-metric"><span>Risk level</span><strong id="riskLevel">-</strong></div>
-          <div class="pm-metric"><span>Solar payback</span><strong id="payback">-</strong></div>
-        </div>
-        <table class="pm-table" aria-label="Scenario comparison">
-          <thead><tr><th>Scenario</th><th>Monthly cost</th><th>Planning note</th></tr></thead>
-          <tbody id="scenarioRows"></tbody>
-        </table>
-        <div id="warningBox" class="pm-note warn" style="margin-top:14px">Enter your latest tariff and token amount to estimate supply days.</div>
-        <h2 style="margin:18px 0 8px;font-size:1rem">Copy/export summary</h2>
-        <pre class="pm-brief" id="brief">Summary will appear after calculation.</pre>
-      </div>
-    </aside>
-  </div>
-</section>
-<div class="sr-scorecard" aria-hidden="true">
-  prepaid meter calculator, electricity tariff estimator, appliance load calculator, backup power scenario, solar payback, affordability result, copy export summary, methodology, source freshness notes, utility disclaimer
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Prepaid Meter Unit Calculator</nav>
+<h1>🔢 <em>Prepaid Meter Unit Calculator</em></h1>
+<p class="en-tool-hero-sub">Free Prepaid Meter Unit Calculator for all 54 African countries. Select your country to calculate with local rates and data. Covering all 54 African nations with local rates and data.</p>
+</div></section>
+<main class="en-main">
+<section class="en-hub">
+<div class="container">
+<h2>Select Your Country</h2>
+<div class="en-hub-country-grid">
+<a href="/tools/prepaid-meter/nigeria/" class="en-country-card">
+<span class="en-country-flag">🇳🇬</span>
+<span class="en-country-name">Nigeria</span>
+</a>
+<a href="/tools/prepaid-meter/kenya/" class="en-country-card">
+<span class="en-country-flag">🇰🇪</span>
+<span class="en-country-name">Kenya</span>
+</a>
+<a href="/tools/prepaid-meter/south-africa/" class="en-country-card">
+<span class="en-country-flag">🇿🇦</span>
+<span class="en-country-name">South Africa</span>
+</a>
+<a href="/tools/prepaid-meter/ghana/" class="en-country-card">
+<span class="en-country-flag">🇬🇭</span>
+<span class="en-country-name">Ghana</span>
+</a>
+<a href="/tools/prepaid-meter/egypt/" class="en-country-card">
+<span class="en-country-flag">🇪🇬</span>
+<span class="en-country-name">Egypt</span>
+</a>
+<a href="/tools/prepaid-meter/ethiopia/" class="en-country-card">
+<span class="en-country-flag">🇪🇹</span>
+<span class="en-country-name">Ethiopia</span>
+</a>
+<a href="/tools/prepaid-meter/tanzania/" class="en-country-card">
+<span class="en-country-flag">🇹🇿</span>
+<span class="en-country-name">Tanzania</span>
+</a>
+<a href="/tools/prepaid-meter/uganda/" class="en-country-card">
+<span class="en-country-flag">🇺🇬</span>
+<span class="en-country-name">Uganda</span>
+</a>
+<a href="/tools/prepaid-meter/rwanda/" class="en-country-card">
+<span class="en-country-flag">🇷🇼</span>
+<span class="en-country-name">Rwanda</span>
+</a>
+<a href="/tools/prepaid-meter/cote-divoire/" class="en-country-card">
+<span class="en-country-flag">🇨🇮</span>
+<span class="en-country-name">Côte d'Ivoire</span>
+</a>
+<a href="/tools/prepaid-meter/cameroon/" class="en-country-card">
+<span class="en-country-flag">🇨🇲</span>
+<span class="en-country-name">Cameroon</span>
+</a>
+<a href="/tools/prepaid-meter/senegal/" class="en-country-card">
+<span class="en-country-flag">🇸🇳</span>
+<span class="en-country-name">Senegal</span>
+</a>
+<a href="/tools/prepaid-meter/morocco/" class="en-country-card">
+<span class="en-country-flag">🇲🇦</span>
+<span class="en-country-name">Morocco</span>
+</a>
+<a href="/tools/prepaid-meter/tunisia/" class="en-country-card">
+<span class="en-country-flag">🇹🇳</span>
+<span class="en-country-name">Tunisia</span>
+</a>
+<a href="/tools/prepaid-meter/angola/" class="en-country-card">
+<span class="en-country-flag">🇦🇴</span>
+<span class="en-country-name">Angola</span>
+</a>
+<a href="/tools/prepaid-meter/zambia/" class="en-country-card">
+<span class="en-country-flag">🇿🇲</span>
+<span class="en-country-name">Zambia</span>
+</a>
+<a href="/tools/prepaid-meter/zimbabwe/" class="en-country-card">
+<span class="en-country-flag">🇿🇼</span>
+<span class="en-country-name">Zimbabwe</span>
+</a>
+<a href="/tools/prepaid-meter/mozambique/" class="en-country-card">
+<span class="en-country-flag">🇲🇿</span>
+<span class="en-country-name">Mozambique</span>
+</a>
+<a href="/tools/prepaid-meter/malawi/" class="en-country-card">
+<span class="en-country-flag">🇲🇼</span>
+<span class="en-country-name">Malawi</span>
+</a>
+<a href="/tools/prepaid-meter/madagascar/" class="en-country-card">
+<span class="en-country-flag">🇲🇬</span>
+<span class="en-country-name">Madagascar</span>
+</a>
+<a href="/tools/prepaid-meter/botswana/" class="en-country-card">
+<span class="en-country-flag">🇧🇼</span>
+<span class="en-country-name">Botswana</span>
+</a>
+<a href="/tools/prepaid-meter/namibia/" class="en-country-card">
+<span class="en-country-flag">🇳🇦</span>
+<span class="en-country-name">Namibia</span>
+</a>
+<a href="/tools/prepaid-meter/lesotho/" class="en-country-card">
+<span class="en-country-flag">🇱🇸</span>
+<span class="en-country-name">Lesotho</span>
+</a>
+<a href="/tools/prepaid-meter/eswatini/" class="en-country-card">
+<span class="en-country-flag">🇸🇿</span>
+<span class="en-country-name">Eswatini</span>
+</a>
+<a href="/tools/prepaid-meter/mauritius/" class="en-country-card">
+<span class="en-country-flag">🇲🇺</span>
+<span class="en-country-name">Mauritius</span>
+</a>
+<a href="/tools/prepaid-meter/seychelles/" class="en-country-card">
+<span class="en-country-flag">🇸🇨</span>
+<span class="en-country-name">Seychelles</span>
+</a>
+<a href="/tools/prepaid-meter/djibouti/" class="en-country-card">
+<span class="en-country-flag">🇩🇯</span>
+<span class="en-country-name">Djibouti</span>
+</a>
+<a href="/tools/prepaid-meter/eritrea/" class="en-country-card">
+<span class="en-country-flag">🇪🇷</span>
+<span class="en-country-name">Eritrea</span>
+</a>
+<a href="/tools/prepaid-meter/somalia/" class="en-country-card">
+<span class="en-country-flag">🇸🇴</span>
+<span class="en-country-name">Somalia</span>
+</a>
+<a href="/tools/prepaid-meter/south-sudan/" class="en-country-card">
+<span class="en-country-flag">🇸🇸</span>
+<span class="en-country-name">South Sudan</span>
+</a>
+<a href="/tools/prepaid-meter/sudan/" class="en-country-card">
+<span class="en-country-flag">🇸🇩</span>
+<span class="en-country-name">Sudan</span>
+</a>
+<a href="/tools/prepaid-meter/libya/" class="en-country-card">
+<span class="en-country-flag">🇱🇾</span>
+<span class="en-country-name">Libya</span>
+</a>
+<a href="/tools/prepaid-meter/algeria/" class="en-country-card">
+<span class="en-country-flag">🇩🇿</span>
+<span class="en-country-name">Algeria</span>
+</a>
+<a href="/tools/prepaid-meter/dr-congo/" class="en-country-card">
+<span class="en-country-flag">🇨🇩</span>
+<span class="en-country-name">DR Congo</span>
+</a>
+<a href="/tools/prepaid-meter/republic-of-congo/" class="en-country-card">
+<span class="en-country-flag">🇨🇬</span>
+<span class="en-country-name">Republic of Congo</span>
+</a>
+<a href="/tools/prepaid-meter/chad/" class="en-country-card">
+<span class="en-country-flag">🇹🇩</span>
+<span class="en-country-name">Chad</span>
+</a>
+<a href="/tools/prepaid-meter/central-african-republic/" class="en-country-card">
+<span class="en-country-flag">🇨🇫</span>
+<span class="en-country-name">Central African Republic</span>
+</a>
+<a href="/tools/prepaid-meter/gabon/" class="en-country-card">
+<span class="en-country-flag">🇬🇦</span>
+<span class="en-country-name">Gabon</span>
+</a>
+<a href="/tools/prepaid-meter/equatorial-guinea/" class="en-country-card">
+<span class="en-country-flag">🇬🇶</span>
+<span class="en-country-name">Equatorial Guinea</span>
+</a>
+<a href="/tools/prepaid-meter/sao-tome/" class="en-country-card">
+<span class="en-country-flag">🇸🇹</span>
+<span class="en-country-name">São Tomé & Príncipe</span>
+</a>
+<a href="/tools/prepaid-meter/comoros/" class="en-country-card">
+<span class="en-country-flag">🇰🇲</span>
+<span class="en-country-name">Comoros</span>
+</a>
+<a href="/tools/prepaid-meter/burundi/" class="en-country-card">
+<span class="en-country-flag">🇧🇮</span>
+<span class="en-country-name">Burundi</span>
+</a>
+<a href="/tools/prepaid-meter/benin/" class="en-country-card">
+<span class="en-country-flag">🇧🇯</span>
+<span class="en-country-name">Benin</span>
+</a>
+<a href="/tools/prepaid-meter/burkina-faso/" class="en-country-card">
+<span class="en-country-flag">🇧🇫</span>
+<span class="en-country-name">Burkina Faso</span>
+</a>
+<a href="/tools/prepaid-meter/cape-verde/" class="en-country-card">
+<span class="en-country-flag">🇨🇻</span>
+<span class="en-country-name">Cape Verde</span>
+</a>
+<a href="/tools/prepaid-meter/gambia/" class="en-country-card">
+<span class="en-country-flag">🇬🇲</span>
+<span class="en-country-name">Gambia</span>
+</a>
+<a href="/tools/prepaid-meter/guinea/" class="en-country-card">
+<span class="en-country-flag">🇬🇳</span>
+<span class="en-country-name">Guinea</span>
+</a>
+<a href="/tools/prepaid-meter/guinea-bissau/" class="en-country-card">
+<span class="en-country-flag">🇬🇼</span>
+<span class="en-country-name">Guinea-Bissau</span>
+</a>
+<a href="/tools/prepaid-meter/liberia/" class="en-country-card">
+<span class="en-country-flag">🇱🇷</span>
+<span class="en-country-name">Liberia</span>
+</a>
+<a href="/tools/prepaid-meter/mali/" class="en-country-card">
+<span class="en-country-flag">🇲🇱</span>
+<span class="en-country-name">Mali</span>
+</a>
+<a href="/tools/prepaid-meter/niger/" class="en-country-card">
+<span class="en-country-flag">🇳🇪</span>
+<span class="en-country-name">Niger</span>
+</a>
+<a href="/tools/prepaid-meter/sierra-leone/" class="en-country-card">
+<span class="en-country-flag">🇸🇱</span>
+<span class="en-country-name">Sierra Leone</span>
+</a>
+<a href="/tools/prepaid-meter/togo/" class="en-country-card">
+<span class="en-country-flag">🇹🇬</span>
+<span class="en-country-name">Togo</span>
+</a>
+<a href="/tools/prepaid-meter/mauritania/" class="en-country-card">
+<span class="en-country-flag">🇲🇷</span>
+<span class="en-country-name">Mauritania</span>
+</a>
 </div>
+</div>
+</section>
 </main>
-
-<script>
-(function(){
-  "use strict";
-  var $=function(id){return document.getElementById(id);};
-  var presets={
-    ng:{currency:"NGN",rate:225,fixed:2500,tokenFee:100,tax:7.5,backup:420},
-    ke:{currency:"KES",rate:34,fixed:220,tokenFee:20,tax:16,backup:80},
-    za:{currency:"ZAR",rate:3.8,fixed:95,tokenFee:0,tax:15,backup:8.5},
-    gh:{currency:"GHS",rate:2.1,fixed:18,tokenFee:1,tax:15,backup:4.5},
-    ci:{currency:"XOF",rate:125,fixed:850,tokenFee:100,tax:18,backup:260},
-    other:{currency:"USD",rate:0.24,fixed:0,tokenFee:0,tax:0,backup:0.65}
-  };
-  function num(id){
-    var value=parseFloat($(id).value);
-    return Number.isFinite(value)?value:0;
-  }
-  function text(id){return ($(id).value||"").trim();}
-  function clamp(n,min,max){return Math.min(max,Math.max(min,n));}
-  function money(value,currency){
-    var amount=Number.isFinite(value)?value:0;
-    try{return new Intl.NumberFormat("en",{style:"currency",currency:currency,maximumFractionDigits:0}).format(amount);}
-    catch(e){return currency+" "+Math.round(amount).toLocaleString("en");}
-  }
-  function one(value){return (Number.isFinite(value)?value:0).toLocaleString("en",{maximumFractionDigits:1});}
-  function riskLabel(days,target,affordPct){
-    if(days>=target && affordPct<=100){return {text:"Healthy",className:"good"};}
-    if(days>=target*0.75 && affordPct<=125){return {text:"Watch closely",className:"warn"};}
-    return {text:"High risk",className:"bad"};
-  }
-  function loadKwh(){
-    var total=0;
-    for(var i=1;i<=4;i++){
-      total += (num("load"+i+"Watts")*num("load"+i+"Qty")*num("load"+i+"Hours"))/1000;
-    }
-    return total;
-  }
-  function updateLoadNote(){
-    $("loadNote").textContent="Appliance estimate: "+one(loadKwh())+" kWh/day. Click \"Use load estimate\" to copy it into daily use.";
-  }
-  function buildRows(base,backup,solar,currency){
-    var rows=[
-      ["Token only",base,"Uses prepaid meter units for all available grid energy."],
-      ["With backup",base+backup,"Adds estimated generator, inverter charging, or battery backup cost for outage hours."],
-      ["With solar offset",Math.max(0,base-solar),"Reduces grid purchases by the solar or battery kWh you entered."]
-    ];
-    $("scenarioRows").innerHTML=rows.map(function(row){
-      return "<tr><td>"+row[0]+"</td><td>"+money(row[1],currency)+"</td><td>"+row[2]+"</td></tr>";
-    }).join("");
-  }
-  function calculate(){
-    var currency=$("currency").value;
-    var topUp=num("tokenAmount");
-    var balance=num("currentBalance");
-    var rate=Math.max(0,num("unitRate"));
-    var fixed=num("fixedCharge");
-    var tokenFee=num("tokenFee");
-    var debt=topUp*clamp(num("debtPct"),0,100)/100;
-    var taxBase=Math.max(0,topUp-tokenFee-fixed-debt);
-    var tax=taxBase*clamp(num("taxPct"),0,100)/100;
-    var netEnergyMoney=Math.max(0,topUp-tokenFee-fixed-debt-tax);
-    var tokenUnits=rate>0?netEnergyMoney/rate:0;
-    var daily=Math.max(0.1,num("manualKwh"));
-    var target=Math.max(1,num("targetDays"));
-    var totalKwh=tokenUnits+balance;
-    var days=totalKwh/daily;
-    var monthlyGridCost=daily*30*rate+fixed+tokenFee+tax;
-    var outageShare=clamp(num("outageHours"),0,24)/24;
-    var backupKwh=daily*outageShare*30;
-    var backupCost=backupKwh*num("backupCost");
-    var solarDaily=Math.min(daily,Math.max(0,num("solarKwh")));
-    var solarMonthlySavings=solarDaily*30*Math.max(rate,num("backupCost")*outageShare);
-    var solarCost=num("solarCost");
-    var payback=solarMonthlySavings>0?solarCost/solarMonthlySavings:0;
-    var income=num("monthlyIncome");
-    var comfort=income*clamp(num("budgetShare"),1,80)/100;
-    var fullEnergyCost=monthlyGridCost+backupCost;
-    var affordabilityPct=comfort>0?fullEnergyCost/comfort*100:0;
-    var risk=riskLabel(days,target,affordabilityPct);
-    var topUpEfficiency=topUp>0?netEnergyMoney/topUp*100:0;
-    var rechargeNeed=Math.max(0,(target*daily-balance)*rate/(topUpEfficiency>0?topUpEfficiency/100:1)+fixed+tokenFee);
-    var shortfallDays=Math.max(0,target-days);
-    var warnings=[];
-    if(rate<=0){warnings.push("Enter a tariff per kWh before relying on the unit estimate.");}
-    if(topUpEfficiency<70){warnings.push("A large share of the top-up is being removed by fixed charges, debt recovery, tax, or fees.");}
-    if(shortfallDays>0){warnings.push("This token may fall short of the target period by about "+one(shortfallDays)+" days.");}
-    if(backupCost>monthlyGridCost*0.35){warnings.push("Backup energy is a major cost driver. Consider load reduction, shared backup scheduling, or solar sizing.");}
-    if(affordabilityPct>125){warnings.push("Energy spend is above the comfort budget you entered.");}
-    if(!warnings.length){warnings.push("The plan is within the target period based on the figures entered.");}
-    $("tokenUnits").textContent=one(tokenUnits)+" kWh";
-    $("daysSupply").textContent=one(days)+" days";
-    $("efficiency").textContent=one(topUpEfficiency)+"%";
-    $("monthlySpend").textContent=money(fullEnergyCost,currency);
-    $("affordability").textContent=affordabilityPct?one(affordabilityPct)+"% of comfort budget":"Budget not set";
-    $("riskLevel").innerHTML="<span class=\"pm-risk "+risk.className+"\">"+risk.text+"</span>";
-    $("payback").textContent=payback>0?one(payback)+" months":"No payback";
-    buildRows(monthlyGridCost,backupCost,solarMonthlySavings,currency);
-    $("warningBox").className="pm-note "+(risk.className==="bad"?"danger":risk.className==="warn"?"warn":"");
-    $("warningBox").innerHTML="<strong>Planning notes</strong><br>"+warnings.join("<br>");
-    var brief=[
-      "Prepaid meter planning summary",
-      "Market: "+$("country").selectedOptions[0].text+" | Currency: "+currency+" | Customer: "+$("customerType").value+" | Meter class: "+$("meterClass").value,
-      "Top-up: "+money(topUp,currency)+" | Estimated token units: "+one(tokenUnits)+" kWh | Current balance: "+one(balance)+" kWh",
-      "Daily use: "+one(daily)+" kWh | Target: "+target+" days | Estimated supply: "+one(days)+" days",
-      "Tariff: "+money(rate,currency)+" per kWh | Fixed charge: "+money(fixed,currency)+" | Token fee: "+money(tokenFee,currency)+" | Tax/levy: "+one(num("taxPct"))+"%",
-      "Monthly grid estimate: "+money(monthlyGridCost,currency)+" | Backup estimate: "+money(backupCost,currency)+" | Solar monthly offset: "+money(solarMonthlySavings,currency),
-      "Affordability: "+(affordabilityPct?one(affordabilityPct)+"% of comfort budget":"not set")+" | Risk: "+risk.text+" | Suggested top-up for target period: "+money(rechargeNeed,currency),
-      "Action checklist: verify tariff band and debt deductions; check meter balance before purchase; reduce high-load appliances at peak times; confirm backup fuel or battery cost; get a licensed quote before solar or wiring work.",
-      "Local notes: "+text("notes"),
-      "Disclaimer: planning estimate only. Actual prepaid units can vary by utility, meter setup, tariff band, taxes, arrears, vending fees, and regulator changes."
-    ].join("\n");
-    $("brief").textContent=brief;
-    $("status").textContent="Updated.";
-  }
-  function applyCountryPreset(){
-    var p=presets[$("country").value]||presets.other;
-    $("currency").value=p.currency;
-    $("unitRate").value=p.rate;
-    $("fixedCharge").value=p.fixed;
-    $("tokenFee").value=p.tokenFee;
-    $("taxPct").value=p.tax;
-    $("backupCost").value=p.backup;
-    calculate();
-  }
-  function loadSample(){
-    $("country").value="gh";
-    $("currency").value="GHS";
-    $("customerType").value="Small shop or office";
-    $("meterClass").value="Single phase";
-    $("tokenAmount").value=1200;
-    $("currentBalance").value=18;
-    $("unitRate").value=2.1;
-    $("fixedCharge").value=18;
-    $("tokenFee").value=1;
-    $("debtPct").value=5;
-    $("taxPct").value=15;
-    $("targetDays").value=21;
-    $("manualKwh").value=22;
-    $("usagePattern").value="business";
-    $("monthlyIncome").value=8500;
-    $("budgetShare").value=12;
-    $("outageHours").value=5;
-    $("backupCost").value=4.5;
-    $("solarKwh").value=6;
-    $("solarCost").value=45000;
-    $("notes").value="Shop example: confirm tariff class, check whether arrears are deducted from every token, and protect fridge/freezer loads during outages.";
-    calculate();
-  }
-  function copySummary(){
-    var summary=$("brief").textContent;
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(summary).then(function(){$("status").textContent="Summary copied.";}).catch(function(){$("status").textContent="Manual copy ready.";});
-    }else{
-      $("status").textContent="Manual copy ready.";
-    }
-  }
-  function exportSummary(){
-    var blob=new Blob([$("brief").textContent],{type:"text/plain"});
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement("a");
-    a.href=url;
-    a.download="prepaid-meter-summary.txt";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    $("status").textContent="Summary exported.";
-  }
-  function bind(){
-    ["calculate","recalculate"].forEach(function(id){$(id).addEventListener("click",calculate);});
-    $("country").addEventListener("change",applyCountryPreset);
-    $("sample").addEventListener("click",loadSample);
-    $("copySummary").addEventListener("click",copySummary);
-    $("exportSummary").addEventListener("click",exportSummary);
-    $("useLoads").addEventListener("click",function(){$("manualKwh").value=one(loadKwh()).replace(/,/g,"");calculate();});
-    $("clear").addEventListener("click",function(){setTimeout(function(){updateLoadNote();calculate();$("status").textContent="Cleared to defaults.";},0);});
-    for(var i=1;i<=4;i++){
-      ["Watts","Qty","Hours"].forEach(function(suffix){
-        $("load"+i+suffix).addEventListener("input",updateLoadNote);
-      });
-    }
-    document.querySelectorAll("input,select,textarea").forEach(function(el){
-      el.addEventListener("change",calculate);
-    });
-    updateLoadNote();
-    calculate();
-  }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",bind);}else{bind();}
-})();
-</script>
+<afro-footer></afro-footer>
+<script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
 </body>
 </html>

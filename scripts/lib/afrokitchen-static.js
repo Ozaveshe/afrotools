@@ -14,6 +14,8 @@ const MANIFEST_PATH = path.join(TOOL_DIR, "seo-manifest.json");
 const ROUTES_PATH = path.join(TOOL_DIR, "static-routes.js");
 const SITE_ORIGIN = "https://afrotools.com";
 const TOOL_OG_IMAGE = `${SITE_ORIGIN}/assets/img/tools/afrokitchen.webp`;
+const RECIPE_FALLBACK_IMAGE = "/assets/img/kitchen-category-banner.webp";
+const RECIPE_FALLBACK_OG_IMAGE = `${SITE_ORIGIN}${RECIPE_FALLBACK_IMAGE}`;
 const LOCAL_RECIPE_IMAGE_ALIASES = {};
 const SUPABASE_URL =
   process.env.SUPABASE_AUTH_URL || "https://zpclagtgczsygrgztlts.supabase.co";
@@ -72,8 +74,26 @@ function writeTextFileSync(filePath, content, encoding) {
   }
 }
 
+function repairMojibake(value) {
+  return String(value || "")
+    .replace(/Ã£/g, "\u00e3")
+    .replace(/Ã©/g, "\u00e9")
+    .replace(/Ã¨/g, "\u00e8")
+    .replace(/Ãª/g, "\u00ea")
+    .replace(/Ã­/g, "\u00ed")
+    .replace(/Ã³/g, "\u00f3")
+    .replace(/Ã´/g, "\u00f4")
+    .replace(/Ãº/g, "\u00fa")
+    .replace(/Ã§/g, "\u00e7")
+    .replace(/Â·/g, " - ")
+    .replace(/â€”/g, " - ")
+    .replace(/â€“/g, " - ")
+    .replace(/â€™/g, "'")
+    .replace(/â€œ|â€�/g, "\"");
+}
+
 function normalizeText(value) {
-  return String(value || "").replace(/\s+/g, " ").trim();
+  return repairMojibake(value).replace(/\s+/g, " ").trim();
 }
 
 function slugify(value) {
@@ -99,6 +119,121 @@ function humanList(values, maxItems) {
   if (items.length === 1) return items[0];
   if (items.length === 2) return `${items[0]} and ${items[1]}`;
   return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
+
+function titleCaseLabel(value) {
+  return normalizeText(value)
+    .replace(/[_-]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+    .join(" ");
+}
+
+function stripBestFor(value) {
+  return normalizeText(value).replace(/^best\s+for\s+/i, "");
+}
+
+function cleanOccasion(value) {
+  return cleanGeneratedPhrase(stripBestFor(value))
+    .replace(/\bregional food discovery,?\s*/gi, "")
+    .replace(/\bcountry-hub depth\b/gi, "country cooking")
+    .replace(/\s+,/g, ",")
+    .replace(/,\s*,/g, ",")
+    .replace(/\s+/g, " ")
+    .replace(/^,\s*/, "")
+    .trim();
+}
+
+function cleanRegionalVariations(recipe) {
+  const value = normalizeText(recipe.regional_variations);
+  if (!value) return "";
+  if (/Cooks may adjust the main ingredient, heat level, liquid, or serving starch while keeping the same local flavor logic\./i.test(value)) {
+    return `${recipe.name} changes by household and market. Keep the main ingredient and seasoning balance, then adjust heat, liquid, or starch for your table.`;
+  }
+  return cleanGeneratedPhrase(value).replace(/\bflavor logic\b/gi, "flavor balance");
+}
+
+function cleanImageText(value, recipe) {
+  const input = normalizeText(value);
+  if (
+    !input ||
+    /AfroKitchen recipe collection artwork for/i.test(input) ||
+    /Fallback collection artwork pending recipe-specific media/i.test(input)
+  ) {
+    return `${recipe.name} recipe from ${recipe.country_name || "AfroKitchen"}`;
+  }
+  return input;
+}
+
+function cleanRecipeMedia(media, recipe) {
+  return (Array.isArray(media) ? media : []).map((entry) => {
+    if (!entry || typeof entry !== "object") return entry;
+    return {
+      ...entry,
+      alt_text: cleanImageText(entry.alt_text || entry.alt || "", recipe),
+      alt: cleanImageText(entry.alt || entry.alt_text || "", recipe),
+      caption: cleanImageText(entry.caption || "", recipe)
+    };
+  });
+}
+
+function cleanGeneratedPhrase(value) {
+  return normalizeText(value)
+    .replace(/\ba table built around\b/gi, "served with")
+    .replace(/\btable built around\b/gi, "served with")
+    .replace(/\bbuilt around\b/gi, "made with")
+    .replace(/\ba Eswatini\b/g, "an Eswatini")
+    .replace(/\bserving logic of\b/gi, "served with");
+}
+
+function cleanGeneratedDescription(recipe) {
+  const description = normalizeText(recipe.description);
+  const country = normalizeText(recipe.country_name);
+  const name = normalizeText(recipe.name);
+  if (!description) return "";
+
+  const generatedMatch = description.match(
+    /^(.+?) is an? (.+?) ([a-z_ -]+) built around (.+?), and the serving logic of (.+?)\.$/i
+  );
+
+  if (generatedMatch) {
+    const dish = normalizeText(generatedMatch[1]) || name;
+    const category = titleCaseLabel(generatedMatch[3]).toLowerCase() || "dish";
+    const base = normalizeText(generatedMatch[4]);
+    const serveWith = normalizeText(generatedMatch[5]);
+    const countryLead = country ? `From ${country}, ` : "";
+    return `${countryLead}${dish} is a ${category} with ${base}. Serve with ${serveWith}.`;
+  }
+
+  return cleanGeneratedPhrase(description)
+    .replace(/\bis an? ([A-Z][A-Za-z ]+) recipe made with\b/g, "uses");
+}
+
+function cleanGeneratedStory(recipe, description) {
+  const story = normalizeText(recipe.story);
+  const country = normalizeText(recipe.country_name);
+  const name = normalizeText(recipe.name);
+  const category = titleCaseLabel(recipe.category).toLowerCase() || "dish";
+  if (!story) return "";
+
+  const gapMatch = story.match(
+    /^(.+?) fills a real AfroKitchen gap for (.+?), where .*? This version keeps the method practical while preserving the dish's core identity: (.+?), and a table built around (.+?)\.$/i
+  );
+
+  if (gapMatch) {
+    const dish = normalizeText(gapMatch[1]) || name;
+    const base = normalizeText(gapMatch[3]);
+    const serveWith = normalizeText(gapMatch[4]);
+    const countryLead = country ? `${country} ` : "";
+    return `${dish} is a practical ${countryLead}${category} centered on ${base}. Serve it with ${serveWith}, then adjust heat and seasoning to your table.`;
+  }
+
+  const cleaned = cleanGeneratedPhrase(story)
+    .replace(/\bfills a real AfroKitchen gap\b/gi, "adds a practical cooking route")
+    .replace(/\bis an? ([A-Z][A-Za-z ]+) recipe made with\b/g, "uses");
+
+  return cleaned || description;
 }
 
 function recipeRoutePath(slug) {
@@ -203,17 +338,28 @@ function loadRecipeImages() {
   return recipes;
 }
 
+function isGenericRecipeImage(value) {
+  const input = normalizeText(value).toLowerCase().replace(/^https?:\/\/(?:www\.)?afrotools\.com/, "");
+  return (
+    !input ||
+    input.includes("/assets/img/tools/afrokitchen.") ||
+    input.includes("/assets/img/logo") ||
+    input.includes("/assets/img/kitchen-category-banner.")
+  );
+}
+
+function isUsableRecipeImage(value) {
+  const input = normalizeText(value);
+  return Boolean(input && !isGenericRecipeImage(input));
+}
+
 function findLocalRecipeImage(slug) {
   const safeSlug = slugify(slug);
   if (!safeSlug) return null;
 
   const stems = [
     safeSlug,
-    `${safeSlug}-1`,
-    `${safeSlug}-2`,
-    `${safeSlug}-3`,
-    `${safeSlug}-4`,
-    `${safeSlug}-5`,
+    `${safeSlug}-1`
   ];
   const extensions = [".webp", ".jpg", ".jpeg", ".png"];
   for (const stem of stems) {
@@ -248,8 +394,31 @@ function resolveRecipeMedia(recipe, recipeImages) {
     };
   }
 
+  const heroMedia = (Array.isArray(recipe.media) ? recipe.media : [])
+    .slice()
+    .sort((left, right) => (left.sort_order || 0) - (right.sort_order || 0))
+    .find((entry) => {
+      const role = normalizeText(entry && entry.role).toLowerCase();
+      return (!role || role === "hero" || role === "main" || role === "plated") && isUsableRecipeImage(entry.image_url);
+    });
+
+  if (heroMedia && heroMedia.image_url) {
+    const imageUrl = heroMedia.image_url;
+    return {
+      pageImage: imageUrl,
+      socialImage: imageUrl.startsWith("http") ? imageUrl : `${SITE_ORIGIN}${imageUrl}`,
+      credit: heroMedia.credit_text
+        ? {
+            photographer: heroMedia.credit_text,
+            photographerUrl: heroMedia.credit_url || "",
+            source: heroMedia.source_type || "image source"
+          }
+        : null
+    };
+  }
+
   const fromManifest = recipeImages[recipe.slug];
-  if (fromManifest && fromManifest.full && fromManifest.manual_override) {
+  if (fromManifest && fromManifest.full && fromManifest.manual_override && isUsableRecipeImage(fromManifest.full)) {
     return {
       pageImage: fromManifest.full,
       socialImage: fromManifest.full,
@@ -263,7 +432,7 @@ function resolveRecipeMedia(recipe, recipeImages) {
     };
   }
 
-  if (recipe.image_url) {
+  if (isUsableRecipeImage(recipe.image_url)) {
     return {
       pageImage: recipe.image_url,
       socialImage: recipe.image_url.startsWith("http")
@@ -275,8 +444,9 @@ function resolveRecipeMedia(recipe, recipeImages) {
 
   return {
     pageImage: null,
-    socialImage: TOOL_OG_IMAGE,
-    credit: null
+    socialImage: RECIPE_FALLBACK_OG_IMAGE,
+    credit: null,
+    isFallback: true
   };
 }
 
@@ -381,12 +551,12 @@ function buildCountryDescription(country) {
     country.recipes
       .filter((recipe) => recipe.generated_in_wave)
       .map((recipe) => recipe.name),
-    3
+    1
   );
-  const fallbackNames = humanList(country.recipes.map((recipe) => recipe.name), 3);
+  const fallbackNames = humanList(country.recipes.map((recipe) => recipe.name), 1);
   const recipeLead = highlighted || fallbackNames;
   return excerpt(
-    `Discover ${country.total_recipes} ${country.country_name} recipes on AfroKitchen, including ${recipeLead}. Browse traditional dishes, regional context, and the wider African food atlas from one country hub.`,
+    `${country.country_name} recipes: ${country.total_recipes} dishes${recipeLead ? ` including ${recipeLead}` : ""}. Browse country context and practical cooking links.`,
     158
   );
 }
@@ -405,12 +575,20 @@ function buildCollectionDescription(collection) {
   );
 
   return excerpt(
-    `Explore ${collection.name} on AfroKitchen with ${collection.total_recipes} recipes from ${collection.country_count} African countries, including ${highlightedRecipes || fallbackRecipes}. Follow dishes from ${highlightedCountries || "across the continent"} in one focused collection.`,
+    `${collection.name} gathers ${collection.total_recipes} African recipes${highlightedRecipes || fallbackRecipes ? ` including ${highlightedRecipes || fallbackRecipes}` : ""}${highlightedCountries ? `, with country links for ${highlightedCountries}` : ""}.`,
     158
   );
 }
 
 function normalizeRecipe(recipe) {
+  const description = cleanGeneratedDescription(recipe);
+  const story = cleanGeneratedStory(recipe, description);
+  const cleanedRecipe = {
+    ...recipe,
+    name: normalizeText(recipe.name),
+    country_name: normalizeText(recipe.country_name)
+  };
+
   return {
     ...recipe,
     tags: Array.isArray(recipe.tags) ? recipe.tags : [],
@@ -418,13 +596,14 @@ function normalizeRecipe(recipe) {
     ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
     steps: Array.isArray(recipe.steps) ? recipe.steps : [],
     reviews: Array.isArray(recipe.reviews) ? recipe.reviews : [],
-    description: normalizeText(recipe.description),
-    story: normalizeText(recipe.story),
+    description,
+    story,
     best_served_with: normalizeText(recipe.best_served_with),
-    regional_variations: normalizeText(recipe.regional_variations),
-    occasion: normalizeText(recipe.occasion),
+    regional_variations: cleanRegionalVariations(cleanedRecipe),
+    occasion: cleanOccasion(recipe.occasion),
     name_local: normalizeText(recipe.name_local),
-    image_alt: normalizeText(recipe.image_alt),
+    image_alt: cleanImageText(recipe.image_alt, cleanedRecipe),
+    media: cleanRecipeMedia(recipe.media, cleanedRecipe),
     default_servings: recipe.default_servings || 1,
     total_time_minutes:
       recipe.total_time_minutes || (recipe.prep_time_minutes || 0) + (recipe.cook_time_minutes || 0),
@@ -527,6 +706,12 @@ function buildCountryManifest(recipes) {
       difficulty: recipe.difficulty,
       total_time_minutes: recipe.total_time_minutes,
       default_servings: recipe.default_servings,
+      country_code: recipe.country_code,
+      country_name: recipe.country_name,
+      country_slug: recipe.country_slug,
+      region: recipe.region,
+      diet_tags: Array.isArray(recipe.diet_tags) ? recipe.diet_tags : [],
+      ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
       generated_in_wave: recipe.generated_in_wave,
       is_featured: Boolean(recipe.is_featured),
       route_path: recipe.route_path,
@@ -625,11 +810,13 @@ function buildCollectionManifest(recipes, countries, collectionRows) {
           difficulty: recipe.difficulty,
           total_time_minutes: recipe.total_time_minutes,
           default_servings: recipe.default_servings,
+          diet_tags: Array.isArray(recipe.diet_tags) ? recipe.diet_tags : [],
           generated_in_wave: recipe.generated_in_wave,
           is_featured: Boolean(recipe.is_featured),
           country_code: recipe.country_code,
           country_name: recipe.country_name,
           country_slug: recipe.country_slug,
+          region: recipe.region,
           route_path: recipe.route_path,
           route_url: recipe.route_url,
           fallback_path: recipe.fallback_path,
@@ -989,6 +1176,8 @@ module.exports = {
   ROUTES_PATH,
   SITE_ORIGIN,
   TOOL_OG_IMAGE,
+  RECIPE_FALLBACK_IMAGE,
+  RECIPE_FALLBACK_OG_IMAGE,
   DEFAULT_WAVE_STRATEGY,
   escapeHtml,
   safeJson,
@@ -1013,6 +1202,8 @@ module.exports = {
   loadAfroKitchenEngine,
   loadRecipeImages,
   findLocalRecipeImage,
+  isGenericRecipeImage,
+  isUsableRecipeImage,
   resolveRecipeMedia,
   buildManifest,
   writeManifest,

@@ -10,7 +10,8 @@ const {
   writeTextFileSync,
   normalizeText,
   slugify,
-  excerpt
+  excerpt,
+  isUsableRecipeImage
 } = require("./afrokitchen-static");
 
 const RULES_PATH = path.join(ROOT, "data", "afrokitchen", "cuisine-intelligence-rules.json");
@@ -30,6 +31,15 @@ function compact(value) {
 
 function unique(values) {
   return Array.from(new Set((values || []).filter(Boolean)));
+}
+
+function cleanEditorialText(value) {
+  return normalizeText(value)
+    .replace(/\ba table built around\b/gi, "served with")
+    .replace(/\btable built around\b/gi, "served with")
+    .replace(/\bbuilt around\b/gi, "made with")
+    .replace(/\ba Eswatini\b/g, "an Eswatini")
+    .replace(/\bverified ([A-Z][A-Za-z -]+) dish in the AfroKitchen archive\b/g, "structured $1 dish in the AfroKitchen archive");
 }
 
 function recipeSearchText(recipe) {
@@ -65,7 +75,7 @@ function assignRegionalLens(recipe, rules) {
     return {
       slug: "national-table",
       name: `${recipe.country_name} national table`,
-      description: `A verified ${recipe.country_name} dish in the AfroKitchen archive.`,
+      description: `A structured ${recipe.country_name} dish in the AfroKitchen archive.`,
       confidence: "medium",
       match_reason: "country-level fallback"
     };
@@ -94,7 +104,7 @@ function assignRegionalLens(recipe, rules) {
     return {
       slug: best.region.slug,
       name: best.region.name,
-      description: best.region.description,
+      description: cleanEditorialText(best.region.description),
       confidence: best.score >= 100 ? "high" : "medium",
       match_reason: unique(best.reasons).slice(0, 4).join(", ")
     };
@@ -103,7 +113,7 @@ function assignRegionalLens(recipe, rules) {
   return {
     slug: "national-table",
     name: `${recipe.country_name} national table`,
-    description: countryRules.description || `A verified ${recipe.country_name} dish in the AfroKitchen archive.`,
+    description: cleanEditorialText(countryRules.description || `A structured ${recipe.country_name} dish in the AfroKitchen archive.`),
     confidence: "medium",
     match_reason: "country-level fallback"
   };
@@ -209,22 +219,26 @@ function collectLocalImagePaths(slug) {
 function collectRecipeImageSources(recipe, recipeImages) {
   const sources = [];
   collectLocalImagePaths(recipe.slug).forEach((source) => sources.push(source));
-  if (recipe.image_url) sources.push(recipe.image_url);
+  if (isUsableRecipeImage(recipe.image_url)) sources.push(recipe.image_url);
 
   const manifestEntry = recipeImages && recipeImages[recipe.slug] ? recipeImages[recipe.slug] : {};
-  if (manifestEntry.full && manifestEntry.manual_override) sources.push(manifestEntry.full);
-  []
-    .concat(Array.isArray(manifestEntry.images) ? manifestEntry.images : [])
-    .concat(Array.isArray(manifestEntry.gallery) ? manifestEntry.gallery : [])
+  if (manifestEntry.full && manifestEntry.manual_override && isUsableRecipeImage(manifestEntry.full)) sources.push(manifestEntry.full);
+  const manifestGallery = manifestEntry.manual_override
+    ? []
+      .concat(Array.isArray(manifestEntry.images) ? manifestEntry.images : [])
+      .concat(Array.isArray(manifestEntry.gallery) ? manifestEntry.gallery : [])
+    : [];
+  manifestGallery
     .concat(Array.isArray(recipe.media) ? recipe.media : [])
     .concat(Array.isArray(recipe.recipe_media) ? recipe.recipe_media : [])
     .forEach((entry) => {
       if (typeof entry === "string") {
-        sources.push(entry);
+        if (isUsableRecipeImage(entry)) sources.push(entry);
         return;
       }
       if (entry && typeof entry === "object") {
-        sources.push(entry.full || entry.url || entry.src || entry.image_url);
+        const source = entry.full || entry.url || entry.src || entry.image_url;
+        if (isUsableRecipeImage(source)) sources.push(source);
       }
     });
 
@@ -244,7 +258,7 @@ function buildImageStatus(recipe, recipeImages, rules) {
       label: role.label,
       filename,
       route_path: recipe.route_path,
-      prompt: `Finished ${recipe.name}, a ${recipe.country_name} ${recipe.category || "recipe"}, ${role.prompt_note}.`
+      prompt: `Finished ${recipe.name}, ${recipe.category || "recipe"} from ${recipe.country_name}, ${role.prompt_note}.`
     };
   });
 
@@ -347,11 +361,13 @@ function summarizeRecipeForCollection(recipe) {
     difficulty: recipe.difficulty,
     total_time_minutes: recipe.total_time_minutes,
     default_servings: recipe.default_servings,
+    diet_tags: Array.isArray(recipe.diet_tags) ? recipe.diet_tags : [],
     generated_in_wave: recipe.generated_in_wave,
     is_featured: Boolean(recipe.is_featured),
     country_code: recipe.country_code,
     country_name: recipe.country_name,
     country_slug: recipe.country_slug,
+    region: recipe.region,
     route_path: recipe.route_path,
     route_url: recipe.route_url,
     fallback_path: recipe.fallback_path,

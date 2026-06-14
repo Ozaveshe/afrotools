@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -233,8 +233,8 @@
     }
   </style>
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=ae01493b">
-<script src="/assets/js/lib/dark-mode.js?v=882f512d" defer></script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=0533540f">
+<script src="/assets/js/lib/dark-mode.js?v=dc870218" defer></script>
 </head>
 <body>
   <main class="tax-workspace pro-gated-content">
@@ -437,7 +437,7 @@
                 </div>
                 <div class="tax-field">
                   <label class="tax-label" for="taxContactInput">Tax contact</label>
-                  <input class="tax-input" id="taxContactInput" type="text" placeholder="Owner, finance lead, or admin">
+                  <input class="tax-input" id="taxContactInput" type="text" placeholder="Owner, finance lead, or reviewer">
                 </div>
                 <div class="tax-field">
                   <label class="tax-label" for="sourcePreferenceSelect">Source review preference</label>
@@ -483,7 +483,7 @@
                 <div>
                   <div class="tax-kicker">Tax calendar</div>
                   <h2 class="tax-h2" id="calendarTitle">Upcoming compliance calendar</h2>
-                  <p class="tax-note">Sample deadlines show the workflow shape. Replace them with verified country calendar records before compliance use.</p>
+                  <p class="tax-note">Starter deadlines show the workflow shape. Replace them with verified country calendar records before compliance use.</p>
                 </div>
                 <span class="tax-pill upcoming" id="deadlineSummary">0 upcoming</span>
               </div>
@@ -597,7 +597,7 @@
                 <div>
                   <div class="tax-kicker">Review checklist</div>
                   <h2 class="tax-h2" id="checklistTitle">Draft review checklist</h2>
-                  <p class="tax-note">Review checklist progress is saved on this device for this sample workspace.</p>
+                  <p class="tax-note">Review checklist progress is saved on this device for this starter workspace.</p>
                 </div>
               </div>
               <div class="tax-panel-body">
@@ -630,7 +630,7 @@
                 <div>
                   <div class="tax-kicker">Source review</div>
                   <h2 class="tax-h2" id="sourceTitle">Review status</h2>
-                  <p class="tax-note">Source dates are sample information until verified against official sources. Source review notes support accountant review, not legal advice or official confirmation.</p>
+                  <p class="tax-note">Source dates are starter information until verified against official sources. Source review notes support accountant review, not legal advice or official confirmation.</p>
                 </div>
                 <button class="tax-btn" type="button" id="exportSourceReviewCsvBtn">Source review CSV</button>
               </div>
@@ -1584,7 +1584,7 @@
         {
           id: "deadline",
           title: "First deadline created",
-          meta: "A sample deadline appears once obligations are selected.",
+          meta: "A starter deadline appears once obligations are selected.",
           done: deadlineItems().length > 0
         },
         {
@@ -2206,7 +2206,7 @@
         }
       });
       upcomingDeadlines().forEach(function (item) {
-        items.push({ title: item.country.name + " " + item.title + " deadline", meta: dateLabel(item.dueDate) + " sample deadline. Verify before use.", label: "upcoming deadline", tone: "upcoming" });
+        items.push({ title: item.country.name + " " + item.title + " deadline", meta: dateLabel(item.dueDate) + " starter deadline. Verify before use.", label: "upcoming deadline", tone: "upcoming" });
       });
       countries.forEach(function (country) {
         if (state.lanes[country.id] === "needs review") {
@@ -2220,7 +2220,7 @@
       clear(els.queueList);
       var items = queueItems();
       if (!items.length) {
-        els.queueList.appendChild(create("div", "tax-empty", "No open queue items in this sample workspace."));
+        els.queueList.appendChild(create("div", "tax-empty", "No open queue items in this starter workspace."));
         return;
       }
       items.slice(0, 10).forEach(function (item) {

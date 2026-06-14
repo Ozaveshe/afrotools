@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
   <meta property="og:title" content="Ghanaian Jollof Rice Recipe | Ghana | AfroKitchen">
   <meta property="og:description" content="Ghanaian jollof rice with basmati rice steamed in a reduced tomato, onion, ginger, garlic, chile, and bay-leaf stew.">
   <meta property="og:image" content="https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,15 +25,15 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=32f6a027">
+  <link rel="stylesheet" href="/tools/afrokitchen/icon-system.css?v=e947352b">
   <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=d0ebe756">
-  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=5b092a80">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=f72d0d62">
   <style>
     .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
-    .ak-static-page .ak-static-helper-note,
-    .ak-static-page .ak-static-related-card { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
+    .ak-static-page .ak-static-helper-note { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
     .ak-static-page .ak-static-hero-card { padding: 24px; align-self: stretch; display: grid; gap: 16px; color: var(--ak-text); }
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
@@ -89,6 +89,7 @@
     .ak-static-page .ak-step-title { font-family: var(--font-body); font-size: 1.05rem; font-weight: 800; line-height: 1.25; }
     .ak-static-page .ak-step-text { max-width: 70ch; color: var(--ak-muted); font-size: 1.02rem; line-height: 1.7; }
     .ak-static-page .ak-step-tip { max-width: 68ch; border-radius: 18px; background: linear-gradient(180deg, var(--ak-accent-soft), #fff7df); }
+    .ak-static-page .ak-step-tip::before { content: none; }
     .ak-static-page .ak-static-step-actions { display: grid; gap: 10px; margin-top: 16px; }
     .ak-static-page .ak-static-timer-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; background: var(--ak-surface-soft); color: var(--ak-dark); width: fit-content; }
     .ak-static-page .ak-static-timer-label { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ak-subtle); }
@@ -99,14 +100,47 @@
     .ak-static-page .ak-static-helper-note p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-related { margin-top: 36px; }
     .ak-static-page .ak-static-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .ak-static-page .ak-static-related-card { padding: 20px; text-decoration: none; display: grid; gap: 10px; }
-    .ak-static-page .ak-static-related-card h3 { margin: 0; color: var(--ak-dark); font-size: 1.2rem; }
-    .ak-static-page .ak-static-related-card p { margin: 0; color: var(--ak-muted); line-height: 1.65; }
-    .ak-static-page .ak-static-card-meta { color: var(--ak-subtle); font-size: .92rem; }
+    .ak-static-page .ak-internal-link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .ak-static-page .ak-internal-link-group { min-width: 0; padding: 18px; border-radius: 20px; background: var(--ak-panel); border: 1px solid var(--ak-line); box-shadow: var(--ak-shadow-sm); }
+    .ak-static-page .ak-internal-link-group p { margin: 6px 0 14px; color: var(--ak-muted); line-height: 1.6; }
+    .ak-static-page .ak-internal-link-list { display: grid; gap: 9px; }
+    .ak-static-page .ak-internal-link { display: grid; gap: 3px; padding: 11px 12px; border-radius: 14px; background: var(--ak-bg); border: 1px solid var(--ak-line); color: var(--ak-dark); text-decoration: none; }
+    .ak-static-page .ak-internal-link span { font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+    .ak-static-page .ak-internal-link small { color: var(--ak-muted); line-height: 1.35; }
+    .ak-static-page .ak-internal-link:hover,
+    .ak-static-page .ak-internal-link:focus-visible { border-color: var(--ak-primary-border); color: var(--ak-primary-deep); outline: none; }
+    .ak-static-page .ak-static-recipe-card { min-width: 0; display: grid; grid-template-columns: minmax(112px, .34fr) minmax(0, 1fr); overflow: hidden; text-decoration: none; color: var(--ak-text); background: #fffdfa; border: 1px solid rgba(82,50,28,.14); border-radius: 18px; box-shadow: 0 12px 28px rgba(36,21,10,.06); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+    .ak-static-page .ak-static-recipe-card:not(.has-thumb) { grid-template-columns: 1fr; }
+    .ak-static-page .ak-static-recipe-card:hover,
+    .ak-static-page .ak-static-recipe-card:focus-visible { transform: translateY(-3px); border-color: rgba(199,62,29,.34); box-shadow: 0 18px 34px rgba(36,21,10,.1); outline: none; }
+    .ak-static-page .ak-static-recipe-card:focus-visible { box-shadow: 0 0 0 4px rgba(199,62,29,.16), 0 18px 34px rgba(36,21,10,.1); }
+    .ak-static-page .ak-static-recipe-card-thumb { min-width: 0; min-height: 100%; background: var(--ak-surface-soft); overflow: hidden; }
+    .ak-static-page .ak-static-recipe-card-thumb img { display: block; width: 100%; height: 100%; min-height: 188px; object-fit: cover; }
+    .ak-static-page .ak-static-recipe-card-fallback { min-height: 156px; display: grid; align-content: end; gap: 12px; padding: 18px; background:
+      radial-gradient(circle at 18% 20%, rgba(15,123,67,.18), transparent 28%),
+      linear-gradient(135deg, #fff7ec, #f6eadb 58%, #eef6e7); border-bottom: 1px solid rgba(82,50,28,.12); }
+    .ak-static-page .ak-fallback-mark { width: 44px; height: 44px; display: inline-grid; place-items: center; border-radius: 50%; background: #2d1b12; color: #fff8ef; font-weight: 900; letter-spacing: .06em; }
+    .ak-static-page .ak-fallback-copy { display: grid; gap: 4px; min-width: 0; }
+    .ak-static-page .ak-fallback-copy strong { color: #2d1b12; line-height: 1.12; overflow-wrap: anywhere; }
+    .ak-static-page .ak-fallback-copy small { color: #6c503b; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-body { min-width: 0; display: grid; align-content: start; gap: 12px; padding: 18px; }
+    .ak-static-page .ak-static-recipe-card-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ak-static-page .ak-static-recipe-badge { display: inline-flex; align-items: center; min-height: 28px; max-width: 100%; padding: 0 10px; border-radius: 999px; background: #fff4e6; border: 1px solid rgba(82,50,28,.12); color: #573723; font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ak-static-page .ak-static-recipe-badge:first-child { background: #f4fbef; border-color: rgba(15,123,67,.16); color: #245b35; }
+    .ak-static-page .ak-static-recipe-card-title { color: var(--ak-dark); font-family: var(--font-display); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.02; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; color: var(--ak-muted); line-height: 1.58; font-size: .93rem; }
+    .ak-static-page .ak-static-recipe-card-meta { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+    .ak-static-page .ak-static-recipe-card-meta > span { gap: 7px; min-width: 0; max-width: 100%; padding: 7px 9px; border-radius: 12px; background: #fff6ea; border: 1px solid rgba(82,50,28,.1); color: #4c3322; font-size: .76rem; }
+    .ak-static-page .ak-static-recipe-card-meta small { display: block; color: #8b6e58; font-size: .62rem; font-weight: 850; letter-spacing: .08em; line-height: 1.1; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-meta strong { display: block; min-width: 0; color: #2b1b12; line-height: 1.2; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-cta { display: inline-flex; align-items: center; gap: 7px; justify-self: start; margin-top: 2px; color: var(--ak-primary-deep); font-size: .78rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card:hover .ak-static-recipe-card-cta,
+    .ak-static-page .ak-static-recipe-card:focus-visible .ak-static-recipe-card-cta { color: var(--ak-primary); }
     .ak-static-page .ak-static-credit { font-size: .88rem; color: var(--ak-subtle); }
     @media (max-width: 960px) {
       .ak-static-page .ak-static-summary-grid,
       .ak-static-page .ak-static-related-grid,
+      .ak-static-page .ak-internal-link-grid,
       .ak-static-page .ak-photo-gallery-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
       .ak-static-page .ak-photo-gallery-head { align-items: start; flex-direction: column; }
@@ -128,14 +162,15 @@
       .ak-static-page .ak-photo-thumbs { grid-template-columns: 1fr; }
       .ak-static-page .ak-photo-thumbs figure { aspect-ratio: 4 / 3; }
       .ak-static-page .ak-nutrition { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card.has-thumb { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card-thumb img { min-height: 180px; }
       .ak-static-page .ak-step { padding: 76px 20px 22px; }
       .ak-static-page .ak-step-num { left: 20px; top: 20px; }
     }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Ghanaian Jollof Rice","description":"Ghanaian jollof rice with basmati rice steamed in a reduced tomato, onion, ginger, garlic, chile, and bay-leaf stew.","image":["https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"],"author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT25M","cookTime":"PT55M","totalTime":"PT80M","recipeYield":"6 servings","recipeCategory":"Main Course","recipeCuisine":"Ghana, West Africa","nutrition":{"@type":"NutritionInformation","calories":"460 calories","proteinContent":"10g","carbohydrateContent":"70g","fatContent":"14g","fiberContent":"3g"},"recipeIngredient":["3 cups basmati rice, washed","400 g canned tomatoes or fresh tomato puree","2 tbsp tomato paste","2 medium onions, one blended, one sliced","¼ cup vegetable oil","2 cloves garlic, minced","1 thumb fresh ginger, grated","2 whole bay leaves","1 tsp curry powder or dried thyme","1 whole scotch bonnet pepper, left whole","3 cups hot chicken stock or water","salt and black pepper, to taste"],"recipeInstructions":[{"@type":"HowToStep","name":"Blend the sauce","text":"Blend tomatoes with one onion, garlic, and ginger until smooth.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"},{"@type":"HowToStep","name":"Fry the tomato stew","text":"Heat oil, cook sliced onion, then fry tomato paste. Add blended sauce, bay leaves, chile, and optional curry or thyme. Cook until thick and glossy.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"},{"@type":"HowToStep","name":"Add rice","text":"Stir in washed rice until coated. Add hot stock or water and season well.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"},{"@type":"HowToStep","name":"Steam","text":"Cover tightly with foil and a lid. Cook on low until the rice is tender and the liquid is absorbed.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"},{"@type":"HowToStep","name":"Rest and fluff","text":"Rest off heat for 10 minutes, remove bay leaves and chile, then fluff gently.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","keywords":"ghanaian-jollof, basmati-rice, tomato-stew, party-rice, ghana, gluten-free, dairy-free, halal, Parties, funerals, and Sunday meals, Jollof","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Ghanaian Jollof Rice","description":"Ghanaian jollof rice with basmati rice steamed in a reduced tomato, onion, ginger, garlic, chile, and bay-leaf stew.","image":["https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"],"author":{"@type":"Organization","name":"AfroKitchen"},"datePublished":"2026-03-18","prepTime":"PT25M","cookTime":"PT55M","totalTime":"PT80M","recipeYield":"6 servings","recipeCategory":"Main dish","recipeCuisine":"Ghana, West Africa","nutrition":{"@type":"NutritionInformation","calories":"460 calories","proteinContent":"10g","carbohydrateContent":"70g","fatContent":"14g","fiberContent":"3g"},"recipeIngredient":["3 cups basmati rice, washed","400 g canned tomatoes or fresh tomato puree","2 tbsp tomato paste","2 medium onions, one blended, one sliced","¼ cup vegetable oil","2 cloves garlic, minced","1 thumb fresh ginger, grated","2 whole bay leaves","1 tsp curry powder or dried thyme","1 whole scotch bonnet pepper, left whole","3 cups hot chicken stock or water","salt and black pepper, to taste"],"recipeInstructions":[{"@type":"HowToStep","name":"Blend the sauce","text":"Blend tomatoes with one onion, garlic, and ginger until smooth.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"},{"@type":"HowToStep","name":"Fry the tomato stew","text":"Heat oil, cook sliced onion, then fry tomato paste. Add blended sauce, bay leaves, chile, and optional curry or thyme. Cook until thick and glossy.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"},{"@type":"HowToStep","name":"Add rice","text":"Stir in washed rice until coated. Add hot stock or water and season well.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"},{"@type":"HowToStep","name":"Steam","text":"Cover tightly with foil and a lid. Cook on low until the rice is tender and the liquid is absorbed.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"},{"@type":"HowToStep","name":"Rest and fluff","text":"Rest off heat for 10 minutes, remove bay leaves and chile, then fluff gently.","url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","image":"https://afrotools.com/assets/img/kitchen/jollof-rice-gh.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/","publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"dateModified":"2026-05-16","isAccessibleForFree":true,"keywords":"ghanaian-jollof, basmati-rice, tomato-stew, party-rice, ghana, gluten-free, dairy-free, halal, Parties, funerals, and Sunday meals, Jollof","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/"}}</script>
+
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Ghana","item":"https://afrotools.com/tools/afrokitchen/countries/ghana/"},{"@type":"ListItem","position":5,"name":"Ghanaian Jollof Rice","item":"https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/"}]}</script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/recipes/jollof-rice-gh/" />
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -157,8 +192,8 @@
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">medium</div></div>
         </div>
         <div class="ak-hero-actions">
-          <a href="/tools/afrokitchen/countries/ghana/" class="ak-btn ak-btn-secondary">Explore Ghana recipes</a>
-          <a href="/tools/afrokitchen/collections/one-pot-wonders/" class="ak-btn ak-btn-primary">Open One-Pot Wonders</a>
+          <a href="/tools/afrokitchen/countries/ghana/" class="ak-btn ak-btn-secondary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Explore Ghana recipes</span></a>
+          <a href="/tools/afrokitchen/collections/one-pot-wonders/" class="ak-btn ak-btn-primary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 6h14"></path><path d="M5 12h14"></path><path d="M5 18h9"></path></svg><span>Open One-Pot Wonders</span></a>
         </div>
       </div>
       <aside class="ak-static-hero-card">
@@ -190,7 +225,7 @@
           </div>
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>Best for Parties, funerals, and Sunday meals, with a medium cooking level and about 80 minutes total.</p>
+            <p>Best for Parties, funerals, and Sunday meals. Plan on a medium cook and about 80 minutes total.</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
@@ -229,7 +264,7 @@
         </div>
         <div class="ak-photo-gallery-grid is-single">
           <figure class="ak-photo-main">
-            <img src="/assets/img/kitchen/jollof-rice-gh.webp" alt="Ghanaian Jollof Rice recipe image" loading="lazy" decoding="async">
+            <img src="/assets/img/kitchen/jollof-rice-gh.webp" alt="Ghanaian Jollof Rice recipe from Ghana" loading="lazy" decoding="async" width="1200" height="750">
             <figcaption>Ghanaian Jollof Rice finished dish</figcaption>
           </figure>
 
@@ -260,9 +295,9 @@
         <div class="ak-static-serving-bar">
           <div class="ak-servings">
             <span class="ak-servings-label">Servings</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)">-</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease servings">-</button>
             <span class="ak-servings-val" id="ak-static-servings">6</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)">+</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase servings">+</button>
           </div>
           <p class="ak-static-serving-note">Scale the dish before you shop, then use the checklist while you cook.</p>
         </div>
@@ -353,12 +388,14 @@
                 <h2 class="ak-panel-title">Step-by-step method</h2>
                 <p class="ak-method-sub">Keep the rhythm calm, watch the texture, and adjust seasoning at the end.</p>
               </div>
-              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/ghana/">Back to Ghana</a>
+              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/ghana/"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Back to Ghana</span></a>
             </div>
             <div class="ak-method-stat-row">
-              <span>5 steps</span>
-              <span>80 min total</span>
-              <span>medium</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg>5 steps</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>25 min prep</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>55 min cook</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>80 min total</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg>medium</span>
             </div>
             <div class="ak-steps"><article class="ak-step" id="step-1">
         <div class="ak-step-header">
@@ -378,12 +415,13 @@
 
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Reduce stew</span>
               <strong id="ak-timer-display-2">20:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-2" onclick="AKStaticRecipePage.toggleTimer(2, 1200)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(2, 1200)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-2" onclick="AKStaticRecipePage.toggleTimer(2, 1200)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(2, 1200)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-2" style="width:100%"></div></div>
           </div>
@@ -406,12 +444,13 @@
 
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Steam rice</span>
               <strong id="ak-timer-display-4">35:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-4" onclick="AKStaticRecipePage.toggleTimer(4, 2100)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(4, 2100)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-4" onclick="AKStaticRecipePage.toggleTimer(4, 2100)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(4, 2100)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-4" style="width:100%"></div></div>
           </div>
@@ -425,53 +464,216 @@
 
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Rest</span>
               <strong id="ak-timer-display-5">10:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-5" onclick="AKStaticRecipePage.toggleTimer(5, 600)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(5, 600)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-5" onclick="AKStaticRecipePage.toggleTimer(5, 600)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(5, 600)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-5" style="width:100%"></div></div>
           </div>
       </article></div>
             <div class="ak-static-helper-note">
-              <p>Some cooks use curry powder, thyme, nutmeg, or stock cubes. The rice is often perfumed basmati or another long-grain rice.</p>
+              <p><svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3 22 20H2L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><span>Some cooks use curry powder, thyme, nutmeg, or stock cubes. The rice is often perfumed basmati or another long-grain rice.</span></p>
             </div>
           </section>
         </div>
       </div>
 
-      <section class="ak-section ak-static-related">
+      <section class="ak-section ak-static-related ak-internal-link-section">
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
-      <h2 class="ak-section-title">More AfroKitchen dishes from the same food atlas</h2>
-      <p class="ak-section-sub">Try another dish from the same country, region, or cooking mood.</p>
+      <h2 class="ak-section-title">Cook around Ghanaian Jollof Rice</h2>
+      <p class="ak-section-sub">Follow country, category, collection, time, and pairing paths without turning the recipe page into a link farm.</p>
     </div>
-    <div class="ak-static-related-grid"><a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/banku-tilapia-gh/">
-        <div class="ak-support-label">Ghana | Main dish</div>
-        <h3>Banku and Tilapia</h3>
-        <p>A Ghanaian plate of smooth fermented corn and cassava dough served with seasoned grilled tilapia and pepper sauce.</p>
-        <div class="ak-static-card-meta">70 min | Main dish</div>
+    <div class="ak-static-related-grid"><a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/red-red-gh/" aria-label="Open recipe: Red Red">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/red-red-gh.webp" alt="Red Red recipe from Ghana" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Ghana</span>
+        <span class="ak-static-recipe-badge">Stew</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Red Red</span>
+      <span class="ak-static-recipe-card-desc">A Ghanaian black-eyed pea stew cooked with red palm oil and served with fried ripe plantain.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>85 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 5</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Vegan</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>West Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/tuo-zaafi-gh/" aria-label="Open recipe: Tuo Zaafi with Ayoyo Soup">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/tuo-zaafi-gh.webp" alt="Tuo Zaafi with Ayoyo Soup recipe from Ghana" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Ghana</span>
+        <span class="ak-static-recipe-badge">Main dish</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Tuo Zaafi with Ayoyo Soup</span>
+      <span class="ak-static-recipe-card-desc">Northern Ghanaian maize swallow served with slippery ayoyo soup and a tomato-pepper stew.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>85 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Gluten Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>West Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/banku-tilapia-gh/" aria-label="Open recipe: Banku and Tilapia">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/banku-tilapia-gh.webp" alt="Banku and Tilapia recipe from Ghana" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Ghana</span>
+        <span class="ak-static-recipe-badge">Main dish</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Banku and Tilapia</span>
+      <span class="ak-static-recipe-card-desc">A Ghanaian plate of smooth fermented corn and cassava dough served with seasoned grilled tilapia and pepper sauce.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>70 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 4</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Dairy Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>West Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/kontomire-stew-gh/" aria-label="Open recipe: Kontomire Stew">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/kontomire-stew-gh.webp" alt="Kontomire Stew recipe from Ghana" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Ghana</span>
+        <span class="ak-static-recipe-badge">Stew</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Kontomire Stew</span>
+      <span class="ak-static-recipe-card-desc">Ghanaian cocoyam leaf stew with palm oil, egusi, smoked fish, tomatoes, onion, chile, and tender greens.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>70 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Gluten Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>West Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a></div>
+    <div class="ak-internal-link-grid"><article class="ak-internal-link-group">
+        <div class="ak-support-label">More Ghana recipes</div>
+        <p>Stay inside the Ghana country hub.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/red-red-gh/">
+        <span>Red Red</span>
+        <small>Ghana - Stew - 85 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/fufu-light-soup-gh/">
-        <div class="ak-support-label">Ghana | Soup</div>
-        <h3>Fufu with Light Soup</h3>
-        <p>Ghanaian cassava-plantain fufu served with peppery tomato-based light soup and goat, chicken, or fish.</p>
-        <div class="ak-static-card-meta">115 min | Soup</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/tuo-zaafi-gh/">
+        <span>Tuo Zaafi with Ayoyo Soup</span>
+        <small>Ghana - Main dish - 85 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/ga-kenkey-fried-fish-gh/">
-        <div class="ak-support-label">Ghana | Main dish</div>
-        <h3>Ga Kenkey with Fried Fish</h3>
-        <p>Ga-style fermented corn dumplings served with fried fish, pepper sauce, and fresh tomato-onion relish.</p>
-        <div class="ak-static-card-meta">135 min | Main dish</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/banku-tilapia-gh/">
+        <span>Banku and Tilapia</span>
+        <small>Ghana - Main dish - 70 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/groundnut-soup-gh/">
-        <div class="ak-support-label">Ghana | Soup</div>
-        <h3>Groundnut Soup</h3>
-        <p>Ghanaian groundnut soup with chicken, peanut paste, tomato, ginger, chile, and a silky broth for fufu or rice balls.</p>
-        <div class="ak-static-card-meta">65 min | Soup</div>
-      </a></div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/kontomire-stew-gh/">
+        <span>Kontomire Stew</span>
+        <small>Ghana - Stew - 70 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">More main dish recipes</div>
+        <p>Compare dishes in the same course or cooking style.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/bobotie-za/">
+        <span>Bobotie</span>
+        <small>South Africa - Main dish - 80 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/poulet-yassa-gn/">
+        <span>Guinean Chicken Yassa</span>
+        <small>Guinea - Main dish - 85 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/koshari-eg/">
+        <span>Koshari</span>
+        <small>Egypt - Main dish - 70 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/poulet-moutarde-ga/">
+        <span>Mustard Chicken</span>
+        <small>Gabon - Main dish - 70 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">From the same collection</div>
+        <p>Continue through One-Pot Wonders.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/koshari-eg/">
+        <span>Koshari</span>
+        <small>Egypt - Main dish - 70 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/riz-gras-bf/">
+        <span>Riz Gras</span>
+        <small>Burkina Faso - Main dish - 70 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/jollof-rice-ng/">
+        <span>Jollof Rice</span>
+        <small>Nigeria - Main dish - 95 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/thieboudienne-mr/">
+        <span>Mauritanian Fish Rice</span>
+        <small>Mauritania - Main dish - 110 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Similar cooking time</div>
+        <p>Pick another dish with a nearby time commitment.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/bobotie-za/">
+        <span>Bobotie</span>
+        <small>South Africa - Main dish - 80 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/kedjenou-ci/">
+        <span>Kedjenou</span>
+        <small>Ivory Coast - Stew - 80 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/nyembwe-chicken-ga/">
+        <span>Nyembwe Chicken</span>
+        <small>Gabon - Stew - 80 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/poulet-muambe-cg/">
+        <span>Poulet à la Muambé</span>
+        <small>Republic of Congo - Stew - 80 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Build a fuller table</div>
+        <p>Pair a main, side, drink, or dessert where the atlas has a useful match.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/banku-tilapia-gh/">
+        <span>Banku and Tilapia</span>
+        <small>Ghana - Main dish - 70 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/omo-tuo-gh/">
+        <span>Omo Tuo</span>
+        <small>Ghana - Side - 45 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/chocolate-quente-st/">
+        <span>Sao Tomean Hot Chocolate</span>
+        <small>São Tomé and Príncipe - Drink - 17 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/thiakry-sn/">
+        <span>Thiakry</span>
+        <small>Senegal - Dessert - 35 min</small>
+      </a>
+        </div>
+      </article></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
       <a href="/tools/afrokitchen/countries/ghana/" class="ak-btn ak-btn-outline">Explore Ghana recipes</a>
@@ -481,10 +683,10 @@
   </section>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/engines/afrokitchen-engine.js?v=b9ee3f19"></script>
-<script>window.__AK_STATIC_RECIPE = {"slug":"jollof-rice-gh","name":"Ghanaian Jollof Rice","description":"Ghanaian jollof rice with basmati rice steamed in a reduced tomato, onion, ginger, garlic, chile, and bay-leaf stew.","story":"Ghanaian jollof is all about the stew before the rice. Fry the tomato base until it tastes rounded, then let basmati steam gently under a tight lid.","default_servings":6,"serving_unit":"servings","country_name":"Ghana","country_code":"GH","region":"West Africa","difficulty":"medium","category":"main","calories":460,"protein_g":10,"carbs_g":70,"fat_g":14,"fiber_g":3,"ingredients":[{"id":"research-jollof-rice-gh-replace-ingredient-1","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":10,"group_name":"Rice","amount":3,"unit":"cups","name":"basmati rice","prep_note":"washed","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-2","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":20,"group_name":"Sauce","amount":400,"unit":"g","name":"canned tomatoes or fresh tomato puree","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-3","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":30,"group_name":"Sauce","amount":2,"unit":"tbsp","name":"tomato paste","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-4","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":40,"group_name":"Sauce","amount":2,"unit":"medium","name":"onions","prep_note":"one blended, one sliced","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-5","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":50,"group_name":"Sauce","amount":0.25,"unit":"cup","name":"vegetable oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-6","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":60,"group_name":"Aromatics","amount":2,"unit":"cloves","name":"garlic","prep_note":"minced","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-7","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":70,"group_name":"Aromatics","amount":1,"unit":"thumb","name":"fresh ginger","prep_note":"grated","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-8","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":80,"group_name":"Aromatics","amount":2,"unit":"whole","name":"bay leaves","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-9","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":90,"group_name":"Aromatics","amount":1,"unit":"tsp","name":"curry powder or dried thyme","prep_note":null,"is_optional":true,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-10","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":100,"group_name":"Heat","amount":1,"unit":"whole","name":"scotch bonnet pepper","prep_note":"left whole","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-11","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":110,"group_name":"Liquid","amount":3,"unit":"cups","name":"hot chicken stock or water","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-12","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":120,"group_name":"Pantry","amount":0,"unit":"","name":"salt and black pepper","prep_note":"to taste","is_optional":false,"substitution":null,"created_at":null}],"steps":[{"id":"research-jollof-rice-gh-replace-step-1","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":1,"title":"Blend the sauce","instruction":"Blend tomatoes with one onion, garlic, and ginger until smooth.","timer_seconds":0,"timer_label":null,"tip":null,"image_url":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-step-2","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":2,"title":"Fry the tomato stew","instruction":"Heat oil, cook sliced onion, then fry tomato paste. Add blended sauce, bay leaves, chile, and optional curry or thyme. Cook until thick and glossy.","timer_seconds":1200,"timer_label":"Reduce stew","tip":null,"image_url":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-step-3","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":3,"title":"Add rice","instruction":"Stir in washed rice until coated. Add hot stock or water and season well.","timer_seconds":0,"timer_label":null,"tip":null,"image_url":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-step-4","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":4,"title":"Steam","instruction":"Cover tightly with foil and a lid. Cook on low until the rice is tender and the liquid is absorbed.","timer_seconds":2100,"timer_label":"Steam rice","tip":null,"image_url":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-step-5","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":5,"title":"Rest and fluff","instruction":"Rest off heat for 10 minutes, remove bay leaves and chile, then fluff gently.","timer_seconds":600,"timer_label":"Rest","tip":null,"image_url":null,"created_at":null}],"gallery_images":[{"src":"/assets/img/kitchen/jollof-rice-gh.webp","alt":"Ghanaian Jollof Rice recipe image","caption":"Ghanaian Jollof Rice finished dish","credit":null}],"region_lens":{"slug":"rice-and-beans","name":"Rice, beans, and street table","description":"Waakye, jollof, kelewele, and lunch-counter plates with many sides.","confidence":"high","match_reason":"curated recipe mapping, jollof, kelewele, rice"},"chef_notes":{"common_mistakes":["Adding too much liquid after the rice goes in.","Stirring too often once the grains should be steaming.","Stopping the base before the pepper, onion, or spice edge has mellowed.","Thinning the pot before the body of the soup or stew has developed."],"readiness_cues":["The grains should be tender but still distinct, with steam carrying the seasoning upward.","The sauce should coat the spoon and taste rounded, not watery or raw.","Greens should be cooked through but still look alive and glossy.","The aroma should smell rounded rather than raw or sharp."],"pantry_notes":["shito","palm oil","sorghum leaves","fermented corn dough","groundnut"],"technique_notes":["stew base frying","fermented dough steaming","street-food plating","soup and swallow pairing"],"serve_with":"Shito, fried plantain, grilled chicken, salad, or kelewele"},"image_status":{"status":"hero-ready","gallery_count":1,"hero_ready":true,"hero_src":"/assets/img/kitchen/jollof-rice-gh.webp","local_image_count":1,"sources":["/assets/img/kitchen/jollof-rice-gh.webp"],"missing_roles":["serving","ingredients","process","table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"jollof-rice-gh.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, a Ghana main, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"jollof-rice-gh-2.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, a Ghana main, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"jollof-rice-gh-3.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, a Ghana main, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"jollof-rice-gh-4.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, a Ghana main, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"jollof-rice-gh-5.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, a Ghana main, dish on table with realistic accompaniments and serving utensils."}]}};</script>
-<script src="/tools/afrokitchen/static-recipe-runtime.js?v=6efc4827" defer></script>
+<script>window.__AK_STATIC_RECIPE = {"slug":"jollof-rice-gh","name":"Ghanaian Jollof Rice","description":"Ghanaian jollof rice with basmati rice steamed in a reduced tomato, onion, ginger, garlic, chile, and bay-leaf stew.","story":"Ghanaian jollof is all about the stew before the rice. Fry the tomato base until it tastes rounded, then let basmati steam gently under a tight lid.","default_servings":6,"serving_unit":"servings","country_name":"Ghana","country_code":"GH","region":"West Africa","difficulty":"medium","category":"main","calories":460,"protein_g":10,"carbs_g":70,"fat_g":14,"fiber_g":3,"ingredients":[{"id":"research-jollof-rice-gh-replace-ingredient-1","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":10,"group_name":"Rice","amount":3,"unit":"cups","name":"basmati rice","prep_note":"washed","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-2","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":20,"group_name":"Sauce","amount":400,"unit":"g","name":"canned tomatoes or fresh tomato puree","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-3","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":30,"group_name":"Sauce","amount":2,"unit":"tbsp","name":"tomato paste","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-4","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":40,"group_name":"Sauce","amount":2,"unit":"medium","name":"onions","prep_note":"one blended, one sliced","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-5","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":50,"group_name":"Sauce","amount":0.25,"unit":"cup","name":"vegetable oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-6","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":60,"group_name":"Aromatics","amount":2,"unit":"cloves","name":"garlic","prep_note":"minced","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-7","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":70,"group_name":"Aromatics","amount":1,"unit":"thumb","name":"fresh ginger","prep_note":"grated","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-8","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":80,"group_name":"Aromatics","amount":2,"unit":"whole","name":"bay leaves","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-9","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":90,"group_name":"Aromatics","amount":1,"unit":"tsp","name":"curry powder or dried thyme","prep_note":null,"is_optional":true,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-10","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":100,"group_name":"Heat","amount":1,"unit":"whole","name":"scotch bonnet pepper","prep_note":"left whole","is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-11","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":110,"group_name":"Liquid","amount":3,"unit":"cups","name":"hot chicken stock or water","prep_note":null,"is_optional":false,"substitution":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-ingredient-12","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","ingredient_id":null,"sort_order":120,"group_name":"Pantry","amount":0,"unit":"","name":"salt and black pepper","prep_note":"to taste","is_optional":false,"substitution":null,"created_at":null}],"steps":[{"id":"research-jollof-rice-gh-replace-step-1","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":1,"title":"Blend the sauce","instruction":"Blend tomatoes with one onion, garlic, and ginger until smooth.","timer_seconds":0,"timer_label":null,"tip":null,"image_url":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-step-2","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":2,"title":"Fry the tomato stew","instruction":"Heat oil, cook sliced onion, then fry tomato paste. Add blended sauce, bay leaves, chile, and optional curry or thyme. Cook until thick and glossy.","timer_seconds":1200,"timer_label":"Reduce stew","tip":null,"image_url":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-step-3","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":3,"title":"Add rice","instruction":"Stir in washed rice until coated. Add hot stock or water and season well.","timer_seconds":0,"timer_label":null,"tip":null,"image_url":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-step-4","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":4,"title":"Steam","instruction":"Cover tightly with foil and a lid. Cook on low until the rice is tender and the liquid is absorbed.","timer_seconds":2100,"timer_label":"Steam rice","tip":null,"image_url":null,"created_at":null},{"id":"research-jollof-rice-gh-replace-step-5","recipe_id":"9ce3197c-87f1-4297-945f-7b54344eb1a1","step_number":5,"title":"Rest and fluff","instruction":"Rest off heat for 10 minutes, remove bay leaves and chile, then fluff gently.","timer_seconds":600,"timer_label":"Rest","tip":null,"image_url":null,"created_at":null}],"gallery_images":[{"src":"/assets/img/kitchen/jollof-rice-gh.webp","alt":"Ghanaian Jollof Rice recipe from Ghana","caption":"Ghanaian Jollof Rice finished dish","credit":null}],"region_lens":{"slug":"rice-and-beans","name":"Rice, beans, and street table","description":"Waakye, jollof, kelewele, and lunch-counter plates with many sides.","confidence":"high","match_reason":"curated recipe mapping, jollof, kelewele, rice"},"chef_notes":{"common_mistakes":["Adding too much liquid after the rice goes in.","Stirring too often once the grains should be steaming.","Stopping the base before the pepper, onion, or spice edge has mellowed.","Thinning the pot before the body of the soup or stew has developed."],"readiness_cues":["The grains should be tender but still distinct, with steam carrying the seasoning upward.","The sauce should coat the spoon and taste rounded, not watery or raw.","Greens should be cooked through but still look alive and glossy.","The aroma should smell rounded rather than raw or sharp."],"pantry_notes":["shito","palm oil","sorghum leaves","fermented corn dough","groundnut"],"technique_notes":["stew base frying","fermented dough steaming","street-food plating","soup and swallow pairing"],"serve_with":"Shito, fried plantain, grilled chicken, salad, or kelewele"},"image_status":{"status":"hero-ready","gallery_count":1,"hero_ready":true,"hero_src":"/assets/img/kitchen/jollof-rice-gh.webp","local_image_count":1,"sources":["/assets/img/kitchen/jollof-rice-gh.webp"],"missing_roles":["serving","ingredients","process","table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"jollof-rice-gh.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, main from Ghana, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"jollof-rice-gh-2.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, main from Ghana, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"jollof-rice-gh-3.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, main from Ghana, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"jollof-rice-gh-4.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, main from Ghana, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"jollof-rice-gh-5.webp","route_path":"/tools/afrokitchen/recipes/jollof-rice-gh/","prompt":"Finished Ghanaian Jollof Rice, main from Ghana, dish on table with realistic accompaniments and serving utensils."}]}};</script>
+<script src="/tools/afrokitchen/static-recipe-runtime.js?v=a7d9608d" defer></script>
 </body>
 </html>

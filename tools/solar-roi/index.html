@@ -1,856 +1,569 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Solar Panel ROI Calculator for Africa | AfroTools</title>
-<meta name="description" content="Estimate solar panel payback across African countries using local currency, electricity spend, generator fuel spend, outage hours, system size, battery, and financing.">
+<title>Solar Panel ROI Calculator for Africa — Payback, Battery &amp; Generator Savings</title>
+<meta name="description" content="Compare solar payback in all 54 African countries, including generator fuel savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.">
 <link rel="canonical" href="https://afrotools.com/tools/solar-roi/">
-<meta property="og:title" content="Solar Panel ROI Calculator for Africa | AfroTools">
-<meta property="og:description" content="Estimate solar panel payback across African countries using local electricity and fuel assumptions.">
+
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/solar-roi/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/roi-solaire/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/faida-ya-solar/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/solar-roi/">
+<meta property="og:title" content="Solar Panel ROI Calculator for Africa — Payback, Battery &amp; Generator Savings">
+<meta property="og:description" content="Compare solar payback in all 54 African countries, including generator fuel savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/solar-roi.webp">
 <meta property="og:url" content="https://afrotools.com/tools/solar-roi/">
 <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Solar Panel ROI Calculator for Africa | AfroTools">
-<meta name="twitter:description" content="Estimate solar payback with country, bill, generator spend, outage hours, system size, battery, and financing inputs.">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Solar Panel ROI Calculator for Africa | AfroTools",
-  "description": "Estimate solar panel payback across African countries using local currency, electricity spend, generator fuel spend, outage hours, system size, battery, and financing.",
-  "url": "https://afrotools.com/tools/solar-roi/",
-  "applicationCategory": "FinanceApplication",
-  "provider": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "image": "https://afrotools.com/assets/img/tools/solar-roi.webp"
-}
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}
-.solar-roi-shell{max-width:1180px;margin:0 auto;padding:32px 20px 72px}
-.solar-roi-first{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);gap:22px;align-items:start}
-.solar-roi-card{background:#fff;border:1px solid var(--en-border);border-radius:14px;box-shadow:var(--en-shadow);padding:24px}
-.solar-roi-card h2{font-size:1.05rem;line-height:1.25;margin:0 0 6px;font-weight:800;color:var(--en-text)}
-.solar-roi-muted{font-size:.9rem;line-height:1.55;color:var(--en-muted);margin:0 0 18px}
-.solar-roi-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.solar-roi-form .en-field-full{grid-column:1/-1}
-.solar-roi-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1.5px solid var(--en-border);border-radius:12px;padding:12px 14px;background:#fff}
-.solar-roi-toggle span{display:block}
-.solar-roi-toggle strong{display:block;font-size:.88rem;color:var(--en-text)}
-.solar-roi-toggle small{display:block;margin-top:3px;font-size:.76rem;line-height:1.35;color:var(--en-muted)}
-.solar-roi-toggle input{width:44px;height:24px;accent-color:var(--en-accent);flex:0 0 auto}
-.solar-roi-assumptions,.solar-roi-load{margin-top:18px;border:1px solid var(--en-border);border-radius:12px;background:#f8fafc;overflow:hidden}
-.solar-roi-assumptions summary,.solar-roi-load summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;font-weight:800;color:var(--en-text);list-style:none}
-.solar-roi-assumptions summary::-webkit-details-marker,.solar-roi-load summary::-webkit-details-marker{display:none}
-.solar-roi-assumptions summary:after,.solar-roi-load summary:after{content:"+";font-size:1.1rem;color:var(--en-accent-dark)}
-.solar-roi-assumptions[open] summary:after,.solar-roi-load[open] summary:after{content:"-"}
-.solar-roi-assumption-body{border-top:1px solid var(--en-border);padding:16px;background:#fff}
-.solar-roi-assumption-grid,.solar-roi-load-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.solar-roi-load-body{border-top:1px solid var(--en-border);padding:16px;background:#fff}
-.solar-roi-load-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}
-.solar-roi-load-actions .en-btn{padding:9px 13px;min-height:36px;font-size:.8rem;box-shadow:none}
-.solar-roi-standards{margin-top:14px;border:1px solid #dbeafe;border-radius:10px;background:#eff6ff;padding:12px 14px;color:#1e3a8a;font-size:.82rem;line-height:1.5}
-.solar-roi-standards strong{display:block;margin-bottom:6px;color:#1e3a8a}
-.solar-roi-standards ul{margin:0;padding-left:18px}
-.solar-roi-standards li+li{margin-top:4px}
-.solar-roi-source-state{display:block;margin-top:5px;font-size:.72rem;line-height:1.35;color:var(--en-muted)}
-.solar-roi-source-panel{margin-top:14px;border:1px solid var(--en-accent-light);border-radius:10px;background:var(--en-accent-pale);padding:12px 14px;color:#78350f;font-size:.82rem;line-height:1.5}
-.solar-roi-source-panel strong{display:block;margin-bottom:4px;color:#78350f}
-.solar-roi-reference-panel{margin-top:12px;border:1px solid #dbeafe;border-radius:10px;background:#f8fbff;padding:12px 14px;color:#17324d;font-size:.82rem;line-height:1.5}
-.solar-roi-reference-panel strong{display:block;margin-bottom:5px;color:#102033}
-.solar-roi-reference-panel ul{margin:6px 0 0;padding-left:18px}
-.solar-roi-reference-panel a{color:#0b63ce;font-weight:800;text-decoration:none}
-.solar-roi-reference-panel a:hover,.solar-roi-reference-panel a:focus-visible{text-decoration:underline;outline:none}
-.solar-roi-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:20px}
-.solar-roi-note{font-size:.78rem;color:var(--en-muted);line-height:1.5}
-.solar-roi-results{position:sticky;top:18px}
-.solar-roi-result-hero{background:linear-gradient(135deg,#0A1628 0%,#173018 54%,#2d4a00 100%);border-radius:16px;padding:26px;color:#fff;margin-bottom:16px;box-shadow:var(--en-shadow);overflow:hidden;position:relative}
-.solar-roi-result-hero:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 55% 80% at 88% 12%,rgba(245,158,11,.16),transparent 62%);pointer-events:none}
-.solar-roi-result-hero>*{position:relative}
-.solar-roi-kicker{font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:9px}
-.solar-roi-payback{font-size:clamp(2.1rem,5vw,3.35rem);line-height:1;font-weight:900;color:var(--en-accent);letter-spacing:0}
-.solar-roi-saving{margin-top:8px;font-size:.95rem;line-height:1.5;color:rgba(255,255,255,.76)}
-.solar-roi-headline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}
-.solar-roi-headline-item{border:1px solid var(--en-border);border-radius:12px;background:#fff;padding:14px}
-.solar-roi-headline-item span{display:block;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--en-muted);margin-bottom:6px}
-.solar-roi-headline-item strong{display:block;font-size:1.08rem;line-height:1.22;color:var(--en-text);overflow-wrap:anywhere}
-.solar-roi-headline-item small{display:block;margin-top:5px;font-size:.74rem;line-height:1.35;color:var(--en-muted)}
-.solar-roi-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}
-.solar-roi-metric{border:1px solid var(--en-border);border-radius:12px;background:#fff;padding:14px}
-.solar-roi-metric span{display:block;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--en-muted);margin-bottom:6px}
-.solar-roi-metric strong{display:block;font-size:1.05rem;line-height:1.22;color:var(--en-text);overflow-wrap:anywhere}
-.solar-roi-summary{border:1px solid var(--en-accent-light);border-radius:12px;background:var(--en-accent-pale);padding:14px 16px;color:#78350f;font-size:.88rem;line-height:1.55}
-.solar-roi-summary p{margin:0}
-.solar-roi-summary p+p{margin-top:8px}
-.solar-roi-export{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 16px}
-.solar-roi-export .en-btn{padding:9px 14px;min-height:38px;font-size:.82rem;box-shadow:none}
-.solar-roi-export-status{font-size:.78rem;color:var(--en-muted);line-height:1.4}
-.solar-roi-links{margin-top:28px}
-.solar-roi-links .en-hub{padding:0;background:transparent}
-.solar-roi-links h2{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(1.35rem,3vw,2rem);font-weight:400;line-height:1.25;margin:0 0 8px;color:var(--en-text)}
-.solar-roi-links p{font-size:.94rem;color:var(--en-muted);line-height:1.55;margin:0 0 18px;max-width:720px}
-.solar-roi-links .en-hub-country-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-@media (max-width:860px){
-  .solar-roi-shell{padding:24px 16px 56px}
-  .solar-roi-first{grid-template-columns:1fr}
-  .solar-roi-results{position:static}
-}
-@media (max-width:480px){
-  .solar-roi-shell{padding:18px 14px 48px}
-  .solar-roi-card{padding:18px}
-  .solar-roi-form{grid-template-columns:1fr;gap:13px}
-  .solar-roi-assumption-grid,.solar-roi-load-grid{grid-template-columns:1fr}
-  .solar-roi-headline{grid-template-columns:1fr}
-  .solar-roi-metrics{grid-template-columns:1fr}
-  .solar-roi-result-hero{padding:22px 20px}
-  .solar-roi-actions .en-btn{width:100%}
-  .solar-roi-links .en-hub-country-grid{grid-template-columns:1fr}
-}
-</style>
-<script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<meta name="twitter:title" content="Solar Panel ROI Calculator for Africa — Payback, Battery &amp; Generator Savings">
+<meta name="twitter:description" content="Compare solar payback in all 54 African countries, including generator fuel savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/solar-roi.webp">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/solar-roi/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/roi-solaire/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/faida-ya-solar/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/solar-roi/" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Solar Panel ROI Calculator for Africa — Payback, Battery & Generator Savings","description":"Compare solar payback in all 54 African countries, including generator fuel savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.","url":"https://afrotools.com/tools/solar-roi/","image":"https://afrotools.com/assets/img/tools/solar-roi.webp","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Solar Panel ROI Calculator for Africa","item":"https://afrotools.com/tools/solar-roi/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I calculate solar payback?","acceptedAnswer":{"@type":"Answer","text":"Enter your monthly grid bill, generator spend, outage hours, system size, battery choice, and financing assumptions. The calculator compares current energy spend with a solar scenario and estimates how long savings may take to recover the system cost."}},{"@type":"Question","name":"Should I include generator fuel?","acceptedAnswer":{"@type":"Answer","text":"Yes, include generator fuel if you use a petrol or diesel generator for backup power. Generator savings can materially change payback, especially for shops, clinics, schools, churches, cold rooms, and SMEs with frequent outages."}},{"@type":"Question","name":"Do I need a battery?","acceptedAnswer":{"@type":"Answer","text":"Not always. A battery is mainly for backup and night-time essential loads. Solar without a large battery can pay back faster, but it will not keep appliances running during outages."}},{"@type":"Question","name":"What size solar system do I need?","acceptedAnswer":{"@type":"Answer","text":"Start from daily kWh, peak load, outage hours, and essential appliances. A small home may start around 1-2 kW, a family home around 3-5 kW, and businesses should do a load estimate before choosing a size."}},{"@type":"Question","name":"Why is my payback different from installer quotes?","acceptedAnswer":{"@type":"Answer","text":"Quotes change with panel wattage, inverter brand, battery chemistry, usable battery capacity, roof work, protection devices, wiring distance, labour, warranty, maintenance, and finance charges."}},{"@type":"Question","name":"What assumptions can I edit?","acceptedAnswer":{"@type":"Answer","text":"You can edit tariff, generator fuel price, solar yield, performance ratio, system size, install cost, battery cost, maintenance, deposit, interest, finance term, and outage or backup assumptions."}},{"@type":"Question","name":"Is this a replacement for PVWatts or installer design?","acceptedAnswer":{"@type":"Answer","text":"No. Use this for early planning and quote comparison. PVWatts, PVGIS, Global Solar Atlas, and installer design tools can model location, roof, shading, inverter limits, and production more precisely."}},{"@type":"Question","name":"How accurate is this calculator?","acceptedAnswer":{"@type":"Answer","text":"It is a planning estimate, not a quote. Accuracy improves when you use recent bills, real fuel receipts, a load profile, local solar yield, current equipment quotes, and finance terms from the provider."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script><script src="/assets/js/bundles/core.e1f95073.min.js" defer></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+.solar-root-filter{display:grid;gap:8px;margin:18px 0 22px;padding:16px;border:1px solid rgba(18,32,51,.1);border-radius:8px;background:#fff;box-shadow:0 12px 30px rgba(11,24,43,.06)}
+.solar-root-filter label,.solar-country-picker label{font-weight:900;color:#122033}
+.solar-root-filter input,.solar-root-filter select{width:100%;min-height:48px;border:1px solid rgba(18,32,51,.18);border-radius:8px;padding:11px 12px;font:inherit;font-size:16px;color:#122033;background:#fff}
+.solar-country-picker{display:grid;gap:8px}
+.solar-country-picker-grid{display:grid;grid-template-columns:minmax(180px,.85fr) minmax(220px,1fr) auto;gap:10px;align-items:end}
+.solar-country-picker p{margin:0;color:#5d6978;line-height:1.45}
+.solar-country-picker-status{font-weight:850;color:#173f3a!important}
+.solar-root-filter input:focus,.solar-root-filter select:focus,.solar-country-picker .solar-country-btn:focus,.en-country-card:focus,.solar-faq summary:focus{outline:3px solid rgba(27,117,208,.28);outline-offset:2px}
+.solar-root-filter p{margin:0;color:#5d6978;line-height:1.45}
+.solar-country-empty{margin-top:12px;padding:14px;border:1px dashed rgba(18,32,51,.18);border-radius:8px;color:#5d6978;background:#fff}
+.solar-country-empty[hidden],.en-country-card[hidden]{display:none!important}
+.en-hub-country-grid .en-country-card{min-height:58px}
+.en-country-currency{display:block;margin-top:4px;color:#667386;font-size:.88rem;font-weight:750}
+.solar-faq details{border:1px solid rgba(18,32,51,.1);border-radius:8px;background:#fff;margin-top:10px}
+.solar-faq summary{cursor:pointer;font-weight:900;min-height:48px;padding:12px 16px;display:flex;align-items:center}
+.solar-faq details p{padding:0 16px 16px;margin:0;color:#596577;line-height:1.6}
+@media(max-width:760px){.breadcrumb{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;padding-bottom:6px}.breadcrumb a{display:inline-flex;align-items:center;min-height:40px}.en-tool-hero{padding-bottom:28px}.en-hub{padding:28px 0}.en-hub-country-grid{grid-template-columns:1fr}.en-hub-country-grid .en-country-card{min-height:62px;padding:14px}.solar-root-filter{margin:16px 0 18px;padding:14px}.solar-country-picker-grid{grid-template-columns:1fr}.solar-country-picker .solar-country-btn{width:100%}}
+@media(prefers-color-scheme:dark){body{background:#0f1724;color:#e7eef8}.solar-root-filter,.solar-country-empty,.solar-faq details{background:#131d2e;border-color:#26364f}.solar-root-filter label,.solar-country-picker label{color:#f1f5f9}.solar-root-filter input,.solar-root-filter select{background:#0f1724;color:#f1f5f9;border-color:#33445f}.solar-root-filter p,.solar-country-picker p,.solar-country-empty,.en-country-currency,.solar-faq details p{color:#b7c3d7}.solar-country-picker-status{color:#9be3cf!important}}
+</style>
 </head>
 <body>
 <afro-navbar theme="dark" active="energy"></afro-navbar>
 <section class="en-tool-hero"><div class="container">
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>&rsaquo;</span> <a href="/energy/">Energy &amp; Utilities</a> <span>&rsaquo;</span> Solar Panel ROI Calculator</nav>
-<h1><em>Solar Panel ROI Calculator</em></h1>
-<p class="en-tool-hero-sub">Start with your country, monthly electricity spend, generator fuel, outage hours, system size, battery scope, and financing preference. Then open the country route below for deeper local notes.</p>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Solar ROI Decision Tool</nav>
+<h1>☀️ <em>Solar ROI Decision Tool</em></h1>
+<p class="en-tool-hero-sub">Compare solar payback in all 54 African countries, including generator fuel savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions. Use a country page for a quick check, then use the full decision tool for generator spend, battery backup, outages, and financing.</p>
 </div></section>
-<main class="solar-roi-shell">
-<section class="solar-roi-first" aria-labelledby="solar-roi-title">
-<div class="solar-roi-card">
-<h2 id="solar-roi-title">Estimate your solar payback</h2>
-<p class="solar-roi-muted">Use recent bills and fuel receipts where you can. The estimate updates on the page and keeps the deeper country calculators available below.</p>
-<form class="solar-roi-form" id="solarRoiForm">
-<div class="en-field en-field-full">
-<label class="en-label" for="roiCountry">Country</label>
-<select class="en-select" id="roiCountry" name="country"></select>
-</div>
-<div class="en-field">
-<label class="en-label" for="monthlyElectricitySpend">Monthly electricity spend</label>
-<input class="en-input" type="number" id="monthlyElectricitySpend" name="monthlyElectricitySpend" inputmode="decimal" min="0" step="1000" value="45000">
-</div>
-<div class="en-field">
-<label class="en-label" for="generatorFuelSpend">Generator fuel spend</label>
-<input class="en-input" type="number" id="generatorFuelSpend" name="generatorFuelSpend" inputmode="decimal" min="0" step="1000" value="30000">
-</div>
-<div class="en-field">
-<label class="en-label" for="outageHours">Outage hours per day</label>
-<input class="en-input" type="number" id="outageHours" name="outageHours" inputmode="decimal" min="0" max="24" step="0.5" value="6">
-</div>
-<div class="en-field">
-<label class="en-label" for="systemSize">System size</label>
-<select class="en-select" id="systemSize" name="systemSize">
-<option value="1">1 kW - lights and devices</option>
-<option value="2">2 kW - small home</option>
-<option value="3" selected>3 kW - family home</option>
-<option value="5">5 kW - large home</option>
-<option value="10">10 kW - small business</option>
-<option value="20">20 kW - medium business</option>
+<main class="en-main">
+<section class="en-hub">
+<div class="container">
+<h2>Choose a country starting point</h2>
+<div class="solar-root-filter" role="search" aria-label="Search Solar ROI countries">
+<div class="solar-country-picker" data-solar-country-picker data-selected-country="nigeria">
+<label for="solarRootCountrySearch">Search or select country</label>
+<div class="solar-country-picker-grid">
+<input id="solarRootCountrySearch" type="search" autocomplete="off" list="solarRootCountryList" placeholder="Search Nigeria, KES, Ghana..." aria-describedby="solarRootCountryHelp solarRootCountryStatus">
+<datalist id="solarRootCountryList">
+<option value="Nigeria">NGN - NG</option>
+<option value="Kenya">KES - KE</option>
+<option value="South Africa">ZAR - ZA</option>
+<option value="Ghana">GHS - GH</option>
+<option value="Egypt">EGP - EG</option>
+<option value="Ethiopia">ETB - ET</option>
+<option value="Tanzania">TZS - TZ</option>
+<option value="Uganda">UGX - UG</option>
+<option value="Rwanda">RWF - RW</option>
+<option value="Côte d'Ivoire">XOF - CI</option>
+<option value="Cameroon">XAF - CM</option>
+<option value="Senegal">XOF - SN</option>
+<option value="Morocco">MAD - MA</option>
+<option value="Tunisia">TND - TN</option>
+<option value="Angola">AOA - AO</option>
+<option value="Zambia">ZMW - ZM</option>
+<option value="Zimbabwe">USD - ZW</option>
+<option value="Mozambique">MZN - MZ</option>
+<option value="Malawi">MWK - MW</option>
+<option value="Madagascar">MGA - MG</option>
+<option value="Botswana">BWP - BW</option>
+<option value="Namibia">NAD - NA</option>
+<option value="Lesotho">LSL - LS</option>
+<option value="Eswatini">SZL - SZ</option>
+<option value="Mauritius">MUR - MU</option>
+<option value="Seychelles">SCR - SC</option>
+<option value="Djibouti">DJF - DJ</option>
+<option value="Eritrea">ERN - ER</option>
+<option value="Somalia">USD - SO</option>
+<option value="South Sudan">SSP - SS</option>
+<option value="Sudan">SDG - SD</option>
+<option value="Libya">LYD - LY</option>
+<option value="Algeria">DZD - DZ</option>
+<option value="DR Congo">CDF - CD</option>
+<option value="Republic of Congo">XAF - CG</option>
+<option value="Chad">XAF - TD</option>
+<option value="Central African Republic">XAF - CF</option>
+<option value="Gabon">XAF - GA</option>
+<option value="Equatorial Guinea">XAF - GQ</option>
+<option value="São Tomé &amp; Príncipe">STN - ST</option>
+<option value="Comoros">KMF - KM</option>
+<option value="Burundi">BIF - BI</option>
+<option value="Benin">XOF - BJ</option>
+<option value="Burkina Faso">XOF - BF</option>
+<option value="Cape Verde">CVE - CV</option>
+<option value="Gambia">GMD - GM</option>
+<option value="Guinea">GNF - GN</option>
+<option value="Guinea-Bissau">XOF - GW</option>
+<option value="Liberia">LRD - LR</option>
+<option value="Mali">XOF - ML</option>
+<option value="Niger">XOF - NE</option>
+<option value="Sierra Leone">SLL - SL</option>
+<option value="Togo">XOF - TG</option>
+<option value="Mauritania">MRU - MR</option>
+</datalist>
+<select id="solarRootCountrySelect" aria-describedby="solarRootCountryHelp solarRootCountryStatus">
+<optgroup label="Popular countries">
+<option value="nigeria" data-code="NG" data-currency="NGN" selected>🇳🇬 Nigeria - NGN</option>
+<option value="kenya" data-code="KE" data-currency="KES">🇰🇪 Kenya - KES</option>
+<option value="south-africa" data-code="ZA" data-currency="ZAR">🇿🇦 South Africa - ZAR</option>
+<option value="ghana" data-code="GH" data-currency="GHS">🇬🇭 Ghana - GHS</option>
+<option value="egypt" data-code="EG" data-currency="EGP">🇪🇬 Egypt - EGP</option>
+<option value="morocco" data-code="MA" data-currency="MAD">🇲🇦 Morocco - MAD</option>
+<option value="tanzania" data-code="TZ" data-currency="TZS">🇹🇿 Tanzania - TZS</option>
+<option value="uganda" data-code="UG" data-currency="UGX">🇺🇬 Uganda - UGX</option>
+<option value="rwanda" data-code="RW" data-currency="RWF">🇷🇼 Rwanda - RWF</option>
+<option value="senegal" data-code="SN" data-currency="XOF">🇸🇳 Senegal - XOF</option>
+</optgroup>
+<optgroup label="All countries">
+<option value="nigeria" data-code="NG" data-currency="NGN" selected>🇳🇬 Nigeria - NGN</option>
+<option value="kenya" data-code="KE" data-currency="KES">🇰🇪 Kenya - KES</option>
+<option value="south-africa" data-code="ZA" data-currency="ZAR">🇿🇦 South Africa - ZAR</option>
+<option value="ghana" data-code="GH" data-currency="GHS">🇬🇭 Ghana - GHS</option>
+<option value="egypt" data-code="EG" data-currency="EGP">🇪🇬 Egypt - EGP</option>
+<option value="ethiopia" data-code="ET" data-currency="ETB">🇪🇹 Ethiopia - ETB</option>
+<option value="tanzania" data-code="TZ" data-currency="TZS">🇹🇿 Tanzania - TZS</option>
+<option value="uganda" data-code="UG" data-currency="UGX">🇺🇬 Uganda - UGX</option>
+<option value="rwanda" data-code="RW" data-currency="RWF">🇷🇼 Rwanda - RWF</option>
+<option value="cote-divoire" data-code="CI" data-currency="XOF">🇨🇮 Côte d'Ivoire - XOF</option>
+<option value="cameroon" data-code="CM" data-currency="XAF">🇨🇲 Cameroon - XAF</option>
+<option value="senegal" data-code="SN" data-currency="XOF">🇸🇳 Senegal - XOF</option>
+<option value="morocco" data-code="MA" data-currency="MAD">🇲🇦 Morocco - MAD</option>
+<option value="tunisia" data-code="TN" data-currency="TND">🇹🇳 Tunisia - TND</option>
+<option value="angola" data-code="AO" data-currency="AOA">🇦🇴 Angola - AOA</option>
+<option value="zambia" data-code="ZM" data-currency="ZMW">🇿🇲 Zambia - ZMW</option>
+<option value="zimbabwe" data-code="ZW" data-currency="USD">🇿🇼 Zimbabwe - USD</option>
+<option value="mozambique" data-code="MZ" data-currency="MZN">🇲🇿 Mozambique - MZN</option>
+<option value="malawi" data-code="MW" data-currency="MWK">🇲🇼 Malawi - MWK</option>
+<option value="madagascar" data-code="MG" data-currency="MGA">🇲🇬 Madagascar - MGA</option>
+<option value="botswana" data-code="BW" data-currency="BWP">🇧🇼 Botswana - BWP</option>
+<option value="namibia" data-code="NA" data-currency="NAD">🇳🇦 Namibia - NAD</option>
+<option value="lesotho" data-code="LS" data-currency="LSL">🇱🇸 Lesotho - LSL</option>
+<option value="eswatini" data-code="SZ" data-currency="SZL">🇸🇿 Eswatini - SZL</option>
+<option value="mauritius" data-code="MU" data-currency="MUR">🇲🇺 Mauritius - MUR</option>
+<option value="seychelles" data-code="SC" data-currency="SCR">🇸🇨 Seychelles - SCR</option>
+<option value="djibouti" data-code="DJ" data-currency="DJF">🇩🇯 Djibouti - DJF</option>
+<option value="eritrea" data-code="ER" data-currency="ERN">🇪🇷 Eritrea - ERN</option>
+<option value="somalia" data-code="SO" data-currency="USD">🇸🇴 Somalia - USD</option>
+<option value="south-sudan" data-code="SS" data-currency="SSP">🇸🇸 South Sudan - SSP</option>
+<option value="sudan" data-code="SD" data-currency="SDG">🇸🇩 Sudan - SDG</option>
+<option value="libya" data-code="LY" data-currency="LYD">🇱🇾 Libya - LYD</option>
+<option value="algeria" data-code="DZ" data-currency="DZD">🇩🇿 Algeria - DZD</option>
+<option value="dr-congo" data-code="CD" data-currency="CDF">🇨🇩 DR Congo - CDF</option>
+<option value="republic-of-congo" data-code="CG" data-currency="XAF">🇨🇬 Republic of Congo - XAF</option>
+<option value="chad" data-code="TD" data-currency="XAF">🇹🇩 Chad - XAF</option>
+<option value="central-african-republic" data-code="CF" data-currency="XAF">🇨🇫 Central African Republic - XAF</option>
+<option value="gabon" data-code="GA" data-currency="XAF">🇬🇦 Gabon - XAF</option>
+<option value="equatorial-guinea" data-code="GQ" data-currency="XAF">🇬🇶 Equatorial Guinea - XAF</option>
+<option value="sao-tome" data-code="ST" data-currency="STN">🇸🇹 São Tomé &amp; Príncipe - STN</option>
+<option value="comoros" data-code="KM" data-currency="KMF">🇰🇲 Comoros - KMF</option>
+<option value="burundi" data-code="BI" data-currency="BIF">🇧🇮 Burundi - BIF</option>
+<option value="benin" data-code="BJ" data-currency="XOF">🇧🇯 Benin - XOF</option>
+<option value="burkina-faso" data-code="BF" data-currency="XOF">🇧🇫 Burkina Faso - XOF</option>
+<option value="cape-verde" data-code="CV" data-currency="CVE">🇨🇻 Cape Verde - CVE</option>
+<option value="gambia" data-code="GM" data-currency="GMD">🇬🇲 Gambia - GMD</option>
+<option value="guinea" data-code="GN" data-currency="GNF">🇬🇳 Guinea - GNF</option>
+<option value="guinea-bissau" data-code="GW" data-currency="XOF">🇬🇼 Guinea-Bissau - XOF</option>
+<option value="liberia" data-code="LR" data-currency="LRD">🇱🇷 Liberia - LRD</option>
+<option value="mali" data-code="ML" data-currency="XOF">🇲🇱 Mali - XOF</option>
+<option value="niger" data-code="NE" data-currency="XOF">🇳🇪 Niger - XOF</option>
+<option value="sierra-leone" data-code="SL" data-currency="SLL">🇸🇱 Sierra Leone - SLL</option>
+<option value="togo" data-code="TG" data-currency="XOF">🇹🇬 Togo - XOF</option>
+<option value="mauritania" data-code="MR" data-currency="MRU">🇲🇷 Mauritania - MRU</option>
+</optgroup>
 </select>
+<a class="solar-country-btn" id="solarRootCountryOpen" href="/tools/solar-roi/nigeria/">Open country page</a>
 </div>
-<div class="en-field">
-<label class="en-label" for="batteryOption">Battery option</label>
-<select class="en-select" id="batteryOption" name="batteryOption">
-<option value="none">No battery</option>
-<option value="starter">Starter backup</option>
-<option value="essential" selected>Essential loads</option>
-<option value="extended">Extended backup</option>
-</select>
+<p id="solarRootCountryHelp">Choose from popular countries or all 54 African countries. The country page opens with local currency and Solar ROI assumptions.</p>
+<p class="solar-country-picker-status" id="solarRootCountryStatus" aria-live="polite">🇳🇬 Nigeria selected - NGN</p>
 </div>
-<details class="solar-roi-load en-field-full" open>
-<summary>Load and sizing guide</summary>
-<div class="solar-roi-load-body">
-<div class="solar-roi-load-grid">
-<div class="en-field">
-<label class="en-label" for="loadProfile">Load profile</label>
-<select class="en-select" id="loadProfile" name="loadProfile">
-<option value="essentials">Essentials - lights, fans, phones, TV</option>
-<option value="family" selected>Family home - fridge, TV, fans, devices</option>
-<option value="shop">Shop or small office</option>
-<option value="clinic">Clinic/fridge-critical load</option>
-<option value="custom">Custom manual load</option>
-</select>
+<p id="solarCountrySearchStatus" aria-live="polite">Showing all 54 countries.</p>
 </div>
-<div class="en-field">
-<label class="en-label" for="dailyLoadKwh">Daily load (kWh/day)</label>
-<input class="en-input" type="number" id="dailyLoadKwh" name="dailyLoadKwh" inputmode="decimal" min="0" step="0.1" value="8">
+<div class="en-hub-country-grid" id="solarCountryGrid">
+<a href="/tools/solar-roi/nigeria/" class="en-country-card" data-country="nigeria ngn ng" data-country-slug="nigeria">
+<span class="en-country-flag" aria-hidden="true">🇳🇬</span>
+<span class="en-country-name">Nigeria</span>
+<span class="en-country-currency">NGN</span>
+</a>
+<a href="/tools/solar-roi/kenya/" class="en-country-card" data-country="kenya kes ke" data-country-slug="kenya">
+<span class="en-country-flag" aria-hidden="true">🇰🇪</span>
+<span class="en-country-name">Kenya</span>
+<span class="en-country-currency">KES</span>
+</a>
+<a href="/tools/solar-roi/south-africa/" class="en-country-card" data-country="south africa zar za" data-country-slug="south-africa">
+<span class="en-country-flag" aria-hidden="true">🇿🇦</span>
+<span class="en-country-name">South Africa</span>
+<span class="en-country-currency">ZAR</span>
+</a>
+<a href="/tools/solar-roi/ghana/" class="en-country-card" data-country="ghana ghs gh" data-country-slug="ghana">
+<span class="en-country-flag" aria-hidden="true">🇬🇭</span>
+<span class="en-country-name">Ghana</span>
+<span class="en-country-currency">GHS</span>
+</a>
+<a href="/tools/solar-roi/egypt/" class="en-country-card" data-country="egypt egp eg" data-country-slug="egypt">
+<span class="en-country-flag" aria-hidden="true">🇪🇬</span>
+<span class="en-country-name">Egypt</span>
+<span class="en-country-currency">EGP</span>
+</a>
+<a href="/tools/solar-roi/ethiopia/" class="en-country-card" data-country="ethiopia etb et" data-country-slug="ethiopia">
+<span class="en-country-flag" aria-hidden="true">🇪🇹</span>
+<span class="en-country-name">Ethiopia</span>
+<span class="en-country-currency">ETB</span>
+</a>
+<a href="/tools/solar-roi/tanzania/" class="en-country-card" data-country="tanzania tzs tz" data-country-slug="tanzania">
+<span class="en-country-flag" aria-hidden="true">🇹🇿</span>
+<span class="en-country-name">Tanzania</span>
+<span class="en-country-currency">TZS</span>
+</a>
+<a href="/tools/solar-roi/uganda/" class="en-country-card" data-country="uganda ugx ug" data-country-slug="uganda">
+<span class="en-country-flag" aria-hidden="true">🇺🇬</span>
+<span class="en-country-name">Uganda</span>
+<span class="en-country-currency">UGX</span>
+</a>
+<a href="/tools/solar-roi/rwanda/" class="en-country-card" data-country="rwanda rwf rw" data-country-slug="rwanda">
+<span class="en-country-flag" aria-hidden="true">🇷🇼</span>
+<span class="en-country-name">Rwanda</span>
+<span class="en-country-currency">RWF</span>
+</a>
+<a href="/tools/solar-roi/cote-divoire/" class="en-country-card" data-country="côte d'ivoire xof ci" data-country-slug="cote-divoire">
+<span class="en-country-flag" aria-hidden="true">🇨🇮</span>
+<span class="en-country-name">Côte d'Ivoire</span>
+<span class="en-country-currency">XOF</span>
+</a>
+<a href="/tools/solar-roi/cameroon/" class="en-country-card" data-country="cameroon xaf cm" data-country-slug="cameroon">
+<span class="en-country-flag" aria-hidden="true">🇨🇲</span>
+<span class="en-country-name">Cameroon</span>
+<span class="en-country-currency">XAF</span>
+</a>
+<a href="/tools/solar-roi/senegal/" class="en-country-card" data-country="senegal xof sn" data-country-slug="senegal">
+<span class="en-country-flag" aria-hidden="true">🇸🇳</span>
+<span class="en-country-name">Senegal</span>
+<span class="en-country-currency">XOF</span>
+</a>
+<a href="/tools/solar-roi/morocco/" class="en-country-card" data-country="morocco mad ma" data-country-slug="morocco">
+<span class="en-country-flag" aria-hidden="true">🇲🇦</span>
+<span class="en-country-name">Morocco</span>
+<span class="en-country-currency">MAD</span>
+</a>
+<a href="/tools/solar-roi/tunisia/" class="en-country-card" data-country="tunisia tnd tn" data-country-slug="tunisia">
+<span class="en-country-flag" aria-hidden="true">🇹🇳</span>
+<span class="en-country-name">Tunisia</span>
+<span class="en-country-currency">TND</span>
+</a>
+<a href="/tools/solar-roi/angola/" class="en-country-card" data-country="angola aoa ao" data-country-slug="angola">
+<span class="en-country-flag" aria-hidden="true">🇦🇴</span>
+<span class="en-country-name">Angola</span>
+<span class="en-country-currency">AOA</span>
+</a>
+<a href="/tools/solar-roi/zambia/" class="en-country-card" data-country="zambia zmw zm" data-country-slug="zambia">
+<span class="en-country-flag" aria-hidden="true">🇿🇲</span>
+<span class="en-country-name">Zambia</span>
+<span class="en-country-currency">ZMW</span>
+</a>
+<a href="/tools/solar-roi/zimbabwe/" class="en-country-card" data-country="zimbabwe usd zw" data-country-slug="zimbabwe">
+<span class="en-country-flag" aria-hidden="true">🇿🇼</span>
+<span class="en-country-name">Zimbabwe</span>
+<span class="en-country-currency">USD</span>
+</a>
+<a href="/tools/solar-roi/mozambique/" class="en-country-card" data-country="mozambique mzn mz" data-country-slug="mozambique">
+<span class="en-country-flag" aria-hidden="true">🇲🇿</span>
+<span class="en-country-name">Mozambique</span>
+<span class="en-country-currency">MZN</span>
+</a>
+<a href="/tools/solar-roi/malawi/" class="en-country-card" data-country="malawi mwk mw" data-country-slug="malawi">
+<span class="en-country-flag" aria-hidden="true">🇲🇼</span>
+<span class="en-country-name">Malawi</span>
+<span class="en-country-currency">MWK</span>
+</a>
+<a href="/tools/solar-roi/madagascar/" class="en-country-card" data-country="madagascar mga mg" data-country-slug="madagascar">
+<span class="en-country-flag" aria-hidden="true">🇲🇬</span>
+<span class="en-country-name">Madagascar</span>
+<span class="en-country-currency">MGA</span>
+</a>
+<a href="/tools/solar-roi/botswana/" class="en-country-card" data-country="botswana bwp bw" data-country-slug="botswana">
+<span class="en-country-flag" aria-hidden="true">🇧🇼</span>
+<span class="en-country-name">Botswana</span>
+<span class="en-country-currency">BWP</span>
+</a>
+<a href="/tools/solar-roi/namibia/" class="en-country-card" data-country="namibia nad na" data-country-slug="namibia">
+<span class="en-country-flag" aria-hidden="true">🇳🇦</span>
+<span class="en-country-name">Namibia</span>
+<span class="en-country-currency">NAD</span>
+</a>
+<a href="/tools/solar-roi/lesotho/" class="en-country-card" data-country="lesotho lsl ls" data-country-slug="lesotho">
+<span class="en-country-flag" aria-hidden="true">🇱🇸</span>
+<span class="en-country-name">Lesotho</span>
+<span class="en-country-currency">LSL</span>
+</a>
+<a href="/tools/solar-roi/eswatini/" class="en-country-card" data-country="eswatini szl sz" data-country-slug="eswatini">
+<span class="en-country-flag" aria-hidden="true">🇸🇿</span>
+<span class="en-country-name">Eswatini</span>
+<span class="en-country-currency">SZL</span>
+</a>
+<a href="/tools/solar-roi/mauritius/" class="en-country-card" data-country="mauritius mur mu" data-country-slug="mauritius">
+<span class="en-country-flag" aria-hidden="true">🇲🇺</span>
+<span class="en-country-name">Mauritius</span>
+<span class="en-country-currency">MUR</span>
+</a>
+<a href="/tools/solar-roi/seychelles/" class="en-country-card" data-country="seychelles scr sc" data-country-slug="seychelles">
+<span class="en-country-flag" aria-hidden="true">🇸🇨</span>
+<span class="en-country-name">Seychelles</span>
+<span class="en-country-currency">SCR</span>
+</a>
+<a href="/tools/solar-roi/djibouti/" class="en-country-card" data-country="djibouti djf dj" data-country-slug="djibouti">
+<span class="en-country-flag" aria-hidden="true">🇩🇯</span>
+<span class="en-country-name">Djibouti</span>
+<span class="en-country-currency">DJF</span>
+</a>
+<a href="/tools/solar-roi/eritrea/" class="en-country-card" data-country="eritrea ern er" data-country-slug="eritrea">
+<span class="en-country-flag" aria-hidden="true">🇪🇷</span>
+<span class="en-country-name">Eritrea</span>
+<span class="en-country-currency">ERN</span>
+</a>
+<a href="/tools/solar-roi/somalia/" class="en-country-card" data-country="somalia usd so" data-country-slug="somalia">
+<span class="en-country-flag" aria-hidden="true">🇸🇴</span>
+<span class="en-country-name">Somalia</span>
+<span class="en-country-currency">USD</span>
+</a>
+<a href="/tools/solar-roi/south-sudan/" class="en-country-card" data-country="south sudan ssp ss" data-country-slug="south-sudan">
+<span class="en-country-flag" aria-hidden="true">🇸🇸</span>
+<span class="en-country-name">South Sudan</span>
+<span class="en-country-currency">SSP</span>
+</a>
+<a href="/tools/solar-roi/sudan/" class="en-country-card" data-country="sudan sdg sd" data-country-slug="sudan">
+<span class="en-country-flag" aria-hidden="true">🇸🇩</span>
+<span class="en-country-name">Sudan</span>
+<span class="en-country-currency">SDG</span>
+</a>
+<a href="/tools/solar-roi/libya/" class="en-country-card" data-country="libya lyd ly" data-country-slug="libya">
+<span class="en-country-flag" aria-hidden="true">🇱🇾</span>
+<span class="en-country-name">Libya</span>
+<span class="en-country-currency">LYD</span>
+</a>
+<a href="/tools/solar-roi/algeria/" class="en-country-card" data-country="algeria dzd dz" data-country-slug="algeria">
+<span class="en-country-flag" aria-hidden="true">🇩🇿</span>
+<span class="en-country-name">Algeria</span>
+<span class="en-country-currency">DZD</span>
+</a>
+<a href="/tools/solar-roi/dr-congo/" class="en-country-card" data-country="dr congo cdf cd" data-country-slug="dr-congo">
+<span class="en-country-flag" aria-hidden="true">🇨🇩</span>
+<span class="en-country-name">DR Congo</span>
+<span class="en-country-currency">CDF</span>
+</a>
+<a href="/tools/solar-roi/republic-of-congo/" class="en-country-card" data-country="republic of congo xaf cg" data-country-slug="republic-of-congo">
+<span class="en-country-flag" aria-hidden="true">🇨🇬</span>
+<span class="en-country-name">Republic of Congo</span>
+<span class="en-country-currency">XAF</span>
+</a>
+<a href="/tools/solar-roi/chad/" class="en-country-card" data-country="chad xaf td" data-country-slug="chad">
+<span class="en-country-flag" aria-hidden="true">🇹🇩</span>
+<span class="en-country-name">Chad</span>
+<span class="en-country-currency">XAF</span>
+</a>
+<a href="/tools/solar-roi/central-african-republic/" class="en-country-card" data-country="central african republic xaf cf" data-country-slug="central-african-republic">
+<span class="en-country-flag" aria-hidden="true">🇨🇫</span>
+<span class="en-country-name">Central African Republic</span>
+<span class="en-country-currency">XAF</span>
+</a>
+<a href="/tools/solar-roi/gabon/" class="en-country-card" data-country="gabon xaf ga" data-country-slug="gabon">
+<span class="en-country-flag" aria-hidden="true">🇬🇦</span>
+<span class="en-country-name">Gabon</span>
+<span class="en-country-currency">XAF</span>
+</a>
+<a href="/tools/solar-roi/equatorial-guinea/" class="en-country-card" data-country="equatorial guinea xaf gq" data-country-slug="equatorial-guinea">
+<span class="en-country-flag" aria-hidden="true">🇬🇶</span>
+<span class="en-country-name">Equatorial Guinea</span>
+<span class="en-country-currency">XAF</span>
+</a>
+<a href="/tools/solar-roi/sao-tome/" class="en-country-card" data-country="são tomé &amp; príncipe stn st" data-country-slug="sao-tome">
+<span class="en-country-flag" aria-hidden="true">🇸🇹</span>
+<span class="en-country-name">São Tomé & Príncipe</span>
+<span class="en-country-currency">STN</span>
+</a>
+<a href="/tools/solar-roi/comoros/" class="en-country-card" data-country="comoros kmf km" data-country-slug="comoros">
+<span class="en-country-flag" aria-hidden="true">🇰🇲</span>
+<span class="en-country-name">Comoros</span>
+<span class="en-country-currency">KMF</span>
+</a>
+<a href="/tools/solar-roi/burundi/" class="en-country-card" data-country="burundi bif bi" data-country-slug="burundi">
+<span class="en-country-flag" aria-hidden="true">🇧🇮</span>
+<span class="en-country-name">Burundi</span>
+<span class="en-country-currency">BIF</span>
+</a>
+<a href="/tools/solar-roi/benin/" class="en-country-card" data-country="benin xof bj" data-country-slug="benin">
+<span class="en-country-flag" aria-hidden="true">🇧🇯</span>
+<span class="en-country-name">Benin</span>
+<span class="en-country-currency">XOF</span>
+</a>
+<a href="/tools/solar-roi/burkina-faso/" class="en-country-card" data-country="burkina faso xof bf" data-country-slug="burkina-faso">
+<span class="en-country-flag" aria-hidden="true">🇧🇫</span>
+<span class="en-country-name">Burkina Faso</span>
+<span class="en-country-currency">XOF</span>
+</a>
+<a href="/tools/solar-roi/cape-verde/" class="en-country-card" data-country="cape verde cve cv" data-country-slug="cape-verde">
+<span class="en-country-flag" aria-hidden="true">🇨🇻</span>
+<span class="en-country-name">Cape Verde</span>
+<span class="en-country-currency">CVE</span>
+</a>
+<a href="/tools/solar-roi/gambia/" class="en-country-card" data-country="gambia gmd gm" data-country-slug="gambia">
+<span class="en-country-flag" aria-hidden="true">🇬🇲</span>
+<span class="en-country-name">Gambia</span>
+<span class="en-country-currency">GMD</span>
+</a>
+<a href="/tools/solar-roi/guinea/" class="en-country-card" data-country="guinea gnf gn" data-country-slug="guinea">
+<span class="en-country-flag" aria-hidden="true">🇬🇳</span>
+<span class="en-country-name">Guinea</span>
+<span class="en-country-currency">GNF</span>
+</a>
+<a href="/tools/solar-roi/guinea-bissau/" class="en-country-card" data-country="guinea-bissau xof gw" data-country-slug="guinea-bissau">
+<span class="en-country-flag" aria-hidden="true">🇬🇼</span>
+<span class="en-country-name">Guinea-Bissau</span>
+<span class="en-country-currency">XOF</span>
+</a>
+<a href="/tools/solar-roi/liberia/" class="en-country-card" data-country="liberia lrd lr" data-country-slug="liberia">
+<span class="en-country-flag" aria-hidden="true">🇱🇷</span>
+<span class="en-country-name">Liberia</span>
+<span class="en-country-currency">LRD</span>
+</a>
+<a href="/tools/solar-roi/mali/" class="en-country-card" data-country="mali xof ml" data-country-slug="mali">
+<span class="en-country-flag" aria-hidden="true">🇲🇱</span>
+<span class="en-country-name">Mali</span>
+<span class="en-country-currency">XOF</span>
+</a>
+<a href="/tools/solar-roi/niger/" class="en-country-card" data-country="niger xof ne" data-country-slug="niger">
+<span class="en-country-flag" aria-hidden="true">🇳🇪</span>
+<span class="en-country-name">Niger</span>
+<span class="en-country-currency">XOF</span>
+</a>
+<a href="/tools/solar-roi/sierra-leone/" class="en-country-card" data-country="sierra leone sll sl" data-country-slug="sierra-leone">
+<span class="en-country-flag" aria-hidden="true">🇸🇱</span>
+<span class="en-country-name">Sierra Leone</span>
+<span class="en-country-currency">SLL</span>
+</a>
+<a href="/tools/solar-roi/togo/" class="en-country-card" data-country="togo xof tg" data-country-slug="togo">
+<span class="en-country-flag" aria-hidden="true">🇹🇬</span>
+<span class="en-country-name">Togo</span>
+<span class="en-country-currency">XOF</span>
+</a>
+<a href="/tools/solar-roi/mauritania/" class="en-country-card" data-country="mauritania mru mr" data-country-slug="mauritania">
+<span class="en-country-flag" aria-hidden="true">🇲🇷</span>
+<span class="en-country-name">Mauritania</span>
+<span class="en-country-currency">MRU</span>
+</a>
 </div>
-<div class="en-field">
-<label class="en-label" for="peakLoadKw">Peak running load (kW)</label>
-<input class="en-input" type="number" id="peakLoadKw" name="peakLoadKw" inputmode="decimal" min="0" step="0.1" value="2.5">
+<p class="solar-country-empty" id="solarCountryEmpty" hidden>No country matches that search. Try the country name, currency, or two-letter code.</p>
 </div>
-<div class="en-field">
-<label class="en-label" for="generatorSizeKva">Current generator size (kVA)</label>
-<input class="en-input" type="number" id="generatorSizeKva" name="generatorSizeKva" inputmode="decimal" min="0" step="0.5" value="3.5">
-</div>
-<div class="en-field">
-<label class="en-label" for="generatorPowerFactor">Generator power factor</label>
-<input class="en-input" type="number" id="generatorPowerFactor" name="generatorPowerFactor" inputmode="decimal" min="0.1" max="1" step="0.05" value="0.8">
-<span class="solar-roi-source-state">Typical planning range: 0.8 to 1.0. Check the generator label.</span>
-</div>
-<div class="en-field">
-<label class="en-label" for="backupHours">Battery backup target (hours)</label>
-<input class="en-input" type="number" id="backupHours" name="backupHours" inputmode="decimal" min="0" max="48" step="0.5" value="6">
-</div>
-<div class="en-field">
-<label class="en-label" for="panelWatt">Panel size (watts)</label>
-<input class="en-input" type="number" id="panelWatt" name="panelWatt" inputmode="numeric" min="100" step="10" value="550">
-</div>
-<div class="en-field">
-<label class="en-label" for="systemEfficiency">System efficiency (%)</label>
-<input class="en-input" type="number" id="systemEfficiency" name="systemEfficiency" inputmode="decimal" min="40" max="100" step="1" value="78">
-</div>
-<div class="en-field">
-<label class="en-label" for="safetyMargin">Sizing safety margin (%)</label>
-<input class="en-input" type="number" id="safetyMargin" name="safetyMargin" inputmode="decimal" min="0" max="80" step="1" value="15">
-</div>
-<div class="en-field">
-<label class="en-label" for="batteryDepth">Usable battery depth (%)</label>
-<input class="en-input" type="number" id="batteryDepth" name="batteryDepth" inputmode="decimal" min="20" max="100" step="1" value="80">
-</div>
-</div>
-<div class="solar-roi-load-actions">
-<button class="en-btn en-btn-secondary" type="button" id="estimateLoadFromBill">Estimate load from bill and fuel</button>
-<button class="en-btn en-btn-secondary" type="button" id="useSuggestedPvSize">Use suggested PV size</button>
-<span class="solar-roi-note" id="loadSizingNote">PV guide uses daily kWh, peak sun hours, efficiency, and safety margin.</span>
-</div>
-<div class="solar-roi-standards">
-<strong>What serious solar ROI calculators usually ask for</strong>
-<ul>
-<li>Electricity use or bill, location or peak sun hours, and system size.</li>
-<li>Daily load, peak running load, generator size, and backup target when outages matter.</li>
-<li>Efficiency losses, panel wattage, battery depth of discharge, inverter headroom, costs, maintenance, and financing.</li>
-</ul>
-</div>
-</div>
-</details>
-<label class="solar-roi-toggle en-field-full" for="financingToggle">
-<span>
-<strong>Include financing estimate</strong>
-<small>Uses the editable deposit, interest, and term assumptions below.</small>
-</span>
-<input type="checkbox" id="financingToggle" name="financingToggle">
-</label>
-</form>
-<details class="solar-roi-assumptions" open>
-<summary>Sources and assumptions</summary>
-<div class="solar-roi-assumption-body">
-<div class="solar-roi-assumption-grid">
-<div class="en-field">
-<label class="en-label" for="assumptionTariff">Electricity tariff per kWh</label>
-<input class="en-input" type="number" id="assumptionTariff" inputmode="decimal" min="0" step="0.01">
-<span class="solar-roi-source-state" id="tariffSourceState">Default source loading.</span>
-</div>
-<div class="en-field">
-<label class="en-label" for="assumptionFuelPrice">Fuel price per litre</label>
-<input class="en-input" type="number" id="assumptionFuelPrice" inputmode="decimal" min="0" step="0.01">
-<span class="solar-roi-source-state" id="fuelSourceState">Default source loading.</span>
-</div>
-<div class="en-field">
-<label class="en-label" for="assumptionInstallCost">Install cost per kW</label>
-<input class="en-input" type="number" id="assumptionInstallCost" inputmode="decimal" min="0" step="100">
-<span class="solar-roi-source-state" id="installSourceState">Default source loading.</span>
-</div>
-<div class="en-field">
-<label class="en-label" for="assumptionBatteryCost">Battery cost</label>
-<input class="en-input" type="number" id="assumptionBatteryCost" inputmode="decimal" min="0" step="100">
-<span class="solar-roi-source-state" id="batterySourceState">Planning estimate, user editable.</span>
-</div>
-<div class="en-field">
-<label class="en-label" for="assumptionMaintenance">Annual maintenance</label>
-<input class="en-input" type="number" id="assumptionMaintenance" inputmode="decimal" min="0" step="100">
-<span class="solar-roi-source-state" id="maintenanceSourceState">Planning default, user editable.</span>
-</div>
-<div class="en-field">
-<label class="en-label" for="assumptionDeposit">Financing deposit (%)</label>
-<input class="en-input" type="number" id="assumptionDeposit" inputmode="decimal" min="0" max="100" step="1" value="20">
-<span class="solar-roi-source-state">Default: planning assumption, freshness: static local estimate, not a lender quote.</span>
-</div>
-<div class="en-field">
-<label class="en-label" for="assumptionInterest">Annual interest (%)</label>
-<input class="en-input" type="number" id="assumptionInterest" inputmode="decimal" min="0" step="0.1" value="18">
-<span class="solar-roi-source-state">Default: planning assumption, freshness: static local estimate, not a lender quote.</span>
-</div>
-<div class="en-field">
-<label class="en-label" for="assumptionTerm">Financing term (months)</label>
-<input class="en-input" type="number" id="assumptionTerm" inputmode="numeric" min="1" step="1" value="36">
-<span class="solar-roi-source-state">Default: planning assumption, freshness: static local estimate, not a lender quote.</span>
-</div>
-</div>
-<div class="solar-roi-source-panel">
-<strong>Formula</strong>
-Simple payback = total system cost divided by annual savings. Annual savings subtracts the maintenance assumption. These defaults come from the local AfroTools energy dataset and planning assumptions, not live installer quotes or PVWatts output.
-</div>
-<div class="solar-roi-reference-panel" data-tool-verification-panel aria-label="Solar ROI sources and verification checklist">
-<strong>Sources & verification before purchase</strong>
-<ul>
-<li>Use a recent electricity bill and fuel receipt, then verify with a written installer quote.</li>
-<li>Check panel orientation, shade, roof condition, inverter headroom, battery depth, warranty, and maintenance terms.</li>
-<li>Disclaimer: this is a planning estimate. For production modelling, compare this view with an independent solar calculator such as <a href="https://pvwatts.nrel.gov/" target="_blank" rel="noopener">NREL PVWatts</a>; AfroTools does not import PVWatts results on this page.</li>
-</ul>
-</div>
-</div>
-</details>
-<div class="solar-roi-actions">
-<button class="en-btn" type="button" id="recalculateSolarRoi">Recalculate</button>
-<a class="en-btn en-btn-secondary" id="countryRouteLink" href="/tools/solar-roi/nigeria/">Open country page</a>
-<span class="solar-roi-note" id="currencyHint">Amounts use the selected country's local currency.</span>
-</div>
-</div>
-<aside class="solar-roi-results" aria-live="polite" aria-label="Solar ROI result">
-<div class="solar-roi-result-hero">
-<div class="solar-roi-kicker">Solar vs generator headline</div>
-<div class="solar-roi-payback" id="roiPayback">-</div>
-<div class="solar-roi-saving" id="roiSaving">Enter your monthly spend to estimate savings.</div>
-</div>
-<div class="solar-roi-headline" aria-label="Solar ROI headline comparison">
-<div class="solar-roi-headline-item"><span>Solar monthly savings</span><strong id="headlineSolarSavings">-</strong><small id="headlineSolarNote">Grid and generator offset before maintenance.</small></div>
-<div class="solar-roi-headline-item"><span>Generator monthly cost</span><strong id="headlineGeneratorCost">-</strong><small id="headlineGeneratorNote">Current spend and equivalent litres.</small></div>
-<div class="solar-roi-headline-item"><span>Payback period</span><strong id="headlinePayback">-</strong><small id="headlinePaybackNote">Simple payback after maintenance.</small></div>
-<div class="solar-roi-headline-item"><span>Battery resilience</span><strong id="headlineResilience">-</strong><small id="headlineResilienceNote">Backup coverage against outage hours.</small></div>
-<div class="solar-roi-headline-item"><span>Affordability risk</span><strong id="headlineAffordability">-</strong><small id="headlineAffordabilityNote">Based on payback and financing pressure.</small></div>
-<div class="solar-roi-headline-item"><span>Generator tool</span><strong><a id="generatorFuelLink" href="/tools/generator-fuel/">Open calculator</a></strong><small>Refine litres, hours, and generator size.</small></div>
-</div>
-<div class="solar-roi-metrics">
-<div class="solar-roi-metric"><span>System cost</span><strong id="roiSystemCost">-</strong></div>
-<div class="solar-roi-metric"><span>Solar generation</span><strong id="roiGeneration">-</strong></div>
-<div class="solar-roi-metric"><span>Grid bill offset</span><strong id="roiGridOffset">-</strong></div>
-<div class="solar-roi-metric"><span>Generator offset</span><strong id="roiGeneratorOffset">-</strong></div>
-<div class="solar-roi-metric"><span>10-year net</span><strong id="roiTenYear">-</strong></div>
-<div class="solar-roi-metric"><span>Finance view</span><strong id="roiFinance">Off</strong></div>
-<div class="solar-roi-metric"><span>Daily load</span><strong id="roiDailyLoad">-</strong></div>
-<div class="solar-roi-metric"><span>Suggested PV size</span><strong id="roiSuggestedPv">-</strong></div>
-<div class="solar-roi-metric"><span>Panel count</span><strong id="roiPanelCount">-</strong></div>
-<div class="solar-roi-metric"><span>Battery guide</span><strong id="roiBatteryGuide">-</strong></div>
-<div class="solar-roi-metric"><span>Inverter guide</span><strong id="roiInverterGuide">-</strong></div>
-<div class="solar-roi-metric"><span>Generator equivalent</span><strong id="roiGeneratorEquivalent">-</strong></div>
-</div>
-<div class="solar-roi-summary">
-<p id="roiSummary">Choose a country and monthly spend to see the operating assumption.</p>
-<p id="roiAssumption">Country defaults come from the AfroTools energy dataset and editable planning assumptions. Confirm local vendor pricing before purchase.</p>
-</div>
-<div class="solar-roi-export" aria-label="Export solar ROI summary">
-<button class="en-btn en-btn-secondary" type="button" id="copySolarSummary">Copy WhatsApp summary</button>
-<button class="en-btn en-btn-secondary" type="button" id="downloadSolarTxt">Download TXT</button>
-<button class="en-btn en-btn-secondary" type="button" id="printSolarSummary">Print or save PDF</button>
-<span class="solar-roi-export-status" id="solarExportStatus">Summary updates after each calculation.</span>
-</div>
-</aside>
 </section>
-
-<section class="solar-roi-links" aria-labelledby="solar-country-routes">
-<div class="en-hub">
-<h2 id="solar-country-routes">Country solar ROI routes</h2>
-<p>Use these deeper country pages for local notes and focused country calculators. They remain available below the pan-African calculator.</p>
+<section class="en-hub" aria-labelledby="solar-roi-next">
+<div class="container">
+<h2 id="solar-roi-next">Plan the full solar decision</h2>
+<p>Use the country page first, then move to the specific calculator that answers your next question. For background reading, start with the <a href="/blog/generator-vs-solar/">generator vs solar guide</a>.</p>
 <div class="en-hub-country-grid">
-<a href="/tools/solar-roi/nigeria/" class="en-country-card"><span class="en-country-name">Nigeria</span></a>
-<a href="/tools/solar-roi/kenya/" class="en-country-card"><span class="en-country-name">Kenya</span></a>
-<a href="/tools/solar-roi/south-africa/" class="en-country-card"><span class="en-country-name">South Africa</span></a>
-<a href="/tools/solar-roi/ghana/" class="en-country-card"><span class="en-country-name">Ghana</span></a>
-<a href="/tools/solar-roi/egypt/" class="en-country-card"><span class="en-country-name">Egypt</span></a>
-<a href="/tools/solar-roi/ethiopia/" class="en-country-card"><span class="en-country-name">Ethiopia</span></a>
-<a href="/tools/solar-roi/tanzania/" class="en-country-card"><span class="en-country-name">Tanzania</span></a>
-<a href="/tools/solar-roi/uganda/" class="en-country-card"><span class="en-country-name">Uganda</span></a>
-<a href="/tools/solar-roi/rwanda/" class="en-country-card"><span class="en-country-name">Rwanda</span></a>
-<a href="/tools/solar-roi/cote-divoire/" class="en-country-card"><span class="en-country-name">Cote d'Ivoire</span></a>
-<a href="/tools/solar-roi/cameroon/" class="en-country-card"><span class="en-country-name">Cameroon</span></a>
-<a href="/tools/solar-roi/senegal/" class="en-country-card"><span class="en-country-name">Senegal</span></a>
-<a href="/tools/solar-roi/morocco/" class="en-country-card"><span class="en-country-name">Morocco</span></a>
-<a href="/tools/solar-roi/tunisia/" class="en-country-card"><span class="en-country-name">Tunisia</span></a>
-<a href="/tools/solar-roi/angola/" class="en-country-card"><span class="en-country-name">Angola</span></a>
-<a href="/tools/solar-roi/zambia/" class="en-country-card"><span class="en-country-name">Zambia</span></a>
-<a href="/tools/solar-roi/zimbabwe/" class="en-country-card"><span class="en-country-name">Zimbabwe</span></a>
-<a href="/tools/solar-roi/mozambique/" class="en-country-card"><span class="en-country-name">Mozambique</span></a>
-<a href="/tools/solar-roi/malawi/" class="en-country-card"><span class="en-country-name">Malawi</span></a>
-<a href="/tools/solar-roi/madagascar/" class="en-country-card"><span class="en-country-name">Madagascar</span></a>
-<a href="/tools/solar-roi/botswana/" class="en-country-card"><span class="en-country-name">Botswana</span></a>
-<a href="/tools/solar-roi/namibia/" class="en-country-card"><span class="en-country-name">Namibia</span></a>
-<a href="/tools/solar-roi/lesotho/" class="en-country-card"><span class="en-country-name">Lesotho</span></a>
-<a href="/tools/solar-roi/eswatini/" class="en-country-card"><span class="en-country-name">Eswatini</span></a>
-<a href="/tools/solar-roi/mauritius/" class="en-country-card"><span class="en-country-name">Mauritius</span></a>
-<a href="/tools/solar-roi/seychelles/" class="en-country-card"><span class="en-country-name">Seychelles</span></a>
-<a href="/tools/solar-roi/djibouti/" class="en-country-card"><span class="en-country-name">Djibouti</span></a>
-<a href="/tools/solar-roi/eritrea/" class="en-country-card"><span class="en-country-name">Eritrea</span></a>
-<a href="/tools/solar-roi/somalia/" class="en-country-card"><span class="en-country-name">Somalia</span></a>
-<a href="/tools/solar-roi/south-sudan/" class="en-country-card"><span class="en-country-name">South Sudan</span></a>
-<a href="/tools/solar-roi/sudan/" class="en-country-card"><span class="en-country-name">Sudan</span></a>
-<a href="/tools/solar-roi/libya/" class="en-country-card"><span class="en-country-name">Libya</span></a>
-<a href="/tools/solar-roi/algeria/" class="en-country-card"><span class="en-country-name">Algeria</span></a>
-<a href="/tools/solar-roi/dr-congo/" class="en-country-card"><span class="en-country-name">DR Congo</span></a>
-<a href="/tools/solar-roi/republic-of-congo/" class="en-country-card"><span class="en-country-name">Republic of Congo</span></a>
-<a href="/tools/solar-roi/chad/" class="en-country-card"><span class="en-country-name">Chad</span></a>
-<a href="/tools/solar-roi/central-african-republic/" class="en-country-card"><span class="en-country-name">Central African Republic</span></a>
-<a href="/tools/solar-roi/gabon/" class="en-country-card"><span class="en-country-name">Gabon</span></a>
-<a href="/tools/solar-roi/equatorial-guinea/" class="en-country-card"><span class="en-country-name">Equatorial Guinea</span></a>
-<a href="/tools/solar-roi/sao-tome/" class="en-country-card"><span class="en-country-name">Sao Tome and Principe</span></a>
-<a href="/tools/solar-roi/comoros/" class="en-country-card"><span class="en-country-name">Comoros</span></a>
-<a href="/tools/solar-roi/burundi/" class="en-country-card"><span class="en-country-name">Burundi</span></a>
-<a href="/tools/solar-roi/benin/" class="en-country-card"><span class="en-country-name">Benin</span></a>
-<a href="/tools/solar-roi/burkina-faso/" class="en-country-card"><span class="en-country-name">Burkina Faso</span></a>
-<a href="/tools/solar-roi/cape-verde/" class="en-country-card"><span class="en-country-name">Cape Verde</span></a>
-<a href="/tools/solar-roi/gambia/" class="en-country-card"><span class="en-country-name">Gambia</span></a>
-<a href="/tools/solar-roi/guinea/" class="en-country-card"><span class="en-country-name">Guinea</span></a>
-<a href="/tools/solar-roi/guinea-bissau/" class="en-country-card"><span class="en-country-name">Guinea-Bissau</span></a>
-<a href="/tools/solar-roi/liberia/" class="en-country-card"><span class="en-country-name">Liberia</span></a>
-<a href="/tools/solar-roi/mali/" class="en-country-card"><span class="en-country-name">Mali</span></a>
-<a href="/tools/solar-roi/niger/" class="en-country-card"><span class="en-country-name">Niger</span></a>
-<a href="/tools/solar-roi/sierra-leone/" class="en-country-card"><span class="en-country-name">Sierra Leone</span></a>
-<a href="/tools/solar-roi/togo/" class="en-country-card"><span class="en-country-name">Togo</span></a>
-<a href="/tools/solar-roi/mauritania/" class="en-country-card"><span class="en-country-name">Mauritania</span></a>
+<a href="/tools/generator-fuel/" class="en-country-card"><span class="en-country-name">Generator Fuel Cost Calculator</span><span class="en-country-name">Convert fuel spend into monthly backup cost.</span></a>
+<a href="/tools/electricity-estimator/" class="en-country-card"><span class="en-country-name">Electricity Bill Estimator</span><span class="en-country-name">Check grid bill and kWh assumptions.</span></a>
+<a href="/tools/battery-sizing/" class="en-country-card"><span class="en-country-name">Battery &amp; Inverter Sizing</span><span class="en-country-name">Size usable battery and inverter capacity.</span></a>
+<a href="/tools/backup-duration/" class="en-country-card"><span class="en-country-name">Battery Backup Duration</span><span class="en-country-name">Estimate outage runtime from load and battery.</span></a>
+<a href="/tools/solar-vs-generator/" class="en-country-card"><span class="en-country-name">Solar vs Generator</span><span class="en-country-name">Compare fuel, maintenance, battery and payback.</span></a>
+<a href="/tools/fuel-tracker/" class="en-country-card"><span class="en-country-name">Fuel Tracker</span><span class="en-country-name">Review fuel-price context before assuming savings.</span></a>
+<a href="/business-roi/" class="en-country-card"><span class="en-country-name">Business ROI Tools</span><span class="en-country-name">For shops, clinics, schools, churches and SMEs.</span></a>
+<a href="/energy/" class="en-country-card"><span class="en-country-name">Energy &amp; Utilities Hub</span><span class="en-country-name">Browse tariff, solar, battery, water and fuel tools.</span></a>
 </div>
 </div>
 </section>
-
-<div style="padding: 28px 0 0; max-width: 760px; margin: 0 auto;">
-  <wise-cta context="general"></wise-cta>
+<section class="en-hub" aria-labelledby="root-faq">
+<div class="container solar-faq">
+<h2 id="root-faq">Solar ROI FAQs</h2>
+<details><summary>How do I calculate solar payback?</summary><p>Enter your monthly grid bill, generator spend, outage hours, system size, battery choice, and financing assumptions. The calculator compares current energy spend with a solar scenario and estimates how long savings may take to recover the system cost.</p></details>
+<details><summary>Should I include generator fuel?</summary><p>Yes, include generator fuel if you use a petrol or diesel generator for backup power. Generator savings can materially change payback, especially for shops, clinics, schools, churches, cold rooms, and SMEs with frequent outages.</p></details>
+<details><summary>Do I need a battery?</summary><p>Not always. A battery is mainly for backup and night-time essential loads. Solar without a large battery can pay back faster, but it will not keep appliances running during outages.</p></details>
+<details><summary>What size solar system do I need?</summary><p>Start from daily kWh, peak load, outage hours, and essential appliances. A small home may start around 1-2 kW, a family home around 3-5 kW, and businesses should do a load estimate before choosing a size.</p></details>
+<details><summary>Why is my payback different from installer quotes?</summary><p>Quotes change with panel wattage, inverter brand, battery chemistry, usable battery capacity, roof work, protection devices, wiring distance, labour, warranty, maintenance, and finance charges.</p></details>
+<details><summary>What assumptions can I edit?</summary><p>You can edit tariff, generator fuel price, solar yield, performance ratio, system size, install cost, battery cost, maintenance, deposit, interest, finance term, and outage or backup assumptions.</p></details>
+<details><summary>Is this a replacement for PVWatts or installer design?</summary><p>No. Use this for early planning and quote comparison. PVWatts, PVGIS, Global Solar Atlas, and installer design tools can model location, roof, shading, inverter limits, and production more precisely.</p></details>
+<details><summary>How accurate is this calculator?</summary><p>It is a planning estimate, not a quote. Accuracy improves when you use recent bills, real fuel receipts, a load profile, local solar yield, current equipment quotes, and finance terms from the provider.</p></details>
 </div>
+</section>
 </main>
 <afro-footer></afro-footer>
-<script src="/data/energy/country-energy-index.js?v=5083c43c"></script>
-<script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
+<script>!function(){function loadAfroEnergyAssistant(){if(window.__afroEnergyAssistantLoaded)return;window.__afroEnergyAssistantLoaded=true;var s=document.createElement("script");s.src="/assets/js/energy-tool-assistant.js?v=b5a3b994";s.defer=true;document.body.appendChild(s);}if("requestIdleCallback"in window){requestIdleCallback(loadAfroEnergyAssistant,{timeout:2500});}else{setTimeout(loadAfroEnergyAssistant,1800);}}();</script>
+
 <script>
 !function(){
-"use strict";
-var COUNTRY_ROUTES=[
-["NG","Nigeria","nigeria"],["KE","Kenya","kenya"],["ZA","South Africa","south-africa"],["GH","Ghana","ghana"],["EG","Egypt","egypt"],["ET","Ethiopia","ethiopia"],["TZ","Tanzania","tanzania"],["UG","Uganda","uganda"],["RW","Rwanda","rwanda"],["CI","Cote d'Ivoire","cote-divoire"],["CM","Cameroon","cameroon"],["SN","Senegal","senegal"],["MA","Morocco","morocco"],["TN","Tunisia","tunisia"],["AO","Angola","angola"],["ZM","Zambia","zambia"],["ZW","Zimbabwe","zimbabwe"],["MZ","Mozambique","mozambique"],["MW","Malawi","malawi"],["MG","Madagascar","madagascar"],["BW","Botswana","botswana"],["NA","Namibia","namibia"],["LS","Lesotho","lesotho"],["SZ","Eswatini","eswatini"],["MU","Mauritius","mauritius"],["SC","Seychelles","seychelles"],["DJ","Djibouti","djibouti"],["ER","Eritrea","eritrea"],["SO","Somalia","somalia"],["SS","South Sudan","south-sudan"],["SD","Sudan","sudan"],["LY","Libya","libya"],["DZ","Algeria","algeria"],["CD","DR Congo","dr-congo"],["CG","Republic of Congo","republic-of-congo"],["TD","Chad","chad"],["CF","Central African Republic","central-african-republic"],["GA","Gabon","gabon"],["GQ","Equatorial Guinea","equatorial-guinea"],["ST","Sao Tome and Principe","sao-tome"],["KM","Comoros","comoros"],["BI","Burundi","burundi"],["BJ","Benin","benin"],["BF","Burkina Faso","burkina-faso"],["CV","Cape Verde","cape-verde"],["GM","Gambia","gambia"],["GN","Guinea","guinea"],["GW","Guinea-Bissau","guinea-bissau"],["LR","Liberia","liberia"],["ML","Mali","mali"],["NE","Niger","niger"],["SL","Sierra Leone","sierra-leone"],["TG","Togo","togo"],["MR","Mauritania","mauritania"]
-];
-var batteryProfiles={
-  none:{label:"No battery",costFactor:.75,generatorFactor:.18},
-  starter:{label:"Starter backup",costFactor:.9,generatorFactor:.45},
-  essential:{label:"Essential loads",costFactor:1,generatorFactor:.7},
-  extended:{label:"Extended backup",costFactor:1.25,generatorFactor:.88}
-};
-var loadProfiles={
-  essentials:{daily:4,peak:1.2,generatorKva:2,backup:4,label:"essentials load"},
-  family:{daily:8,peak:2.5,generatorKva:3.5,backup:6,label:"family home load"},
-  shop:{daily:15,peak:5,generatorKva:7.5,backup:8,label:"shop or small office load"},
-  clinic:{daily:24,peak:7.5,generatorKva:10,backup:10,label:"clinic or fridge-critical load"}
-};
-var $=function(id){return document.getElementById(id);};
-var countrySelect=$("roiCountry");
-var form=$("solarRoiForm");
-var routeLink=$("countryRouteLink");
-var assumptionIds=["assumptionTariff","assumptionFuelPrice","assumptionInstallCost","assumptionBatteryCost","assumptionMaintenance","assumptionDeposit","assumptionInterest","assumptionTerm"];
-var lastResult=null;
-function numberValue(id){
-  var value=parseFloat($(id).value);
-  return isFinite(value)&&value>0?value:0;
-}
-function setNumber(id,value){
-  var rounded=Math.round((isFinite(value)?value:0)*100)/100;
-  $(id).value=String(rounded);
-}
-function money(value,symbol){
-  var rounded=Math.round(isFinite(value)?value:0);
-  return String(symbol||"")+rounded.toLocaleString();
-}
-function years(value){
-  if(!isFinite(value)||value<=0)return "-";
-  if(value>25)return ">25 yrs";
-  return value.toFixed(value>=10?0:1)+" yrs";
-}
-function oneDecimal(value,suffix){
-  if(!isFinite(value))value=0;
-  return value.toFixed(value>=10?0:1)+(suffix||"");
-}
-function clamp(value,min,max){
-  value=isFinite(value)?value:min;
-  return Math.max(min,Math.min(max,value));
-}
-function getCountry(code){
-  var data=window.ENERGY_DATA&&window.ENERGY_DATA.countries&&window.ENERGY_DATA.countries[code];
-  return data||window.ENERGY_DATA&&window.ENERGY_DATA.countries&&window.ENERGY_DATA.countries.NG;
-}
-function countryFreshness(){
-  return window.ENERGY_DATA&&window.ENERGY_DATA.lastUpdated?window.ENERGY_DATA.lastUpdated:"undated";
-}
-function sourceState(label){
-  return "Default: "+label+" from AfroTools energy dataset ("+countryFreshness()+"), estimate, user editable.";
-}
-function systemDataCost(country,kw){
-  var systems=country&&country.solar&&country.solar.systems||{};
-  var direct=systems[String(kw)+"kW"];
-  var local=direct&&direct.total;
-  if(!local){
-    var keys=Object.keys(systems).map(function(key){return parseFloat(key);}).filter(function(size){return isFinite(size);}).sort(function(a,b){return a-b;});
-    for(var i=0;i<keys.length;i++){
-      if(keys[i]>=kw){
-        var size=keys[i];
-        local=systems[String(size)+"kW"]&&systems[String(size)+"kW"].total;
-        if(local&&size!==kw)local=local*(kw/size)*1.08;
-        break;
-      }
+  "use strict";
+  function rootSolarPayload(country){return{country:country||"all",system_size_band:"unknown",payback_band:"unknown",mode:"root"};}
+  function trackRootSolarEvent(eventName,country,retry){var analytics=window.AfroTools&&window.AfroTools.analytics;if(analytics&&typeof analytics.track==="function"){analytics.track(eventName,rootSolarPayload(country));}else if(!retry){setTimeout(function(){trackRootSolarEvent(eventName,country,true);},350);}}
+  function trackRootSolarEventOnReady(eventName,country){var fire=function(){trackRootSolarEvent(eventName,country);};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",fire,{once:true});else setTimeout(fire,0);}
+  var COUNTRIES=[{"code":"NG","name":"Nigeria","slug":"nigeria","flag":"🇳🇬","currency":"NGN","href":"/tools/solar-roi/nigeria/"},{"code":"KE","name":"Kenya","slug":"kenya","flag":"🇰🇪","currency":"KES","href":"/tools/solar-roi/kenya/"},{"code":"ZA","name":"South Africa","slug":"south-africa","flag":"🇿🇦","currency":"ZAR","href":"/tools/solar-roi/south-africa/"},{"code":"GH","name":"Ghana","slug":"ghana","flag":"🇬🇭","currency":"GHS","href":"/tools/solar-roi/ghana/"},{"code":"EG","name":"Egypt","slug":"egypt","flag":"🇪🇬","currency":"EGP","href":"/tools/solar-roi/egypt/"},{"code":"ET","name":"Ethiopia","slug":"ethiopia","flag":"🇪🇹","currency":"ETB","href":"/tools/solar-roi/ethiopia/"},{"code":"TZ","name":"Tanzania","slug":"tanzania","flag":"🇹🇿","currency":"TZS","href":"/tools/solar-roi/tanzania/"},{"code":"UG","name":"Uganda","slug":"uganda","flag":"🇺🇬","currency":"UGX","href":"/tools/solar-roi/uganda/"},{"code":"RW","name":"Rwanda","slug":"rwanda","flag":"🇷🇼","currency":"RWF","href":"/tools/solar-roi/rwanda/"},{"code":"CI","name":"Côte d'Ivoire","slug":"cote-divoire","flag":"🇨🇮","currency":"XOF","href":"/tools/solar-roi/cote-divoire/"},{"code":"CM","name":"Cameroon","slug":"cameroon","flag":"🇨🇲","currency":"XAF","href":"/tools/solar-roi/cameroon/"},{"code":"SN","name":"Senegal","slug":"senegal","flag":"🇸🇳","currency":"XOF","href":"/tools/solar-roi/senegal/"},{"code":"MA","name":"Morocco","slug":"morocco","flag":"🇲🇦","currency":"MAD","href":"/tools/solar-roi/morocco/"},{"code":"TN","name":"Tunisia","slug":"tunisia","flag":"🇹🇳","currency":"TND","href":"/tools/solar-roi/tunisia/"},{"code":"AO","name":"Angola","slug":"angola","flag":"🇦🇴","currency":"AOA","href":"/tools/solar-roi/angola/"},{"code":"ZM","name":"Zambia","slug":"zambia","flag":"🇿🇲","currency":"ZMW","href":"/tools/solar-roi/zambia/"},{"code":"ZW","name":"Zimbabwe","slug":"zimbabwe","flag":"🇿🇼","currency":"USD","href":"/tools/solar-roi/zimbabwe/"},{"code":"MZ","name":"Mozambique","slug":"mozambique","flag":"🇲🇿","currency":"MZN","href":"/tools/solar-roi/mozambique/"},{"code":"MW","name":"Malawi","slug":"malawi","flag":"🇲🇼","currency":"MWK","href":"/tools/solar-roi/malawi/"},{"code":"MG","name":"Madagascar","slug":"madagascar","flag":"🇲🇬","currency":"MGA","href":"/tools/solar-roi/madagascar/"},{"code":"BW","name":"Botswana","slug":"botswana","flag":"🇧🇼","currency":"BWP","href":"/tools/solar-roi/botswana/"},{"code":"NA","name":"Namibia","slug":"namibia","flag":"🇳🇦","currency":"NAD","href":"/tools/solar-roi/namibia/"},{"code":"LS","name":"Lesotho","slug":"lesotho","flag":"🇱🇸","currency":"LSL","href":"/tools/solar-roi/lesotho/"},{"code":"SZ","name":"Eswatini","slug":"eswatini","flag":"🇸🇿","currency":"SZL","href":"/tools/solar-roi/eswatini/"},{"code":"MU","name":"Mauritius","slug":"mauritius","flag":"🇲🇺","currency":"MUR","href":"/tools/solar-roi/mauritius/"},{"code":"SC","name":"Seychelles","slug":"seychelles","flag":"🇸🇨","currency":"SCR","href":"/tools/solar-roi/seychelles/"},{"code":"DJ","name":"Djibouti","slug":"djibouti","flag":"🇩🇯","currency":"DJF","href":"/tools/solar-roi/djibouti/"},{"code":"ER","name":"Eritrea","slug":"eritrea","flag":"🇪🇷","currency":"ERN","href":"/tools/solar-roi/eritrea/"},{"code":"SO","name":"Somalia","slug":"somalia","flag":"🇸🇴","currency":"USD","href":"/tools/solar-roi/somalia/"},{"code":"SS","name":"South Sudan","slug":"south-sudan","flag":"🇸🇸","currency":"SSP","href":"/tools/solar-roi/south-sudan/"},{"code":"SD","name":"Sudan","slug":"sudan","flag":"🇸🇩","currency":"SDG","href":"/tools/solar-roi/sudan/"},{"code":"LY","name":"Libya","slug":"libya","flag":"🇱🇾","currency":"LYD","href":"/tools/solar-roi/libya/"},{"code":"DZ","name":"Algeria","slug":"algeria","flag":"🇩🇿","currency":"DZD","href":"/tools/solar-roi/algeria/"},{"code":"CD","name":"DR Congo","slug":"dr-congo","flag":"🇨🇩","currency":"CDF","href":"/tools/solar-roi/dr-congo/"},{"code":"CG","name":"Republic of Congo","slug":"republic-of-congo","flag":"🇨🇬","currency":"XAF","href":"/tools/solar-roi/republic-of-congo/"},{"code":"TD","name":"Chad","slug":"chad","flag":"🇹🇩","currency":"XAF","href":"/tools/solar-roi/chad/"},{"code":"CF","name":"Central African Republic","slug":"central-african-republic","flag":"🇨🇫","currency":"XAF","href":"/tools/solar-roi/central-african-republic/"},{"code":"GA","name":"Gabon","slug":"gabon","flag":"🇬🇦","currency":"XAF","href":"/tools/solar-roi/gabon/"},{"code":"GQ","name":"Equatorial Guinea","slug":"equatorial-guinea","flag":"🇬🇶","currency":"XAF","href":"/tools/solar-roi/equatorial-guinea/"},{"code":"ST","name":"São Tomé & Príncipe","slug":"sao-tome","flag":"🇸🇹","currency":"STN","href":"/tools/solar-roi/sao-tome/"},{"code":"KM","name":"Comoros","slug":"comoros","flag":"🇰🇲","currency":"KMF","href":"/tools/solar-roi/comoros/"},{"code":"BI","name":"Burundi","slug":"burundi","flag":"🇧🇮","currency":"BIF","href":"/tools/solar-roi/burundi/"},{"code":"BJ","name":"Benin","slug":"benin","flag":"🇧🇯","currency":"XOF","href":"/tools/solar-roi/benin/"},{"code":"BF","name":"Burkina Faso","slug":"burkina-faso","flag":"🇧🇫","currency":"XOF","href":"/tools/solar-roi/burkina-faso/"},{"code":"CV","name":"Cape Verde","slug":"cape-verde","flag":"🇨🇻","currency":"CVE","href":"/tools/solar-roi/cape-verde/"},{"code":"GM","name":"Gambia","slug":"gambia","flag":"🇬🇲","currency":"GMD","href":"/tools/solar-roi/gambia/"},{"code":"GN","name":"Guinea","slug":"guinea","flag":"🇬🇳","currency":"GNF","href":"/tools/solar-roi/guinea/"},{"code":"GW","name":"Guinea-Bissau","slug":"guinea-bissau","flag":"🇬🇼","currency":"XOF","href":"/tools/solar-roi/guinea-bissau/"},{"code":"LR","name":"Liberia","slug":"liberia","flag":"🇱🇷","currency":"LRD","href":"/tools/solar-roi/liberia/"},{"code":"ML","name":"Mali","slug":"mali","flag":"🇲🇱","currency":"XOF","href":"/tools/solar-roi/mali/"},{"code":"NE","name":"Niger","slug":"niger","flag":"🇳🇪","currency":"XOF","href":"/tools/solar-roi/niger/"},{"code":"SL","name":"Sierra Leone","slug":"sierra-leone","flag":"🇸🇱","currency":"SLL","href":"/tools/solar-roi/sierra-leone/"},{"code":"TG","name":"Togo","slug":"togo","flag":"🇹🇬","currency":"XOF","href":"/tools/solar-roi/togo/"},{"code":"MR","name":"Mauritania","slug":"mauritania","flag":"🇲🇷","currency":"MRU","href":"/tools/solar-roi/mauritania/"}];
+  var STORAGE_KEY="afrotools.solarRoi.country";
+  var input=document.getElementById("solarRootCountrySearch");
+  var select=document.getElementById("solarRootCountrySelect");
+  var open=document.getElementById("solarRootCountryOpen");
+  var grid=document.getElementById("solarCountryGrid");
+  var status=document.getElementById("solarCountrySearchStatus");
+  var pickerStatus=document.getElementById("solarRootCountryStatus");
+  var empty=document.getElementById("solarCountryEmpty");
+  if(!input||!select||!open||!grid||!status)return;
+  var cards=Array.prototype.slice.call(grid.querySelectorAll("[data-country]"));
+  function normalize(value){return String(value||"").trim().toLowerCase();}
+  function findCountry(value){
+    var query=normalize(value);if(!query)return null;
+    return COUNTRIES.filter(function(country){return normalize(country.slug)===query||normalize(country.code)===query||normalize(country.name)===query||normalize(country.currency)===query;})[0]||COUNTRIES.filter(function(country){return normalize(country.name).indexOf(query)>=0||normalize(country.slug).indexOf(query)>=0||normalize(country.currency).indexOf(query)>=0||normalize(country.code).indexOf(query)>=0;})[0]||null;
+  }
+  function storedCountry(){try{return localStorage.getItem(STORAGE_KEY)||"";}catch(error){return "";}}
+  function storeCountry(country){try{if(country)localStorage.setItem(STORAGE_KEY,country.code);}catch(error){}}
+  function updateUrl(country){if(!country||!history.replaceState)return;try{var url=new URL(location.href);url.searchParams.set("country",country.code);history.replaceState(null,"",url.toString());}catch(error){}}
+  function applyCountry(country,updateQuery){
+    if(!country)return;
+    select.value=country.slug;
+    input.value=country.name;
+    open.href=country.href;
+    open.textContent="Open "+country.name+" calculator";
+    if(pickerStatus)pickerStatus.textContent=country.flag+" "+country.name+" selected - "+country.currency;
+    storeCountry(country);
+    if(updateQuery)updateUrl(country);
+  }
+  function updateCards(){
+    var query=input.value.trim().toLowerCase();
+    var visible=0;
+    cards.forEach(function(card){
+      var match=!query||card.getAttribute("data-country").indexOf(query)>=0;
+      card.hidden=!match;
+      if(match)visible++;
+    });
+    status.textContent=query?("Showing "+visible+" matching "+(visible===1?"country":"countries")+"."):"Showing all "+cards.length+" countries.";
+    if(empty)empty.hidden=visible!==0;
+  }
+  input.addEventListener("input",function(){updateCards();var match=findCountry(input.value);if(match)applyCountry(match,true);else if(pickerStatus)pickerStatus.textContent="No exact country match yet. Keep typing or use the dropdown.";});
+  select.addEventListener("change",function(){var country=findCountry(select.value);applyCountry(country,true);trackRootSolarEvent("country_selected",country?country.slug:"unknown");updateCards();});
+  input.addEventListener("keydown",function(event){
+    if(event.key==="Enter"){
+      var country=findCountry(input.value)||findCountry(select.value);
+      if(country){event.preventDefault();applyCountry(country,true);trackRootSolarEvent("country_selected",country.slug);window.location.href=country.href;}
     }
-  }
-  if(!local)local=(country.usdRate||1)*850*kw;
-  return local;
-}
-function defaultFuelPrice(country){
-  var fuel=country&&country.fuel||{};
-  return fuel.petrol||fuel.diesel||fuel.kerosene||0;
-}
-function defaultBatteryCost(country,kw,battery){
-  var total=systemDataCost(country,kw);
-  var factors={none:0,starter:.15,essential:.25,extended:.4};
-  return total*(factors[battery]||factors.essential);
-}
-function defaultInstallCost(country,kw){
-  return (systemDataCost(country,kw)*.75)/kw;
-}
-function resilienceLabel(batteryProfile,outageHours){
-  var covered=outageHours*batteryProfile.generatorFactor;
-  if(batteryProfile.generatorFactor<.25)return {label:"Low",note:"No battery means solar does not cover most outage hours."};
-  if(batteryProfile.generatorFactor<.55)return {label:"Basic",note:"Covers roughly "+covered.toFixed(1)+" of "+outageHours.toFixed(1)+" outage hours."};
-  if(batteryProfile.generatorFactor<.82)return {label:"Good",note:"Covers roughly "+covered.toFixed(1)+" of "+outageHours.toFixed(1)+" outage hours."};
-  return {label:"Strong",note:"Covers roughly "+covered.toFixed(1)+" of "+outageHours.toFixed(1)+" outage hours."};
-}
-function affordabilityRisk(payback,payment,netMonthlyAfterMaintenance,financing){
-  if(!isFinite(payback)||payback<=0)return {label:"High",note:"Savings are not enough to recover system cost."};
-  if(financing&&payment>netMonthlyAfterMaintenance)return {label:"High",note:"Monthly finance payment is above estimated net monthly savings."};
-  if(payback>8)return {label:"High",note:"Payback is above 8 years."};
-  if(payback>5)return {label:"Moderate",note:"Payback is above 5 years; compare quotes and smaller systems."};
-  if(financing&&payment>netMonthlyAfterMaintenance*.7)return {label:"Moderate",note:"Finance payment uses most estimated net monthly savings."};
-  return {label:"Lower",note:"Payback and payment pressure look manageable under these assumptions."};
-}
-function applyLoadProfile(profile){
-  var data=loadProfiles[profile];
-  if(!data)return;
-  setNumber("dailyLoadKwh",data.daily);
-  setNumber("peakLoadKw",data.peak);
-  setNumber("generatorSizeKva",data.generatorKva);
-  setNumber("backupHours",data.backup);
-  $("loadSizingNote").textContent="Loaded "+data.label+". Edit any value if your appliance list is different.";
-}
-function estimateLoadFromSpend(){
-  var country=getCountry(countrySelect.value||"NG");
-  var tariff=numberValue("assumptionTariff")||country.electricityTariff&&country.electricityTariff.residential||0;
-  var fuelPrice=numberValue("assumptionFuelPrice")||defaultFuelPrice(country)||0;
-  var gridDaily=tariff>0?numberValue("monthlyElectricitySpend")/tariff/30:0;
-  var generatorLitres=fuelPrice>0?numberValue("generatorFuelSpend")/fuelPrice:0;
-  var generatorDailyKwh=generatorLitres*2.2/30;
-  var daily=Math.max(.5,gridDaily+generatorDailyKwh);
-  var peak=Math.max(.6,daily/4);
-  $("loadProfile").value="custom";
-  setNumber("dailyLoadKwh",daily);
-  setNumber("peakLoadKw",peak);
-  $("loadSizingNote").textContent="Estimated from bill plus fuel using a planning factor of 2.2 kWh per litre. Replace it with an appliance list when possible.";
-}
-function sizingGuide(country,kw,batteryProfile){
-  var sunHours=country.solar&&country.solar.avgSunHours||5;
-  var dailyLoad=numberValue("dailyLoadKwh");
-  var peakLoad=numberValue("peakLoadKw");
-  var generatorKva=numberValue("generatorSizeKva");
-  var powerFactor=clamp(numberValue("generatorPowerFactor")||.8,.1,1);
-  var backupHours=clamp(numberValue("backupHours"),0,48);
-  var panelWatt=Math.max(100,numberValue("panelWatt")||550);
-  var efficiency=clamp(numberValue("systemEfficiency")||78,40,100)/100;
-  var safety=clamp(numberValue("safetyMargin")||0,0,80)/100;
-  var depth=clamp(numberValue("batteryDepth")||80,20,100)/100;
-  var loadPv=dailyLoad>0&&sunHours>0&&efficiency>0?dailyLoad*(1+safety)/(sunHours*efficiency):0;
-  var generatorKw=generatorKva*powerFactor;
-  var outageFactor=1+Math.min(12,numberValue("outageHours"))/24;
-  var generatorPv=generatorKw>0?generatorKw*outageFactor:0;
-  var suggestedPv=Math.max(loadPv,generatorPv,kw);
-  var panelCount=Math.max(1,Math.ceil(suggestedPv*1000/panelWatt));
-  var criticalDaily=dailyLoad*(batteryProfile.generatorFactor||.7);
-  var batteryKwh=depth>0?criticalDaily*(backupHours/24)/depth:0;
-  var inverterKw=Math.max(peakLoad*1.25,generatorKw*.85,kw*.8);
-  var fit=kw>=suggestedPv*.9?"near the suggested range":kw>=loadPv*.9?"covers daily load but may not replace generator peak":"undersized against this load";
-  return {
-    sunHours:sunHours,
-    dailyLoad:dailyLoad,
-    peakLoad:peakLoad,
-    generatorKva:generatorKva,
-    generatorKw:generatorKw,
-    powerFactor:powerFactor,
-    loadPv:loadPv,
-    generatorPv:generatorPv,
-    suggestedPv:suggestedPv,
-    panelWatt:panelWatt,
-    panelCount:panelCount,
-    batteryKwh:batteryKwh,
-    inverterKw:inverterKw,
-    fit:fit,
-    efficiency:efficiency,
-    safety:safety,
-    backupHours:backupHours,
-    depth:depth
-  };
-}
-function setSystemSizeToSuggested(){
-  var country=getCountry(countrySelect.value||"NG");
-  var kw=parseFloat($("systemSize").value)||3;
-  var batteryProfile=batteryProfiles[$("batteryOption").value]||batteryProfiles.essential;
-  var guide=sizingGuide(country,kw,batteryProfile);
-  var suggested=Math.max(1,Math.round(guide.suggestedPv*10)/10);
-  var select=$("systemSize");
-  var value=String(suggested);
-  var option=Array.prototype.filter.call(select.options,function(item){return item.value===value;})[0];
-  if(!option){
-    option=document.createElement("option");
-    option.value=value;
-    option.textContent=oneDecimal(suggested," kW")+" - suggested from load";
-    option.setAttribute("data-suggested","true");
-    select.appendChild(option);
-  }
-  select.value=value;
-  setAssumptionDefaults();
-  calculate();
-  $("loadSizingNote").textContent="System size set to "+oneDecimal(suggested," kW")+" from the load and generator guide.";
-}
-function exportText(result){
-  if(!result)return "AfroTools Solar ROI summary\nNo calculation yet.";
-  return [
-    "AfroTools Solar ROI summary",
-    "Country: "+result.countryName,
-    "System: "+result.kw+" kW, "+result.batteryLabel,
-    "Daily load: "+result.dailyLoadText,
-    "Suggested PV size: "+result.suggestedPvText+" ("+result.fit+")",
-    "Panel count guide: "+result.panelCountText,
-    "Battery guide: "+result.batteryGuideText,
-    "Inverter guide: "+result.inverterGuideText,
-    "Generator equivalent: "+result.generatorEquivalentText,
-    "Solar monthly savings: "+result.grossMonthlySavingText,
-    "Generator monthly cost: "+result.generatorMonthlyCostText+" ("+result.generatorLitresText+")",
-    "Payback period: "+result.paybackText,
-    "Battery resilience: "+result.resilience.label+" - "+result.resilience.note,
-    "Affordability risk: "+result.risk.label+" - "+result.risk.note,
-    "Total system cost: "+result.costText,
-    "Annual savings after maintenance: "+result.annualSavingText,
-    "Formula: simple payback = total system cost / annual savings.",
-    "PV guide: daily kWh x safety margin / (peak sun hours x system efficiency), then checked against generator usable kW.",
-    "Generator fuel calculator: https://afrotools.com/tools/generator-fuel/",
-    "Note: Defaults are editable estimates from the AfroTools energy dataset and planning assumptions, not live installer quotes or PVWatts output."
-  ].join("\n");
-}
-function copyText(text){
-  function fallback(){
-    return new Promise(function(resolve,reject){
-    var area=document.createElement("textarea");
-    area.value=text;
-    area.setAttribute("readonly","");
-    area.style.position="fixed";
-    area.style.left="-9999px";
-    document.body.appendChild(area);
-    area.select();
-    try{document.execCommand("copy");resolve();}catch(err){reject(err);}
-    area.remove();
   });
-  }
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    return navigator.clipboard.writeText(text).catch(fallback);
-  }
-  return fallback();
-}
-function downloadText(filename,text){
-  var blob=new Blob([text],{type:"text/plain;charset=utf-8"});
-  var url=URL.createObjectURL(blob);
-  var link=document.createElement("a");
-  link.href=url;
-  link.download=filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  setTimeout(function(){URL.revokeObjectURL(url);},1000);
-}
-function setAssumptionDefaults(){
-  var code=countrySelect.value||"NG";
-  var country=getCountry(code);
-  var kw=parseFloat($("systemSize").value)||3;
-  var battery=$("batteryOption").value||"essential";
-  setNumber("assumptionTariff",country.electricityTariff&&country.electricityTariff.residential||0);
-  setNumber("assumptionFuelPrice",defaultFuelPrice(country));
-  setNumber("assumptionInstallCost",defaultInstallCost(country,kw));
-  setNumber("assumptionBatteryCost",defaultBatteryCost(country,kw,battery));
-  setNumber("assumptionMaintenance",systemDataCost(country,kw)*.025);
-  $("tariffSourceState").textContent=sourceState("residential tariff");
-  $("fuelSourceState").textContent=sourceState("fuel price");
-  $("installSourceState").textContent=sourceState("solar system cost split");
-  $("batterySourceState").textContent=sourceState("battery cost split from system cost");
-  $("maintenanceSourceState").textContent="Default: 2.5% of dataset system cost ("+countryFreshness()+"), planning estimate, user editable.";
-}
-function calculate(){
-  var code=countrySelect.value||"NG";
-  var route=COUNTRY_ROUTES.filter(function(item){return item[0]===code;})[0]||COUNTRY_ROUTES[0];
-  var country=getCountry(code);
-  var symbol=country.currencySymbol||country.currency||"";
-  var electricitySpend=numberValue("monthlyElectricitySpend");
-  var fuelSpend=numberValue("generatorFuelSpend");
-  var outageHours=Math.min(24,numberValue("outageHours"));
-  var kw=parseFloat($("systemSize").value)||3;
-  var battery=$("batteryOption").value||"essential";
-  var batteryProfile=batteryProfiles[battery]||batteryProfiles.essential;
-  var sunHours=country.solar&&country.solar.avgSunHours||5;
-  var guide=sizingGuide(country,kw,batteryProfile);
-  var tariff=numberValue("assumptionTariff");
-  var fuelPrice=numberValue("assumptionFuelPrice");
-  var installCostPerKw=numberValue("assumptionInstallCost");
-  var batteryCost=numberValue("assumptionBatteryCost");
-  var maintenance=numberValue("assumptionMaintenance");
-  var depositPct=Math.min(100,numberValue("assumptionDeposit"));
-  var interestPct=numberValue("assumptionInterest");
-  var termMonths=Math.max(1,Math.round(numberValue("assumptionTerm")||36));
-  var generation=kw*sunHours*30*.78;
-  var gridValue=generation*tariff;
-  var gridOffset=Math.min(electricitySpend,gridValue);
-  var outageWeight=Math.min(1,outageHours/8);
-  var fuelBaseline=defaultFuelPrice(country)||fuelPrice||1;
-  var generatorOffset=fuelSpend*(fuelPrice/fuelBaseline)*batteryProfile.generatorFactor*(.35+.65*outageWeight);
-  var grossMonthlySaving=gridOffset+generatorOffset;
-  var annualSaving=Math.max(0,grossMonthlySaving*12-maintenance);
-  var cost=kw*installCostPerKw+batteryCost;
-  var payback=annualSaving>0?cost/annualSaving:0;
-  var tenYearNet=annualSaving*10-cost;
-  var financing=$("financingToggle").checked;
-  var financeText="Off";
-  var payment=0;
-  var netMonthlyAfterMaintenance=grossMonthlySaving-maintenance/12;
-  if(financing){
-    var principal=cost*(1-depositPct/100);
-    var monthlyRate=(interestPct/100)/12;
-    payment=monthlyRate>0?principal*(monthlyRate*Math.pow(1+monthlyRate,termMonths))/(Math.pow(1+monthlyRate,termMonths)-1):principal/termMonths;
-    financeText=money(payment,symbol)+"/mo";
-    $("roiSummary").textContent="Simple payback uses total system cost divided by annual savings. With financing on, the planning payment is "+money(payment,symbol)+"/month after a "+money(cost*(depositPct/100),symbol)+" deposit. Net monthly position after maintenance and payment: "+money(netMonthlyAfterMaintenance-payment,symbol)+".";
-  }else{
-    $("roiSummary").textContent="Simple payback = "+money(cost,symbol)+" total system cost / "+money(annualSaving,symbol)+" annual savings. This "+kw+" kW "+batteryProfile.label.toLowerCase()+" case offsets grid and generator spend by about "+money(grossMonthlySaving,symbol)+" per month before maintenance.";
-  }
-  var generatorLitres=fuelPrice>0?fuelSpend/fuelPrice:0;
-  var resilience=resilienceLabel(batteryProfile,outageHours);
-  var risk=affordabilityRisk(payback,payment,netMonthlyAfterMaintenance,financing);
-  var paybackText=years(payback);
-  var suggestedPvText=oneDecimal(guide.suggestedPv," kW");
-  var panelCountText=String(guide.panelCount)+" x "+Math.round(guide.panelWatt)+" W panels";
-  var batteryGuideText=oneDecimal(guide.batteryKwh," kWh usable");
-  var inverterGuideText=oneDecimal(guide.inverterKw," kW inverter");
-  var generatorEquivalentText=oneDecimal(guide.generatorKva," kVA")+" generator = "+oneDecimal(guide.generatorKw," kW usable");
-  lastResult={
-    countryName:route[1],
-    kw:kw,
-    batteryLabel:batteryProfile.label,
-    dailyLoadText:oneDecimal(guide.dailyLoad," kWh/day"),
-    suggestedPvText:suggestedPvText,
-    panelCountText:panelCountText,
-    batteryGuideText:batteryGuideText,
-    inverterGuideText:inverterGuideText,
-    generatorEquivalentText:generatorEquivalentText,
-    fit:guide.fit,
-    grossMonthlySavingText:money(grossMonthlySaving,symbol),
-    generatorMonthlyCostText:money(fuelSpend,symbol),
-    generatorLitresText:(isFinite(generatorLitres)?generatorLitres.toFixed(1):"0.0")+" litres/month",
-    paybackText:paybackText,
-    resilience:resilience,
-    risk:risk,
-    costText:money(cost,symbol),
-    annualSavingText:money(annualSaving,symbol),
-    summaryDate:(new Date).toISOString().slice(0,10)
-  };
-  $("roiPayback").textContent=paybackText;
-  $("roiSaving").textContent="Annual savings after maintenance: "+money(annualSaving,symbol);
-  $("headlineSolarSavings").textContent=money(grossMonthlySaving,symbol)+"/mo";
-  $("headlineSolarNote").textContent="Grid offset "+money(gridOffset,symbol)+" + generator offset "+money(generatorOffset,symbol)+".";
-  $("headlineGeneratorCost").textContent=money(fuelSpend,symbol)+"/mo";
-  $("headlineGeneratorNote").textContent="At "+money(fuelPrice,symbol)+"/litre, about "+lastResult.generatorLitresText+".";
-  $("headlinePayback").textContent=paybackText;
-  $("headlinePaybackNote").textContent="Total system cost divided by annual savings after maintenance.";
-  $("headlineResilience").textContent=resilience.label;
-  $("headlineResilienceNote").textContent=resilience.note;
-  $("headlineAffordability").textContent=risk.label;
-  $("headlineAffordabilityNote").textContent=risk.note;
-  $("roiSystemCost").textContent=money(cost,symbol);
-  $("roiGeneration").textContent=Math.round(generation).toLocaleString()+" kWh/mo";
-  $("roiGridOffset").textContent=money(gridOffset,symbol);
-  $("roiGeneratorOffset").textContent=money(generatorOffset,symbol);
-  $("roiTenYear").textContent=money(tenYearNet,symbol);
-  $("roiFinance").textContent=financeText;
-  $("roiDailyLoad").textContent=lastResult.dailyLoadText;
-  $("roiSuggestedPv").textContent=suggestedPvText;
-  $("roiPanelCount").textContent=panelCountText;
-  $("roiBatteryGuide").textContent=batteryGuideText;
-  $("roiInverterGuide").textContent=inverterGuideText;
-  $("roiGeneratorEquivalent").textContent=generatorEquivalentText;
-  $("loadSizingNote").textContent="Suggested PV uses "+oneDecimal(guide.dailyLoad," kWh/day")+", "+sunHours+" sun hours, "+Math.round(guide.efficiency*100)+"% efficiency, and "+Math.round(guide.safety*100)+"% margin. Current "+kw+" kW selection is "+guide.fit+".";
-  $("roiAssumption").textContent=route[1]+" defaults loaded from AfroTools energy dataset ("+countryFreshness()+"): "+sunHours+" peak sun hours/day, "+(tariff?money(tariff,symbol)+"/kWh":"tariff not set")+", fuel baseline "+money(fuelBaseline,symbol)+"/litre. Load sizing uses daily kWh, peak load, generator kVA, efficiency, safety margin, panel wattage, and battery depth. These are editable estimates, not live installer quotes or PVWatts output.";
-  $("currencyHint").textContent="Amounts shown in "+(country.currency||"local currency")+".";
-  routeLink.href="/tools/solar-roi/"+route[2]+"/";
-  routeLink.textContent="Open "+route[1]+" page";
-  $("solarExportStatus").textContent="Summary ready for WhatsApp, TXT, or print/PDF.";
-}
-function populateCountries(){
-  countrySelect.innerHTML=COUNTRY_ROUTES.map(function(item){
-    return '<option value="'+item[0]+'">'+item[1]+'</option>';
-  }).join("");
-  countrySelect.value="NG";
-}
-populateCountries();
-setAssumptionDefaults();
-["input","change"].forEach(function(eventName){
-  form.addEventListener(eventName,calculate);
-  assumptionIds.forEach(function(id){
-    $(id).addEventListener(eventName,calculate);
-  });
-});
-$("roiCountry").addEventListener("change",function(){
-  setAssumptionDefaults();
-  calculate();
-});
-$("systemSize").addEventListener("change",function(){
-  setAssumptionDefaults();
-  calculate();
-});
-$("batteryOption").addEventListener("change",function(){
-  setAssumptionDefaults();
-  calculate();
-});
-$("loadProfile").addEventListener("change",function(){
-  applyLoadProfile(this.value);
-  calculate();
-});
-$("estimateLoadFromBill").addEventListener("click",function(){
-  estimateLoadFromSpend();
-  calculate();
-});
-$("useSuggestedPvSize").addEventListener("click",setSystemSizeToSuggested);
-$("recalculateSolarRoi").addEventListener("click",calculate);
-$("copySolarSummary").addEventListener("click",function(){
-  copyText(exportText(lastResult)).then(function(){
-    $("solarExportStatus").textContent="WhatsApp-ready summary copied.";
-  }).catch(function(){
-    $("solarExportStatus").textContent="Copy failed. Use TXT download instead.";
-  });
-});
-$("downloadSolarTxt").addEventListener("click",function(){
-  var name="afrotools-solar-roi-"+(lastResult&&lastResult.countryName?lastResult.countryName.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""):"summary")+".txt";
-  downloadText(name,exportText(lastResult));
-  $("solarExportStatus").textContent="TXT summary downloaded.";
-});
-$("printSolarSummary").addEventListener("click",function(){
-  $("solarExportStatus").textContent="Use your browser print dialog to save as PDF.";
-  window.print();
-});
-calculate();
+  open.addEventListener("click",function(){var country=findCountry(select.value);storeCountry(country);trackRootSolarEvent("country_selected",country?country.slug:"unknown");});
+  cards.forEach(function(card){card.addEventListener("click",function(){trackRootSolarEvent("country_selected",card.getAttribute("data-country-slug")||"unknown");});});
+  document.addEventListener("click",function(event){var link=event.target&&event.target.closest?event.target.closest("a[href]"):null;if(link&&link.getAttribute("href").indexOf("/tools/generator-fuel/")===0)trackRootSolarEvent("generator_tool_clicked");});
+  trackRootSolarEventOnReady("calculator_view");
+  var params=new URLSearchParams(location.search);
+  applyCountry(findCountry(params.get("country"))||findCountry(storedCountry())||findCountry("NG"),!!params.get("country"));
+  updateCards();
 }();
 </script>
 </body>

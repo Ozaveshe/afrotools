@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
   <meta property="og:title" content="Mandasi Recipe | Malawi | AfroKitchen">
   <meta property="og:description" content="Malawian mandasi, lightly sweet fried dough made with coconut milk, yeast, cardamom, and a proper rise before frying.">
   <meta property="og:image" content="https://afrotools.com/assets/img/kitchen-category-banner.webp">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="https://afrotools.com/tools/afrokitchen/recipes/mandasi/">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,15 +25,15 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=32f6a027">
+  <link rel="stylesheet" href="/tools/afrokitchen/icon-system.css?v=e947352b">
   <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=d0ebe756">
-  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=5b092a80">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=f72d0d62">
   <style>
     .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
-    .ak-static-page .ak-static-helper-note,
-    .ak-static-page .ak-static-related-card { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
+    .ak-static-page .ak-static-helper-note { background: var(--ak-panel); border: 1px solid var(--ak-line); border-radius: var(--ak-radius); box-shadow: var(--ak-shadow-card); }
     .ak-static-page .ak-static-hero-card { padding: 24px; align-self: stretch; display: grid; gap: 16px; color: var(--ak-text); }
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
@@ -89,6 +89,7 @@
     .ak-static-page .ak-step-title { font-family: var(--font-body); font-size: 1.05rem; font-weight: 800; line-height: 1.25; }
     .ak-static-page .ak-step-text { max-width: 70ch; color: var(--ak-muted); font-size: 1.02rem; line-height: 1.7; }
     .ak-static-page .ak-step-tip { max-width: 68ch; border-radius: 18px; background: linear-gradient(180deg, var(--ak-accent-soft), #fff7df); }
+    .ak-static-page .ak-step-tip::before { content: none; }
     .ak-static-page .ak-static-step-actions { display: grid; gap: 10px; margin-top: 16px; }
     .ak-static-page .ak-static-timer-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; background: var(--ak-surface-soft); color: var(--ak-dark); width: fit-content; }
     .ak-static-page .ak-static-timer-label { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ak-subtle); }
@@ -99,14 +100,47 @@
     .ak-static-page .ak-static-helper-note p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-related { margin-top: 36px; }
     .ak-static-page .ak-static-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .ak-static-page .ak-static-related-card { padding: 20px; text-decoration: none; display: grid; gap: 10px; }
-    .ak-static-page .ak-static-related-card h3 { margin: 0; color: var(--ak-dark); font-size: 1.2rem; }
-    .ak-static-page .ak-static-related-card p { margin: 0; color: var(--ak-muted); line-height: 1.65; }
-    .ak-static-page .ak-static-card-meta { color: var(--ak-subtle); font-size: .92rem; }
+    .ak-static-page .ak-internal-link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+    .ak-static-page .ak-internal-link-group { min-width: 0; padding: 18px; border-radius: 20px; background: var(--ak-panel); border: 1px solid var(--ak-line); box-shadow: var(--ak-shadow-sm); }
+    .ak-static-page .ak-internal-link-group p { margin: 6px 0 14px; color: var(--ak-muted); line-height: 1.6; }
+    .ak-static-page .ak-internal-link-list { display: grid; gap: 9px; }
+    .ak-static-page .ak-internal-link { display: grid; gap: 3px; padding: 11px 12px; border-radius: 14px; background: var(--ak-bg); border: 1px solid var(--ak-line); color: var(--ak-dark); text-decoration: none; }
+    .ak-static-page .ak-internal-link span { font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+    .ak-static-page .ak-internal-link small { color: var(--ak-muted); line-height: 1.35; }
+    .ak-static-page .ak-internal-link:hover,
+    .ak-static-page .ak-internal-link:focus-visible { border-color: var(--ak-primary-border); color: var(--ak-primary-deep); outline: none; }
+    .ak-static-page .ak-static-recipe-card { min-width: 0; display: grid; grid-template-columns: minmax(112px, .34fr) minmax(0, 1fr); overflow: hidden; text-decoration: none; color: var(--ak-text); background: #fffdfa; border: 1px solid rgba(82,50,28,.14); border-radius: 18px; box-shadow: 0 12px 28px rgba(36,21,10,.06); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+    .ak-static-page .ak-static-recipe-card:not(.has-thumb) { grid-template-columns: 1fr; }
+    .ak-static-page .ak-static-recipe-card:hover,
+    .ak-static-page .ak-static-recipe-card:focus-visible { transform: translateY(-3px); border-color: rgba(199,62,29,.34); box-shadow: 0 18px 34px rgba(36,21,10,.1); outline: none; }
+    .ak-static-page .ak-static-recipe-card:focus-visible { box-shadow: 0 0 0 4px rgba(199,62,29,.16), 0 18px 34px rgba(36,21,10,.1); }
+    .ak-static-page .ak-static-recipe-card-thumb { min-width: 0; min-height: 100%; background: var(--ak-surface-soft); overflow: hidden; }
+    .ak-static-page .ak-static-recipe-card-thumb img { display: block; width: 100%; height: 100%; min-height: 188px; object-fit: cover; }
+    .ak-static-page .ak-static-recipe-card-fallback { min-height: 156px; display: grid; align-content: end; gap: 12px; padding: 18px; background:
+      radial-gradient(circle at 18% 20%, rgba(15,123,67,.18), transparent 28%),
+      linear-gradient(135deg, #fff7ec, #f6eadb 58%, #eef6e7); border-bottom: 1px solid rgba(82,50,28,.12); }
+    .ak-static-page .ak-fallback-mark { width: 44px; height: 44px; display: inline-grid; place-items: center; border-radius: 50%; background: #2d1b12; color: #fff8ef; font-weight: 900; letter-spacing: .06em; }
+    .ak-static-page .ak-fallback-copy { display: grid; gap: 4px; min-width: 0; }
+    .ak-static-page .ak-fallback-copy strong { color: #2d1b12; line-height: 1.12; overflow-wrap: anywhere; }
+    .ak-static-page .ak-fallback-copy small { color: #6c503b; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-body { min-width: 0; display: grid; align-content: start; gap: 12px; padding: 18px; }
+    .ak-static-page .ak-static-recipe-card-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ak-static-page .ak-static-recipe-badge { display: inline-flex; align-items: center; min-height: 28px; max-width: 100%; padding: 0 10px; border-radius: 999px; background: #fff4e6; border: 1px solid rgba(82,50,28,.12); color: #573723; font-size: .68rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ak-static-page .ak-static-recipe-badge:first-child { background: #f4fbef; border-color: rgba(15,123,67,.16); color: #245b35; }
+    .ak-static-page .ak-static-recipe-card-title { color: var(--ak-dark); font-family: var(--font-display); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.02; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; color: var(--ak-muted); line-height: 1.58; font-size: .93rem; }
+    .ak-static-page .ak-static-recipe-card-meta { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+    .ak-static-page .ak-static-recipe-card-meta > span { gap: 7px; min-width: 0; max-width: 100%; padding: 7px 9px; border-radius: 12px; background: #fff6ea; border: 1px solid rgba(82,50,28,.1); color: #4c3322; font-size: .76rem; }
+    .ak-static-page .ak-static-recipe-card-meta small { display: block; color: #8b6e58; font-size: .62rem; font-weight: 850; letter-spacing: .08em; line-height: 1.1; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card-meta strong { display: block; min-width: 0; color: #2b1b12; line-height: 1.2; overflow-wrap: anywhere; }
+    .ak-static-page .ak-static-recipe-card-cta { display: inline-flex; align-items: center; gap: 7px; justify-self: start; margin-top: 2px; color: var(--ak-primary-deep); font-size: .78rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .ak-static-page .ak-static-recipe-card:hover .ak-static-recipe-card-cta,
+    .ak-static-page .ak-static-recipe-card:focus-visible .ak-static-recipe-card-cta { color: var(--ak-primary); }
     .ak-static-page .ak-static-credit { font-size: .88rem; color: var(--ak-subtle); }
     @media (max-width: 960px) {
       .ak-static-page .ak-static-summary-grid,
       .ak-static-page .ak-static-related-grid,
+      .ak-static-page .ak-internal-link-grid,
       .ak-static-page .ak-photo-gallery-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
       .ak-static-page .ak-photo-gallery-head { align-items: start; flex-direction: column; }
@@ -128,14 +162,15 @@
       .ak-static-page .ak-photo-thumbs { grid-template-columns: 1fr; }
       .ak-static-page .ak-photo-thumbs figure { aspect-ratio: 4 / 3; }
       .ak-static-page .ak-nutrition { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card.has-thumb { grid-template-columns: 1fr; }
+      .ak-static-page .ak-static-recipe-card-thumb img { min-height: 180px; }
       .ak-static-page .ak-step { padding: 76px 20px 22px; }
       .ak-static-page .ak-step-num { left: 20px; top: 20px; }
     }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Mandasi","description":"Malawian mandasi, lightly sweet fried dough made with coconut milk, yeast, cardamom, and a proper rise before frying.","image":["https://afrotools.com/assets/img/kitchen-category-banner.webp"],"author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT80M","cookTime":"PT20M","totalTime":"PT100M","recipeYield":"12 servings","recipeCategory":"breakfast","recipeCuisine":"Malawi, East Africa","nutrition":{"@type":"NutritionInformation","calories":"140 calories","proteinContent":"3g","carbohydrateContent":"18g","fatContent":"6g","fiberContent":"1g"},"recipeIngredient":["3 cups all-purpose flour","200 ml coconut milk, warm","3 tbsp sugar","1 tsp instant yeast","½ tsp cardamom, ground","¼ tsp nutmeg, grated","½ tsp salt","1 tbsp vegetable oil","3 cups vegetable oil, for deep frying"],"recipeInstructions":[{"@type":"HowToStep","name":"Make Dough","text":"Mix flour, sugar, yeast, cardamom, nutmeg, and salt. Add warm coconut milk and oil. Knead into a soft, smooth dough.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Rise","text":"Cover dough and let rise in a warm place for 1 hour until doubled in size.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Shape","text":"Punch down dough. Pull off golf ball-sized pieces and shape into balls or flatten into small discs.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Fry","text":"Heat oil to 170C. Fry mandasi in batches, turning once, until golden brown on all sides. Drain on paper towels.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Serve","text":"Serve warm with tea or coffee. Optionally dust with powdered sugar.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","keywords":"fried-dough, breakfast, malawi, cardamom, vegan, nut-free","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Mandasi","description":"Malawian mandasi, lightly sweet fried dough made with coconut milk, yeast, cardamom, and a proper rise before frying.","image":["https://afrotools.com/assets/img/kitchen-category-banner.webp"],"author":{"@type":"Organization","name":"AfroKitchen"},"datePublished":"2026-03-18","prepTime":"PT80M","cookTime":"PT20M","totalTime":"PT100M","recipeYield":"12 servings","recipeCategory":"Breakfast","recipeCuisine":"Malawi, East Africa","nutrition":{"@type":"NutritionInformation","calories":"140 calories","proteinContent":"3g","carbohydrateContent":"18g","fatContent":"6g","fiberContent":"1g"},"recipeIngredient":["3 cups all-purpose flour","200 ml coconut milk, warm","3 tbsp sugar","1 tsp instant yeast","½ tsp cardamom, ground","¼ tsp nutmeg, grated","½ tsp salt","1 tbsp vegetable oil","3 cups vegetable oil, for deep frying"],"recipeInstructions":[{"@type":"HowToStep","name":"Make Dough","text":"Mix flour, sugar, yeast, cardamom, nutmeg, and salt. Add warm coconut milk and oil. Knead into a soft, smooth dough.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Rise","text":"Cover dough and let rise in a warm place for 1 hour until doubled in size.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Shape","text":"Punch down dough. Pull off golf ball-sized pieces and shape into balls or flatten into small discs.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Fry","text":"Heat oil to 170C. Fry mandasi in batches, turning once, until golden brown on all sides. Drain on paper towels.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"},{"@type":"HowToStep","name":"Serve","text":"Serve warm with tea or coffee. Optionally dust with powdered sugar.","url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","image":"https://afrotools.com/assets/img/kitchen-category-banner.webp"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/","publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"dateModified":"2026-05-16","isAccessibleForFree":true,"keywords":"fried-dough, breakfast, malawi, cardamom, vegan, nut-free","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/"}}</script>
+
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Malawi","item":"https://afrotools.com/tools/afrokitchen/countries/malawi/"},{"@type":"ListItem","position":5,"name":"Mandasi","item":"https://afrotools.com/tools/afrokitchen/recipes/mandasi/"}]}</script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/recipes/mandasi/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/recipes/mandasi/" />
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -157,8 +192,8 @@
           <div class="ak-stat"><div class="ak-stat-lbl">Level</div><div class="ak-stat-val">easy</div></div>
         </div>
         <div class="ak-hero-actions">
-          <a href="/tools/afrokitchen/countries/malawi/" class="ak-btn ak-btn-secondary">Explore Malawi recipes</a>
-          <a href="/tools/afrokitchen/collections/vegetarian-africa/" class="ak-btn ak-btn-primary">Open Vegetarian Africa</a>
+          <a href="/tools/afrokitchen/countries/malawi/" class="ak-btn ak-btn-secondary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Explore Malawi recipes</span></a>
+          <a href="/tools/afrokitchen/collections/vegetarian-africa/" class="ak-btn ak-btn-primary"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 6h14"></path><path d="M5 12h14"></path><path d="M5 18h9"></path></svg><span>Open Vegetarian Africa</span></a>
         </div>
       </div>
       <aside class="ak-static-hero-card">
@@ -190,7 +225,7 @@
           </div>
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
-            <p>Best for everyday meals, with a easy cooking level and about 100 minutes total.</p>
+            <p>Best for everyday meals. Plan on a easy cook and about 100 minutes total.</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
@@ -202,7 +237,7 @@
           </div>
           <div class="ak-static-summary-card ak-intel-card">
             <strong>Regional lane</strong>
-            <p>Malawi national table. A verified Malawi dish in the AfroKitchen archive.</p>
+            <p>Malawi national table. A structured Malawi dish in the AfroKitchen archive.</p>
           </div>
           <div class="ak-static-summary-card ak-intel-card">
             <strong>Chef watch-outs</strong>
@@ -216,23 +251,7 @@
         </div>
       </div>
 
-      <section class="ak-photo-gallery" aria-label="Mandasi photos">
-        <div class="ak-photo-gallery-head">
-          <div>
-            <div class="ak-section-kicker">Recipe photos</div>
-            <h2 class="ak-section-title">See the dish before you cook</h2>
-          </div>
-          <p>Each recipe supports one main image and up to four extra prep, serving, or step photos when they are available.</p>
-        </div>
-        <div class="ak-photo-gallery-grid is-single">
-          <figure class="ak-photo-main">
-            <img src="/assets/img/kitchen-category-banner.webp" alt="AfroKitchen recipe collection artwork for Mandasi" loading="lazy" decoding="async">
-            <figcaption>Mandasi finished dish</figcaption>
-          </figure>
 
-        </div>
-
-      </section>
       <section class="ak-intel-panel ak-recipe-intel-panel">
     <div>
       <div class="ak-section-kicker">Chef board</div>
@@ -256,9 +275,9 @@
         <div class="ak-static-serving-bar">
           <div class="ak-servings">
             <span class="ak-servings-label">Servings</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)">-</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(-1)" aria-label="Decrease servings">-</button>
             <span class="ak-servings-val" id="ak-static-servings">12</span>
-            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)">+</button>
+            <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)" aria-label="Increase servings">+</button>
           </div>
           <p class="ak-static-serving-note">Scale the dish before you shop, then use the checklist while you cook.</p>
         </div>
@@ -334,12 +353,14 @@
                 <h2 class="ak-panel-title">Step-by-step method</h2>
                 <p class="ak-method-sub">Keep the rhythm calm, watch the texture, and adjust seasoning at the end.</p>
               </div>
-              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/malawi/">Back to Malawi</a>
+              <a class="ak-btn ak-btn-outline" href="/tools/afrokitchen/countries/malawi/"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span>Back to Malawi</span></a>
             </div>
             <div class="ak-method-stat-row">
-              <span>5 steps</span>
-              <span>100 min total</span>
-              <span>easy</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg>5 steps</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>80 min prep</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>20 min cook</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg>100 min total</span>
+              <span><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg>easy</span>
             </div>
             <div class="ak-steps"><article class="ak-step" id="step-1">
         <div class="ak-step-header">
@@ -347,7 +368,7 @@
           <div class="ak-step-title">Make Dough</div>
         </div>
         <div class="ak-step-text">Mix flour, sugar, yeast, cardamom, nutmeg, and salt. Add warm coconut milk and oil. Knead into a soft, smooth dough.</div>
-        <div class="ak-step-tip">The dough should be soft but not sticky — add flour if too wet.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">The dough should be soft but not sticky — add flour if too wet.</span></div>
 
       </article>
 <article class="ak-step" id="step-2">
@@ -356,15 +377,16 @@
           <div class="ak-step-title">Rise</div>
         </div>
         <div class="ak-step-text">Cover dough and let rise in a warm place for 1 hour until doubled in size.</div>
-        <div class="ak-step-tip">Warm coconut milk activates the yeast faster for a better rise.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Warm coconut milk activates the yeast faster for a better rise.</span></div>
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Rise</span>
               <strong id="ak-timer-display-2">60:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-2" onclick="AKStaticRecipePage.toggleTimer(2, 3600)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(2, 3600)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-2" onclick="AKStaticRecipePage.toggleTimer(2, 3600)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(2, 3600)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-2" style="width:100%"></div></div>
           </div>
@@ -384,15 +406,16 @@
           <div class="ak-step-title">Fry</div>
         </div>
         <div class="ak-step-text">Heat oil to 170C. Fry mandasi in batches, turning once, until golden brown on all sides. Drain on paper towels.</div>
-        <div class="ak-step-tip">Do not overcrowd the oil — fry 3-4 at a time for even cooking.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Do not overcrowd the oil — fry 3-4 at a time for even cooking.</span></div>
         <div class="ak-static-step-actions">
             <div class="ak-static-timer-chip">
+              <svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg>
               <span class="ak-static-timer-label">Deep fry</span>
               <strong id="ak-timer-display-4">15:00</strong>
             </div>
             <div class="ak-static-timer-buttons">
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-4" onclick="AKStaticRecipePage.toggleTimer(4, 900)">Start timer</button>
-              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(4, 900)">Reset</button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" id="ak-timer-toggle-4" onclick="AKStaticRecipePage.toggleTimer(4, 900)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="7"></circle><path d="M9 2h6"></path><path d="M12 6v7l3 2"></path></svg><span>Start timer</span></button>
+              <button type="button" class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKStaticRecipePage.resetTimer(4, 900)"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12.5 2.2 2.2 4.8-5.2"></path></svg><span>Reset</span></button>
             </div>
             <div class="ak-static-timer-bar"><div class="ak-static-timer-bar-fill" id="ak-timer-progress-4" style="width:100%"></div></div>
           </div>
@@ -403,46 +426,214 @@
           <div class="ak-step-title">Serve</div>
         </div>
         <div class="ak-step-text">Serve warm with tea or coffee. Optionally dust with powdered sugar.</div>
-        <div class="ak-step-tip">Mandasi are best eaten warm and fresh — they lose their puffiness as they cool.</div>
+        <div class="ak-step-tip"><span class="ak-step-tip-label"><svg class="ak-icon ak-icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 4h9l3 3v13H6z"></path><path d="M14 4v4h4"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg><span>Kitchen note</span></span><span class="ak-step-tip-copy">Mandasi are best eaten warm and fresh — they lose their puffiness as they cool.</span></div>
 
       </article></div>
             <div class="ak-static-helper-note">
-              <p>Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.</p>
+              <p><svg class="ak-icon ak-icon-sm ak-icon-accent" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3 22 20H2L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><span>Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.</span></p>
             </div>
           </section>
         </div>
       </div>
 
-      <section class="ak-section ak-static-related">
+      <section class="ak-section ak-static-related ak-internal-link-section">
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
-      <h2 class="ak-section-title">More AfroKitchen dishes from the same food atlas</h2>
-      <p class="ak-section-sub">Try another dish from the same country, region, or cooking mood.</p>
+      <h2 class="ak-section-title">Cook around Mandasi</h2>
+      <p class="ak-section-sub">Follow country, category, collection, time, and pairing paths without turning the recipe page into a link farm.</p>
     </div>
-    <div class="ak-static-related-grid"><a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/futali-mw/">
-        <div class="ak-support-label">Malawi | Main dish</div>
-        <h3>Futali</h3>
-        <p>Futali is a Malawi main built around pumpkin and sweet potato, peanut flour, and the serving logic of greens or beans.</p>
-        <div class="ak-static-card-meta">100 min | Main dish</div>
+    <div class="ak-static-related-grid"><a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/futali-mw/" aria-label="Open recipe: Futali">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/futali-mw.webp" alt="Futali recipe from Malawi" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Malawi</span>
+        <span class="ak-static-recipe-badge">Main dish</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Futali</span>
+      <span class="ak-static-recipe-card-desc">Futali is a main dish with pumpkin and sweet potato, peanut flour. Serve</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>100 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Dairy Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>East Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-thumb" href="/tools/afrokitchen/recipes/nthochi-bread-mw/" aria-label="Open recipe: Nthochi Bread">
+    <span class="ak-static-recipe-card-thumb"><img src="/assets/img/kitchen/nthochi-bread-mw.webp" alt="Nthochi Bread recipe from Malawi" loading="lazy" decoding="async" width="640" height="480"></span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Malawi</span>
+        <span class="ak-static-recipe-badge">Recipe</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Nthochi Bread</span>
+      <span class="ak-static-recipe-card-desc">Nthochi Bread is a bread with ripe banana and flour, nutmeg and sugar. Serve</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>75 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Medium</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Dairy Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>East Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-fallback" href="/tools/afrokitchen/recipes/nsima-chambo/" aria-label="Open recipe: Nsima with Chambo">
+    <span class="ak-static-recipe-card-fallback" aria-hidden="true">
+    <span class="ak-fallback-mark">MW</span>
+    <span class="ak-fallback-copy"><strong>Nsima with Chambo</strong><small>Malawi - Main dish</small></span>
+  </span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Malawi</span>
+        <span class="ak-static-recipe-badge">Main dish</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Nsima with Chambo</span>
+      <span class="ak-static-recipe-card-desc">Malawian nsima served with grilled chambo or tilapia, tomato-onion ndiwo, lemon, and a firm maize-meal mound.</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>60 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 4</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Gluten Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>East Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a>
+<a class="ak-static-recipe-card has-fallback" href="/tools/afrokitchen/recipes/kondowole-mw/" aria-label="Open recipe: Kondowole">
+    <span class="ak-static-recipe-card-fallback" aria-hidden="true">
+    <span class="ak-fallback-mark">MW</span>
+    <span class="ak-fallback-copy"><strong>Kondowole</strong><small>Malawi - Recipe</small></span>
+  </span>
+    <span class="ak-static-recipe-card-body">
+      <span class="ak-static-recipe-card-badges">
+        <span class="ak-static-recipe-badge">Malawi</span>
+        <span class="ak-static-recipe-badge">Recipe</span>
+      </span>
+      <span class="ak-static-recipe-card-title">Kondowole</span>
+      <span class="ak-static-recipe-card-desc">Kondowole is a starch with cassava flour, hot water and salt. Serve</span>
+      <span class="ak-static-recipe-card-meta">
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l2.5 1.5"></path></svg><span><small>Time</small><strong>50 min</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4v16"></path><path d="M5 4v5a2 2 0 0 0 4 0V4"></path><path d="M15 4v16"></path><path d="M15 4c2.2.8 3.5 2.8 3.5 5.4 0 2.1-.9 3.8-2.5 4.6"></path></svg><span><small>Servings</small><strong>Serves 6</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15a7 7 0 0 1 14 0"></path><path d="m12 15 3-4"></path><path d="M8 19h8"></path></svg><span><small>Difficulty</small><strong>Easy</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 19c8 0 12-5 12-13-8 0-12 5-12 13Z"></path><path d="M6 19c2.4-4.2 5.4-7.2 9-9"></path></svg><span><small>Diet</small><strong>Dairy Free</strong></span></span>
+        <span><svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 20V5"></path><path d="M5 5h11l-1.5 3L16 11H5"></path></svg><span><small>Region</small><strong>East Africa</strong></span></span>
+      </span>
+      <span class="ak-static-recipe-card-cta">Open recipe <svg class="ak-icon ak-static-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7"></path><path d="M9 7h8v8"></path></svg></span>
+    </span>
+  </a></div>
+    <div class="ak-internal-link-grid"><article class="ak-internal-link-group">
+        <div class="ak-support-label">More Malawi recipes</div>
+        <p>Stay inside the Malawi country hub.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/futali-mw/">
+        <span>Futali</span>
+        <small>Malawi - Main dish - 100 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/kondowole/">
-        <div class="ak-support-label">Malawi | Main dish</div>
-        <h3>Kondowole</h3>
-        <p>Northern Malawian cassava-flour staple cooked into a sticky, elastic mound and served with fish or vegetable relish.</p>
-        <div class="ak-static-card-meta">35 min | Main dish</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/nthochi-bread-mw/">
+        <span>Nthochi Bread</span>
+        <small>Malawi - Recipe - 75 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/kondowole-mw/">
-        <div class="ak-support-label">Malawi | Recipe</div>
-        <h3>Kondowole</h3>
-        <p>Kondowole is a Malawi starch built around cassava flour, hot water and salt, and the serving logic of fish stew or beans.</p>
-        <div class="ak-static-card-meta">50 min | Recipe</div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/nsima-chambo/">
+        <span>Nsima with Chambo</span>
+        <small>Malawi - Main dish - 60 min</small>
       </a>
-<a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/mandasi-malawi-mw/">
-        <div class="ak-support-label">Malawi | Snack</div>
-        <h3>Malawian Mandasi</h3>
-        <p>Malawian Mandasi is a Malawi snack built around wheat flour, coconut milk and cardamom, and the serving logic of tea or thobwa.</p>
-        <div class="ak-static-card-meta">50 min | Snack</div>
-      </a></div>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/kondowole-mw/">
+        <span>Kondowole</span>
+        <small>Malawi - Recipe - 50 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">More breakfast recipes</div>
+        <p>Compare dishes in the same course or cooking style.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/lablabi-tn/">
+        <span>Lablabi</span>
+        <small>Tunisia - Breakfast - 560 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/shahan-ful-er/">
+        <span>Shahan Ful</span>
+        <small>Eritrea - Breakfast - 100 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/mofo-gasy/">
+        <span>Mofo Gasy</span>
+        <small>Madagascar - Breakfast - 95 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/okpa-ng/">
+        <span>Okpa</span>
+        <small>Nigeria - Breakfast - 95 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">From the same collection</div>
+        <p>Continue through Vegetarian Africa.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/koki-beans-cm/">
+        <span>Koki Beans</span>
+        <small>Cameroon - Side - 90 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/koshari-eg/">
+        <span>Koshari</span>
+        <small>Egypt - Main dish - 70 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/daraba-td/">
+        <span>Daraba</span>
+        <small>Chad - Stew - 65 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/dambou-ne/">
+        <span>Dambou</span>
+        <small>Niger - Main dish - 60 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Similar cooking time</div>
+        <p>Pick another dish with a nearby time commitment.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/bunny-chow-za/">
+        <span>Bunny Chow</span>
+        <small>South Africa - Main dish - 95 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/jollof-rice-ng/">
+        <span>Jollof Rice</span>
+        <small>Nigeria - Main dish - 95 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/palm-butter-soup-lr/">
+        <span>Palm Butter Soup</span>
+        <small>Liberia - Soup - 95 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/sadza-nenyama-zw/">
+        <span>Sadza neNyama</span>
+        <small>Zimbabwe - Main dish - 105 min</small>
+      </a>
+        </div>
+      </article>
+<article class="ak-internal-link-group">
+        <div class="ak-support-label">Build a fuller table</div>
+        <p>Pair a main, side, drink, or dessert where the atlas has a useful match.</p>
+        <div class="ak-internal-link-list">
+          <a class="ak-internal-link" href="/tools/afrokitchen/recipes/kondowole/">
+        <span>Kondowole</span>
+        <small>Malawi - Main dish - 35 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/asida/">
+        <span>Asida</span>
+        <small>South Sudan - Side - 25 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/chocolate-quente-st/">
+        <span>Sao Tomean Hot Chocolate</span>
+        <small>São Tomé and Príncipe - Drink - 17 min</small>
+      </a>
+<a class="ak-internal-link" href="/tools/afrokitchen/recipes/ladob/">
+        <span>Ladob</span>
+        <small>Seychelles - Dessert - 45 min</small>
+      </a>
+        </div>
+      </article></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
       <a href="/tools/afrokitchen/countries/malawi/" class="ak-btn ak-btn-outline">Explore Malawi recipes</a>
@@ -452,10 +643,10 @@
   </section>
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/engines/afrokitchen-engine.js?v=b9ee3f19"></script>
-<script>window.__AK_STATIC_RECIPE = {"slug":"mandasi","name":"Mandasi","description":"Malawian mandasi, lightly sweet fried dough made with coconut milk, yeast, cardamom, and a proper rise before frying.","story":"Mandasi should not be rushed. Let the dough puff, then fry gently so the inside cooks before the outside gets too dark.","default_servings":12,"serving_unit":"servings","country_name":"Malawi","country_code":"MW","region":"East Africa","difficulty":"easy","category":"breakfast","calories":140,"protein_g":3,"carbs_g":18,"fat_g":6,"fiber_g":1,"ingredients":[{"id":"67634e11-5c86-46f7-9ff5-9c125fcb02d8","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":1,"group_name":"Dough","amount":3,"unit":"cups","name":"all-purpose flour","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"dbd13d2a-5c4e-49c8-a423-d2f00a94fd6f","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":2,"group_name":"Dough","amount":200,"unit":"ml","name":"coconut milk","prep_note":"warm","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"8b302643-3514-4fa2-87e1-c9be921ff7d7","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":3,"group_name":"Dough","amount":3,"unit":"tbsp","name":"sugar","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"236d5489-2f41-4119-afea-f214f060f3dd","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":4,"group_name":"Dough","amount":1,"unit":"tsp","name":"instant yeast","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3b46a902-67f7-43b3-bdff-080eaf9b4e44","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":5,"group_name":"Dough","amount":0.5,"unit":"tsp","name":"cardamom","prep_note":"ground","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"59531f24-9f5a-4841-b3a5-14b69d1b3f1e","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":6,"group_name":"Dough","amount":0.25,"unit":"tsp","name":"nutmeg","prep_note":"grated","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"c6b6929a-7ab3-4dbb-8ad5-5c09b12dc89d","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":7,"group_name":"Dough","amount":0.5,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3109a5ab-e65b-47f8-9436-b0db7d6ac110","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":8,"group_name":"Dough","amount":1,"unit":"tbsp","name":"vegetable oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"5c4db32d-4269-457d-8b6d-bb110ce77526","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":9,"group_name":"Frying","amount":3,"unit":"cups","name":"vegetable oil","prep_note":"for deep frying","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"steps":[{"id":"4a5cd4cb-9f71-43da-b638-5b23737425fc","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":1,"title":"Make Dough","instruction":"Mix flour, sugar, yeast, cardamom, nutmeg, and salt. Add warm coconut milk and oil. Knead into a soft, smooth dough.","timer_seconds":null,"timer_label":null,"tip":"The dough should be soft but not sticky — add flour if too wet.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"4e8782f3-e001-43a3-9483-3a2fcd26e451","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":2,"title":"Rise","instruction":"Cover dough and let rise in a warm place for 1 hour until doubled in size.","timer_seconds":3600,"timer_label":"Rise","tip":"Warm coconut milk activates the yeast faster for a better rise.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"ed41a59a-1ad7-4680-8ab6-d935f4d4f811","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":3,"title":"Shape","instruction":"Punch down dough. Pull off golf ball-sized pieces and shape into balls or flatten into small discs.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"13796baa-b8bc-4830-b22f-200fc3264f3d","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":4,"title":"Fry","instruction":"Heat oil to 170C. Fry mandasi in batches, turning once, until golden brown on all sides. Drain on paper towels.","timer_seconds":900,"timer_label":"Deep fry","tip":"Do not overcrowd the oil — fry 3-4 at a time for even cooking.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3434e987-7046-46f7-b38e-4bd567373750","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":5,"title":"Serve","instruction":"Serve warm with tea or coffee. Optionally dust with powdered sugar.","timer_seconds":null,"timer_label":null,"tip":"Mandasi are best eaten warm and fresh — they lose their puffiness as they cool.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"gallery_images":[{"src":"/assets/img/kitchen-category-banner.webp","alt":"AfroKitchen recipe collection artwork for Mandasi","caption":"Mandasi finished dish","credit":null}],"region_lens":{"slug":"national-table","name":"Malawi national table","description":"A verified Malawi dish in the AfroKitchen archive.","confidence":"medium","match_reason":"country-level fallback"},"chef_notes":{"common_mistakes":["Rushing the base before the raw edge has cooked out.","Adding all seasoning early and forgetting to adjust at the end.","Cooking on heat that is too high once the dish should be steaming or simmering."],"readiness_cues":["The aroma should smell rounded rather than raw or sharp.","Oil, sauce, broth, or steam should look settled and deliberate.","The final texture should match the dish style before you plate it."],"pantry_notes":[],"technique_notes":[],"serve_with":"Tea, coffee, fruit jam, or powdered sugar"},"image_status":{"status":"hero-ready","gallery_count":1,"hero_ready":true,"hero_src":"/assets/img/kitchen-category-banner.webp","local_image_count":0,"sources":["/assets/img/kitchen-category-banner.webp"],"missing_roles":["serving","ingredients","process","table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"mandasi.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, a Malawi breakfast, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"mandasi-2.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, a Malawi breakfast, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"mandasi-3.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, a Malawi breakfast, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"mandasi-4.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, a Malawi breakfast, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"mandasi-5.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, a Malawi breakfast, dish on table with realistic accompaniments and serving utensils."}]}};</script>
-<script src="/tools/afrokitchen/static-recipe-runtime.js?v=6efc4827" defer></script>
+<script>window.__AK_STATIC_RECIPE = {"slug":"mandasi","name":"Mandasi","description":"Malawian mandasi, lightly sweet fried dough made with coconut milk, yeast, cardamom, and a proper rise before frying.","story":"Mandasi should not be rushed. Let the dough puff, then fry gently so the inside cooks before the outside gets too dark.","default_servings":12,"serving_unit":"servings","country_name":"Malawi","country_code":"MW","region":"East Africa","difficulty":"easy","category":"breakfast","calories":140,"protein_g":3,"carbs_g":18,"fat_g":6,"fiber_g":1,"ingredients":[{"id":"67634e11-5c86-46f7-9ff5-9c125fcb02d8","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":1,"group_name":"Dough","amount":3,"unit":"cups","name":"all-purpose flour","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"dbd13d2a-5c4e-49c8-a423-d2f00a94fd6f","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":2,"group_name":"Dough","amount":200,"unit":"ml","name":"coconut milk","prep_note":"warm","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"8b302643-3514-4fa2-87e1-c9be921ff7d7","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":3,"group_name":"Dough","amount":3,"unit":"tbsp","name":"sugar","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"236d5489-2f41-4119-afea-f214f060f3dd","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":4,"group_name":"Dough","amount":1,"unit":"tsp","name":"instant yeast","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3b46a902-67f7-43b3-bdff-080eaf9b4e44","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":5,"group_name":"Dough","amount":0.5,"unit":"tsp","name":"cardamom","prep_note":"ground","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"59531f24-9f5a-4841-b3a5-14b69d1b3f1e","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":6,"group_name":"Dough","amount":0.25,"unit":"tsp","name":"nutmeg","prep_note":"grated","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"c6b6929a-7ab3-4dbb-8ad5-5c09b12dc89d","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":7,"group_name":"Dough","amount":0.5,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3109a5ab-e65b-47f8-9436-b0db7d6ac110","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":8,"group_name":"Dough","amount":1,"unit":"tbsp","name":"vegetable oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"5c4db32d-4269-457d-8b6d-bb110ce77526","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","ingredient_id":null,"sort_order":9,"group_name":"Frying","amount":3,"unit":"cups","name":"vegetable oil","prep_note":"for deep frying","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"steps":[{"id":"4a5cd4cb-9f71-43da-b638-5b23737425fc","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":1,"title":"Make Dough","instruction":"Mix flour, sugar, yeast, cardamom, nutmeg, and salt. Add warm coconut milk and oil. Knead into a soft, smooth dough.","timer_seconds":null,"timer_label":null,"tip":"The dough should be soft but not sticky — add flour if too wet.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"4e8782f3-e001-43a3-9483-3a2fcd26e451","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":2,"title":"Rise","instruction":"Cover dough and let rise in a warm place for 1 hour until doubled in size.","timer_seconds":3600,"timer_label":"Rise","tip":"Warm coconut milk activates the yeast faster for a better rise.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"ed41a59a-1ad7-4680-8ab6-d935f4d4f811","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":3,"title":"Shape","instruction":"Punch down dough. Pull off golf ball-sized pieces and shape into balls or flatten into small discs.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"13796baa-b8bc-4830-b22f-200fc3264f3d","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":4,"title":"Fry","instruction":"Heat oil to 170C. Fry mandasi in batches, turning once, until golden brown on all sides. Drain on paper towels.","timer_seconds":900,"timer_label":"Deep fry","tip":"Do not overcrowd the oil — fry 3-4 at a time for even cooking.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"3434e987-7046-46f7-b38e-4bd567373750","recipe_id":"dd05dc0a-f7dc-41b3-a1fb-8f5e972d38d3","step_number":5,"title":"Serve","instruction":"Serve warm with tea or coffee. Optionally dust with powdered sugar.","timer_seconds":null,"timer_label":null,"tip":"Mandasi are best eaten warm and fresh — they lose their puffiness as they cool.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"gallery_images":[],"region_lens":{"slug":"national-table","name":"Malawi national table","description":"A structured Malawi dish in the AfroKitchen archive.","confidence":"medium","match_reason":"country-level fallback"},"chef_notes":{"common_mistakes":["Rushing the base before the raw edge has cooked out.","Adding all seasoning early and forgetting to adjust at the end.","Cooking on heat that is too high once the dish should be steaming or simmering."],"readiness_cues":["The aroma should smell rounded rather than raw or sharp.","Oil, sauce, broth, or steam should look settled and deliberate.","The final texture should match the dish style before you plate it."],"pantry_notes":[],"technique_notes":[],"serve_with":"Tea, coffee, fruit jam, or powdered sugar"},"image_status":{"status":"missing","gallery_count":0,"hero_ready":false,"hero_src":"","local_image_count":0,"sources":[],"missing_roles":["hero","serving","ingredients","process","table"],"shots":[{"role":"hero","label":"Finished dish hero","filename":"mandasi.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, breakfast from Malawi, plated finished dish in warm natural light, inspectable texture, no text, no logos."},{"role":"serving","label":"Serving detail","filename":"mandasi-2.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, breakfast from Malawi, closer serving angle showing texture, garnish, side dish, and sauce."},{"role":"ingredients","label":"Ingredient setup","filename":"mandasi-3.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, breakfast from Malawi, key ingredients arranged naturally before cooking, bright kitchen light."},{"role":"process","label":"Cooking process","filename":"mandasi-4.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, breakfast from Malawi, mid-cooking pot or pan moment that explains the method."},{"role":"table","label":"Table context","filename":"mandasi-5.webp","route_path":"/tools/afrokitchen/recipes/mandasi/","prompt":"Finished Mandasi, breakfast from Malawi, dish on table with realistic accompaniments and serving utensils."}]}};</script>
+<script src="/tools/afrokitchen/static-recipe-runtime.js?v=a7d9608d" defer></script>
 </body>
 </html>

@@ -30,6 +30,8 @@ const BUNDLE_DEFS = {
     'assets/js/lib/a11y.js',
     'assets/js/components/cookie-consent.js',
     'assets/js/components/ai-consent.js',
+    'assets/js/ai/prefill-adapters.js',
+    'assets/js/ai/prefill-consumer.js',
   ],
   'tool-page': [
     'assets/js/lib/save-state.js',
@@ -50,6 +52,7 @@ const BUNDLE_DEFS = {
 const LEGACY_BUNDLE_ALIASES = {
   core: [
     'core.6b2634cc.min.js',
+    'core.009aa1e7.min.js',
   ],
   // Some generated and country-level salary/tax pages still reference these
   // historical tool-page bundle names. Keep them available until a full HTML

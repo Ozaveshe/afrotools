@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>African Scholarship Finder & Eligibility Check | AfroTools</title>
-<meta name="description" content="Run a quick scholarship eligibility check against the verified live feed, with profile-aware match scoring, fit explanations, and shortlist tools for African students.">
+<meta name="description" content="Run a quick scholarship eligibility check against a reviewed scholarship feed, with profile-aware match scoring, fit explanations, and shortlist tools for African students.">
 <link rel="canonical" href="https://afrotools.com/tools/scholarship-finder/">
 <meta name="tool-id" content="scholarship-finder">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -20,8 +20,8 @@
 <link rel="stylesheet" href="/tools/scholarship-finder/scholarship-study-context-bridge.css?v=07c9aa09">
 <link rel="stylesheet" href="/tools/scholarship-finder/scholarship-deadline-trust.css?v=a83cb38a">
 <link rel="stylesheet" href="/tools/scholarship-finder/scholarship-detail-view.css?v=0ee5db89">
-<script src="/assets/js/components/related-tools-data.min.js?v=da4947b1" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=10803d58" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/components/product-backbone.js?v=6de7d198" defer></script>
@@ -32,6 +32,7 @@
 <script src="/tools/scholarship-finder/scholarship-award-values.js?v=8bb56b2e" defer></script>
 <script src="/tools/scholarship-finder/scholarship-study-context-bridge.js?v=8b2d1a1c" defer></script>
 <script src="/tools/scholarship-finder/scholarship-deadline-trust.js?v=5e73fe47" defer></script>
+<script src="/assets/js/lib/source-confidence.js?v=093904c5" defer></script>
 <script src="/tools/scholarship-finder/scholarship-detail-view.js?v=6a097d94" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
@@ -144,7 +145,7 @@ window.addEventListener('unhandledrejection', function (event) {
   }
 }, true);
 </script>
-<script src="/assets/js/bundles/core.009aa1e7.min.js" defer></script><script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
+<script src="/assets/js/bundles/core.e1f95073.min.js" defer></script><script src="/assets/js/components/ai-consent.js?v=20260614" defer></script><script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
@@ -155,7 +156,7 @@ window.addEventListener('unhandledrejection', function (event) {
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="African Scholarship Finder & Eligibility Check | AfroTools">
-<meta name="twitter:description" content="Quick scholarship check using the verified live feed, with profile-aware match scoring, fit explanations, and shortlist tools.">
+<meta name="twitter:description" content="Quick scholarship check using a reviewed scholarship feed, with profile-aware match scoring, fit explanations, and shortlist tools.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/scholarship-finder.webp">
 <script type="application/ld+json">
 {
@@ -194,11 +195,12 @@ window.addEventListener('unhandledrejection', function (event) {
 </head>
 <body>
 <afro-navbar></afro-navbar>
+<div class="tool-hero-inner afro-source-meta" data-source-meta-id="scholarship-provider-feed" data-source-meta-compact="true"></div>
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Scholarship Finder</span></div>
 <h1>Find scholarships open to African students</h1>
-<p class="hero-sub">Search verified opportunities by country, level, field, destination, funding, and deadline.</p>
-<div class="hero-badges"><span class="badge b-em" id="totalBadge">Checking Scholarships</span><span class="badge b-em">Verified sources</span><span class="badge b-em">Fresh deadlines</span><span class="badge b-em">Saved shortlists</span></div>
+<p class="hero-sub">Search reviewed opportunities by country, level, field, destination, funding, and deadline.</p>
+<div class="hero-badges"><span class="badge b-em" id="totalBadge">Checking Scholarships</span><span class="badge b-em">Reviewed sources</span><span class="badge b-em">Deadline labels</span><span class="badge b-em">Saved shortlists</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -289,6 +291,7 @@ window.addEventListener('unhandledrejection', function (event) {
 </div>
 <div class="card-body">
   <p style="font-size:.78rem;color:#64748b;margin-bottom:12px" id="profileDesc">Use the full explorer when you want deeper scholarship scoring, stronger fit explanations, and a more useful shortlist.</p>
+  <section data-ai-consent-notice data-consent-mode="account_sync_optional" data-tool-id="scholarship-finder" data-consent-title="Scholarship profile control" data-consent-copy="You can run matching locally in this browser. Account profile sync is optional and separate from any AI action; AI workflows must ask again before sending education-profile content to a model." aria-label="Scholarship profile consent notice"></section>
   <div class="profile-grid">
     <div class="field"><label>GPA / Score</label><input aria-label="E.g. 3.50" type="number" id="profileGPA" step="0.01" min="0" max="100" placeholder="e.g. 3.50"></div>
     <div class="field"><label>GPA Scale</label>
@@ -453,13 +456,13 @@ window.addEventListener('unhandledrejection', function (event) {
 
 <section class="seo-section">
 <h2>Scholarships for African Students</h2>
-<p>Scholarship funding for African students changes constantly, so this finder starts from the verified live feed returned by AfroTools instead of a fixed marketing count. When the catalog is limited, the page says so and shows the exact number loaded from the API.</p>
+<p>Scholarship funding for African students changes constantly, so this finder starts from the reviewed feed returned by AfroTools instead of a fixed marketing count. When the catalog is limited, the page says so and shows the exact number loaded from the API.</p>
 <p>Use each match as a source-backed shortlist, then open the official scholarship page before applying. Major programmes such as Chevening, Fulbright, DAAD, Mastercard Foundation Scholars, Rhodes, Gates Cambridge, Erasmus Mundus, and national education funds can change deadlines, country rules, and eligibility windows by cycle.</p>
-<p>Fully funded awards may cover tuition, living expenses, flights, and health insurance, while partial awards may only cover tuition or a fixed grant. The live feed marks funding type, official links, deadline status, and source confidence wherever those fields are available.</p>
+<p>Fully funded awards may cover tuition, living expenses, flights, and health insurance, while partial awards may only cover tuition or a fixed grant. The current feed marks funding type, official links, deadline status, and source confidence wherever those fields are available.</p>
 <p>Success in scholarship applications requires preparation, authentic storytelling, and strategic timing. Start early - most major scholarships have deadlines 9-12 months before the start date. Focus on demonstrating leadership, community impact, and a clear plan for how you'll use your education to contribute to Africa's development. Get strong recommendation letters, write compelling personal statements, and apply to multiple scholarships to increase your chances.</p>
 
 <h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>Where does AfroTools get scholarship data?</summary><p>AfroTools prioritizes official scholarship pages, university pages, foundation pages, government portals, embassy pages, and verified institution sources. Aggregators are useful for discovery, but official links stay the application source of truth.</p></details>
+<details class="faq-item"><summary>Where does AfroTools get scholarship data?</summary><p>AfroTools prioritizes official scholarship pages, university pages, foundation pages, government portals, embassy pages, and reviewed institution sources. Aggregators are useful for discovery, but official links stay the application source of truth.</p></details>
 <details class="faq-item"><summary>Can I apply for multiple scholarships?</summary><p>Yes! In fact, you should. Apply to 5-10 scholarships that match your profile. However, be aware that some scholarships (like Chevening) require you to declare if you hold other awards. You generally cannot accept two fully-funded scholarships simultaneously, so choose the best offer if you receive multiple awards.</p></details>
 <details class="faq-item"><summary>How does the match score work?</summary><p>Our match scoring compares your academic profile (GPA, IELTS score, target field, destination, and study level) against each scholarship's requirements. It weights GPA (40%), IELTS (25%), field match (15%), destination (10%), and level (10%). A "Strong Match" means you meet or exceed most requirements. Even an "Unlikely" match doesn't mean you can't apply - many scholarships consider factors beyond grades.</p></details>
 </section>

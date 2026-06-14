@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=781b5015">
-<script src="/assets/js/components/navbar.min.js?v=4f165426" async></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" async></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" async></script>
 
   <style>
@@ -250,6 +250,8 @@
       display: grid;
       gap: 8px;
       min-width: 230px;
+      max-height: min(70vh, 520px);
+      overflow-y: auto;
       padding: 10px;
       background: var(--color-surface, #fff);
       border: 1.5px solid var(--border);
@@ -801,7 +803,7 @@
         <div class="filter-scroll" id="filter-chips" role="group" aria-label="Filter by category">
           <button class="chip active" data-filter="all" type="button" aria-pressed="true">All <span class="chip-count" id="chip-count-all" hidden></span></button>
           <button class="chip" data-filter="live" type="button" aria-pressed="false">Available Now <span class="chip-count" id="chip-count-live" hidden></span></button>
-          <button class="chip" data-filter="financial" type="button" aria-pressed="false">Salary & Tax</button>
+          <button class="chip" data-filter="financial" type="button" aria-pressed="false">Finance & Tax</button>
           <button class="chip" data-filter="document-pdf" type="button" aria-pressed="false">PDF & Docs</button>
           <button class="chip" data-filter="ecommerce" type="button" aria-pressed="false">VAT & Business</button>
           <button class="chip" data-filter="data-productivity" type="button" aria-pressed="false">Data & Productivity</button>
@@ -814,11 +816,28 @@
               <button class="chip" data-filter="education" type="button" aria-pressed="false">Education</button>
               <button class="chip" data-filter="health" type="button" aria-pressed="false">Health</button>
               <button class="chip" data-filter="agriculture" type="button" aria-pressed="false">Agriculture</button>
+              <button class="chip" data-filter="government" type="button" aria-pressed="false">Government & Civic</button>
               <button class="chip" data-filter="small-business" type="button" aria-pressed="false">Small Business</button>
               <button class="chip" data-filter="fintech" type="button" aria-pressed="false">Fintech & Banking</button>
+              <button class="chip" data-filter="telecom" type="button" aria-pressed="false">Telecom & Mobile</button>
+              <button class="chip" data-filter="trade" type="button" aria-pressed="false">Trade & Import</button>
+              <button class="chip" data-filter="energy" type="button" aria-pressed="false">Energy & Utilities</button>
+              <button class="chip" data-filter="transport" type="button" aria-pressed="false">Transport & Logistics</button>
               <button class="chip" data-filter="language" type="button" aria-pressed="false">Language</button>
               <button class="chip" data-filter="engineering" type="button" aria-pressed="false">Engineering & CAD</button>
               <button class="chip" data-filter="legal" type="button" aria-pressed="false">Legal & Compliance</button>
+              <button class="chip" data-filter="hr-payroll" type="button" aria-pressed="false">HR & Payroll</button>
+              <button class="chip" data-filter="personal-finance" type="button" aria-pressed="false">Personal Finance</button>
+              <button class="chip" data-filter="diaspora" type="button" aria-pressed="false">Diaspora</button>
+              <button class="chip" data-filter="religious-cultural" type="button" aria-pressed="false">Religious & Cultural</button>
+              <button class="chip" data-filter="climate" type="button" aria-pressed="false">Climate</button>
+              <button class="chip" data-filter="insurance" type="button" aria-pressed="false">Insurance</button>
+              <button class="chip" data-filter="sports" type="button" aria-pressed="false">Sports & Entertainment</button>
+              <button class="chip" data-filter="mining" type="button" aria-pressed="false">Mining</button>
+              <button class="chip" data-filter="creative" type="button" aria-pressed="false">Creative Economy</button>
+              <button class="chip" data-filter="security" type="button" aria-pressed="false">Security & Safety</button>
+              <button class="chip" data-filter="travel-tourism" type="button" aria-pressed="false">Travel & Tourism</button>
+              <button class="chip" data-filter="career" type="button" aria-pressed="false">Career & Development</button>
             </div>
           </details>
         </div>
@@ -860,23 +879,38 @@
 // ════════════════════════════════════════════════════════════
 
 var CATEGORY_NAMES = {
-  'financial':         'Salary & Tax',
+  'financial':         'Finance, Tax & Market Data',
   'document-pdf':      'PDF & Documents',
   'image-design':      'Image & Design',
   'developer':         'Developer Tools',
   'education':         'Education',
   'health':            'Health',
+  'government':        'Government & Civic',
   'agriculture':       'Agriculture',
   'african':           'Uniquely African',
   'data-productivity': 'Data & Productivity',
   'small-business':    'Small Business',
   'fintech':           'Fintech & Banking',
+  'telecom':           'Telecom & Mobile',
   'trade':             'Trade',
   'energy':            'Energy',
+  'transport':         'Transport & Logistics',
   'language':          'Language & Translation',
   'engineering':       'Engineering & CAD',
   'ecommerce':         'VAT & Business',
   'legal':             'Legal & Compliance',
+  'hr-payroll':        'HR & Payroll',
+  'personal-finance':  'Personal Finance',
+  'diaspora':          'Diaspora',
+  'religious-cultural':'Religious & Cultural',
+  'climate':           'Climate & Environment',
+  'insurance':         'Insurance',
+  'sports':            'Sports & Entertainment',
+  'mining':            'Mining & Extractives',
+  'creative':          'Creative Economy',
+  'security':          'Security & Safety',
+  'travel-tourism':    'Travel & Tourism',
+  'career':            'Career & Development',
 };
 
 var COUNTRY_NAMES = {
@@ -884,6 +918,55 @@ var COUNTRY_NAMES = {
   'TZ':'Tanzania','ET':'Ethiopia','RW':'Rwanda','UG':'Uganda','SN':'Senegal',
   'CI':"Côte d'Ivoire",'CM':'Cameroon','MA':'Morocco','DZ':'Algeria','TN':'Tunisia',
   'ALL':'All Countries',
+};
+
+Object.assign(COUNTRY_NAMES, {
+  'DZ':'Algeria','AO':'Angola','BJ':'Benin','BW':'Botswana','BF':'Burkina Faso',
+  'BI':'Burundi','CV':'Cabo Verde','CM':'Cameroon','CF':'Central African Republic','TD':'Chad',
+  'KM':'Comoros','CG':'Republic of Congo','CD':'DR Congo','CI':"Cote d'Ivoire / Ivory Coast",
+  'DJ':'Djibouti','EG':'Egypt','GQ':'Equatorial Guinea','ER':'Eritrea','SZ':'Eswatini',
+  'ET':'Ethiopia','GA':'Gabon','GM':'Gambia','GH':'Ghana','GN':'Guinea','GW':'Guinea-Bissau',
+  'KE':'Kenya','LS':'Lesotho','LR':'Liberia','LY':'Libya','MG':'Madagascar','MW':'Malawi',
+  'ML':'Mali','MR':'Mauritania','MU':'Mauritius','MA':'Morocco','MZ':'Mozambique','NA':'Namibia',
+  'NE':'Niger','NG':'Nigeria','RW':'Rwanda','ST':'Sao Tome and Principe','SN':'Senegal',
+  'SC':'Seychelles','SL':'Sierra Leone','SO':'Somalia','ZA':'South Africa','SS':'South Sudan',
+  'SD':'Sudan','TZ':'Tanzania','TG':'Togo','TN':'Tunisia','UG':'Uganda','ZM':'Zambia','ZW':'Zimbabwe',
+  'ALL':'All Countries'
+});
+
+var CATEGORY_ALIASES = {
+  'financial':'finance money salary tax paye fx forex rates prices market data fuel prices',
+  'document-pdf':'documents pdf forms files office',
+  'image-design':'image design photo graphics creative assets',
+  'developer':'dev tools api json seo code webmaster',
+  'education':'school student exam scholarship university',
+  'health':'medical wellness clinic hospital',
+  'government':'civic official passport national id voter permit',
+  'agriculture':'farm crop food prices commodity livestock',
+  'african':'africa pan african local african',
+  'data-productivity':'data productivity business roi calculator',
+  'small-business':'sme startup business merchant pos',
+  'fintech':'banking mobile money payments merchant fees',
+  'telecom':'mobile data plan ussd airtime internet',
+  'trade':'import export customs shipping afcfta',
+  'energy':'power electricity solar fuel petrol diesel gasoline utility',
+  'transport':'logistics vehicle fare fleet fuel route',
+  'language':'translation translator local language',
+  'engineering':'construction cad building materials',
+  'ecommerce':'vat business tax invoice sales tax',
+  'legal':'compliance property mortgage contract law',
+  'hr-payroll':'hr payroll employee wage staff',
+  'personal-finance':'budget savings debt net worth',
+  'diaspora':'migration return remittance japa',
+  'religious-cultural':'religion culture islamic christian wedding',
+  'climate':'environment sustainability carbon flood',
+  'insurance':'premium claims cover risk',
+  'sports':'entertainment football afcon music events',
+  'mining':'extractives gold diamond royalty',
+  'creative':'creator media streaming content music film',
+  'security':'safety cybersecurity password phishing',
+  'travel-tourism':'travel tourism visa hotel safari',
+  'career':'jobs cv resume cover letter certification'
 };
 
 // Trending / popular searches shown on empty state
@@ -954,6 +1037,15 @@ function tokenise(str) {
     .filter(Boolean);
 }
 
+function generatedSearchAliases(tool) {
+  var raw = [tool.id, tool.name, tool.desc, tool.href, tool.category, Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || '')].join(' ').toLowerCase();
+  var terms = [];
+  if (/\bfuel\b|petrol|diesel|gasoline|carburant/.test(raw)) terms.push('fuel tracker fuel prices petrol diesel gasoline carburant');
+  if (/\btax\b|paye|vat|wht|cit|cgt|duty/.test(raw)) terms.push('tax income tax business tax salary tax impot fiscal');
+  if (/stream|creator|content|media|music|video/.test(raw)) terms.push('creator economy creative economy streaming content creator media');
+  return terms.join(' ');
+}
+
 function scoreMatch(tool, tokens) {
   if (!tokens.length) return 1; // no query = show all
 
@@ -966,21 +1058,33 @@ function scoreMatch(tool, tokens) {
     (tool.countries || []).join(' '),
     (tool.countries || []).map(function(c) { return COUNTRY_NAMES[c] || c; }).join(' '),
     CATEGORY_NAMES[tool.category] || '',
+    CATEGORY_ALIASES[tool.category] || '',
+    Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || ''),
+    tool.searchText || '',
+    generatedSearchAliases(tool),
   ].join(' ');
   text = normalizeSearchText(text);
 
   var score = 0;
   var nameText = normalizeSearchText(tool.name);
+  var categoryText = normalizeSearchText((CATEGORY_NAMES[tool.category] || '') + ' ' + (CATEGORY_ALIASES[tool.category] || ''));
+  var countryText = normalizeSearchText((tool.countries || []).map(function(c) { return COUNTRY_NAMES[c] || c; }).join(' '));
+  var idText = normalizeSearchText((tool.id || '') + ' ' + (tool.href || ''));
+  var matchedTokens = 0;
 
   tokens.forEach(function(tok) {
+    var tokenScore = 0;
     // Exact name word match — highest value
-    if (nameText.split(' ').some(function(w) { return w === tok; })) score += 40;
+    if (nameText.split(' ').some(function(w) { return w === tok; })) tokenScore = 40;
     // Name starts with token
-    else if (nameText.startsWith(tok)) score += 30;
+    else if (nameText.startsWith(tok)) tokenScore = 30;
     // Name contains token
-    else if (nameText.includes(tok)) score += 20;
+    else if (nameText.includes(tok)) tokenScore = 20;
+    else if (idText.includes(tok)) tokenScore = 12;
+    else if (categoryText.includes(tok)) tokenScore = 10;
+    else if (countryText.includes(tok)) tokenScore = 8;
     // Description/meta contains
-    else if (text.includes(tok)) score += 5;
+    else if (text.includes(tok)) tokenScore = 5;
     // Partial token match (fuzzy) — token length >= 3
     else if (tok.length >= 3) {
       for (var i = 0; i <= text.length - tok.length; i++) {
@@ -988,12 +1092,16 @@ function scoreMatch(tool, tokens) {
         for (var j = 0; j < tok.length; j++) {
           if (text[i+j] !== tok[j]) dist++;
         }
-        if (dist <= 1) { score += 2; break; }
+        if (dist <= 1) { tokenScore = 2; break; }
       }
+    }
+    if (tokenScore > 0) {
+      matchedTokens++;
+      score += tokenScore;
     }
   });
 
-  return score;
+  return matchedTokens === tokens.length ? score : 0;
 }
 
 function highlight(text, tokens) {
@@ -1507,7 +1615,8 @@ document.addEventListener('keydown', function(e) {
         status: String(tool[5] || '').toLowerCase(),
         href: tool[6] || '#',
         icon: tool[7] || '',
-        priority: Number(tool[8] || 0)
+        priority: Number(tool[8] || 0),
+        searchText: tool[9] || ''
       };
     }
 
@@ -1520,7 +1629,8 @@ document.addEventListener('keydown', function(e) {
       status: String(tool.status || '').toLowerCase(),
       href: tool.href || tool.url || '#',
       icon: tool.icon || '',
-      priority: Number(tool.priority || 0)
+      priority: Number(tool.priority || 0),
+      searchText: tool.searchText || tool.search_text || ''
     };
   }
 

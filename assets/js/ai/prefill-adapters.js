@@ -1,0 +1,601 @@
+/**
+ * Ask AfroTools AI prefill adapters.
+ *
+ * Converts a validated routing decision into a short-lived browser payload.
+ * Launch URLs must never contain extracted private or financial values.
+ *
+ * ToolPrefillAdapter contract:
+ * - supports(toolId)
+ * - normalizeInputs(extractedInputs)
+ * - validateInputs(normalizedInputs)
+ * - toSafeLaunchPayload(normalizedInputs)
+ * - getMissingInputs(normalizedInputs)
+ * - getUserFacingSummary(normalizedInputs)
+ */
+(function initPrefillAdapters(root, factory) {
+  if (typeof module === "object" && module.exports) {
+    module.exports = factory();
+  } else {
+    root.AfroToolsAIPrefillAdapters = factory();
+  }
+})(typeof globalThis !== "undefined" ? globalThis : this, function createPrefillAdapters() {
+  "use strict";
+
+  var PREFILL_STORAGE_KEY = "afrotools.aiPrefillDraft";
+  var PREFILL_TTL_MS = 20 * 60 * 1000;
+  var PAY_PERIODS = ["monthly", "annual", "weekly", "daily"];
+
+  function text(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+  }
+
+  function lower(value) {
+    return text(value).toLowerCase();
+  }
+
+  function number(value) {
+    if (value === undefined || value === null || value === "") return null;
+    if (typeof value === "number") return Number.isFinite(value) ? value : null;
+    var cleaned = String(value).replace(/[, ]/g, "");
+    var match = cleaned.match(/-?\d+(?:\.\d+)?/);
+    if (!match) return null;
+    var parsed = Number(match[0]);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  function positiveNumber(value) {
+    var parsed = number(value);
+    return parsed !== null && parsed >= 0 ? parsed : null;
+  }
+
+  function array(value) {
+    if (Array.isArray(value)) return value.map(text).filter(Boolean);
+    if (typeof value === "string") {
+      return value.split(/[,;]/).map(text).filter(Boolean);
+    }
+    return [];
+  }
+
+  function firstValue(inputs, names) {
+    var source = inputs || {};
+    for (var i = 0; i < names.length; i += 1) {
+      var value = source[names[i]];
+      if (value !== undefined && value !== null && value !== "") return value;
+    }
+    return "";
+  }
+
+  function currency(value, fallback) {
+    var clean = text(value || fallback || "").toUpperCase();
+    if (!clean) return "";
+    var aliases = {
+      NAIRA: "NGN",
+      NIGERIANNAIRA: "NGN",
+      DOLLARS: "USD",
+      DOLLAR: "USD",
+      USD: "USD",
+      KES: "KES",
+      GHS: "GHS",
+      ZAR: "ZAR",
+      NGN: "NGN",
+      XAF: "XAF",
+      XOF: "XOF",
+    };
+    return aliases[clean.replace(/[^A-Z]/g, "")] || clean.slice(0, 3);
+  }
+
+  function studyLevel(value) {
+    var clean = lower(value);
+    if (!clean) return "";
+    if (clean.indexOf("phd") !== -1 || clean.indexOf("doctor") !== -1) return "phd";
+    if (clean.indexOf("master") !== -1 || clean.indexOf("mba") !== -1) return "masters";
+    if (clean.indexOf("bachelor") !== -1 || clean.indexOf("undergrad") !== -1) return "undergrad";
+    if (clean.indexOf("diploma") !== -1) return "diploma";
+    return clean;
+  }
+
+  function payPeriod(value) {
+    var clean = lower(value);
+    if (!clean) return "";
+    if (clean.indexOf("year") !== -1 || clean.indexOf("annual") !== -1) return "annual";
+    if (clean.indexOf("week") !== -1) return "weekly";
+    if (clean.indexOf("day") !== -1) return "daily";
+    if (clean.indexOf("month") !== -1) return "monthly";
+    return PAY_PERIODS.indexOf(clean) !== -1 ? clean : "";
+  }
+
+  function pdfAction(value) {
+    var clean = lower(value);
+    if (!clean) return "";
+    if (clean.indexOf("merge") !== -1 || clean.indexOf("combine") !== -1) return "merge";
+    if (clean.indexOf("compress") !== -1 || clean.indexOf("reduce") !== -1) return "compress";
+    if (clean.indexOf("convert") !== -1 || clean.indexOf("image") !== -1 || clean.indexOf("word") !== -1) return "convert";
+    if (clean.indexOf("split") !== -1 || clean.indexOf("extract") !== -1) return "split";
+    if (clean.indexOf("sign") !== -1 || clean.indexOf("signature") !== -1) return "sign";
+    if (clean.indexOf("protect") !== -1 || clean.indexOf("password") !== -1) return "protect";
+    if (clean.indexOf("watermark") !== -1) return "watermark";
+    if (clean.indexOf("organize") !== -1 || clean.indexOf("reorder") !== -1 || clean.indexOf("page") !== -1) return "organize";
+    return clean;
+  }
+
+  function scholarshipField(value) {
+    var clean = lower(value);
+    if (!clean) return "";
+    if (/\b(stem|engineering|engineer|computer|software|data|science|technology|tech)\b/.test(clean)) return "stem";
+    if (/\b(business|economics|finance|accounting|management|commerce)\b/.test(clean)) return "business";
+    if (/\b(health|medicine|medical|nursing|public health|pharmacy)\b/.test(clean)) return "health";
+    if (/\b(law|legal|governance|public policy)\b/.test(clean)) return "law";
+    if (/\b(art|arts|humanities|social science|literature|media)\b/.test(clean)) return "arts";
+    if (/\b(agric|agriculture|environment|climate|sustainability)\b/.test(clean)) return "agric";
+    return clean;
+  }
+
+  function scholarshipDestination(value) {
+    var clean = lower(value);
+    if (!clean) return "";
+    var aliases = {
+      uk: "uk",
+      "united kingdom": "uk",
+      britain: "uk",
+      england: "uk",
+      us: "us",
+      usa: "us",
+      "u.s.": "us",
+      "united states": "us",
+      america: "us",
+      canada: "canada",
+      australia: "australia",
+      europe: "eu",
+      eu: "eu",
+      germany: "eu",
+      france: "eu",
+      netherlands: "eu",
+      africa: "africa",
+      "within africa": "africa",
+      global: "global",
+      worldwide: "global",
+    };
+    return aliases[clean] || clean;
+  }
+
+  function missing(normalized, fields) {
+    return fields.filter(function isMissing(name) {
+      var value = normalized ? normalized[name] : null;
+      if (Array.isArray(value)) return value.length === 0;
+      return value === undefined || value === null || value === "";
+    });
+  }
+
+  function validateNumbers(normalized, fields) {
+    var errors = [];
+    fields.forEach(function validateField(name) {
+      if (normalized[name] !== null && normalized[name] !== undefined && normalized[name] !== "" && !Number.isFinite(Number(normalized[name]))) {
+        errors.push(name + " must be a valid number");
+      }
+      if (Number(normalized[name]) < 0) errors.push(name + " cannot be negative");
+    });
+    return errors;
+  }
+
+  function makeValidation(errors) {
+    return { valid: errors.length === 0, errors: errors };
+  }
+
+  function appendLaunchParams(route) {
+    var raw = text(route) || "/tools/";
+    var hashIndex = raw.indexOf("#");
+    var hash = hashIndex === -1 ? "" : raw.slice(hashIndex);
+    var base = hashIndex === -1 ? raw : raw.slice(0, hashIndex);
+    var separator = base.indexOf("?") === -1 ? "?" : "&";
+    return base + separator + "source=ask&prefill=1" + hash;
+  }
+
+  function summaryList(items) {
+    return items.filter(Boolean).join("; ");
+  }
+
+  function createPayload(adapter, normalized) {
+    var now = Date.now();
+    return {
+      version: 1,
+      type: "afrotools_ai_prefill",
+      adapterId: adapter.id,
+      toolId: adapter.primaryToolId,
+      route: adapter.routeFor(normalized),
+      createdAt: now,
+      expiresAt: now + PREFILL_TTL_MS,
+      storage: "sessionStorage",
+      privacyNote: adapter.privacyNote,
+      normalizedInputs: normalized,
+      missingInputs: adapter.getMissingInputs(normalized),
+      userFacingSummary: adapter.getUserFacingSummary(normalized),
+    };
+  }
+
+  function createAdapter(config) {
+    return {
+      id: config.id,
+      primaryToolId: config.primaryToolId,
+      aliases: config.aliases || [],
+      privacyNote: config.privacyNote || "Prefill data is stored briefly in this browser session and is not placed in the URL.",
+      supports: function supports(toolId) {
+        var id = text(toolId);
+        return id === config.primaryToolId || this.aliases.indexOf(id) !== -1;
+      },
+      normalizeInputs: config.normalizeInputs,
+      validateInputs: config.validateInputs,
+      getMissingInputs: config.getMissingInputs,
+      getUserFacingSummary: config.getUserFacingSummary,
+      routeFor: config.routeFor || function routeFor() {
+        return config.route;
+      },
+      toSafeLaunchPayload: function toSafeLaunchPayload(normalizedInputs) {
+        return createPayload(this, normalizedInputs || {});
+      },
+    };
+  }
+
+  var cvBuilderAdapter = createAdapter({
+    id: "cv-builder-prefill",
+    primaryToolId: "cv-builder",
+    aliases: ["cv-jobs", "resume-builder"],
+    route: "/tools/cv-builder/",
+    privacyNote: "CV prefill is stored only in this browser session. Do not send full CV text to AI unless you explicitly choose an AI action.",
+    normalizeInputs: function normalizeCv(inputs) {
+      return {
+        country: text(firstValue(inputs, ["country", "market"])),
+        targetRole: text(firstValue(inputs, ["targetRole", "role", "jobTitle"])),
+        experienceYears: positiveNumber(firstValue(inputs, ["experienceYears", "yearsExperience", "yearsOfExperience"])),
+        experienceLevel: text(firstValue(inputs, ["experienceLevel", "seniority"])),
+        industry: text(firstValue(inputs, ["industry", "sector"])),
+        skills: array(firstValue(inputs, ["skills", "keywords"])),
+      };
+    },
+    validateInputs: function validateCv(normalized) {
+      var errors = validateNumbers(normalized, ["experienceYears"]);
+      if (normalized.targetRole && normalized.targetRole.length > 100) errors.push("targetRole is too long");
+      if (normalized.country && normalized.country.length > 80) errors.push("country is too long");
+      return makeValidation(errors);
+    },
+    getMissingInputs: function getMissingCv(normalized) {
+      return missing(normalized, ["targetRole"]);
+    },
+    getUserFacingSummary: function summarizeCv(normalized) {
+      return summaryList([
+        normalized.targetRole ? "CV target role: " + normalized.targetRole : "",
+        normalized.country ? "Market: " + normalized.country : "",
+        normalized.experienceYears !== null ? "Experience: " + normalized.experienceYears + " years" : "",
+        normalized.experienceLevel ? "Experience: " + normalized.experienceLevel : "",
+        normalized.industry ? "Industry: " + normalized.industry : "",
+      ]) || "Open CV Builder and choose a template.";
+    },
+  });
+
+  var scholarshipAdapter = createAdapter({
+    id: "scholarship-finder-prefill",
+    primaryToolId: "scholarship-finder",
+    aliases: ["scholarships", "scholarship"],
+    route: "/tools/scholarship-finder/",
+    normalizeInputs: function normalizeScholarship(inputs) {
+      return {
+        country: text(firstValue(inputs, ["country", "homeCountry", "originCountry", "nationality"])),
+        studyLevel: studyLevel(firstValue(inputs, ["studyLevel", "level"])),
+        field: scholarshipField(firstValue(inputs, ["field", "course", "discipline"])),
+        targetCountry: scholarshipDestination(firstValue(inputs, ["targetCountry", "destinationCountry", "destination"])),
+        gpa: positiveNumber(firstValue(inputs, ["gpa", "gradePointAverage", "score"])),
+        budget: positiveNumber(firstValue(inputs, ["budget", "availableBudget"])),
+      };
+    },
+    validateInputs: function validateScholarship(normalized) {
+      return makeValidation(validateNumbers(normalized, ["budget", "gpa"]));
+    },
+    getMissingInputs: function getMissingScholarship(normalized) {
+      return missing(normalized, ["country", "studyLevel"]);
+    },
+    getUserFacingSummary: function summarizeScholarship(normalized) {
+      return summaryList([
+        normalized.country ? "Home country: " + normalized.country : "",
+        normalized.studyLevel ? "Level: " + normalized.studyLevel : "",
+        normalized.targetCountry ? "Destination: " + normalized.targetCountry : "",
+        normalized.field ? "Field: " + normalized.field : "",
+        normalized.gpa !== null ? "GPA/score captured for local prefill" : "",
+      ]) || "Open Scholarship Finder and add a student profile.";
+    },
+  });
+
+  var importDutyAdapter = createAdapter({
+    id: "import-duty-prefill",
+    primaryToolId: "import-duty",
+    aliases: ["car-import", "car-import-cost", "vehicle-import"],
+    route: "/tools/import-duty/",
+    privacyNote: "Import prefill is stored briefly in this browser session. Item values stay out of the URL.",
+    normalizeInputs: function normalizeImport(inputs) {
+      var itemCategory = text(firstValue(inputs, ["itemCategory", "vehicle", "item", "goodsCategory"]));
+      var vehicleMake = text(firstValue(inputs, ["make", "vehicleMake"]));
+      var vehicleModel = text(firstValue(inputs, ["model", "vehicleModel"]));
+      var vehicleFromCategory = itemCategory.match(/^(toyota|honda|mazda|nissan|hyundai|kia|lexus|bmw|mercedes|ford|volkswagen|vw)\s+(.+)$/i);
+      if (vehicleFromCategory) {
+        if (!vehicleMake) vehicleMake = vehicleFromCategory[1];
+        if (!vehicleModel) vehicleModel = vehicleFromCategory[2];
+      }
+      var itemValue = positiveNumber(firstValue(inputs, ["itemValue", "value", "purchasePrice", "purchasePriceUsd", "budget", "cifValue", "cifUsd"]));
+      var shippingCost = positiveNumber(firstValue(inputs, ["shippingCost", "freight", "freightUsd", "shipping", "shippingUsd"]));
+      var engineCc = positiveNumber(firstValue(inputs, ["engineCc", "engineSize", "engineSizeCc"]));
+      var mode = lower(firstValue(inputs, ["mode", "importMode"]));
+      if (!mode && (vehicleMake || vehicleModel || /\b(toyota|honda|mazda|nissan|hyundai|kia|lexus|bmw|mercedes|ford)\b/i.test(itemCategory))) {
+        mode = "car";
+      }
+      return {
+        mode: mode === "car" || mode === "vehicle" ? "car" : "goods",
+        destinationCountry: text(firstValue(inputs, ["destinationCountry", "country"])),
+        itemCategory: itemCategory || summaryList([vehicleMake, vehicleModel]),
+        itemValue: itemValue,
+        currency: currency(firstValue(inputs, ["currency", "itemCurrency"]), ""),
+        year: text(firstValue(inputs, ["year", "vehicleYear"])),
+        make: vehicleMake,
+        model: vehicleModel,
+        engineCc: engineCc,
+        shippingCost: shippingCost,
+      };
+    },
+    validateInputs: function validateImport(normalized) {
+      var errors = validateNumbers(normalized, ["itemValue", "engineCc", "shippingCost"]);
+      if (normalized.year && !/^(19[8-9]\d|20[0-3]\d)$/.test(String(normalized.year))) errors.push("year is outside the supported vehicle range");
+      return makeValidation(errors);
+    },
+    getMissingInputs: function getMissingImport(normalized) {
+      return missing(normalized, ["destinationCountry", "itemCategory", "itemValue"]);
+    },
+    getUserFacingSummary: function summarizeImport(normalized) {
+      return summaryList([
+        normalized.destinationCountry ? "Destination: " + normalized.destinationCountry : "",
+        normalized.itemCategory ? "Item: " + normalized.itemCategory : "",
+        normalized.year ? "Year: " + normalized.year : "",
+        normalized.engineCc !== null ? "Engine: " + normalized.engineCc + " cc" : "",
+        normalized.itemValue !== null ? "Value captured for local prefill" : "",
+        normalized.shippingCost !== null ? "Shipping captured for local prefill" : "",
+      ]) || "Open Import Duty Calculator and add item details.";
+    },
+  });
+
+  var energyAdapter = createAdapter({
+    id: "energy-prefill",
+    primaryToolId: "solar-roi",
+    aliases: ["solar-energy", "fuel-tracker", "generator-cost", "generator-fuel"],
+    route: "/tools/solar-roi/",
+    normalizeInputs: function normalizeEnergy(inputs) {
+      var fuelType = lower(firstValue(inputs, ["fuelType", "fuel"]));
+      var generatorHours = positiveNumber(firstValue(inputs, ["generatorHoursPerDay", "generatorHours", "hoursPerDay"]));
+      var generatorSize = positiveNumber(firstValue(inputs, ["generatorSizeKva", "generatorSize", "kva"]));
+      var monthlyBill = positiveNumber(firstValue(inputs, ["monthlyBill", "powerBill", "budget", "electricityBill"]));
+      var loadSizeKw = positiveNumber(firstValue(inputs, ["loadSizeKw", "loadSize", "systemKW", "systemSizeKw"]));
+      var backupHours = positiveNumber(firstValue(inputs, ["backupHours", "outageHours", "backupHoursPerDay"]));
+      var mode = lower(firstValue(inputs, ["mode", "energyMode"]));
+      if (!mode && (fuelType || generatorHours !== null || generatorSize !== null)) mode = "generator";
+      return {
+        mode: mode === "generator" || mode === "fuel" ? "generator" : "solar",
+        country: text(firstValue(inputs, ["country"])),
+        city: text(firstValue(inputs, ["city", "location"])),
+        monthlyBill: monthlyBill,
+        loadSizeKw: loadSizeKw,
+        backupHours: backupHours,
+        fuelType: fuelType,
+        generatorHoursPerDay: generatorHours,
+        generatorSizeKva: generatorSize,
+      };
+    },
+    validateInputs: function validateEnergy(normalized) {
+      return makeValidation(validateNumbers(normalized, ["monthlyBill", "loadSizeKw", "backupHours", "generatorHoursPerDay", "generatorSizeKva"]));
+    },
+    getMissingInputs: function getMissingEnergy(normalized) {
+      if (normalized.mode === "generator") return missing(normalized, ["country"]);
+      return missing(normalized, ["country", "monthlyBill"]);
+    },
+    getUserFacingSummary: function summarizeEnergy(normalized) {
+      return summaryList([
+        normalized.mode === "generator" ? "Generator/fuel workflow" : "Solar ROI workflow",
+        normalized.country ? "Country: " + normalized.country : "",
+        normalized.city ? "City: " + normalized.city : "",
+        normalized.monthlyBill !== null ? "Monthly spend captured for local prefill" : "",
+        normalized.loadSizeKw !== null ? "Load/system size: " + normalized.loadSizeKw + " kW" : "",
+        normalized.backupHours !== null ? "Backup target: " + normalized.backupHours + " hours" : "",
+      ]);
+    },
+    routeFor: function routeForEnergy(normalized) {
+      return normalized && normalized.mode === "generator" ? "/tools/fuel-tracker/#generator-cost" : "/tools/solar-roi/";
+    },
+  });
+
+  var invoiceAdapter = createAdapter({
+    id: "invoice-generator-prefill",
+    primaryToolId: "invoice-generator",
+    aliases: ["invoice", "business-invoice"],
+    route: "/tools/invoice-generator/",
+    privacyNote: "Invoice prefill is stored briefly in this browser session. Client names and amounts stay out of the URL.",
+    normalizeInputs: function normalizeInvoice(inputs) {
+      return {
+        clientName: text(firstValue(inputs, ["clientName", "client", "customerName"])),
+        clientCompany: text(firstValue(inputs, ["clientCompany", "company"])),
+        currency: currency(firstValue(inputs, ["currency"]), ""),
+        amount: positiveNumber(firstValue(inputs, ["amount", "itemValue", "total", "budget"])),
+        taxRate: positiveNumber(firstValue(inputs, ["taxRate", "vatRate"])),
+        lineItemDescription: text(firstValue(inputs, ["lineItemDescription", "description", "service"])),
+      };
+    },
+    validateInputs: function validateInvoice(normalized) {
+      var errors = validateNumbers(normalized, ["amount", "taxRate"]);
+      if (normalized.taxRate !== null && normalized.taxRate > 100) errors.push("taxRate cannot exceed 100");
+      return makeValidation(errors);
+    },
+    getMissingInputs: function getMissingInvoice(normalized) {
+      return missing(normalized, ["clientName", "amount"]);
+    },
+    getUserFacingSummary: function summarizeInvoice(normalized) {
+      return summaryList([
+        normalized.clientName ? "Client captured for local prefill" : "",
+        normalized.currency ? "Currency: " + normalized.currency : "",
+        normalized.amount !== null ? "Amount captured for local prefill" : "",
+      ]) || "Open Invoice Generator and add invoice details.";
+    },
+  });
+
+  var payeAdapter = createAdapter({
+    id: "paye-calculator-prefill",
+    primaryToolId: "paye-calculator",
+    aliases: ["payroll-tax", "salary-tax", "paye"],
+    route: "/tools/paye-calculator",
+    privacyNote: "PAYE prefill is stored briefly in this browser session. Salary amounts stay out of the URL.",
+    normalizeInputs: function normalizePaye(inputs) {
+      return {
+        country: text(firstValue(inputs, ["country"])),
+        grossPay: positiveNumber(firstValue(inputs, ["grossPay", "salary", "income", "budget"])),
+        payPeriod: payPeriod(firstValue(inputs, ["payPeriod", "period"])) || "monthly",
+        employeeCount: positiveNumber(firstValue(inputs, ["employeeCount", "employees", "staffCount"])),
+        currency: currency(firstValue(inputs, ["currency"]), ""),
+      };
+    },
+    validateInputs: function validatePaye(normalized) {
+      var errors = validateNumbers(normalized, ["grossPay", "employeeCount"]);
+      if (normalized.payPeriod && PAY_PERIODS.indexOf(normalized.payPeriod) === -1) errors.push("payPeriod is invalid");
+      return makeValidation(errors);
+    },
+    getMissingInputs: function getMissingPaye(normalized) {
+      return missing(normalized, ["country", "grossPay", "payPeriod"]);
+    },
+    getUserFacingSummary: function summarizePaye(normalized) {
+      return summaryList([
+        normalized.country ? "Country: " + normalized.country : "",
+        normalized.grossPay !== null ? "Gross pay captured for local prefill" : "",
+        normalized.payPeriod ? "Period: " + normalized.payPeriod : "",
+        normalized.employeeCount !== null ? "Employees: " + normalized.employeeCount : "",
+      ]) || "Open PAYE calculator and add payroll details.";
+    },
+  });
+
+  var pdfWorkspaceAdapter = createAdapter({
+    id: "pdf-workspace-prefill",
+    primaryToolId: "pdf-workspace",
+    aliases: ["document-pdf", "pdf", "pdf-tools"],
+    route: "/tools/pdf-workspace/",
+    privacyNote: "PDF workflow prefill stores only the intended action in this browser session. Files and document content are never placed in the URL.",
+    normalizeInputs: function normalizePdf(inputs) {
+      return {
+        pdfAction: pdfAction(firstValue(inputs, ["pdfAction", "documentTask", "action", "task"])),
+      };
+    },
+    validateInputs: function validatePdf(normalized) {
+      var action = normalized.pdfAction;
+      var allowed = ["organize", "merge", "compress", "convert", "split", "sign", "protect", "watermark"];
+      return makeValidation(action && allowed.indexOf(action) === -1 ? ["pdfAction is invalid"] : []);
+    },
+    getMissingInputs: function getMissingPdf(normalized) {
+      return missing(normalized, ["pdfAction"]);
+    },
+    getUserFacingSummary: function summarizePdf(normalized) {
+      return normalized.pdfAction ? "PDF action: " + normalized.pdfAction : "Open PDF Workspace and choose a browser-local document action.";
+    },
+  });
+
+  var ADAPTERS = [
+    cvBuilderAdapter,
+    scholarshipAdapter,
+    importDutyAdapter,
+    energyAdapter,
+    invoiceAdapter,
+    payeAdapter,
+    pdfWorkspaceAdapter,
+  ];
+
+  function getPrefillAdapter(toolId) {
+    for (var i = 0; i < ADAPTERS.length; i += 1) {
+      if (ADAPTERS[i].supports(toolId)) return ADAPTERS[i];
+    }
+    return null;
+  }
+
+  function routeOnlyLaunch(toolId, route, summary) {
+    return {
+      supported: false,
+      toolId: text(toolId),
+      route: text(route) || "/tools/",
+      launchUrl: appendLaunchParams(text(route) || "/tools/"),
+      payload: null,
+      missingInputs: [],
+      validation: makeValidation([]),
+      userFacingSummary: text(summary) || "Open the selected AfroTools workflow.",
+      privacyNote: "This route-only workflow does not create a prefill payload.",
+    };
+  }
+
+  function buildSafeLaunch(toolId, extractedInputs, options) {
+    var adapter = getPrefillAdapter(toolId);
+    var route = options && options.selectedRoute ? options.selectedRoute : "";
+    if (!adapter) return routeOnlyLaunch(toolId, route || "/tools/", "");
+    var normalized = adapter.normalizeInputs(extractedInputs || {});
+    var validation = adapter.validateInputs(normalized);
+    var payload = adapter.toSafeLaunchPayload(normalized);
+    if (adapter.id === "energy-prefill" && String(payload.route || "").indexOf("/tools/fuel-tracker/") === 0) {
+      payload.toolId = "fuel-tracker";
+    }
+    var launchUrl = appendLaunchParams(payload.route || route || adapter.routeFor(normalized));
+    return {
+      supported: true,
+      toolId: payload.toolId,
+      route: payload.route,
+      launchUrl: launchUrl,
+      payload: payload,
+      missingInputs: payload.missingInputs,
+      validation: validation,
+      userFacingSummary: payload.userFacingSummary,
+      privacyNote: payload.privacyNote,
+    };
+  }
+
+  function storeLaunchPayload(launchOrPayload, storage) {
+    var target = storage || (typeof sessionStorage !== "undefined" ? sessionStorage : null);
+    var payload = launchOrPayload && launchOrPayload.payload ? launchOrPayload.payload : launchOrPayload;
+    if (!target || !payload) return false;
+    try {
+      target.setItem(PREFILL_STORAGE_KEY, JSON.stringify(payload));
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function readLaunchPayload(storage) {
+    var target = storage || (typeof sessionStorage !== "undefined" ? sessionStorage : null);
+    if (!target) return null;
+    var raw = target.getItem(PREFILL_STORAGE_KEY);
+    if (!raw) return null;
+    try {
+      var payload = JSON.parse(raw);
+      if (!payload || payload.type !== "afrotools_ai_prefill") return null;
+      if (payload.expiresAt && Date.now() > Number(payload.expiresAt)) {
+        target.removeItem(PREFILL_STORAGE_KEY);
+        return null;
+      }
+      return payload;
+    } catch (err) {
+      target.removeItem(PREFILL_STORAGE_KEY);
+      return null;
+    }
+  }
+
+  function clearExpiredLaunchPayload(storage) {
+    return readLaunchPayload(storage) === null;
+  }
+
+  return {
+    PREFILL_STORAGE_KEY: PREFILL_STORAGE_KEY,
+    PREFILL_TTL_MS: PREFILL_TTL_MS,
+    ADAPTERS: ADAPTERS,
+    getPrefillAdapter: getPrefillAdapter,
+    buildSafeLaunch: buildSafeLaunch,
+    routeOnlyLaunch: routeOnlyLaunch,
+    storeLaunchPayload: storeLaunchPayload,
+    readLaunchPayload: readLaunchPayload,
+    clearExpiredLaunchPayload: clearExpiredLaunchPayload,
+    appendLaunchParams: appendLaunchParams,
+  };
+});

@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AfroTools AI Command Page | AfroTools</title>
+  <meta name="description" content="Ask AfroTools AI routes practical prompts into AfroTools calculators, document workflows, local planning tools, and exports.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://afrotools.com/ai/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=optional" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=optional"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script src="/assets/js/bundles/core.e1f95073.min.js" defer></script>
+  <style>
+    :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5}
+    body{margin:0;background:var(--ai-bg);color:var(--ai-text);font-family:"DM Sans",system-ui,sans-serif}
+    .ai-main{min-height:calc(100vh - 160px);padding:46px 18px 58px}
+    .ai-wrap{max-width:1120px;margin:0 auto}
+    .ai-header{max-width:790px;margin:0 auto 22px;text-align:center}
+    .ai-title{margin:0 0 10px;color:var(--ai-text);font-size:clamp(2rem,5vw,3.7rem);font-weight:900;letter-spacing:0;line-height:1.02}
+    .ai-copy{max-width:720px;margin:0 auto;color:var(--ai-muted);font-size:1rem;line-height:1.68}
+    .ai-command{border:1px solid var(--ai-border);border-radius:16px;background:var(--ai-surface);box-shadow:0 18px 44px rgba(15,23,42,.07);padding:18px}
+    .ai-form{display:grid;gap:12px;max-width:860px;margin:0 auto}
+    .ai-field{display:grid;gap:8px}
+    .ai-field label{font-size:.8rem;font-weight:900;color:#334155}
+    .ai-input-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;border:1px solid #d5e2f2;border-radius:15px;background:#fbfdff;padding:7px}
+    .ai-input-row:focus-within{border-color:#8bb8f4;box-shadow:0 0 0 4px rgba(0,98,204,.09)}
+    .ai-input-row input{min-width:0;border:0;outline:0;background:transparent;color:var(--ai-text);font:inherit;font-size:1rem;padding:12px 10px}
+    .ai-run{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border:1px solid var(--ai-primary);border-radius:12px;background:var(--ai-primary);color:#fff;font:inherit;font-size:.88rem;font-weight:900;cursor:pointer}
+    .ai-run:hover,.ai-run:focus-visible{background:var(--ai-primary-dark);border-color:var(--ai-primary-dark)}
+    .ai-trust{margin:0;border:1px solid #fde68a;border-radius:12px;background:var(--ai-warn-bg);color:var(--ai-warn);padding:12px 14px;font-size:.82rem;line-height:1.55}
+    .ai-state{max-width:860px;margin:16px auto 0}
+    .ai-state[hidden]{display:none}
+    .ai-status{border:1px solid var(--ai-border);border-radius:12px;background:#fbfdff;color:#334155;padding:13px 14px;font-size:.85rem;line-height:1.55}
+    .ai-status strong{display:block;color:var(--ai-text);font-size:.9rem;margin-bottom:2px}
+    .ai-loading{display:flex;align-items:center;gap:10px}
+    .ai-spinner{width:18px;height:18px;border-radius:50%;border:3px solid #bfdbfe;border-top-color:var(--ai-primary);animation:ai-spin .8s linear infinite}
+    @keyframes ai-spin{to{transform:rotate(360deg)}}
+    .ai-card-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+    .ai-workflow-card{display:grid;gap:12px;border:1px solid var(--ai-border);border-radius:14px;background:#fff;padding:15px;box-shadow:0 10px 26px rgba(15,23,42,.04)}
+    .ai-workflow-card[data-primary="true"]{border-color:#9fc4ff;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%)}
+    .ai-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .ai-card-title{margin:0;color:var(--ai-text);font-size:1.05rem;font-weight:900;line-height:1.22}
+    .ai-card-reason{margin:5px 0 0;color:#64748b;font-size:.84rem;line-height:1.55}
+    .ai-chip{display:inline-flex;align-items:center;flex:0 0 auto;min-height:28px;padding:4px 9px;border-radius:999px;background:var(--ai-success-bg);color:var(--ai-success);font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+    .ai-card-body{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .ai-mini-panel{border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc;padding:10px}
+    .ai-mini-panel strong{display:block;color:#334155;font-size:.76rem;font-weight:900;margin-bottom:6px}
+    .ai-list{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+    .ai-list li{display:inline-flex;align-items:center;min-height:25px;padding:4px 8px;border-radius:999px;background:#fff;color:#475569;border:1px solid #e2e8f0;font-size:.7rem;font-weight:800}
+    .ai-list-empty{color:#64748b;font-size:.78rem;line-height:1.45}
+    .ai-notice{border:1px solid #bfdbfe;border-radius:11px;background:#f8fbff;color:#334155;padding:10px 11px;font-size:.78rem;line-height:1.5}
+    .ai-notice strong{display:block;color:#0f172a;font-size:.8rem;margin-bottom:2px}
+    .ai-source-hint{display:block;margin-top:5px;color:#475569}
+    .ai-clarification{border:1px solid #fed7aa;border-radius:12px;background:#fff7ed;padding:12px}
+    .ai-clarification h4,.ai-consent-card h3{margin:0;color:#0f172a;font-size:.9rem;font-weight:900;letter-spacing:0}
+    .ai-clarification p,.ai-consent-card p{margin:5px 0 0;color:#6b4f1d;font-size:.78rem;line-height:1.5}
+    .ai-clarification-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:11px}
+    .ai-clarification-field{display:grid;gap:6px}
+    .ai-clarification-field label{color:#334155;font-size:.73rem;font-weight:900}
+    .ai-clarification-field input,.ai-clarification-field select{width:100%;min-width:0;min-height:42px;border:1px solid #f3c079;border-radius:10px;background:#fff;color:#0f172a;font:inherit;font-size:.85rem;padding:8px 10px}
+    .ai-clarification-field input:focus,.ai-clarification-field select:focus{outline:3px solid rgba(245,158,11,.22);outline-offset:1px}
+    .ai-clarification-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .ai-answer-chip{min-height:30px;border:1px solid #f3c079;border-radius:999px;background:#fff;color:#92400e;font:inherit;font-size:.72rem;font-weight:900;padding:4px 9px;cursor:pointer}
+    .ai-answer-chip:hover,.ai-answer-chip:focus-visible{border-color:#d97706;background:#fffbeb}
+    .ai-clarification-actions,.ai-consent-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+    .ai-small-button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;border:1px solid #f3c079;border-radius:10px;background:#fff;color:#92400e;font:inherit;font-size:.78rem;font-weight:900;padding:0 12px;cursor:pointer;text-decoration:none}
+    .ai-small-button.primary{background:#92400e;border-color:#92400e;color:#fff}
+    .ai-small-button.secondary{border-color:#dbe6f4;color:#0057b8}
+    .ai-small-button[disabled]{cursor:not-allowed;opacity:.58}
+    .ai-consent-card{max-width:860px;margin:12px auto 0;border:1px solid #c7d2fe;border-radius:12px;background:#f8fbff;padding:12px 14px;color:#334155}
+    .ai-consent-card[hidden]{display:none}
+    .ai-consent-card p{color:#475569}
+    .ai-consent-check{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:flex-start;gap:9px;margin-top:10px;color:#334155;font-size:.8rem;line-height:1.45;font-weight:800}
+    .ai-consent-check input{width:18px;height:18px;margin-top:1px}
+    .ai-model-status{margin:8px 0 0;color:#475569;font-size:.76rem;line-height:1.45}
+    .ai-debug-panel{max-width:860px;margin:12px auto 0;border:1px dashed #94a3b8;border-radius:12px;background:#fff;color:#334155;padding:11px 12px;font-size:.76rem;line-height:1.45}
+    .ai-debug-panel[hidden]{display:none}
+    .ai-debug-panel summary{cursor:pointer;color:#0f172a;font-weight:900}
+    .ai-debug-panel pre{max-height:260px;overflow:auto;margin:10px 0 0;border-radius:10px;background:#0f172a;color:#e2e8f0;padding:10px;font-size:.72rem;white-space:pre-wrap}
+    .ai-actions{display:flex;flex-wrap:wrap;gap:8px}
+    .ai-open,.ai-browse{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:11px;padding:0 14px;text-decoration:none;font-size:.82rem;font-weight:900}
+    .ai-open{background:var(--ai-primary);border:1px solid var(--ai-primary);color:#fff}
+    .ai-open:hover,.ai-open:focus-visible{background:var(--ai-primary-dark);border-color:var(--ai-primary-dark)}
+    .ai-browse{border:1px solid var(--ai-border);background:#fff;color:var(--ai-primary)}
+    .ai-browse:hover,.ai-browse:focus-visible{border-color:#9fc4ff;background:#eff6ff}
+    .ai-section-title{max-width:860px;margin:26px auto 12px;color:var(--ai-text);font-size:1.05rem;font-weight:900}
+    .ai-fallback-grid{max-width:860px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .ai-fallback-card{display:grid;gap:8px;min-height:150px;border:1px solid var(--ai-border);border-radius:13px;background:#fff;padding:13px;text-decoration:none;color:inherit}
+    .ai-fallback-card strong{color:var(--ai-text);font-size:.92rem;line-height:1.25}
+    .ai-fallback-card span{color:#64748b;font-size:.78rem;line-height:1.45}
+    .ai-fallback-card em{align-self:end;color:var(--ai-primary);font-style:normal;font-size:.78rem;font-weight:900}
+    .ai-fallback-card:hover,.ai-fallback-card:focus-visible{border-color:#9fc4ff;background:#f8fbff}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:760px){.ai-main{padding:34px 12px 44px}.ai-header{text-align:left}.ai-command{padding:14px}.ai-input-row{grid-template-columns:1fr}.ai-run{width:100%}.ai-card-head{display:grid}.ai-card-body,.ai-clarification-grid{grid-template-columns:1fr}.ai-actions,.ai-clarification-actions,.ai-consent-actions{display:grid}.ai-open,.ai-browse,.ai-small-button{width:100%}.ai-fallback-grid{grid-template-columns:1fr}}
+    @media(min-width:761px) and (max-width:980px){.ai-fallback-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(prefers-reduced-motion:reduce){.ai-spinner{animation:none}}
+  </style>
+  <meta property="og:url" content="https://afrotools.com/ai/">
+  <meta property="og:title" content="AfroTools AI Command Page | AfroTools">
+  <meta property="og:description" content="Route practical prompts into AfroTools calculators, documents, planning workflows, and exports.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AfroTools AI Command Page | AfroTools">
+  <meta name="twitter:description" content="A focused command page for routing practical African tasks into AfroTools workflows.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/ai/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/ai/">
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+  <main class="ai-main">
+    <div class="ai-wrap">
+      <header class="ai-header">
+        <h1 class="ai-title">AfroTools AI</h1>
+        <p class="ai-copy">Route a practical task into the right AfroTools workflow. This page shows workflow cards, not a general chatbot.</p>
+      </header>
+
+      <section class="ai-command" aria-labelledby="ai-command-title">
+        <h2 class="sr-only" id="ai-command-title">Ask AfroTools AI</h2>
+        <form class="ai-form" id="aiCommandForm" action="/ai/" method="get" role="search">
+          <div class="ai-field">
+            <label for="aiCommandInput">What do you want to calculate, compare, write, or plan?</label>
+            <div class="ai-input-row">
+              <input id="aiCommandInput" name="q" type="text" placeholder="What do you want to calculate, compare, write, or plan?" autocomplete="off" spellcheck="false">
+              <button class="ai-run" type="submit">Find workflow</button>
+            </div>
+          </div>
+          <p class="ai-trust">Some AfroTools workflows run in your browser. AI-assisted workflows ask before sending private content. This page may send your prompt to the AfroTools routing endpoint to choose a workflow, but it does not require login and does not store raw queries in analytics.</p>
+        </form>
+
+        <div class="ai-state" id="aiEmptyState">
+          <div class="ai-status">
+            <strong>Start with a practical task.</strong>
+            Try a question about CVs, scholarships, import duty, solar, PAYE, invoices, PDFs, fuel, or floor planning.
+          </div>
+        </div>
+
+        <div class="ai-state" id="aiLoadingState" hidden>
+          <div class="ai-status ai-loading" role="status" aria-live="polite">
+            <span class="ai-spinner" aria-hidden="true"></span>
+            <span><strong>Finding the best workflow</strong> Checking AfroTools routing first, with deterministic fallback ready.</span>
+          </div>
+        </div>
+
+        <div class="ai-state" id="aiErrorState" hidden>
+          <div class="ai-status" role="alert">
+            <strong>Router unavailable</strong>
+            <span id="aiErrorText">Using deterministic routing instead.</span>
+          </div>
+          <div class="ai-card-grid" id="aiErrorCards"></div>
+        </div>
+
+        <div class="ai-state" id="aiNoMatchState" hidden>
+          <div class="ai-status" role="status" aria-live="polite">
+            <strong>No clear workflow match yet</strong>
+            Add a country, amount, document type, destination, or sector, or continue browsing the tool directory.
+          </div>
+          <div class="ai-card-grid" id="aiNoMatchCards"></div>
+        </div>
+
+        <div class="ai-state" id="aiResultState" hidden>
+          <div class="ai-card-grid" id="aiResultCards"></div>
+        </div>
+
+        <section class="ai-consent-card" id="aiConsentCard" aria-labelledby="ai-consent-title" hidden>
+          <h3 id="ai-consent-title">Optional AI assist</h3>
+          <p>AfroTools can retry routing with a model provider only after you consent. Avoid adding CVs, PDFs, financial records, profile data, or personal identifiers unless a workflow explicitly asks and you choose to continue.</p>
+          <label class="ai-consent-check" for="aiModelConsent">
+            <input id="aiModelConsent" type="checkbox">
+            <span>I understand this may send my current prompt to AfroTools servers and a configured model provider for routing help.</span>
+          </label>
+          <div class="ai-consent-actions">
+            <button class="ai-small-button primary" type="button" id="aiModelRetry" disabled>Retry with AI assist</button>
+            <a class="ai-small-button secondary" href="/search/" id="aiContinueWithoutModel">Continue browsing</a>
+          </div>
+          <p class="ai-model-status" id="aiModelStatus" role="status" aria-live="polite"></p>
+        </section>
+
+        <details class="ai-debug-panel" id="aiIntentDebugPanel" hidden>
+          <summary>Local intent debug</summary>
+          <p>Visible only when local debug mode is enabled. Raw query parsing is shown in this browser and is not sent by this panel.</p>
+          <pre id="aiIntentDebugOutput">{}</pre>
+        </details>
+      </section>
+
+      <h2 class="ai-section-title">Browse common workflows</h2>
+      <nav class="ai-fallback-grid" id="aiFallbackGrid" aria-label="Fallback AfroTools workflows"></nav>
+    </div>
+  </main>
+  <afro-footer></afro-footer>
+
+  <script src="/assets/js/ai/intent-analytics.js?v=dd455934"></script>
+  <script src="/assets/js/ai/prefill-adapters.js?v=08bdd5f8"></script>
+  <script src="/assets/js/lib/source-confidence.js?v=093904c5"></script>
+  <script>
+  (function () {
+    "use strict";
+
+    var ROUTER_ENDPOINT = "/.netlify/functions/ai-route-intent";
+    var LOW_CONFIDENCE = 0.35;
+    var form = document.getElementById("aiCommandForm");
+    var input = document.getElementById("aiCommandInput");
+    var states = {
+      empty: document.getElementById("aiEmptyState"),
+      loading: document.getElementById("aiLoadingState"),
+      error: document.getElementById("aiErrorState"),
+      noMatch: document.getElementById("aiNoMatchState"),
+      result: document.getElementById("aiResultState")
+    };
+    var resultCards = document.getElementById("aiResultCards");
+    var errorCards = document.getElementById("aiErrorCards");
+    var noMatchCards = document.getElementById("aiNoMatchCards");
+    var fallbackGrid = document.getElementById("aiFallbackGrid");
+    var errorText = document.getElementById("aiErrorText");
+    var consentCard = document.getElementById("aiConsentCard");
+    var modelConsent = document.getElementById("aiModelConsent");
+    var modelRetry = document.getElementById("aiModelRetry");
+    var modelStatus = document.getElementById("aiModelStatus");
+    var intentDebugPanel = document.getElementById("aiIntentDebugPanel");
+    var intentDebugOutput = document.getElementById("aiIntentDebugOutput");
+    var workflowState = createEmptyWorkflowState();
+    var activeMatch = null;
+    var prefillAdapters = window.AfroToolsAIPrefillAdapters || null;
+    var intentAnalytics = window.AfroToolsAIIntentAnalytics || null;
+    var entrySource = getEntrySource();
+    var lastConsentRequestKey = "";
+    var lastClarificationShownKey = "";
+
+    var WORKFLOWS = [
+      card("cv-builder", "CV Builder", "/tools/cv-builder/", "Create or improve a CV/resume for an African job market.", ["cv", "resume", "curriculum vitae", "ats"], ["Target role", "Country or market"], "employment", "browser_local"),
+      card("cover-letter", "Cover Letter Generator", "/tools/cover-letter-generator/", "Prepare a cover letter draft while keeping career data local by default.", ["cover letter", "application letter"], ["Target role", "Company or sector"], "employment", "browser_local"),
+      card("scholarship-finder", "Scholarship Finder", "/tools/scholarship-finder/", "Find scholarship options and organize deadlines with source-aware notes.", ["scholarship", "scholarships", "bursary", "funding", "grant"], ["Home country", "Study level", "Field"], "education", "account_optional"),
+      card("study-abroad-cost", "Study Abroad Planner", "/tools/study-abroad-cost/", "Estimate study abroad costs, gaps, and budget pressure.", ["study abroad", "study in", "university", "tuition", "student visa"], ["Origin country", "Destination country", "Study level"], "education", "browser_local"),
+      card("ielts-calculator", "IELTS Band Calculator", "/tools/ielts-calculator/", "Calculate IELTS band scores and understand study-readiness requirements.", ["ielts", "band score"], ["Scores"], "education", "browser_local"),
+      card("gpa-calculator", "GPA Calculator", "/tools/gpa-calculator/", "Calculate GPA or CGPA for education planning.", ["gpa", "cgpa", "grade point"], ["Grades", "Credit units"], "education", "browser_local"),
+      card("import-duty", "Import Duty Calculator", "/tools/import-duty/", "Estimate customs duty, CIF, landed cost, and import assumptions.", ["import duty", "car import", "customs", "cif", "landed cost", "toyota", "vehicle import"], ["Destination country", "Item or vehicle", "Value"], "finance", "browser_local"),
+      card("solar-roi", "Solar ROI Calculator", "/tools/solar-roi/", "Compare solar payback, generator savings, and power-cost assumptions.", ["solar", "electricity", "power", "inverter", "battery"], ["Country or city", "Monthly bill"], "energy", "browser_local"),
+      card("fuel-tracker", "Fuel Tracker", "/tools/fuel-tracker/", "Check petrol, diesel, LPG, and generator-cost workflows.", ["generator", "fuel", "petrol", "diesel", "kerosene"], ["Country", "Fuel type"], "energy", "browser_local"),
+      card("paye-calculator", "PAYE Calculator", "/tools/paye-calculator/", "Estimate payroll, PAYE, salary tax, and take-home pay.", ["paye", "payroll", "salary", "income tax", "tax", "net pay"], ["Country", "Gross pay", "Pay period"], "tax", "browser_local"),
+      card("vat-calc-pan-african", "VAT Calculator", "/tools/vat-calculator/", "Calculate VAT and business tax amounts as planning estimates.", ["vat", "value added tax", "sales tax"], ["Country", "Amount"], "tax", "browser_local"),
+      card("invoice-generator", "Invoice Generator", "/tools/invoice-generator/", "Create invoice or receipt drafts with export options.", ["invoice", "receipt", "bill client", "business invoice"], ["Client", "Currency", "Amount"], "finance", "browser_local"),
+      card("pdf-workspace", "PDF Workspace", "/tools/pdf-workspace/", "Merge, compress, convert, split, watermark, and protect PDFs in the browser.", ["pdf", "merge", "compress", "convert", "split", "watermark", "document"], ["Document task"], "none", "browser_local"),
+      card("afroplan-floor-planner", "Floor Planner", "/engineering/floor-planner/", "Plan rooms, layouts, construction notes, and BOQ-oriented exports.", ["floor plan", "floor planner", "construction", "boq", "building", "room layout"], ["Room size", "Room type"], "none", "ai_optional"),
+      card("business-planner", "Business Tools", "/vat-business-tax/", "Open business, VAT, registration, receipt, and local compliance workflows.", ["business", "company", "tin", "registration", "sme"], ["Country", "Business task"], "finance", "browser_local")
+    ];
+
+    var FALLBACK_IDS = [
+      "cv-builder",
+      "scholarship-finder",
+      "study-abroad-cost",
+      "import-duty",
+      "solar-roi",
+      "paye-calculator",
+      "invoice-generator",
+      "pdf-workspace",
+      "fuel-tracker"
+    ];
+
+    var SOURCE_HINTS = {
+      "import-duty": "Uses reviewed import-duty planning assumptions. Confirm with customs or a licensed clearing professional before payment.",
+      "scholarship-finder": "Scholarship details can change. Verify eligibility and deadlines on the official provider page.",
+      "fuel-tracker": "Fuel prices may vary by city, station, supplier, and timing. Verify locally before buying or quoting.",
+      "solar-roi": "Energy inputs are planning estimates. Confirm tariffs, equipment quotes, and site conditions before buying.",
+      "paye-calculator": "Uses reviewed tax-engine assumptions. Confirm filing decisions with the relevant tax authority or payroll professional."
+    };
+
+    var CLARIFICATION_FIELDS = {
+      "import-duty": [
+        field("destinationCountry", "Destination country", "select", "", ["Nigeria", "Kenya", "Ghana", "Uganda", "Tanzania", "Zambia"]),
+        field("itemCategory", "Vehicle or item", "text", "Toyota Axio, phones, generator"),
+        field("itemValue", "CIF or item value", "number", "8500", null, true),
+        field("year", "Vehicle year", "number", "2016"),
+        field("engineCc", "Engine size (cc)", "number", "1500"),
+        field("shippingCost", "Shipping cost", "number", "1200", null, true)
+      ],
+      "cv-builder": [
+        field("country", "Target country/market", "select", "", ["Nigeria", "Ghana", "Kenya", "South Africa", "Cameroon"]),
+        field("targetRole", "Target role", "text", "Electrical engineer"),
+        field("experienceYears", "Years of experience", "number", "4"),
+        field("industry", "Industry", "text", "Energy, finance, NGO")
+      ],
+      "scholarship-finder": [
+        field("country", "Nationality/home country", "select", "", ["Nigeria", "Cameroon", "Ghana", "Kenya", "South Africa"]),
+        field("studyLevel", "Study level", "select", "", ["undergraduate", "masters", "phd", "diploma"]),
+        field("field", "Field of study", "text", "Engineering, health, business"),
+        field("targetCountry", "Destination country", "select", "", ["Canada", "United Kingdom", "United States", "Germany", "Australia"]),
+        field("gpa", "GPA or score", "number", "3.5", null, true),
+        field("budget", "Available budget", "number", "8000", null, true)
+      ],
+      "study-abroad-cost": [
+        field("country", "Origin country", "select", "", ["Nigeria", "Ghana", "Kenya", "Cameroon", "South Africa"]),
+        field("targetCountry", "Destination country", "select", "", ["Canada", "United Kingdom", "United States", "Germany", "Australia"]),
+        field("studyLevel", "Study level", "select", "", ["undergraduate", "masters", "phd", "diploma"]),
+        field("budget", "Available budget", "number", "8000", null, true)
+      ],
+      "solar-roi": [
+        field("country", "Country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
+        field("city", "City or location", "text", "Lagos"),
+        field("monthlyBill", "Monthly electricity or fuel spend", "number", "120000", null, true),
+        field("loadSizeKw", "Load or system size (kW)", "number", "5"),
+        field("backupHours", "Backup hours needed", "number", "6")
+      ],
+      "fuel-tracker": [
+        field("country", "Country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
+        field("fuelType", "Fuel type", "select", "", ["petrol", "diesel", "lpg", "kerosene"]),
+        field("generatorHoursPerDay", "Generator hours/day", "number", "6"),
+        field("generatorSizeKva", "Generator size (kVA)", "number", "5")
+      ],
+      "paye-calculator": [
+        field("country", "Payroll country", "select", "", ["Nigeria", "Kenya", "Ghana", "South Africa", "Cameroon"]),
+        field("grossPay", "Gross salary", "number", "250000", null, true),
+        field("payPeriod", "Pay period", "select", "", ["monthly", "annual", "weekly", "daily"]),
+        field("employeeCount", "Number of employees", "number", "5")
+      ],
+      "invoice-generator": [
+        field("clientName", "Client name", "text", "Client or company", null, true),
+        field("amount", "Invoice amount", "number", "45000", null, true),
+        field("currency", "Currency", "select", "", ["NGN", "KES", "GHS", "ZAR", "USD"]),
+        field("lineItemDescription", "Service or item", "text", "Consulting")
+      ],
+      "pdf-workspace": [
+        field("pdfAction", "PDF action", "select", "", ["merge", "compress", "convert", "split", "sign", "protect", "watermark", "organize"])
+      ]
+    };
+
+    function card(id, title, route, reason, keywords, missing, domain, privacyMode) {
+      return { id: id, title: title, route: route, reason: reason, keywords: keywords, missing: missing, domain: domain, privacyMode: privacyMode };
+    }
+
+    function field(name, label, type, placeholder, options, sensitive) {
+      return { name: name, label: label, type: type, placeholder: placeholder || "", options: options || [], sensitive: Boolean(sensitive) };
+    }
+
+    function byId(id) {
+      for (var i = 0; i < WORKFLOWS.length; i += 1) {
+        if (WORKFLOWS[i].id === id) return WORKFLOWS[i];
+      }
+      return null;
+    }
+
+    function normalize(value) {
+      return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9$]+/g, " ").trim();
+    }
+
+    function escapeHtml(value) {
+      return String(value === undefined || value === null ? "" : value).replace(/[&<>"']/g, function (ch) {
+        return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+      });
+    }
+
+    function prettyKey(key) {
+      return String(key || "").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[-_]+/g, " ").replace(/\b\w/g, function (ch) { return ch.toUpperCase(); });
+    }
+
+    function searchUrl(query) {
+      var clean = String(query || "").trim();
+      return clean ? "/search/?q=" + encodeURIComponent(clean) : "/search/";
+    }
+
+    function track(eventName, params) {
+      var analytics = window.AfroTools && window.AfroTools.analytics;
+      var safe = Object.assign({ surface: "ai_command_page" }, params || {});
+      try {
+        if (analytics && typeof analytics.track === "function") {
+          analytics.track(eventName, safe);
+        } else if (typeof window.gtag === "function" && localStorage.getItem("afrotools_cookie_consent") === "accepted") {
+          window.gtag("event", eventName, safe);
+        }
+      } catch (err) {}
+    }
+
+    function trackMany(eventNames, params) {
+      eventNames.forEach(function (eventName) {
+        track(eventName, params);
+      });
+    }
+
+    function getEntrySource() {
+      try {
+        var params = new URLSearchParams(window.location.search || "");
+        var source = params.get("source") || params.get("ai_source") || "";
+        return intentAnalytics && typeof intentAnalytics.normalizeSource === "function"
+          ? intentAnalytics.normalizeSource(source || "direct_ai")
+          : (source || "direct_ai");
+      } catch (err) {
+        return "direct_ai";
+      }
+    }
+
+    function safeIntentMeta(meta) {
+      var selected = workflowState.selectedToolId || activeMatch && activeMatch.selectedToolId || activeMatch && activeMatch.workflow && activeMatch.workflow.id || "";
+      var category = workflowState.intentCategory || activeMatch && activeMatch.workflow && activeMatch.workflow.domain || "";
+      return Object.assign({
+        selectedToolId: selected,
+        intentCategory: category,
+        source: entrySource,
+        routerSource: workflowState.source,
+        confidence: workflowState.confidence
+      }, meta || {});
+    }
+
+    function recordIntent(eventName, meta) {
+      if (!intentAnalytics || typeof intentAnalytics.record !== "function") return null;
+      var payload = intentAnalytics.record(eventName, workflowState, safeIntentMeta(meta));
+      updateIntentDebug();
+      return payload;
+    }
+
+    function updateIntentDebug() {
+      if (!intentAnalytics || !intentDebugPanel || !intentDebugOutput) return;
+      if (!intentAnalytics.isDebugMode || !intentAnalytics.isDebugMode()) return;
+      intentDebugPanel.hidden = false;
+      var debug = {
+        originalQuery: workflowState.originalQuery,
+        selectedToolId: workflowState.selectedToolId,
+        selectedToolRoute: workflowState.selectedToolRoute,
+        confidence: workflowState.confidence,
+        source: workflowState.source,
+        entrySource: entrySource,
+        extractedInputs: workflowState.extractedInputs,
+        missingInputs: workflowState.missingInputs,
+        clarificationAnswers: workflowState.clarificationAnswers,
+        prefillPayloadCreated: Boolean(workflowState.prefillPayload),
+        consentToModel: workflowState.consentToModel,
+        rawQueryLoggingEnabled: intentAnalytics.isRawQueryLoggingEnabled && intentAnalytics.isRawQueryLoggingEnabled()
+      };
+      intentDebugOutput.textContent = JSON.stringify(debug, null, 2);
+    }
+
+    function setState(name) {
+      Object.keys(states).forEach(function (key) {
+        states[key].hidden = key !== name;
+      });
+      if (!["result", "error", "noMatch"].includes(name)) showConsentCard(false);
+    }
+
+    function showConsentCard(show) {
+      if (!consentCard) return;
+      consentCard.hidden = !show;
+      if (!show) {
+        if (modelConsent) modelConsent.checked = false;
+        if (modelRetry) modelRetry.disabled = true;
+        if (modelStatus) modelStatus.textContent = "";
+        lastConsentRequestKey = "";
+        return;
+      }
+      var clean = input ? input.value.trim() : "";
+      if (lastConsentRequestKey !== clean) {
+        track("ai_consent_requested", { has_query: Boolean(clean), query_length: clean.length });
+        lastConsentRequestKey = clean;
+      }
+    }
+
+    function createEmptyWorkflowState() {
+      return {
+        originalQuery: "",
+        selectedToolId: "",
+        selectedToolRoute: "",
+        confidence: 0,
+        extractedInputs: {},
+        missingInputs: [],
+        clarificationAnswers: {},
+        prefillPayload: null,
+        consentToModel: false,
+        intentCategory: "unknown",
+        entrySource: entrySource || "direct_ai",
+        source: "fallback"
+      };
+    }
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value || {}));
+    }
+
+    function normalizeSource(source) {
+      var value = String(source || "");
+      if (value.indexOf("model") !== -1 || value.indexOf("router") !== -1) return "router";
+      if (value.indexOf("deterministic") !== -1) return "deterministic";
+      return "fallback";
+    }
+
+    function mergeInputs(extractedInputs, clarificationAnswers) {
+      return Object.assign({}, extractedInputs || {}, clarificationAnswers || {});
+    }
+
+    function createWorkflowState(match, query, consentToModel) {
+      var workflow = match && match.workflow ? match.workflow : {};
+      var inputs = match && match.extractedInputs ? clone(match.extractedInputs) : {};
+      var missing = match && Array.isArray(match.missingInputs) ? match.missingInputs.slice() : [];
+      return {
+        originalQuery: String(query || match && match.query || ""),
+        selectedToolId: match && (match.selectedToolId || workflow.id) || "",
+        selectedToolRoute: match && (match.selectedRoute || workflow.route) || "",
+        confidence: Number(match && match.confidence || 0),
+        extractedInputs: inputs,
+        missingInputs: missing,
+        clarificationAnswers: {},
+        prefillPayload: null,
+        consentToModel: consentToModel === true,
+        intentCategory: match && (match.intentCategory || match.safetyDomain || workflow.domain) || "unknown",
+        entrySource: entrySource || "direct_ai",
+        source: normalizeSource(match && match.source)
+      };
+    }
+
+    function shouldCallRouter() {
+      try {
+        return new URLSearchParams(window.location.search).get("router") !== "off";
+      } catch (err) {
+        return true;
+      }
+    }
+
+    function extractInputs(query, workflow) {
+      var original = String(query || "");
+      var text = normalize(original);
+      var inputs = {};
+      var countries = {
+        "south africa": "South Africa",
+        nigeria: "Nigeria",
+        ghana: "Ghana",
+        kenya: "Kenya",
+        cameroon: "Cameroon",
+        uganda: "Uganda",
+        tanzania: "Tanzania",
+        rwanda: "Rwanda",
+        zambia: "Zambia",
+        zimbabwe: "Zimbabwe",
+        egypt: "Egypt",
+        morocco: "Morocco",
+        senegal: "Senegal",
+        lagos: "Nigeria",
+        accra: "Ghana",
+        nairobi: "Kenya"
+      };
+      var destinations = {
+        canada: "Canada",
+        uk: "United Kingdom",
+        "united kingdom": "United Kingdom",
+        usa: "United States",
+        "united states": "United States",
+        germany: "Germany",
+        france: "France",
+        australia: "Australia",
+        ireland: "Ireland"
+      };
+      var country = firstAlias(text, countries);
+      var targetCountry = firstAlias(text, destinations);
+      var money = extractMoney(original);
+      var year = original.match(/\b(19[8-9]\d|20[0-3]\d)\b/);
+      var employees = original.match(/\b([1-9][0-9]?)\s+(?:employees|staff|workers)\b/i);
+      var studyLevel = original.match(/\b(undergraduate|bachelor'?s?|masters?|master'?s?|phd|doctorate|diploma|mba)\b/i);
+      var role = original.match(/\b(?:for|as|role|job)\s+(?:an?\s+)?([a-z][a-z\s-]{2,60})(?:\s+in\s+|\s+with\s+|$)/i);
+      var vehicle = original.match(/\b(toyota|honda|mazda|nissan|hyundai|kia|mercedes|bmw|volkswagen|vw|ford|lexus)\s+([a-z0-9 -]{2,40}?)(?:\s+(?:worth|valued|costing|into|to|in|for)\b|[?.!,]|$)/i);
+      var engineCc = original.match(/\b([1-5][0-9]{2,3})\s?cc\b/i);
+      var engineLitres = original.match(/\b([1-6](?:\.\d)?)\s?l(?:itre|iter)?\b/i);
+      var hours = original.match(/\b([0-9]{1,2}(?:\.\d+)?)\s*(?:hours|hrs|h)\s*(?:per|\/)?\s*(?:day|daily)?\b/i);
+      var experienceYears = original.match(/\b([0-9]{1,2})\+?\s*(?:years|yrs)\s+(?:of\s+)?experience\b/i);
+      var pdfTask = original.match(/\b(merge|compress|convert|split|sign|protect|watermark|organize|reorder)\b/i);
+
+      if (country) inputs.country = country;
+      if (targetCountry) inputs.targetCountry = targetCountry;
+      if (money !== null) inputs.budget = money;
+      if (year) inputs.year = year[1];
+      if (employees) inputs.employeeCount = Number(employees[1]);
+      if (studyLevel) inputs.studyLevel = studyLevel[1].replace(/'?s$/i, "");
+      if (role) inputs.targetRole = role[1].trim();
+      if (experienceYears) inputs.experienceYears = Number(experienceYears[1]);
+      if (country && /lagos|accra|nairobi/i.test(original)) inputs.city = /lagos/i.test(original) ? "Lagos" : (/accra/i.test(original) ? "Accra" : "Nairobi");
+
+      if (workflow && workflow.id === "import-duty") {
+        if (country) inputs.destinationCountry = country;
+        if (vehicle) inputs.itemCategory = (vehicle[1] + " " + vehicle[2]).trim();
+        if (money !== null) inputs.itemValue = money;
+        if (engineCc) inputs.engineCc = Number(engineCc[1]);
+        if (engineLitres) inputs.engineCc = Math.round(Number(engineLitres[1]) * 1000);
+      }
+      if (workflow && workflow.id === "solar-roi") {
+        if (money !== null) inputs.monthlyBill = money;
+        if (hours) inputs.backupHours = Number(hours[1]);
+      }
+      if (workflow && workflow.id === "fuel-tracker") {
+        if (hours) inputs.generatorHoursPerDay = Number(hours[1]);
+      }
+      if (workflow && workflow.id === "paye-calculator") {
+        if (money !== null) inputs.grossPay = money;
+        inputs.payPeriod = /\b(annual|yearly|per year)\b/i.test(original) ? "annual" : "monthly";
+      }
+      if (workflow && workflow.id === "invoice-generator") {
+        if (money !== null) inputs.amount = money;
+      }
+      if (workflow && workflow.id === "pdf-workspace" && pdfTask) {
+        inputs.pdfAction = pdfTask[1].toLowerCase();
+      }
+      return inputs;
+    }
+
+    function firstAlias(text, map) {
+      var keys = Object.keys(map).sort(function (a, b) { return b.length - a.length; });
+      for (var i = 0; i < keys.length; i += 1) {
+        if (text.indexOf(keys[i]) !== -1) return map[keys[i]];
+      }
+      return "";
+    }
+
+    function extractMoney(query) {
+      var match = String(query || "").match(/(?:\$|usd\s*)\s?([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m))?/i) ||
+        String(query || "").match(/\b([0-9][0-9,]*(?:\.\d+)?)\s?(usd|dollars|naira|ngn|kes|ghs|zar|xaf|xof)\b/i);
+      if (!match) return null;
+      var amount = Number(String(match[1]).replace(/,/g, ""));
+      if (!Number.isFinite(amount)) return null;
+      if (match[2] && String(match[2]).toLowerCase() === "k") amount *= 1000;
+      if (match[2] && String(match[2]).toLowerCase() === "m") amount *= 1000000;
+      return amount;
+    }
+
+    function deterministicRoute(query) {
+      var text = normalize(query);
+      if (!text) return null;
+      var best = null;
+      WORKFLOWS.forEach(function (workflow) {
+        var score = workflow.keywords.reduce(function (total, keyword) {
+          var clean = normalize(keyword);
+          return total + (text.indexOf(clean) !== -1 ? clean.split(/\s+/).length + 1 : 0);
+        }, 0);
+        if (score > 0 && (!best || score > best.score)) best = { workflow: workflow, score: score };
+      });
+      if (!best) return null;
+      var extracted = extractInputs(query, best.workflow);
+      return {
+        source: "deterministic",
+        confidence: Math.min(0.95, 0.52 + best.score * 0.08),
+        workflow: best.workflow,
+        reason: "Matched obvious AfroTools workflow keywords.",
+        extractedInputs: extracted,
+        missingInputs: missingFor(best.workflow, extracted),
+        privacyMode: best.workflow.privacyMode,
+        safetyDomain: best.workflow.domain,
+        intentCategory: best.workflow.domain || "unknown",
+        selectedToolId: best.workflow.id,
+        selectedRoute: best.workflow.route
+      };
+    }
+
+    function missingFor(workflow, inputs) {
+      var requiredByTool = {
+        "cv-builder": ["targetRole"],
+        "cover-letter": ["targetRole"],
+        "scholarship-finder": ["country", "studyLevel"],
+        "study-abroad-cost": ["country", "targetCountry", "studyLevel"],
+        "ielts-calculator": [],
+        "gpa-calculator": [],
+        "import-duty": ["destinationCountry", "itemCategory", "itemValue"],
+        "solar-roi": ["country", "monthlyBill"],
+        "fuel-tracker": ["country"],
+        "paye-calculator": ["country", "grossPay", "payPeriod"],
+        "vat-calc-pan-african": ["country"],
+        "invoice-generator": ["clientName", "amount"],
+        "pdf-workspace": ["pdfAction"],
+        "afroplan-floor-planner": ["roomSize"],
+        "business-planner": ["country"]
+      };
+      return (requiredByTool[workflow.id] || []).filter(function (key) {
+        var value = inputs && inputs[key];
+        return value === undefined || value === null || value === "";
+      });
+    }
+
+    function fromServerDecision(payload, query) {
+      var decision = payload && payload.decision ? payload.decision : null;
+      if (!decision) return null;
+      var workflow = byId(decision.selectedToolId) || workflowFromDecision(decision);
+      return {
+        source: payload.source || "router",
+        confidence: Number(decision.confidence || 0),
+        workflow: workflow,
+        reason: decision.reasonShort || "Matched by the AfroTools intent router.",
+        extractedInputs: decision.extractedInputs || {},
+        missingInputs: Array.isArray(decision.missingInputs) ? decision.missingInputs : [],
+        privacyMode: decision.privacyMode || workflow.privacyMode,
+        safetyDomain: decision.safetyDomain || workflow.domain,
+        highStakesNotice: decision.highStakesNotice || "",
+        intentCategory: decision.intentCategory || decision.safetyDomain || workflow.domain || "unknown",
+        selectedToolId: decision.selectedToolId || workflow.id,
+        selectedRoute: decision.selectedRoute || workflow.route,
+        query: query
+      };
+    }
+
+    function workflowFromDecision(decision) {
+      var title = String(decision.selectedToolId || "AfroTools workflow").replace(/-/g, " ").replace(/\b\w/g, function (ch) { return ch.toUpperCase(); });
+      return card(decision.selectedToolId || "tool-search", title, decision.selectedRoute || "/search/", "Open the matched AfroTools workflow.", [], [], decision.safetyDomain || "none", decision.privacyMode || "browser_local");
+    }
+
+    function callRouter(query, consentToModel) {
+      if (!shouldCallRouter()) return Promise.reject(new Error("Router disabled for this session."));
+      return fetch(ROUTER_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: query, consentToModel: consentToModel === true })
+      }).then(function (response) {
+        if (!response.ok) throw new Error("Router returned " + response.status);
+        return response.json();
+      });
+    }
+
+    function buildToolPrefillUrl(toolId, extractedInputs, clarificationAnswers, selectedRoute) {
+      var merged = mergeInputs(extractedInputs, clarificationAnswers);
+      var adapters = prefillAdapters;
+      if (!adapters || typeof adapters.buildSafeLaunch !== "function") {
+        return {
+          supported: false,
+          launchUrl: selectedRoute || "/tools/",
+          route: selectedRoute || "/tools/",
+          toolId: toolId,
+          payload: null,
+          userFacingSummary: "Open the selected AfroTools workflow.",
+          missingInputs: [],
+          privacyNote: "Prefill adapters are unavailable, so no prefill payload will be created.",
+          validation: { valid: true, errors: [] }
+        };
+      }
+      return adapters.buildSafeLaunch(toolId, merged, {
+        selectedRoute: selectedRoute || "/tools/"
+      });
+    }
+
+    function saveToolPrefillPayload(toolId, payload) {
+      if (!payload) return false;
+      var adapters = prefillAdapters;
+      var targetPayload = payload.payload ? payload.payload : payload;
+      if (targetPayload && toolId && targetPayload.toolId && targetPayload.toolId !== toolId && toolId !== "solar-roi") {
+        targetPayload.toolId = targetPayload.toolId || toolId;
+      }
+      try {
+        if (adapters && typeof adapters.storeLaunchPayload === "function") {
+          return adapters.storeLaunchPayload(payload);
+        }
+        if (window.sessionStorage) {
+          window.sessionStorage.setItem("afrotools.aiPrefillDraft", JSON.stringify(targetPayload));
+          return true;
+        }
+      } catch (err) {}
+      return false;
+    }
+
+    function readToolPrefillPayload(toolId) {
+      var adapters = prefillAdapters;
+      var payload = null;
+      try {
+        if (adapters && typeof adapters.readLaunchPayload === "function") {
+          payload = adapters.readLaunchPayload();
+        } else if (window.sessionStorage) {
+          payload = JSON.parse(window.sessionStorage.getItem("afrotools.aiPrefillDraft") || "null");
+        }
+      } catch (err) {
+        payload = null;
+      }
+      if (!payload) return null;
+      if (!toolId || payload.toolId === toolId || payload.adapterId === toolId || payload.toolId === "fuel-tracker" && toolId === "solar-roi") return payload;
+      return null;
+    }
+
+    function hasValue(value) {
+      return !(value === undefined || value === null || value === "" || Array.isArray(value) && value.length === 0);
+    }
+
+    function findFieldDescriptor(toolId, name) {
+      var descriptors = CLARIFICATION_FIELDS[toolId] || [];
+      for (var i = 0; i < descriptors.length; i += 1) {
+        if (descriptors[i].name === name) return descriptors[i];
+      }
+      return field(name, prettyKey(name), /amount|bill|pay|value|cost|salary|budget|hours|count|year|gpa|cc|size/i.test(name) ? "number" : "text", "");
+    }
+
+    function getClarificationFields(workflow, state, limit) {
+      var toolId = workflow && workflow.id || "";
+      var merged = mergeInputs(state && state.extractedInputs, state && state.clarificationAnswers);
+      var descriptors = CLARIFICATION_FIELDS[toolId] || [];
+      var picked = [];
+      var seen = {};
+      function add(name) {
+        if (!name || seen[name] || hasValue(merged[name])) return;
+        seen[name] = true;
+        picked.push(findFieldDescriptor(toolId, name));
+      }
+      (state && state.missingInputs || []).forEach(add);
+      descriptors.forEach(function (descriptor) { add(descriptor.name); });
+      return picked.slice(0, limit || 3);
+    }
+
+    function renderFieldControl(descriptor, value, workflowId) {
+      var id = "clarify-" + workflowId + "-" + descriptor.name;
+      if (descriptor.type === "select") {
+        var options = ['<option value="">Choose ' + escapeHtml(descriptor.label.toLowerCase()) + '</option>'].concat((descriptor.options || []).map(function (option) {
+          var selected = String(value || "").toLowerCase() === String(option).toLowerCase() ? " selected" : "";
+          return '<option value="' + escapeHtml(option) + '"' + selected + '>' + escapeHtml(option) + '</option>';
+        })).join("");
+        return '<select id="' + escapeHtml(id) + '" data-clarification-input="' + escapeHtml(descriptor.name) + '">' + options + '</select>';
+      }
+      return '<input id="' + escapeHtml(id) + '" data-clarification-input="' + escapeHtml(descriptor.name) + '" type="' + (descriptor.type === "number" ? "number" : "text") + '" inputmode="' + (descriptor.type === "number" ? "decimal" : "text") + '" value="' + escapeHtml(value || "") + '" placeholder="' + escapeHtml(descriptor.placeholder || "") + '">';
+    }
+
+    function renderFieldChips(descriptor) {
+      if (!descriptor.options || !descriptor.options.length) return "";
+      return '<div class="ai-clarification-chips" aria-label="Quick answers for ' + escapeHtml(descriptor.label) + '">' + descriptor.options.slice(0, 5).map(function (option) {
+        return '<button type="button" class="ai-answer-chip" data-answer-chip="' + escapeHtml(descriptor.name) + '" data-answer-value="' + escapeHtml(option) + '">' + escapeHtml(option) + '</button>';
+      }).join("") + '</div>';
+    }
+
+    function renderClarification(match, state, launch, query) {
+      var workflow = match.workflow;
+      var fields = getClarificationFields(workflow, state, 3);
+      if (!fields.length) return "";
+      var clarificationKey = workflow.id + ":" + fields.map(function (field) { return field.name; }).join(",");
+      if (lastClarificationShownKey !== clarificationKey) {
+        trackMany(["ai_clarification_shown", "ai_command_clarification_shown"], {
+          tool_id: workflow.id,
+          missing_count: fields.length,
+          source: state.source
+        });
+        recordIntent("ai_intent_clarification_shown", {
+          selectedToolId: workflow.id,
+          intentCategory: workflow.domain,
+          missingInputs: fields.map(function (field) { return field.name; })
+        });
+        lastClarificationShownKey = clarificationKey;
+      }
+      var merged = mergeInputs(state.extractedInputs, state.clarificationAnswers);
+      var controls = fields.map(function (descriptor) {
+        var value = merged[descriptor.name];
+        return '<div class="ai-clarification-field">' +
+          '<label for="clarify-' + escapeHtml(workflow.id) + '-' + escapeHtml(descriptor.name) + '">' + escapeHtml(descriptor.label) + (descriptor.sensitive ? " (kept in this browser session)" : "") + '</label>' +
+          renderFieldControl(descriptor, value, workflow.id) +
+          renderFieldChips(descriptor) +
+          '</div>';
+      }).join("");
+      return '<form class="ai-clarification" data-clarification-form data-tool-id="' + escapeHtml(workflow.id) + '">' +
+        '<h4>Add details before opening</h4>' +
+        '<p>AfroTools found the workflow. Add up to three practical details now, or skip and fill them inside the tool.</p>' +
+        '<div class="ai-clarification-grid">' + controls + '</div>' +
+        '<div class="ai-clarification-actions">' +
+        '<button class="ai-small-button primary" type="submit">Update prefill</button>' +
+        '<button class="ai-small-button" type="button" data-skip-open data-tool-id="' + escapeHtml(workflow.id) + '" data-launch-url="' + escapeHtml(launch.launchUrl || workflow.route) + '">Skip and open tool</button>' +
+        '<a class="ai-small-button secondary" href="' + escapeHtml(searchUrl(query)) + '" data-browse-instead data-tool-id="' + escapeHtml(workflow.id) + '">Browse instead</a>' +
+        '</div>' +
+        '</form>';
+    }
+
+    function inputList(inputs) {
+      var keys = Object.keys(inputs || {}).filter(function (key) {
+        return inputs[key] !== undefined && inputs[key] !== null && inputs[key] !== "";
+      });
+      if (!keys.length) return '<span class="ai-list-empty">No inputs detected yet.</span>';
+      return '<ul class="ai-list">' + keys.map(function (key) {
+        return "<li>" + escapeHtml(prettyKey(key)) + ": " + escapeHtml(inputs[key]) + "</li>";
+      }).join("") + "</ul>";
+    }
+
+    function missingList(items) {
+      var values = (items || []).filter(Boolean);
+      if (!values.length) return '<span class="ai-list-empty">No required inputs missing.</span>';
+      return '<ul class="ai-list">' + values.map(function (item) {
+        return "<li>" + escapeHtml(prettyKey(item)) + "</li>";
+      }).join("") + "</ul>";
+    }
+
+    function sourceHintForTool(toolId) {
+      return SOURCE_HINTS[toolId] || "";
+    }
+
+    function renderCard(match, options) {
+      var primary = options && options.primary;
+      var workflow = match.workflow;
+      var state = primary && options && options.state ? options.state : createWorkflowState(match, options && options.query, false);
+      var launch = buildToolPrefillUrl(match.selectedToolId || workflow.id, state.extractedInputs, state.clarificationAnswers, match.selectedRoute || workflow.route);
+      if (primary) {
+        state.prefillPayload = launch.payload || null;
+        state.missingInputs = launch.missingInputs && launch.missingInputs.length ? launch.missingInputs.slice() : state.missingInputs.filter(function (key) {
+          return !hasValue(mergeInputs(state.extractedInputs, state.clarificationAnswers)[key]);
+        });
+        workflowState = state;
+      }
+      var mergedInputs = mergeInputs(state.extractedInputs, state.clarificationAnswers);
+      var search = searchUrl(options && options.query);
+      var privacy = match.highStakesNotice || launch.privacyNote || "Planning workflow. Confirm high-stakes decisions with official sources where needed.";
+      var sourceHint = sourceHintForTool(match.selectedToolId || workflow.id);
+      var confidence = Number(match.confidence || 0);
+      var confidenceLabel = confidence > 0 ? Math.round(confidence * 100) + "% match" : "Browse";
+      var clarification = primary ? renderClarification(match, state, launch, options && options.query) : "";
+      var html = '<article class="ai-workflow-card" data-workflow-card data-tool-id="' + escapeHtml(workflow.id) + '" data-primary="' + (primary ? "true" : "false") + '">' +
+        '<div class="ai-card-head"><div><h3 class="ai-card-title">' + escapeHtml(workflow.title) + '</h3><p class="ai-card-reason">' + escapeHtml(match.reason || workflow.reason) + '</p></div><span class="ai-chip">' + escapeHtml(confidenceLabel) + '</span></div>' +
+        '<div class="ai-card-body"><div class="ai-mini-panel"><strong>Inputs already detected</strong>' + inputList(mergedInputs) + '</div><div class="ai-mini-panel"><strong>Missing required inputs</strong>' + missingList(launch.missingInputs || state.missingInputs) + '</div></div>' +
+        clarification +
+        '<div class="ai-notice"><strong>Privacy and confidence</strong>' + escapeHtml(privacy) + (sourceHint ? '<span class="ai-source-hint">' + escapeHtml(sourceHint) + '</span>' : '') + '</div>' +
+        '<div class="ai-actions"><a class="ai-open" data-open-tool data-tool-id="' + escapeHtml(workflow.id) + '" data-supported="' + (launch.supported ? "true" : "false") + '" href="' + escapeHtml(launch.launchUrl || workflow.route) + '">Open tool</a><a class="ai-browse" href="' + escapeHtml(search) + '">Continue browsing</a></div>' +
+        '</article>';
+      return { html: html, launch: launch, workflow: workflow };
+    }
+
+    function fallbackMatches(query) {
+      return FALLBACK_IDS.map(function (id) {
+        var workflow = byId(id);
+        return {
+          source: "fallback-card",
+          confidence: 0,
+          workflow: workflow,
+          reason: workflow.reason,
+          extractedInputs: {},
+          missingInputs: workflow.missing,
+          selectedToolId: workflow.id,
+          selectedRoute: workflow.route,
+          query: query
+        };
+      });
+    }
+
+    function launchForMatch(match, state) {
+      var workflow = match && match.workflow || {};
+      return buildToolPrefillUrl(match.selectedToolId || workflow.id, state.extractedInputs, state.clarificationAnswers, match.selectedRoute || workflow.route);
+    }
+
+    function collectClarificationAnswers(container) {
+      var answers = {};
+      container.querySelectorAll("[data-clarification-input]").forEach(function (fieldNode) {
+        var name = fieldNode.getAttribute("data-clarification-input");
+        var value = fieldNode.value;
+        if (!name || value === "") return;
+        answers[name] = fieldNode.type === "number" ? Number(value) : value;
+      });
+      return answers;
+    }
+
+    function storeAndOpen(toolId, launch, meta) {
+      var saved = false;
+      if (launch && launch.supported) {
+        saved = saveToolPrefillPayload(toolId, launch);
+        if (saved) trackMany(["ai_prefill_payload_created", "ai_command_prefill_saved"], {
+          tool_id: toolId,
+          missing_count: launch.missingInputs ? launch.missingInputs.length : 0
+        });
+      }
+      trackMany(["ai_prefill_open_tool", "ai_command_tool_open"], Object.assign({
+        tool_id: toolId,
+        route: launch && launch.launchUrl || "",
+        prefill_supported: Boolean(launch && launch.supported),
+        prefill_saved: saved
+      }, meta || {}));
+      recordIntent("ai_intent_tool_open", {
+        selectedToolId: toolId,
+        toolOpenClicked: true,
+        missingInputs: launch && launch.missingInputs || workflowState.missingInputs,
+        fallbackUsed: workflowState.source === "fallback" || workflowState.source === "deterministic"
+      });
+      window.location.href = launch && launch.launchUrl || (activeMatch && activeMatch.selectedRoute) || "/tools/";
+    }
+
+    function renderMatches(target, matches, query, primaryFirst, preserveState) {
+      var launches = [];
+      if (primaryFirst && matches[0]) {
+        activeMatch = Object.assign({ query: query }, matches[0]);
+        if (!preserveState || workflowState.selectedToolId !== (activeMatch.selectedToolId || activeMatch.workflow.id) || workflowState.originalQuery !== query) {
+          workflowState = createWorkflowState(activeMatch, query, workflowState.consentToModel);
+        }
+      } else if (!primaryFirst) {
+        activeMatch = null;
+      }
+      target.innerHTML = matches.map(function (match, index) {
+        var rendered = renderCard(Object.assign({ query: query }, match), { primary: primaryFirst && index === 0, query: query, state: primaryFirst && index === 0 ? workflowState : null });
+        launches.push({ toolId: rendered.workflow.id, launch: rendered.launch });
+        return rendered.html;
+      }).join("");
+      target.querySelectorAll("[data-open-tool]").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var toolId = link.getAttribute("data-tool-id") || "";
+          var found = launches.filter(function (item) { return item.toolId === toolId; })[0];
+          var launch = found && found.launch;
+          if (activeMatch && toolId === workflowState.selectedToolId) {
+            launch = launchForMatch(activeMatch, workflowState);
+            workflowState.prefillPayload = launch.payload || null;
+          }
+          storeAndOpen(toolId, launch || { launchUrl: link.getAttribute("href") || "" });
+        });
+      });
+      target.querySelectorAll("[data-clarification-form]").forEach(function (clarifyForm) {
+        clarifyForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          workflowState.clarificationAnswers = Object.assign({}, workflowState.clarificationAnswers, collectClarificationAnswers(clarifyForm));
+          var launch = activeMatch ? launchForMatch(activeMatch, workflowState) : null;
+          workflowState.prefillPayload = launch && launch.payload || null;
+          workflowState.missingInputs = launch && Array.isArray(launch.missingInputs) ? launch.missingInputs : workflowState.missingInputs;
+          trackMany(["ai_clarification_answered", "ai_command_clarification_submit"], {
+            tool_id: workflowState.selectedToolId,
+            answered_count: Object.keys(workflowState.clarificationAnswers).length,
+            missing_count: workflowState.missingInputs.length
+          });
+          recordIntent("ai_intent_clarification_answered", {
+            selectedToolId: workflowState.selectedToolId,
+            missingInputs: workflowState.missingInputs
+          });
+          renderMatches(target, [activeMatch], query, true, true);
+        });
+      });
+      target.querySelectorAll("[data-answer-chip]").forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          var name = chip.getAttribute("data-answer-chip");
+          var value = chip.getAttribute("data-answer-value") || "";
+          var container = chip.closest(".ai-clarification-field");
+          var control = container && container.querySelector('[data-clarification-input="' + name + '"]');
+          if (control) {
+            control.value = value;
+            control.focus();
+          }
+        });
+      });
+      target.querySelectorAll("[data-skip-open]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var toolId = button.getAttribute("data-tool-id") || workflowState.selectedToolId;
+          var clarifyForm = button.closest("[data-clarification-form]");
+          if (clarifyForm) workflowState.clarificationAnswers = Object.assign({}, workflowState.clarificationAnswers, collectClarificationAnswers(clarifyForm));
+          var launch = activeMatch ? launchForMatch(activeMatch, workflowState) : { launchUrl: button.getAttribute("data-launch-url") || "" };
+          trackMany(["ai_continue_without_ai", "ai_command_clarification_skipped"], { tool_id: toolId, context: "skip_open_tool" });
+          recordIntent("ai_intent_clarification_abandoned", {
+            selectedToolId: toolId,
+            clarificationAbandoned: true,
+            missingInputs: launch && launch.missingInputs || workflowState.missingInputs
+          });
+          storeAndOpen(toolId, launch, { skipped_clarification: true });
+        });
+      });
+      target.querySelectorAll("[data-browse-instead]").forEach(function (link) {
+        link.addEventListener("click", function () {
+          track("ai_continue_without_ai", {
+            tool_id: link.getAttribute("data-tool-id") || "",
+            context: "browse_instead"
+          });
+          recordIntent("ai_intent_clarification_abandoned", {
+            selectedToolId: link.getAttribute("data-tool-id") || workflowState.selectedToolId,
+            clarificationAbandoned: true,
+            missingInputs: workflowState.missingInputs
+          });
+        });
+      });
+    }
+
+    function renderFallbackGrid() {
+      fallbackGrid.innerHTML = FALLBACK_IDS.map(function (id) {
+        var workflow = byId(id);
+        return '<a class="ai-fallback-card" href="' + escapeHtml(workflow.route) + '" data-fallback-card="' + escapeHtml(workflow.id) + '">' +
+          '<strong>' + escapeHtml(workflow.title) + '</strong><span>' + escapeHtml(workflow.reason) + '</span><em>Open tool</em></a>';
+      }).join("");
+    }
+
+    function handleLowConfidence(query) {
+      workflowState = createEmptyWorkflowState();
+      workflowState.originalQuery = query;
+      workflowState.source = "fallback";
+      workflowState.entrySource = entrySource;
+      renderMatches(noMatchCards, fallbackMatches(query), query, false);
+      track("ai_command_fallback_used", { reason: "low_confidence_or_empty", query_length: query.length });
+      recordIntent("ai_intent_fallback", {
+        intentCategory: "unknown",
+        selectedToolId: "tool-search",
+        fallbackUsed: true,
+        routerSource: "low_confidence_or_empty"
+      });
+      setState("noMatch");
+      showConsentCard(true);
+    }
+
+    function routeQuery(query, options) {
+      var consentToModel = Boolean(options && options.consentToModel);
+      var clean = String(query || "").trim();
+      updateUrl(clean);
+      lastClarificationShownKey = "";
+      if (!clean) {
+        setState("empty");
+        showConsentCard(false);
+        updateIntentDebug();
+        return;
+      }
+      setState("loading");
+      track("ai_command_query_submit", { has_query: true, query_length: clean.length, consent_to_model: consentToModel });
+      callRouter(clean, consentToModel).then(function (payload) {
+        var match = fromServerDecision(payload, clean);
+        if (!match || !match.workflow || match.workflow.id === "tool-search" || Number(match.confidence || 0) < LOW_CONFIDENCE) {
+          handleLowConfidence(clean);
+          return;
+        }
+        match.source = consentToModel ? "router" : match.source;
+        workflowState = createWorkflowState(match, clean, consentToModel);
+        renderMatches(resultCards, [match], clean, true);
+        recordIntent("ai_intent_routed", {
+          intentCategory: match.intentCategory || match.safetyDomain || match.workflow.domain,
+          selectedToolId: match.selectedToolId || match.workflow.id,
+          missingInputs: workflowState.missingInputs,
+          fallbackUsed: workflowState.source === "fallback",
+          routerSource: workflowState.source
+        });
+        setState("result");
+        showConsentCard(true);
+        if (modelStatus) modelStatus.textContent = consentToModel ? "AI-assisted routing was requested with consent. Review the selected workflow before opening it." : "";
+      }).catch(function (err) {
+        var fallback = deterministicRoute(clean);
+        track("ai_command_fallback_used", { reason: "router_failure", query_length: clean.length });
+        if (!fallback) {
+          workflowState = createEmptyWorkflowState();
+          workflowState.originalQuery = clean;
+          workflowState.entrySource = entrySource;
+          errorText.textContent = "Using browse cards because the router failed and no obvious keyword matched.";
+          renderMatches(errorCards, fallbackMatches(clean), clean, false);
+          recordIntent("ai_intent_fallback", {
+            intentCategory: "unknown",
+            selectedToolId: "tool-search",
+            fallbackUsed: true,
+            routerSource: "router_failure"
+          });
+          setState("error");
+          showConsentCard(true);
+          return;
+        }
+        workflowState = createWorkflowState(fallback, clean, false);
+        errorText.textContent = (err && err.message ? err.message + ". " : "") + "Using deterministic routing instead.";
+        renderMatches(errorCards, [Object.assign({ query: clean }, fallback)], clean, true);
+        recordIntent("ai_intent_routed", {
+          intentCategory: fallback.intentCategory || fallback.safetyDomain || fallback.workflow.domain,
+          selectedToolId: fallback.selectedToolId || fallback.workflow.id,
+          missingInputs: workflowState.missingInputs,
+          fallbackUsed: true,
+          routerSource: "deterministic_after_router_failure"
+        });
+        setState("error");
+        showConsentCard(true);
+      });
+    }
+
+    function updateUrl(query) {
+      if (!history || !history.replaceState) return;
+      var extras = [];
+      try {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get("router") === "off") extras.push(["router", "off"]);
+        if (params.get("source")) extras.push(["source", params.get("source")]);
+        if (params.get("ai_source")) extras.push(["ai_source", params.get("ai_source")]);
+        if (params.get("ai_debug")) extras.push(["ai_debug", params.get("ai_debug")]);
+        if (params.get("debug_intent")) extras.push(["debug_intent", params.get("debug_intent")]);
+      } catch (err) {}
+      var search = new URLSearchParams();
+      if (query) search.set("q", query);
+      extras.forEach(function (item) { search.set(item[0], item[1]); });
+      var suffix = search.toString();
+      var url = "/ai/" + (suffix ? "?" + suffix : "");
+      if (location.pathname + location.search !== url) history.replaceState(null, "", url);
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      routeQuery(input.value);
+    });
+
+    if (modelConsent && modelRetry) {
+      modelConsent.addEventListener("change", function () {
+        modelRetry.disabled = !modelConsent.checked;
+        if (modelStatus) modelStatus.textContent = modelConsent.checked ? "AI assist will only run if you press Retry with AI assist." : "";
+        track(modelConsent.checked ? "ai_consent_accepted" : "ai_consent_declined", {
+          has_query: Boolean(input.value.trim()),
+          query_length: input.value.trim().length
+        });
+      });
+      modelRetry.addEventListener("click", function () {
+        if (!modelConsent.checked) return;
+        workflowState.consentToModel = true;
+        if (modelStatus) modelStatus.textContent = "Retrying with explicit AI routing consent...";
+        trackMany(["ai_consent_accepted", "ai_command_model_consent_submit"], {
+          has_query: Boolean(input.value.trim()),
+          query_length: input.value.trim().length
+        });
+        routeQuery(input.value, { consentToModel: true });
+      });
+    }
+
+    var continueWithoutModel = document.getElementById("aiContinueWithoutModel");
+    if (continueWithoutModel) {
+      continueWithoutModel.addEventListener("click", function () {
+        track("ai_continue_without_ai", {
+          has_query: Boolean(input.value.trim()),
+          query_length: input.value.trim().length,
+          context: "model_consent_card"
+        });
+      });
+    }
+
+    renderFallbackGrid();
+    fallbackGrid.addEventListener("click", function (event) {
+      var link = event.target.closest("[data-fallback-card]");
+      if (!link) return;
+      trackMany(["ai_continue_without_ai", "ai_command_tool_open"], {
+        tool_id: link.getAttribute("data-fallback-card") || "",
+        route: link.getAttribute("href") || "",
+        fallback_card: true
+      });
+      workflowState.selectedToolId = link.getAttribute("data-fallback-card") || "";
+      workflowState.selectedToolRoute = link.getAttribute("href") || "";
+      workflowState.source = "fallback";
+      recordIntent("ai_intent_tool_open", {
+        selectedToolId: workflowState.selectedToolId,
+        toolOpenClicked: true,
+        fallbackUsed: true
+      });
+    });
+
+    window.AfroToolsAICommandPage = {
+      getState: function () { return clone(workflowState); },
+      buildToolPrefillUrl: buildToolPrefillUrl,
+      saveToolPrefillPayload: saveToolPrefillPayload,
+      readToolPrefillPayload: readToolPrefillPayload
+    };
+
+    var params = new URLSearchParams(window.location.search);
+    var initial = params.get("q") || "";
+    input.value = initial;
+    track("ai_command_page_view", { has_query: !!initial, query_length: initial.length });
+    updateIntentDebug();
+    if (initial) routeQuery(initial);
+  })();
+  </script>
+</body>
+</html>

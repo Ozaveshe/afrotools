@@ -1,6 +1,6 @@
 # French Localization Ledger
 
-Generated: 2026-06-11
+Generated: 2026-06-12
 
 This is an audit-only ledger. It does not translate or edit French pages. English source inventory follows the skip logic in `scripts/build-i18n.js`.
 
