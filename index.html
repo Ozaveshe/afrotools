@@ -149,7 +149,7 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-height:34px;
+      min-height:40px;
       padding:5px 16px;
       border-radius:100px;
       background:#0f172a;
@@ -166,6 +166,10 @@
       top:50%;
       transform:translateY(-50%);
       flex-shrink:0;
+    }
+    #afro-cc-close{
+      width:44px;
+      height:44px;
     }
     .hero {
       padding:72px 0 64px;
@@ -281,10 +285,16 @@
         gap:10px;
         font-size:0.78rem;
       }
+      .signup-bar span{
+        width:100%;
+        min-width:0;
+      }
       .signup-bar-btn {
         min-height:44px;
         font-size:1rem;
         line-height:1.5;
+        width:100%;
+        max-width:320px;
       }
       .signup-bar-close {
         top:8px;
@@ -373,7 +383,7 @@
   </style>
   <style>
     .signup-bar[hidden]{display:none!important}
-    .signup-bar-close{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #dbe4ef;border-radius:999px;background:#fff;color:#475569;box-shadow:0 1px 4px rgba(15,23,42,.08)}
+    .signup-bar-close{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #dbe4ef;border-radius:999px;background:#fff;color:#475569;box-shadow:0 1px 4px rgba(15,23,42,.08)}
     .signup-bar-close:hover{background:#eef5ff;border-color:#bfdbfe;color:#0f172a}
     .signup-bar-close:focus-visible{outline:3px solid rgba(0,98,204,.22);outline-offset:2px}
     .cat-icon-wrap{font-size:2.75rem!important;line-height:1!important;overflow:hidden!important}
@@ -381,6 +391,22 @@
     .cat-icon-wrap img.emoji{width:46px!important;height:46px!important;display:block!important;margin:0!important;object-fit:contain!important}
     .tcard{color:inherit;text-decoration:none;cursor:pointer}
     .tcard:focus-visible{outline:3px solid rgba(0,122,255,.28);outline-offset:4px}
+    .home-section-action,
+    .showcase-cta-link,
+    .ad-cta {
+      display:inline-flex;
+      align-items:center;
+      min-height:44px;
+      text-decoration:none;
+      white-space:normal;
+      line-height:1.25;
+    }
+    .home-section-action{
+      gap:2px;
+      font-size:0.82rem;
+      font-weight:700;
+      color:var(--color-primary);
+    }
     .tcard:hover .tcard-country,.tcard:focus-visible .tcard-country{background:#dbeafe;color:#0057b8}
   </style>
   <style id="home-visual-polish">
@@ -461,6 +487,14 @@
     section[aria-label="Discover unique AfroTools"] .disc-title{color:#0f172a!important;font-family:var(--font-display, var(--font-body, system-ui));font-size:1.28rem;font-weight:800;letter-spacing:0;line-height:1.12;margin:20px 0 10px;position:relative;text-shadow:none!important;z-index:1}
     section[aria-label="Discover unique AfroTools"] .disc-desc{color:#475569!important;font-size:.9rem;line-height:1.58;margin:0 0 18px;opacity:1!important;position:relative;text-shadow:none!important;z-index:1}
     section[aria-label="Discover unique AfroTools"] .disc-cta{align-items:center;display:inline-flex!important;font-size:.8rem;font-weight:800;justify-content:center;line-height:1.1;margin-top:auto;max-width:100%;min-height:36px;padding:8px 13px;position:relative;text-align:center;text-shadow:none!important;white-space:normal;width:max-content;z-index:1}
+    .mk-unique-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .mk-unique-card{background:rgba(248,250,252,.92);border:1px solid rgba(142,185,255,.42);border-radius:14px;padding:13px;min-height:104px}
+    .mk-unique-icon{align-items:center;background:linear-gradient(135deg,#0057b8,#0ea5e9);border:1px solid rgba(255,255,255,.62);border-radius:12px;color:#fff;display:inline-flex;height:38px;justify-content:center;margin-bottom:10px;width:38px}
+    .mk-unique-icon svg{fill:none;height:20px;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:2;width:20px}
+    .mk-unique-name{color:#0f172a;font-size:.78rem;font-weight:800;line-height:1.2;margin-bottom:4px}
+    .mk-unique-meta{color:#64748b;font-size:.68rem;font-weight:700;line-height:1.35}
+    .mk-unique-note{align-items:center;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;color:#166534;display:flex;font-size:.74rem;font-weight:800;gap:8px;line-height:1.35;margin-top:10px;padding:10px 12px}
+    .mk-unique-note svg{fill:none;flex:0 0 auto;height:17px;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:2;width:17px}
     .marquee-strip{background:rgba(255,255,255,.72)!important;border-block:1px solid rgba(142,185,255,.34)!important;backdrop-filter:blur(14px)}
     .marquee-item{background:rgba(255,255,255,.58);border:1px solid rgba(142,185,255,.38);border-radius:999px;padding:7px 12px}
     .marquee-item svg circle{fill:#007aff!important}
@@ -471,6 +505,10 @@
     :root[data-theme="dark"] section[aria-label="Discover unique AfroTools"] .disc-card{background:linear-gradient(145deg,rgba(18,31,51,.76) 0%,rgba(15,29,48,.7) 64%,rgba(12,43,74,.66) 132%)!important;border-color:rgba(77,163,255,.24)!important}
     :root[data-theme="dark"] section[aria-label="Discover unique AfroTools"] .disc-title{color:#eef5ff!important}
     :root[data-theme="dark"] section[aria-label="Discover unique AfroTools"] .disc-desc{color:#b8c7dc!important}
+    :root[data-theme="dark"] .mk-unique-card{background:rgba(18,31,51,.72);border-color:rgba(77,163,255,.24)}
+    :root[data-theme="dark"] .mk-unique-name{color:#eef5ff}
+    :root[data-theme="dark"] .mk-unique-meta{color:#b8c7dc}
+    :root[data-theme="dark"] .mk-unique-note{background:rgba(22,101,52,.18);border-color:rgba(74,222,128,.24);color:#bbf7d0}
     #new-tools .tc-thumb,
     #new-tools .ut-thumb{position:relative;background:#eef4fb;overflow:hidden}
     #new-tools .tc-thumb img,
@@ -489,6 +527,43 @@
       .home-tool-six-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
     }
     @media (max-width:720px){
+      .hero-stats-inner{
+        flex-wrap:wrap;
+      }
+      .hero-stat{
+        width:50%;
+        min-width:0;
+        flex:1 1 50%;
+        padding:12px 10px;
+      }
+      .hero-stat:nth-child(odd){
+        border-right:1px solid #e2e8f0;
+      }
+      .hero-stat:nth-child(1),
+      .hero-stat:nth-child(2){
+        border-bottom:1px solid #e2e8f0;
+      }
+      .hero-stat:nth-child(4){
+        border-right:none;
+      }
+      .showcase-tabs{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px 10px;
+      }
+      .showcase-tab{
+        width:100%;
+        min-height:42px;
+        white-space:normal;
+        justify-content:center;
+        text-align:left;
+        padding:8px 10px;
+      }
+      .showcase-tab-icon{
+        flex:0 0 15px;
+        width:15px;
+        height:15px;
+      }
       .hero{padding:28px 0 18px}
       .home-hero-grid{gap:18px}
       .home-hero-grid .trusted-badge{font-size:.66rem;margin-bottom:12px;padding:5px 12px}
@@ -535,10 +610,78 @@
       section[aria-label="Discover unique AfroTools"] .disc-cta{width:100%}
     }
     @media (max-width:460px){
+      .hero-stat{
+        width:100%;
+        padding:10px 8px;
+      }
+      .hero-stat:nth-child(odd){
+        border-right:none;
+      }
+      .hero-stat:nth-child(1),
+      .hero-stat:nth-child(2),
+      .hero-stat:nth-child(3){
+        border-bottom:1px solid #e2e8f0;
+      }
+      .showcase-tabs{
+        grid-template-columns:1fr;
+      }
+      .showcase-tab{
+        justify-content:flex-start;
+        min-height:44px;
+      }
       .home-hero-grid .hero-h1{font-size:1.94rem}
       .ai-category-tiles{display:none}
       section[aria-label="Discover unique AfroTools"] .disc-badge{font-size:.62rem;padding:6px 9px!important}
       section[aria-label="Discover unique AfroTools"] .disc-badge svg{height:21px;width:21px}
+    }
+    @media (max-width:380px){
+      .signup-bar {
+        padding:10px 12px 10px 12px;
+      }
+      .signup-bar-close{
+        width:44px;
+        height:44px;
+        right:8px;
+      }
+      .signup-bar-btn {
+        max-width:270px;
+        min-height:42px;
+        width:100%;
+      }
+      .home-hero-grid .hero-h1{
+        font-size:1.78rem;
+        line-height:1.12;
+      }
+      .home-hero-grid .hero-sub{
+        font-size:.9rem;
+        line-height:1.58;
+      }
+      .home-hero-grid .hero-search{
+        min-height:54px;
+        padding-top:0;
+      }
+      .home-hero-grid .hero-search input{
+        font-size:16px;
+      }
+      .home-tool-card{
+        padding:13px;
+      }
+      .home-tool-card strong{
+        font-size:1rem;
+      }
+      .home-section-action{
+        padding:10px 2px;
+      }
+      .showcase-cta-link{
+        margin-top:4px;
+      }
+      .showcase-tab{
+        min-height:46px;
+        gap:8px;
+      }
+      .home-tool-six-grid{
+        gap:9px;
+      }
     }
     @media (prefers-reduced-motion:reduce){
       .home-tool-card,.cat-card,.btn-primary,.btn-secondary{transition:none!important}
@@ -637,9 +780,66 @@
     .ai-command-chip-list,.ai-command-category-list{justify-content:flex-start}
     .ai-command-chip,.ai-command-category-pill{font-size:.76rem}
   }
-  @media (prefers-reduced-motion:reduce){
-    .ai-command-chip,.ai-command-category-pill,.ai-command-browse,.ai-command-home-submit{transition:none!important}
-  }
+  @media (max-width:460px){
+    .afrotools-ai-command-hero{
+      padding:28px 14px 24px;
+    }
+    .ai-command-hero-title{
+      font-size:1.94rem;
+      line-height:1.06;
+    }
+    .ai-command-home-submit{
+      width:100%;
+    }
+    .ai-command-chip-list,.ai-command-category-list{
+      justify-content:flex-start;
+      gap:6px;
+    }
+      .ai-command-chip,.ai-command-category-pill{
+        font-size:.72rem;
+        line-height:1.28;
+        padding:6px 10px;
+        min-height:34px;
+        white-space:normal;
+      }
+    }
+    @media (max-width:380px){
+      .afrotools-ai-command-hero{
+        padding:24px 12px 20px;
+      }
+      .ai-command-hero-title{
+        font-size:1.78rem;
+        line-height:1.08;
+      }
+      .ai-command-hero-subtitle{
+        font-size:.9rem;
+        margin-bottom:16px;
+        line-height:1.5;
+      }
+      .ai-command-box{
+        padding:0 4px;
+      }
+      .ai-command-home-form{
+        padding:7px 6px 8px;
+        gap:8px;
+      }
+      .ai-command-home-input{
+        min-height:46px;
+        font-size:16px;
+      }
+      .ai-command-home-submit{
+        min-height:46px;
+      }
+      .ai-command-chip,.ai-command-category-pill{
+        font-size:.66rem;
+        min-height:34px;
+        padding:5px 9px;
+        line-height:1.25;
+      }
+    }
+    @media (prefers-reduced-motion:reduce){
+      .ai-command-chip,.ai-command-category-pill,.ai-command-browse,.ai-command-home-submit{transition:none!important}
+    }
 </style>
 </head>
 <body>
@@ -1003,17 +1203,33 @@
         </div>
         <div class="showcase-visual">
           <div class="showcase-mockup">
-            <div class="mockup-bar"><span class="mkdot r"></span><span class="mkdot y"></span><span class="mkdot g"></span><span class="mockup-title-txt">AFROKITCHEN</span></div>
+            <div class="mockup-bar"><span class="mkdot r"></span><span class="mkdot y"></span><span class="mkdot g"></span><span class="mockup-title-txt">LOCAL CONTEXT TOOLS</span></div>
             <div class="mockup-body">
-              <div class="mk-recipe">
-                <div class="mk-recipe-name">Jollof Rice (Party Style)</div>
-                <div class="mk-recipe-meta">Serves 8 &middot; 90 mins &middot; Nigerian</div>
-                <div class="mk-recipe-cost-row"><span class="mk-recipe-cost-lbl">Total cost</span><span class="mk-recipe-cost-val">&#x20A6; 4,850</span></div>
+              <div class="mk-unique-grid" aria-hidden="true">
+                <div class="mk-unique-card">
+                  <span class="mk-unique-icon"><svg viewBox="0 0 24 24"><path d="M6 14h12"/><path d="M8 14V9a4 4 0 0 1 8 0v5"/><path d="M5 14h14l-1 6H6z"/></svg></span>
+                  <div class="mk-unique-name">Recipe Costing</div>
+                  <div class="mk-unique-meta">Local ingredients, servings, currency</div>
+                </div>
+                <div class="mk-unique-card">
+                  <span class="mk-unique-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 9h14"/><path d="M7 15h10"/><path d="M18 3l3 3-3 3"/><path d="M6 21l-3-3 3-3"/></svg></span>
+                  <div class="mk-unique-name">Japa Planner</div>
+                  <div class="mk-unique-meta">Visa, proof of funds, relocation cost</div>
+                </div>
+                <div class="mk-unique-card">
+                  <span class="mk-unique-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-1.5z"/><path d="M8 7h6"/><path d="M8 11h8"/><path d="M8 15h5"/></svg></span>
+                  <div class="mk-unique-name">WAEC/NECO GPA</div>
+                  <div class="mk-unique-meta">African exams to admission-ready scores</div>
+                </div>
+                <div class="mk-unique-card">
+                  <span class="mk-unique-icon"><svg viewBox="0 0 24 24"><path d="M4 19V5l5 2 6-3 5 2v14l-5-2-6 3z"/><path d="M9 7v14"/><path d="M15 4v14"/></svg></span>
+                  <div class="mk-unique-name">Land Measures</div>
+                  <div class="mk-unique-meta">Plots, acres, hectares, local units</div>
+                </div>
               </div>
-              <div class="mk-recipe-list">
-                <div class="mk-recipe-list-item">&#x1F35A; Long grain rice<span class="mk-recipe-list-cost">&#x20A6; 1,200</span></div>
-                <div class="mk-recipe-list-item">&#x1F345; Tomatoes &amp; peppers<span class="mk-recipe-list-cost">&#x20A6; 850</span></div>
-                <div class="mk-recipe-list-item">&#x1F357; Chicken (1kg)<span class="mk-recipe-list-cost">&#x20A6; 1,800</span></div>
+              <div class="mk-unique-note">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                Built around African-specific workflows, units, costs, and exams.
               </div>
             </div>
           </div>
@@ -1107,7 +1323,7 @@
   <div class="wrap">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
       <div class="eyebrow" style="margin-bottom:0">Salary &amp; Tax</div>
-      <a href="/salary-tax/" style="font-size:0.82rem;font-weight:600;color:var(--color-primary);text-decoration:none;white-space:nowrap">See All →</a>
+      <a href="/salary-tax/" class="home-section-action">See All →</a>
     </div>
     <h2 class="sec-title" id="paye-heading">PAYE Calculators — 54 Countries</h2>
     <p class="sec-sub">Country-aware income tax estimates with named assumptions, local currency labels, and plain explanations. Select tools include optional guidance for understanding your results.</p>
@@ -1284,7 +1500,7 @@
   <div class="wrap">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
       <div class="eyebrow" style="margin-bottom:0">Tools</div>
-      <a href="/all-tools/" style="font-size:0.82rem;font-weight:600;color:var(--color-primary);text-decoration:none;white-space:nowrap">See All →</a>
+      <a href="/all-tools/" class="home-section-action">See All →</a>
     </div>
     <h2 class="sec-title">Built for Africa's Everyday Needs</h2>
     <p class="sec-sub">PDF workspace, CV builder, solar and fuel tools, recipes, maps, creator discovery, currency tools, and practical calculators built around African context.</p>
@@ -1528,7 +1744,7 @@
   <div class="wrap">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
       <div class="eyebrow" style="margin-bottom:0">Education</div>
-      <a href="/tools/education-hub/" style="font-size:0.82rem;font-weight:600;color:var(--color-primary);text-decoration:none;white-space:nowrap">Education Hub →</a>
+      <a href="/tools/education-hub/" class="home-section-action">Education Hub →</a>
     </div>
     <h2 class="sec-title">Student &amp; Education Tools</h2>
     <p class="sec-sub">GPA converters, WAEC grading, JAMB aggregates, IELTS prep, flashcards, scholarships and study planning — built for African students.</p>
@@ -1565,7 +1781,7 @@
   <div class="wrap">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
       <div class="eyebrow" style="margin-bottom:0">Categories</div>
-      <a href="/all-tools/" style="font-size:0.82rem;font-weight:600;color:var(--color-primary);text-decoration:none;white-space:nowrap">Explore All →</a>
+      <a href="/all-tools/" class="home-section-action">Explore All →</a>
     </div>
     <h2 class="sec-title" id="cats-heading">2,594+ Tools. 54 Countries. <span id="cats-tool-count">English, French & Swahili</span>.</h2>
     <p class="sec-sub">AfroTools brings work, money, documents, country, career, food, energy, transport, and planning tools into one African context.</p>

@@ -414,6 +414,21 @@ function preferredFrenchRouteForEnglishPage(enPage) {
   return null;
 }
 
+function preferredFrenchOutputRouteForEnglishPage(enPage) {
+  const clean = enPage.replace(/^\//, '').replace(/\/$/, '');
+  const parts = clean.split('/');
+  if (parts.length >= 2 && parts[0] === 'tools') {
+    const sourceFamily = `${parts[0]}/${parts[1]}`;
+    const mappedFamilyRoute = frenchRouteForEnglishToolSource(sourceFamily);
+    if (mappedFamilyRoute) {
+      const rest = parts.slice(2).filter(Boolean).join('/');
+      return rest ? `${mappedFamilyRoute}/${rest}` : mappedFamilyRoute;
+    }
+  }
+
+  return null;
+}
+
 function preferredFrenchUrlForEnglishPage(enPage) {
   const route = preferredFrenchRouteForEnglishPage(enPage);
   return route ? SITE_URL + route : null;
@@ -461,7 +476,17 @@ function discoverExistingFrPages() {
           const blogSourceLang = sourceHtmlLangForPage(blogEnPage);
           enPage = blogSourceLang && blogSourceLang !== DEFAULT_LANG ? null : blogEnPage;
         } else if (country === 'tools') {
-          enPage = frenchToolSlugToEnglishSource(fileBase) || rel.replace('.html', '').replace(/\/index$/, '');
+          const toolFamily = parts[1];
+          const toolPathParts = parts.slice(2);
+          const toolFamilyEn = frenchToolSlugToEnglishSource(toolFamily) || toolFamily;
+          if (toolPathParts.length === 0) {
+            enPage = toolFamilyEn;
+          } else {
+            const isIndexRoute = parts[parts.length - 1] === 'index.html';
+            const mappedParts = isIndexRoute ? toolPathParts.slice(0, -1) : toolPathParts;
+            const mappedTail = mappedParts.map(p => p).filter(Boolean).join('/');
+            enPage = mappedTail ? `${toolFamilyEn}/${mappedTail}` : toolFamilyEn;
+          }
         } else if (country === 'telecom') {
           enPage = frenchTelecomSlugToEnglishSource(fileBase) || rel.replace('.html', '').replace(/\/index$/, '');
         } else if (fileBase === 'calculateur-salaire-net' && PAYE_SLUG_MAP[country]) {
@@ -728,6 +753,31 @@ function buildLangUrl(pagePath, lang) {
 
 function buildOutputPath(pagePath, lang) {
   const clean = pagePath.replace(/^\//, '').replace(/\/$/, '');
+
+  if (lang === 'fr') {
+    const preferredFrenchRoute = preferredFrenchOutputRouteForEnglishPage(clean);
+    if (preferredFrenchRoute) {
+      const preferredClean = preferredFrenchRoute
+        .replace(/^\/+/, '')
+        .replace(/\/+$/, '');
+      const sourcePath = resolveSourceFile(pagePath);
+
+      if (sourcePath && !sourcePath.endsWith('index.html') && sourcePath.endsWith('.html')) {
+        return path.join(ROOT, preferredClean + '.html');
+      }
+
+      if (preferredClean === 'fr') {
+        return path.join(ROOT, preferredClean, 'index.html');
+      }
+
+      const preferredDirPath = path.join(ROOT, preferredClean);
+      if (fs.existsSync(preferredDirPath) && fs.statSync(preferredDirPath).isFile()) {
+        return path.join(ROOT, preferredClean, 'index.html');
+      }
+
+      return path.join(ROOT, preferredClean, 'index.html');
+    }
+  }
 
   if (clean === '' || clean === 'index.html') {
     return path.join(ROOT, lang, 'index.html');
@@ -1060,6 +1110,9 @@ function processHTML(html, lang, pagePath) {
 
   // Only include hreflang for languages that have translations for this page
   const activeLangs = getAvailableLangs(pagePath);
+  if (!activeLangs.includes(lang)) {
+    activeLangs.push(lang);
+  }
   const hreflangBlock = generateHreflangTags(pagePath, activeLangs);
 
   // Insert hreflang tags before </head>
