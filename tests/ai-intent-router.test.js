@@ -23,6 +23,9 @@ const cases = [
   ["Create an invoice for a client in Accra", "invoice-generator", "finance"],
   ["VAT calculator for a small business in Rwanda", "vat-calc-pan-african", "tax"],
   ["Merge PDF files locally", "pdf-workspace", "none"],
+  ["compress my PDF", "pdf-workspace", "none"],
+  ["add page numbers", "pdf-workspace", "none"],
+  ["protect a PDF", "pdf-workspace", "none"],
   ["Calculate my GPA for university", "gpa-calculator", "education"],
   ["IELTS band score for Canada study", "ielts-calculator", "education"],
   ["I want to study in Canada from Nigeria with $8,000", "study-abroad-cost", "education"],
@@ -45,6 +48,27 @@ const noMatch = router.routeDeterministically("blue sky weekend vibes", { manife
 assert.strictEqual(noMatch.selectedToolId, "tool-search");
 assert.strictEqual(noMatch.selectedRoute, "/search/?source=ask");
 assert.strictEqual(noMatch.canPrefill, false);
+
+const careerRoute = router.routeDeterministically("Write me a CV for an electrical engineer in Ghana", { manifest });
+assert.strictEqual(careerRoute.selectedToolId, "cv-builder");
+assert.strictEqual(careerRoute.safetyDomain, "employment");
+assert.strictEqual(careerRoute.extractedInputs.country, "Ghana");
+assert.strictEqual(careerRoute.extractedInputs.targetRole, "electrical engineer");
+
+const educationPlanRoute = router.routeDeterministically("I want to study in Canada from Nigeria with a budget of $8,000", { manifest });
+assert.strictEqual(educationPlanRoute.selectedToolId, "study-abroad-cost");
+assert.strictEqual(educationPlanRoute.extractedInputs.country, "Nigeria");
+assert.strictEqual(educationPlanRoute.extractedInputs.targetCountry, "Canada");
+assert.strictEqual(educationPlanRoute.extractedInputs.budgetAmount, 8000);
+assert.strictEqual(educationPlanRoute.extractedInputs.currency, "USD");
+
+const pdfPageNumbersRoute = router.routeDeterministically("add page numbers to my PDF", { manifest });
+assert.strictEqual(pdfPageNumbersRoute.selectedToolId, "pdf-workspace");
+assert.strictEqual(pdfPageNumbersRoute.extractedInputs.pdfAction, "page_numbers");
+
+const pdfProtectRoute = router.routeDeterministically("protect a PDF with a password", { manifest });
+assert.strictEqual(pdfProtectRoute.selectedToolId, "pdf-workspace");
+assert.strictEqual(pdfProtectRoute.extractedInputs.pdfAction, "protect");
 
 const invalid = router.validateRouterOutput({ selectedToolId: "cv-builder" });
 assert.strictEqual(invalid.valid, false);

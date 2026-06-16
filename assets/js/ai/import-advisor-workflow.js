@@ -472,7 +472,7 @@
       { title: "Import Duty Calculator", route: "/tools/import-duty/", reason: "Open the flagship landed-cost calculator with safe session prefill." },
       { title: "Car Import Cost Workspace", route: plan.carWorkspaceUrl, reason: "Use the deeper vehicle planning workspace for route and market scenarios." },
       { title: "Car Price Directory", route: "/cars/", reason: "Check car-market pages and source-market comparisons where available." },
-      { title: "Currency Tools", route: "/tools/currency-converter/", reason: "Review FX impact before paying a supplier or clearing agent." },
+      { title: "FX Import Impact", route: "/tools/fx-import-impact/", reason: "Review FX impact before paying a supplier or clearing agent." },
     ].map(renderTool).join("");
     return '<section class="ai-import-plan" data-import-advisor>' +
       '<div class="ai-import-head"><div><h4>Import advisor estimate</h4><p>' + escapeHtml(plan.goalSummary) + '</p></div><span>' + escapeHtml(plan.estimateStatus) + '</span></div>' +
@@ -484,11 +484,11 @@
       '<div class="ai-import-actions">' +
       '<a class="ai-small-button primary" href="/tools/import-duty/?source=ask&prefill=1" data-import-duty-link>Open Import Duty with prefill</a>' +
       '<a class="ai-small-button secondary" href="' + escapeHtml(plan.carWorkspaceUrl) + '" data-car-import-link>Open car workspace</a>' +
-      '<button class="ai-small-button secondary" type="button" data-workflow-export="pdf" data-workflow-export-kind="import">PDF brief</button>' +
-      '<button class="ai-small-button secondary" type="button" data-workflow-export="copy" data-workflow-export-kind="import">Copy checklist</button>' +
-      '<a class="ai-small-button secondary" href="#" data-workflow-export="whatsapp" data-workflow-export-kind="import">WhatsApp summary</a>' +
-      '<button class="ai-small-button secondary" type="button" data-workflow-export="json" data-workflow-export-kind="import">JSON</button>' +
-      '<a class="ai-small-button secondary" href="#" data-workflow-export="email" data-workflow-export-kind="import">Email text</a>' +
+      '<button class="ai-small-button secondary" type="button" data-workflow-export="pdf" data-workflow-export-kind="import" aria-label="Export import advisor PDF brief">PDF brief</button>' +
+      '<button class="ai-small-button secondary" type="button" data-workflow-export="copy" data-workflow-export-kind="import" aria-label="Copy import advisor checklist">Copy checklist</button>' +
+      '<a class="ai-small-button secondary" href="#" data-workflow-export="whatsapp" data-workflow-export-kind="import" aria-label="Open WhatsApp-friendly import advisor summary">WhatsApp summary</a>' +
+      '<button class="ai-small-button secondary" type="button" data-workflow-export="json" data-workflow-export-kind="import" aria-label="Download import advisor JSON report">JSON</button>' +
+      '<a class="ai-small-button secondary" href="#" data-workflow-export="email" data-workflow-export-kind="import" aria-label="Create email-ready import advisor text">Email text</a>' +
       '<span class="ai-import-note">' + escapeHtml(plan.warning) + '</span>' +
       '<span class="ai-panel-status" data-workflow-export-status></span>' +
       '</div>' +

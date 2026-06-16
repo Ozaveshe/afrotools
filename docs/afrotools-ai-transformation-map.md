@@ -187,6 +187,7 @@ Metrics to track with metadata only:
   - `ai_export_generated`: workflow type, selected tool id, export type, source, and confidence bucket.
   - `ai_project_saved`: workflow type, selected tool id, local/account storage metadata, source, and confidence bucket.
   - `ai_signup_prompt_shown`, `ai_pro_upgrade_clicked`, `sponsor_lead_optin_submitted`: conversion type, workflow type, selected tool id, source, and country/category metadata.
+  - `ai_api_interest_clicked`, `ai_widget_interest_clicked`: developer or embed interest surface, workflow type, selected tool id, source, country/category metadata, and confidence bucket.
   - Compatibility events such as `ai_intent_fallback` and `ai_intent_clarification_abandoned` remain accepted by the local helper for fallback/no-match and abandonment reporting.
 
 Do not log raw prompts, CVs, document text, financial details, profile data, or other sensitive content from this surface.
@@ -198,7 +199,8 @@ Implementation notes:
 - Query text is never included in analytics payloads by default. The payload uses `query_length_bucket` such as `1-20`, `21-60`, `61-140`, `141-280`, or `281+`.
 - Raw query logging is only allowed when `NEXT_PUBLIC_AFROTOOLS_AI_RAW_QUERY_LOGGING` is explicitly enabled through runtime flags or local development storage. This is for controlled debugging only and should stay off in production because prompts may contain personal, career, document, financial, legal, or education-profile details.
 - Local debug mode is available with `/ai/?ai_debug=intent` or `localStorage.setItem("afrotools.aiIntentDebug", "intent")`. It renders parsed state in the browser without sending raw query text from the debug panel.
-- Local aggregate reporting is available at `/ai/intent-report.html`. The report is `noindex,nofollow`, reads only the current browser's aggregate counters, and summarizes prompts submitted, routed intents, top workflows, top categories, top countries, selected tools, missing inputs, fallback rate, tool open rate, prefill success rate, clarification completion rate, export counts, saved projects, conversion signals, query length buckets, anonymized safe prompt examples, no-match categories, and source breakdown.
+- Local aggregate reporting is available at `/ai/intent-report.html`. The report is `noindex,nofollow`, reads only the current browser's aggregate counters, and summarizes prompts submitted, routed intents, top workflows, top categories, top countries, selected tools, missing inputs, fallback rate, tool open rate, prefill success rate, clarification completion rate, export counts, saved projects, conversion signals, API/widget interest, query length buckets, anonymized safe prompt examples, no-match categories, and source breakdown.
+- Internal review is available at `/admin/ai-traction.html` behind the existing admin-key session check. It is view-only and exports the same sanitized aggregate report rather than raw prompts or private workflow contents.
 
 ### Current `/ai/` Workflow Launcher
 
@@ -265,6 +267,17 @@ Integrated first workflows:
 
 - Import Advisor: PDF brief, copy checklist, WhatsApp summary, JSON, and email text from the import planning estimate and customs verification checklist.
 - Solar and Generator Advisor: PDF brief, copy checklist, WhatsApp summary, JSON, and email text from the decision brief, installer questions, source state, and planning warning.
+
+### AI Pro Monetization Layer
+
+`assets/js/ai/pro-monetization.js` defines the first AfroTools AI Pro capability model and reusable feature gates. It is intentionally separate from public calculator logic.
+
+- Free keeps basic AI routing, calculators, limited AI briefs, limited workflow exports, local saved projects, and sponsor-supported surfaces.
+- Pro adds more AI documents, deeper saved project/history value, richer PDF exports, no-ads Pro surfaces, advanced planning, and priority workflow features.
+- Team/B2B covers widgets, API access, sponsor/data workflows, team implementation paths, and white-label options.
+- `AFROTOOLS_AI_PRO_PRICING_DISPLAY` / `NEXT_PUBLIC_AFROTOOLS_AI_PRO_PRICING_DISPLAY` control whether upgrade prompts can show pricing-oriented copy. Without the flag, prompts describe value without quoting prices.
+- Feature gates must not move existing promised-free calculators, deterministic routing, or manual tool launch behind Pro. Only new Pro conveniences such as advanced AI documents, richer PDFs, Pro history depth, no-ads surfaces, widgets, API, and white-label paths should hard-block on plan.
+- Upgrade prompts on `/ai/` are inline and dismissible. They must not obscure form controls, block the Open tool action, or collect raw prompts/private profile text for analytics.
 
 ### Education AI Workflow
 

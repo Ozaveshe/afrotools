@@ -28,8 +28,11 @@ test("DataSourceMeta schema exposes the shared source and confidence contract", 
     "sourceType",
     "countryCodes",
     "appliesTo",
+    "lastCheckedAt",
+    "lastReviewedAt",
     "freshnessStatus",
     "confidence",
+    "notes",
     "displayDisclaimer"
   ]) {
     assert.ok(dataSourceMeta.required.includes(field), field + " should be required");
@@ -48,10 +51,12 @@ test("DataSourceMeta schema exposes the shared source and confidence contract", 
     assert.ok(dataSourceMeta.properties.sourceType.enum.includes(sourceType), sourceType + " sourceType supported");
     assert.ok(sourceConfidence.SOURCE_TYPES.includes(sourceType), sourceType + " helper sourceType supported");
   }
+  assert.deepStrictEqual(dataSourceMeta.properties.sourceType.enum, sourceConfidence.SOURCE_TYPES);
   for (const confidence of ["official_verified", "reviewed", "estimated", "low_confidence", "user_entered"]) {
     assert.ok(dataSourceMeta.properties.confidence.enum.includes(confidence), confidence + " confidence supported");
     assert.ok(sourceConfidence.CONFIDENCE_LEVELS.includes(confidence), confidence + " helper confidence supported");
   }
+  assert.deepStrictEqual(dataSourceMeta.properties.confidence.enum, sourceConfidence.CONFIDENCE_LEVELS);
 });
 
 test("source registry entries satisfy the DataSourceMeta schema", function () {
@@ -74,6 +79,9 @@ test("source registry entries satisfy the DataSourceMeta schema", function () {
     assert.ok(source.appliesTo.every((scope) => sourceConfidence.APPLIES_TO.includes(scope)), source.id + " appliesTo valid");
     assert.ok(sourceConfidence.FRESHNESS_STATUSES.includes(source.freshnessStatus), source.id + " freshness valid");
     assert.ok(sourceConfidence.CONFIDENCE_LEVELS.includes(source.confidence), source.id + " confidence valid");
+    assert.ok(source.notes !== undefined, source.id + " notes required");
+    assert.ok(source.lastCheckedAt === null || /^\d{4}-\d{2}-\d{2}$/.test(source.lastCheckedAt), source.id + " lastCheckedAt date or null");
+    assert.ok(source.lastReviewedAt === null || /^\d{4}-\d{2}-\d{2}$/.test(source.lastReviewedAt), source.id + " lastReviewedAt date or null");
     assert.ok(source.displayDisclaimer, source.id + " displayDisclaimer required");
   }
 });
@@ -90,6 +98,8 @@ test("freshness calculation uses review cadence conservatively", function () {
   assert.strictEqual(sourceConfidence.calculateFreshnessStatus(source, "2026-01-20"), "fresh");
   assert.strictEqual(sourceConfidence.calculateFreshnessStatus(source, "2026-02-15"), "acceptable");
   assert.strictEqual(sourceConfidence.calculateFreshnessStatus(source, "2026-03-10"), "stale");
+  assert.strictEqual(sourceConfidence.calculateFreshnessStatus({ freshnessStatus: "unavailable" }, "2026-01-20"), "unavailable");
+  assert.strictEqual(sourceConfidence.calculateFreshnessStatus({ freshnessStatus: "unknown" }, "2026-01-20"), "unknown");
 });
 
 test("confidence label mapping is user-facing and cautious", function () {
@@ -98,7 +108,7 @@ test("confidence label mapping is user-facing and cautious", function () {
   assert.strictEqual(sourceConfidence.getConfidenceLabel({ confidence: "estimated" }), "Estimated");
   assert.strictEqual(sourceConfidence.getConfidenceLabel({ confidence: "low_confidence" }), "Low confidence");
   assert.strictEqual(sourceConfidence.getConfidenceLabel({ confidence: "user_entered" }), "User entered");
-  assert.strictEqual(sourceConfidence.getConfidenceLabel({ confidence: "nope" }), "Unavailable");
+  assert.strictEqual(sourceConfidence.getConfidenceLabel({ confidence: "nope" }), "Low confidence");
 });
 
 test("stale warning behavior flags stale, unknown, unavailable, and low confidence sources", function () {
@@ -117,6 +127,7 @@ test("source badge helpers render cautious, reusable UI fragments", function () 
     freshnessStatus: "stale",
     confidence: "reviewed",
     lastCheckedAt: "2025-01-01",
+    lastReviewedAt: "2025-01-01",
     displayDisclaimer: "Review current authority guidance before filing."
   };
 
@@ -146,12 +157,38 @@ test("unknown source produces cautious copy", function () {
 });
 
 test("migrated flagship entries do not overclaim official verification", function () {
-  const ids = ["import-duty-planning-rates", "scholarship-provider-feed", "afrofuel-static-snapshot"];
+  const ids = [
+    "import-duty-planning-rates",
+    "scholarship-provider-feed",
+    "afrofuel-static-snapshot",
+    "forex-third-party-snapshot",
+    "vat-country-rate-packs"
+  ];
   for (const id of ids) {
     const source = sourceConfidence.getSourceMetaById(id, registry);
     assert.notStrictEqual(source.confidence, "official_verified", id + " should not be official_verified");
     const badge = sourceConfidence.getSourceBadgeProps(source);
     assert.notStrictEqual(badge.label, "Official verified", id + " badge should not say official verified");
+  }
+});
+
+test("named data-heavy lanes are represented in the shared source registry", function () {
+  const requiredIds = [
+    "afrofuel-static-snapshot",
+    "forex-third-party-snapshot",
+    "afrorates-policy-rate-pack",
+    "scholarship-provider-feed",
+    "country-profile-reviewed-dataset",
+    "import-duty-planning-rates",
+    "paye-tax-engine-country-packs",
+    "vat-country-rate-packs"
+  ];
+
+  for (const id of requiredIds) {
+    const source = sourceConfidence.getSourceMetaById(id, registry);
+    assert.strictEqual(source.id, id, id + " should exist");
+    assert.ok(source.countryCodes.length, id + " should have country scope");
+    assert.ok(source.lastCheckedAt || source.lastReviewedAt, id + " should have checked or reviewed metadata");
   }
 });
 

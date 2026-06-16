@@ -40,11 +40,14 @@ for (const adapter of prefill.ADAPTERS) {
 }
 assert.ok(prefill.getPrefillAdapter("cv-builder"));
 assert.ok(prefill.getPrefillAdapter("scholarship-finder"));
+assert.ok(prefill.getPrefillAdapter("study-abroad-cost"));
 assert.ok(prefill.getPrefillAdapter("import-duty"));
+assert.ok(prefill.getPrefillAdapter("car-import-cost"));
 assert.ok(prefill.getPrefillAdapter("solar-roi"));
 assert.ok(prefill.getPrefillAdapter("vat-calc-pan-african"));
 assert.ok(prefill.getPrefillAdapter("invoice-generator"));
 assert.ok(prefill.getPrefillAdapter("paye-calculator"));
+assert.ok(prefill.getPrefillAdapter("cash-flow-forecast"));
 
 const importLaunch = prefill.buildSafeLaunch("import-duty", {
   destinationCountry: "Nigeria",
@@ -81,8 +84,34 @@ const importMissing = prefill.buildSafeLaunch("car-import-cost", {
   destinationCountry: "Ghana",
   itemCategory: "Honda Fit",
 });
+assert.strictEqual(importMissing.toolId, "car-import-cost");
+assert.strictEqual(importMissing.launchUrl, "/tools/car-import-cost/ghana/?source=ask&prefill=1");
 assert.deepStrictEqual(importMissing.missingInputs, ["purchasePrice", "shippingCost", "fxRate"]);
 assert.strictEqual(importMissing.validation.valid, true);
+
+const carImportLaunch = prefill.buildSafeLaunch("car-import-cost", {
+  destinationCountry: "Nigeria",
+  itemCategory: "Toyota Axio",
+  productCategory: "vehicle",
+  make: "Toyota",
+  model: "Axio",
+  year: "2016",
+  purchasePrice: 8500,
+  shippingCost: 1200,
+  insuranceCost: 250,
+  originCountry: "Japan",
+  port: "tin-can",
+  engineCc: 1500,
+  fxRate: 1600,
+});
+assert.strictEqual(carImportLaunch.toolId, "car-import-cost");
+assert.strictEqual(carImportLaunch.payload.normalizedInputs.countryCode, "NG");
+assert.strictEqual(carImportLaunch.payload.normalizedInputs.sourceMarket, "japan");
+assert.strictEqual(carImportLaunch.payload.normalizedInputs.purchasePriceUsd, 8500);
+assert.strictEqual(carImportLaunch.payload.normalizedInputs.freightUsd, 1200);
+assert.strictEqual(carImportLaunch.payload.normalizedInputs.portCode, "tin-can");
+assert.strictEqual(carImportLaunch.launchUrl, "/tools/car-import-cost/nigeria/?source=ask&prefill=1");
+assertUrlDoesNotLeak(carImportLaunch, ["Toyota", "Axio", "8500", "1200", "Japan", "1600"]);
 
 const cvLaunch = prefill.buildSafeLaunch("cv-jobs", {
   country: "Ghana",
@@ -105,6 +134,20 @@ assert.strictEqual(cvLaunch.payload.normalizedInputs.starterId, "trade");
 assert.strictEqual(cvLaunch.payload.normalizedInputs.languagePreference, "English");
 assertUrlDoesNotLeak(cvLaunch, ["Ghana", "electrical engineer", "solar"]);
 
+const aiStarterCvLaunch = prefill.buildSafeLaunch("cv-builder", {
+  country: "Ghana",
+  targetRole: "electrical engineer",
+  templateId: "trade-skills",
+  starterId: "trade",
+  starterProfile: {
+    generatedWithConsent: true,
+    summary: "Electrical engineer with [insert true metric] project evidence.",
+  },
+});
+assert.strictEqual(aiStarterCvLaunch.payload.normalizedInputs.starterProfile.generatedWithConsent, true);
+assert.ok(aiStarterCvLaunch.payload.normalizedInputs.starterProfile.summary.includes("[insert true metric]"));
+assertUrlDoesNotLeak(aiStarterCvLaunch, ["Electrical engineer", "true metric", "Ghana"]);
+
 const cvMissing = prefill.buildSafeLaunch("cv-builder", {
   targetRole: "data analyst",
 });
@@ -126,6 +169,33 @@ const scholarshipMissing = prefill.buildSafeLaunch("scholarship-finder", {
   country: "Nigeria",
 });
 assert.deepStrictEqual(scholarshipMissing.missingInputs, ["studyLevel"]);
+
+const studyAbroadLaunch = prefill.buildSafeLaunch("study-abroad-cost", {
+  originCountry: "Nigeria",
+  targetCountry: "Canada",
+  studyLevel: "masters",
+  field: "engineering",
+  budgetAmount: 8000,
+  currency: "USD",
+  gpa: 3.7,
+  ieltsScore: 7,
+  intakeTimeline: "September 2027",
+});
+assert.strictEqual(studyAbroadLaunch.toolId, "study-abroad-cost");
+assert.strictEqual(studyAbroadLaunch.launchUrl, "/tools/study-abroad-cost/?source=ask&prefill=1");
+assert.deepStrictEqual(studyAbroadLaunch.missingInputs, []);
+assert.strictEqual(studyAbroadLaunch.payload.normalizedInputs.country, "Nigeria");
+assert.strictEqual(studyAbroadLaunch.payload.normalizedInputs.targetCountry, "Canada");
+assert.strictEqual(studyAbroadLaunch.payload.normalizedInputs.studyLevel, "masters");
+assert.strictEqual(studyAbroadLaunch.payload.normalizedInputs.field, "stem");
+assert.strictEqual(studyAbroadLaunch.payload.normalizedInputs.budgetAmount, 8000);
+assert.strictEqual(studyAbroadLaunch.payload.normalizedInputs.currency, "USD");
+assertUrlDoesNotLeak(studyAbroadLaunch, ["Nigeria", "Canada", "8000", "September"]);
+
+const studyAbroadMissing = prefill.buildSafeLaunch("education-planner", {
+  originCountry: "Ghana",
+});
+assert.deepStrictEqual(studyAbroadMissing.missingInputs, ["targetCountry", "studyLevel", "budget"]);
 
 const solarLaunch = prefill.buildSafeLaunch("solar-energy", {
   country: "Nigeria",
@@ -211,6 +281,22 @@ const payeMissing = prefill.buildSafeLaunch("paye-calculator", {
 });
 assert.deepStrictEqual(payeMissing.missingInputs, ["grossPay"]);
 
+const cashflowLaunch = prefill.buildSafeLaunch("cash-flow-forecast", {
+  country: "Kenya",
+  currency: "KES",
+  monthlyRevenue: 750000,
+  fixedMonthlyCosts: 250000,
+  taxRate: 16,
+});
+assert.strictEqual(cashflowLaunch.toolId, "cash-flow-forecast");
+assert.strictEqual(cashflowLaunch.route, "/tools/cash-flow-forecast/");
+assert.strictEqual(cashflowLaunch.launchUrl, "/tools/cash-flow-forecast/?source=ask&prefill=1");
+assert.deepStrictEqual(cashflowLaunch.missingInputs, []);
+assert.strictEqual(cashflowLaunch.payload.normalizedInputs.countryCode, "KE");
+assert.strictEqual(cashflowLaunch.payload.normalizedInputs.monthlyRevenue, 750000);
+assert.strictEqual(cashflowLaunch.payload.normalizedInputs.fixedMonthlyCosts, 250000);
+assertUrlDoesNotLeak(cashflowLaunch, ["Kenya", "750000", "250000"]);
+
 const pdfMissing = prefill.buildSafeLaunch("pdf-workspace", {}, { selectedRoute: "/document-pdf/" });
 assert.strictEqual(pdfMissing.supported, true);
 assert.deepStrictEqual(pdfMissing.missingInputs, ["pdfAction"]);
@@ -220,6 +306,12 @@ const pdfLaunch = prefill.buildSafeLaunch("pdf-workspace", { pdfAction: "compres
 assert.strictEqual(pdfLaunch.toolId, "pdf-workspace");
 assert.deepStrictEqual(pdfLaunch.missingInputs, []);
 assert.strictEqual(pdfLaunch.payload.normalizedInputs.pdfAction, "compress");
+
+const pdfPageNumbersLaunch = prefill.buildSafeLaunch("pdf-workspace", { pdfAction: "add page numbers" });
+assert.strictEqual(pdfPageNumbersLaunch.toolId, "pdf-workspace");
+assert.deepStrictEqual(pdfPageNumbersLaunch.missingInputs, []);
+assert.strictEqual(pdfPageNumbersLaunch.payload.normalizedInputs.pdfAction, "page_numbers");
+assertUrlDoesNotLeak(pdfPageNumbersLaunch, ["add page numbers"]);
 
 const routeOnly = prefill.buildSafeLaunch("unknown-route-only-tool", { secret: "do not leak" }, { selectedRoute: "/tools/custom-workflow/" });
 assert.strictEqual(routeOnly.supported, false);

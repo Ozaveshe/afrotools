@@ -18,7 +18,14 @@ assert.strictEqual(kenyaPayroll.inputs.currency, "KES");
 assert.strictEqual(kenyaPayroll.selectedRoute, "/kenya/ke-paye");
 assert.deepStrictEqual(kenyaPayroll.missingInputs, []);
 assert.ok(kenyaPayroll.warning.includes("not tax"));
+assert.ok(kenyaPayroll.warning.includes("qualified accountant"));
 assert.strictEqual(kenyaPayroll.payrollPrefillInputs.employeeCount, 5);
+assert.strictEqual(kenyaPayroll.cashflowPrefillInputs.fixedMonthlyCosts, 1250000);
+assert.ok(kenyaPayroll.sourceConfidence.some((item) => item.includes("sponsor placements do not alter formulas")));
+const payrollHtml = workflow.renderFinancePanel(kenyaPayroll);
+assert.ok(payrollHtml.includes("Partner surface"));
+assert.ok(payrollHtml.includes("Open cashflow planner"));
+assert.ok(payrollHtml.includes("TIN guide"));
 
 const nigeriaInvoice = plan("Create a VAT invoice in Nigeria for NGN 500000 consulting services");
 assert.strictEqual(nigeriaInvoice.inputs.workflowKind, "invoice");
@@ -49,8 +56,23 @@ assert.strictEqual(tinChecklist.inputs.country, "Ghana");
 assert.strictEqual(tinChecklist.inputs.businessType, "shop");
 assert.strictEqual(tinChecklist.selectedRoute, "/tools/business-registration/");
 assert.ok(tinChecklist.checklist.some((item) => item.toLowerCase().includes("official")));
+const tinHtml = workflow.renderFinancePanel(tinChecklist);
+assert.ok(tinHtml.includes("/tools/tin-guide/"));
+
+const cashflowPlan = plan("Build a cashflow forecast for a retail shop in Kenya with KES 250000 monthly payroll");
+assert.strictEqual(cashflowPlan.inputs.workflowKind, "cashflow");
+assert.strictEqual(cashflowPlan.inputs.country, "Kenya");
+assert.strictEqual(cashflowPlan.selectedRoute, "/tools/cash-flow-forecast/");
+assert.strictEqual(cashflowPlan.recommendedTool, "Cash Flow Forecast");
+assert.ok(workflow.renderFinancePanel(cashflowPlan).includes("Cash Flow Forecast"));
+
+const cashflowRevenuePlan = plan("Build a cashflow forecast for a retail shop in Kenya with KES 750000 monthly revenue and KES 250000 fixed costs");
+assert.strictEqual(cashflowRevenuePlan.inputs.monthlyRevenue, 750000);
+assert.strictEqual(cashflowRevenuePlan.inputs.fixedMonthlyCosts, 250000);
+assert.strictEqual(cashflowRevenuePlan.cashflowPrefillInputs.monthlyRevenue, 750000);
+assert.strictEqual(cashflowRevenuePlan.cashflowPrefillInputs.fixedMonthlyCosts, 250000);
 
 const missingPayroll = workflow.getMissingInputs(workflow.normalizeInputs("Calculate payroll for employees", {}));
 assert.deepStrictEqual(missingPayroll, ["country", "numberOfEmployees", "grossPay"]);
 
-console.log("AI SME finance workflow validated: payroll, VAT, invoice, PAYE, registration, warnings, and missing inputs.");
+console.log("AI SME finance workflow validated: payroll, VAT, invoice, PAYE, registration, cashflow, warnings, and missing inputs.");

@@ -501,8 +501,11 @@ function isRegistryEligible(routeRecord) {
   if (routeRecord.classification.alias || routeRecord.redirectLike || routeRecord.redirectSource || routeRecord.hasNoindex) {
     return false;
   }
+  if (/^\/fr\/docs(?:\/|$)/.test(routeRecord.route)) {
+    return false;
+  }
 
-  return routeRecord.route.startsWith("/fr/tools/")
+  return /^\/fr\/tools\/[^/]+$/.test(routeRecord.route)
     || routeRecord.classification.sections.includes("salary-tax")
     || routeRecord.classification.sections.includes("vat-business-tax")
     || routeRecord.classification.sections.includes("document-pdf");

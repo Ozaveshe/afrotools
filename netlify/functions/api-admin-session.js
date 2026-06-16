@@ -95,6 +95,7 @@ exports.handler = async function(event) {
     storage_key: 'admin_key',
     admin_surfaces: [
       '/mc-7a2f9x.html',
+      '/admin/data-confidence.html',
       '/admin/alerts.html',
       '/admin/review.html',
       '/tools/afrostream/admin.html',

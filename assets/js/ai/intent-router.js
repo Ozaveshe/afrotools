@@ -15,13 +15,27 @@
   "use strict";
 
   var manifestApi = null;
+  var i18nApi = null;
+  var guardrailsApi = null;
   if (typeof require === "function") {
     try {
       manifestApi = require("./tool-manifest.js");
     } catch (err) {
       manifestApi = null;
     }
+    try {
+      i18nApi = require("./i18n.js");
+    } catch (err) {
+      i18nApi = null;
+    }
+    try {
+      guardrailsApi = require("./guardrails.js");
+    } catch (err) {
+      guardrailsApi = null;
+    }
   }
+  if (!i18nApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAII18n) i18nApi = globalThis.AfroToolsAII18n;
+  if (!guardrailsApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIGuardrails) guardrailsApi = globalThis.AfroToolsAIGuardrails;
 
   var OUTPUT_SCHEMA = {
     schemaVersion: 1,
@@ -59,20 +73,51 @@
   };
 
   var ROUTING_RULES = [
+    rule("career-documents", "cover-letter", ["cover letter", "application letter", "motivation letter"], ["employment"]),
     rule("cv-jobs", "cv-builder", ["cv", "resume", "curriculum vitae", "ats", "linkedin profile"], ["employment", "career"]),
     rule("scholarships", "scholarship-finder", ["scholarship", "scholarships", "bursary", "funding", "grant for school"], ["education"]),
     rule("salary-tax", "paye-calculator", ["paye", "payroll", "salary tax", "income tax", "net pay", "gross pay"], ["tax"]),
-    rule("import-duty", "import-duty", ["import duty", "customs duty", "car import", "vehicle import", "landed cost", "toyota", "honda", "mazda", "nissan"], ["finance"]),
+    rule("trade", "hs-code-lookup", ["hs code", "tariff code", "customs code"], ["finance"]),
+    rule("trade", "sadc-roo", ["sadc rules of origin", "rules of origin", "origin certificate"], ["none"]),
+    rule("import-duty", "import-duty", ["import duty", "customs duty", "import", "car import", "vehicle import", "landed cost", "toyota", "honda", "mazda", "nissan"], ["finance"]),
     rule("solar-energy", "solar-roi", ["solar", "inverter", "battery", "backup power", "payback"], ["energy"]),
     rule("fuel-energy", "fuel-tracker", ["generator", "fuel", "petrol", "diesel", "kerosene"], ["energy"]),
-    rule("business-tax", "invoice-generator", ["invoice", "receipt", "bill client"], ["finance"]),
     rule("business-tax", "vat-calc-pan-african", ["vat", "value added tax", "sales tax"], ["tax"]),
-    rule("documents", "pdf-workspace", ["pdf", "merge pdf", "split pdf", "compress pdf", "document"], ["none"]),
+    rule("business-tax", "invoice-generator", ["invoice", "receipt", "bill client"], ["finance"]),
+    rule("documents", "pdf-workspace", ["merge pdf", "merge pdfs", "merge two pdfs", "combine pdf", "combine pdfs", "split pdf", "split pdfs", "extract pdf pages", "compress pdf", "compress my pdf", "reduce pdf", "shrink pdf", "add page numbers", "page numbers", "number pages", "protect pdf", "protect a pdf", "password protect pdf", "lock pdf"], ["none"]),
+    rule("documents", "pdf-sign", ["sign pdf", "sign", "pdf signature", "add signature"], ["none"]),
+    rule("documents", "pdf-redact", ["redact pdf", "redact", "remove sensitive text"], ["none"]),
+    rule("documents", "pdf-to-audio", ["pdf to audio", "read pdf aloud", "listen to pdf"], ["none"]),
+    rule("documents", "pdf-watermark", ["watermark pdf", "pdf watermark"], ["none"]),
+    rule("documents", "pdf-workspace", ["pdf", "document"], ["none"]),
     rule("education", "gpa-calculator", ["gpa", "cgpa", "grade point"], ["education"]),
     rule("education", "ielts-calculator", ["ielts", "band score", "english test"], ["education"]),
     rule("study-abroad", "study-abroad-cost", ["study abroad", "study in", "study from", "student visa", "tuition abroad", "school abroad"], ["education", "immigration"]),
-    rule("study-abroad", "japa-calculator", ["japa", "relocate", "migration cost", "move to canada", "move to uk"], ["immigration"]),
-    rule("construction", "afroplan-floor-planner", ["floor planner", "floor plan", "house plan", "room layout", "construction layout"], ["none"]),
+    rule("study-abroad", "japa-calculator", ["japa", "relocate", "migration cost", "move to canada", "move to uk", "save before moving", "moving from", "moving to"], ["immigration"]),
+    rule("local-life", "rent-affordability", ["rent affordability", "how much rent", "afford rent", "afford", "rent budget", "rent in"], ["legal", "finance"]),
+    rule("local-life", "rent-vs-buy", ["rent vs buy", "buy or rent", "rent or buy"], ["finance"]),
+    rule("local-life", "cost-of-living", ["cost of living", "living cost", "live in", "can i live", "per month", "monthly budget", "monthly expenses", "relocation budget"], ["finance"]),
+    rule("agriculture", "poultry-roi-calculator", ["poultry", "broiler", "broilers", "layers", "chicken farm", "egg production", "poultry roi"], ["finance"]),
+    rule("agriculture", "fish-farming-roi", ["fish farming", "tilapia", "catfish pond", "catfish", "aquaculture", "fingerlings"], ["finance"]),
+    rule("agriculture", "cocoa-tracker", ["cocoa", "cacao", "cocoa farm", "cocoa price", "cocoa farm gate", "cocoa farm-gate", "cocoa farm gate price", "farm gate cocoa", "farm-gate cocoa", "cocoa export", "quality premium"], ["finance"]),
+    rule("agriculture", "storage-loss", ["storage loss", "post harvest", "post-harvest", "grain storage", "hermetic", "silo"], ["finance"]),
+    rule("agriculture", "commodity-prices", ["commodity prices", "market price", "market prices", "farm gate price", "farm-gate price", "sell maize", "sell cocoa", "seasonal price"], ["finance"]),
+    rule("agriculture", "farm-profit-calculator", ["farm profit", "farm roi", "farm margin", "profitable", "profitability", "break even", "break-even"], ["finance"]),
+    rule("agriculture", "crop-yield-estimator", ["crop yield", "yield estimate", "harvest yield", "farm yield", "maize yield", "rice yield", "maize farm", "rice farm", "cassava farm", "tomato farm"], ["none"]),
+    rule("agriculture", "farm-budget", ["farm budget", "farm costs", "farm expenses"], ["finance"]),
+    rule("agriculture", "fertilizer-calculator", ["fertilizer", "fertiliser", "npk", "urea"], ["finance"]),
+    rule("agriculture", "input-prices", ["input prices", "seed prices", "fertilizer prices", "agrochemical prices"], ["finance"]),
+    rule("agriculture", "seed-rate-calculator", ["seed rate", "seeding rate", "how much seed"], ["finance"]),
+    rule("agriculture", "irrigation-calculator", ["irrigation", "water pump", "drip irrigation"], ["none"]),
+    rule("agriculture", "livestock-feed-calculator", ["livestock feed", "poultry feed", "feed ration"], ["finance"]),
+    rule("agriculture", "planting-calendar", ["planting calendar", "when to plant", "plant maize", "plant rice"], ["none"]),
+    rule("construction", "afrodraft", ["afrodraft", "cad-like", "cad like", "cad plan", "dxf", "technical drawing", "drafting plan"], ["none"]),
+    rule("construction", "building-materials", ["building materials", "estimate blocks", "blocks and cement", "cement blocks", "cement bags", "material estimate", "materials estimator", "estimate cement"], ["finance", "legal"]),
+    rule("construction", "boq-generator", ["boq", "bill of quantities", "quantity takeoff", "materials list"], ["finance"]),
+    rule("construction", "land-size", ["land size", "plot size", "sqm plot", "square metre plot", "square meter plot", "50 by 100 plot"], ["none"]),
+    rule("construction", "home-renovation-cost", ["renovation cost", "home renovation", "building cost", "construction cost"], ["finance"]),
+    rule("construction", "afroplan-floor-planner", ["floor planner", "floor plan", "house plan", "room layout", "construction layout", "2-bedroom", "2 bedroom", "bedroom floor plan", "simple floor plan", "design a simple", "plot in"], ["none"]),
+    rule("country-intelligence", "afroatlas", ["country intelligence", "country profile", "compare countries", "compare", "which country", "market entry", "market data", "africa data", "afroatlas", "starting a business", "start a business", "doing business", "remote worker", "remote work", "digital nomad", "costs of moving", "main costs of moving"], ["none"]),
   ];
 
   var COUNTRY_ALIASES = {
@@ -82,6 +127,23 @@
     kenya: "Kenya",
     cameroon: "Cameroon",
     "south africa": "South Africa",
+    lagos: "Nigeria",
+    abuja: "Nigeria",
+    "benin city": "Nigeria",
+    ibadan: "Nigeria",
+    nairobi: "Kenya",
+    mombasa: "Kenya",
+    accra: "Ghana",
+    kumasi: "Ghana",
+    douala: "Cameroon",
+    yaounde: "Cameroon",
+    johannesburg: "South Africa",
+    joburg: "South Africa",
+    "cape town": "South Africa",
+    kampala: "Uganda",
+    kigali: "Rwanda",
+    dar: "Tanzania",
+    "dar es salaam": "Tanzania",
     uganda: "Uganda",
     tanzania: "Tanzania",
     rwanda: "Rwanda",
@@ -132,6 +194,8 @@
 
   function normalizeText(value) {
     return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
       .replace(/[^\w\s$,.:'-]/g, " ")
       .replace(/\s+/g, " ")
@@ -198,6 +262,7 @@
 
   function extractMoney(query) {
     var match = String(query || "").match(/(?:\$|usd\s*)\s?([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m))?/i) ||
+      String(query || "").match(/\b(?:ngn|naira|kes|ksh|ghs|zar|xaf|xof|usd|gbp|eur|cad)\s?([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m))?\b/i) ||
       String(query || "").match(/\b([0-9][0-9,]*(?:\.\d+)?)\s?(usd|dollars|naira|ngn|kes|ghs|zar|xaf|xof)\b/i);
     if (!match) return "";
     var amount = Number(String(match[1]).replace(/,/g, ""));
@@ -207,31 +272,249 @@
     return amount;
   }
 
+  function extractCurrency(query) {
+    var raw = String(query || "");
+    if (/\bcad[- ]?like|cad plan|afrodraft/i.test(raw) && !/\b(?:cad|canadian dollars?)\s?[0-9]|\b[0-9][0-9,]*(?:\.\d+)?\s?(?:cad|canadian dollars?)\b/i.test(raw)) return "";
+    if (/\$|usd|dollars/i.test(raw)) return "USD";
+    if (/gbp|pounds|\u00a3/i.test(raw)) return "GBP";
+    if (/eur|euros|\u20ac/i.test(raw)) return "EUR";
+    if (/cad/i.test(raw)) return "CAD";
+    if (/ngn|naira|\u20a6/i.test(raw)) return "NGN";
+    if (/kes|ksh/i.test(raw)) return "KES";
+    if (/ghs/i.test(raw)) return "GHS";
+    if (/zar/i.test(raw)) return "ZAR";
+    if (/xaf/i.test(raw)) return "XAF";
+    if (/xof/i.test(raw)) return "XOF";
+    return "";
+  }
+
+  function cleanTargetRole(value, country, targetCountry) {
+    var role = String(value || "").trim();
+    [country, targetCountry].filter(Boolean).forEach(function stripCountry(name) {
+      var escaped = String(name).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      role = role.replace(new RegExp("\\s+(?:in|from|based in)\\s+" + escaped + "\\s*$", "i"), "");
+    });
+    return role.replace(/\s+/g, " ").trim();
+  }
+
+  function extractCity(query) {
+    var match = String(query || "").match(/\b(lagos|abuja|benin city|ibadan|nairobi|mombasa|eldoret|accra|kumasi|douala|yaounde|johannesburg|joburg|cape town|kampala|kigali|dakar|kaolack|abidjan|bouake|dar es salaam|dar)\b/i);
+    return match ? match[1].replace(/\b\w/g, function title(char) { return char.toUpperCase(); }) : "";
+  }
+
+  function extractCrop(query) {
+    var text = normalizeText(query);
+    var crops = {
+      maize: "maize",
+      corn: "maize",
+      rice: "rice",
+      cassava: "cassava",
+      cocoa: "cocoa",
+      cacao: "cocoa",
+      coffee: "coffee",
+      sorghum: "sorghum",
+      millet: "millet",
+      tomato: "tomato",
+      tomatoes: "tomato",
+      onion: "onion",
+      onions: "onion",
+      soybean: "soybean",
+      soybeans: "soybean",
+      groundnut: "groundnut",
+      peanuts: "groundnut",
+    };
+    var keys = Object.keys(crops).sort(function byLength(left, right) { return right.length - left.length; });
+    for (var i = 0; i < keys.length; i += 1) {
+      if (new RegExp("(^|\\b)" + keys[i] + "(\\b|$)", "i").test(text)) return crops[keys[i]];
+    }
+    return "";
+  }
+
+  function extractFarmSize(query) {
+    var match = String(query || "").match(/\b([0-9][0-9,]*(?:\.\d+)?)\s?(hectares?|ha|acres?|plots?)\b/i);
+    if (!match) return null;
+    return { size: Number(match[1].replace(/,/g, "")), unit: /acre/i.test(match[2]) ? "acre" : (/plot/i.test(match[2]) ? "plot" : "hectare") };
+  }
+
+  function extractAgricultureCounts(query) {
+    var raw = String(query || "");
+    var birds = raw.match(/\b([0-9][0-9,]*)\s?(broilers?|layers?|birds?|chickens?|hens?)\b/i);
+    var fish = raw.match(/\b([0-9][0-9,]*)\s?(fish|fingerlings?|catfish|tilapia|trout)\b/i);
+    var livestock = raw.match(/\b([0-9][0-9,]*)\s?(cattle|cows|goats|sheep)\b/i);
+    return {
+      birdCount: birds ? Number(birds[1].replace(/,/g, "")) : null,
+      fishCount: fish ? Number(fish[1].replace(/,/g, "")) : null,
+      livestockCount: livestock ? Number(livestock[1].replace(/,/g, "")) : null,
+    };
+  }
+
+  function detectAgricultureEnterprise(query) {
+    var text = normalizeText(query);
+    if (/\bpoultry|broiler|layer|chicken|egg\b/.test(text)) return "poultry";
+    if (/\bfish|catfish|tilapia|trout|aquaculture|pond|fingerlings?\b/.test(text)) return "fish";
+    if (/\bcattle|cow|goat|sheep|livestock|feed ration\b/.test(text)) return "livestock";
+    return "crop";
+  }
+
+  function extractPlot(query) {
+    var raw = String(query || "");
+    var dimensions = raw.match(/\b([0-9]{1,4}(?:\.\d+)?)\s?(?:x|by)\s?([0-9]{1,4}(?:\.\d+)?)\s?(?:m|meters?|metres?|ft|feet)?\b/i);
+    var area = raw.match(/\b([0-9][0-9,]*(?:\.\d+)?)\s?(sqm|sq\s?m|m2|square meters?|square metres?|hectares?|ha|acres?|plots?)\b/i);
+    if (dimensions) return { size: Number(dimensions[1]) * Number(dimensions[2]), unit: "sqm", length: Number(dimensions[1]), width: Number(dimensions[2]) };
+    if (area) return { size: Number(area[1].replace(/,/g, "")), unit: normalizePlotUnit(area[2]) };
+    return null;
+  }
+
+  function normalizePlotUnit(value) {
+    var clean = normalizeText(value);
+    if (/hectare|ha/.test(clean)) return "hectare";
+    if (/acre/.test(clean)) return "acre";
+    if (/plot/.test(clean)) return "plot";
+    return "sqm";
+  }
+
+  function extractConstructionRooms(query) {
+    var raw = String(query || "");
+    var bedroom = raw.match(/\b([1-9][0-9]?)\s?[- ]?(?:bed|bedroom|bedrooms|br)\b/i) || raw.match(/\b(one|two|three|four|five|six)\s?[- ]?(?:bed|bedroom|bedrooms)\b/i);
+    if (bedroom) return { bedrooms: wordNumber(bedroom[1]), raw: bedroom[0] };
+    var roomCount = raw.match(/\b([1-9][0-9]?)\s+(?:rooms?|classrooms?|shops?|offices?)\b/i);
+    if (roomCount) return { count: Number(roomCount[1]), raw: roomCount[0] };
+    if (/\bsmall room|single room|one room|room self contain|studio\b/i.test(raw)) return { count: 1, raw: "small room" };
+    return null;
+  }
+
+  function wordNumber(value) {
+    var clean = normalizeText(value);
+    var words = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6 };
+    return words[clean] || Number(value);
+  }
+
+  function extractConstructionOutput(query) {
+    var text = normalizeText(query);
+    if (/\bcad|cad like|cad-like|dxf|technical drawing|afrodraft|draft\b/.test(text)) return "CAD-like plan";
+    if (/\bboq|bill of quantities|quantity takeoff|materials list\b/.test(text)) return "BOQ";
+    if (/\bblocks?|cement|material|materials|estimate\b/.test(text)) return "material estimate";
+    if (/\bchecklist|approval|permit|documents\b/.test(text)) return "checklist";
+    if (/\bsketch|draw|design|floor plan|layout|plan\b/.test(text)) return "sketch";
+    return "";
+  }
+
+  function extractConstructionMaterial(query) {
+    var text = normalizeText(query);
+    if (/\bblocks?|sandcrete|cement blocks?\b/.test(text)) return "sandcrete blocks";
+    if (/\bcement|mortar|plaster\b/.test(text)) return "cement";
+    if (/\bconcrete|granite|gravel\b/.test(text)) return "concrete";
+    if (/\bbrick|burnt brick\b/.test(text)) return "brick";
+    if (/\bsteel|iron rods?|rebar\b/.test(text)) return "reinforced concrete";
+    if (/\btimber|wood\b/.test(text)) return "timber";
+    return "";
+  }
+
+  function extractPdfAction(query) {
+    var text = normalizeText(query);
+    if (/\b(page numbers?|number pages?|add page numbers?)\b/.test(text)) return "page_numbers";
+    if (/\b(protect|password|lock|encrypt)\b/.test(text)) return "protect";
+    if (/\b(merge|combine)\b/.test(text)) return "merge";
+    if (/\b(compress|reduce|shrink)\b/.test(text)) return "compress";
+    if (/\b(split|extract)\b/.test(text)) return "split";
+    if (/\b(sign|signature)\b/.test(text)) return "sign";
+    if (/\b(redact|remove sensitive)\b/.test(text)) return "redact";
+    if (/\b(audio|listen|read aloud)\b/.test(text)) return "audio";
+    if (/\b(watermark)\b/.test(text)) return "watermark";
+    return "";
+  }
+
+  function extractProductCategory(query) {
+    var text = normalizeText(query);
+    if (/\b(phone|phones|laptop|laptops|electronics|tablet|computer)\b/.test(text)) return "electronics";
+    if (/\b(clothes|clothing|textile|textiles|shoes|fashion)\b/.test(text)) return "clothing";
+    if (/\b(machine|machinery|equipment|industrial)\b/.test(text)) return "machinery";
+    if (/\b(rice|wheat|food|grain|agro|fertilizer)\b/.test(text)) return "food-agriculture";
+    if (/\b(car|vehicle|toyota|honda|mazda|nissan|hyundai|kia|mercedes|bmw|volkswagen|ford|lexus)\b/.test(text)) return "vehicle";
+    return "";
+  }
+
   function extractInputs(query, ruleMatch) {
     var original = String(query || "");
     var text = normalizeText(original);
     var extracted = {};
     var country = extractCountryFromMap(text, COUNTRY_ALIASES);
     var targetCountry = extractCountryFromMap(text, DESTINATION_COUNTRIES);
+    var city = extractCity(original);
     var money = extractMoney(original);
     var year = original.match(/\b(19[8-9]\d|20[0-3]\d)\b/);
     var employees = original.match(/\b([1-9][0-9]?)\s+(?:employees|staff|workers)\b/i);
     var studyLevel = original.match(/\b(undergraduate|bachelor'?s?|masters?|master'?s?|phd|doctorate|diploma|mba)\b/i);
-    var role = original.match(/\b(?:for|as|role|job)\s+(?:an?\s+)?([a-z][a-z\s-]{2,60})(?:\s+in\s+|\s+with\s+|$)/i);
+    var field = original.match(/\b(engineering|computer science|software|data science|business|finance|accounting|medicine|nursing|public health|law|agriculture|climate|environment|arts|media)\b/i);
+    var gpa = original.match(/\b(?:gpa|cgpa)\s*(?:of|is|:)?\s*([0-5](?:\.\d+)?)\b/i) || original.match(/\b([0-5](?:\.\d+)?)\s*\/\s*5(?:\.0)?\b/i);
+    var gradeBand = original.match(/\b(first class|second class upper|2:1|upper second|distinction|merit|credit)\b/i);
+    var ielts = original.match(/\b(?:ielts|english)\s*(?:band|score)?\s*(?:of|is|:)?\s*([4-9](?:\.\d)?)\b/i);
+    var intake = original.match(/\b(?:jan|january|may|sep|sept|september|fall|spring|summer|winter)\s*(?:intake)?\s*(20[2-3]\d)?\b/i);
+    var role = original.match(/\b(?:for|as|role|job)\s+(?:an?\s+)?([a-z][a-z\s-]{2,60}?)(?:\s+in\s+|\s+with\s+|[?.!,]|$)/i);
     var vehicle = original.match(/\b(toyota|honda|mazda|nissan|hyundai|kia|mercedes|bmw|volkswagen|vw|ford|lexus)\s+([a-z0-9 -]{2,40}?)(?:\s+(?:worth|valued|costing|into|to|in|for)\b|[?.!,]|$)/i);
+    var pdfAction = extractPdfAction(original);
+    var productCategory = extractProductCategory(original);
+    var plot = extractPlot(original);
+    var constructionRooms = extractConstructionRooms(original);
+    var constructionMaterial = extractConstructionMaterial(original);
+    var constructionOutput = extractConstructionOutput(original);
+    var crop = extractCrop(original);
+    var farmSize = extractFarmSize(original);
+    var agricultureCounts = extractAgricultureCounts(original);
 
     if (country) extracted.country = country;
+    if (city) extracted.city = city;
     if (targetCountry) extracted.targetCountry = targetCountry;
     if (money) extracted.budget = money;
+    if (money) extracted.budgetAmount = money;
+    if (extractCurrency(original)) extracted.currency = extractCurrency(original);
     if (year) extracted.year = year[1];
     if (employees) extracted.employeeCount = Number(employees[1]);
     if (studyLevel) extracted.studyLevel = studyLevel[1].replace(/'?s$/i, "").toLowerCase();
-    if (role) extracted.targetRole = role[1].trim();
+    if (field) extracted.field = field[1];
+    if (gpa) extracted.gpa = Number(gpa[1]);
+    if (!extracted.gpa && gradeBand) extracted.gradeBand = gradeBand[1].toLowerCase();
+    if (ielts) extracted.ieltsScore = Number(ielts[1]);
+    if (intake) extracted.intakeTimeline = intake[0];
+    if (role) extracted.targetRole = cleanTargetRole(role[1], country, targetCountry);
+    if (pdfAction) extracted.pdfAction = pdfAction;
+    if (productCategory) extracted.productCategory = productCategory;
     if (vehicle) extracted.itemCategory = (vehicle[1] + " " + vehicle[2]).trim();
+    if (!extracted.itemCategory && productCategory) extracted.itemCategory = productCategory;
+    if (plot) {
+      extracted.plotSize = plot.size;
+      extracted.plotUnit = plot.unit;
+      if (plot.length) extracted.plotLength = plot.length;
+      if (plot.width) extracted.plotWidth = plot.width;
+    }
+    if (constructionRooms) extracted.rooms = constructionRooms;
+    if (constructionMaterial) extracted.materialPreference = constructionMaterial;
+    if (constructionOutput) extracted.outputDesired = constructionOutput;
+    if (crop) extracted.crop = crop;
+    if (farmSize) {
+      extracted.farmSize = farmSize.size;
+      extracted.farmSizeUnit = farmSize.unit;
+    }
+    if (agricultureCounts.birdCount) extracted.birdCount = agricultureCounts.birdCount;
+    if (agricultureCounts.fishCount) extracted.fishCount = agricultureCounts.fishCount;
+    if (agricultureCounts.livestockCount) extracted.livestockCount = agricultureCounts.livestockCount;
 
-    if (ruleMatch && ruleMatch.toolId === "import-duty") {
+    if (ruleMatch && (ruleMatch.toolId === "import-duty" || ruleMatch.toolId === "car-import-cost" || ruleMatch.toolId === "landed-cost" || ruleMatch.toolId === "hs-code-lookup")) {
       if (country) extracted.destinationCountry = country;
       if (money) extracted.itemValue = money;
+    }
+    if (ruleMatch && ruleMatch.intentCategory === "agriculture") {
+      extracted.enterpriseType = detectAgricultureEnterprise(original);
+      if (money) extracted.budget = money;
+      if (ruleMatch.toolId === "poultry-roi-calculator") extracted.enterpriseType = "poultry";
+      if (ruleMatch.toolId === "fish-farming-roi") extracted.enterpriseType = "fish";
+      if (ruleMatch.toolId === "livestock-feed-calculator") extracted.enterpriseType = "livestock";
+    }
+    if (ruleMatch && (ruleMatch.intentCategory === "construction" || ruleMatch.toolId === "afroplan-floor-planner" || ruleMatch.toolId === "afrodraft" || ruleMatch.toolId === "building-materials" || ruleMatch.toolId === "boq-generator" || ruleMatch.toolId === "land-size")) {
+      if (money) extracted.budget = money;
+      var building = original.match(/\b(bungalow|duplex|flat|apartment|house|room|shop|office|classroom|school|warehouse|clinic|restaurant|studio)\b/i);
+      if (building) extracted.buildingType = building[1].toLowerCase();
+      if (!extracted.buildingType && constructionRooms && constructionRooms.bedrooms) extracted.buildingType = constructionRooms.bedrooms <= 2 ? "bungalow" : "house";
     }
     if (ruleMatch && ruleMatch.toolId === "paye-calculator") {
       if (money) extracted.grossPay = money;
@@ -239,6 +522,13 @@
     }
     if (ruleMatch && ruleMatch.toolId === "solar-roi" && money) {
       extracted.monthlyBill = money;
+    }
+    if (ruleMatch && (ruleMatch.toolId === "invoice-generator" || ruleMatch.toolId === "vat-calc-pan-african")) {
+      if (money) {
+        extracted.amount = money;
+        extracted.invoiceAmount = money;
+      }
+      if (ruleMatch.toolId === "vat-calc-pan-african") extracted.vatTreatment = "standard";
     }
 
     return extracted;
@@ -318,19 +608,56 @@
     };
   }
 
-  function fallbackDecision(query) {
+  function localizeDecision(decision, options) {
+    if (!i18nApi || typeof i18nApi.localizeRouterDecision !== "function") return decision;
+    var locale = options && (options.locale || options.lang || options.uiLocale);
+    return i18nApi.localizeRouterDecision(decision, locale || "en");
+  }
+
+  function rawFallbackDecision(query) {
     return buildDecision(query, SEARCH_FALLBACK, null, {}, "fallback");
   }
 
+  function fallbackDecision(query, options) {
+    return localizeDecision(rawFallbackDecision(query), options);
+  }
+
+  function guardrailFallbackDecision(query, options, inspection) {
+    var decision = localizeDecision(rawFallbackDecision(query), options);
+    decision.confidence = 0;
+    decision.canPrefill = false;
+    decision.reasonShort = inspection && inspection.userMessage ? inspection.userMessage : "AfroTools AI could not safely route that request.";
+    decision.highStakesNotice = "AfroTools AI will not bypass safety rules, alter formulas, impersonate authorities, fabricate sources, or guarantee high-stakes outcomes.";
+    decision.suggestedNextActions = ["Rephrase as a practical AfroTools calculator or planning task", "Open AfroTools search", "Use official sources for final decisions"];
+    decision._meta = Object.assign({}, decision._meta || {}, {
+      router: "guardrail",
+      providerUsed: false,
+      guardrail: {
+        blocked: true,
+        code: inspection && inspection.code || "blocked",
+        reason: inspection && inspection.reason || "",
+      },
+    });
+    return decision;
+  }
+
   function routeDeterministically(query, options) {
+    if (guardrailsApi && typeof guardrailsApi.inspectPrompt === "function") {
+      var inspection = guardrailsApi.inspectPrompt(query, { maxChars: guardrailsApi.ROUTER_PROMPT_LIMIT || 1200 });
+      if (!inspection.allowed) return guardrailFallbackDecision(query, options, inspection);
+    }
     var manifest = getRouterManifest(options && options.manifest);
     var match = findBestRule(query);
-    if (!match) return fallbackDecision(query);
+    if (!match) return fallbackDecision(query, options);
     var tool = findTool(manifest, match.toolId) || SEARCH_FALLBACK;
-    return buildDecision(query, tool, match, extractInputs(query, match), "deterministic");
+    return localizeDecision(buildDecision(query, tool, match, extractInputs(query, match), "deterministic"), options);
   }
 
   function normalizeDecision(decision, query, options) {
+    if (guardrailsApi && typeof guardrailsApi.inspectPrompt === "function") {
+      var inspection = guardrailsApi.inspectPrompt(query, { maxChars: guardrailsApi.ROUTER_PROMPT_LIMIT || 1200 });
+      if (!inspection.allowed) return guardrailFallbackDecision(query, options, inspection);
+    }
     var manifest = getRouterManifest(options && options.manifest);
     var base = decision && typeof decision === "object" ? Object.assign({}, decision) : {};
     var tool = findTool(manifest, base.selectedToolId) || findTool(manifest, base.selectedToolId || base.toolId) || SEARCH_FALLBACK;
@@ -340,7 +667,7 @@
     var safetyDomain = OUTPUT_SCHEMA.enums.safetyDomain.indexOf(base.safetyDomain) !== -1 ? base.safetyDomain : (tool.highStakesDomain || "none");
     var privacyMode = OUTPUT_SCHEMA.enums.privacyMode.indexOf(base.privacyMode) !== -1 ? base.privacyMode : (tool.privacyMode || "browser_local");
 
-    return {
+    return localizeDecision({
       intentCategory: String(base.intentCategory || deterministic.intentCategory || tool.subcategory || "search"),
       selectedToolId: tool.id,
       selectedRoute: routeUrl(tool.route, query),
@@ -358,7 +685,7 @@
         router: base._meta && base._meta.router ? String(base._meta.router) : "validated",
         providerUsed: Boolean(base._meta && base._meta.providerUsed),
       },
-    };
+    }, options);
   }
 
   function validateRouterOutput(decision) {

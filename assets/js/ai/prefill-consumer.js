@@ -33,6 +33,26 @@
       purchasePrice: ["goodsValue", "carPurchasePrice"],
       itemValue: ["goodsValue", "carPurchasePrice"],
     }, activateImportMode, { quietFields: true, afterApply: resetImportResult }),
+    config("car-import-cost", ["/tools/car-import-cost/"], {
+      countryCode: ["carImportCountry"],
+      sourceMarket: ["carImportSourceMarket"],
+      inputMode: ["carImportInputMode"],
+      outputMode: ["carImportOutputMode"],
+      make: ["carImportMake"],
+      model: ["carImportModel"],
+      year: ["carImportYear"],
+      vehicleType: ["carImportBodyType"],
+      bodyType: ["carImportBodyType"],
+      engineCc: ["carImportEngineCc"],
+      purchasePrice: ["carImportPurchasePrice"],
+      purchasePriceUsd: ["carImportPurchasePrice"],
+      shippingCost: ["carImportFreight"],
+      freightUsd: ["carImportFreight"],
+      insuranceCost: ["carImportInsurance"],
+      insuranceUsd: ["carImportInsurance"],
+      port: ["carImportPort"],
+      portCode: ["carImportPort"],
+    }, null, { quietFields: true, afterApply: recalculateCarImportOnce }),
     config("solar-roi", ["/tools/solar-roi/"], {
       monthlyBill: ["monthlyBill"],
       monthlyGeneratorSpend: ["generatorSpend"],
@@ -61,6 +81,14 @@
     }),
     config("vat-calc-pan-african", ["/tools/vat-calculator/"], {}, applyVatPrefill),
     config("paye-calculator", ["/tools/paye-calculator/", "/kenya/ke-paye", "/ghana/gh-paye", "/nigeria/ng-salary-tax", "/south-africa/za-paye"], {}, applyPayePrefill),
+    config("cash-flow-forecast", ["/tools/cash-flow-forecast/"], {
+      currency: ["currency"],
+      openingBalance: ["opening-balance"],
+      monthlyRevenue: ["month1-rev"],
+      fixedMonthlyCosts: ["fixed-monthly"],
+      cogsPercent: ["cogs-pct"],
+      taxRate: ["tax-rate"],
+    }, null, { afterApply: calculateCashflowOnce }),
     config("pdf-workspace", ["/tools/pdf-workspace/"], {}, focusPdfWorkflow),
   ];
 
@@ -393,6 +421,28 @@
     return applied;
   }
 
+  function calculateCashflowOnce(payload, applied) {
+    if (!applied || !applied.length || typeof root.calculate !== "function" || root.__afrotoolsCashflowPrefillCalculated) return [];
+    root.__afrotoolsCashflowPrefillCalculated = true;
+    root.setTimeout(function() {
+      try {
+        root.calculate();
+      } catch (err) {}
+    }, 0);
+    return ["cashflowForecast"];
+  }
+
+  function recalculateCarImportOnce(payload, applied) {
+    if (!applied || !applied.length || root.__afrotoolsCarImportPrefillCalculated) return [];
+    var form = document.getElementById("carImportForm");
+    if (!form) return [];
+    root.__afrotoolsCarImportPrefillCalculated = true;
+    root.setTimeout(function() {
+      form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    }, 0);
+    return ["carImportCalculation"];
+  }
+
   function noticeText(payload, applied) {
     var missing = Array.isArray(payload.missingInputs) ? payload.missingInputs : [];
     var lines = [];
@@ -443,8 +493,12 @@
     });
   }
 
+  function shouldConsume() {
+    return params().get("prefill") === "1";
+  }
+
   function consume() {
-    if (params().get("prefill") !== "1") return;
+    if (!shouldConsume()) return;
     var adapters = root.AfroToolsAIPrefillAdapters;
     if (!adapters || typeof adapters.readLaunchPayload !== "function") return;
     var payload = adapters.readLaunchPayload();
@@ -459,9 +513,18 @@
     scheduleRetry(config, payload, applied);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", consume, { once: true });
-  } else {
+  function bootConsume() {
     consume();
+    if (!shouldConsume()) return;
+    [150, 500, 1200, 2500].forEach(function(delay) {
+      root.setTimeout(consume, delay);
+    });
   }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootConsume, { once: true });
+  } else {
+    bootConsume();
+  }
+  root.addEventListener("load", bootConsume, { once: true });
 })(typeof globalThis !== "undefined" ? globalThis : this);

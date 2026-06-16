@@ -1,6 +1,14 @@
 const assert = require("assert");
 
 global.Blob = global.Blob || require("buffer").Blob;
+global.AfroTools = {
+  pdf: {
+    async generate(config) {
+      global.__capturedWorkflowPdf = config;
+      return { fileName: "workflow-brief.pdf" };
+    }
+  }
+};
 
 const workflowExport = require("../assets/js/ai/workflow-export.js");
 
@@ -17,6 +25,9 @@ const importPlan = {
     originalQuery: "How much duty for my exact private prompt?",
     providerToken: "secret-token",
     internalTraceId: "trace-123",
+    requestId: "request-123",
+    runId: "run-123",
+    conversationId: "conversation-123",
     email: "person@example.com",
     phone: "+234000000000"
   },
@@ -80,6 +91,9 @@ assert.strictEqual(importReport.inputsUsed.purchasePrice, 8500);
 assert.strictEqual(importReport.inputsUsed.originalQuery, undefined);
 assert.strictEqual(importReport.inputsUsed.providerToken, undefined);
 assert.strictEqual(importReport.inputsUsed.internalTraceId, undefined);
+assert.strictEqual(importReport.inputsUsed.requestId, undefined);
+assert.strictEqual(importReport.inputsUsed.runId, undefined);
+assert.strictEqual(importReport.inputsUsed.conversationId, undefined);
 assert.strictEqual(importReport.inputsUsed.email, undefined);
 assert.strictEqual(importReport.inputsUsed.phone, undefined);
 assert(importReport.resultSummary.some((line) => line.includes("Total landed cost")));
@@ -90,8 +104,17 @@ assert(importText.includes("Inputs used"));
 assert(importText.includes("Source, freshness, and confidence"));
 assert(!importText.includes("secret-token"));
 assert(!importText.includes("trace-123"));
+assert(!importText.includes("request-123"));
+assert(!importText.includes("run-123"));
+assert(!importText.includes("conversation-123"));
 assert(!importText.includes("person@example.com"));
 assert(!importText.includes("How much duty for my exact private prompt"));
+
+const importJson = workflowExport.toJson(importReport);
+assert(importJson.includes('"title": "Import Advisor Decision Brief"'));
+assert(!importJson.includes("secret-token"));
+assert(!importJson.includes("request-123"));
+assert(!importJson.includes("conversation-123"));
 
 const checklist = workflowExport.toChecklistText(importReport);
 assert(checklist.includes("Checklist"));
@@ -124,6 +147,10 @@ const normalized = workflowExport.normalizeReport({
     _internal: "hidden",
     authorization: "Bearer secret",
     userId: "user-1",
+    requestId: "request-1",
+    traceId: "trace-1",
+    runId: "run-1",
+    conversationId: "conversation-1",
     country: "Kenya"
   },
   resultSummary: "Ready"
@@ -131,4 +158,31 @@ const normalized = workflowExport.normalizeReport({
 assert.deepStrictEqual(normalized.inputsUsed, { country: "Kenya" });
 assert.strictEqual(normalized.resultSummary[0], "Ready");
 
-console.log("ai-workflow-export tests passed");
+workflowExport.copyToClipboard(importReport, { mode: "checklist" }).then((copyResult) => {
+  assert.strictEqual(copyResult.copied, false);
+  assert.strictEqual(copyResult.reason, "clipboard_unavailable");
+  assert(copyResult.text.includes("Checklist"));
+  assert(!copyResult.text.includes("secret-token"));
+  return workflowExport.downloadPdfReport(importReport, {
+    toolId: "import-duty",
+    category: "trade"
+  });
+}).then((pdfResult) => {
+  assert.strictEqual(pdfResult.fileName, "workflow-brief.pdf");
+  const captured = global.__capturedWorkflowPdf;
+  assert.strictEqual(captured.title, "Import Advisor Decision Brief");
+  assert.strictEqual(captured.toolId, "import-duty");
+  assert.strictEqual(captured.category, "trade");
+  assert(captured.sections.some((section) => section.title === "Inputs used"));
+  assert(captured.sections.some((section) => section.title === "Source and confidence"));
+  const serialized = JSON.stringify(captured);
+  assert(!serialized.includes("secret-token"));
+  assert(!serialized.includes("request-123"));
+  assert(!serialized.includes("conversation-123"));
+  assert(!serialized.includes("How much duty for my exact private prompt"));
+}).then(() => {
+  console.log("ai-workflow-export tests passed");
+}).catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

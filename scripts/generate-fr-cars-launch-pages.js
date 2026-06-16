@@ -62,7 +62,7 @@ const COUNTRY_PLACE_FR = {
   TZ: "en Tanzanie"
 };
 
-const MODEL_PAGES = [
+const BASE_MODEL_PAGES = [
   { countryCode: "CI", make: "toyota", model: "corolla", year: 2018 },
   { countryCode: "SN", make: "toyota", model: "corolla", year: 2018 },
   { countryCode: "CM", make: "toyota", model: "corolla", year: 2018 },
@@ -130,8 +130,87 @@ const MODEL_PAGES = [
   { countryCode: "ZM", make: "toyota", model: "hilux", year: 2015 },
   { countryCode: "TZ", make: "toyota", model: "corolla", year: 2018 },
   { countryCode: "TZ", make: "toyota", model: "prado", year: 2016 },
-  { countryCode: "TZ", make: "toyota", model: "hilux", year: 2015 }
+  { countryCode: "TZ", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "CI", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "DZ", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "DZ", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "TN", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "TN", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "RW", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "NG", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "NG", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "NG", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "NG", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "GH", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "GH", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "KE", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "KE", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "EG", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "EG", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "ET", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "ET", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "ET", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "AO", make: "toyota", model: "corolla", year: 2018 },
+  { countryCode: "AO", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "AO", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "ZA", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "ZA", make: "toyota", model: "hilux", year: 2015 },
+  { countryCode: "ZA", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "ZA", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "MZ", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "MZ", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "MZ", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "BW", make: "toyota", model: "corolla", year: 2018 },
+  { countryCode: "BW", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "BW", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "BW", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "NA", make: "toyota", model: "corolla", year: 2018 },
+  { countryCode: "NA", make: "toyota", model: "prado", year: 2016 },
+  { countryCode: "NA", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "NA", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "UG", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "UG", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "ZM", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "ZM", make: "hyundai", model: "elantra", year: 2018 },
+  { countryCode: "TZ", make: "honda", model: "cr-v", year: 2016 },
+  { countryCode: "TZ", make: "hyundai", model: "elantra", year: 2018 }
 ];
+
+const PRACTICAL_MARKET_MODEL_WAVE = [
+  { make: "toyota", model: "vitz-yaris", year: 2015 },
+  { make: "honda", model: "accord", year: 2014 },
+  { make: "mazda", model: "demio", year: 2017 },
+  { make: "nissan", model: "x-trail", year: 2015 },
+  { make: "kia", model: "sportage", year: 2017 }
+];
+
+const FAMILY_AND_COMMERCIAL_MODEL_WAVE = [
+  { make: "toyota", model: "camry", year: 2005 },
+  { make: "toyota", model: "camry", year: 2012 },
+  { make: "toyota", model: "axio", year: 2018 },
+  { make: "toyota", model: "axio", year: 2019 },
+  { make: "toyota", model: "noah", year: 2014 },
+  { make: "toyota", model: "noah", year: 2018 },
+  { make: "toyota", model: "prado", year: 2020 },
+  { make: "toyota", model: "hilux", year: 2020 },
+  { make: "honda", model: "cr-v", year: 2020 }
+];
+
+const PREMIUM_AND_WORKHORSE_MODEL_WAVE = [
+  { make: "mercedes-benz", model: "c-class", year: 2016 },
+  { make: "mercedes-benz", model: "e-class", year: 2017 },
+  { make: "mercedes-benz", model: "g-wagon", year: 2022 },
+  { make: "lexus", model: "rx", year: 2017 },
+  { make: "lexus", model: "es", year: 2016 },
+  { make: "ford", model: "ranger", year: 2018 }
+];
+
+const MODEL_PAGES = uniqueBy([
+  ...BASE_MODEL_PAGES,
+  ...expandModelWave(PRACTICAL_MARKET_MODEL_WAVE),
+  ...expandModelWave(FAMILY_AND_COMMERCIAL_MODEL_WAVE),
+  ...expandModelWave(PREMIUM_AND_WORKHORSE_MODEL_WAVE)
+], (page) => `${page.countryCode}|${page.make}|${page.model}|${page.year}`);
 
 const TOP_MODELS = [
   { make: "toyota", model: "corolla", year: 2018 },
@@ -150,7 +229,7 @@ const MODEL_INDEX_PAGES = uniqueBy(MODEL_PAGES.map((page) => ({
   countryCode: page.countryCode,
   make: page.make,
   model: page.model
-})), (page) => `${page.countryCode}|${page.make}|${page.model}`).slice(0, 36);
+})), (page) => `${page.countryCode}|${page.make}|${page.model}`);
 
 function uniqueBy(items, keyFn) {
   const seen = new Set();
@@ -162,6 +241,23 @@ function uniqueBy(items, keyFn) {
     out.push(item);
   }
   return out;
+}
+
+function expandModelWave(modelSpecs) {
+  const pages = [];
+  for (const country of COUNTRIES) {
+    for (const spec of modelSpecs) {
+      const enPath = path.join(root, "cars", country.enSlug, spec.make, spec.model, String(spec.year), "index.html");
+      if (!fs.existsSync(enPath)) continue;
+      pages.push({
+        countryCode: country.code,
+        make: spec.make,
+        model: spec.model,
+        year: spec.year
+      });
+    }
+  }
+  return pages;
 }
 
 function readJson(relPath) {

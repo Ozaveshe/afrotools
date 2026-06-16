@@ -135,12 +135,13 @@
   function pdfAction(value) {
     var clean = lower(value);
     if (!clean) return "";
+    if (clean.indexOf("page number") !== -1 || clean.indexOf("number pages") !== -1) return "page_numbers";
     if (clean.indexOf("merge") !== -1 || clean.indexOf("combine") !== -1) return "merge";
     if (clean.indexOf("compress") !== -1 || clean.indexOf("reduce") !== -1) return "compress";
     if (clean.indexOf("convert") !== -1 || clean.indexOf("image") !== -1 || clean.indexOf("word") !== -1) return "convert";
     if (clean.indexOf("split") !== -1 || clean.indexOf("extract") !== -1) return "split";
     if (clean.indexOf("sign") !== -1 || clean.indexOf("signature") !== -1) return "sign";
-    if (clean.indexOf("protect") !== -1 || clean.indexOf("password") !== -1) return "protect";
+    if (clean.indexOf("protect") !== -1 || clean.indexOf("password") !== -1 || clean.indexOf("lock") !== -1 || clean.indexOf("encrypt") !== -1) return "protect";
     if (clean.indexOf("watermark") !== -1) return "watermark";
     if (clean.indexOf("organize") !== -1 || clean.indexOf("reorder") !== -1 || clean.indexOf("page") !== -1) return "organize";
     return clean;
@@ -341,10 +342,52 @@
     },
   });
 
+  var studyAbroadAdapter = createAdapter({
+    id: "study-abroad-cost-prefill",
+    primaryToolId: "study-abroad-cost",
+    aliases: ["education-planner", "study-abroad", "study-plan", "study-abroad-planner"],
+    route: "/tools/study-abroad-cost/",
+    privacyNote: "Study-abroad prefill is stored briefly in this browser session. Budget and profile details stay out of the URL.",
+    normalizeInputs: function normalizeStudyAbroad(inputs) {
+      return {
+        country: text(firstValue(inputs, ["country", "homeCountry", "originCountry", "nationality"])),
+        originCountry: text(firstValue(inputs, ["originCountry", "homeCountry", "country", "nationality"])),
+        targetCountry: text(firstValue(inputs, ["targetCountry", "destinationCountry", "destination"])),
+        studyLevel: studyLevel(firstValue(inputs, ["studyLevel", "level"])),
+        field: scholarshipField(firstValue(inputs, ["field", "course", "discipline"])),
+        gpa: positiveNumber(firstValue(inputs, ["gpa", "gradePointAverage", "score"])),
+        gradeBand: text(firstValue(inputs, ["gradeBand", "grade", "academicRecord"])),
+        ieltsScore: positiveNumber(firstValue(inputs, ["ieltsScore", "ielts", "englishScore"])),
+        budget: positiveNumber(firstValue(inputs, ["budget", "budgetAmount", "availableBudget"])),
+        budgetAmount: positiveNumber(firstValue(inputs, ["budgetAmount", "budget", "availableBudget"])),
+        currency: currency(firstValue(inputs, ["currency", "budgetCurrency"]), "USD"),
+        intakeTimeline: text(firstValue(inputs, ["intakeTimeline", "intake", "timeline"])),
+      };
+    },
+    validateInputs: function validateStudyAbroad(normalized) {
+      return makeValidation(validateNumbers(normalized, ["budget", "budgetAmount", "gpa", "ieltsScore"]));
+    },
+    getMissingInputs: function getMissingStudyAbroad(normalized) {
+      var missingFields = missing(normalized, ["country", "targetCountry", "studyLevel"]);
+      if (!normalized.budget && normalized.budget !== 0) missingFields.push("budget");
+      return missingFields;
+    },
+    getUserFacingSummary: function summarizeStudyAbroad(normalized) {
+      return summaryList([
+        normalized.country ? "Origin: " + normalized.country : "",
+        normalized.targetCountry ? "Destination: " + normalized.targetCountry : "",
+        normalized.studyLevel ? "Level: " + normalized.studyLevel : "",
+        normalized.field ? "Field: " + normalized.field : "",
+        normalized.budget !== null ? "Budget captured for local prefill" : "",
+        normalized.intakeTimeline ? "Intake: " + normalized.intakeTimeline : "",
+      ]) || "Open Study Abroad Cost Planner and add route details.";
+    },
+  });
+
   var importDutyAdapter = createAdapter({
     id: "import-duty-prefill",
     primaryToolId: "import-duty",
-    aliases: ["car-import", "car-import-cost", "vehicle-import"],
+    aliases: ["vehicle-import"],
     route: "/tools/import-duty/",
     privacyNote: "Import prefill is stored briefly in this browser session. Item values stay out of the URL.",
     normalizeInputs: function normalizeImport(inputs) {
@@ -410,6 +453,97 @@
         normalized.port ? "Arrival: " + normalized.port : "",
       ]) || "Open Import Duty Calculator and add item details.";
     },
+  });
+
+  function importCountryCode(country) {
+    var clean = lower(country);
+    var aliases = {
+      nigeria: "NG",
+      ng: "NG",
+      ghana: "GH",
+      gh: "GH",
+      kenya: "KE",
+      ke: "KE",
+      uganda: "UG",
+      ug: "UG",
+      zambia: "ZM",
+      zm: "ZM",
+      tanzania: "TZ",
+      tz: "TZ",
+    };
+    return aliases[clean] || "";
+  }
+
+  function sourceMarketSlug(originCountry) {
+    var clean = lower(originCountry);
+    if (!clean) return "";
+    if (clean.indexOf("japan") !== -1) return "japan";
+    if (clean.indexOf("uae") !== -1 || clean.indexOf("dubai") !== -1 || clean.indexOf("emirates") !== -1) return "uae";
+    if (clean.indexOf("uk") !== -1 || clean.indexOf("united kingdom") !== -1) return "uk";
+    if (clean.indexOf("south africa") !== -1) return "south-africa";
+    if (clean.indexOf("local") !== -1) return "local-dealer";
+    return "";
+  }
+
+  function carImportRoute(normalized) {
+    var country = importCountryCode(normalized.destinationCountry || normalized.countryCode);
+    var routes = {
+      NG: "/tools/car-import-cost/nigeria/",
+      KE: "/tools/car-import-cost/kenya/",
+      GH: "/tools/car-import-cost/ghana/",
+      UG: "/tools/car-import-cost/uganda/",
+      ZM: "/tools/car-import-cost/zambia/",
+      TZ: "/tools/car-import-cost/tanzania/",
+    };
+    return routes[country] || "/tools/car-import-cost/";
+  }
+
+  var carImportCostAdapter = createAdapter({
+    id: "car-import-cost-prefill",
+    primaryToolId: "car-import-cost",
+    aliases: ["car-import", "vehicle-import-cost", "car-import-workspace"],
+    route: "/tools/car-import-cost/",
+    privacyNote: "Car import prefill is stored briefly in this browser session. Vehicle value, freight, insurance, and FX stay out of the URL.",
+    normalizeInputs: function normalizeCarImport(inputs) {
+      var base = importDutyAdapter.normalizeInputs(inputs || {});
+      var countryCode = importCountryCode(base.destinationCountry);
+      return Object.assign({}, base, {
+        mode: "car",
+        productCategory: "vehicle",
+        countryCode: countryCode,
+        sourceMarket: sourceMarketSlug(base.originCountry) || "japan",
+        inputMode: base.purchasePrice !== null ? "purchase" : "make-model-year",
+        outputMode: "practical",
+        bodyType: base.vehicleType || "",
+        purchasePriceUsd: base.purchasePrice,
+        freightUsd: base.shippingCost,
+        insuranceUsd: base.insuranceCost,
+        portCode: base.port,
+      });
+    },
+    validateInputs: function validateCarImport(normalized) {
+      var errors = validateNumbers(normalized, ["itemValue", "purchasePrice", "purchasePriceUsd", "engineCc", "shippingCost", "freightUsd", "insuranceCost", "insuranceUsd", "fxRate"]);
+      if (normalized.year && !/^(19[8-9]\d|20[0-3]\d)$/.test(String(normalized.year))) errors.push("year is outside the supported vehicle range");
+      return makeValidation(errors);
+    },
+    getMissingInputs: function getMissingCarImport(normalized) {
+      return missing(normalized, ["destinationCountry", "itemCategory", "purchasePrice", "shippingCost", "fxRate"]);
+    },
+    getUserFacingSummary: function summarizeCarImport(normalized) {
+      return summaryList([
+        normalized.destinationCountry ? "Destination: " + normalized.destinationCountry : "",
+        normalized.itemCategory ? "Vehicle: " + normalized.itemCategory : "",
+        normalized.year ? "Year: " + normalized.year : "",
+        normalized.engineCc !== null ? "Engine: " + normalized.engineCc + " cc" : "",
+        normalized.purchasePrice !== null ? "Purchase price captured for local prefill" : "",
+        normalized.shippingCost !== null ? "Shipping captured for local prefill" : "",
+        normalized.insuranceCost !== null ? "Insurance captured for local prefill" : "",
+        normalized.fxRate !== null ? "FX rate captured for planning context" : "",
+        normalized.originCountry ? "Source market: " + normalized.originCountry : "",
+        normalized.port ? "Arrival: " + normalized.port : "",
+      ]) || "Open Car Import Cost and add vehicle details.";
+    },
+    routeFor: carImportRoute,
   });
 
   var energyAdapter = createAdapter({
@@ -597,6 +731,49 @@
     },
   });
 
+  var cashflowAdapter = createAdapter({
+    id: "cash-flow-forecast-prefill",
+    primaryToolId: "cash-flow-forecast",
+    aliases: ["cashflow", "cash-flow", "cash-flow-planner", "cashflow-planner"],
+    route: "/tools/cash-flow-forecast/",
+    privacyNote: "Cashflow prefill is stored briefly in this browser session. Revenue, payroll, and cost assumptions stay out of the URL.",
+    normalizeInputs: function normalizeCashflow(inputs) {
+      var meta = countryMeta(firstValue(inputs, ["country"]), firstValue(inputs, ["countryCode"]));
+      var monthlyRevenue = positiveNumber(firstValue(inputs, ["monthlyRevenue", "revenue", "invoiceAmount", "amount", "openingBalance"]));
+      var fixedMonthlyCosts = positiveNumber(firstValue(inputs, ["fixedMonthlyCosts", "fixedCosts", "grossPayrollPerPeriod", "grossPayroll", "payrollCost"]));
+      return {
+        country: meta.country || text(firstValue(inputs, ["country"])),
+        countryCode: meta.code || text(firstValue(inputs, ["countryCode"])),
+        currency: currency(firstValue(inputs, ["currency"]), meta.currency || ""),
+        openingBalance: positiveNumber(firstValue(inputs, ["openingBalance", "cashOnHand", "startingBalance", "invoiceAmount", "amount"])),
+        monthlyRevenue: monthlyRevenue,
+        fixedMonthlyCosts: fixedMonthlyCosts,
+        cogsPercent: positiveNumber(firstValue(inputs, ["cogsPercent", "cogsPct"])) !== null ? positiveNumber(firstValue(inputs, ["cogsPercent", "cogsPct"])) : null,
+        taxRate: positiveNumber(firstValue(inputs, ["taxRate", "vatRate"])) !== null ? positiveNumber(firstValue(inputs, ["taxRate", "vatRate"])) : null,
+        employeeCount: positiveNumber(firstValue(inputs, ["employeeCount", "numberOfEmployees", "employees", "staffCount"])),
+        payPeriod: payPeriod(firstValue(inputs, ["payPeriod", "period"])) || "",
+        businessType: text(firstValue(inputs, ["businessType", "sector"])),
+      };
+    },
+    validateInputs: function validateCashflow(normalized) {
+      var errors = validateNumbers(normalized, ["openingBalance", "monthlyRevenue", "fixedMonthlyCosts", "cogsPercent", "taxRate", "employeeCount"]);
+      if (normalized.cogsPercent !== null && normalized.cogsPercent > 100) errors.push("cogsPercent cannot exceed 100");
+      if (normalized.taxRate !== null && normalized.taxRate > 100) errors.push("taxRate cannot exceed 100");
+      return makeValidation(errors);
+    },
+    getMissingInputs: function getMissingCashflow(normalized) {
+      return missing(normalized, ["currency"]);
+    },
+    getUserFacingSummary: function summarizeCashflow(normalized) {
+      return summaryList([
+        normalized.country ? "Country: " + normalized.country : "",
+        normalized.currency ? "Currency: " + normalized.currency : "",
+        normalized.monthlyRevenue !== null ? "Revenue assumption captured for local prefill" : "",
+        normalized.fixedMonthlyCosts !== null ? "Cost assumption captured for local prefill" : "",
+      ]) || "Open Cash Flow Forecast and add business assumptions.";
+    },
+  });
+
   var pdfWorkspaceAdapter = createAdapter({
     id: "pdf-workspace-prefill",
     primaryToolId: "pdf-workspace",
@@ -610,7 +787,7 @@
     },
     validateInputs: function validatePdf(normalized) {
       var action = normalized.pdfAction;
-      var allowed = ["organize", "merge", "compress", "convert", "split", "sign", "protect", "watermark"];
+      var allowed = ["organize", "merge", "compress", "convert", "split", "sign", "protect", "watermark", "page_numbers"];
       return makeValidation(action && allowed.indexOf(action) === -1 ? ["pdfAction is invalid"] : []);
     },
     getMissingInputs: function getMissingPdf(normalized) {
@@ -624,11 +801,14 @@
   var ADAPTERS = [
     cvBuilderAdapter,
     scholarshipAdapter,
+    studyAbroadAdapter,
+    carImportCostAdapter,
     importDutyAdapter,
     energyAdapter,
     vatAdapter,
     invoiceAdapter,
     payeAdapter,
+    cashflowAdapter,
     pdfWorkspaceAdapter,
   ];
 

@@ -9,6 +9,9 @@
     "schemaVersion": {
       "const": 1
     },
+    "updatedAt": {
+      "$ref": "#/$defs/DateOrNull"
+    },
     "sources": {
       "type": "array",
       "items": {
@@ -26,8 +29,11 @@
         "sourceType",
         "countryCodes",
         "appliesTo",
+        "lastCheckedAt",
+        "lastReviewedAt",
         "freshnessStatus",
         "confidence",
+        "notes",
         "displayDisclaimer"
       ],
       "additionalProperties": false,
@@ -50,16 +56,12 @@
             "official",
             "regulator",
             "central_bank",
-            "tax_authority",
             "university",
             "foundation",
-            "government",
             "reviewed_dataset",
             "third_party_snapshot",
-            "partner",
             "user_input",
-            "estimate",
-            "unknown"
+            "estimate"
           ]
         },
         "countryCodes": {
@@ -92,20 +94,16 @@
           }
         },
         "effectiveFrom": {
-          "type": "string",
-          "format": "date"
+          "$ref": "#/$defs/DateOrNull"
         },
         "effectiveTo": {
-          "type": "string",
-          "format": "date"
+          "$ref": "#/$defs/DateOrNull"
         },
         "lastCheckedAt": {
-          "type": "string",
-          "format": "date"
+          "$ref": "#/$defs/DateOrNull"
         },
         "lastReviewedAt": {
-          "type": "string",
-          "format": "date"
+          "$ref": "#/$defs/DateOrNull"
         },
         "freshnessStatus": {
           "type": "string",
@@ -118,8 +116,7 @@
             "reviewed",
             "estimated",
             "low_confidence",
-            "user_entered",
-            "unavailable"
+            "user_entered"
           ]
         },
         "reviewCadenceDays": {
@@ -134,6 +131,10 @@
           "minLength": 8
         }
       }
+    },
+    "DateOrNull": {
+      "type": ["string", "null"],
+      "format": "date"
     }
   }
 }

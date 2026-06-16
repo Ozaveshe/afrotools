@@ -15,7 +15,7 @@
 
   var MAX_TEXT = 420;
   var MAX_LIST = 20;
-  var BLOCKED_KEY_PATTERN = /(^|[_-])(raw|prompt|query|token|secret|password|diagnostic|debug|internal|session|cookie|authorization|auth|projectid|userid|provider|model)([_-]|$)/i;
+  var BLOCKED_KEY_PATTERN = /(^|[_-])(raw|prompt|query|token|secret|password|diagnostic|debug|internal|session|cookie|authorization|auth|projectid|userid|requestid|traceid|runid|conversationid|provider|model)([_-]|$)/i;
   var PRIVATE_KEY_PATTERN = /^(email|phone|address|clientName|customerName|fullName|name|passport|nin|idNumber|identityNumber|resumeText|cvText|pdfContent|documentContent|profileText|coverLetterText)$/i;
 
   function text(value, limit) {
@@ -30,7 +30,7 @@
     return BLOCKED_KEY_PATTERN.test(value) ||
       PRIVATE_KEY_PATTERN.test(value) ||
       value.charAt(0) === "_" ||
-      /raw|prompt|query|token|secret|password|diagnostic|debug|internal|session|authorization|cookie|projectid|userid/.test(compact);
+      /raw|prompt|query|token|secret|password|diagnostic|debug|internal|session|authorization|cookie|projectid|userid|requestid|traceid|runid|conversationid/.test(compact);
   }
 
   function sanitizeValue(value, depth) {
@@ -224,9 +224,13 @@
     return true;
   }
 
+  function toJson(report) {
+    return JSON.stringify(normalizeReport(report), null, 2);
+  }
+
   function downloadJson(report, fileName) {
     var safe = normalizeReport(report);
-    return downloadBlob(new Blob([JSON.stringify(safe, null, 2)], { type: "application/json;charset=utf-8" }), fileName || slug(safe.title) + ".json");
+    return downloadBlob(new Blob([toJson(safe)], { type: "application/json;charset=utf-8" }), fileName || slug(safe.title) + ".json");
   }
 
   function copyToClipboard(report, options) {
@@ -252,8 +256,8 @@
   }
 
   function ensurePdfTemplate() {
-    if (!root || !root.document) return Promise.resolve(false);
     if (root.AfroTools && root.AfroTools.pdf && typeof root.AfroTools.pdf.generate === "function") return Promise.resolve(true);
+    if (!root || !root.document) return Promise.resolve(false);
     return new Promise(function (resolve) {
       var existing = root.document.querySelector('script[src*="pdf-template.js"]');
       if (existing) {
@@ -323,6 +327,7 @@
     toWhatsAppText: toWhatsAppText,
     toEmailText: toEmailText,
     downloadJson: downloadJson,
+    toJson: toJson,
     copyToClipboard: copyToClipboard,
     buildWhatsAppUrl: buildWhatsAppUrl,
     buildEmailUrl: buildEmailUrl,

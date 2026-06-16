@@ -184,6 +184,13 @@
     return role.length > 80 ? role.slice(0, 80).trim() : role;
   }
 
+  function stripCountryFromRole(role, country) {
+    var clean = text(role);
+    if (!clean || !country) return clean;
+    var escaped = String(country).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return clean.replace(new RegExp("\\s+(?:in|from|based in)\\s+" + escaped + "\\s*$", "i"), "").trim();
+  }
+
   function inferSkills(sector, role, explicitSkills) {
     var skills = uniq(explicitSkills);
     var clean = normalize((sector || "") + " " + (role || ""));
@@ -269,6 +276,33 @@
     };
   }
 
+  function starterProfileDraft(inputs) {
+    var role = inputs.targetRole || "Target role";
+    var country = inputs.country || "target market";
+    var sector = inputs.sector || "target sector";
+    var skills = inputs.skills && inputs.skills.length ? inputs.skills.slice(0, 5).join(", ") : "role-relevant skills";
+    return {
+      headline: role + " | " + country,
+      summarySkeleton: "Truthful " + role + " profile for " + country + " roles. Replace placeholders with your real years, tools, projects, sectors, and outcomes before exporting.",
+      proofPrompts: [
+        "Add your strongest real " + sector + " project, attachment, employer, or portfolio evidence.",
+        "Turn duties into proof: action, tool or method, scope, and true result.",
+        "Use skills you can defend in interview: " + skills + ".",
+      ],
+    };
+  }
+
+  function applicationPackOutputs(inputs) {
+    var role = inputs.targetRole || "target role";
+    return [
+      { id: "cv", label: "CV", detail: "ATS-safe CV draft for " + role + "." },
+      { id: "cover-letter", label: "Cover letter", detail: "Matching letter once the employer and job description are known." },
+      { id: "linkedin", label: "LinkedIn helper", detail: "Headline, About, and keyword prompts for recruiter search." },
+      { id: "ats", label: "ATS guidance", detail: "Plain export and job-description keyword check before applying." },
+      { id: "tracker", label: "Job tracker", detail: "Application status, deadline, follow-up, and version notes." },
+    ];
+  }
+
   function applicationChecklist(inputs) {
     var role = inputs.targetRole || "target role";
     return [
@@ -282,13 +316,33 @@
     ];
   }
 
+  function buildStarterProfilePrompt(plan) {
+    var inputs = plan && plan.inputs || {};
+    var skills = Array.isArray(inputs.skills) ? inputs.skills.slice(0, 8).join(", ") : "";
+    return [
+      "Create an editable CV starter profile for AfroTools CV Builder.",
+      "Use only these user-approved career details.",
+      "Country or market: " + (inputs.country || "unknown"),
+      "Target role: " + (inputs.targetRole || "unknown"),
+      "Career stage: " + (inputs.careerStage || "unknown"),
+      "Experience level: " + (inputs.experienceLevel || "unknown"),
+      "Sector: " + (inputs.sector || "unknown"),
+      "Skills: " + (skills || "unknown"),
+      "Education: " + (inputs.education || "not provided"),
+      "Language preference: " + (inputs.languagePreference || "English"),
+      "Return one concise professional summary of 45-70 words plus 3 bullet prompts.",
+      "Do not fabricate degrees, employers, certifications, dates, awards, references, metrics, immigration status, or achievements.",
+      "Use bracketed placeholders like [insert true metric] where proof is needed.",
+    ].join("\n");
+  }
+
   function normalizeInputs(query, input) {
     var raw = String(query || "");
     var clean = normalize(raw);
     var source = input || {};
     var inferred = inferExperience(raw);
     var country = text(source.country || source.market) || firstAlias(clean, COUNTRIES);
-    var role = cleanRole(source.targetRole || source.role || source.jobTitle) || parseRole(raw);
+    var role = stripCountryFromRole(cleanRole(source.targetRole || source.role || source.jobTitle) || parseRole(raw), country);
     var sector = text(source.sector || source.industry) || inferSector(raw, role);
     var skills = inferSkills(sector, role, source.skills || source.keywords);
     var languagePreference = text(source.languagePreference || source.language || source.locale) || inferLanguage(raw) || "English";
@@ -327,7 +381,9 @@
     var template = suggestTemplate(inputs);
     var missing = missingInputs(inputs);
     var prompts = starterPrompts(inputs);
-    return {
+    var draft = starterProfileDraft(inputs);
+    var packOutputs = applicationPackOutputs(inputs);
+    var plan = {
       workflowType: "career_agent",
       source: opts.source || "deterministic",
       consentToModel: opts.consentToModel === true,
@@ -339,10 +395,12 @@
       starterProfile: {
         generatedWithConsent: false,
         prompts: prompts,
+        draft: draft,
         note: "Starter profile text is not generated unless the user explicitly chooses AI assistance.",
       },
       matchingTools: TOOL_CARDS.slice(),
       applicationPack: ["CV", "Cover letter", "LinkedIn headline/About", "ATS plain export", "Job tracker entry"],
+      applicationPackOutputs: packOutputs,
       checklist: applicationChecklist(inputs),
       warnings: [
         "Do not fabricate degrees, employers, certifications, dates, references, or achievements.",
@@ -368,10 +426,13 @@
         },
       },
       cvLaunchUrl: "/tools/cv-builder/?source=ask&prefill=1",
+      starterProfilePrompt: "",
       aiProfileStatus: opts.consentToModel === true
         ? "AI starter profile can run only after explicit consent and a configured provider. Manual templates are ready now."
         : "",
     };
+    plan.starterProfilePrompt = buildStarterProfilePrompt(plan);
+    return plan;
   }
 
   function escapeHtml(value) {
@@ -398,6 +459,13 @@
     var missing = plan.missingInputs.length
       ? plan.missingInputs.map(function renderMissing(item) { return "<li>" + escapeHtml(item) + "</li>"; }).join("")
       : "<li>No critical career inputs missing.</li>";
+    var packOutputs = (plan.applicationPackOutputs || []).map(function renderPack(item) {
+      return '<li><strong>' + escapeHtml(item.label) + '</strong><span>' + escapeHtml(item.detail) + '</span></li>';
+    }).join("");
+    var draft = plan.starterProfile && plan.starterProfile.draft || {};
+    var draftPrompts = (draft.proofPrompts || []).map(function renderPrompt(item) {
+      return "<li>" + escapeHtml(item) + "</li>";
+    }).join("");
     return '<section class="ai-career-plan" data-career-plan>' +
       '<div class="ai-career-head"><div><h4>Career agent plan</h4><p>' + escapeHtml(plan.goalSummary) + '</p></div><span>' + escapeHtml(plan.templateSuggestion.templateName) + '</span></div>' +
       '<div class="ai-career-grid">' +
@@ -405,6 +473,8 @@
       '<div><strong>Detected role keywords</strong><ul>' + skills + '</ul></div>' +
       '<div><strong>Missing profile inputs</strong><ul>' + missing + '</ul></div>' +
       '</div>' +
+      '<div class="ai-career-section"><strong>Country-aware starter draft</strong><p>' + escapeHtml(draft.headline || "") + '</p><p>' + escapeHtml(draft.summarySkeleton || "") + '</p><ul>' + draftPrompts + '</ul></div>' +
+      '<div class="ai-career-section"><strong>Application pack outputs</strong><ul class="ai-career-pack">' + packOutputs + '</ul></div>' +
       '<div class="ai-career-section"><strong>Application pack checklist</strong><ol>' + checklist + '</ol></div>' +
       '<div class="ai-career-section"><strong>Matching AfroTools</strong><div class="ai-career-tools">' + tools + '</div></div>' +
       '<div class="ai-career-section ai-career-warning"><strong>Safe CV rules</strong><ul>' + warnings + '</ul></div>' +
@@ -413,6 +483,7 @@
       '<a class="ai-small-button secondary" href="/tools/cover-letter-generator/">Open Cover Letter Generator</a>' +
       '<button class="ai-small-button" type="button" data-career-ai-profile>Generate starter profile with AI</button>' +
       '</div>' +
+      '<p class="ai-career-ai-output" data-career-ai-output>' + escapeHtml(plan.starterProfile && plan.starterProfile.note || "") + '</p>' +
       '<p class="ai-model-status" data-career-profile-status>' + escapeHtml(plan.aiProfileStatus) + '</p>' +
       '</section>';
   }
@@ -422,6 +493,7 @@
     normalizeInputs: normalizeInputs,
     suggestTemplate: suggestTemplate,
     buildCareerWorkflow: buildCareerWorkflow,
+    buildStarterProfilePrompt: buildStarterProfilePrompt,
     renderCareerPanel: renderCareerPanel,
   };
 });

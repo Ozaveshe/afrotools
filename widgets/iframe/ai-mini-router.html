@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask AfroTools AI Mini Router - AfroTools</title>
+<meta name="description" content="Embeddable Ask AfroTools AI mini-router widget for recommending practical AfroTools workflows.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://afrotools.com/widgets/">
+<link rel="stylesheet" href="/widgets/css/widget-base.css?v=67673248">
+<style>
+body{margin:0;padding:16px;background:#fff;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body.dark{background:#0a1628;color:#fafaf8}
+body.minimal{background:transparent}
+#widget-root{max-width:520px;margin:0 auto}
+.aw{box-shadow:none}
+.aw-ai-copy,.aw-ai-reason{color:#64748b;font-size:13px;line-height:1.45;margin:0 0 12px}
+.aw--dark .aw-ai-copy,.aw--dark .aw-ai-reason,.dark .aw-ai-copy,.dark .aw-ai-reason{color:#94a3b8}
+.aw-ai-textarea{height:auto;line-height:1.45;min-height:86px;padding:10px 12px;resize:vertical}
+.aw-ai-chip-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.aw-ai-chip{background:transparent;border:1px solid #cbd5e1;border-radius:999px;color:inherit;cursor:pointer;font:inherit;font-size:12px;font-weight:700;min-height:34px;padding:6px 10px}
+.aw-ai-chip[aria-pressed="true"]{background:#007AFF;border-color:#007AFF;color:#fff}
+.aw-ai-link{align-items:center;background:#0f172a;border-radius:8px;color:#fff;display:inline-flex;font-size:13px;font-weight:800;min-height:40px;padding:0 12px;text-decoration:none}
+.aw--dark .aw-ai-link,.dark .aw-ai-link{background:#4DA3FF;color:#07111f}
+.aw-ai-sponsor{border:1px solid rgba(0,122,255,.22);border-radius:8px;color:#475569;font-size:12px;font-weight:700;margin:0 0 12px;padding:8px 10px}
+.dark .aw-ai-sponsor{color:#cbd5e1}
+.aw-ai-context{font-size:12px;font-weight:700}
+.aw-ai-router--minimal{box-shadow:none;border:1px solid rgba(148,163,184,.35);border-radius:10px;padding:14px}
+.aw-footer{text-align:center;margin:12px auto 0;max-width:520px;padding-top:12px;border-top:1px solid rgba(128,128,128,.25)}
+.aw-footer a{font-size:11px;color:#007AFF;text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<div id="widget-root" class="aw aw--light"></div>
+<div class="aw-footer"><a href="https://afrotools.com/ai/" target="_blank" rel="noopener">Powered by AfroTools AI</a></div>
+<script src="/assets/js/ai/example-registry.js?v=8a754080"></script>
+<script src="/widgets/ai/mini-router.js?v=0c8c48e6"></script>
+<script>
+(function () {
+  "use strict";
+  var params = new URLSearchParams(window.location.search);
+  var theme = params.get("theme") || "light";
+  var config = {
+    theme: theme,
+    defaultCountry: params.get("defaultCountry") || params.get("country") || "",
+    defaultCategory: params.get("defaultCategory") || params.get("category") || "",
+    partnerId: params.get("partnerId") || "",
+    allowedCategories: params.get("allowedCategories") || "",
+    sponsorLabel: params.get("sponsorLabel") || ""
+  };
+  if (theme === "dark") document.body.classList.add("dark");
+  if (theme === "minimal") document.body.classList.add("minimal");
+  document.getElementById("widget-root").className = "aw aw--" + (theme === "dark" ? "dark" : "light");
+  window.AfroWidgets.askAiRouter.render(document.getElementById("widget-root"), config);
+  if ("ResizeObserver" in window) {
+    var ro = new ResizeObserver(function () {
+      window.parent.postMessage({ type: "afrotools:resize", height: document.body.scrollHeight }, "*");
+    });
+    ro.observe(document.body);
+  }
+})();
+</script>
+</body>
+</html>

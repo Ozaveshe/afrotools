@@ -330,6 +330,28 @@
     return options[options.length - 1];
   }
 
+  function generatorFuelRoute(countryData) {
+    var supported = {
+      angola: true,
+      cameroon: true,
+      "cote-divoire": true,
+      egypt: true,
+      ethiopia: true,
+      ghana: true,
+      kenya: true,
+      morocco: true,
+      nigeria: true,
+      rwanda: true,
+      senegal: true,
+      "south-africa": true,
+      tanzania: true,
+      tunisia: true,
+      uganda: true,
+    };
+    var slug = countryData && countryData.slug || "";
+    return slug && supported[slug] ? "/tools/generator-fuel/" + slug + "/" : "/tools/generator-fuel/";
+  }
+
   function sourceLine(countryData, key) {
     var item = countryData && countryData.assumptions && countryData.assumptions[key] || {};
     return {
@@ -490,6 +512,7 @@
       }),
       solarRoute: normalized.countrySlug || normalized.country ? (countryData.slug ? "/tools/solar-roi/" + countryData.slug + "/" : "/tools/solar-roi/") : "/tools/solar-roi/",
       generatorRoute: "/tools/fuel-tracker/#generator-cost",
+      generatorFuelRoute: generatorFuelRoute(countryData),
       decisionBriefText: briefLines.join("\n"),
     };
   }
@@ -513,7 +536,7 @@
       ["Fuel", sourceState.fuel],
       ["Solar yield", sourceState.solarYield],
     ].map(function (row) {
-      return "<li><strong>" + escapeHtml(row[0]) + ":</strong> " + escapeHtml(row[1].label) + " · " + escapeHtml(row[1].confidence) + " confidence · reviewed " + escapeHtml(row[1].freshness) + "</li>";
+      return "<li><strong>" + escapeHtml(row[0]) + ":</strong> " + escapeHtml(row[1].label) + " - " + escapeHtml(row[1].confidence) + " confidence - reviewed " + escapeHtml(row[1].freshness) + "</li>";
     }).join("");
   }
 
@@ -535,14 +558,15 @@
       '</div>' +
       '<div class="ai-energy-actions">' +
       '<a class="ai-small-button primary" href="' + escapeHtml(plan.solarRoute) + '" data-energy-solar-link>Open Solar ROI with prefill</a>' +
-      '<a class="ai-small-button" href="' + escapeHtml(plan.generatorRoute) + '" data-energy-generator-link>Open generator/fuel workflow</a>' +
-      '<button class="ai-small-button secondary" type="button" data-workflow-export="pdf" data-workflow-export-kind="energy">PDF brief</button>' +
-      '<button class="ai-small-button secondary" type="button" data-workflow-export="copy" data-workflow-export-kind="energy">Copy checklist</button>' +
-      '<a class="ai-small-button secondary" href="#" data-workflow-export="whatsapp" data-workflow-export-kind="energy">WhatsApp summary</a>' +
-      '<button class="ai-small-button secondary" type="button" data-workflow-export="json" data-workflow-export-kind="energy">JSON</button>' +
-      '<a class="ai-small-button secondary" href="#" data-workflow-export="email" data-workflow-export-kind="energy">Email text</a>' +
-      '<button class="ai-small-button secondary" type="button" data-energy-brief-download>Download text brief</button>' +
-      '<button class="ai-small-button secondary" type="button" data-energy-ai-brief>Use AI to improve brief</button>' +
+      '<a class="ai-small-button" href="' + escapeHtml(plan.generatorRoute) + '" data-energy-generator-link>Open AfroFuel with prefill</a>' +
+      '<a class="ai-small-button" href="' + escapeHtml(plan.generatorFuelRoute) + '">Open generator calculator</a>' +
+      '<button class="ai-small-button secondary" type="button" data-workflow-export="pdf" data-workflow-export-kind="energy" aria-label="Export energy advisor PDF brief">PDF brief</button>' +
+      '<button class="ai-small-button secondary" type="button" data-workflow-export="copy" data-workflow-export-kind="energy" aria-label="Copy energy advisor checklist">Copy checklist</button>' +
+      '<a class="ai-small-button secondary" href="#" data-workflow-export="whatsapp" data-workflow-export-kind="energy" aria-label="Open WhatsApp-friendly energy advisor summary">WhatsApp summary</a>' +
+      '<button class="ai-small-button secondary" type="button" data-workflow-export="json" data-workflow-export-kind="energy" aria-label="Download energy advisor JSON report">JSON</button>' +
+      '<a class="ai-small-button secondary" href="#" data-workflow-export="email" data-workflow-export-kind="energy" aria-label="Create email-ready energy advisor text">Email text</a>' +
+      '<button class="ai-small-button secondary" type="button" data-energy-brief-download aria-label="Download energy advisor text brief">Download text brief</button>' +
+      '<button class="ai-small-button secondary" type="button" data-energy-ai-brief aria-label="Use AI to improve energy decision brief after consent">Use AI to improve brief</button>' +
       '<span class="ai-panel-status" data-energy-brief-status data-workflow-export-status></span>' +
       '</div>' +
       '</section>';

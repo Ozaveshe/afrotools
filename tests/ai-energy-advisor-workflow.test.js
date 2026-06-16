@@ -20,6 +20,8 @@ assert.ok(lagosShop.estimates.monthlyGeneratorCost > 0);
 assert.ok(lagosShop.estimates.annualFuelExposure > lagosShop.estimates.monthlyGeneratorCost);
 assert.ok(lagosShop.estimates.roughSystemKw >= 3);
 assert.strictEqual(lagosShop.solarRoute, "/tools/solar-roi/nigeria/");
+assert.strictEqual(lagosShop.generatorRoute, "/tools/fuel-tracker/#generator-cost");
+assert.strictEqual(lagosShop.generatorFuelRoute, "/tools/generator-fuel/nigeria/");
 assert.ok(includes(lagosShop.installerQuestions, "inverter"));
 assert.ok(includes(lagosShop.risks, "Fuel"));
 assert.ok(lagosShop.warning.includes("Planning estimate only"));
@@ -28,6 +30,9 @@ assert.strictEqual(lagosShop.generatorPrefillInputs.mode, "generator");
 assert.match(lagosShop.decisionBriefText, /SOLAR AND GENERATOR DECISION BRIEF/);
 assert.match(advisor.renderEnergyPanel(lagosShop), /Solar and generator advisor/);
 assert.match(advisor.renderEnergyPanel(lagosShop), /Open Solar ROI with prefill/);
+assert.match(advisor.renderEnergyPanel(lagosShop), /Open AfroFuel with prefill/);
+assert.match(advisor.renderEnergyPanel(lagosShop), /Open generator calculator/);
+assert.doesNotMatch(advisor.renderEnergyPanel(lagosShop), /Â/);
 
 const nairobiHome = advisor.buildAdvisorPlan({}, {
   query: "Nairobi home solar backup, electricity bill KES 8500, diesel generator 3 hours daily, 2kW load"

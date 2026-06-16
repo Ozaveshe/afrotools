@@ -73,5 +73,7 @@ assert.ok(unknown.sourceConfidence.join(" ").includes("No final customs assessme
 assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /Import advisor estimate/);
 assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /Official verification checklist/);
 assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /Planning estimate only/);
+assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /FX Import Impact/);
+assert.match(advisor.renderImportAdvisorPanel(toyotaWithCosts), /\/tools\/fx-import-impact\//);
 
 console.log("AI import advisor workflow validated: extraction, missing inputs, estimates, source confidence, and cautious copy.");

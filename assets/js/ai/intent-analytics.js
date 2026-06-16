@@ -11,6 +11,22 @@
   var STORAGE_KEY = "afrotools.aiIntentAnalytics.v1";
   var RAW_QUERY_ENV = "NEXT_PUBLIC_AFROTOOLS_AI_RAW_QUERY_LOGGING";
   var DEBUG_STORAGE_KEY = "afrotools.aiIntentDebug";
+  var EVENT_NAMES = [
+    "ai_prompt_submitted",
+    "ai_intent_detected",
+    "ai_clarification_shown",
+    "ai_clarification_answered",
+    "ai_tool_opened",
+    "ai_prefill_success",
+    "ai_prefill_failed",
+    "ai_export_generated",
+    "ai_project_saved",
+    "ai_signup_prompt_shown",
+    "ai_pro_upgrade_clicked",
+    "sponsor_lead_optin_submitted",
+    "ai_api_interest_clicked",
+    "ai_widget_interest_clicked"
+  ];
   var ALLOWED_SOURCES = {
     homepage_input: true,
     prompt_chip: true,
@@ -62,7 +78,8 @@
         projectsSaved: 0,
         signupPromptShown: 0,
         proUpgradeClicked: 0,
-        sponsorLeadOptinSubmitted: 0
+        sponsorLeadOptinSubmitted: 0,
+        apiWidgetInterest: 0
       },
       categories: {},
       workflows: {},
@@ -73,6 +90,7 @@
       sources: {},
       confidenceBuckets: {},
       exportTypes: {},
+      interestSurfaces: {},
       noMatchCategories: {},
       safePromptExamples: {}
     };
@@ -103,6 +121,7 @@
         sources: Object.assign({}, parsed.sources || {}),
         confidenceBuckets: Object.assign({}, parsed.confidenceBuckets || {}),
         exportTypes: Object.assign({}, parsed.exportTypes || {}),
+        interestSurfaces: Object.assign({}, parsed.interestSurfaces || {}),
         noMatchCategories: Object.assign({}, parsed.noMatchCategories || {}),
         safePromptExamples: Object.assign({}, parsed.safePromptExamples || {})
       });
@@ -185,6 +204,9 @@
     var clarificationAnswers = isObject(state.clarificationAnswers) ? state.clarificationAnswers : {};
     var country = extractedInputs.country || extractedInputs.destinationCountry || extractedInputs.targetCountry ||
       clarificationAnswers.country || clarificationAnswers.destinationCountry || clarificationAnswers.targetCountry || "";
+    var conversionType = meta.conversionType || meta.conversion_type || "";
+    if (!conversionType && eventName === "ai_api_interest_clicked") conversionType = "api";
+    if (!conversionType && eventName === "ai_widget_interest_clicked") conversionType = "widget";
     var payload = {
       surface: "ai_command_page",
       intent_category: safeString(meta.intentCategory || state.intentCategory || state.safetyDomain || state.domain || "unknown"),
@@ -201,7 +223,7 @@
       workflow_type: safeString(meta.workflowType || state.workflowType || state.selectedToolId || meta.selectedToolId || "unknown"),
       export_type: safeString(meta.exportType || meta.export_type || "none"),
       prefill_status: safeString(meta.prefillStatus || meta.prefill_status || "unknown"),
-      conversion_type: safeString(meta.conversionType || meta.conversion_type || "none"),
+      conversion_type: safeString(conversionType || "none"),
       no_match_category: safeString(meta.noMatchCategory || (meta.fallbackUsed ? meta.routerSource || state.source || "fallback" : ""), "none"),
       safe_prompt_example: safePromptExample(meta.safePromptExample || "", state, meta)
     };
@@ -213,7 +235,7 @@
   }
 
   function safePromptExample(explicitValue, state, meta) {
-    var explicit = String(explicitValue || "").trim().slice(0, 80);
+    var explicit = safeExplicitPromptExample(explicitValue);
     if (explicit) return explicit;
     var tool = String(meta.selectedToolId || state.selectedToolId || "").trim().slice(0, 80);
     var category = safeString(meta.intentCategory || state.intentCategory || state.safetyDomain || "unknown");
@@ -230,6 +252,15 @@
     if (country && country !== "unknown") parts.push(country);
     parts.push("length:" + queryLengthBucket(meta.queryLength || String(state.originalQuery || meta.query || "").length));
     return parts.join(" / ");
+  }
+
+  function safeExplicitPromptExample(value) {
+    var text = String(value || "").trim().replace(/\s+/g, " ").slice(0, 120);
+    if (!text) return "";
+    if (/@|https?:\/\/|www\.|(?:\+?\d[\d\s().-]{5,}\d)/i.test(text)) return "";
+    if (/\b(email|phone|passport|password|token|secret|resume|curriculum vitae|cover letter|invoice number|tin)\b/i.test(text)) return "";
+    text = text.replace(/[^a-zA-Z0-9 _:/.-]/g, "").trim().slice(0, 80);
+    return text || "";
   }
 
   function confidenceBucket(value) {
@@ -259,6 +290,7 @@
     if (eventName === "ai_signup_prompt_shown") totals.signupPromptShown += 1;
     if (eventName === "ai_pro_upgrade_clicked") totals.proUpgradeClicked += 1;
     if (eventName === "sponsor_lead_optin_submitted") totals.sponsorLeadOptinSubmitted += 1;
+    if (eventName === "ai_api_interest_clicked" || eventName === "ai_widget_interest_clicked" || payload.conversion_type === "api" || payload.conversion_type === "widget") totals.apiWidgetInterest += 1;
 
     increment(store.categories, payload.intent_category);
     increment(store.workflows, payload.workflow_type);
@@ -268,6 +300,7 @@
     increment(store.sources, payload.source);
     increment(store.confidenceBuckets, payload.confidence_bucket);
     if (payload.export_type && payload.export_type !== "none") increment(store.exportTypes, payload.export_type);
+    if (payload.conversion_type === "api" || payload.conversion_type === "widget") increment(store.interestSurfaces, payload.conversion_type);
     if (payload.no_match_category && payload.no_match_category !== "none") increment(store.noMatchCategories, payload.no_match_category);
     if (payload.safe_prompt_example) increment(store.safePromptExamples, payload.safe_prompt_example);
     payload.missing_input_types.forEach(function (input) {
@@ -328,6 +361,7 @@
       topSources: top(store.sources, 8),
       confidenceBuckets: top(store.confidenceBuckets, 8),
       exportTypes: top(store.exportTypes, 8),
+      interestSurfaces: top(store.interestSurfaces, 8),
       noMatchCategories: top(store.noMatchCategories, 8),
       safePromptExamples: top(store.safePromptExamples, 8),
       fallbackRate: rate(store.totals.fallback, routed),
@@ -352,6 +386,7 @@
     storageKey: STORAGE_KEY,
     rawQueryEnv: RAW_QUERY_ENV,
     debugStorageKey: DEBUG_STORAGE_KEY,
+    eventNames: EVENT_NAMES.slice(),
     queryLengthBucket: queryLengthBucket,
     normalizeSource: normalizeSource,
     buildPayload: buildPayload,

@@ -17,9 +17,16 @@ assert.ok(ghana.matchingTools.some((tool) => tool.id === "cv-builder"));
 assert.ok(ghana.matchingTools.some((tool) => tool.id === "cover-letter"));
 assert.ok(ghana.matchingTools.some((tool) => tool.id === "linkedin-optimizer"));
 assert.ok(ghana.applicationPack.includes("ATS plain export"));
+assert.ok(ghana.applicationPackOutputs.some((item) => item.id === "cover-letter"));
+assert.ok(ghana.applicationPackOutputs.some((item) => item.id === "linkedin"));
+assert.ok(ghana.applicationPackOutputs.some((item) => item.id === "tracker"));
 assert.ok(ghana.checklist.some((item) => /ATS/i.test(item)));
 assert.ok(ghana.warnings.join(" ").includes("Do not fabricate degrees"));
 assert.strictEqual(ghana.starterProfile.generatedWithConsent, false);
+assert.ok(ghana.starterProfile.draft.headline.includes("electrical engineer"));
+assert.ok(ghana.starterProfile.draft.summarySkeleton.includes("Replace placeholders"));
+assert.ok(ghana.starterProfilePrompt.includes("Do not fabricate degrees"));
+assert.ok(ghana.starterProfilePrompt.includes("Use only these user-approved career details"));
 assert.strictEqual(ghana.cvPrefillInputs.templateId, ghana.templateSuggestion.templateId);
 assert.strictEqual(ghana.cvLaunchUrl, "/tools/cv-builder/?source=ask&prefill=1");
 
@@ -53,7 +60,10 @@ assert.ok(missing.rendered === undefined);
 const rendered = career.renderCareerPanel(ghana);
 assert.match(rendered, /Career agent plan/);
 assert.match(rendered, /Open CV Builder with starter/);
+assert.match(rendered, /Country-aware starter draft/);
+assert.match(rendered, /Application pack outputs/);
 assert.match(rendered, /Safe CV rules/);
+assert.match(rendered, /Generate starter profile with AI/);
 assert.doesNotMatch(rendered, /guaranteed/i);
 
 const consent = career.buildCareerWorkflow({ country: "Ghana", targetRole: "electrical engineer" }, {

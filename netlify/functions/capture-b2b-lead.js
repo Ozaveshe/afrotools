@@ -86,6 +86,7 @@ function headers(event) {
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json',
+    'Cache-Control': 'no-store',
     'Vary': 'Origin'
   };
 }

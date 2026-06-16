@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { fileToPublicRoute } = require('./lib/canonical-aliases');
+const { englishSourceForFrenchCarsParts } = require('./lib/french-cars-route-map');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -30,10 +31,11 @@ const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
   '.git', '.github', '.claude', 'supabase', 'netlify', 'assets', 'engines',
   'dist', 'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
-  'afrotools-sentinel', 'prompts', 'docs', 'cars', 'audit-results', 'artifacts'
+  'afrotools-sentinel', 'prompts', 'docs', 'audit-results', 'artifacts'
 ]);
 
 const EXCLUDE_ROOT_DIRS = new Set([
+  'cars',
   'jamb',
   'matchday-os'
 ]);
@@ -574,6 +576,24 @@ for (const enUrl of enUrls) {
       .slice(-1)[0] || TODAY;
     i18nEntries.push({ langs, lastmod });
   }
+}
+
+for (const frEntry of groups.fr) {
+  let frPath;
+  try { frPath = new URL(frEntry.url).pathname; } catch { frPath = frEntry.url; }
+  if (!frPath.startsWith('/fr/cars')) continue;
+
+  const parts = frPath.replace(/^\/fr\/cars\/?/, '').replace(/\/$/, '').split('/').filter(Boolean);
+  const enSource = englishSourceForFrenchCarsParts(parts);
+  const enPath = `/${enSource}/`;
+  const enFile = path.join(ROOT, enSource, 'index.html');
+  if (!fs.existsSync(enFile)) continue;
+
+  const lastmod = [frEntry.lastmod, stableSitemapLastmod(`${BASE_URL}${enPath}`, fs.statSync(enFile).mtime)]
+    .filter(Boolean)
+    .sort()
+    .slice(-1)[0] || TODAY;
+  i18nEntries.push({ langs: { en: enPath, fr: frPath }, lastmod });
 }
 
 if (i18nEntries.length > 0) {

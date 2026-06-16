@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Data Confidence Review | AfroTools Admin</title>
+<meta name="description" content="Internal AfroTools admin view for reviewing source freshness and data confidence.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+<style>
+:root{color-scheme:light}
+body{margin:0;background:#f5f7fb;color:#101828;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.dc-shell{max-width:1320px;margin:0 auto;padding:28px 20px 64px}
+.dc-topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.dc-brand{display:flex;align-items:center;gap:12px}
+.dc-mark{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:#101828;color:#fff;font-weight:900}
+.dc-title h1{margin:0;font-size:1.32rem;line-height:1.2;color:#101828}
+.dc-title p{margin:4px 0 0;color:#667085;font-size:.86rem}
+.dc-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;color:#344054;text-decoration:none;font-weight:800;font-size:.82rem}
+.dc-link:hover{border-color:#98a2b3}
+.dc-panel{background:#fff;border:1px solid #d9e2ef;border-radius:8px;box-shadow:0 12px 32px rgba(16,24,40,.06)}
+.dc-gate{max-width:560px;margin:70px auto 0;padding:24px}
+.dc-gate h2{margin:0 0 8px;font-size:1.16rem;color:#101828}
+.dc-gate p{margin:0 0 16px;color:#667085;line-height:1.55;font-size:.9rem}
+.dc-form{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+.dc-field label{display:block;margin:0 0 6px;color:#344054;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.dc-field input,.dc-field select{width:100%;min-height:40px;border:1px solid #cfd8e3;border-radius:8px;background:#fff;color:#101828;padding:0 10px;font:inherit}
+.dc-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;border:1px solid #0f62fe;border-radius:8px;background:#0f62fe;color:#fff;padding:0 14px;font-weight:900;font-size:.82rem;cursor:pointer}
+.dc-btn.secondary{border-color:#cfd8e3;background:#fff;color:#344054}
+.dc-btn:disabled{opacity:.55;cursor:not-allowed}
+.dc-status{min-height:20px;margin-top:12px;color:#667085;font-size:.84rem;line-height:1.45}
+.dc-status.error{color:#b42318}
+.dc-status.warn{color:#b54708}
+.dc-dashboard{display:none}
+.dc-dashboard.active{display:block}
+.dc-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.dc-stat{padding:16px}
+.dc-stat span{display:block;color:#667085;font-size:.74rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.dc-stat strong{display:block;margin-top:7px;color:#101828;font-size:1.75rem;line-height:1}
+.dc-stat small{display:block;margin-top:8px;color:#667085;font-size:.78rem}
+.dc-toolbar{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr)) auto;gap:10px;align-items:end;padding:14px;margin-bottom:16px}
+.dc-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.dc-note{padding:12px 14px;margin-bottom:16px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;color:#9a3412;font-size:.83rem;line-height:1.5}
+.dc-table-wrap{overflow:auto}
+.dc-table{width:100%;border-collapse:separate;border-spacing:0;min-width:1080px}
+.dc-table th,.dc-table td{padding:13px 12px;border-bottom:1px solid #eef2f7;text-align:left;vertical-align:top}
+.dc-table th{position:sticky;top:0;background:#f8fafc;color:#475467;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;z-index:1}
+.dc-table td{font-size:.84rem;color:#344054;line-height:1.45}
+.dc-table strong{display:block;color:#101828;font-size:.88rem;margin-bottom:3px}
+.dc-sub{display:block;color:#667085;font-size:.76rem}
+.dc-badges{display:flex;flex-wrap:wrap;gap:6px}
+.dc-badge{display:inline-flex;align-items:center;min-height:24px;padding:3px 8px;border:1px solid #d0d5dd;border-radius:999px;background:#fff;color:#344054;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.dc-badge.ok,.dc-badge.fresh,.dc-badge.reviewed,.dc-badge.official_verified{background:#ecfdf3;border-color:#abefc6;color:#067647}
+.dc-badge.watch,.dc-badge.acceptable,.dc-badge.user_entered{background:#eff8ff;border-color:#b2ddff;color:#175cd3}
+.dc-badge.warning,.dc-badge.stale,.dc-badge.estimated{background:#fffaeb;border-color:#fedf89;color:#b54708}
+.dc-badge.critical,.dc-badge.unavailable,.dc-badge.unknown,.dc-badge.low_confidence{background:#fef3f2;border-color:#fecdca;color:#b42318}
+.dc-empty{padding:32px;text-align:center;color:#667085}
+.dc-footer{margin-top:16px;color:#667085;font-size:.78rem;line-height:1.5}
+@media(max-width:980px){.dc-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.dc-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.dc-actions{justify-content:flex-start}}
+@media(max-width:680px){.dc-shell{padding:20px 12px 48px}.dc-topbar{align-items:flex-start;flex-direction:column}.dc-summary,.dc-toolbar,.dc-form{grid-template-columns:1fr}.dc-actions{display:grid;grid-template-columns:1fr}.dc-btn,.dc-link{width:100%}}
+</style>
+</head>
+<body>
+<main class="dc-shell">
+  <div class="dc-topbar">
+    <div class="dc-brand">
+      <span class="dc-mark">DC</span>
+      <div class="dc-title">
+        <h1>Data Confidence Review</h1>
+        <p>View-only source freshness, confidence, coverage, and review actions.</p>
+      </div>
+    </div>
+    <a class="dc-link" href="/mc-7a2f9x.html">Mission Control</a>
+  </div>
+
+  <section class="dc-panel dc-gate" id="authGate" aria-labelledby="authTitle">
+    <h2 id="authTitle">Admin key required</h2>
+    <p>This internal review view uses the existing AfroTools admin key. It has no edit, delete, publish, or write controls.</p>
+    <form class="dc-form" id="authForm">
+      <div class="dc-field">
+        <label for="adminKey">Admin key</label>
+        <input id="adminKey" name="adminKey" type="password" autocomplete="off" required>
+      </div>
+      <button class="dc-btn" id="unlockBtn" type="submit">Unlock</button>
+    </form>
+    <div class="dc-status" id="authStatus" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="dc-dashboard" id="dashboard" aria-labelledby="dashboardTitle">
+    <div class="dc-note" id="viewOnlyNote">View-only operations surface. Review exports are local browser downloads; no dashboard actions modify data.</div>
+
+    <div class="dc-summary">
+      <div class="dc-panel dc-stat"><span>Total products</span><strong id="statTotal">0</strong><small>Tracked data lanes</small></div>
+      <div class="dc-panel dc-stat"><span>Current</span><strong id="statCurrent">0</strong><small>Fresh or acceptable</small></div>
+      <div class="dc-panel dc-stat"><span>Needs review</span><strong id="statNeedsReview">0</strong><small>Stale, unknown, or unavailable</small></div>
+      <div class="dc-panel dc-stat"><span>Low confidence</span><strong id="statLowConfidence">0</strong><small>Estimated or low confidence</small></div>
+    </div>
+
+    <div class="dc-panel dc-toolbar" aria-label="Review filters">
+      <div class="dc-field">
+        <label for="countryFilter">Country</label>
+        <select id="countryFilter"><option value="">All countries</option></select>
+      </div>
+      <div class="dc-field">
+        <label for="categoryFilter">Category</label>
+        <select id="categoryFilter"><option value="">All categories</option></select>
+      </div>
+      <div class="dc-field">
+        <label for="confidenceFilter">Confidence</label>
+        <select id="confidenceFilter"><option value="">All confidence</option></select>
+      </div>
+      <div class="dc-field">
+        <label for="freshnessFilter">Freshness</label>
+        <select id="freshnessFilter"><option value="">All freshness</option></select>
+      </div>
+      <div class="dc-actions">
+        <button class="dc-btn secondary" type="button" id="exportCsv">Export CSV</button>
+        <button class="dc-btn secondary" type="button" id="exportJson">Export JSON</button>
+        <button class="dc-btn secondary" type="button" id="clearKey">Lock</button>
+      </div>
+    </div>
+
+    <div class="dc-panel dc-table-wrap">
+      <table class="dc-table">
+        <thead>
+          <tr>
+            <th>Data product</th>
+            <th>Status</th>
+            <th>Last checked</th>
+            <th>Last reviewed</th>
+            <th>Confidence</th>
+            <th>Coverage</th>
+            <th>Next review action</th>
+          </tr>
+        </thead>
+        <tbody id="productRows">
+          <tr><td colspan="7" class="dc-empty">Unlock the dashboard to load review data.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="dc-footer" id="loadedAt"></p>
+  </section>
+</main>
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4"></script>
+<script src="/assets/js/lib/admin-data-confidence.js?v=d4471598"></script>
+<script>
+(function () {
+  "use strict";
+
+  var helper = window.AfroToolsAdminDataConfidence;
+  var state = {
+    adminKey: "",
+    products: [],
+    visibleProducts: []
+  };
+
+  var els = {};
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function text(value) {
+    return value === null || value === undefined || value === "" ? "Not set" : String(value);
+  }
+
+  function escapeHtml(value) {
+    return String(value === null || value === undefined ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function storageGet() {
+    try { return sessionStorage.getItem("admin_key") || ""; } catch (error) { return ""; }
+  }
+
+  function storageSet(value) {
+    try { sessionStorage.setItem("admin_key", value); } catch (error) {}
+  }
+
+  function storageClear() {
+    try { sessionStorage.removeItem("admin_key"); } catch (error) {}
+  }
+
+  function setStatus(message, tone) {
+    els.authStatus.textContent = message || "";
+    els.authStatus.className = "dc-status" + (tone ? " " + tone : "");
+  }
+
+  async function fetchJson(url, options) {
+    var response = await fetch(url, options || {});
+    var textBody = await response.text();
+    var data = null;
+    try {
+      data = textBody ? JSON.parse(textBody) : null;
+    } catch (error) {
+      data = { raw: textBody };
+    }
+    if (!response.ok) {
+      var message = data && data.error ? data.error : "HTTP " + response.status;
+      var err = new Error(message);
+      err.status = response.status;
+      err.data = data;
+      throw err;
+    }
+    return data;
+  }
+
+  async function verifyKey(key) {
+    return fetchJson("/api/admin-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-key": key },
+      body: JSON.stringify({ adminKey: key })
+    });
+  }
+
+  async function loadAdminStatus(key) {
+    try {
+      return await fetchJson("/api/admin-status", { headers: { "x-admin-key": key } });
+    } catch (error) {
+      return {
+        summary: { overall_health: "unavailable", endpoints: { broken: 0, degraded: 0 } },
+        warnings: ["Protected admin status is unavailable in this environment: " + error.message]
+      };
+    }
+  }
+
+  function option(value, label) {
+    return '<option value="' + escapeHtml(value) + '">' + escapeHtml(label || value) + "</option>";
+  }
+
+  function labelize(value) {
+    return String(value || "").replace(/_/g, " ").replace(/\b\w/g, function (match) { return match.toUpperCase(); });
+  }
+
+  function populateSelect(select, values, defaultLabel) {
+    var current = select.value;
+    select.innerHTML = option("", defaultLabel) + values.map(function (value) {
+      return option(value, labelize(value));
+    }).join("");
+    select.value = values.indexOf(current) >= 0 ? current : "";
+  }
+
+  function populateFilters(products) {
+    var countries = [];
+    var categories = [];
+    var confidences = [];
+    var freshness = [];
+
+    products.forEach(function (product) {
+      (product.countryCodes || []).forEach(function (code) {
+        if (code !== "ALL") countries.push(code);
+      });
+      categories.push(product.category);
+      confidences.push(product.confidence);
+      freshness.push(product.freshnessStatus);
+    });
+
+    function sortedUnique(values) {
+      var seen = Object.create(null);
+      return values.filter(function (value) {
+        if (!value || seen[value]) return false;
+        seen[value] = true;
+        return true;
+      }).sort();
+    }
+
+    populateSelect(els.countryFilter, sortedUnique(countries), "All countries");
+    populateSelect(els.categoryFilter, sortedUnique(categories), "All categories");
+    populateSelect(els.confidenceFilter, sortedUnique(confidences), "All confidence");
+    populateSelect(els.freshnessFilter, sortedUnique(freshness), "All freshness");
+  }
+
+  function badge(value, extraClass) {
+    return '<span class="dc-badge ' + escapeHtml(extraClass || value) + '">' + escapeHtml(labelize(value)) + "</span>";
+  }
+
+  function renderRows(products) {
+    state.visibleProducts = products;
+    if (!products.length) {
+      els.productRows.innerHTML = '<tr><td colspan="7" class="dc-empty">No data products match these filters.</td></tr>';
+      return;
+    }
+    els.productRows.innerHTML = products.map(function (product) {
+      var sourceLink = product.sourceUrl
+        ? '<a href="' + escapeHtml(product.sourceUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(product.sourceName) + "</a>"
+        : escapeHtml(product.sourceName);
+      var note = product.statusNote ? '<span class="dc-sub">' + escapeHtml(product.statusNote) + "</span>" : "";
+      return "<tr>" +
+        "<td><strong>" + escapeHtml(product.section) + "</strong><span class=\"dc-sub\">" + sourceLink + "</span></td>" +
+        "<td><div class=\"dc-badges\">" + badge(product.severity) + badge(product.freshnessStatus) + "</div><span class=\"dc-sub\">" + escapeHtml(text(product.sourceStatus)) + "</span></td>" +
+        "<td>" + escapeHtml(text(product.lastCheckedAt)) + "</td>" +
+        "<td>" + escapeHtml(text(product.lastReviewedAt)) + "</td>" +
+        "<td><div class=\"dc-badges\">" + badge(product.confidence) + badge(product.sourceType) + "</div></td>" +
+        "<td>" + escapeHtml(product.countryCoverage) + "<span class=\"dc-sub\">" + escapeHtml((product.countryCodes || []).join(", ")) + "</span></td>" +
+        "<td>" + escapeHtml(product.nextReviewAction) + note + "</td>" +
+        "</tr>";
+    }).join("");
+  }
+
+  function renderSummary(products) {
+    var summary = helper.buildSummary(products);
+    els.statTotal.textContent = summary.total;
+    els.statCurrent.textContent = summary.current;
+    els.statNeedsReview.textContent = summary.needsReview;
+    els.statLowConfidence.textContent = summary.lowConfidence;
+  }
+
+  function applyFilters() {
+    var filtered = helper.filterProducts(state.products, {
+      country: els.countryFilter.value,
+      category: els.categoryFilter.value,
+      confidence: els.confidenceFilter.value,
+      freshness: els.freshnessFilter.value
+    });
+    renderRows(filtered);
+  }
+
+  function download(filename, mime, content) {
+    var blob = new Blob([content], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 500);
+  }
+
+  async function loadDashboard(key) {
+    var registry = await fetchJson("/data/source-registry.json", { cache: "no-store" });
+    var meta = await fetchJson("/data/_meta.json", { cache: "no-store" });
+    var adminStatus = await loadAdminStatus(key);
+    state.products = helper.buildDataProducts(registry, meta, adminStatus, new Date());
+    populateFilters(state.products);
+    renderSummary(state.products);
+    renderRows(state.products);
+    els.loadedAt.textContent = "Loaded " + state.products.length + " data products. Admin status checked: " + text(adminStatus.checked_at || new Date().toISOString()) + ".";
+    els.authGate.style.display = "none";
+    els.dashboard.className = "dc-dashboard active";
+  }
+
+  async function unlock(key) {
+    els.unlockBtn.disabled = true;
+    setStatus("Checking admin key...");
+    try {
+      var session = await verifyKey(key);
+      if (!session || !session.authenticated) {
+        setStatus("Admin key was not accepted.", "error");
+        return;
+      }
+      state.adminKey = key;
+      storageSet(key);
+      setStatus("Loading source review data...");
+      await loadDashboard(key);
+    } catch (error) {
+      if (error.status === 500) {
+        setStatus("Admin secret is not configured. Set ADMIN_KEY or ADMIN_SECRET before enabling this view.", "warn");
+      } else if (error.status === 401) {
+        setStatus("Invalid admin key.", "error");
+      } else {
+        setStatus("Admin session endpoint unavailable: " + error.message, "error");
+      }
+    } finally {
+      els.unlockBtn.disabled = false;
+    }
+  }
+
+  function bind() {
+    els = {
+      authGate: $("authGate"),
+      dashboard: $("dashboard"),
+      authForm: $("authForm"),
+      adminKey: $("adminKey"),
+      unlockBtn: $("unlockBtn"),
+      authStatus: $("authStatus"),
+      statTotal: $("statTotal"),
+      statCurrent: $("statCurrent"),
+      statNeedsReview: $("statNeedsReview"),
+      statLowConfidence: $("statLowConfidence"),
+      countryFilter: $("countryFilter"),
+      categoryFilter: $("categoryFilter"),
+      confidenceFilter: $("confidenceFilter"),
+      freshnessFilter: $("freshnessFilter"),
+      exportCsv: $("exportCsv"),
+      exportJson: $("exportJson"),
+      clearKey: $("clearKey"),
+      productRows: $("productRows"),
+      loadedAt: $("loadedAt")
+    };
+
+    els.authForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var key = els.adminKey.value.trim();
+      if (!key) {
+        setStatus("Enter the admin key to continue.", "error");
+        return;
+      }
+      unlock(key);
+    });
+
+    [els.countryFilter, els.categoryFilter, els.confidenceFilter, els.freshnessFilter].forEach(function (select) {
+      select.addEventListener("change", applyFilters);
+    });
+
+    els.exportCsv.addEventListener("click", function () {
+      download("afrotools-data-confidence-review.csv", "text/csv;charset=utf-8", helper.toReviewCsv(state.visibleProducts));
+    });
+
+    els.exportJson.addEventListener("click", function () {
+      download("afrotools-data-confidence-review.json", "application/json;charset=utf-8", helper.toReviewJson(state.visibleProducts));
+    });
+
+    els.clearKey.addEventListener("click", function () {
+      storageClear();
+      window.location.reload();
+    });
+
+    var stored = storageGet();
+    if (stored) {
+      els.adminKey.value = stored;
+      unlock(stored);
+    }
+  }
+
+  if (!helper) {
+    document.body.innerHTML = '<main class="dc-shell"><section class="dc-panel dc-gate"><h1>Dashboard helper unavailable</h1><p>The data confidence helper failed to load.</p></section></main>';
+    return;
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind);
+  } else {
+    bind();
+  }
+}());
+</script>
+</body>
+</html>

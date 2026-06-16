@@ -41,6 +41,7 @@
     <p class="report-note">This report does not include raw query text unless raw query logging has been explicitly enabled with <code>NEXT_PUBLIC_AFROTOOLS_AI_RAW_QUERY_LOGGING</code>. Keep that flag off outside controlled debugging.</p>
     <div class="report-actions">
       <a class="report-button primary" href="/ai/?ai_debug=intent">Open /ai debug mode</a>
+      <a class="report-button" href="/admin/ai-traction.html">Open admin dashboard</a>
       <button class="report-button" type="button" id="copyReport">Copy JSON</button>
       <button class="report-button" type="button" id="resetReport">Reset local counters</button>
     </div>
@@ -56,6 +57,7 @@
       <article class="report-card"><span>Signup prompts</span><strong id="signupCount">0</strong></article>
       <article class="report-card"><span>Pro clicks</span><strong id="proCount">0</strong></article>
       <article class="report-card"><span>Sponsor opt-ins</span><strong id="sponsorCount">0</strong></article>
+      <article class="report-card"><span>API/widget interest</span><strong id="apiWidgetCount">0</strong></article>
     </section>
     <div class="report-sections">
       <section class="report-section">
@@ -91,6 +93,10 @@
         <ul class="report-list" id="exportTypes"></ul>
       </section>
       <section class="report-section">
+        <h2>API/widget interest</h2>
+        <ul class="report-list" id="interestSurfaces"></ul>
+      </section>
+      <section class="report-section">
         <h2>Safe example prompts</h2>
         <ul class="report-list" id="safePromptExamples"></ul>
       </section>
@@ -104,7 +110,7 @@
       <pre class="report-json" id="reportJson">{}</pre>
     </section>
   </main>
-  <script src="/assets/js/ai/intent-analytics.js?v=289255ec"></script>
+  <script src="/assets/js/ai/intent-analytics.js?v=3285dec5"></script>
   <script>
   (function () {
     "use strict";
@@ -135,6 +141,7 @@
       document.getElementById("signupCount").textContent = totals.signupPromptShown || 0;
       document.getElementById("proCount").textContent = totals.proUpgradeClicked || 0;
       document.getElementById("sponsorCount").textContent = totals.sponsorLeadOptinSubmitted || 0;
+      document.getElementById("apiWidgetCount").textContent = totals.apiWidgetInterest || 0;
       renderList("topWorkflows", report.topWorkflows || []);
       renderList("topCategories", report.topRoutedCategories || []);
       renderList("topCountries", report.topCountriesDetected || []);
@@ -143,6 +150,7 @@
       renderList("topSources", report.topSources || []);
       renderList("confidenceBuckets", report.confidenceBuckets || []);
       renderList("exportTypes", report.exportTypes || []);
+      renderList("interestSurfaces", report.interestSurfaces || []);
       renderList("safePromptExamples", report.safePromptExamples || []);
       renderList("noMatchCategories", report.noMatchCategories || []);
       reportJson.textContent = JSON.stringify(report, null, 2);

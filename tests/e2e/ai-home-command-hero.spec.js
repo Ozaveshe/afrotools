@@ -54,19 +54,56 @@ test("prompt chips populate and focus the command input", async ({ page }) => {
   await expect(input).toBeFocused();
 });
 
-test("command submit routes to the AI command page with q", async ({ page }) => {
+test("command submit routes to AI, scrubs prompt from URL, and launches CV Builder prefill", async ({ page }) => {
   await quietExternalNoise(page);
+  await page.route("**/.netlify/functions/ai-route-intent", async function (route) {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json; charset=utf-8",
+      body: JSON.stringify({
+        ok: true,
+        source: "model_validated",
+        decision: {
+          intentCategory: "career",
+          selectedToolId: "cv-builder",
+          selectedRoute: "/tools/cv-builder/",
+          confidence: 0.91,
+          reasonShort: "Matched CV Builder for a Ghana electrical engineer profile.",
+          extractedInputs: { country: "Ghana", targetRole: "electrical engineer" },
+          missingInputs: [],
+          clarificationQuestion: "",
+          safetyDomain: "employment",
+          highStakesNotice: "Planning support only. Review employment, hiring, salary, and application decisions with qualified local guidance where needed.",
+          privacyMode: "browser_local",
+          canPrefill: true,
+          suggestedNextActions: ["Open CV Builder"]
+        }
+      })
+    });
+  });
 
   await page.goto("/?ai_home_variant=command", { waitUntil: "domcontentloaded" });
 
   const hero = page.locator("#afrotoolsAiCommandHero");
-  await hero.locator("#ai-home-command-input").fill("Import a 2016 Toyota Axio into Nigeria");
+  await hero.locator("#ai-home-command-input").fill("Write me a CV for an electrical engineer in Ghana");
   await hero.getByRole("button", { name: "Ask AfroTools AI" }).click();
 
-  await page.waitForURL(/\/ai\/\?q=/);
-  const url = new URL(page.url());
-  expect(url.pathname).toBe("/ai/");
-  expect(url.searchParams.get("q")).toBe("Import a 2016 Toyota Axio into Nigeria");
+  await page.waitForURL(/\/ai\//);
+  await expect(page.locator("#aiCommandInput")).toHaveValue("Write me a CV for an electrical engineer in Ghana");
+  await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
+  expect(new URL(page.url()).searchParams.get("q")).toBe(null);
+
+  await page.locator("[data-workflow-card]").first().getByRole("link", { name: "Open tool" }).click();
+  await page.waitForURL(/\/tools\/cv-builder\/.*prefill=1/);
+
+  const prefill = await page.evaluate(function () {
+    return JSON.parse(sessionStorage.getItem("afrotools.aiPrefillDraft") || "{}");
+  });
+  expect(prefill.toolId).toBe("cv-builder");
+  expect(prefill.normalizedInputs.country).toBe("Ghana");
+  expect(prefill.normalizedInputs.targetRole).toBe("electrical engineer");
+  expect(page.url()).not.toContain("electrical");
+  expect(page.url()).not.toContain("Ghana");
 });
 
 test("category pills render with non-empty local links", async ({ page, request }) => {
@@ -104,4 +141,45 @@ test("command hero fits a mobile viewport without horizontal overflow", async ({
     return document.documentElement.scrollWidth - window.innerWidth;
   });
   expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test("command hero chips and category pills stay tappable on narrow phones", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await quietExternalNoise(page);
+
+  await page.goto("/?ai_home_variant=command", { waitUntil: "domcontentloaded" });
+
+  const metrics = await page.evaluate(function () {
+    function minHeight(selector) {
+      const nodes = Array.from(document.querySelectorAll(selector)).filter(function (node) {
+        const rect = node.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+      });
+      return nodes.length ? Math.min.apply(null, nodes.map(function (node) { return node.getBoundingClientRect().height; })) : 999;
+    }
+    function maxRight(selector) {
+      const nodes = Array.from(document.querySelectorAll(selector)).filter(function (node) {
+        return node.getBoundingClientRect().width > 0;
+      });
+      return Math.max.apply(null, nodes.map(function (node) { return node.getBoundingClientRect().right; }));
+    }
+    return {
+      inputFont: parseFloat(getComputedStyle(document.querySelector("#ai-home-command-input")).fontSize),
+      chipHeight: minHeight(".ai-command-chip"),
+      categoryHeight: minHeight(".ai-command-category-pill"),
+      submitHeight: minHeight(".ai-command-home-submit"),
+      chipRight: maxRight(".ai-command-chip"),
+      categoryRight: maxRight(".ai-command-category-pill"),
+      viewport: window.innerWidth,
+      overflow: document.documentElement.scrollWidth - window.innerWidth
+    };
+  });
+
+  expect(metrics.inputFont).toBeGreaterThanOrEqual(16);
+  expect(metrics.chipHeight).toBeGreaterThanOrEqual(44);
+  expect(metrics.categoryHeight).toBeGreaterThanOrEqual(44);
+  expect(metrics.submitHeight).toBeGreaterThanOrEqual(44);
+  expect(metrics.chipRight).toBeLessThanOrEqual(metrics.viewport + 1);
+  expect(metrics.categoryRight).toBeLessThanOrEqual(metrics.viewport + 1);
+  expect(metrics.overflow).toBeLessThanOrEqual(1);
 });

@@ -29,7 +29,10 @@
     "generatorHoursPerDay", "fuelType", "loadSizeKw", "outageHours", "backupHours", "budgetRange",
     "workflowKind", "numberOfEmployees", "employeeCount", "grossPay", "salaryBand", "payPeriod",
     "deductionsBenefits", "invoiceAmount", "amount", "vatTreatment", "vatRate", "taxRate",
-    "lineItemDescription", "businessType", "businessTask", "pdfAction"
+    "lineItemDescription", "businessType", "businessTask", "pdfAction",
+    "location", "targetCity", "homeCountry", "monthlyIncome", "monthlyBudget", "monthlyExpenses",
+    "rent", "housingCost", "transportCost", "foodCost", "utilityCost", "utilitiesCost",
+    "internetCost", "householdSize", "familySize", "dependents", "lifestyle", "incomeBand", "expenseBand"
   ];
 
   function nowIso() {

@@ -44,6 +44,23 @@ function sampleState(overrides = {}) {
 
 analytics.reset();
 
+[
+  "ai_prompt_submitted",
+  "ai_intent_detected",
+  "ai_clarification_shown",
+  "ai_clarification_answered",
+  "ai_tool_opened",
+  "ai_prefill_success",
+  "ai_prefill_failed",
+  "ai_export_generated",
+  "ai_project_saved",
+  "ai_signup_prompt_shown",
+  "ai_pro_upgrade_clicked",
+  "sponsor_lead_optin_submitted"
+].forEach((eventName) => {
+  assert(analytics.eventNames.includes(eventName), `${eventName} should be part of the AI analytics contract`);
+});
+
 assert.strictEqual(analytics.queryLengthBucket(""), "0");
 assert.strictEqual(analytics.queryLengthBucket("short query"), "1-20");
 assert.strictEqual(analytics.queryLengthBucket("x".repeat(61)), "61-140");
@@ -94,6 +111,15 @@ const promptPayload = analytics.record("ai_prompt_submitted", sampleState({
 assert.strictEqual(promptPayload.query_length_bucket, "61-140");
 assert.strictEqual(promptPayload.safe_prompt_example, "import-duty / Nigeria / length:61-140");
 assert.strictEqual(Object.prototype.hasOwnProperty.call(promptPayload, "raw_query"), false);
+
+const unsafeExplicitExample = analytics.record("ai_prompt_submitted", sampleState({
+  originalQuery: "Create an invoice for person@example.com, phone 555-0100, amount 5000"
+}), {
+  query: "Create an invoice for person@example.com, phone 555-0100, amount 5000",
+  source: "homepage_input",
+  safePromptExample: "Create an invoice for person@example.com, phone 555-0100, amount 5000"
+});
+assert(!/person@example\.com|555-0100|amount 5000/i.test(unsafeExplicitExample.safe_prompt_example));
 
 analytics.record("ai_intent_detected", sampleState({
   originalQuery: "Should I install solar for my shop in Lagos?",
@@ -172,6 +198,16 @@ analytics.record("sponsor_lead_optin_submitted", sampleState({ selectedToolId: "
   selectedToolId: "solar-roi",
   conversionType: "sponsor_lead"
 });
+analytics.record("ai_api_interest_clicked", sampleState({ selectedToolId: "api-docs" }), {
+  intentCategory: "developer",
+  selectedToolId: "api-docs",
+  workflowType: "api_interest"
+});
+analytics.record("ai_widget_interest_clicked", sampleState({ selectedToolId: "widgets" }), {
+  intentCategory: "developer",
+  selectedToolId: "widgets",
+  workflowType: "widget_interest"
+});
 analytics.record("ai_intent_fallback", sampleState({
   originalQuery: "unclear local task",
   selectedToolId: "tool-search",
@@ -187,7 +223,7 @@ analytics.record("ai_intent_fallback", sampleState({
 });
 
 report = analytics.getReport();
-assert.strictEqual(report.totals.promptsSubmitted, 1);
+assert.strictEqual(report.totals.promptsSubmitted, 2);
 assert.strictEqual(report.totals.intentsDetected, 1);
 assert.strictEqual(report.totals.toolOpen, 1);
 assert.strictEqual(report.totals.prefillSuccess, 1);
@@ -197,11 +233,15 @@ assert.strictEqual(report.totals.projectsSaved, 1);
 assert.strictEqual(report.totals.signupPromptShown, 1);
 assert.strictEqual(report.totals.proUpgradeClicked, 1);
 assert.strictEqual(report.totals.sponsorLeadOptinSubmitted, 1);
+assert.strictEqual(report.totals.apiWidgetInterest, 2);
 assert.strictEqual(report.prefillSuccessRate, 50);
 assert(report.topWorkflows.some((item) => item.name === "energy_advisor"));
 assert(report.exportTypes.some((item) => item.name === "pdf"));
+assert(report.interestSurfaces.some((item) => item.name === "api"));
+assert(report.interestSurfaces.some((item) => item.name === "widget"));
 assert(report.noMatchCategories.some((item) => item.name === "no_keyword_match"));
 assert(report.safePromptExamples.every((item) => !/555-0100|electrical engineer/i.test(item.name)));
+assert(!/person@example\.com|555-0100|amount 5000/i.test(JSON.stringify(report)));
 
 analytics.reset();
 analytics.record("ai_intent_fallback", sampleState({

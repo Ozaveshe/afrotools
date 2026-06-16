@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>AI Traction Dashboard | AfroTools Admin</title>
+<meta name="description" content="Internal AfroTools admin dashboard for reviewing privacy-safe AI workflow traction.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+<style>
+:root{color-scheme:light}
+body{margin:0;background:#f5f7fb;color:#101828;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.ta-shell{max-width:1280px;margin:0 auto;padding:28px 20px 64px}
+.ta-topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.ta-brand{display:flex;align-items:center;gap:12px}
+.ta-mark{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:#101828;color:#fff;font-weight:900}
+.ta-title h1{margin:0;font-size:1.32rem;line-height:1.2;color:#101828}
+.ta-title p{margin:4px 0 0;color:#667085;font-size:.86rem}
+.ta-link,.ta-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;color:#344054;text-decoration:none;font:inherit;font-size:.82rem;font-weight:900;padding:0 14px;cursor:pointer}
+.ta-btn.primary{background:#0f62fe;border-color:#0f62fe;color:#fff}
+.ta-panel{background:#fff;border:1px solid #d9e2ef;border-radius:8px;box-shadow:0 12px 32px rgba(16,24,40,.06)}
+.ta-gate{max-width:560px;margin:70px auto 0;padding:24px}
+.ta-gate h2{margin:0 0 8px;font-size:1.16rem;color:#101828}
+.ta-gate p{margin:0 0 16px;color:#667085;line-height:1.55;font-size:.9rem}
+.ta-form{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+.ta-field label{display:block;margin:0 0 6px;color:#344054;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.ta-field input{width:100%;min-height:40px;border:1px solid #cfd8e3;border-radius:8px;background:#fff;color:#101828;padding:0 10px;font:inherit}
+.ta-status{min-height:20px;margin-top:12px;color:#667085;font-size:.84rem;line-height:1.45}
+.ta-status.error{color:#b42318}
+.ta-dashboard{display:none}
+.ta-dashboard.active{display:block}
+.ta-note{padding:12px 14px;margin-bottom:16px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;color:#9a3412;font-size:.83rem;line-height:1.5}
+.ta-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;margin:0 0 16px}
+.ta-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.ta-stat{padding:16px}
+.ta-stat span{display:block;color:#667085;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.ta-stat strong{display:block;margin-top:7px;color:#101828;font-size:1.72rem;line-height:1}
+.ta-stat small{display:block;margin-top:8px;color:#667085;font-size:.78rem}
+.ta-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.ta-section{padding:14px}
+.ta-section h2{margin:0 0 10px;font-size:1rem;color:#101828}
+.ta-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.ta-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid #eef2f7;border-radius:8px;background:#f8fafc;padding:9px 10px;color:#344054;font-size:.84rem}
+.ta-list b{overflow-wrap:anywhere}
+.ta-json{max-height:360px;overflow:auto;margin:0;border-radius:8px;background:#101828;color:#e2e8f0;padding:12px;font-size:.78rem;line-height:1.55;white-space:pre-wrap}
+@media(max-width:1020px){.ta-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.ta-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.ta-shell{padding:20px 12px 48px}.ta-topbar{align-items:flex-start;flex-direction:column}.ta-summary,.ta-grid,.ta-form{grid-template-columns:1fr}.ta-actions{display:grid}.ta-btn,.ta-link{width:100%}}
+</style>
+</head>
+<body>
+<main class="ta-shell">
+  <div class="ta-topbar">
+    <div class="ta-brand">
+      <span class="ta-mark">AI</span>
+      <div class="ta-title">
+        <h1>AI Traction Dashboard</h1>
+        <p>Privacy-safe workflow analytics for Ask AfroTools AI.</p>
+      </div>
+    </div>
+    <a class="ta-link" href="/mc-7a2f9x.html">Mission Control</a>
+  </div>
+
+  <section class="ta-panel ta-gate" id="authGate" aria-labelledby="authTitle">
+    <h2 id="authTitle">Admin key required</h2>
+    <p>This view uses the existing AfroTools admin key. It reads browser-local sanitized AI analytics and has no edit, delete, publish, or write controls.</p>
+    <form class="ta-form" id="authForm">
+      <div class="ta-field">
+        <label for="adminKey">Admin key</label>
+        <input id="adminKey" name="adminKey" type="password" autocomplete="off" required>
+      </div>
+      <button class="ta-btn primary" id="unlockBtn" type="submit">Unlock</button>
+    </form>
+    <div class="ta-status" id="authStatus" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="ta-dashboard" id="dashboard" aria-labelledby="dashboardTitle">
+    <div class="ta-note">Raw prompt text is not displayed or exported by default. Safe example prompts are synthetic labels built from workflow, category, country, and query-length bucket.</div>
+    <div class="ta-actions">
+      <a class="ta-btn" href="/ai/?ai_debug=intent">Open AI debug mode</a>
+      <button class="ta-btn" type="button" id="copyJson">Copy JSON</button>
+      <button class="ta-btn" type="button" id="downloadJson">Download JSON</button>
+      <button class="ta-btn" type="button" id="lockDashboard">Lock</button>
+    </div>
+
+    <div class="ta-summary" aria-label="AI traction metrics">
+      <div class="ta-panel ta-stat"><span>Prompts submitted</span><strong id="metricPrompts">0</strong><small>Command inputs by source bucket</small></div>
+      <div class="ta-panel ta-stat"><span>Intent detection</span><strong id="metricIntents">0</strong><small>Detected or routed workflows</small></div>
+      <div class="ta-panel ta-stat"><span>Fallback rate</span><strong id="metricFallback">0%</strong><small>No-match or low-confidence routing</small></div>
+      <div class="ta-panel ta-stat"><span>Tool open rate</span><strong id="metricToolOpen">0%</strong><small>Routed users who opened a tool</small></div>
+      <div class="ta-panel ta-stat"><span>Prefill success</span><strong id="metricPrefill">0%</strong><small>Successful tool handoffs</small></div>
+      <div class="ta-panel ta-stat"><span>Exports</span><strong id="metricExports">0</strong><small>Briefs, JSON, copy, share outputs</small></div>
+      <div class="ta-panel ta-stat"><span>Saved projects</span><strong id="metricSaved">0</strong><small>Continue-later workflow saves</small></div>
+      <div class="ta-panel ta-stat"><span>Signup prompts</span><strong id="metricSignup">0</strong><small>Account conversion surfaces</small></div>
+      <div class="ta-panel ta-stat"><span>Pro clicks</span><strong id="metricPro">0</strong><small>Upgrade interest signals</small></div>
+      <div class="ta-panel ta-stat"><span>Sponsor leads</span><strong id="metricSponsor">0</strong><small>Explicit partner opt-ins</small></div>
+      <div class="ta-panel ta-stat"><span>API/widget interest</span><strong id="metricApiWidget">0</strong><small>Developer and embed signals</small></div>
+      <div class="ta-panel ta-stat"><span>Clarification completion</span><strong id="metricClarification">0%</strong><small>Answered after missing inputs</small></div>
+    </div>
+
+    <div class="ta-grid">
+      <section class="ta-panel ta-section"><h2>Workflows</h2><ul class="ta-list" id="workflowList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Categories</h2><ul class="ta-list" id="categoryList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Countries</h2><ul class="ta-list" id="countryList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Tools opened</h2><ul class="ta-list" id="toolList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Missing inputs</h2><ul class="ta-list" id="missingInputList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Entry sources</h2><ul class="ta-list" id="sourceList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Confidence</h2><ul class="ta-list" id="confidenceList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Export types</h2><ul class="ta-list" id="exportList"></ul></section>
+      <section class="ta-panel ta-section"><h2>API/widget interest</h2><ul class="ta-list" id="interestList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Safe example prompts</h2><ul class="ta-list" id="safePromptList"></ul></section>
+      <section class="ta-panel ta-section"><h2>No-match categories</h2><ul class="ta-list" id="noMatchList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Query length buckets</h2><ul class="ta-list" id="lengthList"></ul></section>
+    </div>
+
+    <section class="ta-panel ta-section" style="margin-top:14px">
+      <h2>Sanitized JSON</h2>
+      <pre class="ta-json" id="jsonOutput">{}</pre>
+    </section>
+  </section>
+</main>
+<script src="/assets/js/ai/intent-analytics.js?v=3285dec5"></script>
+<script>
+(function () {
+  "use strict";
+
+  var analytics = window.AfroToolsAIIntentAnalytics;
+  var authGate = document.getElementById("authGate");
+  var dashboard = document.getElementById("dashboard");
+  var authForm = document.getElementById("authForm");
+  var authStatus = document.getElementById("authStatus");
+  var adminKeyInput = document.getElementById("adminKey");
+  var jsonOutput = document.getElementById("jsonOutput");
+
+  function storageGet() {
+    try { return sessionStorage.getItem("admin_key") || ""; } catch (error) { return ""; }
+  }
+
+  function storageSet(value) {
+    try { sessionStorage.setItem("admin_key", value); } catch (error) {}
+  }
+
+  function storageClear() {
+    try { sessionStorage.removeItem("admin_key"); } catch (error) {}
+  }
+
+  function esc(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (ch) {
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch];
+    });
+  }
+
+  function renderList(id, items) {
+    var node = document.getElementById(id);
+    node.innerHTML = items && items.length ? items.map(function (item) {
+      return "<li><b>" + esc(item.name) + "</b><span>" + esc(item.count) + "</span></li>";
+    }).join("") : "<li><b>No local data yet</b><span>0</span></li>";
+  }
+
+  function setMetric(id, value) {
+    document.getElementById(id).textContent = value == null ? 0 : value;
+  }
+
+  function renderDashboard() {
+    var report = analytics && analytics.getReport ? analytics.getReport() : {};
+    var totals = report.totals || {};
+    setMetric("metricPrompts", totals.promptsSubmitted || 0);
+    setMetric("metricIntents", totals.intentsDetected || totals.routed || 0);
+    setMetric("metricFallback", (report.fallbackRate || 0) + "%");
+    setMetric("metricToolOpen", (report.toolOpenRate || 0) + "%");
+    setMetric("metricPrefill", (report.prefillSuccessRate || 0) + "%");
+    setMetric("metricExports", totals.exportsGenerated || 0);
+    setMetric("metricSaved", totals.projectsSaved || 0);
+    setMetric("metricSignup", totals.signupPromptShown || 0);
+    setMetric("metricPro", totals.proUpgradeClicked || 0);
+    setMetric("metricSponsor", totals.sponsorLeadOptinSubmitted || 0);
+    setMetric("metricApiWidget", totals.apiWidgetInterest || 0);
+    setMetric("metricClarification", (report.clarificationCompletionRate || 0) + "%");
+    renderList("workflowList", report.topWorkflows || []);
+    renderList("categoryList", report.topRoutedCategories || []);
+    renderList("countryList", report.topCountriesDetected || []);
+    renderList("toolList", report.topSelectedTools || []);
+    renderList("missingInputList", report.topMissingInputs || []);
+    renderList("sourceList", report.topSources || report.sourceBreakdown || []);
+    renderList("confidenceList", report.confidenceBuckets || []);
+    renderList("exportList", report.exportTypes || []);
+    renderList("interestList", report.interestSurfaces || []);
+    renderList("safePromptList", report.safePromptExamples || []);
+    renderList("noMatchList", report.noMatchCategories || []);
+    renderList("lengthList", report.queryLengthBuckets || []);
+    jsonOutput.textContent = JSON.stringify(report, null, 2);
+  }
+
+  function showDashboard() {
+    authGate.style.display = "none";
+    dashboard.classList.add("active");
+    renderDashboard();
+  }
+
+  function showError(message) {
+    authStatus.textContent = message;
+    authStatus.className = "ta-status error";
+  }
+
+  function verifyKey(key) {
+    authStatus.textContent = "Checking admin key...";
+    authStatus.className = "ta-status";
+    return fetch("/api/admin-session", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-admin-key": key },
+      body: JSON.stringify({ purpose: "ai-traction-dashboard" })
+    }).then(function (response) {
+      if (!response.ok) throw new Error("Admin key was rejected.");
+      return response.json().catch(function () { return {}; });
+    }).then(function () {
+      storageSet(key);
+      showDashboard();
+    }).catch(function () {
+      storageClear();
+      showError("Unable to unlock this dashboard with that admin key.");
+    });
+  }
+
+  authForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var key = adminKeyInput.value.trim();
+    if (!key) {
+      showError("Enter an admin key to continue.");
+      return;
+    }
+    verifyKey(key);
+  });
+
+  document.getElementById("copyJson").addEventListener("click", function () {
+    if (navigator.clipboard) navigator.clipboard.writeText(jsonOutput.textContent).catch(function () {});
+  });
+
+  document.getElementById("downloadJson").addEventListener("click", function () {
+    var blob = new Blob([jsonOutput.textContent], { type: "application/json" });
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "afrotools-ai-traction-report.json";
+    link.click();
+    setTimeout(function () { URL.revokeObjectURL(link.href); }, 1000);
+  });
+
+  document.getElementById("lockDashboard").addEventListener("click", function () {
+    storageClear();
+    dashboard.classList.remove("active");
+    authGate.style.display = "";
+    adminKeyInput.value = "";
+    authStatus.textContent = "";
+  });
+
+  var savedKey = storageGet();
+  if (savedKey) verifyKey(savedKey);
+})();
+</script>
+</body>
+</html>

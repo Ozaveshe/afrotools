@@ -157,6 +157,8 @@
     var genericMoney = parseMoney(raw);
     var salaryMoney = parseLabeledMoney(raw, ["gross salary", "salary", "gross pay", "payroll", "wage", "wages"]);
     var invoiceMoney = parseLabeledMoney(raw, ["invoice amount", "invoice", "receipt", "bill", "amount", "total"]);
+    var revenueMoney = parseLabeledMoney(raw, ["monthly revenue", "revenue", "sales", "turnover"]);
+    var fixedCostsMoney = parseLabeledMoney(raw, ["fixed monthly costs", "fixed costs", "fixed cost", "monthly costs", "costs", "expenses"]);
     var employees = raw.match(/\b([1-9][0-9]?)\s+(?:employees|staff|workers|people)\b/i);
     var vatTreatment = raw.match(/\b(standard|zero-rated|zero rated|exempt|withholding|inclusive|exclusive)\b/i);
     var businessType = raw.match(/\b(shop|retail|consulting|agency|restaurant|school|clinic|startup|company|freelancer|sole proprietor|limited company)\b/i);
@@ -170,6 +172,10 @@
     if (workflowKind === "payroll" && grossPay === null && genericMoney.amount !== null) grossPay = genericMoney.amount;
     if ((workflowKind === "invoice" || workflowKind === "vat") && amount === null && genericMoney.amount !== null) amount = genericMoney.amount;
     var currency = normalizeCurrency(source.currency || salaryMoney.currency || invoiceMoney.currency || genericMoney.currency || country.currency || "");
+    var monthlyRevenue = positiveNumber(source.monthlyRevenue || source.revenue || source.sales);
+    var fixedMonthlyCosts = positiveNumber(source.fixedMonthlyCosts || source.fixedCosts || source.monthlyCosts || source.expenses);
+    if (monthlyRevenue === null && revenueMoney.amount !== null) monthlyRevenue = revenueMoney.amount;
+    if (fixedMonthlyCosts === null && fixedCostsMoney.amount !== null) fixedMonthlyCosts = fixedCostsMoney.amount;
     return {
       workflowKind: workflowKind,
       country: country.country || text(source.country || ""),
@@ -184,6 +190,8 @@
       deductionsBenefits: text(source.deductionsBenefits || source.benefits || source.deductions || ""),
       invoiceAmount: amount,
       amount: amount,
+      monthlyRevenue: monthlyRevenue,
+      fixedMonthlyCosts: fixedMonthlyCosts,
       vatTreatment: normalize(source.vatTreatment || source.taxTreatment || (vatTreatment && vatTreatment[1]) || ""),
       businessType: normalize(source.businessType || (businessType && businessType[1]) || ""),
       lineItemDescription: text(source.lineItemDescription || source.description || source.service || (lineItem && lineItem[1]) || ""),
@@ -278,6 +286,8 @@
     var annualGrossExposure = grossTotalPerPeriod !== null ? grossTotalPerPeriod * periodMultiplier(normalized.payPeriod) : null;
     var vatAmount = normalized.invoiceAmount !== null && normalized.vatRate !== null ? normalized.invoiceAmount * normalized.vatRate / 100 : null;
     var invoiceTotal = vatAmount !== null ? normalized.invoiceAmount + vatAmount : normalized.invoiceAmount;
+    var cashflowMonthlyRevenue = normalized.monthlyRevenue !== null ? normalized.monthlyRevenue : normalized.invoiceAmount;
+    var cashflowFixedCosts = normalized.fixedMonthlyCosts !== null ? normalized.fixedMonthlyCosts : grossTotalPerPeriod;
     var selectedRoute = routeForKind(normalized);
     var recommendedTool = normalized.workflowKind === "payroll" ? "PAYE / Payroll calculator"
       : normalized.workflowKind === "vat" ? "VAT Calculator"
@@ -359,6 +369,19 @@
         vatTreatment: normalized.vatTreatment || "standard",
         lineItemDescription: normalized.lineItemDescription || "Service or product",
       },
+      cashflowPrefillInputs: {
+        country: normalized.country,
+        countryCode: normalized.countryCode,
+        currency: normalized.currency,
+        openingBalance: normalized.invoiceAmount,
+        monthlyRevenue: cashflowMonthlyRevenue,
+        fixedMonthlyCosts: cashflowFixedCosts,
+        grossPayrollPerPeriod: grossTotalPerPeriod,
+        employeeCount: normalized.numberOfEmployees,
+        payPeriod: normalized.payPeriod,
+        taxRate: normalized.vatRate,
+        businessType: normalized.businessType,
+      },
       registrationRoute: "/tools/business-registration/",
       tinRoute: "/tools/tin-guide/",
       cashflowRoute: "/tools/cash-flow-forecast/",
@@ -395,15 +418,18 @@
       '<div><strong>Useful next tools</strong><ul>' +
       '<li><a href="/tools/payslip-generator/">Payslip Generator</a></li>' +
       '<li><a href="/tools/staff-cost/">Employee Cost Calculator</a></li>' +
-      '<li><a href="/tools/business-registration/">Business Registration Checklist</a></li>' +
-      '<li><a href="/tools/cash-flow-forecast/">Cash Flow Forecast</a></li>' +
+      '<li><a href="' + escapeHtml(plan.registrationRoute || "/tools/business-registration/") + '">Business Registration Checklist</a></li>' +
+      '<li><a href="' + escapeHtml(plan.tinRoute || "/tools/tin-guide/") + '">TIN Guide</a></li>' +
+      '<li><a href="' + escapeHtml(plan.cashflowRoute || "/tools/cash-flow-forecast/") + '">Cash Flow Forecast</a></li>' +
       '</ul></div>' +
       '</div>' +
       '<div class="ai-finance-actions">' +
       '<a class="ai-small-button primary" href="' + escapeHtml(plan.selectedRoute) + '" data-sme-primary-link>Open recommended tool</a>' +
       '<a class="ai-small-button" href="/tools/vat-calculator/" data-sme-vat-link>Open VAT calculator</a>' +
       '<a class="ai-small-button" href="/tools/invoice-generator/" data-sme-invoice-link>Open invoice generator</a>' +
-      '<a class="ai-small-button secondary" href="/tools/business-registration/" data-sme-registration-link>Business/TIN checklist</a>' +
+      '<a class="ai-small-button secondary" href="' + escapeHtml(plan.cashflowRoute || "/tools/cash-flow-forecast/") + '" data-sme-cashflow-link>Open cashflow planner</a>' +
+      '<a class="ai-small-button secondary" href="' + escapeHtml(plan.registrationRoute || "/tools/business-registration/") + '" data-sme-registration-link>Business registration checklist</a>' +
+      '<a class="ai-small-button secondary" href="' + escapeHtml(plan.tinRoute || "/tools/tin-guide/") + '" data-sme-tin-link>TIN guide</a>' +
       '<button class="ai-small-button secondary" type="button" data-sme-brief-download>Download finance brief</button>' +
       '<button class="ai-small-button secondary" type="button" data-sme-brief-copy>Copy brief</button>' +
       '<button class="ai-small-button secondary" type="button" data-sme-ai-brief>Use AI to improve brief</button>' +
