@@ -1,1 +1,95 @@
-!function(){"use strict";var e="afrotools_cookie_consent",t=null;try{t=localStorage.getItem(e)}catch(e){}if("accepted"!==t&&"declined"!==t){var n=(document.documentElement.lang||"en").substring(0,2),o={msg:{fr:"AfroTools utilise des cookies pour l’analyse et la sauvegarde de vos préférences.",sw:"AfroTools inatumia kuki kwa uchambuzi na kuhifadhi mapendeleo yako."},accept:{fr:"Accepter",sw:"Kubali"},privacy:{fr:"Politique de confidentialité",sw:"Sera ya Faragha"},dismiss:{fr:"Fermer",sw:"Funga"}},i=function(e){return o[e]&&o[e][n]?o[e][n]:null},a=document.createElement("div");a.id="afro-cookie-consent",a.setAttribute("role","dialog"),a.setAttribute("aria-label","fr"===n?"Consentement aux cookies":"sw"===n?"Idhini ya kuki":"Cookie consent"),a.innerHTML='<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><p style="margin:0;flex:1;min-width:200px;font-size:13px;line-height:1.5;color:#d1d5db;">'+(i("msg")||"AfroTools uses cookies for analytics and saving your preferences.")+'</p><div style="display:flex;gap:8px;flex-shrink:0;"><button id="afro-cc-accept" style="padding:8px 18px;background:#0062cc;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;">'+(i("accept")||"Accept")+'</button><a href="/privacy/" id="afro-cc-learn" style="padding:8px 18px;color:#9ca3af;font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;transition:color .15s;">'+(i("privacy")||"Privacy Policy")+'</a><button id="afro-cc-close" aria-label="'+(i("dismiss")||"Dismiss")+'" style="background:none;border:none;color:#6b7280;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;">&times;</button></div></div>';var r=a.style;r.position="fixed",r.bottom="0",r.left="0",r.right="0",r.zIndex="99999",r.background="#111827",r.borderTop="1px solid rgba(255,255,255,.08)",r.padding="14px 24px",r.fontFamily="'DM Sans', system-ui, sans-serif",r.transition="transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",r.transform="translateY(100%)",document.body.appendChild(a),requestAnimationFrame(function(){requestAnimationFrame(function(){a.style.transform="translateY(0)"})});var c=document.getElementById("afro-cc-accept"),s=document.getElementById("afro-cc-learn");c&&(c.addEventListener("mouseenter",function(){c.style.background="#004fa3"}),c.addEventListener("mouseleave",function(){c.style.background="#0062cc"})),s&&(s.addEventListener("mouseenter",function(){s.style.color="#fff"}),s.addEventListener("mouseleave",function(){s.style.color="#9ca3af"})),document.getElementById("afro-cc-accept").addEventListener("click",function(){d("accepted"),l()}),document.getElementById("afro-cc-close").addEventListener("click",function(){d("declined"),f(),l()})}else"declined"===t&&f();function d(t){try{localStorage.setItem(e,t)}catch(e){}}function l(){a.style.transform="translateY(100%)",setTimeout(function(){a.parentNode&&a.parentNode.removeChild(a)},500)}function f(){window["ga-disable-G-D859CGF391"]=!0}}();
+!function () {
+  "use strict";
+
+  var key = "afrotools_cookie_consent";
+  var consent = null;
+
+  try {
+    consent = localStorage.getItem(key);
+  } catch (err) {}
+
+  if (consent === "accepted" || consent === "declined") {
+    if (consent === "declined") disableAnalytics();
+    return;
+  }
+
+  var lang = (document.documentElement.lang || "en").substring(0, 2);
+  var copy = {
+    msg: {
+      fr: "AfroTools utilise des cookies pour l'analyse et la sauvegarde de vos preferences.",
+      sw: "AfroTools inatumia kuki kwa uchambuzi na kuhifadhi mapendeleo yako."
+    },
+    accept: { fr: "Accepter", sw: "Kubali" },
+    privacy: { fr: "Politique de confidentialite", sw: "Sera ya Faragha" },
+    dismiss: { fr: "Fermer", sw: "Funga" }
+  };
+  var t = function (name) {
+    return copy[name] && copy[name][lang] ? copy[name][lang] : null;
+  };
+
+  var style = document.createElement("style");
+  style.id = "afro-cookie-consent-style";
+  style.textContent = ""
+    + "#afro-cookie-consent{position:fixed;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));z-index:99999;max-width:720px;margin:0 auto;background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:12px;font-family:'DM Sans',system-ui,sans-serif;box-shadow:0 18px 48px rgba(15,23,42,.24);transition:transform .4s cubic-bezier(.16,1,.3,1);transform:translateY(calc(100% + 28px))}"
+    + "#afro-cookie-consent .afro-cc-inner{display:flex;align-items:center;gap:12px}"
+    + "#afro-cookie-consent p{flex:1;margin:0;min-width:180px;color:#d1d5db;font-size:13px;line-height:1.45}"
+    + "#afro-cookie-consent .afro-cc-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}"
+    + "#afro-cookie-consent button,#afro-cookie-consent a{font-family:inherit}"
+    + "#afro-cc-accept{min-height:40px;padding:0 16px;background:#0062cc;color:#fff;border:0;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer}"
+    + "#afro-cc-learn{align-items:center;color:#c5cedb;display:flex;font-size:13px;font-weight:700;min-height:40px;padding:0 10px;text-decoration:none}"
+    + "#afro-cc-close{align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#c5cedb;cursor:pointer;display:inline-flex;font-size:20px;height:40px;justify-content:center;line-height:1;padding:0;width:40px}"
+    + "#afro-cc-accept:hover{background:#004fa3}"
+    + "#afro-cc-learn:hover,#afro-cc-close:hover{color:#fff}"
+    + "@media(max-width:560px){#afro-cookie-consent{left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));border-radius:14px;padding:10px}#afro-cookie-consent .afro-cc-inner{display:grid;gap:9px}#afro-cookie-consent p{font-size:12.5px;line-height:1.42;min-width:0}#afro-cookie-consent .afro-cc-actions{display:flex!important;flex-wrap:nowrap;gap:7px;min-width:0}#afro-cookie-consent #afro-cc-accept,#afro-cookie-consent #afro-cc-learn{flex:1 1 0;font-size:12.5px;justify-content:center;min-height:38px;min-width:0;padding:0 8px;width:auto!important}#afro-cookie-consent #afro-cc-close{flex:0 0 38px;height:38px;width:38px!important}}";
+  document.head.appendChild(style);
+
+  var banner = document.createElement("div");
+  banner.id = "afro-cookie-consent";
+  banner.setAttribute("role", "dialog");
+  banner.setAttribute(
+    "aria-label",
+    lang === "fr" ? "Consentement aux cookies" : lang === "sw" ? "Idhini ya kuki" : "Cookie consent"
+  );
+  banner.innerHTML = '<div class="afro-cc-inner">'
+    + '<p>' + (t("msg") || "AfroTools uses cookies for analytics and saving your preferences.") + '</p>'
+    + '<div class="afro-cc-actions">'
+    + '<button id="afro-cc-accept" type="button">' + (t("accept") || "Accept") + '</button>'
+    + '<a href="/privacy/" id="afro-cc-learn">' + (t("privacy") || "Privacy Policy") + '</a>'
+    + '<button id="afro-cc-close" type="button" aria-label="' + (t("dismiss") || "Dismiss") + '">&times;</button>'
+    + '</div></div>';
+
+  document.body.appendChild(banner);
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      banner.style.transform = "translateY(0)";
+    });
+  });
+
+  document.getElementById("afro-cc-accept").addEventListener("click", function () {
+    save("accepted");
+    close();
+  });
+  document.getElementById("afro-cc-close").addEventListener("click", function () {
+    save("declined");
+    disableAnalytics();
+    close();
+  });
+
+  function save(value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (err) {}
+  }
+
+  function close() {
+    banner.style.transform = "translateY(calc(100% + 28px))";
+    setTimeout(function () {
+      if (banner.parentNode) banner.parentNode.removeChild(banner);
+      if (style.parentNode) style.parentNode.removeChild(style);
+    }, 500);
+  }
+
+  function disableAnalytics() {
+    window["ga-disable-G-D859CGF391"] = true;
+  }
+}();

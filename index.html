@@ -616,12 +616,16 @@
       .country-popular-list{gap:6px}
       .country-popular-list a{padding:7px 10px}
       .country-popular-list[aria-label="Popular countries"]{display:none}
-      .home-tool-six-grid{grid-template-columns:1fr;gap:10px}
-      .home-tool-card{align-items:start;column-gap:12px;display:grid;grid-template-areas:"icon title" "icon desc" "icon cta";grid-template-columns:54px minmax(0,1fr);min-height:0;padding:14px}
-      .home-tool-card .home-tool-icon{align-self:center;grid-area:icon;height:54px;margin:0;min-width:54px;padding:0 6px}
-      .home-tool-card strong{grid-area:title;font-size:.94rem;line-height:1.22}
-      .home-tool-card p{grid-area:desc;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;margin:4px 0 6px;overflow:hidden}
-      .home-tool-card em{grid-area:cta}
+      .home-tool-six-grid{grid-template-columns:1fr;gap:8px}
+      .home-tool-card{align-items:center;background:rgba(255,255,255,.84);border-radius:14px;box-shadow:0 8px 22px rgba(15,23,42,.055);column-gap:12px;display:grid;grid-template-areas:"icon title" "icon desc" "icon cta";grid-template-columns:44px minmax(0,1fr);min-height:0;padding:12px 13px 11px 15px}
+      .home-tool-card::before{bottom:12px;height:auto;left:8px;right:auto;top:12px;width:3px}
+      .home-tool-card::after{display:none}
+      .home-tool-card .home-tool-icon{align-self:center;border-radius:12px;grid-area:icon;height:44px;margin:0;min-width:44px;padding:0;box-shadow:0 8px 18px rgba(0,87,184,.16)}
+      .home-tool-card .home-tool-icon svg{height:21px;width:21px}
+      .home-tool-card strong{align-self:end;grid-area:title;font-size:.95rem;line-height:1.16}
+      .home-tool-card p{grid-area:desc;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;font-size:.8rem;line-height:1.42;margin:2px 0 0;overflow:hidden}
+      .home-tool-card em{background:transparent;border:0;grid-area:cta;justify-self:start;min-height:26px;padding:0;width:auto}
+      :root[data-theme="dark"] .home-tool-card{background:rgba(18,31,51,.82)!important}
       section[aria-label="Discover unique AfroTools"] .sec-top{margin-bottom:18px}
       section[aria-label="Discover unique AfroTools"] .discover-grid{grid-template-columns:1fr;gap:10px}
       section[aria-label="Discover unique AfroTools"] .disc-card{min-height:0;padding:20px!important}
@@ -684,10 +688,19 @@
         font-size:16px;
       }
       .home-tool-card{
-        padding:13px;
+        grid-template-columns:40px minmax(0,1fr);
+        padding:11px 12px 10px 14px;
+      }
+      .home-tool-card .home-tool-icon{
+        height:40px;
+        min-width:40px;
+      }
+      .home-tool-card .home-tool-icon svg{
+        height:19px;
+        width:19px;
       }
       .home-tool-card strong{
-        font-size:1rem;
+        font-size:.92rem;
       }
       .home-section-action{
         padding:10px 2px;
@@ -963,7 +976,7 @@
     <p class="hero-sub">Ask a practical question and move into local African calculators, documents, country data, source notes, and next steps for work and daily life.</p>
     <div class="hero-search-wrap">
       <label class="ai-command-label" for="hero-search-input">Ask AfroTools AI</label>
-      <form class="hero-search ai-command-form" id="ai-frontdoor-form" role="search" action="/search" method="get">
+      <form class="hero-search ai-command-form" id="ai-frontdoor-form" role="search" action="/ai/" method="get">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><line x1="10.2" y1="10.2" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <input type="text" id="hero-search-input" name="q" placeholder="Ask about tax, CVs, imports, study, energy, documents, or country data" aria-label="Ask about tax, CVs, imports, study, energy, documents, or country data" autocomplete="off" spellcheck="false">
         <button class="hero-search-btn" type="submit" id="hero-search-btn">Start</button>
@@ -2691,16 +2704,28 @@ document.addEventListener('DOMContentLoaded', function() {
         if (value === true || value === 1) return true;
         return typeof value === 'string' && /^(1|true|yes|enabled)$/i.test(value);
       }
+      function isDisabled(value) {
+        if (value === false || value === 0) return true;
+        return typeof value === 'string' && /^(0|false|no|disabled|off)$/i.test(value);
+      }
       for (var i = 0; i < flagNames.length; i++) {
+        if (isDisabled(window[flagNames[i]]) || isDisabled(flags[flagNames[i]])) return false;
         if (isEnabled(window[flagNames[i]]) || isEnabled(flags[flagNames[i]])) return true;
       }
+      if (isDisabled(flags.aiFrontdoorEnabled)) return false;
       if (isEnabled(flags.aiFrontdoorEnabled)) return true;
+      if (document.documentElement.dataset.aiFrontdoorEnabled === 'false') return false;
       if (document.documentElement.dataset.aiFrontdoorEnabled === 'true') return true;
       try {
-        return flagNames.some(function(name) { return isEnabled(localStorage.getItem(name)); });
+        for (var j = 0; j < flagNames.length; j++) {
+          var stored = localStorage.getItem(flagNames[j]);
+          if (isDisabled(stored)) return false;
+          if (isEnabled(stored)) return true;
+        }
       } catch (err) {
-        return false;
+        return true;
       }
+      return true;
     }
     function trackAiFrontdoor(eventName, params) {
       var analytics = window.AfroTools && window.AfroTools.analytics;
@@ -2731,7 +2756,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .slice(0, 7);
 
       if (!results.length) {
-        dropdown.innerHTML = '<div class="sd-empty">No tools found for "' + esc(q) + '"</div>';
+        dropdown.innerHTML = '<div class="sd-empty">Press Start to ask AfroTools AI about "' + esc(q) + '"</div>';
         dropdown.classList.add('open');
         return;
       }

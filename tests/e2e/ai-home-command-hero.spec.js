@@ -14,16 +14,49 @@ async function quietExternalNoise(page) {
   });
 }
 
-test("feature flag off leaves the current homepage hero and discovery surface available", async ({ page }) => {
+test("default homepage keeps the legacy hero while routing its prompt form through AfroTools AI", async ({ page }) => {
   await quietExternalNoise(page);
+  await page.route("**/.netlify/functions/ai-route-intent", async function (route) {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json; charset=utf-8",
+      body: JSON.stringify({
+        ok: true,
+        source: "deterministic",
+        decision: {
+          intentCategory: "career",
+          selectedToolId: "cv-builder",
+          selectedRoute: "/tools/cv-builder/",
+          confidence: 0.91,
+          reasonShort: "Matched CV Builder for a Ghana electrical engineer profile.",
+          extractedInputs: { country: "Ghana", targetRole: "electrical engineer" },
+          missingInputs: [],
+          clarificationQuestion: "",
+          safetyDomain: "employment",
+          highStakesNotice: "Planning support only. Review employment, hiring, salary, and application decisions with qualified local guidance where needed.",
+          privacyMode: "browser_local",
+          canPrefill: true,
+          suggestedNextActions: ["Open CV Builder"]
+        }
+      })
+    });
+  });
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
   await expect(page.locator("#afrotoolsAiCommandHero")).toBeHidden();
   await expect(page.locator("#legacy-home-hero")).toBeVisible();
   await expect(page.locator("#hero-search-input")).toBeVisible();
+  await expect(page.locator("#ai-frontdoor-form")).toHaveAttribute("action", "/ai/");
   await expect(page.locator("#start-country")).toBeAttached();
   await expect(page.getByRole("link", { name: /all countries/i }).first()).toHaveAttribute("href", "/countries/");
+
+  await page.locator("#hero-search-input").fill("Write me a CV for an electrical engineer in Ghana");
+  await page.locator("#hero-search-btn").click();
+  await page.waitForURL(/\/ai\//);
+  await expect(page.locator("#aiCommandInput")).toHaveValue("Write me a CV for an electrical engineer in Ghana");
+  await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
+  expect(new URL(page.url()).searchParams.get("q")).toBe(null);
 });
 
 test("feature flag on renders the command homepage variant", async ({ page }) => {

@@ -36,6 +36,17 @@
     .ai-input-row input{min-width:0;border:0;outline:0;background:transparent;color:var(--ai-text);font:inherit;font-size:16px;padding:12px 10px}
     .ai-run{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border:1px solid var(--ai-primary);border-radius:12px;background:var(--ai-primary);color:#fff;font:inherit;font-size:.88rem;font-weight:900;cursor:pointer}
     .ai-run:hover,.ai-run:focus-visible{background:var(--ai-primary-dark);border-color:var(--ai-primary-dark)}
+    .ai-context-panel{display:grid;gap:11px;border:1px solid #dbeafe;border-radius:13px;background:#f8fbff;padding:12px}
+    .ai-context-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .ai-context-head strong{color:#0f172a;font-size:.86rem;font-weight:900}
+    .ai-context-head span{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;background:#e0f2fe;color:#075985;padding:4px 9px;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+    .ai-context-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+    .ai-context-field{display:grid;gap:6px}
+    .ai-context-field label{color:#334155;font-size:.72rem;font-weight:900}
+    .ai-context-field select{width:100%;min-height:44px;border:1px solid #cbdff7;border-radius:10px;background:#fff;color:#0f172a;font:inherit;font-size:16px;padding:8px 10px}
+    .ai-context-field select:focus{outline:3px solid rgba(0,98,204,.16);outline-offset:1px}
+    .ai-context-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+    .ai-context-status{color:#475569;font-size:.76rem;font-weight:800;line-height:1.45}
     .ai-trust{margin:0;border:1px solid #fde68a;border-radius:12px;background:var(--ai-warn-bg);color:var(--ai-warn);padding:12px 14px;font-size:.82rem;line-height:1.55}
     .ai-projects{max-width:860px;margin:14px auto 0;border:1px solid #dbe6f4;border-radius:13px;background:#fbfdff;padding:12px}
     .ai-projects[hidden]{display:none}
@@ -78,6 +89,18 @@
     .ai-notice{border:1px solid #bfdbfe;border-radius:11px;background:#f8fbff;color:#334155;padding:10px 11px;font-size:.78rem;line-height:1.5}
     .ai-notice strong{display:block;color:#0f172a;font-size:.8rem;margin-bottom:2px}
     .ai-source-hint{display:block;margin-top:5px;color:#475569}
+    .ai-intelligence{display:grid;gap:10px;border:1px solid #c7d2fe;border-radius:13px;background:#f8fbff;padding:12px}
+    .ai-intelligence-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .ai-intelligence-head h4{margin:0;color:#0f172a;font-size:.92rem;font-weight:900}
+    .ai-intelligence-head p{margin:3px 0 0;color:#475569;font-size:.76rem;line-height:1.45}
+    .ai-intelligence-badge{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;background:#e0e7ff;color:#3730a3;padding:4px 9px;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;text-align:center}
+    .ai-intelligence-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .ai-intelligence-metric{border:1px solid #dbeafe;border-radius:10px;background:#fff;padding:9px}
+    .ai-intelligence-metric span{display:block;color:#64748b;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+    .ai-intelligence-metric strong{display:block;color:#0f172a;font-size:.83rem;font-weight:900;margin-top:4px;line-height:1.25}
+    .ai-intelligence-list{margin:0;padding-left:19px;color:#475569;font-size:.76rem;line-height:1.5}
+    .ai-intelligence-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+    .ai-plan-status{color:#475569;font-size:.76rem;font-weight:800;line-height:1.45}
     .ai-clarification{border:1px solid #fed7aa;border-radius:12px;background:#fff7ed;padding:12px}
     .ai-clarification h4,.ai-consent-card h3{margin:0;color:#0f172a;font-size:.9rem;font-weight:900;letter-spacing:0}
     .ai-clarification p,.ai-consent-card p{margin:5px 0 0;color:#6b4f1d;font-size:.78rem;line-height:1.5}
@@ -271,8 +294,8 @@
     html[dir="rtl"] .ai-list,html[dir="rtl"] .ai-actions,html[dir="rtl"] .ai-clarification-actions,html[dir="rtl"] .ai-consent-actions{justify-content:flex-start}
     html[dir="rtl"] .ai-hub-list,html[dir="rtl"] .ai-education-plan ul,html[dir="rtl"] .ai-education-plan ol,html[dir="rtl"] .ai-career-plan ul,html[dir="rtl"] .ai-career-plan ol,html[dir="rtl"] .ai-import-plan ul,html[dir="rtl"] .ai-import-plan ol,html[dir="rtl"] .ai-energy-plan ul,html[dir="rtl"] .ai-energy-plan ol,html[dir="rtl"] .ai-finance-plan ul,html[dir="rtl"] .ai-finance-plan ol,html[dir="rtl"] .ai-country-plan ul,html[dir="rtl"] .ai-country-plan ol,html[dir="rtl"] .ai-local-life-plan ul,html[dir="rtl"] .ai-local-life-plan ol,html[dir="rtl"] .ai-construction-panel ul,html[dir="rtl"] .ai-agriculture-panel ul{padding-left:0;padding-right:20px}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media(max-width:760px){.ai-main{padding:26px 12px calc(42px + env(safe-area-inset-bottom))}.ai-header{text-align:left;margin-bottom:16px}.ai-title{font-size:clamp(1.85rem,9vw,2.65rem)}.ai-copy{font-size:.95rem;line-height:1.58}.ai-command{padding:14px;border-radius:14px}.ai-input-row{grid-template-columns:1fr;gap:9px}.ai-run{width:100%}.ai-trust{font-size:.78rem;padding:10px 11px}.ai-card-head,.ai-projects-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head,.ai-country-head,.ai-local-life-head,.ai-workflow-panel-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{display:grid;justify-content:stretch}.ai-chip{justify-self:start}.ai-card-body,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-tools,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-tools,.ai-local-life-source-grid,.ai-result-grid,.ai-vertical-grid,.ai-example-grid,.ai-tool-link-grid,.ai-hub-two{grid-template-columns:1fr}.ai-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions{display:grid}.ai-open,.ai-browse,.ai-small-button{width:100%}.ai-list{display:grid;grid-template-columns:1fr}.ai-list li{border-radius:10px}.ai-clarification-chips{display:grid;grid-template-columns:1fr}.ai-answer-chip{width:100%;text-align:center;justify-content:center}.ai-fallback-grid{grid-template-columns:1fr}.ai-fallback-card{min-height:112px}.ai-hub-section{margin-top:26px}}
-    @media(min-width:761px) and (max-width:980px){.ai-fallback-grid,.ai-education-tools,.ai-career-tools,.ai-import-tools,.ai-country-tools,.ai-local-life-tools{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-education-grid,.ai-career-grid,.ai-import-grid,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-source-grid,.ai-result-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:760px){.ai-main{padding:26px 12px calc(42px + env(safe-area-inset-bottom))}.ai-header{text-align:left;margin-bottom:16px}.ai-title{font-size:clamp(1.85rem,9vw,2.65rem)}.ai-copy{font-size:.95rem;line-height:1.58}.ai-command{padding:14px;border-radius:14px}.ai-input-row{grid-template-columns:1fr;gap:9px}.ai-run{width:100%}.ai-trust{font-size:.78rem;padding:10px 11px}.ai-card-head,.ai-projects-head,.ai-context-head,.ai-intelligence-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head,.ai-country-head,.ai-local-life-head,.ai-workflow-panel-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{display:grid;justify-content:stretch}.ai-chip{justify-self:start}.ai-card-body,.ai-context-grid,.ai-intelligence-grid,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-tools,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-tools,.ai-local-life-source-grid,.ai-result-grid,.ai-vertical-grid,.ai-example-grid,.ai-tool-link-grid,.ai-hub-two{grid-template-columns:1fr}.ai-actions,.ai-context-actions,.ai-intelligence-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions{display:grid}.ai-open,.ai-browse,.ai-small-button{width:100%}.ai-list{display:grid;grid-template-columns:1fr}.ai-list li{border-radius:10px}.ai-clarification-chips{display:grid;grid-template-columns:1fr}.ai-answer-chip{width:100%;text-align:center;justify-content:center}.ai-fallback-grid{grid-template-columns:1fr}.ai-fallback-card{min-height:112px}.ai-hub-section{margin-top:26px}}
+    @media(min-width:761px) and (max-width:980px){.ai-fallback-grid,.ai-education-tools,.ai-career-tools,.ai-import-tools,.ai-country-tools,.ai-local-life-tools{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-education-grid,.ai-career-grid,.ai-import-grid,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-source-grid,.ai-result-grid,.ai-intelligence-grid{grid-template-columns:1fr 1fr}}
     @media(prefers-reduced-motion:reduce){.ai-spinner,.ai-skeleton-line{animation:none}}
   </style>
   <meta property="og:url" content="https://afrotools.com/ai/">
@@ -308,6 +331,65 @@
               <button class="ai-run" type="submit" aria-label="Find matching AfroTools workflow">Find workflow</button>
             </div>
           </div>
+          <section class="ai-context-panel" aria-labelledby="aiContextTitle">
+            <div class="ai-context-head">
+              <strong id="aiContextTitle">Context</strong>
+              <span>Optional</span>
+            </div>
+            <div class="ai-context-grid">
+              <div class="ai-context-field">
+                <label for="aiContextWorkflow">Workflow</label>
+                <select id="aiContextWorkflow">
+                  <option value="">Any workflow</option>
+                  <option value="career">CV/job application</option>
+                  <option value="education">Scholarship/study</option>
+                  <option value="trade">Import/customs</option>
+                  <option value="energy">Solar/fuel</option>
+                  <option value="tax">Payroll/tax</option>
+                  <option value="business">Business/invoice</option>
+                  <option value="document">PDF/document</option>
+                  <option value="country">Country data</option>
+                  <option value="local-life">Local life</option>
+                  <option value="construction">Construction</option>
+                  <option value="agriculture">Agriculture</option>
+                </select>
+              </div>
+              <div class="ai-context-field">
+                <label for="aiContextCountry">Market</label>
+                <select id="aiContextCountry">
+                  <option value="">Any market</option>
+                  <option value="Nigeria">Nigeria</option>
+                  <option value="Ghana">Ghana</option>
+                  <option value="Kenya">Kenya</option>
+                  <option value="South Africa">South Africa</option>
+                  <option value="Cameroon">Cameroon</option>
+                  <option value="Rwanda">Rwanda</option>
+                  <option value="Uganda">Uganda</option>
+                  <option value="Tanzania">Tanzania</option>
+                  <option value="Zambia">Zambia</option>
+                  <option value="Egypt">Egypt</option>
+                  <option value="Morocco">Morocco</option>
+                  <option value="Senegal">Senegal</option>
+                </select>
+              </div>
+              <div class="ai-context-field">
+                <label for="aiContextOutput">Output</label>
+                <select id="aiContextOutput">
+                  <option value="">Any output</option>
+                  <option value="tool">Open the right tool</option>
+                  <option value="prefill">Prefill a calculator</option>
+                  <option value="brief">Build an exportable brief</option>
+                  <option value="checklist">Make a checklist</option>
+                  <option value="compare">Compare options</option>
+                </select>
+              </div>
+            </div>
+            <div class="ai-context-actions">
+              <button class="ai-small-button secondary" id="aiApplyContext" type="button">Apply context</button>
+              <button class="ai-small-button" id="aiClearContext" type="button">Clear</button>
+              <span class="ai-context-status" id="aiContextStatus" aria-live="polite"></span>
+            </div>
+          </section>
           <p class="ai-trust" id="aiTrustNote">Some AfroTools workflows run in your browser. AI-assisted workflows ask before sending private content. This page may send your prompt to the AfroTools routing endpoint to choose a workflow, but it does not require login and does not store raw queries in analytics.</p>
         </form>
 
@@ -481,6 +563,12 @@
     var LOW_CONFIDENCE = 0.35;
     var form = document.getElementById("aiCommandForm");
     var input = document.getElementById("aiCommandInput");
+    var contextWorkflow = document.getElementById("aiContextWorkflow");
+    var contextCountry = document.getElementById("aiContextCountry");
+    var contextOutput = document.getElementById("aiContextOutput");
+    var applyContextButton = document.getElementById("aiApplyContext");
+    var clearContextButton = document.getElementById("aiClearContext");
+    var contextStatus = document.getElementById("aiContextStatus");
     var commandSection = document.querySelector(".ai-command");
     var states = {
       empty: document.getElementById("aiEmptyState"),
@@ -618,6 +706,28 @@
       "commodity-prices": "Commodity price snapshots can be stale. Confirm farm-gate and market prices with current buyers before sale decisions.",
       "livestock-feed-calculator": "Livestock feed estimates depend on current feed ingredient prices, animal health, ration advice, and local vet guidance.",
       "cocoa-tracker": "Cocoa price and quality assumptions require current buyer, grade, moisture, certification, and export-market verification."
+    };
+
+    var CONTEXT_WORKFLOW_PHRASES = {
+      career: "Focus on CV/job application workflow.",
+      education: "Focus on scholarship or study abroad workflow.",
+      trade: "Focus on import/customs workflow.",
+      energy: "Focus on solar, electricity, or fuel workflow.",
+      tax: "Focus on payroll, PAYE, VAT, or tax workflow.",
+      business: "Focus on business, invoice, or SME finance workflow.",
+      document: "Focus on PDF/document workflow.",
+      country: "Focus on country data and market intelligence.",
+      "local-life": "Focus on local-life costs and daily planning.",
+      construction: "Focus on construction, floor plan, or materials workflow.",
+      agriculture: "Focus on agriculture, farm yield, or farm profit workflow."
+    };
+
+    var CONTEXT_OUTPUT_PHRASES = {
+      tool: "Open the right tool.",
+      prefill: "Prefill a calculator with safe structured fields.",
+      brief: "Build an exportable brief.",
+      checklist: "Make a practical checklist.",
+      compare: "Compare options before opening a tool."
     };
 
     var CLARIFICATION_FIELDS = {
@@ -1029,6 +1139,67 @@
       return clean ? "/search/?q=" + encodeURIComponent(clean) : "/search/";
     }
 
+    function selectedValue(node) {
+      return node && node.value ? node.value : "";
+    }
+
+    function setContextStatus(message) {
+      if (contextStatus) contextStatus.textContent = message || "";
+    }
+
+    function contextPhrases() {
+      var phrases = [];
+      var workflow = selectedValue(contextWorkflow);
+      var country = selectedValue(contextCountry);
+      var output = selectedValue(contextOutput);
+      if (workflow && CONTEXT_WORKFLOW_PHRASES[workflow]) phrases.push(CONTEXT_WORKFLOW_PHRASES[workflow]);
+      if (country) phrases.push("Use " + country + " as the country/market.");
+      if (output && CONTEXT_OUTPUT_PHRASES[output]) phrases.push(CONTEXT_OUTPUT_PHRASES[output]);
+      return phrases;
+    }
+
+    function applyAdvancedContext() {
+      if (!input) return false;
+      var phrases = contextPhrases();
+      var original = input.value.trim();
+      if (!phrases.length) {
+        setContextStatus("Choose at least one context field.");
+        return false;
+      }
+      var current = original;
+      var normalizedCurrent = normalize(current);
+      var additions = phrases.filter(function (phrase) {
+        return normalizedCurrent.indexOf(normalize(phrase)) === -1;
+      });
+      if (additions.length) {
+        current = current ? current + " " + additions.join(" ") : additions.join(" ");
+        input.value = current;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+      setContextStatus(additions.length ? "Context added." : "Context already included.");
+      track("ai_command_context_applied", {
+        has_query: Boolean(original),
+        query_length: original.length,
+        workflow_context: selectedValue(contextWorkflow) || "any",
+        country_context: selectedValue(contextCountry) || "any",
+        output_context: selectedValue(contextOutput) || "any",
+        added_count: additions.length
+      });
+      input.focus();
+      return additions.length > 0;
+    }
+
+    function clearAdvancedContext() {
+      if (contextWorkflow) contextWorkflow.value = "";
+      if (contextCountry) contextCountry.value = "";
+      if (contextOutput) contextOutput.value = "";
+      setContextStatus("Context cleared.");
+      track("ai_command_context_cleared", {
+        has_query: Boolean(input && input.value.trim()),
+        query_length: input ? input.value.trim().length : 0
+      });
+    }
+
     function track(eventName, params) {
       var analytics = window.AfroTools && window.AfroTools.analytics;
       var safe = Object.assign({ surface: "ai_command_page" }, params || {});
@@ -1151,6 +1322,7 @@
         prefillPayload: null,
         consentToModel: false,
         intentCategory: "unknown",
+        privacyMode: "browser_local",
         entrySource: entrySource || "direct_ai",
         source: "fallback"
       };
@@ -1195,6 +1367,7 @@
         prefillPayload: null,
         consentToModel: consentToModel === true,
         intentCategory: match && (match.intentCategory || match.safetyDomain || workflow.domain) || "unknown",
+        privacyMode: match && (match.privacyMode || workflow.privacyMode) || "browser_local",
         entrySource: entrySource || "direct_ai",
         source: normalizeSource(match && match.source)
       };
@@ -1872,6 +2045,113 @@
       return SOURCE_HINTS[toolId] || "";
     }
 
+    function sourceLabel(source) {
+      var value = normalizeSource(source);
+      if (value === "router") return "Router";
+      if (value === "deterministic") return "Deterministic";
+      return "Fallback";
+    }
+
+    function privacyLabel(mode) {
+      var value = String(mode || "browser_local");
+      if (value === "browser_local") return "Browser-local";
+      if (value === "account_optional") return "Account optional";
+      if (value === "ai_optional") return "AI optional";
+      if (value === "server_required") return "Server required";
+      return prettyKey(value);
+    }
+
+    function prefillLabel(launch) {
+      var missing = launch && Array.isArray(launch.missingInputs) ? launch.missingInputs.length : 0;
+      if (launch && launch.supported && !missing) return "Ready";
+      if (launch && launch.supported) return "Needs details";
+      return "Manual";
+    }
+
+    function nextStepLabel(launch) {
+      var missing = launch && Array.isArray(launch.missingInputs) ? launch.missingInputs.length : 0;
+      return missing ? "Answer details" : "Open tool";
+    }
+
+    function readableMissing(items) {
+      var values = (items || []).filter(Boolean).map(function (item) { return prettyField(item); });
+      if (!values.length) return "";
+      var visible = values.slice(0, 3).join(", ");
+      return values.length > 3 ? visible + " and " + (values.length - 3) + " more" : visible;
+    }
+
+    function buildWorkflowPlanItems(match, state, launch) {
+      var workflow = match && match.workflow || {};
+      var toolId = match && (match.selectedToolId || workflow.id) || state.selectedToolId || "";
+      var missing = launch && Array.isArray(launch.missingInputs) ? launch.missingInputs : state.missingInputs || [];
+      var privacyMode = state.privacyMode || match && match.privacyMode || workflow.privacyMode || "browser_local";
+      var items = [];
+      var missingText = readableMissing(missing);
+      if (missingText) {
+        items.push("Add " + missingText + " before relying on the prefill.");
+      } else {
+        items.push("Review the detected inputs, then open the canonical " + (workflow.title || "AfroTools") + " workflow.");
+      }
+      if (launch && launch.supported) {
+        items.push("Use the short-lived prefill so the tool opens with safe structured fields.");
+      } else {
+        items.push("Open the workflow and finish the details inside the tool.");
+      }
+      items.push(sourceHintForTool(toolId) ? "Check the source and confidence note before using high-stakes results." : "Review the privacy and confidence note before making decisions.");
+      if (privacyMode === "browser_local") {
+        items.push("Save a sanitized project summary on this device if you want to continue later.");
+      } else if (privacyMode === "account_optional") {
+        items.push("Sync only the sanitized project summary after an explicit account action.");
+      } else {
+        items.push("Use optional AI or server features only after the explicit consent action.");
+      }
+      return items;
+    }
+
+    function renderWorkflowIntelligence(match, state, launch) {
+      if (!match || !state) return "";
+      var workflow = match.workflow || {};
+      var privacyMode = state.privacyMode || match.privacyMode || workflow.privacyMode || "browser_local";
+      var items = buildWorkflowPlanItems(match, state, launch);
+      var planText = (workflow.title || "AfroTools") + " workflow plan: " + items.join(" ");
+      var metrics = [
+        ["Router", sourceLabel(state.source || match.source)],
+        ["Prefill", prefillLabel(launch)],
+        ["Privacy", privacyLabel(privacyMode)],
+        ["Next step", nextStepLabel(launch)]
+      ];
+      return '<section class="ai-intelligence" data-workflow-intelligence data-plan-text="' + escapeHtml(planText) + '" aria-label="Workflow intelligence">' +
+        '<div class="ai-intelligence-head"><h4>Workflow intelligence</h4><span class="ai-intelligence-badge">' + escapeHtml(prefillLabel(launch)) + '</span></div>' +
+        '<div class="ai-intelligence-grid">' + metrics.map(function (metric) {
+          return '<div class="ai-intelligence-metric"><span>' + escapeHtml(metric[0]) + '</span><strong>' + escapeHtml(metric[1]) + '</strong></div>';
+        }).join("") + '</div>' +
+        '<ol class="ai-intelligence-list">' + items.map(function (item) { return '<li>' + escapeHtml(item) + '</li>'; }).join("") + '</ol>' +
+        '<div class="ai-intelligence-actions"><button class="ai-small-button secondary" type="button" data-ai-copy-plan>Copy plan</button><span class="ai-plan-status" data-ai-plan-status aria-live="polite"></span></div>' +
+        '</section>';
+    }
+
+    function copyText(text) {
+      var value = String(text || "");
+      if (!value) return Promise.resolve(false);
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        return navigator.clipboard.writeText(value).then(function () { return true; }).catch(function () { return false; });
+      }
+      try {
+        var textarea = document.createElement("textarea");
+        textarea.value = value;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        var copied = document.execCommand("copy");
+        document.body.removeChild(textarea);
+        return Promise.resolve(Boolean(copied));
+      } catch (err) {
+        return Promise.resolve(false);
+      }
+    }
+
     function aiProFeatureForTool(toolId, category) {
       if (toolId === "cv-builder" || toolId === "cover-letter") return "ai_document_advanced";
       if (toolId === "import-duty" || toolId === "solar-roi") return "workflow_export_rich_pdf";
@@ -2501,6 +2781,7 @@
       var localLifePanel = primary ? renderLocalLifePanel(match, state, launch, options && options.query) : "";
       var constructionPanel = primary ? renderConstructionPanel(match, state, launch, options && options.query) : "";
       var agriculturePanel = primary ? renderAgriculturePanel(match, state, launch, options && options.query) : "";
+      var intelligencePanel = primary ? renderWorkflowIntelligence(match, state, launch) : "";
       var html = '<article class="ai-workflow-card" data-workflow-card role="listitem" aria-label="' + escapeHtml(workflow.title) + ' workflow result" data-tool-id="' + escapeHtml(workflow.id) + '" data-primary="' + (primary ? "true" : "false") + '">' +
         '<div class="ai-card-head"><div><h3 class="ai-card-title">' + escapeHtml(workflow.title) + '</h3><p class="ai-card-reason">' + escapeHtml(match.reason || workflow.reason) + '</p></div><span class="ai-chip">' + escapeHtml(confidenceLabel) + '</span></div>' +
         '<div class="ai-card-body"><div class="ai-mini-panel"><strong>' + escapeHtml(label("result.inputsDetected", "Inputs already detected")) + '</strong>' + inputList(mergedInputs) + '</div><div class="ai-mini-panel"><strong>' + escapeHtml(label("result.missingInputs", "Missing required inputs")) + '</strong>' + missingList(launch.missingInputs || state.missingInputs) + '</div></div>' +
@@ -2514,6 +2795,7 @@
         localLifePanel +
         constructionPanel +
         agriculturePanel +
+        intelligencePanel +
         '<div class="ai-notice"><strong>' + escapeHtml(label("result.privacyConfidence", "Privacy and confidence")) + '</strong>' + escapeHtml(privacy) + (sourceHint ? '<span class="ai-source-hint">' + escapeHtml(sourceHint) + '</span>' : '') + '</div>' +
         '<div class="ai-actions"><a class="ai-open" data-open-tool data-tool-id="' + escapeHtml(workflow.id) + '" data-supported="' + (launch.supported ? "true" : "false") + '" href="' + escapeHtml(launch.launchUrl || workflow.route) + '">' + escapeHtml(label("result.openTool", "Open tool")) + '</a><a class="ai-browse" href="' + escapeHtml(search) + '">' + escapeHtml(label("result.continueBrowsing", "Continue browsing")) + '</a><button class="ai-small-button secondary" type="button" data-save-project>' + escapeHtml(label("result.saveProject", "Save project")) + '</button><button class="ai-small-button secondary" type="button" data-sync-current-project title="' + escapeHtml(label("result.syncTitle", "Sync sanitized project summary only")) + '">' + escapeHtml(label("result.syncSummary", "Sync sanitized summary")) + '</button><span class="ai-panel-status" data-project-card-status aria-live="polite"></span></div>' +
         (primary ? '<div data-ai-pro-upgrade data-feature-id="' + escapeHtml(proFeature) + '" data-workflow-type="' + escapeHtml(workflow.id) + '" data-tool-id="' + escapeHtml(match.selectedToolId || workflow.id) + '" data-category="' + escapeHtml(workflow.category || "") + '"></div>' : '') +
@@ -2612,6 +2894,21 @@
             workflowState.prefillPayload = launch.payload || null;
           }
           storeAndOpen(toolId, launch || { launchUrl: link.getAttribute("href") || "" });
+        });
+      });
+      target.querySelectorAll("[data-ai-copy-plan]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var panel = button.closest("[data-workflow-intelligence]");
+          var status = panel && panel.querySelector("[data-ai-plan-status]");
+          var planText = panel && panel.getAttribute("data-plan-text") || "";
+          copyText(planText).then(function (copied) {
+            if (status) status.textContent = copied ? "Plan copied." : "Copy unavailable.";
+            track("ai_workflow_plan_copied", {
+              tool_id: workflowState.selectedToolId,
+              missing_count: workflowState.missingInputs ? workflowState.missingInputs.length : 0,
+              prefill_ready: Boolean(workflowState.prefillPayload)
+            });
+          });
         });
       });
       target.querySelectorAll("[data-clarification-form]").forEach(function (clarifyForm) {
@@ -3249,8 +3546,21 @@
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
+      if (contextPhrases().length) applyAdvancedContext();
       routeQuery(input.value);
     });
+
+    if (applyContextButton) {
+      applyContextButton.addEventListener("click", function () {
+        applyAdvancedContext();
+      });
+    }
+
+    if (clearContextButton) {
+      clearContextButton.addEventListener("click", function () {
+        clearAdvancedContext();
+      });
+    }
 
     input.addEventListener("keydown", function (event) {
       if (event.key !== "Escape" || !input.value) return;

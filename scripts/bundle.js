@@ -51,6 +51,7 @@ const BUNDLE_DEFS = {
 
 const LEGACY_BUNDLE_ALIASES = {
   core: [
+    'core.8bd20673.min.js',
     'core.6b2634cc.min.js',
     'core.009aa1e7.min.js',
   ],

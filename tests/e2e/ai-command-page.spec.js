@@ -38,8 +38,32 @@ test("direct query load hydrates the editable input and deterministic workflow",
   await page.goto("/ai/?q=Write%20a%20CV%20for%20an%20electrical%20engineer%20in%20Ghana&router=off", { waitUntil: "domcontentloaded" });
 
   await expect(page.locator("#aiCommandInput")).toHaveValue("Write a CV for an electrical engineer in Ghana");
+  const card = page.locator("[data-workflow-card]").first();
+  await expect(card).toContainText("CV Builder");
+  await expect(card).toContainText("Inputs already detected");
+  await expect(card.locator("[data-workflow-intelligence]")).toContainText("Workflow intelligence");
+  await expect(card.locator("[data-workflow-intelligence]")).toContainText("Browser-local");
+  await expect(card.locator("[data-workflow-intelligence]")).toContainText("Save a sanitized project summary");
+  await card.getByRole("button", { name: "Copy plan" }).click();
+  await expect(card.locator("[data-ai-plan-status]")).toContainText(/Plan copied|Copy unavailable/);
+});
+
+test("advanced context controls enrich vague prompts before routing", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  await page.goto("/ai/", { waitUntil: "domcontentloaded" });
+  await page.locator("#aiCommandInput").fill("Help me");
+  await page.locator("#aiContextWorkflow").selectOption("career");
+  await page.locator("#aiContextCountry").selectOption("Ghana");
+  await page.locator("#aiContextOutput").selectOption("brief");
+  await page.getByRole("button", { name: "Apply context" }).click();
+
+  await expect(page.locator("#aiCommandInput")).toHaveValue(/Help me.*CV\/job application.*Ghana.*exportable brief/);
+  await expect(page.locator("#aiContextStatus")).toContainText("Context added");
+
+  await page.getByRole("button", { name: "Find matching AfroTools workflow" }).click();
   await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
-  await expect(page.locator("[data-workflow-card]").first()).toContainText("Inputs already detected");
+  await expect(page.locator("[data-workflow-intelligence]").first()).toContainText("Workflow intelligence");
 });
 
 test("saved AI projects stay local by default and can be continued or deleted", async ({ page }) => {
