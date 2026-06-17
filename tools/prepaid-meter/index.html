@@ -34,6 +34,40 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why did my prepaid units drop?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tariff change, debt recovery, VAT, fixed charges, arrears, or leaving a lifeline band can reduce units."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this a token generator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It only estimates kWh from a purchase amount. Tokens must come from licensed vending channels."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I save for complaints?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Keep the receipt, token, meter number, tariff class, vending date, and a photo of the meter units before loading."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/prepaid-meter/"
+}
+</script>
 </head>
 <body>
 <afro-navbar theme="dark" active="energy"></afro-navbar>
@@ -266,8 +300,34 @@
 </div>
 </div>
 </section>
+
+<section class="df-upgrade" data-df-upgrade="prepaid-meter">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Token unit estimate</span>
+      <h2>Convert prepaid spend into likely kWh units</h2>
+      <p>Estimate how many units a token purchase may deliver after tariff and deductions before checking the country-specific prepaid meter page.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: estimated kWh units after deductions.</li><li>Methodology: spend minus charges divided by tariff per kWh.</li><li>Source note: arrears recovery, VAT, debt, lifeline bands, and fixed charges can change units.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning estimate only. Confirm arrears, debt recovery, VAT, fixed charge, and tariff band on your receipt. Sources/reference: <a href="https://nerc.gov.ng/" target="_blank" rel="noopener">Nigeria NERC</a> | <a href="https://www.epra.go.ke/" target="_blank" rel="noopener">Kenya EPRA</a></p>
+    </div>
+    <form class="df-form" data-df-form="prepaid-meter">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="ZAR">ZAR</option><option value="GHS">GHS</option></select></label>
+      <label>Token purchase amount<input name="spend" type="number" value="10000" min="0" step="any" aria-label="Token purchase amount"></label>
+      <label>Tariff per kWh<input name="tariff" type="number" value="85" min="0" step="any" aria-label="Tariff per kWh"></label>
+      <label>Charges and deductions percent<input name="deductions" type="number" value="8" min="0" step="any" aria-label="Charges and deductions percent"></label>
+      <button type="submit">Estimate units</button>
+      <output class="df-result" data-df-result="prepaid-meter" aria-live="polite">Result: enter token spend and tariff to estimate kWh units.</output>
+      <div class="df-actions"><button type="button" data-df-copy="prepaid-meter">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="prepaid-meter-faq-title">
+  <h2 id="prepaid-meter-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Why did my prepaid units drop?</summary><p>Tariff change, debt recovery, VAT, fixed charges, arrears, or leaving a lifeline band can reduce units.</p></details><details><summary>Is this a token generator?</summary><p>No. It only estimates kWh from a purchase amount. Tokens must come from licensed vending channels.</p></details><details><summary>What should I save for complaints?</summary><p>Keep the receipt, token, meter number, tariff class, vending date, and a photo of the meter units before loading.</p></details></div>
+</section>
 </main>
 <afro-footer></afro-footer>
 <script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

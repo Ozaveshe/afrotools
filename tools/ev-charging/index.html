@@ -23,6 +23,40 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-recharge-ev/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-kuchaji-ev/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ev-charging/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Estimate charging cost per trip or month?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use battery kWh, tariff, efficiency, and distance to understand EV running cost before comparing fuel spend."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I verify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "https://www.iea.org/reports/global-ev-outlook-2024/trends-in-electric-vehicle-charging"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this an official result?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/ev-charging/"
+}
+</script>
 </head>
 <body>
 <afro-navbar theme="dark" active="energy"></afro-navbar>
@@ -68,6 +102,31 @@
 <p><strong>Disclaimer:</strong> Calculations assume standard EV efficiency of 17kWh/100km. Actual consumption varies by model, driving style, and temperature.</p>
 </section>
 
+
+<section class="df-upgrade" data-df-upgrade="ev-charging">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">EV charging cost</span>
+      <h2>Estimate charging cost per trip or month</h2>
+      <p>Use battery kWh, tariff, efficiency, and distance to understand EV running cost before comparing fuel spend.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Result: EV charging estimate ready with cost per charge, cost per km, tariff, and charger-loss checks.</li><li>Methodology: use the fields to create a local planning summary with clear assumptions.</li><li>Source note: confirm live prices, official rules, or platform terms before acting.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Energy disclaimer: actual cost depends on tariff, charger efficiency, battery health, driving style, and public charging fees. Sources/reference: <a href="https://www.iea.org/reports/global-ev-outlook-2024/trends-in-electric-vehicle-charging" target="_blank" rel="noopener">IEA EV charging</a></p>
+    </div>
+    <form class="df-form" data-df-form="ev-charging">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Battery kWh charged<input name="batteryKwh" type="number" value="45" min="0" step="any" aria-label="Battery kWh charged"></label>
+      <label>Tariff per kWh<input name="tariff" type="number" value="85" min="0" step="any" aria-label="Tariff per kWh"></label>
+      <label>Distance km<input name="distance" type="number" value="250" min="0" step="any" aria-label="Distance km"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="ev-charging" data-df-base="Result: EV charging estimate ready with cost per charge, cost per km, tariff, and charger-loss checks." aria-live="polite">Result: EV charging estimate ready with cost per charge, cost per km, tariff, and charger-loss checks.</output>
+      <div class="df-actions"><button type="button" data-df-copy="ev-charging">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="ev-charging-faq-title">
+  <h2 id="ev-charging-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Estimate charging cost per trip or month?</summary><p>Use battery kWh, tariff, efficiency, and distance to understand EV running cost before comparing fuel spend.</p></details><details><summary>What should I verify?</summary><p>Energy disclaimer: actual cost depends on tariff, charger efficiency, battery health, driving style, and public charging fees.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting.</p></details></div>
+</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -114,5 +173,6 @@ document.getElementById("results").scrollIntoView({behavior:"smooth",block:"star
 });
 }();
 </script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

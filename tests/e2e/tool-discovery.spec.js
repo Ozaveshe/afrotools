@@ -81,6 +81,35 @@ test("/search/ finds flagship apps and exposes all registry category filters", a
   await expect(page.getByRole("link", { name: /afrostream/i })).toBeVisible();
 });
 
+test("/search/ uses the local AI router for practical sentence-style prompts", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/search/?q=n%20electrical%20engineer%20in%20Ghana", { waitUntil: "domcontentloaded" });
+
+  const firstResult = page.locator("#results-container a[href]").first();
+  await expect(firstResult).toContainText(/CV|Resume/i, { timeout: 10000 });
+  await expect(firstResult).toHaveAttribute("href", "/tools/cv-builder/");
+  await expect(firstResult).toContainText(/AI match/i);
+  await expect(page.locator("#results-container").first()).not.toContainText("No tools found");
+  const cvReport = await page.evaluate(function () {
+    return window.AfroToolsAIIntentAnalytics.getReport();
+  });
+  expect(cvReport.surfaceBreakdown.some(function (item) { return item.name === "search_page"; })).toBe(true);
+  expect(cvReport.topSelectedTools.some(function (item) { return item.name === "cv-builder"; })).toBe(true);
+  expect(JSON.stringify(cvReport)).not.toContain("electrical engineer");
+
+  await page.locator("#search-input").fill("Get Ghana passport documents fees and next steps");
+  const passportResult = page.locator("#results-container a[href]").first();
+  await expect(passportResult).toContainText(/Passport Application Checklist/i);
+  await expect(passportResult).toHaveAttribute("href", "/tools/passport-checklist/");
+  const passportReport = await page.evaluate(function () {
+    return window.AfroToolsAIIntentAnalytics.getReport();
+  });
+  expect(passportReport.topSelectedTools.some(function (item) { return item.name === "passport-checklist"; })).toBe(true);
+  expect(JSON.stringify(passportReport)).not.toContain("Ghana passport documents");
+});
+
 test("/tools/ directory search uses category and synonym terms", async ({ page }) => {
   await quietExternalNoise(page);
 

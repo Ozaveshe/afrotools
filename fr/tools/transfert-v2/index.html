@@ -3,47 +3,260 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Comparateur transferts v2 | AfroTools</title>
-<meta name="description" content="Comparez les frais et taux de change des services de transfert d’argent vers l’Afrique en temps réel. Notre comparateur nouvelle génération trouve l’option">
+<title>Comparateur transferts d'argent | AfroTools</title>
+<meta name="description" content="Comparez trois scenarios de transfert vers l'Afrique avec frais, marge FX, taux saisi, montant recu, export memo et source World Bank RPW 2026.">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://afrotools.com/fr/tools/transfert-v2/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Comparateur transferts v2 | AfroTools">
-<meta property="og:description" content="Comparez les frais et taux de change des services de transfert d’argent vers l’Afrique en temps réel. Notre comparateur nouvelle génération trouve l’option">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Comparateur transferts d'argent | AfroTools">
+<meta property="og:description" content="Comparez des scenarios de transfert sans pretendre fournir un taux live ou une recommandation garantie.">
 <meta property="og:url" content="https://afrotools.com/fr/tools/transfert-v2/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/remittance-v2.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Comparateur transferts d'argent | AfroTools">
+<meta name="twitter:description" content="Frais, marge FX, montant recu, vitesse et memo exportable pour transferts vers l'Afrique.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/remittance-v2.webp">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/remittance-v2/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/transfert-v2/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/remittance-v2/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/remittance-v2.webp">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/remittance-v2.webp">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/remittance-v2/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/transfert-v2/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/remittance-v2/" />
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Comparateur transferts v2 | AfroTools">
-<meta name="twitter:description" content="Comparez les frais et taux de change des services de transfert d’argent vers l’Afrique en temps réel. Notre comparateur nouvelle génération trouve l’option">
+<script src="/assets/js/components/business-cta.js" defer></script>
+<style>
+:root{--rt-ink:#0f172a;--rt-muted:#526179;--rt-line:#d9e2ef;--rt-blue:#2457c5;--rt-green:#0f7a5c;--rt-amber:#9a6700;--rt-soft:#f7fafc}
+body{background:#f5f7fb;color:var(--rt-ink)}
+.rt-shell{max-width:1180px;margin:0 auto;padding:32px 20px 64px}
+.rt-hero{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:22px;align-items:stretch;margin-bottom:20px}
+.eyebrow{display:inline-flex;border:1px solid #bfd1ff;background:#eff5ff;color:#1d4fb8;border-radius:999px;padding:7px 12px;font-size:.74rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.rt-hero h1{font-size:clamp(2rem,4.7vw,3.8rem);line-height:.98;letter-spacing:0;margin:18px 0 14px}
+.rt-hero p{font-size:1rem;line-height:1.74;color:var(--rt-muted);max-width:720px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:0;border-radius:8px;padding:12px 15px;font-weight:850;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+.btn-primary{background:var(--rt-blue);color:#fff}.btn-secondary{background:#fff;color:#173f91;border:1px solid #cbd9f4}.btn-ghost{background:transparent;color:#173f91;border:1px solid #d7e0ee}
+.hero-card,.tool-card,.side-card{background:#fff;border:1px solid var(--rt-line);border-radius:14px;box-shadow:0 16px 42px rgba(15,23,42,.06)}
+.hero-card{padding:20px;display:grid;gap:13px}.hero-card strong{display:block;font-size:1.05rem;margin-bottom:4px}.hero-card span{display:block;color:var(--rt-muted);font-size:.9rem;line-height:1.55}
+.rt-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}.tool-card{padding:20px}.tool-card h2,.side-card h2{font-size:1.13rem;margin:0 0 12px}
+.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.field{display:grid;gap:6px}.field label{font-weight:850;font-size:.84rem;color:#1f2937}.field input,.field select{width:100%;min-height:44px;border:1px solid #ced9e8;border-radius:8px;background:#fff;padding:11px 12px;font:inherit;color:#111827}.field input:focus,.field select:focus{outline:3px solid rgba(36,87,197,.18);border-color:var(--rt-blue)}.help{font-size:.77rem;color:#667085;line-height:1.4}.wide{grid-column:1/-1}
+.providers{display:grid;gap:10px;margin-top:12px}.provider-row{border:1px solid #dfe7f2;border-radius:12px;background:#fff;padding:12px;display:grid;grid-template-columns:1.2fr repeat(4,1fr);gap:10px;align-items:end}.provider-row h3{margin:0;font-size:.98rem}.provider-row .field label{font-size:.75rem}
+.result-panel{display:grid;gap:12px;margin-top:16px}.summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.metric{border:1px solid #dfe7f2;background:#f8fbff;border-radius:12px;padding:14px}.metric span{display:block;font-size:.7rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#61728d;margin-bottom:7px}.metric strong{font-size:1.18rem;color:#0f172a}
+.rank-table{border:1px solid #dfe7f2;border-radius:12px;background:#fff;overflow:hidden}.rank-row{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr;gap:10px;padding:12px 14px;border-bottom:1px solid #edf2f7;align-items:center}.rank-row:last-child{border-bottom:0}.rank-row.header{background:#f8fbff;font-size:.76rem;font-weight:900;text-transform:uppercase;color:#61728d}.rank-row.best{background:#f1fbf7}.rank-row strong{color:#0f172a}
+.notice{border-left:4px solid var(--rt-blue);background:#f7faff;border-radius:10px;padding:12px 14px;color:#334155;line-height:1.62}.notice.warn{border-left-color:#d97706;background:#fffbeb;color:#713f12}
+.side-stack{display:grid;gap:14px}.side-card{padding:18px}.side-card p,.side-card li{font-size:.9rem;line-height:1.65;color:#53627a}.side-card ul{margin:8px 0 0;padding-left:19px}.side-card a{color:#174ea6;font-weight:900}.badge-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.badge{border-radius:999px;background:#edf5ff;color:#1d4fb8;padding:6px 10px;font-size:.75rem;font-weight:900}
+.faq{margin-top:22px}.faq details{background:#fff;border:1px solid var(--rt-line);border-radius:12px;padding:14px 16px;margin-bottom:10px}.faq summary{cursor:pointer;font-weight:900}.faq p{color:#526179;line-height:1.65}
+@media(max-width:960px){.rt-hero,.rt-grid{grid-template-columns:1fr}.hero-card{order:-1}.form-grid,.summary-grid{grid-template-columns:1fr}.provider-row{grid-template-columns:1fr 1fr}.provider-row h3{grid-column:1/-1}.rank-row{grid-template-columns:1fr 1fr}.rt-shell{padding:22px 14px 52px}.rt-hero h1{font-size:clamp(2rem,11vw,3rem)}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Comparateur transferts d'argent AfroTools","url":"https://afrotools.com/fr/tools/transfert-v2/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fr","description":"Comparateur local de scenarios de transfert avec frais, taux saisi, marge FX et montant recu.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Les taux sont-ils en temps reel ?","acceptedAnswer":{"@type":"Answer","text":"Non. L'utilisateur saisit le taux et les frais a comparer. Le resultat est une estimation de planification a verifier chez le prestataire avant envoi."}},{"@type":"Question","name":"Comment comparer deux prestataires ?","acceptedAnswer":{"@type":"Answer","text":"Comparez le frais explicite, la marge de change, le montant recu, la methode de reception et le delai. Un service sans frais peut etre plus cher si le taux est moins bon."}},{"@type":"Question","name":"Quelle source utiliser pour un benchmark ?","acceptedAnswer":{"@type":"Answer","text":"La base Remittance Prices Worldwide de la Banque mondiale est une reference utile pour comparer les couts de corridors, mais il faut verifier le devis live du prestataire."}}]}</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
-<main>
-<section class="hero-section" style="padding:3rem 1rem;text-align:center">
-<h1>Comparateur transferts v2</h1>
-</section>
-<section style="max-width:960px;margin:0 auto;padding:1rem">
-<iframe src="/tools/remittance-v2/" style="width:100%;min-height:700px;border:none;border-radius:12px" loading="lazy" title="Comparateur transferts v2"></iframe>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<p>Comparez les frais et taux de change des services de transfert d’argent vers l’Afrique en temps réel. Notre comparateur nouvelle génération trouve l’option la plus économique.</p>
-<p>Envoyez de l’argent vers n’importe quel pays africain au meilleur taux. Notre comparateur analyse les offres de Wave, WorldRemit, Wise et les services de mobile money.</p>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Quels corridors sont couverts ?</summary><p>Nous couvrons les transferts depuis l’Europe, l’Amérique du Nord et le Moyen-Orient vers tous les pays africains, incluant le mobile money.</p></details>
-<details><summary>Les taux sont-ils en temps réel ?</summary><p>Oui, les taux de change et les frais sont actualisés régulièrement pour refléter les conditions actuelles du marché.</p></details>
-<details><summary>Le mobile money est-il inclus ?</summary><p>Oui, nous comparons aussi les options de réception par mobile money (M-Pesa, Orange Money, Wave, MTN MoMo, etc.).</p></details>
-</section>
+<main class="rt-shell">
+  <section class="rt-hero">
+    <div>
+      <span class="eyebrow">Comparaison editable 2026</span>
+      <h1>Comparateur transferts d'argent</h1>
+      <p>Comparez plusieurs scenarios avant d'envoyer de l'argent vers l'Afrique. Saisissez le taux que vous voyez chez le prestataire, les frais, la marge FX et la methode de reception; AfroTools classe le montant recu et le cout estime.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#comparateur">Comparer maintenant</a>
+        <button class="btn btn-secondary" type="button" id="sampleBtn">Charger exemple UK -> Nigeria</button>
+      </div>
+    </div>
+    <aside class="hero-card" aria-label="Cadre de l'outil">
+      <div><strong>Pas de taux live</strong><span>Le calcul utilise vos propres hypotheses. Verifiez toujours le devis final avant paiement.</span></div>
+      <div><strong>Frais + marge FX</strong><span>Le vrai cout inclut le frais visible et la perte due au taux de change.</span></div>
+      <div><strong>Memo exportable</strong><span>Copiez, telechargez ou sauvegardez une comparaison pour discussion familiale.</span></div>
+    </aside>
+  </section>
+
+  <section class="rt-grid" id="comparateur">
+    <div class="tool-card">
+      <h2>Scenario de transfert</h2>
+      <form id="remitForm">
+        <div class="form-grid">
+          <div class="field"><label for="fromCurrency">Devise envoyee</label><select id="fromCurrency"><option value="GBP" selected>GBP</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="CAD">CAD</option><option value="ZAR">ZAR</option></select></div>
+          <div class="field"><label for="toCurrency">Devise recue</label><select id="toCurrency"><option value="NGN" selected>NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="XOF">XOF</option><option value="ZAR">ZAR</option><option value="MAD">MAD</option></select></div>
+          <div class="field"><label for="amount">Montant envoye</label><input id="amount" type="number" min="1" step="any" value="500" inputmode="decimal"></div>
+          <div class="field"><label for="midRate">Taux de reference</label><input id="midRate" type="number" min="0" step="any" value="1900" inputmode="decimal"><span class="help">Exemple: 1 GBP = 1900 NGN.</span></div>
+          <div class="field"><label for="annualCount">Nombre d'envois / an</label><input id="annualCount" type="number" min="1" max="365" step="1" value="12" inputmode="numeric"></div>
+          <div class="field"><label for="priority">Priorite</label><select id="priority"><option value="received" selected>Montant recu</option><option value="speed">Vitesse</option><option value="bank">Compte bancaire</option><option value="mobile">Mobile money</option><option value="cash">Cash pickup</option></select></div>
+        </div>
+
+        <div class="providers" aria-label="Prestataires a comparer">
+          <div class="provider-row" data-provider-row>
+            <h3>Option A</h3>
+            <div class="field"><label>Nom</label><input data-name value="Wise"></div>
+            <div class="field"><label>Frais</label><input data-fee type="number" min="0" step="0.01" value="3"></div>
+            <div class="field"><label>Marge FX %</label><input data-margin type="number" min="0" step="0.1" value="0.8"></div>
+            <div class="field"><label>Reception</label><select data-method><option value="bank" selected>Banque</option><option value="mobile">Mobile money</option><option value="cash">Cash</option></select></div>
+          </div>
+          <div class="provider-row" data-provider-row>
+            <h3>Option B</h3>
+            <div class="field"><label>Nom</label><input data-name value="Remitly"></div>
+            <div class="field"><label>Frais</label><input data-fee type="number" min="0" step="0.01" value="0"></div>
+            <div class="field"><label>Marge FX %</label><input data-margin type="number" min="0" step="0.1" value="1.6"></div>
+            <div class="field"><label>Reception</label><select data-method><option value="bank">Banque</option><option value="mobile" selected>Mobile money</option><option value="cash">Cash</option></select></div>
+          </div>
+          <div class="provider-row" data-provider-row>
+            <h3>Option C</h3>
+            <div class="field"><label>Nom</label><input data-name value="Western Union"></div>
+            <div class="field"><label>Frais</label><input data-fee type="number" min="0" step="0.01" value="8"></div>
+            <div class="field"><label>Marge FX %</label><input data-margin type="number" min="0" step="0.1" value="2.4"></div>
+            <div class="field"><label>Reception</label><select data-method><option value="bank">Banque</option><option value="mobile">Mobile money</option><option value="cash" selected>Cash</option></select></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Comparer</button>
+          <button class="btn btn-secondary" type="button" id="copyMemo">Copier le memo</button>
+          <button class="btn btn-ghost" type="button" id="downloadMemo">Telecharger TXT</button>
+          <button class="btn btn-ghost" type="button" id="saveLocal">Sauvegarder localement</button>
+        </div>
+      </form>
+      <div id="resultPanel" class="result-panel" aria-live="polite"></div>
+    </div>
+
+    <aside class="side-stack">
+      <section class="side-card" data-tool-verification-panel="transfert-v2-fr">
+        <h2>Sources et verification</h2>
+        <p><strong>Derniere verification: 2026.</strong> Ce comparateur n'utilise pas d'API live. Il calcule uniquement avec les valeurs saisies.</p>
+        <ul>
+          <li><a href="https://remittanceprices.worldbank.org/" rel="noopener">World Bank Remittance Prices Worldwide</a>: reference publique pour comparer les couts de corridors.</li>
+          <li><strong>Source officielle/prestataire:</strong> verifiez le devis final, le taux payout, les limites et le delai sur le site ou l'application du prestataire.</li>
+          <li><strong>Methodologie:</strong> montant net = montant envoye moins frais; taux effectif = taux de reference moins marge FX; montant recu = net x taux effectif.</li>
+        </ul>
+        <div class="badge-list"><span class="badge">Planning only</span><span class="badge">Export memo</span><span class="badge">No live quote</span></div>
+      </section>
+      <section class="side-card">
+        <h2>Ce qu'il faut verifier</h2>
+        <p>Avant envoi: nom exact du receveur, pays et monnaie, limite KYC, frais final, taux final, delai, methode de retrait, politique d'annulation et support client.</p>
+      </section>
+    </aside>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions frequentes</h2>
+    <details open><summary>Pourquoi le service "sans frais" peut-il couter plus cher ?</summary><p>Parce qu'un prestataire peut gagner sur la marge de change. Comparez toujours le montant final recu, pas seulement les frais affiches.</p></details>
+    <details><summary>Ce classement est-il une recommandation financiere ?</summary><p>Non. C'est une comparaison d'hypotheses. Les conditions live, les limites KYC et la disponibilite peuvent changer avant l'envoi.</p></details>
+    <details><summary>Comment utiliser World Bank RPW ?</summary><p>Utilisez RPW comme benchmark de corridor, puis comparez votre devis prestataire reel dans cet outil pour comprendre frais et marge FX.</p></details>
+  </section>
+
+  <afro-business-cta
+    tool-name="Comparateur transferts d'argent"
+    save-note="Les fintechs et medias diaspora peuvent demander un widget de comparaison transparent avec leurs propres corridors et hypotheses."></afro-business-cta>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function(){
+  'use strict';
+  var STORAGE_KEY = 'afrotools:fr:transfert-v2:last';
+  var lastMemo = '';
+  var resultPanel = document.getElementById('resultPanel');
+  var methodLabels = {bank:'Banque', mobile:'Mobile money', cash:'Cash pickup'};
+
+  function n(id){ var v=parseFloat(document.getElementById(id).value); return Number.isFinite(v)?v:0; }
+  function money(value,currency){ return currency + ' ' + Math.round(value).toLocaleString('fr-FR'); }
+  function rows(){ return Array.from(document.querySelectorAll('[data-provider-row]')); }
+
+  function compare(){
+    var from = document.getElementById('fromCurrency').value;
+    var to = document.getElementById('toCurrency').value;
+    var amount = n('amount');
+    var midRate = n('midRate');
+    var annualCount = Math.max(1, Math.round(n('annualCount')||1));
+    var priority = document.getElementById('priority').value;
+    var results = rows().map(function(row){
+      var name = row.querySelector('[data-name]').value.trim() || 'Option';
+      var fee = Math.max(0, parseFloat(row.querySelector('[data-fee]').value)||0);
+      var margin = Math.max(0, parseFloat(row.querySelector('[data-margin]').value)||0);
+      var method = row.querySelector('[data-method]').value;
+      var net = Math.max(0, amount - fee);
+      var effectiveRate = midRate * (1 - margin / 100);
+      var received = net * effectiveRate;
+      var referenceReceived = amount * midRate;
+      var costInSendCurrency = midRate > 0 ? (referenceReceived - received) / midRate : fee;
+      return {name:name, fee:fee, margin:margin, method:method, effectiveRate:effectiveRate, received:received, cost:costInSendCurrency};
+    }).sort(function(a,b){
+      if (priority === 'bank' || priority === 'mobile' || priority === 'cash') {
+        var ma = a.method === priority ? -1 : 0;
+        var mb = b.method === priority ? -1 : 0;
+        if (ma !== mb) return ma - mb;
+      }
+      return b.received - a.received;
+    });
+    var best = results[0];
+    var worst = results[results.length - 1];
+    var gain = best.received - worst.received;
+    lastMemo = [
+      'Comparateur transferts d argent - AfroTools',
+      'Verification: 2026 | Pas un devis live',
+      'Montant envoye: ' + money(amount, from) + ' | Taux de reference saisi: 1 ' + from + ' = ' + midRate + ' ' + to,
+      'Meilleur scenario estime: ' + best.name + ' | Recu: ' + money(best.received, to) + ' | Frais: ' + money(best.fee, from) + ' | Marge FX: ' + best.margin + '%',
+      'Ecart contre le moins bon scenario: ' + money(gain, to) + ' par envoi | Frequence annuelle: ' + annualCount,
+      'Upside annuel estime: ' + money(gain * annualCount, to),
+      'Avertissement: verifier le devis, le taux final, les limites, le payout et le delai chez le prestataire avant paiement.'
+    ].join('\n');
+
+    resultPanel.innerHTML =
+      '<div class="summary-grid">' +
+        metric('Meilleur scenario', best.name) +
+        metric('Montant recu', money(best.received, to)) +
+        metric('Upside annuel', money(gain * annualCount, to)) +
+      '</div>' +
+      '<div class="rank-table">' +
+        '<div class="rank-row header"><span>Option</span><span>Recu</span><span>Cout estime</span><span>Methode</span></div>' +
+        results.map(function(r,i){
+          return '<div class="rank-row ' + (i===0?'best':'') + '"><strong>' + r.name + '</strong><span>' + money(r.received, to) + '</span><span>' + money(r.cost, from) + ' (' + r.margin.toFixed(1) + '% FX)</span><span>' + methodLabels[r.method] + '</span></div>';
+        }).join('') +
+      '</div>' +
+      '<div class="notice"><strong>Decision:</strong> ' + best.name + ' donne le montant recu le plus eleve avec les hypotheses saisies. L ecart avec ' + worst.name + ' est de ' + money(gain, to) + ' par transfert.</div>' +
+      '<div class="notice warn"><strong>Pas un devis live:</strong> confirmez frais, taux, payout, limites et delai dans l application du prestataire avant d envoyer.</div>';
+    return {best:best, worst:worst, results:results};
+  }
+
+  function metric(label,value){ return '<div class="metric"><span>' + label + '</span><strong>' + value + '</strong></div>'; }
+  function copyMemo(button){
+    if (!lastMemo) compare();
+    function done(){ var old=button.textContent; button.textContent='Copie'; setTimeout(function(){button.textContent=old;},1200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lastMemo).then(done).catch(function(){fallbackCopy(done);});
+    else fallbackCopy(done);
+  }
+  function fallbackCopy(done){
+    var area=document.createElement('textarea'); area.value=lastMemo; area.setAttribute('readonly',''); area.style.position='fixed'; area.style.left='-9999px';
+    document.body.appendChild(area); area.select(); try{document.execCommand('copy'); done();}catch(error){} area.remove();
+  }
+  function downloadMemo(){
+    if (!lastMemo) compare();
+    var blob=new Blob([lastMemo],{type:'text/plain;charset=utf-8'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a'); a.href=url; a.download='comparaison-transfert-afrotools.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+  function saveLocal(){
+    var result=compare();
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify({savedAt:new Date().toISOString(),memo:lastMemo,result:result})); resultPanel.insertAdjacentHTML('beforeend','<div class="notice">Comparaison sauvegardee localement dans ce navigateur.</div>');}
+    catch(error){resultPanel.insertAdjacentHTML('beforeend','<div class="notice warn">Sauvegarde locale indisponible.</div>');}
+  }
+  document.getElementById('remitForm').addEventListener('submit',function(event){event.preventDefault(); compare();});
+  document.getElementById('copyMemo').addEventListener('click',function(){copyMemo(this);});
+  document.getElementById('downloadMemo').addEventListener('click',downloadMemo);
+  document.getElementById('saveLocal').addEventListener('click',saveLocal);
+  document.getElementById('sampleBtn').addEventListener('click',function(){
+    document.getElementById('fromCurrency').value='GBP';
+    document.getElementById('toCurrency').value='NGN';
+    document.getElementById('amount').value='500';
+    document.getElementById('midRate').value='1900';
+    document.getElementById('annualCount').value='12';
+    document.getElementById('priority').value='received';
+    compare();
+    document.getElementById('comparateur').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  compare();
+})();
+</script>
 </body>
 </html>

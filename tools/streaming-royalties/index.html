@@ -44,6 +44,40 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/streaming-royalties/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/redevances-streaming-musical/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/streaming-royalties/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why do royalty rates vary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Platform, country, subscription type, ad-supported listening, rights split, and distributor terms affect payouts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do streams pay the artist directly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually no. Money passes through labels, distributors, publishers, and rights administrators before artists are paid."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should artists reconcile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Streams, territory, ISRC, distributor fee, publishing split, label split, exchange rate, and payment date."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/streaming-royalties/"
+}
+</script>
 </head>
 <body data-sports-tool="streaming-royalties">
 <afro-navbar theme="dark" active="sports"></afro-navbar>
@@ -80,10 +114,35 @@
 </section>
 <div id="sports-tool-root" class="sports-tool-root"></div>
 </div>
+
+<section class="df-upgrade" data-df-upgrade="streaming-royalties">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Royalty estimate</span>
+      <h2>Estimate music streaming royalties after distribution fees</h2>
+      <p>Model streams, rate per thousand, and distributor fee so artists can understand a realistic payout envelope.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: net royalty estimate.</li><li>Methodology: streams divided by 1,000 multiplied by blended rate minus distributor fee.</li><li>Source note: actual rates vary by platform, country, subscription type, rights split, and reporting delay.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Music business disclaimer: this is not a royalty statement. Confirm platform reports, distributor terms, publishing splits, and tax. Sources/reference: <a href="https://loudandclear.byspotify.com/" target="_blank" rel="noopener">Spotify Loud and Clear</a></p>
+    </div>
+    <form class="df-form" data-df-form="streaming-royalties">
+      <label>Streams<input name="streams" type="number" value="100000" min="0" step="any" aria-label="Streams"></label>
+      <label>USD per 1,000 streams<input name="ratePerThousand" type="number" value="3" min="0" step="any" aria-label="USD per 1,000 streams"></label>
+      <label>Distributor fee percent<input name="distributorFee" type="number" value="15" min="0" step="any" aria-label="Distributor fee percent"></label>
+      <button type="submit">Estimate royalties</button>
+      <output class="df-result" data-df-result="streaming-royalties" aria-live="polite">Estimate: enter streams and rate to calculate net royalties.</output>
+      <div class="df-actions"><button type="button" data-df-copy="streaming-royalties">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="streaming-royalties-faq-title">
+  <h2 id="streaming-royalties-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Why do royalty rates vary?</summary><p>Platform, country, subscription type, ad-supported listening, rights split, and distributor terms affect payouts.</p></details><details><summary>Do streams pay the artist directly?</summary><p>Usually no. Money passes through labels, distributors, publishers, and rights administrators before artists are paid.</p></details><details><summary>What should artists reconcile?</summary><p>Streams, territory, ISRC, distributor fee, publishing split, label split, exchange rate, and payment date.</p></details></div>
+</section>
 </main>
 
 <afro-footer></afro-footer>
 <script src="/assets/js/sports-toolkit.js?v=5c024d6d"></script>
 <script>window.AfroSports&&window.AfroSports.init&&window.AfroSports.init();</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

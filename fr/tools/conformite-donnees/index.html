@@ -3,54 +3,368 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Conformité des données Afrique | AfroTools</title>
-<meta name="description" content="Vérifiez la conformité de votre entreprise avec les lois sur la protection des données en Afrique. Notre outil couvre les réglementations RGPD africaines et les législations nationales.">
+<title>Checklist protection des donnees Afrique | AfroTools</title>
+<meta name="description" content="Auto-check local pour preparer une revue NDPA, POPIA, Kenya DPA ou Ghana DPA: score, gaps, sources officielles, plan d'action et export.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/conformite-donnees/">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Conformité des données Afrique | AfroTools">
-<meta property="og:description" content="Vérifiez la conformité de votre entreprise avec les lois sur la protection des données en Afrique. Notre outil couvre les réglementations RGPD africaines et les législations nationales.">
+<meta property="og:title" content="Checklist protection des donnees Afrique | AfroTools">
+<meta property="og:description" content="Preparez une revue de protection des donnees avec un score local, un plan d'action, des sources officielles et un export partageable.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/data-compliance.webp">
 <meta property="og:url" content="https://afrotools.com/fr/tools/conformite-donnees/">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Checklist protection des donnees Afrique | AfroTools">
+<meta name="twitter:description" content="Auto-check local pour preparer une revue NDPA, POPIA, Kenya DPA ou Ghana DPA.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/data-compliance.webp">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/data-compliance/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/conformite-donnees/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ukaguzi-wa-ulinzi-wa-data/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/data-compliance/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
-.tool-hero{text-align:center;padding:3rem 1rem 2rem;background:var(--bg)}
-.tool-hero h1{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--text);margin:0 0 .5rem}
-.tool-hero p{color:var(--text-muted);max-width:600px;margin:0 auto}
-.tool-iframe-wrap{max-width:1000px;margin:0 auto;padding:0 1rem 2rem}
-.tool-iframe-wrap iframe{width:100%;height:700px;border:1px solid var(--border);border-radius:12px}
-.seo-section{max-width:760px;margin:0 auto;padding:2rem 1rem}
-.seo-section h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.seo-section p{line-height:1.7;color:var(--text-muted);margin:0 0 1rem}
-.faq{max-width:760px;margin:0 auto;padding:0 1rem 3rem}
-.faq h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.faq details{border:1px solid var(--border);border-radius:8px;margin:0 0 .5rem;padding:.75rem 1rem}
-.faq summary{cursor:pointer;font-weight:600;color:var(--text)}
-.faq details p{margin:.5rem 0 0;color:var(--text-muted);line-height:1.6}
+:root{--dc-ink:#111827;--dc-muted:#5b6678;--dc-line:#d9e1ec;--dc-soft:#f6f8fb;--dc-blue:#2557d6;--dc-green:#1d7f4f;--dc-orange:#bd5b12;--dc-red:#b42318}
+body{background:#f5f7fb;color:var(--dc-ink)}
+.dc-shell{max-width:1180px;margin:0 auto;padding:30px 20px 70px}
+.dc-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);gap:22px;align-items:stretch;margin-bottom:22px}
+.dc-hero-copy,.dc-panel,.dc-card{background:#fff;border:1px solid var(--dc-line);border-radius:8px;box-shadow:0 14px 36px rgba(16,24,40,.06)}
+.dc-hero-copy{padding:28px}
+.dc-kicker{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--dc-blue);margin-bottom:10px}
+.dc-hero h1{font-size:clamp(2rem,4vw,3.45rem);line-height:1.02;margin:0 0 14px;letter-spacing:0;color:var(--dc-ink)}
+.dc-hero p{font-size:1rem;line-height:1.7;color:var(--dc-muted);max-width:680px;margin:0 0 18px}
+.dc-badges{display:flex;flex-wrap:wrap;gap:8px}
+.dc-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#eef4ff;color:#1f4bc0;font-weight:800;font-size:.76rem}
+.dc-panel{padding:18px}
+.dc-panel h2,.dc-card h2{font-size:1rem;margin:0 0 10px}
+.dc-form{display:grid;gap:14px}
+.dc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.dc-field{display:grid;gap:6px;min-width:0}
+.dc-field span,.dc-section-title{font-size:.76rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#334155}
+select,input[type=number],input[type=text],textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;padding:10px 11px;font:inherit;background:#fff;color:var(--dc-ink)}
+textarea{min-height:88px;resize:vertical}
+.dc-checks{display:grid;gap:12px}
+.dc-checkgroup{border:1px solid #e5ebf3;border-radius:8px;padding:12px;background:#fbfcfe;min-width:0}
+.dc-section-title{margin-bottom:8px;color:var(--dc-blue)}
+.dc-check{display:grid;grid-template-columns:20px minmax(0,1fr);gap:9px;align-items:start;padding:7px 0;border-top:1px solid #eef2f7}
+.dc-check:first-of-type{border-top:0}
+.dc-check input{width:18px;height:18px;margin-top:2px;accent-color:var(--dc-blue)}
+.dc-check label{font-size:.9rem;line-height:1.45;color:#1f2937}
+.dc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.dc-btn{border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:#1f2937;font-weight:800;padding:11px 14px;cursor:pointer}
+.dc-btn.primary{background:var(--dc-blue);border-color:var(--dc-blue);color:#fff}
+.dc-btn:focus-visible{outline:3px solid rgba(37,87,214,.28);outline-offset:2px}
+.dc-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+.dc-card{padding:18px;margin-bottom:18px;min-width:0}
+.dc-result{border:1px solid #dce6f3;background:#f8fbff;border-radius:8px;padding:16px;min-height:146px}
+.dc-score{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center}
+.dc-score-ring{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--dc-blue) var(--pct,0%),#e6edf7 0)}
+.dc-score-ring span{width:68px;height:68px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:900;font-size:1.3rem}
+.dc-band{font-weight:900;font-size:1.2rem;margin-bottom:5px}
+.dc-result p,.dc-note,.dc-card p,.dc-card li{color:var(--dc-muted);line-height:1.65;font-size:.92rem}
+.dc-list{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.dc-list li{padding:9px 10px;border-radius:7px;background:#fff;border:1px solid #e3eaf3}
+.dc-source-grid{display:grid;gap:10px}
+.dc-source{border:1px solid #e4ebf5;border-radius:8px;padding:11px;background:#fff}
+.dc-source strong{display:block;margin-bottom:4px}
+.dc-source a{color:var(--dc-blue);font-weight:800}
+.dc-related{display:grid;gap:8px}
+.dc-related a{display:block;border:1px solid #dde6f0;border-radius:7px;padding:10px;text-decoration:none;color:var(--dc-blue);font-weight:800;background:#fff}
+.dc-warning{border-left:4px solid var(--dc-orange);background:#fff7ed}
+.dc-method{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.dc-mini{border:1px solid #e4ebf5;border-radius:8px;padding:12px;background:#fff}
+.dc-mini strong{display:block;margin-bottom:6px}
+.faq details{border:1px solid #e4ebf5;border-radius:8px;padding:12px;background:#fff;margin-bottom:8px}
+.faq summary{cursor:pointer;font-weight:900}
+.faq p{margin:8px 0 0}
+.dc-status{font-weight:800;color:var(--dc-blue);min-height:22px}
+@media(max-width:880px){.dc-hero,.dc-layout,.dc-method{grid-template-columns:1fr}.dc-grid{grid-template-columns:1fr}.dc-shell{padding:18px 12px 54px}.dc-hero-copy,.dc-panel,.dc-card{box-shadow:none}.dc-score{grid-template-columns:1fr}.dc-score-ring{margin:0 auto}}
 </style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/data-compliance.webp">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Conformité des données Afrique | AfroTools">
-<meta name="twitter:description" content="Vérifiez la conformité de votre entreprise avec les lois sur la protection des données en Afrique. Notre outil couvre les réglementations RGPD africaines et les législations nationales.">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/data-compliance/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/conformite-donnees/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/data-compliance/" />
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Checklist protection des donnees Afrique",
+  "applicationCategory":"BusinessApplication",
+  "operatingSystem":"Web",
+  "url":"https://afrotools.com/fr/tools/conformite-donnees/",
+  "description":"Auto-check local pour preparer une revue NDPA, POPIA, Kenya DPA ou Ghana DPA avec score, plan d'action et sources officielles.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Cet outil prouve-t-il ma conformite?","acceptedAnswer":{"@type":"Answer","text":"Non. C'est un outil de preparation et de triage. Il aide a identifier les controles et documents a verifier, mais ne remplace pas un avis juridique."}},
+    {"@type":"Question","name":"Les donnees saisies quittent-elles le navigateur?","acceptedAnswer":{"@type":"Answer","text":"Non pour cette page. Le calcul, le texte de synthese et la sauvegarde locale se font dans le navigateur."}},
+    {"@type":"Question","name":"Quelles sources dois-je verifier ensuite?","acceptedAnswer":{"@type":"Answer","text":"Verifiez l'autorite officielle du pays concerne: Nigeria NDPC, South Africa Information Regulator, Kenya ODPC ou Ghana Data Protection Commission."}}
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
-<main>
-<section class="tool-hero"><h1>Conformité des données Afrique</h1><p>Vérifiez la conformité de votre entreprise avec les lois sur la protection des données en Afrique. Notre outil couvre les réglementations RGPD africaines et les législations nationales.</p></section>
-<div class="tool-iframe-wrap"><iframe src="/tools/data-compliance/" title="Conformité des données Afrique" loading="lazy"></iframe></div>
-<section class="seo-section"><h2>À propos</h2><p>Vérifiez la conformité de votre entreprise avec les lois sur la protection des données en Afrique. Notre outil couvre les réglementations RGPD africaines et les législations nationales.</p><p>La protection des données personnelles est un enjeu croissant en Afrique. Cet outil vous aide à identifier les réglementations applicables dans chaque pays et à vérifier votre niveau de conformité.</p></section>
-<section class="faq"><h2>Questions fréquentes</h2>
-<details><summary>Quelles lois sont couvertes ?</summary><p>L’outil couvre les lois de protection des données de plus de 30 pays africains, dont le NDPR du Nigeria, le POPIA d’Afrique du Sud et la loi kenyane sur les données.</p></details>
-<details><summary>Est-ce obligatoire pour mon entreprise ?</summary><p>Si vous collectez des données personnelles de résidents africains, vous êtes probablement soumis à ces lois. L’outil vous aide à le déterminer.</p></details>
-<details><summary>Comment améliorer ma conformité ?</summary><p>L’outil fournit des recommandations concrètes : politiques de confidentialité, mesures de sécurité et procédures de consentement adaptées.</p></details>
+<main class="dc-shell">
+<section class="dc-hero">
+  <div class="dc-hero-copy">
+    <div class="dc-kicker">Protection des donnees</div>
+    <h1>Verifier les gaps avant une vraie revue de conformite.</h1>
+    <p>Un auto-check local pour preparer une revue NDPA, POPIA, Kenya DPA ou Ghana DPA. Selectionnez le pays, cochez les controles existants, puis exportez un plan d'action clair pour votre dossier, votre equipe ou votre conseiller.</p>
+    <div class="dc-badges" aria-label="Regimes couverts">
+      <span class="dc-badge">NDPA Nigeria</span>
+      <span class="dc-badge">POPIA South Africa</span>
+      <span class="dc-badge">Kenya DPA</span>
+      <span class="dc-badge">Ghana DPA</span>
+      <span class="dc-badge">Local-only</span>
+    </div>
+  </div>
+  <aside class="dc-panel dc-warning">
+    <h2>Avertissement</h2>
+    <p>Ceci est une estimation de preparation, non officiel et non juridique. Les lois, guides et formulaires changent. Verifiez toujours l'autorite officielle ou demandez un conseil qualifie avant de deposer, publier ou signer.</p>
+    <p class="dc-note">Derniere revue source: 17 juin 2026. Source/reference: autorites officielles listees ci-dessous.</p>
+  </aside>
+</section>
+
+<section class="dc-layout">
+  <div>
+    <form class="dc-card dc-form" id="dcForm">
+      <h2>Construire le score</h2>
+      <div class="dc-grid">
+        <label class="dc-field"><span>Pays principal</span>
+          <select id="country">
+            <option value="ng">Nigeria - Nigeria Data Protection Act</option>
+            <option value="za">South Africa - POPIA</option>
+            <option value="ke">Kenya - Data Protection Act</option>
+            <option value="gh">Ghana - Data Protection Act</option>
+            <option value="multi">Multi-country / pan-African review</option>
+          </select>
+        </label>
+        <label class="dc-field"><span>Type d'organisation</span>
+          <select id="orgType">
+            <option>Startup or SME</option>
+            <option>School or training provider</option>
+            <option>Health, insurance or finance</option>
+            <option>Ecommerce or marketplace</option>
+            <option>NGO, church or community group</option>
+          </select>
+        </label>
+        <label class="dc-field"><span>Personnes concernees</span><input id="peopleCount" type="number" min="0" value="2500"></label>
+        <label class="dc-field"><span>Projet ou produit</span><input id="projectName" type="text" value="Website and customer records"></label>
+      </div>
+
+      <div class="dc-checks" id="checks">
+        <div class="dc-checkgroup">
+          <div class="dc-section-title">Notice, base legale et consentement</div>
+          <div class="dc-check"><input id="c1" type="checkbox"><label for="c1">Privacy notice publiee, claire et disponible avant ou au moment de la collecte.</label></div>
+          <div class="dc-check"><input id="c2" type="checkbox"><label for="c2">Base legale documentee pour chaque finalite: contrat, consentement, obligation legale, interet legitime ou autre base applicable.</label></div>
+          <div class="dc-check"><input id="c3" type="checkbox"><label for="c3">Consentement separe pour marketing, cookies non essentiels ou communications facultatives.</label></div>
+        </div>
+        <div class="dc-checkgroup">
+          <div class="dc-section-title">Droits des personnes</div>
+          <div class="dc-check"><input id="c4" type="checkbox"><label for="c4">Adresse ou formulaire pour demandes d'acces, correction, suppression ou opposition.</label></div>
+          <div class="dc-check"><input id="c5" type="checkbox"><label for="c5">Delai interne pour repondre aux demandes et journal de suivi des reponses.</label></div>
+          <div class="dc-check"><input id="c6" type="checkbox"><label for="c6">Processus pour retirer le consentement aussi facilement qu'il a ete donne.</label></div>
+        </div>
+        <div class="dc-checkgroup">
+          <div class="dc-section-title">Securite, breach et retention</div>
+          <div class="dc-check"><input id="c7" type="checkbox"><label for="c7">Acces limite aux donnees, mots de passe forts, MFA ou controle equivalent.</label></div>
+          <div class="dc-check"><input id="c8" type="checkbox"><label for="c8">Plan de reponse aux incidents avec responsable, delai et modele de notification.</label></div>
+          <div class="dc-check"><input id="c9" type="checkbox"><label for="c9">Calendrier de retention: ce qui est garde, pourquoi, combien de temps et comment supprimer.</label></div>
+        </div>
+        <div class="dc-checkgroup">
+          <div class="dc-section-title">Gouvernance et preuves</div>
+          <div class="dc-check"><input id="c10" type="checkbox"><label for="c10">Responsable privacy, DPO ou Information Officer identifie quand requis.</label></div>
+          <div class="dc-check"><input id="c11" type="checkbox"><label for="c11">Registre des traitements ou mapping des donnees, finalites, systemes, pays et vendeurs.</label></div>
+          <div class="dc-check"><input id="c12" type="checkbox"><label for="c12">DPIA ou revue de risque pour donnees sensibles, enfants, scoring, tracking ou surveillance.</label></div>
+        </div>
+        <div class="dc-checkgroup">
+          <div class="dc-section-title">Vendeurs et transferts</div>
+          <div class="dc-check"><input id="c13" type="checkbox"><label for="c13">Contrats avec processeurs: cloud, paiement, CRM, email, analytics ou support client.</label></div>
+          <div class="dc-check"><input id="c14" type="checkbox"><label for="c14">Transferts internationaux identifies avec garanties, consentement ou base autorisee.</label></div>
+          <div class="dc-check"><input id="c15" type="checkbox"><label for="c15">Verification officielle faite pour enregistrement, notification ou obligation sectorielle.</label></div>
+        </div>
+      </div>
+
+      <label class="dc-field"><span>Notes privees pour l'export</span><textarea id="notes">Add missing documents, vendors, systems, policy links or regulator questions here.</textarea></label>
+      <div class="dc-actions">
+        <button class="dc-btn primary" type="submit">Calculer le score</button>
+        <button class="dc-btn" type="button" id="sampleBtn">Charger un exemple</button>
+        <button class="dc-btn" type="button" id="copyBtn">Copier</button>
+        <button class="dc-btn" type="button" id="downloadBtn">Telecharger TXT</button>
+        <button class="dc-btn" type="button" id="saveBtn">Sauver localement</button>
+      </div>
+      <div class="dc-status" id="status" aria-live="polite"></div>
+    </form>
+
+    <section class="dc-card">
+      <h2>Resultat et plan d'action</h2>
+      <div class="dc-result" id="result">
+        <p>Remplissez la checklist puis lancez le calcul. Le resultat restera dans ce navigateur.</p>
+      </div>
+    </section>
+
+    <section class="dc-card">
+      <h2>Methodologie</h2>
+      <div class="dc-method">
+        <div class="dc-mini"><strong>1. Controls</strong><span>15 controles communs aux programmes de protection des donnees: notice, droits, securite, gouvernance, vendeurs et transferts.</span></div>
+        <div class="dc-mini"><strong>2. Risk modifiers</strong><span>Donnees sensibles, grand volume, multi-country ou secteur regule augmentent l'urgence du plan d'action.</span></div>
+        <div class="dc-mini"><strong>3. Source check</strong><span>Le score ne remplace pas les textes officiels. Il vous indique quoi verifier ensuite avec l'autorite officielle.</span></div>
+      </div>
+    </section>
+
+    <section class="dc-card faq">
+      <h2>Questions frequentes</h2>
+      <details><summary>Ce score suffit-il pour prouver la conformite?</summary><p>Non. Le score est une preparation interne. Une vraie conformite depend des faits, documents, contrats, systemes, pays et decisions de l'autorite officielle.</p></details>
+      <details><summary>Pourquoi ne pas dire "RGPD africain"?</summary><p>Chaque pays a son propre texte, son autorite et ses exigences. Certains principes se ressemblent, mais ce n'est pas un seul regime africain.</p></details>
+      <details><summary>Est-ce que mes notes sont envoyees a AfroTools?</summary><p>Non sur cette page. Les calculs, la synthese, la copie, le telechargement et la sauvegarde se font localement dans le navigateur.</p></details>
+      <details><summary>Que dois-je faire apres un score faible?</summary><p>Priorisez la privacy notice, le mapping des donnees, la securite, les demandes des personnes, les contrats de processeurs et la verification officielle du pays.</p></details>
+    </section>
+  </div>
+
+  <aside>
+    <section class="dc-card" data-tool-verification-panel>
+      <h2>Sources officielles</h2>
+      <p class="dc-note">Use official authority pages before relying on this plan.</p>
+      <div class="dc-source-grid">
+        <div class="dc-source"><strong>Nigeria NDPC</strong><a href="https://ndpc.gov.ng/" target="_blank" rel="noopener">ndpc.gov.ng</a></div>
+        <div class="dc-source"><strong>South Africa Information Regulator</strong><a href="https://inforegulator.org.za/" target="_blank" rel="noopener">inforegulator.org.za</a></div>
+        <div class="dc-source"><strong>Kenya ODPC</strong><a href="https://www.odpc.go.ke/" target="_blank" rel="noopener">odpc.go.ke</a></div>
+        <div class="dc-source"><strong>Ghana Data Protection Commission</strong><a href="https://dataprotection.org.gh/" target="_blank" rel="noopener">dataprotection.org.gh</a></div>
+      </div>
+    </section>
+    <section class="dc-card">
+      <h2>Liens utiles</h2>
+      <div class="dc-related">
+        <a href="/tools/data-compliance/">English data compliance checker</a>
+        <a href="/tools/ndpa-checker/">NDPA Checker</a>
+        <a href="/tools/popia-checker/">POPIA Checker</a>
+        <a href="/tools/kenya-dpa/">Kenya DPA Checker</a>
+        <a href="/tools/privacy-policy-generator/">Privacy policy generator</a>
+      </div>
+    </section>
+    <section class="dc-card">
+      <h2>Ce que le score ne fait pas</h2>
+      <ul>
+        <li>Il ne depose aucun document aupres d'un regulateur.</li>
+        <li>Il ne scanne pas votre site, vos cookies ou vos contrats.</li>
+        <li>Il ne garantit pas l'absence de sanction ou de plainte.</li>
+      </ul>
+    </section>
+  </aside>
 </section>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function(){
+  var checks = Array.from(document.querySelectorAll('#checks input[type="checkbox"]'));
+  var result = document.getElementById('result');
+  var status = document.getElementById('status');
+  var lastSummary = '';
+  var countryLabels = {
+    ng:'Nigeria NDPA',
+    za:'South Africa POPIA',
+    ke:'Kenya DPA',
+    gh:'Ghana DPA',
+    multi:'Multi-country review'
+  };
+  function checkedCount(){ return checks.filter(function(input){ return input.checked; }).length; }
+  function riskNote(country, people){
+    var notes = [];
+    if(country === 'multi') notes.push('Multi-country processing: verify each local authority before launch.');
+    if(people >= 10000) notes.push('Large data volume: keep evidence for mapping, retention, breach plan and vendor contracts.');
+    if(document.getElementById('orgType').value.indexOf('Health') === 0) notes.push('Sensitive or regulated sector: add DPIA/legal review before relying on the score.');
+    return notes;
+  }
+  function missingLabels(){
+    return checks.filter(function(input){ return !input.checked; }).map(function(input){
+      return input.nextElementSibling ? input.nextElementSibling.textContent.trim() : input.id;
+    });
+  }
+  function buildSummary(){
+    var country = document.getElementById('country').value;
+    var people = Number(document.getElementById('peopleCount').value || 0);
+    var project = document.getElementById('projectName').value.trim() || 'Data project';
+    var count = checkedCount();
+    var pct = Math.round((count / checks.length) * 100);
+    var band = pct >= 85 ? 'Ready for legal/source verification' : pct >= 65 ? 'Usable foundation with gaps' : pct >= 45 ? 'High-priority repair plan' : 'Repair-first privacy risk';
+    var missing = missingLabels();
+    var urgent = missing.slice(0,5);
+    var risks = riskNote(country, people);
+    lastSummary = [
+      'AfroTools data compliance self-check',
+      'Project: ' + project,
+      'Regime: ' + countryLabels[country],
+      'Organisation: ' + document.getElementById('orgType').value,
+      'People affected estimate: ' + people,
+      'Score: ' + pct + '% (' + count + '/' + checks.length + ')',
+      'Band: ' + band,
+      '',
+      'Top action gaps:',
+      urgent.length ? urgent.map(function(item,i){ return (i+1) + '. ' + item; }).join('\n') : 'No unchecked top gaps in this checklist.',
+      '',
+      'Risk notes:',
+      risks.length ? risks.map(function(item){ return '- ' + item; }).join('\n') : '- No extra risk modifier selected.',
+      '',
+      'Private notes:',
+      document.getElementById('notes').value.trim() || 'None',
+      '',
+      'Avertissement: planning estimate only, non officiel, not legal advice. Verify the official authority before acting.',
+      'Sources: NDPC Nigeria, Information Regulator South Africa, ODPC Kenya, Data Protection Commission Ghana.'
+    ].join('\n');
+    var color = pct >= 85 ? '#1d7f4f' : pct >= 65 ? '#2557d6' : pct >= 45 ? '#bd5b12' : '#b42318';
+    result.innerHTML = '<div class="dc-score"><div class="dc-score-ring" style="--pct:'+pct+'%;--dc-blue:'+color+'"><span>'+pct+'%</span></div><div><div class="dc-band" style="color:'+color+'">'+band+'</div><p>'+count+' of '+checks.length+' controls are checked for '+countryLabels[country]+'. This is an internal readiness signal, not an official compliance decision.</p></div></div>' +
+      '<h3 class="dc-section-title">Top action gaps</h3><ul class="dc-list">' + urgent.map(function(item){ return '<li>'+item+'</li>'; }).join('') + '</ul>' +
+      (risks.length ? '<ul class="dc-list">' + risks.map(function(item){ return '<li>'+item+'</li>'; }).join('') + '</ul>' : '');
+    status.textContent = 'Score ready. Copy, download or save the summary.';
+  }
+  document.getElementById('dcForm').addEventListener('submit', function(event){
+    event.preventDefault();
+    buildSummary();
+  });
+  document.getElementById('sampleBtn').addEventListener('click', function(){
+    ['c1','c2','c4','c7','c8','c10','c11','c13'].forEach(function(id){ document.getElementById(id).checked = true; });
+    document.getElementById('country').value = 'ng';
+    document.getElementById('orgType').value = 'Ecommerce or marketplace';
+    document.getElementById('peopleCount').value = '18000';
+    document.getElementById('projectName').value = 'Marketplace customer and vendor records';
+    document.getElementById('notes').value = 'Need vendor DPA, data map, breach owner and official registration check.';
+    buildSummary();
+  });
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    if(!lastSummary) buildSummary();
+    var done = function(message){ status.textContent = message; };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(lastSummary).then(function(){ done('Summary copied.'); }).catch(function(){ done('Copy blocked by browser. Use download or select the result text.'); });
+    }else{
+      done('Clipboard not available. Use download.');
+    }
+  });
+  document.getElementById('downloadBtn').addEventListener('click', function(){
+    if(!lastSummary) buildSummary();
+    var blob = new Blob([lastSummary], {type:'text/plain'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'afrotools-data-compliance-check.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+    status.textContent = 'TXT downloaded.';
+  });
+  document.getElementById('saveBtn').addEventListener('click', function(){
+    if(!lastSummary) buildSummary();
+    try{
+      localStorage.setItem('afrotools:data-compliance-fr:last', lastSummary);
+      status.textContent = 'Saved locally in this browser.';
+    }catch(err){
+      status.textContent = 'Local save unavailable in this browser.';
+    }
+  });
+}());
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

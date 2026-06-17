@@ -573,6 +573,22 @@ function getDeadlineOverrideResolution(override) {
   return override && override.deadline_date ? 'exact_date' : 'no_single_public_deadline';
 }
 
+function getScholarshipDeadlineConfidence(scholarship) {
+  if (!scholarship || typeof scholarship !== 'object') return '';
+  const snapshot = scholarship.raw_snapshot && typeof scholarship.raw_snapshot === 'object'
+    ? scholarship.raw_snapshot
+    : {};
+  return String(scholarship.deadline_confidence || snapshot.deadline_confidence || '').toLowerCase();
+}
+
+function isNoSinglePublicDeadline(scholarship) {
+  const confidence = getScholarshipDeadlineConfidence(scholarship);
+  if (confidence === 'no_single_public_deadline') return true;
+
+  const status = String(scholarship && scholarship.deadline_status || '').toLowerCase();
+  return status === 'varies' || status === 'variable' || status === 'no_single_public_deadline';
+}
+
 function loadScholarshipSourceRegistry(options) {
   const settings = options || {};
   if (!settings.force && sourceRegistryCache) {
@@ -1793,7 +1809,7 @@ function buildReminderSchedule(deadlineDate, offsets, options) {
 
 function hasDatedFutureDeadline(scholarship, options) {
   if (!scholarship || !scholarship.deadline_date || scholarship.status === 'closed') return false;
-  if (scholarship.deadline_confidence === 'no_single_public_deadline') return false;
+  if (isNoSinglePublicDeadline(scholarship)) return false;
 
   const parsed = parseDeadlineDate(scholarship.deadline_date);
   if (!parsed) return false;
@@ -1807,7 +1823,7 @@ function hasDatedFutureDeadline(scholarship, options) {
 
 function getReminderUnavailableReason(scholarship) {
   if (!scholarship || !scholarship.is_active) return 'scholarship_unavailable';
-  if (scholarship.deadline_confidence === 'no_single_public_deadline') return 'no_single_public_deadline';
+  if (isNoSinglePublicDeadline(scholarship)) return 'no_single_public_deadline';
   if (!scholarship.deadline_date) return 'missing_dated_deadline';
   if (scholarship.status === 'closed') return 'deadline_closed';
   if (!hasDatedFutureDeadline(scholarship)) return 'deadline_not_future_dated';
@@ -1881,7 +1897,7 @@ async function reconcileReminderJobsForScholarshipIds(client, scholarshipIds) {
 
   const { data: scholarshipRows, error: scholarshipError } = await client
     .from('scholarships')
-    .select('id, title, provider, official_url, source_url, deadline_date, deadline_text, deadline_confidence, confidence_mode, status, is_active')
+    .select('id, title, provider, official_url, source_url, deadline_date, deadline_text, deadline_status, raw_snapshot, confidence_mode, status, is_active')
     .in('id', ids);
   if (scholarshipError) throw scholarshipError;
 

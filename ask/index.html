@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ask AfroTools AI | AfroTools</title>
-  <meta name="description" content="Ask AfroTools AI routes natural-language tasks into AfroTools calculators, document workflows, exports, and local planning tools.">
+  <meta name="description" content="Tell Ask AfroTools AI what you need done, then open the right AfroTools calculator, document tool, export, or planning helper.">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://afrotools.com/ask/">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
   <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-  <script src="/assets/js/bundles/core.a778d1f9.min.js" defer></script>
+  <script src="/assets/js/bundles/core.5fe5d54d.min.js" defer></script>
   <style>
     :root{--ask-bg:#f8fafc;--ask-surface:#fff;--ask-text:#0f172a;--ask-muted:#52637a;--ask-soft:#eef6ff;--ask-border:#dbe6f4;--ask-primary:#0062cc;--ask-primary-dark:#004c9f;--ask-warn:#92400e;--ask-warn-bg:#fffbeb;--ask-success:#065f46;--ask-success-bg:#ecfdf5}
     body{margin:0;background:var(--ask-bg);color:var(--ask-text);font-family:"DM Sans",system-ui,sans-serif}
@@ -38,6 +38,10 @@
     .ask-example{border:1px solid var(--ask-border);border-radius:999px;background:#fff;color:#1e3a5f;min-height:34px;padding:7px 12px;font:inherit;font-size:.74rem;font-weight:800;line-height:1.35;text-align:left;cursor:pointer}
     .ask-example:hover,.ask-example:focus-visible{border-color:#9fc4ff;background:#eff6ff}
     .ask-privacy{border:1px solid #fde68a;border-radius:12px;background:var(--ask-warn-bg);color:var(--ask-warn);padding:12px 14px;font-size:.82rem;line-height:1.55}
+    .ask-system-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0}
+    .ask-system-strip div{border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;padding:10px 11px}
+    .ask-system-strip strong{display:block;color:#0f172a;font-size:.78rem;font-weight:900;line-height:1.25}
+    .ask-system-strip span{display:block;margin-top:3px;color:#64748b;font-size:.72rem;font-weight:700;line-height:1.35}
     .ask-state{margin-top:16px;display:grid;gap:12px}
     .ask-state[hidden]{display:none}
     .ask-status{border:1px solid var(--ask-border);border-radius:12px;background:#fbfdff;padding:12px 14px;color:#334155;font-size:.84rem;line-height:1.55}
@@ -56,17 +60,38 @@
     .tool-card-desc{color:#64748b;font-size:.84rem;line-height:1.55}
     .tool-meta{display:flex;flex-wrap:wrap;gap:6px}
     .tool-meta span{display:inline-flex;align-items:center;min-height:25px;padding:4px 8px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:.68rem;font-weight:800}
+    .ask-source-note{border:1px solid #bfdbfe;border-radius:12px;background:#f8fbff;color:#334155;padding:11px 12px;font-size:.8rem;line-height:1.55}
+    .ask-source-note strong{display:block;color:#0f172a;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+    .ask-source-note[data-source-tone="caution"]{border-color:#fed7aa;background:#fff7ed;color:#7c2d12}
+    .ask-source-note[data-source-tone="caution"] strong{color:#7c2d12}
+    .ask-source-note[data-source-tone="private"]{border-color:#bbf7d0;background:#f0fdf4;color:#14532d}
+    .ask-source-note[data-source-tone="private"] strong{color:#14532d}
     .tool-prefill{border:1px solid #bfdbfe;border-radius:11px;background:#f8fbff;color:#334155;padding:10px 11px;font-size:.78rem;line-height:1.5}
     .tool-prefill strong{display:block;color:#0f172a;font-size:.8rem;margin-bottom:2px}
     .tool-prefill ul{margin:7px 0 0;padding-left:18px}
     .tool-prefill li{margin:3px 0}
+    .related-tools{border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;padding:11px;display:grid;gap:8px}
+    .related-tools[hidden]{display:none}
+    .related-tools strong{color:#0f172a;font-size:.82rem;font-weight:900}
+    .related-tool-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+    .related-tool-list a{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;min-height:38px;border:1px solid #d5e2f2;border-radius:10px;background:#fff;color:#0f172a;text-decoration:none;font-size:.78rem;font-weight:900;padding:8px 10px}
+    .related-tool-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .related-tool-category{color:var(--ask-primary);font-size:.66rem;white-space:nowrap;text-transform:lowercase}
+    .related-tool-list a:hover,.related-tool-list a:focus-visible{border-color:#9fc4ff;background:#eff6ff}
     .ask-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
     .ask-cta,.ask-fallback{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:11px;padding:0 14px;text-decoration:none;font-size:.82rem;font-weight:900}
     .ask-cta{background:var(--ask-primary);color:#fff}
     .ask-cta:hover{background:var(--ask-primary-dark)}
     .ask-fallback{border:1px solid var(--ask-border);background:#fff;color:var(--ask-primary)}
+    .ask-feedback{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border-top:1px solid #dbeafe;padding-top:10px}
+    .ask-feedback span{color:#475569;font-size:.76rem;font-weight:900}
+    .ask-feedback button{min-height:36px;border:1px solid #c7d2fe;border-radius:999px;background:#fff;color:#1d4ed8;font:inherit;font-size:.76rem;font-weight:900;padding:0 12px;cursor:pointer}
+    .ask-feedback button:hover,.ask-feedback button:focus-visible{border-color:#2563eb;background:#eff6ff}
+    .ask-feedback-status{color:#475569;font-size:.76rem;font-weight:800}
     .question-list{display:grid;gap:7px;margin-top:8px}
-    .question-list div{border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;padding:9px 10px;color:#334155;font-size:.8rem;font-weight:700;line-height:1.4}
+    .detail-chip{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#334155;min-height:38px;padding:9px 10px;font:inherit;font-size:.8rem;font-weight:800;line-height:1.4;text-align:left;cursor:pointer}
+    .detail-chip:hover,.detail-chip:focus-visible{border-color:#9fc4ff;background:#eff6ff;color:#0f172a}
+    .detail-chip::after{content:"Add";flex:0 0 auto;color:var(--ask-primary);font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
     .shell-side{display:grid;gap:12px}
     .side-card{border:1px solid var(--ask-border);border-radius:14px;background:#fff;padding:16px;box-shadow:0 12px 34px rgba(15,23,42,.05)}
     .side-card h2{margin:0 0 8px;font-size:1rem;color:var(--ask-text);font-weight:900}
@@ -77,19 +102,19 @@
     .route-list a:hover,.route-list a:focus-visible{border-color:#9fc4ff;background:#eff6ff}
     .empty-illustration{border:1px dashed #bfdbfe;border-radius:13px;background:#f8fbff;padding:14px;color:#64748b;font-size:.82rem;line-height:1.6}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media(max-width:920px){.ask-wrap{grid-template-columns:1fr}.ask-main{padding-top:38px}.ask-grid{grid-template-columns:1fr}}
-    @media(max-width:560px){.ask-main{padding-left:12px;padding-right:12px}.ask-workspace,.side-card{padding:14px}.ask-input-row{grid-template-columns:1fr}.ask-run{width:100%}.ask-actions{display:grid}.ask-cta,.ask-fallback{width:100%}}
+    @media(max-width:920px){.ask-wrap{grid-template-columns:1fr}.ask-main{padding-top:38px}.ask-grid,.ask-system-strip{grid-template-columns:1fr}}
+    @media(max-width:560px){.ask-main{padding-left:12px;padding-right:12px}.ask-workspace,.side-card{padding:14px}.ask-input-row{grid-template-columns:1fr}.ask-run{width:100%}.ask-actions,.ask-feedback{display:grid}.ask-cta,.ask-fallback,.ask-feedback button{width:100%}.related-tool-list{grid-template-columns:1fr}}
     @media(prefers-reduced-motion:reduce){.ask-spinner{animation:none}}
   </style>
   <meta property="og:url" content="https://afrotools.com/ask/">
   <meta property="og:title" content="Ask AfroTools AI | AfroTools">
-  <meta property="og:description" content="A focused command page for routing tasks into AfroTools calculators, document workflows, exports, and planning tools.">
+  <meta property="og:description" content="Tell AfroTools what you need done and open the right calculator, document tool, export, or planning helper.">
   <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Ask AfroTools AI | AfroTools">
-  <meta name="twitter:description" content="Route a practical task into AfroTools workflows, with search fallback and privacy-aware AI boundaries.">
+  <meta name="twitter:description" content="Tell AfroTools what you need done and open the right calculator, document tool, export, or planning helper.">
   <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
   <link rel="alternate" hreflang="en" href="https://afrotools.com/ask/">
   <link rel="alternate" hreflang="x-default" href="https://afrotools.com/ask/">
@@ -101,16 +126,16 @@
       <section aria-labelledby="ask-title">
         <div class="ask-header">
           <h1 class="ask-title" id="ask-title">Ask AfroTools AI</h1>
-          <p class="ask-copy">Enter a task in normal language, review the detected workflow, answer any missing context, then continue into the right AfroTools tool.</p>
+          <p class="ask-copy">Type what you need to do. AfroTools will find the best matching tool, carry safe details when it can, and let you continue from there.</p>
         </div>
 
         <div class="ask-workspace">
           <form class="ask-form" id="askCommandForm" action="/search/" method="get" role="search">
             <div class="ask-field">
-              <label for="askPrompt">What do you want to calculate, compare, write, or plan?</label>
+              <label for="askPrompt">What are you trying to get done?</label>
               <div class="ask-input-row">
                 <input id="askPrompt" name="q" type="text" placeholder="Example: Calculate payroll for 5 employees in Kenya" autocomplete="off" spellcheck="false">
-                <button class="ask-run" type="submit">Detect workflow</button>
+                <button class="ask-run" type="submit">Find my tool</button>
               </div>
             </div>
             <div class="ask-examples" aria-label="Example prompts">
@@ -121,83 +146,99 @@
               <button class="ask-example" type="button" data-example="Calculate payroll for 5 employees in Kenya">Calculate payroll in Kenya</button>
               <button class="ask-example" type="button" data-example="Find scholarships for a Cameroonian student">Find scholarships for Cameroon</button>
             </div>
-            <p class="ask-privacy">Privacy notice: AfroTools AI routes first with local workflow matching. Optional AI assist may send your prompt to AfroTools servers or a model provider only after you choose to continue.</p>
+            <p class="ask-privacy">AfroTools checks existing tools first. Some tools run fully in your browser. Optional AI help asks before sending private details. <a href="/privacy/#ai-assist">Read the AI privacy and source limits</a>.</p>
+            <div class="ask-system-strip" aria-label="How AfroTools chooses a tool">
+              <div><strong>Searches all tools</strong><span>Uses existing AfroTools pages first</span></div>
+              <div><strong>Private first</strong><span>AI help asks before sending details</span></div>
+              <div><strong>Carries safe details</strong><span>Details stay in this browser session</span></div>
+            </div>
           </form>
 
           <div class="ask-state" id="stateEmpty">
             <div class="empty-illustration">
-              <strong>Detected intent will appear here.</strong><br>
-              Start with a practical task. The current adapter is a local mock router, so it can recommend a workflow without sending your prompt anywhere.
+              <strong>Your best match will appear here.</strong><br>
+              Start with a task. AfroTools checks the existing tool catalog first, then prepares a safe handoff into the selected tool.
             </div>
           </div>
 
           <div class="ask-state" id="stateLoading" hidden>
             <div class="ask-status ask-loading" role="status" aria-live="polite">
               <span class="ask-spinner" aria-hidden="true"></span>
-              <span><strong>Checking matching workflows</strong> Comparing your task against the local AfroTools router map.</span>
+              <span><strong>Finding the right tool</strong> Comparing your task with the existing AfroTools catalog.</span>
             </div>
           </div>
 
           <div class="ask-state" id="stateError" hidden>
-            <div class="ask-status" role="alert">
-              <strong>Router unavailable</strong>
-              <span id="errorCopy">Use search while the AI router is unavailable.</span>
+            <div class="ask-status" role="status" aria-live="polite">
+              <strong>Use local search</strong>
+              <span id="errorCopy">AfroTools can keep going with the full local tool directory.</span>
             </div>
             <div class="ask-actions">
-              <a class="ask-fallback" id="errorSearchLink" href="/search/">I only want to search tools</a>
+              <a class="ask-fallback" id="errorSearchLink" href="/search/">Search all tools instead</a>
             </div>
           </div>
 
           <div class="ask-state" id="stateNoMatch" hidden>
             <div class="ask-status" role="status" aria-live="polite">
-              <strong>No clear workflow match yet</strong>
-              Try adding a country, document type, amount, destination, or sector. You can still search the full tool directory.
+              <strong>No clear match yet</strong>
+              <span id="noMatchCopy">Try adding a country, document type, amount, destination, or sector. You can still search the full tool directory.</span>
             </div>
             <div class="ask-actions">
-              <a class="ask-fallback" id="noMatchSearchLink" href="/search/">I only want to search tools</a>
+              <a class="ask-fallback" id="noMatchSearchLink" href="/search/">Search all tools instead</a>
             </div>
           </div>
 
           <div class="ask-state" id="stateResult" hidden>
             <div class="ask-grid">
               <section class="ask-panel" aria-labelledby="intentHeading">
-                <h2 id="intentHeading">Detected intent</h2>
+                <h2 id="intentHeading">What AfroTools understood</h2>
                 <p id="intentSummary">Waiting for a task.</p>
                 <div class="intent-line">
-                  <span class="intent-pill" id="confidencePill">Local router</span>
+                  <span class="intent-pill" id="confidencePill">On-page match</span>
                   <span class="intent-pill" id="riskPill">Planning estimate</span>
                 </div>
               </section>
 
               <section class="ask-panel" aria-labelledby="questionsHeading">
-                <h2 id="questionsHeading">Clarifying questions</h2>
-                <p id="questionsIntro">Answer these in the tool if they matter.</p>
+                <h2 id="questionsHeading">Details that may help</h2>
+                <p id="questionsIntro">You can add these inside the tool if they matter.</p>
                 <div class="question-list" id="questionList"></div>
               </section>
             </div>
 
             <section class="ask-panel tool-card" aria-labelledby="toolHeading">
-              <h2 class="sr-only" id="toolHeading">Recommended tool</h2>
-              <div class="tool-card-title" id="toolTitle">Recommended tool</div>
+              <h2 class="sr-only" id="toolHeading">Best tool to open</h2>
+              <div class="tool-card-title" id="toolTitle">Best tool to open</div>
               <div class="tool-card-desc" id="toolDescription"></div>
               <div class="tool-meta" id="toolMeta"></div>
+              <div class="ask-source-note" id="sourceNote" role="note" hidden></div>
               <div class="tool-prefill" id="prefillSummary" hidden></div>
+              <div class="related-tools" id="relatedTools" hidden>
+                <strong>Related tools</strong>
+                <div class="related-tool-list" id="relatedToolList"></div>
+              </div>
               <div class="ask-actions">
-                <a class="ask-cta" id="openToolLink" href="/tools/">Open tool with prefill</a>
-                <a class="ask-fallback" id="resultSearchLink" href="/search/">I only want to search tools</a>
+                <a class="ask-cta" id="openToolLink" href="/tools/">Open this tool with details</a>
+                <a class="ask-fallback" id="resultSearchLink" href="/search/">Search all tools instead</a>
+              </div>
+              <div class="ask-feedback" data-ask-router-feedback>
+                <span>Was this match useful?</span>
+                <button type="button" data-ask-feedback="positive" aria-label="Mark this Ask AfroTools AI match as helpful">Yes</button>
+                <button type="button" data-ask-feedback="negative" aria-label="Mark this Ask AfroTools AI match as not helpful">Not really</button>
+                <span class="ask-feedback-status" data-ask-feedback-status aria-live="polite"></span>
               </div>
             </section>
           </div>
         </div>
       </section>
 
-      <aside class="shell-side" aria-label="Ask AfroTools AI workflow notes">
+      <aside class="shell-side" aria-label="Ask AfroTools AI notes">
         <section class="side-card">
           <h2>How this page works</h2>
-          <p>Ask AfroTools AI matches your request to practical tools, prepares safe prefill details, and keeps model-assisted routing behind explicit consent.</p>
+          <p>Ask AfroTools AI matches your request to practical tools, prepares safe details, and asks before optional AI help sends anything private.</p>
         </section>
         <section class="side-card">
-          <h2>Common workflows</h2>
+          <h2>Popular tasks</h2>
           <div class="route-list">
             <a href="/tools/study-abroad-cost/">Study abroad <span>Costs</span></a>
             <a href="/tools/cv-builder/">CV &amp; jobs <span>Career</span></a>
@@ -208,14 +249,21 @@
           </div>
         </section>
         <section class="side-card">
-          <h2>Fallback</h2>
-          <p>If routing is disabled or no clear workflow matches, AfroTools sends you to the existing search directory with your query.</p>
+          <h2>Search still works</h2>
+          <p>If AfroTools cannot pick a clear match, you can search the full tool directory with your words.</p>
         </section>
       </aside>
     </div>
   </main>
   <afro-footer></afro-footer>
+  <script src="/assets/js/components/tool-registry.min.js"></script>
+  <script src="/assets/js/ai/tool-manifest.js"></script>
+  <script src="/assets/js/ai/intent-router.js"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=32c7a459"></script>
+  <script src="/assets/js/ai/tool-invocation-runtime.js"></script>
+  <script src="/assets/js/ai/orchestrator.js"></script>
+  <script src="/assets/js/ai/intent-analytics.js"></script>
+  <script src="/assets/js/ai/example-registry.js?v=ba45b881"></script>
   <script>
   (function(){
     "use strict";
@@ -238,12 +286,16 @@
       toolTitle: document.getElementById("toolTitle"),
       toolDescription: document.getElementById("toolDescription"),
       toolMeta: document.getElementById("toolMeta"),
+      sourceNote: document.getElementById("sourceNote"),
       prefillSummary: document.getElementById("prefillSummary"),
+      relatedTools: document.getElementById("relatedTools"),
+      relatedToolList: document.getElementById("relatedToolList"),
       openToolLink: document.getElementById("openToolLink"),
       resultSearchLink: document.getElementById("resultSearchLink"),
       noMatchSearchLink: document.getElementById("noMatchSearchLink"),
       errorSearchLink: document.getElementById("errorSearchLink"),
-      errorCopy: document.getElementById("errorCopy")
+      errorCopy: document.getElementById("errorCopy"),
+      noMatchCopy: document.getElementById("noMatchCopy")
     };
 
     var WORKFLOWS = [
@@ -252,7 +304,7 @@
       workflow("import-duty", "Import Duty Calculator", "/tools/import-duty/", "Estimate landed cost with customs duty, levies, FX, and planning-estimate labels.", ["import", "duty", "customs", "vehicle", "toyota", "axio", "landed cost"], ["Destination country", "Item or vehicle", "Item value", "Year or HS category"], "finance", "mixed"),
       workflow("solar-energy", "Solar ROI Calculator", "/tools/solar-roi/", "Compare solar payback, generator savings, outage cost, and battery planning assumptions.", ["solar", "generator", "electricity", "power", "shop", "lagos", "energy"], ["Country or city", "Monthly bill", "Outage hours", "System quote"], "energy", "mixed"),
       workflow("payroll-tax", "Salary and PAYE tools", "/salary-tax/", "Estimate payroll, PAYE, deductions, and take-home pay as planning guidance.", ["payroll", "employee", "employees", "salary", "paye", "tax", "kenya"], ["Country", "Gross pay", "Pay period", "Employee count"], "tax", "mixed"),
-      workflow("scholarships", "Scholarship Finder", "/tools/scholarship-finder/", "Search funding options, compare fit, and organize deadlines with source-aware notes.", ["scholarship", "funding", "grant", "cameroon", "student"], ["Home country", "Study level", "Field", "Destination"], "education", "mixed"),
+      workflow("scholarships", "Scholarship Finder", "/tools/scholarship-finder/", "Search funding options, compare fit, and organize deadlines with source notes.", ["scholarship", "funding", "grant", "cameroon", "student"], ["Home country", "Study level", "Field", "Destination"], "education", "mixed"),
       workflow("invoice-generator", "Invoice Generator", "/tools/invoice-generator/", "Prepare a browser-local invoice draft with client, currency, line item, tax, and export options.", ["invoice", "receipt", "bill client", "client invoice"], ["Client name", "Currency", "Line item", "Amount"], "finance", "user input"),
       workflow("documents", "PDF Workspace", "/document-pdf/", "Open browser-local document and PDF workflows such as merge, split, compress, watermark, and convert.", ["pdf", "document", "merge", "compress", "watermark", "file"], ["Document task", "Output format"], "none", "user input"),
       workflow("business-tax", "VAT and business tax hub", "/vat-business-tax/", "Open VAT, business registration, and tax workflow tools.", ["business", "vat", "tin", "company", "tax"], ["Country", "Business type", "Tax task"], "tax", "mixed"),
@@ -273,6 +325,25 @@
       return query ? "/search/?q=" + encodeURIComponent(query) : "/search/";
     }
 
+    function resultSearchUrl(result) {
+      return "/search/?source=ask_private";
+    }
+
+    function savePrivateSearchHandoff(prompt, source) {
+      var query = String(prompt || "").trim();
+      if (!query) return false;
+      try {
+        window.sessionStorage.setItem("afrotools.privateSearchHandoff.v1", JSON.stringify({
+          query: query,
+          source: source || "ask_page",
+          createdAt: Date.now()
+        }));
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }
+
     function setState(name) {
       Object.keys(states).forEach(function(key) {
         states[key].hidden = key !== name;
@@ -285,15 +356,173 @@
       return true;
     }
 
+    var manifestCache = null;
+    var currentResult = null;
+    function getRouterManifest() {
+      if (manifestCache) return manifestCache;
+      var manifestApi = window.AfroToolsAIToolManifest;
+      if (!manifestApi || typeof manifestApi.getToolManifestForRouter !== "function") return [];
+      var base = [];
+      if (typeof manifestApi.loadDefaultToolManifest === "function") {
+        try { base = manifestApi.loadDefaultToolManifest(); } catch (err) { base = []; }
+      }
+      manifestCache = manifestApi.getToolManifestForRouter(base);
+      return manifestCache || [];
+    }
+
+    function findToolById(manifest, id) {
+      var clean = String(id || "");
+      for (var i = 0; i < manifest.length; i += 1) {
+        var tool = manifest[i];
+        if (!tool) continue;
+        if (tool.id === clean || tool.slug === clean || (tool.aliases || []).indexOf(clean) !== -1) return tool;
+      }
+      return null;
+    }
+
+    function prettyKey(value) {
+      return String(value || "")
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .replace(/\b\w/g, function(ch) { return ch.toUpperCase(); })
+        .trim();
+    }
+
+    function sourceLabel(value) {
+      var clean = String(value || "").toLowerCase();
+      if (clean === "user input") return "uses your details";
+      if (clean === "mixed") return "source notes in tool";
+      if (clean === "estimated") return "planning estimate";
+      return clean ? "source: " + clean : "source notes in tool";
+    }
+
+    function riskLabel(flow) {
+      var domain = String(flow && flow.domain || "none").toLowerCase();
+      var sourcePolicy = String(flow && flow.sourcePolicy || "").toLowerCase();
+      if (domain === "none" || sourcePolicy === "user input") return "Stays in browser";
+      if (domain === "tax") return "Tax planning estimate";
+      if (domain === "finance" || domain === "trade") return "Financial planning estimate";
+      if (domain === "education") return "Education planning estimate";
+      if (domain === "employment") return "Career planning estimate";
+      if (domain === "legal") return "Legal planning estimate";
+      return prettyKey(domain) + " planning estimate";
+    }
+
+    function sourceNoteFor(flow) {
+      var domain = String(flow && flow.domain || "none").toLowerCase();
+      var sourcePolicy = String(flow && flow.sourcePolicy || "").toLowerCase();
+      var privacyMode = String(flow && flow.privacyMode || "browser_local").toLowerCase();
+      var privateFirst = privacyMode.indexOf("browser") !== -1 || privacyMode.indexOf("local") !== -1 || sourcePolicy === "user input";
+      var highStakes = /tax|finance|trade|education|legal|health|energy|employment/.test(domain) || sourcePolicy === "estimated" || sourcePolicy === "mixed";
+
+      if (sourcePolicy === "estimated") {
+        return {
+          tone: "caution",
+          title: "Planning estimate",
+          text: "Confirm current fees, rates, deadlines, eligibility, and official requirements before acting."
+        };
+      }
+      if (sourcePolicy === "mixed") {
+        return {
+          tone: "caution",
+          title: "Source notes required",
+          text: "This workflow combines your details with tool source notes. Check the tool's freshness labels before making high-stakes decisions."
+        };
+      }
+      if (privateFirst) {
+        return {
+          tone: "private",
+          title: "Private handoff",
+          text: "Safe details stay in this browser session. Optional AI help must ask before sending private content."
+        };
+      }
+      if (highStakes) {
+        return {
+          tone: "caution",
+          title: "Review sources",
+          text: "Open the tool and review its source notes, assumptions, and freshness labels before relying on the result."
+        };
+      }
+      return {
+        tone: "default",
+        title: "Tool handoff",
+        text: "Open the matched AfroTools page for source notes, assumptions, and export options."
+      };
+    }
+
+    function workflowFromTool(tool, decision) {
+      var missing = Array.isArray(decision && decision.missingInputs) ? decision.missingInputs : [];
+      return {
+        id: tool.id,
+        title: tool.title || prettyKey(tool.id),
+        route: decision && decision.selectedRoute || tool.route || "/search/",
+        description: tool.shortDescription || "Open this AfroTools tool and continue with the source notes shown there.",
+        keywords: [],
+        questions: missing.length ? missing.map(prettyKey) : (tool.requiredInputs || []).map(function(input) { return input.label || prettyKey(input.name); }).slice(0, 4),
+        domain: decision && decision.safetyDomain || tool.highStakesDomain || tool.category || "none",
+        sourcePolicy: decision && decision.sourcePolicy || tool.sourcePolicy || "reviewed",
+        privacyMode: decision && decision.privacyMode || tool.privacyMode || "browser_local"
+      };
+    }
+
+    function routeWithCatalog(prompt) {
+      if (!routerEnabled()) return { type: "no-match", message: "Using local search. Open the full tool directory with your prompt." };
+      var router = window.AfroToolsAIIntentRouter;
+      var manifestApi = window.AfroToolsAIToolManifest;
+      if (!router || !manifestApi || typeof router.routeDeterministically !== "function") return null;
+      var manifest = getRouterManifest();
+      if (!manifest.length) return null;
+      var orchestrator = window.AfroToolsAIOrchestrator;
+      if (orchestrator && typeof orchestrator.buildPlan === "function") {
+        var plan = orchestrator.buildPlan(prompt, {
+          manifest: manifest,
+          locale: "en",
+          consentToModel: false,
+          candidateLimit: 3
+        });
+        var selectedToolId = plan && plan.selectedTool && plan.selectedTool.id || plan && plan.toolCall && plan.toolCall.toolId || "";
+        var selectedTool = findToolById(manifest, selectedToolId);
+        if (!plan || plan.status === "no_match" || !selectedTool || selectedToolId === "tool-search") {
+          return { type: "no-match", plan: plan };
+        }
+        var selectedDecision = plan.decision || {};
+        return {
+          type: "match",
+          workflow: workflowFromTool(selectedTool, selectedDecision),
+          tool: selectedTool,
+          decision: selectedDecision,
+          plan: plan,
+          relatedTools: Array.isArray(plan.toolCandidates) ? plan.toolCandidates.slice(0, 4) : [],
+          confidence: Math.max(1, Math.min(99, Math.round(Number(selectedDecision.confidence || 0) * 100))),
+          prompt: prompt,
+          source: "orchestrated tool match"
+        };
+      }
+      var decision = router.routeDeterministically(prompt, { manifest: manifest, locale: "en" });
+      var tool = findToolById(manifest, decision && decision.selectedToolId);
+      if (!decision || !tool || decision.selectedToolId === "tool-search" || Number(decision.confidence || 0) <= 0) {
+        return { type: "no-match" };
+      }
+      return {
+        type: "match",
+        workflow: workflowFromTool(tool, decision),
+        tool: tool,
+        decision: decision,
+        relatedTools: [],
+        confidence: Math.max(1, Math.min(99, Math.round(Number(decision.confidence || 0) * 100))),
+        prompt: prompt,
+        source: decision._meta && decision._meta.ruleSource === "manifest_retrieval" ? "all tools checked" : "tool match"
+      };
+    }
+
     function mockRoute(prompt) {
-      // TODO: Replace with server-validated JSON router output when the AI endpoint exists.
       if (!routerEnabled()) {
-        return { type: "error", message: "AI routing is disabled for this session." };
+        return { type: "no-match", message: "Using local search. Open the full tool directory with your prompt." };
       }
       var text = normalize(prompt);
       if (!text) return { type: "empty" };
       if (text === "router error") {
-        return { type: "error", message: "The workflow matcher could not prepare a route for that request." };
+        return { type: "no-match", message: "Use local search while AfroTools checks for a clearer tool match." };
       }
       var best = null;
       WORKFLOWS.forEach(function(flow) {
@@ -306,6 +535,7 @@
       return {
         type: "match",
         workflow: best.flow,
+        relatedTools: [],
         confidence: Math.min(96, 54 + best.score * 12),
         prompt: prompt
       };
@@ -411,6 +641,29 @@
 
     function buildLaunch(result) {
       var flow = result.workflow;
+      if (result.plan && result.plan.execution) return result.plan.execution;
+      var runtime = window.AfroToolsAIToolInvocationRuntime;
+      var manifestApi = window.AfroToolsAIToolManifest;
+      if (runtime && typeof runtime.buildExecution === "function" && result.decision && result.tool && manifestApi && typeof manifestApi.buildToolInvocation === "function") {
+        var extracted = result.decision.extractedInputs || {};
+        var toolCall = manifestApi.buildToolInvocation(result.tool, {
+          providedInputNames: Object.keys(extracted),
+          missingInputNames: result.decision.missingInputs || []
+        });
+        return runtime.buildExecution({
+          toolCall: toolCall,
+          toolId: toolCall.toolId,
+          selectedRoute: result.decision.selectedRoute || flow.route,
+          title: toolCall.title,
+          category: toolCall.category,
+          subcategory: toolCall.subcategory,
+          extractedInputs: extracted,
+          missingInputs: result.decision.missingInputs || [],
+          privacyMode: toolCall.privacyMode,
+          sourcePolicy: toolCall.sourcePolicy,
+          safetyDomain: toolCall.safetyDomain
+        });
+      }
       var adapters = window.AfroToolsAIPrefillAdapters;
       if (!adapters || typeof adapters.buildSafeLaunch !== "function") {
         return {
@@ -419,8 +672,8 @@
           payload: null,
           missingInputs: [],
           validation: { valid: true, errors: [] },
-          userFacingSummary: "Open the selected AfroTools workflow.",
-          privacyNote: "Prefill adapters are unavailable, so no prefill payload will be created."
+          userFacingSummary: "Open the selected AfroTools tool.",
+          privacyNote: "Safe details are unavailable, so nothing will be carried into the tool."
         };
       }
       return adapters.buildSafeLaunch(flow.id, extractPromptInputs(result.prompt, flow), { selectedRoute: flow.route });
@@ -439,61 +692,199 @@
       var errors = launch.validation && launch.validation.errors ? launch.validation.errors.map(function(item) {
         return "<li>Check: " + escapeHtml(item) + "</li>";
       }).join("") : "";
-      els.prefillSummary.innerHTML = "<strong>" + (launch.supported ? "Prefill ready" : "Route-only handoff") + "</strong>" +
+      els.prefillSummary.innerHTML = "<strong>" + (launch.supported ? "Details ready" : "Open only") + "</strong>" +
         "<span>" + escapeHtml(launch.userFacingSummary || "") + "</span>" +
         (missingItems || errors ? "<ul>" + missingItems + errors + "</ul>" : "") +
         "<p>" + escapeHtml(launch.privacyNote || "") + "</p>";
       els.prefillSummary.hidden = false;
     }
 
+    function safeCandidateRoute(value) {
+      var route = String(value || "/search/").replace(/[\r\n]/g, "");
+      if (!route || route.charAt(0) !== "/" || route.indexOf("//") === 0 || /^\/?https?:/i.test(route)) return "/search/";
+      return route;
+    }
+
+    function renderRelatedTools(result) {
+      if (!els.relatedTools || !els.relatedToolList) return;
+      var candidates = (result.relatedTools || []).filter(function(candidate) {
+        return candidate && candidate.toolId && candidate.route && candidate.toolId !== result.workflow.id;
+      }).slice(0, 4);
+      if (!candidates.length) {
+        els.relatedTools.hidden = true;
+        els.relatedToolList.innerHTML = "";
+        return;
+      }
+      els.relatedToolList.innerHTML = candidates.map(function(candidate) {
+        var route = safeCandidateRoute(candidate.route);
+        return '<a data-related-tool="' + escapeHtml(candidate.toolId) + '" href="' + escapeHtml(route) + '">' +
+          '<span class="related-tool-title">' + escapeHtml(candidate.title || prettyKey(candidate.toolId)) + '</span>' +
+          '<span class="related-tool-category">' + escapeHtml(candidate.category || "tool") + '</span>' +
+          "</a>";
+      }).join("");
+      els.relatedTools.hidden = false;
+    }
+
+    function renderSourceNote(flow) {
+      if (!els.sourceNote) return;
+      var note = sourceNoteFor(flow);
+      els.sourceNote.dataset.sourceTone = note.tone || "default";
+      els.sourceNote.innerHTML = "<strong>" + escapeHtml(note.title) + "</strong><span>" + escapeHtml(note.text) + "</span>";
+      els.sourceNote.hidden = false;
+    }
+
+    function recordAskPromptSubmitted(prompt) {
+      var analytics = window.AfroToolsAIIntentAnalytics;
+      if (!analytics || typeof analytics.record !== "function") return;
+      analytics.record("ai_prompt_submitted", {}, {
+        surface: "ask_page",
+        source: "direct_ai",
+        queryLength: String(prompt || "").trim().length,
+        selectedToolId: "unknown",
+        intentCategory: "unknown",
+        workflowType: "ask_frontdoor"
+      });
+    }
+
     function renderMatch(result) {
       var flow = result.workflow;
       var launch = buildLaunch(result);
-      els.intentSummary.textContent = "Looks like a " + flow.title.toLowerCase() + " task. This is a local router preview, not a model result.";
-      els.confidencePill.textContent = result.confidence + "% local match";
-      els.riskPill.textContent = flow.domain === "none" ? "Local workflow" : flow.domain + " planning estimate";
-      els.questionsIntro.textContent = "These are the inputs the destination tool may need.";
+      currentResult = result;
+      els.intentSummary.textContent = result.decision && result.decision.reasonShort ? result.decision.reasonShort : "Looks like a " + flow.title.toLowerCase() + " task.";
+      els.confidencePill.textContent = result.confidence + "% match";
+      els.riskPill.textContent = riskLabel(flow);
+      els.questionsIntro.textContent = "These are details the tool may need.";
       els.questionList.innerHTML = flow.questions.map(function(question) {
-        return "<div>" + escapeHtml(question) + "</div>";
+        return '<button class="detail-chip" type="button" data-detail-chip="' + escapeHtml(question) + '" aria-label="Add detail: ' + escapeHtml(question) + '">' + escapeHtml(question) + "</button>";
       }).join("");
       els.toolTitle.textContent = flow.title;
       els.toolDescription.textContent = flow.description;
       els.toolMeta.innerHTML = [
         flow.domain === "none" ? "general" : flow.domain,
-        "source: " + flow.sourcePolicy,
-        "mock router"
+        "privacy: " + (flow.privacyMode || "browser_local").replace(/_/g, " "),
+        sourceLabel(flow.sourcePolicy),
+        result.source || "tool match"
       ].map(function(label) {
         return "<span>" + escapeHtml(label) + "</span>";
       }).join("");
       renderPrefillSummary(launch);
-      els.openToolLink.textContent = launch.supported ? "Open tool with prefill" : "Open selected tool";
+      renderSourceNote(flow);
+      renderRelatedTools(result);
+      els.openToolLink.textContent = launch.supported ? "Open this tool with details" : "Open this tool";
       els.openToolLink.href = launch.launchUrl;
-      els.resultSearchLink.href = searchUrl(result.prompt);
+      els.resultSearchLink.href = resultSearchUrl(result);
+      els.resultSearchLink.onclick = function() {
+        savePrivateSearchHandoff(result.prompt, "ask_result");
+      };
       els.openToolLink.onclick = function() {
-        if (!launch.supported || !window.AfroToolsAIPrefillAdapters) return;
-        try { window.AfroToolsAIPrefillAdapters.storeLaunchPayload(launch); } catch (err) {}
+        recordAskToolOpened(result, launch);
+        if (!launch.supported && !launch.payloadReady) return;
+        try {
+          if (window.AfroToolsAIToolInvocationRuntime && typeof window.AfroToolsAIToolInvocationRuntime.storeExecution === "function") {
+            window.AfroToolsAIToolInvocationRuntime.storeExecution(launch);
+          } else if (window.AfroToolsAIPrefillAdapters) {
+            window.AfroToolsAIPrefillAdapters.storeLaunchPayload(launch);
+          }
+        } catch (err) {}
       };
       setState("result");
     }
 
+    function analyticsMetaForResult(result, outcome) {
+      var decision = result && result.decision || {};
+      var flow = result && result.workflow || {};
+      var negative = outcome === "negative";
+      var positive = outcome === "positive";
+      return {
+        surface: "ask_page",
+        selectedToolId: decision.selectedToolId || flow.id || "unknown",
+        intentCategory: decision.intentCategory || flow.domain || "unknown",
+        workflowType: flow.id || decision.selectedToolId || "unknown",
+        confidence: Number(decision.confidence || result && result.confidence / 100 || 0),
+        missingInputs: Array.isArray(decision.missingInputs) ? decision.missingInputs : [],
+        queryLength: String(result && result.prompt || "").length,
+        source: "direct_ai",
+        routerSource: result && result.source || "ask_page",
+        feedbackOutcome: outcome,
+        feedbackReason: negative ? "route_mismatch" : (positive ? "route_useful" : "none"),
+        driftSignal: negative ? "route_mismatch" : "none"
+      };
+    }
+
+    function recordAskIntentDetected(result) {
+      var analytics = window.AfroToolsAIIntentAnalytics;
+      if (!analytics || typeof analytics.record !== "function" || !result) return;
+      analytics.record("ai_intent_detected", {}, analyticsMetaForResult(result, "none"));
+    }
+
+    function recordAskFallback(prompt, category) {
+      var analytics = window.AfroToolsAIIntentAnalytics;
+      if (!analytics || typeof analytics.record !== "function") return;
+      analytics.record("ai_intent_fallback", {}, {
+        surface: "ask_page",
+        source: "search_fallback",
+        routerSource: "ask_page",
+        fallbackUsed: true,
+        noMatchCategory: category || "no_match",
+        queryLength: String(prompt || "").trim().length,
+        selectedToolId: "tool-search",
+        intentCategory: "search",
+        workflowType: "tool-search"
+      });
+    }
+
+    function recordAskToolOpened(result, launch) {
+      var analytics = window.AfroToolsAIIntentAnalytics;
+      if (!analytics || typeof analytics.record !== "function") return;
+      var meta = analyticsMetaForResult(result, "none");
+      meta.toolOpenClicked = true;
+      meta.prefillStatus = launch && launch.payloadReady ? "ready" : (launch && launch.supported ? "open_only" : "unsupported");
+      analytics.record("ai_tool_opened", {}, meta);
+      if (launch && launch.payloadReady) analytics.record("ai_prefill_success", {}, meta);
+    }
+
+    function recordAskFeedback(outcome, status) {
+      if (!currentResult) return;
+      var analytics = window.AfroToolsAIIntentAnalytics;
+      var meta = analyticsMetaForResult(currentResult, outcome);
+      if (analytics && typeof analytics.record === "function") {
+        analytics.record("ai_router_feedback_submitted", {}, meta);
+        if (outcome === "negative") analytics.record("ai_router_drift_signal", {}, meta);
+      }
+      if (status) status.textContent = "Feedback saved for router review.";
+    }
+
     function routePrompt(prompt) {
       var trimmed = String(prompt || "").trim();
-      els.noMatchSearchLink.href = searchUrl(trimmed);
-      els.errorSearchLink.href = searchUrl(trimmed);
+      els.noMatchSearchLink.href = "/search/?source=ask_private";
+      els.errorSearchLink.href = "/search/?source=ask_private";
+      els.noMatchSearchLink.onclick = function() {
+        savePrivateSearchHandoff(trimmed, "ask_no_match");
+      };
+      els.errorSearchLink.onclick = function() {
+        savePrivateSearchHandoff(trimmed, "ask_error");
+      };
       if (!trimmed) {
         setState("empty");
         return;
       }
       setState("loading");
+      recordAskPromptSubmitted(trimmed);
       window.setTimeout(function() {
-        var result = mockRoute(trimmed);
+        var result = null;
+        try { result = routeWithCatalog(trimmed); } catch (err) { result = null; }
+        if (!result) result = mockRoute(trimmed);
         if (result.type === "match") {
           renderMatch(result);
+          recordAskIntentDetected(result);
         } else if (result.type === "no-match") {
+          if (els.noMatchCopy) els.noMatchCopy.textContent = result.message || "Try adding a country, document type, amount, destination, or sector. You can still search the full tool directory.";
+          recordAskFallback(trimmed, result.message ? "local_search" : "no_match");
           setState("noMatch");
         } else if (result.type === "error") {
-          els.errorCopy.textContent = result.message || "Use search while the AI router is unavailable.";
-          setState("error");
+          if (els.noMatchCopy) els.noMatchCopy.textContent = result.message || "Use local search while AfroTools checks for a clearer match.";
+          recordAskFallback(trimmed, "router_error");
+          setState("noMatch");
         } else {
           setState("empty");
         }
@@ -524,11 +915,53 @@
       }
     }
 
+    function hydrateExamples() {
+      var registry = window.AfroToolsAIPromptExamples;
+      var container = document.querySelector(".ask-examples");
+      if (!registry || !container || typeof registry.getPromptExamplesForSurface !== "function") return;
+      var examples = registry.getPromptExamplesForSurface("homepage_command", { language: "en", limit: 8 });
+      if (!examples.length) return;
+      container.innerHTML = "";
+      examples.forEach(function(example) {
+        var button = document.createElement("button");
+        button.className = "ask-example";
+        button.type = "button";
+        button.setAttribute("data-example", example.text);
+        button.setAttribute("data-example-id", example.id);
+        button.textContent = example.text;
+        container.appendChild(button);
+      });
+    }
+
     if (!form || !input) return;
+
+    hydrateExamples();
 
     form.addEventListener("submit", function(event) {
       event.preventDefault();
       routePrompt(input.value);
+    });
+
+    document.addEventListener("click", function(event) {
+      var chip = event.target.closest && event.target.closest("[data-detail-chip]");
+      if (!chip) return;
+      var detail = chip.getAttribute("data-detail-chip") || "";
+      var current = String(input.value || "").trim();
+      var addition = detail ? " " + detail + ": " : "";
+      if (addition && current.toLowerCase().indexOf(detail.toLowerCase() + ":") === -1) {
+        input.value = current + addition;
+      }
+      input.focus();
+      try { input.setSelectionRange(input.value.length, input.value.length); } catch (err) {}
+      if (els.questionsIntro) els.questionsIntro.textContent = "Add the detail in the prompt, then run the match again.";
+    });
+
+    document.addEventListener("click", function(event) {
+      var button = event.target.closest && event.target.closest("[data-ask-feedback]");
+      if (!button) return;
+      var panel = button.closest("[data-ask-router-feedback]");
+      var status = panel && panel.querySelector("[data-ask-feedback-status]");
+      recordAskFeedback(button.getAttribute("data-ask-feedback") || "none", status);
     });
 
     document.querySelectorAll("[data-example]").forEach(function(button) {

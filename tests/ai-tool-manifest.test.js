@@ -102,6 +102,34 @@ const routerManifest = manifestApi.getToolManifestForRouter(manifest);
 assert.strictEqual(routerManifest.length, manifest.length, "router helper should preserve manifest length");
 const defaultRouterManifest = manifestApi.getToolManifestForRouter();
 assert.strictEqual(defaultRouterManifest.length, manifest.length, "router helper should load the default manifest in Node");
+const invocationManifest = manifestApi.getToolInvocationManifest(manifest);
+assert.strictEqual(invocationManifest.length, manifest.length, "tool invocation manifest should cover the full router-safe tool catalog");
+const cvToolCall = manifestApi.buildToolInvocation(expectEntry("cv-builder"), {
+  providedInputNames: ["country", "targetRole"],
+  missingInputNames: [],
+});
+assert.strictEqual(cvToolCall.type, "existing_tool_call");
+assert.strictEqual(cvToolCall.action, "prefill_existing_tool");
+assert.strictEqual(cvToolCall.toolId, "cv-builder");
+assert.strictEqual(cvToolCall.route, expectEntry("cv-builder").route);
+assert.strictEqual(cvToolCall.invocationMode, "session_prefill");
+assert.ok(cvToolCall.inputSchema.requiredInputs.length >= 0);
+assert.ok(cvToolCall.capabilities.includes("route_only"));
+assert.ok(cvToolCall.capabilities.includes("prefill"));
+assert.deepStrictEqual(cvToolCall.providedInputNames, ["country", "targetRole"]);
+assert.deepStrictEqual(cvToolCall.missingInputNames, []);
+const categoryCalls = manifestApi.getToolInvocationManifest(manifest, { category: "energy", limit: 5 });
+assert.ok(categoryCalls.length > 0 && categoryCalls.length <= 5, "category-filtered tool calls should be bounded");
+assert.ok(categoryCalls.every((toolCall) => toolCall.type === "existing_tool_call"), "category tool calls should keep the invocation contract");
+const passportCandidates = manifestApi.rankToolCandidates("passport application checklist for Ghana", manifest, { limit: 3 });
+assert.strictEqual(passportCandidates.catalogSize, manifest.length, "tool retrieval should rank across the full manifest");
+assert.strictEqual(passportCandidates.candidates[0].tool.id, "passport-checklist", "manifest retrieval should find non-flagship government tools");
+const mobileMoneyCandidates = manifestApi.rankToolCandidates("compare mobile money fees in Kenya", manifest, { limit: 3 });
+assert.strictEqual(mobileMoneyCandidates.candidates[0].tool.id, "mobile-money-fees", "manifest retrieval should find exact fintech fee tools");
+const ndaCandidates = manifestApi.rankToolCandidates("generate an NDA for a client in Ghana", manifest, { limit: 3 });
+assert.strictEqual(ndaCandidates.candidates[0].tool.id, "nda-generator", "domain terms should beat geography-only matches");
+const nonsenseCandidates = manifestApi.rankToolCandidates("blue sky weekend vibes", manifest, { limit: 3 });
+assert.strictEqual(nonsenseCandidates.candidates.length, 0, "weak unrelated prompts should not produce tool calls");
 const routerAllowedFields = new Set([
   "id",
   "slug",

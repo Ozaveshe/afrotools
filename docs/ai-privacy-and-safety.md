@@ -13,6 +13,14 @@ Status: implementation policy. This document describes current safety boundaries
 - Source links and confidence labels must come from AfroTools data metadata, not AI text.
 - Sponsor, Pro, or partner surfaces must not alter formulas, rankings, eligibility, or source labels.
 
+## Limits And Source Warnings
+
+AfroTools AI is a router and planning assistant, not a tax, legal, immigration, engineering, customs, medical, financial, admissions, employment, or government authority. It can help users find the right AfroTools workflow, collect missing fields, prefill supported tools, summarize assumptions, and prepare exports, but the underlying tool or official source remains the decision point.
+
+Changing rates, fees, deadlines, fuel prices, scholarship availability, visa rules, tax rules, customs rules, payroll obligations, tariff bands, school requirements, and construction assumptions need source and freshness checks before a user relies on them.
+
+High-stakes user journeys must direct users to official sources or qualified professionals before filing, applying, importing, building, hiring, paying, submitting documents, or making compliance decisions. AI text must not turn planning estimates into official advice or guarantees.
+
 ## Sensitive Content
 
 Treat these as sensitive:
@@ -42,6 +50,8 @@ Implemented in `ai-route-intent`:
 - obvious deterministic matches can skip the model even with consent.
 
 Consent is not a blanket permission to send everything. Only the minimum relevant prompt or structured fields should be sent.
+
+Core deterministic routing, tool search, manual launch, and supported prefill handoffs should work without model consent. Optional AI text generation must ask before sending sensitive career, financial, education, document, property, trade, legal, health, immigration, payroll, invoice, or business details.
 
 ## No Silent Uploads
 
@@ -171,9 +181,9 @@ Not allowed:
 
 ## Saved Projects
 
-Saved projects should store sanitized summaries, not raw documents. Local saving is acceptable for unauthenticated users where possible. Account sync requires explicit user action and must still use sanitized payloads.
+Saved AI projects should store sanitized summaries by default, not raw CVs, resumes, invoices, PDFs, transcripts, salary rows, payroll records, private identifiers, client names, employer names, profile paragraphs, legal facts, health facts, or raw prompts. Local saving is acceptable for unauthenticated users where possible. Account sync requires explicit user action and must still use sanitized payloads.
 
-Do not save raw CV/PDF/document contents by default.
+Do not save raw CV/PDF/document contents by default. If a future workflow needs raw project content for account sync, it must implement explicit consent, clear retention/deletion controls, and privacy filtering before storage.
 
 ## Exports
 

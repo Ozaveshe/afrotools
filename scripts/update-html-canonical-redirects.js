@@ -49,7 +49,7 @@ function parseExistingSources(text) {
 function buildBlock(eol, aliases, existingSources) {
   const rules = aliases
     .filter((alias) => !existingSources.has(alias.source))
-    .map((alias) => `${alias.source}  ${alias.target}  301`);
+    .map((alias) => `${alias.source}  ${alias.target}  301!`);
 
   const forbiddenRule = rules.find((rule) => {
     const source = rule.trim().split(/\s+/)[0];
@@ -64,6 +64,7 @@ function buildBlock(eol, aliases, existingSources) {
     START_MARKER,
     "# Generated from HTML pages whose preferred canonical route differs from the .html file URL.",
     "# Safe scope only: simple .html aliases plus redirect-like compatibility pages.",
+    "# Forced because Netlify otherwise serves existing .html files before applying alias redirects.",
     ...rules,
     END_MARKER,
   ];

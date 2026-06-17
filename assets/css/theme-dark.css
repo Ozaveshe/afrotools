@@ -13,6 +13,9 @@
   --dm-blue-solid: #2563eb;
   --dm-green: #34d399;
   --dm-shadow: 0 18px 44px rgba(0, 0, 0, .28);
+  --shadow-lifted: 0 18px 44px rgba(0, 0, 0, .34);
+  --shadow-glow-blue: 0 16px 38px rgba(37, 99, 235, .26);
+  --shadow-glow-green: 0 16px 38px rgba(16, 185, 129, .18);
 }
 
 :root[data-theme="dark"] body {
@@ -437,6 +440,35 @@
   border-color: var(--dm-border) !important;
   color: var(--dm-text) !important;
   box-shadow: var(--dm-shadow) !important;
+}
+
+:root[data-theme="dark"] :where(.btn-primary, .btn--primary, .hero-search-btn, button[type="submit"], .card-cta.cta-monthly, .card-cta.cta-annual) {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 56%, #0ea5e9 100%) !important;
+  border-color: rgba(147, 197, 253, .28) !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-glow-blue) !important;
+}
+
+:root[data-theme="dark"] :where(.btn-secondary, .btn-ghost, .btn--ghost-dark, .btn-outline, .card-cta):not(.cta-monthly):not(.cta-annual) {
+  background: rgba(18, 31, 51, .82) !important;
+  border-color: rgba(147, 197, 253, .24) !important;
+  color: var(--dm-text) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .26) !important;
+}
+
+@media (max-width: 720px) {
+  :root[data-theme="dark"] body .home-hero-grid .hero-search .hero-search-btn {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    margin: 4px !important;
+    padding-inline: 18px !important;
+  }
+
+  :root[data-theme="dark"] body .home-hero-grid .hero-search input {
+    display: block !important;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+  }
 }
 
 :root[data-theme="dark"] .tc-foot,
@@ -1657,4 +1689,112 @@
   background: rgba(96, 165, 250, .14) !important;
   border-color: rgba(147, 197, 253, .42) !important;
   color: #dbeafe !important;
+}
+
+/* Ask AfroTools AI: page-local variables and cards need explicit dark coverage. */
+:root[data-theme="dark"] {
+  --ai-bg: #09111f !important;
+  --ai-surface: #121f33 !important;
+  --ai-text: #eef5ff !important;
+  --ai-muted: #b8c7dc !important;
+  --ai-border: #26364e !important;
+  --ai-soft: #101b2e !important;
+  --ai-primary: #60a5fa !important;
+  --ai-primary-dark: #93c5fd !important;
+}
+
+:root[data-theme="dark"] body .ai-main {
+  background:
+    radial-gradient(circle at 18% 8%, rgba(37, 99, 235, .16), transparent 32%),
+    linear-gradient(180deg, #09111f 0%, #0b1524 46%, #09111f 100%) !important;
+  color: var(--dm-text) !important;
+}
+
+:root[data-theme="dark"] body .ai-title,
+:root[data-theme="dark"] body .ai-section-title,
+:root[data-theme="dark"] body .ai-hub-section h2,
+:root[data-theme="dark"] body .ai-card-title,
+:root[data-theme="dark"] body .ai-projects h3,
+:root[data-theme="dark"] body .ai-context-head strong,
+:root[data-theme="dark"] body .ai-workflow-panel-head h4,
+:root[data-theme="dark"] body .ai-vertical-card strong,
+:root[data-theme="dark"] body .ai-example-card strong,
+:root[data-theme="dark"] body .ai-tool-link strong,
+:root[data-theme="dark"] body .ai-fallback-card strong {
+  color: var(--dm-text) !important;
+}
+
+:root[data-theme="dark"] body .ai-copy,
+:root[data-theme="dark"] body .ai-hub-section p,
+:root[data-theme="dark"] body .ai-card-reason,
+:root[data-theme="dark"] body .ai-context-status,
+:root[data-theme="dark"] body .ai-projects p,
+:root[data-theme="dark"] body .ai-model-status,
+:root[data-theme="dark"] body .ai-vertical-card span,
+:root[data-theme="dark"] body .ai-example-card span,
+:root[data-theme="dark"] body .ai-tool-link span,
+:root[data-theme="dark"] body .ai-fallback-card span {
+  color: var(--dm-muted) !important;
+}
+
+:root[data-theme="dark"] body .ai-command,
+:root[data-theme="dark"] body .ai-form,
+:root[data-theme="dark"] body .ai-context-panel,
+:root[data-theme="dark"] body .ai-projects,
+:root[data-theme="dark"] body .ai-project-item,
+:root[data-theme="dark"] body .ai-status,
+:root[data-theme="dark"] body .ai-workflow-card,
+:root[data-theme="dark"] body .ai-mini-panel,
+:root[data-theme="dark"] body .ai-candidate-tools,
+:root[data-theme="dark"] body .ai-candidate-link,
+:root[data-theme="dark"] body .ai-consent-card,
+:root[data-theme="dark"] body .ai-debug-panel,
+:root[data-theme="dark"] body .ai-fallback-card,
+:root[data-theme="dark"] body .ai-vertical-card,
+:root[data-theme="dark"] body .ai-example-card,
+:root[data-theme="dark"] body .ai-tool-link,
+:root[data-theme="dark"] body .ai-hub-note,
+:root[data-theme="dark"] body .ai-hub-faq details,
+:root[data-theme="dark"] body .ai-result-summary > div,
+:root[data-theme="dark"] body .ai-result-grid > div {
+  background: rgba(18, 31, 51, .9) !important;
+  border-color: rgba(147, 197, 253, .18) !important;
+  color: var(--dm-text) !important;
+}
+
+:root[data-theme="dark"] body .ai-input-row,
+:root[data-theme="dark"] body .ai-context-field select,
+:root[data-theme="dark"] body .ai-clarification-field input,
+:root[data-theme="dark"] body .ai-clarification-field select {
+  background: #0b1524 !important;
+  border-color: rgba(147, 197, 253, .2) !important;
+  color: var(--dm-text) !important;
+}
+
+:root[data-theme="dark"] body .ai-input-row input,
+:root[data-theme="dark"] body .ai-context-field label,
+:root[data-theme="dark"] body .ai-field label,
+:root[data-theme="dark"] body .ai-clarification-field label {
+  color: var(--dm-text) !important;
+}
+
+:root[data-theme="dark"] body .ai-input-row input::placeholder {
+  color: #8fa4c0 !important;
+}
+
+:root[data-theme="dark"] body .ai-trust,
+:root[data-theme="dark"] body .ai-notice,
+:root[data-theme="dark"] body .ai-tool-call,
+:root[data-theme="dark"] body .ai-country-plan,
+:root[data-theme="dark"] body .ai-local-life-plan,
+:root[data-theme="dark"] body .ai-education-plan,
+:root[data-theme="dark"] body .ai-career-plan,
+:root[data-theme="dark"] body .ai-import-plan,
+:root[data-theme="dark"] body .ai-energy-plan,
+:root[data-theme="dark"] body .ai-finance-plan,
+:root[data-theme="dark"] body .ai-construction-panel,
+:root[data-theme="dark"] body .ai-agriculture-panel {
+  background: rgba(11, 21, 36, .82) !important;
+  border-color: rgba(147, 197, 253, .18) !important;
+  color: var(--dm-muted) !important;
 }

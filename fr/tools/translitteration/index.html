@@ -1,48 +1,728 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Outil de translittération | AfroTools</title>
-<meta name="description" content="Translittérez du texte entre différents alphabets et systèmes d’écriture africains. Convertissez entre l’alphabet latin, l’arabe, le ge’ez, le tifinagh et ">
-<link rel="canonical" href="https://afrotools.com/fr/tools/translitteration/">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Outil de translittération | AfroTools">
-<meta property="og:description" content="Translittérez du texte entre différents alphabets et systèmes d’écriture africains. Convertissez entre l’alphabet latin, l’arabe, le ge’ez, le tifinagh et ">
-<meta property="og:url" content="https://afrotools.com/fr/tools/translitteration/">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
-<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/transliterate.webp">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/transliterate.webp">
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/translitteration/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/translitteration/" />
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Outil de translittération | AfroTools">
-<meta name="twitter:description" content="Translittérez du texte entre différents alphabets et systèmes d’écriture africains. Convertissez entre l’alphabet latin, l’arabe, le ge’ez, le tifinagh et ">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outil de translitteration Afrique | AfroTools</title>
+  <meta name="description" content="Translitterez des textes courts entre latin, arabe, tifinagh et ethiopien avec regles visibles, copie, export TXT et limites claires.">
+  <link rel="canonical" href="https://afrotools.com/fr/tools/translitteration/">
+  <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/translitteration/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/transliterate/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/transliterate/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Outil de translitteration Afrique | AfroTools">
+  <meta property="og:description" content="Convertissez des textes courts entre systemes d'ecriture avec copie, export et avertissement de qualite.">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/translitteration/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/transliterate.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Outil de translitteration Afrique | AfroTools">
+  <meta name="twitter:description" content="Translitteration locale pour arabe, latin, tifinagh et ethiopien.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/transliterate.webp">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script src="/assets/js/components/related-tools-data.min.js?v=97274272" defer></script>
+  <style>
+    :root {
+      --trans-ink: #111827;
+      --trans-muted: #5f6877;
+      --trans-line: #dbe4ef;
+      --trans-blue: #2459c7;
+      --trans-green: #0f7a55;
+      --trans-card: #ffffff;
+      --trans-bg: #f5f8fc;
+    }
+
+    body {
+      margin: 0;
+      background: var(--trans-bg);
+      color: var(--trans-ink);
+    }
+
+    .page {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 30px 20px 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, .82fr);
+      gap: 24px;
+      align-items: stretch;
+      padding: 34px;
+      border: 1px solid var(--trans-line);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 88% 20%, rgba(36, 89, 199, .12), transparent 31%),
+        linear-gradient(135deg, #ffffff 0%, #f2f7ff 100%);
+      box-shadow: 0 20px 70px rgba(22, 31, 53, .08);
+    }
+
+    .kicker {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 14px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: #1746a2;
+      font-size: .74rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 730px;
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 690px;
+      margin: 18px 0 0;
+      color: var(--trans-muted);
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions,
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--trans-line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--trans-ink);
+      font-weight: 850;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      border-color: var(--trans-blue);
+      background: var(--trans-blue);
+      color: #fff;
+    }
+
+    .hero-panel {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      padding: 20px;
+      border: 1px solid var(--trans-line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.86);
+    }
+
+    .mini {
+      display: grid;
+      gap: 5px;
+      padding: 14px;
+      border: 1px solid var(--trans-line);
+      border-radius: 13px;
+      background: #fff;
+    }
+
+    .mini strong {
+      color: var(--trans-blue);
+    }
+
+    .mini small {
+      color: var(--trans-muted);
+      line-height: 1.5;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(380px, 1fr);
+      gap: 22px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--trans-line);
+      border-radius: 16px;
+      background: var(--trans-card);
+      box-shadow: 0 16px 46px rgba(22, 31, 53, .06);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--trans-line);
+      background: #fbfcff;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1.06rem;
+    }
+
+    .panel-head p {
+      margin: 6px 0 0;
+      color: var(--trans-muted);
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #334155;
+      font-size: .82rem;
+      font-weight: 850;
+    }
+
+    textarea,
+    select {
+      width: 100%;
+      min-height: 44px;
+      box-sizing: border-box;
+      border: 1px solid #cdd7e5;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--trans-ink);
+      font: inherit;
+      padding: 10px 12px;
+    }
+
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.65;
+    }
+
+    textarea[dir="rtl"] {
+      text-align: right;
+      font-size: 1.08rem;
+    }
+
+    textarea:focus,
+    select:focus,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid rgba(36, 89, 199, .24);
+      outline-offset: 2px;
+    }
+
+    .output {
+      display: grid;
+      gap: 12px;
+    }
+
+    .box {
+      padding: 18px;
+      border: 1px solid var(--trans-line);
+      border-radius: 14px;
+      background: #f8fbff;
+    }
+
+    .box.main {
+      border-left: 5px solid var(--trans-green);
+      background: #f2fbf6;
+    }
+
+    .box span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--trans-muted);
+      font-size: .75rem;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .box code {
+      display: block;
+      color: var(--trans-ink);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .method {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 13px;
+      background: #fff8e7;
+      color: #684100;
+      line-height: 1.65;
+    }
+
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      color: var(--trans-muted);
+      font-size: .88rem;
+      font-weight: 800;
+    }
+
+    .source-grid,
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .source-card,
+    details {
+      border: 1px solid var(--trans-line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .source-card h3 {
+      margin: 0 0 8px;
+      font-size: .96rem;
+    }
+
+    .source-card p,
+    details p {
+      margin: 0 0 12px;
+      color: var(--trans-muted);
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+
+    .source-card a {
+      color: var(--trans-blue);
+      font-weight: 850;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    details p {
+      margin-top: 10px;
+    }
+
+    .note {
+      margin-top: 22px;
+      padding: 16px;
+      border: 1px solid #f6d99a;
+      border-radius: 14px;
+      background: #fff8e7;
+      color: #684100;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 880px) {
+      .hero,
+      .workspace,
+      .source-grid,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        padding: 18px 14px 56px;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Outil de translitteration Afrique",
+    "url": "https://afrotools.com/fr/tools/translitteration/",
+    "description": "Translitteration locale pour textes courts entre latin, arabe, tifinagh et ethiopien.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web",
+    "inLanguage": "fr",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "La translitteration est-elle une traduction ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Elle change le systeme d'ecriture ou l'approximation sonore, mais elle ne traduit pas le sens du texte."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Puis-je utiliser ce resultat officiellement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Utilisez-le comme brouillon. Verifiez les noms propres, signes diacritiques et normes demandees par votre ecole, banque, administration ou editeur."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quelles ecritures sont couvertes ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "L'outil couvre des regles utiles pour arabe vers latin, latin vers arabe approximatif, latin vers tifinagh basique et ethiopien basique vers latin."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
-<afro-navbar></afro-navbar>
-<main>
-<section class="hero-section" style="padding:3rem 1rem;text-align:center">
-<h1>Outil de translittération</h1>
-</section>
-<section style="max-width:960px;margin:0 auto;padding:1rem">
-<iframe src="/tools/transliterate/" style="width:100%;min-height:700px;border:none;border-radius:12px" loading="lazy" title="Outil de translittération"></iframe>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<p>Translittérez du texte entre différents alphabets et systèmes d’écriture africains. Convertissez entre l’alphabet latin, l’arabe, le ge’ez, le tifinagh et d’autres écritures.</p>
-<p>L’Afrique utilise de nombreux systèmes d’écriture. Notre outil convertit du texte entre l’alphabet latin, l’arabe, le ge’ez éthiopien, le tifinagh amazigh et le N’Ko mandingue.</p>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Qu’est-ce que la translittération ?</summary><p>La translittération est la conversion d’un texte d’un système d’écriture à un autre, en préservant la prononciation plutôt que la traduction du sens.</p></details>
-<details><summary>Quelles écritures africaines sont supportées ?</summary><p>L’outil supporte le ge’ez, le tifinagh, le N’Ko, l’ajami (arabe pour langues africaines) et l’alphabet latin.</p></details>
-<details><summary>Est-ce une traduction ?</summary><p>Non, la translittération convertit les sons d’une écriture à l’autre sans changer le sens. Pour traduire, utilisez nos outils de traduction dédiés.</p></details>
-</section>
-</main>
-<afro-footer></afro-footer>
+  <afro-navbar></afro-navbar>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <span class="kicker">Translitteration locale</span>
+        <h1>Changer d'ecriture sans pretendre traduire.</h1>
+        <p class="lead">Convertissez des noms, montants, titres et phrases courtes entre latin, arabe, tifinagh et ethiopien. Les regles sont pratiques pour un brouillon, mais les noms propres et documents officiels doivent etre relus par une personne competente.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#tool">Translitterer</a>
+          <button class="button" type="button" id="sampleBtn">Charger un exemple</button>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Modes supportes">
+        <div class="mini"><strong>Arabe vers latin</strong><small>سلام عليكم -> salam 'lykm, avec regles simples.</small></div>
+        <div class="mini"><strong>Latin vers arabe</strong><small>Draft phonetic only: salam -> سَلَم تقريب.</small></div>
+        <div class="mini"><strong>Tifinagh / Ethiopien</strong><small>Regles limitees pour premiers brouillons et identification.</small></div>
+      </aside>
+    </section>
+
+    <section class="workspace" id="tool">
+      <form class="panel" id="transForm">
+        <div class="panel-head">
+          <h2>Texte source</h2>
+          <p>Choisissez un mode, collez un court texte, puis relisez le resultat avant usage.</p>
+        </div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div>
+              <label for="mode">Mode</label>
+              <select id="mode">
+                <option value="arabic-latin">Arabe vers latin</option>
+                <option value="latin-arabic">Latin vers arabe approximatif</option>
+                <option value="latin-tifinagh">Latin vers tifinagh basique</option>
+                <option value="ethiopic-latin">Ethiopien basique vers latin</option>
+              </select>
+            </div>
+            <div>
+              <label for="style">Style de sortie</label>
+              <select id="style">
+                <option value="plain">Simple</option>
+                <option value="lower">Minuscules</option>
+                <option value="upper">Majuscules</option>
+              </select>
+            </div>
+            <div>
+              <label for="inputText">Texte</label>
+              <textarea id="inputText" dir="auto">سلام عليكم 2026</textarea>
+            </div>
+          </div>
+          <div class="controls">
+            <button class="button primary" type="submit">Translitterer</button>
+            <button class="button" type="button" id="swapBtn">Utiliser la sortie</button>
+            <button class="button" type="button" id="copyBtn">Copier</button>
+            <button class="button" type="button" id="downloadBtn">Telecharger TXT</button>
+            <button class="button" type="button" id="saveBtn">Sauver localement</button>
+          </div>
+          <p class="status" id="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <section class="panel" aria-labelledby="resultTitle">
+        <div class="panel-head">
+          <h2 id="resultTitle">Resultat</h2>
+          <p>La sortie est une approximation de translitteration, pas une traduction.</p>
+        </div>
+        <div class="panel-body output">
+          <div class="box main">
+            <span>Translitteration</span>
+            <code id="outputText" dir="auto"></code>
+          </div>
+          <div class="box">
+            <span>Controle qualite</span>
+            <code id="analysisText"></code>
+          </div>
+          <p class="method">Methodologie: l'outil applique une table de caracteres et quelques digraphes. Avertissement: resultat non officiel; ne remplace pas une norme ALA-LC, ICU/CLDR, un traducteur humain ou les regles d'une administration.</p>
+        </div>
+      </section>
+    </section>
+
+    <section class="source-grid" data-tool-verification-panel aria-label="Sources et verification">
+      <article class="source-card">
+        <h3>Unicode CLDR</h3>
+        <p>CLDR decrit la translitteration comme conversion approximativement phonetique d'un script vers un autre.</p>
+        <a href="https://cldr.unicode.org/index/cldr-spec/transliteration-guidelines" target="_blank" rel="noopener">Lire CLDR</a>
+      </article>
+      <article class="source-card">
+        <h3>ALA-LC Arabic</h3>
+        <p>La table ALA-LC fournit une reference de romanisation arabe plus stricte que ce brouillon local.</p>
+        <a href="https://www.loc.gov/catdir/cpso/romanization/arabic.pdf" target="_blank" rel="noopener">Table arabe</a>
+      </article>
+      <article class="source-card">
+        <h3>Unicode Tifinagh</h3>
+        <p>Le chart Unicode reference les caracteres Tifinagh utilises pour les ecritures amazighes.</p>
+        <a href="https://www.unicode.org/charts/PDF/U2D30.pdf" target="_blank" rel="noopener">Chart Tifinagh</a>
+      </article>
+    </section>
+
+    <section class="note">
+      <strong>Avertissement.</strong> Cet outil est une aide de brouillon non officielle. Il ne traduit pas le sens, ne garantit pas la prononciation exacte et ne remplace pas une norme professionnelle. Verifier avec votre norme, votre enseignant, votre editeur ou l'administration cible avant publication. Sources revues le 17 juin 2026.
+    </section>
+
+    <section class="faq-grid" aria-label="Questions frequentes">
+      <details>
+        <summary>Pourquoi le resultat peut-il sembler imparfait ?</summary>
+        <p>Plusieurs lettres peuvent avoir plusieurs sons selon la langue, le dialecte et les voyelles absentes. Les noms propres demandent souvent une verification humaine.</p>
+      </details>
+      <details>
+        <summary>Puis-je translitterer un long document ?</summary>
+        <p>Pour un long document, utilisez l'outil pour repérer le modele, puis faites relire par une personne competente. Les erreurs de noms, dates ou lieux peuvent etre importantes.</p>
+      </details>
+      <details>
+        <summary>Pourquoi pas une traduction automatique ?</summary>
+        <p>La translitteration conserve surtout les sons ou les caracteres. Elle ne transforme pas le sens d'une langue vers une autre.</p>
+      </details>
+    </section>
+
+    <afro-related-tools category="language" current="translitteration-fr"></afro-related-tools>
+  </main>
+
+  <afro-footer></afro-footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var arabicToLatin = {
+        'ا': 'a', 'أ': 'a', 'إ': 'i', 'آ': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': 'h', 'خ': 'kh',
+        'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z', 'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z',
+        'ع': "'", 'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ک': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ه': 'h',
+        'ة': 'h', 'و': 'w', 'ؤ': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'y', 'ء': "'", 'لا': 'la', 'َ': 'a', 'ِ': 'i',
+        'ُ': 'u', 'ْ': '', 'ّ': '', 'ً': 'an', 'ٍ': 'in', 'ٌ': 'un', '٠': '0', '١': '1', '٢': '2', '٣': '3',
+        '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+      };
+
+      var latinArabicPairs = [
+        ['kh', 'خ'], ['sh', 'ش'], ['th', 'ث'], ['dh', 'ذ'], ['gh', 'غ'],
+        ['a', 'ا'], ['b', 'ب'], ['t', 'ت'], ['j', 'ج'], ['h', 'ه'], ['d', 'د'], ['r', 'ر'], ['z', 'ز'],
+        ['s', 'س'], ['f', 'ف'], ['q', 'ق'], ['k', 'ك'], ['l', 'ل'], ['m', 'م'], ['n', 'ن'], ['w', 'و'],
+        ['y', 'ي'], ['i', 'ي'], ['u', 'و'], ['e', 'ي'], ['o', 'و']
+      ];
+
+      var latinToTifinagh = {
+        a: 'ⴰ', b: 'ⴱ', g: 'ⴳ', d: 'ⴷ', e: 'ⴻ', f: 'ⴼ', k: 'ⴽ', h: 'ⵀ', l: 'ⵍ', m: 'ⵎ', n: 'ⵏ',
+        q: 'ⵇ', r: 'ⵔ', s: 'ⵙ', t: 'ⵜ', w: 'ⵡ', y: 'ⵢ', z: 'ⵣ'
+      };
+
+      var ethiopicToLatin = {
+        'ሀ': 'ha', 'ሁ': 'hu', 'ሂ': 'hi', 'ሃ': 'ha', 'ሄ': 'he', 'ህ': 'h', 'ሆ': 'ho',
+        'ለ': 'le', 'ሉ': 'lu', 'ሊ': 'li', 'ላ': 'la', 'ሌ': 'le', 'ል': 'l', 'ሎ': 'lo',
+        'መ': 'me', 'ሙ': 'mu', 'ሚ': 'mi', 'ማ': 'ma', 'ሜ': 'me', 'ም': 'm', 'ሞ': 'mo',
+        'ሰ': 'se', 'ሱ': 'su', 'ሲ': 'si', 'ሳ': 'sa', 'ሴ': 'se', 'ስ': 's', 'ሶ': 'so',
+        'በ': 'be', 'ቡ': 'bu', 'ቢ': 'bi', 'ባ': 'ba', 'ቤ': 'be', 'ብ': 'b', 'ቦ': 'bo',
+        'አ': 'a', 'ኡ': 'u', 'ኢ': 'i', 'ኣ': 'a', 'ኤ': 'e', 'እ': 'e', 'ኦ': 'o',
+        'ከ': 'ke', 'ኩ': 'ku', 'ኪ': 'ki', 'ካ': 'ka', 'ኬ': 'ke', 'ክ': 'k', 'ኮ': 'ko',
+        'ወ': 'we', 'ዉ': 'wu', 'ዊ': 'wi', 'ዋ': 'wa', 'ዌ': 'we', 'ው': 'w', 'ዎ': 'wo',
+        'ዘ': 'ze', 'ዙ': 'zu', 'ዚ': 'zi', 'ዛ': 'za', 'ዜ': 'ze', 'ዝ': 'z', 'ዞ': 'zo'
+      };
+
+      var state = { output: '' };
+
+      function el(id) {
+        return document.getElementById(id);
+      }
+
+      function mapChars(text, table) {
+        var output = '';
+        for (var i = 0; i < text.length; i += 1) {
+          var two = text.slice(i, i + 2);
+          if (table[two]) {
+            output += table[two];
+            i += 1;
+          } else {
+            output += table[text[i]] !== undefined ? table[text[i]] : text[i];
+          }
+        }
+        return output;
+      }
+
+      function latinToArabic(text) {
+        var lower = text.toLowerCase();
+        var output = '';
+        var index = 0;
+        while (index < lower.length) {
+          var matched = false;
+          for (var i = 0; i < latinArabicPairs.length; i += 1) {
+            var from = latinArabicPairs[i][0];
+            if (lower.slice(index, index + from.length) === from) {
+              output += latinArabicPairs[i][1];
+              index += from.length;
+              matched = true;
+              break;
+            }
+          }
+          if (!matched) {
+            output += text[index];
+            index += 1;
+          }
+        }
+        return output;
+      }
+
+      function latinToTifinaghText(text) {
+        return Array.from(text).map(function (char) {
+          var lower = char.toLowerCase();
+          return latinToTifinagh[lower] || char;
+        }).join('');
+      }
+
+      function applyStyle(text) {
+        if (el('style').value === 'lower') return text.toLowerCase();
+        if (el('style').value === 'upper') return text.toUpperCase();
+        return text;
+      }
+
+      function transliterate() {
+        var text = el('inputText').value || '';
+        var mode = el('mode').value;
+        var output = text;
+        if (mode === 'arabic-latin') {
+          output = mapChars(text, arabicToLatin);
+        } else if (mode === 'latin-arabic') {
+          output = latinToArabic(text);
+        } else if (mode === 'latin-tifinagh') {
+          output = latinToTifinaghText(text);
+        } else if (mode === 'ethiopic-latin') {
+          output = mapChars(text, ethiopicToLatin);
+        }
+        output = applyStyle(output);
+        var scriptNote = mode === 'latin-arabic' ? 'Sortie approximative en arabe.' : mode === 'latin-tifinagh' ? 'Sortie tifinagh basique.' : mode === 'ethiopic-latin' ? 'Sortie latine depuis un sous-ensemble ethiopien.' : 'Sortie latine depuis arabe.';
+        el('outputText').textContent = output || 'Aucun texte a translitterer.';
+        el('analysisText').textContent = scriptNote + ' Longueur entree: ' + text.length + ' caracteres. Longueur sortie: ' + output.length + ' caracteres. Relire les noms propres et diacritiques.';
+        el('status').textContent = 'Translitteration prete.';
+        state.output = [
+          'AfroTools - Outil de translitteration',
+          'Mode: ' + el('mode').selectedOptions[0].textContent,
+          'Entree: ' + text,
+          'Sortie: ' + output,
+          'Avertissement: brouillon non officiel, ne remplace pas une norme ou une relecture humaine.'
+        ].join('\\n');
+        return state.output;
+      }
+
+      function copyResult() {
+        var text = state.output || transliterate();
+        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+          el('status').textContent = 'Copie bloquee par le navigateur. Utilisez le telechargement TXT.';
+          return;
+        }
+        navigator.clipboard.writeText(text).then(function () {
+          el('status').textContent = 'Resultat copie.';
+        }).catch(function () {
+          el('status').textContent = 'Copie bloquee par le navigateur. Utilisez le telechargement TXT.';
+        });
+      }
+
+      function downloadText() {
+        var text = state.output || transliterate();
+        var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = 'translitteration-afrotools.txt';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        el('status').textContent = 'Fichier TXT prepare.';
+      }
+
+      function saveLocal() {
+        var payload = {
+          savedAt: new Date().toISOString(),
+          mode: el('mode').value,
+          style: el('style').value,
+          input: el('inputText').value,
+          output: state.output || transliterate()
+        };
+        localStorage.setItem('afrotools:translitteration-fr:last', JSON.stringify(payload));
+        el('status').textContent = 'Translitteration sauvee dans ce navigateur.';
+      }
+
+      el('transForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        transliterate();
+      });
+      el('inputText').addEventListener('input', transliterate);
+      el('mode').addEventListener('change', transliterate);
+      el('style').addEventListener('change', transliterate);
+      el('sampleBtn').addEventListener('click', function () {
+        el('mode').value = 'arabic-latin';
+        el('style').value = 'plain';
+        el('inputText').value = 'سلام عليكم 2026';
+        transliterate();
+        location.hash = '#tool';
+      });
+      el('swapBtn').addEventListener('click', function () {
+        el('inputText').value = el('outputText').textContent;
+        transliterate();
+      });
+      el('copyBtn').addEventListener('click', copyResult);
+      el('downloadBtn').addEventListener('click', downloadText);
+      el('saveBtn').addEventListener('click', saveLocal);
+
+      transliterate();
+    }());
+  </script>
 </body>
 </html>

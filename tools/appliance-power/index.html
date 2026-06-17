@@ -23,6 +23,40 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/consommation-appareils/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/matumizi-ya-umeme-ya-vifaa/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/appliance-power/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Estimate monthly energy use by appliance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Model watts, daily hours, days, and tariff before comparing generator, inverter, or grid cost."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I verify before acting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Energy disclaimer: actual draw varies by appliance age, duty cycle, voltage, and tariff class."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this an official result?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/appliance-power/"
+}
+</script>
 </head>
 <body>
 <afro-navbar theme="dark" active="energy"></afro-navbar>
@@ -64,6 +98,32 @@
 <p><strong>Disclaimer:</strong> Wattage figures are typical values. Check your appliance's nameplate for exact rated power.</p>
 </section>
 
+
+<section class="df-upgrade" data-df-upgrade="appliance-power">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Appliance power audit</span>
+      <h2>Estimate monthly energy use by appliance</h2>
+      <p>Model watts, daily hours, days, and tariff before comparing generator, inverter, or grid cost.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Result: appliance power audit ready with kWh, monthly cost, and load-planning note.</li><li>Methodology: use the fields to create a local planning summary with visible assumptions.</li><li>Source note: Energy efficiency references should be checked when live prices, policy, or eligibility matters.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Energy disclaimer: actual draw varies by appliance age, duty cycle, voltage, and tariff class. Source/reference: Energy efficiency references.</p>
+    </div>
+    <form class="df-form" data-df-form="appliance-power">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Appliance watts<input name="watts" type="number" value="1500" min="0" step="any" aria-label="Appliance watts"></label>
+      <label>Hours per day<input name="hours" type="number" value="4" min="0" step="any" aria-label="Hours per day"></label>
+      <label>Days per month<input name="days" type="number" value="30" min="0" step="any" aria-label="Days per month"></label>
+      <label>Tariff per kWh<input name="tariff" type="number" value="85" min="0" step="any" aria-label="Tariff per kWh"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="appliance-power" data-df-base="Result: appliance power audit ready with kWh, monthly cost, and load-planning note." aria-live="polite">Result: appliance power audit ready with kWh, monthly cost, and load-planning note.</output>
+      <div class="df-actions"><button type="button" data-df-copy="appliance-power">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="appliance-power-faq-title">
+  <h2 id="appliance-power-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Estimate monthly energy use by appliance?</summary><p>Model watts, daily hours, days, and tariff before comparing generator, inverter, or grid cost.</p></details><details><summary>What should I verify before acting?</summary><p>Energy disclaimer: actual draw varies by appliance age, duty cycle, voltage, and tariff class.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting.</p></details></div>
+</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -148,5 +208,6 @@ document.getElementById("calcBtn").addEventListener("click",function(){
 });
 }();
 </script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

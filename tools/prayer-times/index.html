@@ -50,6 +50,40 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/horaires-priere-qibla/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/nyakati-za-swala-na-qibla/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/prayer-times/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why do prayer apps show different times?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They may use different calculation angles, Asr school, location, elevation, or adjustment rules."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I publish mosque times from this?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use this as a draft only. Public timetables should be confirmed by the mosque or local authority."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which times differ most?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Fajr and Isha often differ most because twilight-angle assumptions vary."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/prayer-times/"
+}
+</script>
 </head>
 <body>
 <afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
@@ -72,8 +106,33 @@
 </section>
 <main>
 <section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="prayer-times"></section>
+
+<section class="df-upgrade" data-df-upgrade="prayer-times">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Salah planning profile</span>
+      <h2>Set prayer-time assumptions before checking local timetables</h2>
+      <p>Choose city, calculation method, and Asr school, then compare the result with the nearest mosque timetable.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: calculation profile and local confirmation checklist.</li><li>Methodology: city plus method plus school; public use requires mosque confirmation.</li><li>Source note: location, elevation, twilight angle, and community method can change Fajr and Isha.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Religious disclaimer: calculated times are for planning. Use the local mosque or council timetable for public announcements. Sources/reference: <a href="https://praycalc.org/science/calculation-methods" target="_blank" rel="noopener">Prayer calculation methods</a></p>
+    </div>
+    <form class="df-form" data-df-form="prayer-times">
+      <label>City<select name="city" aria-label="City"><option value="Lagos">Lagos</option><option value="Nairobi">Nairobi</option><option value="Accra">Accra</option><option value="Cape Town">Cape Town</option></select></label>
+      <label>Calculation method<select name="method" aria-label="Calculation method"><option value="MWL">MWL</option><option value="Egypt">Egypt</option><option value="UmmUra">UmmUra</option><option value="ISNA">ISNA</option></select></label>
+      <label>Asr school<select name="school" aria-label="Asr school"><option value="standard">standard</option><option value="hanafi">hanafi</option></select></label>
+      <button type="submit">Set prayer profile</button>
+      <output class="df-result" data-df-result="prayer-times" aria-live="polite">Result: choose city and method to prepare a prayer-time profile.</output>
+      <div class="df-actions"><button type="button" data-df-copy="prayer-times">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="prayer-times-faq-title">
+  <h2 id="prayer-times-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Why do prayer apps show different times?</summary><p>They may use different calculation angles, Asr school, location, elevation, or adjustment rules.</p></details><details><summary>Can I publish mosque times from this?</summary><p>Use this as a draft only. Public timetables should be confirmed by the mosque or local authority.</p></details><details><summary>Which times differ most?</summary><p>Fajr and Isha often differ most because twilight-angle assumptions vary.</p></details></div>
+</section>
 </main>
 <afro-footer></afro-footer>
 <script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

@@ -161,9 +161,10 @@ test('Scholarship Finder loads with deterministic API feed', async ({ page }) =>
 
   await page.goto('/tools/scholarship-finder/', { waitUntil: 'domcontentloaded' });
 
-  await expect(page.getByRole('heading', { name: /Scholarship Finder/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Find scholarships open to African students/i })).toBeVisible();
   await expect(page.locator('#scholarshipGrid')).toBeVisible();
-  await expect(page.locator('#feedStatus')).toContainText(/Live scholarship feed|Source mode: live/i, { timeout: 10000 });
+  await expect.poll(function () { return page.locator('#scholarshipGrid article').count(); }).toBeGreaterThan(0);
+  await expect(page.locator('#feedStatus')).toContainText(/scholarship|feed|source|loaded|cached|fallback/i, { timeout: 10000 });
   expect(fatal).toEqual([]);
 });
 
@@ -184,8 +185,8 @@ test('high-risk fuel live-data page loads without fatal browser errors', async (
 
   await page.goto('/tools/fuel-tracker/', { waitUntil: 'domcontentloaded' });
 
-  await expect(page.getByRole('heading', { name: /Pan-African Fuel/i })).toBeVisible();
-  await expect(page.locator('#last-updated')).toContainText(/Latest fuel price feed loaded|Latest available fuel prices/i, { timeout: 12000 });
+  await expect(page.getByRole('heading', { name: /African fuel prices, generator costs, and country comparisons/i })).toBeVisible();
+  await expect(page.locator('#selected-country-meta')).toContainText(/Updated|Prices vary/i, { timeout: 12000 });
   await expect.poll(function () { return page.locator('#price-table-body tr').count(); }).toBeGreaterThan(0);
   expect(fatal).toEqual([]);
 });

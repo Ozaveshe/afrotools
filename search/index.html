@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=781b5015">
 <script src="/assets/js/components/navbar.min.js?v=17467034" async></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" async></script>
+  <script src="/assets/js/ai/intent-analytics.js?v=4de3dd18"></script>
 
   <style>
     :root {
@@ -1007,6 +1008,19 @@ var filterToggle  = document.getElementById('filter-toggle');
 var moreFilters   = document.getElementById('more-filters');
 var isSearchReady = false;
 var requestSearchIndexLoad = function() {};
+var aiRouteCache = Object.create(null);
+var aiRouteScriptPromise = null;
+var aiRoutePendingKey = '';
+var aiSearchPromptAnalytics = Object.create(null);
+var aiSearchRouteAnalytics = Object.create(null);
+var privateSearchHandoffQuery = '';
+var PRIVATE_SEARCH_HANDOFF_KEY = 'afrotools.privateSearchHandoff.v1';
+var AI_ROUTE_SCRIPTS = [
+  '/assets/js/ai/tool-manifest.js',
+  '/assets/js/ai/intent-router.js',
+  '/assets/js/ai/tool-invocation-runtime.js',
+  '/assets/js/ai/orchestrator.js'
+];
 
 // ════════════════════════════════════════════════════════════
 // SEARCH LOGIC
@@ -1035,6 +1049,27 @@ function tokenise(str) {
   return normalizeSearchText(str)
     .split(/\s+/)
     .filter(Boolean);
+}
+
+function recordAISearchIntent(eventName, query, meta) {
+  var analytics = window.AfroToolsAIIntentAnalytics;
+  if (!analytics || typeof analytics.record !== 'function') return;
+  var clean = String(query || '').trim();
+  analytics.record(eventName, {}, Object.assign({
+    surface: 'search_page',
+    source: 'search_fallback',
+    queryLength: clean.length,
+    selectedToolId: 'unknown',
+    intentCategory: 'unknown',
+    workflowType: 'search_page'
+  }, meta || {}));
+}
+
+function recordAISearchPrompt(query) {
+  var key = normalizeSearchText(query);
+  if (!key || aiSearchPromptAnalytics[key]) return;
+  aiSearchPromptAnalytics[key] = true;
+  recordAISearchIntent('ai_prompt_submitted', query, {});
 }
 
 function generatedSearchAliases(tool) {
@@ -1176,6 +1211,131 @@ function search(query, filter, sort) {
   });
 }
 
+function loadAISearchScript(src) {
+  return new Promise(function(resolve, reject) {
+    if (document.querySelector('script[src="' + src + '"]')) {
+      resolve();
+      return;
+    }
+    var script = document.createElement('script');
+    script.src = src;
+    script.async = false;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+function loadAISearchRouter() {
+  if (window.AfroToolsAIOrchestrator) return Promise.resolve();
+  if (aiRouteScriptPromise) return aiRouteScriptPromise;
+
+  aiRouteScriptPromise = AI_ROUTE_SCRIPTS.reduce(function(chain, src) {
+    return chain.then(function() {
+      return loadAISearchScript(src);
+    });
+  }, Promise.resolve());
+
+  return aiRouteScriptPromise;
+}
+
+function shouldUseAIRouter(query, filter, resultCount) {
+  if (filter !== 'all') return false;
+  var tokens = tokenise(query);
+  if (tokens.length < 3) return false;
+  if (normalizeSearchText(query).length < 12) return false;
+  return resultCount <= 5 || tokens.some(function(token) {
+    return /^(write|make|create|get|find|need|plan|calculate|prepare|help|show)$/i.test(token);
+  });
+}
+
+function requestAIRouteEnhancement(query, filter, resultCount) {
+  if (window.AfroToolsAIOrchestrator) return;
+  if (!shouldUseAIRouter(query, filter, resultCount)) return;
+
+  var key = normalizeSearchText(query) + '|' + filter;
+  if (!key || aiRoutePendingKey === key) return;
+  aiRoutePendingKey = key;
+
+  loadAISearchRouter().then(function() {
+    var stillSameQuery = normalizeSearchText(state.query) + '|' + state.filter === key;
+    aiRoutePendingKey = '';
+    if (stillSameQuery) doRender();
+  }).catch(function() {
+    aiRoutePendingKey = '';
+  });
+}
+
+function findSearchToolByPlan(plan) {
+  if (!plan || plan.status !== 'success' || !plan.selectedTool) return null;
+  var selectedId = normalizeSearchText(plan.selectedTool.id);
+  var selectedRoute = normalizeSearchHref(plan.selectedTool.route);
+  if (!selectedId || selectedId === 'tool search') return null;
+
+  return (window.AFRO_TOOLS || []).find(function(tool) {
+    var id = normalizeSearchText(tool.id);
+    var href = normalizeSearchHref(tool.href);
+    return (selectedId && id === selectedId) || (selectedRoute && href === selectedRoute);
+  }) || null;
+}
+
+function buildAISearchResult(query, filter) {
+  var normalized = normalizeSearchText(query);
+  if (!normalized || normalized.length < 3 || filter !== 'all') return null;
+  if (!window.AfroToolsAIOrchestrator || typeof window.AfroToolsAIOrchestrator.buildPlan !== 'function') return null;
+
+  var plan = aiRouteCache[normalized];
+  if (!plan) {
+    try {
+      plan = window.AfroToolsAIOrchestrator.buildPlan(query, {
+        locale: 'en',
+        candidateLimit: 0,
+        obviousConfidence: 0.78
+      });
+      aiRouteCache[normalized] = plan;
+    } catch (error) {
+      aiRouteCache[normalized] = { status: 'error' };
+      return null;
+    }
+  }
+
+  var confidence = Number(plan && plan.decision && plan.decision.confidence);
+  if (!Number.isFinite(confidence) || confidence < 0.5) return null;
+
+  var tool = findSearchToolByPlan(plan);
+  if (!tool) return null;
+  var routeKey = normalized + '|' + normalizeSearchText(tool.id || tool.name);
+  if (!aiSearchRouteAnalytics[routeKey]) {
+    aiSearchRouteAnalytics[routeKey] = true;
+    recordAISearchIntent('ai_intent_detected', query, {
+      selectedToolId: tool.id || 'unknown',
+      intentCategory: tool.category || 'unknown',
+      workflowType: tool.id || 'search_ai_match',
+      confidence: confidence,
+      routerSource: 'search_full_catalog'
+    });
+  }
+
+  return {
+    tool: Object.assign({}, tool, { aiSuggested: true }),
+    score: 10000 + Math.round(confidence * 100),
+    source: 'ai-router'
+  };
+}
+
+function mergeAISearchResult(results, query, filter) {
+  var routed = buildAISearchResult(query, filter);
+  if (!routed) return results;
+
+  var routedKey = normalizeSearchHref(routed.tool.href) || normalizeSearchText(routed.tool.id || routed.tool.name);
+  var withoutDuplicate = results.filter(function(result) {
+    var key = normalizeSearchHref(result.tool.href) || normalizeSearchText(result.tool.id || result.tool.name);
+    return key !== routedKey;
+  });
+
+  return [routed].concat(withoutDuplicate);
+}
+
 // ════════════════════════════════════════════════════════════
 // RENDER
 // ════════════════════════════════════════════════════════════
@@ -1189,6 +1349,7 @@ function renderCard(tool, tokens) {
 
   // Badges
   var badges = '';
+  if (tool.aiSuggested) badges += '<span class="badge badge-ai">AI match</span>';
   if (isLive)  badges += '<span class="badge badge-live">Live</span>';
   if (isNew)   badges += '<span class="badge badge-new">New</span>';
   if (!isAvail) badges += '<span class="badge badge-soon">Coming Soon</span>';
@@ -1369,7 +1530,10 @@ function doRender() {
     return;
   }
 
-  var results = search(query, state.filter, state.sort);
+  if (query && state.filter === 'all') recordAISearchPrompt(query);
+  var baseResults = search(query, state.filter, state.sort);
+  requestAIRouteEnhancement(query, state.filter, baseResults.length);
+  var results = mergeAISearchResult(baseResults, query, state.filter);
   renderResults(results, tokens, state.page);
 }
 
@@ -1427,9 +1591,29 @@ function syncFilterUI() {
 // ════════════════════════════════════════════════════════════
 // URL STATE
 // ════════════════════════════════════════════════════════════
+function readPrivateSearchHandoff(params) {
+  var source = params && params.get('source') || '';
+  if (source !== 'ask_private' && source !== 'ai_private') return '';
+  try {
+    var raw = sessionStorage.getItem(PRIVATE_SEARCH_HANDOFF_KEY) || '';
+    if (!raw) return '';
+    var payload = JSON.parse(raw);
+    var createdAt = Number(payload && payload.createdAt || 0);
+    var query = String(payload && payload.query || '').trim();
+    sessionStorage.removeItem(PRIVATE_SEARCH_HANDOFF_KEY);
+    if (!query || query.length > 1200) return '';
+    if (!createdAt || Date.now() - createdAt > 10 * 60 * 1000) return '';
+    privateSearchHandoffQuery = query;
+    try { history.replaceState(null, '', '/search/'); } catch (err) {}
+    return query;
+  } catch (err) {
+    return '';
+  }
+}
+
 function readURL() {
   var params = new URLSearchParams(window.location.search);
-  var q = params.get('q') || '';
+  var q = params.get('q') || readPrivateSearchHandoff(params) || privateSearchHandoffQuery || '';
   var f = params.get('f') || 'all';
   state.query = q;
   state.filter = f;
@@ -1452,6 +1636,7 @@ function pushURL() {
 // ════════════════════════════════════════════════════════════
 function setQuery(q) {
   if (!isSearchReady) requestSearchIndexLoad();
+  if (!q) privateSearchHandoffQuery = '';
   state.query = q;
   state.page = 1;
   searchInput.value = q;

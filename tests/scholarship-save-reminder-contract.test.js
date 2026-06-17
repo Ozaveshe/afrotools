@@ -2,6 +2,7 @@ const assert = require('assert');
 const path = require('path');
 
 const {
+  hasDatedFutureDeadline,
   saveScholarshipForUser,
   updateReminderForUser
 } = require(path.join(__dirname, '..', 'netlify/functions/_shared/scholarship-platform.js'));
@@ -159,6 +160,19 @@ function createMockClient(settings) {
     return call.table === 'user_scholarship_reminders' && call.op === 'upsert';
   });
   assert.strictEqual(variableReminderUpsert, undefined, 'no-dated-deadline reminder requests must not create reminder rows');
+
+  assert.strictEqual(
+    hasDatedFutureDeadline({
+      deadline_date: futureDateIso(30),
+      deadline_status: 'varies',
+      status: 'unclear',
+      raw_snapshot: {
+        deadline_confidence: 'no_single_public_deadline'
+      }
+    }),
+    false,
+    'production raw_snapshot deadline confidence should block dated reminders when the public deadline varies'
+  );
 
   const saveWithReminderClient = createMockClient({
     scholarship: {

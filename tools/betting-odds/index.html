@@ -44,6 +44,40 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/betting-odds/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cotes-paris-sportifs/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/betting-odds/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is implied probability?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is the probability suggested by the odds. Decimal odds of 2.00 imply about 50% before bookmaker margin."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does positive edge guarantee profit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It only compares your assumption with the odds. The event can still lose."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should users avoid?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chasing losses, borrowing to bet, betting under pressure, and treating this calculator as a prediction."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/betting-odds/"
+}
+</script>
 </head>
 <body data-sports-tool="betting-odds">
 <afro-navbar theme="dark" active="sports"></afro-navbar>
@@ -80,10 +114,36 @@
 </section>
 <div id="sports-tool-root" class="sports-tool-root"></div>
 </div>
+
+<section class="df-upgrade" data-df-upgrade="betting-odds">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Odds value check</span>
+      <h2>Compare implied probability with your own probability</h2>
+      <p>Convert odds into implied probability, compare your stated probability, and understand the potential profit and risk.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: implied probability, stated edge, and potential profit.</li><li>Methodology: implied probability equals 100 divided by decimal odds.</li><li>Source note: odds move quickly and no calculator predicts match outcomes.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Responsible gambling disclaimer: this is an arithmetic tool, not a prediction or betting recommendation. Only risk money you can afford to lose. Sources/reference: <a href="https://www.gambleaware.org/" target="_blank" rel="noopener">GambleAware safer gambling</a></p>
+    </div>
+    <form class="df-form" data-df-form="betting-odds">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Decimal odds<input name="odds" type="number" value="2.2" min="0" step="any" aria-label="Decimal odds"></label>
+      <label>Stake<input name="stake" type="number" value="5000" min="0" step="any" aria-label="Stake"></label>
+      <label>Your probability percent<input name="probability" type="number" value="48" min="0" step="any" aria-label="Your probability percent"></label>
+      <button type="submit">Check odds value</button>
+      <output class="df-result" data-df-result="betting-odds" aria-live="polite">Result: enter odds, stake, and probability to check implied value.</output>
+      <div class="df-actions"><button type="button" data-df-copy="betting-odds">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="betting-odds-faq-title">
+  <h2 id="betting-odds-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>What is implied probability?</summary><p>It is the probability suggested by the odds. Decimal odds of 2.00 imply about 50% before bookmaker margin.</p></details><details><summary>Does positive edge guarantee profit?</summary><p>No. It only compares your assumption with the odds. The event can still lose.</p></details><details><summary>What should users avoid?</summary><p>Chasing losses, borrowing to bet, betting under pressure, and treating this calculator as a prediction.</p></details></div>
+</section>
 </main>
 
 <afro-footer></afro-footer>
 <script src="/assets/js/sports-toolkit.js?v=5c024d6d"></script>
 <script>window.AfroSports&&window.AfroSports.init&&window.AfroSports.init();</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

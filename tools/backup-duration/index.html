@@ -22,6 +22,40 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/autonomie-secours/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/muda-wa-backup-ya-betri/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/backup-duration/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Estimate how long backup power may last?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Compare battery capacity, usable depth, inverter loss, and load before buying or sizing backup power."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I verify before acting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Energy disclaimer: battery age, temperature, inverter efficiency, and surge loads can shorten runtime."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this an official result?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/backup-duration/"
+}
+</script>
 </head>
 <body>
 <afro-navbar theme="dark" active="energy"></afro-navbar>
@@ -59,6 +93,31 @@
 <p><strong>Disclaimer:</strong> Actual backup time depends on real load profile, temperature, and battery age. New batteries perform closest to these estimates.</p>
 </section>
 
+
+<section class="df-upgrade" data-df-upgrade="backup-duration">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Battery backup duration</span>
+      <h2>Estimate how long backup power may last</h2>
+      <p>Compare battery capacity, usable depth, inverter loss, and load before buying or sizing backup power.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Result: backup duration estimate ready with usable energy, load, losses, and runtime caveat.</li><li>Methodology: use the fields to create a local planning summary with visible assumptions.</li><li>Source note: Battery sizing references should be checked when live prices, policy, or eligibility matters.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Energy disclaimer: battery age, temperature, inverter efficiency, and surge loads can shorten runtime. Source/reference: Battery sizing references.</p>
+    </div>
+    <form class="df-form" data-df-form="backup-duration">
+      <label>Battery Wh<input name="batteryWh" type="number" value="2400" min="0" step="any" aria-label="Battery Wh"></label>
+      <label>Load watts<input name="loadWatts" type="number" value="350" min="0" step="any" aria-label="Load watts"></label>
+      <label>Usable percent<input name="usable" type="number" value="80" min="0" step="any" aria-label="Usable percent"></label>
+      <label>Inverter loss percent<input name="loss" type="number" value="10" min="0" step="any" aria-label="Inverter loss percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="backup-duration" data-df-base="Result: backup duration estimate ready with usable energy, load, losses, and runtime caveat." aria-live="polite">Result: backup duration estimate ready with usable energy, load, losses, and runtime caveat.</output>
+      <div class="df-actions"><button type="button" data-df-copy="backup-duration">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="backup-duration-faq-title">
+  <h2 id="backup-duration-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Estimate how long backup power may last?</summary><p>Compare battery capacity, usable depth, inverter loss, and load before buying or sizing backup power.</p></details><details><summary>What should I verify before acting?</summary><p>Energy disclaimer: battery age, temperature, inverter efficiency, and surge loads can shorten runtime.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting.</p></details></div>
+</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 </main>
@@ -95,5 +154,6 @@ document.getElementById("results").scrollIntoView({behavior:"smooth",block:"star
 });
 }();
 </script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

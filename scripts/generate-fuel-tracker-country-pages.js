@@ -343,6 +343,8 @@ function htmlPage(row, rows) {
       encodingFormat: 'application/json',
       contentUrl: `${BASE_URL}/data/fuel/latest.json`,
     },
+    isAccessibleForFree: true,
+    license: `${BASE_URL}/terms/`,
   };
   const priceItemListSchema = {
     '@context': 'https://schema.org',
@@ -361,13 +363,16 @@ function htmlPage(row, rows) {
   };
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(description)}">
 <link rel="canonical" href="${escapeHtml(url)}">
+<link rel="alternate" hreflang="en" href="${escapeHtml(url)}" />
+<link rel="alternate" hreflang="x-default" href="${escapeHtml(url)}" />
+<link rel="alternate" hreflang="fr" href="${BASE_URL}/fr/tools/suivi-carburant/${escapeHtml(slug)}/" />
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="${escapeHtml(title)}">
@@ -545,7 +550,7 @@ function htmlPage(row, rows) {
   } catch (err) {}
 })();
 </script>
-<script src="/assets/js/components/navbar.min.js?v=4f165426" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 </body>
 </html>

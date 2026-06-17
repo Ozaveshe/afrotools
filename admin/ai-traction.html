@@ -97,6 +97,8 @@ body{margin:0;background:#f5f7fb;color:#101828;font-family:Inter,system-ui,-appl
       <div class="ta-panel ta-stat"><span>Sponsor leads</span><strong id="metricSponsor">0</strong><small>Explicit partner opt-ins</small></div>
       <div class="ta-panel ta-stat"><span>API/widget interest</span><strong id="metricApiWidget">0</strong><small>Developer and embed signals</small></div>
       <div class="ta-panel ta-stat"><span>Clarification completion</span><strong id="metricClarification">0%</strong><small>Answered after missing inputs</small></div>
+      <div class="ta-panel ta-stat"><span>Router feedback</span><strong id="metricFeedback">0</strong><small>Useful/not-useful route signals</small></div>
+      <div class="ta-panel ta-stat"><span>Drift signals</span><strong id="metricDrift">0</strong><small>Route mismatch and fallback review queue</small></div>
     </div>
 
     <div class="ta-grid">
@@ -105,12 +107,15 @@ body{margin:0;background:#f5f7fb;color:#101828;font-family:Inter,system-ui,-appl
       <section class="ta-panel ta-section"><h2>Countries</h2><ul class="ta-list" id="countryList"></ul></section>
       <section class="ta-panel ta-section"><h2>Tools opened</h2><ul class="ta-list" id="toolList"></ul></section>
       <section class="ta-panel ta-section"><h2>Missing inputs</h2><ul class="ta-list" id="missingInputList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Surfaces</h2><ul class="ta-list" id="surfaceList"></ul></section>
       <section class="ta-panel ta-section"><h2>Entry sources</h2><ul class="ta-list" id="sourceList"></ul></section>
       <section class="ta-panel ta-section"><h2>Confidence</h2><ul class="ta-list" id="confidenceList"></ul></section>
       <section class="ta-panel ta-section"><h2>Export types</h2><ul class="ta-list" id="exportList"></ul></section>
       <section class="ta-panel ta-section"><h2>API/widget interest</h2><ul class="ta-list" id="interestList"></ul></section>
       <section class="ta-panel ta-section"><h2>Safe example prompts</h2><ul class="ta-list" id="safePromptList"></ul></section>
       <section class="ta-panel ta-section"><h2>No-match categories</h2><ul class="ta-list" id="noMatchList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Router feedback</h2><ul class="ta-list" id="feedbackList"></ul></section>
+      <section class="ta-panel ta-section"><h2>Drift signals</h2><ul class="ta-list" id="driftList"></ul></section>
       <section class="ta-panel ta-section"><h2>Query length buckets</h2><ul class="ta-list" id="lengthList"></ul></section>
     </div>
 
@@ -120,7 +125,7 @@ body{margin:0;background:#f5f7fb;color:#101828;font-family:Inter,system-ui,-appl
     </section>
   </section>
 </main>
-<script src="/assets/js/ai/intent-analytics.js?v=3285dec5"></script>
+<script src="/assets/js/ai/intent-analytics.js?v=4de3dd18"></script>
 <script>
 (function () {
   "use strict";
@@ -177,17 +182,22 @@ body{margin:0;background:#f5f7fb;color:#101828;font-family:Inter,system-ui,-appl
     setMetric("metricSponsor", totals.sponsorLeadOptinSubmitted || 0);
     setMetric("metricApiWidget", totals.apiWidgetInterest || 0);
     setMetric("metricClarification", (report.clarificationCompletionRate || 0) + "%");
+    setMetric("metricFeedback", totals.routerFeedbackSubmitted || 0);
+    setMetric("metricDrift", totals.routerDriftSignals || 0);
     renderList("workflowList", report.topWorkflows || []);
     renderList("categoryList", report.topRoutedCategories || []);
     renderList("countryList", report.topCountriesDetected || []);
     renderList("toolList", report.topSelectedTools || []);
     renderList("missingInputList", report.topMissingInputs || []);
+    renderList("surfaceList", report.topSurfaces || report.surfaceBreakdown || []);
     renderList("sourceList", report.topSources || report.sourceBreakdown || []);
     renderList("confidenceList", report.confidenceBuckets || []);
     renderList("exportList", report.exportTypes || []);
     renderList("interestList", report.interestSurfaces || []);
     renderList("safePromptList", report.safePromptExamples || []);
     renderList("noMatchList", report.noMatchCategories || []);
+    renderList("feedbackList", report.feedbackOutcomes || []);
+    renderList("driftList", report.driftSignals || []);
     renderList("lengthList", report.queryLengthBuckets || []);
     jsonOutput.textContent = JSON.stringify(report, null, 2);
   }

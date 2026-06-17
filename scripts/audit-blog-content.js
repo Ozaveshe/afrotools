@@ -131,17 +131,10 @@ function countMatches(text, phraseList) {
 
 function countBadEncoding(raw) {
   const badPatterns = [
-    /Ã./g,
-    /£/g,
-    /-/g,
-    /-/g,
-    /'/g,
-    /"/g,
-    /â€\x9d/g,
-    /â€¦/g,
-    /-/g,
-    /-/g,
-    /-/g
+    /\u00c3\u0192/g,
+    /\u00c3\u00a2\u00e2\u201a\u00ac/g,
+    /\u00c2(?:\u00a0|\u00a3|\u00a9|\u00ae|\u00b0|\u00b7)/g,
+    /\uFFFD/g
   ];
 
   return badPatterns.reduce((count, pattern) => count + ((raw.match(pattern) || []).length), 0);
@@ -176,7 +169,20 @@ function slugToTopic(slug, title) {
 }
 
 function extractBodyHtml(raw) {
-  return matchFirst(raw, /<(?:article|div)\s+class="article-body"[^>]*>([\s\S]*?)<\/(?:article|div)>/i);
+  const candidates = [
+    /<(?:article|div)\b[^>]*class="[^"]*\barticle-body\b[^"]*"[^>]*>([\s\S]*?)<\/(?:article|div)>/i,
+    /<article\b[^>]*class="[^"]*\bcar-import-section\b[^"]*"[^>]*>([\s\S]*?)<\/article>/i,
+    /<article\b[^>]*class="[^"]*\bblog-post\b[^"]*"[^>]*>([\s\S]*?)<\/article>/i,
+    /<main\b[^>]*>([\s\S]*?)<\/main>/i,
+    /<body\b[^>]*>([\s\S]*?)<\/body>/i
+  ];
+
+  for (const pattern of candidates) {
+    const body = matchFirst(raw, pattern);
+    if (body) return body;
+  }
+
+  return '';
 }
 
 function extractReadTime(raw) {
@@ -193,7 +199,7 @@ function extractCards(raw) {
     const href = matchFirst(block, /<h3>\s*<a href="([^"]+)"/i);
     const title = stripHtml(matchFirst(block, /<h3>([\s\S]*?)<\/h3>/i));
     const excerpt = stripHtml(matchFirst(block, /<p class="article-card-excerpt">([\s\S]*?)<\/p>/i));
-    const image = matchFirst(block, /<img src="([^"]+)"/i);
+    const image = matchFirst(block, /<img\b[^>]*\bsrc="([^"]+)"/i);
     const category = matchFirst(block, /data-cat="([^"]+)"/i);
     cards.push({ href, title, excerpt, image, category });
   }

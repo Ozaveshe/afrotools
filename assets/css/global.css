@@ -1730,3 +1730,167 @@ afro-navbar {
     min-height: 100dvh;
   }
 }
+
+/* 2026+ visual refresh: shared polish for public tools, Pro apps, and AI surfaces. */
+:where(.btn, .btn-primary, .btn-secondary, .btn-ghost, .card-cta, .hero-search-btn, button[type="submit"], a[role="button"]) {
+  min-height: var(--control-height, 44px);
+  border-radius: var(--radius-control, var(--radius-md));
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  touch-action: manipulation;
+}
+
+:where(.btn-primary, .btn--primary, .hero-search-btn, .card-cta.cta-monthly, .card-cta.cta-annual, button[type="submit"]) {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark, #004ba0) 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--shadow-glow-blue, 0 14px 32px rgba(0, 98, 204, 0.16));
+}
+
+:where(.btn-primary, .btn--primary, .hero-search-btn, .card-cta.cta-monthly, .card-cta.cta-annual, button[type="submit"]):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 38px rgba(var(--color-primary-rgb, 0, 98, 204), 0.22);
+}
+
+:where(.btn-secondary, .btn-ghost, .btn--ghost-dark, .btn-outline, .card-cta):not(.cta-monthly):not(.cta-annual) {
+  background: var(--surface-glass-strong, var(--color-surface));
+  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.18);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+:where(.btn-secondary, .btn-ghost, .btn--ghost-dark, .btn-outline, .card-cta):not(.cta-monthly):not(.cta-annual):hover {
+  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.34);
+  box-shadow: var(--shadow-lifted, 0 18px 44px rgba(15, 23, 42, 0.10));
+}
+
+:where(.card, .panel, .box, .stat-card, .metric-card, .result-card, .tool-card, .category-card, .cat-card, .hub-card, .feature-card, .step-card, .dashboard-card, .admin-card, .pro-lab-card, .plan-boundary-card, .home-tool-card, .country-tool-card) {
+  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.12);
+  box-shadow: var(--shadow-card, 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.03));
+}
+
+:where(a.card, a.panel, a.tool-card, a.category-card, a.cat-card, a.hub-card, a.feature-card, a.step-card, a.home-tool-card, a.country-tool-card, .card-hover, [role="button"].card) {
+  cursor: pointer;
+}
+
+:where(a.card, a.panel, a.tool-card, a.category-card, a.cat-card, a.hub-card, a.feature-card, a.step-card, a.home-tool-card, a.country-tool-card, .card-hover, [role="button"].card):hover {
+  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.28);
+  box-shadow: var(--shadow-card-hover, 0 8px 24px rgba(15, 23, 42, 0.08));
+}
+
+:where(.form-input, .form-select, .form-textarea, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) {
+  border-color: var(--color-border);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+:where(.form-input, .form-select, .form-textarea, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea):focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb, 0, 98, 204), 0.12);
+  outline: none;
+}
+
+:where(.badge, .pill, .chip, [class*="-badge"], [class*="-pill"], [class*="-chip"]) {
+  letter-spacing: 0;
+}
+
+html[data-theme="dark"] :where(.btn-secondary, .btn-ghost, .btn--ghost-dark, .btn-outline, .card-cta):not(.cta-monthly):not(.cta-annual) {
+  background: rgba(18, 31, 51, 0.82);
+  border-color: rgba(147, 197, 253, 0.24);
+  color: var(--color-text);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.26);
+}
+
+html[data-theme="dark"] :where(.card, .panel, .box, .stat-card, .metric-card, .result-card, .tool-card, .category-card, .cat-card, .hub-card, .feature-card, .step-card, .dashboard-card, .admin-card, .pro-lab-card, .plan-boundary-card, .home-tool-card, .country-tool-card) {
+  border-color: rgba(147, 197, 253, 0.16);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.24);
+}
+
+/* 2026+ app interior polish: forms, result panels, tables, and workbench cards. */
+:where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .panel, .preview-card, .insights-card, .workflow-card, .app-card, .dashboard-card) {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(248, 251, 255, 0.86)),
+    var(--surface-glass, var(--color-surface));
+  border: 1px solid rgba(var(--color-primary-rgb, 0, 98, 204), 0.13);
+  border-radius: var(--radius-xl, 18px);
+}
+
+:where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .preview-card, .insights-card, .app-card, .dashboard-card, .ai-command) {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(248, 251, 255, 0.88)) !important;
+  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.14) !important;
+  border-radius: var(--radius-xl, 18px) !important;
+  box-shadow: var(--shadow-card, 0 12px 30px rgba(15, 23, 42, 0.06)) !important;
+}
+
+:where(.form-grid, .result-grid, .result-cards, .app-grid, .dashboard-grid, .tool-main-grid, .input-row, .form-row, .form-row-2) {
+  gap: clamp(12px, 2vw, 18px);
+}
+
+:where(.input-block, .input-group, .form-field, .form-group, .field, .control-group) {
+  display: grid;
+  gap: 7px;
+}
+
+:where(.input-block label, .input-group label, .form-field label, .form-group label, .form-label) {
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+:where(.form-helper, .form-help, .field-help, .input-hint, .muted-note) {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+:where(.calculate-bar, .form-actions, .tool-actions, .action-row, .panel-actions, .preview-tools, .topbar-actions, .ai-actions, .ai-context-actions, .ai-consent-actions) {
+  align-items: center;
+  gap: 10px;
+}
+
+:where(.calculate-bar, .form-actions, .tool-actions, .panel-actions) {
+  border-radius: var(--radius-lg, 16px);
+}
+
+:where(.table-wrap, .items-table-wrap, .fx-table-wrap, .pad-table-wrap, .tax-table-wrapper, .band-table-wrap) {
+  border: 1px solid rgba(var(--color-primary-rgb, 0, 98, 204), 0.13);
+  border-radius: var(--radius-xl, 18px);
+  background: var(--surface-glass-strong, var(--color-surface));
+  box-shadow: var(--shadow-card, 0 12px 30px rgba(15, 23, 42, 0.06));
+  overflow: auto;
+}
+
+:where(.table-wrap, .items-table-wrap, .fx-table-wrap, .pad-table-wrap, .tax-table-wrapper, .band-table-wrap) table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+:where(.table-wrap, .items-table-wrap, .fx-table-wrap, .pad-table-wrap, .tax-table-wrapper, .band-table-wrap) :where(th, td) {
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+html[data-theme="dark"] :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .panel, .preview-card, .insights-card, .workflow-card, .app-card, .dashboard-card) {
+  background:
+    linear-gradient(145deg, rgba(18, 31, 51, 0.88), rgba(11, 21, 36, 0.92)),
+    var(--color-surface);
+  border-color: rgba(147, 197, 253, 0.16);
+}
+
+html[data-theme="dark"] :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .preview-card, .insights-card, .app-card, .dashboard-card, .ai-command) {
+  background:
+    linear-gradient(145deg, rgba(18, 31, 51, 0.9), rgba(11, 21, 36, 0.94)) !important;
+  border-color: rgba(147, 197, 253, 0.18) !important;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28) !important;
+}
+
+html[data-theme="dark"] :where(.table-wrap, .items-table-wrap, .fx-table-wrap, .pad-table-wrap, .tax-table-wrapper, .band-table-wrap) {
+  background: rgba(18, 31, 51, 0.78);
+  border-color: rgba(147, 197, 253, 0.16);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.btn, .btn-primary, .btn-secondary, .btn-ghost, .card-cta, .hero-search-btn, button[type="submit"], a.card, a.panel, a.tool-card, a.category-card, a.cat-card, a.hub-card, a.feature-card, a.step-card, a.home-tool-card, a.country-tool-card) {
+    transition: none !important;
+    transform: none !important;
+  }
+}

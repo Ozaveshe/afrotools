@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-17T08:15:44.446Z",
+  "task": "afrotools_ai_system_readiness",
+  "scope": "repo_artifacts_not_live_production",
+  "gate": {
+    "passed": true,
+    "failedCount": 0,
+    "failedChecks": []
+  },
+  "checks": [
+    {
+      "label": "prompt_registry_valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "label": "router_prompt_production",
+      "passed": true,
+      "detail": "2026-06-17.tool-call-v1"
+    },
+    {
+      "label": "manifest_large_enough",
+      "passed": true,
+      "detail": "1245 router-safe tools"
+    },
+    {
+      "label": "tool_catalog_pack_complete",
+      "passed": true,
+      "detail": "1245 tools across 57 chunks"
+    },
+    {
+      "label": "corpus_large_enough",
+      "passed": true,
+      "detail": "159 synthetic records"
+    },
+    {
+      "label": "category_coverage",
+      "passed": true,
+      "detail": "23 categories"
+    },
+    {
+      "label": "model_splits_present",
+      "passed": true,
+      "detail": "{\"train\":100,\"validation\":29,\"test\":30}"
+    },
+    {
+      "label": "held_out_category_coverage",
+      "passed": true,
+      "detail": "23 held-out categories"
+    },
+    {
+      "label": "tool_call_eval_gate",
+      "passed": true,
+      "detail": "exact=1 executable=1 privacy=1"
+    },
+    {
+      "label": "synthetic_privacy_contract",
+      "passed": true,
+      "detail": "synthetic-only corpus and split artifacts"
+    },
+    {
+      "label": "router_lab_available",
+      "passed": true,
+      "detail": "/ai/router-lab.html"
+    }
+  ],
+  "promptRegistry": {
+    "valid": true,
+    "errors": [],
+    "productionPromptCount": 4,
+    "prompts": [
+      {
+        "id": "router.classify-intent",
+        "owner": "ai-platform",
+        "method": "classifyIntent",
+        "productionVersion": "2026-06-17.tool-call-v1",
+        "evalDataset": "data/ai/routing-eval-fixtures.json",
+        "minEvalPassRate": 0.95,
+        "hasProductionVersion": true,
+        "forbiddenPayloads": [
+          "raw_cv",
+          "raw_resume",
+          "raw_pdf",
+          "email",
+          "phone",
+          "address",
+          "api_key",
+          "password",
+          "secret"
+        ]
+      },
+      {
+        "id": "workflow.generate-brief",
+        "owner": "ai-platform",
+        "method": "generateWorkflowBrief",
+        "productionVersion": "2026-06-17.brief-v1",
+        "evalDataset": "data/ai/routing-eval-fixtures.json",
+        "minEvalPassRate": 0.85,
+        "hasProductionVersion": true,
+        "forbiddenPayloads": [
+          "raw_cv",
+          "raw_resume",
+          "raw_pdf",
+          "email",
+          "phone",
+          "address",
+          "api_key",
+          "password",
+          "secret"
+        ]
+      },
+      {
+        "id": "document.generate-draft",
+        "owner": "ai-platform",
+        "method": "generateDocumentDraft",
+        "productionVersion": "2026-06-17.document-v1",
+        "evalDataset": "data/ai/routing-eval-fixtures.json",
+        "minEvalPassRate": 0.85,
+        "hasProductionVersion": true,
+        "forbiddenPayloads": [
+          "raw_pdf",
+          "api_key",
+          "password",
+          "secret"
+        ]
+      },
+      {
+        "id": "result.explain",
+        "owner": "ai-platform",
+        "method": "explainResult",
+        "productionVersion": "2026-06-17.explain-v1",
+        "evalDataset": "data/ai/routing-eval-fixtures.json",
+        "minEvalPassRate": 0.85,
+        "hasProductionVersion": true,
+        "forbiddenPayloads": [
+          "raw_cv",
+          "raw_resume",
+          "raw_pdf",
+          "email",
+          "phone",
+          "address",
+          "api_key",
+          "password",
+          "secret"
+        ]
+      }
+    ]
+  },
+  "routerManifest": {
+    "routerSafeToolCount": 1245,
+    "minRequired": 1000,
+    "sampleToolIds": [
+      "ke-paye",
+      "ng-paye",
+      "afrotools-pro",
+      "medical-report",
+      "afropoints",
+      "remittance-compare",
+      "car-price-intelligence",
+      "cv-builder",
+      "car-import-cost",
+      "gh-paye",
+      "invoice-generator",
+      "pdf-editor"
+    ]
+  },
+  "toolCatalogPack": {
+    "toolCount": 1245,
+    "chunkCount": 57,
+    "categoryCount": 31,
+    "manifestHash": "4decc63641ab8a56733f621a3725d3302595a81d843a9ec160dc8eaa75335579",
+    "maxChunkChars": 28000,
+    "gate": {
+      "passed": true,
+      "minExpectedTools": 1000,
+      "toolCoverageComplete": true,
+      "duplicateIds": [],
+      "rawTextDetected": false
+    },
+    "privacy": {
+      "source": "public_router_safe_manifest",
+      "containsRealUserData": false,
+      "storesRawPrivateContent": false,
+      "rawPromptIncluded": false,
+      "rawTextDetected": false
+    }
+  },
+  "corpus": {
+    "recordCount": 159,
+    "categoryCount": 23,
+    "sourceCounts": {
+      "routing_eval_fixture": 112,
+      "prompt_example_registry": 47
+    },
+    "splitCounts": {
+      "eval": 150,
+      "train": 9
+    },
+    "syntheticOnly": true
+  },
+  "modelTraining": {
+    "recordCount": 159,
+    "splitCounts": {
+      "train": 100,
+      "validation": 29,
+      "test": 30
+    },
+    "heldOutCategoryCount": 23,
+    "files": {
+      "train": "router-tool-call-train.jsonl",
+      "validation": "router-tool-call-validation.jsonl",
+      "test": "router-tool-call-test.jsonl"
+    },
+    "privacy": {
+      "syntheticOnly": true,
+      "containsRealUserData": false,
+      "storesRawPrivateContent": false,
+      "urlPrivacyContract": "sensitive fields must use browser-local prefill storage, not route query strings"
+    }
+  },
+  "evaluation": {
+    "prompt": {
+      "promptId": "router.classify-intent",
+      "promptVersion": "2026-06-17.tool-call-v1",
+      "evalDataset": "data/ai/routing-eval-fixtures.json",
+      "minEvalPassRate": 0.95
+    },
+    "gate": {
+      "minExactToolPassRate": 0.98,
+      "minExecutablePassRate": 1,
+      "minUrlPrivacyPassRate": 1,
+      "passed": true
+    },
+    "totals": {
+      "total": 159,
+      "passed": 159,
+      "exactTool": 159,
+      "categoryMatch": 159,
+      "executable": 159,
+      "urlPrivacy": 159,
+      "missingInputMatch": 159,
+      "passRate": 1,
+      "exactToolPassRate": 1,
+      "categoryPassRate": 1,
+      "executablePassRate": 1,
+      "urlPrivacyPassRate": 1,
+      "missingInputMatchRate": 1
+    },
+    "failureCount": 0
+  },
+  "operations": {
+    "primaryRunbook": [
+      "npm run ai:training-corpus",
+      "npm run ai:model-splits",
+      "npm run ai:tool-catalog-pack",
+      "npm run eval:ai-tool-calls",
+      "npm run ai:ops-report",
+      "npm run test:ai"
+    ],
+    "releaseGate": "Do not promote router prompt/model/provider changes unless this report gate and test:ai pass.",
+    "liveDataNote": "This report proves repo artifacts only. Live Supabase schema, provider keys, Netlify deploy health, and production traffic must be checked separately."
+  }
+}

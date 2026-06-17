@@ -41,12 +41,28 @@ async function call(body, options) {
     assert.strictEqual(response.statusCode, 200);
     assert.strictEqual(json.status, 'success');
     assert.strictEqual(json.selectedTool.id, 'cv-builder');
+    assert.strictEqual(json.toolCall.type, 'existing_tool_call');
+    assert.strictEqual(json.toolCall.toolId, 'cv-builder');
+    assert.strictEqual(json.toolCall.action, 'prefill_existing_tool');
+    assert.ok(json.toolCall.capabilities.includes('prefill'));
     assert.ok(json.selectedRoute.startsWith('/tools/cv-builder/'));
     assert.ok(json.selectedRoute.includes('source=api_ai_route'));
     assert.ok(json.selectedRoute.includes('country=Ghana'));
     assert.strictEqual(json.safetyDomain, 'employment');
     assert.strictEqual(json.privacyMode, 'browser_local');
     assert.deepStrictEqual(json.missingInputs, []);
+    assert.ok(Array.isArray(json.toolCandidates));
+    assert.strictEqual(json.toolCatalog.routerSafeToolCount >= 1000, true);
+    assert.strictEqual(json.toolCatalog.candidateCount, json.toolCandidates.length);
+    assert.strictEqual(json.orchestration.type, 'afrotools_ai_orchestration_summary');
+    assert.strictEqual(json.orchestration.source, 'deterministic_full_catalog_api');
+    assert.strictEqual(json.orchestration.rawQueryIncluded, false);
+    assert.strictEqual(json.orchestration.selectedToolId, 'cv-builder');
+    assert.strictEqual(json.orchestration.candidateCount, json.toolCandidates.length);
+    assert.strictEqual(json.orchestration.routerSafeToolCount, json.toolCatalog.routerSafeToolCount);
+    assert.ok(json.toolCandidates.every((candidate) => candidate.type === 'existing_tool_candidate'));
+    assert.ok(json.toolCandidates.every((candidate) => candidate.toolId !== json.toolCall.toolId));
+    assert.ok(!JSON.stringify(json.toolCandidates).includes('electrical engineer'));
     assert.ok(!JSON.stringify(json).includes('electrical engineer'));
   }
 
@@ -60,9 +76,15 @@ async function call(body, options) {
     assert.strictEqual(response.statusCode, 200);
     assert.strictEqual(json.status, 'no_match');
     assert.strictEqual(json.selectedTool.id, 'tool-search');
+    assert.strictEqual(json.toolCall.toolId, 'tool-search');
+    assert.strictEqual(json.toolCall.action, 'open_existing_tool');
     assert.ok(json.selectedRoute.startsWith('/search/'));
     assert.strictEqual(json.category, 'search');
     assert.strictEqual(json.confidence, 0);
+    assert.deepStrictEqual(json.toolCandidates, []);
+    assert.strictEqual(json.orchestration.status, 'no_match');
+    assert.strictEqual(json.orchestration.selectedToolId, 'tool-search');
+    assert.strictEqual(json.orchestration.rawQueryIncluded, false);
   }
 
   {
@@ -75,8 +97,16 @@ async function call(body, options) {
     assert.strictEqual(response.statusCode, 200);
     assert.strictEqual(json.status, 'success');
     assert.strictEqual(json.selectedTool.id, 'import-duty');
+    assert.strictEqual(json.toolCall.toolId, 'import-duty');
+    assert.ok(json.toolCall.missingInputNames.includes('itemValue'));
     assert.strictEqual(json.safetyDomain, 'finance');
     assert.ok(json.missingInputs.includes('itemValue'));
+    assert.ok(Array.isArray(json.toolCandidates));
+    assert.strictEqual(json.orchestration.selectedToolId, 'import-duty');
+    assert.strictEqual(json.orchestration.selectedRoute, '/tools/import-duty/');
+    assert.ok(json.toolCandidates.every((candidate) => candidate.type === 'existing_tool_candidate'));
+    assert.ok(json.toolCandidates.every((candidate) => candidate.toolId !== 'import-duty'));
+    assert.ok(!JSON.stringify(json.toolCandidates).includes('Toyota Axio'));
     assert.ok(!Object.prototype.hasOwnProperty.call(json, 'extractedInputs'));
   }
 
@@ -98,6 +128,7 @@ async function call(body, options) {
     assert.ok(!payload.includes('chain'));
     assert.ok(!payload.includes('_meta'));
     assert.ok(!payload.includes('provider'));
+    assert.ok(Array.isArray(json.toolCandidates));
   }
 
   {

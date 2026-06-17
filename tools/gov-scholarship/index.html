@@ -122,6 +122,40 @@ select:focus{outline:none;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,2
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/gov-scholarship/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/bourses-gouvernementales/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/gov-scholarship/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What documents usually matter first?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Transcript, admission letter, ID/passport, recommendation letters, essay, CV, and proof of financial need where required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I apply close to the deadline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, but late applications fail easily because referees, transcripts, portals, and payment confirmations take time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I reuse one essay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use a base essay, but tailor motivation, country fit, course fit, and impact plan to each scholarship."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/gov-scholarship/"
+}
+</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -201,6 +235,31 @@ select:focus{outline:none;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,2
 </div>
 
 
+
+<section class="df-upgrade" data-df-upgrade="gov-scholarship">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Scholarship readiness</span>
+      <h2>Check whether an application pack is actually ready</h2>
+      <p>Score deadline pressure and document readiness before opening country scholarship routes or sending applications.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: readiness score and missing-document focus.</li><li>Methodology: deadline buffer plus number of core documents ready.</li><li>Source note: official scholarship pages control eligibility, deadlines, and required documents.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education disclaimer: this does not guarantee funding or admission. Verify eligibility, deadline, and required documents with the official scholarship provider. Sources/reference: <a href="https://www.daad.de/en/studying-in-germany/scholarships/" target="_blank" rel="noopener">DAAD scholarship database</a> | <a href="https://cscuk.fcdo.gov.uk/scholarships/" target="_blank" rel="noopener">Commonwealth Scholarships</a></p>
+    </div>
+    <form class="df-form" data-df-form="gov-scholarship">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Study level<select name="level" aria-label="Study level"><option value="undergraduate">undergraduate</option><option value="masters">masters</option><option value="phd">phd</option><option value="short course">short course</option></select></label>
+      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
+      <label>Core documents ready<input name="documentsReady" type="number" value="5" min="0" step="any" aria-label="Core documents ready"></label>
+      <button type="submit">Check readiness</button>
+      <output class="df-result" data-df-result="gov-scholarship" aria-live="polite">Result: enter deadline and documents to score scholarship readiness.</output>
+      <div class="df-actions"><button type="button" data-df-copy="gov-scholarship">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="gov-scholarship-faq-title">
+  <h2 id="gov-scholarship-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>What documents usually matter first?</summary><p>Transcript, admission letter, ID/passport, recommendation letters, essay, CV, and proof of financial need where required.</p></details><details><summary>Can I apply close to the deadline?</summary><p>Yes, but late applications fail easily because referees, transcripts, portals, and payment confirmations take time.</p></details><details><summary>Should I reuse one essay?</summary><p>Use a base essay, but tailor motivation, country fit, course fit, and impact plan to each scholarship.</p></details></div>
+</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -267,5 +326,6 @@ function renderResults(list) {
 // Show all on load
 renderResults(GOV_SCHOLARSHIPS);
 </script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

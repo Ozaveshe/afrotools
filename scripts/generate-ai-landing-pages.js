@@ -89,7 +89,7 @@ function renderStructuredData(page, data) {
       {
         "@type": "ItemList",
         "@id": canonical,
-        "name": page.title + " underlying tools",
+        "name": page.title + " tools",
         "itemListElement": page.tools.map((tool, index) => ({
           "@type": "ListItem",
           "position": index + 1,
@@ -151,7 +151,7 @@ function renderPage(page, data) {
         <p class="ai-hero-copy">${escapeHtml(page.description)}</p>
         <div class="ai-hero-actions">
           <a class="ai-primary" href="${escapeHtml(prompt)}">Try this prompt</a>
-          <a class="ai-secondary" href="#tools">Open underlying tools</a>
+          <a class="ai-secondary" href="#tools">Open the tools</a>
         </div>
       </div>
     </section>
@@ -160,7 +160,7 @@ function renderPage(page, data) {
       <div class="ai-landing-wrap">
         <section class="ai-section ai-two" aria-labelledby="how-it-works">
           <div>
-            <h2 id="how-it-works">What this workflow does</h2>
+            <h2 id="how-it-works">How this helps</h2>
             <p>${escapeHtml(page.summary)}</p>
             <div class="ai-actions-row">
               <a class="ai-primary" style="background:#0057b8;color:#fff;border-color:#0057b8" href="${escapeHtml(prompt)}">Ask AfroTools AI</a>
@@ -180,11 +180,11 @@ function renderPage(page, data) {
 
         <section class="ai-section" aria-labelledby="example-prompts">
           <h2 id="example-prompts">Example prompts</h2>
-          <div class="ai-grid">${examplePrompts.map((item) => `<a class="ai-prompt" href="${escapeHtml(promptHref(item))}"><span><strong>${escapeHtml(item)}</strong><span>Routes to the relevant AfroTools workflow.</span></span></a>`).join("")}</div>
+          <div class="ai-grid">${examplePrompts.map((item) => `<a class="ai-prompt" href="${escapeHtml(promptHref(item))}"><span><strong>${escapeHtml(item)}</strong><span>Opens the right AfroTools tool.</span></span></a>`).join("")}</div>
         </section>
 
         <section class="ai-section" id="tools" aria-labelledby="tools-title">
-          <h2 id="tools-title">Underlying tools this page routes to</h2>
+          <h2 id="tools-title">Tools this page can open</h2>
           <div class="ai-grid">${page.tools.map((tool) => `<a class="ai-tool" href="${escapeHtml(tool.href)}"><strong>${escapeHtml(tool.label)}</strong><span>${escapeHtml(tool.note)}</span></a>`).join("")}</div>
         </section>
 

@@ -57,6 +57,41 @@ test("default homepage keeps the legacy hero while routing its prompt form throu
   await expect(page.locator("#aiCommandInput")).toHaveValue("Write me a CV for an electrical engineer in Ghana");
   await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
   expect(new URL(page.url()).searchParams.get("q")).toBe(null);
+  const report = await page.evaluate(function () {
+    return window.AfroToolsAIIntentAnalytics.getReport();
+  });
+  expect(report.surfaceBreakdown.some(function (item) { return item.name === "homepage"; })).toBe(true);
+  expect(JSON.stringify(report)).not.toContain("electrical engineer");
+});
+
+test("legacy homepage dropdown surfaces an AI match for sentence-style prompts", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  await page.locator("#hero-search-input").fill("n electrical engineer in Ghana");
+  const firstSuggestion = page.locator("#search-dropdown .sd-item").first();
+
+  await expect(firstSuggestion).toContainText(/CV|Resume/i, { timeout: 10000 });
+  await expect(firstSuggestion).toContainText(/AI match/i);
+  await expect(firstSuggestion).toHaveAttribute("href", "/tools/cv-builder/");
+  await expect(page.locator("#search-dropdown")).not.toContainText("No tools found");
+
+  const loaded = await page.evaluate(function () {
+    return {
+      router: Boolean(window.AfroToolsAIOrchestrator),
+      aiScriptCount: document.querySelectorAll('script[src*="/assets/js/ai/"]').length
+    };
+  });
+  expect(loaded.router).toBe(true);
+  expect(loaded.aiScriptCount).toBeGreaterThanOrEqual(4);
+  const report = await page.evaluate(function () {
+    return window.AfroToolsAIIntentAnalytics.getReport();
+  });
+  expect(report.surfaceBreakdown.some(function (item) { return item.name === "homepage"; })).toBe(true);
+  expect(report.topSelectedTools.some(function (item) { return item.name === "cv-builder"; })).toBe(true);
+  expect(JSON.stringify(report)).not.toContain("electrical engineer");
 });
 
 test("feature flag on renders the command homepage variant", async ({ page }) => {
@@ -68,7 +103,7 @@ test("feature flag on renders the command homepage variant", async ({ page }) =>
   await expect(hero).toBeVisible();
   await expect(page.locator("#legacy-home-hero")).toBeHidden();
   await expect(hero.getByRole("heading", { name: /AfroTools AI/i, level: 1 })).toContainText("Africa");
-  await expect(hero.getByPlaceholder("What do you want to calculate, compare, write, or plan?")).toBeVisible();
+  await expect(hero.locator("#ai-home-command-input")).toBeVisible();
   await expect(hero.getByRole("link", { name: "Browse all tools" })).toHaveAttribute("href", "/tools/");
   await expect(page.locator("#start-country")).toBeAttached();
   await expect(page.getByRole("link", { name: /CV Builder/i }).first()).toBeAttached();
@@ -81,9 +116,9 @@ test("prompt chips populate and focus the command input", async ({ page }) => {
 
   const hero = page.locator("#afrotoolsAiCommandHero");
   const input = hero.locator("#ai-home-command-input");
-  await hero.getByRole("button", { name: "Study in Canada from Nigeria with $8,000" }).click();
+  await hero.getByRole("button", { name: "Get Ghana passport documents, fees to check, and next steps" }).click();
 
-  await expect(input).toHaveValue("Study in Canada from Nigeria with $8,000");
+  await expect(input).toHaveValue("Get Ghana passport documents, fees to check, and next steps");
   await expect(input).toBeFocused();
 });
 
@@ -126,7 +161,7 @@ test("command submit routes to AI, scrubs prompt from URL, and launches CV Build
   await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
   expect(new URL(page.url()).searchParams.get("q")).toBe(null);
 
-  await page.locator("[data-workflow-card]").first().getByRole("link", { name: "Open tool" }).click();
+  await page.locator("[data-workflow-card]").first().getByRole("link", { name: /Open (this )?tool/ }).click();
   await page.waitForURL(/\/tools\/cv-builder\/.*prefill=1/);
 
   const prefill = await page.evaluate(function () {

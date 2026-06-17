@@ -58,6 +58,8 @@
       <article class="report-card"><span>Pro clicks</span><strong id="proCount">0</strong></article>
       <article class="report-card"><span>Sponsor opt-ins</span><strong id="sponsorCount">0</strong></article>
       <article class="report-card"><span>API/widget interest</span><strong id="apiWidgetCount">0</strong></article>
+      <article class="report-card"><span>Router feedback</span><strong id="feedbackCount">0</strong></article>
+      <article class="report-card"><span>Drift signals</span><strong id="driftCount">0</strong></article>
     </section>
     <div class="report-sections">
       <section class="report-section">
@@ -79,6 +81,10 @@
       <section class="report-section">
         <h2>Top missing inputs</h2>
         <ul class="report-list" id="topMissing"></ul>
+      </section>
+      <section class="report-section">
+        <h2>Surfaces</h2>
+        <ul class="report-list" id="topSurfaces"></ul>
       </section>
       <section class="report-section">
         <h2>Entry sources</h2>
@@ -104,13 +110,21 @@
         <h2>No-match categories</h2>
         <ul class="report-list" id="noMatchCategories"></ul>
       </section>
+      <section class="report-section">
+        <h2>Router feedback</h2>
+        <ul class="report-list" id="feedbackOutcomes"></ul>
+      </section>
+      <section class="report-section">
+        <h2>Drift signals</h2>
+        <ul class="report-list" id="driftSignals"></ul>
+      </section>
     </div>
     <section class="report-section">
       <h2>JSON output</h2>
       <pre class="report-json" id="reportJson">{}</pre>
     </section>
   </main>
-  <script src="/assets/js/ai/intent-analytics.js?v=3285dec5"></script>
+  <script src="/assets/js/ai/intent-analytics.js?v=4de3dd18"></script>
   <script>
   (function () {
     "use strict";
@@ -142,17 +156,22 @@
       document.getElementById("proCount").textContent = totals.proUpgradeClicked || 0;
       document.getElementById("sponsorCount").textContent = totals.sponsorLeadOptinSubmitted || 0;
       document.getElementById("apiWidgetCount").textContent = totals.apiWidgetInterest || 0;
+      document.getElementById("feedbackCount").textContent = totals.routerFeedbackSubmitted || 0;
+      document.getElementById("driftCount").textContent = totals.routerDriftSignals || 0;
       renderList("topWorkflows", report.topWorkflows || []);
       renderList("topCategories", report.topRoutedCategories || []);
       renderList("topCountries", report.topCountriesDetected || []);
       renderList("topTools", report.topSelectedTools || []);
       renderList("topMissing", report.topMissingInputs || []);
+      renderList("topSurfaces", report.topSurfaces || report.surfaceBreakdown || []);
       renderList("topSources", report.topSources || []);
       renderList("confidenceBuckets", report.confidenceBuckets || []);
       renderList("exportTypes", report.exportTypes || []);
       renderList("interestSurfaces", report.interestSurfaces || []);
       renderList("safePromptExamples", report.safePromptExamples || []);
       renderList("noMatchCategories", report.noMatchCategories || []);
+      renderList("feedbackOutcomes", report.feedbackOutcomes || []);
+      renderList("driftSignals", report.driftSignals || []);
       reportJson.textContent = JSON.stringify(report, null, 2);
     }
     document.getElementById("copyReport").addEventListener("click", function () {

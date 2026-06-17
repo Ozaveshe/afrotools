@@ -21,6 +21,8 @@
     "ai_prefill_failed",
     "ai_export_generated",
     "ai_project_saved",
+    "ai_router_feedback_submitted",
+    "ai_router_drift_signal",
     "ai_signup_prompt_shown",
     "ai_pro_upgrade_clicked",
     "sponsor_lead_optin_submitted",
@@ -79,7 +81,11 @@
         signupPromptShown: 0,
         proUpgradeClicked: 0,
         sponsorLeadOptinSubmitted: 0,
-        apiWidgetInterest: 0
+        apiWidgetInterest: 0,
+        routerFeedbackSubmitted: 0,
+        routerFeedbackPositive: 0,
+        routerFeedbackNegative: 0,
+        routerDriftSignals: 0
       },
       categories: {},
       workflows: {},
@@ -87,11 +93,15 @@
       countries: {},
       missingInputs: {},
       queryLengthBuckets: {},
+      surfaces: {},
       sources: {},
       confidenceBuckets: {},
       exportTypes: {},
       interestSurfaces: {},
       noMatchCategories: {},
+      feedbackOutcomes: {},
+      feedbackReasons: {},
+      driftSignals: {},
       safePromptExamples: {}
     };
   }
@@ -118,11 +128,15 @@
         countries: Object.assign({}, parsed.countries || {}),
         missingInputs: Object.assign({}, parsed.missingInputs || {}),
         queryLengthBuckets: Object.assign({}, parsed.queryLengthBuckets || {}),
+        surfaces: Object.assign({}, parsed.surfaces || {}),
         sources: Object.assign({}, parsed.sources || {}),
         confidenceBuckets: Object.assign({}, parsed.confidenceBuckets || {}),
         exportTypes: Object.assign({}, parsed.exportTypes || {}),
         interestSurfaces: Object.assign({}, parsed.interestSurfaces || {}),
         noMatchCategories: Object.assign({}, parsed.noMatchCategories || {}),
+        feedbackOutcomes: Object.assign({}, parsed.feedbackOutcomes || {}),
+        feedbackReasons: Object.assign({}, parsed.feedbackReasons || {}),
+        driftSignals: Object.assign({}, parsed.driftSignals || {}),
         safePromptExamples: Object.assign({}, parsed.safePromptExamples || {})
       });
     } catch (err) {
@@ -159,6 +173,16 @@
     if (value === "category" || value === "category_tile") return "category_pill";
     if (value === "direct" || value === "ai") return "direct_ai";
     return ALLOWED_SOURCES[value] ? value : "unknown";
+  }
+
+  function normalizeSurface(surface) {
+    var value = safeString(surface, "ai_command_page").toLowerCase().replace(/[^a-z0-9_-]+/g, "_");
+    if (value === "ai" || value === "ai_command" || value === "ai_command_page") return "ai_command_page";
+    if (value === "ask" || value === "ask_page" || value === "ask_frontdoor") return "ask_page";
+    if (value === "home" || value === "homepage" || value === "homepage_input") return "homepage";
+    if (value === "search" || value === "search_page" || value === "tool_search") return "search_page";
+    if (value === "widget" || value === "ai_widget" || value === "mini_router") return "ai_widget";
+    return "unknown";
   }
 
   function normalizeMissingInputs(inputs) {
@@ -208,7 +232,7 @@
     if (!conversionType && eventName === "ai_api_interest_clicked") conversionType = "api";
     if (!conversionType && eventName === "ai_widget_interest_clicked") conversionType = "widget";
     var payload = {
-      surface: "ai_command_page",
+      surface: normalizeSurface(meta.surface || state.surface || "ai_command_page"),
       intent_category: safeString(meta.intentCategory || state.intentCategory || state.safetyDomain || state.domain || "unknown"),
       selected_tool_id: safeString(meta.selectedToolId || state.selectedToolId || "unknown"),
       country_detected: safeString(meta.country || country, "unknown"),
@@ -225,6 +249,9 @@
       prefill_status: safeString(meta.prefillStatus || meta.prefill_status || "unknown"),
       conversion_type: safeString(conversionType || "none"),
       no_match_category: safeString(meta.noMatchCategory || (meta.fallbackUsed ? meta.routerSource || state.source || "fallback" : ""), "none"),
+      feedback_outcome: normalizeFeedbackOutcome(meta.feedbackOutcome || meta.feedback_outcome || ""),
+      feedback_reason: normalizeFeedbackReason(meta.feedbackReason || meta.feedback_reason || ""),
+      drift_signal: normalizeDriftSignal(meta.driftSignal || meta.drift_signal || ""),
       safe_prompt_example: safePromptExample(meta.safePromptExample || "", state, meta)
     };
     if (isRawQueryLoggingEnabled()) {
@@ -271,6 +298,35 @@
     return "high";
   }
 
+  function normalizeFeedbackOutcome(value) {
+    var clean = safeString(value, "none").toLowerCase().replace(/[^a-z0-9_-]/g, "_");
+    if (clean === "yes" || clean === "good" || clean === "positive" || clean === "useful") return "positive";
+    if (clean === "no" || clean === "bad" || clean === "negative" || clean === "wrong") return "negative";
+    if (clean === "skipped" || clean === "dismissed") return clean;
+    return "none";
+  }
+
+  function normalizeFeedbackReason(value) {
+    var clean = safeString(value, "none").toLowerCase().replace(/[^a-z0-9_-]/g, "_").slice(0, 48);
+    if (clean === "none" || clean === "unknown") return "none";
+    if (/wrong|mismatch|bad_route/.test(clean)) return "route_mismatch";
+    if (/missing|field|input/.test(clean)) return "missing_context";
+    if (/privacy|sensitive|unsafe/.test(clean)) return "privacy_concern";
+    if (/slow|error|broken|fail/.test(clean)) return "runtime_error";
+    return clean || "none";
+  }
+
+  function normalizeDriftSignal(value) {
+    var clean = safeString(value, "none").toLowerCase().replace(/[^a-z0-9_-]/g, "_").slice(0, 48);
+    if (clean === "none" || clean === "unknown") return "none";
+    if (/low_confidence/.test(clean)) return "low_confidence";
+    if (/fallback|no_match/.test(clean)) return "fallback_or_no_match";
+    if (/wrong|mismatch|bad_route/.test(clean)) return "route_mismatch";
+    if (/privacy|sensitive|unsafe/.test(clean)) return "privacy_concern";
+    if (/runtime|error|broken|failed/.test(clean)) return "runtime_error";
+    return clean || "none";
+  }
+
   function updateAggregate(eventName, payload) {
     var store = readStore();
     var totals = store.totals;
@@ -291,17 +347,27 @@
     if (eventName === "ai_pro_upgrade_clicked") totals.proUpgradeClicked += 1;
     if (eventName === "sponsor_lead_optin_submitted") totals.sponsorLeadOptinSubmitted += 1;
     if (eventName === "ai_api_interest_clicked" || eventName === "ai_widget_interest_clicked" || payload.conversion_type === "api" || payload.conversion_type === "widget") totals.apiWidgetInterest += 1;
+    if (eventName === "ai_router_feedback_submitted") {
+      totals.routerFeedbackSubmitted += 1;
+      if (payload.feedback_outcome === "positive") totals.routerFeedbackPositive += 1;
+      if (payload.feedback_outcome === "negative") totals.routerFeedbackNegative += 1;
+    }
+    if (eventName === "ai_router_drift_signal" || payload.drift_signal && payload.drift_signal !== "none") totals.routerDriftSignals += 1;
 
     increment(store.categories, payload.intent_category);
     increment(store.workflows, payload.workflow_type);
     increment(store.tools, payload.selected_tool_id);
     increment(store.countries, payload.country_detected);
     increment(store.queryLengthBuckets, payload.query_length_bucket);
+    increment(store.surfaces, payload.surface);
     increment(store.sources, payload.source);
     increment(store.confidenceBuckets, payload.confidence_bucket);
     if (payload.export_type && payload.export_type !== "none") increment(store.exportTypes, payload.export_type);
     if (payload.conversion_type === "api" || payload.conversion_type === "widget") increment(store.interestSurfaces, payload.conversion_type);
     if (payload.no_match_category && payload.no_match_category !== "none") increment(store.noMatchCategories, payload.no_match_category);
+    if (payload.feedback_outcome && payload.feedback_outcome !== "none") increment(store.feedbackOutcomes, payload.feedback_outcome);
+    if (payload.feedback_reason && payload.feedback_reason !== "none") increment(store.feedbackReasons, payload.feedback_reason);
+    if (payload.drift_signal && payload.drift_signal !== "none") increment(store.driftSignals, payload.drift_signal);
     if (payload.safe_prompt_example) increment(store.safePromptExamples, payload.safe_prompt_example);
     payload.missing_input_types.forEach(function (input) {
       increment(store.missingInputs, input);
@@ -357,17 +423,24 @@
       topMissingInputs: top(store.missingInputs, 10),
       topSelectedTools: top(store.tools, 10),
       queryLengthBuckets: top(store.queryLengthBuckets, 8),
+      surfaceBreakdown: top(store.surfaces, 8),
+      topSurfaces: top(store.surfaces, 8),
       sourceBreakdown: top(store.sources, 8),
       topSources: top(store.sources, 8),
       confidenceBuckets: top(store.confidenceBuckets, 8),
       exportTypes: top(store.exportTypes, 8),
       interestSurfaces: top(store.interestSurfaces, 8),
       noMatchCategories: top(store.noMatchCategories, 8),
+      feedbackOutcomes: top(store.feedbackOutcomes, 8),
+      feedbackReasons: top(store.feedbackReasons, 8),
+      driftSignals: top(store.driftSignals, 8),
       safePromptExamples: top(store.safePromptExamples, 8),
       fallbackRate: rate(store.totals.fallback, routed),
       toolOpenRate: rate(store.totals.toolOpen, routed),
       prefillSuccessRate: rate(store.totals.prefillSuccess, prefillAttempts),
-      clarificationCompletionRate: rate(store.totals.clarificationAnswered, shown)
+      clarificationCompletionRate: rate(store.totals.clarificationAnswered, shown),
+      routerFeedbackNegativeRate: rate(store.totals.routerFeedbackNegative, store.totals.routerFeedbackSubmitted),
+      routerDriftSignalRate: rate(store.totals.routerDriftSignals, routed)
     };
   }
 
@@ -389,11 +462,14 @@
     eventNames: EVENT_NAMES.slice(),
     queryLengthBucket: queryLengthBucket,
     normalizeSource: normalizeSource,
+    normalizeSurface: normalizeSurface,
     buildPayload: buildPayload,
     record: record,
     getReport: getReport,
     reset: reset,
     isRawQueryLoggingEnabled: isRawQueryLoggingEnabled,
-    isDebugMode: isDebugMode
+    isDebugMode: isDebugMode,
+    normalizeFeedbackOutcome: normalizeFeedbackOutcome,
+    normalizeDriftSignal: normalizeDriftSignal
   };
 });

@@ -50,6 +50,40 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calendrier-ramadan/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ratiba-ya-ramadhani/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ramadan-timetable/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why can Ramadan start shift by one day?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many communities follow local moon sighting or an official council, so calculated dates remain planning dates until confirmed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I publish mosque times from this tool?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use this for drafting only. Public mosque timetables should use the mosque or council-approved prayer times."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What buffer should families use for suhoor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many households add 5-15 minutes before Fajr as a safety buffer, but local guidance should come first."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/ramadan-timetable/"
+}
+</script>
 </head>
 <body>
 <afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
@@ -72,8 +106,34 @@
 </section>
 <main>
 <section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="ramadan-timetable"></section>
+
+<section class="df-upgrade" data-df-upgrade="ramadan-timetable">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Ramadan planner</span>
+      <h2>Create a Ramadan timetable draft before local confirmation</h2>
+      <p>Draft a family or community Ramadan timetable with city, start date, days, and suhoor buffer, then confirm moon sighting and mosque times.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: timetable draft and publishing caveats.</li><li>Methodology: start date, day count, city, and buffer; prayer times should be confirmed locally.</li><li>Source note: moon sighting and mosque timetable are the final authority for public schedules.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Religious disclaimer: calculated dates are for planning. Confirm the official start, suhoor, iftar, and Eid announcement locally before publishing. Sources/reference: <a href="https://praycalc.org/science/calculation-methods" target="_blank" rel="noopener">Prayer calculation methods</a> | <a href="https://www.islamicfinder.org/locale/?language=en" target="_blank" rel="noopener">IslamicFinder Islamic events</a></p>
+    </div>
+    <form class="df-form" data-df-form="ramadan-timetable">
+      <label>City<select name="city" aria-label="City"><option value="Lagos">Lagos</option><option value="Nairobi">Nairobi</option><option value="Accra">Accra</option><option value="Cape Town">Cape Town</option></select></label>
+      <label>Expected start date<input name="startDate" type="date" value="2026-02-18" min="0" step="any" aria-label="Expected start date"></label>
+      <label>Number of days<input name="days" type="number" value="30" min="0" step="any" aria-label="Number of days"></label>
+      <label>Suhoor safety buffer minutes<input name="suhoorBuffer" type="number" value="10" min="0" step="any" aria-label="Suhoor safety buffer minutes"></label>
+      <button type="submit">Draft timetable</button>
+      <output class="df-result" data-df-result="ramadan-timetable" aria-live="polite">Result: enter city and expected start date to draft a Ramadan timetable.</output>
+      <div class="df-actions"><button type="button" data-df-copy="ramadan-timetable">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="ramadan-timetable-faq-title">
+  <h2 id="ramadan-timetable-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Why can Ramadan start shift by one day?</summary><p>Many communities follow local moon sighting or an official council, so calculated dates remain planning dates until confirmed.</p></details><details><summary>Should I publish mosque times from this tool?</summary><p>Use this for drafting only. Public mosque timetables should use the mosque or council-approved prayer times.</p></details><details><summary>What buffer should families use for suhoor?</summary><p>Many households add 5-15 minutes before Fajr as a safety buffer, but local guidance should come first.</p></details></div>
+</section>
 </main>
 <afro-footer></afro-footer>
 <script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

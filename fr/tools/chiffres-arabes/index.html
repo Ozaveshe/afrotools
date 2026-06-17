@@ -1,50 +1,692 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Convertisseur de chiffres arabes | AfroTools</title>
-<meta name="description" content="Convertissez entre les chiffres arabes orientaux et les chiffres indo-arabes (0123456789) utilisés en Occident. Un outil pratique pour le travail multilingue.">
-<link rel="canonical" href="https://afrotools.com/fr/tools/chiffres-arabes/">
-<meta property="og:title" content="Convertisseur de chiffres arabes | AfroTools">
-<meta property="og:description" content="Convertissez entre les chiffres arabes orientaux et les chiffres indo-arabes (0123456789) utilisés en Occident. Un outil pratique pour le travail multilingue.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/arabic-calc.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/chiffres-arabes/">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Convertisseur de chiffres arabes | AfroTools">
-<meta name="twitter:description" content="Convertissez entre les chiffres arabes orientaux et les chiffres indo-arabes (0123456789) utilisés en Occident. Un outil pratique pour le travail multilingue.">
-<meta property="og:type" content="website">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
-<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/arabic-calc.webp">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/arabic-numerals/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/chiffres-arabes/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/arabic-numerals/" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convertisseur de chiffres arabes | AfroTools</title>
+  <meta name="description" content="Convertissez 0-9, chiffres Arabic-Indic et Extended Arabic-Indic pour documents arabes, nord-africains et multilingues. Copie et export inclus.">
+  <link rel="canonical" href="https://afrotools.com/fr/tools/chiffres-arabes/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/arabic-numerals/">
+  <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/chiffres-arabes/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/arabic-numerals/">
+  <meta property="og:title" content="Convertisseur de chiffres arabes | AfroTools">
+  <meta property="og:description" content="Convertissez entre chiffres occidentaux, Arabic-Indic et Extended Arabic-Indic avec copie rapide.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/arabic-calc.webp">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/chiffres-arabes/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Convertisseur de chiffres arabes | AfroTools">
+  <meta name="twitter:description" content="Convertissez les chiffres arabes et occidentaux pour documents multilingues.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/arabic-calc.webp">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script src="/assets/js/components/related-tools-data.min.js?v=97274272" defer></script>
+  <style>
+    :root {
+      --arabic-ink: #111827;
+      --arabic-muted: #5f6877;
+      --arabic-line: #dbe4ef;
+      --arabic-blue: #2459c7;
+      --arabic-green: #0f7a55;
+      --arabic-card: #ffffff;
+      --arabic-bg: #f5f8fc;
+    }
+
+    body {
+      margin: 0;
+      background: var(--arabic-bg);
+      color: var(--arabic-ink);
+    }
+
+    .page {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 30px 20px 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, .85fr);
+      gap: 24px;
+      align-items: stretch;
+      padding: 34px;
+      border: 1px solid var(--arabic-line);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 88% 20%, rgba(36, 89, 199, .12), transparent 31%),
+        linear-gradient(135deg, #ffffff 0%, #eef6ff 100%);
+      box-shadow: 0 20px 70px rgba(22, 31, 53, .08);
+    }
+
+    .kicker {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 14px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: #1746a2;
+      font-size: .74rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 670px;
+      margin: 18px 0 0;
+      color: var(--arabic-muted);
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions,
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--arabic-line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--arabic-ink);
+      font-weight: 850;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      border-color: var(--arabic-blue);
+      background: var(--arabic-blue);
+      color: #fff;
+    }
+
+    .digit-panel {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      align-content: start;
+      padding: 20px;
+      border: 1px solid var(--arabic-line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.86);
+    }
+
+    .digit {
+      display: grid;
+      gap: 3px;
+      place-items: center;
+      min-height: 70px;
+      border: 1px solid var(--arabic-line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .digit strong {
+      font-size: 1.55rem;
+      line-height: 1;
+    }
+
+    .digit small {
+      color: var(--arabic-muted);
+      font-size: .72rem;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(380px, 1.1fr);
+      gap: 22px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--arabic-line);
+      border-radius: 16px;
+      background: var(--arabic-card);
+      box-shadow: 0 16px 46px rgba(22, 31, 53, .06);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--arabic-line);
+      background: #fbfcff;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1.06rem;
+    }
+
+    .panel-head p {
+      margin: 6px 0 0;
+      color: var(--arabic-muted);
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #334155;
+      font-size: .82rem;
+      font-weight: 850;
+    }
+
+    textarea,
+    select {
+      width: 100%;
+      min-height: 44px;
+      box-sizing: border-box;
+      border: 1px solid #cdd7e5;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--arabic-ink);
+      font: inherit;
+      padding: 10px 12px;
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+      line-height: 1.65;
+    }
+
+    textarea[dir="rtl"] {
+      text-align: right;
+      font-size: 1.08rem;
+    }
+
+    textarea:focus,
+    select:focus,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid rgba(36, 89, 199, .24);
+      outline-offset: 2px;
+    }
+
+    .output-box {
+      display: grid;
+      gap: 12px;
+    }
+
+    .output {
+      padding: 18px;
+      border: 1px solid var(--arabic-line);
+      border-radius: 14px;
+      background: #f8fbff;
+    }
+
+    .output.main {
+      border-left: 5px solid var(--arabic-green);
+      background: #f2fbf6;
+    }
+
+    .output span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--arabic-muted);
+      font-size: .75rem;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .output code {
+      display: block;
+      color: var(--arabic-ink);
+      font-size: 1.1rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .method {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 13px;
+      background: #fff8e7;
+      color: #684100;
+      line-height: 1.65;
+    }
+
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      color: var(--arabic-muted);
+      font-size: .88rem;
+      font-weight: 800;
+    }
+
+    .source-grid,
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .source-card,
+    details {
+      border: 1px solid var(--arabic-line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .source-card h3 {
+      margin: 0 0 8px;
+      font-size: .96rem;
+    }
+
+    .source-card p,
+    details p {
+      margin: 0 0 12px;
+      color: var(--arabic-muted);
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+
+    .source-card a {
+      color: var(--arabic-blue);
+      font-weight: 850;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    details p {
+      margin-top: 10px;
+    }
+
+    .note {
+      margin-top: 22px;
+      padding: 16px;
+      border: 1px solid #f6d99a;
+      border-radius: 14px;
+      background: #fff8e7;
+      color: #684100;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 880px) {
+      .hero,
+      .workspace,
+      .source-grid,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        padding: 18px 14px 56px;
+      }
+
+      .digit-panel {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Convertisseur de chiffres arabes",
+    "url": "https://afrotools.com/fr/tools/chiffres-arabes/",
+    "description": "Convertisseur local entre chiffres occidentaux, Arabic-Indic et Extended Arabic-Indic.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web",
+    "inLanguage": "fr",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Quelle difference entre Arabic-Indic et Extended Arabic-Indic ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Unicode encode les chiffres Arabic-Indic en U+0660 a U+0669 et les chiffres Extended Arabic-Indic en U+06F0 a U+06F9. Leur usage depend de la langue, du pays et de la police."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Le convertisseur traduit-il le texte arabe ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il convertit uniquement les chiffres et certains separateurs numeriques. Il ne traduit pas les mots et ne corrige pas le sens du texte."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Puis-je utiliser le resultat dans un document officiel ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Utilisez le resultat comme aide de saisie, puis verifiez avec le modele officiel, la police utilisee et la personne qui valide le document."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
-<afro-navbar></afro-navbar>
-<main>
-<section class="hero" style="padding:3rem 1rem;text-align:center;background:var(--bg)">
-<h1>Convertisseur de chiffres arabes</h1>
-</section>
-<section style="max-width:1080px;margin:0 auto;padding:1rem">
-<iframe src="/tools/arabic-numerals/" style="width:100%;min-height:80vh;border:none;border-radius:12px" loading="lazy" title="Convertisseur de chiffres arabes"></iframe>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<p>Convertissez entre les chiffres arabes orientaux et les chiffres indo-arabes (0123456789) utilisés en Occident. Un outil pratique pour le travail multilingue.</p>
-<p>Les chiffres arabes orientaux sont largement utilisés dans le monde arabophone, y compris en Afrique du Nord. Notre convertisseur facilite la transition entre les deux systèmes de numération pour vos documents et communications.</p>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Quelle est la différence entre les deux systèmes ?</summary><p>Les chiffres indo-arabes (0-9) sont utilisés en Occident, tandis que les chiffres arabes orientaux sont utilisés dans de nombreux pays arabophones.</p></details>
-<details><summary>Dans quels pays africains utilise-t-on ces chiffres ?</summary><p>Les chiffres arabes orientaux sont courants en Égypte, au Soudan et dans d’autres pays d’Afrique du Nord arabophone.</p></details>
-<details><summary>Le convertisseur gère-t-il les grands nombres ?</summary><p>Oui, le convertisseur fonctionne avec des nombres de toute taille, y compris les décimales.</p></details>
-</section>
-</main>
-<afro-footer></afro-footer>
+  <afro-navbar></afro-navbar>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <span class="kicker">Arabic-Indic digits</span>
+        <h1>Convertir les chiffres sans casser le texte.</h1>
+        <p class="lead">Passez de 0123456789 vers ٠١٢٣٤٥٦٧٨٩, vers ۰۱۲۳۴۵۶۷۸۹, ou inversement. Utile pour factures, formulaires, horaires, prix, dates et documents multilingues en Afrique du Nord et dans les pays arabophones.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#converter">Convertir maintenant</a>
+          <button class="button" type="button" id="sampleBtn">Charger un exemple</button>
+        </div>
+      </div>
+      <aside class="digit-panel" aria-label="Table des chiffres">
+        <div class="digit"><strong>0</strong><small>٠ / ۰</small></div>
+        <div class="digit"><strong>1</strong><small>١ / ۱</small></div>
+        <div class="digit"><strong>2</strong><small>٢ / ۲</small></div>
+        <div class="digit"><strong>3</strong><small>٣ / ۳</small></div>
+        <div class="digit"><strong>4</strong><small>٤ / ۴</small></div>
+        <div class="digit"><strong>5</strong><small>٥ / ۵</small></div>
+        <div class="digit"><strong>6</strong><small>٦ / ۶</small></div>
+        <div class="digit"><strong>7</strong><small>٧ / ۷</small></div>
+        <div class="digit"><strong>8</strong><small>٨ / ۸</small></div>
+        <div class="digit"><strong>9</strong><small>٩ / ۹</small></div>
+      </aside>
+    </section>
+
+    <section class="workspace" id="converter">
+      <form class="panel" id="convertForm">
+        <div class="panel-head">
+          <h2>Texte ou nombre a convertir</h2>
+          <p>Le texte reste local dans le navigateur. Les lettres ne sont pas traduites; seuls les chiffres et separateurs numeriques changent.</p>
+        </div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div>
+              <label for="mode">Conversion</label>
+              <select id="mode">
+                <option value="to-arabic-indic">0-9 vers Arabic-Indic</option>
+                <option value="to-extended">0-9 vers Extended Arabic-Indic</option>
+                <option value="to-western">Arabic-Indic vers 0-9</option>
+                <option value="normalize">Normaliser tous les chiffres vers 0-9</option>
+              </select>
+            </div>
+            <div>
+              <label for="separators">Separateurs</label>
+              <select id="separators">
+                <option value="keep">Garder les separateurs</option>
+                <option value="arabic">Convertir . et , en separateurs arabes</option>
+                <option value="western">Convertir separateurs arabes en . et ,</option>
+              </select>
+            </div>
+            <div>
+              <label for="inputText">Entree</label>
+              <textarea id="inputText" dir="auto">Invoice 2026-06-17: 1,250.75 GHS</textarea>
+            </div>
+          </div>
+          <div class="controls">
+            <button class="button primary" type="submit">Convertir</button>
+            <button class="button" type="button" id="swapBtn">Inverser</button>
+            <button class="button" type="button" id="copyBtn">Copier</button>
+            <button class="button" type="button" id="downloadBtn">Telecharger TXT</button>
+            <button class="button" type="button" id="saveBtn">Sauver localement</button>
+          </div>
+          <p class="status" id="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <section class="panel" aria-labelledby="resultTitle">
+        <div class="panel-head">
+          <h2 id="resultTitle">Sortie</h2>
+          <p>Copiez le resultat ou exportez-le pour le coller dans votre document.</p>
+        </div>
+        <div class="panel-body output-box">
+          <div class="output main">
+            <span>Resultat converti</span>
+            <code id="outputText" dir="auto"></code>
+          </div>
+          <div class="output">
+            <span>Analyse rapide</span>
+            <code id="analysisText"></code>
+          </div>
+          <p class="method">Methodologie: chaque caractere de chiffre est mappe vers son equivalent Unicode. Avertissement: ce convertisseur est une aide technique non officielle; verifier avec votre modele, votre police et votre validateur avant usage officiel.</p>
+        </div>
+      </section>
+    </section>
+
+    <section class="source-grid" data-tool-verification-panel aria-label="Sources et verification">
+      <article class="source-card">
+        <h3>Unicode Arabic</h3>
+        <p>Le standard Unicode reference les Arabic-Indic digits de U+0660 a U+0669.</p>
+        <a href="https://www.unicode.org/charts/PDF/U0600.pdf" target="_blank" rel="noopener">Voir le chart Unicode</a>
+      </article>
+      <article class="source-card">
+        <h3>U+0660</h3>
+        <p>Reference de caractere pour Arabic-Indic digit zero, categorie Number Decimal Digit.</p>
+        <a href="https://www.fileformat.info/info/unicode/char/0660/index.htm" target="_blank" rel="noopener">Verifier U+0660</a>
+      </article>
+      <article class="source-card">
+        <h3>U+06F0</h3>
+        <p>Reference de caractere pour Extended Arabic-Indic digit zero.</p>
+        <a href="https://www.fileformat.info/info/unicode/char/06f0/index.htm" target="_blank" rel="noopener">Verifier U+06F0</a>
+      </article>
+    </section>
+
+    <section class="note">
+      <strong>Avertissement.</strong> L'outil convertit les caracteres numeriques, mais ne traduit pas le contenu, ne valide pas un document officiel et ne garantit pas le rendu dans toutes les polices. Verifier avec le systeme cible avant publication. Sources Unicode revues le 17 juin 2026.
+    </section>
+
+    <section class="faq-grid" aria-label="Questions frequentes">
+      <details>
+        <summary>Est-ce utile pour l'Afrique du Nord ?</summary>
+        <p>Oui, surtout pour documents arabes ou bilingues. Mais les usages varient selon pays, organisation, clavier et logiciel.</p>
+      </details>
+      <details>
+        <summary>Pourquoi deux formes de chiffres arabes ?</summary>
+        <p>Unicode distingue Arabic-Indic digits et Extended Arabic-Indic digits. Certaines formes sont plus courantes dans le monde arabe, d'autres dans les contextes persan, ourdou ou voisins.</p>
+      </details>
+      <details>
+        <summary>Le sens droite-gauche est-il gere ?</summary>
+        <p>Le navigateur gere l'affichage avec Unicode et la direction du texte. Pour des documents officiels, relisez le resultat dans le logiciel final.</p>
+      </details>
+    </section>
+
+    <afro-related-tools category="language" current="chiffres-arabes-fr"></afro-related-tools>
+  </main>
+
+  <afro-footer></afro-footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var western = '0123456789';
+      var arabicIndic = '٠١٢٣٤٥٦٧٨٩';
+      var extended = '۰۱۲۳۴۵۶۷۸۹';
+      var state = { output: '' };
+
+      function el(id) {
+        return document.getElementById(id);
+      }
+
+      function mapText(text, from, to) {
+        var lookup = {};
+        for (var i = 0; i < from.length; i += 1) {
+          lookup[from[i]] = to[i];
+        }
+        return text.replace(new RegExp('[' + from + ']', 'g'), function (char) {
+          return lookup[char] || char;
+        });
+      }
+
+      function normalizeDigits(text) {
+        return mapText(mapText(text, arabicIndic, western), extended, western);
+      }
+
+      function convertSeparators(text) {
+        var mode = el('separators').value;
+        if (mode === 'arabic') {
+          return text.replace(/\./g, '٫').replace(/,/g, '٬');
+        }
+        if (mode === 'western') {
+          return text.replace(/٫/g, '.').replace(/٬/g, ',');
+        }
+        return text;
+      }
+
+      function convert() {
+        var text = el('inputText').value || '';
+        var mode = el('mode').value;
+        var output = text;
+
+        if (mode === 'to-arabic-indic') {
+          output = mapText(normalizeDigits(text), western, arabicIndic);
+        } else if (mode === 'to-extended') {
+          output = mapText(normalizeDigits(text), western, extended);
+        } else if (mode === 'to-western' || mode === 'normalize') {
+          output = normalizeDigits(text);
+        }
+        output = convertSeparators(output);
+
+        var westernCount = (text.match(/[0-9]/g) || []).length;
+        var arabicCount = (text.match(/[٠-٩]/g) || []).length;
+        var extendedCount = (text.match(/[۰-۹]/g) || []).length;
+
+        el('outputText').textContent = output || 'Aucun texte a convertir.';
+        el('analysisText').textContent = 'Chiffres detectes: occidentaux ' + westernCount + ', Arabic-Indic ' + arabicCount + ', Extended Arabic-Indic ' + extendedCount + '. Mode: ' + el('mode').selectedOptions[0].textContent + '.';
+        el('status').textContent = 'Conversion prete.';
+        state.output = [
+          'AfroTools - Convertisseur de chiffres arabes',
+          'Mode: ' + el('mode').selectedOptions[0].textContent,
+          'Entree: ' + text,
+          'Sortie: ' + output,
+          'Avertissement: aide technique non officielle. Verifier le rendu final.'
+        ].join('\\n');
+        return state.output;
+      }
+
+      function copyResult() {
+        var text = state.output || convert();
+        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+          el('status').textContent = 'Copie bloquee par le navigateur. Utilisez le telechargement TXT.';
+          return;
+        }
+        navigator.clipboard.writeText(text).then(function () {
+          el('status').textContent = 'Resultat copie.';
+        }).catch(function () {
+          el('status').textContent = 'Copie bloquee par le navigateur. Utilisez le telechargement TXT.';
+        });
+      }
+
+      function downloadText() {
+        var text = state.output || convert();
+        var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = 'chiffres-arabes-afrotools.txt';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        el('status').textContent = 'Fichier TXT prepare.';
+      }
+
+      function saveLocal() {
+        var payload = {
+          savedAt: new Date().toISOString(),
+          mode: el('mode').value,
+          separators: el('separators').value,
+          input: el('inputText').value,
+          output: state.output || convert()
+        };
+        localStorage.setItem('afrotools:chiffres-arabes-fr:last', JSON.stringify(payload));
+        el('status').textContent = 'Conversion sauvee dans ce navigateur.';
+      }
+
+      el('convertForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        convert();
+      });
+      el('inputText').addEventListener('input', convert);
+      el('mode').addEventListener('change', convert);
+      el('separators').addEventListener('change', convert);
+      el('sampleBtn').addEventListener('click', function () {
+        el('inputText').value = 'Date 2026-06-17, montant 1,250.75, telephone +233 24 123 4567';
+        el('mode').value = 'to-arabic-indic';
+        el('separators').value = 'arabic';
+        convert();
+        location.hash = '#converter';
+      });
+      el('swapBtn').addEventListener('click', function () {
+        el('inputText').value = el('outputText').textContent;
+        el('mode').value = 'to-western';
+        el('separators').value = 'western';
+        convert();
+      });
+      el('copyBtn').addEventListener('click', copyResult);
+      el('downloadBtn').addEventListener('click', downloadText);
+      el('saveBtn').addEventListener('click', saveLocal);
+
+      convert();
+    }());
+  </script>
 </body>
 </html>

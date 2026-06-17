@@ -213,6 +213,198 @@
     return clean.length > 1 && clean.endsWith("/") ? clean.slice(0, -1).toLowerCase() : clean.toLowerCase();
   }
 
+  var SEARCH_STOP_WORDS = {
+    a: true,
+    about: true,
+    all: true,
+    an: true,
+    and: true,
+    any: true,
+    app: true,
+    are: true,
+    as: true,
+    be: true,
+    build: true,
+    calculate: true,
+    calculator: true,
+    can: true,
+    check: true,
+    checker: true,
+    create: true,
+    do: true,
+    for: true,
+    from: true,
+    get: true,
+    give: true,
+    help: true,
+    how: true,
+    i: true,
+    in: true,
+    into: true,
+    is: true,
+    make: true,
+    me: true,
+    my: true,
+    need: true,
+    of: true,
+    on: true,
+    open: true,
+    or: true,
+    plan: true,
+    planner: true,
+    please: true,
+    should: true,
+    show: true,
+    tell: true,
+    the: true,
+    this: true,
+    to: true,
+    tool: true,
+    use: true,
+    what: true,
+    will: true,
+    with: true,
+  };
+
+  var GEOGRAPHY_SEARCH_TERMS = {
+    abidjan: true,
+    abuja: true,
+    accra: true,
+    africa: true,
+    african: true,
+    cameroon: true,
+    dakar: true,
+    douala: true,
+    egypt: true,
+    ethiopia: true,
+    ghana: true,
+    ibadan: true,
+    kenya: true,
+    kigali: true,
+    lagos: true,
+    morocco: true,
+    nairobi: true,
+    nigeria: true,
+    rwanda: true,
+    senegal: true,
+    tanzania: true,
+    uganda: true,
+    zambia: true,
+    zimbabwe: true,
+  };
+
+  function normalizeSearchText(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function tokenizeToolQuery(value, options) {
+    var opts = options || {};
+    var minLength = Number(opts.minLength || 3);
+    var limit = Number(opts.limit || 80);
+    var tokens = normalizeSearchText(value).split(/\s+/).filter(function keepToken(token) {
+      return token && token.length >= minLength && !SEARCH_STOP_WORDS[token];
+    });
+    return unique(tokens).slice(0, limit);
+  }
+
+  function toolSearchFields(tool) {
+    var entry = tool || {};
+    return [
+      { name: "id", weight: 10, value: entry.id },
+      { name: "slug", weight: 10, value: entry.slug },
+      { name: "title", weight: 9, value: entry.title },
+      { name: "intent", weight: 8, value: array(entry.userIntents).join(" ") },
+      { name: "example", weight: 5, value: array(entry.exampleQueries).join(" ") },
+      { name: "description", weight: 3, value: entry.shortDescription },
+      { name: "category", weight: 3, value: entry.category },
+      { name: "subcategory", weight: 4, value: entry.subcategory },
+      { name: "alias", weight: 7, value: array(entry.aliases).join(" ") },
+    ].map(function normalizeField(field) {
+      return Object.assign({}, field, { normalized: normalizeSearchText(field.value) });
+    });
+  }
+
+  function containsSearchToken(fieldText, token) {
+    if (!fieldText || !token) return false;
+    var padded = " " + String(fieldText).replace(/-/g, " ") + " ";
+    return padded.indexOf(" " + token + " ") !== -1;
+  }
+
+  function phraseScore(queryText, fields) {
+    var score = 0;
+    if (!queryText) return score;
+    fields.forEach(function scoreField(field) {
+      if (!field.normalized || field.normalized.length < 4) return;
+      if (queryText.indexOf(field.normalized) !== -1) score += field.weight * 3;
+      if (field.normalized.indexOf(queryText) !== -1 && queryText.length >= 6) score += field.weight * 2;
+    });
+    return score;
+  }
+
+  function rankToolCandidates(query, manifest, options) {
+    var opts = options || {};
+    var tools = array(Array.isArray(manifest) ? manifest : loadDefaultToolManifest());
+    var limit = Number(opts.limit || 25);
+    var minScore = Number(opts.minScore || 8);
+    var queryText = normalizeSearchText(query);
+    var tokens = tokenizeToolQuery(query, { limit: opts.tokenLimit || 80 });
+    var deterministicToolId = text(opts.selectedToolId || opts.deterministicToolId);
+
+    var ranked = tools.map(function scoreTool(tool) {
+      var fields = toolSearchFields(tool);
+      var matchedFields = {};
+      var matchedTerms = {};
+      var score = phraseScore(queryText, fields);
+
+      if (deterministicToolId && (tool.id === deterministicToolId || tool.slug === deterministicToolId || array(tool.aliases).indexOf(deterministicToolId) !== -1)) {
+        score += 1000;
+        matchedFields.deterministic = true;
+      }
+
+      tokens.forEach(function scoreToken(token, tokenIndex) {
+        fields.forEach(function scoreField(field) {
+          if (!containsSearchToken(field.normalized, token)) return;
+          score += field.weight + (token.length > 5 ? 2 : 0);
+          if ((field.name === "id" || field.name === "slug" || field.name === "title") && tokenIndex < 3) score += 8 - tokenIndex * 2;
+          matchedFields[field.name] = true;
+          matchedTerms[token] = true;
+        });
+      });
+
+      if (array(tool.aiCapabilities).indexOf("prefill") !== -1) score += 1;
+      if (array(tool.aiCapabilities).indexOf("route_only") !== -1) score += 0.5;
+      var matchedTermList = Object.keys(matchedTerms);
+      if (matchedTermList.length && matchedTermList.every(function isGeographyOnly(term) {
+        return GEOGRAPHY_SEARCH_TERMS[term] === true;
+      })) {
+        score = Math.min(score, 5);
+      }
+
+      return {
+        tool: tool,
+        score: Math.round(score * 100) / 100,
+        matchedFields: Object.keys(matchedFields),
+        matchedTerms: matchedTermList,
+      };
+    }).filter(function keepCandidate(candidate) {
+      return candidate.score >= minScore;
+    }).sort(function sortCandidate(left, right) {
+      return (right.score - left.score) || String(left.tool.id).localeCompare(String(right.tool.id));
+    });
+
+    return {
+      queryTokenCount: tokens.length,
+      catalogSize: tools.length,
+      candidates: limit > 0 ? ranked.slice(0, limit) : ranked,
+    };
+  }
+
   function slugFromRoute(route, id) {
     var parts = routeKey(route).replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
     return parts[0] === "tools" && parts[1] ? parts[1] : parts[parts.length - 1] || id;
@@ -501,6 +693,50 @@
     });
   }
 
+  function buildToolInvocation(tool, options) {
+    var entry = tool || {};
+    var opts = options || {};
+    var capabilities = unique(entry.aiCapabilities);
+    var canPrefill = capabilities.indexOf("prefill") !== -1;
+    return {
+      type: "existing_tool_call",
+      action: canPrefill ? "prefill_existing_tool" : "open_existing_tool",
+      toolId: text(entry.id, "tool-search"),
+      route: normalizeRoute(entry.route || "/search/", entry.id || "tool-search"),
+      title: text(entry.title, "Search AfroTools"),
+      category: text(entry.category, "search"),
+      subcategory: text(entry.subcategory, "search"),
+      invocationMode: canPrefill ? "session_prefill" : "route_only",
+      canPrefill: canPrefill,
+      inputSchema: {
+        requiredInputs: array(entry.requiredInputs).map(makeInput),
+        optionalInputs: array(entry.optionalInputs).map(makeInput),
+      },
+      providedInputNames: unique(opts.providedInputNames),
+      missingInputNames: unique(opts.missingInputNames),
+      privacyMode: text(entry.privacyMode, "browser_local"),
+      sourcePolicy: text(entry.sourcePolicy, "reviewed"),
+      safetyDomain: text(entry.highStakesDomain, "none"),
+      capabilities: capabilities,
+      outputTypes: unique(entry.outputTypes),
+    };
+  }
+
+  function getToolInvocationManifest(manifest, options) {
+    var opts = options || {};
+    var tools = array(Array.isArray(manifest) ? manifest : loadDefaultToolManifest());
+    var category = text(opts.category).toLowerCase();
+    var limit = Number(opts.limit || 0);
+    var calls = tools.filter(function keepTool(entry) {
+      if (!entry || !entry.id) return false;
+      if (!category) return true;
+      return String(entry.category || "").toLowerCase() === category || String(entry.subcategory || "").toLowerCase() === category;
+    }).map(function mapTool(entry) {
+      return buildToolInvocation(entry);
+    });
+    return limit > 0 ? calls.slice(0, limit) : calls;
+  }
+
   return {
     ALLOWED_VALUES: ALLOWED_VALUES,
     TOOL_MANIFEST_SCHEMA: TOOL_MANIFEST_SCHEMA,
@@ -509,5 +745,9 @@
     validateToolManifest: validateToolManifest,
     loadDefaultToolManifest: loadDefaultToolManifest,
     getToolManifestForRouter: getToolManifestForRouter,
+    buildToolInvocation: buildToolInvocation,
+    getToolInvocationManifest: getToolInvocationManifest,
+    tokenizeToolQuery: tokenizeToolQuery,
+    rankToolCandidates: rankToolCandidates,
   };
 });

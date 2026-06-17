@@ -74,17 +74,22 @@
 
   var ROUTING_RULES = [
     rule("career-documents", "cover-letter", ["cover letter", "application letter", "motivation letter"], ["employment"]),
-    rule("cv-jobs", "cv-builder", ["cv", "resume", "curriculum vitae", "ats", "linkedin profile"], ["employment", "career"]),
+    rule("cv-jobs", "cv-builder", ["cv", "resume", "curriculum vitae", "ats", "linkedin profile", "job application pack", "application pack", "graduate trainee role"], ["employment", "career"]),
+    rule("government", "passport-checklist", ["passport checklist", "passport application", "passport documents", "passport fees", "ghana passport", "passport next steps"], ["none"]),
+    rule("african", "mobile-money-fees", ["mobile money fees", "m-pesa fees", "mpesa fees", "mtn momo fees", "send cash", "cheapest send option"], ["finance"]),
+    rule("legal", "nda-generator", ["draft nda", "create nda", "client nda", "nda for", "non disclosure", "non-disclosure", "legal document generator"], ["legal"]),
+    rule("study-abroad", "study-abroad-cost", ["study with", "study budget", "study cost", "study documents", "tuition budget", "nigeria to canada study"], ["education", "immigration"]),
     rule("scholarships", "scholarship-finder", ["scholarship", "scholarships", "bursary", "funding", "grant for school"], ["education"]),
     rule("salary-tax", "paye-calculator", ["paye", "payroll", "salary tax", "income tax", "net pay", "gross pay"], ["tax"]),
     rule("trade", "hs-code-lookup", ["hs code", "tariff code", "customs code"], ["finance"]),
     rule("trade", "sadc-roo", ["sadc rules of origin", "rules of origin", "origin certificate"], ["none"]),
-    rule("import-duty", "import-duty", ["import duty", "customs duty", "import", "car import", "vehicle import", "landed cost", "toyota", "honda", "mazda", "nissan"], ["finance"]),
+    rule("import-duty", "import-duty", ["import duty", "customs duty", "import", "car import", "vehicle import", "landed cost", "cif", "port charges", "duty and port", "machinery into", "toyota", "honda", "mazda", "nissan"], ["finance"]),
     rule("solar-energy", "solar-roi", ["solar", "inverter", "battery", "backup power", "payback"], ["energy"]),
     rule("fuel-energy", "fuel-tracker", ["generator", "fuel", "petrol", "diesel", "kerosene"], ["energy"]),
-    rule("business-tax", "vat-calc-pan-african", ["vat", "value added tax", "sales tax"], ["tax"]),
-    rule("business-tax", "invoice-generator", ["invoice", "receipt", "bill client"], ["finance"]),
-    rule("documents", "pdf-workspace", ["merge pdf", "merge pdfs", "merge two pdfs", "combine pdf", "combine pdfs", "split pdf", "split pdfs", "extract pdf pages", "compress pdf", "compress my pdf", "reduce pdf", "shrink pdf", "add page numbers", "page numbers", "number pages", "protect pdf", "protect a pdf", "password protect pdf", "lock pdf"], ["none"]),
+    rule("business-tax", "invoice-generator", ["vat invoice", "create a vat invoice", "invoice with vat", "invoice", "receipt", "bill client"], ["finance"]),
+    rule("business-tax", "vat-calc-pan-african", ["calculate vat", "vat calculator", "vat rate", "value added tax", "sales tax"], ["tax"]),
+    rule("business-planning", "business-planner", ["register a small business", "business registration", "get a tin", "tin in", "start a business", "business setup"], ["finance", "legal"]),
+    rule("documents", "pdf-workspace", ["compress and sign", "compress, sign", "compress sign", "export a pdf locally", "pdf locally", "without uploading", "merge pdf", "merge pdfs", "merge two pdfs", "combine pdf", "combine pdfs", "split pdf", "split pdfs", "extract pdf pages", "compress pdf", "compress my pdf", "reduce pdf", "shrink pdf", "add page numbers", "page numbers", "number pages", "protect pdf", "protect a pdf", "password protect pdf", "lock pdf"], ["none"]),
     rule("documents", "pdf-sign", ["sign pdf", "sign", "pdf signature", "add signature"], ["none"]),
     rule("documents", "pdf-redact", ["redact pdf", "redact", "remove sensitive text"], ["none"]),
     rule("documents", "pdf-to-audio", ["pdf to audio", "read pdf aloud", "listen to pdf"], ["none"]),
@@ -92,11 +97,11 @@
     rule("documents", "pdf-workspace", ["pdf", "document"], ["none"]),
     rule("education", "gpa-calculator", ["gpa", "cgpa", "grade point"], ["education"]),
     rule("education", "ielts-calculator", ["ielts", "band score", "english test"], ["education"]),
-    rule("study-abroad", "study-abroad-cost", ["study abroad", "study in", "study from", "student visa", "tuition abroad", "school abroad"], ["education", "immigration"]),
+    rule("study-abroad", "study-abroad-cost", ["study abroad", "study in", "study from", "student visa", "tuition abroad", "school abroad", "student prepare", "australia intake", "canada intake", "uk intake", "intake documents"], ["education", "immigration"]),
     rule("study-abroad", "japa-calculator", ["japa", "relocate", "migration cost", "move to canada", "move to uk", "save before moving", "moving from", "moving to"], ["immigration"]),
     rule("local-life", "rent-affordability", ["rent affordability", "how much rent", "afford rent", "afford", "rent budget", "rent in"], ["legal", "finance"]),
     rule("local-life", "rent-vs-buy", ["rent vs buy", "buy or rent", "rent or buy"], ["finance"]),
-    rule("local-life", "cost-of-living", ["cost of living", "living cost", "live in", "can i live", "per month", "monthly budget", "monthly expenses", "relocation budget"], ["finance"]),
+    rule("local-life", "cost-of-living", ["cost of living", "living cost", "living costs", "compare living costs", "live in", "can i live", "per month", "monthly budget", "monthly expenses", "relocation budget"], ["finance"]),
     rule("agriculture", "poultry-roi-calculator", ["poultry", "broiler", "broilers", "layers", "chicken farm", "egg production", "poultry roi"], ["finance"]),
     rule("agriculture", "fish-farming-roi", ["fish farming", "tilapia", "catfish pond", "catfish", "aquaculture", "fingerlings"], ["finance"]),
     rule("agriculture", "cocoa-tracker", ["cocoa", "cacao", "cocoa farm", "cocoa price", "cocoa farm gate", "cocoa farm-gate", "cocoa farm gate price", "farm gate cocoa", "farm-gate cocoa", "cocoa export", "quality premium"], ["finance"]),
@@ -115,8 +120,9 @@
     rule("construction", "building-materials", ["building materials", "estimate blocks", "blocks and cement", "cement blocks", "cement bags", "material estimate", "materials estimator", "estimate cement"], ["finance", "legal"]),
     rule("construction", "boq-generator", ["boq", "bill of quantities", "quantity takeoff", "materials list"], ["finance"]),
     rule("construction", "land-size", ["land size", "plot size", "sqm plot", "square metre plot", "square meter plot", "50 by 100 plot"], ["none"]),
+    rule("construction", "construction-budget", ["estimate renovation costs", "renovation costs", "building budget", "construction budget"], ["finance"]),
     rule("construction", "home-renovation-cost", ["renovation cost", "home renovation", "building cost", "construction cost"], ["finance"]),
-    rule("construction", "afroplan-floor-planner", ["floor planner", "floor plan", "house plan", "room layout", "construction layout", "2-bedroom", "2 bedroom", "bedroom floor plan", "simple floor plan", "design a simple", "plot in"], ["none"]),
+    rule("construction", "afroplan-floor-planner", ["floor planner", "floor plan", "floor layout", "house plan", "room layout", "construction layout", "two-bedroom", "two bedroom", "2-bedroom", "2 bedroom", "bedroom floor plan", "simple floor plan", "design a simple", "plot in"], ["none"]),
     rule("country-intelligence", "afroatlas", ["country intelligence", "country profile", "compare countries", "compare", "which country", "market entry", "market data", "africa data", "afroatlas", "starting a business", "start a business", "doing business", "remote worker", "remote work", "digital nomad", "costs of moving", "main costs of moving"], ["none"]),
   ];
 
@@ -238,6 +244,8 @@
 
   function findBestRule(query) {
     var text = normalizeText(query);
+    var roleMatch = professionCareerMatch(query);
+    if (roleMatch) return roleMatch;
     var best = null;
     ROUTING_RULES.forEach(function scoreRule(candidate) {
       var score = keywordScore(text, candidate.keywords);
@@ -246,6 +254,23 @@
       }
     });
     return best;
+  }
+
+  function findManifestCandidate(query, manifest) {
+    if (!manifestApi || typeof manifestApi.rankToolCandidates !== "function") return null;
+    var ranked = manifestApi.rankToolCandidates(query, manifest, { limit: 1, minScore: 14 });
+    var candidate = ranked && ranked.candidates && ranked.candidates[0];
+    if (!candidate || !candidate.tool) return null;
+    return {
+      intentCategory: candidate.tool.subcategory || candidate.tool.category || "search",
+      toolId: candidate.tool.id,
+      score: Math.max(2, Math.min(4, Math.round(candidate.score / 8))),
+      source: "manifest_retrieval",
+      retrievalScore: candidate.score,
+      matchedFields: candidate.matchedFields || [],
+      matchedTerms: candidate.matchedTerms || [],
+      catalogSize: ranked.catalogSize || array(manifest).length,
+    };
   }
 
   function extractCountryFromMap(text, map) {
@@ -258,6 +283,46 @@
       if (pattern.test(text)) return map[key];
     }
     return "";
+  }
+
+  function detectedCountryCount(text) {
+    var found = {};
+    Object.keys(COUNTRY_ALIASES).forEach(function detectCountry(key) {
+      var pattern = new RegExp("(^|\\b)" + key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(\\b|$)", "i");
+      if (pattern.test(text)) found[COUNTRY_ALIASES[key]] = true;
+    });
+    return Object.keys(found).length;
+  }
+
+  function isExplicitCountryIntelligenceQuery(text) {
+    return /\bcountry (?:profile|intelligence)\b|\bmarket (?:entry|overview)\b|\bafrica data\b|\bafroatlas\b|\bwhich country\b|\bdoing business\b|\bstarting a business\b|\bstart a business\b/.test(text);
+  }
+
+  function isElectricalCalculationQuery(text) {
+    return /\b(load|voltage|current|amps?|watts?|kw|kva|cable|wire|breaker|panel|appliance|power|tariff|meter|phase|circuit|sizing|solar|generator|bill|calculate|calculator|size)\b/.test(text);
+  }
+
+  function extractProfessionRole(query) {
+    var text = normalizeText(query);
+    if (isElectricalCalculationQuery(text)) return "";
+    var role = text.match(/\b((?:electrical|civil|mechanical|software|data|network|structural|petroleum|chemical|site|project)\s+(?:engineer|developer|analyst|technician|manager))\b/) ||
+      text.match(/\b((?:program|programme|project|finance|business|data|systems|sales|marketing|operations|hr|accounting)\s+(?:officer|manager|analyst|assistant|associate|lead))\b/) ||
+      text.match(/\b(accountant|teacher|nurse|doctor|driver|electrician|plumber|welder|architect|surveyor|lawyer|designer|developer|engineer|technician)\b/);
+    return role ? role[1].replace(/\s+/g, " ").trim() : "";
+  }
+
+  function professionCareerMatch(query) {
+    var text = normalizeText(query);
+    var role = extractProfessionRole(query);
+    if (!role) return null;
+    if (/\b(cover letter|application letter|motivation letter)\b/.test(text)) return null;
+    if (!/\b(cv|resume|write|build|create|job|career|role|application|profile|linkedin)\b/.test(text) && detectedCountryCount(text) <= 0) return null;
+    return {
+      intentCategory: "cv-jobs",
+      toolId: "cv-builder",
+      score: 5,
+      source: "profession_role",
+    };
   }
 
   function extractMoney(query) {
@@ -476,7 +541,8 @@
     if (!extracted.gpa && gradeBand) extracted.gradeBand = gradeBand[1].toLowerCase();
     if (ielts) extracted.ieltsScore = Number(ielts[1]);
     if (intake) extracted.intakeTimeline = intake[0];
-    if (role) extracted.targetRole = cleanTargetRole(role[1], country, targetCountry);
+    if (role && ruleMatch && (ruleMatch.toolId === "cv-builder" || ruleMatch.toolId === "cover-letter")) extracted.targetRole = cleanTargetRole(role[1], country, targetCountry);
+    if (!extracted.targetRole && ruleMatch && ruleMatch.toolId === "cv-builder") extracted.targetRole = extractProfessionRole(original);
     if (pdfAction) extracted.pdfAction = pdfAction;
     if (productCategory) extracted.productCategory = productCategory;
     if (vehicle) extracted.itemCategory = (vehicle[1] + " " + vehicle[2]).trim();
@@ -562,7 +628,7 @@
   function clarificationQuestion(missingInputs) {
     var missing = array(missingInputs);
     if (!missing.length) return "";
-    if (missing.indexOf("country") !== -1) return "Which country should AfroTools use for this workflow?";
+    if (missing.indexOf("country") !== -1) return "Which country should AfroTools use?";
     if (missing.indexOf("destinationCountry") !== -1) return "Which destination country should AfroTools calculate for?";
     if (missing.indexOf("targetCountry") !== -1) return "Which destination country are you considering?";
     if (missing.indexOf("grossPay") !== -1) return "What gross pay amount should be used for the PAYE estimate?";
@@ -570,13 +636,13 @@
     if (missing.indexOf("itemCategory") !== -1) return "What item or vehicle are you importing?";
     if (missing.indexOf("studyLevel") !== -1) return "What study level are you targeting?";
     if (missing.indexOf("monthlyBill") !== -1) return "What is the current monthly power bill or generator fuel spend?";
-    return "Can you add the missing detail so AfroTools can prepare the workflow?";
+    return "Can you add the missing detail so AfroTools can help?";
   }
 
   function nextActions(tool, missingInputs) {
-    var actions = ["Open the recommended AfroTools workflow"];
-    if (array(missingInputs).length) actions.unshift("Answer the clarification question");
-    if (tool && array(tool.aiCapabilities).indexOf("prefill") !== -1) actions.push("Use extracted fields as prefill candidates after user review");
+    var actions = ["Open the recommended AfroTools tool"];
+    if (array(missingInputs).length) actions.unshift("Add the missing detail");
+    if (tool && array(tool.aiCapabilities).indexOf("prefill") !== -1) actions.push("Use the details after you review them");
     actions.push("Search AfroTools if the match is not right");
     return actions;
   }
@@ -592,7 +658,7 @@
       selectedToolId: safeTool.id,
       selectedRoute: routeUrl(safeTool.route, query),
       confidence: clampConfidence(confidence),
-      reasonShort: ruleMatch ? "Matched obvious AfroTools workflow keywords." : "No strong workflow match; falling back to AfroTools search.",
+      reasonShort: ruleMatch && ruleMatch.source === "manifest_retrieval" ? "Checked the AfroTools tool catalog." : (ruleMatch ? "Matched your words to an AfroTools tool." : "No strong match yet; opening AfroTools search."),
       extractedInputs: extracted || {},
       missingInputs: missing,
       clarificationQuestion: clarificationQuestion(missing),
@@ -604,6 +670,10 @@
       _meta: {
         router: "deterministic",
         providerUsed: false,
+        retrievalSource: ruleMatch && ruleMatch.source || "rule",
+        retrievalScore: ruleMatch && ruleMatch.retrievalScore || undefined,
+        retrievalMatchedFields: ruleMatch && ruleMatch.matchedFields || undefined,
+        retrievalCatalogSize: ruleMatch && ruleMatch.catalogSize || undefined,
       },
     };
   }
@@ -648,6 +718,11 @@
     }
     var manifest = getRouterManifest(options && options.manifest);
     var match = findBestRule(query);
+    var manifestMatch = findManifestCandidate(query, manifest);
+    var normalizedQuery = normalizeText(query);
+    var keepCountryComparisonRule = match && match.toolId === "afroatlas" && detectedCountryCount(normalizedQuery) >= 2;
+    var weakGenericCountryRule = match && match.toolId === "afroatlas" && match.score <= 3 && !keepCountryComparisonRule && !isExplicitCountryIntelligenceQuery(normalizedQuery);
+    if (!match || (manifestMatch && manifestMatch.retrievalScore >= 40 && weakGenericCountryRule)) match = manifestMatch;
     if (!match) return fallbackDecision(query, options);
     var tool = findTool(manifest, match.toolId) || SEARCH_FALLBACK;
     return localizeDecision(buildDecision(query, tool, match, extractInputs(query, match), "deterministic"), options);

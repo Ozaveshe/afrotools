@@ -2,54 +2,475 @@
 <html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur de profit forex | AfroTools</title>
-<meta name="description" content="Calculez vos profits et pertes potentiels sur le marché des changes avec les devises africaines. Simulez vos transactions forex avant de trader.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="view-transition" content="same-origin">
+<title>Calculateur profit Forex, pips et risque | AfroTools</title>
+<meta name="description" content="Calculez un scenario Forex: pips, profit ou perte, spread, commission, marge, rendement et risque du compte. Outil educatif, sans conseil de trading.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/profit-forex/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/forex-profit/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/profit-forex/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-faida-forex/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/forex-profit/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Calculateur de profit forex | AfroTools">
-<meta property="og:description" content="Calculez vos profits et pertes potentiels sur le marché des changes avec les devises africaines. Simulez vos transactions forex avant de trader.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Calculateur profit Forex, pips et risque | AfroTools">
+<meta property="og:description" content="Scenario Forex local: pips, P/L net, frais, marge, rendement et note de risque.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/forex-profit.webp">
 <meta property="og:url" content="https://afrotools.com/fr/tools/profit-forex/">
-<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur profit Forex, pips et risque | AfroTools">
+<meta name="twitter:description" content="Calculez un scenario Forex avec spread, commission, marge et risque.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/forex-profit.webp">
+<meta property="article:modified_time" content="2026-06-17">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=97274272" defer></script>
+<script src="/assets/js/components/business-cta.js" defer></script>
 <style>
-.tool-hero{text-align:center;padding:3rem 1rem 2rem;background:var(--bg)}
-.tool-hero h1{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--text);margin:0 0 .5rem}
-.tool-hero p{color:var(--text-muted);max-width:600px;margin:0 auto}
-.tool-iframe-wrap{max-width:1000px;margin:0 auto;padding:0 1rem 2rem}
-.tool-iframe-wrap iframe{width:100%;height:700px;border:1px solid var(--border);border-radius:12px}
-.seo-section{max-width:760px;margin:0 auto;padding:2rem 1rem}
-.seo-section h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.seo-section p{line-height:1.7;color:var(--text-muted);margin:0 0 1rem}
-.faq{max-width:760px;margin:0 auto;padding:0 1rem 3rem}
-.faq h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.faq details{border:1px solid var(--border);border-radius:8px;margin:0 0 .5rem;padding:.75rem 1rem}
-.faq summary{cursor:pointer;font-weight:600;color:var(--text)}
-.faq details p{margin:.5rem 0 0;color:var(--text-muted);line-height:1.6}
+:root{--fx-ink:#111827;--fx-muted:#64748b;--fx-line:#dbe4ef;--fx-soft:#f6f9fd;--fx-blue:#175cd3;--fx-green:#087443;--fx-red:#b42318;--fx-amber:#a15c07}
+body{background:#f7f9fc;color:var(--fx-ink)}
+.fx-hero{background:radial-gradient(circle at 20% 20%,rgba(56,189,248,.22),transparent 32%),linear-gradient(135deg,#08111f,#122744 58%,#0d3b55);color:#fff}
+.fx-hero__inner{max-width:1180px;margin:0 auto;padding:48px 20px 44px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(290px,.92fr);gap:24px;align-items:center}
+.fx-kicker{display:inline-flex;margin-bottom:14px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.08);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#bae6fd}
+.fx-hero h1{max-width:800px;margin:0;color:#fff;font-size:clamp(2rem,5vw,3.75rem);line-height:1;letter-spacing:-.03em}
+.fx-hero p{max-width:700px;margin:18px 0 0;color:rgba(255,255,255,.76);font-size:1rem;line-height:1.7}
+.fx-ticket{background:#fff;color:#0f172a;border-radius:14px;padding:18px;box-shadow:0 22px 64px rgba(0,0,0,.28)}
+.fx-ticket span{display:block;color:#667085;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.fx-ticket strong{display:block;margin-top:8px;font-size:2.3rem;line-height:1;color:#175cd3}
+.fx-ticket p{margin:10px 0 0;color:#475569;font-size:.86rem}
+.fx-shell{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+.fx-grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:22px;align-items:start}
+.fx-card{background:#fff;border:1px solid var(--fx-line);border-radius:12px;box-shadow:0 10px 32px rgba(16,24,40,.06)}
+.fx-card+.fx-card{margin-top:18px}
+.fx-head{padding:18px 20px;border-bottom:1px solid #edf1f7}
+.fx-head h2,.fx-head h3{margin:0;font-size:.98rem}
+.fx-body{padding:20px}
+.fx-form{display:grid;gap:16px}
+.fx-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fx-field label,.fx-label{display:block;margin-bottom:7px;color:#344054;font-size:.76rem;font-weight:800;letter-spacing:.03em}
+.fx-field input,.fx-field select{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;background:#fbfdff;color:#0f172a;font:inherit;font-size:.92rem;padding:11px 12px}
+.fx-field input:focus,.fx-field select:focus{outline:3px solid rgba(23,92,211,.14);border-color:var(--fx-blue)}
+.fx-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid #d8e2ef;border-radius:10px;overflow:hidden}
+.fx-tab{min-height:44px;border:0;background:#f8fbff;color:#35506f;font-weight:800;cursor:pointer}
+.fx-tab[aria-pressed="true"][data-side="buy"]{background:#087443;color:#fff}
+.fx-tab[aria-pressed="true"][data-side="sell"]{background:#b42318;color:#fff}
+.fx-actions{display:flex;flex-wrap:wrap;gap:10px}
+.fx-btn{min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#173f80;padding:10px 13px;font-weight:800;cursor:pointer}
+.fx-btn:hover,.fx-btn:focus-visible{border-color:var(--fx-blue);outline:3px solid rgba(23,92,211,.12)}
+.fx-primary{background:var(--fx-blue);border-color:var(--fx-blue);color:#fff}
+.fx-secondary{background:#eef5ff}
+.fx-results{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+.fx-pnl{border-radius:12px;padding:22px;color:#fff;background:#101828}
+.fx-pnl span{display:block;color:#b7c7e6;font-size:.72rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.fx-pnl strong{display:block;margin-top:8px;font-size:clamp(2rem,5vw,3.2rem);line-height:1}
+.fx-pnl[data-tone="profit"] strong{color:#86efac}
+.fx-pnl[data-tone="loss"] strong{color:#fca5a5}
+.fx-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.fx-metric{background:#f6f9fc;border:1px solid #e4e9f2;border-radius:10px;padding:12px}
+.fx-metric span{display:block;color:#667085;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.fx-metric strong{display:block;margin-top:4px;font-size:1.18rem}
+.fx-status{margin-top:12px;border:1px solid #d6eadf;background:#f1fbf5;color:#14613e;border-radius:10px;padding:12px;font-size:.86rem;line-height:1.55}
+.fx-status[data-tone="warn"]{border-color:#f5d6aa;background:#fff7ed;color:#8a4b05}
+.fx-summary{white-space:pre-wrap;background:#f8fbff;border:1px solid #dbe7f7;border-radius:10px;padding:14px;color:#26364d;font-size:.88rem;line-height:1.65;margin-top:12px}
+.fx-list{display:grid;gap:10px}
+.fx-list a,.fx-list span{display:block;border:1px solid #e4e9f2;border-radius:8px;padding:11px 12px;color:#274060;text-decoration:none;font-size:.86rem;line-height:1.45}
+.fx-list a:hover{border-color:var(--fx-blue);background:#f7fbff}
+.fx-seo{max-width:1180px;margin:0 auto;padding:0 20px 72px}
+.fx-seo-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fx-seo h2{font-size:1.35rem;margin:0 0 12px}
+.fx-seo p,.fx-seo li{color:#475569;line-height:1.75;font-size:.94rem}
+.fx-seo ul{padding-left:18px;margin:0}
+.fx-faq details{border-top:1px solid #e4e9f2;padding:14px 0}
+.fx-faq summary{font-weight:800;cursor:pointer}
+@media(max-width:900px){.fx-hero__inner,.fx-grid,.fx-results,.fx-seo-grid{grid-template-columns:1fr}.fx-ticket{display:none}}
+@media(max-width:620px){.fx-shell,.fx-seo{padding-left:14px;padding-right:14px}.fx-row,.fx-metrics{grid-template-columns:1fr}.fx-actions .fx-btn{width:100%}.fx-body{padding:16px}.fx-hero__inner{padding:38px 14px}}
 </style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/forex-profit.webp">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur de profit forex | AfroTools">
-<meta name="twitter:description" content="Calculez vos profits et pertes potentiels sur le marché des changes avec les devises africaines. Simulez vos transactions forex avant de trader.">
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/profit-forex/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/profit-forex/" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculateur profit Forex",
+  "url": "https://afrotools.com/fr/tools/profit-forex/",
+  "inLanguage": "fr",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "description": "Calculateur local de scenario Forex avec pips, profit ou perte, spread, commission, marge, rendement et risque du compte.",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "featureList": ["Profit et perte Forex", "Valeur du pip", "Spread et commission", "Marge", "Risque du compte", "Export local"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Ce calculateur donne-t-il un conseil de trading ?", "acceptedAnswer": {"@type": "Answer", "text": "Non. Il calcule un scenario mathematique a partir de vos prix et frais. Il ne predit pas le marche et ne recommande aucune transaction."}},
+    {"@type": "Question", "name": "Pourquoi ajouter le spread et la commission ?", "acceptedAnswer": {"@type": "Answer", "text": "Le resultat brut peut etre trompeur. Le spread, la commission et le slippage peuvent transformer un petit gain brut en perte nette."}},
+    {"@type": "Question", "name": "Que verifier avant de trader ?", "acceptedAnswer": {"@type": "Answer", "text": "Verifiez la licence du courtier, les regles du pays, le risque de levier, les frais reels, votre stop-loss et la possibilite de perdre plus que prevu."}}
+  ]
+}
+</script>
 </head>
 <body>
-<afro-navbar></afro-navbar>
+<afro-navbar active="tools"></afro-navbar>
 <main>
-<section class="tool-hero"><h1>Calculateur de profit forex</h1><p>Calculez vos profits et pertes potentiels sur le marché des changes avec les devises africaines. Simulez vos transactions forex avant de trader.</p></section>
-<div class="tool-iframe-wrap"><iframe src="/tools/forex-profit/" title="Calculateur de profit forex" loading="lazy"></iframe></div>
-<section class="seo-section"><h2>À propos</h2><p>Calculez vos profits et pertes potentiels sur le marché des changes avec les devises africaines. Simulez vos transactions forex avant de trader.</p><p>Le trading forex avec les devises africaines présente des opportunités uniques. Cet outil vous aide à calculer les profits potentiels, les marges et les risques de vos opérations de change.</p></section>
-<section class="faq"><h2>Questions fréquentes</h2>
-<details><summary>Comment calculer mon profit forex ?</summary><p>Saisissez la paire de devises, le volume, le prix d’entrée et de sortie. L’outil calcule le profit ou la perte en tenant compte du spread et des commissions.</p></details>
-<details><summary>Quelles paires de devises sont disponibles ?</summary><p>Toutes les paires majeures avec les devises africaines : NGN, ZAR, KES, GHS, EGP, MAD, XOF, XAF et bien d’autres.</p></details>
-<details><summary>Le trading forex est-il légal en Afrique ?</summary><p>La réglementation varie selon les pays. L’outil indique le cadre légal du trading forex dans les principaux marchés africains.</p></details>
+<section class="fx-hero">
+  <div class="fx-hero__inner">
+    <div>
+      <span class="fx-kicker">Forex, pips et risque</span>
+      <h1>Calculateur profit Forex avec frais et marge</h1>
+      <p>Modelez un trade long ou short, saisissez les prix, le volume, le spread et la commission, puis voyez le profit net, la perte possible, la marge mobilisee et le risque du compte.</p>
+    </div>
+    <div class="fx-ticket" aria-hidden="true">
+      <span>Resultat net du scenario</span>
+      <strong id="heroPnl">$0.00</strong>
+      <p>Les prix et frais sont saisis par vous. Aucun flux de taux en direct n'est utilise.</p>
+    </div>
+  </div>
 </section>
+
+<section class="fx-shell">
+  <div class="fx-grid">
+    <div>
+      <section class="fx-card" aria-labelledby="fx-form-title">
+        <div class="fx-head"><h2 id="fx-form-title">Configurer le scenario</h2></div>
+        <div class="fx-body">
+          <form id="fxForm" class="fx-form">
+            <div>
+              <span class="fx-label">Direction</span>
+              <div class="fx-tabs" role="group" aria-label="Direction du trade">
+                <button class="fx-tab" type="button" data-side="buy" aria-pressed="true">Achat / Long</button>
+                <button class="fx-tab" type="button" data-side="sell" aria-pressed="false">Vente / Short</button>
+              </div>
+            </div>
+
+            <div class="fx-row">
+              <div class="fx-field">
+                <label for="pair">Paire</label>
+                <select id="pair" name="pair">
+                  <option value="EUR/USD" data-pip="0.0001" data-quote="USD">EUR/USD</option>
+                  <option value="GBP/USD" data-pip="0.0001" data-quote="USD">GBP/USD</option>
+                  <option value="USD/JPY" data-pip="0.01" data-quote="JPY">USD/JPY</option>
+                  <option value="USD/ZAR" data-pip="0.0001" data-quote="ZAR">USD/ZAR</option>
+                  <option value="USD/NGN" data-pip="0.01" data-quote="NGN">USD/NGN</option>
+                  <option value="USD/KES" data-pip="0.01" data-quote="KES">USD/KES</option>
+                  <option value="USD/GHS" data-pip="0.01" data-quote="GHS">USD/GHS</option>
+                </select>
+              </div>
+              <div class="fx-field">
+                <label for="accountCurrency">Devise du compte</label>
+                <select id="accountCurrency" name="accountCurrency">
+                  <option value="USD">$ USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                  <option value="ZAR">ZAR</option>
+                  <option value="NGN">NGN</option>
+                  <option value="KES">KES</option>
+                  <option value="GHS">GHS</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="fx-row">
+              <div class="fx-field">
+                <label for="entryPrice">Prix d'entree</label>
+                <input id="entryPrice" name="entryPrice" type="number" min="0" step="any" value="1.0850" required>
+              </div>
+              <div class="fx-field">
+                <label for="exitPrice">Prix de sortie ou stop</label>
+                <input id="exitPrice" name="exitPrice" type="number" min="0" step="any" value="1.0915" required>
+              </div>
+            </div>
+
+            <div class="fx-row">
+              <div class="fx-field">
+                <label for="units">Taille position, unites de base</label>
+                <input id="units" name="units" type="number" min="1" step="1" value="10000">
+              </div>
+              <div class="fx-field">
+                <label for="leverage">Levier utilise</label>
+                <input id="leverage" name="leverage" type="number" min="1" max="1000" step="1" value="30">
+              </div>
+            </div>
+
+            <div class="fx-row">
+              <div class="fx-field">
+                <label for="spreadPips">Spread, en pips</label>
+                <input id="spreadPips" name="spreadPips" type="number" min="0" step="0.1" value="1.2">
+              </div>
+              <div class="fx-field">
+                <label for="commission">Commission totale, devise du compte</label>
+                <input id="commission" name="commission" type="number" min="0" step="0.01" value="0">
+              </div>
+            </div>
+
+            <div class="fx-row">
+              <div class="fx-field">
+                <label for="quoteToAccount">Conversion devise cotee vers compte</label>
+                <input id="quoteToAccount" name="quoteToAccount" type="number" min="0" step="any" value="1">
+              </div>
+              <div class="fx-field">
+                <label for="accountBalance">Solde du compte</label>
+                <input id="accountBalance" name="accountBalance" type="number" min="0" step="0.01" value="1000">
+              </div>
+            </div>
+
+            <div class="fx-actions">
+              <button class="fx-btn fx-primary" type="submit">Calculer le scenario</button>
+              <button class="fx-btn fx-secondary" type="button" id="sampleBtn">Exemple USD/ZAR</button>
+              <button class="fx-btn" type="reset">Reinitialiser</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="fx-card" aria-labelledby="fx-result-title">
+        <div class="fx-head"><h2 id="fx-result-title">Resultat et risque</h2></div>
+        <div class="fx-body">
+          <div class="fx-results">
+            <div class="fx-pnl" id="pnlPanel" data-tone="profit">
+              <span>Profit / perte net</span>
+              <strong id="netPnl">$0.00</strong>
+            </div>
+            <div class="fx-metrics">
+              <div class="fx-metric"><span>Pips bruts</span><strong id="pipsOut">0</strong></div>
+              <div class="fx-metric"><span>Valeur pip</span><strong id="pipValueOut">$0.00</strong></div>
+              <div class="fx-metric"><span>Marge estimee</span><strong id="marginOut">$0.00</strong></div>
+              <div class="fx-metric"><span>Risque compte</span><strong id="riskOut">0%</strong></div>
+            </div>
+          </div>
+          <div id="statusBox" class="fx-status" role="status">Pret a calculer. Les resultats sont educatifs.</div>
+          <pre id="summaryBox" class="fx-summary" aria-live="polite"></pre>
+          <div class="fx-actions" style="margin-top:12px">
+            <button class="fx-btn fx-primary" type="button" id="copyBtn">Copier le resume</button>
+            <button class="fx-btn fx-secondary" type="button" id="downloadBtn">Telecharger TXT</button>
+            <button class="fx-btn" type="button" id="saveBtn">Sauvegarder localement</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside>
+      <section class="fx-card" data-tool-verification-panel aria-label="Sources and verification">
+        <div class="fx-head"><h3>Sources &amp; verification</h3></div>
+        <div class="fx-body fx-list">
+          <span>Verification panel: official authority links checked on 17 June 2026. This page is not an investment recommendation, broker endorsement, quote, or official regulatory opinion.</span>
+          <a href="https://sec.gov.ng/for-investors/keep-track-of-circulars/public-notice-online-retail-foreign-exchange-forex-trading/" target="_blank" rel="nofollow noopener">SEC Nigeria official notice: online retail Forex risk</a>
+          <a href="https://licensees.cma.or.ke/licenses/5/" target="_blank" rel="nofollow noopener">Kenya CMA official list: licensed online Forex brokers</a>
+          <a href="https://new.kenyalaw.org/akn/ke/act/ln/2017/226/eng@2023-10-06" target="_blank" rel="nofollow noopener">Kenya Law official Forex trading regulations</a>
+          <a href="https://www.fsca.co.za/" target="_blank" rel="nofollow noopener">South Africa FSCA official regulator site</a>
+          <a href="https://www.iosco.org/i-scan/" target="_blank" rel="nofollow noopener">IOSCO I-SCAN warnings and alerts</a>
+        </div>
+      </section>
+
+      <section class="fx-card">
+        <div class="fx-head"><h3>Outils lies</h3></div>
+        <div class="fx-body fx-list">
+          <a href="/tools/currency-converter/">Convertisseur de devises</a>
+          <a href="/tools/informal-fx-watch/">Suivi change informel</a>
+          <a href="/tools/risk-reward/">Risque / rendement</a>
+          <a href="/tools/position-size/">Taille de position</a>
+          <a href="/tools/investment-return/">Rendement investissement</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</section>
+
+<section class="fx-seo">
+  <div class="fx-seo-grid">
+    <section class="fx-card">
+      <div class="fx-body">
+        <h2>Methodologie</h2>
+        <p>Methodology: le calcul part de la difference entre le prix de sortie et le prix d'entree. Pour un achat, un prix de sortie plus haut cree un gain brut; pour une vente, un prix de sortie plus bas cree un gain brut. L'outil convertit ce mouvement en pips, applique la valeur du pip, retire spread et commission, puis compare la perte ou le gain au solde du compte.</p>
+        <ul>
+          <li><strong>Formule principale:</strong> P/L brut = mouvement du prix x unites x conversion devise cotee vers devise du compte.</li>
+          <li><strong>Frais:</strong> cout spread = spread en pips x valeur du pip; P/L net = P/L brut - cout spread - commission.</li>
+          <li><strong>Avertissement:</strong> education seulement, non officiel, ne remplace pas un conseiller financier, un regulateur, votre courtier ou votre propre verification.</li>
+          <li><strong>Limites:</strong> slippage, swap, liquidite, execution, taxes et appels de marge ne sont pas garantis dans ce scenario.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="fx-card fx-faq">
+      <div class="fx-body">
+        <h2>Questions frequentes</h2>
+        <details open><summary>Ce calculateur predit-il le marche ?</summary><p>Non. Il transforme vos hypotheses en chiffres. Il ne predit pas les taux, ne donne aucun signal d'achat ou de vente et ne promet aucun rendement.</p></details>
+        <details><summary>Pourquoi saisir la conversion manuellement ?</summary><p>Pour garder le calcul local et transparent. Utilisez le taux de votre courtier ou un taux que vous pouvez verifier; le resultat n'est pas une cotation en direct.</p></details>
+        <details><summary>Quel risque verifier avant une operation ?</summary><p>Verifiez la licence du broker, la taille de position, le levier, la perte maximale, le stop-loss, les frais reels, les protections disponibles et les restrictions de votre pays.</p></details>
+      </div>
+    </section>
+  </div>
+</section>
+
+<afro-business-cta tool-name="Calculateur profit Forex" save-note="Sauvegardez des scenarios anonymes et gardez vos prix, frais et notes de risque sous votre controle."></afro-business-cta>
+<afro-related-tools category="financial" current="profit-forex-fr"></afro-related-tools>
 </main>
 <afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var side = 'buy';
+  var form = document.getElementById('fxForm');
+  var storageKey = 'afrotools:fr:forex-profit';
+  var symbols = { USD: '$', EUR: 'EUR ', GBP: 'GBP ', ZAR: 'R', NGN: 'NGN ', KES: 'KSh ', GHS: 'GHc ', JPY: 'JPY ' };
+
+  function byId(id) { return document.getElementById(id); }
+  function num(id) { return Number(byId(id).value) || 0; }
+  function money(value, currency) {
+    var sign = value < 0 ? '-' : '';
+    return sign + (symbols[currency] || currency + ' ') + Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function selectedPair() {
+    var option = byId('pair').selectedOptions[0];
+    return {
+      pair: byId('pair').value,
+      pip: Number(option.dataset.pip),
+      quote: option.dataset.quote
+    };
+  }
+  function calculate() {
+    var pair = selectedPair();
+    var entry = num('entryPrice');
+    var exit = num('exitPrice');
+    var units = Math.max(1, num('units'));
+    var leverage = Math.max(1, num('leverage'));
+    var spreadPips = Math.max(0, num('spreadPips'));
+    var commission = Math.max(0, num('commission'));
+    var quoteToAccount = Math.max(0, num('quoteToAccount'));
+    var balance = Math.max(0, num('accountBalance'));
+    var accountCurrency = byId('accountCurrency').value;
+    if (!entry || !exit || !quoteToAccount) {
+      byId('statusBox').dataset.tone = 'warn';
+      byId('statusBox').textContent = 'Saisissez prix, taille et conversion avant de calculer.';
+      return null;
+    }
+    var movement = side === 'buy' ? exit - entry : entry - exit;
+    var pips = movement / pair.pip;
+    var gross = movement * units * quoteToAccount;
+    var pipValue = pair.pip * units * quoteToAccount;
+    var spreadCost = spreadPips * pipValue;
+    var net = gross - spreadCost - commission;
+    var notionalAccount = entry * units * quoteToAccount;
+    var margin = notionalAccount / leverage;
+    var riskPct = balance ? Math.abs(net) / balance * 100 : 0;
+    var tone = net >= 0 ? 'profit' : 'loss';
+    byId('pnlPanel').dataset.tone = tone;
+    byId('netPnl').textContent = money(net, accountCurrency);
+    byId('heroPnl').textContent = money(net, accountCurrency);
+    byId('pipsOut').textContent = (pips >= 0 ? '+' : '') + pips.toFixed(1);
+    byId('pipValueOut').textContent = money(pipValue, accountCurrency);
+    byId('marginOut').textContent = money(margin, accountCurrency);
+    byId('riskOut').textContent = riskPct.toFixed(2) + '%';
+    var warnings = [];
+    if (riskPct > 2) warnings.push('Risque superieur a 2% du compte.');
+    if (leverage > 30) warnings.push('Levier eleve: verifiez les limites reglementaires et le risque d appel de marge.');
+    if (spreadPips > Math.abs(pips)) warnings.push('Le spread est plus grand que le mouvement brut du trade.');
+    var summary = [
+      'Resume Forex - AfroTools',
+      'Paire: ' + pair.pair + ' | Direction: ' + (side === 'buy' ? 'Achat/Long' : 'Vente/Short'),
+      'Entree: ' + entry + ' | Sortie/stop: ' + exit + ' | Unites: ' + units.toLocaleString('en-US'),
+      'Mouvement: ' + (pips >= 0 ? '+' : '') + pips.toFixed(1) + ' pips',
+      'Valeur du pip: ' + money(pipValue, accountCurrency),
+      'P/L brut: ' + money(gross, accountCurrency),
+      'Cout spread: ' + money(spreadCost, accountCurrency) + ' | Commission: ' + money(commission, accountCurrency),
+      'P/L net: ' + money(net, accountCurrency),
+      'Marge estimee: ' + money(margin, accountCurrency) + ' | Risque compte: ' + riskPct.toFixed(2) + '%',
+      warnings.length ? 'Alertes: ' + warnings.join(' ') : 'Alertes: aucune alerte automatique.',
+      'Avertissement: scenario educatif non officiel; verifiez broker, licence, frais reels, slippage, swap, fiscalite et regles locales.'
+    ].join('\n');
+    byId('summaryBox').textContent = summary;
+    byId('statusBox').dataset.tone = warnings.length ? 'warn' : 'ok';
+    byId('statusBox').textContent = warnings.length ? warnings.join(' ') : 'Scenario calcule. Verifiez les frais reels et la licence du courtier avant toute decision.';
+    return summary;
+  }
+  function setSide(next) {
+    side = next;
+    document.querySelectorAll('.fx-tab').forEach(function (btn) {
+      btn.setAttribute('aria-pressed', btn.dataset.side === side ? 'true' : 'false');
+    });
+    calculate();
+  }
+  function snapshot() {
+    return {
+      side: side, pair: byId('pair').value, accountCurrency: byId('accountCurrency').value,
+      entryPrice: byId('entryPrice').value, exitPrice: byId('exitPrice').value, units: byId('units').value,
+      leverage: byId('leverage').value, spreadPips: byId('spreadPips').value, commission: byId('commission').value,
+      quoteToAccount: byId('quoteToAccount').value, accountBalance: byId('accountBalance').value
+    };
+  }
+  function restore(data) {
+    Object.keys(data).forEach(function (key) {
+      var field = byId(key);
+      if (field) field.value = data[key];
+    });
+    if (data.side) setSide(data.side);
+    calculate();
+  }
+  document.querySelectorAll('.fx-tab').forEach(function (btn) {
+    btn.addEventListener('click', function () { setSide(btn.dataset.side); });
+  });
+  form.addEventListener('submit', function (event) { event.preventDefault(); calculate(); });
+  form.addEventListener('input', calculate);
+  form.addEventListener('change', calculate);
+  form.addEventListener('reset', function () { window.setTimeout(function () { setSide('buy'); calculate(); }, 0); });
+  byId('sampleBtn').addEventListener('click', function () {
+    byId('pair').value = 'USD/ZAR';
+    byId('accountCurrency').value = 'USD';
+    byId('entryPrice').value = '18.3000';
+    byId('exitPrice').value = '18.1200';
+    byId('units').value = '10000';
+    byId('leverage').value = '20';
+    byId('spreadPips').value = '18';
+    byId('commission').value = '4';
+    byId('quoteToAccount').value = '0.055';
+    byId('accountBalance').value = '1500';
+    setSide('sell');
+  });
+  byId('copyBtn').addEventListener('click', function () {
+    var text = byId('summaryBox').textContent || calculate();
+    navigator.clipboard.writeText(text).then(function () {
+      byId('statusBox').dataset.tone = 'ok';
+      byId('statusBox').textContent = 'Resume copie dans le presse-papiers.';
+    }).catch(function () {
+      byId('statusBox').dataset.tone = 'warn';
+      byId('statusBox').textContent = 'Copie automatique indisponible. Selectionnez le resume et copiez-le manuellement.';
+    });
+  });
+  byId('downloadBtn').addEventListener('click', function () {
+    var blob = new Blob([byId('summaryBox').textContent || calculate()], { type: 'text/plain;charset=utf-8' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'scenario-forex-afrotools.txt';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(function () { URL.revokeObjectURL(link.href); }, 250);
+  });
+  byId('saveBtn').addEventListener('click', function () {
+    localStorage.setItem(storageKey, JSON.stringify(snapshot()));
+    byId('statusBox').dataset.tone = 'ok';
+    byId('statusBox').textContent = 'Scenario sauvegarde localement dans ce navigateur.';
+  });
+  try {
+    var saved = localStorage.getItem(storageKey);
+    if (saved) restore(JSON.parse(saved));
+    else calculate();
+  } catch (err) {
+    calculate();
+  }
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

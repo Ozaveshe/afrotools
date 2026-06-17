@@ -8,7 +8,7 @@
   const THEME_KEY = 'aft_theme';
   const THEME_STYLE_ID = 'afro-theme-standard';
   const THEME_LINK_ID = 'afro-theme-dark-css';
-  const THEME_LINK_HREF = '/assets/css/theme-dark.min.css?v=1402339c';
+  const THEME_LINK_HREF = '/assets/css/theme-dark.min.css?v=95760302';
   const COUNTRY_SELECTOR_THEME_STYLE_ID = 'afro-country-theme';
   const THEME_COLOR_LIGHT = '#F8FAFD';
   const THEME_COLOR_DARK = '#09111F';

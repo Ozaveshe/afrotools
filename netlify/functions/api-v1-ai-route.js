@@ -27,6 +27,10 @@ const CATEGORY_ALIASES = {
   'country-intelligence': ['country-intelligence', 'afroatlas'],
   country: ['country-intelligence', 'afroatlas'],
 };
+const WEAK_CANDIDATE_TERMS = new Set([
+  'africa', 'african', 'compare', 'create', 'generate', 'ghana', 'kenya', 'lagos',
+  'nigeria', 'open', 'plan', 'planner', 'tool', 'workflow',
+]);
 
 function json(event, statusCode, body, extraHeaders) {
   return {
@@ -200,13 +204,112 @@ function selectedToolPayload(tool) {
   };
 }
 
+function publicToolCallPayload(decision, tool) {
+  const selected = tool || {
+    id: 'tool-search',
+    route: '/search/',
+    title: 'Search AfroTools',
+    category: 'search',
+    subcategory: 'search',
+    requiredInputs: [],
+    optionalInputs: [],
+    privacyMode: 'browser_local',
+    sourcePolicy: 'reviewed',
+    highStakesDomain: 'none',
+    aiCapabilities: ['route_only'],
+    outputTypes: ['report'],
+  };
+  return toolManifestApi.buildToolInvocation(selected, {
+    missingInputNames: Array.isArray(decision && decision.missingInputs) ? decision.missingInputs : [],
+  });
+}
+
+function buildToolCandidates(query, decision, manifest, allowed) {
+  if (!toolManifestApi || typeof toolManifestApi.rankToolCandidates !== 'function') return [];
+  const selectedToolId = decision && decision.selectedToolId;
+  const selectedTool = findTool(manifest, selectedToolId);
+  const ranked = toolManifestApi.rankToolCandidates(query, manifest, {
+    limit: 8,
+    minScore: 8,
+    selectedToolId,
+  });
+  return (ranked.candidates || []).filter(function keep(candidate) {
+    if (!candidate || !candidate.tool || !candidate.tool.id || candidate.tool.id === selectedToolId) return false;
+    const strongTerms = (candidate.matchedTerms || []).filter(function keepTerm(term) {
+      return !WEAK_CANDIDATE_TERMS.has(String(term || '').toLowerCase());
+    });
+    if (!strongTerms.length) return false;
+    const candidateDecision = {
+      intentCategory: candidate.tool.subcategory || candidate.tool.category || 'tools',
+      safetyDomain: candidate.tool.highStakesDomain || 'none',
+    };
+    if (!sameSurface(selectedTool, candidate.tool)) return false;
+    return categoryAllowed(candidateDecision, candidate.tool, allowed);
+  }).slice(0, 5).map(function mapCandidate(candidate) {
+    const call = toolManifestApi.buildToolInvocation(candidate.tool);
+    return {
+      type: 'existing_tool_candidate',
+      toolId: call.toolId,
+      title: call.title,
+      route: call.route,
+      category: call.category,
+      subcategory: call.subcategory,
+      action: call.action,
+      canPrefill: call.canPrefill,
+      privacyMode: call.privacyMode,
+      sourcePolicy: call.sourcePolicy,
+      safetyDomain: call.safetyDomain,
+      outputTypes: call.outputTypes,
+      score: Math.round(Number(candidate.score || 0) * 100) / 100,
+    };
+  });
+}
+
+function sameSurface(selectedTool, candidateTool) {
+  if (!selectedTool || !candidateTool) return true;
+  const selectedDomain = cleanText(selectedTool.highStakesDomain || 'none', 40);
+  const candidateDomain = cleanText(candidateTool.highStakesDomain || 'none', 40);
+  if (selectedDomain !== 'none' && candidateDomain !== 'none' && selectedDomain !== candidateDomain) return false;
+  if (selectedTool.subcategory && candidateTool.subcategory && selectedTool.subcategory === candidateTool.subcategory) return true;
+  if (selectedTool.category && candidateTool.category && selectedTool.category === candidateTool.category) return true;
+  if (selectedDomain !== 'none' && candidateDomain !== 'none' && selectedDomain === candidateDomain) return true;
+  return selectedDomain === 'none' || candidateDomain === 'none';
+}
+
+function buildOrchestrationSummary(decision, tool, toolCall, toolCandidates, options) {
+  const opts = options || {};
+  const selectedToolId = tool ? tool.id : 'tool-search';
+  return {
+    schemaVersion: 1,
+    type: 'afrotools_ai_orchestration_summary',
+    source: 'deterministic_full_catalog_api',
+    rawQueryIncluded: false,
+    queryLength: cleanText(opts.query, MAX_QUERY_CHARS).length,
+    status: tool ? 'success' : 'no_match',
+    selectedToolId,
+    selectedRoute: tool ? tool.route : '/search/',
+    toolCallType: toolCall && toolCall.type || 'existing_tool_call',
+    candidateCount: Array.isArray(toolCandidates) ? toolCandidates.length : 0,
+    routerSafeToolCount: Array.isArray(opts.manifest) ? opts.manifest.length : 0,
+    privacyMode: cleanText(decision && decision.privacyMode || tool && tool.privacyMode || 'browser_local', 40),
+    sourcePolicy: cleanText(toolCall && toolCall.sourcePolicy || tool && tool.sourcePolicy || 'reviewed', 40),
+    safetyDomain: cleanText(decision && decision.safetyDomain || tool && tool.highStakesDomain || 'none', 40),
+  };
+}
+
 function publicResponse(decision, tool, options) {
+  const opts = options || {};
   const noMatch = !tool || decision.selectedToolId === 'tool-search' || Number(decision.confidence) <= 0;
   const category = noMatch ? 'search' : cleanText(decision.intentCategory || tool.subcategory || tool.category, 80);
+  const toolCandidates = opts.query && Array.isArray(opts.manifest)
+    ? buildToolCandidates(opts.query, decision, opts.manifest, opts.allowedCategories)
+    : [];
+  const toolCall = publicToolCallPayload(decision, noMatch ? null : tool);
   return {
     status: noMatch ? 'no_match' : 'success',
     selectedTool: selectedToolPayload(tool),
-    selectedRoute: safeRoute(tool ? decision.selectedRoute : '/search/', options),
+    toolCall,
+    selectedRoute: safeRoute(tool ? decision.selectedRoute : '/search/', opts),
     category,
     confidence: Number(Number(decision.confidence || 0).toFixed(2)),
     missingInputs: Array.isArray(decision.missingInputs) ? decision.missingInputs.map(function mapInput(input) {
@@ -217,6 +320,12 @@ function publicResponse(decision, tool, options) {
       : 'Open ' + cleanText(tool.title, 120) + ' for this AfroTools workflow.',
     privacyMode: cleanText(decision.privacyMode || (tool && tool.privacyMode) || 'browser_local', 40),
     safetyDomain: cleanText(decision.safetyDomain || (tool && tool.highStakesDomain) || 'none', 40),
+    toolCandidates,
+    toolCatalog: {
+      routerSafeToolCount: Array.isArray(opts.manifest) ? opts.manifest.length : 0,
+      candidateCount: toolCandidates.length,
+    },
+    orchestration: buildOrchestrationSummary(decision, noMatch ? null : tool, toolCall, toolCandidates, opts),
   };
 }
 
@@ -295,12 +404,14 @@ exports.handler = async function handler(event) {
       missingInputs: [],
       privacyMode: 'browser_local',
       safetyDomain: 'none',
-    }, null, { country, locale }), Object.assign({}, rateLimitHeaders(auth), routeLimitHeaders(endpointKey)));
+    }, null, { country, locale, query, manifest, allowedCategories }), Object.assign({}, rateLimitHeaders(auth), routeLimitHeaders(endpointKey)));
   }
 
-  return json(event, 200, publicResponse(decision, tool, { country, locale }), Object.assign({}, rateLimitHeaders(auth), routeLimitHeaders(endpointKey)));
+  return json(event, 200, publicResponse(decision, tool, { country, locale, query, manifest, allowedCategories }), Object.assign({}, rateLimitHeaders(auth), routeLimitHeaders(endpointKey)));
 };
 
 exports.__test = {
+  buildOrchestrationSummary,
+  buildToolCandidates,
   safeRoute,
 };

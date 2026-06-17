@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4"><link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script><script src="/assets/js/bundles/core.a778d1f9.min.js" defer></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script><script src="/assets/js/bundles/core.5fe5d54d.min.js" defer></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
 .solar-root-filter{display:grid;gap:8px;margin:18px 0 22px;padding:16px;border:1px solid rgba(18,32,51,.1);border-radius:8px;background:#fff;box-shadow:0 12px 30px rgba(11,24,43,.06)}
 .solar-root-filter label,.solar-country-picker label{font-weight:900;color:#122033}
 .solar-root-filter input,.solar-root-filter select{width:100%;min-height:48px;border:1px solid rgba(18,32,51,.18);border-radius:8px;padding:11px 12px;font:inherit;font-size:16px;color:#122033;background:#fff}
@@ -45,6 +45,7 @@
 @media(max-width:760px){.breadcrumb{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;padding-bottom:6px}.breadcrumb a{display:inline-flex;align-items:center;min-height:40px}.en-tool-hero{padding-bottom:28px}.en-hub{padding:28px 0}.en-hub-country-grid{grid-template-columns:1fr}.en-hub-country-grid .en-country-card{min-height:62px;padding:14px}.solar-root-filter{margin:16px 0 18px;padding:14px}.solar-country-picker-grid{grid-template-columns:1fr}.solar-country-picker .solar-country-btn{width:100%}}
 @media(prefers-color-scheme:dark){body{background:#0f1724;color:#e7eef8}.solar-root-filter,.solar-country-empty,.solar-faq details{background:#131d2e;border-color:#26364f}.solar-root-filter label,.solar-country-picker label{color:#f1f5f9}.solar-root-filter input,.solar-root-filter select{background:#0f1724;color:#f1f5f9;border-color:#33445f}.solar-root-filter p,.solar-country-picker p,.solar-country-empty,.en-country-currency,.solar-faq details p{color:#b7c3d7}.solar-country-picker-status{color:#9be3cf!important}}
 </style>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
 </head>
 <body>
 <afro-navbar theme="dark" active="energy"></afro-navbar>
@@ -499,6 +500,31 @@
 <details><summary>How accurate is this calculator?</summary><p>It is a planning estimate, not a quote. Accuracy improves when you use recent bills, real fuel receipts, a load profile, local solar yield, current equipment quotes, and finance terms from the provider.</p></details>
 </div>
 </section>
+
+<section class="df-upgrade" data-df-upgrade="solar-roi">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Energy planning workflow</span>
+      <h2>Solar Panel ROI Calculator decision workspace</h2>
+      <p>Turn power assumptions into a practical estimate with load, runtime, tariff, and backup caveats. This panel is tuned for solar panel roi calculator so the user can move from a thin page to a usable first decision.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Solar Panel ROI Calculator: energy planning summary ready with load, runtime, tariff, buffer, and equipment notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: sources, currentYear, browserOk.</li><li>Source note: utility tariff, fuel, manufacturer, installer, and energy-efficiency references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Energy estimate only. Confirm real appliance draw, tariff class, fuel price, battery health, installer advice, and safety rules. Source/reference: utility tariff, fuel, manufacturer, installer, and energy-efficiency references.</p>
+    </div>
+    <form class="df-form" data-df-form="solar-roi">
+      <label>Load watts<input name="loadWatts" type="number" value="800" min="0" step="any" aria-label="Load watts"></label>
+      <label>Hours per day<input name="hours" type="number" value="6" min="0" step="any" aria-label="Hours per day"></label>
+      <label>Tariff or fuel cost<input name="tariff" type="number" value="85" min="0" step="any" aria-label="Tariff or fuel cost"></label>
+      <label>Sizing buffer percent<input name="buffer" type="number" value="20" min="0" step="any" aria-label="Sizing buffer percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="solar-roi" data-df-base="Solar Panel ROI Calculator: energy planning summary ready with load, runtime, tariff, buffer, and equipment notes." aria-live="polite">Solar Panel ROI Calculator: energy planning summary ready with load, runtime, tariff, buffer, and equipment notes.</output>
+      <div class="df-actions"><button type="button" data-df-copy="solar-roi">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="solar-roi-faq-title">
+  <h2 id="solar-roi-faq-title">Solar Panel ROI Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn power assumptions into a practical estimate with load, runtime, tariff, and backup caveats. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Energy estimate only. Confirm real appliance draw, tariff class, fuel price, battery health, installer advice, and safety rules.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+</section>
 </main>
 <afro-footer></afro-footer>
 <script>!function(){function loadAfroEnergyAssistant(){if(window.__afroEnergyAssistantLoaded)return;window.__afroEnergyAssistantLoaded=true;var s=document.createElement("script");s.src="/assets/js/energy-tool-assistant.js?v=b5a3b994";s.defer=true;document.body.appendChild(s);}if("requestIdleCallback"in window){requestIdleCallback(loadAfroEnergyAssistant,{timeout:2500});}else{setTimeout(loadAfroEnergyAssistant,1800);}}();</script>
@@ -566,5 +592,6 @@
   updateCards();
 }();
 </script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

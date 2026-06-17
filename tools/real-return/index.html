@@ -98,6 +98,40 @@ details[open] summary::after{content:'\2212'}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rendement-reel-inflation/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/faida-halisi-baada-ya-mfumuko/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/real-return/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "See whether an investment beats inflation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Compare nominal return, inflation, fees, and tax to estimate the real return that matters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I verify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "https://www.imf.org/en/Publications/WEO/weo-database/2024/October"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this an official result?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/real-return/"
+}
+</script>
 </head>
 <body>
 <afro-navbar theme="dark" active="fintech"></afro-navbar>
@@ -183,6 +217,32 @@ details[open] summary::after{content:'\2212'}
   <div class="card">
     <h2>Frequently Asked Questions</h2>
 
+
+<section class="df-upgrade" data-df-upgrade="real-return">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Inflation-adjusted return</span>
+      <h2>See whether an investment beats inflation</h2>
+      <p>Compare nominal return, inflation, fees, and tax to estimate the real return that matters.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Result: real-return check ready with nominal return, inflation drag, fees, and purchasing-power warning.</li><li>Methodology: use the fields to create a local planning summary with clear assumptions.</li><li>Source note: confirm live prices, official rules, or platform terms before acting.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Financial disclaimer: this is educational, not investment advice. Confirm rates, fees, tax, and inflation source. Sources/reference: <a href="https://www.imf.org/en/Publications/WEO/weo-database/2024/October" target="_blank" rel="noopener">IMF inflation data</a></p>
+    </div>
+    <form class="df-form" data-df-form="real-return">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Principal<input name="principal" type="number" value="1000000" min="0" step="any" aria-label="Principal"></label>
+      <label>Nominal return percent<input name="returnRate" type="number" value="18" min="0" step="any" aria-label="Nominal return percent"></label>
+      <label>Inflation percent<input name="inflation" type="number" value="24" min="0" step="any" aria-label="Inflation percent"></label>
+      <label>Fees percent<input name="fees" type="number" value="1" min="0" step="any" aria-label="Fees percent"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="real-return" data-df-base="Result: real-return check ready with nominal return, inflation drag, fees, and purchasing-power warning." aria-live="polite">Result: real-return check ready with nominal return, inflation drag, fees, and purchasing-power warning.</output>
+      <div class="df-actions"><button type="button" data-df-copy="real-return">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="real-return-faq-title">
+  <h2 id="real-return-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>See whether an investment beats inflation?</summary><p>Compare nominal return, inflation, fees, and tax to estimate the real return that matters.</p></details><details><summary>What should I verify?</summary><p>Financial disclaimer: this is educational, not investment advice. Confirm rates, fees, tax, and inflation source.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting.</p></details></div>
+</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -245,5 +305,6 @@ function calcRealReturn(){
   document.getElementById('rr-results').classList.add('on');
 }
 </script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

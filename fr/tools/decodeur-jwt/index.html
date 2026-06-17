@@ -1,106 +1,412 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="view-transition" content="same-origin">
-<title>Décodeur JWT | AfroTools</title>
-<meta name="description" content="Décodeur JWT gratuit en ligne. Inspectez l'en-tête, le payload et les dates de vos tokens JSON Web Token.">
-<link rel="canonical" href="https://afrotools.com/fr/tools/decodeur-jwt/">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Décodeur JWT | AfroTools">
-<meta property="og:description" content="Décodeur JWT gratuit. Inspectez l'en-tête, le payload et les dates de vos tokens.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/jwt-decoder.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/decodeur-jwt/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Décodeur JWT | AfroTools">
-<meta name="twitter:description" content="Décodeur JWT gratuit en ligne. Inspectez l'en-tête, le payload et les dates de vos tokens JSON Web Token.">
-<meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
-<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Décodeur JWT",
-  "url": "https://afrotools.com/fr/tools/decodeur-jwt/",
-  "inLanguage": "fr",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/jwt-decoder.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Qu'est-ce qu'un token JWT ?","acceptedAnswer":{"@type":"Answer","text":"Un JWT (JSON Web Token) est un standard ouvert pour transmettre des informations entre deux parties sous forme de jeton signé numériquement."}},{"@type":"Question","name":"Le décodeur vérifie-t-il la signature JWT ?","acceptedAnswer":{"@type":"Answer","text":"L'outil décode et affiche le contenu du JWT mais ne vérifie pas la signature cryptographique. Pour la vérification, utilisez une bibliothèque côté serveur."}},{"@type":"Question","name":"Quels algorithmes JWT sont supportés ?","acceptedAnswer":{"@type":"Answer","text":"L'outil décode les algorithmes JWT courants : HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512, PS256, PS384, PS512 et EdDSA."}}]}
-</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/jwt-decoder.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="view-transition" content="same-origin">
+  <title>Decodeur JWT local | AfroTools</title>
+  <meta name="description" content="Decodez un JWT localement avec header, payload, dates exp nbf iat, risques JOSE, copie, export TXT, sources RFC et aucune verification serveur.">
+  <link rel="canonical" href="https://afrotools.com/fr/tools/decodeur-jwt/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Decodeur JWT local | AfroTools">
+  <meta property="og:description" content="Inspectez un JSON Web Token dans votre navigateur: header, payload, dates, risques et export local.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/jwt-decoder.webp">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/decodeur-jwt/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Decodeur JWT local | AfroTools">
+  <meta name="twitter:description" content="Decodeur JWT local avec analyse exp nbf iat, copie, export et avertissement de signature.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/jwt-decoder.webp">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script src="/assets/js/lib/error-boundary.js"></script>
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/jwt-decoder/">
+  <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/decodeur-jwt/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/jwt-decoder/">
+  <style>
+    :root {
+      --jwt-ink: #101827;
+      --jwt-muted: #607089;
+      --jwt-line: #dbe5f2;
+      --jwt-blue: #2458c9;
+      --jwt-green: #0f7a4f;
+      --jwt-warn: #9a5f08;
+      --jwt-red: #a33a2d;
+      --jwt-soft: #f5f8fc;
+      --jwt-card: #ffffff;
+    }
+    body { background: var(--jwt-soft); color: var(--jwt-ink); }
+    .jwt-shell, .jwt-shell * { box-sizing: border-box; }
+    .jwt-shell { max-width: 1180px; margin: 0 auto; padding: 28px 18px 52px; }
+    .jwt-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr); gap: 18px; margin-bottom: 18px; }
+    .jwt-panel { background: var(--jwt-card); border: 1px solid var(--jwt-line); border-radius: 18px; box-shadow: 0 18px 48px rgba(24, 40, 70, .07); }
+    .jwt-hero-main { padding: 30px; }
+    .eyebrow { color: var(--jwt-blue); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 900; }
+    h1 { margin: 10px 0 12px; font-size: clamp(2rem, 5vw, 4.4rem); line-height: .97; letter-spacing: -.02em; }
+    .lead { color: var(--jwt-muted); font-size: 1.05rem; line-height: 1.72; max-width: 760px; }
+    .trust { padding: 22px; display: grid; gap: 12px; }
+    .trust div { border-bottom: 1px solid #edf2f8; padding-bottom: 12px; }
+    .trust div:last-child { border-bottom: 0; padding-bottom: 0; }
+    .trust span { display: block; color: var(--jwt-muted); font-size: .8rem; font-weight: 850; text-transform: uppercase; letter-spacing: .05em; }
+    .trust strong { display: block; margin-top: 4px; }
+    .jwt-grid { display: grid; grid-template-columns: minmax(330px, .95fr) minmax(0, 1.05fr); gap: 18px; align-items: start; }
+    .jwt-grid > *, .jwt-hero > * { min-width: 0; max-width: 100%; }
+    .jwt-card { padding: 22px; }
+    .card-title { margin: 0 0 6px; font-size: 1.35rem; }
+    .card-note { margin: 0 0 18px; color: var(--jwt-muted); line-height: 1.6; }
+    .field { display: grid; gap: 7px; margin-bottom: 14px; }
+    label { font-weight: 850; font-size: .9rem; }
+    textarea, input { width: 100%; border: 1px solid var(--jwt-line); border-radius: 12px; padding: 12px; font: inherit; color: var(--jwt-ink); background: #fff; }
+    textarea { min-height: 220px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9rem; line-height: 1.55; }
+    .help { color: var(--jwt-muted); font-size: .82rem; line-height: 1.45; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .btn { min-height: 44px; border-radius: 999px; border: 1px solid var(--jwt-line); background: #fff; color: var(--jwt-ink); padding: 11px 15px; font-weight: 850; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+    .btn.primary { background: var(--jwt-blue); border-color: var(--jwt-blue); color: #fff; }
+    .btn:focus-visible, textarea:focus-visible, input:focus-visible { outline: 3px solid rgba(36, 88, 201, .25); outline-offset: 2px; }
+    .status { border-radius: 16px; padding: 16px; border: 1px solid var(--jwt-line); background: #fff; line-height: 1.6; margin-bottom: 12px; }
+    .status.good { background: #effbf5; border-color: rgba(15, 122, 79, .28); }
+    .status.warn { background: #fff8e8; border-color: rgba(154, 95, 8, .28); }
+    .status.risk { background: #fff1ee; border-color: rgba(163, 58, 45, .28); }
+    .claims { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+    .claim { border: 1px solid var(--jwt-line); border-radius: 14px; background: #fff; padding: 12px; }
+    .claim span { display: block; color: var(--jwt-muted); font-size: .78rem; font-weight: 850; }
+    .claim strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .code-grid { display: grid; gap: 12px; }
+    .code-card { border: 1px solid var(--jwt-line); border-radius: 14px; background: #fff; overflow: hidden; }
+    .code-card h3 { margin: 0; padding: 12px 14px; border-bottom: 1px solid #edf2f8; font-size: .92rem; }
+    pre { margin: 0; padding: 14px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.55; font-size: .86rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .source-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .source-card { border: 1px solid var(--jwt-line); border-radius: 14px; background: #fff; padding: 14px; }
+    .source-card a { color: var(--jwt-blue); font-weight: 850; }
+    .source-card p, .faq p { color: var(--jwt-muted); line-height: 1.55; }
+    .notice { margin-top: 18px; border-left: 4px solid var(--jwt-blue); background: #eef5ff; padding: 14px 16px; border-radius: 12px; line-height: 1.6; }
+    .faq details { border: 1px solid var(--jwt-line); border-radius: 14px; padding: 14px 16px; background: #fff; margin-bottom: 10px; }
+    .faq summary { font-weight: 850; cursor: pointer; }
+    @media (max-width: 880px) {
+      .jwt-hero, .jwt-grid, .source-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 620px) {
+      .jwt-shell { padding: 18px 12px 42px; }
+      .jwt-hero-main, .jwt-card { padding: 20px; }
+      .claims { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      textarea { min-height: 190px; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Decodeur JWT local",
+    "url": "https://afrotools.com/fr/tools/decodeur-jwt/",
+    "inLanguage": "fr",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "description": "Decodeur JWT local pour inspecter header, payload et dates sans envoyer le token a un serveur.",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+    "author": {"@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com/"}
   }
-}
-</style>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/jwt-decoder/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/decodeur-jwt/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/jwt-decoder/" />
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Le decodeur verifie-t-il la signature JWT ?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Non. Il decode les trois segments et signale les risques visibles. La verification cryptographique exige la cle et une bibliotheque JOSE adaptee cote serveur ou cote client de confiance."}
+      },
+      {
+        "@type": "Question",
+        "name": "Puis-je coller un token de production ?",
+        "acceptedAnswer": {"@type": "Answer", "text": "L outil fonctionne localement, mais il reste preferable de masquer les tokens sensibles, de travailler avec des exemples courts et de ne pas partager les resultats contenant des donnees personnelles."}
+      },
+      {
+        "@type": "Question",
+        "name": "Quels champs sont analyses ?",
+        "acceptedAnswer": {"@type": "Answer", "text": "L outil lit header, payload, alg, typ, iss, sub, aud, exp, nbf, iat et signale les dates expirees, futures ou absentes quand elles existent."}
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Décodeur JWT</h1>
-<p>Décodez et inspectez les tokens JWT. Visualisez l'en-tête, le payload et les dates utiles.</p>
-</section>
-<div class="fr-wrap">
-<div class="fr-tool-frame">
-<iframe src="/tools/jwt-decoder/" title="Décodeur JWT" loading="lazy"></iframe>
-</div>
-<div class="fr-seo">
-<h2>Décodeur JWT en ligne</h2>
-<p>Le décodeur JWT d'AfroTools vous permet d'inspecter rapidement un token JSON Web Token. Visualisez l'en-tête avec l'algorithme utilisé, le payload avec les revendications et les dates d'expiration. Cet outil aide au développement d'applications avec authentification OAuth ou OpenID Connect.</p>
-<p>L'outil fonctionne entièrement hors ligne une fois chargé. Aucun token n'est envoyé à un serveur. Collez votre JWT et obtenez instantanément une vue claire et structurée de son contenu.</p>
-</div>
-<div class="fr-faq">
-<h2>Questions fréquentes</h2>
-<details><summary>Qu'est-ce qu'un token JWT ?</summary><p>Un JWT (JSON Web Token) est un standard ouvert pour transmettre des informations entre deux parties sous forme de jeton signé numériquement.</p></details>
-<details><summary>Le décodeur vérifie-t-il la signature JWT ?</summary><p>L'outil décode et affiche le contenu du JWT mais ne vérifie pas la signature cryptographique. Pour la vérification de signature, utilisez une bibliothèque côté serveur.</p></details>
-<details><summary>Quels algorithmes JWT sont supportés ?</summary><p>L'outil décode les algorithmes JWT courants : HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512, PS256, PS384, PS512 et EdDSA.</p></details>
-</div>
-</div>
+<main class="jwt-shell">
+  <section class="jwt-hero">
+    <div class="jwt-panel jwt-hero-main">
+      <div class="eyebrow">Developer tools</div>
+      <h1>Decoder un JWT sans quitter votre navigateur</h1>
+      <p class="lead">Collez un JSON Web Token pour lire le header, le payload et les dates utiles. L outil aide au debug OAuth, OpenID Connect et API, mais il ne prouve jamais que la signature est valide.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="#decoder">Decoder un token</a>
+        <a class="btn" href="#sources">Sources RFC</a>
+      </div>
+    </div>
+    <aside class="jwt-panel trust" aria-label="Principes de securite">
+      <div><span>Confidentialite</span><strong>Traitement local. Aucun token envoye au serveur AfroTools.</strong></div>
+      <div><span>Verification</span><strong>Decode seulement. La signature JWS reste non verifiee.</strong></div>
+      <div><span>Derniere verification</span><strong>Sources RFC et IANA relues en juin 2026.</strong></div>
+    </aside>
+  </section>
+
+  <section class="jwt-grid" id="decoder">
+    <form class="jwt-panel jwt-card" id="jwtForm">
+      <h2 class="card-title">Coller le token</h2>
+      <p class="card-note">Utilisez un token de test quand possible. Un JWT de production peut contenir des identifiants, emails, roles ou scopes sensibles.</p>
+      <div class="field">
+        <label for="jwtInput">JWT compact</label>
+        <textarea id="jwtInput" spellcheck="false" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
+        <span class="help">Format attendu: header.payload.signature en base64url.</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" type="submit">Decoder</button>
+        <button class="btn" type="button" id="sampleBtn">Charger exemple</button>
+        <button class="btn" type="button" id="copyBtn">Copier le rapport</button>
+        <button class="btn" type="button" id="downloadBtn">Telecharger TXT</button>
+        <button class="btn" type="button" id="saveBtn">Sauvegarder localement</button>
+      </div>
+      <p class="help" id="actionStatus" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="jwt-panel jwt-card" aria-live="polite">
+      <h2 class="card-title">Resultat</h2>
+      <div class="status" id="riskBox">Collez un token pour afficher le resultat.</div>
+      <div class="claims">
+        <div class="claim"><span>Algorithme</span><strong id="algOut">-</strong></div>
+        <div class="claim"><span>Expiration</span><strong id="expOut">-</strong></div>
+        <div class="claim"><span>Signature</span><strong id="sigOut">-</strong></div>
+      </div>
+      <div class="code-grid">
+        <div class="code-card"><h3>Header</h3><pre id="headerOut">{}</pre></div>
+        <div class="code-card"><h3>Payload</h3><pre id="payloadOut">{}</pre></div>
+        <div class="code-card"><h3>Rapport</h3><pre id="reportOut">Aucun rapport.</pre></div>
+      </div>
+    </section>
+  </section>
+
+  <section class="jwt-panel jwt-card" id="sources" style="margin-top:18px">
+    <h2 class="card-title">Sources, methodology et limites</h2>
+    <p class="card-note"><strong>Methodology / methode:</strong> le script separe le token compact en trois segments, decode header et payload en base64url UTF-8, parse le JSON, puis calcule un breakdown des claims temporels `exp`, `nbf` et `iat`. Il ne recalcule pas la signature et ne valide pas la cle.</p>
+    <div class="source-grid">
+      <div class="source-card">
+        <a href="https://datatracker.ietf.org/doc/html/rfc7519" target="_blank" rel="noopener">RFC 7519 - JSON Web Token</a>
+        <p>Reference principale sur la structure JWT et les claims.</p>
+      </div>
+      <div class="source-card">
+        <a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank" rel="noopener">RFC 7515 - JSON Web Signature</a>
+        <p>Reference sur la signature JWS et la protection MAC ou signature numerique.</p>
+      </div>
+      <div class="source-card">
+        <a href="https://www.iana.org/assignments/jwt" target="_blank" rel="noopener">IANA JWT Claims Registry</a>
+        <p>Registre des claims JWT publies et de leurs references.</p>
+      </div>
+      <div class="source-card">
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/btoa" target="_blank" rel="noopener">MDN - Base64 browser APIs</a>
+        <p>Contexte sur les fonctions base64 du navigateur et leurs limites Unicode.</p>
+      </div>
+    </div>
+    <div class="notice" data-tool-verification-panel>
+      <strong>Verification AfroTools:</strong> decodeur local, pas de requete reseau pour le token, pas de signature verifiee, pas de conseil securite complet. Confirmez toujours les tokens cote serveur avec une bibliotheque JOSE maintenue.
+    </div>
+  </section>
+
+  <section class="jwt-panel jwt-card faq" style="margin-top:18px">
+    <h2 class="card-title">Questions frequentes</h2>
+    <details>
+      <summary>Pourquoi un JWT decode peut-il quand meme etre faux ?</summary>
+      <p>Le decodeur lit le JSON visible, mais un attaquant peut modifier header ou payload. Seule une verification de signature avec la bonne cle prouve l integrite du token.</p>
+    </details>
+    <details>
+      <summary>Que signifie alg none ?</summary>
+      <p>`alg: none` indique un token non signe. Il peut etre legitime dans certains tests tres controles, mais il ne doit pas etre accepte par defaut en production.</p>
+    </details>
+    <details>
+      <summary>Pourquoi verifier exp, nbf et iat ?</summary>
+      <p>`exp` indique l expiration, `nbf` le debut de validite et `iat` la date d emission. Ces claims aident a detecter un token expire, pas encore valide ou trop ancien.</p>
+    </details>
+  </section>
+
+  <section class="jwt-panel jwt-card" style="margin-top:18px">
+    <h2 class="card-title">Related tools / outils associes</h2>
+    <div class="btn-row">
+      <a class="btn" href="/tools/jwt-decoder/">JWT Decoder EN</a>
+      <a class="btn" href="/fr/tools/formateur-json">Formateur JSON</a>
+      <a class="btn" href="/fr/tools/encodeur-base64">Base64</a>
+      <a class="btn" href="/fr/tools/generateur-hash">Hash</a>
+      <a class="btn" href="/fr/tools/generateur-mot-de-passe">Mot de passe</a>
+    </div>
+    <afro-related-tools category="developer" current="decodeur-jwt-fr"></afro-related-tools>
+  </section>
+</main>
 <afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+  var input = document.getElementById('jwtInput');
+  var status = document.getElementById('actionStatus');
+  var sample = [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+    'eyJzdWIiOiJ1c2VyLTEyMyIsIm5hbWUiOiJBZnJvVG9vbHMgRGVtbyIsImlhdCI6MTcxNzIwMDAwMCwibmJmIjoxNzE3MjAwMDAwLCJleHAiOjQwNzA5MDg4MDB9',
+    'demo-signature-not-verified'
+  ].join('.');
+
+  function base64UrlDecode(part) {
+    var normalized = String(part || '').replace(/-/g, '+').replace(/_/g, '/');
+    while (normalized.length % 4) normalized += '=';
+    var binary = window.atob(normalized);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  }
+
+  function fmtJson(value) {
+    return JSON.stringify(value, null, 2);
+  }
+
+  function fmtDate(seconds) {
+    if (!Number.isFinite(seconds)) return '-';
+    return new Date(seconds * 1000).toISOString();
+  }
+
+  function decodeJwt() {
+    var token = input.value.trim();
+    if (!token) throw new Error('Collez un JWT compact.');
+    var parts = token.split('.');
+    if (parts.length !== 3) throw new Error('Format invalide: le JWT compact doit contenir 3 segments.');
+    var header = JSON.parse(base64UrlDecode(parts[0]));
+    var payload = JSON.parse(base64UrlDecode(parts[1]));
+    var signaturePresent = parts[2].length > 0;
+    var now = Math.floor(Date.now() / 1000);
+    var notes = [];
+    var risk = 'good';
+
+    if (String(header.alg || '').toLowerCase() === 'none') {
+      risk = 'risk';
+      notes.push('Risque: alg none indique un token non signe.');
+    }
+    if (!signaturePresent) {
+      risk = 'risk';
+      notes.push('Risque: segment signature vide.');
+    }
+    if (Number.isFinite(Number(payload.exp))) {
+      if (Number(payload.exp) < now) {
+        risk = 'risk';
+        notes.push('Token expire depuis ' + fmtDate(Number(payload.exp)) + '.');
+      } else {
+        notes.push('Expiration: ' + fmtDate(Number(payload.exp)) + '.');
+      }
+    } else {
+      if (risk !== 'risk') risk = 'warn';
+      notes.push('Aucun claim exp detecte.');
+    }
+    if (Number.isFinite(Number(payload.nbf)) && Number(payload.nbf) > now) {
+      risk = 'warn';
+      notes.push('Token pas encore valide avant ' + fmtDate(Number(payload.nbf)) + '.');
+    }
+    if (Number.isFinite(Number(payload.iat))) notes.push('Emission: ' + fmtDate(Number(payload.iat)) + '.');
+    notes.push('Signature non verifiee par cet outil.');
+
+    var report = [
+      'Decodeur JWT - AfroTools',
+      'Algorithme: ' + (header.alg || '-'),
+      'Type: ' + (header.typ || '-'),
+      'Issuer: ' + (payload.iss || '-'),
+      'Subject: ' + (payload.sub || '-'),
+      'Audience: ' + (Array.isArray(payload.aud) ? payload.aud.join(', ') : (payload.aud || '-')),
+      'Expiration: ' + fmtDate(Number(payload.exp)),
+      'Not before: ' + fmtDate(Number(payload.nbf)),
+      'Issued at: ' + fmtDate(Number(payload.iat)),
+      'Notes: ' + notes.join(' '),
+      'Limite: decode local seulement, pas verification cryptographique.'
+    ].join('\n');
+
+    document.getElementById('algOut').textContent = header.alg || '-';
+    document.getElementById('expOut').textContent = fmtDate(Number(payload.exp));
+    document.getElementById('sigOut').textContent = signaturePresent ? 'Presente, non verifiee' : 'Absente';
+    document.getElementById('headerOut').textContent = fmtJson(header);
+    document.getElementById('payloadOut').textContent = fmtJson(payload);
+    document.getElementById('reportOut').textContent = report;
+    document.getElementById('riskBox').className = 'status ' + risk;
+    document.getElementById('riskBox').textContent = notes.join(' ');
+    return report;
+  }
+
+  function setStatus(message) {
+    status.textContent = message;
+  }
+
+  function safeDecode(message) {
+    try {
+      var report = decodeJwt();
+      setStatus(message || 'JWT decode.');
+      return report;
+    } catch (error) {
+      document.getElementById('riskBox').className = 'status risk';
+      document.getElementById('riskBox').textContent = error.message;
+      setStatus(error.message);
+      return '';
+    }
+  }
+
+  document.getElementById('jwtForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    safeDecode('JWT decode.');
+  });
+
+  document.getElementById('sampleBtn').addEventListener('click', function () {
+    input.value = sample;
+    safeDecode('Exemple charge.');
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var report = safeDecode('');
+    if (!report) return;
+    navigator.clipboard.writeText(report).then(function () {
+      setStatus('Rapport copie.');
+    }).catch(function () {
+      setStatus('Copie indisponible dans ce navigateur.');
+    });
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', function () {
+    var report = safeDecode('');
+    if (!report) return;
+    var blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'decodeur-jwt-afrotools.txt';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatus('Fichier TXT prepare.');
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', function () {
+    localStorage.setItem('afrotools:decodeur-jwt-fr', JSON.stringify({ token: input.value, savedAt: new Date().toISOString() }));
+    setStatus('Brouillon sauvegarde dans ce navigateur.');
+  });
+
+  try {
+    var saved = JSON.parse(localStorage.getItem('afrotools:decodeur-jwt-fr') || 'null');
+    if (saved && saved.token) {
+      input.value = saved.token;
+      safeDecode('Brouillon local restaure.');
+    }
+  } catch (error) {
+    setStatus('Brouillon local non restaure.');
+  }
+})();
+</script>
 </body>
 </html>

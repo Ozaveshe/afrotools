@@ -4,22 +4,26 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur de code QR | AfroTools</title>
-<meta name="description" content="Préparez un code QR avec l'outil AfroTools en anglais pour liens, texte, WiFi ou vCard, puis téléchargez le rendu en PNG ou SVG.">
-<meta name="theme-color" content="#007AFF">
+<title>Generateur de code QR gratuit | AfroTools</title>
+<meta name="description" content="Creez un code QR pour lien, texte, WiFi ou contact. Apercu, copie du contenu, telechargement PNG et notes de verification dans le navigateur.">
+<meta name="theme-color" content="#2563eb">
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="canonical" href="https://afrotools.com/fr/tools/generateur-qr/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/qr-generator/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-qr/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kitengeneza-qr/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/qr-generator/" />
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
-<meta property="og:title" content="Générateur de code QR | AfroTools">
-<meta property="og:description" content="Page française d'accès au générateur de code QR AfroTools avec outil principal en anglais.">
+<meta property="og:title" content="Generateur de code QR gratuit | AfroTools">
+<meta property="og:description" content="Creez un code QR pour lien, texte, WiFi ou contact avec apercu, copie et export PNG.">
 <meta property="og:url" content="https://afrotools.com/fr/tools/generateur-qr/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/qr-generator.webp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Générateur de code QR | AfroTools">
-<meta name="twitter:description" content="Page française d'accès au générateur de code QR AfroTools avec outil principal en anglais.">
+<meta name="twitter:title" content="Generateur de code QR gratuit | AfroTools">
+<meta name="twitter:description" content="Creez un code QR pour lien, texte, WiFi ou contact avec apercu, copie et export PNG.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/qr-generator.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -28,53 +32,411 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<style>
+  :root { --qr-blue:#2563eb; --qr-ink:#111827; --qr-soft:#f5f7fb; --qr-line:#dbe4f0; }
+  body { background:#f8fafc; color:var(--qr-ink); font-family:"DM Sans", system-ui, sans-serif; }
+  .qr-hero { background:#0f172a; color:#fff; padding:44px 0 34px; }
+  .qr-wrap { max-width:1120px; margin:0 auto; padding:0 22px; }
+  .qr-breadcrumb { color:#93a4bd; font-size:.74rem; margin-bottom:14px; }
+  .qr-breadcrumb a { color:#cbd5e1; text-decoration:none; }
+  .qr-kicker { color:#93c5fd; font-size:.72rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  h1 { max-width:760px; margin:8px 0 10px; font-size:clamp(2rem,5vw,3.35rem); line-height:1.02; letter-spacing:-.03em; }
+  .qr-lede { max-width:720px; margin:0; color:#cbd5e1; font-size:1rem; line-height:1.7; }
+  .qr-main { padding:28px 0 70px; }
+  .qr-grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr); gap:20px; align-items:start; }
+  .qr-panel { background:#fff; border:1px solid var(--qr-line); border-radius:12px; box-shadow:0 14px 34px rgba(15,23,42,.06); overflow:hidden; }
+  .qr-panel__head { padding:18px 20px; border-bottom:1px solid var(--qr-line); background:#f8fbff; }
+  .qr-panel__head h2 { margin:0; font-size:1.02rem; }
+  .qr-panel__body { padding:20px; }
+  .qr-tabs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-bottom:16px; }
+  .qr-tab { min-height:44px; border:1px solid var(--qr-line); background:#fff; border-radius:8px; color:#334155; font-weight:800; cursor:pointer; }
+  .qr-tab[aria-pressed="true"] { background:var(--qr-blue); border-color:var(--qr-blue); color:#fff; }
+  label { display:block; margin:0 0 14px; font-weight:800; color:#1f2937; }
+  .qr-hint { display:block; margin-top:3px; color:#64748b; font-size:.8rem; font-weight:500; line-height:1.5; }
+  input, textarea, select { width:100%; box-sizing:border-box; margin-top:7px; border:1px solid #cbd5e1; border-radius:9px; padding:11px 12px; font:inherit; color:#111827; background:#fff; }
+  textarea { min-height:120px; resize:vertical; }
+  input:focus, textarea:focus, select:focus, button:focus-visible { outline:3px solid rgba(37,99,235,.22); outline-offset:2px; border-color:var(--qr-blue); }
+  .qr-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .qr-logo { border:1px dashed #b6c4d8; border-radius:10px; padding:12px; background:#f8fafc; }
+  .qr-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:6px; }
+  .qr-btn { border:1px solid var(--qr-blue); background:var(--qr-blue); color:#fff; border-radius:9px; min-height:44px; padding:0 16px; font-weight:900; cursor:pointer; }
+  .qr-btn--ghost { background:#fff; color:var(--qr-blue); }
+  .qr-btn--muted { background:#eef4ff; color:#1d4ed8; border-color:#bfdbfe; }
+  .qr-preview { display:grid; place-items:center; min-height:330px; background:linear-gradient(180deg,#f8fbff,#eef4ff); border-bottom:1px solid var(--qr-line); padding:22px; }
+  .qr-codebox { width:280px; min-height:280px; display:grid; place-items:center; border-radius:18px; background:#fff; border:1px solid #dbeafe; box-shadow:0 20px 50px rgba(15,23,42,.10); padding:18px; }
+  #qrCanvasHost canvas, #qrCanvasHost img { max-width:238px; height:auto; }
+  .qr-empty { color:#64748b; text-align:center; line-height:1.6; font-weight:700; }
+  .qr-result { padding:16px 20px 20px; }
+  .qr-result output { display:block; min-height:62px; border:1px solid #dbeafe; background:#f8fbff; border-radius:10px; padding:12px; color:#334155; line-height:1.55; white-space:pre-wrap; }
+  .qr-mini { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:14px; }
+  .qr-mini div { border:1px solid #e2e8f0; border-radius:10px; padding:12px; background:#fff; }
+  .qr-mini strong { display:block; color:#111827; font-size:.82rem; margin-bottom:4px; }
+  .qr-mini span { color:#64748b; font-size:.78rem; line-height:1.45; }
+  .qr-info { margin-top:18px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  .qr-note { background:#fff; border:1px solid var(--qr-line); border-radius:12px; padding:16px; }
+  .qr-note h2, .qr-note h3 { margin:0 0 8px; font-size:1rem; }
+  .qr-note p, .qr-note li { color:#475569; line-height:1.65; font-size:.9rem; }
+  .qr-note ul { margin:8px 0 0; padding-left:18px; }
+  .qr-note a { color:#1d4ed8; font-weight:800; }
+  details.qr-note summary { cursor:pointer; font-weight:900; color:#111827; }
+  .qr-faq { margin-top:18px; }
+  @media (max-width:860px) {
+    .qr-grid, .qr-info { grid-template-columns:1fr; }
+    .qr-tabs, .qr-mini { grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:520px) {
+    .qr-row, .qr-tabs, .qr-mini { grid-template-columns:1fr; }
+    .qr-codebox { width:100%; min-height:250px; }
+  }
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Générateur de code QR | AfroTools",
-  "description": "Page française d'accès au générateur de code QR AfroTools avec outil principal en anglais.",
+  "name": "Generateur de code QR AfroTools",
+  "description": "Creez un code QR pour lien, texte, WiFi ou contact avec apercu, copie et export PNG.",
   "url": "https://afrotools.com/fr/tools/generateur-qr/",
-  "inLanguage": "https://afrotools.com/fr/",
+  "inLanguage": "fr",
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/qr-generator.webp"
+  "browserRequirements": "JavaScript requis",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com/"}
 }
 </script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/qr-generator/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-qr/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/qr-generator/" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Les donnees du QR code quittent-elles mon navigateur ?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Non. Le texte saisi est transforme dans le navigateur pour l apercu et le telechargement. AfroTools ne demande pas de compte pour cette action."}
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je utiliser ce code QR pour une affiche ou un menu ?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Oui, mais testez toujours le code avec plusieurs telephones avant impression, surtout si vous changez les couleurs ou ajoutez un logo."}
+    },
+    {
+      "@type": "Question",
+      "name": "Que dois-je verifier avant d imprimer ?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Verifiez le lien, le contraste, la taille d impression, la marge blanche autour du code et la lisibilite sur un telephone ancien."}
+    }
+  ]
+}
+</script>
 </head>
 <body>
-<afro-navbar></afro-navbar>
+<afro-navbar active="tools"></afro-navbar>
 <main>
-<section style="background:linear-gradient(135deg,#0f1419,#1a1f2e);padding:48px 0 36px;text-align:center">
-<div style="max-width:800px;margin:0 auto;padding:0 24px">
-<nav style="font-size:.72rem;color:rgba(255,255,255,.3);margin-bottom:14px"><a href="/fr/" style="color:rgba(255,255,255,.3);text-decoration:none">Accueil</a> / <a href="/fr/tools/outils-image/" style="color:rgba(255,255,255,.3);text-decoration:none">Image et design</a> / <span style="color:#007AFF">Générateur de code QR</span></nav>
-<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Générateur de code QR</h1>
-<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin:0 auto 14px">Accédez au générateur QR AfroTools pour liens, texte, WiFi et contacts. L'interface principale est encore en anglais.</p>
-<span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;background:rgba(0,113,227,.18);color:#007AFF;border:1px solid rgba(0,113,227,.38)">Interface anglaise</span>
-</div>
-</section>
-<section style="padding:40px 0 72px">
-<div style="max-width:800px;margin:0 auto;padding:0 24px;text-align:center">
-<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:48px 24px;box-shadow:0 1px 8px rgba(0,0,0,.05)">
-<p style="font-size:1rem;color:#0f172a;margin-bottom:16px;font-weight:600">La version française complète n'est pas encore prête. Ouvrez l'outil principal en anglais pour créer le code QR.</p>
-<a href="/tools/qr-generator/" style="display:inline-block;padding:12px 28px;background:#007AFF;color:#fff;border-radius:8px;font-weight:700;text-decoration:none;font-size:.9rem">Ouvrir l&rsquo;outil en anglais &rarr;</a>
-</div>
-</div>
-</section>
+  <section class="qr-hero">
+    <div class="qr-wrap">
+      <nav class="qr-breadcrumb"><a href="/fr/">Accueil</a> / <a href="/fr/tools/outils-image/">Image et design</a> / Generateur QR</nav>
+      <div class="qr-kicker">Outil image local</div>
+      <h1>Generateur de code QR pour liens, WiFi, menus et contacts</h1>
+      <p class="qr-lede">Preparez un QR code utile pour une affiche, une carte de visite, un menu, une page de paiement ou un acces WiFi. L apercu, la copie et le telechargement se font dans votre navigateur.</p>
+    </div>
+  </section>
+
+  <section class="qr-main">
+    <div class="qr-wrap qr-grid">
+      <form class="qr-panel" id="qrForm">
+        <div class="qr-panel__head">
+          <h2>Composer le QR code</h2>
+        </div>
+        <div class="qr-panel__body">
+          <div class="qr-tabs" aria-label="Type de QR code">
+            <button class="qr-tab" type="button" data-mode="url" aria-pressed="true">Lien</button>
+            <button class="qr-tab" type="button" data-mode="text" aria-pressed="false">Texte</button>
+            <button class="qr-tab" type="button" data-mode="wifi" aria-pressed="false">WiFi</button>
+            <button class="qr-tab" type="button" data-mode="vcard" aria-pressed="false">Contact</button>
+          </div>
+
+          <div data-pane="url">
+            <label for="qrUrl">Lien a encoder
+              <span class="qr-hint">Utilisez une page mobile, un lien WhatsApp, un formulaire, un menu ou une page de paiement.</span>
+              <input id="qrUrl" name="qrUrl" type="url" value="https://afrotools.com/tools/qr-generator/" autocomplete="url">
+            </label>
+          </div>
+
+          <div data-pane="text" hidden>
+            <label for="qrText">Texte court
+              <span class="qr-hint">Pour un message, un code de stand, une instruction ou une note de livraison.</span>
+              <textarea id="qrText" name="qrText">Scannez ce code pour ouvrir AfroTools.</textarea>
+            </label>
+          </div>
+
+          <div data-pane="wifi" hidden>
+            <label for="wifiName">Nom du reseau WiFi
+              <input id="wifiName" name="wifiName" type="text" value="AfroTools Guest">
+            </label>
+            <label for="wifiPass">Mot de passe WiFi
+              <input id="wifiPass" name="wifiPass" type="text" value="guest1234">
+            </label>
+            <label for="wifiSecurity">Securite
+              <select id="wifiSecurity" name="wifiSecurity">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Ouvert</option>
+              </select>
+            </label>
+          </div>
+
+          <div data-pane="vcard" hidden>
+            <div class="qr-row">
+              <label for="vName">Nom complet
+                <input id="vName" name="vName" type="text" value="Amina Bello">
+              </label>
+              <label for="vOrg">Entreprise
+                <input id="vOrg" name="vOrg" type="text" value="AfroTools Studio">
+              </label>
+            </div>
+            <div class="qr-row">
+              <label for="vPhone">Telephone
+                <input id="vPhone" name="vPhone" type="tel" value="+2348012345678">
+              </label>
+              <label for="vEmail">Email
+                <input id="vEmail" name="vEmail" type="email" value="hello@example.com">
+              </label>
+            </div>
+          </div>
+
+          <div class="qr-row">
+            <label for="darkColor">Couleur du code
+              <input id="darkColor" name="darkColor" type="color" value="#111827">
+            </label>
+            <label for="lightColor">Fond
+              <input id="lightColor" name="lightColor" type="color" value="#ffffff">
+            </label>
+          </div>
+
+          <div class="qr-logo">
+            <label for="logoFile">Logo optionnel
+              <span class="qr-hint">Ajoutez un petit logo uniquement si le code reste lisible. Le fichier reste local dans ce navigateur.</span>
+              <input id="logoFile" name="logoFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+            </label>
+          </div>
+
+          <div class="qr-actions">
+            <button class="qr-btn" type="submit">Creer le QR code</button>
+            <button class="qr-btn qr-btn--ghost" type="button" id="copyPayload">Copier le contenu</button>
+            <button class="qr-btn qr-btn--muted" type="button" id="saveLocal">Sauver le brouillon</button>
+          </div>
+        </div>
+      </form>
+
+      <aside class="qr-panel" aria-label="Resultat QR code">
+        <div class="qr-preview">
+          <div class="qr-codebox" id="qrCanvasHost">
+            <p class="qr-empty">Choisissez un type, puis cliquez sur Creer le QR code.</p>
+          </div>
+        </div>
+        <div class="qr-result">
+          <output id="qrStatus" aria-live="polite">Resultat pret apres generation. Aucun texte prive n est place dans l URL.</output>
+          <div class="qr-actions">
+            <button class="qr-btn" type="button" id="downloadPng">Telecharger PNG</button>
+            <a class="qr-btn qr-btn--ghost" href="/tools/qr-generator/">Outil anglais complet</a>
+          </div>
+          <div class="qr-mini">
+            <div><strong>Contraste</strong><span>Gardez un code fonce sur fond clair.</span></div>
+            <div><strong>Test</strong><span>Scannez avant impression ou partage.</span></div>
+            <div><strong>Export</strong><span>PNG pour web, affiche, flyer et WhatsApp.</span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="qr-wrap qr-info">
+      <section class="qr-note">
+        <h2>Methodologie</h2>
+        <p>Le generateur transforme vos champs en une charge utile standard: URL, texte simple, WIFI ou vCard. Il cree ensuite un apercu QR dans le navigateur, ajoute le logo si vous en choisissez un, puis permet de copier ou telecharger le resultat.</p>
+        <ul>
+          <li>Liens: verifiez que la page cible fonctionne sur mobile.</li>
+          <li>WiFi: confirmez le nom du reseau, la securite et le mot de passe.</li>
+          <li>Contact: relisez telephone, email et entreprise avant impression.</li>
+        </ul>
+      </section>
+
+      <section class="qr-note" data-tool-verification-panel="generateur-qr-fr">
+        <h2>Sources &amp; verification</h2>
+        <p><strong>Derniere verification 2026.</strong> Ce workflow est une aide de creation, pas une certification d impression. Les controles suivent les pratiques communes pour URL, canevas et contraste lisible.</p>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL">Reference MDN sur les URL</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">Reference MDN Canvas API</a></li>
+          <li><a href="https://www.w3.org/WAI/WCAG22/quickref/">Reference WCAG pour lisibilite et contraste</a></li>
+        </ul>
+      </section>
+
+      <section class="qr-note">
+        <h2>Batch workflow</h2>
+        <p>Pour plusieurs affiches, gardez une queue de liens dans un document, creez un code par page, puis nommez les fichiers avec le lieu et la date. Exemple: <strong>menu-lagos-juillet.png</strong>, <strong>wifi-salon-accra.png</strong>, <strong>contact-kigali-event.png</strong>.</p>
+      </section>
+
+      <section class="qr-note">
+        <h2>Confidentialite et avertissement</h2>
+        <p>Le contenu saisi reste dans la page pendant la session et le brouillon local utilise le stockage du navigateur si vous cliquez sur sauver. Ne mettez pas de mot de passe sensible dans un QR public. Testez toujours le scan avec plusieurs telephones.</p>
+      </section>
+    </div>
+
+    <div class="qr-wrap qr-faq">
+      <details class="qr-note">
+        <summary>Ce QR code est-il garanti lisible partout ?</summary>
+        <p>Non. La lisibilite depend de la taille, du contraste, de la qualite d impression, de la camera et de la marge blanche autour du code.</p>
+      </details>
+      <details class="qr-note">
+        <summary>Puis-je ajouter un logo ?</summary>
+        <p>Oui, mais gardez-le petit. Un logo trop grand peut casser le scan. Verifiez le resultat avec plusieurs applications camera.</p>
+      </details>
+      <details class="qr-note">
+        <summary>Pourquoi garder une version anglaise ?</summary>
+        <p>La page anglaise reste la route principale avec les variantes et liens historiques. Cette page francaise donne maintenant une surface locale utile et renvoie vers l outil complet si vous en avez besoin.</p>
+      </details>
+    </div>
+  </section>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function () {
+  const tabs = Array.from(document.querySelectorAll('.qr-tab'));
+  const panes = Array.from(document.querySelectorAll('[data-pane]'));
+  const form = document.getElementById('qrForm');
+  const host = document.getElementById('qrCanvasHost');
+  const status = document.getElementById('qrStatus');
+  const logoInput = document.getElementById('logoFile');
+  let currentMode = 'url';
+  let currentPayload = '';
+
+  function $(id) { return document.getElementById(id); }
+  function clean(value) { return String(value || '').trim(); }
+  function escapeWifi(value) { return clean(value).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/:/g, '\\:').replace(/"/g, '\\"'); }
+  function escapeVcard(value) { return clean(value).replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\n/g, '\\n'); }
+
+  function setMode(mode) {
+    currentMode = mode;
+    tabs.forEach((tab) => tab.setAttribute('aria-pressed', String(tab.dataset.mode === mode)));
+    panes.forEach((pane) => { pane.hidden = pane.dataset.pane !== mode; });
+  }
+
+  function getPayload() {
+    if (currentMode === 'url') return clean($('qrUrl').value);
+    if (currentMode === 'text') return clean($('qrText').value);
+    if (currentMode === 'wifi') {
+      const security = $('wifiSecurity').value;
+      const ssid = escapeWifi($('wifiName').value);
+      const pass = escapeWifi($('wifiPass').value);
+      return ssid ? `WIFI:T:${security};S:${ssid};P:${pass};;` : '';
+    }
+    const name = escapeVcard($('vName').value);
+    if (!name) return '';
+    return [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      `FN:${name}`,
+      clean($('vPhone').value) ? `TEL:${escapeVcard($('vPhone').value)}` : '',
+      clean($('vEmail').value) ? `EMAIL:${escapeVcard($('vEmail').value)}` : '',
+      clean($('vOrg').value) ? `ORG:${escapeVcard($('vOrg').value)}` : '',
+      'END:VCARD'
+    ].filter(Boolean).join('\n');
+  }
+
+  function overlayLogo() {
+    const file = logoInput.files && logoInput.files[0];
+    const canvas = host.querySelector('canvas');
+    if (!file || !canvas) return;
+    const reader = new FileReader();
+    reader.onload = function () {
+      const img = new Image();
+      img.onload = function () {
+        const ctx = canvas.getContext('2d');
+        const size = Math.round(canvas.width * 0.18);
+        const x = Math.round((canvas.width - size) / 2);
+        const y = Math.round((canvas.height - size) / 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(x - 6, y - 6, size + 12, size + 12);
+        ctx.drawImage(img, x, y, size, size);
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function generate() {
+    currentPayload = getPayload();
+    if (!currentPayload) {
+      status.textContent = 'Ajoutez un lien, un texte, un reseau WiFi ou un contact avant de generer.';
+      return;
+    }
+    host.innerHTML = '';
+    if (!window.QRCode) {
+      host.innerHTML = '<p class="qr-empty">La librairie QR externe n est pas chargee. Copiez le contenu ou ouvrez l outil anglais complet.</p>';
+      status.textContent = 'Apercu QR indisponible, mais le contenu est pret a copier.';
+      return;
+    }
+    new window.QRCode(host, {
+      text: currentPayload,
+      width: 240,
+      height: 240,
+      colorDark: $('darkColor').value,
+      colorLight: $('lightColor').value,
+      correctLevel: window.QRCode.CorrectLevel.H
+    });
+    window.setTimeout(overlayLogo, 80);
+    status.textContent = `Resultat: QR code ${currentMode} cree localement. Testez le scan avant impression.`;
+  }
+
+  tabs.forEach((tab) => tab.addEventListener('click', () => setMode(tab.dataset.mode)));
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    generate();
+  });
+
+  $('copyPayload').addEventListener('click', async function () {
+    currentPayload = getPayload();
+    if (!currentPayload) {
+      status.textContent = 'Rien a copier pour le moment.';
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(currentPayload);
+      status.textContent = 'Contenu du QR code copie.';
+    } catch (error) {
+      status.textContent = 'Copie automatique indisponible. Selectionnez le texte dans votre navigateur.';
+    }
+  });
+
+  $('saveLocal').addEventListener('click', function () {
+    currentPayload = getPayload();
+    localStorage.setItem('afrotools.qr.fr.draft', JSON.stringify({
+      mode: currentMode,
+      payload: currentPayload,
+      dark: $('darkColor').value,
+      light: $('lightColor').value,
+      savedAt: new Date().toISOString()
+    }));
+    status.textContent = 'Brouillon sauvegarde dans ce navigateur.';
+  });
+
+  $('downloadPng').addEventListener('click', function () {
+    const canvas = host.querySelector('canvas');
+    if (!canvas) {
+      status.textContent = 'Creez d abord un QR code avant le telechargement.';
+      return;
+    }
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = `afrotools-qr-${currentMode}.png`;
+    link.click();
+    status.textContent = 'Telechargement PNG prepare.';
+  });
+
+  generate();
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

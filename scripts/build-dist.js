@@ -92,6 +92,7 @@ const BLOCKED_ROOT_EXTENSIONS = new Set([
 ]);
 
 const BLOCKED_RELATIVE_FILES = new Set([
+  'assets/js/ai/prompt-registry.js',
   'fr/widgets/iframe/template.html',
   'tools/afrostream/admin.html',
   'tools/afroatlas/_country-template.html',

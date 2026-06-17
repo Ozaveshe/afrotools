@@ -44,6 +44,40 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/concert-budget/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/budget-concert/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/concert-budget/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What costs are often missed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Security, generators, fuel, ticketing fees, artist hospitality, permits, cleanup, insurance, and refunds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do sponsors matter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sponsors reduce break-even pressure, but deliverables and payment timing must be written down."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I calculate before deposits?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Break-even tickets, worst-case attendance, refund exposure, artist cancellation terms, and cash reserve."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/concert-budget/"
+}
+</script>
 </head>
 <body data-sports-tool="concert-budget">
 <afro-navbar theme="dark" active="sports"></afro-navbar>
@@ -80,10 +114,37 @@
 </section>
 <div id="sports-tool-root" class="sports-tool-root"></div>
 </div>
+
+<section class="df-upgrade" data-df-upgrade="concert-budget">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Event margin check</span>
+      <h2>Estimate concert profit before deposits go out</h2>
+      <p>Stress test tickets, price, sponsors, and event cost before paying artists, venue, sound, security, and marketing deposits.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: event profit or loss estimate.</li><li>Methodology: ticket revenue plus sponsors minus event cost.</li><li>Source note: attendance, refunds, weather, security, tax, and ticketing fees can change margin.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Business disclaimer: this is a planning estimate. Confirm tax, permits, security, artist contract, refund rules, and venue terms. Sources/reference: <a href="https://www.eventbrite.com/blog/event-budget-template-ds00/" target="_blank" rel="noopener">Eventbrite event budget guide</a></p>
+    </div>
+    <form class="df-form" data-df-form="concert-budget">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Expected tickets sold<input name="tickets" type="number" value="800" min="0" step="any" aria-label="Expected tickets sold"></label>
+      <label>Average ticket price<input name="ticketPrice" type="number" value="5000" min="0" step="any" aria-label="Average ticket price"></label>
+      <label>Sponsor revenue<input name="sponsors" type="number" value="1000000" min="0" step="any" aria-label="Sponsor revenue"></label>
+      <label>Total event cost<input name="eventCost" type="number" value="3500000" min="0" step="any" aria-label="Total event cost"></label>
+      <button type="submit">Estimate margin</button>
+      <output class="df-result" data-df-result="concert-budget" aria-live="polite">Estimate: enter tickets, price, sponsors, and cost to calculate event margin.</output>
+      <div class="df-actions"><button type="button" data-df-copy="concert-budget">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="concert-budget-faq-title">
+  <h2 id="concert-budget-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>What costs are often missed?</summary><p>Security, generators, fuel, ticketing fees, artist hospitality, permits, cleanup, insurance, and refunds.</p></details><details><summary>Why do sponsors matter?</summary><p>Sponsors reduce break-even pressure, but deliverables and payment timing must be written down.</p></details><details><summary>What should I calculate before deposits?</summary><p>Break-even tickets, worst-case attendance, refund exposure, artist cancellation terms, and cash reserve.</p></details></div>
+</section>
 </main>
 
 <afro-footer></afro-footer>
 <script src="/assets/js/sports-toolkit.js?v=5c024d6d"></script>
 <script>window.AfroSports&&window.AfroSports.init&&window.AfroSports.init();</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

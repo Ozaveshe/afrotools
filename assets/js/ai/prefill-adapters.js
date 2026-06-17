@@ -269,7 +269,7 @@
     primaryToolId: "cv-builder",
     aliases: ["cv-jobs", "resume-builder"],
     route: "/tools/cv-builder/",
-    privacyNote: "CV prefill is stored only in this browser session. Do not send full CV text to AI unless you explicitly choose an AI action.",
+    privacyNote: "CV details are stored only in this browser session. Do not send full CV text to AI unless you explicitly choose an AI action.",
     normalizeInputs: function normalizeCv(inputs) {
       return {
         country: text(firstValue(inputs, ["country", "market"])),

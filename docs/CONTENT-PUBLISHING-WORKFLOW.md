@@ -17,6 +17,7 @@ Treat them as separate systems.
 - Article pattern: `blog/<slug>/index.html`
 - Shared styles: `blog/assets/css/blog.css`
 - Canonical pattern: `https://afrotools.com/blog/<slug>/`
+- Strategy doc: `docs/BLOG-STRATEGY-2026.md`
 
 ### Creative news
 
@@ -188,6 +189,7 @@ The `Daily Blog Image Queue` automation runs after the content batches. It shoul
 
 ### Main blog
 
+- Start from `docs/BLOG-STRATEGY-2026.md` for current pillars, refresh queues, and priority topic families.
 - Prioritize tool-adjacent topics that can link into existing calculators and hubs.
 - Avoid publishing two posts that cannibalize the same keyword unless one is clearly an update or a different intent.
 - Favor country-specific or rules-based topics when they create search entry points for tools.

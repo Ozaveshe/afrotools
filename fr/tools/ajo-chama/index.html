@@ -3,48 +3,450 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gestionnaire Ajo/Chama/Tontine | AfroTools</title>
-<meta name="description" content="Gérez facilement votre groupe d’épargne rotative (Ajo, Chama, Tontine) avec notre outil numérique. Suivez les contributions, les tours de collecte et les membres en toute transparence.">
+<title>Gestionnaire Ajo, Chama et Tontine | Calendrier de cotisations</title>
+<meta name="description" content="Planifiez un groupe Ajo, Chama, Susu, Stokvel ou Tontine: membres, cotisation, pot, ordre de paiement, reserve, retard et export CSV local.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/ajo-chama/">
-<meta property="og:title" content="Gestionnaire Ajo/Chama/Tontine | AfroTools">
-<meta property="og:description" content="Gérez facilement votre groupe d’épargne rotative (Ajo, Chama, Tontine) avec notre outil numérique. Suivez les contributions, les tours de collecte et les membres en toute transparence.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Gestionnaire Ajo, Chama et Tontine | AfroTools">
+<meta property="og:description" content="Creez un calendrier de cotisations et de paiements pour votre groupe d'epargne rotative, avec export local et notes de verification.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/ajo-chama.webp">
 <meta property="og:url" content="https://afrotools.com/fr/tools/ajo-chama/">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gestionnaire Ajo/Chama/Tontine | AfroTools">
-<meta name="twitter:description" content="Gérez facilement votre groupe d’épargne rotative (Ajo, Chama, Tontine) avec notre outil numérique. Suivez les contributions, les tours de collecte et les membres en toute transparence.">
-<meta property="og:type" content="website">
+<meta name="twitter:title" content="Gestionnaire Ajo, Chama et Tontine | AfroTools">
+<meta name="twitter:description" content="Calendrier local-first pour groupes d'epargne rotative: cotisations, ordre de paiement, reserve et export CSV.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ajo-chama.webp">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ajo-chama.webp">
+<style>
+:root{--ajo-ink:#121826;--ajo-muted:#637086;--ajo-line:#d8e1ed;--ajo-soft:#f5f8fb;--ajo-blue:#2254c7;--ajo-green:#13795b;--ajo-gold:#b7791f;--ajo-red:#b42318}
+*,*::before,*::after{box-sizing:border-box}
+body{background:#f7fafc;color:var(--ajo-ink)}
+.ajo-hero{background:#fff;border-bottom:1px solid var(--ajo-line)}
+.ajo-shell{max-width:1180px;width:100%;margin:0 auto;padding:32px 20px}
+.ajo-kicker{display:inline-flex;border:1px solid #bbd1ff;border-radius:999px;background:#edf4ff;color:#1f4aad;padding:7px 12px;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.ajo-hero h1{font-size:clamp(2rem,5vw,3.9rem);line-height:1.03;letter-spacing:0;margin:16px 0 12px;max-width:920px}
+.ajo-hero p{max-width:790px;color:var(--ajo-muted);font-size:1.04rem;line-height:1.72;margin:0}
+.ajo-badges{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
+.ajo-badge{border:1px solid var(--ajo-line);background:var(--ajo-soft);border-radius:8px;padding:13px 14px;font-weight:900}
+.ajo-badge span{display:block;color:var(--ajo-muted);font-size:.75rem;margin-top:3px}
+.ajo-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px;align-items:start}
+.ajo-grid>*,.ajo-form>*{min-width:0}
+.ajo-card{min-width:0;max-width:100%;background:#fff;border:1px solid var(--ajo-line);border-radius:8px;box-shadow:0 18px 44px rgba(15,23,42,.06)}
+.ajo-panel{min-width:0;max-width:100%;padding:18px;overflow:hidden}
+.ajo-panel h2{font-size:1.12rem;margin:0 0 14px}
+.ajo-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-size:.86rem;font-weight:900;margin-bottom:7px;color:#1f2937}
+input,select,textarea{width:100%;min-width:0;border:1px solid #cfd8e6;border-radius:8px;background:#fff;color:#111827;font:inherit}
+input,select{height:44px;padding:0 12px}
+textarea{min-height:156px;padding:12px;resize:vertical;line-height:1.5}
+.wide{grid-column:1/-1}
+.ajo-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ajo-btn{border:1px solid #c9d4e5;border-radius:8px;background:#fff;min-height:44px;padding:0 15px;font-weight:900;color:#172033;cursor:pointer}
+.ajo-btn.primary{background:var(--ajo-blue);border-color:var(--ajo-blue);color:#fff}
+.ajo-btn.success{background:var(--ajo-green);border-color:var(--ajo-green);color:#fff}
+.ajo-btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(34,84,199,.25);outline-offset:2px}
+.ajo-status{min-height:24px;margin-top:12px;font-weight:900;color:var(--ajo-green)}
+.ajo-status.error{color:var(--ajo-red)}
+.ajo-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.ajo-stat{border:1px solid var(--ajo-line);background:#f8fafc;border-radius:8px;padding:12px}
+.ajo-stat strong{display:block;font-size:1.25rem}
+.ajo-stat span{display:block;color:var(--ajo-muted);font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.ajo-note{border-left:4px solid var(--ajo-gold);background:#fffbeb;border-radius:8px;padding:12px 14px;color:#6f4b00;font-weight:800;line-height:1.55;margin-bottom:14px}
+.ajo-table-wrap{width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;border:1px solid var(--ajo-line);border-radius:8px}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th,td{border-bottom:1px solid var(--ajo-line);padding:11px 12px;text-align:left;font-size:.88rem}
+th{background:#f5f8fb;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:#536179}
+tbody tr:last-child td{border-bottom:0}
+.ajo-summary{white-space:pre-wrap;border:1px solid var(--ajo-line);border-radius:8px;background:#fbfdff;padding:12px;min-height:110px;color:#2d3748;line-height:1.55}
+.ajo-info{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+.ajo-info h2{font-size:1.05rem;margin:0 0 10px}
+.ajo-info p,.ajo-info li,.ajo-faq p{color:var(--ajo-muted);font-size:.92rem;line-height:1.65}
+.ajo-info ul{padding-left:19px;margin:0}
+.ajo-links{display:grid;gap:10px}
+.ajo-links a{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--ajo-line);border-radius:8px;padding:12px 14px;background:#fff;text-decoration:none;color:#1746b8;font-weight:900}
+.ajo-faq{margin-top:20px}
+.ajo-faq details{background:#fff;border:1px solid var(--ajo-line);border-radius:8px;margin-bottom:10px}
+.ajo-faq summary{cursor:pointer;padding:14px 16px;font-weight:900}
+.ajo-faq p{padding:0 16px 14px;margin:0}
+@media (max-width: 920px){.ajo-grid,.ajo-info{grid-template-columns:1fr}.ajo-badges,.ajo-stats{grid-template-columns:1fr 1fr}}
+@media (max-width: 620px){.ajo-shell{padding:24px 14px}.ajo-form,.ajo-badges,.ajo-stats{grid-template-columns:1fr}.ajo-actions .ajo-btn{width:100%}}
+</style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Gestionnaire Ajo, Chama et Tontine AfroTools",
+  "url":"https://afrotools.com/fr/tools/ajo-chama/",
+  "inLanguage":"fr",
+  "applicationCategory":"FinanceApplication",
+  "operatingSystem":"Web",
+  "description":"Outil local pour planifier les cotisations, paiements, reserves et exports d'un groupe d'epargne rotative.",
+  "featureList":["Calendrier de paiement","Reserve de groupe","Export CSV","Copie du resume","Sauvegarde locale"],
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Ajo, Chama, Susu et Tontine designent-ils la meme chose ?","acceptedAnswer":{"@type":"Answer","text":"Les noms varient selon les pays et les communautes, mais l'idee commune est un groupe qui cotise regulierement et distribue le pot selon un ordre convenu."}},
+    {"@type":"Question","name":"Cet outil garde-t-il l'argent du groupe ?","acceptedAnswer":{"@type":"Answer","text":"Non. AfroTools ne collecte pas l'argent, ne garde pas les fonds et ne remplace pas un compte bancaire, mobile money, SACCO ou contrat de groupe."}},
+    {"@type":"Question","name":"Comment eviter les litiges ?","acceptedAnswer":{"@type":"Answer","text":"Le calendrier doit etre valide par les membres, avec regles ecrites sur retards, absences, remplacements, ordre de paiement et preuve de versement."}}
+  ]
+}
+</script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ajo-chama/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ajo-chama/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ajo-chama/" />
 </head>
 <body>
-<afro-navbar></afro-navbar>
-<main>
-<section class="hero" style="padding:3rem 1rem;text-align:center;background:var(--bg)">
-<h1>Gestionnaire Ajo/Chama/Tontine</h1>
-</section>
-<section style="max-width:1080px;margin:0 auto;padding:1rem">
-<iframe src="/tools/ajo-chama/" style="width:100%;min-height:80vh;border:none;border-radius:12px" loading="lazy" title="Gestionnaire Ajo/Chama/Tontine"></iframe>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<p>Gérez facilement votre groupe d’épargne rotative (Ajo, Chama, Tontine) avec notre outil numérique. Suivez les contributions, les tours de collecte et les membres en toute transparence.</p>
-<p>Les systèmes d’épargne rotative sont profondément ancrés dans les cultures africaines. Notre gestionnaire modernise cette pratique traditionnelle en offrant un suivi numérique complet, réduisant les litiges et facilitant la gestion pour l’organisateur et les membres.</p>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Qu’est-ce qu’une tontine/Ajo/Chama ?</summary><p>C’est un système d’épargne collective où les membres contribuent régulièrement une somme fixe. À chaque tour, un membre différent reçoit la totalité de la collecte.</p></details>
-<details><summary>Comment fonctionne le suivi des paiements ?</summary><p>L’outil enregistre chaque contribution, envoie des rappels et génère un historique transparent accessible à tous les membres du groupe.</p></details>
-<details><summary>Mes données sont-elles sécurisées ?</summary><p>Oui, toutes les données de votre groupe sont chiffrées et accessibles uniquement aux membres autorisés.</p></details>
-</section>
+<afro-navbar active="tools"></afro-navbar>
+<header class="ajo-hero">
+  <div class="ajo-shell">
+    <span class="ajo-kicker">Epargne collective locale</span>
+    <h1>Planifiez les tours, les cotisations et les paiements avant que le groupe commence.</h1>
+    <p>Construisez un calendrier clair pour Ajo, Chama, Susu, Esusu, Stokvel ou Tontine. Entrez les membres, la cotisation et l'ordre de paiement; exportez ensuite un resume partageable. L'outil aide a organiser, il ne garde pas l'argent.</p>
+    <div class="ajo-badges" aria-label="Fonctions principales">
+      <div class="ajo-badge">Pot par tour <span>cotisation x membres</span></div>
+      <div class="ajo-badge">Rotation <span>dates et beneficiaires</span></div>
+      <div class="ajo-badge">Reserve <span>fonds commun optionnel</span></div>
+      <div class="ajo-badge">Export <span>copie, CSV et localStorage</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="ajo-shell">
+  <section class="ajo-grid" aria-labelledby="planner-title">
+    <div class="ajo-card ajo-panel">
+      <h2 id="planner-title">Parametres du groupe</h2>
+      <div class="ajo-form">
+        <div>
+          <label for="groupName">Nom du groupe</label>
+          <input id="groupName" value="Tontine diaspora Accra" autocomplete="organization">
+        </div>
+        <div>
+          <label for="currency">Devise</label>
+          <select id="currency">
+            <option value="XOF">XOF</option>
+            <option value="NGN">NGN</option>
+            <option value="GHS" selected>GHS</option>
+            <option value="KES">KES</option>
+            <option value="ZAR">ZAR</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+          </select>
+        </div>
+        <div>
+          <label for="contribution">Cotisation par membre</label>
+          <input id="contribution" type="number" min="0" step="100" value="500">
+        </div>
+        <div>
+          <label for="frequency">Frequence</label>
+          <select id="frequency">
+            <option value="7">Hebdomadaire</option>
+            <option value="14">Toutes les 2 semaines</option>
+            <option value="30" selected>Mensuelle</option>
+          </select>
+        </div>
+        <div>
+          <label for="startDate">Premier tour</label>
+          <input id="startDate" type="date" value="2026-07-01">
+        </div>
+        <div>
+          <label for="reserveRate">Reserve commune (%)</label>
+          <input id="reserveRate" type="number" min="0" max="30" step="1" value="5">
+        </div>
+        <div>
+          <label for="lateFee">Penalite retard par tour</label>
+          <input id="lateFee" type="number" min="0" step="10" value="25">
+        </div>
+        <div>
+          <label for="orderMode">Ordre de paiement</label>
+          <select id="orderMode">
+            <option value="listed" selected>Ordre de la liste</option>
+            <option value="reverse">Ordre inverse</option>
+            <option value="amount">Priorite aux besoins notes</option>
+          </select>
+        </div>
+        <div class="wide">
+          <label for="members">Membres (un par ligne). Ajoutez "| besoin" pour classer par priorite.</label>
+          <textarea id="members">Ama | 5
+Kofi | 3
+Aisha | 4
+Moussa | 2
+Grace | 1</textarea>
+        </div>
+      </div>
+      <div class="ajo-actions">
+        <button class="ajo-btn primary" id="planBtn" type="button">Generer le calendrier</button>
+        <button class="ajo-btn" id="sampleBtn" type="button">Exemple marche</button>
+        <button class="ajo-btn" id="resetBtn" type="button">Effacer</button>
+      </div>
+      <div id="status" class="ajo-status" role="status" aria-live="polite">Pret a planifier.</div>
+    </div>
+
+    <div class="ajo-card ajo-panel">
+      <h2>Resultat du cycle</h2>
+      <div class="ajo-stats">
+        <div class="ajo-stat"><strong id="memberCount">0</strong><span>membres</span></div>
+        <div class="ajo-stat"><strong id="potValue">0</strong><span>pot par tour</span></div>
+        <div class="ajo-stat"><strong id="payoutValue">0</strong><span>versement net</span></div>
+        <div class="ajo-stat"><strong id="cycleLength">0</strong><span>jours du cycle</span></div>
+      </div>
+      <div class="ajo-note" id="riskNote">Le resultat apparaitra ici avec les points de vigilance du groupe.</div>
+      <div class="ajo-table-wrap">
+        <table aria-label="Calendrier de paiement Ajo Chama Tontine">
+          <thead><tr><th>Tour</th><th>Date</th><th>Beneficiaire</th><th>Pot</th><th>Reserve</th><th>Versement net</th></tr></thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+      <label for="summary" style="margin-top:14px">Resume partageable</label>
+      <div id="summary" class="ajo-summary" tabindex="0"></div>
+      <div class="ajo-actions">
+        <button class="ajo-btn success" id="copyBtn" type="button">Copier le resume</button>
+        <button class="ajo-btn" id="csvBtn" type="button">Telecharger CSV</button>
+        <button class="ajo-btn" id="saveBtn" type="button">Sauvegarder JSON</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="ajo-info" data-tool-verification-panel aria-label="Sources et verification">
+    <div class="ajo-card ajo-panel">
+      <h2>Methodologie et limites</h2>
+      <ul>
+        <li>Pot par tour = cotisation par membre x nombre de membres actifs.</li>
+        <li>Reserve = pot x pourcentage de reserve. Versement net = pot - reserve.</li>
+        <li>La rotation suit l'ordre choisi; l'ordre final doit etre approuve par le groupe.</li>
+        <li>Ce plan est informatif et non officiel. Il ne remplace pas reglement interne, contrat, conseil financier, compte bancaire ou preuve mobile money.</li>
+      </ul>
+      <p>Derniere verification des references: 17 juin 2026. Verifiez les regles locales si votre groupe devient une cooperative, une SACCO, une association enregistree ou un produit financier.</p>
+    </div>
+    <div class="ajo-card ajo-panel">
+      <h2>Sources de contexte</h2>
+      <div class="ajo-links">
+        <a href="https://www.cgap.org/blog/regulating-savings-groups-only-proportionate-approach-will-work" target="_blank" rel="noopener">CGAP sur savings groups <span>regulation proportionnee</span></a>
+        <a href="https://documents.worldbank.org/pt/publication/documents-reports/documentdetail/737181468914522468/indigenous-savings-and-credit-societies-in-the-third-world-any-message" target="_blank" rel="noopener">World Bank ROSCA <span>credit societies</span></a>
+        <a href="https://www.uncdf.org/Download/AdminFileWithFilename?cultureId=127&filename=24062020052burkinasavingsreportnewv07rc002pdf&id=10853" target="_blank" rel="noopener">UNCDF savings groups <span>toolkit</span></a>
+        <a href="https://fsdafrica.org/savings-groups-and-womens-financial-inclusion/" target="_blank" rel="noopener">FSD Africa <span>financial inclusion</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ajo-info" aria-labelledby="related-title">
+    <div class="ajo-card ajo-panel">
+      <h2 id="related-title">Related tools utiles</h2>
+      <div class="ajo-links">
+        <a href="/tools/ajo-tracker/">Ajo tracker anglais <span>workflow complet</span></a>
+        <a href="/tools/susu-tracker/">Susu tracker <span>suivi contributions</span></a>
+        <a href="/tools/thrift-calc/">Thrift calculator <span>rendement</span></a>
+        <a href="/tools/sacco-calc/">SACCO calculator <span>epargne et pret</span></a>
+        <a href="/tools/savings-goal/">Savings goal <span>objectif individuel</span></a>
+      </div>
+    </div>
+    <div class="ajo-card ajo-panel">
+      <h2>Checklist avant le premier tour</h2>
+      <ul>
+        <li>Confirmer membres, ordre de paiement et date limite de cotisation.</li>
+        <li>Definir preuves acceptees: recu mobile money, virement, cash signe.</li>
+        <li>Decider quoi faire en cas de retard, depart, remplacement ou deces.</li>
+        <li>Nommer au moins deux personnes pour verifier le registre.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ajo-faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions frequentes</h2>
+    <details><summary>Est-ce que le premier beneficiaire gagne plus ?</summary><p>Il recoit l'argent plus tot, donc il gagne de la liquidite. Les derniers membres accumulent plutot une discipline d'epargne. Le groupe doit accepter cette difference avant de commencer.</p></details>
+    <details><summary>Puis-je enregistrer les vraies donnees du groupe ?</summary><p>Vous pouvez sauvegarder localement dans ce navigateur, mais evitez d'entrer des informations sensibles inutiles. Exportez un fichier et gardez-le dans un espace controle par le groupe.</p></details>
+    <details><summary>Ce plan est-il juridiquement valable ?</summary><p>Non. C'est un document de planification. Pour un groupe formel, confirmez les obligations d'association, cooperative, SACCO, fiscalite ou protection des consommateurs dans votre pays.</p></details>
+  </section>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function(){
+  const el = (id) => document.getElementById(id);
+  let lastSchedule = [];
+  function money(value){
+    const currency = el('currency').value;
+    return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(Math.round(value)) + ' ' + currency;
+  }
+  function parseMembers(){
+    return el('members').value.split(/\r?\n/).map((line, index) => {
+      const parts = line.split('|').map((part) => part.trim());
+      const name = parts[0] || '';
+      const need = Number(parts[1] || (index + 1));
+      return name ? { name, need: Number.isFinite(need) ? need : index + 1, index } : null;
+    }).filter(Boolean);
+  }
+  function addDays(date, days){
+    const next = new Date(date.getTime());
+    next.setDate(next.getDate() + days);
+    return next;
+  }
+  function orderMembers(members){
+    const mode = el('orderMode').value;
+    if (mode === 'reverse') return members.slice().reverse();
+    if (mode === 'amount') return members.slice().sort((a, b) => b.need - a.need || a.index - b.index);
+    return members.slice();
+  }
+  function setStatus(text, isError){
+    el('status').textContent = text;
+    el('status').classList.toggle('error', Boolean(isError));
+  }
+  function buildSummary(schedule, members, pot, reserve, payout){
+    const lines = [
+      'Groupe: ' + el('groupName').value,
+      'Membres: ' + members.length,
+      'Cotisation par membre: ' + money(Number(el('contribution').value || 0)),
+      'Pot par tour: ' + money(pot),
+      'Reserve par tour: ' + money(reserve),
+      'Versement net par beneficiaire: ' + money(payout),
+      'Penalite retard proposee: ' + money(Number(el('lateFee').value || 0)),
+      '',
+      'Rotation:',
+      ...schedule.map((row) => row.round + '. ' + row.date + ' - ' + row.name + ' - ' + money(row.payout)),
+      '',
+      'Limite: planification informative, non officielle. Confirmer les regles du groupe et les obligations locales.'
+    ];
+    return lines.join('\n');
+  }
+  function plan(){
+    const members = parseMembers();
+    const contribution = Number(el('contribution').value || 0);
+    const reserveRate = Number(el('reserveRate').value || 0) / 100;
+    const interval = Number(el('frequency').value || 30);
+    const startRaw = el('startDate').value;
+    if (members.length < 2) {
+      setStatus('Ajoutez au moins deux membres.', true);
+      return;
+    }
+    if (!contribution || contribution <= 0) {
+      setStatus('Entrez une cotisation positive.', true);
+      return;
+    }
+    if (!startRaw) {
+      setStatus('Choisissez une date de depart.', true);
+      return;
+    }
+    const start = new Date(startRaw + 'T00:00:00');
+    const ordered = orderMembers(members);
+    const pot = contribution * members.length;
+    const reserve = pot * reserveRate;
+    const payout = pot - reserve;
+    lastSchedule = ordered.map((member, index) => ({
+      round: index + 1,
+      date: addDays(start, index * interval).toISOString().slice(0, 10),
+      name: member.name,
+      pot,
+      reserve,
+      payout
+    }));
+    el('memberCount').textContent = String(members.length);
+    el('potValue').textContent = money(pot);
+    el('payoutValue').textContent = money(payout);
+    el('cycleLength').textContent = String(interval * Math.max(0, members.length - 1));
+    el('scheduleBody').innerHTML = lastSchedule.map((row) => '<tr><td>' + row.round + '</td><td>' + row.date + '</td><td>' + row.name + '</td><td>' + money(row.pot) + '</td><td>' + money(row.reserve) + '</td><td>' + money(row.payout) + '</td></tr>').join('');
+    const risk = [];
+    if (members.length < 5) risk.push('Petit groupe: un seul retard peut bloquer le cycle.');
+    if (reserveRate === 0) risk.push('Aucune reserve: prevoyez une regle claire pour frais et retards.');
+    if (Number(el('lateFee').value || 0) === 0) risk.push('Aucune penalite retard: confirmez une solution avant le premier tour.');
+    if (!risk.length) risk.push('Structure lisible: validez maintenant l ordre, les preuves de paiement et les regles de retard.');
+    el('riskNote').textContent = risk.join(' ');
+    el('summary').textContent = buildSummary(lastSchedule, members, pot, reserve, payout);
+    setStatus('Calendrier genere localement.');
+  }
+  function csv(){
+    if (!lastSchedule.length) plan();
+    const header = ['tour','date','beneficiaire','pot','reserve','versement_net'];
+    const rows = lastSchedule.map((row) => [row.round,row.date,row.name,row.pot,row.reserve,row.payout]);
+    const text = [header, ...rows].map((row) => row.map((cell) => '"' + String(cell).replace(/"/g, '""') + '"').join(',')).join('\n');
+    const blob = new Blob([text], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'afrotools-ajo-chama-calendrier.csv';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setStatus('CSV prepare.');
+  }
+  async function copy(){
+    if (!el('summary').textContent.trim()) plan();
+    try {
+      await navigator.clipboard.writeText(el('summary').textContent);
+      setStatus('Resume copie.');
+    } catch (error) {
+      const range = document.createRange();
+      range.selectNodeContents(el('summary'));
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      setStatus('Copie automatique bloquee. Resume selectionne.', true);
+    }
+  }
+  function save(){
+    const payload = {
+      groupName: el('groupName').value,
+      currency: el('currency').value,
+      contribution: el('contribution').value,
+      frequency: el('frequency').value,
+      startDate: el('startDate').value,
+      reserveRate: el('reserveRate').value,
+      lateFee: el('lateFee').value,
+      orderMode: el('orderMode').value,
+      members: el('members').value,
+      schedule: lastSchedule,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem('afrotools:fr:ajo-chama:last', JSON.stringify(payload));
+    setStatus('Sauvegarde JSON locale enregistree.');
+  }
+  function restore(){
+    try {
+      const raw = localStorage.getItem('afrotools:fr:ajo-chama:last');
+      if (!raw) return;
+      const payload = JSON.parse(raw);
+      ['groupName','currency','contribution','frequency','startDate','reserveRate','lateFee','orderMode','members'].forEach((key) => {
+        if (payload[key] !== undefined && el(key)) el(key).value = payload[key];
+      });
+    } catch (error) {
+      localStorage.removeItem('afrotools:fr:ajo-chama:last');
+    }
+  }
+  el('planBtn').addEventListener('click', plan);
+  el('sampleBtn').addEventListener('click', () => {
+    el('groupName').value = 'Chama Nairobi salon';
+    el('currency').value = 'KES';
+    el('contribution').value = '3000';
+    el('frequency').value = '30';
+    el('reserveRate').value = '3';
+    el('lateFee').value = '200';
+    el('members').value = 'Wanjiku | 4\nAmina | 5\nOtieno | 3\nNjeri | 2\nMensah | 1';
+    plan();
+  });
+  el('resetBtn').addEventListener('click', () => {
+    el('members').value = '';
+    el('scheduleBody').innerHTML = '';
+    el('summary').textContent = '';
+    lastSchedule = [];
+    ['memberCount','potValue','payoutValue','cycleLength'].forEach((id) => { el(id).textContent = '0'; });
+    el('riskNote').textContent = 'Le resultat apparaitra ici avec les points de vigilance du groupe.';
+    setStatus('Champs effaces.');
+  });
+  el('copyBtn').addEventListener('click', copy);
+  el('csvBtn').addEventListener('click', csv);
+  el('saveBtn').addEventListener('click', save);
+  restore();
+  plan();
+})();
+</script>
 </body>
 </html>

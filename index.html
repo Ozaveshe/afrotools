@@ -101,7 +101,8 @@
 
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-  <script src="/assets/js/bundles/core.a778d1f9.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+  <script src="/assets/js/bundles/core.5fe5d54d.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+  <script src="/assets/js/ai/intent-analytics.js?v=4de3dd18"></script>
   <!-- Twemoji: consistent flag rendering on Windows -->
   <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 
@@ -152,15 +153,16 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:14px;
+      gap:12px;
       flex-wrap:wrap;
       min-height:45px;
-      padding:10px 24px;
-      background:#f8fafc;
-      color:#334155;
-      border-bottom:1px solid var(--color-border,#e2e8f0);
+      padding:9px 68px 9px 24px;
+      background:linear-gradient(90deg,#f8fbff 0%,#eef6ff 52%,#f7fbff 100%);
+      color:#26384f;
+      border-bottom:1px solid rgba(148,163,184,.28);
+      box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
       font-size:0.82rem;
-      font-weight:500;
+      font-weight:650;
       position:relative;
       z-index:50;
       text-align:center;
@@ -300,9 +302,9 @@
     }
     @media (max-width:720px) {
       .signup-bar {
-        min-height:116px;
-        padding:12px 44px 12px 16px;
-        gap:10px;
+        min-height:0;
+        padding:10px 58px 12px 16px;
+        gap:8px;
         font-size:0.78rem;
       }
       .signup-bar span{
@@ -311,10 +313,11 @@
       }
       .signup-bar-btn {
         min-height:44px;
-        font-size:1rem;
+        font-size:0.92rem;
         line-height:1.5;
-        width:100%;
+        width:auto;
         max-width:320px;
+        padding-inline:22px;
       }
       .signup-bar-close {
         top:8px;
@@ -875,12 +878,121 @@
       .ai-command-chip,.ai-command-category-pill,.ai-command-browse,.ai-command-home-submit{transition:none!important}
     }
 </style>
+  <style id="afro-wow-visual-pass">
+    :root {
+      --wow-surface: rgba(255,255,255,.82);
+      --wow-border: rgba(0,98,204,.16);
+      --wow-shadow: 0 18px 44px rgba(15,23,42,.10);
+      --wow-shadow-hover: 0 24px 58px rgba(15,23,42,.14);
+    }
+    .hero {
+      background:
+        linear-gradient(120deg, rgba(248,251,255,.98), rgba(238,247,255,.94) 42%, rgba(255,255,255,.98)),
+        linear-gradient(90deg, rgba(0,98,204,.08), rgba(0,98,204,0) 34%, rgba(16,185,129,.08));
+      border-bottom-color: rgba(0,98,204,.12);
+    }
+    .home-hero-grid .trusted-badge,
+    .ai-example-chip,
+    .ai-category-tile,
+    .country-picker-card,
+    .home-preview-card,
+    .home-hero-image-card,
+    .home-trust-grid div,
+    .home-about-card,
+    .tcard,
+    .disc-card,
+    .nl-box {
+      background: var(--wow-surface) !important;
+      border-color: var(--wow-border) !important;
+      box-shadow: var(--wow-shadow) !important;
+    }
+    .home-hero-grid .hero-search,
+    .ai-command-home-form {
+      background: rgba(255,255,255,.9) !important;
+      border-color: rgba(0,98,204,.2) !important;
+      box-shadow: 0 16px 42px rgba(15,23,42,.10), 0 0 0 1px rgba(255,255,255,.56) inset !important;
+    }
+    .hero-search-btn,
+    .ai-command-home-submit,
+    .btn-primary,
+    .tcard-country,
+    .disc-cta,
+    .nl-btn {
+      background: linear-gradient(135deg,#0057b8 0%,#0077d9 64%,#0ea5e9 100%) !important;
+      border-color: rgba(255,255,255,.52) !important;
+      box-shadow: 0 14px 32px rgba(0,87,184,.22) !important;
+      color: #fff !important;
+    }
+    .home-tool-card {
+      background: linear-gradient(145deg,rgba(255,255,255,.84),rgba(255,255,255,.68) 62%,rgba(232,242,255,.8)) !important;
+      border-color: rgba(0,98,204,.18) !important;
+      box-shadow: var(--wow-shadow) !important;
+      letter-spacing: 0;
+    }
+    .home-tool-card:hover,
+    .home-tool-card:focus-visible,
+    .disc-card:hover,
+    .disc-card:focus-visible,
+    .tcard:hover,
+    .tcard:focus-visible {
+      border-color: rgba(0,98,204,.34) !important;
+      box-shadow: var(--wow-shadow-hover) !important;
+    }
+    .home-tool-card .home-tool-icon {
+      background: linear-gradient(135deg,#0057b8,#0ea5e9) !important;
+      box-shadow: 0 12px 24px rgba(0,87,184,.22) !important;
+    }
+    :root[data-theme="dark"] {
+      --wow-surface: rgba(18,31,51,.78);
+      --wow-border: rgba(147,197,253,.2);
+      --wow-shadow: 0 18px 44px rgba(0,0,0,.32);
+      --wow-shadow-hover: 0 24px 58px rgba(0,0,0,.38);
+    }
+    :root[data-theme="dark"] .hero {
+      background:
+        linear-gradient(120deg, rgba(7,17,31,.98), rgba(11,23,40,.96) 48%, rgba(9,17,31,.98)),
+        linear-gradient(90deg, rgba(37,99,235,.14), rgba(37,99,235,0) 36%, rgba(16,185,129,.12)) !important;
+    }
+    :root[data-theme="dark"] .signup-bar {
+      background:linear-gradient(90deg,rgba(7,17,31,.98),rgba(12,26,46,.96)) !important;
+      border-bottom-color:rgba(147,197,253,.16) !important;
+      box-shadow:0 1px 0 rgba(255,255,255,.04) inset !important;
+      color:#e6f0ff !important;
+    }
+    :root[data-theme="dark"] .signup-bar-btn {
+      background:rgba(37,99,235,.18) !important;
+      border:1px solid rgba(147,197,253,.22) !important;
+      color:#fff !important;
+      box-shadow:0 12px 28px rgba(37,99,235,.14) !important;
+    }
+    :root[data-theme="dark"] .signup-bar-close {
+      background:rgba(18,31,51,.96) !important;
+      border-color:rgba(147,197,253,.18) !important;
+      color:#dbeafe !important;
+    }
+    :root[data-theme="dark"] .home-hero-grid .hero-search,
+    :root[data-theme="dark"] .ai-command-home-form {
+      background: rgba(11,21,36,.9) !important;
+      border-color: rgba(147,197,253,.24) !important;
+      box-shadow: 0 18px 44px rgba(0,0,0,.32), 0 0 0 1px rgba(147,197,253,.08) inset !important;
+    }
+    @media (max-width: 720px) {
+      .hero { padding-top: 26px; }
+      .home-hero-grid .hero-h1,
+      .ai-command-hero-title {
+        letter-spacing: 0 !important;
+      }
+      .home-tool-card {
+        box-shadow: 0 10px 26px rgba(15,23,42,.08) !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <afro-navbar theme="dark"></afro-navbar>
 <div class="signup-bar" id="signup-bar" role="banner" aria-label="Sign up prompt">
-  <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Use tools free without an account. Create one only to save and sync calculations.</span>
+  <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Free to use. Sign in only to save and sync.</span>
   <a href="/auth/?mode=signup&amp;next=/dashboard/" class="signup-bar-btn">Save and sync &rarr;</a>
   <button class="signup-bar-close" type="button" data-signup-bar-close aria-controls="signup-bar" aria-label="Dismiss save and sync message">&times;</button>
 </div>
@@ -945,12 +1057,14 @@
     <p class="ai-command-trust-copy">AfroTools routes your request to practical tools, source-labeled data, and exportable next steps. Many workflows run in your browser; AI-assisted workflows ask before sending private content.</p>
 
     <div class="ai-command-chip-list" aria-label="Example prompts for AfroTools AI">
-      <button type="button" class="ai-command-chip" data-ai-home-example="study-canada-ng" data-ai-home-prompt="Study in Canada from Nigeria with $8,000">Study in Canada from Nigeria with $8,000</button>
-      <button type="button" class="ai-command-chip" data-ai-home-example="import-axio-ng" data-ai-home-prompt="Import a 2016 Toyota Axio into Nigeria">Import a 2016 Toyota Axio into Nigeria</button>
-      <button type="button" class="ai-command-chip" data-ai-home-example="cv-engineer-gh" data-ai-home-prompt="Write a CV for an electrical engineer in Ghana">Write a CV for an electrical engineer in Ghana</button>
-      <button type="button" class="ai-command-chip" data-ai-home-example="payroll-ke" data-ai-home-prompt="Calculate payroll for 5 employees in Kenya">Calculate payroll for 5 employees in Kenya</button>
-      <button type="button" class="ai-command-chip" data-ai-home-example="scholarships-cm" data-ai-home-prompt="Find scholarships for a Cameroonian student">Find scholarships for a Cameroonian student</button>
-      <button type="button" class="ai-command-chip" data-ai-home-example="solar-shop-lagos" data-ai-home-prompt="Check solar ROI for my shop in Lagos">Check solar ROI for my shop in Lagos</button>
+      <button type="button" class="ai-command-chip" data-ai-home-example="passport-checklist-gh" data-ai-home-prompt="Get Ghana passport documents, fees to check, and next steps">Get Ghana passport documents, fees to check, and next steps</button>
+      <button type="button" class="ai-command-chip" data-ai-home-example="mobile-money-fees-ke" data-ai-home-prompt="Compare M-Pesa fees in Kenya and find the cheapest send option">Compare M-Pesa fees in Kenya and find the cheapest send option</button>
+      <button type="button" class="ai-command-chip" data-ai-home-example="nda-client-gh" data-ai-home-prompt="Draft a Ghana client NDA and open the document generator">Draft a Ghana client NDA and open the document generator</button>
+      <button type="button" class="ai-command-chip" data-ai-home-example="study-canada-ng-home" data-ai-home-prompt="Plan Nigeria to Canada study with USD 8,000, scholarships, and documents">Plan Nigeria to Canada study with USD 8,000, scholarships, and documents</button>
+      <button type="button" class="ai-command-chip" data-ai-home-example="cv-engineer-gh" data-ai-home-prompt="Build a Ghana electrical engineer CV and open the CV Builder">Build a Ghana electrical engineer CV and open the CV Builder</button>
+      <button type="button" class="ai-command-chip" data-ai-home-example="import-axio-ng" data-ai-home-prompt="Estimate a 2016 Toyota Axio landed cost into Nigeria before clearing">Estimate a 2016 Toyota Axio landed cost into Nigeria before clearing</button>
+      <button type="button" class="ai-command-chip" data-ai-home-example="compress-sign-pdf" data-ai-home-prompt="Compress, sign, and export a PDF locally without uploading it">Compress, sign, and export a PDF locally without uploading it</button>
+      <button type="button" class="ai-command-chip" data-ai-home-example="starlink-ng" data-ai-home-prompt="Compare Starlink vs MTN or fibre internet for a Nigeria office">Compare Starlink vs MTN or fibre internet for a Nigeria office</button>
     </div>
 
     <nav class="ai-command-category-list" aria-label="Quick AfroTools AI categories">
@@ -2342,8 +2456,8 @@
 
 <afro-footer></afro-footer>
 
-<script src="/assets/js/ai/example-registry.js?v=8a754080"></script>
-<script src="/assets/js/ai/i18n.js?v=ce44701a"></script>
+<script src="/assets/js/ai/example-registry.js?v=ba45b881"></script>
+<script src="/assets/js/ai/i18n.js?v=a6df4d13"></script>
 <script>
 function showTab(i) {
   var tabs = document.querySelectorAll('.showcase-tab');
@@ -2593,6 +2707,15 @@ document.addEventListener('DOMContentLoaded', function() {
     var dropdown = document.getElementById('search-dropdown');
     var btn      = document.getElementById('hero-search-btn');
     if (!input || !dropdown) return;
+    var aiRouteCache = Object.create(null);
+    var aiRouteScriptPromise = null;
+    var aiRoutePendingKey = '';
+    var AI_ROUTE_SCRIPTS = [
+      '/assets/js/ai/tool-manifest.js',
+      '/assets/js/ai/intent-router.js',
+      '/assets/js/ai/tool-invocation-runtime.js',
+      '/assets/js/ai/orchestrator.js'
+    ];
 
     var CATEGORY_LABELS = {
       'financial':'Salary & Tax','document-pdf':'PDF & Docs',
@@ -2652,6 +2775,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function normalizeSearchText(value) {
       return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
     }
+    function normalizeSearchHref(value) {
+      return String(value || '').split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
+    }
     function generatedAliases(tool) {
       var raw = [tool.id, tool.name, tool.desc, tool.href, tool.category, Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || '')].join(' ').toLowerCase();
       var terms = [];
@@ -2694,6 +2820,134 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function tokenise(q) {
       return normalizeSearchText(q).split(/\s+/).filter(function(t){return t.length>0;});
+    }
+
+    var aiHeroPromptAnalytics = Object.create(null);
+    var aiHeroRouteAnalytics = Object.create(null);
+
+    function recordAIHeroIntent(eventName, query, meta) {
+      var analytics = window.AfroToolsAIIntentAnalytics;
+      if (!analytics || typeof analytics.record !== 'function') return;
+      var clean = String(query || '').trim();
+      analytics.record(eventName, {}, Object.assign({
+        surface: 'homepage',
+        source: 'homepage_input',
+        queryLength: clean.length,
+        selectedToolId: 'unknown',
+        intentCategory: 'unknown',
+        workflowType: 'homepage_ai_frontdoor'
+      }, meta || {}));
+    }
+
+    function recordAIHeroPrompt(query, source) {
+      var key = normalizeSearchText(query) + '|' + (source || 'homepage_input');
+      if (!key || aiHeroPromptAnalytics[key]) return;
+      aiHeroPromptAnalytics[key] = true;
+      recordAIHeroIntent('ai_prompt_submitted', query, {
+        source: source || 'homepage_input'
+      });
+    }
+    window.AfroToolsAIHomeRecordPrompt = recordAIHeroPrompt;
+
+    function loadAISearchScript(src) {
+      return new Promise(function(resolve, reject) {
+        if (document.querySelector('script[src="' + src + '"]')) {
+          resolve();
+          return;
+        }
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = false;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    function loadAIHeroRouter() {
+      if (window.AfroToolsAIOrchestrator) return Promise.resolve();
+      if (aiRouteScriptPromise) return aiRouteScriptPromise;
+      aiRouteScriptPromise = AI_ROUTE_SCRIPTS.reduce(function(chain, src) {
+        return chain.then(function() { return loadAISearchScript(src); });
+      }, Promise.resolve());
+      return aiRouteScriptPromise;
+    }
+
+    function shouldUseAIHeroRouter(q, resultCount) {
+      var tokens = tokenise(q);
+      if (tokens.length < 3) return false;
+      if (normalizeSearchText(q).length < 12) return false;
+      return resultCount <= 5 || tokens.some(function(token) {
+        return /^(write|make|create|get|find|need|plan|calculate|prepare|help|show|build)$/i.test(token);
+      });
+    }
+
+    function requestAIHeroRoute(q, resultCount) {
+      if (window.AfroToolsAIOrchestrator) return;
+      if (!shouldUseAIHeroRouter(q, resultCount)) return;
+      var key = normalizeSearchText(q);
+      if (!key || aiRoutePendingKey === key) return;
+      aiRoutePendingKey = key;
+      loadAIHeroRouter().then(function() {
+        var stillSameQuery = normalizeSearchText(input.value) === key;
+        aiRoutePendingKey = '';
+        if (stillSameQuery) renderDropdown(input.value.trim());
+      }).catch(function() {
+        aiRoutePendingKey = '';
+      });
+    }
+
+    function findToolForAIPlan(plan) {
+      if (!plan || plan.status !== 'success' || !plan.selectedTool || !Array.isArray(window.AFRO_TOOLS)) return null;
+      var selectedId = normalizeSearchText(plan.selectedTool.id);
+      var selectedRoute = normalizeSearchHref(plan.selectedTool.route);
+      if (!selectedId || selectedId === 'tool search') return null;
+      return AFRO_TOOLS.find(function(tool) {
+        return normalizeSearchText(tool.id) === selectedId || normalizeSearchHref(tool.href) === selectedRoute;
+      }) || null;
+    }
+
+    function buildAIHeroResult(q) {
+      var key = normalizeSearchText(q);
+      if (!key || !window.AfroToolsAIOrchestrator || typeof window.AfroToolsAIOrchestrator.buildPlan !== 'function') return null;
+      var plan = aiRouteCache[key];
+      if (!plan) {
+        try {
+          plan = window.AfroToolsAIOrchestrator.buildPlan(q, { locale: 'en', candidateLimit: 0, obviousConfidence: 0.78 });
+          aiRouteCache[key] = plan;
+        } catch (err) {
+          aiRouteCache[key] = { status: 'error' };
+          return null;
+        }
+      }
+      var confidence = Number(plan && plan.decision && plan.decision.confidence);
+      if (!Number.isFinite(confidence) || confidence < 0.5) return null;
+      var tool = findToolForAIPlan(plan);
+      if (!tool) return null;
+      var routeKey = key + '|' + normalizeSearchText(tool.id || tool.name);
+      if (!aiHeroRouteAnalytics[routeKey]) {
+        aiHeroRouteAnalytics[routeKey] = true;
+        recordAIHeroIntent('ai_intent_detected', q, {
+          selectedToolId: tool.id || 'unknown',
+          intentCategory: tool.category || 'unknown',
+          workflowType: tool.id || 'homepage_ai_match',
+          confidence: confidence,
+          source: 'homepage_input',
+          routerSource: 'homepage_full_catalog'
+        });
+      }
+      return { t: Object.assign({}, tool, { aiSuggested: true }), s: 10000 + Math.round(confidence * 100) };
+    }
+
+    function mergeAIHeroResult(results, q) {
+      var routed = buildAIHeroResult(q);
+      if (!routed) return results;
+      var routedKey = normalizeSearchHref(routed.t.href) || normalizeSearchText(routed.t.id || routed.t.name);
+      var deduped = results.filter(function(result) {
+        var key = normalizeSearchHref(result.t.href) || normalizeSearchText(result.t.id || result.t.name);
+        return key !== routedKey;
+      });
+      return [routed].concat(deduped);
     }
 
     function navigate(href) { window.location.href = href; }
@@ -2744,7 +2998,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var tokens = tokenise(q);
       if (!tokens.length) { closeDropdown(); return; }
 
-      var results = AFRO_TOOLS
+      var baseResults = AFRO_TOOLS
         .map(function(t){ return {t:t, s:score(t,tokens)}; })
         .filter(function(r){ return r.s > 0; })
         .sort(function(a,b){
@@ -2752,8 +3006,9 @@ document.addEventListener('DOMContentLoaded', function() {
           var al = (a.t.status==='live'||a.t.status==='new') ? 1 : 0;
           var bl = (b.t.status==='live'||b.t.status==='new') ? 1 : 0;
           return bl - al;
-        })
-        .slice(0, 7);
+        });
+      requestAIHeroRoute(q, baseResults.length);
+      var results = mergeAIHeroResult(baseResults, q).slice(0, 7);
 
       if (!results.length) {
         dropdown.innerHTML = '<div class="sd-empty">Press Start to ask AfroTools AI about "' + esc(q) + '"</div>';
@@ -2771,6 +3026,7 @@ document.addEventListener('DOMContentLoaded', function() {
           : '<span class="sd-badge sd-badge-soon">Coming Soon</span>';
         var tag = isLive ? 'a' : 'div';
         var href = isLive ? ' href="' + tool.href + '"' : '';
+        if (tool.aiSuggested) badge = '<span class="sd-badge sd-badge-live">AI match</span>';
         html += '<' + tag + class_attr(i) + href + ' data-href="' + (tool.href||'') + '" data-live="' + isLive + '">'
           + '<div class="sd-icon">' + esc(tool.icon||'🔧') + '</div>'
           + '<div class="sd-body">'
@@ -2808,6 +3064,7 @@ document.addEventListener('DOMContentLoaded', function() {
         query_length: q.length,
         source: source || 'hero'
       });
+      recordAIHeroPrompt(q, source === 'chip' ? 'prompt_chip' : 'homepage_input');
       if (aiEnabled) {
         window.location.href = q ? '/ai/?q=' + encodeURIComponent(q) : '/ai/';
         return;
@@ -2871,6 +3128,10 @@ document.addEventListener('DOMContentLoaded', function() {
       var q = this.value.trim();
       debounce = setTimeout(function(){ renderDropdown(q); }, 100);
     });
+    window.addEventListener('afrotools:registry-ready', function() {
+      var q = input.value.trim();
+      if (q) renderDropdown(q);
+    });
 
     // Click search btn
     btn.addEventListener('click', function(e) {
@@ -2930,9 +3191,9 @@ document.addEventListener('DOMContentLoaded', function() {
       var promptRegistry = window.AfroToolsAIPromptExamples || null;
       var container = hero.querySelector('.ai-command-chip-list');
       if (!promptRegistry || !container || typeof promptRegistry.getPromptExamplesForSurface !== 'function') return;
-      var examples = promptRegistry.getPromptExamplesForSurface('homepage_command', { language: homeLocale, limit: 6 });
+      var examples = promptRegistry.getPromptExamplesForSurface('homepage_command', { language: homeLocale, limit: 8 });
       if (!examples.length && homeLocale !== 'en') {
-        examples = promptRegistry.getPromptExamplesForSurface('homepage_command', { language: 'en', limit: 6 });
+        examples = promptRegistry.getPromptExamplesForSurface('homepage_command', { language: 'en', limit: 8 });
       }
       if (!examples.length) return;
       container.innerHTML = '';
@@ -3054,6 +3315,7 @@ document.addEventListener('DOMContentLoaded', function() {
           route: getCommandRoute(),
           source: pendingCommandSource || 'homepage_input'
         });
+        if (window.AfroToolsAIHomeRecordPrompt) window.AfroToolsAIHomeRecordPrompt(query, pendingCommandSource || 'homepage_input');
         window.location.href = buildCommandUrl(query, pendingCommandSource || 'homepage_input');
       });
       input.addEventListener('input', function () {

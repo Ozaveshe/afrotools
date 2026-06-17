@@ -3,47 +3,249 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur UIF (SA) | AfroTools</title>
-<meta name="description" content="Calculez vos cotisations et prestations UIF (Unemployment Insurance Fund) en Afrique du Sud. Estimez vos allocations chômage selon votre historique et sala">
+<title>Calculateur UIF Afrique du Sud | AfroTools</title>
+<meta name="description" content="Calculez les cotisations UIF Afrique du Sud: part salarie, part employeur, plafond mensuel, total equipe, export et sources officielles 2026.">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://afrotools.com/fr/tools/za-uif/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Calculateur UIF (SA) | AfroTools">
-<meta property="og:description" content="Calculez vos cotisations et prestations UIF (Unemployment Insurance Fund) en Afrique du Sud. Estimez vos allocations chômage selon votre historique et sala">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Calculateur UIF Afrique du Sud | AfroTools">
+<meta property="og:description" content="Estimez la retenue UIF salarie/employeur en Afrique du Sud avec note de verification et export local.">
 <meta property="og:url" content="https://afrotools.com/fr/tools/za-uif/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/za-uif.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur UIF Afrique du Sud | AfroTools">
+<meta name="twitter:description" content="Cotisations UIF: part salarie, part employeur, plafond et total equipe.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/za-uif.webp">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/za-uif/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/za-uif/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/za-uif/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/za-uif.webp">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/za-uif.webp">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur UIF (SA) | AfroTools">
-<meta name="twitter:description" content="Calculez vos cotisations et prestations UIF (Unemployment Insurance Fund) en Afrique du Sud. Estimez vos allocations chômage selon votre historique et sala">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/za-uif/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/za-uif/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/za-uif/" />
+<script src="/assets/js/components/business-cta.js" defer></script>
+<style>
+:root{--uif-ink:#0f172a;--uif-muted:#53627a;--uif-line:#d9e2ef;--uif-blue:#0369a1;--uif-soft:#f0f9ff;--uif-green:#10785d;--uif-warn:#9a6700}
+body{background:#f6f9fc;color:var(--uif-ink)}
+.uif-shell{max-width:1160px;margin:0 auto;padding:32px 20px 64px}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:22px;align-items:stretch;margin-bottom:20px}
+.eyebrow{display:inline-flex;border:1px solid #b9def4;background:#eff9ff;color:#075985;border-radius:999px;padding:7px 12px;font-size:.74rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{font-size:clamp(2rem,4.6vw,3.7rem);line-height:.98;letter-spacing:0;margin:18px 0 14px}
+.hero p{font-size:1rem;line-height:1.74;color:var(--uif-muted);max-width:720px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:0;border-radius:8px;padding:12px 15px;font-weight:850;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+.btn-primary{background:var(--uif-blue);color:#fff}.btn-secondary{background:#fff;color:#075985;border:1px solid #c8e1f0}.btn-ghost{background:transparent;color:#075985;border:1px solid #d7e3ee}
+.hero-card,.tool-card,.source-card{background:#fff;border:1px solid var(--uif-line);border-radius:14px;box-shadow:0 16px 42px rgba(15,23,42,.06)}
+.hero-card{padding:20px;display:grid;gap:13px}.hero-card strong{display:block;font-size:1.05rem;margin-bottom:4px}.hero-card span{display:block;color:var(--uif-muted);font-size:.9rem;line-height:1.55}
+.tool-grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:18px;align-items:start}.tool-card{padding:20px}.tool-card h2,.source-card h2{font-size:1.13rem;margin:0 0 12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:grid;gap:6px}.field label{font-weight:850;font-size:.84rem;color:#1f2937}.field input,.field select{width:100%;min-height:44px;border:1px solid #ced9e8;border-radius:8px;background:#fff;padding:11px 12px;font:inherit;color:#111827}.field input:focus,.field select:focus{outline:3px solid rgba(3,105,161,.18);border-color:var(--uif-blue)}.help{font-size:.77rem;color:#667085;line-height:1.4}.wide{grid-column:1/-1}
+.result-panel{display:grid;gap:12px;margin-top:16px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{border:1px solid #dfe7f2;background:#f8fbff;border-radius:12px;padding:14px}.metric span{display:block;font-size:.72rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#61728d;margin-bottom:7px}.metric strong{font-size:1.28rem;color:#0f172a}
+.notice{border-left:4px solid var(--uif-blue);background:#f0f9ff;border-radius:10px;padding:12px 14px;color:#0c4a6e;line-height:1.62}.notice.warn{border-left-color:#d97706;background:#fffbeb;color:#713f12}
+.breakdown{border:1px solid #dfe7f2;border-radius:12px;background:#fff;overflow:hidden}.row{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid #edf2f7}.row:last-child{border-bottom:0}.row span:first-child{color:#526179}.row strong{text-align:right;white-space:nowrap}
+.source-stack{display:grid;gap:14px}.source-card{padding:18px}.source-card p,.source-card li{font-size:.9rem;line-height:1.65;color:#53627a}.source-card ul{margin:8px 0 0;padding-left:19px}.source-card a{color:#075985;font-weight:900}.badge-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.badge{border-radius:999px;background:#eff9ff;color:#075985;padding:6px 10px;font-size:.75rem;font-weight:900}
+.faq{margin-top:22px}.faq details{background:#fff;border:1px solid var(--uif-line);border-radius:12px;padding:14px 16px;margin-bottom:10px}.faq summary{cursor:pointer;font-weight:900}.faq p{color:#526179;line-height:1.65}
+@media(max-width:880px){.hero,.tool-grid{grid-template-columns:1fr}.hero-card{order:-1}.form-grid,.metric-grid{grid-template-columns:1fr}.uif-shell{padding:22px 14px 52px}.hero h1{font-size:clamp(2rem,11vw,3rem)}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur UIF Afrique du Sud","url":"https://afrotools.com/fr/tools/za-uif/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fr","description":"Calculateur local pour estimer les cotisations UIF salarie et employeur en Afrique du Sud.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quel est le taux UIF ?","acceptedAnswer":{"@type":"Answer","text":"Les sources officielles indiquent une contribution totale de 2%: 1% retenu au salarie et 1% paye par l'employeur, sous reserve du plafond applicable."}},{"@type":"Question","name":"Ce calculateur depose-t-il une declaration ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il produit une estimation de paie et un memo. Verifiez SARS, UIF/uFiling ou votre conseiller paie avant paiement ou declaration."}},{"@type":"Question","name":"Les prestations UIF sont-elles garanties ?","acceptedAnswer":{"@type":"Answer","text":"Non. L'eligibilite et les prestations dependent du dossier, des credits, du type de demande et des regles officielles."}}]}</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
-<main>
-<section class="hero-section" style="padding:3rem 1rem;text-align:center">
-<h1>Calculateur UIF (SA)</h1>
-</section>
-<section style="max-width:960px;margin:0 auto;padding:1rem">
-<iframe src="/tools/za-uif/" style="width:100%;min-height:700px;border:none;border-radius:12px" loading="lazy" title="Calculateur UIF (SA)"></iframe>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<p>Calculez vos cotisations et prestations UIF (Unemployment Insurance Fund) en Afrique du Sud. Estimez vos allocations chômage selon votre historique et salaire.</p>
-<p>L’UIF protège les travailleurs sud-africains en cas de chômage, maladie, maternité ou décès. Notre calculateur estime vos cotisations mensuelles et prestations.</p>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Quel est le taux de cotisation UIF ?</summary><p>La cotisation totale est de 2% du salaire : 1% par l’employé et 1% par l’employeur, plafonnée à R17 712 par mois.</p></details>
-<details><summary>Combien de temps puis-je toucher les allocations ?</summary><p>Vous recevez 1 jour d’allocation pour chaque 4 jours cotisés, jusqu’à un maximum de 238 jours (environ 8 mois).</p></details>
-<details><summary>Quelles prestations sont couvertes ?</summary><p>L’UIF couvre le chômage, le congé maladie prolongé, le congé maternité/paternité et les prestations de décès.</p></details>
-</section>
+<main class="uif-shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">UIF payroll check 2026</span>
+      <h1>Calculateur UIF Afrique du Sud</h1>
+      <p>Calculez la retenue UIF employee, la part employeur et le total mensuel pour une personne ou une equipe. L'outil applique le taux de 1% + 1% et le plafond mensuel renseigne, puis genere un memo local.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#calculateur">Calculer UIF</a>
+        <button class="btn btn-secondary" type="button" id="sampleBtn">Charger un exemple</button>
+      </div>
+    </div>
+    <aside class="hero-card" aria-label="Cadre de calcul">
+      <div><strong>Contribution employee</strong><span>1% de la remuneration prise en compte, avec plafond si applicable.</span></div>
+      <div><strong>Contribution employeur</strong><span>L'employeur ajoute 1% en plus de la retenue employee.</span></div>
+      <div><strong>Planning seulement</strong><span>Ce n'est pas une declaration uFiling, SARS ou Department of Employment and Labour.</span></div>
+    </aside>
+  </section>
+
+  <section class="tool-grid" id="calculateur">
+    <div class="tool-card">
+      <h2>Donnees de paie</h2>
+      <form id="uifForm" class="form-grid">
+        <div class="field">
+          <label for="salary">Salaire mensuel brut</label>
+          <input id="salary" type="number" min="0" step="any" value="22000" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="employees">Nombre d'employes</label>
+          <input id="employees" type="number" min="1" step="1" value="1" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="cap">Plafond mensuel UIF utilise</label>
+          <input id="cap" type="number" min="0" step="any" value="17712" inputmode="decimal">
+          <span class="help">Gardez R17,712 si votre revue 2026 le confirme. Modifiez si une source officielle plus recente indique autre chose.</span>
+        </div>
+        <div class="field">
+          <label for="months">Mois a estimer</label>
+          <input id="months" type="number" min="1" max="24" step="1" value="12" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="payDate">Date de paie</label>
+          <input id="payDate" type="date">
+        </div>
+        <div class="field">
+          <label for="sourceStatus">Etat de verification</label>
+          <select id="sourceStatus">
+            <option value="verified" selected>Source verifiee pour le mois</option>
+            <option value="review">A revoir avant paie</option>
+            <option value="historical">Hypothese historique</option>
+          </select>
+        </div>
+        <div class="wide actions">
+          <button class="btn btn-primary" type="submit">Calculer</button>
+          <button class="btn btn-secondary" type="button" id="copyMemo">Copier</button>
+          <button class="btn btn-ghost" type="button" id="downloadMemo">Telecharger TXT</button>
+          <button class="btn btn-ghost" type="button" id="saveLocal">Sauvegarder localement</button>
+        </div>
+      </form>
+      <div id="resultPanel" class="result-panel" aria-live="polite"></div>
+    </div>
+
+    <aside class="source-stack">
+      <section class="source-card" data-tool-verification-panel="za-uif-fr">
+        <h2>Sources officielles</h2>
+        <p><strong>Derniere verification: 2026.</strong> Le calcul utilise le principe 1% employee + 1% employeur et un plafond modifiable.</p>
+        <ul>
+          <li><a href="https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/" rel="noopener">SARS - Unemployment Insurance Fund</a>: source fiscale pour les contributions UIF.</li>
+          <li><a href="https://www.gov.za/services/services-residents/world-work/uif/register-uif" rel="noopener">South African Government - Register with UIF</a>: obligations employeur et taux de contribution.</li>
+          <li><a href="https://www.labour.gov.za/" rel="noopener">Department of Employment and Labour</a>: UIF/uFiling, formulaires et demandes de prestations.</li>
+        </ul>
+        <div class="badge-list"><span class="badge">Source officielle</span><span class="badge">Export paie</span><span class="badge">Plafond editable</span></div>
+      </section>
+      <section class="source-card">
+        <h2>Methodologie</h2>
+        <p>Remuneration assurable = salaire mensuel brut limite par le plafond. Cotisation employee = 1% de cette base. Cotisation employeur = 1% de cette base. Total UIF = 2% de la base, multiplie par le nombre d'employes et les mois.</p>
+        <p><strong>Avertissement:</strong> ceci n'est pas un avis fiscal, juridique ou paie. Confirmez le plafond et les exclusions avec SARS/uFiling ou votre conseiller.</p>
+      </section>
+    </aside>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions frequentes</h2>
+    <details open><summary>Pourquoi le plafond est-il editable ?</summary><p>Les seuils et instructions peuvent changer. Un outil responsable permet de garder l'hypothese visible et modifiable au lieu de cacher un chiffre dans le code.</p></details>
+    <details><summary>Ce calculateur estime-t-il les prestations chomage ?</summary><p>Cette version francaise calcule surtout les cotisations de paie. Pour les prestations, verifiez uFiling, Department of Employment and Labour ou la version anglaise plus detaillee.</p></details>
+    <details><summary>Dois-je payer la part employeur en plus de la retenue ?</summary><p>Oui: la logique de base est 1% retenu au salarie et 1% ajoute par l'employeur, pour un total de 2% sur la remuneration assurable.</p></details>
+  </section>
+
+  <afro-business-cta
+    tool-name="Calculateur UIF Afrique du Sud"
+    save-note="Les equipes RH et cabinets paie peuvent demander un widget UIF/VAT/PAYE adapte a leurs bulletins et workflows."></afro-business-cta>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function(){
+  'use strict';
+  var STORAGE_KEY = 'afrotools:fr:za-uif:last';
+  var lastMemo = '';
+  var panel = document.getElementById('resultPanel');
+  var form = document.getElementById('uifForm');
+
+  function n(id){
+    var value = parseFloat(document.getElementById(id).value);
+    return Number.isFinite(value) ? value : 0;
+  }
+  function zar(value){ return 'R ' + value.toLocaleString('fr-FR',{maximumFractionDigits:2,minimumFractionDigits:2}); }
+  function today(){
+    var d = new Date();
+    return d.toISOString().slice(0,10);
+  }
+  function calculate(){
+    var salary = n('salary');
+    var employees = Math.max(1, Math.round(n('employees') || 1));
+    var cap = n('cap');
+    var months = Math.max(1, Math.round(n('months') || 1));
+    var base = cap > 0 ? Math.min(salary, cap) : salary;
+    var employee = base * 0.01;
+    var employer = base * 0.01;
+    var total = employee + employer;
+    var teamMonthly = total * employees;
+    var periodTotal = teamMonthly * months;
+    var capped = cap > 0 && salary > cap;
+    var status = document.getElementById('sourceStatus').value;
+    var payDate = document.getElementById('payDate').value || today();
+    lastMemo = [
+      'Calculateur UIF Afrique du Sud - AfroTools',
+      'Verification: 2026 | Date de paie: ' + payDate,
+      'Salaire brut: ' + zar(salary) + ' | Plafond utilise: ' + zar(cap) + ' | Base assurable: ' + zar(base),
+      'Employee 1%: ' + zar(employee) + ' | Employeur 1%: ' + zar(employer) + ' | Total mensuel par employe: ' + zar(total),
+      'Employes: ' + employees + ' | Mois: ' + months + ' | Total equipe/periode: ' + zar(periodTotal),
+      'Etat source: ' + status,
+      'Avertissement: estimation de paie uniquement; verifier SARS, UIF/uFiling ou conseiller avant declaration.'
+    ].join('\n');
+    panel.innerHTML =
+      '<div class="metric-grid">' +
+        metric('Retenue employee', zar(employee)) +
+        metric('Part employeur', zar(employer)) +
+        metric('Total mensuel / employe', zar(total)) +
+        metric('Total equipe / periode', zar(periodTotal)) +
+      '</div>' +
+      '<div class="notice"><strong>' + (capped ? 'Plafond applique.' : 'Aucun depassement du plafond.') + '</strong> Base assurable utilisee: ' + zar(base) + '. Taux applique: 1% employee + 1% employeur.</div>' +
+      '<div class="breakdown">' +
+        row('Salaire brut mensuel', zar(salary)) +
+        row('Plafond saisi', zar(cap)) +
+        row('Base assurable', zar(base)) +
+        row('Employes x mois', employees + ' x ' + months) +
+      '</div>' +
+      '<div class="notice warn"><strong>Verification requise:</strong> confirmez le plafond, les exclusions de remuneration et la date de paiement avec SARS/uFiling avant depot.</div>';
+    return {employee:employee, employer:employer, total:periodTotal};
+  }
+  function metric(label,value){ return '<div class="metric"><span>' + label + '</span><strong>' + value + '</strong></div>'; }
+  function row(label,value){ return '<div class="row"><span>' + label + '</span><strong>' + value + '</strong></div>'; }
+  function copyMemo(button){
+    if (!lastMemo) calculate();
+    function done(){ var old=button.textContent; button.textContent='Copie'; setTimeout(function(){button.textContent=old;},1200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lastMemo).then(done).catch(function(){fallbackCopy(done);});
+    else fallbackCopy(done);
+  }
+  function fallbackCopy(done){
+    var area=document.createElement('textarea');
+    area.value=lastMemo; area.setAttribute('readonly',''); area.style.position='fixed'; area.style.left='-9999px';
+    document.body.appendChild(area); area.select(); try{document.execCommand('copy'); done();}catch(error){} area.remove();
+  }
+  function downloadMemo(){
+    if (!lastMemo) calculate();
+    var blob = new Blob([lastMemo], {type:'text/plain;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'memo-uif-afrique-du-sud.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+  function saveLocal(){
+    var result = calculate();
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({savedAt:new Date().toISOString(), memo:lastMemo, result:result})); panel.insertAdjacentHTML('beforeend','<div class="notice">Memo sauvegarde localement dans ce navigateur.</div>'); }
+    catch(error) { panel.insertAdjacentHTML('beforeend','<div class="notice warn">Sauvegarde locale indisponible dans ce navigateur.</div>'); }
+  }
+  document.getElementById('payDate').value = today();
+  form.addEventListener('submit', function(event){ event.preventDefault(); calculate(); });
+  document.getElementById('copyMemo').addEventListener('click', function(){ copyMemo(this); });
+  document.getElementById('downloadMemo').addEventListener('click', downloadMemo);
+  document.getElementById('saveLocal').addEventListener('click', saveLocal);
+  document.getElementById('sampleBtn').addEventListener('click', function(){
+    document.getElementById('salary').value = '30000';
+    document.getElementById('employees').value = '12';
+    document.getElementById('cap').value = '17712';
+    document.getElementById('months').value = '12';
+    document.getElementById('sourceStatus').value = 'verified';
+    calculate();
+    document.getElementById('calculateur').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  calculate();
+})();
+</script>
 </body>
 </html>

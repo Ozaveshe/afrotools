@@ -25,11 +25,16 @@ const analyticsSource = fs.readFileSync(path.join(root, "assets", "js", "ai", "i
   "metricSponsor",
   "metricApiWidget",
   "metricClarification",
+  "metricFeedback",
+  "metricDrift",
   "workflowList",
   "categoryList",
   "countryList",
+  "surfaceList",
   "safePromptList",
   "noMatchList",
+  "feedbackList",
+  "driftList",
   "interestList",
   "jsonOutput"
 ].forEach((needle) => {
@@ -43,9 +48,12 @@ const analyticsSource = fs.readFileSync(path.join(root, "assets", "js", "ai", "i
   "topWorkflows",
   "topCategories",
   "topCountries",
+  "topSurfaces",
   "safePromptExamples",
   "noMatchCategories",
-  "interestSurfaces"
+  "interestSurfaces",
+  "feedbackOutcomes",
+  "driftSignals"
 ].forEach((needle) => {
   assert(localReport.includes(needle), `local AI intent report should include ${needle}`);
 });
@@ -60,6 +68,8 @@ const analyticsSource = fs.readFileSync(path.join(root, "assets", "js", "ai", "i
   "ai_prefill_failed",
   "ai_export_generated",
   "ai_project_saved",
+  "ai_router_feedback_submitted",
+  "ai_router_drift_signal",
   "ai_signup_prompt_shown",
   "ai_pro_upgrade_clicked",
   "sponsor_lead_optin_submitted",
@@ -71,6 +81,8 @@ const analyticsSource = fs.readFileSync(path.join(root, "assets", "js", "ai", "i
 
 assert(analyticsSource.includes("safeExplicitPromptExample"), "analytics helper should sanitize explicit prompt examples");
 assert(analyticsSource.includes("interestSurfaces"), "analytics helper should aggregate API/widget interest surfaces");
+assert(analyticsSource.includes("surfaceBreakdown"), "analytics helper should aggregate sanitized product surfaces");
+assert(analyticsSource.includes("normalizeSurface"), "analytics helper should normalize product surfaces");
 assert(!adminDashboard.includes("originalQuery"), "admin dashboard should not render raw workflow queries");
 assert(!adminDashboard.includes("raw_query"), "admin dashboard should not request raw query payloads");
 

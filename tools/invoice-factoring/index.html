@@ -96,6 +96,40 @@ details[open] summary::after{content:'\2212'}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/affacturage/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/factoring-ankara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-factoring/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Estimate the true cost of selling an invoice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Model invoice value, advance rate, discount fee, days outstanding, and reserve before accepting factoring."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I verify before acting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Finance disclaimer: this is educational, not financing advice. Confirm contract fees, recourse, reserve, and debtor notice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this an official result?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting."
+      }
+    }
+  ],
+  "url": "https://afrotools.com/tools/invoice-factoring/"
+}
+</script>
 </head>
 <body>
 <afro-navbar theme="dark" active="fintech"></afro-navbar>
@@ -161,6 +195,32 @@ details[open] summary::after{content:'\2212'}
   <div class="card">
     <h2>Frequently Asked Questions</h2>
 
+
+<section class="df-upgrade" data-df-upgrade="invoice-factoring">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Invoice factoring cost</span>
+      <h2>Estimate the true cost of selling an invoice</h2>
+      <p>Model invoice value, advance rate, discount fee, days outstanding, and reserve before accepting factoring.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: Result: factoring cost ready with advance, fee, reserve, days, and cash-flow tradeoff.</li><li>Methodology: use the fields to create a local planning summary with visible assumptions.</li><li>Source note: SME finance references should be checked when live prices, policy, or eligibility matters.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Finance disclaimer: this is educational, not financing advice. Confirm contract fees, recourse, reserve, and debtor notice. Source/reference: SME finance references.</p>
+    </div>
+    <form class="df-form" data-df-form="invoice-factoring">
+      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
+      <label>Invoice value<input name="invoice" type="number" value="2000000" min="0" step="any" aria-label="Invoice value"></label>
+      <label>Advance percent<input name="advance" type="number" value="80" min="0" step="any" aria-label="Advance percent"></label>
+      <label>Fee percent<input name="fee" type="number" value="4" min="0" step="any" aria-label="Fee percent"></label>
+      <label>Days outstanding<input name="days" type="number" value="45" min="0" step="any" aria-label="Days outstanding"></label>
+      <button type="submit">Create summary</button>
+      <output class="df-result" data-df-result="invoice-factoring" data-df-base="Result: factoring cost ready with advance, fee, reserve, days, and cash-flow tradeoff." aria-live="polite">Result: factoring cost ready with advance, fee, reserve, days, and cash-flow tradeoff.</output>
+      <div class="df-actions"><button type="button" data-df-copy="invoice-factoring">Copy summary</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="invoice-factoring-faq-title">
+  <h2 id="invoice-factoring-faq-title">Frequently Asked Questions</h2>
+  <div class="df-faq__grid"><details><summary>Estimate the true cost of selling an invoice?</summary><p>Model invoice value, advance rate, discount fee, days outstanding, and reserve before accepting factoring.</p></details><details><summary>What should I verify before acting?</summary><p>Finance disclaimer: this is educational, not financing advice. Confirm contract fees, recourse, reserve, and debtor notice.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting.</p></details></div>
+</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="budget"></wise-cta>
 </div>
@@ -202,5 +262,6 @@ function calcInvoiceFactoring(){
   document.getElementById('if-results').classList.add('on');
 }
 </script>
+<script src="/assets/js/pages/english-df-app-upgrades.js" defer></script>
 </body>
 </html>

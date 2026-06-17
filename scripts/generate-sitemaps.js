@@ -25,6 +25,7 @@ const EXPLICIT_SITEMAP_HTML = [
   'widgets/demo/index.html'
 ];
 const REFRESH_LASTMOD = process.env.AFROTOOLS_REFRESH_SITEMAP_LASTMOD === '1';
+const REDIRECTS_PATH = path.join(ROOT, '_redirects');
 
 // Directories to exclude entirely (non-content)
 const EXCLUDE_DIRS = new Set([
@@ -100,6 +101,59 @@ function readExistingUrlLastmods() {
 
 const EXISTING_URL_LASTMODS = readExistingUrlLastmods();
 const EXISTING_INDEX_LASTMODS = readXmlLastmods(path.join(ROOT, 'sitemap-index.xml'), 'sitemap');
+
+function normalizeRedirectSource(value) {
+  const route = String(value || '').trim().split(/[?#]/)[0];
+  if (!route || !route.startsWith('/')) return '';
+  if (route !== '/' && route.endsWith('/')) return route.replace(/\/+$/, '/');
+  return route;
+}
+
+function loadRedirectExclusions() {
+  const exact = new Set();
+  const forcedWildcards = [];
+  if (!fs.existsSync(REDIRECTS_PATH)) return { exact, forcedWildcards };
+
+  const lines = fs.readFileSync(REDIRECTS_PATH, 'utf8').split(/\r?\n/);
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+
+    const parts = trimmed.split(/\s+/);
+    if (parts.length < 3) continue;
+
+    const status = parts[2];
+    if (!/^(?:301|302|307|308|410)!?$/.test(status)) continue;
+
+    const source = normalizeRedirectSource(parts[0]);
+    if (!source) continue;
+
+    if (source.includes('*')) {
+      if (status.endsWith('!')) {
+        forcedWildcards.push(source.split('*')[0]);
+      }
+      continue;
+    }
+
+    if (!source.includes(':')) exact.add(source);
+  }
+
+  return { exact, forcedWildcards };
+}
+
+const REDIRECT_EXCLUSIONS = loadRedirectExclusions();
+
+function isExplicitRedirectRoute(url) {
+  let route;
+  try {
+    route = new URL(url).pathname;
+  } catch {
+    route = url;
+  }
+
+  if (REDIRECT_EXCLUSIONS.exact.has(route)) return true;
+  return REDIRECT_EXCLUSIONS.forcedWildcards.some(prefix => route.startsWith(prefix));
+}
 
 function xmlEscape(value) {
   return String(value == null ? '' : value)
@@ -369,7 +423,7 @@ function inspectHtmlFile(filePath) {
       ? manifestMetadata.lastmod
       : stableSitemapLastmod(url, fs.statSync(filePath).mtime),
     images,
-    exclude: redirectLike || canonicalMismatch || noindex,
+    exclude: redirectLike || canonicalMismatch || noindex || isExplicitRedirectRoute(url),
   };
 }
 

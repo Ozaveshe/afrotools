@@ -31,6 +31,11 @@ const cases = [
   ["I want to study in Canada from Nigeria with $8,000", "study-abroad-cost", "education"],
   ["Japa cost to move to the UK", "japa-calculator", "immigration"],
   ["Draw a floor plan for a two bedroom house", "afroplan-floor-planner", "none"],
+  ["passport application checklist for Ghana", "passport-checklist", "immigration"],
+  ["compare mobile money fees in Kenya", "mobile-money-fees", "finance"],
+  ["generate an NDA for a client in Ghana", "nda-generator", "legal"],
+  ["check land title before buying land in Lagos", "land-title-check", "legal"],
+  ["starlink vs local isp in Nigeria", "telecom-starlink", "finance"],
 ];
 
 for (const [query, expectedTool, expectedDomain] of cases) {
@@ -69,6 +74,15 @@ assert.strictEqual(pdfPageNumbersRoute.extractedInputs.pdfAction, "page_numbers"
 const pdfProtectRoute = router.routeDeterministically("protect a PDF with a password", { manifest });
 assert.strictEqual(pdfProtectRoute.selectedToolId, "pdf-workspace");
 assert.strictEqual(pdfProtectRoute.extractedInputs.pdfAction, "protect");
+
+const catalogRoute = router.routeDeterministically("compare mobile money fees in Kenya", { manifest });
+assert.strictEqual(catalogRoute.selectedToolId, "mobile-money-fees");
+assert.strictEqual(catalogRoute._meta.retrievalSource, "rule");
+assert.strictEqual(catalogRoute.intentCategory, "african");
+
+const countryComparisonRoute = router.routeDeterministically("Compare Kenya and Ghana for ecommerce", { manifest });
+assert.strictEqual(countryComparisonRoute.selectedToolId, "afroatlas");
+assert.strictEqual(countryComparisonRoute._meta.retrievalSource, "rule");
 
 const invalid = router.validateRouterOutput({ selectedToolId: "cv-builder" });
 assert.strictEqual(invalid.valid, false);

@@ -48,6 +48,7 @@ const FORBIDDEN_PATHS = [
   'supabase',
   'test-results',
   'tests',
+  'assets/js/ai/prompt-registry.js',
   'tools/afrostream/admin.html',
   'tools/afroatlas/_country-template.html',
   'widgets/iframe/template.html'

@@ -54,6 +54,8 @@ analytics.reset();
   "ai_prefill_failed",
   "ai_export_generated",
   "ai_project_saved",
+  "ai_router_feedback_submitted",
+  "ai_router_drift_signal",
   "ai_signup_prompt_shown",
   "ai_pro_upgrade_clicked",
   "sponsor_lead_optin_submitted"
@@ -66,8 +68,12 @@ assert.strictEqual(analytics.queryLengthBucket("short query"), "1-20");
 assert.strictEqual(analytics.queryLengthBucket("x".repeat(61)), "61-140");
 assert.strictEqual(analytics.normalizeSource("example_chip"), "prompt_chip");
 assert.strictEqual(analytics.normalizeSource("home"), "homepage_input");
+assert.strictEqual(analytics.normalizeSurface("ask_frontdoor"), "ask_page");
+assert.strictEqual(analytics.normalizeSurface("tool search"), "search_page");
+assert.strictEqual(analytics.normalizeSurface("invoice for person@example.com"), "unknown");
 
 const payload = analytics.buildPayload("ai_intent_routed", sampleState(), {});
+assert.strictEqual(payload.surface, "ai_command_page");
 assert.strictEqual(payload.intent_category, "unknown");
 assert.strictEqual(payload.selected_tool_id, "import-duty");
 assert.strictEqual(payload.country_detected, "Nigeria");
@@ -83,6 +89,7 @@ analytics.record("ai_intent_clarification_answered", sampleState({ intentCategor
   missingInputs: ["engineCc"]
 });
 analytics.record("ai_intent_tool_open", sampleState({ intentCategory: "finance", missingInputs: [] }), {
+  surface: "ask_page",
   intentCategory: "finance",
   toolOpenClicked: true,
   missingInputs: []
@@ -98,6 +105,8 @@ assert.strictEqual(report.toolOpenRate, 100);
 assert.strictEqual(report.clarificationCompletionRate, 100);
 assert.strictEqual(report.topRoutedCategories[0].name, "finance");
 assert.strictEqual(report.topCountriesDetected[0].name, "Nigeria");
+assert(report.surfaceBreakdown.some((item) => item.name === "ask_page"));
+assert(report.topSurfaces.some((item) => item.name === "ai_command_page"));
 assert(report.topMissingInputs.some((item) => item.name === "engineCc"));
 
 analytics.reset();
@@ -128,6 +137,7 @@ analytics.record("ai_intent_detected", sampleState({
   extractedInputs: { country: "Nigeria", city: "Lagos" },
   missingInputs: ["monthlyElectricitySpend"]
 }), {
+  surface: "ask_page",
   intentCategory: "energy",
   selectedToolId: "solar-roi",
   workflowType: "energy_advisor"
@@ -136,6 +146,7 @@ analytics.record("ai_clarification_shown", sampleState({
   selectedToolId: "solar-roi",
   missingInputs: ["monthlyElectricitySpend"]
 }), {
+  surface: "ask_page",
   intentCategory: "energy",
   selectedToolId: "solar-roi",
   workflowType: "energy_advisor",
@@ -154,6 +165,7 @@ analytics.record("ai_tool_opened", sampleState({
   selectedToolId: "solar-roi",
   missingInputs: []
 }), {
+  surface: "ask_page",
   intentCategory: "energy",
   selectedToolId: "solar-roi",
   workflowType: "energy_advisor",
@@ -182,6 +194,23 @@ analytics.record("ai_project_saved", sampleState({ selectedToolId: "solar-roi" }
   intentCategory: "energy",
   selectedToolId: "solar-roi",
   workflowType: "energy_advisor"
+});
+analytics.record("ai_router_feedback_submitted", sampleState({ selectedToolId: "solar-roi" }), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor",
+  feedbackOutcome: "negative",
+  feedbackReason: "wrong route for this task",
+  driftSignal: "route mismatch",
+  query: "my private solar question should not be stored"
+});
+analytics.record("ai_router_drift_signal", sampleState({ selectedToolId: "solar-roi" }), {
+  intentCategory: "energy",
+  selectedToolId: "solar-roi",
+  workflowType: "energy_advisor",
+  feedbackOutcome: "negative",
+  feedbackReason: "wrong route for this task",
+  driftSignal: "route mismatch"
 });
 analytics.record("ai_signup_prompt_shown", sampleState({ selectedToolId: "solar-roi" }), {
   intentCategory: "energy",
@@ -230,6 +259,9 @@ assert.strictEqual(report.totals.prefillSuccess, 1);
 assert.strictEqual(report.totals.prefillFailed, 1);
 assert.strictEqual(report.totals.exportsGenerated, 1);
 assert.strictEqual(report.totals.projectsSaved, 1);
+assert.strictEqual(report.totals.routerFeedbackSubmitted, 1);
+assert.strictEqual(report.totals.routerFeedbackNegative, 1);
+assert.strictEqual(report.totals.routerDriftSignals, 2);
 assert.strictEqual(report.totals.signupPromptShown, 1);
 assert.strictEqual(report.totals.proUpgradeClicked, 1);
 assert.strictEqual(report.totals.sponsorLeadOptinSubmitted, 1);
@@ -239,9 +271,14 @@ assert(report.topWorkflows.some((item) => item.name === "energy_advisor"));
 assert(report.exportTypes.some((item) => item.name === "pdf"));
 assert(report.interestSurfaces.some((item) => item.name === "api"));
 assert(report.interestSurfaces.some((item) => item.name === "widget"));
+assert(report.surfaceBreakdown.some((item) => item.name === "ask_page"));
 assert(report.noMatchCategories.some((item) => item.name === "no_keyword_match"));
+assert(report.feedbackOutcomes.some((item) => item.name === "negative"));
+assert(report.feedbackReasons.some((item) => item.name === "route_mismatch"));
+assert(report.driftSignals.some((item) => item.name === "route_mismatch"));
+assert.strictEqual(report.routerFeedbackNegativeRate, 100);
 assert(report.safePromptExamples.every((item) => !/555-0100|electrical engineer/i.test(item.name)));
-assert(!/person@example\.com|555-0100|amount 5000/i.test(JSON.stringify(report)));
+assert(!/person@example\.com|555-0100|amount 5000|private solar question/i.test(JSON.stringify(report)));
 
 analytics.reset();
 analytics.record("ai_intent_fallback", sampleState({
