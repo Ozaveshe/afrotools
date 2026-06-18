@@ -266,7 +266,7 @@
   </main>
   <afro-footer></afro-footer>
 <script src="/assets/js/ai/tool-manifest.js?v=43a68fa3"></script>
-  <script src="/assets/js/ai/intent-router.js?v=3596f1b3"></script>
+  <script src="/assets/js/ai/intent-router.js?v=b8c5a218"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=456f4dfc"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
   <script src="/assets/js/ai/orchestrator.js?v=506da83a"></script>
@@ -643,6 +643,7 @@
       var employees = original.match(/\b([1-9][0-9]?)\s+(?:employees|staff|workers)\b/i);
       var vehicle = original.match(/\b(toyota|honda|mazda|nissan|hyundai|kia|mercedes|bmw|volkswagen|vw|ford|lexus)\s+([a-z0-9 -]{2,40}?)(?:\s+(?:worth|valued|costing|into|to|in|for)\b|[?.!,]|$)/i);
       var role = original.match(/\b(?:for|as|role|job)\s+(?:an?\s+)?([a-z][a-z\s-]{2,60})(?:\s+in\s+|\s+with\s+|$)/i);
+      var looseCareerRole = original.match(/\b(?:an?\s+)?([a-z][a-z\s-]{1,60}?\s(?:engineer|developer|designer|accountant|nurse|teacher|driver|manager|analyst|technician|officer|assistant|administrator|consultant|marketer|writer|electrician|mechanic|chef|lawyer|doctor))(?:\s+in\s+|\s+with\s+|[?.!,]|$)/i);
       var studyLevel = original.match(/\b(undergraduate|bachelor'?s?|masters?|master'?s?|phd|doctorate|diploma|mba)\b/i);
       var client = original.match(/\b(?:for|to)\s+(?:a\s+)?(?:client|customer)\s+([a-z][a-z\s&.-]{1,60})(?:\s+for\s+|\s+in\s+|$)/i);
 
@@ -655,6 +656,7 @@
 
       if (flow.id === "cv-jobs") {
         if (role) extracted.targetRole = role[1].trim();
+        else if (looseCareerRole) extracted.targetRole = looseCareerRole[1].trim().replace(/^(?:n|a|an)\s+/i, "");
       }
       if (flow.id === "import-duty") {
         extracted.destinationCountry = country || "";
@@ -774,8 +776,74 @@
       };
     }
 
+    function extractPassportIntent(prompt) {
+      var original = String(prompt || "");
+      var text = normalize(original);
+      if (text.indexOf("passport") === -1) return null;
+      if (!/\b(application|apply|renew|documents?|fees?|checklist|next steps?)\b/.test(text)) return null;
+      return {
+        country: extractCountry(text, {
+          nigeria: "Nigeria",
+          ghana: "Ghana",
+          kenya: "Kenya",
+          "south africa": "South Africa",
+          uganda: "Uganda",
+          tanzania: "Tanzania",
+          rwanda: "Rwanda",
+          angola: "Angola",
+          angoa: "Angola"
+        })
+      };
+    }
+
+    function buildPassportAnswerPreview(intent) {
+      var countryText = intent && intent.country ? " for " + intent.country : "";
+      return {
+        title: "I found the passport route.",
+        text: "Open the passport checklist" + countryText + " to review documents, fees, source notes, and next steps.",
+        facts: [
+          intent && intent.country ? "Country: " + intent.country : "",
+          "Workflow: Passport checklist",
+          "Output: Documents + next steps"
+        ].filter(Boolean)
+      };
+    }
+
     function enhanceAnswerResult(result) {
       if (!result || result.type !== "match") return result;
+      var passportIntent = extractPassportIntent(result.prompt);
+      if (passportIntent) {
+        var passportFlow = workflow(
+          "passport-checklist",
+          "Passport Application Checklist",
+          "/tools/passport-checklist/",
+          "Step-by-step passport application guide with document checklists, fee notes, processing context, and official portals.",
+          [],
+          passportIntent.country ? [] : ["Country"],
+          "immigration",
+          "mixed"
+        );
+        return Object.assign({}, result, {
+          workflow: passportFlow,
+          tool: null,
+          plan: null,
+          confidence: Math.max(Number(result.confidence || 0), 92),
+          source: "orchestrated tool match",
+          answerPreview: buildPassportAnswerPreview(passportIntent),
+          decision: Object.assign({}, result.decision || {}, {
+            selectedToolId: "passport-checklist",
+            selectedRoute: "/tools/passport-checklist/",
+            intentCategory: "government",
+            safetyDomain: "immigration",
+            sourcePolicy: "mixed",
+            privacyMode: "browser_local",
+            confidence: 0.92,
+            reasonShort: "Found a passport application task and matched the passport checklist.",
+            extractedInputs: Object.assign({}, result.decision && result.decision.extractedInputs || {}, passportIntent.country ? { country: passportIntent.country } : {}),
+            missingInputs: passportIntent.country ? [] : ["country"]
+          })
+        });
+      }
       var intent = extractSalaryTaxIntent(result.prompt);
       if (!intent) return result;
       var extracted = Object.assign({}, result.decision && result.decision.extractedInputs || {}, {

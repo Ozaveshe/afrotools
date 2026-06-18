@@ -708,6 +708,10 @@
     return localizeDecision(rawFallbackDecision(query), options);
   }
 
+  function isExplicitPassportQuery(text) {
+    return /\bpassport\b/.test(text) && /\b(application|apply|renew|documents?|fees?|checklist|ghana|nigeria|kenya|next steps?)\b/.test(text);
+  }
+
   function guardrailFallbackDecision(query, options, inspection) {
     var decision = localizeDecision(rawFallbackDecision(query), options);
     decision.confidence = 0;
@@ -739,6 +743,15 @@
     var keepCountryComparisonRule = match && match.toolId === "afroatlas" && detectedCountryCount(normalizedQuery) >= 2;
     var weakGenericCountryRule = match && match.toolId === "afroatlas" && match.score <= 3 && !keepCountryComparisonRule && !isExplicitCountryIntelligenceQuery(normalizedQuery);
     if (!match || (manifestMatch && manifestMatch.retrievalScore >= 40 && weakGenericCountryRule)) match = manifestMatch;
+    if (isExplicitPassportQuery(normalizedQuery) && findTool(manifest, "passport-checklist")) {
+      match = Object.assign({}, match || {}, {
+        intentCategory: "government",
+        toolId: "passport-checklist",
+        score: Math.max(Number(match && match.score || 0), 7),
+        safetyHints: ["immigration"],
+        source: "explicit_passport",
+      });
+    }
     if (match && match.toolId === "paye-calculator" && extractCountryFromMap(normalizedQuery, COUNTRY_ALIASES) === "Angola" && findTool(manifest, "ao-paye")) {
       match = Object.assign({}, match, {
         toolId: "ao-paye",

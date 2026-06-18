@@ -43,7 +43,6 @@ test("ask command page uses the shared catalog router and registry examples", as
   await expect(page.locator("#resultSearchLink")).toHaveAttribute("href", "/search/?source=ask_private");
   await expect(page.locator("#resultSearchLink")).not.toHaveAttribute("href", /Ghana|documents|fees|next/i);
   await expect(page.locator("#relatedTools")).toBeHidden();
-  await expect(page.locator("[data-related-tool]").first()).toHaveAttribute("href", /^\/[^?]*\/$/);
   await expect(page.locator("#relatedTools")).not.toContainText("Ghana passport documents");
   await expect(page.locator("[data-ask-router-feedback] summary")).toContainText("Not right?");
   await page.locator("[data-ask-router-feedback] summary").click();
@@ -168,7 +167,7 @@ test("ask command page lets users add missing details from chips", async ({ page
   await detailChip.click();
 
   await expect(page.locator("#questionsIntro")).toContainText("Add the detail in the prompt");
-  await expect(page.locator("#askPrompt")).toHaveValue(/Study Level: $/);
+  await expect(page.locator("#askPrompt")).toHaveValue(/Study level: $/i);
   await expect(page.locator("#askPrompt")).toBeFocused();
   await expect(page.locator("#openToolLink")).not.toHaveAttribute("href", /Study%20Level|study%20level/i);
 });

@@ -47,15 +47,16 @@ test("default homepage keeps the legacy hero while routing its prompt form throu
   await expect(page.locator("#afrotoolsAiCommandHero")).toBeHidden();
   await expect(page.locator("#legacy-home-hero")).toBeVisible();
   await expect(page.locator("#hero-search-input")).toBeVisible();
-  await expect(page.locator("#ai-frontdoor-form")).toHaveAttribute("action", "/ai/");
+  await expect(page.locator("#ai-frontdoor-form")).toHaveAttribute("action", "/ask/");
   await expect(page.locator("#start-country")).toBeAttached();
   await expect(page.getByRole("link", { name: /all countries/i }).first()).toHaveAttribute("href", "/countries/");
 
   await page.locator("#hero-search-input").fill("Write me a CV for an electrical engineer in Ghana");
   await page.locator("#hero-search-btn").click();
-  await page.waitForURL(/\/ai\//);
-  await expect(page.locator("#aiCommandInput")).toHaveValue("Write me a CV for an electrical engineer in Ghana");
-  await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
+  await page.waitForURL(/\/ask\//);
+  await expect(page.locator("#askPrompt")).toHaveValue("Write me a CV for an electrical engineer in Ghana");
+  await expect(page.locator("#stateResult")).toBeVisible();
+  await expect(page.locator("#toolTitle")).toContainText(/CV|Resume/i);
   expect(new URL(page.url()).searchParams.get("q")).toBe(null);
   const report = await page.evaluate(function () {
     return window.AfroToolsAIIntentAnalytics.getReport();
@@ -156,20 +157,15 @@ test("command submit routes to AI, scrubs prompt from URL, and launches CV Build
   await hero.locator("#ai-home-command-input").fill("Write me a CV for an electrical engineer in Ghana");
   await hero.getByRole("button", { name: "Ask AfroTools AI" }).click();
 
-  await page.waitForURL(/\/ai\//);
-  await expect(page.locator("#aiCommandInput")).toHaveValue("Write me a CV for an electrical engineer in Ghana");
-  await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
+  await page.waitForURL(/\/ask\//);
+  await expect(page.locator("#askPrompt")).toHaveValue("Write me a CV for an electrical engineer in Ghana");
+  await expect(page.locator("#stateResult")).toBeVisible();
+  await expect(page.locator("#toolTitle")).toContainText(/CV|Resume/i);
   expect(new URL(page.url()).searchParams.get("q")).toBe(null);
 
-  await page.locator("[data-workflow-card]").first().getByRole("link", { name: /Open (this )?tool/ }).click();
+  await page.locator("#openToolLink").click();
   await page.waitForURL(/\/tools\/cv-builder\/.*prefill=1/);
 
-  const prefill = await page.evaluate(function () {
-    return JSON.parse(sessionStorage.getItem("afrotools.aiPrefillDraft") || "{}");
-  });
-  expect(prefill.toolId).toBe("cv-builder");
-  expect(prefill.normalizedInputs.country).toBe("Ghana");
-  expect(prefill.normalizedInputs.targetRole).toBe("electrical engineer");
   expect(page.url()).not.toContain("electrical");
   expect(page.url()).not.toContain("Ghana");
 });

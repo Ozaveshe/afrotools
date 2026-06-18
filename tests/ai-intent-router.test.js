@@ -33,6 +33,7 @@ const cases = [
   ["Japa cost to move to the UK", "japa-calculator", "immigration"],
   ["Draw a floor plan for a two bedroom house", "afroplan-floor-planner", "none"],
   ["passport application checklist for Ghana", "passport-checklist", "immigration"],
+  ["Get Ghana passport documents, fees to check, and next steps", "passport-checklist", "immigration"],
   ["compare mobile money fees in Kenya", "mobile-money-fees", "finance"],
   ["generate an NDA for a client in Ghana", "nda-generator", "legal"],
   ["check land title before buying land in Lagos", "land-title-check", "legal"],
