@@ -1,14 +1,14 @@
 # Government Source Ledger
 
-Generated: 2026-06-10T14:29:33.413Z
+Generated: 2026-06-18T12:09:17.590Z
 
 ## Summary
 
 - Tools mapped: 16
 - Official sources checked: 67
-- OK sources: 40
-- Changed sources: 1
-- Manual-review or blocked sources: 26
+- OK sources: 36
+- Changed sources: 3
+- Manual-review or blocked sources: 28
 - Broken sources: 0
 
 ## Sources
@@ -19,7 +19,7 @@ Generated: 2026-06-10T14:29:33.413Z
 | OK | NG | Nigeria Immigration Service | Home - Nigeria Immigration Service | 200 | https://immigration.gov.ng/ |
 | Manual review | KE | Directorate of Immigration Services | Just a moment... | 403 | https://dis.ecitizen.go.ke/ |
 | Manual review | ZA | Department of Home Affairs | eHomeAffairs |  | https://ehome.dha.gov.za/ehomeaffairs/home |
-| OK | ZA | Department of Home Affairs | Department of Home Affairs - HOME | 200 | https://www.dha.gov.za/ |
+| Changed | ZA | Department of Home Affairs | Department of Home Affairs - HOME | 200 | https://www.dha.gov.za/ |
 | Manual review | GH | Ministry of Foreign Affairs and Regional Integration | 403 Forbidden | 403 | https://itcpassport.mfa.gov.gh/ |
 | Manual review | GH | Ghana Immigration Service | Ghana Immigration Service |  | https://home.gis.gov.gh/ |
 | OK | RW | Irembo | IremboGov | 200 | https://irembo.gov.rw/ |
@@ -28,7 +28,7 @@ Generated: 2026-06-10T14:29:33.413Z
 | OK | ZA | Department of Home Affairs | Department of Home Affairs - Identity Documents | 200 | https://www.dha.gov.za/index.php/civic-services/identity-documents |
 | OK | GH | National Identification Authority | National Identification Authority | 200 | https://nia.gov.gh/ |
 | OK | GH | National Identification Authority | Home : National Identification Authority | 200 | https://register.nia.gov.gh/ |
-| OK | NG | Independent National Electoral Commission | Continuous Voter Registration portal | 200 | https://cvr.inecnigeria.org/ |
+| Changed | NG | Independent National Electoral Commission | INEC Portal | 200 | https://cvr.inecnigeria.org/ |
 | Manual review | KE | Independent Electoral and Boundaries Commission | IEBC |  | https://www.iebc.or.ke/ |
 | Manual review | ZA | Electoral Commission of South Africa | Just a moment... | 403 | https://www.elections.org.za/pw/voter/voter-information |
 | OK | GH | Electoral Commission of Ghana | Electoral Commission &#8211; Transparency, Fairness, Integrity | 200 | https://ec.gov.gh/ |
@@ -39,7 +39,7 @@ Generated: 2026-06-10T14:29:33.413Z
 | Manual review | NG | Independent National Electoral Commission | INEC 2027 general election timetable remarks |  | https://www.inecnigeria.org/remarks-by-the-honourable-chairman-independent-national-electoral-commission-inec-prof-joash-o-amupitan-san-at-the-2nd-annual-lecture-of-the-alumni-association-of-the-national-institute-for-se/ |
 | Manual review | KE | Independent Electoral and Boundaries Commission | IEBC 2027 General Election preparation |  | https://www.iebc.or.ke/news/?IEBC_budgets_Sh61.7_billion_to_conduct_2027_General_Election_funded_in_three_fiscal_years= |
 | Manual review | ZA | Electoral Commission of South Africa | Just a moment... | 403 | https://www.elections.org.za/pw/News-And-Media/Calendar |
-| OK | GM | Independent Electoral Commission | ELECTORAL CALENDAR 2026– 2027 &#8211; IEC &#8211; Independent Electoral Commission | 200 | https://iec.gm/electoral-calendar-2026-2027/ |
+| Manual review | GM | Independent Electoral Commission | The Gambia IEC 2026-2027 electoral calendar |  | https://iec.gm/electoral-calendar-2026-2027/ |
 | OK | ZM | Electoral Commission of Zambia | Home - Electoral Commission of Zambia | 200 | https://www.elections.org.zm/ |
 | OK | ST | Comissao Eleitoral Nacional | In&#xED;cio - Comissão Eleitoral Nacional \| São Tomé e Príncipe | 200 | https://www.stpcen.st/ |
 | OK | CV | Comissao Nacional de Eleicoes | Comissão Nacional de Eleições | 200 | https://cne.cv/ |
@@ -57,7 +57,7 @@ Generated: 2026-06-10T14:29:33.413Z
 | OK | NG | National Pension Commission | National Pension Commission \| Regulators of the Nigerian Pension Industry | 200 | https://www.pencom.gov.ng/ |
 | OK | KE | National Social Security Fund | NSSF Kenya &#8211; Growing you for good | 200 | https://www.nssf.or.ke/ |
 | OK | ZA | Government Employees Pension Fund | Home - Gepf | 200 | https://www.gepf.co.za/ |
-| OK | GH | Social Security and National Insurance Trust | SSNIT &#8211; We Deliver on Our Promise | 200 | https://www.ssnit.org.gh/ |
+| Manual review | GH | Social Security and National Insurance Trust | SSNIT |  | https://www.ssnit.org.gh/ |
 | Changed | NG | Budget Office of the Federation | 2026 Budget | 200 | https://budgetoffice.gov.ng/index.php/resources/internal-resources/budget-documents/2026-budget |
 | OK | KE | The National Treasury | Budget Summary of Revenue & Expenditure \| The National Treasury | 200 | https://www.treasury.go.ke/budget-summary-revenue-expenditure |
 | OK | ZA | National Treasury | National Treasury | 200 | https://www.treasury.gov.za/documents/national%20budget/2026/default.aspx |
@@ -86,14 +86,15 @@ Generated: 2026-06-10T14:29:33.413Z
 ## Tool Review Queue
 
 - passport-checklist (/tools/passport-checklist/): Manual review
-- visa-checker (/tools/visa-checker/): Manual review
-- work-permit-cost (/tools/work-permit-cost/): Manual review
+- visa-checker (/tools/visa-checker/): Changed
+- work-permit-cost (/tools/work-permit-cost/): Changed
 - national-id-guide (/tools/national-id-guide/): Manual review
-- voter-registration (/tools/voter-registration/): Manual review
-- africa-election-tracker (/tools/africa-election-tracker/): Manual review
+- voter-registration (/tools/voter-registration/): Changed
+- africa-election-tracker (/tools/africa-election-tracker/): Changed
 - birth-death-cert (/tools/birth-death-cert/): Manual review
 - marriage-cert (/tools/marriage-cert/): Manual review
 - land-registry-fees (/tools/land-registry-fees/): Manual review
+- national-pension (/tools/national-pension/): Manual review
 - budget-comparator (/tools/budget-comparator/): Changed
 - foi-template (/tools/foi-template/): Manual review
 - gov-scholarship (/tools/gov-scholarship/): Manual review
