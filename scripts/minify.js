@@ -245,7 +245,7 @@ async function run() {
     try {
       const finalCode = await minifyToFixedPoint(code, {
         compress: { dead_code: true, passes: 1 },
-        mangle: { reserved: ['AFRO_TOOLS', 'AFRO_CATEGORIES', 'onRegistryReady', 'AfroAuth', 'AfroData'] },
+        mangle: { reserved: ['AFRO_TOOLS', 'AFRO_CATEGORIES', 'onRegistryReady', 'AfroAuth', 'AfroData', 'externalLink', 'recordWidgetIntent'] },
         output: { comments: /^!/ },
       });
       if (finalCode && isValidJavaScript(finalCode, filePath)) {
