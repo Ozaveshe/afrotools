@@ -28,11 +28,18 @@ assert.ok(report.checks.some((item) => item.label === "ask_refinement_chips_pres
 assert.ok(report.checks.some((item) => item.label === "ask_feedback_telemetry_present" && item.passed), "architecture should gate Ask AfroTools AI feedback telemetry");
 assert.ok(report.checks.some((item) => item.label === "ask_funnel_telemetry_present" && item.passed), "architecture should gate Ask AfroTools AI funnel telemetry");
 assert.ok(report.checks.some((item) => item.label === "ask_source_freshness_notice_present" && item.passed), "architecture should gate Ask AfroTools AI source and freshness guidance");
+assert.ok(report.checks.some((item) => item.label === "ask_consumer_surface_simplified" && item.passed), "architecture should gate the simplified consumer Ask surface");
+assert.ok(report.checks.some((item) => item.label === "ask_answer_engine_preview_present" && item.passed), "architecture should gate Ask AfroTools AI answer previews");
 assert.ok(report.checks.some((item) => item.label === "analytics_surface_dimension_present" && item.passed), "architecture should gate sanitized AI surface telemetry");
 assert.ok(report.checks.some((item) => item.label === "multi_surface_funnel_telemetry_present" && item.passed), "architecture should gate homepage/search/widget AI funnel telemetry");
 assert.ok(report.checks.some((item) => item.label === "ai_fallback_links_avoid_raw_prompt_urls" && item.passed), "architecture should gate raw-prompt-safe fallback links");
 assert.ok(report.checks.some((item) => item.label === "search_ai_bridge_present" && item.passed), "architecture should gate the search-page AI bridge");
 assert.ok(report.checks.some((item) => item.label === "widget_iframe_handoff_contract" && item.passed), "architecture should gate iframe-safe widget handoffs");
+assert.ok(report.checks.some((item) => item.label === "token_training_model_path_declared" && item.passed), "architecture should gate token, training, and model path declarations");
+assert.ok(report.architecture.answerEngine.currentPilot.includes("Angola salary-tax"), "architecture should describe the current answer-engine pilot");
+assert.ok(report.architecture.tokenStrategy.routerBudgetTokens <= 1200, "router token budget should stay tight");
+assert.ok(report.architecture.trainingDataStrategy.forbiddenSources.some((item) => /raw CV text/.test(item)), "training data strategy should forbid private raw data");
+assert.ok(report.architecture.modelPathStages.includes("stage_2_router_fine_tune"), "architecture should include a fine-tune stage");
 assert.ok(report.architecture.gates.includes("npm run ai:model-splits"));
 assert.ok(report.architecture.gates.includes("npm run eval:ai-tool-calls"));
 assert.ok(report.architecture.gates.includes("npm run test:ai"));

@@ -38,6 +38,10 @@
     za: { country: "South Africa", code: "ZA", currency: "ZAR", payeRoute: "/south-africa/za-paye", vatRate: 15 },
     johannesburg: { country: "South Africa", code: "ZA", currency: "ZAR", payeRoute: "/south-africa/za-paye", vatRate: 15 },
     joburg: { country: "South Africa", code: "ZA", currency: "ZAR", payeRoute: "/south-africa/za-paye", vatRate: 15 },
+    angola: { country: "Angola", code: "AO", currency: "AOA", payeRoute: "/angola/ao-paye", vatRate: 14 },
+    angoa: { country: "Angola", code: "AO", currency: "AOA", payeRoute: "/angola/ao-paye", vatRate: 14 },
+    ao: { country: "Angola", code: "AO", currency: "AOA", payeRoute: "/angola/ao-paye", vatRate: 14 },
+    luanda: { country: "Angola", code: "AO", currency: "AOA", payeRoute: "/angola/ao-paye", vatRate: 14 },
   };
 
   function text(value) {
@@ -105,6 +109,10 @@
       KES: "KES",
       GHS: "GHS",
       ZAR: "ZAR",
+      AOA: "AOA",
+      KWANZA: "AOA",
+      KWANZAS: "AOA",
+      KZ: "AOA",
       NGN: "NGN",
       XAF: "XAF",
       XOF: "XOF",
@@ -215,8 +223,17 @@
     var hashIndex = raw.indexOf("#");
     var hash = hashIndex === -1 ? "" : raw.slice(hashIndex);
     var base = hashIndex === -1 ? raw : raw.slice(0, hashIndex);
-    var separator = base.indexOf("?") === -1 ? "?" : "&";
-    return base + separator + "source=ask&prefill=1" + hash;
+    var queryIndex = base.indexOf("?");
+    var path = queryIndex === -1 ? base : base.slice(0, queryIndex);
+    var query = queryIndex === -1 ? "" : base.slice(queryIndex + 1);
+    var params = query ? query.split("&").filter(function keepParam(pair) {
+      var key = pair.split("=")[0] || "";
+      try { key = decodeURIComponent(key); } catch (err) {}
+      key = key.toLowerCase();
+      return key !== "source" && key !== "prefill";
+    }) : [];
+    params.push("source=ask", "prefill=1");
+    return path + "?" + params.join("&") + hash;
   }
 
   function summaryList(items) {
@@ -651,7 +668,7 @@
   var payeAdapter = createAdapter({
     id: "paye-calculator-prefill",
     primaryToolId: "paye-calculator",
-    aliases: ["payroll-tax", "salary-tax", "paye", "payroll", "afropayroll", "employee-cost"],
+    aliases: ["payroll-tax", "salary-tax", "paye", "payroll", "afropayroll", "employee-cost", "ao-paye"],
     route: "/tools/paye-calculator/",
     privacyNote: "PAYE prefill is stored briefly in this browser session. Salary amounts stay out of the URL.",
     normalizeInputs: function normalizePaye(inputs) {

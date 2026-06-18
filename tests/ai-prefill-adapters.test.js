@@ -276,6 +276,20 @@ assert.strictEqual(payeLaunch.payload.normalizedInputs.grossPayAnnual, 3000000);
 assert.deepStrictEqual(payeLaunch.missingInputs, []);
 assertUrlDoesNotLeak(payeLaunch, ["250000", "5"]);
 
+const angolaPayeLaunch = prefill.buildSafeLaunch("ao-paye", {
+  country: "Angola",
+  grossPay: 1000000,
+  payPeriod: "monthly",
+});
+assert.strictEqual(angolaPayeLaunch.toolId, "paye-calculator");
+assert.strictEqual(angolaPayeLaunch.route, "/angola/ao-paye");
+assert.strictEqual(angolaPayeLaunch.launchUrl, "/angola/ao-paye?source=ask&prefill=1");
+assert.strictEqual(angolaPayeLaunch.payload.normalizedInputs.countryCode, "AO");
+assert.strictEqual(angolaPayeLaunch.payload.normalizedInputs.currency, "AOA");
+assert.strictEqual(angolaPayeLaunch.payload.normalizedInputs.grossPayAnnual, 12000000);
+assert.deepStrictEqual(angolaPayeLaunch.missingInputs, []);
+assertUrlDoesNotLeak(angolaPayeLaunch, ["1000000"]);
+
 const payeMissing = prefill.buildSafeLaunch("paye-calculator", {
   country: "Kenya",
 });
@@ -318,6 +332,9 @@ assert.strictEqual(routeOnly.supported, false);
 assert.strictEqual(routeOnly.payload, null);
 assert.strictEqual(routeOnly.launchUrl, "/tools/custom-workflow/?source=ask&prefill=1");
 assertUrlDoesNotLeak(routeOnly, ["do not leak"]);
+
+const routeWithExistingParams = prefill.buildSafeLaunch("unknown-route-only-tool", {}, { selectedRoute: "/tools/custom-workflow/?source=ask&prefill=0&tab=fees#notes" });
+assert.strictEqual(routeWithExistingParams.launchUrl, "/tools/custom-workflow/?tab=fees&source=ask&prefill=1#notes");
 
 const storage = memoryStorage();
 assert.strictEqual(prefill.storeLaunchPayload(importLaunch, storage), true);

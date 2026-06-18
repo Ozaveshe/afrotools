@@ -27,6 +27,32 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+<style>
+  .sci-page{background:#f6f8fb;color:#0f172a;font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .sci-shell{max-width:1120px;margin:0 auto;padding:1.25rem}
+  .sci-app{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(320px,1.1fr);gap:1rem;margin-top:-2rem;align-items:start}
+  .sci-panel{background:#fff;border:1px solid #dbe4ef;border-radius:10px;padding:1rem;box-shadow:0 16px 38px rgba(15,23,42,.08)}
+  .sci-panel h2{margin:.1rem 0 .65rem;font-size:1.25rem;color:#0f172a}
+  .sci-panel p{color:#52627a;line-height:1.65}
+  .sci-display{background:#101827;color:#fff;border-radius:10px;padding:1rem;margin-bottom:.8rem}
+  .sci-display label{display:block;color:#bfdbfe;font-weight:800;font-size:.82rem;margin-bottom:.35rem}
+  .sci-display input{width:100%;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:#0b1220;color:#fff;padding:.8rem;font:inherit;font-size:1.05rem}
+  .sci-result{margin-top:.7rem;color:#dbeafe;min-height:2.4rem}
+  .sci-result strong{display:block;color:#fff;font-size:1.55rem;word-break:break-word}
+  .sci-toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0}
+  .sci-btn{border:1px solid #cbd5e1;background:#fff;color:#172033;border-radius:8px;padding:.68rem .8rem;font-weight:800;cursor:pointer}
+  .sci-btn.primary{background:#155eef;color:#fff;border-color:#155eef}
+  .sci-btn.warn{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+  .sci-keypad{display:grid;grid-template-columns:repeat(5,1fr);gap:.45rem}
+  .sci-keypad .sci-btn{min-height:44px;padding:.55rem .35rem}
+  .sci-mode{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.75rem 0;color:#475569}
+  .sci-mode label{display:inline-flex;gap:.35rem;align-items:center;font-weight:800}
+  .sci-output{width:100%;min-height:132px;border:1px solid #cbd5e1;border-radius:8px;padding:.75rem;font:inherit;resize:vertical}
+  .sci-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem}
+  .sci-list{margin:.2rem 0 0;padding-left:1.15rem;color:#52627a;line-height:1.7}
+  .sci-list a{color:#155eef;font-weight:800}
+  @media(max-width:860px){.sci-app{grid-template-columns:1fr;margin-top:0}.sci-keypad{grid-template-columns:repeat(4,1fr)}}
+</style>
 
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -59,14 +85,104 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculatrice-scientifique/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scientific-calc/" />
 </head>
-<body>
+<body class="sci-page">
 <afro-navbar active="tools"></afro-navbar>
 <header style="background:linear-gradient(135deg,#0A1628 0%,#007AFF 100%);padding:3rem 1.5rem;text-align:center;color:#fff">
 <p style="font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;opacity:.5;margin-bottom:.5rem">Outil Education</p>
 <h1 style="font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;margin-bottom:.5rem">Calculatrice scientifique</h1>
 <p style="font-size:1rem;opacity:.7;max-width:560px;margin:0 auto">Calculatrice scientifique gratuite avec trigonometrie, memoire et constantes.</p>
 </header>
-<main id="toolContainer" style="max-width:960px;margin:0 auto;padding:1.5rem"></main>
+<main id="toolContainer" class="sci-shell">
+  <section class="sci-app" aria-label="Calculatrice scientifique AfroTools">
+    <form class="sci-panel" id="scientificCalcForm">
+      <div class="sci-display">
+        <label for="sciExpression">Expression</label>
+        <input id="sciExpression" name="expression" autocomplete="off" inputmode="decimal" value="sin(30)+sqrt(144)">
+        <div class="sci-result" aria-live="polite">
+          Résultat
+          <strong id="sciResult">-</strong>
+        </div>
+      </div>
+      <div class="sci-mode" aria-label="Mode trigonométrique">
+        <label><input type="radio" name="angleMode" value="deg" checked> Degrés</label>
+        <label><input type="radio" name="angleMode" value="rad"> Radians</label>
+        <span id="sciMemory">Mémoire : 0</span>
+      </div>
+      <div class="sci-toolbar">
+        <button class="sci-btn primary" type="submit">Calculer</button>
+        <button class="sci-btn" type="button" data-action="copy">Copier</button>
+        <button class="sci-btn" type="button" data-action="example">Exemple</button>
+        <button class="sci-btn warn" type="button" data-action="clear">Effacer</button>
+      </div>
+      <div class="sci-keypad" aria-label="Clavier scientifique">
+        <button class="sci-btn" type="button" data-insert="sin(">sin</button>
+        <button class="sci-btn" type="button" data-insert="cos(">cos</button>
+        <button class="sci-btn" type="button" data-insert="tan(">tan</button>
+        <button class="sci-btn" type="button" data-insert="log(">log</button>
+        <button class="sci-btn" type="button" data-insert="ln(">ln</button>
+        <button class="sci-btn" type="button" data-insert="sqrt(">√</button>
+        <button class="sci-btn" type="button" data-insert="^">x^y</button>
+        <button class="sci-btn" type="button" data-insert="pi">π</button>
+        <button class="sci-btn" type="button" data-insert="e">e</button>
+        <button class="sci-btn" type="button" data-insert="!">n!</button>
+        <button class="sci-btn" type="button" data-insert="7">7</button>
+        <button class="sci-btn" type="button" data-insert="8">8</button>
+        <button class="sci-btn" type="button" data-insert="9">9</button>
+        <button class="sci-btn" type="button" data-insert="/">÷</button>
+        <button class="sci-btn" type="button" data-action="memoryAdd">M+</button>
+        <button class="sci-btn" type="button" data-insert="4">4</button>
+        <button class="sci-btn" type="button" data-insert="5">5</button>
+        <button class="sci-btn" type="button" data-insert="6">6</button>
+        <button class="sci-btn" type="button" data-insert="*">×</button>
+        <button class="sci-btn" type="button" data-action="memorySubtract">M-</button>
+        <button class="sci-btn" type="button" data-insert="1">1</button>
+        <button class="sci-btn" type="button" data-insert="2">2</button>
+        <button class="sci-btn" type="button" data-insert="3">3</button>
+        <button class="sci-btn" type="button" data-insert="-">−</button>
+        <button class="sci-btn" type="button" data-action="memoryRecall">MR</button>
+        <button class="sci-btn" type="button" data-insert="0">0</button>
+        <button class="sci-btn" type="button" data-insert=".">.</button>
+        <button class="sci-btn" type="button" data-insert="(">(</button>
+        <button class="sci-btn" type="button" data-insert=")">)</button>
+        <button class="sci-btn" type="button" data-action="memoryClear">MC</button>
+      </div>
+    </form>
+    <aside class="sci-panel">
+      <h2>Résumé et contrôle</h2>
+      <p>Utilisez cette calculatrice pour vérifier des exercices, conversions trigonométriques, logarithmes et puissances. Les calculs restent dans votre navigateur.</p>
+      <label for="sciSummary" style="font-weight:800;color:#334155">Résumé copiable</label>
+      <textarea id="sciSummary" class="sci-output" readonly>Le résultat apparaîtra ici.</textarea>
+      <div class="sci-grid">
+        <article>
+          <h3>Méthodologie</h3>
+          <p>La méthode de calcul transforme les fonctions autorisées en appels mathématiques JavaScript, applique le mode degrés/radians aux fonctions trigonométriques, puis affiche le résultat arrondi de façon lisible.</p>
+        </article>
+        <article>
+          <h3>Avertissement</h3>
+          <p>Avertissement : vérifiez les examens, devoirs notés, chiffres d'ingénierie et arrondis critiques avec votre enseignant, manuel ou logiciel officiel. Cette page ne remplace pas une validation académique ou professionnelle.</p>
+        </article>
+      </div>
+    </aside>
+  </section>
+  <section class="sci-grid" aria-label="Sources et exemples">
+    <article class="sci-panel">
+      <h2>Fonctions prises en charge</h2>
+      <ul class="sci-list">
+        <li>Trigonométrie : sin, cos, tan en degrés ou radians.</li>
+        <li>Logarithmes : log base 10 et ln naturel.</li>
+        <li>Racines, puissances, constantes pi/e, factorielle et mémoire.</li>
+      </ul>
+    </article>
+    <article class="sci-panel">
+      <h2>Sources et fraîcheur</h2>
+      <p>Références techniques vérifiées pour la surface 2026.</p>
+      <ul class="sci-list">
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math" rel="nofollow noopener" target="_blank">MDN JavaScript Math</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence" rel="nofollow noopener" target="_blank">MDN priorité des opérateurs</a></li>
+      </ul>
+    </article>
+  </section>
+</main>
 <section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
 <h2 style="font-size:1.3rem;font-weight:800;color:#0A1628;margin-bottom:1rem">Calculatrice scientifique en ligne</h2>
 <p style="color:#475569;line-height:1.7;margin-bottom:1rem">Notre calculatrice scientifique offre toutes les fonctions necessaires : trigonometrie (sin, cos, tan et inverses), logarithmes (log, ln), puissances et racines, factorielles, constantes mathematiques et un systeme de memoire complet.</p>
@@ -78,6 +194,128 @@
 <details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155">Peut-on basculer entre degres et radians ?</summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Oui. Utilisez le bouton DEG/RAD pour basculer. Le mode actif est affiche en permanence pour eviter les erreurs.</p></details>
 <details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155">La calculatrice fonctionne-t-elle au clavier ?</summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Oui. Toutes les touches numeriques, operateurs et la touche Entree fonctionnent. Des raccourcis supplementaires sont disponibles pour les fonctions avancees.</p></details>
 </section>
+<script>
+  (function () {
+    var form = document.getElementById('scientificCalcForm');
+    if (!form) return;
+    var expression = document.getElementById('sciExpression');
+    var result = document.getElementById('sciResult');
+    var summary = document.getElementById('sciSummary');
+    var memoryLabel = document.getElementById('sciMemory');
+    var memory = 0;
+    var lastValue = 0;
+
+    function mode() {
+      var checked = form.querySelector('input[name="angleMode"]:checked');
+      return checked ? checked.value : 'deg';
+    }
+
+    function toRadians(value) {
+      return mode() === 'deg' ? value * Math.PI / 180 : value;
+    }
+
+    function factorial(value) {
+      if (!Number.isInteger(value) || value < 0 || value > 170) throw new Error('Factorielle hors limite');
+      var total = 1;
+      for (var i = 2; i <= value; i += 1) total *= i;
+      return total;
+    }
+
+    function normalise(raw) {
+      return String(raw || '')
+        .replace(/π/g, 'pi')
+        .replace(/×/g, '*')
+        .replace(/÷/g, '/')
+        .replace(/\^/g, '**')
+        .replace(/(\d+|\))!/g, 'factorial($1)');
+    }
+
+    function calculate() {
+      var raw = expression.value.trim();
+      var safe = normalise(raw);
+      if (!/^[0-9+\-*/().,\sA-Za-z*]+$/.test(safe.replace(/\*\*/g, '*'))) throw new Error('Expression non autorisée');
+      var allowed = /\b(sin|cos|tan|asin|acos|atan|sqrt|log|ln|abs|floor|ceil|round|min|max|pow|pi|e|factorial)\b/g;
+      var unknown = safe.replace(allowed, '').match(/[A-Za-z]+/g);
+      if (unknown) throw new Error('Fonction non prise en charge : ' + unknown[0]);
+      var fn = new Function('sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'sqrt', 'log', 'ln', 'abs', 'floor', 'ceil', 'round', 'min', 'max', 'pow', 'pi', 'e', 'factorial', 'return (' + safe + ');');
+      var value = fn(
+        function (x) { return Math.sin(toRadians(x)); },
+        function (x) { return Math.cos(toRadians(x)); },
+        function (x) { return Math.tan(toRadians(x)); },
+        function (x) { return mode() === 'deg' ? Math.asin(x) * 180 / Math.PI : Math.asin(x); },
+        function (x) { return mode() === 'deg' ? Math.acos(x) * 180 / Math.PI : Math.acos(x); },
+        function (x) { return mode() === 'deg' ? Math.atan(x) * 180 / Math.PI : Math.atan(x); },
+        Math.sqrt, Math.log10, Math.log, Math.abs, Math.floor, Math.ceil,
+        Math.round, Math.min, Math.max, Math.pow, Math.PI, Math.E, factorial
+      );
+      if (!Number.isFinite(value)) throw new Error('Résultat non fini');
+      lastValue = value;
+      var display = Number(Math.abs(value) >= 1e8 || Math.abs(value) < 1e-6 ? value.toPrecision(10) : value.toFixed(10).replace(/0+$/, '').replace(/\.$/, ''));
+      result.textContent = String(display);
+      summary.value = [
+        'AfroTools - calculatrice scientifique',
+        'Expression : ' + raw,
+        'Mode : ' + (mode() === 'deg' ? 'degrés' : 'radians'),
+        'Résultat : ' + display,
+        'Méthode : fonctions Math autorisées, mode trigonométrique appliqué, puis arrondi lisible.',
+        'Avertissement : vérifier les calculs critiques avec une source officielle ou un enseignant.'
+      ].join('\n');
+      try { localStorage.setItem('afrotools_scientific_calc_fr_v1', summary.value); } catch (_) {}
+      return value;
+    }
+
+    function setStatus(message) {
+      result.textContent = message;
+      summary.value = message;
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      try { calculate(); } catch (error) { setStatus(error.message || 'Erreur de calcul'); }
+    });
+    form.addEventListener('click', function (event) {
+      var button = event.target.closest('button');
+      if (!button) return;
+      var insert = button.getAttribute('data-insert');
+      var action = button.getAttribute('data-action');
+      if (insert) {
+        expression.setRangeText(insert, expression.selectionStart, expression.selectionEnd, 'end');
+        expression.focus();
+        return;
+      }
+      if (action === 'clear') {
+        expression.value = '';
+        setStatus('Expression effacée');
+      }
+      if (action === 'example') {
+        expression.value = 'cos(60)+sqrt(81)+5!';
+        try { calculate(); } catch (error) { setStatus(error.message || 'Erreur'); }
+      }
+      if (action === 'copy') {
+        try { calculate(); } catch (_) {}
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(summary.value);
+      }
+      if (action === 'memoryAdd') memory += lastValue;
+      if (action === 'memorySubtract') memory -= lastValue;
+      if (action === 'memoryRecall') {
+        expression.setRangeText(String(memory), expression.selectionStart, expression.selectionEnd, 'end');
+        expression.focus();
+      }
+      if (action === 'memoryClear') memory = 0;
+      memoryLabel.textContent = 'Mémoire : ' + Number(memory.toFixed(8));
+    });
+    form.addEventListener('change', function () {
+      try { calculate(); } catch (_) {}
+    });
+    expression.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        try { calculate(); } catch (error) { setStatus(error.message || 'Erreur'); }
+      }
+    });
+    try { calculate(); } catch (error) { setStatus(error.message || 'Erreur de calcul'); }
+  })();
+</script>
 <afro-footer></afro-footer>
 </body>
 </html>

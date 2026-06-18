@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-17T12:36:16.573Z",
+  "generatedAt": "2026-06-18T03:21:09.680Z",
   "task": "afrotools_ai_product_architecture",
   "scope": "repo_artifacts_not_live_production",
   "gate": {
@@ -60,6 +60,16 @@
       "detail": "ask/index.html"
     },
     {
+      "label": "ask_consumer_surface_simplified",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
+      "label": "ask_answer_engine_preview_present",
+      "passed": true,
+      "detail": "ask/index.html"
+    },
+    {
       "label": "analytics_surface_dimension_present",
       "passed": true,
       "detail": "assets/js/ai/intent-analytics.js"
@@ -103,6 +113,11 @@
       "label": "training_and_eval_gates_declared",
       "passed": true,
       "detail": "npm run ai:tool-catalog-pack | npm run ai:training-corpus | npm run ai:model-splits | npm run eval:ai-tool-calls | npm run ai:ops-report | npm run ai:architecture-report | npm run test:ai"
+    },
+    {
+      "label": "token_training_model_path_declared",
+      "passed": true,
+      "detail": "data/ai/product-architecture.json"
     },
     {
       "label": "privacy_first_principle_declared",
@@ -163,6 +178,51 @@
         "label": "Safety, privacy, and telemetry",
         "fileCount": 4
       }
+    ],
+    "answerEngine": {
+      "goal": "Turn Ask AfroTools AI from a generic tool finder into a search-style answer engine that extracts obvious entities, shows what it understood, and then launches the existing calculator or workflow.",
+      "runtimeOrder": [
+        "local entity extraction for country, amount, task, document type, route, and missing inputs",
+        "deterministic router and full-catalog retrieval",
+        "answer preview composer with source, confidence, and no unsupported calculation claims",
+        "sessionStorage prefill handoff into canonical tools",
+        "optional consented model explanation after the user chooses AI help"
+      ],
+      "currentPilot": "Angola salary-tax prompts extract Angola, typo variant Angoa, gross pay, pay period, AOA/Kz context, and route to /angola/ao-paye without placing salary values in the URL."
+    },
+    "tokenStrategy": {
+      "routerBudgetTokens": 1200,
+      "catalogChunkBudgetTokens": 7000,
+      "answerPreviewBudgetTokens": 500,
+      "explanationBudgetTokens": 1800,
+      "policy": "Send only the top catalog chunk, structured extracted inputs, source labels, and tool-call schema to a provider. Never send the full public catalog or raw sensitive user content by default.",
+      "compression": [
+        "compact tool records to id, route, title, category, sourcePolicy, safetyDomain, required inputs, and hints",
+        "bucket prompt length in analytics instead of storing raw prompts",
+        "summarize previous workflow state into sanitized structured inputs before any consented model call"
+      ]
+    },
+    "trainingDataStrategy": {
+      "sources": [
+        "generated synthetic tool-call corpus",
+        "held-out model-training splits",
+        "sanitized router feedback metadata",
+        "manually reviewed drift-intake examples",
+        "public router-safe tool catalog records"
+      ],
+      "forbiddenSources": [
+        "raw CV text",
+        "raw document/PDF contents",
+        "emails, phone numbers, account identifiers, or private profile data",
+        "salary, legal, health, financial, or education-profile details unless converted into sanitized non-identifying fixtures"
+      ],
+      "evaluation": "Promote routing, prompt, or fine-tune changes only after held-out tool-call evals, privacy guardrail tests, and browser workflow checks pass."
+    },
+    "modelPathStages": [
+      "stage_0_local_answer_engine",
+      "stage_1_consent_model_router",
+      "stage_2_router_fine_tune",
+      "stage_3_domain_small_model"
     ],
     "gates": [
       "npm run ai:tool-catalog-pack",

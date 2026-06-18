@@ -5,13 +5,13 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Medical Report Interpreter | AfroTools</title>
-  <meta name="description" content="AI-powered tool to understand your medical lab test results in plain language. Supports 80+ biomarkers across CBC, lipid panel, liver, kidney, thyroid, diabetes and more. Free for Africa.">
+  <meta name="description" content="Private lab result explainer for common biomarkers, with optional AI only after consent. Educational, non-diagnostic guidance for clinician follow-up.">
   <meta name="theme-color" content="var(--color-primary)">
   <link rel="canonical" href="https://afrotools.com/tools/medical-report/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AfroTools">
   <meta property="og:title" content="Medical Report Interpreter — Understand Your Lab Results in Plain Language | AfroTools">
-  <meta property="og:description" content="AI-powered tool to understand your medical lab test results in plain language. Supports 80+ biomarkers across CBC, lipid panel, liver, kidney, thyroid, diabetes and more.">
+  <meta property="og:description" content="Private lab result explainer for common biomarkers, with optional AI only after consent. Educational, non-diagnostic guidance for clinician follow-up.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/medical-report.webp">
   <meta property="og:url" content="https://afrotools.com/tools/medical-report/">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -178,6 +178,8 @@
 .mr-chat-input button{padding:10px 20px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap;flex-shrink:0}
 .mr-chat-input button:hover{background:#0063D1}
 .mr-chat-input button:disabled{background:#9ca3af;cursor:not-allowed}
+.mr-ai-consent{display:flex;gap:10px;align-items:flex-start;margin:14px 0 12px;padding:12px 14px;border:1px solid #dbeafe;background:#eff6ff;border-radius:10px;font-size:12px;line-height:1.55;color:#1f2937}
+.mr-ai-consent input{margin-top:3px;flex-shrink:0}
 
 /* Toast */
 .mr-toast{position:fixed;bottom:22px;right:22px;background:#111;color:#fff;padding:11px 18px;border-radius:9px;font-size:13px;font-weight:600;transform:translateY(80px);opacity:0;transition:.3s;z-index:2000;max-width:320px}
@@ -206,7 +208,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Medical Report Interpreter",
-  "description": "AI-powered tool to understand your medical lab test results in plain language. Supports 80+ biomarkers across CBC, lipid panel, liver, kidney, thyroid, diabetes and more.",
+  "description": "Private lab result explainer for common biomarkers, with optional AI only after consent. Educational, non-diagnostic guidance for clinician follow-up.",
   "url": "https://afrotools.com/tools/medical-report/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
@@ -231,7 +233,7 @@
   "@type": "WebPage",
   "name": "Medical Report Interpreter",
   "url": "https://afrotools.com/tools/medical-report/",
-  "description": "AI-powered tool to understand your medical lab test results in plain language. Supports 80+ biomarkers across CBC, lipid panel, liver, kidney, thyroid, diabetes and more.",
+  "description": "Private lab result explainer for common biomarkers, with optional AI only after consent. Educational, non-diagnostic guidance for clinician follow-up.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -251,7 +253,7 @@
       "name": "Is my medical data safe?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. All lab result parsing and reference range comparison happens entirely in your browser. Your medical data is never sent to or stored on any server. The only data sent externally is to the AI for interpretation, and it is not stored."
+        "text": "Lab result parsing and reference range comparison happen in your browser. Optional AI interpretation is off until you choose it; if enabled, only parsed marker names, values, units, status, and your question are sent for interpretation, not the raw uploaded report."
       }
     },
     {
@@ -283,7 +285,7 @@
       "name": "How accurate is the interpretation?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The reference ranges used are standard medical ranges recognized by major health organizations. The AI provides general guidance to help you understand your results. However, reference ranges can vary by lab, age, sex, and other factors. Always discuss your results with your doctor."
+        "text": "The reference ranges are general planning ranges and can vary by lab, age, sex, pregnancy status, medicines, and medical history. Always discuss your specific results with a qualified clinician."
       }
     }
   ]
@@ -295,7 +297,7 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Medical Report Interpreter — Understand Your Lab Results in Plain Language | AfroTools">
-<meta name="twitter:description" content="AI-powered tool to understand your medical lab test results in plain language. Supports 80+ biomarkers across CBC, lipid panel, liver, kidney, thyroid, diabetes and more.">
+<meta name="twitter:description" content="Private lab result explainer for common biomarkers, with optional AI only after consent. Educational, non-diagnostic guidance for clinician follow-up.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/medical-report.webp">
 <script type="application/ld+json">
 {
@@ -341,9 +343,9 @@
   <section class="mr-hero">
     <span class="mr-hero-emoji">&#x1F3E5;</span>
     <h1>Medical Report <b>Interpreter</b></h1>
-    <p>Understand your lab test results in plain language. No more Googling scary medical terms. 80+ biomarkers analyzed instantly.</p>
+    <p>Understand common lab markers in plain language, keep raw reports local, and prepare safer questions for your clinician.</p>
     <div class="mr-badges">
-      <span class="mr-badge">&#x1F916; AI-Powered</span>
+      <span class="mr-badge">&#x1F916; Optional AI</span>
       <span class="mr-badge">&#x1F9EA; 80+ Biomarkers</span>
       <span class="mr-badge">&#x26A1; Instant Results</span>
       <span class="mr-badge">&#x1F512; Private &amp; Secure</span>
@@ -353,7 +355,7 @@
   <!-- Disclaimer top -->
   <div class="mr-disclaimer">
     <span class="mr-disclaimer-icon">&#x26A0;&#xFE0F;</span>
-    <div><strong>Medical Disclaimer:</strong> This tool is for educational purposes only. It helps you understand your lab results but is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult your healthcare provider about your results.</div>
+    <div><strong>Medical Disclaimer:</strong> This tool is for educational purposes only. It does not diagnose, treat, confirm health, or replace professional medical advice. Seek urgent care for severe symptoms or a result your lab marks critical, and discuss results with a qualified healthcare provider.</div>
   </div>
 
   <!-- Input card -->
@@ -421,6 +423,11 @@
       </div>
     </div>
 
+    <label class="mr-ai-consent">
+      <input type="checkbox" id="aiConsent">
+      <span>Use optional AI interpretation and chat. This sends parsed marker names, values, units, status, and your question to AfroTools AI. Raw pasted/uploaded report text stays out of the AI request.</span>
+    </label>
+
     <!-- Analyze button -->
     <button type="button" class="mr-analyze" id="analyzeBtn" onclick="analyzeResults()">
       &#x1F50D; Analyze My Results
@@ -454,10 +461,11 @@
     <!-- AI Interpretation -->
     <div class="mr-ai-section">
       <div class="mr-ai-header">
-        <h3>&#x1F9E0; AI Interpretation <span class="mr-ai-badge">AI-Powered</span></h3>
+        <h3>&#x1F9E0; Interpretation <span class="mr-ai-badge">Local first</span></h3>
       </div>
-      <div class="mr-ai-ctx">Our AI analyzes your results together to provide a holistic interpretation in plain language.</div>
+      <div class="mr-ai-ctx">Local summary appears first. Optional AI only runs after consent and receives parsed marker values, not the raw report.</div>
       <div class="mr-ai-content loading" id="aiInterpretation">Analyzing your results...</div>
+      <button type="button" class="mr-chat-prompt" id="aiRunBtn" onclick="runAIInterpretation()" style="margin-top:10px">Generate optional AI interpretation</button>
     </div>
 
     <!-- Questions for Doctor -->
@@ -476,12 +484,12 @@
     <!-- Chat follow-up -->
     <div class="mr-chat-section" id="chatSection">
       <h3>&#x1F4AC; Ask Follow-up Questions <span class="mr-ai-badge">AI Chat</span></h3>
-      <div class="mr-chat-ctx">Ask anything about your results. The AI has context of all your lab values.</div>
+      <div class="mr-chat-ctx">Follow-up chat is optional and requires the AI consent checkbox above. Ask clinician-prep questions, not medication or treatment instructions.</div>
       <div class="mr-chat-prompts" id="chatPrompts">
-        <button type="button" class="mr-chat-prompt" onclick="askChat('What should I eat to improve my results?')">What should I eat to improve?</button>
-        <button type="button" class="mr-chat-prompt" onclick="askChat('Are any of my results concerning?')">Are any results concerning?</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('What general food or habit questions should I discuss with my clinician?')">Food questions for clinician</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('Which results should I ask my clinician to explain first?')">Which results to ask about?</button>
         <button type="button" class="mr-chat-prompt" onclick="askChat('Explain my results like I am 70 years old')">Explain like I am 70</button>
-        <button type="button" class="mr-chat-prompt" onclick="askChat('What lifestyle changes would help?')">Lifestyle changes to help</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('What retest or follow-up timing questions should I ask?')">Retest questions</button>
       </div>
       <div class="mr-chat-messages" id="chatMessages"></div>
       <div class="mr-chat-input">
@@ -493,7 +501,7 @@
     <!-- Disclaimer bottom -->
     <div class="mr-disclaimer" style="margin-top:20px">
       <span class="mr-disclaimer-icon">&#x26A0;&#xFE0F;</span>
-      <div><strong>Reminder:</strong> This tool is for educational purposes only. It is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult your healthcare provider about your results.</div>
+      <div><strong>Reminder:</strong> This tool is for educational purposes only. It does not diagnose, treat, confirm health, or replace professional medical advice. Always consult your healthcare provider about your results.</div>
     </div>
   </div>
 
@@ -513,7 +521,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Yes. All lab result parsing and reference range comparison happens entirely in your browser. Your medical data is never stored on any server. The only data sent externally is to the AI for deeper interpretation, and it is not stored.
+        Lab result parsing and reference range comparison happen in your browser. Optional AI interpretation is off until you choose it; if enabled, only parsed marker names, values, units, status, and your question are sent for interpretation, not the raw uploaded report.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -549,7 +557,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        The reference ranges used are standard medical ranges recognized by major health organizations. The AI provides general guidance to help you understand your results in plain language. However, reference ranges can vary by lab, age, sex, and other factors. Always discuss your specific results with your doctor for personalized interpretation.
+        The reference ranges are general planning ranges and can vary by lab, age, sex, pregnancy status, medicines, and medical history. Always discuss your specific results with a qualified clinician for personalized interpretation.
       </div>
     </details>
   </div>
@@ -579,7 +587,7 @@
 <section class="health-action-kit" data-health-tool-id="medical-report" data-health-tool-name="Medical Report Interpreter" data-health-href="/tools/medical-report/" data-health-bucket="labs" data-health-journey="labs" data-health-source-name="CDC sickle cell disease" data-health-source-url="https://www.cdc.gov/sickle-cell/about/index.html" data-health-competitor="Ada and lab-analyzer style apps" data-health-feature="Symptom and report apps work best when they convert results into questions, red flags, and a shareable summary." aria-labelledby="health-action-title-medical-report">
 <span class="health-action-kicker">Complete package upgrade</span>
 <h2 id="health-action-title-medical-report">Medical Report Interpreter: save, export, and continue the workflow</h2>
-<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Labs and compatibility pack workflow.</p>
+<p>This app now has a safer local-first handoff for clinician questions, retest prompts, dashboard notes, and PDF visit prep.</p>
 <div class="health-action-grid">
 <div class="health-action-card">
 <h3>Competitor feature checked</h3>
@@ -590,9 +598,9 @@
 <div class="health-action-card">
 <h3>Dashboard and PDF actions</h3>
 <ul>
-<li>Save this health plan to the dashboard workspace on this device.</li>
-<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
-<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
+<li>Analyze first, then save a sanitized summary and clinician questions.</li>
+<li>Unlock a PDF visit-prep plan without saving the raw lab report.</li>
+<li>Signed-in sessions attempt account workspace sync for the sanitized plan when the shared workspace API is available.</li>
 </ul>
 <div class="health-action-buttons">
 <button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="medical-report">Save to dashboard</button>
@@ -688,11 +696,11 @@ const BIOMARKERS = {
   'Anti-TPO': { name: 'Anti-Thyroid Peroxidase Antibodies', unit: 'IU/mL', low: 0, high: 35, category: 'Thyroid', explain: 'Antibodies that attack your thyroid. High levels indicate autoimmune thyroid disease (Hashimoto\'s or Graves\').' },
 
   // Diabetes
-  'Fasting Glucose': { name: 'Fasting Blood Glucose', unit: 'mg/dL', low: 70, high: 100, category: 'Diabetes', explain: 'Blood sugar after fasting 8+ hours. 100-125 is prediabetes (take action now). 126+ on two tests suggests diabetes.' },
-  'FBS': { name: 'Fasting Blood Sugar', unit: 'mg/dL', low: 70, high: 100, category: 'Diabetes', explain: 'Blood sugar after fasting. 100-125 is prediabetes. 126+ suggests diabetes.', alias: 'Fasting Glucose' },
-  'HbA1c': { name: 'Glycated Hemoglobin', unit: '%', low: 4.0, high: 5.6, category: 'Diabetes', explain: 'Your average blood sugar over the past 3 months. 5.7-6.4% is prediabetes. 6.5%+ suggests diabetes. The most important diabetes test.' },
-  'Random Glucose': { name: 'Random Blood Glucose', unit: 'mg/dL', low: 70, high: 140, category: 'Diabetes', explain: 'Blood sugar at any time of day. Above 200 with symptoms like thirst and frequent urination strongly suggests diabetes.' },
-  'RBS': { name: 'Random Blood Sugar', unit: 'mg/dL', low: 70, high: 140, category: 'Diabetes', explain: 'Blood sugar at any time. Above 200 with symptoms suggests diabetes.', alias: 'Random Glucose' },
+  'Fasting Glucose': { name: 'Fasting Blood Glucose', unit: 'mg/dL', low: 70, high: 100, category: 'Diabetes', explain: 'Blood sugar after fasting 8+ hours. Higher values can be associated with prediabetes or diabetes and should be confirmed with a clinician and repeat or related testing.' },
+  'FBS': { name: 'Fasting Blood Sugar', unit: 'mg/dL', low: 70, high: 100, category: 'Diabetes', explain: 'Blood sugar after fasting. Higher values can be associated with prediabetes or diabetes and should be confirmed with a clinician and repeat or related testing.', alias: 'Fasting Glucose' },
+  'HbA1c': { name: 'Glycated Hemoglobin', unit: '%', low: 4.0, high: 5.6, category: 'Diabetes', explain: 'Your average blood sugar over the past 3 months. Higher values can indicate increased diabetes risk and need clinician review in context.' },
+  'Random Glucose': { name: 'Random Blood Glucose', unit: 'mg/dL', low: 70, high: 140, category: 'Diabetes', explain: 'Blood sugar at any time of day. High values, especially with symptoms like thirst and frequent urination, need prompt clinician review.' },
+  'RBS': { name: 'Random Blood Sugar', unit: 'mg/dL', low: 70, high: 140, category: 'Diabetes', explain: 'Blood sugar at any time. High values, especially with symptoms, need prompt clinician review.', alias: 'Random Glucose' },
   'Insulin': { name: 'Fasting Insulin', unit: 'uIU/mL', low: 2.6, high: 24.9, category: 'Diabetes', explain: 'The hormone that regulates blood sugar. High fasting insulin may indicate insulin resistance, a precursor to type 2 diabetes.' },
   'HOMA-IR': { name: 'HOMA-IR (Insulin Resistance)', unit: '', low: 0, high: 2.5, category: 'Diabetes', explain: 'A calculated measure of insulin resistance. Above 2.5 suggests insulin resistance. Lifestyle changes can improve it.' },
   'C-Peptide': { name: 'C-Peptide', unit: 'ng/mL', low: 0.5, high: 2.7, category: 'Diabetes', explain: 'Shows how much insulin your pancreas is producing. Helps distinguish type 1 from type 2 diabetes.' },
@@ -730,7 +738,7 @@ const BIOMARKERS = {
   'AFP': { name: 'Alpha-Fetoprotein', unit: 'ng/mL', low: 0, high: 10, category: 'Other', explain: 'A protein that can be elevated in liver cancer or during pregnancy. Used as a tumor marker.' },
   'CEA': { name: 'Carcinoembryonic Antigen', unit: 'ng/mL', low: 0, high: 5.0, category: 'Other', explain: 'A tumor marker. Elevated levels may indicate colorectal, lung, or other cancers. Also rises with smoking.' },
   'Prolactin': { name: 'Prolactin', unit: 'ng/mL', low: 2, high: 18, category: 'Other', explain: 'A hormone mainly associated with milk production. Elevated levels in non-pregnant women or men may indicate a pituitary issue.' },
-  'Cortisol': { name: 'Cortisol (Morning)', unit: 'ug/dL', low: 6, high: 23, category: 'Other', explain: 'The stress hormone. Abnormal levels can indicate adrenal gland problems. High levels cause weight gain and high blood pressure.' },
+  'Cortisol': { name: 'Cortisol (Morning)', unit: 'ug/dL', low: 6, high: 23, category: 'Other', explain: 'The stress hormone. Abnormal levels can be associated with adrenal or stress-response issues and should be interpreted with collection time, symptoms, and medicines.' },
   'Testosterone': { name: 'Testosterone', unit: 'ng/dL', low: 270, high: 1070, category: 'Other', explain: 'The main male sex hormone. Low levels cause fatigue, low libido, and mood changes. Also important for women in smaller amounts.' },
   'Estradiol': { name: 'Estradiol (E2)', unit: 'pg/mL', low: 15, high: 350, category: 'Other', explain: 'The main female estrogen. Levels vary with menstrual cycle. Important for bone health and reproductive function.' }
 };
@@ -812,6 +820,99 @@ let chatHistory = [];
 let chatLoading = false;
 let currentImageFile = null;
 let currentPdfFile = null;
+
+function hasAIConsent() {
+  var input = document.getElementById('aiConsent');
+  return !!(input && input.checked);
+}
+
+function getParsedSummaryLines(results) {
+  return results.map(function(r) {
+    return r.key + ': ' + r.value + ' ' + r.biomarker.unit + ' (' + r.status + ', range: ' + r.biomarker.low + '-' + (r.biomarker.high >= 999 ? 'higher is better' : r.biomarker.high) + ')';
+  });
+}
+
+function buildLocalInterpretation(results) {
+  var abnormal = results.filter(r => r.status !== 'normal');
+  var normal = results.filter(r => r.status === 'normal');
+  var copy = '';
+
+  if (abnormal.length === 0) {
+    copy = 'All recognized markers fall within the general reference ranges used by this tool. That does not confirm overall health, because ranges can vary by lab and by your age, sex, pregnancy status, medicines, symptoms, and medical history.\n\n';
+    copy += 'Use this as a visit-prep note: ask your clinician whether these tests should be repeated, whether any missing markers matter for you, and what interval is appropriate for your situation.';
+    return copy;
+  }
+
+  copy = normal.length + ' recognized marker' + (normal.length === 1 ? ' is' : 's are') + ' within the general range and ' + abnormal.length + ' marker' + (abnormal.length === 1 ? ' is' : 's are') + ' outside it.\n\n';
+  copy += 'Markers to discuss:\n\n';
+  abnormal.forEach(function(r) {
+    var direction = r.status === 'high' ? 'above' : 'below';
+    copy += '- ' + r.biomarker.name + ' (' + r.key + '): ' + r.value + ' ' + r.biomarker.unit + ' is ' + direction + ' this tool\'s general reference range. ' + r.biomarker.explain + '\n\n';
+  });
+  copy += 'A single outside-range result is not a diagnosis. Lab variation, timing, diet, hydration, exercise, stress, medicines, and illness can affect results. Ask your healthcare provider whether a repeat test, related marker, or urgent review is needed.';
+  return copy;
+}
+
+function renderLocalInterpretation(results) {
+  var aiDiv = document.getElementById('aiInterpretation');
+  if (!aiDiv) return;
+  aiDiv.className = 'mr-ai-content';
+  aiDiv.textContent = buildLocalInterpretation(results);
+}
+
+function recordMedicalReportSnapshot(results) {
+  if (!window.AfroHealthWorkflow || typeof window.AfroHealthWorkflow.recordSnapshot !== 'function') return;
+  var abnormal = results.filter(r => r.status !== 'normal');
+  var normal = results.filter(r => r.status === 'normal');
+  var questions = Array.prototype.map.call(document.querySelectorAll('#questionsList li'), function(li) {
+    return li.textContent;
+  }).slice(0, 6);
+  var markers = results.map(function(r) {
+    return {
+      marker: r.key,
+      value: r.value,
+      unit: r.biomarker.unit,
+      status: r.status,
+      category: r.category
+    };
+  });
+  window.AfroHealthWorkflow.recordSnapshot({
+    toolId: 'medical-report',
+    headline: results.length + ' recognized markers; ' + abnormal.length + ' outside general range',
+    resultText: 'Sanitized medical-report summary only. Raw pasted/uploaded report text is not included.',
+    fields: [
+      { label: 'Recognized markers', value: String(results.length) },
+      { label: 'Within general range', value: String(normal.length) },
+      { label: 'Outside general range', value: String(abnormal.length) },
+      { label: 'Saved content', value: 'Marker names, values, status, clinician questions; no raw report text' }
+    ],
+    markers: markers,
+    clinicianQuestions: questions
+  });
+}
+
+function runAIInterpretation() {
+  if (!parsedResults.length) {
+    toast('Analyze your lab results before using optional AI.');
+    return;
+  }
+  if (!hasAIConsent()) {
+    toast('Tick the optional AI consent checkbox first.');
+    return;
+  }
+  fetchAIInterpretation(parsedResults);
+}
+
+document.addEventListener('click', function(e) {
+  var action = e.target.closest && e.target.closest('[data-health-tool-id="medical-report"][data-health-action]');
+  if (action && !parsedResults.length) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    toast('Analyze results first so only a sanitized summary is saved or exported.');
+  } else if (action && parsedResults.length) {
+    recordMedicalReportSnapshot(parsedResults);
+  }
+}, true);
 
 // ============================================================
 // INPUT TAB SWITCHING
@@ -1028,6 +1129,7 @@ async function analyzeResults() {
     renderSummary(parsedResults);
     renderMarkers(parsedResults);
     generateDoctorQuestions(parsedResults);
+    recordMedicalReportSnapshot(parsedResults);
 
     // Show results
     document.getElementById('resultsContainer').classList.add('on');
@@ -1038,8 +1140,12 @@ async function analyzeResults() {
     // Scroll to results
     document.getElementById('resultsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    // Fire AI interpretation
-    fetchAIInterpretation(parsedResults, text);
+    // Keep interpretation local unless the user opts into AI.
+    if (hasAIConsent()) {
+      fetchAIInterpretation(parsedResults);
+    } else {
+      renderLocalInterpretation(parsedResults);
+    }
 
     // Reset chat
     chatHistory = [];
@@ -1133,11 +1239,11 @@ function renderSummary(results) {
 
   var msg = '';
   if (abnormal === 0) {
-    msg = 'Great news! All ' + total + ' markers tested are within normal range. Your results look healthy. Continue maintaining your current lifestyle and discuss these results with your doctor at your next visit.';
+    msg = 'All ' + total + ' recognized markers fall within this tool\'s general reference ranges. This does not confirm overall health. Discuss the result, missing markers, and retest timing with your healthcare provider.';
   } else if (abnormal <= 2) {
-    msg = normal + ' of ' + total + ' markers are within normal range. ' + abnormal + ' marker' + (abnormal > 1 ? 's need' : ' needs') + ' attention (highlighted below). This is usually nothing to worry about, but discuss these with your doctor.';
+    msg = normal + ' of ' + total + ' markers are within this tool\'s general range. ' + abnormal + ' marker' + (abnormal > 1 ? 's are' : ' is') + ' outside range and should be discussed with your healthcare provider, especially if symptoms or lab-critical flags are present.';
   } else {
-    msg = normal + ' of ' + total + ' markers are within normal range. ' + abnormal + ' markers need attention. We recommend discussing these results with your healthcare provider soon.';
+    msg = normal + ' of ' + total + ' markers are within this tool\'s general range. ' + abnormal + ' markers are outside range. Arrange clinician review and seek urgent care for severe symptoms or any result your lab marks critical.';
   }
   document.getElementById('summaryMsg').textContent = msg;
 }
@@ -1202,16 +1308,16 @@ function generateDoctorQuestions(results) {
   var abnormal = results.filter(r => r.status !== 'normal');
 
   if (abnormal.length === 0) {
-    questions.push('My results are all normal. How often should I get these tests repeated?');
+    questions.push('These recognized markers are within the general range. How often should I repeat these tests?');
     questions.push('Are there any additional tests you recommend based on my age and health history?');
-    questions.push('What lifestyle habits should I maintain to keep my results in the healthy range?');
+    questions.push('Are there symptoms, medicines, pregnancy status, or history that change how you interpret these results?');
   } else {
     abnormal.forEach(function(r) {
       var direction = r.status === 'high' ? 'high' : 'low';
-      questions.push('My ' + r.key + ' is ' + direction + ' at ' + r.value + ' ' + r.biomarker.unit + '. What could be causing this and should I be concerned?');
+      questions.push('My ' + r.key + ' is ' + direction + ' at ' + r.value + ' ' + r.biomarker.unit + '. What follow-up or repeat test should I consider?');
     });
-    questions.push('Based on these abnormal results, should I have any follow-up tests?');
-    questions.push('Are there dietary or lifestyle changes that could help improve my abnormal results?');
+    questions.push('Based on these outside-range results, should I have any follow-up tests?');
+    questions.push('Are there general diet, activity, medicine, or timing factors that could affect these results?');
     if (abnormal.some(r => r.category === 'Diabetes')) {
       questions.push('Should I be monitoring my blood sugar more frequently?');
     }
@@ -1238,23 +1344,30 @@ function generateDoctorQuestions(results) {
 // ============================================================
 // AI INTERPRETATION
 // ============================================================
-async function fetchAIInterpretation(results, text) {
+async function fetchAIInterpretation(results) {
   var aiDiv = document.getElementById('aiInterpretation');
+  if (!hasAIConsent()) {
+    renderLocalInterpretation(results);
+    return;
+  }
   aiDiv.className = 'mr-ai-content loading';
   aiDiv.textContent = 'Analyzing your results with AI...';
 
-  var parsedSummary = results.map(function(r) {
-    return r.key + ': ' + r.value + ' ' + r.biomarker.unit + ' (' + r.status + ', range: ' + r.biomarker.low + '-' + (r.biomarker.high >= 999 ? 'higher is better' : r.biomarker.high) + ')';
-  }).join('\n');
+  var parsedSummary = getParsedSummaryLines(results).join('\n');
 
   try {
     var res = await fetch('/.netlify/functions/ai-advisor', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AfroTools-AI-Consent': 'accepted',
+        'X-AfroTools-AI-Content-Consent': 'accepted'
+      },
       body: JSON.stringify({
         tool: 'medical-report',
-        message: 'Here are my lab results:\n' + parsedSummary + '\n\nPlease explain what these results mean in simple language my elderly mother would understand. Identify any abnormal values and explain what they could mean. Suggest questions I should ask my doctor.',
-        context: 'Parsed biomarkers: ' + JSON.stringify(results.map(r => ({ key: r.key, value: r.value, status: r.status, unit: r.biomarker.unit })))
+        message: 'Here are parsed lab markers from my report, not the raw report text:\n' + parsedSummary + '\n\nPlease explain these values in simple educational language, avoid diagnosis or treatment instructions, flag urgent/critical patterns as clinician follow-up, and suggest questions I should ask a qualified healthcare provider.',
+        context: 'Parsed biomarkers: ' + JSON.stringify(results.map(r => ({ key: r.key, value: r.value, status: r.status, unit: r.biomarker.unit }))),
+        consent: { aiAdvisor: 'accepted', aiContentIncluded: true }
       })
     });
 
@@ -1266,23 +1379,7 @@ async function fetchAIInterpretation(results, text) {
   } catch(e) {
     // Provide fallback interpretation
     aiDiv.className = 'mr-ai-content';
-    var abnormal = results.filter(r => r.status !== 'normal');
-    var normal = results.filter(r => r.status === 'normal');
-    var fallback = '';
-
-    if (abnormal.length === 0) {
-      fallback = 'Good news! All your tested markers fall within normal reference ranges. This generally indicates that the body systems tested are functioning well.\n\n';
-      fallback += 'Continue maintaining a healthy lifestyle with regular exercise, balanced nutrition, adequate sleep, and routine checkups. Your doctor can provide personalized advice based on your complete medical history.';
-    } else {
-      fallback = 'Your results show ' + normal.length + ' normal markers and ' + abnormal.length + ' marker' + (abnormal.length > 1 ? 's' : '') + ' outside the normal range.\n\n';
-      fallback += 'Markers that need attention:\n\n';
-      abnormal.forEach(function(r) {
-        var direction = r.status === 'high' ? 'above' : 'below';
-        fallback += '- ' + r.biomarker.name + ' (' + r.key + '): Your value of ' + r.value + ' ' + r.biomarker.unit + ' is ' + direction + ' the normal range of ' + r.biomarker.low + '-' + (r.biomarker.high >= 999 ? 'higher' : r.biomarker.high) + '. ' + r.biomarker.explain + '\n\n';
-      });
-      fallback += 'Important: A single abnormal result does not necessarily mean there is a problem. Many factors including diet, exercise, stress, medications, and time of day can affect results. Please discuss these findings with your healthcare provider for proper evaluation.';
-    }
-    aiDiv.textContent = fallback;
+    aiDiv.textContent = buildLocalInterpretation(results);
   }
 }
 
@@ -1292,6 +1389,10 @@ async function fetchAIInterpretation(results, text) {
 async function askChat(preset) {
   var q = (preset || document.getElementById('chatInput').value || '').trim();
   if (!q || chatLoading) return;
+  if (!hasAIConsent()) {
+    toast('Tick the optional AI consent checkbox before using follow-up chat.');
+    return;
+  }
   chatLoading = true;
   document.getElementById('chatBtn').disabled = true;
   document.getElementById('chatInput').value = '';
@@ -1305,7 +1406,7 @@ async function askChat(preset) {
   chat.appendChild(typing);
   chat.scrollTop = 99999;
 
-  var sys = 'You are the AfroTools Medical Report Advisor. You help people understand their lab test results in simple, reassuring language. Be clear, warm, and practical. Always remind users you are not a doctor and they should consult their healthcare provider. Keep responses under 200 words. Use short paragraphs. ';
+  var sys = 'You are the AfroTools Medical Report Advisor. You help people understand parsed lab markers in simple educational language. Do not diagnose, prescribe, recommend medication changes, give treatment instructions, or reassure someone that they are healthy. Encourage urgent care for severe symptoms or lab-critical values, and clinician review for personal decisions. Keep responses under 200 words. Use short paragraphs. ';
 
   if (parsedResults.length > 0) {
     sys += 'The user has the following lab results: ';
@@ -1319,8 +1420,12 @@ async function askChat(preset) {
   try {
     var res = await fetch('/.netlify/functions/ai-advisor', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system: sys, messages: msgs })
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AfroTools-AI-Consent': 'accepted',
+        'X-AfroTools-AI-Content-Consent': 'accepted'
+      },
+      body: JSON.stringify({ system: sys, messages: msgs, consent: { aiAdvisor: 'accepted', aiContentIncluded: true } })
     });
     typing.remove();
     if (!res.ok) throw new Error();

@@ -14,6 +14,7 @@ const cases = [
   ["Scholarships for masters in Canada from Nigeria", "scholarship-finder", "education"],
   ["Calculate payroll for 5 employees in Kenya", "paye-calculator", "tax"],
   ["PAYE on 250000 KES monthly salary", "paye-calculator", "tax"],
+  ["I want to calculate my salary tax in angoa 1000000", "ao-paye", "tax"],
   ["How much duty to import a 2016 Toyota Axio into Nigeria?", "import-duty", "finance"],
   ["Car import landed cost for Honda Fit to Ghana", "import-duty", "finance"],
   ["Should I install solar for my shop in Lagos?", "solar-roi", "energy"],
@@ -66,6 +67,14 @@ assert.strictEqual(educationPlanRoute.extractedInputs.country, "Nigeria");
 assert.strictEqual(educationPlanRoute.extractedInputs.targetCountry, "Canada");
 assert.strictEqual(educationPlanRoute.extractedInputs.budgetAmount, 8000);
 assert.strictEqual(educationPlanRoute.extractedInputs.currency, "USD");
+
+const angolaSalaryRoute = router.routeDeterministically("I want to calculate my salary tax in angoa 1000000", { manifest });
+assert.strictEqual(angolaSalaryRoute.selectedToolId, "ao-paye");
+assert.strictEqual(angolaSalaryRoute.selectedRoute, "/angola/ao-paye?source=ask");
+assert.strictEqual(angolaSalaryRoute.extractedInputs.country, "Angola");
+assert.strictEqual(angolaSalaryRoute.extractedInputs.grossPay, 1000000);
+assert.strictEqual(angolaSalaryRoute.extractedInputs.payPeriod, "monthly");
+assert.deepStrictEqual(angolaSalaryRoute.missingInputs, []);
 
 const pdfPageNumbersRoute = router.routeDeterministically("add page numbers to my PDF", { manifest });
 assert.strictEqual(pdfPageNumbersRoute.selectedToolId, "pdf-workspace");

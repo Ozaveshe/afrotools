@@ -3,53 +3,551 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tarif extérieur commun EAC | AfroTools</title>
-<meta name="description" content="Calculez les droits de douane selon le Tarif extérieur commun de la Communauté d’Afrique de l’Est. Trouvez les taux applicables à vos marchandises.">
+<title>Tarif exterieur commun EAC | Estimateur droits import | AfroTools</title>
+<meta name="description" content="Estimez les droits import EAC CET avec valeur CIF, bande tarifaire, origine, pays partenaire, export et sources officielles EAC.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/tec-eac/">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Tarif extérieur commun EAC | AfroTools">
-<meta property="og:description" content="Calculez les droits de douane selon le Tarif extérieur commun de la Communauté d’Afrique de l’Est. Trouvez les taux applicables à vos marchandises.">
+<meta property="og:title" content="Tarif exterieur commun EAC | AfroTools">
+<meta property="og:description" content="Estimez les droits import EAC CET avec valeur CIF, bande tarifaire, origine et sources officielles EAC.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/eac-cet.webp">
 <meta property="og:url" content="https://afrotools.com/fr/tools/tec-eac/">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tarif exterieur commun EAC | AfroTools">
+<meta name="twitter:description" content="Estimez les droits import EAC CET avec valeur CIF, bande tarifaire, origine et sources officielles EAC.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/eac-cet.webp">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tec-eac/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/tec-eac/" />
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
-.tool-hero{text-align:center;padding:3rem 1rem 2rem;background:var(--bg)}
-.tool-hero h1{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--text);margin:0 0 .5rem}
-.tool-hero p{color:var(--text-muted);max-width:600px;margin:0 auto}
-.tool-iframe-wrap{max-width:1000px;margin:0 auto;padding:0 1rem 2rem}
-.tool-iframe-wrap iframe{width:100%;height:700px;border:1px solid var(--border);border-radius:12px}
-.seo-section{max-width:760px;margin:0 auto;padding:2rem 1rem}
-.seo-section h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.seo-section p{line-height:1.7;color:var(--text-muted);margin:0 0 1rem}
-.faq{max-width:760px;margin:0 auto;padding:0 1rem 3rem}
-.faq h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.faq details{border:1px solid var(--border);border-radius:8px;margin:0 0 .5rem;padding:.75rem 1rem}
-.faq summary{cursor:pointer;font-weight:600;color:var(--text)}
-.faq details p{margin:.5rem 0 0;color:var(--text-muted);line-height:1.6}
+  :root {
+    --eac-ink: #102033;
+    --eac-muted: #5d6d83;
+    --eac-line: #d8e3f0;
+    --eac-soft: #f3f8fb;
+    --eac-card: #ffffff;
+    --eac-blue: #2357b8;
+    --eac-green: #11754d;
+    --eac-gold: #bb7b00;
+  }
+  body { background: #f6f8fb; color: var(--eac-ink); }
+  .eac-wrap { max-width: 1180px; margin: 0 auto; padding: 32px 18px 58px; }
+  .eac-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(330px, .9fr);
+    gap: 24px;
+    align-items: start;
+    margin: 18px 0 24px;
+  }
+  .eac-panel, .eac-card {
+    background: var(--eac-card);
+    border: 1px solid var(--eac-line);
+    border-radius: 8px;
+    box-shadow: 0 18px 38px rgba(16, 32, 51, .06);
+  }
+  .eac-panel { padding: 30px; }
+  .eac-eyebrow {
+    margin: 0 0 12px;
+    color: var(--eac-blue);
+    font-size: .75rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  h1 { margin: 0 0 16px; font-size: clamp(2rem, 4.8vw, 3.8rem); line-height: 1; letter-spacing: 0; }
+  .eac-lead { color: var(--eac-muted); line-height: 1.75; font-size: 1.05rem; max-width: 66ch; }
+  .eac-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .eac-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    border: 1px solid var(--eac-line);
+    border-radius: 999px;
+    padding: 0 12px;
+    background: var(--eac-soft);
+    color: #24415d;
+    font-size: .86rem;
+    font-weight: 800;
+  }
+  .eac-card { padding: 22px; }
+  .eac-form { display: grid; gap: 15px; }
+  .eac-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .eac-field label {
+    display: block;
+    margin: 0 0 7px;
+    font-size: .84rem;
+    font-weight: 850;
+    color: #23364e;
+  }
+  .eac-field input, .eac-field select, .eac-field textarea {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #c7d4e5;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--eac-ink);
+    padding: 11px 12px;
+    font: inherit;
+  }
+  .eac-field textarea { min-height: 78px; resize: vertical; }
+  .eac-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .eac-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    border: 1px solid #c7d4e5;
+    border-radius: 8px;
+    padding: 0 15px;
+    background: #fff;
+    color: #1d2d44;
+    font-weight: 850;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .eac-btn.primary { background: var(--eac-blue); border-color: var(--eac-blue); color: #fff; }
+  .eac-btn:focus-visible, .eac-field input:focus-visible, .eac-field select:focus-visible, .eac-field textarea:focus-visible {
+    outline: 3px solid rgba(35, 87, 184, .2);
+    outline-offset: 2px;
+  }
+  .eac-warning {
+    display: none;
+    border-left: 4px solid var(--eac-gold);
+    border-radius: 8px;
+    background: #fff8e8;
+    color: #6a4300;
+    padding: 12px 14px;
+    font-weight: 750;
+  }
+  .eac-warning.show { display: block; }
+  .eac-results { display: grid; gap: 14px; margin-top: 20px; }
+  .eac-result-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .eac-result {
+    border: 1px solid var(--eac-line);
+    border-radius: 8px;
+    background: #fbfdff;
+    padding: 15px;
+  }
+  .eac-result strong {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--eac-muted);
+    font-size: .76rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .eac-number { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 950; color: var(--eac-green); letter-spacing: 0; }
+  .eac-output { white-space: pre-line; overflow-wrap: anywhere; color: #21334a; line-height: 1.65; }
+  .eac-sections { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, .46fr); gap: 20px; margin-top: 22px; }
+  .eac-section {
+    border: 1px solid var(--eac-line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 22px;
+  }
+  .eac-section h2 { margin: 0 0 12px; font-size: 1.28rem; }
+  .eac-section p, .eac-section li { color: var(--eac-muted); line-height: 1.72; }
+  .eac-section ul, .eac-section ol { padding-left: 1.2rem; }
+  .eac-source-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .eac-source-list a {
+    display: block;
+    border: 1px solid var(--eac-line);
+    border-radius: 8px;
+    padding: 12px;
+    background: #f8fbff;
+    color: #174ea6;
+    font-weight: 850;
+    text-decoration: none;
+  }
+  .eac-faq details { border-top: 1px solid var(--eac-line); padding: 14px 0; }
+  .eac-faq summary { cursor: pointer; font-weight: 850; color: #1f3048; }
+  @media (max-width: 900px) {
+    .eac-hero, .eac-sections, .eac-result-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    .eac-wrap { padding-inline: 14px; }
+    .eac-panel, .eac-card, .eac-section { padding: 18px; }
+    .eac-grid-2 { grid-template-columns: 1fr; }
+    .eac-actions .eac-btn { flex: 1 1 150px; }
+  }
 </style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/eac-cet.webp">
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tec-eac/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/tec-eac/" />
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tarif extérieur commun EAC | AfroTools">
-<meta name="twitter:description" content="Calculez les droits de douane selon le Tarif extérieur commun de la Communauté d’Afrique de l’Est. Trouvez les taux applicables à vos marchandises.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Tarif exterieur commun EAC",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "url": "https://afrotools.com/fr/tools/tec-eac/",
+  "description": "Estimateur local des droits d'import selon une bande EAC CET, avec valeur CIF, origine, export et sources officielles.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Le calcul donne-t-il un taux officiel definitif ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Non. L'outil applique la bande que vous choisissez pour estimer le droit sur la valeur CIF. Le classement HS, les mesures de sejour, exemptions et taxes locales doivent etre verifies avec les autorites ou un agent en douane." }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelles bandes EAC CET sont incluses ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "La structure generale utilise 0%, 10%, 25% et 35%. Certains produits et pays peuvent avoir des mesures approuvees separement dans les gazettes EAC." }
+    },
+    {
+      "@type": "Question",
+      "name": "L'outil couvre-t-il la TVA et les frais portuaires ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Non. Il calcule surtout une estimation du droit d'import. Vous pouvez ajouter des frais locaux comme ligne separee, mais les taxes nationales doivent etre confirmees localement." }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
-<main>
-<section class="tool-hero"><h1>Tarif extérieur commun EAC</h1><p>Calculez les droits de douane selon le Tarif extérieur commun de la Communauté d’Afrique de l’Est. Trouvez les taux applicables à vos marchandises.</p></section>
-<div class="tool-iframe-wrap"><iframe src="/tools/eac-cet/" title="Tarif extérieur commun EAC" loading="lazy"></iframe></div>
-<section class="seo-section"><h2>À propos</h2><p>Calculez les droits de douane selon le Tarif extérieur commun de la Communauté d’Afrique de l’Est. Trouvez les taux applicables à vos marchandises.</p><p>Le TEC-EAC harmonise les droits de douane entre le Kenya, la Tanzanie, l’Ouganda, le Rwanda, le Burundi, le Soudan du Sud et la RDC. Cet outil vous aide à trouver les taux applicables.</p></section>
-<section class="faq"><h2>Questions fréquentes</h2>
-<details><summary>Qu’est-ce que le TEC-EAC ?</summary><p>Le Tarif extérieur commun de l’EAC fixe des droits de douane uniformes pour les importations en provenance de pays non membres de la communauté.</p></details>
-<details><summary>Quels sont les taux appliqués ?</summary><p>Trois bandes principales : 0 % pour les matières premières, 10 % pour les produits intermédiaires et 25 % pour les produits finis.</p></details>
-<details><summary>Y a-t-il des exemptions ?</summary><p>Oui, certains produits bénéficient d’exemptions ou de taux réduits. L’outil indique les exceptions applicables par catégorie de produit.</p></details>
-</section>
+<main class="eac-wrap">
+  <section class="eac-hero">
+    <div class="eac-panel">
+      <p class="eac-eyebrow">Commerce EAC</p>
+      <h1>Tarif exterieur commun EAC</h1>
+      <p class="eac-lead">Preparez une estimation simple des droits d'import pour un envoi vers un Etat partenaire de la Communaute d'Afrique de l'Est. Entrez la valeur CIF, choisissez la bande tarifaire, signalez l'origine et exportez une note a verifier avec votre commissionnaire ou l'autorite douaniere.</p>
+      <div class="eac-pills" aria-label="Points cles">
+        <span class="eac-pill">CIF x taux CET</span>
+        <span class="eac-pill">0%, 10%, 25%, 35%</span>
+        <span class="eac-pill">Sources EAC</span>
+      </div>
+    </div>
+
+    <section class="eac-card" aria-labelledby="tool-title">
+      <h2 id="tool-title">Estimer les droits</h2>
+      <form class="eac-form" id="eac-form">
+        <div class="eac-grid-2">
+          <div class="eac-field">
+            <label for="country">Pays de destination</label>
+            <select id="country" name="country">
+              <option>Kenya</option>
+              <option>Tanzanie</option>
+              <option>Ouganda</option>
+              <option>Rwanda</option>
+              <option>Burundi</option>
+              <option>Soudan du Sud</option>
+              <option>RDC</option>
+              <option>Somalie</option>
+            </select>
+          </div>
+          <div class="eac-field">
+            <label for="origin">Origine declaree</label>
+            <select id="origin" name="origin">
+              <option value="external">Pays hors EAC</option>
+              <option value="eac">Origine EAC avec preuve</option>
+              <option value="unknown">Origine a confirmer</option>
+            </select>
+          </div>
+        </div>
+        <div class="eac-grid-2">
+          <div class="eac-field">
+            <label for="currency">Devise de travail</label>
+            <select id="currency" name="currency">
+              <option value="USD">USD</option>
+              <option value="KES">KES</option>
+              <option value="TZS">TZS</option>
+              <option value="UGX">UGX</option>
+              <option value="RWF">RWF</option>
+              <option value="BIF">BIF</option>
+              <option value="CDF">CDF</option>
+            </select>
+          </div>
+          <div class="eac-field">
+            <label for="cif">Valeur CIF</label>
+            <input id="cif" name="cif" inputmode="decimal" value="10000" placeholder="Ex. 10000" required>
+          </div>
+        </div>
+        <div class="eac-grid-2">
+          <div class="eac-field">
+            <label for="band">Bande tarifaire</label>
+            <select id="band" name="band">
+              <option value="0">0% - matieres premieres / biens exemptes</option>
+              <option value="10">10% - produits intermediaires</option>
+              <option value="25" selected>25% - produits finis</option>
+              <option value="35">35% - bande maximale / produits sensibles</option>
+              <option value="custom">Taux personnalise</option>
+            </select>
+          </div>
+          <div class="eac-field">
+            <label for="custom-rate">Taux personnalise (%)</label>
+            <input id="custom-rate" name="custom-rate" inputmode="decimal" value="25">
+          </div>
+        </div>
+        <div class="eac-grid-2">
+          <div class="eac-field">
+            <label for="local-fees">Autres frais a ajouter</label>
+            <input id="local-fees" name="local-fees" inputmode="decimal" value="350" placeholder="Port, documentation, agent">
+          </div>
+          <div class="eac-field">
+            <label for="hs-code">Code HS / produit</label>
+            <input id="hs-code" name="hs-code" placeholder="Ex. 8517.12 telephones">
+          </div>
+        </div>
+        <div class="eac-field">
+          <label for="notes">Notes de verification</label>
+          <textarea id="notes" name="notes" placeholder="Ex. verifier stay of application 2025/2026, exemption pays, regles d'origine."></textarea>
+        </div>
+        <div class="eac-actions">
+          <button class="eac-btn primary" type="submit">Calculer</button>
+          <button class="eac-btn" type="button" id="copy-result">Copier</button>
+          <button class="eac-btn" type="button" id="download-result">Telecharger TXT</button>
+          <button class="eac-btn" type="button" id="save-result">Sauvegarder localement</button>
+        </div>
+        <div class="eac-warning" id="warning" role="alert"></div>
+        <p class="eac-lead" id="status" aria-live="polite" style="font-size:.92rem;margin:0"></p>
+      </form>
+    </section>
+  </section>
+
+  <section class="eac-card" aria-labelledby="result-title">
+    <h2 id="result-title">Resultat</h2>
+    <div class="eac-results" aria-live="polite">
+      <div class="eac-result-grid">
+        <div class="eac-result"><strong>Valeur CIF</strong><div class="eac-number" id="cif-output">USD 10,000.00</div></div>
+        <div class="eac-result"><strong>Taux applique</strong><div class="eac-number" id="rate-output">25%</div></div>
+        <div class="eac-result"><strong>Droit estime</strong><div class="eac-number" id="duty-output">USD 2,500.00</div></div>
+        <div class="eac-result"><strong>Landed estimate</strong><div class="eac-number" id="landed-output">USD 12,850.00</div></div>
+      </div>
+      <div class="eac-result">
+        <strong>Note exportable</strong>
+        <div class="eac-output" id="summary-output"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="eac-sections">
+    <section class="eac-section">
+      <h2>Methodologie, workflow et limites</h2>
+      <p><strong>Methode de calcul.</strong> Pour une origine hors EAC, le droit estime est la valeur CIF multipliee par la bande CET choisie. Pour une origine EAC avec preuve, l'outil affiche un scenario preferentiel a verifier avec les regles d'origine. Le landed estimate ajoute la valeur CIF, le droit estime et les frais que vous saisissez.</p>
+      <ol>
+        <li>Confirmez le code HS et la description de marchandise.</li>
+        <li>Verifiez la bande CET, les mesures de sejour, exemptions ou taux nationaux approuves.</li>
+        <li>Ajoutez TVA, accises, IDF, frais portuaires ou autres charges locales separement.</li>
+        <li>Validez la declaration avec un agent en douane ou l'autorite fiscale du pays.</li>
+      </ol>
+      <p><strong>Avertissement.</strong> Cet outil est une estimation commerciale et non un avis juridique, fiscal ou douanier. Il ne remplace pas l'e-tariff officiel, la gazette EAC, un ruling de classification ou une declaration douaniere.</p>
+    </section>
+
+    <aside class="eac-section" aria-labelledby="sources-title">
+      <h2 id="sources-title">Sources &amp; verification</h2>
+      <ul class="eac-source-list">
+        <li><a href="https://www.eac.int/" target="_blank" rel="noopener">Source officielle EAC: portail et e-Tariff Tool</a></li>
+        <li><a href="https://www.eac.int/documents?controller=download&amp;file=3e9a4e00-a2ca-44a4-b4a5-2e4d25b63798&amp;name=EAC+Vol+AT+1+NO+14+JUNE+2022.pdf&amp;task=download.file" target="_blank" rel="noopener">Source officielle EAC: Gazette du 30 juin 2022</a></li>
+        <li><a href="https://www.eac.int/documents?controller=download&amp;file=6d9a30be-8655-479c-a5e3-bc5ed0db5c3d&amp;name=EAC+Vol+AT+1+NO+19+JUNE+2025.pdf&amp;task=download.file" target="_blank" rel="noopener">Source officielle EAC: mesures 2025/2026</a></li>
+        <li><a href="https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf" target="_blank" rel="noopener">Reference KRA: EAC CET 2022 version</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <section class="eac-section eac-faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions frequentes</h2>
+    <details>
+      <summary>Le calcul donne-t-il un taux officiel definitif ?</summary>
+      <p>Non. Le taux final depend du classement HS, de l'origine, des mesures approuvees, des exemptions, des taxes nationales et de la declaration acceptee par la douane.</p>
+    </details>
+    <details>
+      <summary>Quelles bandes EAC CET sont incluses ?</summary>
+      <p>La structure generale inclut 0%, 10%, 25% et 35%. Certains produits peuvent etre soumis a des mesures specifiques publiees dans les gazettes EAC.</p>
+    </details>
+    <details>
+      <summary>Pourquoi saisir une valeur CIF ?</summary>
+      <p>Les droits d'import sont generalement estimes sur une valeur en douane. CIF permet de regrouper cout, assurance et fret pour obtenir une base de calcul simple.</p>
+    </details>
+  </section>
+
+  <section class="eac-section" aria-labelledby="related-title">
+    <h2 id="related-title">Continuer le workflow</h2>
+    <p>Pour une equipe commerce, vous pouvez relier cette estimation a un calcul d'import, une facture ou un widget interne.</p>
+    <div class="eac-actions">
+      <a class="eac-btn" href="/tools/import-duty/">Import duty calculator</a>
+      <a class="eac-btn" href="/tools/invoice-generator/">Generateur de facture</a>
+      <a class="eac-btn" href="/custom-calculators/">Calculateur douane sur mesure</a>
+      <a class="eac-btn" href="/api/">API et donnees</a>
+    </div>
+  </section>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function () {
+  'use strict';
+
+  const STORAGE_KEY = 'afrotools_tec_eac_fr_v1';
+  const form = document.getElementById('eac-form');
+  const country = document.getElementById('country');
+  const origin = document.getElementById('origin');
+  const currency = document.getElementById('currency');
+  const cif = document.getElementById('cif');
+  const band = document.getElementById('band');
+  const customRate = document.getElementById('custom-rate');
+  const localFees = document.getElementById('local-fees');
+  const hsCode = document.getElementById('hs-code');
+  const notes = document.getElementById('notes');
+  const warning = document.getElementById('warning');
+  const status = document.getElementById('status');
+  const cifOutput = document.getElementById('cif-output');
+  const rateOutput = document.getElementById('rate-output');
+  const dutyOutput = document.getElementById('duty-output');
+  const landedOutput = document.getElementById('landed-output');
+  const summaryOutput = document.getElementById('summary-output');
+
+  function parseMoney(value, label) {
+    const cleaned = String(value || '').trim().replace(/\s+/g, '').replace(/,/g, '');
+    if (!/^\d+(\.\d+)?$/.test(cleaned)) return { error: label + ' doit etre un nombre positif.' };
+    const number = Number(cleaned);
+    if (!Number.isFinite(number) || number < 0) return { error: label + ' doit etre un nombre positif.' };
+    return { value: number };
+  }
+
+  function parseRate() {
+    const rateRaw = band.value === 'custom' ? customRate.value : band.value;
+    const cleaned = String(rateRaw || '').trim().replace('%', '').replace(',', '.');
+    if (!/^\d+(\.\d+)?$/.test(cleaned)) return { error: 'Le taux doit etre un pourcentage positif.' };
+    const rate = Number(cleaned);
+    if (!Number.isFinite(rate) || rate < 0 || rate > 100) return { error: 'Le taux doit etre entre 0% et 100%.' };
+    return { value: rate };
+  }
+
+  function money(value) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.value, maximumFractionDigits: 2 }).format(value);
+  }
+
+  function buildResult() {
+    warning.classList.remove('show');
+    warning.textContent = '';
+
+    const cifParsed = parseMoney(cif.value, 'La valeur CIF');
+    const feesParsed = parseMoney(localFees.value || '0', 'Les frais locaux');
+    const rateParsed = parseRate();
+    const firstError = cifParsed.error || feesParsed.error || rateParsed.error;
+    if (firstError) {
+      warning.textContent = firstError;
+      warning.classList.add('show');
+      status.textContent = 'Correction requise avant calcul.';
+      return null;
+    }
+
+    let rate = rateParsed.value;
+    let duty = cifParsed.value * rate / 100;
+    let originNote = 'Origine hors EAC: la bande CET choisie est appliquee a la valeur CIF.';
+    if (origin.value === 'eac') {
+      duty = 0;
+      originNote = "Origine EAC avec preuve: scenario preferentiel a confirmer avec les regles d'origine et les documents requis.";
+    } else if (origin.value === 'unknown') {
+      originNote = "Origine a confirmer: utilisez ce resultat comme scenario de risque jusqu'a verification.";
+      warning.textContent = "Origine non confirmee: verifiez les regles d'origine avant de declarer le taux.";
+      warning.classList.add('show');
+    }
+
+    const landed = cifParsed.value + duty + feesParsed.value;
+    const lines = [
+      'Pays: ' + country.value,
+      'Devise: ' + currency.value,
+      'Valeur CIF: ' + money(cifParsed.value),
+      'Bande / taux: ' + rate.toFixed(rate % 1 ? 2 : 0) + '%',
+      'Droit estime: ' + money(duty),
+      'Autres frais saisis: ' + money(feesParsed.value),
+      'Landed estimate: ' + money(landed),
+      originNote
+    ];
+    if (hsCode.value.trim()) lines.push('HS / produit: ' + hsCode.value.trim());
+    if (notes.value.trim()) lines.push('Notes: ' + notes.value.trim());
+    lines.push('Avertissement: estimation seulement; verifier HS, gazettes EAC, exemptions, taxes nationales et autorite douaniere.');
+
+    cifOutput.textContent = money(cifParsed.value);
+    rateOutput.textContent = rate.toFixed(rate % 1 ? 2 : 0) + '%';
+    dutyOutput.textContent = money(duty);
+    landedOutput.textContent = money(landed);
+    summaryOutput.textContent = lines.join('\n');
+    status.textContent = 'Estimation prete.';
+    return { summary: lines.join('\n'), cif: cifParsed.value, fees: feesParsed.value, rate, duty, landed };
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    const temp = document.createElement('textarea');
+    temp.value = text;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand('copy');
+    temp.remove();
+    return Promise.resolve();
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    buildResult();
+  });
+
+  document.getElementById('copy-result').addEventListener('click', function () {
+    const result = buildResult();
+    if (!result) return;
+    copyText(result.summary).then(function () {
+      status.textContent = 'Estimation copiee.';
+    });
+  });
+
+  document.getElementById('download-result').addEventListener('click', function () {
+    const result = buildResult();
+    if (!result) return;
+    const blob = new Blob([result.summary + '\n'], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'tec-eac-estimation.txt';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    status.textContent = 'Fichier TXT prepare.';
+  });
+
+  document.getElementById('save-result').addEventListener('click', function () {
+    const result = buildResult();
+    if (!result) return;
+    const payload = {
+      savedAt: new Date().toISOString(),
+      country: country.value,
+      origin: origin.value,
+      currency: currency.value,
+      cif: cif.value,
+      band: band.value,
+      customRate: customRate.value,
+      localFees: localFees.value,
+      hsCode: hsCode.value,
+      notes: notes.value,
+      summary: result.summary
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      status.textContent = 'Instantane sauvegarde dans ce navigateur.';
+    } catch (error) {
+      status.textContent = 'Sauvegarde locale indisponible dans ce navigateur.';
+    }
+  });
+
+  band.addEventListener('change', function () {
+    if (band.value !== 'custom') customRate.value = band.value;
+    buildResult();
+  });
+  [country, origin, currency, cif, customRate, localFees, hsCode, notes].forEach(function (field) {
+    field.addEventListener('input', buildResult);
+    field.addEventListener('change', buildResult);
+  });
+
+  buildResult();
+})();
+</script>
 </body>
 </html>

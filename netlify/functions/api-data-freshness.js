@@ -8,6 +8,7 @@
 
 const { getData } = require('./_shared/data-store');
 const { loadScholarshipFeed, SCHOLARSHIP_PUBLIC_MIN_COUNT } = require('./_shared/scholarship-platform');
+const { getCollector } = require('./_shared/market-data-refresh');
 const { getAllowedOrigin } = require('./utils/cors');
 
 const DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
@@ -208,7 +209,7 @@ async function buildMarketDataSummary(includeAdmin) {
   try {
     const [sourcesResult, runsResult] = await Promise.all([
       supabaseGet('market_data_sources?select=id,dataset,source_key,active,last_success_at,last_error_at,cadence_hours,ttl_hours&active=eq.true&order=dataset.asc,source_key.asc'),
-      supabaseGet('market_data_source_runs?select=id,dataset,status,started_at,finished_at,records_inserted,records_published,error_summary&order=started_at.desc&limit=50'),
+      supabaseGet('market_data_source_runs?select=id,source_id,dataset,status,started_at,finished_at,records_inserted,records_published,error_summary&order=started_at.desc&limit=50'),
     ]);
 
     if (sourcesResult.skipped || runsResult.skipped) {
@@ -220,11 +221,27 @@ async function buildMarketDataSummary(includeAdmin) {
 
     const now = Date.now();
     const sources = Array.isArray(sourcesResult.rows) ? sourcesResult.rows : [];
+    const refreshManagedSources = sources.filter(function (source) {
+      return !!getCollector(source);
+    });
     const runs = Array.isArray(runsResult.rows) ? runsResult.rows : [];
-    const failedRuns = runs.filter(function (run) {
+    const recentCutoff = now - (7 * 24 * 60 * 60 * 1000);
+    const recentRuns = runs.filter(function (run) {
+      const started = new Date(run.started_at || run.finished_at || 0).getTime();
+      return Number.isFinite(started) && started >= recentCutoff;
+    });
+    const latestRunBySource = {};
+    recentRuns.forEach(function (run) {
+      const key = (run.source_id || run.dataset || run.id) + ':' + (run.dataset || '');
+      if (!latestRunBySource[key]) latestRunBySource[key] = run;
+    });
+    const latestRecentRuns = Object.keys(latestRunBySource).map(function (key) {
+      return latestRunBySource[key];
+    });
+    const failedRuns = latestRecentRuns.filter(function (run) {
       return ['failed', 'error'].includes(String(run.status || '').toLowerCase());
     });
-    const staleSources = sources.filter(function (source) {
+    const staleSources = refreshManagedSources.filter(function (source) {
       const cadenceHours = Number(source.cadence_hours || source.ttl_hours || 24);
       const threshold = Math.max(cadenceHours * 2 * 60, 1440);
       const age = ageMinutes(source.last_success_at, now);
@@ -234,7 +251,8 @@ async function buildMarketDataSummary(includeAdmin) {
     const safe = {
       available: true,
       active_sources: sources.length,
-      recent_runs: runs.length,
+      refresh_managed_sources: refreshManagedSources.length,
+      recent_runs: recentRuns.length,
       failed_recent_runs: failedRuns.length,
       stale_sources: staleSources.length,
       status: failedRuns.length || staleSources.length ? 'degraded' : 'ok',
@@ -242,7 +260,7 @@ async function buildMarketDataSummary(includeAdmin) {
 
     if (includeAdmin) {
       safe.sources = sources;
-      safe.recent_runs = runs;
+      safe.recent_runs = recentRuns;
       safe.failed_runs = failedRuns;
       safe.stale_source_rows = staleSources;
     }

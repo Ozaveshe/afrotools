@@ -3,54 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur d’engrais | AfroTools</title>
-<meta name="description" content="Calculez les besoins en engrais de vos cultures selon le type de sol et les conditions africaines. Optimisez vos apports pour un meilleur rendement.">
+<title>Calculateur engrais NPK 2026 | AfroTools</title>
+<meta name="description" content="Convertissez une recommandation N-P2O5-K2O en kilos d engrais, sacs, cout et ecarts nutriments avec methode claire, sources FAO/IFDC et export local.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-engrais/">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Calculateur d’engrais | AfroTools">
-<meta property="og:description" content="Calculez les besoins en engrais de vos cultures selon le type de sol et les conditions africaines. Optimisez vos apports pour un meilleur rendement.">
+<meta property="og:title" content="Calculateur engrais NPK 2026 | AfroTools">
+<meta property="og:description" content="Convertissez une recommandation N-P2O5-K2O en kilos d engrais, sacs, cout et ecarts nutriments avec methode claire, sources FAO/IFDC et export local.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/fertilizer-calc.webp">
 <meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-engrais/">
 <meta property="og:type" content="website">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fertilizer-calc.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur engrais NPK 2026 | AfroTools">
+<meta name="twitter:description" content="Convertissez une recommandation N-P2O5-K2O en kilos d engrais, sacs, cout et ecarts nutriments avec methode claire, sources FAO/IFDC et export local.">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fertilizer-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-engrais/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fertilizer-calc/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/business-cta.js" defer></script>
 <style>
-.tool-hero{text-align:center;padding:3rem 1rem 2rem;background:var(--bg)}
-.tool-hero h1{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--text);margin:0 0 .5rem}
-.tool-hero p{color:var(--text-muted);max-width:600px;margin:0 auto}
-.tool-iframe-wrap{max-width:1000px;margin:0 auto;padding:0 1rem 2rem}
-.tool-iframe-wrap iframe{width:100%;height:700px;border:1px solid var(--border);border-radius:12px}
-.seo-section{max-width:760px;margin:0 auto;padding:2rem 1rem}
-.seo-section h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.seo-section p{line-height:1.7;color:var(--text-muted);margin:0 0 1rem}
-.faq{max-width:760px;margin:0 auto;padding:0 1rem 3rem}
-.faq h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.faq details{border:1px solid var(--border);border-radius:8px;margin:0 0 .5rem;padding:.75rem 1rem}
-.faq summary{cursor:pointer;font-weight:600;color:var(--text)}
-.faq details p{margin:.5rem 0 0;color:var(--text-muted);line-height:1.6}
+  .fert-page{--ink:#172033;--muted:#64748b;--line:#d9e2ef;--green:#0f7a4f;--blue:#2457c5;--red:#b42318;--amber:#a15c07;background:#f8faf7;color:var(--ink)}
+  .fert-page *,.fert-page *:before,.fert-page *:after{box-sizing:border-box}
+  .fert-wrap{max-width:1180px;margin:0 auto;padding:clamp(1rem,3vw,2rem)}
+  .fert-hero{background:linear-gradient(135deg,#fff,#eefbf3);border-bottom:1px solid var(--line)}
+  .fert-hero-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);gap:1.5rem;align-items:center}
+  .fert-kicker{margin:0 0 .75rem;color:var(--green);font-size:.78rem;font-weight:900;letter-spacing:.11em;text-transform:uppercase}
+  .fert-hero h1{margin:0;max-width:780px;font-size:clamp(2rem,5vw,3.8rem);line-height:1.04;letter-spacing:0}
+  .fert-lead{max-width:760px;margin:1rem 0 0;color:var(--muted);font-size:1.05rem;line-height:1.7}
+  .fert-card{background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 28px rgba(16,24,40,.07);min-width:0;padding:clamp(1rem,2.2vw,1.5rem)}
+  .fert-hero-card strong{display:block;color:var(--green);font-size:2.25rem;line-height:1}
+  .fert-hero-card span{display:block;margin-top:.5rem;color:var(--muted);line-height:1.55}
+  .fert-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.25rem}
+  .fert-badge{background:#e9f8ef;border:1px solid #bee7ca;border-radius:999px;color:#11613d;font-size:.84rem;font-weight:800;padding:.45rem .72rem}
+  .fert-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.82fr);gap:1rem}
+  .fert-form,.fert-results{display:grid;gap:1rem}
+  .fert-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+  .fert-field{display:grid;gap:.35rem;min-width:0}
+  .fert-field label{font-size:.9rem;font-weight:900;color:#263548}
+  .fert-field input,.fert-field select,.fert-field textarea{width:100%;min-height:44px;border:1px solid #cbd7e5;border-radius:6px;padding:.72rem .8rem;color:var(--ink);font:inherit}
+  .fert-field textarea{min-height:84px;resize:vertical}
+  .fert-help{color:var(--muted);font-size:.82rem;line-height:1.45}
+  .fert-actions{display:flex;flex-wrap:wrap;gap:.7rem}
+  .fert-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #b8c5d8;border-radius:6px;background:#fff;color:var(--ink);cursor:pointer;font:inherit;font-weight:900;padding:.7rem 1rem}
+  .fert-btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+  .fert-btn:focus-visible,.fert-field input:focus-visible,.fert-field select:focus-visible,.fert-field textarea:focus-visible{outline:3px solid rgba(15,122,79,.2);outline-offset:2px}
+  .fert-status{display:inline-flex;border-radius:999px;padding:.42rem .72rem;font-size:.82rem;font-weight:900}
+  .fert-status.ok{background:#dcfce7;color:var(--green)}
+  .fert-status.watch{background:#fef3c7;color:var(--amber)}
+  .fert-status.risk{background:#fee4e2;color:var(--red)}
+  .fert-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+  .fert-metric{background:#f8fcf7;border:1px solid var(--line);border-radius:8px;padding:.8rem}
+  .fert-metric strong{display:block;font-size:1.24rem;overflow-wrap:anywhere}
+  .fert-metric span{display:block;margin-top:.25rem;color:var(--muted);font-size:.78rem;font-weight:900;text-transform:uppercase}
+  .fert-list{display:grid;gap:.5rem;margin:.5rem 0 0;padding:0}
+  .fert-list li{list-style:none;background:#f8fcf7;border:1px solid var(--line);border-radius:6px;line-height:1.45;padding:.65rem .75rem}
+  .fert-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+  .fert-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;color:#733b12;line-height:1.55;padding:.85rem 1rem}
+  .fert-source-list li{margin-bottom:.55rem}
+  .fert-source-list a,.fert-related a{color:var(--blue);font-weight:900}
+  .fert-related{display:flex;flex-wrap:wrap;gap:.65rem}
+  .fert-related a{background:#eef5ff;border:1px solid #c7d7fe;border-radius:999px;padding:.55rem .8rem;text-decoration:none}
+  .fert-faq details{border-top:1px solid var(--line);padding:.9rem 0}
+  .fert-faq summary{cursor:pointer;font-weight:900}
+  .fert-line{min-height:1.4rem;color:var(--muted);font-size:.9rem}
+  @media(max-width:880px){.fert-hero-grid,.fert-grid,.fert-info{grid-template-columns:1fr}}
+  @media(max-width:620px){.fert-fields,.fert-metrics{grid-template-columns:1fr}.fert-actions .fert-btn{width:100%}}
 </style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fertilizer-calc.webp">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fertilizer-calc/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-engrais/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fertilizer-calc/" />
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur d’engrais | AfroTools">
-<meta name="twitter:description" content="Calculez les besoins en engrais de vos cultures selon le type de sol et les conditions africaines. Optimisez vos apports pour un meilleur rendement.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur engrais NPK 2026","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://afrotools.com/fr/tools/calculateur-engrais/","description":"Outil local pour convertir une recommandation N-P2O5-K2O en quantite d engrais, sacs, cout et ecarts nutriments.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Que signifient les nombres NPK sur un sac ?","acceptedAnswer":{"@type":"Answer","text":"Ils indiquent les pourcentages d azote N, de phosphate P2O5 et de potasse K2O contenus dans l engrais."}},{"@type":"Question","name":"Cet outil donne-t-il une recommandation agronomique officielle ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il convertit une recommandation saisie par l utilisateur en sacs et cout. La dose doit venir d une analyse de sol, d un agronome, d une fiche locale ou d un service d extension."}},{"@type":"Question","name":"Pourquoi y a-t-il des ecarts nutriments ?","acceptedAnswer":{"@type":"Answer","text":"Un seul produit NPK peut couvrir un nutriment mais sur- ou sous-apporter les autres. L outil affiche ces ecarts pour faciliter la discussion avec un conseiller."}}]}
+</script>
 </head>
-<body>
+<body class="fert-page">
 <afro-navbar></afro-navbar>
-<main>
-<section class="tool-hero"><h1>Calculateur d’engrais</h1><p>Calculez les besoins en engrais de vos cultures selon le type de sol et les conditions africaines. Optimisez vos apports pour un meilleur rendement.</p></section>
-<div class="tool-iframe-wrap"><iframe src="/tools/fertilizer-calc/" title="Calculateur d’engrais" loading="lazy"></iframe></div>
-<section class="seo-section"><h2>À propos</h2><p>Calculez les besoins en engrais de vos cultures selon le type de sol et les conditions africaines. Optimisez vos apports pour un meilleur rendement.</p><p>Un apport d’engrais adapté est crucial pour la productivité agricole en Afrique. Cet outil calcule les quantités optimales d’azote, phosphore et potassium selon votre culture et votre sol.</p></section>
-<section class="faq"><h2>Questions fréquentes</h2>
-<details><summary>Comment calculer mes besoins en engrais ?</summary><p>Saisissez le type de culture, la superficie et le type de sol. L’outil recommande les quantités d’NPK adaptées à vos conditions.</p></details>
-<details><summary>Quels types d’engrais sont recommandés ?</summary><p>L’outil recommande aussi bien les engrais chimiques que les alternatives biologiques disponibles sur les marchés africains.</p></details>
-<details><summary>Comment réduire les coûts d’engrais ?</summary><p>L’outil propose des stratégies d’optimisation : rotation des cultures, compostage et utilisation ciblée pour réduire les quantités nécessaires.</p></details>
-</section>
+<main id="main-content">
+  <section class="fert-hero">
+    <div class="fert-wrap fert-hero-grid">
+      <div>
+        <p class="fert-kicker">Engrais et nutriments 2026</p>
+        <h1>Transformez une recommandation NPK en sacs, cout et alertes d apport.</h1>
+        <p class="fert-lead">Entrez la surface, le besoin N-P2O5-K2O par hectare, le grade du produit, le poids du sac et son prix. AfroTools calcule kilos d engrais, nombre de sacs, cout total, nutriments fournis et ecarts.</p>
+        <div class="fert-badges"><span class="fert-badge">N-P2O5-K2O</span><span class="fert-badge">Sacs 50 kg</span><span class="fert-badge">Sur/sous-apport</span><span class="fert-badge">Export local</span></div>
+      </div>
+      <aside class="fert-card fert-hero-card">
+        <strong>4R</strong>
+        <span>Bon produit, bonne dose, bon moment, bon endroit. Ce calcul aide la logistique; la recommandation doit rester locale et agronomique.</span>
+        <p class="fert-note">Planning estimate only: pas de prescription officielle, pas d analyse de sol, pas de garantie de rendement.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="fert-wrap fert-grid" aria-label="Calculateur d engrais">
+    <article class="fert-card">
+      <h2>Recommendation et produit</h2>
+      <form class="fert-form" id="fertForm">
+        <div class="fert-fields">
+          <div class="fert-field"><label for="crop">Culture</label><select id="crop"><option>Mais</option><option>Riz</option><option>Manioc</option><option>Tomate</option><option>Cacao</option><option>Oignon</option><option>Soja</option></select></div>
+          <div class="fert-field"><label for="currency">Devise</label><select id="currency"><option>USD</option><option>XOF</option><option>NGN</option><option>GHS</option><option>KES</option><option>ZAR</option><option>EUR</option></select></div>
+          <div class="fert-field"><label for="area">Surface (ha)</label><input id="area" type="number" min="0.01" step="0.01" value="2"></div>
+          <div class="fert-field"><label for="match">Nutriment a couvrir</label><select id="match"><option value="N">Azote N</option><option value="P">Phosphate P2O5</option><option value="K">Potasse K2O</option><option value="all">Couvrir les trois au minimum</option></select></div>
+          <div class="fert-field"><label for="needN">Besoin N kg/ha</label><input id="needN" type="number" min="0" step="1" value="90"></div>
+          <div class="fert-field"><label for="needP">Besoin P2O5 kg/ha</label><input id="needP" type="number" min="0" step="1" value="45"></div>
+          <div class="fert-field"><label for="needK">Besoin K2O kg/ha</label><input id="needK" type="number" min="0" step="1" value="45"></div>
+          <div class="fert-field"><label for="credit">Credit compost/fumier kg nutriment/ha</label><input id="credit" type="number" min="0" step="1" value="0"><span class="fert-help">Credit simple applique a N, P2O5 et K2O pour eviter une fausse precision.</span></div>
+          <div class="fert-field"><label for="gradeN">Grade produit N (%)</label><input id="gradeN" type="number" min="0" max="100" step="0.1" value="15"></div>
+          <div class="fert-field"><label for="gradeP">Grade produit P2O5 (%)</label><input id="gradeP" type="number" min="0" max="100" step="0.1" value="15"></div>
+          <div class="fert-field"><label for="gradeK">Grade produit K2O (%)</label><input id="gradeK" type="number" min="0" max="100" step="0.1" value="15"></div>
+          <div class="fert-field"><label for="bagKg">Poids du sac (kg)</label><input id="bagKg" type="number" min="1" step="1" value="50"></div>
+          <div class="fert-field"><label for="bagPrice">Prix par sac</label><input id="bagPrice" type="number" min="0" step="1" value="32"></div>
+          <div class="fert-field"><label for="split">Fraction appliquee maintenant (%)</label><input id="split" type="number" min="1" max="100" step="1" value="50"></div>
+        </div>
+        <div class="fert-field"><label for="notes">Notes soil test, calendrier ou conseiller</label><textarea id="notes">Utiliser la dose issue d une analyse de sol ou d un conseiller agricole local avant achat.</textarea></div>
+        <div class="fert-actions"><button class="fert-btn primary" type="submit">Calculer les sacs</button><button class="fert-btn" id="copyFert" type="button">Copier</button><button class="fert-btn" id="downloadFert" type="button">Telecharger TXT</button><button class="fert-btn" id="saveFert" type="button">Sauver localement</button></div>
+        <p class="fert-line" id="fertLine" role="status" aria-live="polite"></p>
+      </form>
+    </article>
+
+    <aside class="fert-card fert-results" aria-label="Resultats engrais">
+      <div><span class="fert-status watch" id="fertStatus">A verifier</span><h2 id="fertTitle">La dose couvre le nutriment choisi mais cree des ecarts.</h2><p class="fert-help" id="fertSummary">Modifiez le grade ou le nutriment a couvrir pour comparer les sacs.</p></div>
+      <div class="fert-metrics">
+        <div class="fert-metric"><strong id="productKg">0 kg</strong><span>Produit total</span></div>
+        <div class="fert-metric"><strong id="bagCount">0</strong><span>Sacs a acheter</span></div>
+        <div class="fert-metric"><strong id="totalCost">0</strong><span>Cout total</span></div>
+        <div class="fert-metric"><strong id="nowKg">0 kg</strong><span>A appliquer maintenant</span></div>
+      </div>
+      <section><h3>Breakdown nutriments</h3><ul class="fert-list" id="fertBreakdown"></ul></section>
+      <section><h3>Actions</h3><ul class="fert-list" id="fertActions"></ul></section>
+    </aside>
+  </section>
+
+  <section class="fert-wrap fert-info" data-tool-verification-panel aria-label="Sources et verification">
+    <article class="fert-card"><h2>Sources et fraicheur</h2><p>Sources reviewed June 2026. Verify with soil test, agronomist, product label and extension service before purchase or application.</p><ul class="fert-source-list"><li><a href="https://www.fao.org/4/a0443e/a0443e.pdf" target="_blank" rel="noopener">FAO - Fertilizer and plant nutrition guide</a></li><li><a href="https://ifdc.org/wp-content/uploads/2022/11/West-Africa-Fertilizer-Bulk-Blending-Manual-November-2022-Edition.pdf" target="_blank" rel="noopener">IFDC - West Africa Fertilizer Bulk Blending Manual</a></li><li><a href="https://www.fao.org/global-soil-partnership/areas-of-work/soil-fertility/en/" target="_blank" rel="noopener">FAO Global Soil Partnership - soil fertility</a></li><li><a href="https://agris.fao.org/search/en/providers/123818/records/67235e67b605bda15e0abca5" target="_blank" rel="noopener">FAO AGRIS - 4R nutrient management in African agriculture</a></li></ul></article>
+    <article class="fert-card"><h2>Methodology</h2><p>Besoin total = kg/ha x surface. Produit requis = besoin du nutriment choisi divise par le pourcentage du grade. Nutriment fourni = produit total x pourcentage du grade. Sacs = produit total / poids du sac, arrondi au sac superieur. Cost = sacs x prix.</p><p class="fert-note">Disclaimer: ce calcul ne remplace pas une analyse de sol, une etiquette produit, un agronome ou une regle environnementale locale.</p></article>
+    <article class="fert-card"><h2>Related tools</h2><div class="fert-related"><a href="/fr/tools/rendement-culture/">Rendement</a><a href="/fr/tools/profit-agricole/">Profit agricole</a><a href="/agriculture/fertilizer/">Fertilizer hub</a><a href="/agriculture/soil-ph/">Soil pH</a><a href="/agriculture/irrigation/">Irrigation</a><a href="/tools/fertilizer-calc/">English fertilizer</a></div></article>
+  </section>
+
+  <section class="fert-wrap fert-card fert-faq" aria-label="Questions frequentes"><h2>Questions frequentes</h2><details><summary>Pourquoi utiliser N, P2O5 et K2O ?</summary><p>Les grades commerciaux expriment souvent les nutriments principaux en pourcentages N, P2O5 et K2O. Le calcul convertit ces pourcentages en kilos de nutriments fournis.</p></details><details><summary>Pourquoi l outil peut-il signaler un sur-apport ?</summary><p>Un seul produit NPK peut couvrir l azote tout en apportant trop ou pas assez de phosphate ou potasse. Ce signal aide a choisir un autre grade ou une combinaison.</p></details><details><summary>Dois-je appliquer tout l engrais en une fois ?</summary><p>Pas forcement. La fraction appliquee maintenant sert a preparer une application fractionnee, mais le calendrier doit etre valide par la culture, le sol, la pluie et le conseiller local.</p></details></section>
+  <afro-business-cta tool-name="Calculateur engrais NPK" prospect-segment="agriculture" save-note="Sauvez le scenario local, exportez le TXT, puis demandez un widget engrais pour cooperative, distributeur, agritech ou media agricole."></afro-business-cta>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function(){"use strict";
+var ids=["crop","currency","area","match","needN","needP","needK","credit","gradeN","gradeP","gradeK","bagKg","bagPrice","split","notes"],f={};ids.forEach(function(id){f[id]=document.getElementById(id);});
+var out={status:document.getElementById("fertStatus"),title:document.getElementById("fertTitle"),summary:document.getElementById("fertSummary"),product:document.getElementById("productKg"),bags:document.getElementById("bagCount"),cost:document.getElementById("totalCost"),now:document.getElementById("nowKg"),breakdown:document.getElementById("fertBreakdown"),actions:document.getElementById("fertActions"),line:document.getElementById("fertLine")},lastSummary="";
+function n(id){var v=Number(f[id].value);return Number.isFinite(v)?v:0}function kg(v){return new Intl.NumberFormat("fr-FR",{maximumFractionDigits:v>=100?0:1}).format(v)+" kg"}function money(v){return new Intl.NumberFormat("fr-FR",{maximumFractionDigits:0}).format(v)+" "+f.currency.value}function list(node,items){node.innerHTML="";items.forEach(function(text){var li=document.createElement("li");li.textContent=text;node.appendChild(li)})}
+function requiredBy(key,needs,grades){return grades[key]>0?needs[key]/(grades[key]/100):0}
+function calc(){var area=Math.max(.01,n("area")),credit=Math.max(0,n("credit"));var needs={N:Math.max(0,n("needN")-credit)*area,P:Math.max(0,n("needP")-credit)*area,K:Math.max(0,n("needK")-credit)*area};var grades={N:Math.max(0,n("gradeN")),P:Math.max(0,n("gradeP")),K:Math.max(0,n("gradeK"))};var product=0;if(f.match.value==="all"){product=Math.max(requiredBy("N",needs,grades),requiredBy("P",needs,grades),requiredBy("K",needs,grades))}else{product=requiredBy(f.match.value,needs,grades)}var bagKg=Math.max(1,n("bagKg")),bags=Math.ceil(product/bagKg),cost=bags*n("bagPrice"),now=product*Math.min(100,Math.max(1,n("split")))/100;var supplied={N:product*grades.N/100,P:product*grades.P/100,K:product*grades.K/100};var diffs={N:supplied.N-needs.N,P:supplied.P-needs.P,K:supplied.K-needs.K};var maxAbs=Math.max(Math.abs(diffs.N),Math.abs(diffs.P),Math.abs(diffs.K));var risk=maxAbs>Math.max(20,product*.12)?"risk":maxAbs>8?"watch":"ok";var actions=[];["N","P","K"].forEach(function(k){if(diffs[k]<-5)actions.push("Sous-apport "+k+": envisager un complement ou un autre grade apres conseil local.");if(diffs[k]>15)actions.push("Sur-apport "+k+": verifier risque de gaspillage, cout ou contrainte environnementale.")});if(!grades.N&&!grades.P&&!grades.K)actions.push("Entrer un grade produit valide, par exemple 15-15-15 ou 20-10-10.");if(!actions.length)actions.push("Comparer avec prix local, disponibilite du grade et calendrier de la culture.");actions.push("Confirmer dose, fractionnement et placement avec analyse de sol ou conseiller agricole.");
+out.status.textContent=risk==="ok"?"Equilibre proche":risk==="watch"?"A verifier":"Risque d ecart";out.status.className="fert-status "+risk;out.title.textContent=risk==="ok"?"Le produit est proche des besoins saisis.":risk==="watch"?"La dose couvre le nutriment choisi mais cree des ecarts.":"Le grade ou le nutriment choisi cree un ecart important.";out.summary.textContent=f.crop.value+": recommandation sur "+area.toFixed(2)+" ha, grade "+grades.N+"-"+grades.P+"-"+grades.K+".";out.product.textContent=kg(product);out.bags.textContent=String(bags)+" sacs";out.cost.textContent=money(cost);out.now.textContent=kg(now);list(out.breakdown,["Besoin total N: "+kg(needs.N)+"; fourni: "+kg(supplied.N)+"; ecart: "+kg(diffs.N)+".","Besoin total P2O5: "+kg(needs.P)+"; fourni: "+kg(supplied.P)+"; ecart: "+kg(diffs.P)+".","Besoin total K2O: "+kg(needs.K)+"; fourni: "+kg(supplied.K)+"; ecart: "+kg(diffs.K)+".","Produit total = besoin du nutriment choisi / pourcentage du grade.","Sacs arrondis au sac superieur pour l achat.","Application maintenant = produit total x fraction saisie."]);list(out.actions,actions);
+lastSummary=["Calculateur engrais NPK - AfroTools","Culture: "+f.crop.value,"Surface: "+area.toFixed(2)+" ha","Grade: "+grades.N+"-"+grades.P+"-"+grades.K,"Produit total: "+kg(product),"Sacs: "+bags,"Cout: "+money(cost),"N fourni/ecart: "+kg(supplied.N)+" / "+kg(diffs.N),"P2O5 fourni/ecart: "+kg(supplied.P)+" / "+kg(diffs.P),"K2O fourni/ecart: "+kg(supplied.K)+" / "+kg(diffs.K),"Methodology: product kg = nutrient requirement / fertilizer grade percentage; bags rounded up.","Disclaimer: planning estimate only; verify with soil test, agronomist, product label and extension service."].join("\\n")}
+function line(text){out.line.textContent=text}document.getElementById("fertForm").addEventListener("submit",function(e){e.preventDefault();calc();line("Calcul engrais mis a jour.")});document.getElementById("copyFert").addEventListener("click",function(){calc();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(lastSummary).then(function(){line("Resume copie.")},function(){line("Copie impossible; utilisez le TXT.")})}else line("Copie non disponible.")});document.getElementById("downloadFert").addEventListener("click",function(){calc();var blob=new Blob([lastSummary],{type:"text/plain;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="calculateur-engrais-afrotools.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},800);line("Export TXT prepare.")});document.getElementById("saveFert").addEventListener("click",function(){calc();try{localStorage.setItem("afrotools:calculateur-engrais-fr:last",JSON.stringify({savedAt:new Date().toISOString(),summary:lastSummary}));line("Scenario sauvegarde dans localStorage.")}catch(e){line("Sauvegarde locale indisponible.")}});ids.forEach(function(id){f[id].addEventListener("input",calc);f[id].addEventListener("change",calc)});calc();
+})();
+</script>
 </body>
 </html>

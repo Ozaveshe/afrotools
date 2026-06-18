@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ludo Sprint | AfroTools Games</title>
+  <meta name="description" content="Play Ludo Sprint offline against the computer. A lightweight race-board game for AfroTools Games, with local stats and no account required.">
+  <link rel="canonical" href="https://afrotools.com/games/ludo-sprint/">
+  <meta property="og:title" content="Ludo Sprint | AfroTools Games">
+  <meta property="og:description" content="A fast offline-vs-computer race-board game for AfroTools Games.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:url" content="https://afrotools.com/games/ludo-sprint/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ludo Sprint | AfroTools Games">
+  <meta name="twitter:description" content="A fast offline-vs-computer race-board game for AfroTools Games.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    :root{
+      --game-ink:#0b1020;
+      --game-blue:#2563eb;
+      --game-yellow:#facc15;
+      --game-coral:#fb7185;
+      --game-mint:#34d399;
+      --game-paper:#fffdf5;
+      --game-line:#0f172a;
+    }
+    body{margin:0;font-family:"DM Sans",system-ui,sans-serif;background:#071025;color:#fff;-webkit-font-smoothing:antialiased}
+    body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px) 0 0/42px 42px,
+      linear-gradient(0deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/42px 42px,
+      linear-gradient(180deg,#101a39 0%,#071025 56%,#111827 100%)}
+    a{color:inherit;text-decoration:none}
+    button,select{font:inherit}
+    .lg-wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+    .lg-hero{position:relative;overflow:hidden;background:#101a39;padding:34px 0 32px;border-bottom:8px solid #030712}
+    .lg-hero::before{content:"";position:absolute;inset:0;background:
+      linear-gradient(135deg,rgba(250,204,21,.14) 0 12%,transparent 12% 24%,rgba(52,211,153,.12) 24% 36%,transparent 36% 100%),
+      repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 92px)}
+    .lg-hero>*{position:relative}
+    .lg-breadcrumb{font-size:.78rem;color:rgba(255,255,255,.72);margin-bottom:18px;font-weight:800}
+    .lg-breadcrumb a{color:#bfdbfe}
+    .lg-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:30px;align-items:center}
+    .lg-title{font-size:clamp(2.7rem,7vw,6.1rem);line-height:.88;letter-spacing:-.07em;margin:0 0 16px;font-weight:900;text-transform:uppercase;text-shadow:0 6px 0 rgba(0,0,0,.22)}
+    .lg-title span{display:block;color:var(--game-yellow);text-shadow:0 6px 0 rgba(251,113,133,.55)}
+    .lg-sub{max-width:680px;font-size:1.02rem;line-height:1.7;color:#dbeafe;margin:0}
+    .lg-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+    .lg-btn{border:3px solid #030712;border-radius:14px;background:#fff;color:#0f172a;min-height:48px;padding:0 18px;font-weight:900;box-shadow:0 6px 0 #030712;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:transform .16s ease,box-shadow .16s ease}
+    .lg-btn:hover:not([disabled]){transform:translateY(2px);box-shadow:0 4px 0 #030712}
+    .lg-btn-primary{background:var(--game-yellow)}
+    .lg-btn-blue{background:var(--game-blue);color:#fff}
+    .lg-btn[disabled]{opacity:.55;cursor:not-allowed}
+    .lg-score-card{background:var(--game-paper);color:#0f172a;border:3px solid #030712;border-radius:18px;padding:18px;box-shadow:0 12px 0 #030712,0 26px 70px rgba(0,0,0,.26);transform:rotate(1deg)}
+    .lg-score-card h2{margin:0 0 12px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#475569}
+    .lg-score-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .lg-score{border:2px solid #0f172a;border-radius:14px;background:#dbeafe;padding:12px;box-shadow:0 5px 0 rgba(15,23,42,.2)}
+    .lg-score:nth-child(2){background:#fecdd3}.lg-score:nth-child(3){background:#dcfce7}.lg-score:nth-child(4){background:#fef3c7}
+    .lg-score strong{display:block;font-size:1.55rem;line-height:1;color:#0f172a}
+    .lg-score span{display:block;margin-top:5px;font-size:.72rem;text-transform:uppercase;font-weight:900;color:#475569}
+    .lg-main{background:#fff7db;color:#0f172a;padding:34px 0 52px}
+    .lg-shell{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
+    .lg-card,.lg-side{background:#fff;border:3px solid #0f172a;border-radius:18px;box-shadow:0 9px 0 #0f172a}
+    .lg-card{padding:22px}
+    .lg-side{padding:18px;margin-bottom:14px}
+    .lg-board-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}
+    .lg-board-head h2{margin:0;font-size:1.7rem;line-height:1;text-transform:uppercase;letter-spacing:-.04em;color:#0f172a}
+    .lg-board-head p,.lg-side p{margin:8px 0 0;color:#475569;line-height:1.6;font-weight:700}
+    .lg-pill{display:inline-flex;min-height:30px;align-items:center;justify-content:center;border:2px solid #0f172a;border-radius:10px;background:#facc15;color:#0f172a;padding:0 10px;font-size:.72rem;text-transform:uppercase;font-weight:900;box-shadow:0 4px 0 rgba(15,23,42,.22);white-space:nowrap}
+    .lg-board{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:8px;max-width:560px;margin:0 auto 18px}
+    .lg-cell{position:relative;aspect-ratio:1;border:3px solid #0f172a;border-radius:16px;background:#e0f2fe;box-shadow:0 5px 0 rgba(15,23,42,.18);display:flex;align-items:flex-start;justify-content:flex-start;padding:7px;font-size:.7rem;font-weight:900;color:#475569}
+    .lg-cell:nth-child(4n){background:#fef08a}.lg-cell:nth-child(4n+2){background:#bbf7d0}.lg-cell:nth-child(4n+3){background:#fecdd3}
+    .lg-cell.is-home,.lg-cell.is-finish{background:#fff;border-style:dashed}
+    .lg-token{position:absolute;width:34%;height:34%;min-width:22px;min-height:22px;border:3px solid #0f172a;border-radius:999px;box-shadow:0 4px 0 rgba(15,23,42,.24)}
+    .lg-token.is-player{right:10px;bottom:10px;background:#2563eb}
+    .lg-token.is-cpu{left:10px;bottom:10px;background:#fb7185}
+    .lg-token span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:900}
+    .lg-status{border:3px solid #0f172a;border-radius:18px;background:#fffdf5;padding:16px;margin-top:14px;box-shadow:0 7px 0 rgba(15,23,42,.18)}
+    .lg-status h3{margin:0 0 6px;color:#0f172a;font-size:1.1rem}
+    .lg-status p{margin:0;color:#475569;line-height:1.6;font-weight:700}
+    .lg-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .lg-dice{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+    .lg-die{width:62px;height:62px;border:3px solid #0f172a;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;box-shadow:0 6px 0 rgba(15,23,42,.22)}
+    .lg-log{display:grid;gap:8px;max-height:240px;overflow:auto;margin:12px 0 0;padding:0;list-style:none}
+    .lg-log li{border:2px solid #0f172a;border-radius:12px;background:#f8fafc;padding:9px 10px;color:#334155;font-size:.85rem;line-height:1.45;font-weight:700}
+    .lg-rule-list{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+    .lg-rule-list li{border:2px solid #0f172a;border-radius:12px;background:#e0f2fe;padding:10px;color:#334155;font-size:.84rem;line-height:1.5;font-weight:800}
+    .lg-note{margin-top:12px;border-top:2px solid #e2e8f0;padding-top:12px;color:#64748b;font-size:.78rem;line-height:1.55;font-weight:700}
+    @media (max-width:900px){
+      .lg-hero-grid,.lg-shell{grid-template-columns:1fr}
+      .lg-score-card{transform:none}
+    }
+    @media (max-width:560px){
+      .lg-wrap{padding:0 16px}
+      .lg-hero{padding:26px 0 30px}
+      .lg-title{font-size:3.15rem}
+      .lg-actions,.lg-controls{grid-template-columns:1fr;flex-direction:column}
+      .lg-actions .lg-btn,.lg-controls .lg-btn{width:100%}
+      .lg-board{gap:5px}
+      .lg-cell{border-width:2px;border-radius:12px;padding:5px}
+      .lg-board-head{display:grid}
+    }
+  </style>
+</head>
+<body>
+  <afro-navbar active="education"></afro-navbar>
+  <main>
+    <section class="lg-hero">
+      <div class="lg-wrap">
+        <nav class="lg-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a> / <a href="/games/">Games</a> / Ludo Sprint
+        </nav>
+        <div class="lg-hero-grid">
+          <div>
+            <h1 class="lg-title">Ludo <span>Sprint</span></h1>
+            <p class="lg-sub">A quick offline race-board game against the computer. Roll, enter on a six, send the opponent home when you land on them, and reach finish first.</p>
+            <div class="lg-actions">
+              <a class="lg-btn lg-btn-primary" href="#play">Play vs Computer</a>
+              <a class="lg-btn" href="/games/">Back to Games</a>
+            </div>
+          </div>
+          <aside class="lg-score-card" aria-label="Local Ludo Sprint stats">
+            <h2>Local Record</h2>
+            <div class="lg-score-grid">
+              <div class="lg-score"><strong id="playerWins">0</strong><span>Your wins</span></div>
+              <div class="lg-score"><strong id="cpuWins">0</strong><span>CPU wins</span></div>
+              <div class="lg-score"><strong id="gamesPlayed">0</strong><span>Games</span></div>
+              <div class="lg-score"><strong id="pvpStatus">CPU</strong><span>Mode</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="lg-main" id="play">
+      <div class="lg-wrap lg-shell">
+        <section class="lg-card" aria-labelledby="ludo-title">
+          <div class="lg-board-head">
+            <div>
+              <h2 id="ludo-title">Race Board</h2>
+              <p>Blue is you. Pink is the computer. This is a fast ruleset for the first offline release, not full tournament Ludo.</p>
+            </div>
+            <span class="lg-pill" id="turnPill">Your turn</span>
+          </div>
+          <div class="lg-board" id="board" aria-label="Ludo Sprint board"></div>
+          <div class="lg-dice">
+            <div class="lg-die" id="dieValue" aria-label="Latest dice roll">-</div>
+            <div class="lg-status" aria-live="polite">
+              <h3 id="statusTitle">Ready to roll</h3>
+              <p id="statusText">Roll a six to enter the board. First token to finish wins.</p>
+            </div>
+          </div>
+          <div class="lg-controls">
+            <button class="lg-btn lg-btn-blue" type="button" id="rollBtn">Roll dice</button>
+            <button class="lg-btn" type="button" id="newGameBtn">New race</button>
+          </div>
+        </section>
+
+        <aside>
+          <section class="lg-side">
+            <h2>Rules</h2>
+            <ul class="lg-rule-list">
+              <li>Roll 6 to leave home. After that, every roll moves your token forward.</li>
+              <li>If you land on the computer, its token goes home. Same rule applies to you.</li>
+              <li>First to reach finish wins. Progress and wins stay in this browser only.</li>
+            </ul>
+          </section>
+          <section class="lg-side">
+            <h2>Roadmap</h2>
+            <p>Online PvP comes later, after account limits, matchmaking, anti-cheat, abuse controls, and disconnect handling are real.</p>
+            <p class="lg-note">No gambling, betting, cash rewards, or real-money stakes are part of this game.</p>
+          </section>
+          <section class="lg-side">
+            <h2>Move Log</h2>
+            <ul class="lg-log" id="moveLog" aria-live="polite"></ul>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <afro-footer></afro-footer>
+  <script>
+    (function(){
+      "use strict";
+
+      var STORAGE_KEY="afrotools_ludo_sprint_v1";
+      var FINISH=24;
+      var state;
+
+      function $(id){return document.getElementById(id);}
+      function readStats(){
+        try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");}
+        catch(e){return {};}
+      }
+      function writeStats(stats){
+        try{localStorage.setItem(STORAGE_KEY,JSON.stringify(stats));}
+        catch(e){}
+      }
+      function newState(){
+        return {
+          player:-1,
+          cpu:-1,
+          turn:"player",
+          die:"-",
+          over:false,
+          log:["New race started. Blue rolls first."]
+        };
+      }
+      function renderBoard(){
+        var html="";
+        for(var i=0;i<=FINISH;i++){
+          var classes="lg-cell"+(i===0?" is-home":"")+(i===FINISH?" is-finish":"");
+          html+='<div class="'+classes+'" data-cell="'+i+'"><span>'+(i===0?"Home":i===FINISH?"Finish":i)+'</span>';
+          if(state.player===i||(state.player===-1&&i===0))html+='<i class="lg-token is-player" aria-label="Your token"><span>Y</span></i>';
+          if(state.cpu===i||(state.cpu===-1&&i===0))html+='<i class="lg-token is-cpu" aria-label="Computer token"><span>C</span></i>';
+          html+='</div>';
+        }
+        $("board").innerHTML=html;
+      }
+      function renderStats(){
+        var stats=readStats();
+        $("playerWins").textContent=stats.playerWins||0;
+        $("cpuWins").textContent=stats.cpuWins||0;
+        $("gamesPlayed").textContent=stats.gamesPlayed||0;
+        $("pvpStatus").textContent="CPU";
+      }
+      function renderLog(){
+        $("moveLog").innerHTML=state.log.slice(-8).map(function(item){
+          return "<li>"+escapeHtml(item)+"</li>";
+        }).reverse().join("");
+      }
+      function renderStatus(title,text){
+        $("statusTitle").textContent=title;
+        $("statusText").textContent=text;
+      }
+      function render(){
+        renderBoard();
+        renderStats();
+        renderLog();
+        $("dieValue").textContent=state.die;
+        $("turnPill").textContent=state.over?"Game over":state.turn==="player"?"Your turn":"Computer turn";
+        $("rollBtn").disabled=state.over||state.turn!=="player";
+      }
+      function rollDie(){
+        return Math.floor(Math.random()*6)+1;
+      }
+      function moveToken(owner,roll){
+        var other=owner==="player"?"cpu":"player";
+        var label=owner==="player"?"You":"Computer";
+        if(state[owner]===-1){
+          if(roll===6){
+            state[owner]=0;
+            state.log.push(label+" rolled 6 and entered the board.");
+          }else{
+            state.log.push(label+" rolled "+roll+" and stayed home.");
+          }
+          return;
+        }
+        state[owner]=Math.min(FINISH,state[owner]+roll);
+        state.log.push(label+" moved to "+(state[owner]===FINISH?"finish":state[owner])+".");
+        if(state[owner]===FINISH){
+          finish(owner);
+          return;
+        }
+        if(state[owner]===state[other]&&state[other]>-1){
+          state[other]=-1;
+          state.log.push(label+" landed on the opponent and sent them home.");
+        }
+      }
+      function finish(winner){
+        var stats=readStats();
+        stats.gamesPlayed=(stats.gamesPlayed||0)+1;
+        if(winner==="player"){
+          stats.playerWins=(stats.playerWins||0)+1;
+          renderStatus("You win","Clean sprint. Start a new race or head back to the games hub.");
+        }else{
+          stats.cpuWins=(stats.cpuWins||0)+1;
+          renderStatus("Computer wins","The computer reached finish first. Run it back.");
+        }
+        writeStats(stats);
+        state.over=true;
+        state.log.push((winner==="player"?"You win.":"Computer wins.")+" Race complete.");
+      }
+      function playerRoll(){
+        if(state.over||state.turn!=="player")return;
+        var roll=rollDie();
+        state.die=roll;
+        moveToken("player",roll);
+        if(!state.over){
+          state.turn="cpu";
+          renderStatus("Computer is rolling","The computer will roll automatically.");
+          render();
+          window.setTimeout(cpuRoll,700);
+          return;
+        }
+        render();
+      }
+      function cpuRoll(){
+        if(state.over)return;
+        var roll=rollDie();
+        state.die=roll;
+        moveToken("cpu",roll);
+        if(!state.over){
+          state.turn="player";
+          renderStatus("Your turn","Roll the dice and keep racing.");
+        }
+        render();
+      }
+      function resetRace(){
+        state=newState();
+        renderStatus("Ready to roll","Roll a six to enter the board. First token to finish wins.");
+        render();
+      }
+      function escapeHtml(value){
+        return String(value).replace(/[&<>"']/g,function(ch){
+          return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];
+        });
+      }
+
+      $("rollBtn").addEventListener("click",playerRoll);
+      $("newGameBtn").addEventListener("click",resetRace);
+      resetRace();
+    })();
+  </script>
+</body>
+</html>

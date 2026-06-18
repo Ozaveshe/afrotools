@@ -40,6 +40,26 @@
 .fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
 .fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
 .fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+.json-app{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);gap:1rem;margin-bottom:32px}
+.json-panel{background:#fff;border:1px solid #dbe4ef;border-radius:12px;padding:1rem;box-shadow:0 14px 34px rgba(15,23,42,.07)}
+.json-panel h2{margin:.1rem 0 .55rem;font-size:1.15rem;color:#0f172a}
+.json-panel p{color:#52627a;line-height:1.65;font-size:.9rem}
+.json-field{display:grid;gap:.35rem;color:#334155;font-weight:800;font-size:.88rem}
+.json-field textarea{width:100%;min-height:310px;border:1px solid #cbd5e1;border-radius:8px;padding:.8rem;font:14px/1.55 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;color:#111827;background:#f8fafc;resize:vertical}
+.json-output textarea{background:#0f172a;color:#dbeafe;border-color:#1e293b}
+.json-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin:.8rem 0}
+.json-btn{border:1px solid #155eef;background:#155eef;color:#fff;border-radius:8px;padding:.72rem .9rem;font-weight:800;cursor:pointer}
+.json-btn.secondary{background:#fff;color:#155eef}
+.json-btn.warn{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.json-status{border-radius:8px;background:#ecfdf5;color:#065f46;padding:.75rem;margin:.8rem 0;font-weight:800}
+.json-status.is-error{background:#fef2f2;color:#991b1b}
+.json-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin:.85rem 0}
+.json-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.7rem}
+.json-metric span{display:block;color:#64748b;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em}
+.json-metric strong{display:block;color:#0f172a;margin-top:.2rem}
+.json-list{margin:.3rem 0 0;padding-left:1.15rem;color:#52627a;line-height:1.7}
+.json-list a{color:#155eef;font-weight:800}
+@media(max-width:860px){.json-app{grid-template-columns:1fr}.json-field textarea{min-height:220px}.json-metrics{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
 {
@@ -86,9 +106,50 @@
 <p>Formatez, validez et corrigez votre JSON en ligne. Vue arborescente, minification, coloration syntaxique. 100% côté client.</p>
 </section>
 <div class="fr-wrap">
-<div class="fr-tool-frame">
-<iframe src="/tools/json-formatter/" title="Formateur JSON" loading="lazy"></iframe>
+<section class="json-app" aria-label="Formateur JSON côté navigateur">
+<form class="json-panel" id="jsonFormatterForm">
+<h2>Coller le JSON</h2>
+<p>Formatez, minifiez, validez ou tentez une réparation légère. Le texte reste dans votre navigateur.</p>
+<label class="json-field">Entrée JSON
+<textarea id="jsonInput" spellcheck="false">{"country":"Côte d'Ivoire","tools":["VAT","PDF","CV"],"active":true}</textarea>
+</label>
+<div class="json-actions">
+<button class="json-btn" type="submit">Formater</button>
+<button class="json-btn secondary" type="button" id="jsonMinify">Minifier</button>
+<button class="json-btn secondary" type="button" id="jsonRepair">Réparer léger</button>
+<button class="json-btn secondary" type="button" id="jsonSample">Exemple</button>
+<button class="json-btn secondary" type="button" id="jsonCopy">Copier</button>
+<button class="json-btn warn" type="button" id="jsonDownload">Télécharger</button>
 </div>
+<div class="json-status" id="jsonStatus" aria-live="polite">Prêt à valider.</div>
+</form>
+<aside class="json-panel json-output">
+<h2>Sortie et résumé</h2>
+<label class="json-field">JSON formaté
+<textarea id="jsonOutput" readonly spellcheck="false"></textarea>
+</label>
+<div class="json-metrics">
+<div class="json-metric"><span>Statut</span><strong id="jsonValidity">-</strong></div>
+<div class="json-metric"><span>Taille</span><strong id="jsonSize">-</strong></div>
+<div class="json-metric"><span>Clés</span><strong id="jsonKeys">-</strong></div>
+<div class="json-metric"><span>Profondeur</span><strong id="jsonDepth">-</strong></div>
+</div>
+</aside>
+</section>
+<section class="json-app" aria-label="Méthode JSON">
+<article class="json-panel">
+<h2>Méthodologie</h2>
+<p>La méthode utilise JSON.parse pour valider, JSON.stringify pour formater ou minifier, puis une analyse récursive pour compter les clés, tableaux et niveaux. La réparation légère retire les commentaires, virgules finales et guillemets simples simples avant une nouvelle validation.</p>
+</article>
+<article class="json-panel">
+<h2>Avertissement et confidentialité</h2>
+<p>Avertissement : ce validateur signale les erreurs de syntaxe JSON mais ne garantit pas qu'un schéma métier, une API ou une base de données acceptera le fichier. Ne collez pas de secrets de production. Le traitement est local au navigateur; aucune donnée n'est envoyée à AfroTools.</p>
+<ul class="json-list">
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" rel="nofollow noopener" target="_blank">MDN JSON.parse</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify" rel="nofollow noopener" target="_blank">MDN JSON.stringify</a></li>
+</ul>
+</article>
+</section>
 <div class="fr-seo">
 <h2>Formateur JSON en ligne gratuit</h2>
 <p>Le formateur JSON d'AfroTools vous permet de valider, formater et minifier votre JSON directement dans le navigateur. Que vous déboguiez une réponse API ou prépariez un fichier de configuration, cet outil corrige automatiquement les erreurs courantes comme les virgules finales et les guillemets simples. La vue arborescente interactive facilite la navigation dans les structures JSON complexes.</p>
@@ -101,6 +162,127 @@
 <details><summary>L'outil fonctionne-t-il hors ligne ?</summary><p>Une fois la page chargée, l'outil fonctionne entièrement hors ligne. Tout le traitement JSON se fait en JavaScript dans votre navigateur sans connexion requise.</p></details>
 </div>
 </div>
+<script>
+  (function () {
+    var form = document.getElementById('jsonFormatterForm');
+    if (!form) return;
+    var input = document.getElementById('jsonInput');
+    var output = document.getElementById('jsonOutput');
+    var status = document.getElementById('jsonStatus');
+    var validity = document.getElementById('jsonValidity');
+    var size = document.getElementById('jsonSize');
+    var keys = document.getElementById('jsonKeys');
+    var depth = document.getElementById('jsonDepth');
+    var minify = document.getElementById('jsonMinify');
+    var repair = document.getElementById('jsonRepair');
+    var sample = document.getElementById('jsonSample');
+    var copy = document.getElementById('jsonCopy');
+    var download = document.getElementById('jsonDownload');
+
+    function setStatus(message, isError) {
+      status.textContent = message;
+      status.classList.toggle('is-error', !!isError);
+      validity.textContent = isError ? 'Invalide' : 'Valide';
+    }
+
+    function analyse(value, level) {
+      if (value === null || typeof value !== 'object') return { keys: 0, depth: level };
+      var total = 0;
+      var maxDepth = level;
+      if (Array.isArray(value)) {
+        value.forEach(function (item) {
+          var next = analyse(item, level + 1);
+          total += next.keys;
+          maxDepth = Math.max(maxDepth, next.depth);
+        });
+      } else {
+        Object.keys(value).forEach(function (key) {
+          total += 1;
+          var next = analyse(value[key], level + 1);
+          total += next.keys;
+          maxDepth = Math.max(maxDepth, next.depth);
+        });
+      }
+      return { keys: total, depth: maxDepth };
+    }
+
+    function parseCurrent(text) {
+      return JSON.parse(text == null ? input.value : text);
+    }
+
+    function render(compact) {
+      try {
+        var parsed = parseCurrent();
+        var formatted = JSON.stringify(parsed, null, compact ? 0 : 2);
+        output.value = formatted;
+        var stats = analyse(parsed, 0);
+        size.textContent = new Intl.NumberFormat('fr-FR').format(formatted.length) + ' caractères';
+        keys.textContent = stats.keys + ' clés';
+        depth.textContent = stats.depth + ' niveaux';
+        setStatus(compact ? 'JSON valide et minifié.' : 'JSON valide et formaté.', false);
+        try { localStorage.setItem('afrotools_json_formatter_fr_v1', formatted); } catch (_) {}
+        return formatted;
+      } catch (error) {
+        setStatus(error.message || 'JSON invalide.', true);
+        output.value = '';
+        size.textContent = '-';
+        keys.textContent = '-';
+        depth.textContent = '-';
+        return '';
+      }
+    }
+
+    function repairText(text) {
+      return String(text || '')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/(^|[^:])\/\/.*$/gm, '$1')
+        .replace(/,\s*([}\]])/g, '$1')
+        .replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, function (_, inner) {
+          return '"' + inner.replace(/"/g, '\\"') + '"';
+        })
+        .replace(/([{,]\s*)([A-Za-z_$][\w$-]*)(\s*:)/g, '$1"$2"$3');
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      render(false);
+    });
+    minify.addEventListener('click', function () { render(true); });
+    repair.addEventListener('click', function () {
+      input.value = repairText(input.value);
+      render(false);
+    });
+    sample.addEventListener('click', function () {
+      input.value = '{\\n  \"country\": \"Sénégal\",\\n  \"workflow\": \"API test\",\\n  \"items\": [{\"name\":\"PDF\", \"count\": 3}],\\n  \"private\": true\\n}';
+      render(false);
+    });
+    copy.addEventListener('click', function () {
+      var text = output.value || render(false);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          copy.textContent = 'Copié';
+          setTimeout(function () { copy.textContent = 'Copier'; }, 1300);
+        }).catch(function () { output.select(); });
+      } else {
+        output.select();
+      }
+    });
+    download.addEventListener('click', function () {
+      var text = output.value || render(false);
+      if (!text) return;
+      var blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'afrotools-json-formate.json';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    });
+    render(false);
+  })();
+</script>
 <afro-footer></afro-footer>
 </body>
 </html>

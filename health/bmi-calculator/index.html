@@ -509,6 +509,35 @@ a{text-decoration:none;color:inherit}
 
     // Store last calculation
     localStorage.setItem('bmi-last', JSON.stringify({ bmi: bmi.toFixed(1), category: cat.label, date: new Date().toISOString().split('T')[0] }));
+
+    if (window.AfroHealthWorkflow && typeof window.AfroHealthWorkflow.recordSnapshot === 'function') {
+      var snapshotFields = [
+        { label: 'BMI', value: bmi.toFixed(1) },
+        { label: 'BMI category', value: cat.label },
+        { label: 'Unit mode', value: unit }
+      ];
+      if (waistCm && waistCm > 0 && typeof whtr !== 'undefined') {
+        snapshotFields.push({ label: 'Waist-to-height ratio', value: whtr.toFixed(3) });
+      }
+      window.AfroHealthWorkflow.recordSnapshot({
+        toolId: 'bmi-calculator',
+        headline: 'BMI ' + bmi.toFixed(1) + ' - ' + cat.label,
+        resultText: 'BMI is a screening measure. Use this result with waist measurement, activity, medical history, and clinician review when making health decisions.',
+        fields: snapshotFields,
+        markers: [
+          { label: 'BMI category', value: cat.label, unit: 'screening band', status: cat.label.indexOf('Normal') === 0 ? 'monitor' : 'follow-up' }
+        ],
+        clinicianQuestions: [
+          'Should I also review waist circumference, blood pressure, or blood sugar?',
+          'How often should I retest weight and waist under similar conditions?'
+        ],
+        nextSteps: [
+          'Repeat measurements under similar conditions before comparing trends.',
+          'Bring this result to a clinician if it conflicts with symptoms, pregnancy, athletic body composition, or existing conditions.'
+        ],
+        sourceNotes: ['BMI is a screening tool and does not directly diagnose body fat, fitness, or disease.']
+      });
+    }
   }
 
   document.getElementById('calc-btn').addEventListener('click', calcBMI);

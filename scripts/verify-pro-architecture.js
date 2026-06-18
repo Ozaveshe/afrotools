@@ -71,6 +71,7 @@ vm.createContext(context);
 [
   "assets/js/lib/pro-app-registry.js",
   "assets/js/lib/pro-daily-os-registry.js",
+  "assets/js/lib/pro-faith-community-route-state.js",
   "assets/js/lib/pro-architecture.js"
 ].forEach((file) => {
   try {
@@ -92,6 +93,7 @@ const controlApps = control && control.getApps ? control.getApps() : [];
 const dailyApps = daily && daily.getApps ? daily.getApps() : [];
 const allApps = architecture && architecture.getApps ? architecture.getApps() : [];
 const summary = architecture && architecture.getSummary ? architecture.getSummary() : {};
+const faithApp = daily && daily.getApp ? daily.getApp("faith-community") : null;
 
 function assertIds(label, actual, expected) {
   const actualIds = actual.map((app) => app.id).sort();
@@ -115,6 +117,87 @@ allApps.forEach((app) => {
   if (idSet.has(app.id)) addFailure(`duplicate app id ${app.id}`);
   idSet.add(app.id);
 });
+
+if (!faithApp) {
+  addFailure("Faith Community app metadata was not found");
+} else {
+  const requiredFaithLabels = [
+    "Local preview only",
+    "Device-only records",
+    "No live reminders",
+    "No account sync"
+  ];
+  const requiredFaithGaps = [
+    "Event reminders",
+    "Volunteer rota gaps",
+    "Welfare follow-up gaps",
+    "Giving and zakat ledger CSV exports",
+    "Certificate packets",
+    "Outreach exports"
+  ];
+  const requiredFaithSliceTerms = [
+    "afrofaith_community_os_device_v1",
+    "Member roster",
+    "Giving and zakat ledger",
+    "Event reminder queue",
+    "Welfare follow-up queue",
+    "Export CSV",
+    "Need summary, no confidential details",
+    "Device-only export. Not receipt, payment proof, tax proof, or account sync.",
+    "does not sync records, send reminders, process payments, issue receipts, or contact members"
+  ];
+  const faithPrompt = daily.buildAgentPrompt ? daily.buildAgentPrompt(faithApp) : "";
+  const faithHtml = read("pro/apps/faith-community/index.html");
+  const faithRouteStateJs = read("assets/js/lib/pro-faith-community-route-state.js");
+
+  requiredFaithLabels.forEach((label) => {
+    if (!faithPrompt.includes(label)) addFailure(`Faith launch brief missing route-state label: ${label}`);
+  });
+  requiredFaithGaps.forEach((gap) => {
+    if (!faithPrompt.includes(gap)) addFailure(`Faith launch brief missing workflow gap: ${gap}`);
+  });
+  if (!/member, giving\/zakat, volunteer, welfare, certificate, and outreach records stay on this device/i.test(faithPrompt)) {
+    addFailure("Faith launch brief missing device-only privacy boundary");
+  }
+  if (!/pro-faith-community-route-state\.js/.test(faithHtml)) {
+    addFailure("Faith route does not load pro-faith-community-route-state.js");
+  }
+  if (/&amp;amp;/.test(faithHtml)) {
+    addFailure("Faith route has double-escaped ampersand text");
+  }
+  if (!/local preview Pro workspace/i.test(faithHtml)) {
+    addFailure("Faith route description does not disclose local preview status");
+  }
+  requiredFaithSliceTerms.forEach((term) => {
+    if (!faithRouteStateJs.includes(term)) addFailure(`Faith local slice missing required term: ${term}`);
+  });
+  if (/fetch\s*\(|AfroWorkspace|supabase\.|getSupabase|\/api\/workspace|\/api\/faith/i.test(faithRouteStateJs)) {
+    addFailure("Faith local slice must not call network, workspace sync, or Supabase APIs");
+  }
+}
+
+const legalHtml = read("pro/apps/legal/index.html");
+[
+  "storageBoundary",
+  "reviewBoundary",
+  "signatureBoundary",
+  "reminderBoundary",
+  "packetContents"
+].forEach((token) => {
+  if (!legalHtml.includes(token)) addFailure(`Legal Desk export packet missing boundary token: ${token}`);
+});
+if (/ready\/signed rows/i.test(legalHtml)) {
+  addFailure("Legal Desk metric must not imply signed rows without e-signature proof");
+}
+if (!/legalTablesPresent:false/.test(legalHtml)) {
+  addFailure("Legal Desk export packet must disclose that dedicated Legal Desk tables are not present");
+}
+if (!/lawyerReviewIncluded:false/.test(legalHtml)) {
+  addFailure("Legal Desk export packet must disclose that lawyer review is not included");
+}
+if (!/serverReminderJobs:false/.test(legalHtml)) {
+  addFailure("Legal Desk export packet must disclose that reminder delivery is not server-backed");
+}
 
 allApps.forEach((app) => {
   const file = routeToFile(app.route);

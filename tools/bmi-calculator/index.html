@@ -1821,6 +1821,36 @@
             if (state.history.length > 0) {
                 document.getElementById('historyCard').style.display = 'block';
             }
+
+            if (window.AfroHealthWorkflow && typeof window.AfroHealthWorkflow.recordSnapshot === 'function') {
+                const snapshotFields = [
+                    { label: 'BMI', value: bmi.toFixed(1) },
+                    { label: 'BMI category', value: category },
+                    { label: 'BMI prime', value: bmiPrime.toFixed(2) },
+                    { label: 'Estimated daily calories', value: String(Math.round(tdee)) }
+                ];
+                if (wthRatio) snapshotFields.push({ label: 'Waist-to-height ratio', value: wthRatio.toFixed(2) });
+                if (whrRatio) snapshotFields.push({ label: 'Waist-to-hip ratio', value: whrRatio.toFixed(2) });
+                window.AfroHealthWorkflow.recordSnapshot({
+                    toolId: 'bmi-calc-tools',
+                    headline: 'BMI ' + bmi.toFixed(1) + ' - ' + category,
+                    resultText: riskDescription + ' BMI is a screening measure and should be reviewed with waist, activity, symptoms, and clinical history.',
+                    fields: snapshotFields,
+                    markers: [
+                        { label: 'BMI category', value: category, unit: 'screening band', status: categoryClass.replace('cat-', '') },
+                        { label: 'Health risk note', value: riskLevel, unit: 'screening note', status: categoryClass.replace('cat-', '') }
+                    ],
+                    clinicianQuestions: [
+                        'Should I also check blood pressure, blood sugar, or waist circumference?',
+                        'How often should I repeat these measurements under similar conditions?'
+                    ],
+                    nextSteps: [
+                        'Use this as a screening and planning result, not a diagnosis.',
+                        'Review unexpected or concerning results with a qualified health worker.'
+                    ],
+                    sourceNotes: ['BMI and derived estimates are screening aids and do not replace clinical assessment.']
+                });
+            }
         }
 
         function calculateMacros(tdee, weightKg) {

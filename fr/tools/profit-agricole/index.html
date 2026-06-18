@@ -3,47 +3,714 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur de profit agricole | AfroTools</title>
-<meta name="description" content="Estimez la rentabilité de vos activités agricoles avec notre calculateur de profit. Prenez en compte les coûts des intrants, la main-d’œuvre, le transport et les prix de vente pour évaluer vos marges.">
+<title>Calculateur profit agricole 2026 | AfroTools</title>
+<meta name="description" content="Calculez marge brute agricole, profit net, seuil de rentabilite, perte post-recolte et prix minimum avec sources FAO, methode claire et export local.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/profit-agricole/">
-<meta property="og:title" content="Calculateur de profit agricole | AfroTools">
-<meta property="og:description" content="Estimez la rentabilité de vos activités agricoles avec notre calculateur de profit. Prenez en compte les coûts des intrants, la main-d’œuvre, le transport et les prix de vente pour évaluer vos marges.">
+<meta property="og:title" content="Calculateur profit agricole 2026 | AfroTools">
+<meta property="og:description" content="Calculez marge brute agricole, profit net, seuil de rentabilite, perte post-recolte et prix minimum avec sources FAO, methode claire et export local.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/agric-profit.webp">
 <meta property="og:url" content="https://afrotools.com/fr/tools/profit-agricole/">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur de profit agricole | AfroTools">
-<meta name="twitter:description" content="Estimez la rentabilité de vos activités agricoles avec notre calculateur de profit. Prenez en compte les coûts des intrants, la main-d’œuvre, le transport et les prix de vente pour évaluer vos marges.">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur profit agricole 2026 | AfroTools">
+<meta name="twitter:description" content="Calculez marge brute agricole, profit net, seuil de rentabilite, perte post-recolte et prix minimum avec sources FAO, methode claire et export local.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/agric-profit.webp">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/profit-agricole/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/profit-agricole/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/agric-profit.webp">
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/profit-agricole/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/profit-agricole/" />
+<script src="/assets/js/components/business-cta.js" defer></script>
+<style>
+  .farm-page {
+    --farm-ink: #172117;
+    --farm-muted: #5d6f60;
+    --farm-border: #d8e5d5;
+    --farm-green: #167348;
+    --farm-blue: #2457c5;
+    --farm-amber: #a45b00;
+    --farm-red: #b42318;
+    background: #f7faf4;
+    color: var(--farm-ink);
+  }
+  .farm-page *,
+  .farm-page *::before,
+  .farm-page *::after {
+    box-sizing: border-box;
+  }
+  .farm-wrap {
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+  .farm-hero {
+    background:
+      linear-gradient(120deg, rgba(22, 115, 72, .12), rgba(36, 87, 197, .08)),
+      #fff;
+    border-bottom: 1px solid var(--farm-border);
+  }
+  .farm-hero-grid {
+    align-items: center;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+  }
+  .farm-kicker {
+    color: var(--farm-green);
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .11em;
+    margin: 0 0 .75rem;
+    text-transform: uppercase;
+  }
+  .farm-hero h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: 0;
+    line-height: 1.03;
+    margin: 0;
+    max-width: 760px;
+  }
+  .farm-lead {
+    color: var(--farm-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 1rem 0 0;
+    max-width: 760px;
+  }
+  .farm-card {
+    background: #fff;
+    border: 1px solid var(--farm-border);
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .07);
+    min-width: 0;
+    padding: clamp(1rem, 2.3vw, 1.5rem);
+  }
+  .farm-hero-card strong {
+    color: var(--farm-green);
+    display: block;
+    font-size: 2.3rem;
+    line-height: 1;
+  }
+  .farm-hero-card span {
+    color: var(--farm-muted);
+    display: block;
+    line-height: 1.5;
+    margin-top: .5rem;
+  }
+  .farm-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-top: 1.25rem;
+  }
+  .farm-badge {
+    background: #e7f6ec;
+    border: 1px solid #c3e7cf;
+    border-radius: 999px;
+    color: #11613d;
+    font-size: .84rem;
+    font-weight: 800;
+    padding: .45rem .7rem;
+  }
+  .farm-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, .82fr);
+  }
+  .farm-card h2,
+  .farm-card h3 {
+    line-height: 1.2;
+    margin: 0 0 .75rem;
+  }
+  .farm-form,
+  .farm-results {
+    display: grid;
+    gap: 1rem;
+  }
+  .farm-fields {
+    display: grid;
+    gap: .9rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .farm-field {
+    display: grid;
+    gap: .35rem;
+    min-width: 0;
+  }
+  .farm-field label {
+    color: #253425;
+    font-size: .9rem;
+    font-weight: 900;
+  }
+  .farm-field input,
+  .farm-field select,
+  .farm-field textarea {
+    border: 1px solid #c9d8c8;
+    border-radius: 6px;
+    color: var(--farm-ink);
+    font: inherit;
+    min-height: 44px;
+    padding: .72rem .8rem;
+    width: 100%;
+  }
+  .farm-field textarea {
+    min-height: 78px;
+    resize: vertical;
+  }
+  .farm-help {
+    color: var(--farm-muted);
+    font-size: .82rem;
+    line-height: 1.45;
+  }
+  .farm-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .7rem;
+  }
+  .farm-btn {
+    align-items: center;
+    border: 1px solid #afc4ae;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-weight: 900;
+    justify-content: center;
+    min-height: 44px;
+    padding: .7rem 1rem;
+  }
+  .farm-btn.primary {
+    background: var(--farm-green);
+    border-color: var(--farm-green);
+    color: #fff;
+  }
+  .farm-btn.secondary {
+    background: #fff;
+    color: var(--farm-ink);
+  }
+  .farm-field input:focus-visible,
+  .farm-field select:focus-visible,
+  .farm-field textarea:focus-visible,
+  .farm-btn:focus-visible {
+    outline: 3px solid rgba(22, 115, 72, .2);
+    outline-offset: 2px;
+  }
+  .farm-score {
+    align-items: start;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .farm-status {
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: .82rem;
+    font-weight: 900;
+    padding: .42rem .72rem;
+  }
+  .farm-status.profit {
+    background: #dcfce7;
+    color: var(--farm-green);
+  }
+  .farm-status.tight {
+    background: #fef3c7;
+    color: var(--farm-amber);
+  }
+  .farm-status.loss {
+    background: #fee4e2;
+    color: var(--farm-red);
+  }
+  .farm-metrics {
+    display: grid;
+    gap: .7rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .farm-metric {
+    background: #f8fcf7;
+    border: 1px solid var(--farm-border);
+    border-radius: 8px;
+    padding: .8rem;
+  }
+  .farm-metric strong {
+    display: block;
+    font-size: 1.24rem;
+    overflow-wrap: anywhere;
+  }
+  .farm-metric span {
+    color: var(--farm-muted);
+    display: block;
+    font-size: .78rem;
+    font-weight: 900;
+    margin-top: .25rem;
+    text-transform: uppercase;
+  }
+  .farm-list {
+    display: grid;
+    gap: .5rem;
+    margin: .5rem 0 0;
+    padding: 0;
+  }
+  .farm-list li {
+    background: #f8fcf7;
+    border: 1px solid var(--farm-border);
+    border-radius: 6px;
+    line-height: 1.45;
+    list-style: none;
+    padding: .65rem .75rem;
+  }
+  .farm-info-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .farm-note {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 8px;
+    color: #733b12;
+    line-height: 1.55;
+    padding: .85rem 1rem;
+  }
+  .farm-source-list li {
+    margin-bottom: .55rem;
+  }
+  .farm-source-list a,
+  .farm-related a {
+    color: var(--farm-blue);
+    font-weight: 900;
+  }
+  .farm-related {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem;
+  }
+  .farm-related a {
+    background: #eef5ff;
+    border: 1px solid #c7dcff;
+    border-radius: 999px;
+    padding: .55rem .8rem;
+    text-decoration: none;
+  }
+  .farm-faq details {
+    border-top: 1px solid var(--farm-border);
+    padding: .9rem 0;
+  }
+  .farm-faq summary {
+    cursor: pointer;
+    font-weight: 900;
+  }
+  .farm-status-line {
+    color: var(--farm-muted);
+    font-size: .9rem;
+    min-height: 1.4rem;
+  }
+  @media (max-width: 880px) {
+    .farm-hero-grid,
+    .farm-grid,
+    .farm-info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 620px) {
+    .farm-fields,
+    .farm-metrics {
+      grid-template-columns: 1fr;
+    }
+    .farm-actions .farm-btn {
+      width: 100%;
+    }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculateur profit agricole 2026",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/fr/tools/profit-agricole/",
+  "description": "Calculateur local pour estimer marge brute, profit net, seuil de rentabilite et effet des pertes post-recolte pour une saison agricole.",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Quelle est la difference entre marge brute et profit net agricole ?",
+      "acceptedAnswer": {"@type": "Answer", "text": "La marge brute correspond au revenu de vente moins les couts variables. Le profit net deduit ensuite les couts fixes de la saison."}
+    },
+    {
+      "@type": "Question",
+      "name": "Les prix et rendements sont-ils officiels ?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Non. L utilisateur saisit ses propres prix, rendements, couts et pertes. L outil donne une estimation de planification et doit etre verifiee avec les prix de marche, l extension agricole ou le conseiller local."}
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je comparer plusieurs cultures ?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Oui. Sauvez ou exportez un scenario TXT, changez la culture ou les hypotheses, puis comparez marge par hectare, seuil de rentabilite et effet des pertes."}
+    }
+  ]
+}
+</script>
 </head>
-<body>
+<body class="farm-page">
 <afro-navbar></afro-navbar>
-<main>
-<section class="hero" style="padding:3rem 1rem;text-align:center;background:var(--bg)">
-<h1>Calculateur de profit agricole</h1>
-</section>
-<section style="max-width:1080px;margin:0 auto;padding:1rem">
-<iframe src="/tools/agric-profit/" style="width:100%;min-height:80vh;border:none;border-radius:12px" loading="lazy" title="Calculateur de profit agricole"></iframe>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<p>Estimez la rentabilité de vos activités agricoles avec notre calculateur de profit. Prenez en compte les coûts des intrants, la main-d’œuvre, le transport et les prix de vente pour évaluer vos marges.</p>
-<p>L’agriculture reste le pilier économique de nombreux pays africains. Notre calculateur aide les agriculteurs et agro-entrepreneurs à planifier leurs cultures, optimiser leurs coûts et maximiser leurs profits pour chaque saison.</p>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Quelles cultures sont prises en charge ?</summary><p>Le calculateur couvre les principales cultures africaines : maïs, riz, manioc, cacao, café, arachide et bien d’autres, avec des données spécifiques par région.</p></details>
-<details><summary>Puis-je comparer plusieurs cultures ?</summary><p>Oui, vous pouvez comparer la rentabilité de différentes cultures pour déterminer laquelle est la plus profitable dans votre contexte.</p></details>
-<details><summary>Les coûts sont-ils adaptés à mon pays ?</summary><p>Le calculateur utilise des estimations de coûts adaptées aux réalités locales de chaque pays africain.</p></details>
-</section>
+<main id="main-content">
+  <section class="farm-hero">
+    <div class="farm-wrap farm-hero-grid">
+      <div>
+        <p class="farm-kicker">Saison agricole 2026</p>
+        <h1>Calculez la vraie marge d une culture avant de planter, vendre ou emprunter.</h1>
+        <p class="farm-lead">Saisissez surface, rendement, prix bord champ, intrants, main-d oeuvre, transport, pertes post-recolte et couts fixes. AfroTools calcule revenu net vendable, marge brute, profit net, seuil de rentabilite et prix minimum.</p>
+        <div class="farm-badges" aria-label="Fonctions">
+          <span class="farm-badge">Marge brute</span>
+          <span class="farm-badge">Profit net</span>
+          <span class="farm-badge">Pertes post-recolte</span>
+          <span class="farm-badge">Export local</span>
+        </div>
+      </div>
+      <aside class="farm-card farm-hero-card" aria-label="Confidentialite">
+        <strong>Local</strong>
+        <span>Vos prix, couts et notes de saison restent dans le navigateur. Le bouton sauver utilise localStorage; aucun fichier ferme n est envoye a AfroTools.</span>
+        <p class="farm-note">Planning estimate only: ce n est pas un prix officiel, une recommandation de credit ou une garantie de rendement.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="farm-wrap farm-grid" aria-label="Calculateur de profit agricole">
+    <article class="farm-card">
+      <h2>Scenario de culture</h2>
+      <form class="farm-form" id="farmForm">
+        <div class="farm-fields">
+          <div class="farm-field">
+            <label for="crop">Culture</label>
+            <select id="crop">
+              <option>Mais</option>
+              <option>Riz</option>
+              <option>Manioc</option>
+              <option>Cacao</option>
+              <option>Cafe</option>
+              <option>Arachide</option>
+              <option>Tomate</option>
+              <option>Oignon</option>
+            </select>
+          </div>
+          <div class="farm-field">
+            <label for="currency">Devise</label>
+            <select id="currency">
+              <option>USD</option>
+              <option>XOF</option>
+              <option>NGN</option>
+              <option>GHS</option>
+              <option>KES</option>
+              <option>ZAR</option>
+              <option>EUR</option>
+            </select>
+          </div>
+          <div class="farm-field">
+            <label for="area">Surface cultivee</label>
+            <input id="area" type="number" min="0.01" step="0.01" value="2.5" aria-describedby="areaHelp">
+            <span class="farm-help" id="areaHelp">En hectares. Utilisez le convertisseur si votre mesure est en acres.</span>
+          </div>
+          <div class="farm-field">
+            <label for="yield">Rendement attendu par hectare</label>
+            <input id="yield" type="number" min="0" step="0.1" value="3.2">
+          </div>
+          <div class="farm-field">
+            <label for="price">Prix de vente par tonne</label>
+            <input id="price" type="number" min="0" step="1" value="420">
+          </div>
+          <div class="farm-field">
+            <label for="loss">Perte post-recolte (%)</label>
+            <input id="loss" type="number" min="0" max="80" step="0.5" value="8">
+          </div>
+          <div class="farm-field">
+            <label for="seedCost">Semences et plants</label>
+            <input id="seedCost" type="number" min="0" step="1" value="180">
+          </div>
+          <div class="farm-field">
+            <label for="inputCost">Engrais, protection, eau</label>
+            <input id="inputCost" type="number" min="0" step="1" value="520">
+          </div>
+          <div class="farm-field">
+            <label for="labourCost">Main-d oeuvre et mecanisation</label>
+            <input id="labourCost" type="number" min="0" step="1" value="650">
+          </div>
+          <div class="farm-field">
+            <label for="postHarvestCost">Recolte, stockage, transport</label>
+            <input id="postHarvestCost" type="number" min="0" step="1" value="420">
+          </div>
+          <div class="farm-field">
+            <label for="fixedCost">Couts fixes de saison</label>
+            <input id="fixedCost" type="number" min="0" step="1" value="300">
+          </div>
+          <div class="farm-field">
+            <label for="familyLabour">Valeur du travail familial</label>
+            <input id="familyLabour" type="number" min="0" step="1" value="250">
+          </div>
+        </div>
+        <div class="farm-field">
+          <label for="notes">Notes marche, irrigation, qualite ou risque</label>
+          <textarea id="notes">Prix bord champ saisi par l utilisateur; verifier le prix de marche avant vente.</textarea>
+        </div>
+        <div class="farm-actions">
+          <button class="farm-btn primary" type="submit">Calculer la marge</button>
+          <button class="farm-btn secondary" id="copyFarm" type="button">Copier</button>
+          <button class="farm-btn secondary" id="downloadFarm" type="button">Telecharger TXT</button>
+          <button class="farm-btn secondary" id="saveFarm" type="button">Sauver localement</button>
+        </div>
+        <p class="farm-status-line" id="farmStatus" role="status" aria-live="polite"></p>
+      </form>
+    </article>
+
+    <aside class="farm-card farm-results" aria-label="Resultats agricoles">
+      <div class="farm-score">
+        <span class="farm-status profit" id="profitStatus">Rentable</span>
+        <h2 id="profitTitle">La marge couvre les couts variables et fixes.</h2>
+        <p class="farm-help" id="profitSummary">Les chiffres changeront lorsque vous modifiez le rendement, le prix ou les pertes.</p>
+      </div>
+      <div class="farm-metrics">
+        <div class="farm-metric"><strong id="grossRevenue">0</strong><span>Revenu vendable</span></div>
+        <div class="farm-metric"><strong id="grossMargin">0</strong><span>Marge brute</span></div>
+        <div class="farm-metric"><strong id="netProfit">0</strong><span>Profit net</span></div>
+        <div class="farm-metric"><strong id="marginPerHa">0</strong><span>Marge par hectare</span></div>
+        <div class="farm-metric"><strong id="breakEvenYield">0</strong><span>Rendement seuil</span></div>
+        <div class="farm-metric"><strong id="minimumPrice">0</strong><span>Prix minimum/tonne</span></div>
+      </div>
+      <section>
+        <h3>Breakdown</h3>
+        <ul class="farm-list" id="farmBreakdown"></ul>
+      </section>
+      <section>
+        <h3>Actions utiles</h3>
+        <ul class="farm-list" id="farmActions"></ul>
+      </section>
+    </aside>
+  </section>
+
+  <section class="farm-wrap farm-info-grid" data-tool-verification-panel aria-label="Sources et verification">
+    <article class="farm-card">
+      <h2>Sources et fraicheur</h2>
+      <p>Sources reviewed June 2026. Les prix et rendements sont vos hypotheses; verify with local market prices, extension officers, cooperatives or buyers.</p>
+      <ul class="farm-source-list">
+        <li><a href="https://www.fao.org/4/a1298e/a1298e12.pdf" target="_blank" rel="noopener">FAO - Farm Management tools, gross margin budgeting</a></li>
+        <li><a href="https://www.fao.org/4/i0411e/i0411e.pdf" target="_blank" rel="noopener">FAO - Farm management extension guide</a></li>
+        <li><a href="https://www.fao.org/platform-food-loss-waste/food-loss/food-loss-reduction/food-loss-reduction-resources/en" target="_blank" rel="noopener">FAO - Food loss reduction resources</a></li>
+        <li><a href="https://www.worldbank.org/en/programs/africa-myths-and-facts/publication/is-post-harvest-loss-significant-in-sub-saharan-africa" target="_blank" rel="noopener">World Bank - Post-harvest loss in Sub-Saharan Africa</a></li>
+      </ul>
+    </article>
+    <article class="farm-card">
+      <h2>Methodology</h2>
+      <p>Gross income = surface x rendement x prix x (1 - perte). Variable costs = semences + intrants + main-d oeuvre + recolte/stockage/transport + travail familial. Gross margin = gross income - variable costs. Profit net = gross margin - fixed costs.</p>
+      <p class="farm-note">Disclaimer: ce calcul ne remplace pas une comptabilite agricole, une offre d acheteur, une assurance, un conseil agronomique ou une decision de credit.</p>
+    </article>
+    <article class="farm-card">
+      <h2>Related tools</h2>
+      <div class="farm-related">
+        <a href="/fr/tools/rendement-culture/">Rendement culture</a>
+        <a href="/fr/tools/calculateur-engrais/">Engrais</a>
+        <a href="/agriculture/crop-yield/">Crop yield</a>
+        <a href="/agriculture/input-prices/">Input prices</a>
+        <a href="/tools/fertilizer-calc/">Fertilizer calc</a>
+        <a href="/agriculture/">Agriculture hub</a>
+      </div>
+    </article>
+  </section>
+
+  <section class="farm-wrap farm-card farm-faq" aria-label="Questions frequentes">
+    <h2>Questions frequentes</h2>
+    <details>
+      <summary>Pourquoi inclure le travail familial ?</summary>
+      <p>La FAO recommande de valoriser les intrants non achetes lorsque l on compare des cultures ou technologies. Cela evite de croire qu une culture est rentable parce que le temps familial n est pas compte.</p>
+    </details>
+    <details>
+      <summary>Que faire si le profit net est negatif ?</summary>
+      <p>Revoyez le prix minimum, les pertes, le transport, les intrants et le rendement seuil. Ensuite confirmez avec les prix reels du marche avant de planter ou de vendre.</p>
+    </details>
+    <details>
+      <summary>Ce calculateur utilise-t-il des prix officiels ?</summary>
+      <p>Non. Les prix sont saisis par vous. L outil aide a structurer la decision; il ne promet pas de prix, rendement ou marge.</p>
+    </details>
+  </section>
+
+  <afro-business-cta
+    tool-name="Calculateur profit agricole"
+    prospect-segment="agriculture"
+    save-note="Sauvez un scenario local, exportez le TXT, puis demandez un widget agricole pour cooperative, media, ONG ou portefeuille de producteurs."></afro-business-cta>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function () {
+  "use strict";
+  var ids = ["crop", "currency", "area", "yield", "price", "loss", "seedCost", "inputCost", "labourCost", "postHarvestCost", "fixedCost", "familyLabour", "notes"];
+  var fields = {};
+  ids.forEach(function (id) { fields[id] = document.getElementById(id); });
+  var output = {
+    status: document.getElementById("profitStatus"),
+    title: document.getElementById("profitTitle"),
+    summary: document.getElementById("profitSummary"),
+    grossRevenue: document.getElementById("grossRevenue"),
+    grossMargin: document.getElementById("grossMargin"),
+    netProfit: document.getElementById("netProfit"),
+    marginPerHa: document.getElementById("marginPerHa"),
+    breakEvenYield: document.getElementById("breakEvenYield"),
+    minimumPrice: document.getElementById("minimumPrice"),
+    breakdown: document.getElementById("farmBreakdown"),
+    actions: document.getElementById("farmActions"),
+    line: document.getElementById("farmStatus")
+  };
+  var lastSummary = "";
+
+  function num(id) {
+    var value = Number(fields[id].value);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function money(value) {
+    return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format(value) + " " + fields.currency.value;
+  }
+
+  function renderList(node, items) {
+    node.innerHTML = "";
+    items.forEach(function (text) {
+      var item = document.createElement("li");
+      item.textContent = text;
+      node.appendChild(item);
+    });
+  }
+
+  function calculate() {
+    var area = Math.max(0.01, num("area"));
+    var yieldPerHa = Math.max(0, num("yield"));
+    var price = Math.max(0, num("price"));
+    var lossRate = Math.min(80, Math.max(0, num("loss"))) / 100;
+    var totalYield = area * yieldPerHa;
+    var soldYield = totalYield * (1 - lossRate);
+    var revenue = soldYield * price;
+    var variableCost = num("seedCost") + num("inputCost") + num("labourCost") + num("postHarvestCost") + num("familyLabour");
+    var grossMargin = revenue - variableCost;
+    var netProfit = grossMargin - num("fixedCost");
+    var marginPerHa = grossMargin / area;
+    var breakEvenYield = price > 0 ? (variableCost + num("fixedCost")) / price / area / (1 - lossRate) : 0;
+    var minimumPrice = soldYield > 0 ? (variableCost + num("fixedCost")) / soldYield : 0;
+    var statusClass = netProfit >= 0 && grossMargin > 0 ? "profit" : grossMargin > 0 ? "tight" : "loss";
+    var statusText = statusClass === "profit" ? "Rentable" : statusClass === "tight" ? "Marge serree" : "Perte probable";
+    var title = statusClass === "profit"
+      ? "La marge couvre les couts variables et fixes."
+      : statusClass === "tight"
+        ? "La marge brute est positive, mais les couts fixes absorbent le profit."
+        : "Les couts depassent le revenu vendable dans ce scenario.";
+    var actions = [];
+
+    if (lossRate >= .15) actions.push("Prioriser stockage, tri, sechage, transport ou contrat d acheteur pour reduire les pertes.");
+    if (netProfit < 0) actions.push("Comparer le prix minimum et le rendement seuil avec les prix reels avant de planter.");
+    if (num("familyLabour") === 0) actions.push("Ajouter une valeur au travail familial pour comparer cette culture a une autre.");
+    if (num("postHarvestCost") > revenue * .18) actions.push("Verifier si transport, emballage ou stockage peuvent etre mutualises avec une cooperative.");
+    if (!actions.length) actions.push("Sauver ce scenario puis tester un prix bas et un rendement prudent.");
+    actions.push("Verifier les hypotheses avec prix de marche, conseiller agricole, acheteur ou cooperative locale.");
+
+    output.status.textContent = statusText;
+    output.status.className = "farm-status " + statusClass;
+    output.title.textContent = title;
+    output.summary.textContent = fields.crop.value + ": " + area.toFixed(2) + " ha, " + soldYield.toFixed(2) + " tonnes vendables apres pertes.";
+    output.grossRevenue.textContent = money(revenue);
+    output.grossMargin.textContent = money(grossMargin);
+    output.netProfit.textContent = money(netProfit);
+    output.marginPerHa.textContent = money(marginPerHa);
+    output.breakEvenYield.textContent = breakEvenYield.toFixed(2) + " t/ha";
+    output.minimumPrice.textContent = money(minimumPrice);
+
+    var breakdown = [
+      "Production brute: " + totalYield.toFixed(2) + " tonnes avant pertes.",
+      "Production vendable: " + soldYield.toFixed(2) + " tonnes apres " + Math.round(lossRate * 100) + "% de pertes.",
+      "Variable costs: " + money(variableCost) + " incluant travail familial.",
+      "Gross margin: revenu vendable moins couts variables.",
+      "Profit net: marge brute moins couts fixes de saison.",
+      "Seuil: rendement et prix minimum pour couvrir couts variables + fixes."
+    ];
+    renderList(output.breakdown, breakdown);
+    renderList(output.actions, actions);
+
+    lastSummary = [
+      "Calculateur profit agricole - AfroTools",
+      "Culture: " + fields.crop.value,
+      "Surface: " + area.toFixed(2) + " ha",
+      "Rendement: " + yieldPerHa.toFixed(2) + " t/ha",
+      "Perte post-recolte: " + Math.round(lossRate * 100) + "%",
+      "Revenu vendable: " + money(revenue),
+      "Marge brute: " + money(grossMargin),
+      "Profit net: " + money(netProfit),
+      "Marge par hectare: " + money(marginPerHa),
+      "Rendement seuil: " + breakEvenYield.toFixed(2) + " t/ha",
+      "Prix minimum: " + money(minimumPrice),
+      "Methodology: gross income - variable costs = gross margin; gross margin - fixed costs = profit net.",
+      "Disclaimer: planning estimate only; verify with local market, extension service, buyer or cooperative."
+    ].join("\n");
+    return { netProfit: netProfit };
+  }
+
+  function setLine(text) {
+    output.line.textContent = text;
+  }
+
+  document.getElementById("farmForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    calculate();
+    setLine("Marge mise a jour.");
+  });
+
+  document.getElementById("copyFarm").addEventListener("click", function () {
+    calculate();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(lastSummary).then(function () {
+        setLine("Resume copie.");
+      }, function () {
+        setLine("Copie impossible; utilisez le telechargement TXT.");
+      });
+    } else {
+      setLine("Copie non disponible dans ce navigateur.");
+    }
+  });
+
+  document.getElementById("downloadFarm").addEventListener("click", function () {
+    calculate();
+    var blob = new Blob([lastSummary], { type: "text/plain;charset=utf-8" });
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "profit-agricole-afrotools.txt";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(function () { URL.revokeObjectURL(link.href); }, 800);
+    setLine("Export TXT prepare.");
+  });
+
+  document.getElementById("saveFarm").addEventListener("click", function () {
+    calculate();
+    try {
+      localStorage.setItem("afrotools:profit-agricole-fr:last", JSON.stringify({
+        savedAt: new Date().toISOString(),
+        summary: lastSummary
+      }));
+      setLine("Scenario sauvegarde dans localStorage.");
+    } catch (error) {
+      setLine("Sauvegarde locale indisponible.");
+    }
+  });
+
+  ids.forEach(function (id) {
+    fields[id].addEventListener("input", calculate);
+    fields[id].addEventListener("change", calculate);
+  });
+  calculate();
+})();
+</script>
 </body>
 </html>

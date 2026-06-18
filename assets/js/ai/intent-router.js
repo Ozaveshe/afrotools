@@ -153,6 +153,10 @@
     uganda: "Uganda",
     tanzania: "Tanzania",
     rwanda: "Rwanda",
+    angola: "Angola",
+    angoa: "Angola",
+    angolan: "Angola",
+    luanda: "Angola",
     zambia: "Zambia",
     zimbabwe: "Zimbabwe",
     ethiopia: "Ethiopia",
@@ -327,14 +331,24 @@
 
   function extractMoney(query) {
     var match = String(query || "").match(/(?:\$|usd\s*)\s?([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m))?/i) ||
-      String(query || "").match(/\b(?:ngn|naira|kes|ksh|ghs|zar|xaf|xof|usd|gbp|eur|cad)\s?([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m))?\b/i) ||
-      String(query || "").match(/\b([0-9][0-9,]*(?:\.\d+)?)\s?(usd|dollars|naira|ngn|kes|ghs|zar|xaf|xof)\b/i);
+      String(query || "").match(/\b(?:ngn|naira|kes|ksh|ghs|zar|xaf|xof|aoa|kz|kwanza|kwanzas|usd|gbp|eur|cad)\s?([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m))?\b/i) ||
+      String(query || "").match(/\b([0-9][0-9,]*(?:\.\d+)?)\s?(usd|dollars|naira|ngn|kes|ghs|zar|xaf|xof|aoa|kz|kwanza|kwanzas)\b/i);
     if (!match) return "";
     var amount = Number(String(match[1]).replace(/,/g, ""));
     if (!Number.isFinite(amount)) return "";
     if (match[2] && String(match[2]).toLowerCase() === "k") amount *= 1000;
     if (match[2] && String(match[2]).toLowerCase() === "m") amount *= 1000000;
     return amount;
+  }
+
+  function extractPlainAmount(query) {
+    var matches = String(query || "").match(/\b[1-9][0-9]{2,}(?:,[0-9]{3})*(?:\.\d+)?\b/g);
+    if (!matches || !matches.length) return "";
+    for (var i = matches.length - 1; i >= 0; i -= 1) {
+      var amount = Number(String(matches[i]).replace(/,/g, ""));
+      if (Number.isFinite(amount) && amount >= 100) return amount;
+    }
+    return "";
   }
 
   function extractCurrency(query) {
@@ -348,6 +362,7 @@
     if (/kes|ksh/i.test(raw)) return "KES";
     if (/ghs/i.test(raw)) return "GHS";
     if (/zar/i.test(raw)) return "ZAR";
+    if (/aoa|kwanza|kwanzas|\bkz\b/i.test(raw)) return "AOA";
     if (/xaf/i.test(raw)) return "XAF";
     if (/xof/i.test(raw)) return "XOF";
     return "";
@@ -582,8 +597,9 @@
       if (building) extracted.buildingType = building[1].toLowerCase();
       if (!extracted.buildingType && constructionRooms && constructionRooms.bedrooms) extracted.buildingType = constructionRooms.bedrooms <= 2 ? "bungalow" : "house";
     }
-    if (ruleMatch && ruleMatch.toolId === "paye-calculator") {
-      if (money) extracted.grossPay = money;
+    if (ruleMatch && (ruleMatch.toolId === "paye-calculator" || ruleMatch.toolId === "ao-paye" || ruleMatch.intentCategory === "salary-tax")) {
+      var salaryAmount = money || extractPlainAmount(original);
+      if (salaryAmount) extracted.grossPay = salaryAmount;
       if (!extracted.payPeriod) extracted.payPeriod = /\bannual|yearly|per year\b/i.test(original) ? "annual" : "monthly";
     }
     if (ruleMatch && ruleMatch.toolId === "solar-roi" && money) {
@@ -723,6 +739,13 @@
     var keepCountryComparisonRule = match && match.toolId === "afroatlas" && detectedCountryCount(normalizedQuery) >= 2;
     var weakGenericCountryRule = match && match.toolId === "afroatlas" && match.score <= 3 && !keepCountryComparisonRule && !isExplicitCountryIntelligenceQuery(normalizedQuery);
     if (!match || (manifestMatch && manifestMatch.retrievalScore >= 40 && weakGenericCountryRule)) match = manifestMatch;
+    if (match && match.toolId === "paye-calculator" && extractCountryFromMap(normalizedQuery, COUNTRY_ALIASES) === "Angola" && findTool(manifest, "ao-paye")) {
+      match = Object.assign({}, match, {
+        toolId: "ao-paye",
+        score: Math.max(Number(match.score || 0), 4),
+        source: "country_salary_tax",
+      });
+    }
     if (!match) return fallbackDecision(query, options);
     var tool = findTool(manifest, match.toolId) || SEARCH_FALLBACK;
     return localizeDecision(buildDecision(query, tool, match, extractInputs(query, match), "deterministic"), options);

@@ -1,105 +1,390 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="view-transition" content="same-origin">
-<title>Generateur de hash | AfroTools</title>
-<meta name="description" content="Generateur de hash gratuit en ligne. Creez des hash MD5, SHA-1, SHA-256, SHA-512. Verification d'integrite de fichiers.">
-<link rel="canonical" href="https://afrotools.com/fr/tools/generateur-hash/">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Generateur de hash | AfroTools">
-<meta property="og:description" content="Generateur de hash gratuit. MD5, SHA-1, SHA-256, SHA-512 en ligne.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/generateur-hash/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Generateur de hash | AfroTools">
-<meta name="twitter:description" content="Generateur de hash gratuit en ligne. Creez des hash MD5, SHA-1, SHA-256, SHA-512. Verification d">
-<meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
-<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Generateur de hash",
-  "url": "https://afrotools.com/fr/tools/generateur-hash/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/hash-generator.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quel algorithme de hash choisir ?","acceptedAnswer":{"@type":"Answer","text":"Pour la securite generale, utilisez SHA-256. MD5 et SHA-1 sont deconseilles pour la securite mais utiles pour les checksums rapides."}},{"@type":"Question","name":"Le hash est-il calcule localement ?","acceptedAnswer":{"@type":"Answer","text":"Oui, tous les calculs de hash sont effectues localement dans votre navigateur via l'API Web Crypto. Aucun fichier n'est envoye a un serveur."}},{"@type":"Question","name":"Puis-je verifier le hash d'un fichier telecharge ?","acceptedAnswer":{"@type":"Answer","text":"Oui, glissez-deposez le fichier dans l'outil et comparez le hash genere avec celui fourni par le site de telechargement."}}]}
-</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <title>Generateur de hash | AfroTools</title>
+  <meta name="description" content="Generez localement des empreintes SHA pour texte ou fichier, comparez un hash attendu, copiez le resultat et exportez un rapport TXT sans envoi serveur.">
+  <link rel="canonical" href="https://afrotools.com/fr/tools/generateur-hash/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Generateur de hash | AfroTools">
+  <meta property="og:description" content="Generez localement des empreintes SHA pour texte ou fichier, comparez un hash attendu, copiez le resultat et exportez un rapport TXT sans envoi serveur.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/generateur-hash/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Generateur de hash | AfroTools">
+  <meta name="twitter:description" content="Generez localement des empreintes SHA pour texte ou fichier, comparez un hash attendu, copiez le resultat et exportez un rapport TXT sans envoi serveur.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
+  <meta name="robots" content="index, follow">
+  <meta name="tool-id" content="generateur-hash-fr">
+  <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-hash/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/generateur-hash/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Generateur de hash",
+    "url": "https://afrotools.com/fr/tools/generateur-hash/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "description": "Outil local de hash SHA pour texte, fichiers et verification d'integrite.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/hash-generator.webp"
   }
-}
-</style>
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-hash/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/generateur-hash/" />
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Quel algorithme de hash choisir ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pour une verification d'integrite courante, SHA-256 est le choix par defaut. SHA-384 et SHA-512 conviennent aux rapports plus exigeants. SHA-1 est conserve pour compatibilite, mais il ne doit pas etre utilise pour une nouvelle securite forte."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Le fichier est-il envoye a un serveur ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Le fichier est lu par le navigateur et le hash est calcule avec l'API Web Crypto quand elle est disponible."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Puis-je hasher un mot de passe avec cet outil ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non pour le stockage de mots de passe. Utilisez plutot des fonctions adaptees comme Argon2, bcrypt ou PBKDF2 avec sel et parametres de cout."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:#f8fafc;color:#111827;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select,textarea{font:inherit}
+    a{color:#1d4ed8}
+    .hash-wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+    .hash-hero{background:#0f172a;color:#fff;padding:42px 0 34px}
+    .hash-crumb{font-size:.82rem;color:#cbd5e1;margin-bottom:16px}
+    .hash-crumb a{color:#e5e7eb;text-decoration:none}
+    .hash-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px;align-items:end}
+    .hash-kicker{margin:0 0 10px;color:#93c5fd;font-size:.78rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+    .hash-title{font-size:clamp(2rem,5vw,3.8rem);line-height:1;margin:0 0 12px;letter-spacing:-.05em}
+    .hash-lede{margin:0;max-width:720px;color:#dbeafe;line-height:1.7}
+    .hash-hero-card{background:#fff;color:#111827;border-radius:8px;padding:18px;box-shadow:0 22px 60px rgba(0,0,0,.22)}
+    .hash-hero-card h2{margin:0 0 12px;color:#64748b;font-size:.86rem;text-transform:uppercase;letter-spacing:.1em}
+    .hash-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .hash-stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px}
+    .hash-stat strong{display:block;font-size:1.25rem}
+    .hash-stat span{display:block;margin-top:6px;color:#64748b;font-size:.75rem;font-weight:800}
+    .hash-main{padding:28px 0 44px}
+    .hash-grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;align-items:start}
+    .hash-card{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:20px;box-shadow:0 14px 34px rgba(15,23,42,.05)}
+    .hash-card h2{margin:0 0 14px;color:#0f172a;font-size:1.16rem}
+    .hash-form{display:grid;gap:14px}
+    .hash-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .hash-field label{display:block;margin-bottom:6px;color:#475569;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .hash-field input,.hash-field select,.hash-field textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#111827;padding:10px 12px}
+    .hash-field input,.hash-field select{min-height:44px}
+    .hash-field textarea{min-height:160px;resize:vertical;line-height:1.5}
+    .hash-field input:focus,.hash-field select:focus,.hash-field textarea:focus,.hash-btn:focus-visible{outline:3px solid rgba(37,99,235,.22);outline-offset:2px}
+    .hash-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .hash-btn{border:1px solid transparent;border-radius:8px;background:#2563eb;color:#fff;min-height:44px;padding:0 16px;font-weight:900;cursor:pointer}
+    .hash-btn.secondary{background:#fff;color:#1f2937;border-color:#cbd5e1}
+    .hash-btn.gold{background:#f59e0b;color:#111827}
+    .hash-output{display:grid;gap:12px}
+    .hash-result{word-break:break-all;background:#0f172a;color:#f8fafc;border-radius:8px;padding:16px;min-height:130px;line-height:1.6;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9rem}
+    .hash-pill{display:inline-flex;align-items:center;width:max-content;min-height:28px;border-radius:999px;background:#eff6ff;color:#1d4ed8;padding:0 10px;font-size:.78rem;font-weight:900}
+    .hash-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+    .hash-list li{border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;padding:10px 12px;color:#475569;line-height:1.55}
+    .hash-list strong{color:#111827}
+    .hash-warning{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:8px;padding:12px;font-size:.86rem;line-height:1.6}
+    .hash-status{min-height:22px;color:#475569;font-size:.86rem;font-weight:800}
+    .hash-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .hash-info-card{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px}
+    .hash-info-card h2{margin:0 0 10px;font-size:1.05rem;color:#0f172a}
+    .hash-info-card p,.hash-info-card li{color:#475569;font-size:.9rem;line-height:1.68}
+    .hash-info-card ul{margin:10px 0 0;padding-left:18px}
+    .hash-source-list{list-style:none!important;padding:0!important;display:grid;gap:9px}
+    .hash-source-list a{font-weight:800;text-decoration:underline;text-underline-offset:3px}
+    @media (max-width:900px){
+      .hash-hero-grid,.hash-grid,.hash-info-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:640px){
+      .hash-wrap{padding:0 16px}
+      .hash-row{grid-template-columns:1fr}
+      .hash-actions .hash-btn{width:100%}
+    }
+  </style>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Generateur de hash</h1>
-<p>Generez des hash MD5, SHA-1, SHA-256 et SHA-512 a partir de texte ou fichiers. Verification d'integrite instantanee.</p>
-</section>
-<div class="fr-wrap">
-<div class="fr-tool-frame">
-<iframe src="/tools/hash-generator/" title="Generateur de hash" loading="lazy"></iframe>
-</div>
-<div class="fr-seo">
-<h2>Generateur de hash en ligne</h2>
-<p>Le generateur de hash d'AfroTools cree des empreintes numeriques MD5, SHA-1, SHA-256 et SHA-512 a partir de texte ou de fichiers. Verifiez l'integrite de vos telechargements en comparant les hash. Tout le calcul se fait localement dans votre navigateur pour garantir la securite.</p>
-<p>Supportant les algorithmes les plus courants, cet outil est ideal pour verifier l'integrite de fichiers telecharges, generer des empreintes pour le stockage ou creer des signatures numeriques.</p>
-</div>
-<div class="fr-faq">
-<h2>Questions frequentes</h2>
-<details><summary>Quel algorithme de hash choisir ?</summary><p>Pour la securite generale, utilisez SHA-256. Pour les mots de passe, utilisez bcrypt ou Argon2. MD5 et SHA-1 sont deconseilles pour la securite mais utiles pour les checksums.</p></details>
-<details><summary>Le hash est-il calcule localement ?</summary><p>Oui, tous les calculs de hash sont effectues localement dans votre navigateur via l'API Web Crypto. Aucun fichier ni texte n'est envoye a un serveur.</p></details>
-<details><summary>Puis-je verifier le hash d'un fichier telecharge ?</summary><p>Oui, glissez-deposez le fichier telecharge dans l'outil et comparez le hash genere avec celui fourni par le site de telechargement pour verifier l'integrite du fichier.</p></details>
-</div>
-</div>
+<main>
+  <section class="hash-hero">
+    <div class="hash-wrap">
+      <nav class="hash-crumb" aria-label="Fil d'Ariane"><a href="/fr/">Accueil</a> / <a href="/fr/tools/">Outils</a> / Generateur de hash</nav>
+      <div class="hash-hero-grid">
+        <div>
+          <p class="hash-kicker">Developpeurs et verification fichier</p>
+          <h1 class="hash-title">Generateur de hash</h1>
+          <p class="hash-lede">Calculez localement une empreinte SHA pour du texte ou un fichier, comparez un hash attendu et exportez un rapport de verification.</p>
+        </div>
+        <aside class="hash-hero-card" aria-label="Caracteristiques">
+          <h2>Local par defaut</h2>
+          <div class="hash-stat-grid">
+            <div class="hash-stat"><strong>SHA</strong><span>1 / 256 / 384 / 512</span></div>
+            <div class="hash-stat"><strong>Fichier</strong><span>Lu dans le navigateur</span></div>
+            <div class="hash-stat"><strong>TXT</strong><span>Rapport exportable</span></div>
+            <div class="hash-stat"><strong>2026</strong><span>Sources revues</span></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="hash-main">
+    <div class="hash-wrap hash-grid">
+      <section class="hash-card" aria-labelledby="hash-form-title">
+        <h2 id="hash-form-title">1. Choisir l'entree</h2>
+        <div class="hash-form">
+          <div class="hash-row">
+            <div class="hash-field">
+              <label for="algorithm">Algorithme</label>
+              <select id="algorithm">
+                <option value="SHA-256">SHA-256 recommande</option>
+                <option value="SHA-384">SHA-384</option>
+                <option value="SHA-512">SHA-512</option>
+                <option value="SHA-1">SHA-1 compatibilite</option>
+              </select>
+            </div>
+            <div class="hash-field">
+              <label for="inputMode">Mode</label>
+              <select id="inputMode">
+                <option value="text">Texte</option>
+                <option value="file">Fichier</option>
+              </select>
+            </div>
+          </div>
+          <div class="hash-field" id="textField">
+            <label for="inputText">Texte</label>
+            <textarea id="inputText">AfroTools verification locale SHA-256</textarea>
+          </div>
+          <div class="hash-field" id="fileField" hidden>
+            <label for="inputFile">Fichier</label>
+            <input id="inputFile" type="file">
+          </div>
+          <div class="hash-field">
+            <label for="expectedHash">Hash attendu optionnel</label>
+            <input id="expectedHash" placeholder="Collez un hash a comparer">
+          </div>
+        </div>
+        <div class="hash-actions">
+          <button class="hash-btn" id="runBtn" type="button">Calculer</button>
+          <button class="hash-btn secondary" id="sampleBtn" type="button">Exemple</button>
+          <button class="hash-btn secondary" id="copyBtn" type="button">Copier</button>
+          <button class="hash-btn gold" id="downloadBtn" type="button">Telecharger TXT</button>
+          <button class="hash-btn secondary" id="saveBtn" type="button">Sauvegarder</button>
+        </div>
+        <p class="hash-status" id="statusText" aria-live="polite">Pret. Le calcul reste dans ce navigateur.</p>
+      </section>
+
+      <aside class="hash-card" aria-labelledby="hash-result-title">
+        <h2 id="hash-result-title">2. Resultat</h2>
+        <div class="hash-output">
+          <span class="hash-pill" id="matchPill">Comparaison: non lancee</span>
+          <div class="hash-result" id="hashOutput">Le hash apparait ici.</div>
+          <ul class="hash-list" id="detailsList"></ul>
+          <div class="hash-warning">Avertissement: cet outil sert aux empreintes et checksums. Pour stocker des mots de passe, utilisez Argon2, bcrypt ou PBKDF2 avec sel et parametres de cout; un simple SHA ne suffit pas.</div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="hash-wrap hash-info-grid">
+      <section class="hash-info-card" data-tool-verification-panel aria-label="Methodologie, sources et verification">
+        <h2>Methodologie et limites</h2>
+        <p>La methode utilise l'API Web Crypto du navigateur quand elle est disponible. Pour le texte, l'outil encode la chaine en UTF-8 puis calcule le digest. Pour les fichiers, le fichier est lu en ArrayBuffer localement, puis le digest est converti en hexadecimal.</p>
+        <ul>
+          <li>Derniere verification des sources: 2026-06-17.</li>
+          <li>SHA-256 est le choix recommande pour une verification d'integrite courante.</li>
+          <li>SHA-1 est affiche uniquement pour compatibilite avec d'anciens checksums.</li>
+          <li>Le fichier ou le texte ne quitte pas le navigateur pendant le calcul de base.</li>
+        </ul>
+      </section>
+      <section class="hash-info-card">
+        <h2>Sources &amp; verification</h2>
+        <ul class="hash-source-list">
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest" target="_blank" rel="noopener">MDN - SubtleCrypto digest()</a></li>
+          <li><a href="https://www.w3.org/TR/webcrypto-2/" target="_blank" rel="noopener">W3C - Web Cryptography Level 2</a></li>
+          <li><a href="https://csrc.nist.gov/pubs/fips/180-4/upd1/final" target="_blank" rel="noopener">NIST FIPS 180-4 Secure Hash Standard</a></li>
+          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP Cryptographic Storage Cheat Sheet</a></li>
+        </ul>
+        <p class="hash-status">Reference, pas certification: AfroTools ne certifie pas la securite de votre systeme ou de votre pipeline.</p>
+      </section>
+    </div>
+
+    <div class="hash-wrap hash-info-grid">
+      <section class="hash-info-card">
+        <h2>Questions frequentes</h2>
+        <details><summary>Pourquoi MD5 n'est-il pas propose ici ?</summary><p>Cette version utilise Web Crypto natif, qui expose les familles SHA mais pas MD5. Cela evite de charger une bibliotheque externe pour un algorithme deconseille en securite.</p></details>
+        <details><summary>Comment verifier un fichier telecharge ?</summary><p>Selectionnez le fichier, choisissez l'algorithme indique par le fournisseur, collez le hash attendu et comparez le statut.</p></details>
+        <details><summary>Le hash prouve-t-il qu'un fichier est sur ?</summary><p>Non. Un hash identique confirme surtout que le fichier correspond a une empreinte attendue. Il ne remplace pas une signature, une source fiable ou une analyse de securite.</p></details>
+      </section>
+      <section class="hash-info-card">
+        <h2>Outils lies</h2>
+        <ul>
+          <li><a href="/fr/tools/encodeur-base64/">Encodeur Base64</a></li>
+          <li><a href="/fr/tools/formateur-json/">Formateur JSON</a></li>
+          <li><a href="/fr/tools/generateur-mot-de-passe/">Generateur de mot de passe</a></li>
+          <li><a href="/fr/tools/testeur-api/">Testeur API</a></li>
+        </ul>
+      </section>
+    </div>
+  </section>
+</main>
 <afro-footer></afro-footer>
+<script>
+  (function(){
+    "use strict";
+    var STORAGE_KEY="afrotools_generateur_hash_fr_v1";
+    var lastReport=null;
+    function $(id){return document.getElementById(id);}
+    function toHex(buffer){
+      return Array.prototype.map.call(new Uint8Array(buffer),function(byte){return byte.toString(16).padStart(2,"0");}).join("");
+    }
+    async function digestBuffer(buffer,algorithm){
+      if(!window.crypto||!window.crypto.subtle) throw new Error("Web Crypto indisponible dans ce navigateur.");
+      return toHex(await window.crypto.subtle.digest(algorithm,buffer));
+    }
+    function normalizeHash(value){return String(value||"").toLowerCase().replace(/[^a-f0-9]/g,"");}
+    async function getInputBuffer(){
+      if($("inputMode").value==="file"){
+        var file=$("inputFile").files[0];
+        if(!file) throw new Error("Choisissez un fichier ou repassez en mode texte.");
+        return {buffer:await file.arrayBuffer(),label:file.name,size:file.size,kind:"fichier"};
+      }
+      var text=$("inputText").value||"";
+      return {buffer:new TextEncoder().encode(text),label:"texte saisi",size:new TextEncoder().encode(text).byteLength,kind:"texte"};
+    }
+    async function run(){
+      try{
+        $("statusText").textContent="Calcul en cours...";
+        var algorithm=$("algorithm").value;
+        var input=await getInputBuffer();
+        var hash=await digestBuffer(input.buffer,algorithm);
+        var expected=normalizeHash($("expectedHash").value);
+        var match=expected?expected===hash.toLowerCase():null;
+        lastReport={algorithm:algorithm,hash:hash,expected:expected,match:match,label:input.label,size:input.size,kind:input.kind,createdAt:new Date().toISOString()};
+        render(lastReport);
+        $("statusText").textContent="Hash calcule localement.";
+      }catch(error){
+        $("statusText").textContent=error.message;
+      }
+    }
+    function render(report){
+      $("hashOutput").textContent=report.hash;
+      $("matchPill").textContent=report.match===null?"Comparaison: aucun hash attendu":(report.match?"Comparaison: correspondance":"Comparaison: difference");
+      $("matchPill").style.background=report.match===false?"#fef2f2":(report.match?"#ecfdf5":"#eff6ff");
+      $("matchPill").style.color=report.match===false?"#991b1b":(report.match?"#166534":"#1d4ed8");
+      $("detailsList").innerHTML=[
+        ["Algorithme",report.algorithm],
+        ["Entree",report.kind+" - "+report.label],
+        ["Taille",report.size+" octets"],
+        ["Usage",report.algorithm==="SHA-1"?"Compatibilite seulement":"Verification d'integrite recommandee"]
+      ].map(function(row){return "<li><strong>"+row[0]+"</strong>: "+row[1]+"</li>";}).join("");
+    }
+    function summary(){
+      var report=lastReport;
+      if(!report) return "Aucun hash calcule.";
+      return [
+        "AfroTools - Generateur de hash",
+        "Date: "+report.createdAt,
+        "Algorithme: "+report.algorithm,
+        "Entree: "+report.kind+" - "+report.label,
+        "Taille: "+report.size+" octets",
+        "Hash: "+report.hash,
+        "Hash attendu: "+(report.expected||"non fourni"),
+        "Comparaison: "+(report.match===null?"non lancee":(report.match?"correspondance":"difference")),
+        "",
+        "Methodologie: calcul local avec Web Crypto SubtleCrypto.digest quand disponible.",
+        "Avertissement: ne pas utiliser un simple SHA pour stocker des mots de passe."
+      ].join("\\n");
+    }
+    function copy(){
+      var text=lastReport?lastReport.hash:summary();
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){$("statusText").textContent="Hash copie.";},function(){$("statusText").textContent=text;});
+      }else{
+        $("statusText").textContent=text;
+      }
+    }
+    function download(){
+      var blob=new Blob([summary()],{type:"text/plain;charset=utf-8"});
+      var url=URL.createObjectURL(blob);
+      var link=document.createElement("a");
+      link.href=url;
+      link.download="afrotools-hash-report.txt";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      $("statusText").textContent="Rapport telecharge.";
+    }
+    function save(){
+      try{
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(lastReport||{}));
+        $("statusText").textContent="Resultat sauvegarde dans ce navigateur.";
+      }catch(error){
+        $("statusText").textContent="Sauvegarde locale indisponible.";
+      }
+    }
+    function sample(){
+      $("inputMode").value="text";
+      toggleMode();
+      $("algorithm").value="SHA-256";
+      $("inputText").value="AfroTools verification locale SHA-256";
+      $("expectedHash").value="";
+      run();
+    }
+    function toggleMode(){
+      var fileMode=$("inputMode").value==="file";
+      $("fileField").hidden=!fileMode;
+      $("textField").hidden=fileMode;
+    }
+    $("runBtn").addEventListener("click",run);
+    $("sampleBtn").addEventListener("click",sample);
+    $("copyBtn").addEventListener("click",copy);
+    $("downloadBtn").addEventListener("click",download);
+    $("saveBtn").addEventListener("click",save);
+    $("inputMode").addEventListener("change",toggleMode);
+    $("algorithm").addEventListener("change",run);
+    $("inputText").addEventListener("input",function(){ if($("inputMode").value==="text") run(); });
+    $("expectedHash").addEventListener("input",run);
+    toggleMode();
+    run();
+  })();
+</script>
 </body>
 </html>

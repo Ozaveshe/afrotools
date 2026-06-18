@@ -17,6 +17,63 @@
     "Sensitive workflow content stays browser-local by default and must not be stored in analytics, URLs, eval reports, or model training artifacts.",
     "Model readiness is proven by generated synthetic corpus, held-out splits, eval gates, drift intake, and operator dashboards."
   ],
+  "answerEngine": {
+    "goal": "Turn Ask AfroTools AI from a generic tool finder into a search-style answer engine that extracts obvious entities, shows what it understood, and then launches the existing calculator or workflow.",
+    "runtimeOrder": [
+      "local entity extraction for country, amount, task, document type, route, and missing inputs",
+      "deterministic router and full-catalog retrieval",
+      "answer preview composer with source, confidence, and no unsupported calculation claims",
+      "sessionStorage prefill handoff into canonical tools",
+      "optional consented model explanation after the user chooses AI help"
+    ],
+    "currentPilot": "Angola salary-tax prompts extract Angola, typo variant Angoa, gross pay, pay period, AOA/Kz context, and route to /angola/ao-paye without placing salary values in the URL."
+  },
+  "tokenStrategy": {
+    "routerBudgetTokens": 1200,
+    "catalogChunkBudgetTokens": 7000,
+    "answerPreviewBudgetTokens": 500,
+    "explanationBudgetTokens": 1800,
+    "policy": "Send only the top catalog chunk, structured extracted inputs, source labels, and tool-call schema to a provider. Never send the full public catalog or raw sensitive user content by default.",
+    "compression": [
+      "compact tool records to id, route, title, category, sourcePolicy, safetyDomain, required inputs, and hints",
+      "bucket prompt length in analytics instead of storing raw prompts",
+      "summarize previous workflow state into sanitized structured inputs before any consented model call"
+    ]
+  },
+  "trainingDataStrategy": {
+    "sources": [
+      "generated synthetic tool-call corpus",
+      "held-out model-training splits",
+      "sanitized router feedback metadata",
+      "manually reviewed drift-intake examples",
+      "public router-safe tool catalog records"
+    ],
+    "forbiddenSources": [
+      "raw CV text",
+      "raw document/PDF contents",
+      "emails, phone numbers, account identifiers, or private profile data",
+      "salary, legal, health, financial, or education-profile details unless converted into sanitized non-identifying fixtures"
+    ],
+    "evaluation": "Promote routing, prompt, or fine-tune changes only after held-out tool-call evals, privacy guardrail tests, and browser workflow checks pass."
+  },
+  "modelPath": [
+    {
+      "stage": "stage_0_local_answer_engine",
+      "description": "Use deterministic extraction, retrieval, and answer previews for obvious user tasks with zero provider cost."
+    },
+    {
+      "stage": "stage_1_consent_model_router",
+      "description": "Use the existing provider port only when the deterministic result is ambiguous and the user consents."
+    },
+    {
+      "stage": "stage_2_router_fine_tune",
+      "description": "Fine-tune or distill a small tool-call router on sanitized synthetic and reviewed examples, not on private user text."
+    },
+    {
+      "stage": "stage_3_domain_small_model",
+      "description": "Train AfroTools-owned domain models for routing and explanation style after corpus scale, eval quality, cost, and privacy controls are proven. This is the realistic path toward DeepSeek-like capability, not a first release dependency."
+    }
+  ],
   "layers": [
     {
       "id": "interfaces",

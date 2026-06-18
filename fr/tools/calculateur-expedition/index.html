@@ -1,49 +1,508 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur d’expédition | AfroTools</title>
-<meta name="description" content="Estimez les coûts d’expédition pour vos envois à destination ou en provenance d’Afrique. Notre calculateur prend en compte le poids, les dimensions et la d">
-<link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-expedition/">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Calculateur d’expédition | AfroTools">
-<meta property="og:description" content="Estimez les coûts d’expédition pour vos envois à destination ou en provenance d’Afrique. Notre calculateur prend en compte le poids, les dimensions et la d">
-<meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-expedition/">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
-<script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/shipping-calc.webp">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/shipping-calc.webp">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/shipping-calc/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-expedition/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/shipping-calc/" />
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur d’expédition | AfroTools">
-<meta name="twitter:description" content="Estimez les coûts d’expédition pour vos envois à destination ou en provenance d’Afrique. Notre calculateur prend en compte le poids, les dimensions et la d">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Calculateur d'expedition | AfroTools</title>
+  <meta name="description" content="Estimez le cout d expedition, le poids volumetrique, le poids facturable, les frais locaux et une marge de risque pour vos colis vers ou depuis l Afrique.">
+  <link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-expedition/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Calculateur d'expedition | AfroTools">
+  <meta property="og:description" content="Estimez le cout d expedition, le poids volumetrique, le poids facturable, les frais locaux et une marge de risque pour vos colis vers ou depuis l Afrique.">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-expedition/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/shipping-calc.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Calculateur d'expedition | AfroTools">
+  <meta name="twitter:description" content="Estimez le cout d expedition, le poids volumetrique, le poids facturable, les frais locaux et une marge de risque pour vos colis vers ou depuis l Afrique.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/shipping-calc.webp">
+  <meta name="tool-id" content="calculateur-expedition-fr">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/shipping-calc/">
+  <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-expedition/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/shipping-calc/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script src="/assets/js/components/business-cta.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculateur d'expedition AfroTools",
+    "url": "https://afrotools.com/fr/tools/calculateur-expedition/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Calculateur de poids volumetrique, poids facturable et cout d'expedition pour colis vers ou depuis l'Afrique.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Ce calculateur donne-t-il un devis officiel de transporteur ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il fournit une estimation de planification. Confirmez toujours le tarif, le diviseur volumetrique, les restrictions et les taxes avec le transporteur, le transitaire ou l'autorite douaniere concernee."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Comment le poids facturable est-il calcule ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le poids volumetrique est calcule avec longueur x largeur x hauteur divise par le diviseur choisi. Le poids facturable correspond au plus grand chiffre entre le poids reel total et le poids volumetrique total."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Les droits de douane sont-ils inclus ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Le champ valeur declaree aide a estimer l'assurance et le risque, mais ce calculateur ne remplace pas un calcul de droits de douane, de TVA d'importation ou de courtage."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:#f6f8fb;color:#111827;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:#1d4ed8}
+    button,input,select{font:inherit}
+    .ship-wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+    .ship-hero{background:#101827;color:#fff;padding:42px 0 34px}
+    .ship-breadcrumb{font-size:.82rem;color:#cbd5e1;margin-bottom:16px}
+    .ship-breadcrumb a{color:#e2e8f0;text-decoration:none}
+    .ship-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:end}
+    .ship-kicker{margin:0 0 10px;color:#93c5fd;font-size:.78rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+    .ship-title{margin:0 0 14px;font-size:clamp(2.1rem,5vw,4rem);line-height:1;letter-spacing:-.05em}
+    .ship-lede{margin:0;max-width:720px;color:#dbeafe;font-size:1rem;line-height:1.7}
+    .ship-hero-card{background:#fff;color:#111827;border-radius:8px;padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.22)}
+    .ship-hero-card h2{margin:0 0 12px;font-size:.88rem;text-transform:uppercase;letter-spacing:.1em;color:#64748b}
+    .ship-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .ship-stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px}
+    .ship-stat strong{display:block;font-size:1.25rem;color:#0f172a}
+    .ship-stat span{display:block;margin-top:6px;color:#64748b;font-size:.75rem;font-weight:800}
+    .ship-main{padding:28px 0 44px}
+    .ship-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+    .ship-card{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:20px;box-shadow:0 14px 34px rgba(15,23,42,.05)}
+    .ship-card h2{margin:0 0 14px;font-size:1.2rem;color:#0f172a}
+    .ship-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .ship-field label{display:block;margin-bottom:6px;color:#475569;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .ship-field input,.ship-field select{width:100%;min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#111827;padding:0 12px}
+    .ship-field input:focus,.ship-field select:focus,.ship-btn:focus-visible{outline:3px solid rgba(37,99,235,.22);outline-offset:2px}
+    .ship-full{grid-column:1/-1}
+    .ship-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .ship-btn{border:1px solid transparent;border-radius:8px;background:#2563eb;color:#fff;min-height:44px;padding:0 16px;font-weight:900;cursor:pointer}
+    .ship-btn.secondary{background:#fff;color:#1f2937;border-color:#cbd5e1}
+    .ship-btn.gold{background:#f59e0b;color:#111827}
+    .ship-result{display:grid;gap:12px}
+    .ship-total{background:#0f172a;color:#fff;border-radius:8px;padding:18px}
+    .ship-total span{display:block;color:#bfdbfe;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em}
+    .ship-total strong{display:block;margin-top:8px;font-size:2rem;letter-spacing:-.03em}
+    .ship-metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .ship-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px}
+    .ship-metric span{display:block;color:#64748b;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .ship-metric strong{display:block;margin-top:6px;color:#0f172a;font-size:1.1rem}
+    .ship-breakdown{margin:0;padding:0;list-style:none;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
+    .ship-breakdown li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#475569;font-size:.9rem}
+    .ship-breakdown li:last-child{border-bottom:0}
+    .ship-breakdown strong{color:#111827}
+    .ship-note{margin:0;color:#64748b;font-size:.84rem;line-height:1.6}
+    .ship-warning{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:8px;padding:12px;font-size:.86rem;line-height:1.6}
+    .ship-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .ship-info-card{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px}
+    .ship-info-card h2{margin:0 0 10px;font-size:1.05rem;color:#0f172a}
+    .ship-info-card p,.ship-info-card li{color:#475569;font-size:.9rem;line-height:1.68}
+    .ship-info-card ul{margin:10px 0 0;padding-left:18px}
+    .ship-source-list{list-style:none!important;padding:0!important;display:grid;gap:9px}
+    .ship-source-list a{font-weight:800;text-decoration:underline;text-underline-offset:3px}
+    .ship-status{min-height:22px;color:#475569;font-size:.86rem;font-weight:800}
+    @media (max-width:900px){
+      .ship-hero-grid,.ship-grid,.ship-info-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:640px){
+      .ship-wrap{padding:0 16px}
+      .ship-form,.ship-metric-grid{grid-template-columns:1fr}
+      .ship-actions .ship-btn{width:100%}
+    }
+  </style>
 </head>
 <body>
-<afro-navbar></afro-navbar>
+<afro-navbar active="ecommerce"></afro-navbar>
 <main>
-<section class="hero-section" style="padding:3rem 1rem;text-align:center">
-<h1>Calculateur d’expédition</h1>
-</section>
-<section style="max-width:960px;margin:0 auto;padding:1rem">
-<iframe src="/tools/shipping-calc/" style="width:100%;min-height:700px;border:none;border-radius:12px" loading="lazy" title="Calculateur d’expédition"></iframe>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<p>Estimez les coûts d’expédition pour vos envois à destination ou en provenance d’Afrique. Notre calculateur prend en compte le poids, les dimensions et la destination.</p>
-<p>Planifiez vos envois internationaux vers l’Afrique avec des estimations fiables. L’outil compare les tarifs DHL, FedEx, UPS et transporteurs locaux avec les frais de douane estimés.</p>
-</section>
-<section style="max-width:760px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Quels transporteurs sont comparés ?</summary><p>Nous comparons les tarifs de DHL, FedEx, UPS, Aramex et des transporteurs locaux africains pour trouver la meilleure option.</p></details>
-<details><summary>Les frais de douane sont-ils inclus ?</summary><p>L’outil fournit une estimation des droits de douane et taxes à l’importation basée sur la nature des marchandises et le pays de destination.</p></details>
-<details><summary>Quel est le délai de livraison ?</summary><p>Les délais varient selon le transporteur et la destination : de 3-5 jours pour l’express à 2-4 semaines pour le fret maritime.</p></details>
-</section>
+  <section class="ship-hero">
+    <div class="ship-wrap">
+      <nav class="ship-breadcrumb" aria-label="Fil d'Ariane">
+        <a href="/fr/">Accueil</a> / <a href="/fr/transport/">Transport</a> / Calculateur d'expedition
+      </nav>
+      <div class="ship-hero-grid">
+        <div>
+          <p class="ship-kicker">Planification colis et fret</p>
+          <h1 class="ship-title">Calculateur d'expedition</h1>
+          <p class="ship-lede">Estimez le poids volumetrique, le poids facturable et le cout total de planification avant de demander un devis a un transporteur ou transitaire.</p>
+        </div>
+        <aside class="ship-hero-card" aria-label="Resume rapide">
+          <h2>Ce que l'outil calcule</h2>
+          <div class="ship-stat-grid">
+            <div class="ship-stat"><strong>kg</strong><span>Poids facturable</span></div>
+            <div class="ship-stat"><strong>%</strong><span>Marge de risque</span></div>
+            <div class="ship-stat"><strong>TXT</strong><span>Export local</span></div>
+            <div class="ship-stat"><strong>2026</strong><span>Sources revues</span></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="ship-main">
+    <div class="ship-wrap ship-grid">
+      <section class="ship-card" aria-labelledby="calculator-title">
+        <h2 id="calculator-title">1. Entrez les donnees du colis</h2>
+        <form class="ship-form" id="shipForm">
+          <div class="ship-field">
+            <label for="originCountry">Origine</label>
+            <select id="originCountry">
+              <option>Nigeria</option>
+              <option>Ghana</option>
+              <option>Kenya</option>
+              <option>Afrique du Sud</option>
+              <option>France</option>
+              <option>Royaume-Uni</option>
+              <option>Emirats arabes unis</option>
+              <option>Chine</option>
+            </select>
+          </div>
+          <div class="ship-field">
+            <label for="destinationCountry">Destination</label>
+            <select id="destinationCountry">
+              <option>Ghana</option>
+              <option>Nigeria</option>
+              <option>Kenya</option>
+              <option>Afrique du Sud</option>
+              <option>France</option>
+              <option>Royaume-Uni</option>
+              <option>Emirats arabes unis</option>
+              <option>Chine</option>
+            </select>
+          </div>
+          <div class="ship-field">
+            <label for="currency">Devise du scenario</label>
+            <select id="currency">
+              <option value="USD">USD</option>
+              <option value="NGN">NGN</option>
+              <option value="GHS">GHS</option>
+              <option value="KES">KES</option>
+              <option value="ZAR">ZAR</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+          <div class="ship-field">
+            <label for="mode">Mode / diviseur</label>
+            <select id="mode">
+              <option value="5000">Express colis, cm/kg / 5000</option>
+              <option value="6000">Fret aerien, cm/kg / 6000</option>
+              <option value="3000">Route, scenario prudent / 3000</option>
+              <option value="1000">LCL maritime, volume / 1000</option>
+            </select>
+          </div>
+          <div class="ship-field">
+            <label for="packages">Nombre de colis</label>
+            <input id="packages" type="number" min="1" step="1" value="3">
+          </div>
+          <div class="ship-field">
+            <label for="actualWeight">Poids reel par colis (kg)</label>
+            <input id="actualWeight" type="number" min="0" step="0.1" value="8">
+          </div>
+          <div class="ship-field">
+            <label for="lengthCm">Longueur (cm)</label>
+            <input id="lengthCm" type="number" min="1" step="1" value="50">
+          </div>
+          <div class="ship-field">
+            <label for="widthCm">Largeur (cm)</label>
+            <input id="widthCm" type="number" min="1" step="1" value="40">
+          </div>
+          <div class="ship-field">
+            <label for="heightCm">Hauteur (cm)</label>
+            <input id="heightCm" type="number" min="1" step="1" value="35">
+          </div>
+          <div class="ship-field">
+            <label for="rateKg">Tarif estime par kg</label>
+            <input id="rateKg" type="number" min="0" step="0.01" value="7.5">
+          </div>
+          <div class="ship-field">
+            <label for="declaredValue">Valeur declaree</label>
+            <input id="declaredValue" type="number" min="0" step="1" value="650">
+          </div>
+          <div class="ship-field">
+            <label for="insurancePct">Assurance (%)</label>
+            <input id="insurancePct" type="number" min="0" step="0.1" value="1.5">
+          </div>
+          <div class="ship-field">
+            <label for="localFees">Collecte, livraison, courtage</label>
+            <input id="localFees" type="number" min="0" step="1" value="45">
+          </div>
+          <div class="ship-field">
+            <label for="packagingFees">Emballage et manutention fixe</label>
+            <input id="packagingFees" type="number" min="0" step="1" value="20">
+          </div>
+          <div class="ship-field">
+            <label for="fuelPct">Surcharge carburant / handling (%)</label>
+            <input id="fuelPct" type="number" min="0" step="0.1" value="12">
+          </div>
+          <div class="ship-field">
+            <label for="riskPct">Marge devise et risque (%)</label>
+            <input id="riskPct" type="number" min="0" step="0.1" value="8">
+          </div>
+        </form>
+        <div class="ship-actions">
+          <button class="ship-btn" type="button" id="calcBtn">Calculer</button>
+          <button class="ship-btn secondary" type="button" id="sampleBtn">Exemple PME</button>
+          <button class="ship-btn secondary" type="button" id="copyBtn">Copier</button>
+          <button class="ship-btn gold" type="button" id="downloadBtn">Telecharger TXT</button>
+          <button class="ship-btn secondary" type="button" id="saveBtn">Sauvegarder localement</button>
+        </div>
+        <p class="ship-note" id="statusText" aria-live="polite">Pret. Modifiez les hypotheses puis lancez le calcul.</p>
+      </section>
+
+      <aside class="ship-card" aria-labelledby="result-title">
+        <h2 id="result-title">2. Resultat</h2>
+        <div class="ship-result" id="resultPanel">
+          <div class="ship-total"><span>Cout total estime</span><strong id="totalCost">--</strong></div>
+          <div class="ship-metric-grid">
+            <div class="ship-metric"><span>Poids reel total</span><strong id="actualTotal">--</strong></div>
+            <div class="ship-metric"><span>Poids volumetrique</span><strong id="volumeTotal">--</strong></div>
+            <div class="ship-metric"><span>Poids facturable</span><strong id="chargeableTotal">--</strong></div>
+            <div class="ship-metric"><span>Risque prix</span><strong id="riskLevel">--</strong></div>
+          </div>
+          <ul class="ship-breakdown" id="breakdownList" aria-label="Ventilation du calcul"></ul>
+          <div class="ship-warning" id="warningText">Avertissement: estimation seulement. Confirmez avec le transporteur ou le transitaire avant expedition.</div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="ship-wrap ship-info-grid">
+      <section class="ship-info-card" data-tool-verification-panel aria-label="Methodologie, sources et verification">
+        <h2>Methodologie et hypotheses</h2>
+        <p>Nous calculons le volume par colis avec la formule longueur x largeur x hauteur / diviseur. Le poids facturable est le plus grand chiffre entre le poids reel total et le poids volumetrique total. Le cout total ajoute ensuite le fret, les frais locaux, l'emballage, l'assurance, une surcharge carburant/manutention et une marge de risque.</p>
+        <ul>
+          <li>Calcul mis a jour et derniere verification des sources: 2026-06-17.</li>
+          <li>Le diviseur par defaut 5000 est courant pour les colis express en cm/kg, mais il peut changer selon le transporteur, le pays et le contrat.</li>
+          <li>Ce calculateur ne calcule pas les droits de douane, la TVA d'importation, les restrictions produit ou les frais reels d'un courtier.</li>
+          <li>Confirmez avec DHL, FedEx, UPS, un transitaire ou l'autorite douaniere avant une decision finale.</li>
+        </ul>
+      </section>
+      <section class="ship-info-card">
+        <h2>Sources &amp; verification</h2>
+        <ul class="ship-source-list">
+          <li><a href="https://aviationcargo.dhl.com/business-tools/volume-calculator" target="_blank" rel="noopener">DHL Aviation Cargo - volume calculator</a></li>
+          <li><a href="https://www.fedex.com.cn/en-cn/customer-support/faq/invoices-and-payments/fees-and-charges/calculate-dimensional-weight.html" target="_blank" rel="noopener">FedEx - dimensional weight formula</a></li>
+          <li><a href="https://www.ups.com/us/en/support/shipping-support/shipping-dimensions-weight" target="_blank" rel="noopener">UPS - shipping dimensions and weight</a></li>
+          <li><a href="https://www.wcoomd.org/en/topics/valuation/overview/faq-valuation.aspx" target="_blank" rel="noopener">World Customs Organization - customs valuation FAQ</a></li>
+          <li><a href="https://www.wto.org/english/tratop_e/cusval_e/cusval_info_e.htm" target="_blank" rel="noopener">WTO - customs valuation technical information</a></li>
+        </ul>
+        <p class="ship-note">Non officiel: AfroTools ne remplace pas un devis, une declaration douaniere, un contrat de transport, une facture commerciale ou un conseil professionnel.</p>
+      </section>
+    </div>
+
+    <div class="ship-wrap" style="margin-top:18px">
+      <afro-business-cta
+        tool-name="Calculateur d'expedition"
+        save-note="Sauvegardez un scenario de colis, exportez le resume TXT, puis demandez un devis confirme a un transporteur ou transitaire."></afro-business-cta>
+    </div>
+
+    <div class="ship-wrap ship-info-grid">
+      <section class="ship-info-card">
+        <h2>Questions frequentes</h2>
+        <details><summary>Quels transporteurs sont compares ?</summary><p>L'outil ne compare pas des tarifs en direct. Il vous aide a preparer un scenario avec un poids facturable et des hypotheses que vous pouvez ensuite verifier avec DHL, FedEx, UPS, Aramex, un transitaire ou un transporteur local.</p></details>
+        <details><summary>Pourquoi le poids volumetrique peut-il depasser le poids reel ?</summary><p>Un colis leger mais volumineux occupe plus d'espace. Les transporteurs peuvent donc facturer selon le poids volumetrique lorsque celui-ci est superieur au poids reel.</p></details>
+        <details><summary>Comment utiliser le resultat ?</summary><p>Copiez ou telechargez le resume, puis envoyez-le avec les dimensions, la valeur declaree, le mode de transport et la destination a un prestataire pour obtenir un devis officiel.</p></details>
+      </section>
+      <section class="ship-info-card">
+        <h2>Outils lies</h2>
+        <ul>
+          <li><a href="/fr/tools/droits-douane/">Calculateur droits de douane</a></li>
+          <li><a href="/fr/tools/estimateur-fret/">Estimateur de fret</a></li>
+          <li><a href="/fr/tools/liste-colisage/">Liste de colisage</a></li>
+          <li><a href="/tools/invoice-generator/">Generateur de facture</a></li>
+          <li><a href="/fr/trade/">Commerce international</a></li>
+        </ul>
+      </section>
+    </div>
+  </section>
 </main>
 <afro-footer></afro-footer>
+<script>
+  (function(){
+    "use strict";
+    var STORAGE_KEY="afrotools_calculateur_expedition_fr_v1";
+    var lastResult=null;
+    function $(id){return document.getElementById(id);}
+    function num(id){
+      var value=Number($(id).value);
+      return Number.isFinite(value)?value:0;
+    }
+    function money(value){
+      var currency=$("currency").value;
+      return new Intl.NumberFormat("fr-FR",{style:"currency",currency:currency,maximumFractionDigits:2}).format(value);
+    }
+    function kg(value){
+      return new Intl.NumberFormat("fr-FR",{maximumFractionDigits:2}).format(value)+" kg";
+    }
+    function setStatus(text){$("statusText").textContent=text;}
+    function calculate(){
+      var packages=Math.max(1,Math.round(num("packages")));
+      var actualEach=Math.max(0,num("actualWeight"));
+      var length=Math.max(1,num("lengthCm"));
+      var width=Math.max(1,num("widthCm"));
+      var height=Math.max(1,num("heightCm"));
+      var divisor=Math.max(1,Number($("mode").value));
+      var actualTotal=packages*actualEach;
+      var volumetricEach=(length*width*height)/divisor;
+      var volumetricTotal=volumetricEach*packages;
+      var chargeable=Math.max(actualTotal,volumetricTotal);
+      var freight=chargeable*Math.max(0,num("rateKg"));
+      var insurance=Math.max(0,num("declaredValue"))*(Math.max(0,num("insurancePct"))/100);
+      var fixed=Math.max(0,num("localFees"))+Math.max(0,num("packagingFees"));
+      var fuel=(freight+insurance+fixed)*(Math.max(0,num("fuelPct"))/100);
+      var subtotal=freight+insurance+fixed+fuel;
+      var risk=subtotal*(Math.max(0,num("riskPct"))/100);
+      var total=subtotal+risk;
+      var density=actualTotal/Math.max(1,(length*width*height*packages)/1000000);
+      var riskLabel=chargeable>actualTotal*1.35?"Volume eleve":(num("riskPct")>=10?"Marge prudente":"Standard");
+      lastResult={
+        date:"2026-06-17",
+        origin:$("originCountry").value,
+        destination:$("destinationCountry").value,
+        currency:$("currency").value,
+        packages:packages,
+        dimensions:length+" x "+width+" x "+height+" cm",
+        divisor:divisor,
+        actualTotal:actualTotal,
+        volumetricTotal:volumetricTotal,
+        chargeable:chargeable,
+        freight:freight,
+        insurance:insurance,
+        fixed:fixed,
+        fuel:fuel,
+        risk:risk,
+        total:total,
+        density:density,
+        riskLabel:riskLabel
+      };
+      render(lastResult);
+      setStatus("Calcul mis a jour. Vous pouvez copier, telecharger ou sauvegarder ce scenario.");
+      return lastResult;
+    }
+    function render(result){
+      $("totalCost").textContent=money(result.total);
+      $("actualTotal").textContent=kg(result.actualTotal);
+      $("volumeTotal").textContent=kg(result.volumetricTotal);
+      $("chargeableTotal").textContent=kg(result.chargeable);
+      $("riskLevel").textContent=result.riskLabel;
+      $("breakdownList").innerHTML=[
+        ["Fret estime",money(result.freight)],
+        ["Frais locaux et emballage",money(result.fixed)],
+        ["Assurance estimee",money(result.insurance)],
+        ["Surcharge carburant / handling",money(result.fuel)],
+        ["Marge devise et risque",money(result.risk)]
+      ].map(function(row){return "<li><span>"+row[0]+"</span><strong>"+row[1]+"</strong></li>";}).join("");
+      $("warningText").textContent="Avertissement: estimation seulement. Poids facturable base sur "+kg(result.chargeable)+" avec un diviseur "+result.divisor+". Verifiez le devis, les taxes, les restrictions et les delais avec le prestataire.";
+    }
+    function summary(){
+      var result=lastResult||calculate();
+      return [
+        "AfroTools - Calculateur d'expedition",
+        "Origine: "+result.origin,
+        "Destination: "+result.destination,
+        "Colis: "+result.packages+" x "+result.dimensions,
+        "Diviseur: "+result.divisor,
+        "Poids reel total: "+kg(result.actualTotal),
+        "Poids volumetrique: "+kg(result.volumetricTotal),
+        "Poids facturable: "+kg(result.chargeable),
+        "Fret estime: "+money(result.freight),
+        "Frais locaux et emballage: "+money(result.fixed),
+        "Assurance estimee: "+money(result.insurance),
+        "Surcharge: "+money(result.fuel),
+        "Marge risque: "+money(result.risk),
+        "Total estime: "+money(result.total),
+        "",
+        "Methodologie: poids volumetrique = longueur x largeur x hauteur / diviseur. Le poids facturable est le maximum entre poids reel et poids volumetrique.",
+        "Avertissement: estimation seulement, non officiel, ne remplace pas un devis transporteur, un calcul de douane ou un conseil professionnel."
+      ].join("\\n");
+    }
+    function copy(){
+      var text=summary();
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){setStatus("Resume copie.");},function(){setStatus(text);});
+      }else{
+        setStatus(text);
+      }
+    }
+    function download(){
+      var blob=new Blob([summary()],{type:"text/plain;charset=utf-8"});
+      var url=URL.createObjectURL(blob);
+      var link=document.createElement("a");
+      link.href=url;
+      link.download="afrotools-calculateur-expedition.txt";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Resume telecharge.");
+    }
+    function save(){
+      var result=lastResult||calculate();
+      try{
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(result));
+        setStatus("Scenario sauvegarde dans ce navigateur.");
+      }catch(error){
+        setStatus("Impossible de sauvegarder localement sur ce navigateur.");
+      }
+    }
+    function sample(){
+      $("originCountry").value="France";
+      $("destinationCountry").value="Nigeria";
+      $("currency").value="EUR";
+      $("mode").value="5000";
+      $("packages").value="4";
+      $("actualWeight").value="6.5";
+      $("lengthCm").value="45";
+      $("widthCm").value="38";
+      $("heightCm").value="32";
+      $("rateKg").value="8.2";
+      $("declaredValue").value="900";
+      $("insurancePct").value="1.2";
+      $("localFees").value="65";
+      $("packagingFees").value="25";
+      $("fuelPct").value="11";
+      $("riskPct").value="9";
+      calculate();
+    }
+    $("calcBtn").addEventListener("click",calculate);
+    $("sampleBtn").addEventListener("click",sample);
+    $("copyBtn").addEventListener("click",copy);
+    $("downloadBtn").addEventListener("click",download);
+    $("saveBtn").addEventListener("click",save);
+    Array.prototype.forEach.call(document.querySelectorAll("#shipForm input,#shipForm select"),function(node){
+      node.addEventListener("change",calculate);
+    });
+    calculate();
+  })();
+</script>
 </body>
 </html>

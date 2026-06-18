@@ -366,6 +366,31 @@ function calculate(){
   document.getElementById('adviceList').innerHTML=advice.map(a=>`<li>${a}</li>`).join('');
 
   document.getElementById('resultCard').style.display='block';
+
+  if (window.AfroHealthWorkflow && typeof window.AfroHealthWorkflow.recordSnapshot === 'function') {
+    window.AfroHealthWorkflow.recordSnapshot({
+      toolId: 'diabetes-risk',
+      headline: level + ' - score ' + score + '/30',
+      resultText: desc,
+      fields: [
+        { label: 'Risk score', value: score + '/30' },
+        { label: 'Risk band', value: level }
+      ],
+      markers: [
+        { label: 'Diabetes risk band', value: level, unit: 'screening band', status: score >= 12 ? 'follow-up' : 'monitor' }
+      ],
+      clinicianQuestions: [
+        'Should I get fasting glucose or HbA1c screening based on this risk profile?',
+        'How often should I repeat screening if my risk factors change?'
+      ],
+      nextSteps: [
+        'Use this as a screening prompt, not a diagnosis.',
+        'Discuss moderate or higher risk with a qualified health worker.'
+      ],
+      sourceNotes: ['FINDRISC-style diabetes risk screening adapted for planning conversations.']
+    });
+  }
+
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
 </script>

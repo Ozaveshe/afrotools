@@ -12,7 +12,7 @@ const {
   listActiveSources
 } = require('./market-data-ingest');
 
-const USER_AGENT = 'Mozilla/5.0 AfroTools/1.0 (+https://afrotools.com)';
+const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36 AfroTools/1.0 (+https://afrotools.com)';
 const WISE_RECEIVE_CURRENCY = {
   NG: 'NGN',
   GH: 'GHS',
@@ -29,6 +29,7 @@ function decodeHtmlEntities(value) {
   return String(value || '')
     .replace(/&nbsp;/gi, ' ')
     .replace(/&#0?39;/g, "'")
+    .replace(/&#8211;|&#x2013;/gi, '-')
     .replace(/&amp;/gi, '&')
     .replace(/&quot;/gi, '"')
     .replace(/&lt;/gi, '<')
@@ -50,6 +51,7 @@ async function fetchText(url) {
   const response = await fetch(url, {
     headers: {
       'user-agent': USER_AGENT,
+      'accept-language': 'en-US,en;q=0.9',
       accept: 'text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.8'
     }
   });
@@ -63,6 +65,7 @@ async function fetchPdfText(url) {
   const response = await fetch(url, {
     headers: {
       'user-agent': USER_AGENT,
+      'accept-language': 'en-US,en;q=0.9',
       accept: 'application/pdf,*/*'
     }
   });
@@ -89,6 +92,9 @@ function buildWiseQuoteRecords(source, text) {
   const amountMatch = text.match(/The cheapest way to send\s+([\d,]+)\s+USD/i) ||
     text.match(/Sending\s+([\d,]+)\s+USD\s+Transfer cost/i);
   const sendAmount = normalizeNumber((amountMatch?.[1] || '').replace(/,/g, '')) || null;
+  if (!sendAmount) {
+    throw new Error('Could not parse Wise send amount for ' + source.source_key);
+  }
 
   const cheapestMatch = text.match(/The cheapest way to send[\s\S]{0,160}?costs\s+(\d+(?:\.\d{1,2})?)\s+USD/i);
   const directDebitMatch = text.match(/Direct debit\s+(\d+(?:\.\d{1,2})?)\s+USD/i) ||
@@ -403,12 +409,13 @@ async function collectUgMtnInternationalFees(source) {
 
 async function collectUgMtnMerchantWallet(source) {
   const text = cleanHtmlText(await fetchText(source.base_url));
+  const normalizedText = text.replace(/\u2013/g, '-').replace(/\u00e2\u20ac\u201c/g, '-');
   const tiers = [
     { amount_band: 'UGX 1-2,500', fee_amount: 25, pattern: /1-\s*2,500\s+25/i },
     { amount_band: 'UGX 2,501-5,000', fee_amount: 50, pattern: /2,501\s*[–-]\s*5,000\s+50/i },
     { amount_band: 'UGX 5,001-10,000', fee_amount: 100, pattern: /5,001\s*[–-]\s*10,000\s+100/i }
   ];
-  if (!tiers.every(function (tier) { return tier.pattern.test(text); })) {
+  if (!tiers.every(function (tier) { return tier.pattern.test(normalizedText); })) {
     throw new Error('Could not verify MTN Uganda merchant payer tiers');
   }
 
@@ -451,6 +458,11 @@ function getCollector(source) {
 }
 
 async function refreshOneSource(source, options) {
+  const collector = getCollector(source);
+  if (!collector) {
+    return { source_key: source.source_key, status: 'unsupported' };
+  }
+
   const run = await createRun(source.id, source.dataset, {
     trigger: options?.trigger || 'scheduled-refresh-market-data',
     collector: source.source_key,
@@ -459,19 +471,6 @@ async function refreshOneSource(source, options) {
   });
 
   try {
-    const collector = getCollector(source);
-    if (!collector) {
-      await finishRun(run?.id, {
-        status: 'failed',
-        records_seen: 0,
-        records_inserted: 0,
-        records_published: 0,
-        error_summary: 'No collector registered for source_key ' + source.source_key
-      });
-      await markSourceFailure(source.id);
-      return { source_key: source.source_key, status: 'unsupported' };
-    }
-
     const records = await collector(source);
     if (!Array.isArray(records) || !records.length) {
       throw new Error('Collector returned no records');

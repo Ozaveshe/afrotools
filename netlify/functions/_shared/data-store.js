@@ -122,7 +122,7 @@ async function setData(key, data) {
   // 1. Write to Supabase (primary — upsert)
   if (SUPABASE_KEY) {
     try {
-      var res = await fetch(SUPABASE_URL + '/rest/v1/live_data_store', {
+      var res = await fetch(SUPABASE_URL + '/rest/v1/live_data_store?on_conflict=key', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

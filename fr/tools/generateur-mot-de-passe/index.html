@@ -4,102 +4,593 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
-<title>Generateur de mot de passe | AfroTools</title>
-<meta name="description" content="Generateur de mots de passe securises gratuit. Personnalisez longueur et complexite. Evaluation de la force du mot de passe incluse.">
+<title>Generateur de mot de passe | Local Web Crypto | AfroTools</title>
+<meta name="description" content="Generez des mots de passe ou phrases secretes dans votre navigateur avec Web Crypto, entropie estimee, copie, export et sources NIST OWASP.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/generateur-mot-de-passe/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:title" content="Generateur de mot de passe | AfroTools">
-<meta property="og:description" content="Generateur de mots de passe securises gratuit. Personnalisez longueur et complexite.">
+<meta property="og:description" content="Generez localement des mots de passe et phrases secretes avec Web Crypto, entropie estimee et export.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/password-gen.webp">
 <meta property="og:url" content="https://afrotools.com/fr/tools/generateur-mot-de-passe/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Generateur de mot de passe | AfroTools">
-<meta name="twitter:description" content="Generateur de mots de passe securises gratuit. Personnalisez longueur et complexite. Evaluation de la force du mot de passe incluse.">
+<meta name="twitter:description" content="Generez localement des mots de passe et phrases secretes avec Web Crypto, entropie estimee et export.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/password-gen.webp">
 <meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+  :root {
+    --pw-ink: #101828;
+    --pw-muted: #5d6c82;
+    --pw-line: #d9e3f0;
+    --pw-soft: #f4f8fc;
+    --pw-card: #ffffff;
+    --pw-blue: #2757c5;
+    --pw-green: #147a54;
+    --pw-red: #b42318;
+    --pw-gold: #9a6500;
+  }
+  body { background: #f6f8fb; color: var(--pw-ink); }
+  .pw-wrap { max-width: 1180px; margin: 0 auto; padding: 32px 18px 58px; }
+  .pw-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(330px, .9fr);
+    gap: 24px;
+    align-items: start;
+    margin: 18px 0 24px;
+  }
+  .pw-panel, .pw-card {
+    background: var(--pw-card);
+    border: 1px solid var(--pw-line);
+    border-radius: 8px;
+    box-shadow: 0 18px 40px rgba(16, 24, 40, .06);
+  }
+  .pw-panel { padding: 30px; }
+  .pw-eyebrow {
+    margin: 0 0 12px;
+    color: var(--pw-blue);
+    font-size: .75rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  h1 { margin: 0 0 16px; font-size: clamp(2rem, 5vw, 3.8rem); line-height: 1; letter-spacing: 0; }
+  .pw-lead { color: var(--pw-muted); line-height: 1.75; font-size: 1.05rem; max-width: 64ch; }
+  .pw-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .pw-pill {
+    border: 1px solid var(--pw-line);
+    border-radius: 999px;
+    padding: 8px 12px;
+    background: var(--pw-soft);
+    color: #24405f;
+    font-weight: 850;
+    font-size: .86rem;
+  }
+  .pw-card { padding: 22px; }
+  .pw-form { display: grid; gap: 15px; }
+  .pw-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .pw-field label, .pw-field legend {
+    display: block;
+    margin: 0 0 7px;
+    color: #23364e;
+    font-size: .84rem;
+    font-weight: 850;
+  }
+  .pw-field input, .pw-field select {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #c7d4e5;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--pw-ink);
+    padding: 11px 12px;
+    font: inherit;
+  }
+  .pw-checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .pw-checks label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 42px;
+    border: 1px solid var(--pw-line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 8px 10px;
+    font-weight: 750;
+    color: #26374f;
+  }
+  .pw-checks input { width: 18px; height: 18px; }
+  .pw-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pw-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    border: 1px solid #c7d4e5;
+    border-radius: 8px;
+    padding: 0 15px;
+    background: #fff;
+    color: #1d2d44;
+    font-weight: 850;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .pw-btn.primary { background: var(--pw-blue); border-color: var(--pw-blue); color: #fff; }
+  .pw-btn:focus-visible, .pw-field input:focus-visible, .pw-field select:focus-visible {
+    outline: 3px solid rgba(39, 87, 197, .22);
+    outline-offset: 2px;
+  }
+  .pw-warning {
+    display: none;
+    border-left: 4px solid var(--pw-gold);
+    border-radius: 8px;
+    background: #fff8e8;
+    color: #6b4300;
+    padding: 12px 14px;
+    font-weight: 750;
+    white-space: pre-line;
+  }
+  .pw-warning.show { display: block; }
+  .pw-results { display: grid; gap: 14px; margin-top: 20px; }
+  .pw-output {
+    width: 100%;
+    min-height: 170px;
+    border: 1px solid var(--pw-line);
+    border-radius: 8px;
+    padding: 16px;
+    background: #0c1727;
+    color: #e6edf7;
+    font: 1rem/1.7 Consolas, Monaco, monospace;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .pw-meter {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .pw-meter span {
+    height: 10px;
+    border-radius: 999px;
+    background: #d9e3f0;
+  }
+  .pw-meter[data-level="1"] span:nth-child(-n+1) { background: var(--pw-red); }
+  .pw-meter[data-level="2"] span:nth-child(-n+2) { background: var(--pw-gold); }
+  .pw-meter[data-level="3"] span:nth-child(-n+3) { background: #2684ff; }
+  .pw-meter[data-level="4"] span:nth-child(-n+4) { background: var(--pw-green); }
+  .pw-summary {
+    border: 1px solid var(--pw-line);
+    border-radius: 8px;
+    background: #fbfdff;
+    padding: 15px;
+    color: #22334c;
+    line-height: 1.65;
+  }
+  .pw-sections { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, .46fr); gap: 20px; margin-top: 22px; }
+  .pw-section {
+    border: 1px solid var(--pw-line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 22px;
+  }
+  .pw-section h2 { margin: 0 0 12px; font-size: 1.28rem; }
+  .pw-section p, .pw-section li { color: var(--pw-muted); line-height: 1.72; }
+  .pw-section ul, .pw-section ol { padding-left: 1.2rem; }
+  .pw-source-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .pw-source-list a {
+    display: block;
+    border: 1px solid var(--pw-line);
+    border-radius: 8px;
+    padding: 12px;
+    background: #f8fbff;
+    color: #174ea6;
+    font-weight: 850;
+    text-decoration: none;
+  }
+  .pw-faq details { border-top: 1px solid var(--pw-line); padding: 14px 0; }
+  .pw-faq summary { cursor: pointer; font-weight: 850; color: #1f3048; }
+  @media (max-width: 920px) {
+    .pw-hero, .pw-sections { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    .pw-wrap { padding-inline: 14px; }
+    .pw-panel, .pw-card, .pw-section { padding: 18px; }
+    .pw-grid-2, .pw-checks { grid-template-columns: 1fr; }
+    .pw-actions .pw-btn { flex: 1 1 150px; }
+  }
 </style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Generateur de mot de passe",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Any",
   "url": "https://afrotools.com/fr/tools/generateur-mot-de-passe/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/password-gen.webp"
+  "description": "Generateur local de mots de passe et phrases secretes avec Web Crypto, estimation d'entropie, copie et export.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Les mots de passe generes sont-ils vraiment aleatoires ?","acceptedAnswer":{"@type":"Answer","text":"Oui, l'outil utilise l'API Web Crypto du navigateur qui fournit un generateur cryptographiquement securise (CSPRNG)."}},{"@type":"Question","name":"Quelle longueur de mot de passe recommandez-vous ?","acceptedAnswer":{"@type":"Answer","text":"Un minimum de 12 caracteres avec un melange de majuscules, minuscules, chiffres et symboles. Pour les comptes sensibles, 16 caracteres ou plus."}},{"@type":"Question","name":"L'outil fonctionne-t-il hors ligne ?","acceptedAnswer":{"@type":"Answer","text":"Oui, apres le chargement initial de la page, le generateur fonctionne entierement hors ligne sans aucune connexion internet."}}]}
-</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/password-gen.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
-  }
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Les mots de passe sont-ils envoyes a un serveur ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Non. La generation se fait localement dans le navigateur. L'outil ne sauvegarde que les reglages si vous cliquez sur sauvegarder." }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle longueur choisir ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Pour un mot de passe aleatoire, 16 caracteres ou plus est un bon choix pratique. Les phrases secretes peuvent etre plus longues et plus memorisables." }
+    },
+    {
+      "@type": "Question",
+      "name": "Cet outil remplace-t-il un gestionnaire de mots de passe ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Non. Il aide a generer des secrets, mais un gestionnaire de mots de passe reste recommande pour stocker et remplir les mots de passe." }
+    }
+  ]
 }
-</style>
+</script>
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-mot-de-passe/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/generateur-mot-de-passe/" />
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Generateur de mot de passe</h1>
-<p>Generez des mots de passe securises et aleatoires. Personnalisez la longueur, les caracteres et la complexite.</p>
-</section>
-<div class="fr-wrap">
-<div class="fr-tool-frame">
-<iframe src="/tools/password-generator/" title="Generateur de mot de passe" loading="lazy"></iframe>
-</div>
-<div class="fr-seo">
-<h2>Generateur de mot de passe securise</h2>
-<p>Le generateur de mots de passe d'AfroTools cree des mots de passe cryptographiquement securises et aleatoires. Personnalisez la longueur, incluez ou excluez les majuscules, chiffres et caracteres speciaux. L'indicateur de force vous aide a choisir un mot de passe suffisamment robuste pour chaque usage.</p>
-<p>Les mots de passe sont generes localement avec l'API Web Crypto pour une entropie maximale. Aucun mot de passe n'est transmis ou stocke. Generez autant de mots de passe que necessaire pour vos comptes.</p>
-</div>
-<div class="fr-faq">
-<h2>Questions frequentes</h2>
-<details><summary>Les mots de passe generes sont-ils vraiment aleatoires ?</summary><p>Oui, l'outil utilise l'API Web Crypto du navigateur qui fournit un generateur de nombres pseudo-aleatoires cryptographiquement securise (CSPRNG).</p></details>
-<details><summary>Quelle longueur de mot de passe recommandez-vous ?</summary><p>Un minimum de 12 caracteres avec un melange de majuscules, minuscules, chiffres et symboles. Pour les comptes sensibles, utilisez 16 caracteres ou plus.</p></details>
-<details><summary>L'outil fonctionne-t-il hors ligne ?</summary><p>Oui, apres le chargement initial de la page, le generateur de mots de passe fonctionne entierement hors ligne sans aucune connexion internet.</p></details>
-</div>
-</div>
+<main class="pw-wrap">
+  <section class="pw-hero">
+    <div class="pw-panel">
+      <p class="pw-eyebrow">Securite locale</p>
+      <h1>Generateur de mot de passe</h1>
+      <p class="pw-lead">Generez des mots de passe ou phrases secretes dans votre navigateur avec `crypto.getRandomValues`. Les mots de passe ne sont pas envoyes a AfroTools, et la sauvegarde locale conserve uniquement vos reglages.</p>
+      <div class="pw-pills" aria-label="Fonctions">
+        <span class="pw-pill">Web Crypto</span>
+        <span class="pw-pill">Entropie estimee</span>
+        <span class="pw-pill">Copie et export</span>
+      </div>
+    </div>
+
+    <section class="pw-card" aria-labelledby="tool-title">
+      <h2 id="tool-title">Reglages</h2>
+      <form class="pw-form" id="password-form">
+        <div class="pw-grid-2">
+          <div class="pw-field">
+            <label for="mode">Mode</label>
+            <select id="mode">
+              <option value="password">Mot de passe aleatoire</option>
+              <option value="passphrase">Phrase secrete</option>
+            </select>
+          </div>
+          <div class="pw-field">
+            <label for="count">Nombre de sorties</label>
+            <input id="count" type="number" min="1" max="20" value="5">
+          </div>
+        </div>
+        <div class="pw-grid-2">
+          <div class="pw-field">
+            <label for="length">Longueur du mot de passe</label>
+            <input id="length" type="number" min="8" max="96" value="20">
+          </div>
+          <div class="pw-field">
+            <label for="words">Mots par phrase</label>
+            <input id="words" type="number" min="4" max="10" value="5">
+          </div>
+        </div>
+        <fieldset class="pw-checks">
+          <legend>Caracteres</legend>
+          <label><input type="checkbox" id="lower" checked> minuscules</label>
+          <label><input type="checkbox" id="upper" checked> majuscules</label>
+          <label><input type="checkbox" id="numbers" checked> chiffres</label>
+          <label><input type="checkbox" id="symbols" checked> symboles</label>
+          <label><input type="checkbox" id="exclude-ambiguous" checked> eviter 0/O/l/1</label>
+          <label><input type="checkbox" id="require-each" checked> inclure chaque type choisi</label>
+        </fieldset>
+        <div class="pw-actions">
+          <button class="pw-btn primary" type="submit">Generer</button>
+          <button class="pw-btn" type="button" id="copy-result">Copier</button>
+          <button class="pw-btn" type="button" id="download-result">Telecharger TXT</button>
+          <button class="pw-btn" type="button" id="save-settings">Sauvegarder les reglages</button>
+        </div>
+        <div class="pw-warning" id="warning" role="alert"></div>
+        <p class="pw-lead" id="status" aria-live="polite" style="font-size:.92rem;margin:0"></p>
+      </form>
+    </section>
+  </section>
+
+  <section class="pw-card" aria-labelledby="result-title">
+    <h2 id="result-title">Resultats</h2>
+    <div class="pw-results">
+      <pre class="pw-output" id="password-output" tabindex="0"></pre>
+      <div class="pw-meter" id="meter" data-level="4" aria-label="Indicateur de force estimee"><span></span><span></span><span></span><span></span></div>
+      <div class="pw-summary" id="summary-output"></div>
+    </div>
+  </section>
+
+  <div class="pw-sections">
+    <section class="pw-section">
+      <h2>Methodologie et limites</h2>
+      <p><strong>Methodologie.</strong> Le mode mot de passe construit un alphabet a partir de vos options, puis selectionne les caracteres avec `crypto.getRandomValues` et un tirage sans biais modulo. Le mode phrase secrete choisit des mots dans une liste locale. L'entropie estimee utilise `longueur x log2(taille alphabet)` ou `mots x log2(taille liste)`.</p>
+      <ul>
+        <li>La longueur compte souvent plus qu'une complexite difficile a retenir.</li>
+        <li>Ne reutilisez pas le meme secret sur plusieurs services.</li>
+        <li>Copiez ou exportez seulement dans un environnement prive.</li>
+        <li>Avertissement: cet outil ne remplace pas un gestionnaire de mots de passe, MFA, verification de fuite ou politique de securite professionnelle.</li>
+      </ul>
+    </section>
+
+    <aside class="pw-section" aria-labelledby="sources-title" data-tool-verification-panel>
+      <h2 id="sources-title">Sources &amp; verification</h2>
+      <ul class="pw-source-list">
+        <li><a href="https://csrc.nist.gov/pubs/sp/800/63/b/upd2/final" target="_blank" rel="noopener">Source officielle NIST: SP 800-63B authenticator guidelines</a></li>
+        <li><a href="https://pages.nist.gov/800-63-3/sp800-63b.html" target="_blank" rel="noopener">Reference NIST: memorized secrets</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" target="_blank" rel="noopener">Source OWASP: Authentication Cheat Sheet</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html" target="_blank" rel="noopener">Source OWASP: Password Storage Cheat Sheet</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues" target="_blank" rel="noopener">MDN Web Docs: Crypto.getRandomValues</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <section class="pw-section pw-faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions frequentes</h2>
+    <details>
+      <summary>Les mots de passe sont-ils envoyes a un serveur ?</summary>
+      <p>Non. Les secrets sont generes dans votre navigateur. Si vous sauvegardez, AfroTools stocke seulement les reglages, pas les mots de passe generes.</p>
+    </details>
+    <details>
+      <summary>Quelle longueur choisir ?</summary>
+      <p>Pour un mot de passe aleatoire, 16 caracteres ou plus est un bon choix pratique. Pour un compte tres sensible, utilisez un mot de passe long et unique, MFA, et un gestionnaire fiable.</p>
+    </details>
+    <details>
+      <summary>Pourquoi proposer une phrase secrete ?</summary>
+      <p>Une phrase secrete longue peut etre plus facile a lire ou dicter. Elle doit rester unique, aleatoire et stockee dans un endroit fiable.</p>
+    </details>
+  </section>
+
+  <section class="pw-section" aria-labelledby="related-title">
+    <h2 id="related-title">Outils lies</h2>
+    <div class="pw-actions">
+      <a class="pw-btn" href="/tools/hash-generator/">Generateur de hash</a>
+      <a class="pw-btn" href="/tools/base64-encoder/">Encodeur Base64</a>
+      <a class="pw-btn" href="/tools/qrcode/">QR Code</a>
+      <a class="pw-btn" href="/tools/meta-tag-generator/">Meta tags</a>
+    </div>
+  </section>
+</main>
 <afro-footer></afro-footer>
+<script>
+(function () {
+  'use strict';
+
+  const STORAGE_KEY = 'afrotools_generateur_mot_de_passe_fr_settings_v1';
+  const WORDS = [
+    'abidjan', 'accra', 'atlas', 'baobab', 'banque', 'bissau', 'brique', 'cacao',
+    'coton', 'dakar', 'delta', 'digue', 'douala', 'ebene', 'energie', 'fleuve',
+    'gombo', 'harissa', 'ivoire', 'jardin', 'kigali', 'kilimanjaro', 'lagon', 'lome',
+    'manguier', 'marche', 'mobile', 'naira', 'nairobi', 'orange', 'patience', 'pivot',
+    'plateau', 'recette', 'safran', 'sahara', 'sankofa', 'savane', 'soleil', 'tampon',
+    'tanger', 'tissu', 'ubuntu', 'valeur', 'village', 'yamoussoukro', 'zellige', 'zongo',
+    'ananas', 'atelier', 'budget', 'calebasse', 'civique', 'credit', 'dossier', 'etoile',
+    'facture', 'grenier', 'indice', 'kolanut', 'lampe', 'mandat', 'notaire', 'palmier',
+    'quittance', 'rappel', 'signal', 'travail', 'union', 'virement', 'wakanda', 'zenith'
+  ];
+  const SETS = {
+    lower: 'abcdefghijklmnopqrstuvwxyz',
+    upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    numbers: '0123456789',
+    symbols: '!@#$%^&*()-_=+[]{};:,.?'
+  };
+  const ambiguous = /[0Ool1I]/g;
+  const form = document.getElementById('password-form');
+  const output = document.getElementById('password-output');
+  const summary = document.getElementById('summary-output');
+  const warning = document.getElementById('warning');
+  const status = document.getElementById('status');
+  const meter = document.getElementById('meter');
+  const controls = {
+    mode: document.getElementById('mode'),
+    count: document.getElementById('count'),
+    length: document.getElementById('length'),
+    words: document.getElementById('words'),
+    lower: document.getElementById('lower'),
+    upper: document.getElementById('upper'),
+    numbers: document.getElementById('numbers'),
+    symbols: document.getElementById('symbols'),
+    excludeAmbiguous: document.getElementById('exclude-ambiguous'),
+    requireEach: document.getElementById('require-each')
+  };
+
+  function cryptoRandom(max) {
+    if (!window.crypto || !window.crypto.getRandomValues) {
+      throw new Error('Web Crypto indisponible dans ce navigateur.');
+    }
+    const array = new Uint32Array(1);
+    const limit = Math.floor(0x100000000 / max) * max;
+    do {
+      window.crypto.getRandomValues(array);
+    } while (array[0] >= limit);
+    return array[0] % max;
+  }
+
+  function shuffle(chars) {
+    const arr = chars.split('');
+    for (let i = arr.length - 1; i > 0; i -= 1) {
+      const j = cryptoRandom(i + 1);
+      const tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr.join('');
+  }
+
+  function selectedSets() {
+    const list = [];
+    ['lower', 'upper', 'numbers', 'symbols'].forEach(function (key) {
+      if (controls[key].checked) {
+        let chars = SETS[key];
+        if (controls.excludeAmbiguous.checked) chars = chars.replace(ambiguous, '');
+        if (chars) list.push({ key, chars });
+      }
+    });
+    return list;
+  }
+
+  function generatePassword(length) {
+    const sets = selectedSets();
+    if (!sets.length) throw new Error('Choisissez au moins un type de caractere.');
+    const pool = sets.map(function (set) { return set.chars; }).join('');
+    let password = '';
+    if (controls.requireEach.checked && length >= sets.length) {
+      sets.forEach(function (set) {
+        password += set.chars[cryptoRandom(set.chars.length)];
+      });
+    }
+    while (password.length < length) {
+      password += pool[cryptoRandom(pool.length)];
+    }
+    return shuffle(password);
+  }
+
+  function generatePassphrase(wordCount) {
+    const picked = [];
+    for (let i = 0; i < wordCount; i += 1) picked.push(WORDS[cryptoRandom(WORDS.length)]);
+    return picked.join('-') + '-' + String(cryptoRandom(100)).padStart(2, '0');
+  }
+
+  function estimateEntropy() {
+    if (controls.mode.value === 'passphrase') {
+      return (Number(controls.words.value) * Math.log2(WORDS.length)) + Math.log2(100);
+    }
+    const pool = selectedSets().map(function (set) { return set.chars; }).join('');
+    return Number(controls.length.value) * Math.log2(Math.max(pool.length, 1));
+  }
+
+  function level(bits) {
+    if (bits < 50) return 1;
+    if (bits < 75) return 2;
+    if (bits < 100) return 3;
+    return 4;
+  }
+
+  function build() {
+    warning.classList.remove('show');
+    warning.textContent = '';
+    const count = Math.min(Math.max(Number(controls.count.value) || 1, 1), 20);
+    const length = Math.min(Math.max(Number(controls.length.value) || 16, 8), 96);
+    const words = Math.min(Math.max(Number(controls.words.value) || 5, 4), 10);
+    controls.count.value = count;
+    controls.length.value = length;
+    controls.words.value = words;
+    const results = [];
+    try {
+      for (let i = 0; i < count; i += 1) {
+        results.push(controls.mode.value === 'passphrase' ? generatePassphrase(words) : generatePassword(length));
+      }
+      const bits = estimateEntropy();
+      const rounded = Math.round(bits);
+      output.textContent = results.join('\n');
+      meter.dataset.level = String(level(bits));
+      summary.textContent = 'Entropie estimee: environ ' + rounded + ' bits par sortie. Mode: ' + (controls.mode.value === 'passphrase' ? 'phrase secrete' : 'mot de passe aleatoire') + '. Generation locale avec Web Crypto quand disponible. Les secrets affiches ne sont pas sauvegardes automatiquement.';
+      status.textContent = 'Generation terminee.';
+      if (bits < 75) {
+        warning.textContent = 'Entropie faible ou moyenne: augmentez la longueur ou utilisez plus de mots.';
+        warning.classList.add('show');
+      }
+      return { results, bits, summary: summary.textContent };
+    } catch (error) {
+      output.textContent = '';
+      summary.textContent = '';
+      warning.textContent = error.message;
+      warning.classList.add('show');
+      status.textContent = 'Generation impossible avec ces reglages.';
+      return null;
+    }
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    const temp = document.createElement('textarea');
+    temp.value = text;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand('copy');
+    temp.remove();
+    return Promise.resolve();
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    build();
+  });
+
+  document.getElementById('copy-result').addEventListener('click', function () {
+    const result = build();
+    if (!result) return;
+    copyText(result.results.join('\n')).then(function () {
+      status.textContent = 'Secrets copies.';
+    });
+  });
+
+  document.getElementById('download-result').addEventListener('click', function () {
+    const result = build();
+    if (!result) return;
+    const text = result.results.join('\n') + '\n\n' + result.summary + '\nAvertissement: supprimez ce fichier apres import dans un gestionnaire de mots de passe.\n';
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'mots-de-passe-generes.txt';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    status.textContent = 'Fichier TXT prepare.';
+  });
+
+  document.getElementById('save-settings').addEventListener('click', function () {
+    build();
+    const settings = {
+      savedAt: new Date().toISOString(),
+      mode: controls.mode.value,
+      count: controls.count.value,
+      length: controls.length.value,
+      words: controls.words.value,
+      lower: controls.lower.checked,
+      upper: controls.upper.checked,
+      numbers: controls.numbers.checked,
+      symbols: controls.symbols.checked,
+      excludeAmbiguous: controls.excludeAmbiguous.checked,
+      requireEach: controls.requireEach.checked
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      status.textContent = 'Reglages sauvegardes localement. Les mots de passe ne sont pas sauvegardes.';
+    } catch (error) {
+      status.textContent = 'Sauvegarde locale indisponible dans ce navigateur.';
+    }
+  });
+
+  Object.values(controls).forEach(function (control) {
+    control.addEventListener('change', build);
+    control.addEventListener('input', build);
+  });
+
+  build();
+})();
+</script>
 </body>
 </html>

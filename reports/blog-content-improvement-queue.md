@@ -1,10 +1,10 @@
 # Blog Content Improvement Queue
 
-Generated: 2026-06-17T13:31:56.970Z
+Generated: 2026-06-18T03:39:06.124Z
 
 ## Summary
 - Articles classified: 201
-- Needs official-source refresh: 55
+- Needs official-source refresh: 28
 - Needs freshness review: 105
 - Needs image cleanup: 0
 - Needs metadata cleanup: 0
@@ -43,8 +43,8 @@ Generated: 2026-06-17T13:31:56.970Z
 30. inflation-rates-africa-2026-guide - monitor - Monitor
 
 ## Buckets
-- monitor: 41
-- official-refresh: 55
+- monitor: 68
+- official-refresh: 28
 - freshness: 105
 
 ## Operating Notes

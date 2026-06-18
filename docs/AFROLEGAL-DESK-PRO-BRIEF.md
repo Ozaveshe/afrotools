@@ -66,6 +66,27 @@ The shell stores draft contract rows, template lanes, client or entity records, 
 
 The export packet is a browser-generated JSON file. It is not uploaded, account-backed, e-signed, filed, or sent to any lawyer or court.
 
+## Live Supabase Check
+
+Checked on 2026-06-18 with the AfroTools Supabase MCP target. The live public schema still has no dedicated Legal Desk document, packet, signature, renewal, reminder, review, or audit tables. Matching document/workspace names were:
+
+- `vault_documents`
+- `workspace_items`
+- `user_scholarship_reminders`
+- `payroll_workspace_comments`
+
+`workspace_items` currently contains generic document/PDF and unrelated draft item types, not Legal Desk packet or reminder records. Recent API/auth/storage logs did not show Legal Desk-specific packet storage or reminder delivery activity. Treat Legal Desk as browser-local until the production schema, RLS policies, storage rules, APIs, reminder delivery, and audit trail are implemented and tested.
+
+The exported JSON packet must keep these machine-readable boundary fields:
+
+- `storageBoundary`
+- `reviewBoundary`
+- `signatureBoundary`
+- `reminderBoundary`
+- `packetContents`
+
+These fields must state that the packet is device-local JSON only, is not uploaded to Supabase, does not include lawyer review, does not provide e-signature or filing proof, and does not send renewal reminders.
+
 ## Legal Disclaimer
 
 The shell must keep this boundary visible:

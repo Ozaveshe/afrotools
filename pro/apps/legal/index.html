@@ -269,7 +269,7 @@
           <div class="legal-metric"><strong id="metricActive">0</strong><span>active drafts</span><small>Local document workspace</small></div>
           <div class="legal-metric"><strong id="metricEntities">0</strong><span>client/entity records</span><small>Saved on this device CRM rows</small></div>
           <div class="legal-metric"><strong id="metricTemplates">0</strong><span>template lanes</span><small>Drafting workflows</small></div>
-          <div class="legal-metric"><strong id="metricSigned">0</strong><span>ready/signed rows</span><small>E-signing is not included</small></div>
+          <div class="legal-metric"><strong id="metricSigned">0</strong><span>ready rows</span><small>E-signing is not included</small></div>
           <div class="legal-metric"><strong id="metricPackets">0</strong><span>export packets</span><small>JSON handoff only</small></div>
         </section>
 
@@ -563,7 +563,7 @@
         var reviews = state.reviews || [];
         var renewals = state.renewals || [];
         var readyChecklist = checklist.filter(function(item){ return item.ready; }).length;
-        var signedReady = contracts.filter(function(item){ return /ready|signed/i.test(item.status || ""); }).length;
+        var readyRows = contracts.filter(function(item){ return /ready/i.test(item.status || ""); }).length;
 
         byId("clientSelect").value = state.client || "sme-operator";
         byId("jurisdictionSelect").value = state.jurisdiction || "Nigeria";
@@ -574,7 +574,7 @@
         byId("metricActive").textContent = contracts.length;
         byId("metricEntities").textContent = entities.length;
         byId("metricTemplates").textContent = templates.length;
-        byId("metricSigned").textContent = signedReady;
+        byId("metricSigned").textContent = readyRows;
         byId("metricPackets").textContent = state.packets || 0;
         byId("navContractCount").textContent = contracts.length;
         byId("navTemplateCount").textContent = templates.length;
@@ -713,6 +713,40 @@
           product:"AfroLegal Desk Pro",
           exportedAt:new Date().toISOString(),
           disclaimer:"Document drafting support only. Not legal advice.",
+          storageBoundary:{
+            mode:"device-local-json",
+            accountBacked:false,
+            uploadedToSupabase:false,
+            legalTablesPresent:false,
+            note:"This export is generated in the browser and is not uploaded, synced, filed, or stored in a Legal Desk Supabase table."
+          },
+          reviewBoundary:{
+            legalAdvice:false,
+            lawyerReviewIncluded:false,
+            enforceabilityGuaranteed:false,
+            note:"The packet is a drafting and handoff aid. A qualified lawyer in the relevant jurisdiction must review before reliance or signature."
+          },
+          signatureBoundary:{
+            eSignatureIncluded:false,
+            signedStatusProof:false,
+            filingProof:false,
+            note:"The workspace can prepare signature checklists, but it does not execute e-signatures, prove signing, or submit filings."
+          },
+          reminderBoundary:{
+            deliveryBacked:false,
+            serverReminderJobs:false,
+            renewalNoticeSent:false,
+            note:"Renewal and review reminders are local checklist rows only. No email, SMS, court, registry, or lawyer notification is sent."
+          },
+          packetContents:{
+            contracts:(state.contracts || []).length,
+            templates:(state.templates || []).length,
+            entities:(state.entities || []).length,
+            checklistItems:(state.checklist || []).length,
+            renewals:(state.renewals || []).length,
+            reviews:(state.reviews || []).length,
+            packetHistory:(state.packetHistory || []).length
+          },
           state:state
         };
         var blob = new Blob([JSON.stringify(packet, null, 2)], {type:"application/json"});

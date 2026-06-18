@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess Practice | AfroTools Games</title>
+  <meta name="description" content="Play Chess Practice offline on AfroTools Games. Solve quick chess tactics, watch the computer reply, and build a local streak.">
+  <link rel="canonical" href="https://afrotools.com/games/chess-practice/">
+  <meta property="og:title" content="Chess Practice | AfroTools Games">
+  <meta property="og:description" content="Quick offline chess tactics with local progress and computer replies.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:url" content="https://afrotools.com/games/chess-practice/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chess Practice | AfroTools Games">
+  <meta name="twitter:description" content="Quick offline chess tactics with local progress and computer replies.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+  <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;font-family:"DM Sans",system-ui,sans-serif;background:#071025;color:#fff;-webkit-font-smoothing:antialiased}
+    body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px) 0 0/42px 42px,linear-gradient(0deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/42px 42px,linear-gradient(180deg,#101a39 0%,#071025 56%,#111827 100%)}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .cp-wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+    .cp-hero{position:relative;overflow:hidden;background:#101a39;padding:34px 0 32px;border-bottom:8px solid #030712}
+    .cp-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.2) 0 14%,transparent 14% 28%,rgba(250,204,21,.15) 28% 42%,transparent 42% 100%),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 92px)}
+    .cp-hero>*{position:relative}
+    .cp-breadcrumb{font-size:.78rem;color:rgba(255,255,255,.72);margin-bottom:18px;font-weight:800}
+    .cp-breadcrumb a{color:#bfdbfe}
+    .cp-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:30px;align-items:center}
+    .cp-title{font-size:clamp(2.45rem,6.5vw,5.7rem);line-height:.9;letter-spacing:-.07em;margin:0 0 16px;font-weight:900;text-transform:uppercase;text-shadow:0 6px 0 rgba(0,0,0,.22)}
+    .cp-title span{display:block;color:#facc15;text-shadow:0 6px 0 rgba(37,99,235,.6)}
+    .cp-sub{max-width:690px;font-size:1.02rem;line-height:1.7;color:#dbeafe;margin:0}
+    .cp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+    .cp-btn{border:3px solid #030712;border-radius:14px;background:#fff;color:#0f172a;min-height:48px;padding:0 18px;font-weight:900;box-shadow:0 6px 0 #030712;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:transform .16s ease,box-shadow .16s ease}
+    .cp-btn:hover:not([disabled]){transform:translateY(2px);box-shadow:0 4px 0 #030712}
+    .cp-btn-primary{background:#facc15}
+    .cp-btn-blue{background:#2563eb;color:#fff}
+    .cp-btn[disabled]{opacity:.55;cursor:not-allowed}
+    .cp-score-card{background:#fffdf5;color:#0f172a;border:3px solid #030712;border-radius:18px;padding:18px;box-shadow:0 12px 0 #030712,0 26px 70px rgba(0,0,0,.26);transform:rotate(1deg)}
+    .cp-score-card h2{margin:0 0 12px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#475569}
+    .cp-score-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .cp-score{border:2px solid #0f172a;border-radius:14px;background:#dbeafe;padding:12px;box-shadow:0 5px 0 rgba(15,23,42,.2)}
+    .cp-score:nth-child(2){background:#fef3c7}.cp-score:nth-child(3){background:#dcfce7}.cp-score:nth-child(4){background:#fecdd3}
+    .cp-score strong{display:block;font-size:1.55rem;line-height:1;color:#0f172a}
+    .cp-score span{display:block;margin-top:5px;font-size:.72rem;text-transform:uppercase;font-weight:900;color:#475569}
+    .cp-main{background:#fff7db;color:#0f172a;padding:34px 0 52px}
+    .cp-shell{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
+    .cp-shell>*{min-width:0}
+    .cp-card,.cp-side{background:#fff;border:3px solid #0f172a;border-radius:18px;box-shadow:0 9px 0 #0f172a}
+    .cp-card{padding:22px;min-width:0}
+    .cp-side{padding:18px;margin-bottom:14px;min-width:0}
+    .cp-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}
+    .cp-head h2,.cp-side h2{margin:0;font-size:1.55rem;line-height:1;text-transform:uppercase;letter-spacing:-.04em;color:#0f172a}
+    .cp-head p,.cp-side p{margin:8px 0 0;color:#475569;line-height:1.6;font-weight:700}
+    .cp-pill{display:inline-flex;min-height:30px;align-items:center;justify-content:center;border:2px solid #0f172a;border-radius:10px;background:#facc15;color:#0f172a;padding:0 10px;font-size:.72rem;text-transform:uppercase;font-weight:900;box-shadow:0 4px 0 rgba(15,23,42,.22);white-space:nowrap}
+    .cp-board{width:min(640px,100%);min-width:0;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));border:4px solid #0f172a;border-radius:18px;overflow:hidden;box-shadow:0 9px 0 rgba(15,23,42,.2);background:#0f172a}
+    .cp-cell{aspect-ratio:1;min-width:0;padding:0;border:0;background:#f8fafc;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;color:#0f172a}
+    .cp-cell.is-dark{background:#2563eb;color:#fff}
+    .cp-cell.is-selected{outline:5px solid #facc15;outline-offset:-7px}
+    .cp-cell.is-target::after{content:"";position:absolute;width:28%;height:28%;border:3px solid #0f172a;border-radius:999px;background:#facc15;box-shadow:0 3px 0 rgba(15,23,42,.2)}
+    .cp-cell.is-last{box-shadow:inset 0 0 0 5px rgba(250,204,21,.88)}
+    .cp-piece{width:68%;height:68%;border:3px solid #0f172a;border-radius:16px;box-shadow:0 5px 0 rgba(15,23,42,.28);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:900;letter-spacing:-.04em}
+    .cp-piece.is-white{background:#fff;color:#0f172a}
+    .cp-piece.is-black{background:#fb7185;color:#fff}
+    .cp-status{border:3px solid #0f172a;border-radius:18px;background:#fffdf5;padding:16px;margin-top:14px;box-shadow:0 7px 0 rgba(15,23,42,.18)}
+    .cp-status h3{margin:0 0 6px;color:#0f172a;font-size:1.1rem}
+    .cp-status p{margin:0;color:#475569;line-height:1.6;font-weight:700}
+    .cp-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .cp-list{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+    .cp-list li{border:2px solid #0f172a;border-radius:12px;background:#e0f2fe;padding:10px;color:#334155;font-size:.84rem;line-height:1.5;font-weight:800}
+    .cp-note{margin-top:12px;border-top:2px solid #e2e8f0;padding-top:12px;color:#64748b;font-size:.78rem;line-height:1.55;font-weight:700}
+    @media (max-width:900px){.cp-hero-grid,.cp-shell{grid-template-columns:1fr}.cp-score-card{transform:none}}
+    @media (max-width:560px){.cp-wrap{padding:0 16px}.cp-hero{padding:26px 0 30px}.cp-title{font-size:2.85rem}.cp-actions,.cp-controls{grid-template-columns:1fr;flex-direction:column}.cp-actions .cp-btn,.cp-controls .cp-btn{width:100%}.cp-card{padding:16px}.cp-piece{border-width:2px;border-radius:12px;font-size:.72rem}.cp-head{display:grid}}
+  </style>
+</head>
+<body>
+  <afro-navbar active="education"></afro-navbar>
+  <main>
+    <section class="cp-hero">
+      <div class="cp-wrap">
+        <nav class="cp-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a> / <a href="/games/">Games</a> / Chess Practice
+        </nav>
+        <div class="cp-hero-grid">
+          <div>
+            <h1 class="cp-title">Chess <span>Practice</span></h1>
+            <p class="cp-sub">A fast offline tactics board. Find the best move, watch the computer answer, then move to the next puzzle. This is practice mode, not a full chess engine yet.</p>
+            <div class="cp-actions">
+              <a class="cp-btn cp-btn-primary" href="#play">Start Tactics</a>
+              <a class="cp-btn" href="/games/">Back to Games</a>
+            </div>
+          </div>
+          <aside class="cp-score-card" aria-label="Local Chess Practice stats">
+            <h2>Local Record</h2>
+            <div class="cp-score-grid">
+              <div class="cp-score"><strong id="solvedCount">0</strong><span>Solved</span></div>
+              <div class="cp-score"><strong id="streakCount">0</strong><span>Streak</span></div>
+              <div class="cp-score"><strong id="bestStreak">0</strong><span>Best</span></div>
+              <div class="cp-score"><strong id="attemptCount">0</strong><span>Tries</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="cp-main" id="play">
+      <div class="cp-wrap cp-shell">
+        <section class="cp-card" aria-labelledby="chess-title">
+          <div class="cp-head">
+            <div>
+              <h2 id="chess-title">Tactics Board</h2>
+              <p id="puzzlePrompt">White to move. Click a piece, then the target square.</p>
+            </div>
+            <span class="cp-pill" id="puzzlePill">Puzzle 1</span>
+          </div>
+          <div class="cp-board" id="board" aria-label="Chess Practice board"></div>
+          <div class="cp-status" aria-live="polite">
+            <h3 id="statusTitle">Find the move</h3>
+            <p id="statusText">Click a white piece to start.</p>
+          </div>
+          <div class="cp-controls">
+            <button class="cp-btn cp-btn-blue" type="button" id="hintBtn">Show hint</button>
+            <button class="cp-btn" type="button" id="nextBtn">Next puzzle</button>
+          </div>
+        </section>
+        <aside>
+          <section class="cp-side">
+            <h2 id="puzzleName">Opening Net</h2>
+            <p id="puzzleGoal">Goal: choose the forcing move.</p>
+            <p class="cp-note" id="coachText">The board checks one best move per puzzle. Full legal-move chess comes later with a proper engine.</p>
+          </section>
+          <section class="cp-side">
+            <h2>How To Play</h2>
+            <ul class="cp-list">
+              <li>White moves first. Select the white piece, then the destination square.</li>
+              <li>The computer replies automatically after the correct move.</li>
+              <li>Your streak is stored locally on this device only.</li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <afro-footer></afro-footer>
+  <script>
+    (function(){
+      "use strict";
+
+      var STORAGE_KEY="afrotools_chess_practice_v1";
+      var files=["a","b","c","d","e","f","g","h"];
+      var puzzles=[
+        {
+          name:"Opening Net",
+          goal:"Goal: develop with tempo and attack the loose queen.",
+          prompt:"White to move. Find the knight jump that creates a fork.",
+          pieces:{e1:"WK",d1:"WQ",c4:"WB",g5:"WN",a2:"WP",b2:"WP",c2:"WP",f2:"WP",g2:"WP",h2:"WP",e8:"BK",d8:"BQ",c8:"BB",g8:"BN",a7:"BP",b7:"BP",c7:"BP",f7:"BP",g7:"BP",h7:"BP"},
+          move:{from:"g5",to:"f7",label:"Nxf7"},
+          reply:{from:"e8",to:"f7",label:"Kxf7"},
+          success:"Nice fork. The knight forces the king to spend a move while White wins time.",
+          hint:"The active knight can jump with check."
+        },
+        {
+          name:"Back Rank Pin",
+          goal:"Goal: use the rook file before the king escapes.",
+          prompt:"White to move. Find the rook move that pins the back rank.",
+          pieces:{g1:"WK",c1:"WR",d1:"WQ",c4:"WB",f3:"WN",a2:"WP",b2:"WP",f2:"WP",g2:"WP",h2:"WP",g8:"BK",d8:"BQ",a8:"BR",f8:"BB",a7:"BP",b7:"BP",f7:"BP",g7:"BP",h7:"BP"},
+          move:{from:"c1",to:"c8",label:"Rc8"},
+          reply:{from:"d8",to:"c8",label:"Qxc8"},
+          success:"Clean pressure. The rook forces the queen to answer on c8.",
+          hint:"Look for the open file that reaches the back rank."
+        },
+        {
+          name:"Queen Sweep",
+          goal:"Goal: capture the loose center piece.",
+          prompt:"White to move. Pick up the undefended piece in the center.",
+          pieces:{g1:"WK",h5:"WQ",c4:"WB",f3:"WN",a2:"WP",b2:"WP",c2:"WP",f2:"WP",g2:"WP",h2:"WP",g8:"BK",d8:"BQ",e5:"BN",c8:"BB",a7:"BP",b7:"BP",f7:"BP",g7:"BP",h7:"BP"},
+          move:{from:"h5",to:"e5",label:"Qxe5"},
+          reply:{from:"d8",to:"e7",label:"Qe7"},
+          success:"Good eye. The queen takes the central knight before Black can defend.",
+          hint:"Your queen can travel diagonally into the center."
+        },
+        {
+          name:"Bishop Hook",
+          goal:"Goal: remove the defender near the king.",
+          prompt:"White to move. Find the bishop capture that opens the attack.",
+          pieces:{g1:"WK",d1:"WQ",d3:"WB",f3:"WN",a2:"WP",b2:"WP",c2:"WP",f2:"WP",g2:"WP",h2:"WP",g8:"BK",d8:"BQ",c8:"BB",g7:"BP",h7:"BP",f7:"BP",a7:"BP",b7:"BP",c7:"BP"},
+          move:{from:"d3",to:"h7",label:"Bxh7"},
+          reply:{from:"g8",to:"h7",label:"Kxh7"},
+          success:"Classic hook. The bishop pulls the king into the open.",
+          hint:"The bishop on d3 is aiming at h7."
+        },
+        {
+          name:"Queen Lift",
+          goal:"Goal: bring the queen into the attack.",
+          prompt:"White to move. Find the queen lift toward the exposed king.",
+          pieces:{g1:"WK",d1:"WQ",e2:"WB",f3:"WN",a2:"WP",b2:"WP",c2:"WP",f2:"WP",g2:"WP",h2:"WP",g8:"BK",d8:"BQ",c8:"BB",a7:"BP",b7:"BP",f7:"BP",g7:"BP",h7:"BP"},
+          move:{from:"d1",to:"h5",label:"Qh5"},
+          reply:{from:"g7",to:"g6",label:"g6"},
+          success:"Good attacking square. Black has to spend a move chasing the queen.",
+          hint:"The queen can slide to h5 and pressure f7."
+        }
+      ];
+      var state={index:0,pieces:{},selected:null,lastMove:[],solved:false};
+
+      function $(id){return document.getElementById(id);}
+      function readStats(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");}catch(e){return {};}}
+      function writeStats(stats){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(stats));}catch(e){}}
+      function current(){return puzzles[state.index];}
+      function squareToRowCol(square){
+        return {row:8-Number(square.charAt(1)),col:files.indexOf(square.charAt(0))};
+      }
+      function rowColToSquare(row,col){
+        return files[col]+String(8-row);
+      }
+      function pieceSide(piece){
+        return piece&&piece.charAt(0)==="W"?"white":"black";
+      }
+      function pieceLabel(piece){
+        return piece||"";
+      }
+      function resetPuzzle(index){
+        state.index=(index+puzzles.length)%puzzles.length;
+        state.pieces=Object.assign({},current().pieces);
+        state.selected=null;
+        state.lastMove=[];
+        state.solved=false;
+        $("puzzlePrompt").textContent=current().prompt;
+        $("puzzleName").textContent=current().name;
+        $("puzzleGoal").textContent=current().goal;
+        $("puzzlePill").textContent="Puzzle "+(state.index+1);
+        $("coachText").textContent="The board checks one best move per puzzle. Full legal-move chess comes later with a proper engine.";
+        renderStatus("Find the move","Click a white piece to start.");
+        render();
+      }
+      function render(){
+        var puzzle=current();
+        var target=state.selected===puzzle.move.from?puzzle.move.to:null;
+        var html="";
+        for(var row=0;row<8;row++){
+          for(var col=0;col<8;col++){
+            var square=rowColToSquare(row,col);
+            var dark=(row+col)%2===1;
+            var piece=state.pieces[square]||"";
+            var selected=state.selected===square;
+            var isTarget=target===square;
+            var isLast=state.lastMove.indexOf(square)!==-1;
+            var classes="cp-cell"+(dark?" is-dark":"")+(selected?" is-selected":"")+(isTarget?" is-target":"")+(isLast?" is-last":"");
+            html+='<button type="button" class="'+classes+'" data-square="'+square+'" aria-label="'+square+(piece?" "+piece:" empty")+'">';
+            if(piece)html+='<span class="cp-piece is-'+pieceSide(piece)+'">'+pieceLabel(piece)+'</span>';
+            html+="</button>";
+          }
+        }
+        $("board").innerHTML=html;
+        Array.prototype.forEach.call($("board").querySelectorAll(".cp-cell"),function(cell){
+          cell.addEventListener("click",function(){handleSquare(cell.getAttribute("data-square"));});
+        });
+        renderStats();
+      }
+      function renderStats(){
+        var stats=readStats();
+        $("solvedCount").textContent=stats.solved||0;
+        $("streakCount").textContent=stats.streak||0;
+        $("bestStreak").textContent=stats.bestStreak||0;
+        $("attemptCount").textContent=stats.attempts||0;
+      }
+      function renderStatus(title,text){
+        $("statusTitle").textContent=title;
+        $("statusText").textContent=text;
+      }
+      function handleSquare(square){
+        if(state.solved)return;
+        var piece=state.pieces[square];
+        if(piece&&pieceSide(piece)==="white"){
+          state.selected=square;
+          renderStatus("Piece selected","Now choose the destination square.");
+          render();
+          return;
+        }
+        if(!state.selected)return renderStatus("Choose a piece","Select a white piece first.");
+        checkMove(state.selected,square);
+      }
+      function checkMove(from,to){
+        var puzzle=current();
+        var stats=readStats();
+        stats.attempts=(stats.attempts||0)+1;
+        if(from===puzzle.move.from&&to===puzzle.move.to){
+          stats.solved=(stats.solved||0)+1;
+          stats.streak=(stats.streak||0)+1;
+          stats.bestStreak=Math.max(stats.bestStreak||0,stats.streak);
+          writeStats(stats);
+          applyMove(from,to);
+          state.solved=true;
+          renderStatus("Best move",puzzle.move.label+" works. "+puzzle.success);
+          $("coachText").textContent=puzzle.success;
+          render();
+          window.setTimeout(function(){
+            applyMove(puzzle.reply.from,puzzle.reply.to);
+            renderStatus("Computer reply",puzzle.reply.label+". Tap Next puzzle when ready.");
+            $("coachText").textContent="Computer replied with "+puzzle.reply.label+". The practice round stays local and offline.";
+            render();
+          },650);
+        }else{
+          stats.streak=0;
+          writeStats(stats);
+          state.selected=null;
+          renderStatus("Try again","That is not the tactic. Use the hint if you want a nudge.");
+          render();
+        }
+      }
+      function applyMove(from,to){
+        var piece=state.pieces[from];
+        if(!piece)return;
+        delete state.pieces[from];
+        state.pieces[to]=piece;
+        state.lastMove=[from,to];
+      }
+      function showHint(){
+        if(state.solved)return;
+        state.selected=current().move.from;
+        renderStatus("Hint",current().hint);
+        render();
+      }
+      $("hintBtn").addEventListener("click",showHint);
+      $("nextBtn").addEventListener("click",function(){resetPuzzle(state.index+1);});
+      resetPuzzle(new Date().getDate()%puzzles.length);
+    })();
+  </script>
+</body>
+</html>

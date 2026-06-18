@@ -5,6 +5,12 @@ var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 var ADMIN_SECRET = process.env.ADMIN_SECRET;
 var ENV_FEEDS = process.env.AFROSTREAM_NEWS_RSS_FEEDS || '';
+var MAX_CONCURRENT_FEEDS = 6;
+var FEED_TIMEOUT_MS = 9000;
+var DEFAULT_SCHEDULED_LOOKBACK_DAYS = 3;
+var DEFAULT_MANUAL_LOOKBACK_DAYS = 10;
+var DEFAULT_SCHEDULED_INSERT_LIMIT = 12;
+var DEFAULT_MANUAL_INSERT_LIMIT = 30;
 
 function headers() {
   return { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
@@ -38,6 +44,17 @@ function isTruthy(value) {
 function isDryRun(event) {
   var qs = event.queryStringParameters || {};
   return isTruthy(qs.dry_run) || isTruthy(qs.dryRun) || isTruthy(qs.review_only);
+}
+
+function numberParam(event, keys, fallback, min, max) {
+  var qs = event.queryStringParameters || {};
+  for (var i = 0; i < keys.length; i++) {
+    var value = Number(qs[keys[i]]);
+    if (Number.isFinite(value)) {
+      return Math.min(max, Math.max(min, value));
+    }
+  }
+  return fallback;
 }
 
 async function sb(method, path, body, upsert) {
@@ -225,6 +242,38 @@ function isEditoriallyRelevant(item, source) {
   });
 }
 
+function hasAfricaSignal(item, source) {
+  var haystack = normalizeForMatch([
+    source && source.name,
+    source && source.category,
+    item.title,
+    item.description
+  ].join(' '));
+  var signals = [
+    'africa', 'african', 'afrobeats', 'afrobeat', 'afro', 'nigeria',
+    'nigerian', 'ghana', 'ghanaian', 'kenya', 'kenyan', 'south africa',
+    'south african', 'rwanda', 'rwandan', 'uganda', 'ugandan', 'tanzania',
+    'ethiopia', 'morocco', 'zambia', 'zambian', 'lagos', 'nairobi',
+    'accra', 'kigali', 'johannesburg', 'cape town'
+  ];
+  return signals.some(function(signal) {
+    return (' ' + haystack + ' ').indexOf(' ' + signal + ' ') !== -1;
+  });
+}
+
+function isRecentEnough(item, cutoffMs) {
+  if (!cutoffMs) return true;
+  var publishedAt = new Date(item.published_at).getTime();
+  if (!Number.isFinite(publishedAt)) return true;
+  return publishedAt >= cutoffMs;
+}
+
+function shouldPublishWithoutCreatorMatch(item, source, cutoffMs) {
+  return isRecentEnough(item, cutoffMs) &&
+    isEditoriallyRelevant(item, source) &&
+    hasAfricaSignal(item, source);
+}
+
 function findCreatorMatches(item, creators) {
   var haystack = normalizeForMatch(item.title + ' ' + item.description);
   return creators.filter(function(creator) {
@@ -232,6 +281,171 @@ function findCreatorMatches(item, creators) {
       return aliasMatches(haystack, alias);
     });
   });
+}
+
+async function fetchFeed(source) {
+  var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  var timeout = controller ? setTimeout(function() { controller.abort(); }, FEED_TIMEOUT_MS) : null;
+  try {
+    return await fetch(source.feed_url, {
+      signal: controller ? controller.signal : undefined,
+      headers: {
+        'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, text/html, */*',
+        'User-Agent': 'Mozilla/5.0 (compatible; AfroStreamNewsMonitor/1.1; +https://afrotools.com/tools/afrostream/)'
+      }
+    });
+  } finally {
+    if (timeout) clearTimeout(timeout);
+  }
+}
+
+async function mapWithConcurrency(items, limit, iterator) {
+  var results = new Array(items.length);
+  var cursor = 0;
+  async function worker() {
+    while (cursor < items.length) {
+      var current = cursor++;
+      results[current] = await iterator(items[current], current);
+    }
+  }
+  var workers = [];
+  var count = Math.min(limit, items.length);
+  for (var i = 0; i < count; i++) workers.push(worker());
+  await Promise.all(workers);
+  return results;
+}
+
+async function processNewsCandidate(source, item, matches, summary, dryRun, insertBudget) {
+  var externalId = hash(source.feed_url + '|' + item.guid);
+  var existingRows = await sb('GET', 'as_news?external_id=eq.' + encodeURIComponent(externalId) + '&select=id,slug,external_id');
+  var existingNews = Array.isArray(existingRows) && existingRows.length ? existingRows[0] : null;
+  summary.matched_items++;
+
+  if (dryRun) {
+    if (existingNews) summary.existing_news++;
+    else summary.would_insert_news++;
+    summary.would_create_mentions += matches.length;
+    if (summary.matches.length < 25) {
+      summary.matches.push({
+        source: source.name || 'RSS source',
+        title: item.title,
+        source_url: item.link || source.feed_url,
+        external_id: externalId,
+        existing_news_id: existingNews ? existingNews.id : null,
+        matched_creators: matches.map(function(match) {
+          return { id: match.id, name: match.name, slug: match.slug };
+        })
+      });
+    }
+    return;
+  }
+
+  if (!existingNews && insertBudget.remaining <= 0) {
+    summary.skipped_matches++;
+    if (summary.skipped.length < 25) {
+      summary.skipped.push({
+        source: source.name || 'RSS source',
+        title: item.title,
+        source_url: item.link || source.feed_url,
+        reason: 'Run insert limit reached.'
+      });
+    }
+    return;
+  }
+
+  var newsRows = await sb('POST', 'as_news?on_conflict=external_id', {
+    title: item.title,
+    slug: slugify(item.title) + '-' + externalId.slice(0, 6),
+    category: source.category || 'creator-news',
+    author: source.name || 'RSS source',
+    excerpt: item.description || (matches.length ? 'Creator mention from ' : 'AfroStream source update from ') + (source.name || 'RSS source'),
+    body: item.description || item.title,
+    source_url: item.link || source.feed_url,
+    source_name: source.name || 'RSS source',
+    external_id: externalId,
+    is_featured: false,
+    is_published: true,
+    published_at: item.published_at
+  }, true);
+  var news = Array.isArray(newsRows) ? newsRows[0] : null;
+  if (!news || !news.id) return;
+  if (existingNews) summary.existing_news++;
+  else {
+    summary.inserted_news++;
+    insertBudget.remaining--;
+  }
+
+  for (var m = 0; m < matches.length; m++) {
+    await sb('POST', 'as_news_creator_mentions?on_conflict=news_id,creator_id', {
+      news_id: news.id,
+      creator_id: matches[m].id,
+      matched_name: matches[m].name,
+      source_url: item.link || source.feed_url
+    }, true);
+    summary.mentions++;
+  }
+}
+
+async function processSource(source, creators, summary, options) {
+  var checkedAt = new Date().toISOString();
+  var fetchedItemCount = 0;
+  var fetchStatusCode = null;
+  try {
+    var res = await fetchFeed(source);
+    fetchStatusCode = res.status;
+    if (!res.ok) {
+      await updateSourceHealth(source, {
+        last_checked_at: checkedAt,
+        last_status_code: res.status,
+        last_item_count: 0,
+        last_error: 'HTTP ' + res.status
+      }, options.dryRun);
+      summary.errors.push(source.name + ': HTTP ' + res.status);
+      return;
+    }
+    var xml = await res.text();
+    var items = parseFeed(xml).slice(0, 30);
+    fetchedItemCount = items.length;
+    summary.items_seen += items.length;
+
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      if (!isRecentEnough(item, options.cutoffMs)) continue;
+      var matches = findCreatorMatches(item, creators);
+      if (!matches.length && !shouldPublishWithoutCreatorMatch(item, source, options.cutoffMs)) continue;
+      if (!matches.length) summary.editorial_backfill_matches++;
+      if (!isEditoriallyRelevant(item, source)) {
+        summary.skipped_matches++;
+        if (summary.skipped.length < 25) {
+          summary.skipped.push({
+            source: source.name || 'RSS source',
+            title: item.title,
+            source_url: item.link || source.feed_url,
+            reason: 'Matched a creator name but lacked a creator, platform, music, gaming, business, or milestone signal.'
+          });
+        }
+        continue;
+      }
+
+      await processNewsCandidate(source, item, matches, summary, options.dryRun, options.insertBudget);
+    }
+
+    await updateSourceHealth(source, {
+      last_checked_at: checkedAt,
+      last_success_at: checkedAt,
+      last_status_code: fetchStatusCode || 200,
+      last_item_count: fetchedItemCount,
+      last_error: null
+    }, options.dryRun);
+  } catch (e) {
+    await updateSourceHealth(source, {
+      last_checked_at: checkedAt,
+      last_status_code: fetchStatusCode,
+      last_item_count: fetchedItemCount,
+      last_error: e.name === 'AbortError' ? 'feed timeout' : e.message
+    }, options.dryRun);
+    summary.errors.push((source.name || source.feed_url) + ': ' + (e.name === 'AbortError' ? 'feed timeout' : e.message));
+  }
 }
 
 exports.handler = async function(event) {
@@ -242,12 +456,19 @@ exports.handler = async function(event) {
   var runStart = Date.now();
   var runSource = newsMonitorSource(event);
   var dryRun = isDryRun(event);
+  var lookbackDays = numberParam(event, ['backfill_days', 'lookback_days'], isScheduled(event) ? DEFAULT_SCHEDULED_LOOKBACK_DAYS : DEFAULT_MANUAL_LOOKBACK_DAYS, 1, 21);
+  var insertLimit = numberParam(event, ['max_insert_news', 'limit'], isScheduled(event) ? DEFAULT_SCHEDULED_INSERT_LIMIT : DEFAULT_MANUAL_INSERT_LIMIT, 1, 60);
+  var cutoffMs = Date.now() - (lookbackDays * 24 * 60 * 60 * 1000);
+  var insertBudget = { remaining: insertLimit };
   var summary = {
     dry_run: dryRun,
+    lookback_days: lookbackDays,
+    insert_limit: insertLimit,
     sources: 0,
     creators: 0,
     items_seen: 0,
     matched_items: 0,
+    editorial_backfill_matches: 0,
     would_insert_news: 0,
     existing_news: 0,
     would_create_mentions: 0,
@@ -285,122 +506,13 @@ exports.handler = async function(event) {
     creators = Array.isArray(creators) ? creators : [];
     summary.creators = creators.length;
 
-    for (var s = 0; s < sources.length; s++) {
-      var source = sources[s];
-      var checkedAt = new Date().toISOString();
-      var fetchedItemCount = 0;
-      var fetchStatusCode = null;
-      try {
-        var res = await fetch(source.feed_url, {
-          headers: {
-            'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml',
-            'User-Agent': 'AfroStreamMentionMonitor/1.0'
-          }
-        });
-        fetchStatusCode = res.status;
-        if (!res.ok) {
-          await updateSourceHealth(source, {
-            last_checked_at: checkedAt,
-            last_status_code: res.status,
-            last_item_count: 0,
-            last_error: 'HTTP ' + res.status
-          }, dryRun);
-          summary.errors.push(source.name + ': HTTP ' + res.status);
-          continue;
-        }
-        var xml = await res.text();
-        var items = parseFeed(xml).slice(0, 30);
-        fetchedItemCount = items.length;
-        summary.items_seen += items.length;
-
-        for (var i = 0; i < items.length; i++) {
-          var item = items[i];
-          var matches = findCreatorMatches(item, creators);
-          if (!matches.length) continue;
-          if (!isEditoriallyRelevant(item, source)) {
-            summary.skipped_matches++;
-            if (summary.skipped.length < 25) {
-              summary.skipped.push({
-                source: source.name || 'RSS source',
-                title: item.title,
-                source_url: item.link || source.feed_url,
-                reason: 'Matched a creator name but lacked a creator, platform, music, gaming, business, or milestone signal.'
-              });
-            }
-            continue;
-          }
-
-          var externalId = hash(source.feed_url + '|' + item.guid);
-          var existingRows = await sb('GET', 'as_news?external_id=eq.' + encodeURIComponent(externalId) + '&select=id,slug,external_id');
-          var existingNews = Array.isArray(existingRows) && existingRows.length ? existingRows[0] : null;
-          summary.matched_items++;
-
-          if (dryRun) {
-            if (existingNews) summary.existing_news++;
-            else summary.would_insert_news++;
-            summary.would_create_mentions += matches.length;
-            if (summary.matches.length < 25) {
-              summary.matches.push({
-                source: source.name || 'RSS source',
-                title: item.title,
-                source_url: item.link || source.feed_url,
-                external_id: externalId,
-                existing_news_id: existingNews ? existingNews.id : null,
-                matched_creators: matches.map(function(match) {
-                  return { id: match.id, name: match.name, slug: match.slug };
-                })
-              });
-            }
-            continue;
-          }
-
-          var newsRows = await sb('POST', 'as_news?on_conflict=external_id', {
-            title: item.title,
-            slug: slugify(item.title) + '-' + externalId.slice(0, 6),
-            category: source.category || 'creator-news',
-            author: source.name || 'RSS source',
-            excerpt: item.description || ('Creator mention from ' + (source.name || 'RSS source')),
-            body: item.description || item.title,
-            source_url: item.link || source.feed_url,
-            source_name: source.name || 'RSS source',
-            external_id: externalId,
-            is_featured: false,
-            is_published: true,
-            published_at: item.published_at
-          }, true);
-          var news = Array.isArray(newsRows) ? newsRows[0] : null;
-          if (!news || !news.id) continue;
-          if (existingNews) summary.existing_news++;
-          else summary.inserted_news++;
-
-          for (var m = 0; m < matches.length; m++) {
-            await sb('POST', 'as_news_creator_mentions?on_conflict=news_id,creator_id', {
-              news_id: news.id,
-              creator_id: matches[m].id,
-              matched_name: matches[m].name,
-              source_url: item.link || source.feed_url
-            }, true);
-            summary.mentions++;
-          }
-        }
-
-        await updateSourceHealth(source, {
-          last_checked_at: checkedAt,
-          last_success_at: checkedAt,
-          last_status_code: fetchStatusCode || 200,
-          last_item_count: fetchedItemCount,
-          last_error: null
-        }, dryRun);
-      } catch (e) {
-        await updateSourceHealth(source, {
-          last_checked_at: checkedAt,
-          last_status_code: fetchStatusCode,
-          last_item_count: fetchedItemCount,
-          last_error: e.message
-        }, dryRun);
-        summary.errors.push((source.name || source.feed_url) + ': ' + e.message);
-      }
-    }
+    await mapWithConcurrency(sources, MAX_CONCURRENT_FEEDS, function(source) {
+      return processSource(source, creators, summary, {
+        dryRun: dryRun,
+        cutoffMs: cutoffMs,
+        insertBudget: insertBudget
+      });
+    });
 
     var usefulOutputCount = summary.inserted_news + summary.existing_news + summary.mentions;
     var runStatus = summary.errors.length && usefulOutputCount === 0 ? 'error' : 'ok';

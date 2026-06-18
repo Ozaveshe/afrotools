@@ -313,6 +313,32 @@ function check() {
   if (history.length > 30) history.length = 30;
   localStorage.setItem('bp_history', JSON.stringify(history));
   renderHistory();
+
+  if (window.AfroHealthWorkflow && typeof window.AfroHealthWorkflow.recordSnapshot === 'function') {
+    const fields = [
+      { label: 'Systolic', value: sys + ' mmHg' },
+      { label: 'Diastolic', value: dia + ' mmHg' }
+    ];
+    if (pulseNum >= 30 && pulseNum <= 200) fields.push({ label: 'Pulse', value: pulseNum + ' bpm' });
+    window.AfroHealthWorkflow.recordSnapshot({
+      toolId: 'blood-pressure',
+      headline: result.cat + ' - ' + sys + '/' + dia + ' mmHg',
+      resultText: result.advice,
+      fields: fields,
+      markers: [
+        { label: 'Blood pressure category', value: result.cat, unit: 'screening band', status: result.cls.replace('bp-', '') }
+      ],
+      clinicianQuestions: [
+        'Should I repeat this reading at home and share an average?',
+        'When should I book a blood-pressure review based on repeated readings?'
+      ],
+      nextSteps: [
+        'Repeat readings under similar resting conditions before making decisions.',
+        'Seek urgent care for crisis-range readings or severe symptoms.'
+      ],
+      sourceNotes: ['AHA-style blood-pressure categories for screening and visit preparation only.']
+    });
+  }
 }
 
 function renderHistory() {

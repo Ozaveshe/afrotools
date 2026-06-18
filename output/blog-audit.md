@@ -1,6 +1,6 @@
 # Blog Audit
 
-Generated: 2026-06-17T13:31:46.892Z
+Generated: 2026-06-18T03:38:54.161Z
 
 ## Summary
 - Posts audited: 203
@@ -9,7 +9,7 @@ Generated: 2026-06-17T13:31:46.892Z
 - Posts with no external sources on fact-heavy topics: 1
 - Posts with obvious encoding issues: 0
 - Average quality score: 94.8/100
-- Average word count: 666
+- Average word count: 660
 - Average AI-pattern hits: 0.2
 
 ## Category Counts

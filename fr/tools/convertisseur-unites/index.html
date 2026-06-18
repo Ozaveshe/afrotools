@@ -27,6 +27,31 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=ee859bb4">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=e7ad73c8">
+<style>
+  .unit-page{background:#f6f8fb;color:#0f172a;font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .unit-shell{max-width:1120px;margin:0 auto;padding:1.25rem}
+  .unit-app{display:grid;grid-template-columns:minmax(280px,.95fr) minmax(320px,1.05fr);gap:1rem;margin-top:-2rem;align-items:start}
+  .unit-panel{background:#fff;border:1px solid #dbe4ef;border-radius:10px;padding:1rem;box-shadow:0 16px 38px rgba(15,23,42,.08)}
+  .unit-panel h2{margin:.1rem 0 .65rem;font-size:1.25rem;color:#0f172a}
+  .unit-panel p{color:#52627a;line-height:1.65}
+  .unit-form{display:grid;gap:.8rem}
+  .unit-field{display:grid;gap:.35rem;color:#334155;font-weight:800;font-size:.9rem}
+  .unit-field input,.unit-field select,.unit-field textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:.76rem;font:inherit;color:#111827;background:#fff}
+  .unit-actions{display:flex;flex-wrap:wrap;gap:.55rem}
+  .unit-btn{border:1px solid #155eef;background:#155eef;color:#fff;border-radius:8px;padding:.72rem .9rem;font-weight:800;cursor:pointer}
+  .unit-btn.secondary{background:#fff;color:#155eef}
+  .unit-result{background:#0f172a;color:#fff;border-radius:10px;padding:1rem}
+  .unit-result h2,.unit-result p{color:#fff}
+  .unit-metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:.85rem 0}
+  .unit-metric{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:.75rem}
+  .unit-metric span{display:block;color:#cbd5e1;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em}
+  .unit-metric strong{display:block;font-size:1.1rem;margin-top:.25rem;word-break:break-word}
+  .unit-output{width:100%;min-height:144px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:#111827;color:#e5e7eb;padding:.75rem;font:inherit;resize:vertical}
+  .unit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:1rem}
+  .unit-list{margin:.2rem 0 0;padding-left:1.15rem;color:#52627a;line-height:1.7}
+  .unit-list a{color:#155eef;font-weight:800}
+  @media(max-width:860px){.unit-app{grid-template-columns:1fr;margin-top:0}.unit-metric-grid{grid-template-columns:1fr}}
+</style>
 
 <script src="/assets/js/components/navbar.min.js?v=17467034" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -59,14 +84,82 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/convertisseur-unites/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/unit-converter/" />
 </head>
-<body>
+<body class="unit-page">
 <afro-navbar active="tools"></afro-navbar>
 <header style="background:linear-gradient(135deg,#0A1628 0%,#007AFF 100%);padding:3rem 1.5rem;text-align:center;color:#fff">
 <p style="font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;opacity:.5;margin-bottom:.5rem">Outil Education</p>
 <h1 style="font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;margin-bottom:.5rem">Convertisseur d unites</h1>
 <p style="font-size:1rem;opacity:.7;max-width:560px;margin:0 auto">Convertissez longueur, poids, temperature, surface et plus avec des unites africaines.</p>
 </header>
-<main id="toolContainer" style="max-width:960px;margin:0 auto;padding:1.5rem"></main>
+<main id="toolContainer" class="unit-shell">
+  <section class="unit-app" aria-label="Convertisseur d'unités AfroTools">
+    <form class="unit-panel unit-form" id="unitConverterForm">
+      <h2>Convertir une mesure</h2>
+      <p>Choisissez une catégorie, une unité de départ et une unité d'arrivée. Les conversions standards suivent les relations SI; les unités foncières locales restent des repères de planification.</p>
+      <label class="unit-field">Catégorie
+        <select id="unitCategory" name="category">
+          <option value="length">Longueur</option>
+          <option value="mass">Poids / masse</option>
+          <option value="temperature">Température</option>
+          <option value="area">Surface et terrain</option>
+          <option value="volume">Volume</option>
+          <option value="speed">Vitesse</option>
+          <option value="data">Données numériques</option>
+          <option value="energy">Énergie</option>
+        </select>
+      </label>
+      <label class="unit-field">Valeur
+        <input id="unitValue" name="value" type="number" inputmode="decimal" step="any" value="1">
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+        <label class="unit-field">De
+          <select id="unitFrom" name="from"></select>
+        </label>
+        <label class="unit-field">Vers
+          <select id="unitTo" name="to"></select>
+        </label>
+      </div>
+      <div class="unit-actions">
+        <button class="unit-btn" type="submit">Convertir</button>
+        <button class="unit-btn secondary" type="button" id="unitSwap">Inverser</button>
+        <button class="unit-btn secondary" type="button" id="unitExample">Exemple</button>
+        <button class="unit-btn secondary" type="button" id="unitCopy">Copier</button>
+      </div>
+    </form>
+    <aside class="unit-result" aria-live="polite">
+      <h2 id="unitResultTitle">Résultat</h2>
+      <p id="unitResultText">La conversion apparaîtra ici.</p>
+      <div class="unit-metric-grid">
+        <div class="unit-metric"><span>Valeur convertie</span><strong id="unitConverted">-</strong></div>
+        <div class="unit-metric"><span>Formule</span><strong id="unitFormula">-</strong></div>
+        <div class="unit-metric"><span>Catégorie</span><strong id="unitCategoryLabel">-</strong></div>
+        <div class="unit-metric"><span>Confiance</span><strong id="unitConfidence">-</strong></div>
+      </div>
+      <label class="unit-field" style="color:#dbeafe">Résumé copiable
+        <textarea id="unitSummary" class="unit-output" readonly>Convertissez une valeur pour générer le résumé.</textarea>
+      </label>
+    </aside>
+  </section>
+  <section class="unit-grid" aria-label="Méthode et sources">
+    <article class="unit-panel">
+      <h2>Méthodologie</h2>
+      <p>La méthode de calcul convertit d'abord vers une unité de base de la catégorie, puis vers l'unité cible. La température utilise des formules dédiées, car l'échelle contient un décalage.</p>
+    </article>
+    <article class="unit-panel">
+      <h2>Avertissement</h2>
+      <p>Avertissement : les conversions SI sont mathématiques, mais les tailles de parcelles, plots, feddans et morgen peuvent varier selon le pays, le cadastre ou le contrat. Vérifiez les documents officiels avant tout achat foncier, devis d'ingénierie ou dépôt réglementaire.</p>
+    </article>
+    <article class="unit-panel">
+      <h2>Sources et fraîcheur</h2>
+      <p>Références techniques vérifiées pour la surface 2026.</p>
+      <ul class="unit-list">
+        <li><a href="https://www.bipm.org/en/measurement-units" rel="nofollow noopener" target="_blank">BIPM - International System of Units</a></li>
+        <li><a href="https://www.nist.gov/pml/owm/metric-si/si-units" rel="nofollow noopener" target="_blank">NIST - SI Units</a></li>
+        <li><a href="https://www.nist.gov/pml/owm/si-units-temperature" rel="nofollow noopener" target="_blank">NIST - Temperature conversions</a></li>
+      </ul>
+    </article>
+  </section>
+</main>
 <section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
 <h2 style="font-size:1.3rem;font-weight:800;color:#0A1628;margin-bottom:1rem">Convertir des unites facilement</h2>
 <p style="color:#475569;line-height:1.7;margin-bottom:1rem">Notre convertisseur d unites couvre 20 categories de conversion, des unites standard internationales aux unites specifiquement africaines. Convertissez les plots nigerians en hectares, les morgen sud-africains en acres, les feddans egyptiens en metres carres.</p>
@@ -78,6 +171,230 @@
 <details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155">Combien de categories de conversion ?</summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">20 categories : longueur, poids, temperature, surface, volume, vitesse, carburant, cuisine, donnees, energie, pression, temps, angle, frequence, force, puissance et plus.</p></details>
 <details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155">La conversion est-elle bidirectionnelle ?</summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Oui. Entrez une valeur dans n importe quel champ et toutes les autres unites se mettent a jour instantanement.</p></details>
 </section>
+<script>
+  (function () {
+    var form = document.getElementById('unitConverterForm');
+    if (!form) return;
+    var categories = {
+      length: {
+        label: 'Longueur',
+        base: 'm',
+        confidence: 'Élevée - relation SI standard',
+        units: {
+          m: { label: 'mètre (m)', factor: 1 },
+          km: { label: 'kilomètre (km)', factor: 1000 },
+          cm: { label: 'centimètre (cm)', factor: 0.01 },
+          mm: { label: 'millimètre (mm)', factor: 0.001 },
+          in: { label: 'pouce (in)', factor: 0.0254 },
+          ft: { label: 'pied (ft)', factor: 0.3048 },
+          yd: { label: 'yard (yd)', factor: 0.9144 },
+          mi: { label: 'mile (mi)', factor: 1609.344 }
+        }
+      },
+      mass: {
+        label: 'Poids / masse',
+        base: 'kg',
+        confidence: 'Élevée - relation SI standard',
+        units: {
+          kg: { label: 'kilogramme (kg)', factor: 1 },
+          g: { label: 'gramme (g)', factor: 0.001 },
+          t: { label: 'tonne métrique (t)', factor: 1000 },
+          lb: { label: 'livre (lb)', factor: 0.45359237 },
+          oz: { label: 'once (oz)', factor: 0.028349523125 }
+        }
+      },
+      area: {
+        label: 'Surface et terrain',
+        base: 'm2',
+        confidence: 'Mixte - SI élevé, unités foncières locales à vérifier',
+        units: {
+          m2: { label: 'mètre carré (m²)', factor: 1 },
+          ha: { label: 'hectare (ha)', factor: 10000 },
+          acre: { label: 'acre', factor: 4046.8564224 },
+          plotLagos: { label: 'plot Lagos repère 648 m²', factor: 648 },
+          plotAbuja: { label: 'plot Abuja repère 900 m²', factor: 900 },
+          feddan: { label: 'feddan Égypte repère 4 200 m²', factor: 4200 },
+          morgen: { label: 'morgen Afrique australe repère 8 565 m²', factor: 8565 }
+        }
+      },
+      volume: {
+        label: 'Volume',
+        base: 'l',
+        confidence: 'Élevée - relation métrique standard',
+        units: {
+          l: { label: 'litre (L)', factor: 1 },
+          ml: { label: 'millilitre (mL)', factor: 0.001 },
+          m3: { label: 'mètre cube (m³)', factor: 1000 },
+          cup: { label: 'tasse cuisine 240 mL', factor: 0.24 },
+          tbsp: { label: 'cuillère à soupe 15 mL', factor: 0.015 },
+          tsp: { label: 'cuillère à café 5 mL', factor: 0.005 },
+          galUS: { label: 'gallon US', factor: 3.785411784 }
+        }
+      },
+      speed: {
+        label: 'Vitesse',
+        base: 'mps',
+        confidence: 'Élevée - relation standard',
+        units: {
+          mps: { label: 'mètre/seconde', factor: 1 },
+          kph: { label: 'km/h', factor: 0.2777777778 },
+          mph: { label: 'mile/h', factor: 0.44704 },
+          knot: { label: 'nœud', factor: 0.5144444444 }
+        }
+      },
+      data: {
+        label: 'Données numériques',
+        base: 'byte',
+        confidence: 'Élevée - base décimale courante',
+        units: {
+          byte: { label: 'octet (B)', factor: 1 },
+          kb: { label: 'kilooctet (KB)', factor: 1000 },
+          mb: { label: 'mégaoctet (MB)', factor: 1000000 },
+          gb: { label: 'gigaoctet (GB)', factor: 1000000000 },
+          kib: { label: 'kibioctet (KiB)', factor: 1024 },
+          mib: { label: 'mébioctet (MiB)', factor: 1048576 }
+        }
+      },
+      energy: {
+        label: 'Énergie',
+        base: 'j',
+        confidence: 'Élevée - relation standard',
+        units: {
+          j: { label: 'joule (J)', factor: 1 },
+          kj: { label: 'kilojoule (kJ)', factor: 1000 },
+          wh: { label: 'wattheure (Wh)', factor: 3600 },
+          kwh: { label: 'kilowattheure (kWh)', factor: 3600000 },
+          kcal: { label: 'kilocalorie alimentaire', factor: 4184 }
+        }
+      },
+      temperature: {
+        label: 'Température',
+        base: 'c',
+        confidence: 'Élevée - formules exactes NIST',
+        units: {
+          c: { label: 'Celsius (°C)' },
+          f: { label: 'Fahrenheit (°F)' },
+          k: { label: 'Kelvin (K)' }
+        }
+      }
+    };
+
+    var category = document.getElementById('unitCategory');
+    var value = document.getElementById('unitValue');
+    var from = document.getElementById('unitFrom');
+    var to = document.getElementById('unitTo');
+    var title = document.getElementById('unitResultTitle');
+    var text = document.getElementById('unitResultText');
+    var converted = document.getElementById('unitConverted');
+    var formula = document.getElementById('unitFormula');
+    var categoryLabel = document.getElementById('unitCategoryLabel');
+    var confidence = document.getElementById('unitConfidence');
+    var summary = document.getElementById('unitSummary');
+    var swap = document.getElementById('unitSwap');
+    var example = document.getElementById('unitExample');
+    var copy = document.getElementById('unitCopy');
+
+    function format(value) {
+      return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 8 }).format(Number(value.toPrecision(12)));
+    }
+
+    function populateUnits() {
+      var current = categories[category.value];
+      var previousFrom = from.value;
+      var previousTo = to.value;
+      from.innerHTML = '';
+      to.innerHTML = '';
+      Object.keys(current.units).forEach(function (key) {
+        var optionFrom = new Option(current.units[key].label, key);
+        var optionTo = new Option(current.units[key].label, key);
+        from.add(optionFrom);
+        to.add(optionTo);
+      });
+      from.value = current.units[previousFrom] ? previousFrom : Object.keys(current.units)[0];
+      to.value = current.units[previousTo] && previousTo !== from.value ? previousTo : Object.keys(current.units)[1] || Object.keys(current.units)[0];
+    }
+
+    function toCelsius(input, unit) {
+      if (unit === 'f') return (input - 32) / 1.8;
+      if (unit === 'k') return input - 273.15;
+      return input;
+    }
+
+    function fromCelsius(input, unit) {
+      if (unit === 'f') return (input * 1.8) + 32;
+      if (unit === 'k') return input + 273.15;
+      return input;
+    }
+
+    function calculate() {
+      var current = categories[category.value];
+      var input = Number(value.value);
+      if (!Number.isFinite(input)) input = 0;
+      var result;
+      var formulaText;
+      if (category.value === 'temperature') {
+        result = fromCelsius(toCelsius(input, from.value), to.value);
+        formulaText = current.units[from.value].label + ' → °C → ' + current.units[to.value].label;
+      } else {
+        var base = input * current.units[from.value].factor;
+        result = base / current.units[to.value].factor;
+        formulaText = 'valeur × ' + current.units[from.value].factor + ' ÷ ' + current.units[to.value].factor;
+      }
+      title.textContent = format(input) + ' ' + current.units[from.value].label + ' =';
+      converted.textContent = format(result) + ' ' + current.units[to.value].label;
+      text.textContent = 'Conversion ' + current.label.toLowerCase() + ' avec une valeur de base contrôlée.';
+      formula.textContent = formulaText;
+      categoryLabel.textContent = current.label;
+      confidence.textContent = current.confidence;
+      summary.value = [
+        'AfroTools - convertisseur d’unités',
+        'Catégorie : ' + current.label,
+        'Entrée : ' + format(input) + ' ' + current.units[from.value].label,
+        'Résultat : ' + format(result) + ' ' + current.units[to.value].label,
+        'Méthode : ' + formulaText,
+        'Avertissement : vérifier les unités foncières locales, devis d’ingénierie et documents officiels avant décision.'
+      ].join('\n');
+      try { localStorage.setItem('afrotools_unit_converter_fr_v1', summary.value); } catch (_) {}
+    }
+
+    category.addEventListener('change', function () { populateUnits(); calculate(); });
+    [value, from, to].forEach(function (input) {
+      input.addEventListener('input', calculate);
+      input.addEventListener('change', calculate);
+    });
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      calculate();
+    });
+    swap.addEventListener('click', function () {
+      var temp = from.value;
+      from.value = to.value;
+      to.value = temp;
+      calculate();
+    });
+    example.addEventListener('click', function () {
+      category.value = 'area';
+      populateUnits();
+      value.value = '2';
+      from.value = 'plotLagos';
+      to.value = 'ha';
+      calculate();
+    });
+    copy.addEventListener('click', function () {
+      calculate();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(summary.value).then(function () {
+          copy.textContent = 'Copié';
+          setTimeout(function () { copy.textContent = 'Copier'; }, 1300);
+        }).catch(function () { summary.select(); });
+      } else {
+        summary.select();
+      }
+    });
+    populateUnits();
+    calculate();
+  })();
+</script>
 <afro-footer></afro-footer>
 </body>
 </html>

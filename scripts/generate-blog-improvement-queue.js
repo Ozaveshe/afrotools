@@ -8,7 +8,8 @@ const CONTENT_AUDIT = path.join(ROOT, 'output', 'blog-audit.json');
 const EDITORIAL_AUDIT = path.join(ROOT, 'reports', 'blog-editorial-audit.json');
 const OUTPUT_JSON = path.join(ROOT, 'reports', 'blog-content-improvement-queue.json');
 const OUTPUT_MD = path.join(ROOT, 'reports', 'blog-content-improvement-queue.md');
-const CURRENT_REVIEW_DATE = 'June 17, 2026';
+const CURRENT_REVIEW_DATES = ['June 18, 2026', 'June 17, 2026'];
+const CURRENT_REVIEW_DATES_SW = ['18 Juni 2026', '17 Juni 2026'];
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -32,12 +33,20 @@ function priorityFor(article, contentPost, issues) {
 
 function hasCurrentSourceReview(article) {
   const html = fs.readFileSync(path.join(ROOT, article.file), 'utf8');
-  const reviewPatterns = [
-    new RegExp(`Source check,\\s*${CURRENT_REVIEW_DATE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i'),
-    new RegExp(`Editorial review,\\s*${CURRENT_REVIEW_DATE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i'),
-    new RegExp(`Last reviewed:\\s*${CURRENT_REVIEW_DATE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i'),
-    new RegExp(`Primary sources reviewed[^<]*${CURRENT_REVIEW_DATE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i')
-  ];
+  const reviewPatterns = CURRENT_REVIEW_DATES.flatMap((date) => {
+    const escapedDate = date.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return [
+      new RegExp(`Source check[: ,]+\\s*${escapedDate}`, 'i'),
+      new RegExp(`Sources Checked on\\s*${escapedDate}`, 'i'),
+      new RegExp(`Editorial review,\\s*${escapedDate}`, 'i'),
+      new RegExp(`Last reviewed:\\s*${escapedDate}`, 'i'),
+      new RegExp(`Primary sources reviewed[^<]*${escapedDate}`, 'i')
+    ];
+  });
+  CURRENT_REVIEW_DATES_SW.forEach((date) => {
+    const escapedDate = date.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    reviewPatterns.push(new RegExp(`Vyanzo rasmi vimekaguliwa[^<]*${escapedDate}`, 'i'));
+  });
   return reviewPatterns.some((pattern) => pattern.test(html));
 }
 

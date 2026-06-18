@@ -618,7 +618,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       <div>
         <div class="hero-eyebrow">AI-Powered &bull; 54 Countries</div>
         <h1>AI Business<br><em>Planner</em></h1>
-        <p class="hero-sub">Country-specific registration, tax setup, and licensing &mdash; step-by-step action plans powered by AI for all 54 African countries.</p>
+        <p class="hero-sub">Country-specific registration, tax setup, and licensing &mdash; step-by-step planning workflows for all 54 African countries, with AI assist where available.</p>
         <div class="hero-badges">
           <span class="badge badge-gold">Includes AI Advisor</span>
           <span class="badge badge-blue">54 Countries</span>
@@ -659,7 +659,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
   <div class="wrap">
     <span class="eyebrow">Step 2</span>
     <h2 class="section-title">Tell Us About Your Business</h2>
-    <p class="section-sub">We'll use this to generate a tailored action plan with real registration steps, tax obligations, and licenses.</p>
+    <p class="section-sub">We'll use this to generate a tailored planning workflow with registration steps, tax obligations, license checks, and follow-ups to verify with official sources.</p>
     <div class="form-group">
       <label class="form-label" for="biz-type">Business Type</label>
       <select class="form-select" id="biz-type"></select>
@@ -894,12 +894,12 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
   // ── Generate plan
   document.getElementById('btn-plan').onclick = function(){
     if (!state.country) return;
-    state.plan = BusinessPlannerEngine.generateActionPlan({
+    state.plan = ensurePlannerTaxCoverage(BusinessPlannerEngine.generateActionPlan({
       countryCode: state.country.code,
       businessType: document.getElementById('biz-type').value,
       industry: document.getElementById('biz-industry').value,
       hasEmployees: document.getElementById('emp-yes').classList.contains('active')
-    });
+    }), document.getElementById('emp-yes').classList.contains('active'));
     state.chatHistory = [];
     renderPlan();
     document.getElementById('sec-plan').classList.remove('locked');
@@ -912,7 +912,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     var p = state.plan;
     document.getElementById('plan-title').textContent = (FLAG_MAP[p.countryCode]||'') + ' ' + p.country + ' \u2014 ' + p.businessType;
     if (typeof twemoji !== 'undefined') twemoji.parse(document.getElementById('plan-title'), { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
-    document.getElementById('plan-disclaimer').textContent = p.disclaimer;
+    document.getElementById('plan-disclaimer').textContent = buildPlanDisclaimer(p);
 
     var html = '';
 
@@ -962,6 +962,13 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       p.phase4_banking.estimatedTimeline
     );
 
+    // Phase 5: Follow-ups and renewal checks
+    html += buildPhase('Phase 5: Follow-ups & renewal checks', 'ph-5', '5',
+      '<p style="font-size:.82rem;color:#6b7280;margin-bottom:12px">Use these as reminders after the first setup pass. Dates and renewal cycles vary by authority, sector, city, and entity type, so verify them before relying on the plan.</p>'
+      + getSetupFollowups(p).map(function(item){ return '<div class="step-item"><div class="step-check" data-checkable="1"></div><span>'+esc(item)+'</span></div>'; }).join(''),
+      '5 checks'
+    );
+
     // Cost Estimate
     html += buildPhase('Cost Estimate', 'ph-cost', '💰',
       '<div class="cost-grid">'
@@ -993,6 +1000,43 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       + '</div>'
       + '<div class="phase-body">' + bodyHtml + '</div>'
       + '</div>';
+  }
+
+  function getSetupFollowups(p){
+    var registrationAuthority = (p.phase1_registration && p.phase1_registration.authority) || 'the business registry';
+    var taxAuthority = (p.phase2_tax && p.phase2_tax.authority) || 'the tax authority';
+    return [
+      'Save the registration certificate, tax ID, receipt, and application reference numbers in one launch folder.',
+      'Confirm whether the business premises, trade, municipal, health, sector, or professional licenses need annual renewal.',
+      'Create a tax calendar from ' + taxAuthority + ' guidance before the first filing period starts.',
+      'Ask the bank for any post-opening KYC, board-resolution, beneficial-owner, or account-activity follow-up requirements.',
+      'Re-check ' + registrationAuthority + ' and ' + taxAuthority + ' source pages before paying fees, filing forms, or quoting timelines.'
+    ];
+  }
+
+  function buildPlanDisclaimer(p){
+    var base = p && p.disclaimer ? p.disclaimer + ' ' : '';
+    return base + 'Use this as planning guidance only, not legal, tax, financial, banking, or licensing advice. Fees, thresholds, forms, filing dates, processing times, and renewal rules can change; verify current requirements with the named authority before paying, filing, or signing contracts.';
+  }
+
+  function ensurePlannerTaxCoverage(plan, hasEmployees){
+    if (!plan || !plan.countryCode || !plan.phase2_tax) return plan;
+    if (plan.phase2_tax.applicableTaxes && plan.phase2_tax.applicableTaxes.length) return plan;
+    var country = BusinessPlannerEngine.getCountry(plan.countryCode);
+    if (!country || !country.tax || !country.tax.obligations) return plan;
+    var type = String(plan.businessType || '').toLowerCase();
+    var isCompany = /ltd|limited|company|pty|sarl|societe|société|corporation/.test(type);
+    var isSole = /sole|proprietor|individual|individuel|individuelle|enterprise/.test(type);
+    plan.phase2_tax.applicableTaxes = country.tax.obligations.filter(function(tax){
+      if (tax.note && /employees/i.test(tax.note) && !hasEmployees) return false;
+      return (tax.applicableTo || []).some(function(target){
+        var normalized = String(target || '').toLowerCase();
+        if (isCompany && /ltd|limited|company|pty|sarl|corporate/.test(normalized)) return true;
+        if (isSole && /sole|proprietor|personal|individual|individuel/.test(normalized)) return true;
+        return type.indexOf(normalized) !== -1 || normalized.indexOf(type) !== -1;
+      });
+    });
+    return plan;
   }
 
   function esc(s){ if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -1238,6 +1282,12 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     addText('ACCOUNT REQUIREMENTS', 8, true);
     p.phase4_banking.requirements.forEach(function(r, i){ addNumberedStep(i, r); });
 
+    // === PHASE 5 ===
+    y += 4;
+    sectionHeader('Phase 5: Follow-ups & renewal checks', 15, 118, 110);
+    addText('REMINDERS TO VERIFY', 8, true);
+    getSetupFollowups(p).forEach(function(item, i){ addNumberedStep(i, item); });
+
     // === COST ESTIMATE ===
     y += 4;
     sectionHeader('Cost Estimate', 0, 122, 255);
@@ -1267,7 +1317,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     y += 6;
     checkPage(20);
     doc.setFillColor(245, 247, 250);
-    var discLines = doc.splitTextToSize(p.disclaimer, contentW - 12);
+    var discLines = doc.splitTextToSize(buildPlanDisclaimer(p), contentW - 12);
     var discH = discLines.length * 3.5 + 8;
     doc.roundedRect(margin, y, contentW, discH, 2, 2, 'F');
     doc.setFontSize(6.5);
@@ -1400,7 +1450,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     chatSend.disabled = true;
     showTyping();
 
-    var systemPrompt = 'You are the AfroTools Business Advisor \u2014 an AI assistant specializing in business registration and compliance across all 54 African countries.\n\nCONTEXT: The user selected:\n- Country: '+state.plan.country+'\n- Business Type: '+state.plan.businessType+'\n- Industry: '+(document.getElementById('biz-industry').value||'Not specified')+'\n- Has Employees: '+(document.getElementById('emp-yes').classList.contains('active')?'Yes':'No')+'\n\nRULES:\n- Be specific. Name the exact authority, website, fee.\n- Use local currency ('+state.plan.currency.symbol+' '+state.plan.currency.code+').\n- If unsure, say so and recommend verification.\n- Keep responses concise \u2014 2-3 paragraphs max.\n- Use **bold** for important terms and amounts.\n- Use numbered or bullet lists for steps.\n- Be encouraging. Starting a business in Africa should feel achievable.';
+    var systemPrompt = 'You are the AfroTools Business Advisor \u2014 an AI assistant specializing in business registration and compliance across all 54 African countries.\n\nCONTEXT: The user selected:\n- Country: '+state.plan.country+'\n- Business Type: '+state.plan.businessType+'\n- Industry: '+(document.getElementById('biz-industry').value||'Not specified')+'\n- Has Employees: '+(document.getElementById('emp-yes').classList.contains('active')?'Yes':'No')+'\n\nRULES:\n- Be specific about the authority and workflow, but do not invent current fees, thresholds, filing dates, processing times, license renewals, programs, bank requirements, or source URLs.\n- Use local currency ('+state.plan.currency.symbol+' '+state.plan.currency.code+') only when the amount is already known from the plan or clearly labelled as an estimate.\n- If a rule may have changed, say it needs official verification and name the authority to check.\n- Keep responses concise \u2014 2-3 paragraphs max.\n- Use **bold** for important terms and labelled estimates.\n- Use numbered or bullet lists for steps.\n- Be encouraging. Starting a business in Africa should feel achievable.';
 
     var messages = [{role:'user', content: systemPrompt + '\n\nUser question: ' + msg}];
     var history = state.chatHistory.slice(-8);
@@ -1894,6 +1944,9 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       renderSectionToPdf('Funding Strategy', proSectionData['funding-strategy'], 157, 23, 77);
     }
 
+    sectionHead('Important verification note', 100, 116, 139);
+    addWrappedText(buildPlanDisclaimer(p), 8, false);
+
     addFooter();
     doc.save('AfroTools-PRO-Business-Plan-' + p.country.replace(/\s/g,'-') + '.pdf');
   }
@@ -1924,12 +1977,28 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     };
 
     try {
-      var { error } = await sb.from('saved_business_plans').upsert(saveData, {
-        onConflict: 'user_id,country_code,business_type,industry'
-      });
+      var { data: existingRows, error: findError } = await sb
+        .from('saved_business_plans')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('country_code', ctx.countryCode)
+        .eq('business_type', ctx.businessType)
+        .eq('industry', ctx.industry)
+        .order('updated_at', { ascending: false })
+        .limit(1);
+
+      if (findError) throw findError;
+
+      var existing = existingRows && existingRows[0];
+      var result = existing
+        ? await sb.from('saved_business_plans').update(saveData).eq('id', existing.id)
+        : await sb.from('saved_business_plans').insert(Object.assign({ created_at: new Date().toISOString() }, saveData));
+      var error = result && result.error;
       if (!error) {
         var indicator = document.getElementById('gen-status');
         if (indicator) indicator.innerHTML += ' <span class="save-indicator show">Saved \u2713</span>';
+      } else {
+        throw error;
       }
     } catch(e) {
       console.warn('[BusinessPlanner] Auto-save failed:', e);
@@ -2012,6 +2081,29 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
     }
   }
 
+  function restoreSavedActionPlan(saved){
+    if (!saved || !saved.action_plan) {
+      state.plan = null;
+      return false;
+    }
+    state.plan = ensurePlannerTaxCoverage(saved.action_plan, null);
+    state.country = countries.find(function(c){ return c.code === saved.country_code; }) || null;
+    if (state.country) {
+      renderCountries(document.getElementById('country-search').value);
+      onCountrySelected();
+    }
+    var typeEl = document.getElementById('biz-type');
+    if (typeEl && (saved.business_type || state.plan.businessType)) typeEl.value = saved.business_type || state.plan.businessType;
+    var industryEl = document.getElementById('biz-industry');
+    if (industryEl && saved.industry) industryEl.value = saved.industry;
+    var descEl = document.getElementById('biz-desc');
+    if (descEl) descEl.value = saved.description || '';
+    document.getElementById('sec-plan').classList.remove('locked');
+    updateProgress(3);
+    renderPlan();
+    return true;
+  }
+
   // Handle click on a saved plan (load it) or delete
   if (savedList) {
     savedList.addEventListener('click', async function(e) {
@@ -2048,8 +2140,9 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
 
       // Render saved plan sections
       savedPanel.classList.remove('open');
+      var canExportSavedPlan = restoreSavedActionPlan(data);
       var outputEl = document.getElementById('pro-plan-output');
-      outputEl.innerHTML = '';
+      outputEl.innerHTML = canExportSavedPlan ? '' : '<div class="info-card">This saved plan is missing its action-plan snapshot, so full PDF export is disabled. Regenerate the plan to refresh registration, tax, license, banking, and follow-up context.</div>';
       outputEl.style.display = 'block';
       proSectionData = {};
 
@@ -2067,9 +2160,11 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
       // Add PDF button
       var actionsDiv = document.createElement('div');
       actionsDiv.className = 'pro-plan-actions';
-      actionsDiv.innerHTML = '<button type="button" class="btn-sm primary" id="btn-pro-pdf">Download Full Business Plan PDF</button>';
+      actionsDiv.innerHTML = canExportSavedPlan
+        ? '<button type="button" class="btn-sm primary" id="btn-pro-pdf">Download Full Business Plan PDF</button>'
+        : '<button type="button" class="btn-sm primary" id="btn-pro-pdf" disabled title="Regenerate this plan to restore the action-plan snapshot">PDF unavailable for this saved plan</button>';
       outputEl.appendChild(actionsDiv);
-      document.getElementById('btn-pro-pdf').addEventListener('click', function(){ generateProPdf(); });
+      if (canExportSavedPlan) document.getElementById('btn-pro-pdf').addEventListener('click', function(){ generateProPdf(); });
 
       outputEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });

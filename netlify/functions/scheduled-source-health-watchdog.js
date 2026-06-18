@@ -1,5 +1,6 @@
 const { getData, setData } = require('./_shared/data-store');
 const { loadScholarshipFeed, SCHOLARSHIP_PUBLIC_MIN_COUNT } = require('./_shared/scholarship-platform');
+const { getCollector } = require('./_shared/market-data-refresh');
 const { isEmailConfigured, sendEmail } = require('./_shared/email-adapter');
 
 const WATCHDOG_KEY = 'automation-health-latest';
@@ -255,7 +256,7 @@ async function checkMarketDataRuns(summary, nowMs) {
   try {
     const [sourcesResult, runsResult] = await Promise.all([
       supabaseGet('market_data_sources?select=id,dataset,source_key,active,last_success_at,last_error_at,cadence_hours,ttl_hours&active=eq.true&order=dataset.asc,source_key.asc'),
-      supabaseGet('market_data_source_runs?select=id,dataset,status,started_at,finished_at,records_inserted,records_published,error_summary&order=started_at.desc&limit=50'),
+      supabaseGet('market_data_source_runs?select=id,source_id,dataset,status,started_at,finished_at,records_inserted,records_published,error_summary&order=started_at.desc&limit=50'),
     ]);
 
     if (sourcesResult.skipped || runsResult.skipped) {
@@ -264,13 +265,29 @@ async function checkMarketDataRuns(summary, nowMs) {
     }
 
     const sources = Array.isArray(sourcesResult.rows) ? sourcesResult.rows : [];
+    const refreshManagedSources = sources.filter(function (source) {
+      return !!getCollector(source);
+    });
     const runs = Array.isArray(runsResult.rows) ? runsResult.rows : [];
     const staleSources = [];
-    const failedRuns = runs.filter(function (run) {
+    const recentCutoff = nowMs - (7 * 24 * 60 * 60 * 1000);
+    const recentRuns = runs.filter(function (run) {
+      const started = new Date(run.started_at || run.finished_at || 0).getTime();
+      return Number.isFinite(started) && started >= recentCutoff;
+    });
+    const latestRunBySource = {};
+    recentRuns.forEach(function (run) {
+      const key = (run.source_id || run.dataset || run.id) + ':' + (run.dataset || '');
+      if (!latestRunBySource[key]) latestRunBySource[key] = run;
+    });
+    const latestRecentRuns = Object.keys(latestRunBySource).map(function (key) {
+      return latestRunBySource[key];
+    });
+    const failedRuns = latestRecentRuns.filter(function (run) {
       return ['failed', 'error'].includes(String(run.status || '').toLowerCase());
     });
 
-    sources.forEach(function (source) {
+    refreshManagedSources.forEach(function (source) {
       const cadenceHours = Number(source.cadence_hours || source.ttl_hours || 24);
       const thresholdMinutes = Math.max(cadenceHours * 2 * 60, 1440);
       const lastSuccess = toIso(source.last_success_at);
@@ -289,7 +306,8 @@ async function checkMarketDataRuns(summary, nowMs) {
     summary.sources.market_data = {
       checked: true,
       active_sources: sources.length,
-      recent_runs: runs.length,
+      refresh_managed_sources: refreshManagedSources.length,
+      recent_runs: recentRuns.length,
       failed_recent_runs: failedRuns.length,
       stale_sources: staleSources.slice(0, 25),
     };
@@ -487,6 +505,10 @@ async function maybeSendDigest(summary) {
 
 function safeSummary(summary, includeDetails) {
   if (includeDetails) return summary;
+  const marketData = summary.sources && summary.sources.market_data ? summary.sources.market_data : null;
+  const staleSources = marketData && Array.isArray(marketData.stale_sources)
+    ? marketData.stale_sources
+    : [];
   return {
     ok: summary.ok,
     checked_at: summary.checked_at,
@@ -507,10 +529,11 @@ function safeSummary(summary, includeDetails) {
       } : null,
       market_data: summary.sources.market_data ? {
         checked: true,
-        active_sources: summary.sources.market_data.active_sources,
-        recent_runs: summary.sources.market_data.recent_runs,
-        failed_recent_runs: summary.sources.market_data.failed_recent_runs,
-        stale_source_count: summary.sources.market_data.stale_sources.length,
+        active_sources: marketData.active_sources,
+        refresh_managed_sources: marketData.refresh_managed_sources,
+        recent_runs: marketData.recent_runs,
+        failed_recent_runs: marketData.failed_recent_runs,
+        stale_source_count: staleSources.length,
       } : null,
       scholarship_feed: summary.sources.scholarship_feed || null,
       scholarship_ingest_runs: summary.sources.scholarship_ingest_runs || null,

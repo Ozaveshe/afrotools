@@ -20,28 +20,33 @@ test("ask command page uses the shared catalog router and registry examples", as
   await page.goto("/ask/", { waitUntil: "domcontentloaded" });
 
   await expect(page.locator("iframe")).toHaveCount(0);
-  await expect(page.locator(".ask-system-strip")).toContainText("Searches all tools");
-  await expect(page.locator(".ask-system-strip")).toContainText("Uses existing AfroTools pages first");
-  await expect(page.locator(".ask-examples")).toContainText("Ghana passport documents");
+  await expect(page.locator(".ask-copy")).toContainText("Say what you need");
+  await expect(page.locator(".ask-privacy")).toContainText("Private by default");
+  await expect(page.locator(".ask-system-strip")).toBeHidden();
+  await expect(page.locator(".ask-examples")).toContainText("Passport documents");
+  await expect(page.locator(".ask-example")).toHaveCount(4);
+  await expect(page.locator("body")).not.toContainText("How this page works");
   await expect.poll(() => page.evaluate(() => Boolean(window.AfroToolsAIOrchestrator && window.AfroToolsAIOrchestrator.buildPlan))).toBe(true);
 
   await page.locator("#askPrompt").fill("Get Ghana passport documents, fees to check, and next steps");
-  await page.getByRole("button", { name: "Find my tool" }).click();
+  await page.getByRole("button", { name: "Start" }).click();
 
   await expect(page.locator("#stateResult")).toBeVisible();
   await expect(page.locator("#toolTitle")).toContainText(/Passport/i);
   await expect(page.locator("#toolMeta")).toContainText("orchestrated tool match");
   await expect(page.locator("#toolMeta")).not.toContainText("mock router");
   await expect(page.locator("#sourceNote")).toBeVisible();
-  await expect(page.locator("#sourceNote")).toContainText(/source|freshness|private|estimate/i);
+  await expect(page.locator("#sourceNote")).toContainText(/source|private|estimate|ready/i);
   await expect(page.locator("#openToolLink")).toHaveAttribute("href", /\/tools\/passport-checklist\//);
+  const openHref = await page.locator("#openToolLink").getAttribute("href");
+  expect(new URL(openHref, "https://afrotools.com").searchParams.getAll("source")).toEqual(["ask"]);
   await expect(page.locator("#resultSearchLink")).toHaveAttribute("href", "/search/?source=ask_private");
   await expect(page.locator("#resultSearchLink")).not.toHaveAttribute("href", /Ghana|documents|fees|next/i);
-  await expect(page.locator("#relatedTools")).toBeVisible();
-  await expect(page.locator("#relatedTools")).toContainText("Related tools");
+  await expect(page.locator("#relatedTools")).toBeHidden();
   await expect(page.locator("[data-related-tool]").first()).toHaveAttribute("href", /^\/[^?]*\/$/);
   await expect(page.locator("#relatedTools")).not.toContainText("Ghana passport documents");
-  await expect(page.locator("[data-ask-router-feedback]")).toContainText("Was this match useful?");
+  await expect(page.locator("[data-ask-router-feedback] summary")).toContainText("Not right?");
+  await page.locator("[data-ask-router-feedback] summary").click();
   await page.locator("[data-ask-feedback='negative']").click();
   await expect(page.locator("[data-ask-feedback-status]")).toContainText("Feedback saved for router review.");
   const feedbackReport = await page.evaluate(() => window.AfroToolsAIIntentAnalytics.getReport());
@@ -64,7 +69,7 @@ test("ask command page uses the shared catalog router and registry examples", as
   expect(JSON.stringify(openReport)).not.toContain("Ghana passport documents");
 
   await page.locator("#askPrompt").fill("n electrical engineer in Ghana");
-  await page.getByRole("button", { name: "Find my tool" }).click();
+  await page.getByRole("button", { name: "Start" }).click();
 
   await expect(page.locator("#stateResult")).toBeVisible();
   await expect(page.locator("#toolTitle")).toContainText(/CV|Resume/i);
@@ -80,14 +85,34 @@ test("ask command page shows source and freshness guidance for high-stakes match
   await page.goto("/ask/", { waitUntil: "domcontentloaded" });
 
   await page.locator("#askPrompt").fill("How much duty to import a 2016 Toyota Axio into Nigeria?");
-  await page.getByRole("button", { name: "Find my tool" }).click();
+  await page.getByRole("button", { name: "Start" }).click();
 
   await expect(page.locator("#stateResult")).toBeVisible();
   await expect(page.locator("#toolTitle")).toContainText(/Import|Duty|Customs/i);
   await expect(page.locator("#riskPill")).toContainText(/estimate/i);
   await expect(page.locator("#sourceNote")).toBeVisible();
-  await expect(page.locator("#sourceNote")).toContainText(/source|freshness|official|rates|requirements/i);
+  await expect(page.locator("#sourceNote")).toContainText(/source|fees|rules|estimate/i);
   await expect(page.locator("#sourceNote")).not.toContainText("guaranteed");
+});
+
+test("ask command page gives an intelligent Angola salary-tax answer preview", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  await page.goto("/ask/", { waitUntil: "domcontentloaded" });
+
+  await expect(page.locator(".ask-doodle")).toBeVisible();
+  await page.locator("#askPrompt").fill("i want to calculate my salary tax in angoa 1000000");
+  await page.getByRole("button", { name: "Start" }).click();
+
+  await expect(page.locator("#stateResult")).toBeVisible();
+  await expect(page.locator("#toolTitle")).toContainText("Angola PAYE Calculator");
+  await expect(page.locator("#answerPreview")).toBeVisible();
+  await expect(page.locator("#answerPreview")).toContainText("Angola");
+  await expect(page.locator("#answerPreview")).toContainText("Kz 1,000,000");
+  await expect(page.locator("#answerPreview")).toContainText("IRT + INSS");
+  await expect(page.locator("#answerPreview")).not.toContainText(/tax is|net pay is|you will pay/i);
+  await expect(page.locator("#openToolLink")).toHaveAttribute("href", "/angola/ao-paye?source=ask&prefill=1");
+  await expect(page.locator("#sourceNote")).toContainText(/Check sources|tool source notes/i);
 });
 
 test("ask command page uses local-search fallback without scary router errors", async ({ page }) => {
@@ -116,7 +141,7 @@ test("ask private search handoff keeps prompt out of the URL", async ({ page }) 
 
   await page.goto("/ask/", { waitUntil: "domcontentloaded" });
   await page.locator("#askPrompt").fill("Get Ghana passport documents, fees to check, and next steps");
-  await page.getByRole("button", { name: "Find my tool" }).click();
+  await page.getByRole("button", { name: "Start" }).click();
 
   await expect(page.locator("#stateResult")).toBeVisible();
   await page.locator("#resultSearchLink").click();
@@ -133,10 +158,11 @@ test("ask command page lets users add missing details from chips", async ({ page
   await page.goto("/ask/", { waitUntil: "domcontentloaded" });
 
   await page.locator("#askPrompt").fill("I want to study in Canada from Nigeria with $8,000");
-  await page.getByRole("button", { name: "Find my tool" }).click();
+  await page.getByRole("button", { name: "Start" }).click();
 
   await expect(page.locator("#stateResult")).toBeVisible();
   await expect(page.locator("#toolTitle")).toContainText(/Study|Scholarship/i);
+  await page.locator("#detailDrawer summary").click();
   const detailChip = page.getByRole("button", { name: "Add detail: Study Level" });
   await expect(detailChip).toBeVisible();
   await detailChip.click();
