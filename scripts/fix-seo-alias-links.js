@@ -20,7 +20,6 @@ const ALIASES = {
   "/kenya/ke-salary-tax": "/kenya/ke-paye",
   "/south-africa/za-salary-tax": "/south-africa/za-paye",
   "/blog/import-duty-kenya-2026/": "/blog/import-duty-calculator-kenya-2026/",
-  "/tools/paye-calculator/": "/salary-tax/",
   "/tools/salary-tax/": "/salary-tax/",
   "/tools/salary-calculator/": "/salary-tax/",
   "/categories/financial/": "/salary-tax/",
