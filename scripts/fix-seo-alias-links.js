@@ -12,6 +12,7 @@ const IGNORE_DIRS = new Set([
   ".jamb-tools",
   "node_modules",
   "afrotools-deploy",
+  "dist",
 ]);
 
 const ALIASES = {
@@ -42,6 +43,23 @@ const ALIASES = {
   "/fr/tools/study-planner/": "/fr/tools/planificateur-etudes/",
   "/fr/tools/fuel-tracker/": "/fr/tools/suivi-carburant/",
   "/fr/tools/afrorates/": "/fr/tools/afrotaux/",
+  "/tools/qrcode/": "/tools/qr-generator/",
+  "/tools/html-minifier/": "/tools/dev-tools/",
+  "/language-translation/": "/language/",
+  "/tools/privacy-policy-generator/": "/tools/privacy-policy-gen/",
+  "/tools/tax-id/": "/tools/tin-guide/",
+  "/fr/tools/facture/": "/fr/tools/generateur-factures/",
+  "/fr/tools/verification-cac/": "/fr/tools/verificateur-cac/",
+  "/tools/base64-encoder/": "/tools/base64/",
+  "/tools/profit-stand-marche/": "/fr/tools/profit-stand-marche/",
+  "/tools/farm-budget/": "/agriculture/farm-budget/",
+  "/tools/transport-fares/": "/transport/",
+  "/tools/project-timeline/": "/tools/business-plan/",
+  "/fr/tools/conformite-fiscale/": "/fr/tools/ng-impot-societes/",
+  "/fr/tools/impot-societe/": "/fr/tools/ng-impot-societes/",
+  "/tools/risk-reward/": "/tools/forex-profit/",
+  "/tools/position-size/": "/tools/forex-profit/",
+  "/tools/baby-name/": "/tools/baby-name-generator/",
 };
 
 function findHtmlFiles(dir) {

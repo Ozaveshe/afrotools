@@ -1,6 +1,16 @@
 # SEO Changelog
 
-Date: 2026-04-10
+Date: 2026-06-18
+
+## 2026-06-18 Maintenance Refresh
+
+- Rebuilt the registry-backed public tool directory and search indexes from `assets/js/components/tool-registry.js`.
+- Synced public count copy to the current generated total of `2,595+` live tool instances.
+- Regenerated the sitemap index and public sitemap set: `sitemap.xml`, `sitemap-index.xml`, `sitemap-tools.xml`, `sitemap-countries.xml`, `sitemap-agriculture.xml`, `sitemap-blog.xml`, `sitemap-fr.xml`, `sitemap-sw.xml`, `sitemap-ha.xml`, `sitemap-yo.xml`, `sitemap-cars.xml`, `sitemap-misc.xml`, `sitemap-i18n.xml`, and `jamb/sitemap.xml`.
+- Ran SEO normalization after sitemap generation so canonical route metadata, sitemap lastmod values, and structured-data URLs stay aligned.
+- Expanded `scripts/fix-seo-alias-links.js` with legacy utility and French route aliases, then reran link validation to clear all broken internal links.
+
+## 2026-04-10 SEO System Update
 
 ## What Changed
 
