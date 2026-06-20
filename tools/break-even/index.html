@@ -5,11 +5,11 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Break-Even Calculator for African Businesses | AfroTools</title>
-<meta name="description" content="Free break-even calculator with interactive charts, sensitivity analysis, margin of safety, and PDF reports. Calculate how many units to sell to cover costs. Built for African entrepreneurs.">
+<meta name="description" content="Calculate the monthly sales units and revenue needed to cover fixed and variable costs. Test pricing, margin of safety, sensitivity scenarios, and export a break-even report.">
 <link rel="canonical" href="https://afrotools.com/tools/break-even/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Break Even Calculator | AfroTools">
-<meta property="og:description" content="Calculate break-even point with charts, sensitivity analysis, profit zone visualization, and PDF reports.">
+<meta property="og:description" content="Calculate break-even units, revenue, margin of safety, sensitivity scenarios, and export a planning report.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/break-even.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/break-even/">
@@ -22,7 +22,7 @@
 <script src="/assets/js/components/related-tools-data.min.js?v=b2a3e3ac" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -349,6 +349,63 @@
     margin-top: 12px;
   }
 
+  .action-plan-box {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px;
+    color: #475569;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .action-plan-box strong {
+    display: block;
+    color: var(--afro-dark);
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .action-plan-box ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+  }
+
+  .action-status {
+    min-height: 20px;
+    margin-top: 8px;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .break-next-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .break-next-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    padding: 14px;
+  }
+
+  .break-next-card strong {
+    display: block;
+    color: var(--afro-dark);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+
+  .break-next-card span {
+    display: block;
+    color: #52637a;
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+
   .action-btn {
     padding: 10px 12px;
     background: var(--afro-green);
@@ -428,14 +485,15 @@
       grid-template-columns: 1fr;
     }
 
-    .action-buttons {
+    .action-buttons,
+    .break-next-grid {
       grid-template-columns: 1fr;
     }
   }
 </style>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/break-even.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/break-even.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Break-Even Calculator","description":"Calculate break-even units, revenue, contribution margin, margin of safety, and sensitivity scenarios from user-entered costs and price.","url":"https://afrotools.com/tools/break-even/","inLanguage":"en","applicationCategory":"BusinessApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/break-even.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Break-Even Calculator for African Businesses","url":"https://afrotools.com/tools/break-even/","description":"Calculate the sales units and revenue needed to cover fixed and variable costs, then test pricing and cost sensitivity.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/break-even.webp"}</script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/lib/pdf-template.js?v=61bb8821" defer></script>
 <script src="/assets/js/bundles/core.c3deb143.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
@@ -446,7 +504,7 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Break Even Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate break-even point with charts, sensitivity analysis, profit zone visualization, and PDF reports.">
+<meta name="twitter:description" content="Calculate break-even units, revenue, margin of safety, sensitivity scenarios, and export a planning report.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/break-even.webp">
 <script type="application/ld+json">
 {
@@ -489,26 +547,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use Break-Even Calculator?",
+      "name": "What inputs do I need for break-even analysis?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Use monthly fixed costs, variable cost per unit, selling price per unit, currency, and expected monthly sales volume. The calculator returns break-even units, break-even revenue, contribution margin, margin of safety, and sensitivity scenarios."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on Break-Even Calculator?",
+      "name": "How should I use the break-even result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Use it to set a minimum sales target, test whether price or cost changes make the business safer, and decide what to verify before sharing a plan with partners, lenders, or investors."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Break-Even Calculator an official result?",
+      "name": "Is this financial advice?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a planning estimate based on the numbers you enter. Verify real prices, costs, tax treatment, seasonality, loan terms, and market demand before making business or financing decisions."
       }
     }
   ],
@@ -523,7 +581,7 @@
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
     <h1>Break Even <em>Calculator</em></h1>
-    <p class="hero-sub">Find your break-even point with interactive charts. Analyze profit zones, sensitivity to price changes, margin of safety, and download professional PDF reports.</p>
+    <p class="hero-sub">Enter costs, price, and expected sales to see the minimum units and revenue needed to cover costs, then test price or cost pressure before you share the plan.</p>
     <div class="hero-badges">
       <span class="badge b-green">Interactive Charts</span>
       <span class="badge b-green">Sensitivity Analysis</span>
@@ -710,11 +768,14 @@
       <div class="card" id="actionsCard" style="display: none;">
         <div class="card-head"><span class="card-title">Actions</span></div>
         <div class="card-body">
+          <div class="action-plan-box" id="breakEvenActionPlan" aria-live="polite"><strong>Use this result as a decision checklist.</strong><span>Copy the action plan, download the PDF, or save the calculation after checking the assumptions.</span></div>
           <div class="action-buttons">
-            <button type="button" class="action-btn" onclick="downloadPDF()">📄 Download PDF Report</button>
-            <button type="button" class="action-btn alt" onclick="printChart()">🖨 Print</button>
+            <button type="button" class="action-btn" onclick="copyBreakEvenPlan()">Copy action plan</button>
+            <button type="button" class="action-btn" onclick="downloadPDF()">Download PDF report</button>
+            <button type="button" class="action-btn alt" onclick="printChart()">Print</button>
           </div>
-          <button type="button" class="action-btn" style="width: 100%; margin-top: 8px;" onclick="saveBreakEven()">💾 Save Calculation</button>
+          <button type="button" class="action-btn" style="width: 100%; margin-top: 8px;" onclick="saveBreakEven()">Save calculation</button>
+          <div class="action-status" id="breakEvenActionStatus" role="status" aria-live="polite"></div>
           <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
             <save-result-button tool-slug="break-even" tool-name="Break Even Calculator"></save-result-button>
             <share-result-button tool-name="Break Even Calculator" tool-slug="break-even"></share-result-button>
@@ -744,11 +805,11 @@
       <div class="info-card">
         <div class="info-title">Why It Matters</div>
         <div class="info-text">
-          Most African SMEs never calculate break-even. Knowing your break-even gives you:<br><br>
-          ✓ Pricing confidence<br>
-          ✓ Sales targets<br>
-          ✓ Risk awareness<br>
-          ✓ Growth strategy clarity
+          Use break-even before changing price, hiring, borrowing, or buying stock. It gives you:<br><br>
+          Pricing floor<br>
+          Monthly sales target<br>
+          Cost pressure check<br>
+          Safer growth assumptions
         </div>
       </div>
 
@@ -761,36 +822,31 @@
 <afro-related-tools category="ecommerce" current="break-even"></afro-related-tools>
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Break-Even Calculator: How It Works</h2>
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Break-even workflow</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Break-Even Calculator helps entrepreneurs and business owners determine exactly when their revenue will cover all costs. Enter your fixed costs, variable cost per unit, and selling price to instantly see your break-even point in both units and revenue. The tool goes beyond basic calculations by providing interactive charts that visualise your cost and revenue curves, sensitivity analysis to test how changes in pricing or costs affect your break-even point, and margin of safety metrics so you understand the buffer between your current sales and the break-even threshold. You can also generate a professional PDF report to share with partners, investors, or lenders. Designed specifically for African entrepreneurs, this calculator accounts for the realities of running a business on the continent — from fluctuating input costs to multi-currency considerations. Whether you are launching a new product, evaluating a business idea, or preparing a pitch deck, the break-even analysis gives you the data-driven confidence to make sound financial decisions.</p>
+    <p>Start with the calculator, then use the result as a monthly operating target. If the break-even number is too high, test three moves before acting: raise price, reduce fixed costs, or reduce variable cost per unit. Export or copy the result only after the assumptions match current supplier prices, rent, labour, tax, and realistic demand.</p>
   </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
 
 <section class="df-upgrade" data-df-upgrade="break-even">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Break-Even Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for break-even calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Break-Even Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, businessCta, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Break-even action path</span>
+      <h2>Use the result as a monthly target</h2>
+      <p>Calculate first, then decide whether the target is practical for your market, staff, stock, cash flow, and sales channel.</p>
+      <ul class="df-upgrade__bullets"><li>Compare expected sales with break-even units before committing to rent, hiring, debt, or stock.</li><li>Use sensitivity rows to see whether price cuts, supplier increases, or fixed-cost growth make the plan unsafe.</li><li>Export the report or copy the action plan for a partner, lender, investor, or internal review.</li><li>Verify real supplier prices, labour, delivery, tax, seasonality, and payment timing before final decisions.</li></ul>
+      <p class="df-upgrade__note"><strong>Planning estimate.</strong> This is not financial advice, funding approval, or a guaranteed profit forecast. It depends entirely on the costs, price, and sales volume you enter.</p>
     </div>
-    <form class="df-form" data-df-form="break-even">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="break-even" data-df-base="Break-Even Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Break-Even Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="break-even">Copy summary</button></div>
-    </form>
+    <div class="break-next-grid" aria-label="Break-even next steps">
+      <div class="break-next-card"><strong>1. Enter real costs</strong><span>Rent, labour, utilities, other fixed costs, variable cost per unit, price, and expected monthly sales.</span></div>
+      <div class="break-next-card"><strong>2. Stress-test price</strong><span>Check whether a discount, supplier increase, or fixed-cost jump makes break-even unrealistic.</span></div>
+      <div class="break-next-card"><strong>3. Export the plan</strong><span>Download PDF, save locally, or copy the action plan after calculating.</span></div>
+    </div>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="break-even-faq-title">
-  <h2 id="break-even-faq-title">Break-Even Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <h2 id="break-even-faq-title">Break-even FAQ</h2>
+  <div class="df-faq__grid"><details><summary>What numbers should I verify first?</summary><p>Verify current rent, wages, utilities, supplier costs, packaging, delivery, taxes, bank charges, expected demand, and collection timing. Small cost changes can move the break-even target quickly.</p></details><details><summary>What if current sales are below break-even?</summary><p>Treat the gap as an action list. You can raise price, reduce variable cost, cut fixed costs, improve sales volume, or delay expansion until the monthly target is realistic.</p></details><details><summary>Can I share the report with a lender or investor?</summary><p>Yes, as a planning report. Add source documents, supplier quotes, invoices, leases, payroll assumptions, and real sales evidence before using it for financing or investment conversations.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -920,7 +976,17 @@ function loadPreset(i) {
     document.getElementById('actionsCard').style.display = 'block';
 
     // Chart
-    drawBreakEvenChart(breakEvenUnits, fixedCosts, varCost, sellingPrice, contribMargin);
+    try {
+      if (window.Chart) {
+        drawBreakEvenChart(breakEvenUnits, fixedCosts, varCost, sellingPrice, contribMargin);
+      } else {
+        var chartNote = document.querySelector('#chartCard .card-body > div:last-child');
+        if (chartNote) chartNote.textContent = 'Chart library unavailable in this browser; use the tables and action plan below.';
+      }
+    } catch (e) {
+      var fallbackNote = document.querySelector('#chartCard .card-body > div:last-child');
+      if (fallbackNote) fallbackNote.textContent = 'Chart could not render; use the tables and action plan below.';
+    }
 
     // Profit Zone
     generateProfitZone(breakEvenUnits, fixedCosts, varCost, sellingPrice, currency);
@@ -938,6 +1004,7 @@ function loadPreset(i) {
       breakEvenUnits, breakEvenRevenue, marginOfSafety, contribMargin,
       currency, date: new Date().toLocaleDateString()
     };
+    renderBreakEvenActionPlan();
 
     // Wire up save/share buttons
     var _saveBtn = document.querySelector('save-result-button');
@@ -1113,6 +1180,49 @@ function loadPreset(i) {
     box.style.display = 'block';
   }
 
+  function breakEvenPlanText() {
+    var data = window.beData;
+    if (!data) return 'Calculate break-even first.';
+    var c = data.currency;
+    var profitLoss = (data.currentSales * data.sellingPrice) - (data.fixedCosts + data.currentSales * data.varCost);
+    var gap = data.currentSales - data.breakEvenUnits;
+    return [
+      'AfroTools break-even action plan',
+      'Business: ' + (data.businessName || 'My Business'),
+      'Break-even units: ' + data.breakEvenUnits.toLocaleString() + ' per month',
+      'Break-even revenue: ' + c + data.breakEvenRevenue.toLocaleString('en', {maximumFractionDigits: 0}),
+      'Contribution margin: ' + c + data.contribMargin.toFixed(2) + ' per unit',
+      'Current sales gap: ' + (gap >= 0 ? '+' : '') + gap.toLocaleString() + ' units versus break-even',
+      'Monthly profit/loss at current sales: ' + (profitLoss >= 0 ? '+' : '') + c + profitLoss.toLocaleString('en', {maximumFractionDigits: 0}),
+      'Next checks: verify supplier prices, rent, labour, delivery, tax, payment timing, seasonality, and realistic sales volume before acting.'
+    ].join('\n');
+  }
+
+  function renderBreakEvenActionPlan() {
+    var target = document.getElementById('breakEvenActionPlan');
+    var data = window.beData;
+    if (!target || !data) return;
+    var gap = data.currentSales - data.breakEvenUnits;
+    var status = gap >= 0 ? 'Current sales are above break-even by ' + gap.toLocaleString() + ' units.' : 'Current sales are below break-even by ' + Math.abs(gap).toLocaleString() + ' units.';
+    var action = gap >= 0 ? 'Stress-test a price drop or supplier cost increase before expanding.' : 'Close the gap by raising price, lowering variable costs, cutting fixed costs, or increasing sales volume.';
+    target.innerHTML = '<strong>' + status + '</strong><ul><li>Break-even revenue: ' + data.currency + data.breakEvenRevenue.toLocaleString('en', {maximumFractionDigits: 0}) + '</li><li>Contribution margin: ' + data.currency + data.contribMargin.toFixed(2) + ' per unit</li><li>' + action + '</li><li>Export only after checking current costs and demand assumptions.</li></ul>';
+  }
+
+  function setBreakEvenActionStatus(message) {
+    var status = document.getElementById('breakEvenActionStatus');
+    if (status) status.textContent = message || '';
+  }
+
+  function copyBreakEvenPlan() {
+    if (!window.beData) { setBreakEvenActionStatus('Calculate break-even first.'); return; }
+    var text = breakEvenPlanText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ setBreakEvenActionStatus('Action plan copied. No data was sent to AfroTools.'); }).catch(function(){ setBreakEvenActionStatus(text); });
+    } else {
+      setBreakEvenActionStatus(text);
+    }
+  }
+
   function downloadPDF() {
     var data = window.beData;
     if (!data) { alert('Please calculate break-even first'); return; }
@@ -1158,7 +1268,7 @@ function loadPreset(i) {
       ],
       chartImage: chartImg,
       source: 'Break-even analysis based on user-provided cost structure. Formula: Fixed Costs / (Selling Price - Variable Cost per Unit).',
-      disclaimer: 'For informational purposes only. Not professional financial advice. Actual results may vary based on market conditions.'
+      disclaimer: 'Planning estimate only. Not financial advice, funding approval, or a guaranteed profit forecast. Verify current costs, sales volume, tax treatment, payment timing, and market conditions before acting.'
     });
   }
 
