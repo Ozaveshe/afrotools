@@ -28,9 +28,13 @@
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
+.fr-hero{background:#0f172a;padding:42px 0 30px}
+.fr-hero-inner{max-width:1120px;margin:0 auto;padding:0 20px}
+.fr-kicker{display:inline-flex;margin-bottom:10px;color:#93c5fd;font-size:.74rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.fr-hero h1{font-size:clamp(1.55rem,4vw,2.45rem);font-weight:800;color:#fff;margin:0 0 10px;max-width:760px;line-height:1.08}
+.fr-hero p{color:rgba(255,255,255,.72);font-size:.95rem;max-width:680px;line-height:1.65;margin:0}
+.fr-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.fr-badge{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#dbeafe;border-radius:999px;padding:6px 10px;font-size:.76rem;font-weight:700}
 .fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
 .fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
 .fr-tool-frame iframe{width:100%;height:600px;border:none}
@@ -51,7 +55,7 @@
 .json-btn{border:1px solid #155eef;background:#155eef;color:#fff;border-radius:8px;padding:.72rem .9rem;font-weight:800;cursor:pointer}
 .json-btn.secondary{background:#fff;color:#155eef}
 .json-btn.warn{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
-.json-status{border-radius:8px;background:#ecfdf5;color:#065f46;padding:.75rem;margin:.8rem 0;font-weight:800}
+.json-status{border-radius:8px;background:#ecfdf5;color:#065f46;padding:.75rem;margin:.8rem 0;font-weight:800;line-height:1.45}
 .json-status.is-error{background:#fef2f2;color:#991b1b}
 .json-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;margin:.85rem 0}
 .json-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.7rem}
@@ -102,14 +106,18 @@
 <body>
 <afro-navbar active="tools"></afro-navbar>
 <section class="fr-hero">
-<h1>Formateur JSON</h1>
-<p>Formatez, validez et corrigez votre JSON en ligne. Vue arborescente, minification, coloration syntaxique. 100% côté client.</p>
+<div class="fr-hero-inner">
+<span class="fr-kicker">Outil développeur local</span>
+<h1>Formater, réparer et exporter un JSON avant test API</h1>
+<p>Collez un payload, validez la syntaxe, réparez les erreurs simples, puis copiez ou téléchargez le résultat. Tout reste dans votre navigateur.</p>
+<div class="fr-badges"><span class="fr-badge">JSON.parse</span><span class="fr-badge">Réparation légère</span><span class="fr-badge">Copie/export</span><span class="fr-badge">Local par défaut</span></div>
+</div>
 </section>
 <div class="fr-wrap">
 <section class="json-app" aria-label="Formateur JSON côté navigateur">
 <form class="json-panel" id="jsonFormatterForm">
-<h2>Coller le JSON</h2>
-<p>Formatez, minifiez, validez ou tentez une réparation légère. Le texte reste dans votre navigateur.</p>
+<h2>Coller un payload</h2>
+<p>Utilisez ce panneau pour nettoyer une réponse API, un webhook ou une configuration avant de l’envoyer dans un ticket ou un test.</p>
 <label class="json-field">Entrée JSON
 <textarea id="jsonInput" spellcheck="false">{"country":"Côte d'Ivoire","tools":["VAT","PDF","CV"],"active":true}</textarea>
 </label>
@@ -119,12 +127,12 @@
 <button class="json-btn secondary" type="button" id="jsonRepair">Réparer léger</button>
 <button class="json-btn secondary" type="button" id="jsonSample">Exemple</button>
 <button class="json-btn secondary" type="button" id="jsonCopy">Copier</button>
-<button class="json-btn warn" type="button" id="jsonDownload">Télécharger</button>
+<button class="json-btn warn" type="button" id="jsonDownload">Télécharger .json</button>
 </div>
-<div class="json-status" id="jsonStatus" aria-live="polite">Prêt à valider.</div>
+<div class="json-status" id="jsonStatus" aria-live="polite">Prêt à valider. Aucun contenu n’est envoyé à AfroTools.</div>
 </form>
 <aside class="json-panel json-output">
-<h2>Sortie et résumé</h2>
+<h2>Résultat prêt à copier</h2>
 <label class="json-field">JSON formaté
 <textarea id="jsonOutput" readonly spellcheck="false"></textarea>
 </label>
@@ -138,12 +146,12 @@
 </section>
 <section class="json-app" aria-label="Méthode JSON">
 <article class="json-panel">
-<h2>Méthodologie</h2>
-<p>La méthode utilise JSON.parse pour valider, JSON.stringify pour formater ou minifier, puis une analyse récursive pour compter les clés, tableaux et niveaux. La réparation légère retire les commentaires, virgules finales et guillemets simples simples avant une nouvelle validation.</p>
+<h2>Ce que fait l’outil</h2>
+<p>La validation utilise JSON.parse, le formatage utilise JSON.stringify et les métriques comptent les clés, tableaux et niveaux. La réparation légère retire les commentaires, virgules finales et guillemets simples avant une nouvelle validation.</p>
 </article>
 <article class="json-panel">
-<h2>Avertissement et confidentialité</h2>
-<p>Avertissement : ce validateur signale les erreurs de syntaxe JSON mais ne garantit pas qu'un schéma métier, une API ou une base de données acceptera le fichier. Ne collez pas de secrets de production. Le traitement est local au navigateur; aucune donnée n'est envoyée à AfroTools.</p>
+<h2>Confidentialité et limites</h2>
+<p>Le validateur signale les erreurs de syntaxe JSON mais ne garantit pas qu'un schéma métier, une API ou une base de données acceptera le fichier. Ne collez pas de secrets de production. Le traitement est local au navigateur; aucune donnée n'est envoyée à AfroTools.</p>
 <ul class="json-list">
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" rel="nofollow noopener" target="_blank">MDN JSON.parse</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify" rel="nofollow noopener" target="_blank">MDN JSON.stringify</a></li>
@@ -219,7 +227,7 @@
         size.textContent = new Intl.NumberFormat('fr-FR').format(formatted.length) + ' caractères';
         keys.textContent = stats.keys + ' clés';
         depth.textContent = stats.depth + ' niveaux';
-        setStatus(compact ? 'JSON valide et minifié.' : 'JSON valide et formaté.', false);
+        setStatus(compact ? 'JSON valide et minifié. Copiez ou téléchargez le résultat.' : 'JSON valide et formaté. Copiez ou téléchargez le résultat.', false);
         try { localStorage.setItem('afrotools_json_formatter_fr_v1', formatted); } catch (_) {}
         return formatted;
       } catch (error) {
@@ -261,6 +269,7 @@
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(function () {
           copy.textContent = 'Copié';
+          setStatus('Résultat copié dans le presse-papiers.', false);
           setTimeout(function () { copy.textContent = 'Copier'; }, 1300);
         }).catch(function () { output.select(); });
       } else {
@@ -279,6 +288,7 @@
       link.click();
       link.remove();
       URL.revokeObjectURL(url);
+      setStatus('Fichier JSON préparé pour téléchargement.', false);
     });
     render(false);
   })();
