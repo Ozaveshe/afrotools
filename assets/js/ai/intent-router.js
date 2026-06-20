@@ -641,24 +641,66 @@
     return "";
   }
 
-  function clarificationQuestion(missingInputs) {
-    var missing = array(missingInputs);
-    if (!missing.length) return "";
-    if (missing.indexOf("country") !== -1) return "Which country should AfroTools use?";
-    if (missing.indexOf("destinationCountry") !== -1) return "Which destination country should AfroTools calculate for?";
-    if (missing.indexOf("targetCountry") !== -1) return "Which destination country are you considering?";
-    if (missing.indexOf("grossPay") !== -1) return "What gross pay amount should be used for the PAYE estimate?";
-    if (missing.indexOf("itemValue") !== -1) return "What item or vehicle value should AfroTools use for the import estimate?";
-    if (missing.indexOf("itemCategory") !== -1) return "What item or vehicle are you importing?";
-    if (missing.indexOf("studyLevel") !== -1) return "What study level are you targeting?";
-    if (missing.indexOf("monthlyBill") !== -1) return "What is the current monthly power bill or generator fuel spend?";
-    return "Can you add the missing detail so AfroTools can help?";
+  function hasCapability(tool, capability) {
+    return Boolean(tool && array(tool.aiCapabilities).indexOf(capability) !== -1);
   }
 
-  function nextActions(tool, missingInputs) {
-    var actions = ["Open the recommended AfroTools tool"];
-    if (array(missingInputs).length) actions.unshift("Add the missing detail");
-    if (tool && array(tool.aiCapabilities).indexOf("prefill") !== -1) actions.push("Use the details after you review them");
+  function outputTypes(tool) {
+    return array(tool && tool.outputTypes).filter(Boolean).slice(0, 6);
+  }
+
+  function clarificationQuestion(missingInputs, tool) {
+    var missing = array(missingInputs);
+    if (!missing.length) return "";
+    var title = tool && tool.title ? " for " + tool.title : "";
+    if (missing.indexOf("country") !== -1) return "Which country should AfroTools use" + title + "?";
+    if (missing.indexOf("destinationCountry") !== -1) return "Which destination country should the import, customs, or relocation workflow use?";
+    if (missing.indexOf("targetCountry") !== -1) return "Which destination country are you considering?";
+    if (missing.indexOf("grossPay") !== -1) return "What gross pay amount should the PAYE workflow estimate from?";
+    if (missing.indexOf("payPeriod") !== -1) return "Is that pay amount monthly, annual, weekly, or daily?";
+    if (missing.indexOf("itemValue") !== -1 || missing.indexOf("purchasePrice") !== -1) return "What item, vehicle, or CIF value should the import workflow use as a planning input?";
+    if (missing.indexOf("itemCategory") !== -1) return "What item or vehicle are you importing?";
+    if (missing.indexOf("studyLevel") !== -1) return "What study level are you targeting?";
+    if (missing.indexOf("budget") !== -1) return "What budget should AfroTools use as a planning estimate?";
+    if (missing.indexOf("monthlyBill") !== -1) return "What monthly power bill or generator fuel spend should the energy workflow use?";
+    if (missing.indexOf("pdfAction") !== -1) return "What PDF action do you need: merge, compress, sign, protect, split, watermark, or page numbers?";
+    return "What missing detail should AfroTools use to open the right workflow?";
+  }
+
+  function buildHandoffPlan(tool, missingInputs) {
+    var safeTool = tool || SEARCH_FALLBACK;
+    var missing = array(missingInputs);
+    var canPrefill = safeTool.id !== SEARCH_FALLBACK.id && hasCapability(safeTool, "prefill");
+    return {
+      mode: canPrefill ? "session_prefill" : "route_only",
+      userReviewRequired: true,
+      payloadLocation: canPrefill ? "sessionStorage" : "none",
+      rawSensitiveDataInUrl: false,
+      requiresClarification: missing.length > 0,
+      missingInputs: missing,
+      consentRequiredForModel: safeTool.privacyMode === "ai_optional" || safeTool.privacyMode === "server_required",
+      launchLabel: canPrefill ? "Review prefill and open tool" : "Open tool",
+    };
+  }
+
+  function buildExportPlan(tool, safetyDomain) {
+    var types = outputTypes(tool);
+    var canExport = hasCapability(tool, "export") || types.length > 0;
+    return {
+      available: canExport,
+      formats: types,
+      defaultFormat: types.indexOf("pdf") !== -1 ? "pdf" : (types.indexOf("report") !== -1 ? "report" : (types[0] || "")),
+      reviewBeforeUse: safetyDomain && safetyDomain !== "none",
+      copy: canExport ? "Export only after reviewing assumptions, source notes, and any missing inputs." : "Open the tool first; export support depends on the destination workflow.",
+    };
+  }
+
+  function nextActions(tool, missingInputs, exportPlan) {
+    var actions = [];
+    if (array(missingInputs).length) actions.push("Answer the clarification so the workflow opens with the right context");
+    actions.push("Open the recommended AfroTools tool");
+    if (tool && hasCapability(tool, "prefill")) actions.push("Review the browser-only prefill before calculating or exporting");
+    if (exportPlan && exportPlan.available) actions.push("Export the finished result from the tool after checking assumptions");
     actions.push("Search AfroTools if the match is not right");
     return actions;
   }
@@ -677,12 +719,14 @@
       reasonShort: ruleMatch && ruleMatch.source === "manifest_retrieval" ? "Checked the AfroTools tool catalog." : (ruleMatch ? "Matched your words to an AfroTools tool." : "No strong match yet; opening AfroTools search."),
       extractedInputs: extracted || {},
       missingInputs: missing,
-      clarificationQuestion: clarificationQuestion(missing),
+      clarificationQuestion: clarificationQuestion(missing, safeTool),
       safetyDomain: safetyDomain,
       highStakesNotice: highStakesNotice(safetyDomain),
       privacyMode: privacyMode,
-      canPrefill: safeTool.id !== SEARCH_FALLBACK.id && array(safeTool.aiCapabilities).indexOf("prefill") !== -1,
-      suggestedNextActions: nextActions(safeTool, missing),
+      canPrefill: safeTool.id !== SEARCH_FALLBACK.id && hasCapability(safeTool, "prefill"),
+      handoffPlan: buildHandoffPlan(safeTool, missing),
+      exportPlan: buildExportPlan(safeTool, safetyDomain),
+      suggestedNextActions: nextActions(safeTool, missing, buildExportPlan(safeTool, safetyDomain)),
       _meta: {
         router: "deterministic",
         providerUsed: false,
@@ -786,12 +830,14 @@
       reasonShort: String(base.reasonShort || deterministic.reasonShort || "Matched against AfroTools tool registry.").slice(0, 240),
       extractedInputs: extracted,
       missingInputs: missing.filter(Boolean),
-      clarificationQuestion: String(base.clarificationQuestion || clarificationQuestion(missing) || ""),
+      clarificationQuestion: String(base.clarificationQuestion || clarificationQuestion(missing, tool) || ""),
       safetyDomain: safetyDomain,
       highStakesNotice: String(base.highStakesNotice || highStakesNotice(safetyDomain) || ""),
       privacyMode: privacyMode,
-      canPrefill: Boolean(base.canPrefill !== undefined ? base.canPrefill : array(tool.aiCapabilities).indexOf("prefill") !== -1),
-      suggestedNextActions: array(base.suggestedNextActions).length ? array(base.suggestedNextActions).map(String).slice(0, 5) : nextActions(tool, missing),
+      canPrefill: Boolean(base.canPrefill !== undefined ? base.canPrefill : hasCapability(tool, "prefill")),
+      handoffPlan: base.handoffPlan && typeof base.handoffPlan === "object" ? base.handoffPlan : buildHandoffPlan(tool, missing),
+      exportPlan: base.exportPlan && typeof base.exportPlan === "object" ? base.exportPlan : buildExportPlan(tool, safetyDomain),
+      suggestedNextActions: array(base.suggestedNextActions).length ? array(base.suggestedNextActions).map(String).slice(0, 5) : nextActions(tool, missing, buildExportPlan(tool, safetyDomain)),
       _meta: {
         router: base._meta && base._meta.router ? String(base._meta.router) : "validated",
         providerUsed: Boolean(base._meta && base._meta.providerUsed),

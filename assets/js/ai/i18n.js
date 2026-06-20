@@ -144,8 +144,9 @@
         fallback: "No strong match yet; opening AfroTools search.",
         validated: "Matched against AfroTools tool registry.",
         openWorkflow: "Open the recommended AfroTools tool",
-        answerClarification: "Add the missing detail",
-        usePrefill: "Use the details after you review them",
+        answerClarification: "Answer the clarification",
+        usePrefill: "Review the browser-only prefill before using the tool",
+        exportResult: "Export from the tool after checking assumptions",
         searchIfWrong: "Search AfroTools if the match is not right",
       },
       privacyNotices: {
@@ -336,6 +337,7 @@
         openWorkflow: "Ouvrir l'outil AfroTools recommande",
         answerClarification: "Répondre à la question de clarification",
         usePrefill: "Utiliser les détails détectés après votre vérification",
+        exportResult: "Exporter depuis l'outil apres verification",
         searchIfWrong: "Rechercher dans AfroTools si la correspondance n'est pas correcte",
       },
       privacyNotices: {
@@ -526,6 +528,7 @@
         openWorkflow: "Abrir a ferramenta AfroTools recomendada",
         answerClarification: "Responder à pergunta de clarificação",
         usePrefill: "Usar os detalhes detetados após revisão",
+        exportResult: "Exportar pela ferramenta depois de verificar",
         searchIfWrong: "Pesquisar no AfroTools se a correspondência não estiver certa",
       },
       privacyNotices: {
@@ -716,6 +719,7 @@
         openWorkflow: "افتح أداة AfroTools الموصى بها",
         answerClarification: "أجب عن سؤال التوضيح",
         usePrefill: "استخدم التفاصيل التي تم العثور عليها بعد المراجعة",
+        exportResult: "صدّر من الأداة بعد مراجعة الافتراضات",
         searchIfWrong: "ابحث في AfroTools إذا لم تكن المطابقة صحيحة",
       },
       privacyNotices: {
@@ -906,6 +910,7 @@
         openWorkflow: "Fungua zana iliyopendekezwa ya AfroTools",
         answerClarification: "Jibu swali la ufafanuzi",
         usePrefill: "Tumia taarifa zilizopatikana baada ya kuzikagua",
+        exportResult: "Hamisha kutoka kwenye zana baada ya kukagua makadirio",
         searchIfWrong: "Tafuta AfroTools ikiwa ulinganifu si sahihi",
       },
       privacyNotices: {
@@ -1079,6 +1084,7 @@
       actions.unshift(t(locale, "router.answerClarification"));
     }
     if (decision && decision.canPrefill) actions.push(t(locale, "router.usePrefill"));
+    if (decision && decision.exportPlan && decision.exportPlan.available) actions.push(t(locale, "router.exportResult"));
     actions.push(t(locale, "router.searchIfWrong"));
     return actions;
   }

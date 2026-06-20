@@ -263,6 +263,8 @@
       execution: execution,
       toolCandidates: candidates,
       consent: consent,
+      handoffPlan: decision.handoffPlan || {},
+      exportPlan: decision.exportPlan || {},
       safety: {
         privacyMode: toolCall.privacyMode || decision.privacyMode || "browser_local",
         sourcePolicy: toolCall.sourcePolicy || "reviewed",
@@ -291,6 +293,8 @@
       candidateCount: array(item.toolCandidates).length,
       routerSafeToolCount: item.manifest && item.manifest.routerSafeToolCount || 0,
       consent: item.consent || {},
+      handoffPlan: item.handoffPlan || item.decision && item.decision.handoffPlan || {},
+      exportPlan: item.exportPlan || item.decision && item.decision.exportPlan || {},
       safety: item.safety || {},
     };
   }
