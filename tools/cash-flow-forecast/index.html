@@ -108,7 +108,8 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
 .toggle-row{display:flex;gap:0;border:1.5px solid #cbd5e1;border-radius:7px;overflow:hidden;margin-bottom:18px}
 .toggle-btn{flex:1;padding:9px;border:none;background:#f8fafc;cursor:pointer;font-size:.78rem;font-weight:600;font-family:inherit;color:#64748b}
 .toggle-btn.active{background:#ea580c;color:#fff}
-@media(max-width:768px){.row{grid-template-columns:1fr}.row-3{grid-template-columns:1fr 1fr}.monthly-grid{grid-template-columns:repeat(3,1fr)}.summary-row{grid-template-columns:1fr 1fr}}
+.export-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.export-actions .btn{width:auto;min-height:42px;margin:0;padding:10px 14px}.btn-secondary{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}.btn-secondary:hover{background:#ffedd5}.action-plan{display:grid;gap:10px;border:1px solid #fed7aa;border-radius:10px;background:#fff7ed;padding:14px;color:#7c2d12;font-size:.82rem;line-height:1.55}.action-plan strong{display:block;color:#0f172a;font-size:.92rem}.action-plan ul{margin:0;padding-left:18px}.export-status{margin-top:10px;color:#475569;font-size:.78rem;font-weight:700;min-height:20px}.cashflow-next-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.cashflow-next-card{border:1px solid #e2e8f0;border-radius:10px;background:#fff;padding:14px}.cashflow-next-card strong{display:block;color:#0f172a;font-size:.9rem;margin-bottom:5px}.cashflow-next-card span{display:block;color:#52637a;font-size:.8rem;line-height:1.55}
+@media(max-width:768px){.row{grid-template-columns:1fr}.row-3{grid-template-columns:1fr 1fr}.monthly-grid{grid-template-columns:repeat(3,1fr)}.summary-row,.cashflow-next-grid{grid-template-columns:1fr 1fr}.export-actions{display:grid}.export-actions .btn{width:100%}}
 </style>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cash-flow-forecast.webp">
@@ -124,26 +125,26 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use Cash Flow Forecast Tool?",
+      "name": "How do I use the cash flow forecast?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter opening cash, monthly revenue, cost assumptions, tax estimate, and one-time costs. Review the month-by-month closing balance, then export the CSV or copy a lender-ready summary for follow-up planning."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on Cash Flow Forecast Tool?",
+      "name": "What does a negative month mean?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "A negative closing balance means the assumptions show a cash shortfall in that month. Treat it as an early warning to reduce costs, improve collections, adjust payment timing, or arrange working capital before the gap appears."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Cash Flow Forecast Tool an official result?",
+      "name": "Is this tax or accounting advice?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. The forecast is a planning estimate based on user-entered assumptions. Confirm tax, bookkeeping, lending, and compliance decisions with current records, official guidance, or a qualified accountant."
       }
     }
   ],
@@ -163,7 +164,8 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
       <span class="badge">12-Month View</span>
       <span class="badge">Negative Month Alert</span>
       <span class="badge">Visual Chart</span>
-      <span class="badge">NGN Default</span>
+      <span class="badge">CSV Export</span>
+      <span class="badge">Copy Summary</span>
     </div>
   </div>
 </section>
@@ -292,6 +294,22 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
           </div>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">Finish and export</div></div>
+        <div class="card-body">
+          <div class="action-plan" id="forecast-action-plan" aria-live="polite">
+            <strong>Generate a forecast to see the cash action plan.</strong>
+            <span>The tool will flag negative months, year-end balance, and the next check to make before you share the forecast.</span>
+          </div>
+          <div class="export-actions" aria-label="Cash flow forecast export actions">
+            <button type="button" class="btn btn-secondary" onclick="copyForecastSummary()">Copy lender summary</button>
+            <button type="button" class="btn btn-secondary" onclick="downloadCsv()">Download CSV</button>
+            <button type="button" class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
+          </div>
+          <div class="export-status" id="export-status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -306,14 +324,14 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
           <p>A negative closing balance (highlighted in red) means you would run out of cash in that month. This requires action: secure a short-term loan, delay expenses, speed up collections, or raise emergency working capital. African businesses often use informal credit (rotating savings with Ajo/Chama, family loans) to bridge short-term cash gaps.</p>
         </details>
         <details class="faq-item">
-          <summary>What tax rate should I use in Nigeria?</summary>
-          <p>Companies Income Tax (CIT) in Nigeria: Small companies (turnover &lt;₦25M/year): 0%. Medium companies (₦25M–₦100M): 20%. Large companies (&gt;₦100M): 30%. For VAT purposes: standard VAT rate is 7.5%. This tool uses the rate you enter as a % of gross profit for simplicity.</p>
+          <summary>What tax rate should I use?</summary>
+          <p>Use the planning rate your accountant, bookkeeping record, or current revenue-authority guidance supports. If you are unsure, run a conservative scenario and a lower-tax scenario, then verify the real filing treatment before using the forecast for lending, pricing, or compliance.</p>
         </details>
       </div>
     </div>
 
     <div class="disclaimer">
-      <strong>Disclaimer:</strong> This forecast is based on the assumptions you enter. Actual results will differ due to market conditions, payment collection timing, unplanned expenses, and economic factors. Use this as a planning tool alongside your actual bookkeeping records.
+      <strong>Disclaimer:</strong> This forecast is based on the assumptions you enter. Actual results will differ because of payment timing, tax treatment, inventory costs, FX, late customers, unplanned expenses, and market conditions. Use it as a planning estimate alongside your actual bookkeeping records and professional advice.
     </div>
   </div>
 </section>
@@ -323,26 +341,18 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
 <section class="df-upgrade" data-df-upgrade="cash-flow-forecast">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Cash Flow Forecast Tool decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for cash flow forecast tool so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Cash Flow Forecast Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: saveExport, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Cash control workflow</span>
+      <h2>Turn the forecast into a working-capital plan</h2>
+      <p>Use the calculator first, then export the result for the next money conversation: supplier terms, overdraft request, investor update, or internal cost review.</p>
+      <ul class="df-upgrade__bullets"><li>Run at least two scenarios: expected sales and slower collections.</li><li>Use negative months as the funding-gap list, not as a final accounting answer.</li><li>Export CSV for a spreadsheet review or copy the summary for a lender or partner note.</li><li>Verify tax, stock, FX, debt-service, and payment timing against current records before acting.</li></ul>
+      <p class="df-upgrade__note"><strong>Planning estimate.</strong> The tool does not file tax, approve credit, or replace bookkeeping. Keep source documents and accountant review for final decisions.</p>
     </div>
-    <form class="df-form" data-df-form="cash-flow-forecast">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="cash-flow-forecast" data-df-base="Cash Flow Forecast Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Cash Flow Forecast Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="cash-flow-forecast">Copy summary</button></div>
-    </form>
+    <div class="cashflow-next-grid" aria-label="Cash flow next steps">
+      <div class="cashflow-next-card"><strong>1. Choose assumptions</strong><span>Opening cash, revenue pattern, COGS, fixed costs, tax estimate, and one-time costs.</span></div>
+      <div class="cashflow-next-card"><strong>2. Find pressure months</strong><span>Look for the first negative month, the lowest balance, and the largest cost trigger.</span></div>
+      <div class="cashflow-next-card"><strong>3. Export and review</strong><span>Download CSV, copy the summary, and verify records before sharing externally.</span></div>
+    </div>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="cash-flow-forecast-faq-title">
-  <h2 id="cash-flow-forecast-faq-title">Cash Flow Forecast Tool FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -352,6 +362,7 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
 <script>
 var CURR_SYMS = {NGN:"₦",KES:"KSh",ZAR:"R",GHS:"GH₵",USD:"$"};
 var revMode = 'growth';
+var lastForecast = null;
 var MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 function sym() { return CURR_SYMS[document.getElementById('currency').value] || ""; }
@@ -439,6 +450,15 @@ function calculate() {
   }
 
   document.getElementById('results-section').style.display = 'block';
+  lastForecast = {
+    currency: document.getElementById('currency').value,
+    openingBalance: opening,
+    cogsPct: cogsPct,
+    fixedMonthly: fixedMonthly,
+    taxRate: taxRate,
+    revenues: revs,
+    rows: rows
+  };
 
   // Summary stats
   var totalRev = rows.Revenue.reduce(function(a,b){return a+b;},0);
@@ -497,7 +517,83 @@ function calculate() {
     tbody.appendChild(tr);
   });
 
+  lastForecast.summary = { totalRevenue: totalRev, totalCosts: totalCost, negativeMonths: negMonths, yearEndBalance: closingYear };
+  renderActionPlan(lastForecast);
+  setExportStatus('Forecast ready. Copy the summary, download CSV, or print to PDF.');
   document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function forecastCsvRows() {
+  if (!lastForecast) return [];
+  var rows = lastForecast.rows;
+  var out = [['Row'].concat(MONTH_NAMES)];
+  ['Revenue','COGS','GrossProfit','FixedCosts','OnetimeCosts','TaxablePL','Tax','NetCashFlow','ClosingBalance'].forEach(function(key) {
+    out.push([key].concat(rows[key].map(function(value) { return Math.round(value); })));
+  });
+  return out;
+}
+
+function csvEscape(value) {
+  var text = String(value === undefined || value === null ? '' : value);
+  return /[",\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+}
+
+function forecastSummaryText() {
+  if (!lastForecast) return 'Generate a cash flow forecast first.';
+  var summary = lastForecast.summary || {};
+  var lowest = Math.min.apply(null, lastForecast.rows.ClosingBalance);
+  var firstNegativeIndex = lastForecast.rows.ClosingBalance.findIndex(function(value) { return value < 0; });
+  var firstNegative = firstNegativeIndex === -1 ? 'none in the 12-month scenario' : MONTH_NAMES[firstNegativeIndex];
+  return [
+    'AfroTools cash flow forecast',
+    'Currency: ' + lastForecast.currency,
+    'Total revenue: ' + fmt(summary.totalRevenue || 0),
+    'Total costs: ' + fmt(summary.totalCosts || 0),
+    'Year-end balance: ' + fmt(summary.yearEndBalance || 0),
+    'Negative months: ' + (summary.negativeMonths || 0) + ' (first: ' + firstNegative + ')',
+    'Lowest closing balance: ' + fmt(lowest),
+    'Planning note: verify sales timing, collections, tax treatment, stock costs, debt service, and FX before acting.'
+   ].join('\n');
+}
+
+function renderActionPlan(forecast) {
+  var target = document.getElementById('forecast-action-plan');
+  if (!target || !forecast) return;
+  var summary = forecast.summary || {};
+  var rows = forecast.rows || {};
+  var firstNegativeIndex = (rows.ClosingBalance || []).findIndex(function(value) { return value < 0; });
+  var lowest = Math.min.apply(null, rows.ClosingBalance || [0]);
+  var status = firstNegativeIndex === -1 ? 'No negative closing months in this scenario.' : 'First negative month: ' + MONTH_NAMES[firstNegativeIndex] + '.';
+  var action = firstNegativeIndex === -1 ? 'Stress-test slower collections before sharing externally.' : 'Plan funding, cost cuts, or collection action before ' + MONTH_NAMES[firstNegativeIndex] + '.';
+  target.innerHTML = '<strong>' + status + '</strong><ul><li>Year-end balance: ' + fmt(summary.yearEndBalance || 0) + '</li><li>Lowest closing balance: ' + fmt(lowest) + '</li><li>' + action + '</li><li>Export CSV for spreadsheet review or copy the lender summary.</li></ul>';
+}
+
+function setExportStatus(message) {
+  var status = document.getElementById('export-status');
+  if (status) status.textContent = message || '';
+}
+
+function downloadCsv() {
+  if (!lastForecast) { setExportStatus('Generate a forecast first.'); return; }
+  var csv = forecastCsvRows().map(function(row) { return row.map(csvEscape).join(','); }).join('\n');
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'afrotools-cash-flow-forecast.csv';
+  document.body.appendChild(link);
+  link.click();
+  setTimeout(function() { URL.revokeObjectURL(link.href); link.remove(); }, 0);
+  setExportStatus('CSV downloaded. Review it against your bookkeeping records before sharing.');
+}
+
+function copyForecastSummary() {
+  if (!lastForecast) { setExportStatus('Generate a forecast first.'); return; }
+  var text = forecastSummaryText();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() { setExportStatus('Summary copied.'); }).catch(function() { setExportStatus(text); });
+  } else {
+    setExportStatus(text);
+  }
 }
 
 // Initialize manual inputs
