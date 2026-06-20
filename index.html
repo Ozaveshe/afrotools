@@ -1042,7 +1042,7 @@
 
     <div class="ai-command-box">
       <label class="ai-command-field-label" for="ai-home-command-input">Ask AfroTools AI</label>
-      <form class="ai-command-home-form" id="ai-home-command-form" role="search" action="/ask/" method="get">
+      <form class="ai-command-home-form" id="ai-home-command-form" role="search" action="/ai/" method="get">
         <span class="ai-command-home-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="7.25" cy="7.25" r="5.6" stroke="currentColor" stroke-width="1.7"/><line x1="11.45" y1="11.45" x2="16" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         </span>
@@ -1054,7 +1054,7 @@
     <div class="ai-command-hero-actions">
       <a class="ai-command-browse" href="/tools/" data-ai-home-category="browse-all-tools">Browse all tools</a>
     </div>
-    <p class="ai-command-trust-copy">AfroTools routes your request to practical tools, source-labeled data, and exportable next steps. Many workflows run in your browser; AI-assisted workflows ask before sending private content.</p>
+    <p class="ai-command-trust-copy">AfroTools routes your request to practical tools, source-labeled data, and exportable next steps. Homepage prompts open the AI command center through a private browser handoff; optional model help asks before sensitive content is sent.</p>
 
     <div class="ai-command-chip-list" aria-label="Example prompts for AfroTools AI">
       <button type="button" class="ai-command-chip" data-ai-home-example="passport-checklist-gh" data-ai-home-prompt="Get Ghana passport documents, fees to check, and next steps">Get Ghana passport documents, fees to check, and next steps</button>
@@ -1090,7 +1090,7 @@
     <p class="hero-sub">Ask a practical question and move into local African calculators, documents, country data, source notes, and next steps for work and daily life.</p>
     <div class="hero-search-wrap">
       <label class="ai-command-label" for="hero-search-input">Ask AfroTools AI</label>
-      <form class="hero-search ai-command-form" id="ai-frontdoor-form" role="search" action="/ask/" method="get">
+      <form class="hero-search ai-command-form" id="ai-frontdoor-form" role="search" action="/ai/" method="get">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><line x1="10.2" y1="10.2" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <input type="text" id="hero-search-input" name="q" placeholder="Ask about tax, CVs, imports, study, energy, documents, or country data" aria-label="Ask about tax, CVs, imports, study, energy, documents, or country data" autocomplete="off" spellcheck="false">
         <button class="hero-search-btn" type="submit" id="hero-search-btn">Start</button>
@@ -3291,7 +3291,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function getCommandRoute() {
       var configured = window.AFROTOOLS_AI_COMMAND_ROUTE || (window.AFROTOOLS_FLAGS && window.AFROTOOLS_FLAGS.aiCommandRoute);
       if (configured && typeof configured === 'string' && configured.charAt(0) === '/') return configured;
-      return '/ask/';
+      return '/ai/';
     }
     var pendingCommandSource = 'homepage_input';
     function storeAskDraft(query, source) {
