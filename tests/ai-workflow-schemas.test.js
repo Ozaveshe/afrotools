@@ -38,6 +38,19 @@ const validExamples = {
     highStakesNotice: "Planning estimate only. Confirm tariffs and installation sizing with current suppliers.",
     privacyMode: "browser_local",
     canPrefill: true,
+    handoffPlan: {
+      mode: "session_prefill",
+      userReviewRequired: true,
+      rawSensitiveDataInUrl: false,
+      requiresClarification: true,
+      missingInputs: ["monthlyBill"]
+    },
+    exportPlan: {
+      available: true,
+      formats: ["number", "table", "report"],
+      defaultFormat: "report",
+      reviewBeforeUse: true
+    },
     suggestedNextActions: ["Answer missing load details", "Open Solar ROI"]
   }, { sources: [source({ sourceType: "estimate", confidence: "estimated" })] }),
   ClarificationQuestion: {

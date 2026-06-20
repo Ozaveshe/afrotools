@@ -525,6 +525,9 @@
 .ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
 .ai-advisor-body{padding:14px 18px}
 .ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-consent{display:grid;grid-template-columns:16px 1fr;gap:8px;align-items:start;margin:0 0 10px;padding:9px 10px;border:1px solid #DBEAFE;border-radius:8px;background:#F8FBFF;color:#334155;font-size:.72rem;line-height:1.45}
+.ai-consent input{margin-top:2px}
+.ai-local-note{font-size:.68rem;color:#64748b;margin:-3px 0 8px}
 .ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .ai-msg-u{font-size:.76rem;padding:7px 10px;background:#007AFF;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
 .ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
@@ -950,11 +953,13 @@
     <div class="ai-advisor-card" id="aiCard">
       <div class="ai-advisor-head">
         <span class="ai-dot"></span>
-        <span class="ai-title">AI Profit Margin Advisor</span>
-        <span class="ai-by">Powered by Claude</span>
+        <span class="ai-title">Margin Assistant</span>
+        <span class="ai-by">Local-first</span>
       </div>
       <div class="ai-advisor-body">
-        <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+        <div class="ai-status" id="aiStatus">Ask about margin, markup, breakeven, imports, or pricing. Local guidance runs in this browser. Network AI is optional.</div>
+        <label class="ai-consent" for="aiConsent"><input type="checkbox" id="aiConsent"> <span>Use network AI for this chat. This sends your question and recent assistant messages to AfroTools AI; keep private prices or client details out unless you choose to share them.</span></label>
+        <div class="ai-local-note">Unchecked: no AI network request is made.</div>
         <div class="ai-chat" id="aiChat">
           <div class="ai-msgs" id="aiMsgs"></div>
           <div class="ai-input-row">
@@ -1020,7 +1025,7 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Profit Margin Calculator: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Profit Margin Calculator is a professional-grade tool built for African businesses to analyse profitability across products, services, and pricing scenarios. Enter your cost price and selling price to instantly see your gross profit, profit margin percentage, and markup percentage. The tool supports multi-product analysis, allowing you to compare margins across your entire product line in a single view. For businesses that import goods, the import cost module factors in duties, customs fees, shipping, and FOREX conversion rates - critical cost elements for African importers dealing with fluctuating exchange rates. The calculator also computes breakeven quantities so you know exactly how many units you need to sell to cover your fixed costs. An integrated AI advisor provides expert guidance on pricing strategy, cost management, and profitability improvement tailored to African market realities including competition from cheap imports, informal sector dynamics, and VAT implications across different countries. Whether you run a retail shop, an e-commerce store, or a manufacturing operation, this calculator gives you the financial clarity to set profitable prices and grow your business.</p>
+    <p>The AfroTools Profit Margin Calculator is a professional-grade tool built for African businesses to analyse profitability across products, services, and pricing scenarios. Enter your cost price and selling price to instantly see your gross profit, profit margin percentage, and markup percentage. The tool supports multi-product analysis, allowing you to compare margins across your entire product line in a single view. For businesses that import goods, the import cost module factors in duties, customs fees, shipping, and FOREX conversion rates - critical cost elements for African importers dealing with fluctuating exchange rates. The calculator also computes breakeven quantities so you know exactly how many units you need to sell to cover your fixed costs. The assistant explains margin, markup, breakeven, import-cost, and pricing next steps. It gives local browser guidance by default, and network AI is used only after explicit consent. Whether you run a retail shop, an e-commerce store, or a manufacturing operation, this calculator gives you the financial clarity to set profitable prices and grow your business.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
@@ -1045,8 +1050,8 @@
       <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">It varies by industry. Retail typically sees 20-50% margins, services can achieve 40-70%, and manufacturing often ranges from 15-35%. The AI advisor can provide industry-specific guidance for your market.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can the AI advisor help with my specific pricing strategy?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. The built-in AI advisor understands African market dynamics and can help with pricing strategy, handling FOREX fluctuations, competitive pricing against imports, and optimising your product mix for maximum profitability.</p>
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can the assistant help with my pricing strategy?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. It can explain the result locally in your browser and suggest what to check next. If you tick the network AI consent box, your question and recent chat messages can be sent for a more flexible response.</p>
     </details>
   </div>
 </section>
@@ -1108,12 +1113,12 @@
     // Save & Share wiring
     document.getElementById('singleActions').style.display = 'flex';
     var _saveBtn = document.querySelector('#single save-result-button');
-    if (_saveBtn) _saveBtn.setData({
+    if (_saveBtn && typeof _saveBtn.setData === 'function') _saveBtn.setData({
       inputs: { costPrice: cost, sellingPrice: selling, currency: currency },
       outputs: { profit: profit.toFixed(2), margin: margin + '%', markup: markup + '%', roi: roi + '%' }
     });
     var _shareBtn = document.querySelector('#single share-result-button');
-    if (_shareBtn) _shareBtn.setResult({
+    if (_shareBtn && typeof _shareBtn.setResult === 'function') _shareBtn.setResult({
       headline: 'Profit Margin Analysis',
       mainValue: margin + '% margin',
       subValues: [
@@ -1254,12 +1259,12 @@
     // Save & Share wiring
     document.getElementById('multiActions').style.display = 'flex';
     var _saveBtnM = document.querySelector('#multi save-result-button');
-    if (_saveBtnM) _saveBtnM.setData({
+    if (_saveBtnM && typeof _saveBtnM.setData === 'function') _saveBtnM.setData({
       inputs: { currency: currency, productCount: rows.length },
       outputs: { totalRevenue: totalRevenue.toFixed(0), totalCost: totalCost.toFixed(0), totalProfit: totalProfit.toFixed(0), avgMargin: avgMargin + '%' }
     });
     var _shareBtnM = document.querySelector('#multi share-result-button');
-    if (_shareBtnM) _shareBtnM.setResult({
+    if (_shareBtnM && typeof _shareBtnM.setResult === 'function') _shareBtnM.setResult({
       headline: 'Multi-Product Profitability',
       mainValue: currency + totalProfit.toLocaleString('en', {maximumFractionDigits: 0}) + ' profit',
       subValues: [
@@ -1325,12 +1330,12 @@
     // Save & Share wiring
     document.getElementById('importActions').style.display = 'flex';
     var _saveBtnI = document.querySelector('#import save-result-button');
-    if (_saveBtnI) _saveBtnI.setData({
+    if (_saveBtnI && typeof _saveBtnI.setData === 'function') _saveBtnI.setData({
       inputs: { productCost: cost, shipping: shipping, dutyPct: duty, agentFeePct: agent, forexRate: rate, forexSpread: spread, destCurrency: destCurrency },
       outputs: { landedCost: landedCost.toFixed(2), beforeForex: beforeForex.toFixed(2), forexImpact: forexMargin.toFixed(2), suggest50: suggest50.toFixed(2), suggest100: suggest100.toFixed(2) }
     });
     var _shareBtnI = document.querySelector('#import share-result-button');
-    if (_shareBtnI) _shareBtnI.setResult({
+    if (_shareBtnI && typeof _shareBtnI.setResult === 'function') _shareBtnI.setResult({
       headline: 'Import Landed Cost',
       mainValue: destCurrency + landedCost.toFixed(2),
       subValues: [
@@ -1399,28 +1404,58 @@
 
 <script>
 var AI_MSGS=[];
+function aiEscape(text){return String(text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function getText(id){var el=document.getElementById(id);return el?String(el.textContent||el.value||'').trim():'';}
+function localMarginAdvice(question){
+  var q=String(question||'').toLowerCase();
+  var margin=getText('profitMargin')||getText('marginResult')||getText('singleMargin');
+  var markup=getText('markupPercent')||getText('markupResult')||getText('singleMarkup');
+  var profit=getText('grossProfit')||getText('profitResult')||getText('singleProfit');
+  var context=[profit&&'profit '+profit,margin&&'margin '+margin,markup&&'markup '+markup].filter(Boolean).join(', ');
+  if(/import|forex|fx|duty|shipping|landed/.test(q)) return 'Local guidance: use the import-cost tab to include product cost, freight, duty, fees, and exchange-rate spread before setting the selling price. Compare margin after landed cost, not only supplier cost.';
+  if(/break|even|volume|units/.test(q)) return 'Local guidance: breakeven is fixed costs divided by profit per unit. If the answer looks too high, test a higher price, lower variable cost, smaller fixed cost, or a bundled offer.';
+  if(/markup/.test(q)) return 'Local guidance: markup is profit divided by cost. Margin is profit divided by selling price. A 100% markup is a 50% margin, so quote both carefully when discussing pricing.';
+  if(/discount|promo|sale/.test(q)) return 'Local guidance: discounts come out of profit first. Before discounting, check whether volume will rise enough to replace the lost margin and whether payment fees or delivery costs change.';
+  if(/price|pricing|charge|sell/.test(q)) return 'Local guidance: start from landed or delivery cost, choose a target margin, compare against market prices, then check breakeven volume. '+(context?'Current visible result: '+context+'.':'Run a calculation first for a sharper local answer.');
+  return 'Local guidance: run the margin, multi-product, import-cost, or breakeven tab, then ask about one decision: price, markup, discount, landed cost, or units needed. '+(context?'Current visible result: '+context+'.':'No network request was made.');
+}
+function appendAiMessage(kind,text){
+  var msgsEl=document.getElementById('aiMsgs');
+  msgsEl.innerHTML+='<div class="ai-msg-'+kind+'">'+aiEscape(text).replace(/\n/g,'<br>')+'</div>';
+  msgsEl.scrollTop=msgsEl.scrollHeight;
+}
 async function sendAI(){
   var input=document.getElementById('aiInput');
   var msgsEl=document.getElementById('aiMsgs');
   var sendBtn=document.getElementById('aiSend');
+  var consent=document.getElementById('aiConsent');
   var q=input.value.trim();
   if(!q)return;
   AI_MSGS.push({role:'user',content:q});
-  msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  appendAiMessage('u',q);
   input.value='';sendBtn.disabled=true;
-  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent='Thinking\u2026';
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent=consent&&consent.checked?'Checking optional AI...':'Preparing local guidance...';
   msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  var reply='';
   try{
-    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'profit-margin',messages:AI_MSGS.slice(-6),context:''})});
-    var data=await res.json();
-    if(thinkEl.parentNode)thinkEl.remove();
-    var reply=data.reply||data.error||'Sorry, I could not get a response.';
-    AI_MSGS.push({role:'assistant',content:reply});
-    msgsEl.innerHTML+='<div class="ai-msg-a">'+reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div>';
+    if(consent&&consent.checked){
+      var canSend=window.AfroTools&&window.AfroTools.AIConsent&&typeof window.AfroTools.AIConsent.ensureConsent==='function'&&window.AfroTools.AIConsent.ensureConsent({mode:'ai_optional_prompt_only',toolId:'profit-margin',action:'profit-margin-ai-advisor'});
+      if(!canSend){
+        reply=localMarginAdvice(q)+' Network AI was not contacted because consent was not confirmed.';
+      }else{
+      var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'profit-margin',messages:AI_MSGS.slice(-6),context:'User explicitly consented to network AI for this profit-margin chat.'})});
+      var data=await res.json();
+      reply=data.reply||data.error||localMarginAdvice(q);
+      }
+    }else{
+      reply=localMarginAdvice(q);
+    }
   }catch(e){
-    if(thinkEl.parentNode)thinkEl.remove();
-    msgsEl.innerHTML+='<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+    reply=localMarginAdvice(q)+' Network AI was unavailable, so this stayed local.';
   }
+  if(thinkEl.parentNode)thinkEl.remove();
+  AI_MSGS.push({role:'assistant',content:reply});
+  appendAiMessage('a',reply);
   sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
 }
 </script>

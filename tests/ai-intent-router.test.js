@@ -55,12 +55,21 @@ const noMatch = router.routeDeterministically("blue sky weekend vibes", { manife
 assert.strictEqual(noMatch.selectedToolId, "tool-search");
 assert.strictEqual(noMatch.selectedRoute, "/search/?source=ask");
 assert.strictEqual(noMatch.canPrefill, false);
+assert.strictEqual(noMatch.handoffPlan.mode, "route_only");
+assert.strictEqual(noMatch.handoffPlan.payloadLocation, "none");
+assert.strictEqual(noMatch.exportPlan.available, false);
 
 const careerRoute = router.routeDeterministically("Write me a CV for an electrical engineer in Ghana", { manifest });
 assert.strictEqual(careerRoute.selectedToolId, "cv-builder");
 assert.strictEqual(careerRoute.safetyDomain, "employment");
 assert.strictEqual(careerRoute.extractedInputs.country, "Ghana");
 assert.strictEqual(careerRoute.extractedInputs.targetRole, "electrical engineer");
+assert.strictEqual(careerRoute.handoffPlan.mode, "session_prefill");
+assert.strictEqual(careerRoute.handoffPlan.rawSensitiveDataInUrl, false);
+assert.strictEqual(careerRoute.handoffPlan.userReviewRequired, true);
+assert.strictEqual(careerRoute.exportPlan.available, true);
+assert.ok(careerRoute.exportPlan.formats.includes("pdf"));
+assert.ok(careerRoute.suggestedNextActions.some((action) => /browser-only prefill/i.test(action)));
 
 const educationPlanRoute = router.routeDeterministically("I want to study in Canada from Nigeria with a budget of $8,000", { manifest });
 assert.strictEqual(educationPlanRoute.selectedToolId, "study-abroad-cost");
@@ -84,6 +93,9 @@ assert.strictEqual(pdfPageNumbersRoute.extractedInputs.pdfAction, "page_numbers"
 const pdfProtectRoute = router.routeDeterministically("protect a PDF with a password", { manifest });
 assert.strictEqual(pdfProtectRoute.selectedToolId, "pdf-workspace");
 assert.strictEqual(pdfProtectRoute.extractedInputs.pdfAction, "protect");
+assert.strictEqual(pdfProtectRoute.handoffPlan.mode, "session_prefill");
+assert.strictEqual(pdfProtectRoute.handoffPlan.rawSensitiveDataInUrl, false);
+assert.ok(pdfProtectRoute.exportPlan.formats.includes("pdf"));
 
 const catalogRoute = router.routeDeterministically("compare mobile money fees in Kenya", { manifest });
 assert.strictEqual(catalogRoute.selectedToolId, "mobile-money-fees");

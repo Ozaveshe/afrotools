@@ -59,6 +59,8 @@
         highStakesNotice: field("string"),
         privacyMode: field("enum", { required: true, enum: PRIVACY_MODES }),
         canPrefill: field("boolean"),
+        handoffPlan: field("object"),
+        exportPlan: field("object"),
         suggestedNextActions: field("array", { required: true, minItems: 1 }),
         sources: field("sources"),
         disclaimer: field("string"),

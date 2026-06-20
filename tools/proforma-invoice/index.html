@@ -6,19 +6,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <title>Proforma Invoice Generator for African Trade | AfroTools</title>
-<meta name="description" content="Generate professional proforma invoices for international trade. HS codes, Incoterms, FOB/CIF pricing. Required for LC opening and import permits in Africa.">
+<meta name="description" content="Prepare a proforma invoice for African trade with HS codes, Incoterms, FOB/CIF totals, payment terms, and export-ready notes for buyer, bank, or broker review.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://afrotools.com/tools/proforma-invoice/">
 
 <meta property="og:title" content="Proforma Invoice Generator for African Trade | AfroTools">
-<meta property="og:description" content="Generate professional proforma invoices for international trade. HS codes, Incoterms, FOB/CIF pricing. Required for LC opening and import permits in Africa.">
+<meta property="og:description" content="Prepare a proforma invoice for African trade with HS codes, Incoterms, FOB/CIF totals, payment terms, and export-ready notes for buyer, bank, or broker review.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/proforma-invoice/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/proforma-invoice.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Proforma Invoice Generator for African Trade | AfroTools">
-<meta name="twitter:description" content="Generate professional proforma invoices for international trade. HS codes, Incoterms, FOB/CIF pricing.">
+<meta name="twitter:description" content="Prepare a proforma invoice with HS codes, Incoterms, FOB/CIF totals, payment terms, and review notes.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/proforma-invoice.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +44,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 .badge-blue{background:#007AFF;color:#fff}
 .badge-gray{background:rgba(255,255,255,.12);color:#fff}
 .pi-wrap{max-width:1300px;margin:0 auto;padding:1.5rem}
-.pi-grid{display:grid;grid-template-columns:40% 1fr;gap:1.5rem;align-items:start}
+.pi-grid{display:grid;grid-template-columns:40% 1fr;gap:1.5rem;align-items:start}.pi-grid>*{min-width:0}
 @media(max-width:900px){.pi-grid{grid-template-columns:1fr}}
 .form-panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;position:sticky;top:1rem}
 @media(max-width:900px){.form-panel{position:static}}
@@ -60,7 +60,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:#007AFF;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
 .fg textarea{resize:vertical;min-height:60px}
 .fg .optional{color:#94a3b8;font-weight:400;font-size:.72rem}
-.items-table-wrap{overflow-x:auto;margin-top:.5rem}
+.items-table-wrap{overflow-x:auto;margin-top:.5rem;max-width:100%}
 .items-table{width:100%;border-collapse:collapse;font-size:.8rem}
 .items-table th{background:#F8FAFD;padding:.4rem .5rem;text-align:left;font-weight:700;color:#475569;border-bottom:1.5px solid #e2e8f0;white-space:nowrap}
 .items-table td{padding:.35rem .4rem;border-bottom:1px solid #f1f5f9;vertical-align:middle}
@@ -79,7 +79,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 .btn-primary{padding:.6rem 1.25rem;background:#007AFF;color:#fff;border:none;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;transition:background .2s}
 .btn-primary:hover{background:#0063D1}
 .btn-secondary{padding:.6rem 1.25rem;background:#fff;color:#475569;border:1.5px solid #e2e8f0;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s}
-.btn-secondary:hover{background:#f8fafc;border-color:#cbd5e1}
+.btn-secondary:hover{background:#f8fafc;border-color:#cbd5e1}.pi-status{flex-basis:100%;min-height:20px;color:#475569;font-size:.78rem;font-weight:700}.trade-next-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.trade-next-card{border:1px solid #e2e8f0;border-radius:10px;background:#fff;padding:14px}.trade-next-card strong{display:block;color:#0f172a;font-size:.9rem;margin-bottom:5px}.trade-next-card span{display:block;color:#52637a;font-size:.8rem;line-height:1.55}@media(max-width:720px){.trade-next-grid{grid-template-columns:1fr}.action-bar{display:grid}.action-bar .btn-primary,.action-bar .btn-secondary{width:100%}.form-panel,.doc-panel{width:100%;min-width:0}.doc-preview{padding:18px;max-width:100%;overflow-x:auto}.doc-parties,.doc-terms-bar,.doc-terms-grid{grid-template-columns:1fr}.doc-table{min-width:520px}.doc-totals{justify-content:stretch}.doc-totals-box{min-width:0;width:100%}}
 /* ── Document Preview ── */
 .doc-panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06)}
 .doc-preview{background:#fff;padding:30px;font-family:'DM Sans',system-ui,sans-serif;font-size:11pt;color:#0f172a;min-height:600px}
@@ -146,26 +146,26 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use Proforma Invoice Generator?",
+      "name": "What should a proforma invoice include for African trade?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Include seller and buyer details, proforma number, validity date, Incoterm, loading and discharge ports, country of origin, HS codes, quantities, currency, freight, insurance, payment terms, delivery time, packaging, inspection, and special conditions."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on Proforma Invoice Generator?",
+      "name": "Can I use this proforma invoice for LC, permits, or customs planning?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Use it as a draft for buyer, bank, broker, or agent review. Requirements vary by country, bank, product, and shipment, so verify HS codes, permits, valuation, Incoterms, and required wording before filing or payment."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Proforma Invoice Generator an official result?",
+      "name": "Is this a final commercial invoice?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. A proforma invoice is a quotation document, not a demand for payment or a customs filing by itself. Convert it into the final commercial invoice only after contract, shipment, and compliance details are confirmed."
       }
     }
   ],
@@ -181,7 +181,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
     <a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span>Proforma Invoice
   </div>
   <h1>Proforma Invoice Generator</h1>
-  <p>Professional proforma invoices for African trade — HS codes, Incoterms, FOB/CIF pricing</p>
+  <p>Prepare a buyer-ready trade quote with HS codes, Incoterms, FOB/CIF totals, payment terms, and export notes</p>
   <div class="badges">
     <span class="badge badge-blue">FREE</span>
     <span class="badge badge-gray">INCOTERMS 2020</span>
@@ -197,8 +197,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
     <div class="form-panel">
       <div class="action-bar" style="margin-bottom:1rem;margin-top:0">
         <button type="button" class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
+        <button type="button" class="btn-secondary" onclick="copyTradeSummary()">Copy trade summary</button>
+        <button type="button" class="btn-secondary" onclick="copyLast()">Restore last draft</button>
         <button type="button" class="btn-secondary" onclick="resetForm()">Reset Form</button>
-        <button type="button" class="btn-secondary" onclick="copyLast()">Copy Last</button>
+        <div class="pi-status" id="piStatus" role="status" aria-live="polite"></div>
       </div>
 
       <!-- Seller Details -->
@@ -344,26 +346,22 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <section class="df-upgrade" data-df-upgrade="proforma-invoice">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Proforma Invoice Generator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for proforma invoice generator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Proforma Invoice Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, officialSource, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Trade document workflow</span>
+      <h2>Finish the quote before you send it</h2>
+      <p>Use the form as the document builder, then copy the trade summary or print to PDF for buyer, bank, broker, or freight-agent review.</p>
+      <ul class="df-upgrade__bullets"><li>Check seller, buyer, ports, origin country, payment terms, delivery window, and validity date.</li><li>Add HS codes and product descriptions that match the buyer request and supporting documents.</li><li>Use FOB and CIF totals as planning figures until freight, insurance, permits, and bank wording are confirmed.</li><li>Keep the final commercial invoice separate until shipment and contract details are settled.</li></ul>
+      <p class="df-upgrade__note"><strong>Planning document.</strong> This is a proforma quote builder, not a customs filing, tax invoice, or bank approval. Verify wording and documents with the buyer, broker, bank, or revenue authority before submitting.</p>
     </div>
-    <form class="df-form" data-df-form="proforma-invoice">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="proforma-invoice" data-df-base="Proforma Invoice Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Proforma Invoice Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="proforma-invoice">Copy summary</button></div>
-    </form>
+    <div class="trade-next-grid" aria-label="Proforma invoice next steps">
+      <div class="trade-next-card"><strong>1. Build the quote</strong><span>Enter buyer, seller, Incoterm, ports, origin, HS code, quantity, unit price, freight, and insurance.</span></div>
+      <div class="trade-next-card"><strong>2. Review assumptions</strong><span>Confirm HS classification, permit needs, inspection wording, payment terms, and shipment timing.</span></div>
+      <div class="trade-next-card"><strong>3. Export for review</strong><span>Print to PDF or copy the trade summary for WhatsApp, email, broker review, or bank pre-check.</span></div>
+    </div>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="proforma-invoice-faq-title">
-  <h2 id="proforma-invoice-faq-title">Proforma Invoice Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <h2 id="proforma-invoice-faq-title">Proforma invoice FAQ</h2>
+  <div class="df-faq__grid"><details><summary>What should I check before sending the proforma?</summary><p>Confirm buyer details, seller registration, Incoterm, ports, origin country, validity date, HS codes, quantities, price basis, freight, insurance, packaging, inspection, payment terms, and any permit or bank wording.</p></details><details><summary>Can this support LC, permit, or broker review?</summary><p>Yes as a draft handoff. Banks, brokers, and agencies may require specific formats or extra documents, so treat the PDF and copied summary as review material until requirements are confirmed.</p></details><details><summary>Is this a final invoice?</summary><p>No. It is a proforma quote, not a demand for payment or official filing. Prepare the final commercial invoice only after the order, shipment, and compliance details are agreed.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="budget"></wise-cta>
@@ -649,6 +647,55 @@ function copyLast(){
     });
     calcTotals();
   } catch(e){alert('No saved data found.');}
+}
+
+function setPiStatus(message){
+  const status=document.getElementById('piStatus');
+  if(status) status.textContent=message||'';
+}
+
+function proformaTotals(){
+  let subtotal=0;
+  let itemCount=0;
+  document.querySelectorAll('#itemsBody tr').forEach(tr=>{
+    const nums=tr.querySelectorAll('input[type="number"]');
+    if(nums.length>=2){
+      const qty=parseFloat(nums[0].value)||0;
+      const price=parseFloat(nums[1].value)||0;
+      if(qty||price) itemCount++;
+      subtotal+=qty*price;
+    }
+  });
+  const freight=parseFloat(v('piFreight'))||0;
+  const insurance=parseFloat(v('piInsurance'))||0;
+  return {subtotal,freight,insurance,fob:subtotal+freight,cif:subtotal+freight+insurance,itemCount};
+}
+
+function tradeSummaryText(){
+  const totals=proformaTotals();
+  const cur=v('piCurrency').split(' ')[0]||'USD';
+  return [
+    'AfroTools proforma invoice review summary',
+    'Proforma number: '+(v('piNumber')||'not set'),
+    'Seller: '+(v('sellerName')||'not set')+' - '+(v('sellerCountry')||'not set'),
+    'Buyer: '+(v('buyerName')||'not set')+' - '+(v('buyerCountry')||'not set'),
+    'Route: '+(v('piPOL')||'loading port not set')+' to '+(v('piPOD')||'discharge port not set'),
+    'Incoterm/payment: '+(v('piIncoterm')||'not set')+' / '+(v('piPaymentTerms')||'not set'),
+    'Items with values: '+totals.itemCount,
+    'FOB total: '+cur+' '+fmt(totals.fob),
+    'CIF total: '+cur+' '+fmt(totals.cif),
+    'Review before sending: HS codes, permits, bank wording, inspection, freight, insurance, validity date, and final commercial invoice requirements.'
+  ].join('\n');
+}
+
+function copyTradeSummary(){
+  const text=tradeSummaryText();
+  saveToLocal();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>setPiStatus('Trade summary copied. No data was sent to AfroTools.')).catch(()=>setPiStatus(text));
+  } else {
+    setPiStatus(text);
+  }
 }
 
 function saveToLocal(){
