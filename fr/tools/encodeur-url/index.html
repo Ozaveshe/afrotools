@@ -153,6 +153,7 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
             <button id="decodeBtn" type="button">Décoder</button>
             <button id="swapBtn" type="button">Permuter</button>
             <button id="copyBtn" type="button">Copier</button>
+            <button id="downloadBtn" type="button">Télécharger</button>
             <button class="url-danger" id="clearBtn" type="button">Effacer</button>
           </div>
         </div>
@@ -161,7 +162,7 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
       <div class="url-panel">
         <div class="url-panel-head">
           <h2 class="url-panel-title">Résultat</h2>
-          <p class="url-panel-sub">Les erreurs de décodage sont affichées clairement et ne bloquent pas la page.</p>
+          <p class="url-panel-sub">Les erreurs de décodage sont affichées clairement. Copiez ou téléchargez la sortie sans compte.</p>
         </div>
         <div class="url-panel-body url-stack">
           <div class="url-output" id="urlOutput" role="status" aria-live="polite"></div>
@@ -251,7 +252,7 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
           <a href="/fr/tools/formateur-json/">Formateur JSON</a>
           <a href="/fr/tools/generateur-uuid/">Générateur UUID</a>
           <a href="/fr/developers/">Portail développeurs</a>
-          <a href="/tools/url-encoder/">Version source</a>
+          <a href="/tools/url-encoder/">Version anglaise</a>
         </div>
       </div>
 
@@ -389,6 +390,22 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
     }
   }
 
+  function downloadOutput(button){
+    var text = output.textContent || '';
+    var blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    var original = button.textContent;
+    link.href = url;
+    link.download = 'url-encodeur-afrotools.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    button.textContent = 'Téléchargé';
+    setTimeout(function(){ button.textContent = original; },1200);
+  }
+
   document.getElementById('encodeUriBtn').addEventListener('click',encodeUri);
   document.getElementById('encodeComponentBtn').addEventListener('click',encodeComponent);
   document.getElementById('decodeBtn').addEventListener('click',decodeValue);
@@ -399,6 +416,7 @@ details p{margin:9px 0 0;color:var(--url-muted);line-height:1.6}
     else decodeValue();
   });
   document.getElementById('copyBtn').addEventListener('click',function(){ copyOutput(this); });
+  document.getElementById('downloadBtn').addEventListener('click',function(){ downloadOutput(this); });
   document.getElementById('clearBtn').addEventListener('click',function(){
     input.value = '';
     applyResult('',[]);
