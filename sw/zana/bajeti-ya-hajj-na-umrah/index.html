@@ -53,6 +53,19 @@
 </div>
 </section>
 <main><section data-sw-prompt-note="66" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:18px;color:#334155;line-height:1.65;"><strong style="color:#0f172a;">Istilahi na mipaka:</strong> Istilahi za dini na utamaduni zimewekwa kwa heshima na bila kudai mamlaka rasmi: package ni kifurushi cha safari au huduma, vendor quotes ni nukuu za bei kutoka watoa huduma, family contributions ni michango ya familia, contingency ni akiba ya dharura, checklist ni orodha ya ukaguzi, flight ni nauli ya ndege, na visa ni kibali cha kuingia nchi. Masuala ya ibada, tarehe, fatwa, visa na gharama rasmi yahakikiwe na msikiti, kanisa, uongozi wa jamii, mamlaka au mtoa huduma.</div></section>
+<section data-sw-cultural-prep style="max-width:1100px;margin:24px auto;padding:0 20px;">
+  <div style="background:#fff;border:1px solid #fde68a;border-radius:14px;padding:18px;box-shadow:0 1px 8px rgba(15,23,42,.05);">
+    <h2 style="font-size:1.1rem;margin:0 0 8px;color:#0f172a;">Mpango wa haraka kabla ya zana</h2>
+    <p style="margin:0 0 14px;color:#475569;line-height:1.65;">Jaza muktadha mfupi ili kupanga tarehe, wageni, bajeti au mahitaji ya familia kabla ya kutumia zana kamili hapa chini.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Tukio au lengo<input data-cultural-event type="text" placeholder="Mfano: harusi, swala, Ramadhani" style="width:100%;border:1px solid #fde68a;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Watu au siku<input data-cultural-size type="text" placeholder="Mfano: wageni 150 au siku 30" style="width:100%;border:1px solid #fde68a;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Bajeti au eneo<input data-cultural-budget type="text" placeholder="Mfano: KES 250000, Dar es Salaam" style="width:100%;border:1px solid #fde68a;border-radius:10px;padding:10px;font:inherit;"></label>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"><button type="button" data-cultural-button style="border:0;border-radius:999px;background:#b45309;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer;">Panga mpango</button><span data-cultural-status aria-live="polite" style="align-self:center;color:#64748b;"></span></div>
+    <output data-cultural-output style="display:block;margin-top:12px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px;color:#4b2e13;line-height:1.6;">Ongeza maelezo, kisha tumia zana kamili iliyo hapa chini.</output>
+  </div>
+</section>
 <section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="hajj-budget"></section>
 </main>
 <afro-footer></afro-footer>
@@ -93,6 +106,27 @@
   function run(){ walk(document.body); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
   new MutationObserver(function(muts){ muts.forEach(function(m){ m.addedNodes && m.addedNodes.forEach(function(n){ if(n.nodeType===1) walk(n); else if(n.nodeType===3) localizeText(n); }); }); }).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+<script>
+(function(){
+  const root = document.querySelector('[data-sw-cultural-prep]');
+  if (!root) return;
+  const event = root.querySelector('[data-cultural-event]');
+  const size = root.querySelector('[data-cultural-size]');
+  const budget = root.querySelector('[data-cultural-budget]');
+  const output = root.querySelector('[data-cultural-output]');
+  const status = root.querySelector('[data-cultural-status]');
+  function render(){
+    const bits = [];
+    if (event.value.trim()) bits.push('Lengo: ' + event.value.trim());
+    if (size.value.trim()) bits.push('Kiwango: ' + size.value.trim());
+    if (budget.value.trim()) bits.push('Bajeti/eneo: ' + budget.value.trim());
+    output.textContent = bits.length ? bits.join(' | ') + '. Tumia matokeo haya kwenye zana kamili, kisha hakiki na familia, viongozi au watoa huduma.' : 'Ongeza maelezo, kisha tumia zana kamili iliyo hapa chini.';
+    if (status) status.textContent = bits.length ? 'Mpango uko tayari.' : '';
+  }
+  root.querySelector('[data-cultural-button]')?.addEventListener('click', render);
+  [event, size, budget].forEach(function(input){ input && input.addEventListener('input', render); });
 })();
 </script>
 </body>

@@ -49,7 +49,14 @@
     .info-card-label{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:6px}
     .info-card-value{font-size:1.35rem;font-weight:800;color:#0f172a;margin-bottom:4px}
     .info-card-note{font-size:0.75rem;color:#6B7280;line-height:1.5}
+    .sw-task-panel{margin-top:22px;background:#fff;border:1.5px solid #bfdbfe;border-radius:14px;padding:18px;text-align:left;box-shadow:0 16px 34px rgba(15,23,42,.1)}
+    .sw-task-panel h2{font-size:1.08rem;margin:0 0 6px;color:#0f172a}.sw-task-panel p{color:#475569;line-height:1.6;margin:0 0 12px}
+    .sw-task-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.sw-task-grid label{display:grid;gap:6px;color:#0f172a;font-weight:800;font-size:.86rem}
+    .sw-task-grid select,.sw-task-grid input{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px 11px;font:inherit}.sw-task-output{display:block;margin-top:12px;border:1px solid #dbeafe;border-radius:10px;background:#eff6ff;color:#1e3a8a;padding:12px;line-height:1.55}
+    .sw-task-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.sw-task-actions a,.sw-task-actions button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;cursor:pointer}.sw-task-actions a{background:#007AFF;color:#fff}.sw-task-actions button{background:#0f172a;color:#fff}.sw-task-status{align-self:center;color:#64748b;font-size:.88rem}
+    .sw-proof-panel{margin-top:16px;border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:12px;padding:14px 16px;line-height:1.65}
     .divider{height:1px;background:#E5E7EB;margin:0}
+    @media(max-width:640px){.sw-task-actions a,.sw-task-actions button{width:100%}}
   </style>
   <meta property="article:modified_time" content="2026-03-29">
 <meta property="og:url" content="https://afrotools.com/sw/zambia/">
@@ -57,6 +64,8 @@
 <meta name="twitter:title" content="Vikokotoo Zambia 2026 - Mishahara, PAYE na Ajira | AfroTools">
 <meta name="twitter:description" content="Zana za mishahara na ajira za Zambia kwa Kiswahili: PAYE ya Zambia, gharama ya mfanyakazi, mkandarasi, kibali cha kazi na malipo ya mwisho wa ajira.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/zm-paye.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mwanzo","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":2,"name":"Mshahara na Kodi","item":"https://afrotools.com/sw/mshahara-na-kodi/"},{"@type":"ListItem","position":3,"name":"Zambia","item":"https://afrotools.com/sw/zambia/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"sw","mainEntity":[{"@type":"Question","name":"Nianzie wapi kwenye zana za Zambia?","acceptedAnswer":{"@type":"Answer","text":"Anza na kikokotoo cha PAYE ikiwa unataka mshahara baada ya kodi, kisha tumia gharama ya mfanyakazi, mkandarasi au mfanyakazi, kibali cha kazi au malipo ya mwisho wa ajira kulingana na kazi yako."}},{"@type":"Question","name":"Je, ukurasa huu ni ushauri rasmi wa kodi?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Ukurasa huu ni njia ya kupanga na kuelekeza kwenye zana. Thibitisha viwango, makato na masharti na ZRA, NAPSA au mshauri anayefaa kabla ya kuwasilisha au kulipa."}},{"@type":"Question","name":"Je, ninaweza kunakili brief ya kazi yangu?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Chagua kazi, ingiza muktadha mfupi, kisha nakili brief ya maswali ya kufungua zana sahihi."}}]}</script>
 </head>
 <body>
   <afro-navbar></afro-navbar>
@@ -67,6 +76,17 @@
       <p class="hero-sub">Anza na mishahara ya Zambia kwa Kiswahili: kokotoa PAYE ya ZRA, pima NAPSA, kisha linganisha gharama ya mwajiri, mkandarasi, vibali vya kazi na malipo ya mwisho wa ajira.</p>
       <a href="/sw/zambia/kikokotoo-kodi-mshahara/" class="btn-blue">Kikokotoo cha PAYE &rarr;</a>
       <a href="/sw/mshahara-na-kodi/" class="btn-outline">Mishahara na PAYE</a>
+      <section class="sw-task-panel" aria-label="Chagua kazi ya Zambia">
+        <h2>Chagua kazi yako</h2>
+        <p>Badala ya kusoma ukurasa mzima, chagua unachotaka kufanya na tengeneza brief fupi kabla ya kufungua zana.</p>
+        <div class="sw-task-grid">
+          <label>Kazi<select id="swTask"><option value="paye">Kokotoa PAYE</option><option value="employer">Pima gharama ya mfanyakazi</option><option value="contractor">Linganisha mkandarasi na mfanyakazi</option><option value="permit">Andaa kibali cha kazi</option><option value="exit">Panga malipo ya mwisho wa ajira</option></select></label>
+          <label>Muktadha<input id="swContext" autocomplete="off" placeholder="Ex: mshahara wa ZMW 12000, offer mpya"></label>
+        </div>
+        <output class="sw-task-output" id="swTaskOutput">Chagua kazi na uongeze muktadha ili kupata hatua inayofuata.</output>
+        <div class="sw-task-actions"><a id="swTaskLink" href="/sw/zambia/kikokotoo-kodi-mshahara/">Fungua zana inayofaa</a><button type="button" id="swCopyTask">Nakili brief</button><span class="sw-task-status" id="swTaskStatus" aria-live="polite"></span></div>
+        <div class="sw-proof-panel" data-tool-verification-panel><strong>Kontroli ya 2026:</strong> tumia hub hii kama ramani ya kazi, si filing rasmi. Thibitisha viwango na masharti na ZRA, NAPSA, mwajiri au mshauri kabla ya malipo, usajili au makubaliano ya ajira.</div>
+      </section>
     </div>
   </section>
   <section class="sec" data-sw-country-mode="lighter-bridge" style="padding-top:30px;padding-bottom:0;">
@@ -318,6 +338,15 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script>
+!function(){
+var routes={paye:["PAYE ya Zambia","/sw/zambia/kikokotoo-kodi-mshahara/","Kokotoa mshahara baada ya kodi, makato na take-home pay."],employer:["Gharama ya mfanyakazi","/sw/zambia/kikokotoo-gharama-ya-mfanyakazi/","Ongeza michango ya mwajiri na gharama ya mwezi."],contractor:["Mkandarasi au mfanyakazi","/sw/zambia/kilinganisha-mkandarasi-na-mfanyakazi/","Linganisha gharama na hatari ya uainishaji."],permit:["Kibali cha kazi","/sw/zambia/kikokotoo-gharama-ya-kibali-cha-kazi/","Andaa maswali ya ada, muda na nyaraka."],exit:["Malipo ya mwisho wa ajira","/sw/zambia/kikokotoo-malipo-ya-kuachishwa-kazi/","Panga taarifa, likizo, kiinua mgongo na kifurushi."]};
+var task=document.getElementById("swTask"),ctx=document.getElementById("swContext"),out=document.getElementById("swTaskOutput"),link=document.getElementById("swTaskLink"),status=document.getElementById("swTaskStatus");
+function brief(){var item=routes[task.value]||routes.paye;var extra=ctx.value.trim();return item[0]+": "+item[2]+(extra?" Muktadha: "+extra+".":"");}
+function render(){var item=routes[task.value]||routes.paye;out.textContent=brief()+" Hakiki chanzo rasmi kabla ya uamuzi.";link.href=item[1];if(status)status.textContent="";}
+task.addEventListener("change",render);ctx.addEventListener("input",render);document.getElementById("swCopyTask").addEventListener("click",function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent="Brief imenakiliwa.";}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();
+}();
+  </script>
   <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <!-- sw-religious-country:start -->

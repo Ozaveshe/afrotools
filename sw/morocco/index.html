@@ -69,6 +69,8 @@
   </style>
   <meta property="article:modified_time" content="2026-03-29" />
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ma-paye.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mwanzo","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":2,"name":"Mshahara na Kodi","item":"https://afrotools.com/sw/mshahara-na-kodi/"},{"@type":"ListItem","position":3,"name":"Moroko","item":"https://afrotools.com/sw/morocco/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"sw","mainEntity":[{"@type":"Question","name":"Nianzie wapi kwenye zana za Moroko?","acceptedAnswer":{"@type":"Answer","text":"Chagua kazi kwenye paneli ya juu. AfroTools itakupeleka kwenye kikokotoo sahihi au hub inayofaa bila kubadilisha viwango vya msingi."}},{"@type":"Question","name":"Je, ukurasa huu ni ushauri rasmi wa kodi?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Ni ramani ya zana na makadirio. Thibitisha viwango, makato, vibali na masharti na mamlaka rasmi, mwajiri au mshauri kabla ya kulipa au kuwasilisha."}},{"@type":"Question","name":"Je, ninaweza kunakili brief ya kazi yangu?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Chagua kazi, ongeza muktadha mfupi, kisha nakili brief ili uendelee kwenye zana inayofaa."}}]}</script>
 </head>
 <body>
   <afro-navbar></afro-navbar>
@@ -79,6 +81,17 @@
       <p class="hero-sub">Anza na mishahara ya Moroko kwa Kiswahili: kokotoa PAYE ya DGI, kagua CNSS na AMO, pima muda wa ziada, na panga likizo bila kupotea kwenye zana za jumla.</p>
       <a href="/sw/morocco/kikokotoo-kodi-mshahara/" class="btn-blue">Kikokotoo cha Kodi ya Mshahara &rarr;</a>
       <a href="/sw/mshahara-na-kodi/" class="btn-outline">Mishahara na PAYE</a>
+      <section class="sw-task-panel" aria-label="Chagua kazi ya Moroko">
+        <h2>Chagua kazi yako</h2>
+        <p>Badala ya kusoma ukurasa mzima, chagua unachotaka kufanya na tengeneza brief fupi kabla ya kufungua zana.</p>
+        <div class="sw-task-grid">
+          <label>Kazi<select id="swTask"><option value="paye">Kodi ya mshahara</option><option value="employer">Gharama ya mfanyakazi</option><option value="contractor">Mkandarasi au mfanyakazi</option><option value="permit">Kibali cha kazi</option><option value="exit">Malipo ya mwisho wa ajira</option></select></label>
+          <label>Muktadha<input id="swContext" autocomplete="off" placeholder="Ex: mshahara, offer, invoice au swali"></label>
+        </div>
+        <output class="sw-task-output" id="swTaskOutput">Chagua kazi na uongeze muktadha ili kupata hatua inayofuata.</output>
+        <div class="sw-task-actions"><a id="swTaskLink" href="/sw/morocco/kikokotoo-kodi-mshahara/">Fungua zana inayofaa</a><button type="button" id="swCopyTask">Nakili brief</button><span class="sw-task-status" id="swTaskStatus" aria-live="polite"></span></div>
+        <div class="sw-proof-panel" data-tool-verification-panel><strong>Kontroli ya 2026:</strong> tumia hub hii kama ramani ya kazi, si filing rasmi. Thibitisha viwango na masharti na mamlaka rasmi, mwajiri au mshauri kabla ya malipo, usajili au makubaliano ya ajira.</div>
+      </section>
     </div>
   </section>
   <section class="sec" data-sw-country-mode="lighter-bridge" style="padding-top:30px;padding-bottom:0;">
@@ -462,6 +475,16 @@
 <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+  <script>
+!function(){
+var routes={"paye":["Kodi ya mshahara","/sw/morocco/kikokotoo-kodi-mshahara/","Kokotoa mshahara baada ya kodi na makato muhimu."],"employer":["Gharama ya mfanyakazi","/sw/morocco/kikokotoo-gharama-ya-mfanyakazi/","Ongeza mzigo wa mwajiri na gharama ya mwezi."],"contractor":["Mkandarasi au mfanyakazi","/sw/morocco/kilinganisha-mkandarasi-na-mfanyakazi/","Linganisha muundo wa ajira na mkataba."],"permit":["Kibali cha kazi","/sw/morocco/kikokotoo-gharama-ya-kibali-cha-kazi/","Andaa maswali ya ada, muda na nyaraka."],"exit":["Malipo ya mwisho wa ajira","/sw/morocco/kikokotoo-malipo-ya-kuachishwa-kazi/","Panga taarifa, likizo na kifurushi cha mwisho."]};
+var task=document.getElementById("swTask"),ctx=document.getElementById("swContext"),out=document.getElementById("swTaskOutput"),link=document.getElementById("swTaskLink"),status=document.getElementById("swTaskStatus");
+function brief(){var item=routes[task.value]||routes[Object.keys(routes)[0]];var extra=ctx.value.trim();return item[0]+": "+item[2]+(extra?" Muktadha: "+extra+".":"");}
+function render(){var item=routes[task.value]||routes[Object.keys(routes)[0]];out.textContent=brief()+" Hakiki chanzo rasmi kabla ya uamuzi.";link.href=item[1];if(status)status.textContent="";}
+task.addEventListener("change",render);ctx.addEventListener("input",render);document.getElementById("swCopyTask").addEventListener("click",function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent="Brief imenakiliwa.";}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();
+}();
+  </script>
+
   <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <!-- sw-religious-country:start -->

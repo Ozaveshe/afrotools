@@ -715,6 +715,12 @@ body {
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/currency-converter/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/convertisseur-devises/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/currency-converter/" />
+<style data-fx-mobile-overflow-fix>
+@media(max-width:768px){.fx-card{max-width:100%;overflow:hidden}.fx-table-wrap,.matrix-wrap{display:block;width:100%;max-width:calc(100vw - 48px);overflow-x:auto}.matrix-table{width:max-content;min-width:920px}}
+</style>
+<style data-product-kit-style>
+.product-kit{max-width:1040px;margin:22px auto;padding:18px 20px;border:1px solid #bfdbfe;border-radius:14px;background:#fff;box-shadow:0 14px 30px rgba(15,23,42,.07)}.product-kit h2{margin:0 0 8px;color:#0f172a;font-size:clamp(1.1rem,2vw,1.42rem)}.product-kit p{margin:0 0 14px;color:#475569;line-height:1.62}.product-kit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.product-kit label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#334155}.product-kit textarea,.product-kit input,.product-kit select{width:100%;box-sizing:border-box;min-height:44px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;padding:10px 12px;font:inherit;color:#0f172a}.product-kit textarea{min-height:86px;resize:vertical}.product-kit output{display:block;margin-top:12px;border:1px solid #dbeafe;border-left:4px solid #2563eb;border-radius:0 12px 12px 0;background:#f8fbff;padding:12px;color:#334155;line-height:1.55;white-space:pre-line}.product-kit-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.product-kit-actions button,.product-kit-actions a{border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.product-kit-actions button{background:#0f172a;color:#fff;cursor:pointer}.product-kit-actions a{background:#2563eb;color:#fff}.product-proof{max-width:1040px;margin:22px auto;padding:18px 20px;border:1px solid #dbeafe;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}.product-proof h2{margin:0 0 10px;font-size:1.08rem;color:#0f172a}.product-proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.product-proof-grid div{border:1px solid #e2e8f0;background:#fff;border-radius:10px;padding:12px}.product-proof-grid strong{display:block;color:#0f172a;margin-bottom:4px}@media(max-width:640px){.product-kit-actions button,.product-kit-actions a{width:100%}}
+</style>
 </head>
 
 <body>
@@ -741,6 +747,7 @@ body {
     <span id="updatedText">Chargement des taux&hellip;</span>
   </div>
 </section>
+<section id="product-kit" class="product-kit" data-product-kit data-tool-title="Convertisseur de devises africaines"><h2>Brief de decision</h2><p>Preparez le scenario, les donnees et le choix a comparer avant de copier un resume ou de continuer dans l outil.</p><div class="product-kit-grid"><label>Scenario<input name="scenario" placeholder="PME, client, voyage, projet"></label><label>Donnees<textarea name="input" placeholder="montant, devise, fournisseur, fichier, delai"></textarea></label><label>Decision<select name="decision"><option value="compare options">Comparer les options</option><option value="estimate cost">Estimer le cout</option><option value="prepare export">Preparer export</option></select></label></div><output data-product-output aria-live="polite"></output><div class="product-kit-actions"><button type="button" data-product-copy>Copier le brief</button><button type="button" data-product-download>Telecharger TXT</button><a href="#product-kit">Continuer</a><span data-product-status aria-live="polite"></span></div></section>
 
 <!-- ═══════════════════════════════════════════════════════════════════
      4. CONVERTER + CHART
@@ -956,7 +963,8 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <afro-related-tools></afro-related-tools>
+    <section class="product-proof" data-product-proof data-tool-verification-panel><h2>Methode, sources et limites</h2><div class="product-proof-grid"><div><strong>Methode</strong><p>L outil combine vos entrees avec les controles visibles de la page pour preparer une estimation, une comparaison ou un export local.</p></div><div><strong>Verification</strong><p>Confirmez taux, prix, fournisseurs, formats de fichiers et conditions officielles avant de signer, payer ou publier.</p></div><div><strong>Limites 2026</strong><p>Support de decision uniquement; pas une offre bancaire, un taux officiel, une promesse de service ou un avis professionnel.</p></div></div></section>
+<afro-related-tools></afro-related-tools>
   </div>
 </section>
 
@@ -1741,5 +1749,8 @@ body {
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script data-product-kit-script>
+(function(){document.querySelectorAll('[data-product-kit]').forEach(function(panel){var output=panel.querySelector('[data-product-output]');var status=panel.querySelector('[data-product-status]');var title=panel.getAttribute('data-tool-title')||document.title;function val(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){return [title,'Scenario: '+(val('scenario')||'planning'),'Input: '+(val('input')||'a renseigner / weka data'),'Decision: '+(val('decision')||'compare options'),'Limit: estimate or workflow helper only; confirm live prices, official rates, provider terms, privacy and local rules before committing.'].join(String.fromCharCode(10));}function render(){if(output)output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-product-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Copied.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var download=panel.querySelector('[data-product-download]');if(download)download.addEventListener('click',function(){var blob=new Blob([summary()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(title||'afrotools-brief').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.txt';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);});render();});})();
+</script>
 </body>
 </html>

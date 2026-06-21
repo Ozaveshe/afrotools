@@ -63,6 +63,17 @@ function countries(sel){if(typeof TELECOM_DATA==='undefined')return;Object.keys(
 var sel=q('country'),res=q('results'),buttons=document.querySelectorAll('[data-priority]');countries(sel);buttons.forEach(function(b){b.addEventListener('click',function(){buttons.forEach(function(x){x.classList.remove('active')});b.classList.add('active');render()})});sel.addEventListener('change',render);function render(){var c=TELECOM_DATA.countries[sel.value];var p=document.querySelector('[data-priority].active');var priority=p?p.getAttribute('data-priority'):'stable';var rec=priority==='latency'?'Fibre':priority==='mobility'?'LTE / 5G':priority==='budget'?'LTE':'Fibre';var available=c?(c.isp||[]).map(function(x){return x.type}).join(', '):'choisissez un pays';res.innerHTML='<div class="fr-result-row"><span>Choix recommande</span><strong>'+rec+'</strong></div><div class="fr-result-row"><span>Technologies reperees</span><strong>'+available+'</strong></div><div class="fr-result-row"><span>Conseil</span><strong>'+ (priority==='mobility'?'Testez le signal dans le lieu exact.':'Demandez la stabilite et les frais d installation.') +'</strong></div>'}
 })();
 </script>
+<section class="fr-tel-section" data-fr-telecom-warning style="max-width:1120px;margin:24px auto;padding:0 20px;">
+  <div class="fr-tel-note"><strong>Avertissement:</strong> ces resultats sont des estimations indicatives et ne remplacent pas une confirmation officielle de l'operateur. Verifiez prix, validite, taxes, frais d'itinerance, couverture et conditions dans l'application, le menu USSD, le contrat ou le service client avant achat ou engagement.</div>
+</section>
+<!-- fr-score76-qa-panel:start -->
+<section class="fr-score76-qa" data-tool-verification-panel aria-label="Methodologie, sources et limites" style="max-width:900px;margin:24px auto;padding:16px 18px;border:1px solid #c7d2fe;border-radius:12px;background:linear-gradient(135deg,#eef2ff 0%,#f8fafc 100%);color:#1e293b;line-height:1.55;box-shadow:0 10px 24px rgba(15,23,42,.06)">
+  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Methodologie, sources et limites</h2>
+  <p style="margin:.35rem 0"><strong>Methodologie:</strong> le resultat combine les champs de la page, les donnees AfroTools disponibles et les regles appliquees par l outil. Gardez les hypotheses visibles avant de copier, telecharger ou utiliser le resultat.</p>
+  <p style="margin:.35rem 0"><strong>Sources:</strong> controle 2026 a confirmer avec la source officielle, l autorite competente, le fournisseur ou votre document de reference lorsque le prix, la loi, la sante, la taxe ou la disponibilite peuvent changer.</p>
+  <p style="margin:.35rem 0"><strong>Avertissement:</strong> estimation seulement; ce guide est non officiel et ne remplace pas un conseil professionnel, fiscal, juridique, medical ou technique.</p>
+</section>
+<!-- fr-score76-qa-panel:end -->
 <afro-footer></afro-footer>
 </body>
 </html>

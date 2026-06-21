@@ -103,6 +103,16 @@
         <div id="detail"></div>
       </div>
     </section>
+<section class="section panel" data-sw-creator-workspace>
+      <h2>Workspace ya brief na export</h2>
+      <p>Weka brief ya kampeni, maelezo ya brand au maandishi ya mteja kisha pakua muhtasari wa TXT kwa WhatsApp, email au proposal. Faragha: No upload - files never leave your browser; zana hii huchakata kwenye kifaa chako.</p>
+      <div class="form-grid">
+        <label>Ingiza brief ya kampeni<input type="file" id="creatorBriefFile" accept=".txt,.md,text/plain"></label>
+        <label>Brief ya kazi<textarea id="creatorBriefText" placeholder="Mfano: brand, jukwaa, hadhira, bidhaa, muda wa kampeni, deliverables na KPI."></textarea></label>
+      </div>
+      <div class="actions"><button type="button" id="creatorCopyPlan">Nakili mpango</button><a class="button secondary" id="creatorDownloadPlan" download="afrotools-creator-workspace.txt" href="data:text/plain;charset=utf-8,">Pakua TXT</a></div>
+      <p class="note"><strong>Njia ya kazi:</strong> tengeneza matokeo ya zana, ongeza brief ya mteja, kisha pakua au nakili muhtasari kabla ya kutuma rate card, caption, script au media kit. Hakiki masharti ya brand, haki za matumizi na sera za jukwaa kabla ya kutuma.</p>
+    </section>
 <section class="section panel">
       <h2>Angalia pia</h2>
       <div class="link-list">
@@ -121,7 +131,16 @@
     </section>
 <section class="section note"><strong>Angalizo:</strong> Matokeo haya ni makadirio ya kupanga bei za influencer/mtayarishi mwenye hadhira. Hayahakikishi followers, reach, virality, brand deals, mapato, CPM, engagement rate, idhini ya platform au conversion ya sponsorship. Hakiki sera za platform, mikataba, data za kampeni, brands, agencies, mhasibu au mshauri kabla ya maamuzi yenye hatari.</section>
   </main>
-  <afro-footer></afro-footer>
+<!-- sw-score77-qa-panel:start -->
+<section class="sw-score77-qa" data-tool-verification-panel aria-label="Mbinu, vyanzo na kanusho" style="max-width:920px;margin:24px auto;padding:16px 18px;border:1px solid #bae6fd;border-radius:12px;background:linear-gradient(135deg,#ecfeff 0%,#f8fafc 100%);color:#1f2937;line-height:1.6;box-shadow:0 10px 24px rgba(15,23,42,.06)">
+  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Mbinu, vyanzo na kanusho</h2>
+  <p style="margin:.35rem 0"><strong>Mbinu:</strong> matokeo yanatumia taarifa unazoingiza, dhana zilizo kwenye ukurasa na kanuni za zana hii. Soma muhtasari kabla ya kunakili, kupakua au kutumia matokeo.</p>
+  <p style="margin:.35rem 0"><strong>Vyanzo:</strong> ukaguzi wa 2026 unahitaji hakiki chanzo rasmi, mamlaka husika, mtoa huduma, kliniki, mhasibu au nyaraka zako pale bei, sheria, afya, kodi au upatikanaji vinaweza kubadilika.</p>
+  <p style="margin:.35rem 0"><strong>Kanusho:</strong> haya ni makadirio tu na si taarifa rasmi; haibadili ushauri wa kitaalamu, wa kodi, wa kisheria, wa afya, wa bima au wa biashara.</p>
+  <p style="margin:.35rem 0"><strong>Faragha:</strong> unachoandika hubaki local kwenye browser yako isipokuwa ukurasa umeonyesha wazi kuwa unatuma au kuhifadhi data mahali pengine.</p>
+</section>
+<!-- sw-score77-qa-panel:end -->
+<afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=91514111"></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b"></script>
   <script src="/assets/js/wise-cta.js?v=10209ee0"></script>
@@ -143,5 +162,64 @@ function calc(){const t=tier(num('followers'));const b=BASE[q('country').value][
 function reset(){q('country').value='NG';q('platform').value='instagram';q('followers').value=50000;q('engRate').value=4.5;q('niche').value='lifestyle';}
 bind(calc,reset);
   </script>
+  <script>
+(function(){
+  const root = document.querySelector('[data-sw-creator-workspace]');
+  if (!root) return;
+  const file = root.querySelector('#creatorBriefFile');
+  const brief = root.querySelector('#creatorBriefText');
+  const copy = root.querySelector('#creatorCopyPlan');
+  const download = root.querySelector('#creatorDownloadPlan');
+  let lastUrl = '';
+  function textFrom(selector) {
+    const node = document.querySelector(selector);
+    return node ? node.innerText.replace(/\s+\n/g, '\n').trim() : '';
+  }
+  function buildPlan() {
+    const title = (document.querySelector('h1') || {}).innerText || 'AfroTools creator workspace';
+    const input = brief.value.trim() || 'Brief haijaongezwa bado.';
+    const summary = textFrom('#results');
+    const detail = textFrom('#detail');
+    return [
+      title,
+      '',
+      'Brief ya kampeni:',
+      input,
+      '',
+      'Matokeo ya zana:',
+      summary || 'Bonyeza Tengeneza ili kupata matokeo.',
+      '',
+      detail,
+      '',
+      'Faragha: imeandaliwa kwenye browser yako. Hakuna upload ya faili kwenye server.'
+    ].filter(Boolean).join('\n');
+  }
+  function refreshDownload() {
+    if (!download) return;
+    if (lastUrl) URL.revokeObjectURL(lastUrl);
+    const blob = new Blob([buildPlan()], { type: 'text/plain;charset=utf-8' });
+    lastUrl = URL.createObjectURL(blob);
+    download.href = lastUrl;
+  }
+  file && file.addEventListener('change', function () {
+    const chosen = file.files && file.files[0];
+    if (!chosen) return;
+    const reader = new FileReader();
+    reader.onload = function () { brief.value = String(reader.result || '').slice(0, 12000); refreshDownload(); };
+    reader.readAsText(chosen);
+  });
+  brief && brief.addEventListener('input', refreshDownload);
+  copy && copy.addEventListener('click', function () {
+    const plan = buildPlan();
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(plan);
+    copy.textContent = 'Imenakiliwa';
+    setTimeout(function(){ copy.textContent = 'Nakili mpango'; }, 1400);
+  });
+  const calculate = document.getElementById('calculate');
+  calculate && calculate.addEventListener('click', function(){ setTimeout(refreshDownload, 0); });
+  window.addEventListener('beforeunload', function(){ if (lastUrl) URL.revokeObjectURL(lastUrl); });
+  refreshDownload();
+})();
+</script>
 </body>
 </html>

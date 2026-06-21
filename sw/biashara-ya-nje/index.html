@@ -92,6 +92,35 @@
   </div>
 </section>
 <!-- /sw-small-business-sme -->
+
+<section data-sw-trade-planner style="max-width:1120px;margin:28px auto;padding:0 20px;">
+  <div data-tool-verification-panel style="background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:20px;box-shadow:0 12px 30px rgba(15,23,42,.06);">
+    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#0f766e;font-weight:900;margin-bottom:8px;">Planner ya biashara ya nje</div>
+    <h2 style="margin:0 0 8px;color:#0f172a;letter-spacing:-.02em;">Panga shehena kabla ya kuuliza quote</h2>
+    <p style="margin:0 0 16px;color:#526071;line-height:1.65;">Chagua muktadha wako kisha pata hatua ya kwanza. Hii ni planner ya mwaka 2026 kwa kuelekeza kwenye zana sahihi, si uamuzi rasmi.</p>
+    <form data-sw-planner-form style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;align-items:end;">
+      <label style="display:block;font-weight:800;color:#334155;font-size:.84rem;line-height:1.35;">Hatua ya biashara<select data-sw-planner-field="0" style="width:100%;margin-top:6px;border:1.5px solid #dbe3ef;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;color:#0f172a;"><option>Kuagiza bidhaa</option><option>Kuuza nje</option><option>HS code na AfCFTA</option><option>LC au malipo ya kimataifa</option></select></label><label style="display:block;font-weight:800;color:#334155;font-size:.84rem;line-height:1.35;">Nyaraka muhimu<select data-sw-planner-field="1" style="width:100%;margin-top:6px;border:1.5px solid #dbe3ef;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;color:#0f172a;"><option>Ankara na packing list</option><option>Cheti cha asili</option><option>Bill of Lading</option><option>Customs entry</option></select></label><label style="display:block;font-weight:800;color:#334155;font-size:.84rem;line-height:1.35;">Unachohitaji kuthibitisha<select data-sw-planner-field="2" style="width:100%;margin-top:6px;border:1.5px solid #dbe3ef;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;color:#0f172a;"><option>Ushuru na VAT</option><option>Freight na demurrage</option><option>Benki na FX</option><option>Idhini ya mamlaka</option></select></label>
+      <button type="submit" style="border:0;border-radius:10px;background:#0f766e;color:#fff;font-weight:900;padding:12px 16px;font:inherit;cursor:pointer;">Panga hatua</button>
+    </form>
+    <div data-sw-planner-result role="status" aria-live="polite" style="margin-top:14px;border:1px solid #bfdbfe;background:#eff6ff;border-radius:12px;padding:14px;color:#1e3a8a;line-height:1.6;">Chagua chaguo zako kisha bonyeza Panga hatua ili kuona muhtasari.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px;">
+      <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;background:#fbfdff;"><strong>Njia ya kukokotoa</strong><p style="margin:6px 0 0;color:#526071;line-height:1.55;">Tunapanga kwa bidhaa, route, Incoterms, freight, bima, ushuru, VAT, bandari, bank charges na hati kabla ya kukokotoa landed cost au quote.</p></div>
+      <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;background:#fbfdff;"><strong>Chanzo na ukaguzi</strong><p style="margin:6px 0 0;color:#526071;line-height:1.55;">Hakiki HS code, rates, AfCFTA eligibility, port charges, bank fees na shipping schedule na customs authority, clearing agent, bank au carrier. Sasisho: 2026.</p></div>
+      <div style="border:1px solid #fed7aa;border-radius:12px;padding:14px;background:#fff7ed;color:#7c2d12;"><strong>Kanusho</strong><p style="margin:6px 0 0;line-height:1.55;">Hii si ruling ya forodha, classification rasmi, quote ya shipping, ushauri wa benki au idhini ya kuingiza bidhaa.</p></div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root=document.querySelector('[data-sw-trade-planner]'); if(!root) return;
+  var form=root.querySelector('[data-sw-planner-form]'); var out=root.querySelector('[data-sw-planner-result]');
+  form.addEventListener('submit', function(event){
+    event.preventDefault();
+    var values=[].slice.call(root.querySelectorAll('[data-sw-planner-field]')).map(function(el){return el.options?el.options[el.selectedIndex].text:el.value;});
+    out.textContent='Muhtasari: '+values.join(' + ')+'. Hatua inayofuata: fungua zana iliyo karibu kwenye ukurasa huu, weka viwango vilivyothibitishwa, kisha hifadhi au nakili matokeo kwa mazungumzo na mtoa huduma husika.';
+  });
+})();
+</script>
 </main>
 <!-- sw-company-formation-compliance -->
 <section id="kampuni-na-compliance" style="padding:38px 20px;background:#f8fafc;border-top:1px solid #e5e7eb">

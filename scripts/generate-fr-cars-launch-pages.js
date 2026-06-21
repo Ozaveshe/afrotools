@@ -481,7 +481,7 @@ function frenchVehicleProfile(vehicle) {
 function layout({ title, description, canonical, enUrl, schema, body }) {
   const pageBody = normalizeFrenchText(body);
   return `<!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js">
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -524,6 +524,25 @@ function layout({ title, description, canonical, enUrl, schema, body }) {
     .fr-cars-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem}
     .fr-cars-button{display:inline-flex;align-items:center;justify-content:center;padding:.8rem 1rem;border-radius:7px;background:#0f766e;color:#fff;text-decoration:none;font-weight:800}
     .fr-cars-button.secondary{background:#fff;color:#0f766e;border:1px solid #99f6e4}
+
+    .fr-cars-tool{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:1rem;margin:1.25rem 0 2rem}
+    .fr-cars-form{background:#fff;border:1px solid #dbe5f0;border-radius:10px;padding:1rem;box-shadow:0 14px 36px rgba(15,23,42,.08)}
+    .fr-cars-form h2,.fr-cars-output h2{margin:.1rem 0 .4rem;color:#111827}
+    .fr-cars-form p,.fr-cars-output p{color:#4b5563;margin:.2rem 0 .85rem;line-height:1.6}
+    .fr-cars-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+    .fr-cars-field{display:grid;gap:.35rem;color:#334155;font-weight:800;font-size:.88rem}
+    .fr-cars-field input,.fr-cars-field select,.fr-cars-field textarea{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:.75rem;font:inherit;color:#111827;background:#fff}
+    .fr-cars-field textarea{min-height:108px;resize:vertical}
+    .fr-cars-output{background:#0f172a;color:#fff;border-radius:10px;padding:1rem;box-shadow:0 18px 44px rgba(15,23,42,.22)}
+    .fr-cars-output h2,.fr-cars-output p{color:#fff}
+    .fr-cars-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:.85rem 0}
+    .fr-cars-metric{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:.75rem}
+    .fr-cars-metric span{display:block;color:#cbd5e1;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em}
+    .fr-cars-metric strong{display:block;font-size:1.05rem;margin-top:.22rem}
+    .fr-cars-output textarea{width:100%;min-height:132px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:#111827;color:#e5e7eb;padding:.75rem;font:inherit;resize:vertical}
+    .fr-cars-source-list{display:grid;gap:.55rem;margin:0;padding-left:1.1rem}
+    .fr-cars-source-list a{color:#0f766e;font-weight:800}
+    @media(max-width:860px){.fr-cars-tool{grid-template-columns:1fr}.fr-cars-fields{grid-template-columns:1fr}.fr-cars-result-grid{grid-template-columns:1fr}}
     @media(max-width:720px){.fr-cars-hero{padding:3rem 0}.fr-cars-table{font-size:.92rem}}
   </style>
   <script type="application/ld+json">${escapeJson(schema)}</script>
@@ -534,6 +553,56 @@ function layout({ title, description, canonical, enUrl, schema, body }) {
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
+
+  <script>
+    (function () {
+      var form = document.getElementById('frCarsEstimator');
+      if (!form) return;
+      var market = document.getElementById('fr-car-market');
+      var model = document.getElementById('fr-car-model');
+      var budget = document.getElementById('fr-car-budget');
+      var fx = document.getElementById('fr-car-fx');
+      var logistics = document.getElementById('fr-car-logistics');
+      var localFees = document.getElementById('fr-car-local-fees');
+      var verdict = document.getElementById('frCarsVerdict');
+      var context = document.getElementById('frCarsContext');
+      var landed = document.getElementById('frCarsLanded');
+      var local = document.getElementById('frCarsLocal');
+      var gap = document.getElementById('frCarsGap');
+      var risk = document.getElementById('frCarsRisk');
+      var summary = document.getElementById('frCarsSummary');
+      function num(el){ return Math.max(0, Number(el.value) || 0); }
+      function selected(el){ return el.options[el.selectedIndex]; }
+      function fmt(value, currency){ return Math.round(value).toLocaleString('fr-FR') + ' ' + currency; }
+      function calculate(){
+        var m = selected(market);
+        var car = selected(model);
+        var currency = m.dataset.currency || '';
+        var baseUsd = Number(car.dataset.price) || 0;
+        var fxRate = num(fx);
+        var duty = Number(m.dataset.duty) || 0;
+        var factor = Number(m.dataset.factor) || 1;
+        var landedLocal = ((baseUsd + num(logistics)) * (1 + duty) * fxRate) + num(localFees);
+        var localLow = landedLocal * factor * 0.92;
+        var localHigh = landedLocal * factor * 1.08;
+        var budgetValue = num(budget);
+        var gapValue = budgetValue - landedLocal;
+        var ok = gapValue >= 0;
+        verdict.textContent = ok ? 'Budget plausible, marge a garder' : 'Budget court, hypothese a revoir';
+        context.textContent = selected(market).text + ' - ' + selected(model).text + '. Comparez ce repere avec un devis vendeur, douane et transitaire avant paiement.';
+        landed.textContent = fmt(landedLocal, currency);
+        local.textContent = fmt(localLow, currency) + ' - ' + fmt(localHigh, currency);
+        gap.textContent = (ok ? '+' : '-') + fmt(Math.abs(gapValue), currency);
+        risk.textContent = (car.dataset.risk || 'Moyen') + ' / revente ' + (car.dataset.resale || 'a verifier');
+        summary.value = 'Marche: ' + selected(market).text + '\nModele: ' + selected(model).text + '\nCout rendu estime: ' + landed.textContent + '\nFourchette locale: ' + local.textContent + '\nMarge budget: ' + gap.textContent + '\nNote: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
+      }
+      form.addEventListener('submit', function(event){ event.preventDefault(); calculate(); });
+      ['change','input'].forEach(function(evt){ [market, model, budget, fx, logistics, localFees].forEach(function(el){ el.addEventListener(evt, calculate); }); });
+      document.getElementById('frCarsExample').addEventListener('click', function(){ market.value='ci'; model.value='Toyota Corolla 2018'; budget.value='9500000'; fx.value='610'; logistics.value='2400'; localFees.value='450000'; calculate(); });
+      document.getElementById('frCarsCopy').addEventListener('click', function(){ calculate(); if (navigator.clipboard) navigator.clipboard.writeText(summary.value); });
+      calculate();
+    })();
+  </script>
 </body>
 </html>
 `;
@@ -628,6 +697,85 @@ function renderHub() {
     </section>
     <section class="fr-cars-shell fr-cars-band">
       <p class="fr-cars-note">Lancement prudent : ${COUNTRIES.length} marchés francophones ou très pertinents en français, ${MAKE_PAGES.length} pages de marque, ${MODEL_INDEX_PAGES.length} pages de modèle et ${MODEL_PAGES.length} pages année. Aucun lot massif n'est ajouté à la main.</p>
+
+      <section class="fr-cars-tool" aria-label="Estimateur voiture Afrique francophone" data-tool-verification-panel="fr-cars-estimator" data-tool-id="car-price-intelligence-fr">
+        <form class="fr-cars-form" id="frCarsEstimator">
+          <span class="fr-kicker">Estimateur 2026</span>
+          <h2>Comparer achat local et import</h2>
+          <p>Choisissez un marche, une voiture cible et vos hypotheses. Le resultat reste une estimation de planification, pas une cotation officielle.</p>
+          <div class="fr-cars-fields">
+            <label class="fr-cars-field">Marche
+              <select id="fr-car-market" name="market">
+                <option value="ci" data-currency="XOF" data-city="Abidjan" data-factor="1.12" data-duty="0.38">Cote d'Ivoire</option>
+                <option value="sn" data-currency="XOF" data-city="Dakar" data-factor="1.10" data-duty="0.36">Senegal</option>
+                <option value="cm" data-currency="XAF" data-city="Douala" data-factor="1.16" data-duty="0.42">Cameroun</option>
+                <option value="ma" data-currency="MAD" data-city="Casablanca" data-factor="1.08" data-duty="0.34">Maroc</option>
+                <option value="ng" data-currency="NGN" data-city="Lagos" data-factor="1.18" data-duty="0.45">Nigeria</option>
+                <option value="ke" data-currency="KES" data-city="Nairobi" data-factor="1.14" data-duty="0.40">Kenya</option>
+                <option value="gh" data-currency="GHS" data-city="Accra" data-factor="1.13" data-duty="0.38">Ghana</option>
+              </select>
+            </label>
+            <label class="fr-cars-field">Modele
+              <select id="fr-car-model" name="model">
+                <option value="Toyota Corolla 2018" data-price="9800" data-risk="Faible" data-resale="Fort">Toyota Corolla 2018</option>
+                <option value="Toyota Prado 2016" data-price="23500" data-risk="Moyen" data-resale="Fort">Toyota Prado 2016</option>
+                <option value="Toyota Hilux 2015" data-price="18500" data-risk="Moyen" data-resale="Fort">Toyota Hilux 2015</option>
+                <option value="Honda CR-V 2016" data-price="14500" data-risk="Moyen" data-resale="Bon">Honda CR-V 2016</option>
+                <option value="Hyundai Elantra 2018" data-price="9200" data-risk="Faible" data-resale="Bon">Hyundai Elantra 2018</option>
+              </select>
+            </label>
+            <label class="fr-cars-field">Budget local
+              <input id="fr-car-budget" name="budget" type="number" inputmode="decimal" min="0" step="1000" value="9500000">
+            </label>
+            <label class="fr-cars-field">Taux FX local pour 1 USD
+              <input id="fr-car-fx" name="fx" type="number" inputmode="decimal" min="1" step="1" value="610">
+            </label>
+            <label class="fr-cars-field">Fret, assurance et port (USD)
+              <input id="fr-car-logistics" name="logistics" type="number" inputmode="decimal" min="0" step="100" value="2400">
+            </label>
+            <label class="fr-cars-field">Frais agent et immatriculation
+              <input id="fr-car-local-fees" name="localFees" type="number" inputmode="decimal" min="0" step="1000" value="450000">
+            </label>
+          </div>
+          <div class="fr-cars-actions">
+            <button class="fr-cars-button" type="submit">Comparer</button>
+            <button class="fr-cars-button secondary" type="button" id="frCarsExample">Exemple</button>
+            <button class="fr-cars-button secondary" type="button" id="frCarsCopy">Copier le resume</button>
+          </div>
+        </form>
+        <aside class="fr-cars-output" aria-live="polite">
+          <span class="fr-kicker">Resultat</span>
+          <h2 id="frCarsVerdict">Budget a verifier</h2>
+          <p id="frCarsContext">Comparez le cout rendu, la marge de securite et le risque avant de parler a un vendeur ou transitaire.</p>
+          <div class="fr-cars-result-grid">
+            <div class="fr-cars-metric"><span>Cout rendu estime</span><strong id="frCarsLanded">-</strong></div>
+            <div class="fr-cars-metric"><span>Fourchette achat local</span><strong id="frCarsLocal">-</strong></div>
+            <div class="fr-cars-metric"><span>Marge budget</span><strong id="frCarsGap">-</strong></div>
+            <div class="fr-cars-metric"><span>Risque / revente</span><strong id="frCarsRisk">-</strong></div>
+          </div>
+          <label class="fr-cars-field">Resume acheteur
+            <textarea id="frCarsSummary" readonly>Remplissez le formulaire pour generer un resume.</textarea>
+          </label>
+        </aside>
+      </section>
+      <div class="fr-cars-grid">
+        <article class="fr-cars-card">
+          <h2>Methode</h2>
+          <p>Nous calculons un cout rendu indicatif avec prix source, fret, assurance, frais portuaires, droit/taxe estime et frais locaux. La fourchette locale applique une prime de marche pour comparer import et achat sur place.</p>
+        </article>
+        <article class="fr-cars-card">
+          <h2>Limites</h2>
+          <p>Avertissement : ce n'est pas un devis officiel, une valuation douaniere, un conseil financier ou une garantie de disponibilite. Confirmez les droits, l'etat du vehicule, les restrictions d'age et les frais avec l'autorite ou un agent agree.</p>
+        </article>
+        <article class="fr-cars-card">
+          <h2>Sources et fraicheur</h2>
+          <ul class="fr-cars-source-list">
+            <li><a href="https://customs.gov.ng/?page_id=3161" rel="nofollow noopener" target="_blank">Nigeria Customs Service</a> - reference officielle, verification repo 2026-04-10.</li>
+            <li><a href="https://www.kra.go.ke/individual/importing/learn-about-importation/procedures-for-motor-vehicle" rel="nofollow noopener" target="_blank">Kenya Revenue Authority</a> - procedure officielle, verification repo 2026-04-10.</li>
+            <li><a href="https://gra.gov.gh/customs/vehicle-importation/" rel="nofollow noopener" target="_blank">Ghana Revenue Authority</a> - guide officiel, verification repo 2026-04-10.</li>
+          </ul>
+        </article>
+      </div>
       <div class="fr-cars-grid">${countryCards}</div>
       <div class="fr-cars-grid">
         <article class="fr-cars-card">
@@ -830,10 +978,9 @@ function renderModelIndexPage(page) {
       inLanguage: "fr",
       description,
       about: {
-        "@type": "Product",
+        "@type": "Thing",
         name: vehicleLabel,
-        brand: { "@type": "Brand", name: ctx.vehicle.make },
-        model: ctx.vehicle.model
+        description: `Repere de budget AfroTools pour ${vehicleLabel} ${place}.`
       }
     },
     breadcrumb([
@@ -895,11 +1042,10 @@ function renderModelPage(page) {
       inLanguage: "fr",
       description,
       about: {
-        "@type": "Product",
+        "@type": "Thing",
         name: vehicleName,
-        brand: { "@type": "Brand", name: ctx.vehicle.make },
-        model: ctx.vehicle.model,
-        vehicleModelDate: String(ctx.vehicle.year)
+        description: `Estimation AfroTools pour ${vehicleName} ${place}, sans annonce vendeur ni offre commerciale.`,
+        identifier: `${ctx.vehicle.makeSlug}-${ctx.vehicle.modelSlug}-${ctx.vehicle.year}`
       }
     },
     breadcrumb([

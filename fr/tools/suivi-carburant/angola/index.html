@@ -84,6 +84,7 @@
   .fuel-faq summary { cursor: pointer; padding: 16px 18px; font-weight: 900; }
   .fuel-faq details p { padding: 0 18px 18px; margin: 0; }
   .fuel-note { padding: 16px 18px; border-radius: 8px; background: #eef6ef; color: #415247; border: 1px solid rgba(35,92,57,.12); }
+  .fuel-planner{background:#fff;border:1px solid rgba(20,32,24,.1);border-radius:8px;box-shadow:0 18px 40px rgba(20,32,24,.08);padding:20px}.fuel-planner-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.fuel-planner label{display:grid;gap:6px;color:#183124;font-size:.9rem;font-weight:850}.fuel-planner input,.fuel-planner select{border:1px solid rgba(20,32,24,.18);border-radius:8px;color:#142018;font:inherit;min-height:42px;padding:9px 11px;width:100%}.fuel-planner-output{display:block;margin-top:14px;border:1px solid rgba(35,92,57,.18);border-radius:8px;background:#eef6ef;color:#183124;font-weight:850;line-height:1.55;padding:12px}.fuel-planner .fuel-note a{color:#235c39;font-weight:900}.fuel-source-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.fuel-source-row a{border:1px solid rgba(35,92,57,.18);border-radius:999px;color:#235c39;font-weight:850;padding:8px 11px;text-decoration:none}@media (max-width: 760px){.fuel-planner-grid{grid-template-columns:1fr}}
   @media (max-width: 760px) {
     .fuel-country-shell { width: min(100% - 24px, 1120px); }
     .fuel-country-hero { padding-top: 36px; }
@@ -168,7 +169,19 @@ window.addEventListener('load', function() {
   </div>
 </header>
 <main class="fuel-country-shell fuel-main">
-  <section class="fuel-section" aria-labelledby="generator-estimate">
+  <section class="fuel-section fuel-planner" aria-labelledby="fuel-planner-title" data-fr-fuel-planner data-currency="AOA">
+    <h2 id="fuel-planner-title">Planifier un budget carburant en Angola</h2>
+    <p>Transformez ce prix instantane en estimation mensuelle simple pour transport, generateur, livraison ou suivi de depenses.</p>
+    <div class="fuel-planner-grid">
+      <label>Type de carburant<select name="fuel_type"><option data-price="300" value="petrol">Essence</option><option data-price="235" value="diesel">Diesel</option><option data-price="400" value="lpg">GPL</option></select></label>
+      <label>Litres par jour<input name="litres_per_day" type="number" min="0" step="0.1" value="10" inputmode="decimal"></label>
+      <label>Jours par mois<input name="days_per_month" type="number" min="1" max="31" step="1" value="26" inputmode="numeric"></label>
+    </div>
+    <output class="fuel-planner-output" data-fuel-planner-output aria-live="polite">Entrez une consommation pour obtenir une estimation.</output>
+    <div class="fuel-note" style="margin-top:14px"><strong>Methode et sources:</strong> estimation = litres par jour x jours par mois x prix instantane AfroFuel. Source visible: <a href="/data/fuel/latest.json">data/fuel/latest.json</a>, derniere ligne affichee Mar 1, 2026. Avertissement: prix de pompe, depot, ville et fournisseur peuvent varier; verifiez localement avant achat, devis ou decision financiere.</div>
+    <div class="fuel-source-row"><a href="/fr/tools/suivi-carburant/#fuel-compare">Comparer les pays</a><a href="/fr/tools/suivi-carburant/#generator-cost">Calculateur generateur</a></div>
+  </section>
+<section class="fuel-section" aria-labelledby="generator-estimate">
     <h2 id="generator-estimate">Generator cost estimate in Angola</h2>
     <p>A 5 KVA petrol generator running 8 hours per day for 26 days per month uses about 312 litres monthly in this simple planning model.</p>
     <div class="fuel-panels">
@@ -249,5 +262,8 @@ window.addEventListener('load', function() {
 </script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script data-fr-fuel-planner-script>
+(function(){document.querySelectorAll('[data-fr-fuel-planner]').forEach(function(panel){var currency=panel.getAttribute('data-currency')||'';var output=panel.querySelector('[data-fuel-planner-output]');var type=panel.querySelector('[name="fuel_type"]');var litres=panel.querySelector('[name="litres_per_day"]');var days=panel.querySelector('[name="days_per_month"]');function n(el,fallback){var value=el&&el.value?Number(String(el.value).replace(',', '.')):fallback;return Number.isFinite(value)&&value>0?value:fallback;}function price(){var option=type&&type.options[type.selectedIndex];return option?Number(option.getAttribute('data-price')||0):0;}function fuelLabel(){var option=type&&type.options[type.selectedIndex];return option?option.textContent:'carburant';}function fmt(value){try{return new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(value);}catch(err){return Math.round(value).toString();}}function render(){var daily=n(litres,10);var month=n(days,26);var p=price();if(!output||!p){return;}var total=daily*month*p;output.textContent='Estimation locale: '+fmt(total)+' '+currency+' par mois pour '+daily+' litres/jour de '+fuelLabel()+' pendant '+month+' jours. Verifiez le prix local avant achat ou devis.';}panel.addEventListener('input',render);panel.addEventListener('change',render);render();});})();
+</script>
 </body>
 </html>

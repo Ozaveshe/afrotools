@@ -65,6 +65,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--col
 <link rel="alternate" hreflang="en" href="https://afrotools.com/document-pdf/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/document-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/document-pdf/" />
+<style data-fr-p1-planner-style>
+.fr-p1-planner{margin:22px auto;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px;max-width:1040px}.fr-p1-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.fr-p1-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-p1-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-p1-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.fr-p1-grid input,.fr-p1-grid select,.fr-p1-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-p1-grid textarea{min-height:84px;resize:vertical}.fr-p1-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.fr-p1-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.fr-p1-buttons a,.fr-p1-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.fr-p1-buttons a{background:#0057b8;color:#fff}.fr-p1-buttons button{background:#0f172a;color:#fff}.fr-p1-status{font-size:.84rem;color:#64748b;align-self:center}.fr-p1-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.fr-p1-buttons a,.fr-p1-buttons button{width:100%}}
+</style>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -79,6 +82,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--col
 <div><div class="hs-n" id="s-pipe">--</div><div class="hs-l">En préparation</div></div>
 </div>
 </div></section>
+<section class="fr-p1-planner" data-fr-p1-planner data-tool-name="Documents et PDF">
+<h2>Preparer votre action</h2>
+<p>Ajoutez le contexte utile, puis ouvrez l outil complet avec un brief clair. Le resume reste dans votre navigateur.</p>
+<div class="fr-p1-grid">
+<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: Senegal, client, document, projet"></label>
+<label>Action<select name="task"><option value="preparer">Preparer un document</option><option value="exporter">Preparer export</option><option value="verifier">Verifier confidentialite</option></select></label>
+<label>Donnees ou demande<textarea name="details" placeholder="Montant, date, fichier, besoin, prix ou contrainte"></textarea></label>
+<label>Fichier ou document<input type="file" name="file" accept="application/pdf,.pdf,.doc,.docx,.txt,image/*"></label>
+</div>
+<output class="fr-p1-output" data-p1-output>Ajoutez un contexte, une action ou des donnees pour preparer le brief.</output>
+<div class="fr-p1-buttons"><a href="/document-pdf/">Ouvrir l outil complet</a><button type="button" data-p1-copy>Copier le brief</button><span class="fr-p1-status" data-p1-status aria-live="polite"></span></div>
+<div class="fr-p1-method"><strong>2026:</strong> Confidentialite: gardez les fichiers sensibles dans votre navigateur et verifiez la page complete avant tout envoi, export ou partage.</div>
+</section>
+<section class="fr-p1-planner" data-tool-verification-panel>
+<h2>Controle qualite avant export</h2>
+<p>Les outils PDF doivent rester locaux par defaut: verifier le fichier, choisir le bon flux, puis telecharger seulement apres avoir relu le resultat. Les recettes, briefs et exports de workflow doivent rester des metadonnees, jamais le contenu brut du document.</p>
+<div class="fr-p1-method"><strong>Methode:</strong> commencez par compresser, fusionner, convertir, signer ou rediger selon le besoin; gardez une copie source; controlez les pages, la confidentialite, la lisibilite et le format avant partage.</div>
+</section>
 <section class="sec"><div class="wrap">
 <div class="ey">PDF en français</div>
 <h2 class="st">Outils PDF déjà prêts</h2>
@@ -128,6 +149,9 @@ render(live,pipe,'');
 var si=document.getElementById('tool-search');if(si){si.addEventListener('input',function(){var q=this.value.trim().toLowerCase();if(!q){render(live,pipe,'');return;}function m(t){return(t.name||'').toLowerCase().includes(q)||(t.desc||'').toLowerCase().includes(q)||(t.id||'').toLowerCase().includes(q);}render(live.filter(m),pipe.filter(m),q);});}
 }
 if(typeof onRegistryReady==='function'){onRegistryReady(_initDocPdfFr);}else{document.addEventListener('DOMContentLoaded',function(){if(typeof AFRO_TOOLS!=='undefined')_initDocPdfFr();else document.addEventListener('afrotools:registry-ready',_initDocPdfFr);});}
+</script>
+<script data-fr-p1-planner-script>
+(function(){document.querySelectorAll('[data-fr-p1-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'AfroTools';var output=panel.querySelector('[data-p1-output]');var status=panel.querySelector('[data-p1-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var file=panel.querySelector('[name="file"]');var fileText=file&&file.files&&file.files.length?file.files.length+' file':'';var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Donnees: '+details);if(fileText)parts.push(fileText);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des donnees pour preparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-p1-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
 </script>
 </body>
 </html>

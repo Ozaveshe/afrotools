@@ -325,6 +325,15 @@
 </section>
 
 <!-- SEO Content -->
+<section data-tool-verification-panel data-sw-study-export style="max-width:1120px;margin:24px auto;padding:0 1.25rem;">
+<div style="background:#fff;border:1px solid #dbeafe;border-radius:16px;padding:18px;box-shadow:0 12px 30px rgba(15,23,42,.06);">
+  <h2 style="margin:0 0 8px;color:#0f172a;">Mpango wa kusoma na export</h2>
+  <p data-methodology style="color:#475569;line-height:1.65;margin:0 0 12px;">Tumia kadi kwa kurudia kwa vipindi: jibu, weka alama ya ugumu, rudi kwenye mada zilizo ngumu, kisha pakua mpango wa kipindi chako.</p>
+  <p data-disclaimer style="color:#475569;line-height:1.65;margin:0 0 12px;"><strong>Kanusho:</strong> Hii ni zana ya kujifunza, si dhamana ya kufaulu mtihani. Linganisha na syllabus, past papers na mwalimu wako.</p>
+  <button type="button" id="studyPlanDownload" style="border:0;border-radius:10px;background:#1d4ed8;color:#fff;font-weight:900;padding:11px 15px;cursor:pointer">Pakua mpango wa kusoma</button>
+  <span id="studyPlanStatus" aria-live="polite" style="font-weight:800;color:#475569"></span>
+</div>
+</section>
 <section class="sw-seo">
   <h2>Kadi za Kusoma — Zana Bora ya Kujifunzia kwa Wanafunzi wa Afrika</h2>
   <p>Kizalishaji cha kadi za kusoma cha AfroTools kimeundwa hasa kwa wanafunzi wa Afrika wanaojitayarisha kwa mitihani ya JAMB, WAEC, KCSE, SA Matric, na masomo ya chuo kikuu. Zana hii inakusaidia kufanya muda wako wa masomo kuwa na ufanisi zaidi kupitia mbinu za kisayansi za kujifunza.</p>
@@ -371,5 +380,11 @@
 <script src="/tools/flashcard-maker/flashcard-maker.js?v=c60a8f14" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-</body>
+<script>
+(function(){
+  function swStudyPlan(){ return 'Mpango wa kusoma AfroTools\n1. Chagua deck au tengeneza kadi 10-20.\n2. Soma kwa dakika 25.\n3. Rudia kadi ulizokosea mara mbili.\n4. Linganisha na syllabus au past papers.\n\nKanusho: zana ya kujifunza, si dhamana ya matokeo ya mtihani.'; }
+  var btn=document.getElementById('studyPlanDownload'), status=document.getElementById('studyPlanStatus');
+  if(btn) btn.addEventListener('click', function(){ var blob=new Blob([swStudyPlan()],{type:'text/plain;charset=utf-8'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='mpango-wa-kusoma-afrotools.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); if(status) status.textContent='Mpango umepakuliwa.'; });
+})();
+</script></body>
 </html>

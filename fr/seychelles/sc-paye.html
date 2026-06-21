@@ -57,9 +57,31 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/seychelles/sc-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/seychelles/sc-paye" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/seychelles/sc-paye" />
+<style data-at-trust-panel-style>
+.at-trust-panel{max-width:960px;margin:22px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:12px;background:#f8fbff;color:#334155;box-shadow:0 10px 24px rgba(15,23,42,.06)}.at-trust-panel h2{margin:0 0 8px;color:#0f172a;font-size:1.04rem}.at-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.at-trust-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;line-height:1.48}.at-trust-grid strong{display:block;color:#0f172a;margin-bottom:3px}.at-trust-panel p{margin:10px 0 0;line-height:1.58;color:#475569}
+</style>
+<style data-fr-country-brief-style>
+.fr-country-brief{max-width:960px;margin:22px auto;padding:18px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 12px 28px rgba(15,23,42,.07)}.fr-country-brief h1,.fr-country-brief h2{margin:0 0 8px;color:#0f172a;font-size:clamp(1.18rem,2vw,1.5rem)}.fr-country-brief p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-country-brief form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-country-brief label{display:grid;gap:6px;font-size:.84rem;font-weight:800;color:#334155}.fr-country-brief input,.fr-country-brief select{min-height:44px;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#f8fafc;color:#0f172a}.fr-country-brief output{display:block;margin-top:12px;border:1px solid #e2e8f0;border-left:4px solid #2563eb;border-radius:0 10px 10px 0;background:#f8fafc;padding:12px;color:#334155;line-height:1.55;white-space:pre-line}.fr-country-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.fr-country-actions button,.fr-country-actions a{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.fr-country-actions button{background:#0f172a;color:#fff;cursor:pointer}.fr-country-actions a{background:#2563eb;color:#fff}@media(max-width:640px){.fr-country-actions button,.fr-country-actions a{width:100%}}
+</style>
 </head>
 <body class="tool-page">
 <afro-navbar theme="dark"></afro-navbar>
+<section class="fr-country-brief" data-fr-country-brief data-tool-verification-panel data-tool-title="Calculateur PAYE Seychelles 2026 — SRC">
+<h2>Calculateur PAYE Seychelles 2026 — SRC</h2>
+<p>Preparez votre calcul en francais avant d ouvrir le moteur complet. Ce brief reste local dans le navigateur et clarifie les donnees a verifier.</p>
+<form>
+<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: entreprise, client, facture"></label>
+<label>Montant ou salaire<input name="amount" inputmode="decimal" autocomplete="off" placeholder="Ex: 250000"></label>
+<label>Besoin<select name="need"><option value="calculer le net">Calculer le net</option><option value="verifier une facture">Verifier une facture</option><option value="preparer un brief">Preparer un brief</option></select></label>
+</form>
+<output aria-live="polite"></output>
+<div class="fr-country-actions"><button type="button" data-fr-country-copy>Copier le brief</button><a href="/seychelles/sc-paye">Ouvrir le calculateur complet</a></div>
+</section>
+<section class="at-trust-panel" data-tool-verification-panel aria-label="Methodologie, sources et limites">
+<h2>Methodologie, sources et limites</h2>
+<div class="at-trust-grid"><div><strong>Methodologie</strong>La page aide a preparer un calcul, une comparaison ou une verification avec vos donnees avant de passer a l outil principal.</div><div><strong>Sources</strong>Pour tout taux, bareme, examen, assurance, sante, education ou regle pays, confirmez la source officielle ou le fournisseur avant decision.</div><div><strong>Limites 2026</strong>Ce contenu est non officiel. Les hypotheses sont a valider et ne remplacent pas un avis fiscal, juridique, medical, educatif ou professionnel.</div></div>
+<p>Derniere verification editoriale: 2026. Utilisez le resultat comme repere de travail, puis conservez la source, la date et le contexte de votre verification.</p>
+</section>
 <section class="tool-hero"><div class="container">
 <div>
 <nav class="breadcrumb"><a href="/fr/">AfroTools</a><span>&rsaquo;</span><a href="/fr/seychelles/">Seychelles</a><span>&rsaquo;</span>PAYE</nav>
@@ -129,5 +151,8 @@
 </section>
 <!-- TOOL_VERIFICATION_PANEL_END -->
 <afro-footer></afro-footer>
+<script data-fr-country-brief-script>
+(function(){document.querySelectorAll('[data-fr-country-brief]').forEach(function(panel){var form=panel.querySelector('form');var output=panel.querySelector('output');var title=panel.getAttribute('data-tool-title')||'Calculateur';function val(name){var el=form&&form.elements[name];return el&&el.value?el.value.trim():'';}function summary(){return [title,'Pays/contexte: '+(val('scope')||'a preciser'),'Montant ou salaire: '+(val('amount')||'a renseigner'),'Besoin: '+(val('need')||'verification'),'Limite: estimation non officielle; verifier source, date et regle pays avant usage.'].join('\n');}function render(){if(output)output.textContent=summary();}if(form){form.addEventListener('input',render);form.addEventListener('change',render);form.addEventListener('submit',function(e){e.preventDefault();render();});}var copy=panel.querySelector('[data-fr-country-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text);render();});render();});})();
+</script>
 </body>
 </html>

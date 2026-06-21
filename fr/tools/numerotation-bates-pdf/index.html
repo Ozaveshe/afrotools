@@ -66,6 +66,8 @@
 .fr-seo details p{margin-top:8px}
 .fr-crumb{max-width:1200px;margin:0 auto;padding:10px 24px 0;font-size:12px;color:#9ca3af}
 .fr-crumb a{color:#9ca3af;text-decoration:none}.fr-crumb a:hover{color:var(--color-primary)}.fr-crumb span{margin:0 5px}
+.fr-prep-panel{max-width:940px;margin:20px auto 0;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
+.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-family:var(--font-display)}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input,.fr-prep-fields select{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px;white-space:pre-line}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}.fr-privacy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;margin-top:12px}.fr-privacy-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;color:#334155;line-height:1.45}.fr-privacy-grid strong{display:block;color:#0f172a;margin-bottom:3px}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-bates.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-bates/" />
@@ -79,7 +81,45 @@
 <h1><em>Numérotation Bates PDF</em></h1>
 <p>Ajoutez une numérotation Bates professionnelle à vos documents juridiques PDF.</p>
 </div>
+<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Preparation locale">
+  <h2>Pr?parer votre PDF localement</h2>
+  <p>Ajoutez votre fichier et le r?sultat attendu avant d?ouvrir l?outil complet. Les noms de fichiers servent seulement au brief local; aucun PDF n?est envoy? par ce panneau.</p>
+  <div class="fr-prep-fields">
+    <label>Pays ou contexte<input name="context" autocomplete="off" placeholder="Ex: Senegal, client, projet"></label>
+    <label>Fichier ou donnees<input name="data" autocomplete="off" placeholder="Ex: contrat PDF, 250 lignes"></label>
+    <label>Resultat voulu<input name="goal" autocomplete="off" placeholder="Ex: signer, compresser, verifier"></label>
+    <label>PDF local<input name="pdfFiles" type="file" accept="application/pdf" multiple data-fr-pdf-files></label>
+  </div>
+  <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, un fichier ou un resultat voulu pour preparer votre resume.</output>
+  <div class="fr-privacy-grid"><div><strong>Fichier local</strong>Le panneau lit seulement le nom du PDF pour pr?parer votre checklist.</div><div><strong>T?l?chargement</strong>L?outil source g?n?re un nouveau PDF ? r?cup?rer sur votre appareil.</div><div><strong>Confidentialit?</strong>Ne t?l?versez pas de document sensible sans v?rifier l?outil ouvert.</div></div>
+  <div class="fr-prep-actions">
+    <a href="/tools/pdf-bates/">Ouvrir l'outil source</a>
+    <button type="button" data-fr-prep-copy>Copier le resume</button>
+    <button type="button" data-fr-prep-download>T?l?charger TXT</button>
+    <span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span>
+  </div>
+</section>
 <iframe src="/tools/pdf-bates/" class="fr-tool-frame" title="Numérotation Bates PDF" loading="lazy" allow="clipboard-write"></iframe>
+<script>
+(function(){
+  var panel=document.querySelector('[data-fr-prep]');
+  if(!panel)return;
+  var title="Numérotation Bates PDF";
+  var output=panel.querySelector('[data-fr-prep-output]');
+  var status=panel.querySelector('[data-fr-prep-status]');
+  function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}
+  function files(){var el=panel.querySelector('[data-fr-pdf-files]');return el&&el.files&&el.files.length?Array.from(el.files).map(function(f){return f.name;}).join(', '):'aucun PDF selectionne';}
+  function summary(){return [title,'Contexte: '+(value('context')||'a preciser'),'Fichier/donnees: '+(value('data')||'a preciser'),'PDF local: '+files(),'Resultat voulu: '+(value('goal')||'a preciser'),'Checklist: verifier pages, qualite du rendu, nom du fichier de sortie et conservation locale avant partage.'].join('\n');}
+  function render(){output.textContent=summary();if(status)status.textContent='';}
+  panel.addEventListener('input',render);
+  panel.addEventListener('change',render);
+  render();
+  var copy=panel.querySelector('[data-fr-prep-copy]');
+  if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
+  var download=panel.querySelector('[data-fr-prep-download]');
+  if(download)download.addEventListener('click',function(){var blob=new Blob([summary()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download="checklist-numerotation-bates-pdf.txt";a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT telecharge.';});
+})();
+</script>
 <section class="fr-seo">
 <h2>Numérotation Bates PDF</h2>
 <p>Ajoutez des identifiants séquentiels à chaque page de vos documents juridiques pour le référencement légal.</p>

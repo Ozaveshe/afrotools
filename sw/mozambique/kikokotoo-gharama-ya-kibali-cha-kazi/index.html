@@ -28,6 +28,9 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91"><link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><link rel="stylesheet" href="/assets/css/hr-payroll.css?v=91474939">
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+<style data-sw-work-permit-planner-style>
+.sw-work-permit-planner{border:1px solid #bfdbfe;border-radius:14px;background:#fff;box-shadow:0 12px 28px rgba(15,23,42,.06);padding:18px;margin:0 0 18px}.sw-work-permit-planner h2{margin:0 0 8px;font-size:1.08rem;color:#0f172a}.sw-work-permit-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.sw-permit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}.sw-permit-grid label{display:grid;gap:6px;font-weight:800;color:#334155;font-size:.88rem}.sw-permit-grid input,.sw-permit-grid select{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px 11px;font:inherit;background:#fff}.sw-work-permit-planner button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:900;padding:11px 15px;cursor:pointer}.sw-permit-output{display:block;margin-top:12px;border:1px solid #dbeafe;border-radius:12px;background:#eff6ff;color:#1e3a8a;padding:12px;line-height:1.55;min-height:48px}
+</style>
 </head>
 <body>
 <afro-navbar theme="dark" active="hr-payroll"></afro-navbar>
@@ -37,6 +40,12 @@
 <p class="hr-tool-hero-sub">Jua ada, muda wa uchakataji, nyaraka, na mamlaka husika ya kibali cha kazi Msumbiji. Ukurasa huu unalenga waajiri, HR, wasimamizi wa uajiri, na wafanyakazi wa kigeni wanaotaka kupanga uajiri na uzingatiaji mapema.</p>
 </div></section>
 <main class="hr-main">
+<section class="sw-work-permit-planner" data-work-permit-planner aria-label="Mpangaji wa gharama ya kibali cha kazi">
+<h2>Panga bajeti ya kibali cha kazi</h2>
+<p>Weka ada uliyoithibitisha, idadi ya waombaji, muda wa uchakataji na akiba ya gharama za ziada. Hii ni bajeti ya maandalizi, si kibali au ada rasmi.</p>
+<div class="sw-permit-grid"><label>Ada kwa mwombaji<input data-permit-fee type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex. 500"></label><label>Waombaji<input data-permit-count type="number" inputmode="numeric" min="1" step="1" value="1"></label><label>Akiba ya gharama (%)<input data-permit-buffer type="number" inputmode="decimal" min="0" step="1" value="10"></label><label>Wiki za uchakataji<input data-permit-weeks type="number" inputmode="numeric" min="0" step="1" placeholder="Ex. 8"></label><label>Action<button type="button" data-permit-run>Kokotoa bajeti</button></label></div>
+<output class="sw-permit-output" data-permit-output>Weka ada na idadi ya waombaji ili kuona bajeti ya maandalizi.</output>
+</section>
 <div class="hr-card"><div class="hr-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>&#x1F4BC;</span><h2>Kikokotoo cha Gharama ya Kibali cha Kazi</h2><span class="hr-card-toggle">&#x25BE;</span></div>
 <div class="hr-card-body">
 <p style="font-size:.98rem;color:#475569;line-height:1.75">Tumia muhtasari huu kuelewa ada ya kibali, mamlaka ya kuwasilisha maombi, muda unaoweza kuchukua, na nyaraka zinazohitajika kabla ya kuajiri au kuhamisha mfanyakazi wa kigeni kwenda Msumbiji.</p>
@@ -50,6 +59,16 @@
 <p><strong>Kumbuka:</strong> Makadirio haya yanategemea data iliyopo kwenye AfroTools na yanaweza kutofautiana na tafsiri ya mamlaka, mkataba, CBA, au ushauri wa kitaalamu. Hakiki na vyanzo rasmi au mhasibu, wakili, mshauri wa HR au mtaalamu aliyehitimu kabla ya kufanya uamuzi wa mwisho.</p>
 </section>
 </main>
+
+<section class="sw-official-source-strip" data-tool-verification-panel style="max-width:1120px;margin:24px auto;padding:0 20px">
+  <!-- sw-work-permit-official-source:start -->
+  <div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:16px 18px;line-height:1.65;">
+    <strong>Msumbiji: chanzo rasmi cha kuhakiki.</strong>
+    <p style="margin:.35rem 0;color:#1e3a8a;">Chanzo hiki ni ukurasa rasmi wa embassy kwa visa/immigration fees; kwa work authorization au DIRE, hakiki pia na mamlaka ya ndani au mshauri wa uhamiaji Msumbiji. Hakiki ada, fomu, muda na eligibility moja kwa moja kwenye mamlaka kabla ya kulipa au kutoa ofa.</p>
+    <ul style="margin:.5rem 0 0 1.25rem;color:#1e3a8a;"><li><a href="https://usa.embamoc.gov.mz/?page_id=99" target="_blank" rel="nofollow noopener">Embassy of the Republic of Mozambique - Visa information</a></li></ul>
+  </div>
+  <!-- sw-work-permit-official-source:end -->
+</section>
 <afro-footer></afro-footer>
 <script src="/data/hr/work-permit-data.js?v=ef1b2ade"></script>
 <script>
@@ -78,6 +97,9 @@ if(d.requirements&&d.requirements.length){h+='<div style="margin-top:1rem"><stro
 h+='<div class="hr-info" style="margin-top:1rem">'+COUNTRY_NOTE+'</div>';
 document.getElementById('results').innerHTML=h;document.getElementById('results').classList.add('on');
 }();
+</script>
+<script data-sw-work-permit-planner-script>
+(function(){document.querySelectorAll('[data-work-permit-planner]').forEach(function(card){var out=card.querySelector('[data-permit-output]');function val(sel){return parseFloat(card.querySelector(sel).value)||0;}function calc(){var fee=val('[data-permit-fee]');var count=Math.max(1,val('[data-permit-count]')||1);var buffer=val('[data-permit-buffer]')/100;var weeks=val('[data-permit-weeks]');var base=fee*count;var total=base*(1+buffer);out.textContent='Bajeti ya maandalizi: '+total.toLocaleString('en-US',{maximumFractionDigits:2})+' | Ada msingi: '+base.toLocaleString('en-US',{maximumFractionDigits:2})+' | Waombaji: '+count+' | Muda wa kupanga: '+(weeks||'hakiki')+' wiki. Thibitisha ada na mamlaka kabla ya kulipa.';}card.addEventListener('input',calc);var btn=card.querySelector('[data-permit-run]');if(btn)btn.addEventListener('click',calc);});})();
 </script>
 </body>
 </html>

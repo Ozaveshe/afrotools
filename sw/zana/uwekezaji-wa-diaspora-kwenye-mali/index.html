@@ -81,6 +81,13 @@
 <h2>Jinsi ya kutumia matokeo</h2>
 <p>Angalia namba kama nafasi ya kuuliza maswali bora: gharama gani zimeachwa nje, sheria gani zinatumika, ni nani anayethibitisha hati, na kiwango gani cha riba, kodi au ada kinatoka kwenye chanzo rasmi.</p>
 </div>
+<div class="swp-card" data-tool-verification-panel>
+<div class="swp-eyebrow">Ukaguzi</div>
+<h2>Mbinu na chanzo cha kuthibitisha</h2>
+<p>Mbinu: tunatumia bajeti ya diaspora, kiwango cha FX unachoingiza, bei ya mali, pango, mabadiliko ya FX na ada ya usimamizi. Matokeo ni makadirio tu, si live FX, valuation rasmi, ushauri wa uwekezaji, title check au idhini ya kununua.</p>
+<div class="swp-warning"><strong>Chanzo cha mwisho:</strong> benki au money-transfer rate, wakili, title search, valuer, agent, property manager, kodi, insurance na rekodi za pango. Tarehe ya ukaguzi: 2026-06-19.</div>
+<button class="swp-button" type="button" onclick="swpCopyProof('Thibitisha FX rate, transfer fee, title search, wakili, valuation, agent mandate, property manager, tax, insurance na pango la soko kabla ya kutuma pesa.')">Nakili checklist</button>
+</div>
 <div class="swp-card swp-faq">
 <div class="swp-eyebrow">Maswali</div>
 <h2>Maswali yanayoulizwa mara kwa mara</h2>
@@ -107,6 +114,7 @@ function swpMoney(x){var sym=SWP_SYMBOLS[swpVal('currency')]||'';return sym+Math
 function swpPct(x){return (isFinite(x)?x:0).toFixed(1)+'%'}
 function swpPayment(principal,annualRate,years){var m=annualRate/100/12,n=years*12;if(!n)return 0;return m>0?principal*(m*Math.pow(1+m,n))/(Math.pow(1+m,n)-1):principal/n}
 function swpSet(primary,sub,metrics,rows,note){document.getElementById('swp-primary').textContent=primary;document.getElementById('swp-sub').textContent=sub;document.getElementById('swp-metrics').innerHTML=metrics.map(function(m){return '<div class="swp-metric"><strong>'+m[1]+'</strong><span>'+m[0]+'</span></div>'}).join('');var table=document.getElementById('swp-table');if(rows&&rows.length){table.innerHTML='<thead><tr>'+rows[0].map(function(h){return '<th>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+rows.slice(1).map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>'}).join('')+'</tr>'}).join('')+'</tbody>';document.getElementById('swp-table-wrap').style.display='block'}else{table.innerHTML='';document.getElementById('swp-table-wrap').style.display='none'}document.getElementById('swp-note').textContent=note||'';document.getElementById('swp-results').classList.add('on')}
+function swpCopyProof(text){if(navigator.clipboard){navigator.clipboard.writeText(text)}}
 function swpCalc(kind){var p,deposit,loan,monthly,total,interest,fees,metrics,rows,note,score,checked,totalItems;
 switch(kind){
 case 'mortgage':p=swpNum('price');deposit=p*swpNum('depositPct')/100;loan=Math.max(0,p-deposit);monthly=swpPayment(loan,swpNum('rate'),swpNum('years'));total=monthly*swpNum('years')*12;interest=total-loan;fees=p*swpNum('feesPct')/100;swpSet(swpMoney(monthly),'Malipo ya mwezi ya makadirio', [['Kiasi cha mkopo',swpMoney(loan)],['Amana',swpMoney(deposit)],['Riba yote',swpMoney(interest)],['Gharama za mwanzo',swpMoney(fees)]], [['Kipengele','Kiasi'],['Bei ya nyumba',swpMoney(p)],['Jumla ya malipo ya mkopo',swpMoney(total)],['Gharama ya awali inayohitajika',swpMoney(deposit+fees)]], 'Thibitisha riba, insurance, valuation, stamp duty na ada nyingine na benki au wakili.');break;

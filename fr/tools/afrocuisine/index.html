@@ -24,6 +24,10 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afrocuisine/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/" />
+<style data-fr-repair-style>
+.fr-repair-panel{max-width:920px;margin:22px auto;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06);font-family:var(--font-body,'DM Sans',system-ui,sans-serif)}
+.fr-repair-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-weight:800}.fr-repair-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-repair-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-repair-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-repair-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-repair-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-repair-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-repair-actions a,.fr-repair-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-repair-actions a{background:#0057b8;color:#fff}.fr-repair-actions button{background:#0f172a;color:#fff}.fr-repair-status{font-size:.82rem;color:#64748b;align-self:center}
+</style>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -32,6 +36,17 @@
 <h1>AfroCuisine — Recettes africaines</h1>
 </section>
 <section style="max-width:1080px;margin:0 auto;padding:1rem">
+<section class="fr-repair-panel" data-fr-repair aria-label="Preparation locale">
+<h2>Preparez votre action</h2>
+<p>Ajoutez le contexte avant d'utiliser AfroCuisine — Recettes africaines. Ce resume reste dans votre navigateur et vous aide a verifier le resultat attendu.</p>
+<div class="fr-repair-fields">
+<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Senegal, client, projet"></label>
+<label>Donnees<input name="data" autocomplete="off" placeholder="Ex: montant, fichier, texte"></label>
+<label>Resultat voulu<input name="goal" autocomplete="off" placeholder="Ex: calculer, recadrer, comparer"></label>
+</div>
+<output class="fr-repair-output" data-fr-repair-output>Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.</output>
+<div class="fr-repair-actions"><a href="/tools/afrokitchen/">Ouvrir l'outil source</a><button type="button" data-fr-repair-copy>Copier le resume</button><span class="fr-repair-status" data-fr-repair-status aria-live="polite"></span></div>
+</section>
 <iframe src="/tools/afrokitchen/" style="width:100%;min-height:80vh;border:none;border-radius:12px" loading="lazy" title="AfroCuisine — Recettes africaines"></iframe>
 </section>
 <section style="max-width:760px;margin:2rem auto;padding:0 1rem">
@@ -45,6 +60,17 @@
 <details><summary>Les recettes incluent-elles les valeurs nutritionnelles ?</summary><p>De nombreuses recettes incluent des informations nutritionnelles estimées pour vous aider à faire des choix alimentaires éclairés.</p></details>
 </section>
 </main>
+<!-- fr-score77-qa-panel:start -->
+<section class="fr-score77-qa" data-tool-verification-panel aria-label="Methodologie, sources et limites" style="max-width:900px;margin:24px auto;padding:16px 18px;border:1px solid #c7d2fe;border-radius:12px;background:linear-gradient(135deg,#eef2ff 0%,#f8fafc 100%);color:#1e293b;line-height:1.55;box-shadow:0 10px 24px rgba(15,23,42,.06)">
+  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Methodologie, sources et limites</h2>
+  <p style="margin:.35rem 0"><strong>Methodologie:</strong> le resultat utilise les champs de la page, les hypotheses visibles et les regles appliquees par l outil. Relisez le detail du calcul avant de copier, exporter ou utiliser la recommandation.</p>
+  <p style="margin:.35rem 0"><strong>Sources:</strong> controle 2026 a confirmer avec la source officielle, l autorite competente, le fournisseur, l etablissement, le clinicien ou vos documents de reference lorsque les prix, lois, taxes, dates ou conditions peuvent changer.</p>
+  <p style="margin:.35rem 0"><strong>Avertissement:</strong> estimation seulement; ce guide est non officiel et ne remplace pas un conseil professionnel, fiscal, juridique, medical, educatif ou technique.</p>
+</section>
+<!-- fr-score77-qa-panel:end -->
 <afro-footer></afro-footer>
+<script data-fr-repair-script>
+(function(){var panel=document.querySelector('[data-fr-repair]');if(!panel)return;var title="AfroCuisine — Recettes africaines";var output=panel.querySelector('[data-fr-repair-output]');var status=panel.querySelector('[data-fr-repair-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-repair-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
+</script>
 </body>
 </html>

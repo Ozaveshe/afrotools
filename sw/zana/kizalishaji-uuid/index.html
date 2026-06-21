@@ -5,7 +5,7 @@
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kizalishaji UUID, ULID na NanoID | AfroTools</title>
-<meta name="description" content="Kizalishaji Uuid kwa Kiswahili: zana ya developer inayobaki wazi kuhusu kazi yake, matumizi ya ndani ya browser na tahadhari za production.">
+<meta name="description" content="Tengeneza UUID v4, UUID v7, ULID na NanoID-style IDs kwenye browser. Kagua timestamp, randomness, collision risk, database snippets na tradeoffs kabla ya kuchagua format.">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kizalishaji-uuid/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-uuid/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/uuid-generator/">
@@ -13,14 +13,16 @@
 
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Kizalishaji UUID, ULID na NanoID">
-<meta property="og:description" content="Kizalishaji Uuid kwa Kiswahili: zana ya developer inayobaki wazi kuhusu kazi yake, matumizi ya ndani ya browser na tahadhari za production.">
+<meta property="og:description" content="Tengeneza UUID v4, UUID v7, ULID na NanoID-style IDs kwenye browser. Kagua timestamp, randomness, collision risk, database snippets na tradeoffs kabla ya kuchagua format.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/sw/zana/kizalishaji-uuid/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/uuid-generator.webp">
 <meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="sw_KE">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kizalishaji UUID, ULID na NanoID">
-<meta name="twitter:description" content="Kizalishaji Uuid kwa Kiswahili: zana ya developer inayobaki wazi kuhusu kazi yake, matumizi ya ndani ya browser na tahadhari za production.">
+<meta name="twitter:description" content="Tengeneza UUID v4, UUID v7, ULID na NanoID-style IDs kwenye browser. Kagua timestamp, randomness, collision risk, database snippets na tradeoffs kabla ya kuchagua format.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/uuid-generator.webp">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
@@ -141,7 +143,7 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Kizalishaji UUID","item":"https://afrotools.com/sw/zana/kizalishaji-uuid/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kizalishaji UUID hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page: utilities nyingi hufanya kazi kwenye browser, lakini API, hosting, domain au provider workflows zinaweza kutegemea endpoints au data ya provider. Usitumie secrets za production bila tahadhari."}},{"@type":"Question","name":"Matokeo haya ni dhamana ya production?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Tumia matokeo kama msaada wa upangaji, debugging au generation. Hakiki security, privacy, hosting, SEO, domain, PWA na USSD requirements na provider au mtaalamu kabla ya launch/uzinduzi."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kizalishaji UUID hutuma IDs server?","acceptedAnswer":{"@type":"Answer","text":"Hapana. IDs hutengenezwa kwenye browser kwa Web Crypto pale randomness inapohitajika. Ukipakua CSV au JSON, faili hutengenezwa kwenye kifaa chako."}},{"@type":"Question","name":"Nichague UUID v4 au UUID v7?","acceptedAnswer":{"@type":"Answer","text":"UUID v4 ni random opaque ID nzuri kwa matumizi mengi. UUID v7 ina timestamp prefix, hivyo hupanga karibu na muda wa kutengenezwa na mara nyingi husaidia database indexes, lakini inaweza kufichua muda wa kuundwa."}},{"@type":"Question","name":"UUID v7 hufichua taarifa gani?","acceptedAnswer":{"@type":"Answer","text":"UUID v7 hufichua muda wa kuundwa kwa usahihi wa takriban millisecond. Hilo linaweza kuwa sawa kwa keys za ndani, lakini si bora kwa public IDs zinazoweza kuonyesha activity ya biashara."}},{"@type":"Question","name":"NanoID-style ID ni UUID rasmi?","acceptedAnswer":{"@type":"Answer","text":"Hapana. NanoID-style IDs ni strings fupi za random, si UUID zenye version na variant fields. Zinaweza kufaa kwa slugs na references fupi lakini hifadhi kama text."}},{"@type":"Question","name":"Collision calculator ni dhamana?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Ni makadirio tu kwa birthday-bound probability. Hakiki chanzo, runtime randomness, concurrency na database constraints kabla ya kutumia kwenye production."}}]}</script>
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
 </head>
 <body>
@@ -151,12 +153,12 @@
   <div class="wrap">
     <div class="crumb"><a href="/">AfroTools</a> / <a href="/sw/zana-za-developer/">Zana za Developer</a> / UUID Kizalishaji</div>
     <h1>Kizalishaji UUID, ULID na NanoID</h1>
-    <p class="lead">Create UUID v4, UUID v7, ULID and NanoID-style identifiers locally. Inspect timestamps, random bits, collision risk, kupanga behavior and database usage before choosing an ID format.</p>
+    <p class="lead">Tengeneza UUID v4, UUID v7, ULID na NanoID-style IDs ndani ya browser. Kagua timestamps, random bits, collision risk, mpangilio na matumizi ya database kabla ya kuchagua format.</p>
     <div class="chips" aria-label="Tool capabilities">
-      <span class="chip">UUID v7 sortable IDs</span>
-      <span class="chip">Local crypto randomness</span>
-      <span class="chip">Collision math</span>
-      <span class="chip">Database snippets</span>
+      <span class="chip">UUID v7 zinazopangwa</span>
+      <span class="chip">Randomness ya Web Crypto</span>
+      <span class="chip">Makadirio ya collision</span>
+      <span class="chip">Snippets za database</span>
     </div>
   </div>
 </section>
@@ -169,29 +171,29 @@
         <div class="panel-head">
           <div>
             <h2 class="panel-title">Tengeneza IDs</h2>
-            <div class="panel-sub">Everything runs in this browser using Web Crypto where randomness is needed.</div>
+            <div class="panel-sub">Kila kitu hufanyika kwenye browser hii kwa kutumia Web Crypto pale randomness inapohitajika.</div>
           </div>
           <div class="row" id="statusLine"></div>
         </div>
         <div class="panel-body stack">
           <div class="field-grid">
-            <label for="idType">ID type
+            <label for="idType">Aina ya ID
               <select id="idType">
-                <option value="uuidv7">UUID v7, sortable</option>
+                <option value="uuidv7">UUID v7, inayopangwa</option>
                 <option value="uuidv4">UUID v4, random</option>
-                <option value="ulid">ULID, sortable text</option>
+                <option value="ulid">ULID, text inayopangwa</option>
                 <option value="nanoid">NanoID-style</option>
               </select>
             </label>
-            <label for="countInput">Count
+            <label for="countInput">Idadi
               <input id="countInput" type="number" min="1" max="1000" value="25">
             </label>
-            <label for="formatSelect">UUID format
+            <label for="formatSelect">Format ya UUID
               <select id="formatSelect">
                 <option value="canonical">canonical lowercase</option>
-                <option value="uppercase">uppercase</option>
-                <option value="nohyphen">no hyphens</option>
-                <option value="braces">with braces</option>
+                <option value="uppercase">herufi kubwa</option>
+                <option value="nohyphen">bila hyphens</option>
+                <option value="braces">na braces</option>
                 <option value="urn">URN</option>
               </select>
             </label>
@@ -201,7 +203,7 @@
             <label for="nanoAlphabet">NanoID alphabet
               <input id="nanoAlphabet" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-">
             </label>
-            <label for="prefixInput">Optional prefix
+            <label for="prefixInput">Prefix ya hiari
               <input id="prefixInput" placeholder="usr_">
             </label>
           </div>
@@ -217,8 +219,8 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2 class="panel-title">Tengenezad IDs</h2>
-            <div class="panel-sub" id="generatedSub">Fresh IDs appear here.</div>
+            <h2 class="panel-title">IDs zilizotengenezwa</h2>
+            <div class="panel-sub" id="generatedSub">IDs mpya zitaonekana hapa.</div>
           </div>
         </div>
         <div class="panel-body">
@@ -229,12 +231,12 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2 class="panel-title">Validate and Inspect</h2>
-            <div class="panel-sub">Paste any UUID, ULID or generated ID to inspect format and anatomy.</div>
+            <h2 class="panel-title">Validate na kagua</h2>
+            <div class="panel-sub">Bandika UUID, ULID au ID yoyote ili kukagua format na anatomy.</div>
           </div>
         </div>
         <div class="panel-body stack">
-          <label for="inspectInput">ID to inspect</label>
+          <label for="inspectInput">ID ya kukagua</label>
           <input id="inspectInput" spellcheck="false">
           <div class="light-output big-id" id="coloredId"></div>
           <div class="diff" id="anatomyOutput"></div>
@@ -244,30 +246,30 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2 class="panel-title">Collision Calculator</h2>
-            <div class="panel-sub">Birthday-bound estimate for random identifier spaces.</div>
+            <h2 class="panel-title">Kikokotoo cha collision</h2>
+            <div class="panel-sub">Makadirio ya birthday-bound kwa nafasi za identifiers za random.</div>
           </div>
         </div>
         <div class="panel-body stack">
           <div class="field-grid">
             <label for="collisionBits">Random bits
               <select id="collisionBits">
-                <option value="122">UUID v4, 122 random bits</option>
-                <option value="74">UUID v7, about 74 random bits</option>
-                <option value="80">ULID, 80 random bits per millisecond</option>
-                <option value="126">NanoID 21 default alphabet, about 126 bits</option>
+                <option value="122">UUID v4, random bits 122</option>
+                <option value="74">UUID v7, takriban random bits 74</option>
+                <option value="80">ULID, random bits 80 kwa millisecond</option>
+                <option value="126">NanoID 21 default alphabet, takriban bits 126</option>
                 <option value="custom">Custom</option>
               </select>
             </label>
-            <label for="customBits">Custom bits
+            <label for="customBits">Bits zako
               <input id="customBits" type="number" min="1" max="256" value="96">
             </label>
-            <label for="collisionCount">IDs generated
+            <label for="collisionCount">IDs zilizotengenezwa
               <input id="collisionCount" value="1000000000">
             </label>
           </div>
           <div class="row">
-            <button class="primary" id="collisionBtn" type="button">Calculate Risk</button>
+            <button class="primary" id="collisionBtn" type="button">Kokotoa risk</button>
           </div>
           <div class="messages" id="collisionOutput"></div>
         </div>
@@ -276,8 +278,8 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2 class="panel-title">Implementation Snippets</h2>
-            <div class="panel-sub">Practical storage patterns for generated IDs.</div>
+            <h2 class="panel-title">Snippets za utekelezaji</h2>
+            <div class="panel-sub">Mifumo ya kuhifadhi IDs hizi kwenye database au app code.</div>
           </div>
         </div>
         <div class="panel-body stack">
@@ -299,8 +301,8 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2 class="panel-title">Recommendation</h2>
-            <div class="panel-sub">Which format fits the selected use case?</div>
+            <h2 class="panel-title">Pendekezo</h2>
+            <div class="panel-sub">Format ipi inafaa kwa matumizi uliyochagua?</div>
           </div>
         </div>
         <div class="panel-body">
@@ -311,8 +313,8 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2 class="panel-title">Format Facts</h2>
-            <div class="panel-sub">Bits, sorting and leakage tradeoffs.</div>
+            <h2 class="panel-title">Ukweli wa format</h2>
+            <div class="panel-sub">Bits, sorting na tradeoffs za taarifa zinazoweza kuonekana.</div>
           </div>
         </div>
         <div class="panel-body">
@@ -323,8 +325,8 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2 class="panel-title">Onyos</h2>
-            <div class="panel-sub">Things to check before production use.</div>
+            <h2 class="panel-title">Maonyo</h2>
+            <div class="panel-sub">Mambo ya kuhakiki kabla ya production.</div>
           </div>
         </div>
         <div class="panel-body">
@@ -335,15 +337,16 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2 class="panel-title">Reference Sources</h2>
-            <div class="panel-sub">Specs and docs behind this tool.</div>
+            <h2 class="panel-title">Vyanzo na uthibitishaji</h2>
+            <div class="panel-sub">Specs, mbinu na kanusho la matumizi ya production.</div>
           </div>
         </div>
-        <div class="panel-body source-list">
-          <div class="source-row"><div><a href="https://www.rfc-editor.org/rfc/rfc9562.html" target="_blank" rel="noopener">RFC 9562 UUIDs</a><span>Current UUID specification, including UUID v4, v7, variants and layouts.</span></div><span>IETF RFC</span></div>
-          <div class="source-row"><div><a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank" rel="noopener">MDN crypto.randomUUID</a><span>Vinjarir-native UUID v4 generation with cryptographically secure randomness.</span></div><span>MDN</span></div>
-          <div class="source-row"><div><a href="https://github.com/ulid/spec" target="_blank" rel="noopener">ULID specification</a><span>Crockford Base32, 48-bit timestamp, 80-bit randomness and lexical sortability.</span></div><span>Spec</span></div>
-          <div class="source-row"><div><a href="https://github.com/ai/nanoid" target="_blank" rel="noopener">Nano ID project</a><span>URL-friendly random IDs, custom alphabet and collision-size guidance.</span></div><span>Project docs</span></div>
+        <div class="panel-body source-list" data-tool-verification-panel>
+          <div class="source-row"><div><a href="https://www.rfc-editor.org/info/rfc9562/" target="_blank" rel="noopener">RFC 9562 UUIDs</a><span>Chanzo cha sasa cha UUID v4, v7, variants na layouts. Tunatumia kanuni hizi kwa anatomy na timestamps.</span></div><span>IETF RFC</span></div>
+          <div class="source-row"><div><a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank" rel="noopener">MDN crypto.randomUUID</a><span>Browser-native UUID v4 generation kwa cryptographically secure randomness kwenye browsers zinazounga mkono API hii.</span></div><span>MDN</span></div>
+          <div class="source-row"><div><a href="https://github.com/ulid/spec" target="_blank" rel="noopener">ULID specification</a><span>Marejeo ya Crockford Base32, 48-bit timestamp, 80-bit randomness na lexical sortability.</span></div><span>Spec</span></div>
+          <div class="source-row"><div><a href="https://github.com/ai/nanoid" target="_blank" rel="noopener">Nano ID project</a><span>Guidance ya URL-friendly random IDs, custom alphabet na ukubwa wa collision space.</span></div><span>Project docs</span></div>
+          <div class="source-row"><div><strong>Kanusho la production</strong><span>Collision risk ni makadirio tu. Hakiki chanzo, constraints za database, concurrency na secrecy needs kabla ya kutumia ID format kwenye mfumo rasmi.</span></div><span>Review</span></div>
         </div>
       </div>
     </aside>
@@ -354,16 +357,24 @@
 
 <section class="faq">
   <details>
-    <summary>Should I use UUID v4 or UUID v7 for database primary keys?</summary>
-    <p>UUID v4 is excellent for opaque random IDs. UUID v7 includes a Unix-millisecond timestamp prefix, so new IDs kupanga roughly by creation time and are usually friendlier to database indexes.</p>
+    <summary>Nitumie UUID v4 au UUID v7 kwa primary keys?</summary>
+    <p>UUID v4 ni nzuri kwa IDs za random zisizoonyesha muda. UUID v7 ina Unix-millisecond timestamp prefix, hivyo IDs mpya hupanga karibu na muda wa kutengenezwa na mara nyingi ni rafiki zaidi kwa database indexes.</p>
   </details>
   <details>
-    <summary>Does UUID v7 leak information?</summary>
-    <p>Yes, it leaks approximate creation time. That is usually fine for internal database keys, but may be undesirable for public identifiers where timing reveals business activity.</p>
+    <summary>UUID v7 hufichua taarifa?</summary>
+    <p>Ndiyo, hufichua muda wa kuundwa kwa takriban millisecond. Hilo linaweza kuwa sawa kwa keys za ndani, lakini si bora kwa public identifiers kama timing inaonyesha activity ya biashara.</p>
   </details>
   <details>
-    <summary>Are NanoID-style IDs official UUIDs?</summary>
-    <p>Hapana. NanoID-style IDs are compact random strings. They are useful for public slugs and short references, but they do not carry UUID version or variant structure.</p>
+    <summary>NanoID-style IDs ni UUID rasmi?</summary>
+    <p>Hapana. NanoID-style IDs ni strings fupi za random. Zinafaa kwa public slugs na short references, lakini hazina UUID version au variant structure.</p>
+  </details>
+  <details>
+    <summary>Kikokotoo cha collision kinamaanisha nini?</summary>
+    <p>Kinatoa makadirio tu ya probability kwa kutumia birthday-bound logic. Matokeo si dhamana ya production; hakiki random source, database uniqueness na retry strategy.</p>
+  </details>
+  <details>
+    <summary>IDs hutumwa AfroTools?</summary>
+    <p>Hapana kwa kazi kuu za ukurasa huu. IDs hutengenezwa kwenye browser na downloads hutengenezwa kwenye kifaa chako.</p>
   </details>
 </section>
 
@@ -466,8 +477,8 @@
     var count = Math.max(1, Math.min(1000, Number($('countInput').value || 1)));
     lastIds = [];
     for (var i = 0; i < count; i++) lastIds.push(generateOne());
-    $('generatedSub').textContent = count + ' ' + labelFor($('idType').value) + ' generated locally.';
-    $('statusLine').innerHTML = '<span class="pill good">' + count + ' generated</span>';
+    $('generatedSub').textContent = count + ' ' + labelFor($('idType').value) + ' zimetengenezwa kwenye browser.';
+    $('statusLine').innerHTML = '<span class="pill good">' + count + ' zimetengenezwa</span>';
     renderIds();
     $('inspectInput').value = lastIds[0] || '';
     inspect();
@@ -601,7 +612,7 @@
     var bits = $('collisionBits').value === 'custom' ? Number($('customBits').value || 1) : Number($('collisionBits').value);
     var n = Number(String($('collisionCount').value || '').replace(/[,\s]/g, ''));
     if (!Number.isFinite(bits) || bits < 1 || !Number.isFinite(n) || n < 1) {
-      $('collisionOutput').innerHTML = '<div class="message bad">Enter a valid bit count and generated ID count.</div>';
+      $('collisionOutput').innerHTML = '<div class="message bad">Weka bits na idadi ya IDs zilizo valid.</div>';
       return;
     }
     var log10Exp = 2 * Math.log10(n) - Math.log10(2) - bits * Math.log10(2);

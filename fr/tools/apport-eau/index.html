@@ -38,6 +38,8 @@
 .fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
 .fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
 .fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
+.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
 </style>
 <script type="application/ld+json">
 {
@@ -85,15 +87,37 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/water-intake/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/apport-eau/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/water-intake/" />
+<style data-localized-verification-style>
+.localized-verification-panel{max-width:1120px;margin:18px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:14px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 12px 28px rgba(15,23,42,.06);color:#0f172a}.localized-verification-panel h2{margin:0 0 8px;font-size:1.05rem;letter-spacing:-.01em}.localized-verification-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.localized-verification-grid div{border:1px solid #dbeafe;border-radius:12px;background:#fff;padding:11px;line-height:1.5;color:#475569}.localized-verification-grid strong{display:block;color:#0f172a;margin-bottom:4px}.localized-verification-panel p{margin:10px 0 0;color:#475569;line-height:1.58}@media(max-width:640px){.localized-verification-panel{margin:14px 12px;padding:14px}}
+</style>
 </head>
 <body>
+<section class="localized-verification-panel" data-tool-verification-panel aria-label="Methode, sources et limites">
+<h2>Methode, sources et prochaine action</h2>
+<div class="localized-verification-grid"><div><strong>Methode</strong>Le resultat utilise les donnees saisies dans cet outil pour produire une estimation de travail, une comparaison ou une checklist.</div><div><strong>Sources a verifier</strong>Confirmez les taux, frais, licences, documents, prix ou exigences avec l autorite officielle, le prestataire, la banque, l assureur, le medecin ou le conseiller concerne.</div><div><strong>Action utile</strong>Gardez la date, le pays, la devise, les hypotheses et le resultat avant de payer, signer, declarer, voyager ou deposer un dossier.</div></div>
+<p>Ce contenu n est pas un devis officiel, un conseil professionnel ni une validation finale. Utilisez-le comme premier repere, puis verifiez aupres de la source responsable.</p>
+</section>
 <afro-navbar active="tools"></afro-navbar>
 <section class="fr-hero">
 <h1>Apport en eau</h1>
 <p>Estimez un besoin quotidien en eau selon votre profil, votre activité et le climat, sans remplacer un avis médical.</p>
 </section>
 <div class="fr-wrap">
+<section class="fr-prep-panel" data-fr-prep aria-label="Preparation locale">
+<h2>Preparez votre saisie</h2>
+<p>Ajoutez le contexte avant de lancer Calculateur d'apport en eau. Ce brouillon reste dans votre navigateur et vous aide a verifier le resultat attendu.</p>
+<div class="fr-prep-fields">
+<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Senegal, client, projet"></label>
+<label>Donnees<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
+<label>Resultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, verifier, calculer"></label>
+</div>
+<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.</output>
+<div class="fr-prep-actions"><a href="/tools/water-intake/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le resume</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
+</section>
 <div class="fr-tool-frame"><iframe src="/tools/water-intake/" title="Calculateur d'apport en eau" loading="lazy"></iframe></div>
+<script>
+(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Calculateur d'apport en eau";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
+</script>
 <div class="fr-note"><strong>Repère uniquement.</strong> Les besoins en eau varient selon la santé, la chaleur, l’activité, la grossesse, l’allaitement et certains traitements. En cas de malaise, confusion, vomissements ou déshydratation sévère, demandez rapidement une aide médicale.</div>
 <div class="fr-seo">
 <h2>Hydratation et climat africain</h2>

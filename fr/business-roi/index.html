@@ -88,8 +88,21 @@
   .hl-icon{font-size:28px;margin-bottom:10px}
   .hl-title{font-size:.82rem;font-weight:700;color:#111827;margin-bottom:4px}
   .hl-desc{font-size:.75rem;color:#6b7280;line-height:1.5}
+  .decision-panel{margin:30px auto 4px;border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:22px;box-shadow:0 10px 26px rgba(15,23,42,.06);box-sizing:border-box}
+  .decision-panel h2{font-size:1.2rem;line-height:1.2;margin:0 0 6px;color:#111827;font-weight:800}
+  .decision-panel p{margin:0 0 16px;color:#64748b;line-height:1.6}
+  .decision-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .decision-grid label{display:grid;gap:6px;font-size:.78rem;font-weight:800;color:#374151}
+  .decision-grid select,.decision-grid input{width:100%;min-height:44px;border:1.5px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#111827;padding:10px 12px;font:inherit;box-sizing:border-box}
+  .decision-output{display:block;margin-top:14px;border:1px solid #e2e8f0;border-left:4px solid var(--color-primary);border-radius:0 10px 10px 0;background:#f8fafc;color:#334155;padding:14px;line-height:1.6;white-space:pre-line}
+  .decision-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+  .decision-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}
+  .decision-status{font-size:.82rem;color:#64748b}
+  .decision-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .decision-trust div{border:1px solid #dbeafe;background:#eff6ff;border-radius:10px;padding:10px;color:#334155;line-height:1.45}
+  .decision-trust strong{display:block;color:#0f172a;margin-bottom:3px}
 
-  @media(max-width:640px){.hero-stats{gap:20px}.hs-n{font-size:1.6rem}.highlights{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.hero-stats{gap:20px}.hs-n{font-size:1.6rem}.highlights{grid-template-columns:1fr 1fr}.decision-grid,.decision-trust{grid-template-columns:1fr}}
 </style>
 <meta property="og:locale" content="fr_FR">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -164,6 +177,19 @@ window.addEventListener('load', function() {
   </div>
 </div>
 
+<section class="wrap decision-panel" data-business-brief data-tool-verification-panel aria-labelledby="business-brief-title">
+  <h2 id="business-brief-title">Préparer la bonne décision business</h2>
+  <p>Choisissez votre problème, votre marché et votre urgence. AfroTools prépare un brief local-first pour ouvrir le bon outil avec les bonnes vérifications.</p>
+  <div class="decision-grid">
+    <label>Besoin principal<select id="businessNeed"><option value="marge">Marge et prix de vente</option><option value="facture">Facture, proforma ou devis</option><option value="stock">Stock et réapprovisionnement</option><option value="roi">ROI ou faisabilité</option><option value="budget">Budget et cash-flow</option></select></label>
+    <label>Marché<input id="businessMarket" autocomplete="off" placeholder="Ex: Côte d'Ivoire, Sénégal, Maroc"></label>
+    <label>Urgence<select id="businessUrgency"><option>Cette semaine</option><option>Ce mois-ci</option><option>Avant un financement</option><option>Avant une importation</option></select></label>
+  </div>
+  <output id="businessBriefOutput" class="decision-output" aria-live="polite"></output>
+  <div class="decision-actions"><button type="button" id="copyBusinessBrief">Copier le brief</button><button type="button" id="downloadBusinessBrief">Télécharger TXT</button><span id="businessBriefStatus" class="decision-status" aria-live="polite"></span></div>
+  <div class="decision-trust"><div><strong>Méthode</strong>Transforme le besoin en prochaines actions et outil recommandé.</div><div><strong>Source</strong>Les montants, taux, frais et règles doivent être vérifiés dans l'outil ou auprès d'une source locale.</div><div><strong>Confidentialité</strong>Le brief reste dans le navigateur; aucun contenu métier n'est envoyé.</div></div>
+</section>
+
 <section class="sec"><div class="wrap">
   <div class="ey">Tous les outils</div>
   <h2 class="st">Outils business et ROI</h2>
@@ -183,6 +209,32 @@ window.addEventListener('load', function() {
 <afro-footer></afro-footer>
 
 <script>
+function _initBusinessBrief(){
+  var output=document.getElementById('businessBriefOutput');
+  if(!output)return;
+  var status=document.getElementById('businessBriefStatus');
+  var map={
+    marge:{tool:'Calculateur de marge',action:'Comparez coût d’achat, frais, taxes, livraison et prix final avant de publier votre tarif.'},
+    facture:{tool:'Générateur de facture ou proforma',action:'Préparez client, lignes, devise, échéance et conditions de paiement.'},
+    stock:{tool:'Gestion de stock',action:'Vérifiez rotation, seuil de réapprovisionnement, délai fournisseur et coût de rupture.'},
+    roi:{tool:'Calculateur ROI ou faisabilité',action:'Séparez investissement initial, revenus attendus, coûts récurrents et scénario prudent.'},
+    budget:{tool:'Planificateur de budget',action:'Classez charges fixes, charges variables, trésorerie disponible et marge de sécurité.'}
+  };
+  function value(id){var el=document.getElementById(id);return el&&el.value?el.value.trim():'';}
+  function brief(){
+    var need=value('businessNeed')||'marge';
+    var item=map[need]||map.marge;
+    return ['Brief business AfroTools','Marché: '+(value('businessMarket')||'à préciser'),'Urgence: '+value('businessUrgency'),'Outil recommandé: '+item.tool,'Action: '+item.action,'Vérifications: devise, frais locaux, taxes applicables, date des hypothèses, source de prix.'].join('\n');
+  }
+  function render(){output.textContent=brief();if(status)status.textContent='';}
+  ['businessNeed','businessMarket','businessUrgency'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',render);});
+  var copy=document.getElementById('copyBusinessBrief');
+  if(copy)copy.addEventListener('click',function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copié.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
+  var download=document.getElementById('downloadBusinessBrief');
+  if(download)download.addEventListener('click',function(){var blob=new Blob([brief()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='brief-business-roi.txt';a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT téléchargé.';});
+  render();
+}
+document.addEventListener('DOMContentLoaded',_initBusinessBrief);
 function _initBusinessRoi(){
   var operatorCategories = {
     'data-productivity': true,

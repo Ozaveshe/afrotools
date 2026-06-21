@@ -85,6 +85,9 @@
 .adv-col.wa-adv h3{color:#25D366}
 .adv-col.sms-adv h3{color:#06B6D4}
 .adv-col ul{margin:0;padding:0 0 0 1.1rem;font-size:.83rem;color:#475569;line-height:1.7}
+.copy-btn{display:block;width:100%;padding:.75rem;background:#e0f2fe;color:#075985;border:1px solid #bae6fd;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:inherit;margin:-.35rem 0 1rem}
+.copy-status{min-height:1.25rem;color:#075985;font-size:.85rem;margin-bottom:1rem}
+.trust-panel{border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:1rem 1.1rem;line-height:1.65;margin:1.25rem 0}.trust-panel h2{font-size:1rem;margin:0 0 .45rem;color:#0f172a}.trust-panel ul{margin:.45rem 0 0;padding-left:1.1rem}.trust-panel a{color:#075985;font-weight:800}
 .empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"WhatsApp Business dhidi ya SMS","url":"https://afrotools.com/sw/zana/whatsapp-business-dhidi-ya-sms/","description":"Linganishia WhatsApp Business API na SMS nyingi kwa gharama, reach, aina ya ujumbe na breakeven ya biashara.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
@@ -132,11 +135,22 @@
   </div>
 
   <button type="button" class="calc-btn" id="calc-btn">Linganisha Gharama</button>
+  <button type="button" class="copy-btn" id="copy-summary-btn">Nakili muhtasari wa biashara</button>
+  <div class="copy-status" id="copy-status" aria-live="polite"></div>
 
   <div id="results"></div>
   <div class="empty-state" id="empty-state">
     <p>Chagua nchi, weka idadi na mgawanyo wa ujumbe, kisha bofya Linganisha</p>
   </div>
+  <section class="trust-panel" data-tool-verification-panel>
+    <h2>Mbinu, mipaka na hatua ya biashara</h2>
+    <p>Ukaguzi wa 2026: zana hii hutumia rates zilizopo kwenye data ya AfroTools kwa nchi uliyochagua, kisha inalinganisha gharama ya WhatsApp Business na bulk SMS kwa volume na mgawanyo wa ujumbe unaoweka.</p>
+    <ul>
+      <li><strong>Mbinu:</strong> gharama = idadi ya ujumbe x rate ya channel; SMS hupewa discount ya volume kwenye model hii.</li>
+      <li><strong>Mipaka:</strong> bei, approvals, templates, opt-in, taxes na deliverability hubadilika. Hakiki na provider au operator kabla ya campaign.</li>
+      <li><strong>Hatua ya biashara:</strong> nakili muhtasari, jadili na marketing/ops, kisha linganisha na <a href="/sw/biashara-ndogo/">mpango wa biashara ndogo</a> kabla ya kutuma volume kubwa.</li>
+    </ul>
+  </section>
 </div>
 
 
@@ -156,6 +170,9 @@
   var valMkt = document.getElementById('val-marketing');
   var valUtl = document.getElementById('val-utility');
   var valSvc = document.getElementById('val-service');
+  var copyBtn = document.getElementById('copy-summary-btn');
+  var copyStatus = document.getElementById('copy-status');
+  var lastSummary = '';
 
   function init() {
     if (typeof TELECOM_DATA === 'undefined') return;
@@ -170,6 +187,7 @@
       select.appendChild(opt);
     }
     calcBtn.addEventListener('click', calculate);
+    copyBtn.addEventListener('click', copySummary);
     sliderMkt.addEventListener('input', syncSliders);
     sliderUtl.addEventListener('input', syncSliders);
     sliderSvc.addEventListener('input', syncSliders);
@@ -200,9 +218,30 @@
     return sym + Number(num).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0});
   }
 
+  function copySummary() {
+    if (!lastSummary) {
+      lastSummary = 'WhatsApp Business dhidi ya SMS\n1. Chagua nchi na volume.\n2. Linganisha gharama, reach, opt-in na approval za provider.\n3. Hakiki bei na terms kabla ya kutuma campaign.';
+    }
+    function done() { copyStatus.textContent = 'Muhtasari umenakiliwa. Bandika kwenye brief ya marketing, WhatsApp au email.'; }
+    function fallback() {
+      var area = document.createElement('textarea');
+      area.value = lastSummary;
+      document.body.appendChild(area);
+      area.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(area);
+      done();
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(lastSummary).then(done).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
   function calculate() {
     var code = select.value;
-    if (!code) { alert('Please select a country.'); return; }
+    if (!code) { alert('Tafadhali chagua nchi.'); return; }
     emptyEl.style.display = 'none';
 
     var country = TELECOM_DATA.countries[code];
@@ -218,7 +257,7 @@
     var smsRate = smsData.costPerSMS || smsData.domesticRate || smsData.avgCostPerSMS || 0;
 
     if (waMktRate === 0 && smsRate === 0) {
-      resultsEl.innerHTML = '<p style="text-align:center;color:#94a3b8;margin:2rem 0;">No WhatsApp Business or SMS pricing data available for ' + country.name + ' yet.</p>';
+      resultsEl.innerHTML = '<p style="text-align:center;color:#94a3b8;margin:2rem 0;">Bado hakuna data ya bei ya WhatsApp Business au SMS kwa ' + country.name + '.</p>';
       return;
     }
 
@@ -263,19 +302,20 @@
     }
 
     var html = buildVersusCards(waTotal, smsTotal, waAvgPerMsg, smsEffRate, sym, volume);
+    lastSummary = 'WhatsApp Business dhidi ya SMS - ' + country.name + '\nVolume: ' + volume.toLocaleString('en') + ' ujumbe/mwezi\nWhatsApp estimate: ' + fmtInt(Math.round(waTotal), sym) + '\nSMS estimate: ' + fmtInt(Math.round(smsTotal), sym) + '\nChannel ya gharama nafuu: ' + (waTotal <= smsTotal ? 'WhatsApp Business' : 'SMS') + '\nKumbuka: hakiki provider rates, opt-in, templates, taxes na deliverability kabla ya campaign.';
 
     if (breakeven > 0) {
-      html += '<div class="breakeven-box"><h2>Breakeven Point</h2>' +
-        '<div class="be-value">' + breakeven.toLocaleString('en') + ' messages/month</div>' +
-        '<div class="be-note">Above this volume, WhatsApp Business API becomes cheaper than Bulk SMS</div></div>';
+      html += '<div class="breakeven-box"><h2>Breakeven</h2>' +
+        '<div class="be-value">' + breakeven.toLocaleString('en') + ' ujumbe/mwezi</div>' +
+        '<div class="be-note">Juu ya volume hii, WhatsApp Business API inakuwa nafuu kuliko bulk SMS kwenye model hii</div></div>';
     } else if (waTotal < smsTotal) {
-      html += '<div class="breakeven-box"><h2>Breakeven Point</h2>' +
-        '<div class="be-value">WhatsApp is cheaper at all volumes</div>' +
-        '<div class="be-note">With your message type split, WhatsApp Business API costs less regardless of volume</div></div>';
+      html += '<div class="breakeven-box"><h2>Breakeven</h2>' +
+        '<div class="be-value">WhatsApp ni nafuu kwenye volumes zote</div>' +
+        '<div class="be-note">Kwa mgawanyo ulioweka, WhatsApp Business API ina gharama ndogo kwenye model hii</div></div>';
     } else {
-      html += '<div class="breakeven-box"><h2>Breakeven Point</h2>' +
-        '<div class="be-value">SMS remains cheaper</div>' +
-        '<div class="be-note">At current rates and message type split, Bulk SMS stays more cost-effective</div></div>';
+      html += '<div class="breakeven-box"><h2>Breakeven</h2>' +
+        '<div class="be-value">SMS bado ni nafuu</div>' +
+        '<div class="be-note">Kwa rates na mgawanyo huu, bulk SMS inaonekana kuwa na gharama ndogo</div></div>';
     }
 
     html += buildBreakdownTable(mktCount, utlCount, svcCount, waMktRate, waUtlRate, waSvcRate, smsEffRate, sym, cur);
@@ -291,20 +331,20 @@
       '<div class="vs-label">WhatsApp Business API</div>' +
       '<h3>WhatsApp</h3>' +
       '<div class="vs-price">' + fmtInt(Math.round(waTotal), sym) + '</div>' +
-      '<div class="vs-sub">' + volume.toLocaleString('en') + ' messages/month</div>' +
-      '<div class="vs-row"><span class="vl">Avg per message</span><span class="vv">' + fmt(waAvg, sym) + '</span></div>' +
-      '<div class="vs-row"><span class="vl">Annual cost</span><span class="vv">' + fmtInt(Math.round(waTotal * 12), sym) + '</span></div>' +
-      '<div class="vs-row"><span class="vl">Verdict</span><span class="vv" style="color:' + (waWins ? '#059669' : '#dc2626') + '">' + (waWins ? 'Cheaper' : 'More Expensive') + '</span></div>' +
+      '<div class="vs-sub">' + volume.toLocaleString('en') + ' ujumbe/mwezi</div>' +
+      '<div class="vs-row"><span class="vl">Wastani kwa ujumbe</span><span class="vv">' + fmt(waAvg, sym) + '</span></div>' +
+      '<div class="vs-row"><span class="vl">Gharama ya mwaka</span><span class="vv">' + fmtInt(Math.round(waTotal * 12), sym) + '</span></div>' +
+      '<div class="vs-row"><span class="vl">Hitimisho</span><span class="vv" style="color:' + (waWins ? '#059669' : '#dc2626') + '">' + (waWins ? 'Nafuu' : 'Gharama zaidi') + '</span></div>' +
       '</div>' +
       '<div class="vs-divider"><span>VS</span></div>' +
       '<div class="vs-card sms">' +
       '<div class="vs-label">Bulk SMS</div>' +
       '<h3>SMS</h3>' +
       '<div class="vs-price">' + fmtInt(Math.round(smsTotal), sym) + '</div>' +
-      '<div class="vs-sub">' + volume.toLocaleString('en') + ' messages/month</div>' +
-      '<div class="vs-row"><span class="vl">Per message</span><span class="vv">' + fmt(smsRate, sym) + '</span></div>' +
-      '<div class="vs-row"><span class="vl">Annual cost</span><span class="vv">' + fmtInt(Math.round(smsTotal * 12), sym) + '</span></div>' +
-      '<div class="vs-row"><span class="vl">Verdict</span><span class="vv" style="color:' + (!waWins ? '#059669' : '#dc2626') + '">' + (!waWins ? 'Cheaper' : 'More Expensive') + '</span></div>' +
+      '<div class="vs-sub">' + volume.toLocaleString('en') + ' ujumbe/mwezi</div>' +
+      '<div class="vs-row"><span class="vl">Kwa ujumbe</span><span class="vv">' + fmt(smsRate, sym) + '</span></div>' +
+      '<div class="vs-row"><span class="vl">Gharama ya mwaka</span><span class="vv">' + fmtInt(Math.round(smsTotal * 12), sym) + '</span></div>' +
+      '<div class="vs-row"><span class="vl">Hitimisho</span><span class="vv" style="color:' + (!waWins ? '#059669' : '#dc2626') + '">' + (!waWins ? 'Nafuu' : 'Gharama zaidi') + '</span></div>' +
       '</div></div>';
   }
 
@@ -314,8 +354,8 @@
       {type: 'Utility', count: utl, waRate: waUtlR, smsRate: smsR},
       {type: 'Service', count: svc, waRate: waSvcR, smsRate: smsR}
     ];
-    var html = '<h2 style="font-size:1.1rem;font-weight:700;margin:2rem 0 .75rem;color:#0f172a;">Cost Breakdown by Message Type (' + cur + ')</h2>' +
-      '<div style="overflow-x:auto"><table class="breakdown-table"><thead><tr><th>Type</th><th>Count</th><th>WA Rate</th><th>WA Cost</th><th>SMS Rate</th><th>SMS Cost</th><th>Winner</th></tr></thead><tbody>';
+    var html = '<h2 style="font-size:1.1rem;font-weight:700;margin:2rem 0 .75rem;color:#0f172a;">Breakdown ya gharama kwa aina ya ujumbe (' + cur + ')</h2>' +
+      '<div style="overflow-x:auto"><table class="breakdown-table"><thead><tr><th>Aina</th><th>Idadi</th><th>WA rate</th><th>WA gharama</th><th>SMS rate</th><th>SMS gharama</th><th>Nafuu</th></tr></thead><tbody>';
     for (var i = 0; i < rows.length; i++) {
       var r = rows[i];
       var waCost = r.count * r.waRate;
@@ -333,20 +373,20 @@
 
   function buildAdvantages() {
     return '<div class="advantages">' +
-      '<div class="adv-col wa-adv"><h3>WhatsApp Wins On</h3><ul>' +
-      '<li>Rich media (images, video, buttons)</li>' +
-      '<li>Read receipts and delivery tracking</li>' +
-      '<li>Cheaper for high-volume service messages</li>' +
-      '<li>Interactive templates and quick replies</li>' +
-      '<li>Higher engagement rates (98% open rate)</li>' +
-      '<li>Two-way conversations built in</li></ul></div>' +
-      '<div class="adv-col sms-adv"><h3>SMS Wins On</h3><ul>' +
-      '<li>100% reach (no internet needed)</li>' +
-      '<li>Works on feature phones</li>' +
-      '<li>No app installation required</li>' +
-      '<li>Better for OTPs and time-sensitive alerts</li>' +
-      '<li>Simpler API integration</li>' +
-      '<li>Regulatory compliance for some industries</li></ul></div></div>';
+      '<div class="adv-col wa-adv"><h3>WhatsApp husaidia zaidi kwa</h3><ul>' +
+      '<li>Media tajiri kama picha, video na buttons</li>' +
+      '<li>Delivery/read receipts na tracking ya conversation</li>' +
+      '<li>Service messages zenye volume kubwa pale rate ni nzuri</li>' +
+      '<li>Templates, quick replies na mazungumzo ya pande mbili</li>' +
+      '<li>Engagement ya juu pale customers wame-opt in</li>' +
+      '<li>Support na commerce workflows ndani ya chat</li></ul></div>' +
+      '<div class="adv-col sms-adv"><h3>SMS husaidia zaidi kwa</h3><ul>' +
+      '<li>Reach pana bila internet</li>' +
+      '<li>Feature phones na customers wasio na WhatsApp</li>' +
+      '<li>Hakuna app installation inayohitajika</li>' +
+      '<li>OTPs na alerts za haraka</li>' +
+      '<li>Integration rahisi kwa baadhi ya providers</li>' +
+      '<li>Industries zinazohitaji channel ya kawaida ya telco</li></ul></div></div>';
   }
 
   if (document.readyState === 'loading') {

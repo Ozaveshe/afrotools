@@ -95,9 +95,27 @@
   .seo-links-list{list-style:none;display:flex;flex-wrap:wrap;gap:12px}
   .seo-links-list a{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #E5E7EB;border-radius:999px;background:#fff;padding:10px 14px;font-size:.86rem;font-weight:600;color:#0f172a}
   .seo-links-list a:hover{border-color:#007AFF;color:#007AFF}
+  .sw-country-assist{padding:34px 0 0}
+  .sw-country-panel{background:#fff;border:1.5px solid #dbeafe;border-radius:18px;box-shadow:0 18px 44px rgba(15,23,42,.08);overflow:hidden}
+  .sw-country-panel-head{display:grid;grid-template-columns:1fr .8fr;gap:1rem;padding:1.25rem;background:linear-gradient(135deg,#071827,#0f766e);color:#fff}
+  .sw-country-panel-head h2{margin:0 0 .45rem;font-size:1.28rem;letter-spacing:-.02em}
+  .sw-country-panel-head p{margin:0;color:rgba(255,255,255,.78);line-height:1.58;font-size:.94rem}
+  .sw-country-status{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+  .sw-country-status span{display:block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:.8rem;font-size:.78rem;color:rgba(255,255,255,.76)}
+  .sw-country-status strong{display:block;color:#fff;font-size:.98rem;margin-bottom:.15rem}
+  .sw-country-form{display:grid;grid-template-columns:1fr 1fr auto;gap:.9rem;padding:1.15rem;align-items:end}
+  .sw-country-field label{display:block;font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#475569;margin-bottom:.35rem}
+  .sw-country-field select,.sw-country-field input{width:100%;border:1.5px solid #cbd5e1;border-radius:12px;padding:.72rem .8rem;font:inherit;background:#fff;color:#0f172a}
+  .sw-country-field select:focus,.sw-country-field input:focus{outline:3px solid rgba(14,165,233,.2);border-color:#0284c7}
+  .sw-country-form button{border:0;border-radius:12px;background:#007AFF;color:#fff;font-weight:900;padding:.78rem 1.05rem;cursor:pointer}
+  .sw-country-result{margin:0 1.15rem 1.15rem;padding:1rem;border:1px solid #bfdbfe;background:#eff6ff;border-radius:14px;color:#0f172a;line-height:1.58}
+  .sw-country-result a{color:#075985;font-weight:900}
+  .sw-country-result small{display:block;margin-top:.55rem;color:#475569;line-height:1.5}
   @media (max-width:640px){
     .hero{padding:64px 20px 52px}
     .cta-box{padding:24px 20px}
+    .sw-country-panel-head,.sw-country-form{grid-template-columns:1fr}
+    .sw-country-status{grid-template-columns:1fr}
   }
 </style>
 <meta property="article:modified_time" content="2026-04-15">
@@ -117,6 +135,28 @@
   </div>
 </section>
 <main>
+  <section class="sw-country-assist" aria-labelledby="dj-route-title">
+    <div class="wrap">
+      <div class="sw-country-panel">
+        <div class="sw-country-panel-head">
+          <div>
+            <h2 id="dj-route-title">Njia ya haraka ya Djibouti</h2>
+            <p>Chagua kazi yako na upate ukurasa wa kuanzia kwa PAYE, VAT, FX au nyaraka za biashara. Matokeo ni mwongozo wa kupanga 2026, si ushauri wa kodi.</p>
+          </div>
+          <div class="sw-country-status" data-tool-verification-panel>
+            <span><strong>Mbinu</strong>Huunganisha kazi yako na zana hai za Djibouti.</span>
+            <span><strong>Vyanzo</strong>Thibitisha na mamlaka, mwajiri, benki au mshauri kabla ya kuwasilisha.</span>
+          </div>
+        </div>
+        <form class="sw-country-form" id="dj-country-router">
+          <div class="sw-country-field"><label for="dj-task">Unahitaji nini?</label><select id="dj-task"><option value="paye">Kokotoa mshahara na PAYE</option><option value="vat">Ongeza au toa VAT</option><option value="fx">Badilisha sarafu au kupanga malipo</option><option value="invoice">Andaa ankara au usajili wa biashara</option></select></div>
+          <div class="sw-country-field"><label for="dj-amount">Kiasi cha kuanzia</label><input id="dj-amount" inputmode="decimal" placeholder="Mfano: 250000 DJF"></div>
+          <button type="submit">Pendekeza</button>
+        </form>
+        <div class="sw-country-result" id="dj-country-result" role="status" aria-live="polite">Chagua kazi ili kupata njia inayofaa na kikomo cha chanzo.</div>
+      </div>
+    </div>
+  </section>
   <section class="sec">
     <div class="wrap">
       <div class="eyebrow">Muhtasari wa Haraka</div>
@@ -235,6 +275,26 @@
 </nav>
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
+<script>
+(function(){
+  var form=document.getElementById('dj-country-router');
+  var result=document.getElementById('dj-country-result');
+  if(!form||!result){return;}
+  var routes={
+    paye:['/sw/djibouti/kikokotoo-kodi-mshahara/','Kikokotoo cha PAYE cha Djibouti','Tumia mshahara ghafi, kisha linganisha matokeo na payroll au mshauri wa kodi.'],
+    vat:['/sw/djibouti/kikokotoo-vat/','Kikokotoo cha VAT Djibouti','Tumia kwa ankara na bei ya biashara; thibitisha kiwango na msamaha kabla ya kuwasilisha.'],
+    fx:['/sw/mshahara-na-kodi/fx/','Sarafu na FX','Tumia kama makadirio ya planning; viwango vya benki na money transfer hubadilika haraka.'],
+    invoice:['/sw/zana/kizalishaji-ankara/','Kizalishaji ankara','Unda ankara ya awali, kisha ongeza TIN/VAT na masharti ya biashara kama yanahitajika.']
+  };
+  form.addEventListener('submit',function(event){
+    event.preventDefault();
+    var task=document.getElementById('dj-task').value;
+    var amount=(document.getElementById('dj-amount').value||'kiasi ulicho nacho').trim();
+    var item=routes[task]||routes.paye;
+    result.innerHTML='<strong>Pendekezo:</strong> fungua <a href="'+item[0]+'">'+item[1]+'</a> na tumia '+amount+' kama input ya kuanzia. <small>Kanusho 2026: AfroTools hutoa makadirio ya kupanga; thibitisha kodi, VAT, FX na nyaraka na chanzo rasmi au mshauri anayefaa. '+item[2]+'</small>';
+  });
+})();
+</script>
 <script>
 function initSwCountryHub() {
   if (typeof renderToolGrid === 'function') {

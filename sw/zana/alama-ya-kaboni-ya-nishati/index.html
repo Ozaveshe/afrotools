@@ -53,35 +53,43 @@
 <section class="en-tool-hero"><div class="container">
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/sw/">Nyumbani</a> <span>/</span> <a href="/sw/nishati-na-huduma/">Nishati na Huduma</a> <span>/</span> Alama ya Kaboni ya Nishati</nav>
 <h1>Alama ya Kaboni ya Nishati</h1>
-<p class="en-tool-hero-sub">Tumia kuona emissions za matumizi ya nishati na kuandaa hatua za kupunguza. Si inventory rasmi ya carbon/kaboni.</p>
+<p class="en-tool-hero-sub">Tumia kuona makisio ya uzalishaji wa kaboni kutokana na matumizi ya nishati na kuandaa hatua za kupunguza. Si inventory rasmi ya carbon/kaboni.</p>
 </div></section>
 <main class="en-main"><section data-sw-prompt-note="69" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:18px;color:#334155;line-height:1.65;"><strong style="color:#0f172a;">Istilahi na mipaka:</strong> Istilahi za mazingira na huduma zimefafanuliwa: EV ni gari la umeme, carbon ni kaboni/uzalishaji wa hewa chafu, kWh ni kipimo cha matumizi ya umeme, backup ni nishati ya akiba, generator ni jenereta, na solar ni umeme wa jua. Matokeo ni makadirio ya kupanga, si bei rasmi ya utility, utabiri wa hali ya hewa, matokeo ya maabara au ushauri wa mamlaka.</div></section>
-<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span></span><h2>Enter Your Monthly Energy Use</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span></span><h2>Weka matumizi yako ya nishati kwa mwezi</h2><span class="en-card-toggle">&#x25BE;</span></div>
 <div class="en-card-body"><div class="en-form-grid">
 <div class="en-field"><label class="en-label" for="countrySelect">Nchi</label><select class="en-select" id="countrySelect">
 <option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="CI">Cte d'Ivoire</option><option value="CM">Cameroon</option><option value="MA">Morocco</option><option value="TN">Tunisia</option><option value="AO">Angola</option>
 </select></div>
-<div class="en-field"><label class="en-label" for="gridKWh">Grid Electricity (kWh/month)</label><input class="en-input" type="number" id="gridKWh" placeholder="e.g. 200" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="gridKWh">Umeme wa grid (kWh/mwezi)</label><input class="en-input" type="number" id="gridKWh" placeholder="mf. 200" inputmode="numeric"></div>
 <div class="en-field"><label class="en-label" for="genLitres">Jenereta ya Dizeli (lita/mwezi)</label><input class="en-input" type="number" id="genLitres" placeholder="e.g. 40" inputmode="numeric"></div>
-<div class="en-field"><label class="en-label" for="lpgKg">LPG / Cooking Gas (kg/month)</label><input class="en-input" type="number" id="lpgKg" placeholder="e.g. 12.5" inputmode="numeric"></div>
-<div class="en-field"><label class="en-label" for="woodKg">Firewood / Biomass (kg/month)</label><input class="en-input" type="number" id="woodKg" placeholder="e.g. 0" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="lpgKg">LPG / gesi ya kupikia (kg/mwezi)</label><input class="en-input" type="number" id="lpgKg" placeholder="mf. 12.5" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="woodKg">Kuni / biomass (kg/mwezi)</label><input class="en-input" type="number" id="woodKg" placeholder="mf. 0" inputmode="numeric"></div>
 </div>
-<button class="en-btn" id="calcBtn" type="button">Hesabu Footprint</button></div></div>
+<button class="en-btn" id="calcBtn" type="button">Hesabu alama ya kaboni</button></div></div>
 <div class="en-results" id="results">
-<div class="en-res-hero"><div class="en-res-label">Monthly CO Footprint</div><div class="en-res-amount" id="rTotal"></div><div class="en-res-sub" id="rRating">Rating: </div></div>
-<table class="en-results-table"><thead><tr><th>Energy Source</th><th>CO / Month</th><th>Share</th></tr></thead><tbody id="rBreakdown"></tbody></table>
-<table class="en-results-table" style="margin-top:12px"><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
-<tr><td>Annual CO</td><td id="rAnnual"></td></tr>
-<tr><td>Trees Needed to Offset</td><td id="rTrees"></td></tr>
-<tr><td>Offset Cost / Year</td><td id="rOffset"></td></tr>
-<tr><td>solar/umeme wa jua Could Reduce By</td><td id="rSolar"></td></tr>
+<div class="en-res-hero"><div class="en-res-label">Alama ya CO2 kwa mwezi</div><div class="en-res-amount" id="rTotal"></div><div class="en-res-sub" id="rRating">Kiwango: </div></div>
+<table class="en-results-table"><thead><tr><th>Chanzo cha nishati</th><th>CO2 / mwezi</th><th>Sehemu</th></tr></thead><tbody id="rBreakdown"></tbody></table>
+<table class="en-results-table" style="margin-top:12px"><thead><tr><th>Kipimo</th><th>Thamani</th></tr></thead><tbody>
+<tr><td>CO2 ya mwaka</td><td id="rAnnual"></td></tr>
+<tr><td>Miti inayokadiriwa ku-offset</td><td id="rTrees"></td></tr>
+<tr><td>Gharama ya offset kwa mwaka</td><td id="rOffset"></td></tr>
+<tr><td>Solar inaweza kupunguza kwa</td><td id="rSolar"></td></tr>
 </tbody></table>
 <div class="en-observations" id="rObs"></div>
 </div>
 <section class="en-seo">
-<h2>Alama ya Kaboni ya Nishati in Africa  Understanding Your Impact</h2>
-<p>Africa's per-capita energy carbon/kaboni footprint is among the lowest globally, yet the combination of unreliable grid power and heavy generator/jenereta use creates significant emissions. Understanding your footprint is the first step to reducing it through solar/umeme wa jua, LPG upgrades, and energy efficiency.</p>
-<p><strong>Disclaimer:</strong> CO estimates use standard emission factors. Actual values vary by mafuta type and grid mix.</p>
+<h2>Alama ya kaboni ya nishati Afrika</h2>
+<p>Matumizi ya umeme wa grid, jenereta, LPG na kuni yanaweza kubadilisha uzalishaji wa kaboni wa kaya au biashara. Kuelewa alama yako husaidia kupanga solar, LPG bora, vifaa vyenye ufanisi na kupunguza matumizi ya jenereta.</p>
+<p><strong>Kanusho:</strong> Makisio ya CO2 hutumia emission factors za kawaida. Thamani halisi hubadilika kulingana na aina ya mafuta, grid mix, ufanisi wa vifaa na tabia ya matumizi.</p>
+</section>
+
+<section data-tool-verification-panel class="sw-tool-verification" aria-label="Mbinu, vyanzo na mipaka ya alama ya kaboni" style="max-width:1120px;margin:26px auto 18px;padding:0 24px;">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+    <article style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:14px;padding:16px 18px;color:#1e3a8a;"><strong>Mbinu ya kukokotoa</strong><p style="margin:.45rem 0 0;line-height:1.65;">Tunatumia kWh za grid, lita za dizeli, kg za LPG, kg za biomass na emission factors za kupanga ili kukokotoa CO2 ya mwezi na mwaka.</p></article>
+    <article style="border:1px solid #fde68a;background:#fffbeb;border-radius:14px;padding:16px 18px;color:#92400e;"><strong>Makadirio tu</strong><p style="margin:.45rem 0 0;line-height:1.65;">Si inventory rasmi ya carbon, MRV, report ya ESG au cheti cha offset. Hakiki fuel records, bills, grid factor, auditor au carbon professional kabla ya kuripoti rasmi.</p></article>
+    <article style="border:1px solid #bbf7d0;background:#f0fdf4;border-radius:14px;padding:16px 18px;color:#166534;"><strong>Chanzo na uhakiki</strong><p style="margin:.45rem 0 .8rem;line-height:1.65;">Vyanzo ni bill ya umeme, receipts za mafuta/LPG, meter logs, fuel cards na standard emission references. Tarehe ya ukaguzi: 2026-06-19.</p><button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText('Hakiki alama ya kaboni: kWh, lita za dizeli, LPG, biomass, grid factor, receipts, meter logs na kama unahitaji carbon auditor.')" style="border:0;border-radius:999px;background:#166534;color:#fff;font-weight:700;padding:.62rem .95rem;cursor:pointer;">Nakili checklist ya kaboni</button></article>
+  </div>
 </section>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">

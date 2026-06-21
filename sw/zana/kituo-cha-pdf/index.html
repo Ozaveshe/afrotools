@@ -55,7 +55,7 @@ h1{font-size:clamp(2rem,5vw,3.3rem);line-height:1.04;letter-spacing:-.04em;margi
   <p class="lead">Chagua zana ya PDF kwa kazi maalum: kuunganisha, kugawanya, kubana, kusaini, kulinda, OCR, kujaza fomu na kupanga kurasa. Faili nyeti zinahitaji uhakiki kabla ya kuwasilishwa rasmi.</p>
   <div class="hero-actions"><a class="btn primary" href="/sw/zana/nafasi-pdf/">Fungua nafasi ya PDF</a><a class="btn ghost" href="/sw/zana-zote/">Tazama zana zote</a></div>
 </div></section>
-<main>
+<main><section class="sec alt" data-tool-verification-panel data-sw-pdf-router><div class="wrap"><div class="sec-head"><div class="kicker">Chagua faili na kazi</div><h2>Njia ya haraka ya PDF</h2><p>Chagua aina ya kazi na faili zako ili kupata njia sahihi. Faili hazipakishwi hapa; utazifungua kwenye zana ya kivinjari inayofaa.</p></div><div class="grid"><div class="doc-card"><label for="pdfTask"><strong>Kazi ya PDF</strong></label><select id="pdfTask" style="width:100%;margin-top:8px;padding:11px;border:1px solid #cbd5e1;border-radius:10px"><option value="/sw/zana/nafasi-pdf/">Unganisha au gawanya PDF</option><option value="/sw/zana/kubana-pdf/">Bana PDF</option><option value="/sw/zana/kusaini-pdf/">Saini PDF</option><option value="/sw/zana/ocr-pdf/">OCR / toa maandishi</option><option value="/sw/zana/alama-maji-pdf/">Weka watermark</option></select></div><div class="doc-card"><label for="pdfFiles"><strong>Faili za kuandaa</strong></label><input id="pdfFiles" type="file" accept="application/pdf" multiple style="width:100%;margin-top:8px"><p style="margin:10px 0 0;color:#64748b">Majina tu ndiyo yatasomwa kwa muhtasari huu wa ndani.</p></div><div class="doc-card" data-methodology><strong>Mbinu na faragha</strong><p>Zana za PDF za AfroTools zinalenga kazi za kivinjari. Hakiki matokeo kabla ya kutuma hati rasmi, mkataba au nyaraka zenye data binafsi.</p></div></div><div class="hero-actions" style="margin-top:14px"><button type="button" class="btn primary" id="pdfPlanOpen">Fungua zana inayofaa</button><button type="button" class="btn ghost" id="pdfPlanCopy">Nakili mpango</button><span id="pdfPlanStatus" aria-live="polite" style="font-weight:800;color:#475569"></span></div></div></section>
 <section class="sec"><div class="wrap"><div class="sec-head"><div class="kicker">Nafasi ya kazi na kazi za msingi</div><h2>Nafasi ya kazi na kazi za msingi</h2><p>Tumia sehemu hii kwa kazi za kawaida za PDF. Matokeo hutegemea faili, kivinjari, ruhusa za kifaa na ubora wa nyaraka chanzo.</p></div><div class="grid"><a class="doc-card" href="/sw/zana/nafasi-pdf/">
     <span class="doc-card-kicker">PDF workspace / merge / split</span>
     <strong>Nafasi ya Kazi ya PDF</strong>
@@ -141,5 +141,17 @@ h1{font-size:clamp(2rem,5vw,3.3rem);line-height:1.04;letter-spacing:-.04em;margi
 <!-- sw-advanced-pdf-workspace:end -->
 </main>
 <afro-footer></afro-footer>
-</body>
+<script>
+(function(){
+  function swPdfPlanSummary(){
+    var task = document.getElementById('pdfTask');
+    var files = document.getElementById('pdfFiles');
+    var names = files && files.files && files.files.length ? Array.prototype.map.call(files.files, function(file){ return file.name; }).join(', ') : 'Hakuna faili iliyochaguliwa bado';
+    return 'Mpango wa PDF AfroTools\nKazi: ' + (task && task.selectedOptions[0] ? task.selectedOptions[0].textContent : 'PDF') + '\nFaili: ' + names + '\nMbinu: chagua zana ya kivinjari, hakiki matokeo, kisha export.\nKanusho: si uthibitisho rasmi au ushauri wa kisheria.';
+  }
+  var open = document.getElementById('pdfPlanOpen'), copy = document.getElementById('pdfPlanCopy'), status = document.getElementById('pdfPlanStatus');
+  if(open) open.addEventListener('click', function(){ var task = document.getElementById('pdfTask'); location.href = task ? task.value : '/sw/zana/nafasi-pdf/'; });
+  if(copy) copy.addEventListener('click', function(){ var text = swPdfPlanSummary(); if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ if(status) status.textContent='Mpango umenakiliwa.'; }).catch(function(){ if(status) status.textContent='Nakili kwa mkono ikiwa ruhusa imezuiwa.'; }); } });
+})();
+</script></body>
 </html>

@@ -508,6 +508,24 @@ select:focus,input:focus{outline:none;border-color:var(--np-blue);box-shadow:0 0
 </div>
 <afro-related-tools category="government" current="national-pension"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="fr-proof-panel" data-fr-proof-panel data-tool-verification-panel aria-label="Methode, sources et limites" style="max-width:960px;margin:24px auto;padding:0 20px;">
+  <div style="border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 10px 26px rgba(15,23,42,.06);color:#334155;line-height:1.6">
+    <h2 style="font-size:1.1rem;margin:0 0 8px;color:#0f172a">Methode, source et verification</h2>
+    <p style="margin:0 0 12px">Utilisez ce resultat comme estimation de preparation. Avant decision, confirmez les taux, dates, exemptions, justificatifs et conditions avec la source competente.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px">
+      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Methode</strong><br>Calcul local base sur les champs saisis et les hypotheses visibles de la page.</div>
+      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Source a verifier</strong><br><a href="https://afrotools.com/fr/all-tools/" rel="noopener" target="_blank">Caisse ou organisme national de pension du pays concerne</a></div>
+      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Limite</strong><br>Pas un avis fiscal, medical, juridique, bancaire ou officiel. Mise a jour a verifier en 2026.</div>
+    </div>
+    <output data-fr-proof-output style="display:block;margin-top:12px;border:1px solid #e2e8f0;border-left:4px solid #2563eb;border-radius:0 8px 8px 0;background:#f8fafc;padding:12px;white-space:pre-line"></output>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center"><button type="button" data-fr-proof-copy style="border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer">Copier le brief</button><button type="button" data-fr-proof-download style="border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer">Telecharger TXT</button><span data-fr-proof-status aria-live="polite" style="font-size:.82rem;color:#64748b"></span></div>
+  </div>
+</section>
+
+<script data-fr-proof-script>
+(function(){var panel=document.querySelector('[data-fr-proof-panel]');if(!panel)return;var title="Simulateur national de pension en Afrique";var status=panel.querySelector('[data-fr-proof-status]');var output=panel.querySelector('[data-fr-proof-output]');function brief(){return [title,'Methode: estimation locale basee sur les champs saisis et les hypotheses visibles.','Source a verifier: Caisse ou organisme national de pension du pays concerne','Limite: confirmer les taux, dates, exemptions et conditions avant decision; pas un avis officiel.','Annee de verification: 2026'].join('\n');}function render(){if(output)output.textContent=brief();if(status)status.textContent='';}render();var copy=panel.querySelector('[data-fr-proof-copy]');if(copy)copy.addEventListener('click',function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var download=panel.querySelector('[data-fr-proof-download]');if(download)download.addEventListener('click',function(){var blob=new Blob([brief()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download="brief-verification-national-pension.txt";a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT telecharge.';});})();
+</script>
 <afro-footer></afro-footer>
 
 <script>

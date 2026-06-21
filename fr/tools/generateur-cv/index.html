@@ -70,6 +70,18 @@ body{background:#f8fafc;color:#0f172a}
 .fr-tool-frame iframe{display:block;width:100%;min-height:720px;border:0;background:#fff}
 .fr-note{margin:1rem 0 1.25rem;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:14px;background:#eff6ff;color:#1e3a8a;line-height:1.65;font-size:.95rem}
 .fr-note strong{display:block;margin-bottom:.25rem;color:#172554}
+.fr-local-cv{margin:1rem 0 1.25rem;padding:1.15rem;background:#fff;border:1px solid #dbe4ee;border-radius:18px;box-shadow:0 12px 34px rgba(15,23,42,.06)}
+.fr-local-cv h2{margin:0 0 .55rem;font-size:1.2rem}
+.fr-local-cv p{color:#475569;line-height:1.7}
+.fr-cv-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem;margin-top:.9rem}
+.fr-cv-form label{font-weight:800;color:#334155;font-size:.88rem}
+.fr-cv-form input,.fr-cv-form textarea,.fr-cv-form select{width:100%;margin-top:.4rem;border:1.5px solid #dbe4ee;border-radius:12px;padding:.8rem;font:inherit;color:#0f172a;background:#fff}
+.fr-cv-form textarea{min-height:120px;resize:vertical}
+.fr-cv-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.9rem}
+.fr-cv-actions button{border:0;border-radius:12px;background:#0f6fd6;color:#fff;font:inherit;font-weight:900;padding:.8rem 1rem;cursor:pointer}
+.fr-cv-actions button.secondary{background:#e2e8f0;color:#0f172a}
+.fr-cv-result{margin-top:.9rem;border:1px solid #bfdbfe;background:#eff6ff;border-radius:14px;padding:1rem;color:#1e3a8a;line-height:1.65;white-space:pre-wrap}
+.fr-privacy{margin-top:.8rem;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:.85rem;color:#166534;line-height:1.6}
 .fr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin-top:1rem}
 .fr-link{display:block;padding:1rem;border:1px solid #dbe4ee;border-radius:14px;background:#fff;text-decoration:none;color:#0f172a}
 .fr-link:hover{border-color:#60a5fa;box-shadow:0 10px 24px rgba(15,23,42,.08)}
@@ -101,6 +113,19 @@ body{background:#f8fafc;color:#0f172a}
 </section>
 <main class="fr-main">
   <div class="fr-note"><strong>Un CV ne remplace pas l’adaptation au poste.</strong> Relisez vos informations, adaptez le profil au poste, évitez les données personnelles inutiles et vérifiez les formats demandés par l’employeur avant l’envoi.</div>
+  <section class="fr-local-cv" data-fr-cv-local data-tool-verification-panel>
+    <h2>Préparer le brief avant le CV</h2>
+    <p>Collez un brouillon ou importez un fichier texte pour transformer vos informations en brief de CV. Tout reste dans votre navigateur : aucun upload, browser-local, files never leave your device.</p>
+    <form id="frCvLocalForm" class="fr-cv-form">
+      <label>Importer un brouillon TXT<input id="frCvFile" type="file" accept=".txt,.md,.csv,text/plain"></label>
+      <label>Poste visé<select id="frCvRole"><option>Finance, comptabilité ou audit</option><option>Technologie ou data</option><option>Vente, marketing ou support client</option><option>Administration, opérations ou ONG</option><option>Stage ou jeune diplômé</option></select></label>
+      <label style="grid-column:1/-1;">Notes de carrière<textarea id="frCvNotes" placeholder="Expérience, réalisations, outils, langues, pays, certifications, liens à vérifier..."></textarea></label>
+    </form>
+    <div class="fr-cv-actions"><button id="frCvBuild" type="button">Créer le brief</button><button id="frCvCopy" class="secondary" type="button">Copier</button><button id="frCvDownload" class="secondary" type="button">Télécharger TXT</button></div>
+    <div id="frCvResult" class="fr-cv-result" role="status" aria-live="polite">Ajoutez un brouillon ou quelques notes, puis créez un brief structuré avant d’utiliser le générateur complet.</div>
+    <div class="fr-privacy"><strong>Confidentialité locale.</strong> Le texte du CV, le fichier importé, les contacts et les liens restent sur cet appareil. N’envoyez pas de CV à un service IA sans consentement explicite.</div>
+    <p><strong>Méthodologie :</strong> le brief classe les informations en profil, preuves, compétences, mots-clés et points à vérifier. <strong>Avertissement :</strong> résultat indicatif, à relire avant candidature. Mise à jour produit : 2026.</p>
+  </section>
   <section class="fr-card fr-tool-frame" aria-label="Générateur de CV">
     <iframe id="fr-source-frame" src="/tools/cv-builder/" title="Générateur de CV" loading="eager"></iframe>
   </section>
@@ -115,6 +140,39 @@ body{background:#f8fafc;color:#0f172a}
   <section class="fr-section fr-faq"><h2>Questions fréquentes</h2><details><summary>Le générateur garantit-il une embauche ?</summary><p>Non. Il aide à produire un document propre, mais la sélection dépend du poste, du marché et du recruteur.</p></details><details><summary>Puis-je exporter en PDF ?</summary><p>Oui, utilisez l’export prévu par le générateur et vérifiez le rendu avant l’envoi.</p></details></section>
 </main>
 <script>
+(function(){
+  const fileInput=document.getElementById('frCvFile');
+  const notes=document.getElementById('frCvNotes');
+  const role=document.getElementById('frCvRole');
+  const result=document.getElementById('frCvResult');
+  let importedText='';
+  function makeBrief(){
+    const text=[importedText,notes.value].filter(Boolean).join('\n').trim();
+    const lines=text.split(/\n+/).map(function(line){return line.trim();}).filter(Boolean).slice(0,18);
+    const skillHints=(text.match(/\b(Excel|Power BI|SQL|Python|Salesforce|QuickBooks|SAP|IFRS|French|English|Swahili|CRM|audit|budget|data|marketing|operations)\b/gi)||[]).slice(0,10);
+    const brief=[
+      'Brief CV - '+role.value,
+      '',
+      'Profil cible: adaptez le résumé au poste visé et au pays de candidature.',
+      'Preuves à placer en haut: '+(lines.slice(0,4).join(' | ')||'ajoutez 3 à 5 réalisations mesurables.'),
+      'Compétences détectées: '+(Array.from(new Set(skillHints)).join(', ')||'ajoutez outils, langues, secteurs et certifications.'),
+      'Points à vérifier: dates, employeurs, diplômes, liens, téléphone, email, autorisation de travail et format demandé.',
+      'Étape suivante: utilisez le générateur complet ci-dessous, exportez en PDF, puis relisez chaque fait avant envoi.'
+    ].join('\n');
+    result.textContent=brief;
+    return brief;
+  }
+  fileInput.addEventListener('change',function(){
+    const file=fileInput.files&&fileInput.files[0];
+    if(!file) return;
+    const reader=new FileReader();
+    reader.onload=function(){importedText=String(reader.result||'').slice(0,12000);result.textContent='Brouillon importé localement. Créez le brief quand vous êtes prêt.';};
+    reader.readAsText(file);
+  });
+  document.getElementById('frCvBuild').addEventListener('click',makeBrief);
+  document.getElementById('frCvCopy').addEventListener('click',function(){const text=makeBrief();const btn=this;if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){btn.textContent='Copié';}).catch(function(){btn.textContent='Copie manuelle';});}else{btn.textContent='Copie manuelle';}});
+  document.getElementById('frCvDownload').addEventListener('click',function(){const blob=new Blob([makeBrief()],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='brief-cv-afrotools.txt';a.click();URL.revokeObjectURL(a.href);});
+})();
 (function(){
   const textMap={"Resume":"CV","CV Builder":"Générateur de CV","Personal Information":"Informations personnelles","Work Experience":"Expérience professionnelle","Éducation":"Formation","Skills":"Compétences","Download PDF":"Télécharger le PDF","Preview":"Aperçu","Template":"Modèle","Save":"Enregistrer","Share":"Partager"};
   const frame=document.getElementById('fr-source-frame');

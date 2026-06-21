@@ -193,7 +193,22 @@ body{margin:0;background:#f4f7fb;color:#0f172a;font-family:'DM Sans',system-ui,-
 <section class="fr-section"><h2>Questions fréquentes</h2><div class="fr-faq"><details><summary>Quels frais faut-il surveiller en priorité ?</summary><p>Les principaux postes sont l'honoraire mensuel de gestion, les frais de mise en location, les frais de renouvellement et, selon le pays, la TVA appliquée sur la commission.</p></details><details><summary>Les frais de mise en location sont-ils négociables ?</summary><p>Oui, très souvent. Pour les renouvellements, de nombreuses agences acceptent un montant réduit ou un demi-mois de loyer selon la qualité du bien et la fidélité du bailleur.</p></details><details><summary>La TVA doit-elle être incluse dans le budget ?</summary><p>Oui, lorsqu'elle s'applique aux honoraires d'agence. L'outil permet de l'intégrer afin d'éviter une sous-estimation du coût total.</p></details></div></section>
 </div>
 <aside class="fr-side"><div class="fr-section" style="margin-top:0"><h2>Outils associés</h2><div class="fr-list"><div class="fr-kicker-card"><strong>Rendement locatif</strong><span>Comparez le rendement brut et net de votre bien après frais.</span></div><div class="fr-kicker-card"><strong>ROI immobilier</strong><span>Mesurez la rentabilité globale d'un investissement immobilier.</span></div><div class="fr-kicker-card"><strong>Vérification locataire</strong><span>Réduisez le risque avant la mise en location.</span></div><div class="fr-kicker-card"><strong>Frais de transfert</strong><span>Anticipez le coût d'achat avant la signature.</span></div></div></div><div class="fr-section"><h2>Conseils de négociation</h2><div class="fr-list"><div class="fr-kicker-card"><strong>Frais de mise en location</strong><span>Le poste le plus négociable est souvent celui de la mise en location, surtout pour les renouvellements.</span></div><div class="fr-kicker-card"><strong>Portefeuille multi-biens</strong><span>Si vous gérez plusieurs biens, demandez une remise sur le pourcentage de gestion.</span></div><div class="fr-kicker-card"><strong>Vérification TVA</strong><span>Confirmez toujours si l'agence est autorisée à facturer la TVA avant de budgéter les coûts.</span></div></div></div></aside>
-</div></main>
+</div>
+<section class="fr-decision-panel" data-fr-decision-planner style="max-width:1120px;margin:24px auto;padding:0 24px;">
+  <div style="background:#fff;border:1px solid #dbe4ef;border-radius:14px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.06);">
+    <h2 style="margin:0 0 8px;color:#0f172a;font-size:1.15rem;">Preparation rapide</h2>
+    <p style="margin:0 0 14px;color:#475569;line-height:1.6;"><strong>Methodologie:</strong> renseignez le pays, le montant et l'objectif; la page transforme ces entrees en resume de verification avant d'utiliser l'outil principal. Sources: version source AfroTools, liens et hypotheses visibles sur cette page. Mise a jour 2026.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Pays ou devise<input data-fr-decision-country type="text" placeholder="Ex: Nigeria, NGN, XOF" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Montant ou volume<input data-fr-decision-amount type="text" placeholder="Ex: 250000" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Objectif<input data-fr-decision-goal type="text" placeholder="Ex: comparer deux scenarios" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"><button type="button" data-fr-decision-button style="border:0;border-radius:999px;background:#0f766e;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer;">Creer le resume</button><span data-fr-decision-status aria-live="polite" style="color:#64748b;align-self:center;"></span></div>
+    <output data-fr-decision-output style="display:block;margin-top:12px;border-left:4px solid #0f766e;background:#f8fafc;border-radius:10px;padding:12px;color:#334155;line-height:1.55;">Ajoutez quelques informations pour preparer votre verification.</output>
+    <p style="margin:12px 0 0;color:#475569;line-height:1.6;"><strong>Avertissement:</strong> cette estimation generale ne remplace pas un avis juridique, fiscal, medical, financier ou professionnel. Verifiez les sources officielles, les dates, les frais et les seuils avant de payer, signer ou declarer.</p>
+  </div>
+</section>
+</main>
 <afro-related-tools category="property" current="property-mgmt-fees"></afro-related-tools>
 
   <section class="fr-caution-note" aria-label="Repère uniquement" style="max-width:1180px;margin:22px auto 34px;padding:16px 18px;border:1px solid #bfdbfe;border-radius:14px;background:#eff6ff;color:#1e3a8a;line-height:1.65">
@@ -269,6 +284,28 @@ body{margin:0;background:#f4f7fb;color:#0f172a;font-family:'DM Sans',system-ui,-
     })
     .catch(function(err){ console.error('[fr-wrapper][frais-gestion-immobiliere]', err); fallback('Le moteur source est momentanément indisponible.'); })
     .finally(function(){ if (timeoutId) clearTimeout(timeoutId); });
+})();
+</script>
+<script>
+(function(){
+  const root = document.querySelector('[data-fr-decision-planner]');
+  if (!root) return;
+  const country = root.querySelector('[data-fr-decision-country]');
+  const amount = root.querySelector('[data-fr-decision-amount]');
+  const goal = root.querySelector('[data-fr-decision-goal]');
+  const output = root.querySelector('[data-fr-decision-output]');
+  const status = root.querySelector('[data-fr-decision-status]');
+  function render(){
+    const title = (document.querySelector('h1') || {}).innerText || 'Outil AfroTools';
+    const parts = [];
+    if (country.value.trim()) parts.push('Pays/devise: ' + country.value.trim());
+    if (amount.value.trim()) parts.push('Montant/volume: ' + amount.value.trim());
+    if (goal.value.trim()) parts.push('Objectif: ' + goal.value.trim());
+    output.textContent = parts.length ? title + ' - ' + parts.join(' | ') + '. Verifiez les hypotheses et les sources avant decision.' : 'Ajoutez quelques informations pour preparer votre verification.';
+    if (status) status.textContent = parts.length ? 'Resume pret.' : '';
+  }
+  root.querySelector('[data-fr-decision-button]')?.addEventListener('click', render);
+  [country, amount, goal].forEach(function(input){ input && input.addEventListener('input', render); });
 })();
 </script>
 </body>

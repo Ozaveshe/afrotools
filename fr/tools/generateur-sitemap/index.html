@@ -40,6 +40,8 @@
 .fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
 .fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
 .fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
+.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
 </style>
 <script type="application/ld+json">
 {
@@ -86,9 +88,23 @@
 <p>Générez des sitemaps XML pour votre site avec priorités, fréquences et dates de modification.</p>
 </section>
 <div class="fr-wrap">
+<section class="fr-prep-panel" data-fr-prep aria-label="Preparation locale">
+<h2>Preparez votre saisie</h2>
+<p>Ajoutez le contexte avant de lancer Générateur de sitemap. Ce brouillon reste dans votre navigateur et vous aide a verifier le resultat attendu.</p>
+<div class="fr-prep-fields">
+<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Senegal, client, projet"></label>
+<label>Donnees<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
+<label>Resultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, verifier, calculer"></label>
+</div>
+<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.</output>
+<div class="fr-prep-actions"><a href="/tools/sitemap-gen/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le resume</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
+</section>
 <div class="fr-tool-frame">
 <iframe src="/tools/sitemap-gen/" title="Générateur de sitemap" loading="lazy"></iframe>
 </div>
+<script>
+(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Générateur de sitemap";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
+</script>
 <div class="fr-seo">
 <h2>Générateur de sitemap XML</h2>
 <p>Le générateur de sitemap d'AfroTools crée des fichiers XML sitemap pour aider les moteurs de recherche à découvrir vos pages publiques. Ajoutez vos URL avec les priorités, fréquences de mise à jour et dates de dernière modification. Le fichier généré suit le protocole sitemap standard.</p>
@@ -101,6 +117,21 @@
 <details><summary>Comment soumettre mon sitemap à Google ?</summary><p>Ajoutez votre sitemap dans Google Search Console via la section Sitemaps. Vous pouvez également ajouter la directive Sitemap dans votre fichier robots.txt.</p></details>
 </div>
 </div>
+
+<section data-tool-verification-panel style="max-width:1080px;margin:20px auto;padding:20px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 8px 22px rgba(15,23,42,.05);line-height:1.65">
+  <!-- upgrade-proof-panel:start -->
+  <p style="margin:0 0 6px;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0f766e">Contr?le utile</p>
+  <h2 style="margin:0 0 8px;font-size:1.2rem;color:#0f172a">Sitemap: contr?le avant publication</h2>
+  <p style="margin:.35rem 0;color:#475569"><strong>M?thodologie :</strong> Listez les URL canoniques, excluez les noindex, puis validez le XML avant envoi.</p>
+  <p style="margin:.35rem 0;color:#475569"><strong>Source ? v?rifier :</strong> Routes publi?es du site, canonicals et Search Console si disponible.</p>
+  <p style="margin:.35rem 0;color:#475569"><strong>Avertissement :</strong> Un sitemap aide la d?couverte; il ne garantit pas l?indexation.</p>
+  <form aria-label="Sitemap: contr?le avant publication" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px">
+    <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Montant ou contexte<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" inputmode="decimal" placeholder="Ex : 250000"></label>
+    <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Point ? confirmer<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" placeholder="Source, date, autorit?, expert"></label>
+    <button type="button" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;margin-top:12px;padding:10px 14px;border:0;border-radius:8px;background:#0f766e;color:#fff;font-weight:900;text-decoration:none;cursor:pointer">Copier le r?sum?</button>
+  </form>
+  <!-- upgrade-proof-panel:end -->
+</section>
 <afro-footer></afro-footer>
 </body>
 </html>

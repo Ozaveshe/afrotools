@@ -34,6 +34,8 @@
 .fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
 .fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
 .fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
+.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
 </style>
 <script type="application/ld+json">
 {
@@ -80,7 +82,21 @@
 <p>Lisez vos resultats d'analyses comme aide educative, puis confirmez-les avec le laboratoire ou un professionnel de sante.</p>
 </section>
 <div class="fr-wrap">
+<section class="fr-prep-panel" data-fr-prep aria-label="Preparation locale">
+<h2>Preparez votre saisie</h2>
+<p>Ajoutez le contexte avant de lancer Repere de rapport medical. Ce brouillon reste dans votre navigateur et vous aide a verifier le resultat attendu.</p>
+<div class="fr-prep-fields">
+<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Senegal, client, projet"></label>
+<label>Donnees<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
+<label>Resultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, verifier, calculer"></label>
+</div>
+<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.</output>
+<div class="fr-prep-actions"><a href="/tools/medical-report/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le resume</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
+</section>
 <div class="fr-tool-frame"><iframe src="/tools/medical-report/" title="Repere de rapport medical" loading="lazy"></iframe></div>
+<script>
+(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Repere de rapport medical";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
+</script>
 <div class="fr-seo">
 <h2>Comprendre vos analyses avec prudence</h2>
 <p>Lire un rapport medical peut etre deroutant avec ses abreviations et valeurs de reference. Cette page sert de repere uniquement pour preparer vos questions et mieux suivre les termes du rapport.</p>
@@ -93,6 +109,24 @@
 <details><summary>Cet outil remplace-t-il l'avis du medecin ?</summary><p>Non. Il vous aide a preparer vos questions, mais ne pose pas de diagnostic et ne remplace jamais une consultation ou une interpretation clinique.</p></details>
 </div>
 </div>
+
+<section class="fr-proof-panel" data-fr-proof-panel data-tool-verification-panel aria-label="Methode, sources et limites" style="max-width:960px;margin:24px auto;padding:0 20px;">
+  <div style="border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 10px 26px rgba(15,23,42,.06);color:#334155;line-height:1.6">
+    <h2 style="font-size:1.1rem;margin:0 0 8px;color:#0f172a">Methode, source et verification</h2>
+    <p style="margin:0 0 12px">Utilisez ce resultat comme estimation de preparation. Avant decision, confirmez les taux, dates, exemptions, justificatifs et conditions avec la source competente.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px">
+      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Methode</strong><br>Calcul local base sur les champs saisis et les hypotheses visibles de la page.</div>
+      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Source a verifier</strong><br><a href="https://afrotools.com/fr/all-tools/" rel="noopener" target="_blank">Professionnel de sante et dossier patient local</a></div>
+      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Limite</strong><br>Pas un avis fiscal, medical, juridique, bancaire ou officiel. Mise a jour a verifier en 2026.</div>
+    </div>
+    <output data-fr-proof-output style="display:block;margin-top:12px;border:1px solid #e2e8f0;border-left:4px solid #2563eb;border-radius:0 8px 8px 0;background:#f8fafc;padding:12px;white-space:pre-line"></output>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center"><button type="button" data-fr-proof-copy style="border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer">Copier le brief</button><button type="button" data-fr-proof-download style="border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer">Telecharger TXT</button><span data-fr-proof-status aria-live="polite" style="font-size:.82rem;color:#64748b"></span></div>
+  </div>
+</section>
+
+<script data-fr-proof-script>
+(function(){var panel=document.querySelector('[data-fr-proof-panel]');if(!panel)return;var title="Repere de rapport medical";var status=panel.querySelector('[data-fr-proof-status]');var output=panel.querySelector('[data-fr-proof-output]');function brief(){return [title,'Methode: estimation locale basee sur les champs saisis et les hypotheses visibles.','Source a verifier: Professionnel de sante et dossier patient local','Limite: confirmer les taux, dates, exemptions et conditions avant decision; pas un avis officiel.','Annee de verification: 2026'].join('\n');}function render(){if(output)output.textContent=brief();if(status)status.textContent='';}render();var copy=panel.querySelector('[data-fr-proof-copy]');if(copy)copy.addEventListener('click',function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var download=panel.querySelector('[data-fr-proof-download]');if(download)download.addEventListener('click',function(){var blob=new Blob([brief()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download="brief-verification-rapport-medical.txt";a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT telecharge.';});})();
+</script>
 <afro-footer></afro-footer>
 </body>
 </html>

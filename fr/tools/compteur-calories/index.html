@@ -37,6 +37,8 @@
 .fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
 .fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
 .fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
+.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
 </style>
 <script type="application/ld+json">
 {
@@ -84,7 +86,21 @@
 <p>Estimez les calories et macronutriments de repas africains, avec une lecture prudente des portions et recettes.</p>
 </section>
 <div class="fr-wrap">
+<section class="fr-prep-panel" data-fr-prep aria-label="Preparation locale">
+<h2>Preparez votre saisie</h2>
+<p>Ajoutez le contexte avant de lancer Compteur de calories africain. Ce brouillon reste dans votre navigateur et vous aide a verifier le resultat attendu.</p>
+<div class="fr-prep-fields">
+<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Senegal, client, projet"></label>
+<label>Donnees<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
+<label>Resultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, verifier, calculer"></label>
+</div>
+<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.</output>
+<div class="fr-prep-actions"><a href="/tools/calorie-counter/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le resume</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
+</section>
 <div class="fr-tool-frame"><iframe src="/tools/calorie-counter/" title="Compteur de calories africain" loading="lazy"></iframe></div>
+<script>
+(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Compteur de calories africain";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
+</script>
 <div class="fr-note"><strong>Repère nutritionnel.</strong> Les valeurs varient selon la recette, la portion, l’huile, les ingrédients et la préparation. Pour un suivi médical, un diabète, une grossesse ou un trouble alimentaire, demandez un avis qualifié.</div>
 <div class="fr-seo">
 <h2>Compteur de calories pour plats africains</h2>

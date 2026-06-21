@@ -90,6 +90,29 @@
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web"
 }</script>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "sw",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Valuation hii ni rasmi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hapana. Ni makadirio ya kupanga mazungumzo na pitch, si uthibitisho wa mwekezaji, bei ya mwisho au ushauri wa kifedha."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Kwa nini kuna mbinu zaidi ya moja?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Startups hutathminiwa kwa vigezo tofauti kama mapato, ukuaji, gross margin, timu, traction, soko na hatua ya kampuni."
+      }
+    }
+  ]
+}</script>
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
 </head>
 <body>
@@ -144,7 +167,14 @@
     </section>
 <section class="section note warn">
       <strong>Angalizo:</strong> Matokeo haya ni makadirio ya kupanga startup valuation. Hayathibitishi faida, ufadhili, bei, thamani ya kampuni, malipo ya mtoa huduma au uhai wa biashara. Hakiki namba zako na mshauri wa biashara, mhasibu, mtoa huduma wa malipo, msajili au mamlaka ya kodi inapohitajika.
-    </section><section class="section panel">
+    </section>
+    <section class="section panel" data-tool-verification-panel>
+      <h2>Mbinu na chanzo cha kuthibitisha</h2>
+      <p>Mbinu: tunalinganisha revenue multiple, scorecard na Berkus kwa kutumia sekta, soko, hatua, mapato, ukuaji, gross margin, timu, bidhaa na traction ulizoweka. Matokeo ni makadirio tu, si valuation rasmi, term sheet, ushauri wa kifedha au ahadi ya ufadhili.</p>
+      <p class="note"><strong>Chanzo cha mwisho:</strong> cap table, financial statements, customer contracts, churn, pipeline, investor comps, market size, IP, legal diligence na terms za deal. Tarehe ya ukaguzi: 2026-06-19.</p>
+      <div class="actions"><button type="button" onclick="copyProof('Thibitisha revenue, ARR/MRR, gross margin, churn, users wanaolipa, cap table, market comps, IP, debt, runway na terms za investor kabla ya kutumia valuation kwenye pitch.')">Nakili checklist</button></div>
+    </section>
+    <section class="section panel">
       <h2>Maswali ya haraka</h2>
       <h3>Valuation hii ni rasmi?</h3><p>Hapana. Ni makadirio ya mazungumzo na kupanga pitch, si uthibitisho wa mwekezaji.</p>
       <h3>Kwa nini kuna mbinu zaidi ya moja?</h3><p>Startups hutathminiwa kwa vigezo tofauti: mapato, timu, traction, soko na hatua ya kampuni.</p>
@@ -171,6 +201,7 @@ function metric(label, value, help){ return '<div class="metric"><span>' + label
 function setResults(html){ q('results').innerHTML = html; }
 function setDetail(html){ const el = q('detail'); if (el) el.innerHTML = html; }
 function bind(calc, reset){ q('calculate').addEventListener('click', calc); if (q('reset')) q('reset').addEventListener('click', function(){ reset(); calc(); }); calc(); }
+function copyProof(text){ if (navigator.clipboard) navigator.clipboard.writeText(text); }
 const multiples={fintech:[8,12,15],healthtech:[5,8,10],edtech:[4,6,8],agritech:[3,5,7],logistics:[3,5,6],ecommerce:[2,3.5,5],saas:[8,10,12],cleantech:[4,7,10],proptech:[3,5,7]};
 const stageBase={'pre-seed':250000,seed:1500000,'series-a':8000000,'series-b':25000000};
 function calc(){ const m=multiples[q('sector').value]; const growthAdj=num('growth')>20?1.3:num('growth')>10?1:num('growth')>5?.7:.5; const marginAdj=num('grossMargin')>60?1.1:num('grossMargin')>40?1:.8; const countryAdj=(q('country').value==='NG'||q('country').value==='KE')?1:(q('country').value==='ZA'||q('country').value==='EG')?.95:.85; const revMid=num('revenue')*m[1]*growthAdj*marginAdj*countryAdj; const teamScore=Math.min(3,num('team'))/3; const productScore=Math.min(3,num('product'))/3; const marketScore=num('growth')>10?1.3:num('growth')>5?1:.7; const traction=num('users')>10000?1.3:num('users')>1000?1:.7; const score=(teamScore*.3)+(productScore*.25)+(marketScore*.2)+(traction*.15)+(.1); const scorecard=stageBase[q('stage').value]*score*countryAdj; const berkus=(Math.min(500000, teamScore*500000)+Math.min(500000, productScore*500000)+Math.min(500000, marketScore*380000)+Math.min(500000, traction*380000)+Math.min(500000, num('revenue')*.5))*countryAdj; const avg=(revMid+scorecard+berkus)/3; setResults(metric('Revenue multiple', money(revMid,'USD'), '') + metric('Scorecard', money(scorecard,'USD'), '') + metric('Berkus', money(berkus,'USD'), '') + metric('Wastani wa makadirio', money(avg,'USD'), 'Si bei ya mwisho')); setDetail('<p class="note">Tumia range hii kama mwanzo wa mazungumzo. Wawekezaji huangalia pia traction, ushahidi wa wateja, governance na hali ya soko.</p>'); }

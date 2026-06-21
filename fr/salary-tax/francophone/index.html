@@ -67,6 +67,23 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/salary-tax/francophone/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/mshahara-na-kodi/francophone/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/salary-tax/francophone/" />
+<style>
+.fr-finance-planner{border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:20px;margin:0 0 22px;box-shadow:0 10px 26px rgba(15,23,42,.06)}
+.fr-finance-planner h2{font-size:1.15rem;line-height:1.2;margin:0 0 6px;color:#0f172a;font-weight:800}
+.fr-finance-planner p{margin:0 0 14px;color:#64748b;line-height:1.6}
+.fr-finance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.fr-finance-grid label{display:grid;gap:6px;font-size:.8rem;font-weight:800;color:#334155}
+.fr-finance-grid select,.fr-finance-grid input{width:100%;min-height:44px;border:1.5px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#0f172a;padding:10px 12px;font:inherit;box-sizing:border-box}
+.fr-finance-output{display:block;margin-top:14px;border:1px solid #e2e8f0;border-left:4px solid #2563eb;border-radius:0 10px 10px 0;background:#f8fafc;color:#334155;padding:14px;line-height:1.6;white-space:pre-line}
+.fr-finance-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.fr-finance-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}
+.fr-finance-actions a{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:#2563eb;color:#fff;font-weight:800;padding:10px 14px;text-decoration:none}
+.fr-finance-status{font-size:.82rem;color:#64748b}
+.fr-finance-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.fr-finance-trust div{border:1px solid #dbeafe;background:#eff6ff;border-radius:10px;padding:10px;color:#334155;line-height:1.45}
+.fr-finance-trust strong{display:block;color:#0f172a;margin-bottom:3px}
+@media(max-width:720px){.fr-finance-grid,.fr-finance-trust{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -112,6 +129,18 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
     Retour au hub salaire &amp; fiscalité
   </a>
+  <section class="fr-finance-planner" data-fr-finance-planner data-tool-verification-panel aria-labelledby="fr-finance-planner-title">
+    <h2 id="fr-finance-planner-title">Trouver le bon outil francophone</h2>
+    <p>Choisissez le pays, le besoin et la sortie attendue. AfroTools prépare un chemin clair vers salaire net, TVA, devises ou comparaison de revenus.</p>
+    <div class="fr-finance-grid">
+      <label>Pays<select id="frFinanceCountry"><option>Sénégal</option><option>Cameroun</option><option>Maroc</option><option>Algérie</option><option>Tunisie</option><option>Côte d'Ivoire</option></select></label>
+      <label>Besoin<select id="frFinanceNeed"><option value="salary">Salaire net / paie</option><option value="vat">TVA et prix TTC</option><option value="currency">Devises et transferts</option><option value="salaryCompare">Comparer des salaires</option></select></label>
+      <label>Sortie attendue<input id="frFinanceGoal" autocomplete="off" placeholder="Ex: estimation mensuelle, brief client, contrôle facture"></label>
+    </div>
+    <output id="frFinanceOutput" class="fr-finance-output" aria-live="polite"></output>
+    <div class="fr-finance-actions"><a id="frFinanceLink" href="/fr/all-tools/">Ouvrir l'outil recommandé</a><button type="button" id="copyFrFinanceBrief">Copier le brief</button><button type="button" id="downloadFrFinanceBrief">Télécharger TXT</button><span id="frFinanceStatus" class="fr-finance-status" aria-live="polite"></span></div>
+    <div class="fr-finance-trust"><div><strong>Methodologie</strong>Route votre besoin vers les outils francais deja publies.</div><div><strong>Sources</strong>Verifiez les taux, baremes et regles sur les pages pays et les sources officielles.</div><div><strong>Limites 2026</strong>Estimation non officielle de preparation, pas une declaration fiscale ni un bulletin officiel.</div></div>
+  </section>
   <div class="shub-results-header">
     <div class="shub-results-label">Outils francophones</div>
     <span class="shub-count-badge" id="tool-count"></span>
@@ -207,6 +236,32 @@
 <afro-footer></afro-footer>
 
 <script>
+function _initFrFinancePlanner(){
+  var output=document.getElementById('frFinanceOutput');
+  if(!output)return;
+  var status=document.getElementById('frFinanceStatus');
+  var link=document.getElementById('frFinanceLink');
+  var routes={
+    salary:{label:'Calculateur salaire net',path:'/fr/salary-tax/paye/',check:'salaire brut, primes, cotisations, période, barème pays'},
+    vat:{label:'Calculateur TVA',path:'/fr/tools/calculateur-tva/',check:'prix HT/TTC, taux applicable, exemptions, date de facture'},
+    currency:{label:'Convertisseur de devises',path:'/fr/tools/convertisseur-devises/',check:'devise source, devise cible, frais de transfert, date du taux'},
+    salaryCompare:{label:'Comparateur de salaires',path:'/fr/tools/comparateur-salaires/',check:'poste, ville, seniorité, avantages et devise'}
+  };
+  function value(id){var el=document.getElementById(id);return el&&el.value?el.value.trim():'';}
+  function current(){return routes[value('frFinanceNeed')]||routes.salary;}
+  function brief(){
+    var item=current();
+    return ['Brief finance francophone AfroTools','Pays: '+value('frFinanceCountry'),'Besoin: '+item.label,'Sortie attendue: '+(value('frFinanceGoal')||'à préciser'),'Outil recommandé: '+item.path,'À vérifier: '+item.check+'.'].join('\n');
+  }
+  function render(){var item=current();if(link){link.href=item.path;link.textContent='Ouvrir '+item.label;}output.textContent=brief();if(status)status.textContent='';}
+  ['frFinanceCountry','frFinanceNeed','frFinanceGoal'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',render);});
+  var copy=document.getElementById('copyFrFinanceBrief');
+  if(copy)copy.addEventListener('click',function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copié.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
+  var download=document.getElementById('downloadFrFinanceBrief');
+  if(download)download.addEventListener('click',function(){var blob=new Blob([brief()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='brief-finance-francophone.txt';a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT téléchargé.';});
+  render();
+}
+document.addEventListener('DOMContentLoaded',_initFrFinancePlanner);
 window.HUB_CONFIG = {
   id: 'francophone',
   label: 'Afrique francophone',

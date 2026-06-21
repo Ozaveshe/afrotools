@@ -42,7 +42,7 @@
 <afro-navbar theme="dark" active="tools"></afro-navbar>
 <section class="sw-hero"><div class="sw-wrap">
 <nav class="sw-crumb" aria-label="Breadcrumb"><a href="/sw/">AfroTools Kiswahili</a> &rsaquo; <a href="/sw/biashara-na-uzingatiaji/">Biashara na Uzingatiaji</a> &rsaquo; Ankara</nav>
-<h1>Kizalishaji cha<br><em>ankara</em></h1>
+<h1>Kizalishaji cha <br><em>ankara</em></h1>
 <p class="sw-sub">Andaa ankara yenye bidhaa, kodi ya VAT, jumla, maelezo ya mteja na PDF inayoweza kutumwa mara moja.</p>
 <div class="sw-badges"><span class="sw-badge">PDF</span><span class="sw-badge">VAT</span><span class="sw-badge">Hifadhi rasimu</span></div>
 </div></section><main class="sw-main" id="main-content"><div class="sw-wrap">
@@ -68,7 +68,7 @@
 <div class="sw-kicker">Hakiki na PDF</div>
 <h2>Ankara yako</h2>
 <div class="sw-preview" id="ankaraPreview">Jaza maelezo kisha bonyeza "Hakiki ankara".</div>
-<div class="sw-actions"><button class="sw-button" id="btnDownloadPDF" type="button" onclick="downloadPDF()">Pakua PDF</button><button class="sw-button secondary" id="btnSaveInv" type="button" onclick="saveAnkara()">Hifadhi rasimu</button><button class="sw-button secondary" id="btnShare" type="button" onclick="shareAnkara()">Nakili muhtasari</button><button class="sw-button secondary" id="btnReset" type="button" onclick="resetAnkara()">Safisha</button><button class="sw-button secondary" id="btnPrint" type="button" onclick="window.print()">Chapisha</button></div>
+<div class="sw-actions"><button class="sw-button" id="btnDownloadPDF" type="button" onclick="downloadPDF()">Pakua PDF</button><button class="sw-button secondary" id="btnSaveInv" type="button" onclick="saveAnkara()">Hifadhi rasimu</button><button class="sw-button secondary" id="btnShare" type="button" onclick="shareAnkara()">Nakili muhtasari</button><a class="sw-button secondary" id="btnDraftDownload" download="afrotools-ankara-rasimu.json" href="data:application/json;charset=utf-8,{}">Pakua JSON</a><label class="sw-button secondary" for="draftImport" style="cursor:pointer">Ingiza JSON</label><input id="draftImport" type="file" accept=".json,application/json" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none"><button class="sw-button secondary" id="btnReset" type="button" onclick="resetAnkara()">Safisha</button><button class="sw-button secondary" id="btnPrint" type="button" onclick="window.print()">Chapisha</button></div>
 </section>
 <section class="sw-section sw-card">
 <div class="sw-kicker">Angalia pia</div>
@@ -85,14 +85,30 @@
 function today(offset){var d=new Date();d.setDate(d.getDate()+(offset||0));return d.toISOString().slice(0,10)}
 document.getElementById('ankaraDate').value=today(0);document.getElementById('dueDate').value=today(14);
 function addItem(desc,qty,price){var body=document.getElementById('lineItems');body.insertAdjacentHTML('beforeend','<tr><td><input aria-label="Sw input bidhaa desc" class="sw-input bidhaa-desc" value="'+(desc||'Huduma')+'"></td><td><input aria-label="Sw input bidhaa qty" class="sw-input bidhaa-qty" type="number" min="0" value="'+(qty||1)+'"></td><td><input aria-label="Sw input bidhaa price" class="sw-input bidhaa-price" type="number" min="0" value="'+(price||0)+'"></td><td><button class="sw-button secondary" type="button" onclick="this.closest(\'tr\').remove();renderAnkara()">Ondoa</button></td></tr>')}
-function rows(){return Array.prototype.map.call(document.querySelectorAll('#lineItems tr'),function(r){return{desc:r.querySelector('.item-desc').value,qty:parseFloat(r.querySelector('.item-qty').value)||0,price:parseFloat(r.querySelector('.item-price').value)||0}})}
+function rows(){return Array.prototype.map.call(document.querySelectorAll('#lineItems tr'),function(r){return{desc:r.querySelector('.bidhaa-desc').value,qty:parseFloat(r.querySelector('.bidhaa-qty').value)||0,price:parseFloat(r.querySelector('.bidhaa-price').value)||0}})}
 function renderAnkara(){var company=document.getElementById('companyName').value.trim(),client=document.getElementById('clientName').value.trim();if(!company||!client){alert('Tafadhali jaza jina la kampuni na mteja.');return}var list=rows();if(!list.length){alert('Ongeza angalau bidhaa au huduma moja.');return}var cur=document.getElementById('currency').value,tax=parseFloat(document.getElementById('taxRate').value)||0,sub=0;var lines=list.map(function(x){var total=x.qty*x.price;sub+=total;return '<tr><td>'+x.desc+'</td><td>'+x.qty+'</td><td>'+cur+' '+x.price.toLocaleString('sw-TZ')+'</td><td>'+cur+' '+total.toLocaleString('sw-TZ')+'</td></tr>'}).join('');var vat=sub*tax/100,grand=sub+vat;document.getElementById('ankaraPreview').innerHTML='<h3>'+company+'</h3><p>Ankara '+document.getElementById('ankaraNumber').value+' kwa '+client+'</p><p>Tarehe: '+document.getElementById('ankaraDate').value+' | Mwisho: '+document.getElementById('dueDate').value+'</p><table class="sw-table"><thead><tr><th>Maelezo</th><th>Idadi</th><th>Bei</th><th>Jumla</th></tr></thead><tbody>'+lines+'</tbody></table><div style="text-align:right;margin-top:14px"><p>Jumla ndogo: '+cur+' '+sub.toLocaleString('sw-TZ')+'</p><p>VAT/kodi: '+cur+' '+vat.toLocaleString('sw-TZ')+'</p><h3>Jumla ya kulipa: '+cur+' '+grand.toLocaleString('sw-TZ')+'</h3></div><p>'+document.getElementById('ankaraNotes').value+'</p>';return{company:company,client:client,total:grand,currency:cur}}
 function downloadPDF(){renderAnkara();window.print()}
 function saveAnkara(){var data={companyName:companyName.value,clientName:clientName.value,ankaraNumber:ankaraNumber.value,currency:currency.value,ankaraDate:ankaraDate.value,dueDate:dueDate.value,taxRate:taxRate.value,ankaraNotes:ankaraNotes.value,items:rows()};localStorage.setItem('sw-ankara-rasimu',JSON.stringify(data));alert('Rasimu ya ankara imehifadhiwa kwenye kivinjari hiki.')}
+function draftData(){return{companyName:companyName.value,clientName:clientName.value,ankaraNumber:ankaraNumber.value,currency:currency.value,ankaraDate:ankaraDate.value,dueDate:dueDate.value,taxRate:taxRate.value,ankaraNotes:ankaraNotes.value,items:rows()}}
+function updateDraftDownload(){var link=document.getElementById('btnDraftDownload');if(link)link.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(draftData(),null,2))}
+function loadDraft(data){companyName.value=data.companyName||'';clientName.value=data.clientName||'';ankaraNumber.value=data.ankaraNumber||'INV-001';currency.value=data.currency||currency.value;ankaraDate.value=data.ankaraDate||today(0);dueDate.value=data.dueDate||today(14);taxRate.value=data.taxRate||'0';ankaraNotes.value=data.ankaraNotes||'';document.getElementById('lineItems').innerHTML='';(Array.isArray(data.items)&&data.items.length?data.items:[{desc:'Huduma',qty:1,price:0}]).forEach(function(x){addItem(x.desc,x.qty,x.price)});updateDraftDownload()}
+document.getElementById('draftImport').addEventListener('change',function(){var file=this.files&&this.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(){try{loadDraft(JSON.parse(reader.result));alert('Rasimu imeingizwa kwenye kivinjari hiki.')}catch(e){alert('Faili ya JSON haikusomeka.')}};reader.readAsText(file)});
+document.addEventListener('input',updateDraftDownload);
+document.addEventListener('change',updateDraftDownload);
 function shareAnkara(){var r=renderAnkara();if(!r)return;var txt='Ankara '+ankaraNumber.value+' - '+r.client+' - '+r.currency+' '+r.total.toLocaleString('sw-TZ');navigator.clipboard&&navigator.clipboard.writeText(txt);alert('Muhtasari wa ankara umenakiliwa.')}
 function resetAnkara(){if(confirm('Safisha fomu ya ankara?')){localStorage.removeItem('sw-ankara-rasimu');location.reload()}}
 addItem('Huduma',1,0);
+updateDraftDownload();
 </script>
+<!-- sw-score77-qa-panel:start -->
+<section class="sw-score77-qa" data-tool-verification-panel aria-label="Mbinu, vyanzo na kanusho" style="max-width:920px;margin:24px auto;padding:16px 18px;border:1px solid #bae6fd;border-radius:12px;background:linear-gradient(135deg,#ecfeff 0%,#f8fafc 100%);color:#1f2937;line-height:1.6;box-shadow:0 10px 24px rgba(15,23,42,.06)">
+  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Mbinu, vyanzo na kanusho</h2>
+  <p style="margin:.35rem 0"><strong>Mbinu:</strong> matokeo yanatumia taarifa unazoingiza, dhana zilizo kwenye ukurasa na kanuni za zana hii. Soma muhtasari kabla ya kunakili, kupakua au kutumia matokeo.</p>
+  <p style="margin:.35rem 0"><strong>Vyanzo:</strong> ukaguzi wa 2026 unahitaji hakiki chanzo rasmi, mamlaka husika, mtoa huduma, kliniki, mhasibu au nyaraka zako pale bei, sheria, afya, kodi au upatikanaji vinaweza kubadilika.</p>
+  <p style="margin:.35rem 0"><strong>Kanusho:</strong> haya ni makadirio tu na si taarifa rasmi; haibadili ushauri wa kitaalamu, wa kodi, wa kisheria, wa afya, wa bima au wa biashara.</p>
+  <p style="margin:.35rem 0"><strong>Faragha:</strong> unachoandika hubaki local kwenye browser yako isipokuwa ukurasa umeonyesha wazi kuwa unatuma au kuhifadhi data mahali pengine.</p>
+</section>
+<!-- sw-score77-qa-panel:end -->
 <afro-footer></afro-footer>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

@@ -286,7 +286,7 @@ function calc(){
 
   // Wire save button
   var saveBtn=document.querySelector('save-result-button[tool-slug="discount-calc"]');
-  if(saveBtn){
+  if(saveBtn&&typeof saveBtn.setData==='function'){
     saveBtn.setData({
       inputs:{originalPrice:price,currency:cur,discounts:discounts.map(function(d){return d.value}).join(', '),taxRate:tax+'%'},
       outputs:{finalPrice:fmt(current),savings:fmt(savings),effectiveDiscount:effectivePct.toFixed(1)+'%'}
@@ -295,7 +295,7 @@ function calc(){
 
   // Wire share button
   var shareBtn=document.querySelector('share-result-button[tool-slug="discount-calc"]');
-  if(shareBtn){
+  if(shareBtn&&typeof shareBtn.setResult==='function'){
     shareBtn.setResult({
       headline:discounts.map(function(d){return d.value}).join(' + ')+' off '+fmt(price),
       mainValue:fmt(current),

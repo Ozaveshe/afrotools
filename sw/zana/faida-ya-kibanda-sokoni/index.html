@@ -32,7 +32,7 @@
     p { line-height: 1.65; }
     a { color: #0f766e; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-    .panel, .tool-card, .result-card { background: #fff; border: 1px solid #d9e7df; border-radius: 8px; padding: 20px; box-shadow: 0 8px 28px rgba(18, 51, 39, .06); }
+    .panel, .tool-card, .result-card { background: #fff; border: 1px solid #d9e7df; border-radius: 8px; padding: 20px; box-shadow: 0 8px 28px rgba(18, 51, 39, .06); overflow: hidden; }
     .tool-card h3, .result-card h3 { margin: 0 0 8px; font-size: 1.05rem; }
     .tool-card p, .result-card p { margin: 0; color: #475b52; }
     .tool-card ul { margin: 10px 0 0; padding-left: 20px; color: #475b52; }
@@ -46,7 +46,7 @@
     .results { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 18px; }
     .metric { border: 1px solid #d9e7df; border-radius: 8px; padding: 14px; background: #fbfdfb; }
     .metric strong { display: block; font-size: 1.35rem; color: #0f3f35; margin-top: 6px; overflow-wrap: anywhere; }
-    table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 14px; display: block; overflow-x: auto; white-space: nowrap; }
     th, td { text-align: left; border-bottom: 1px solid #dce8e0; padding: 10px; vertical-align: top; }
     th { color: #143c33; background: #edf6f1; }
     .note { border-left: 4px solid #0f766e; background: #eaf7f2; padding: 14px 16px; border-radius: 8px; color: #21443b; }
@@ -142,7 +142,19 @@
         <a href="/sw/zana/usajili-biashara/">Usajili wa biashara</a>
       </div>
     </section>
-<section class="section note warn">
+<section class="section panel" data-tool-verification-panel data-sw-export-brief>
+      <h2>Mbinu, chanzo na hatua inayofuata</h2>
+      <div class="grid">
+        <div class="tool-card" data-methodology><h3>Mbinu ya hesabu</h3><p>AfroTools hutumia namba ulizoingiza, mfano wa ada au gharama, kisha hutengeneza makadirio ya kupanga. Badilisha namba zako kabla ya kutegemea matokeo.</p></div>
+        <div class="tool-card" data-official-source><h3>Chanzo cha kuthibitisha</h3><p>Hakiki bei, ada, kodi, mkataba, commission, exchange rate na masharti kwenye mtoa huduma rasmi, mhasibu, msajili au mamlaka husika kabla ya kulipa au kusaini.</p></div>
+        <div class="tool-card" data-disclaimer><h3>Kanusho</h3><p>Haya ni makadirio ya kupanga biashara, si ushauri wa fedha, kodi, uwekezaji, compliance au uthibitisho wa faida.</p></div>
+      </div>
+      <div class="actions">
+        <button type="button" id="copyBrief">Nakili muhtasari</button>
+        <button type="button" class="secondary" id="downloadBrief">Pakua TXT</button>
+        <span id="briefStatus" aria-live="polite" style="font-weight:800;color:#475569"></span>
+      </div>
+    </section><section class="section note warn">
       <strong>Angalizo:</strong> Matokeo haya ni makadirio ya kupanga biashara ya kibanda sokoni. Hayathibitishi faida, ufadhili, bei, thamani ya kampuni, malipo ya mtoa huduma au uhai wa biashara. Hakiki namba zako na mshauri wa biashara, mhasibu, mtoa huduma wa malipo, msajili au mamlaka ya kodi inapohitajika.
     </section><section class="section panel">
       <h2>Maswali ya haraka</h2>
@@ -176,6 +188,36 @@ function bind(calc, reset){ q('calculate').addEventListener('click', calc); if (
 function calc(){ const cur=q('currency').value; const rev=num('sell1')*num('qty1')+num('sell2')*num('qty2'); const cost=num('buy1')*num('qty1')+num('buy2')*num('qty2'); const gross=rev-cost; const net=gross-num('fees'); const margin=rev?net/rev*100:0; setResults(metric('Mapato kwa siku', money(rev,cur), '') + metric('Faida ghafi', money(gross,cur), '') + metric('Faida net kwa siku', money(net,cur), '') + metric('Faida kwa mwezi', money(net*num('days'),cur), pct(margin) + ' margin')); setDetail('<p class="note">Angalia bidhaa yenye margin kubwa na stock inayozunguka haraka kabla ya kuongeza mtaji.</p>'); }
 function reset(){ q('buy1').value=500; q('sell1').value=750; q('qty1').value=60; q('buy2').value=1200; q('sell2').value=1800; q('qty2').value=25; q('fees').value=2500; q('days').value=24; }
 bind(calc, reset);
+function buildBrief(){
+  const title = document.querySelector('h1') ? document.querySelector('h1').textContent.trim() : 'Muhtasari wa AfroTools';
+  const results = q('results') ? q('results').innerText.trim() : '';
+  const detail = q('detail') ? q('detail').innerText.trim() : '';
+  return title + '\n\nMatokeo:\n' + (results || 'Kokotoa matokeo kwanza.') + (detail ? '\n\nMaelezo:\n' + detail : '') + '\n\nMbinu: makadirio hutokana na namba ulizoingiza.\nChanzo: hakiki ada, bei, kodi na masharti kwenye mtoa huduma rasmi au mtaalamu.\nKanusho: si ushauri wa fedha, kodi au uwekezaji.';
+}
+function setupBriefExport(){
+  const copy = q('copyBrief'), download = q('downloadBrief'), status = q('briefStatus');
+  if(!copy || !download) return;
+  function setStatus(msg){ if(status) status.textContent = msg; }
+  copy.addEventListener('click', function(){
+    const text = buildBrief();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ setStatus('Muhtasari umenakiliwa.'); }).catch(function(){ setStatus('Nakili kwa mkono ikiwa ruhusa imezuiwa.'); });
+    } else setStatus('Nakili kwa mkono ikiwa browser haina clipboard.');
+  });
+  download.addEventListener('click', function(){
+    const blob = new Blob([buildBrief()], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'afrotools-muhtasari.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus('TXT imepakuliwa.');
+  });
+}
+setupBriefExport();
   </script>
 </body>
 </html>

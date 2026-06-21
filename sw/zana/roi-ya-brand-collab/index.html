@@ -76,10 +76,18 @@
 }
 </script>
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
+<style data-localized-verification-style>
+.localized-verification-panel{max-width:1120px;margin:18px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:14px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 12px 28px rgba(15,23,42,.06);color:#0f172a}.localized-verification-panel h2{margin:0 0 8px;font-size:1.05rem;letter-spacing:-.01em}.localized-verification-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.localized-verification-grid div{border:1px solid #dbeafe;border-radius:12px;background:#fff;padding:11px;line-height:1.5;color:#475569}.localized-verification-grid strong{display:block;color:#0f172a;margin-bottom:4px}.localized-verification-panel p{margin:10px 0 0;color:#475569;line-height:1.58}@media(max-width:640px){.localized-verification-panel{margin:14px 12px;padding:14px}}
+</style>
 </head>
 <body>
   <afro-navbar></afro-navbar>
   <main class="wrap">
+<section class="localized-verification-panel" data-tool-verification-panel aria-label="Mbinu, vyanzo na mipaka">
+<h2>Mbinu, vyanzo na hatua inayofuata</h2>
+<div class="localized-verification-grid"><div><strong>Mbinu</strong>Matokeo hutumia taarifa unazoingiza kwenye zana hii na hutoa makadirio ya kupanga, kulinganisha au kuandaa maamuzi.</div><div><strong>Vyanzo vya kuthibitisha</strong>Hakiki viwango, ada, masharti, leseni, nyaraka au bei na mamlaka rasmi, mtoa huduma, benki, bima, daktari au mshauri husika.</div><div><strong>Hatua muhimu</strong>Hifadhi tarehe, nchi, sarafu, maelezo uliyotumia na matokeo kabla ya kutuma ombi, kulipa, kusaini au kusafiri.</div></div>
+<p>Hii si nukuu rasmi, ushauri wa kitaalamu wala idhini ya mwisho. Tumia kama hatua ya kwanza, kisha thibitisha na chanzo kinachowajibika.</p>
+</section>
     <section class="hero">
       <div class="eyebrow">Uchumi wa watayarishi</div>
       <h1>ROI ya ushirikiano wa chapa</h1>
@@ -104,6 +112,16 @@
         <div id="results" class="results"></div>
         <div id="detail"></div>
       </div>
+    </section>
+<section class="section panel" data-sw-creator-workspace>
+      <h2>Workspace ya brief na export</h2>
+      <p>Weka brief ya kampeni, maelezo ya brand au maandishi ya mteja kisha pakua muhtasari wa TXT kwa WhatsApp, email au proposal. Faragha: No upload - files never leave your browser; zana hii huchakata kwenye kifaa chako.</p>
+      <div class="form-grid">
+        <label>Ingiza brief ya kampeni<input type="file" id="creatorBriefFile" accept=".txt,.md,text/plain"></label>
+        <label>Brief ya kazi<textarea id="creatorBriefText" placeholder="Mfano: brand, jukwaa, hadhira, bidhaa, muda wa kampeni, deliverables na KPI."></textarea></label>
+      </div>
+      <div class="actions"><button type="button" id="creatorCopyPlan">Nakili mpango</button><a class="button secondary" id="creatorDownloadPlan" download="afrotools-creator-workspace.txt" href="data:text/plain;charset=utf-8,">Pakua TXT</a></div>
+      <p class="note"><strong>Njia ya kazi:</strong> tengeneza matokeo ya zana, ongeza brief ya mteja, kisha pakua au nakili muhtasari kabla ya kutuma rate card, caption, script au media kit. Hakiki masharti ya brand, haki za matumizi na sera za jukwaa kabla ya kutuma.</p>
     </section>
 <section class="section panel">
       <h2>Angalia pia</h2>
@@ -143,5 +161,64 @@ function calc(){const budget=num('budget'),followers=FOLLOW[q('tier').value],rea
 function reset(){q('country').value='NG';q('budget').value=2000;q('tier').value='micro';q('platform').value='instagram';q('engRate').value=4.5;q('productPrice').value=25;q('convRate').value=1.5;}
 bind(calc,reset);
   </script>
+  <script>
+(function(){
+  const root = document.querySelector('[data-sw-creator-workspace]');
+  if (!root) return;
+  const file = root.querySelector('#creatorBriefFile');
+  const brief = root.querySelector('#creatorBriefText');
+  const copy = root.querySelector('#creatorCopyPlan');
+  const download = root.querySelector('#creatorDownloadPlan');
+  let lastUrl = '';
+  function textFrom(selector) {
+    const node = document.querySelector(selector);
+    return node ? node.innerText.replace(/\s+\n/g, '\n').trim() : '';
+  }
+  function buildPlan() {
+    const title = (document.querySelector('h1') || {}).innerText || 'AfroTools creator workspace';
+    const input = brief.value.trim() || 'Brief haijaongezwa bado.';
+    const summary = textFrom('#results');
+    const detail = textFrom('#detail');
+    return [
+      title,
+      '',
+      'Brief ya kampeni:',
+      input,
+      '',
+      'Matokeo ya zana:',
+      summary || 'Bonyeza Tengeneza ili kupata matokeo.',
+      '',
+      detail,
+      '',
+      'Faragha: imeandaliwa kwenye browser yako. Hakuna upload ya faili kwenye server.'
+    ].filter(Boolean).join('\n');
+  }
+  function refreshDownload() {
+    if (!download) return;
+    if (lastUrl) URL.revokeObjectURL(lastUrl);
+    const blob = new Blob([buildPlan()], { type: 'text/plain;charset=utf-8' });
+    lastUrl = URL.createObjectURL(blob);
+    download.href = lastUrl;
+  }
+  file && file.addEventListener('change', function () {
+    const chosen = file.files && file.files[0];
+    if (!chosen) return;
+    const reader = new FileReader();
+    reader.onload = function () { brief.value = String(reader.result || '').slice(0, 12000); refreshDownload(); };
+    reader.readAsText(chosen);
+  });
+  brief && brief.addEventListener('input', refreshDownload);
+  copy && copy.addEventListener('click', function () {
+    const plan = buildPlan();
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(plan);
+    copy.textContent = 'Imenakiliwa';
+    setTimeout(function(){ copy.textContent = 'Nakili mpango'; }, 1400);
+  });
+  const calculate = document.getElementById('calculate');
+  calculate && calculate.addEventListener('click', function(){ setTimeout(refreshDownload, 0); });
+  window.addEventListener('beforeunload', function(){ if (lastUrl) URL.revokeObjectURL(lastUrl); });
+  refreshDownload();
+})();
+</script>
 </body>
 </html>

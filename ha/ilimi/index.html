@@ -42,6 +42,7 @@
 }
 </script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools Hausa","item":"https://afrotools.com/ha/"},{"@type":"ListItem","position":2,"name":"Ilimi","item":"https://afrotools.com/ha/ilimi/"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"ha","mainEntity":[{"@type":"Question","name":"Wanne kayan ilimi zan fara amfani da shi?","acceptedAnswer":{"@type":"Answer","text":"Idan kana shirin admission, fara da JAMB ko WAEC/NECO. Idan kana shirin kudi, fara da kasafin dalibi, kudin makaranta ko tallafin karatu. Idan kana jami'a, fara da GPA/CGPA."}},{"@type":"Question","name":"Shin AfroTools yana maye gurbin portal na JAMB ko WAEC?","acceptedAnswer":{"@type":"Answer","text":"A'a. AfroTools yana taimaka wajen shiri da lissafi. Ka tabbatar da sakamako, cutoff, fees da deadlines daga portal na hukuma ko makaranta."}},{"@type":"Question","name":"Zan iya kwafa shirin da na zaba?","acceptedAnswer":{"@type":"Answer","text":"Eh. Panel din shiri yana bada brief da za ka iya kwafa kafin bude kayan aiki da ya dace."}}]}</script>
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
@@ -322,6 +323,25 @@
       font-weight: 800;
     }
     .ha-empty[data-visible="true"] { display: block; }
+    .ha-quick-plan {
+      margin-top: 24px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 8px;
+      background: rgba(255,255,255,.13);
+      padding: 16px;
+      color: #fff;
+    }
+    .ha-quick-plan h2 { margin: 0 0 8px; color: #fff; font-size: 1.08rem; }
+    .ha-quick-plan p { margin: 0 0 12px; color: rgba(255,255,255,.86); font-size: .95rem; }
+    .ha-quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 10px; }
+    .ha-quick-grid label { display: grid; gap: 6px; font-weight: 900; font-size: .86rem; }
+    .ha-quick-grid select, .ha-quick-grid input { width: 100%; border: 1px solid rgba(255,255,255,.28); border-radius: 8px; padding: 10px 11px; color: #0f172a; font: inherit; }
+    .ha-quick-output { display: block; margin-top: 12px; border: 1px solid rgba(255,255,255,.22); border-radius: 8px; background: rgba(255,255,255,.92); color: #0d324e; padding: 12px; line-height: 1.55; font-weight: 800; }
+    .ha-quick-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
+    .ha-quick-actions a, .ha-quick-actions button { min-height: 40px; border-radius: 999px; padding: 9px 14px; font: inherit; font-weight: 900; cursor: pointer; }
+    .ha-quick-actions a { background: #fff; color: #0d324e; border: 1px solid #fff; }
+    .ha-quick-actions button { border: 1px solid rgba(255,255,255,.35); background: #0f172a; color: #fff; }
+    .ha-quick-status { align-self: center; color: rgba(255,255,255,.86); font-size: .88rem; }
     @media (max-width: 860px) {
       .ha-hero { padding: 72px 0 42px; }
       .ha-stats, .ha-grid, .ha-lane { grid-template-columns: 1fr; }
@@ -350,6 +370,16 @@
           <a class="ha-chip" href="/ha/kayan-aiki/">Duk kayan Hausa</a>
           <a class="ha-chip" href="/ha/jamb/">AfroJAMB a Hausa</a>
         </div>
+        <section class="ha-quick-plan" data-tool-verification-panel aria-label="Shirin ilimi mai sauri">
+          <h2>Me kake bukata yau?</h2>
+          <p>Za ka iya zabar burinka, rubuta muktadha, sannan ka bude kayan da ya dace ko ka kwafa brief din shiri.</p>
+          <div class="ha-quick-grid">
+            <label>Buri<select id="haQuickGoal"><option value="jamb">Shirin JAMB</option><option value="waec">WAEC/NECO</option><option value="budget">Kasafin dalibi</option><option value="fees">Kudin makaranta</option><option value="gpa">GPA/CGPA</option><option value="scholarship">Tallafin karatu</option></select></label>
+            <label>Muktadha<input id="haQuickContext" autocomplete="off" placeholder="Ex: jamb 240, school fees, semester 2"></label>
+          </div>
+          <output class="ha-quick-output" id="haQuickOutput">Zabi buri da muktadha domin samun mataki na gaba.</output>
+          <div class="ha-quick-actions"><a id="haQuickLink" href="/ha/kayan-aiki/kalkuletan-jamb/">Bude kayan da ya dace</a><button type="button" id="haQuickCopy">Kwafa shiri</button><span class="ha-quick-status" id="haQuickStatus" aria-live="polite"></span></div>
+        </section>
         <div class="ha-stats" aria-label="Abubuwan da aka fi nema">
           <div class="ha-stat"><strong>JAMB</strong><span>Aggregate, CBT, tsoffin tambayoyi da shiga jami'a</span></div>
           <div class="ha-stat"><strong>WAEC</strong><span>WAEC/NECO, O'Level da cancantar shiga</span></div>
@@ -547,6 +577,19 @@
       var filters = Array.prototype.slice.call(document.querySelectorAll('.ha-filter'));
       var empty = document.getElementById('ha-edu-empty');
       var activeFilter = 'all';
+      var quickGoal = document.getElementById('haQuickGoal');
+      var quickContext = document.getElementById('haQuickContext');
+      var quickOutput = document.getElementById('haQuickOutput');
+      var quickLink = document.getElementById('haQuickLink');
+      var quickStatus = document.getElementById('haQuickStatus');
+      var quickRoutes = {
+        jamb: ['Kalkuletan JAMB', '/ha/kayan-aiki/kalkuletan-jamb/', 'Kokoto aggregate, cutoff da admission questions.'],
+        waec: ['WAEC/NECO', '/ha/kayan-aiki/kalkuletan-waec-neco/', 'Duba O-Level credits da eligibility.'],
+        budget: ['Kasafin dalibi', '/ha/kayan-aiki/kasafin-dalibi/', 'Shirya kudin zango, abinci, haya, transport da ragowa.'],
+        fees: ['Kudin makaranta', '/ha/kayan-aiki/kwatanta-kudin-makaranta/', 'Kwatanta tuition, hostel, books da hidden fees.'],
+        gpa: ['GPA/CGPA', '/ha/kayan-aiki/kalkuletan-gpa-cgpa/', 'Kokoto GPA ko CGPA kafin scholarship ko admission.'],
+        scholarship: ['Tallafin karatu', '/ha/kayan-aiki/neman-tallafin-karatu/', 'Shirya profile, documents da deadlines na scholarship.']
+      };
 
       function normalize(value) {
         return String(value || '').trim().toLowerCase();
@@ -567,6 +610,20 @@
         if (empty) empty.setAttribute('data-visible', visible ? 'false' : 'true');
       }
 
+      function quickBrief() {
+        var item = quickRoutes[(quickGoal && quickGoal.value) || 'jamb'] || quickRoutes.jamb;
+        var context = quickContext && quickContext.value ? quickContext.value.trim() : '';
+        return item[0] + ': ' + item[2] + (context ? ' Muktadha: ' + context + '.' : '') + ' Tabbatar da portal ko makaranta kafin mataki na karshe.';
+      }
+
+      function renderQuickPlan() {
+        if (!quickGoal || !quickOutput || !quickLink) return;
+        var item = quickRoutes[quickGoal.value] || quickRoutes.jamb;
+        quickOutput.textContent = quickBrief();
+        quickLink.href = item[1];
+        if (quickStatus) quickStatus.textContent = '';
+      }
+
       if (input) input.addEventListener('input', applyFilters);
       filters.forEach(function (button) {
         button.addEventListener('click', function () {
@@ -577,7 +634,25 @@
           applyFilters();
         });
       });
+      if (quickGoal) quickGoal.addEventListener('change', renderQuickPlan);
+      if (quickContext) quickContext.addEventListener('input', renderQuickPlan);
+      var quickCopy = document.getElementById('haQuickCopy');
+      if (quickCopy) {
+        quickCopy.addEventListener('click', function () {
+          var text = quickBrief();
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () {
+              if (quickStatus) quickStatus.textContent = 'An kwafa shirin.';
+            }).catch(function () {
+              if (quickStatus) quickStatus.textContent = text;
+            });
+          } else if (quickStatus) {
+            quickStatus.textContent = text;
+          }
+        });
+      }
       applyFilters();
+      renderQuickPlan();
     }());
   </script>
 </body>

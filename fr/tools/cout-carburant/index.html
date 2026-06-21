@@ -59,6 +59,20 @@
 <details><summary>Les prix sont-ils à jour ?</summary><p>Les prix sont mis à jour régulièrement à partir des sources officielles de chaque pays africain.</p></details>
 <details><summary>Pourquoi les prix varient-ils tant ?</summary><p>Les subventions, les taxes et les coûts de transport varient selon les pays, créant des écarts de prix significatifs sur le continent.</p></details>
 </section>
+<section class="fr-decision-panel" data-fr-decision-planner style="max-width:1120px;margin:24px auto;padding:0 24px;">
+  <div style="background:#fff;border:1px solid #dbe4ef;border-radius:14px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.06);">
+    <h2 style="margin:0 0 8px;color:#0f172a;font-size:1.15rem;">Preparation rapide</h2>
+    <p style="margin:0 0 14px;color:#475569;line-height:1.6;"><strong>Methodologie:</strong> renseignez le pays, le montant et l'objectif; la page transforme ces entrees en resume de verification avant d'utiliser l'outil principal. Sources: version source AfroTools, liens et hypotheses visibles sur cette page. Mise a jour 2026.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Pays ou devise<input data-fr-decision-country type="text" placeholder="Ex: Nigeria, NGN, XOF" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Montant ou volume<input data-fr-decision-amount type="text" placeholder="Ex: 250000" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Objectif<input data-fr-decision-goal type="text" placeholder="Ex: comparer deux scenarios" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"><button type="button" data-fr-decision-button style="border:0;border-radius:999px;background:#0f766e;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer;">Creer le resume</button><span data-fr-decision-status aria-live="polite" style="color:#64748b;align-self:center;"></span></div>
+    <output data-fr-decision-output style="display:block;margin-top:12px;border-left:4px solid #0f766e;background:#f8fafc;border-radius:10px;padding:12px;color:#334155;line-height:1.55;">Ajoutez quelques informations pour preparer votre verification.</output>
+    <p style="margin:12px 0 0;color:#475569;line-height:1.6;"><strong>Avertissement:</strong> cette estimation generale ne remplace pas un avis juridique, fiscal, medical, financier ou professionnel. Verifiez les sources officielles, les dates, les frais et les seuils avant de payer, signer ou declarer.</p>
+  </div>
+</section>
 </main>
 
 <section class="fr-utility-note" data-fr-utility-wave>
@@ -127,6 +141,28 @@
     var obs=new MutationObserver(function(){localize(document.body); localizeFrames();});
     obs.observe(document.body,{childList:true,subtree:true});
   });
+})();
+</script>
+<script>
+(function(){
+  const root = document.querySelector('[data-fr-decision-planner]');
+  if (!root) return;
+  const country = root.querySelector('[data-fr-decision-country]');
+  const amount = root.querySelector('[data-fr-decision-amount]');
+  const goal = root.querySelector('[data-fr-decision-goal]');
+  const output = root.querySelector('[data-fr-decision-output]');
+  const status = root.querySelector('[data-fr-decision-status]');
+  function render(){
+    const title = (document.querySelector('h1') || {}).innerText || 'Outil AfroTools';
+    const parts = [];
+    if (country.value.trim()) parts.push('Pays/devise: ' + country.value.trim());
+    if (amount.value.trim()) parts.push('Montant/volume: ' + amount.value.trim());
+    if (goal.value.trim()) parts.push('Objectif: ' + goal.value.trim());
+    output.textContent = parts.length ? title + ' - ' + parts.join(' | ') + '. Verifiez les hypotheses et les sources avant decision.' : 'Ajoutez quelques informations pour preparer votre verification.';
+    if (status) status.textContent = parts.length ? 'Resume pret.' : '';
+  }
+  root.querySelector('[data-fr-decision-button]')?.addEventListener('click', render);
+  [country, amount, goal].forEach(function(input){ input && input.addEventListener('input', render); });
 })();
 </script>
 </body>

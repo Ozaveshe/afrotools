@@ -47,6 +47,10 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/car-insurance/seychelles" />
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js?v=40bd62b3" defer></script>
+<style data-fr-insurance-quote-kit-style>
+.fr-insurance-quote-kit{max-width:1080px;margin:22px auto;padding:20px;border:1px solid #bfdbfe;border-radius:14px;background:linear-gradient(135deg,#f8fbff,#ffffff 56%,#f0fdf4);box-shadow:0 14px 30px rgba(15,23,42,.07);color:#0f172a}.fr-insurance-quote-kit *{box-sizing:border-box}.fr-insurance-quote-kicker{margin:0 0 7px;color:#2563eb;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.fr-insurance-quote-kit h2{margin:0;font-size:clamp(1.25rem,2vw,1.7rem);line-height:1.16}.fr-insurance-quote-kit>p{max-width:760px;margin:8px 0 16px;color:#475569;line-height:1.6}.fr-insurance-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);gap:16px;align-items:start}.fr-insurance-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.fr-insurance-form label{display:grid;gap:6px;color:#334155;font-weight:700}.fr-insurance-form input,.fr-insurance-form select,.fr-insurance-form textarea{width:100%;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-insurance-form textarea{min-height:92px;resize:vertical;grid-column:1/-1}.fr-insurance-output{border:1px solid #bbf7d0;border-radius:12px;background:#f7fee7;padding:14px;min-height:100%;display:flex;flex-direction:column;gap:12px}.fr-insurance-output h3{margin:0;font-size:1rem}.fr-insurance-preview{white-space:pre-wrap;line-height:1.5;color:#334155}.fr-insurance-actions{display:flex;flex-wrap:wrap;gap:10px}.fr-insurance-actions button,.fr-insurance-actions a{border:0;border-radius:999px;background:#0f172a;color:#fff;padding:10px 13px;font-weight:800;cursor:pointer}.fr-insurance-actions a{background:#2563eb}.fr-insurance-method{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.fr-insurance-method div,.fr-insurance-faq details{border:1px solid #dbeafe;border-radius:12px;background:#fff;padding:12px;line-height:1.5}.fr-insurance-method strong{display:block;margin-bottom:4px}.fr-insurance-faq{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}.fr-insurance-faq summary{cursor:pointer;font-weight:800;color:#0f172a}.fr-insurance-faq p{margin:8px 0 0;color:#475569;line-height:1.5}@media (max-width:760px){.fr-insurance-quote-kit{margin:16px 12px;padding:16px}.fr-insurance-grid,.fr-insurance-form,.fr-insurance-method,.fr-insurance-faq{grid-template-columns:1fr}.fr-insurance-actions button,.fr-insurance-actions a{width:100%;text-align:center}}
+</style>
+<script type="application/ld+json" data-fr-insurance-faq-schema>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment utiliser cet estimateur assurance auto pour Seychelles ?","acceptedAnswer":{"@type":"Answer","text":"Saisissez la valeur du vehicule, son age, le type de couverture et votre profil conducteur. Utilisez ensuite le brief local pour demander un devis documente a un assureur ou courtier."}},{"@type":"Question","name":"Est-ce un devis officiel ?","acceptedAnswer":{"@type":"Answer","text":"Non. AfroTools fournit une estimation de travail. Le prix final depend de la police, des exclusions, du risque accepte et du devis emis par un fournisseur autorise."}},{"@type":"Question","name":"Quelles sources dois-je verifier avant de souscrire ?","acceptedAnswer":{"@type":"Answer","text":"Verifiez les conditions de police, franchises, exclusions et exigences locales avec l assureur, le courtier, le regulateur ou les documents officiels disponibles."}}],"url":"https://afrotools.com/fr/tools/assurance-auto/seychelles","name":"Seychelles Calculateur assurance auto — Estimez votre prime"}</script>
 </head>
 <script>
 window.addEventListener('load', function() {
@@ -86,7 +90,28 @@ window.addEventListener('load', function() {
 <h1>🇸🇨 Seychelles <em>Estimateur de prime assurance auto</em></h1>
 <p class="ins-tool-hero-sub">Free car insurance premium estimator for Seychelles. Calculer third-party and comprehensive motor insurance costs with Seychelles's top providers.</p>
 </div></section>
-<main class="ins-main">
+<main id="estimateur-assurance" class="ins-main">
+<section class="fr-insurance-quote-kit" id="fr-insurance-quote-kit" data-fr-insurance-quote-kit data-tool-verification-panel aria-label="Preparation du devis assurance auto">
+<p class="fr-insurance-quote-kicker">Mode devis local</p>
+<h2>Preparer une demande d'assurance auto utile</h2>
+<p>Utilisez l'estimation comme point de depart, puis transformez-la en brief clair pour comparer tiers, tous risques, franchise et exclusions avec un assureur ou un courtier.</p>
+<div class="fr-insurance-grid">
+<form class="fr-insurance-form" data-fr-insurance-brief-form>
+<label>Pays ou marche<input name="country" value="Seychelles" autocomplete="off"></label>
+<label>Usage du vehicule<select name="usage"><option>Personnel</option><option>Familial</option><option>Entreprise</option><option>Taxi, VTC ou livraison</option></select></label>
+<label>Couverture souhaitee<select name="cover"><option>Tiers obligatoire</option><option>Tiers plus vol/incendie</option><option>Tous risques</option><option>Comparer plusieurs options</option></select></label>
+<label>Valeur du vehicule<input name="value" inputmode="decimal" placeholder="Ex. 5000000"></label>
+<textarea name="notes" placeholder="Notes pour le courtier: marque, modele, annee, usage, ville, antecedents de sinistre, franchise souhaitee."></textarea>
+</form>
+<aside class="fr-insurance-output" aria-live="polite">
+<h3>Brief a copier</h3>
+<div class="fr-insurance-preview" data-fr-insurance-brief-output>Ajoutez les infos du vehicule pour obtenir un brief de comparaison.</div>
+<div class="fr-insurance-actions"><button type="button" data-fr-insurance-copy>Copier le brief</button><button type="button" data-fr-insurance-download>Telecharger TXT</button><a href="#estimateur-assurance">Calculer la prime</a></div>
+</aside>
+</div>
+<div class="fr-insurance-method"><div><strong>Methodologie</strong>Le calcul donne une fourchette de travail selon la valeur, l'age du vehicule, le profil conducteur et le type de couverture.</div><div><strong>Sources a verifier</strong>Confirmez primes, franchises, exclusions, taxes et obligations avec l'assureur, le courtier, le regulateur ou les documents de police.</div><div><strong>Limites 2026</strong>Ce n'est pas un devis officiel, une souscription, ni un avis professionnel. Les prix finaux changent selon l'evaluation du fournisseur.</div></div>
+<div class="fr-insurance-faq" aria-label="Questions frequentes"><details><summary>Que comparer ?</summary><p>Comparez la prime, la franchise, les exclusions, l'assistance, les plafonds, le vol/incendie et le delai d'indemnisation.</p></details><details><summary>Quand refaire le calcul ?</summary><p>Refaites-le apres changement de valeur, d'usage, de conducteur principal, de ville ou d'historique de sinistre.</p></details><details><summary>Que garder comme preuve ?</summary><p>Conservez le devis, les conditions particulieres, les exclusions, le recu et les contacts de reclamation.</p></details></div>
+</section>
 <div class="ins-card"><div class="ins-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>🚗</span><h2>Calculer Your Estimate</h2><span class="ins-card-toggle">&#x25BE;</span></div>
 <div class="ins-card-body"><div class="ins-form-grid"><div class="ins-field"><label class="ins-f-label" for="vehicleValue">Valeur du vehicule</label><input class="ins-f-input" type="number" id="vehicleValue" placeholder="e.g. 5000000" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="vehicleAge">Age du vehicule (annees)</label><input class="ins-f-input" type="number" id="vehicleAge" placeholder="e.g. 3" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="vehicleType">Type de vehicule</label><select class="ins-f-select" id="vehicleType"><option value="Sedan/Saloon">Sedan/Saloon</option><option value="SUV/4x4">SUV/4x4</option><option value="Pickup/Truck">Pickup/Truck</option><option value="Minibus/Van">Minibus/Van</option><option value="Motorcycle">Motorcycle</option><option value="Commercial">Commercial</option></select></div><div class="ins-field"><label class="ins-f-label" for="driverAge">Age du conducteur</label><input class="ins-f-input" type="number" id="driverAge" placeholder="e.g. 35" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="yearsLicensed">Annees avec permis</label><input class="ins-f-input" type="number" id="yearsLicensed" placeholder="e.g. 10" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="claimHistory">Sinistres sur les 3 dernieres annees</label><select class="ins-f-select" id="claimHistory"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3+">3+</option></select></div></div>
 <button class="ins-calc-btn" id="calcBtn" type="button">Calculer l'estimation</button></div></div>
@@ -144,5 +169,33 @@ document.getElementById("results").scrollIntoView({behavior:"smooth",block:"star
 <script src="/assets/js/insurance-workbench.js?v=100b7540" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(window.twemoji){twemoji.parse(document.body,{folder:'svg',ext:'.svg'})}</script>
+<script data-fr-insurance-quote-kit-script>
+(function(){
+  var kit=document.querySelector('[data-fr-insurance-quote-kit]');
+  if(!kit)return;
+  var form=kit.querySelector('[data-fr-insurance-brief-form]');
+  var output=kit.querySelector('[data-fr-insurance-brief-output]');
+  var copy=kit.querySelector('[data-fr-insurance-copy]');
+  var download=kit.querySelector('[data-fr-insurance-download]');
+  var nl=String.fromCharCode(10);
+  function value(name){var el=form&&form.elements?form.elements[name]:null;return el&&el.value?el.value.trim():'';}
+  function build(){
+    var lines=[
+      'Demande devis assurance auto - '+(value('country')||'marche local'),
+      'Usage: '+(value('usage')||'a confirmer'),
+      'Couverture souhaitee: '+(value('cover')||'a confirmer'),
+      'Valeur vehicule: '+(value('value')||'a confirmer'),
+      'Notes: '+(value('notes')||'marque, modele, annee, ville, conducteur, sinistres et franchise a preciser'),
+      'A verifier: prime finale, franchise, exclusions, taxes, assistance et conditions de police.'
+    ];
+    return lines.join(nl);
+  }
+  function render(){if(output)output.textContent=build();}
+  if(form)form.addEventListener('input',render);
+  if(copy)copy.addEventListener('click',function(){var text=build();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);} if(output)output.textContent=text+nl+nl+'Brief copie ou pret a copier.';});
+  if(download)download.addEventListener('click',function(){var blob=new Blob([build()],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='brief-assurance-auto.txt';document.body.appendChild(a);a.click();URL.revokeObjectURL(a.href);a.remove();});
+  render();
+})();
+</script>
 </body>
 </html>

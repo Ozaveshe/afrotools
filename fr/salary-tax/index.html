@@ -57,9 +57,6 @@
 <afro-navbar></afro-navbar>
 
 <section class="hub-hero">
-  <div class="hero-orb hero-orb--1" aria-hidden="true"></div>
-  <div class="hero-orb hero-orb--2" aria-hidden="true"></div>
-  <div class="hero-orb hero-orb--3" aria-hidden="true"></div>
   <div class="hub-hero-inner">
     <nav class="hub-breadcrumb" aria-label="Fil d'Ariane">
       <a href="/fr/">Accueil</a><span aria-hidden="true">/</span>
@@ -299,7 +296,14 @@
     <a href="/fr/contact/">Parler à l'équipe →</a>
   </div>
 </main>
-
+<!-- fr-score77-qa-panel:start -->
+<section class="fr-score77-qa" data-tool-verification-panel aria-label="Methodologie, sources et limites" style="max-width:900px;margin:24px auto;padding:16px 18px;border:1px solid #c7d2fe;border-radius:12px;background:linear-gradient(135deg,#eef2ff 0%,#f8fafc 100%);color:#1e293b;line-height:1.55;box-shadow:0 10px 24px rgba(15,23,42,.06)">
+  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Methodologie, sources et limites</h2>
+  <p style="margin:.35rem 0"><strong>Methodologie:</strong> le resultat utilise les champs de la page, les hypotheses visibles et les regles appliquees par l outil. Relisez le detail du calcul avant de copier, exporter ou utiliser la recommandation.</p>
+  <p style="margin:.35rem 0"><strong>Sources:</strong> controle 2026 a confirmer avec la source officielle, l autorite competente, le fournisseur, l etablissement, le clinicien ou vos documents de reference lorsque les prix, lois, taxes, dates ou conditions peuvent changer.</p>
+  <p style="margin:.35rem 0"><strong>Avertissement:</strong> estimation seulement; ce guide est non officiel et ne remplace pas un conseil professionnel, fiscal, juridique, medical, educatif ou technique.</p>
+</section>
+<!-- fr-score77-qa-panel:end -->
 <afro-footer></afro-footer>
 
 <script>
@@ -474,6 +478,7 @@ function _initFrenchSalaryTaxHub() {
     return {
       id: tool.id,
       href: getFrenchHref(tool),
+      imageId: tool.imageId || tool.sourceId || tool.id,
       icon: tool.icon || "💰",
       name: "Calculateur PAYE " + country,
       desc: "Calculez le salaire net, les retenues et le coût employeur pour " + country + ".",
@@ -488,6 +493,7 @@ function _initFrenchSalaryTaxHub() {
     return {
       id: tool.id,
       href: getFrenchHref(tool),
+      imageId: tool.imageId || tool.sourceId || tool.id,
       icon: tool.icon || "🧮",
       name: copy.name || tool.name,
       desc: copy.desc || tool.desc,
@@ -584,11 +590,12 @@ function _initFrenchSalaryTaxHub() {
   }
 
   function renderCard(tool) {
+    var imageId = tool.imageId || tool.id;
     return '' +
       '<a href="' + tool.href + '" class="tc">' +
         '<div class="tc-thumb" style="background:linear-gradient(145deg,#0c1929 0%,#1a2744 60%,#1e3a5f 100%)">' +
           '<div class="tc-thumb-ph">' + tool.icon + '</div>' +
-          '<img src="/assets/img/tools/' + tool.id + '.webp" alt="' + tool.name.replace(/"/g, '&quot;') + '" loading="lazy" onerror="this.onerror=function(){this.style.display=\'none\'};this.src=\'/assets/img/tools/' + tool.id + '.svg\';">' +
+          '<img src="/assets/img/tools/' + imageId + '.webp" alt="' + tool.name.replace(/"/g, '&quot;') + '" loading="lazy" onerror="this.onerror=function(){this.style.display=\'none\'};this.src=\'/assets/img/tools/' + imageId + '.svg\';">' +
         '</div>' +
         '<div class="tc-body">' +
           '<div class="tc-row1"><span class="tc-flag">' + tool.icon + '</span><span class="tc-badge badge-live">En ligne</span></div>' +

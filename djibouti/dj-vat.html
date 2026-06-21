@@ -924,12 +924,12 @@ function getEffectiveRate() {
 
     // Save & Share button data
     var saveBtn = document.querySelector('save-result-button');
-    if (saveBtn) saveBtn.setData({
+    if (saveBtn && typeof saveBtn.setData === 'function') saveBtn.setData({
       inputs: { amount: raw, mode: currentDir, rate: effRate },
       outputs: { netAmount: pretax, vatAmount: vat, totalInclusive: total }
     });
     var shareBtn = document.querySelector('share-result-button');
-    if (shareBtn) shareBtn.setResult({
+    if (shareBtn && typeof shareBtn.setResult === 'function') shareBtn.setResult({
       headline: currentDir === 'add' ? 'VAT Inclusive Total' : 'VAT Extracted',
       mainValue: fmtD(total),
       subValues: [

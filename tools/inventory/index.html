@@ -247,8 +247,8 @@ function renderStats(){
 
   var saveBtn=document.querySelector('save-result-button[tool-slug="inventory"]');
   var shareBtn=document.querySelector('share-result-button[tool-slug="inventory"]');
-  if(saveBtn){saveBtn.setData({inputs:{totalProducts:total,lowStockItems:low},outputs:{stockValueCost:totalValue,potentialRevenue:totalRevenue,potentialProfit:totalRevenue-totalValue}});}
-  if(shareBtn){shareBtn.setResult({headline:'Inventory Summary',mainValue:total+' Products',subValues:[{label:'Stock Value',value:totalValue.toLocaleString()},{label:'Potential Revenue',value:totalRevenue.toLocaleString()},{label:'Low Stock',value:String(low)}],inputs:{totalProducts:total,lowStockItems:low}});}
+  if(saveBtn&&typeof saveBtn.setData==='function'){saveBtn.setData({inputs:{totalProducts:total,lowStockItems:low},outputs:{stockValueCost:totalValue,potentialRevenue:totalRevenue,potentialProfit:totalRevenue-totalValue}});}
+  if(shareBtn&&typeof shareBtn.setResult==='function'){shareBtn.setResult({headline:'Inventory Summary',mainValue:total+' Products',subValues:[{label:'Stock Value',value:totalValue.toLocaleString()},{label:'Potential Revenue',value:totalRevenue.toLocaleString()},{label:'Low Stock',value:String(low)}],inputs:{totalProducts:total,lowStockItems:low}});}
 }
 function renderTable(){
   const search=document.getElementById('searchInput').value.toLowerCase();

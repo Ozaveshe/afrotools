@@ -40,6 +40,8 @@
 .fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
 .fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
 .fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
+.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
+.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
 </style>
 <script type="application/ld+json">
 {
@@ -86,9 +88,23 @@
 <p>Executez des requetes SQL dans un environnement sandbox. Base de donnees SQLite integree dans le navigateur.</p>
 </section>
 <div class="fr-wrap">
+<section class="fr-prep-panel" data-fr-prep aria-label="Preparation locale">
+<h2>Preparez votre saisie</h2>
+<p>Ajoutez le contexte avant de lancer Bac a sable SQL. Ce brouillon reste dans votre navigateur et vous aide a verifier le resultat attendu.</p>
+<div class="fr-prep-fields">
+<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Senegal, client, projet"></label>
+<label>Donnees<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
+<label>Resultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, verifier, calculer"></label>
+</div>
+<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.</output>
+<div class="fr-prep-actions"><a href="/tools/sql-playground/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le resume</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
+</section>
 <div class="fr-tool-frame">
 <iframe src="/tools/sql-playground/" title="Bac a sable SQL" loading="lazy"></iframe>
 </div>
+<script>
+(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Bac a sable SQL";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
+</script>
 <div class="fr-seo">
 <h2>Bac a sable SQL en ligne</h2>
 <p>Le bac a sable SQL d'AfroTools vous offre un environnement SQLite complet directement dans le navigateur. Executez des requetes CREATE, INSERT, SELECT, UPDATE et DELETE sans aucune installation. Ideal pour apprendre le SQL, tester des requetes ou prototyper des schemas de base de donnees.</p>
@@ -101,6 +117,14 @@
 <details><summary>Puis-je creer des tables et des index ?</summary><p>Oui, l'environnement sandbox supporte toutes les commandes DDL de SQLite : CREATE TABLE, CREATE INDEX, ALTER TABLE, DROP TABLE, et plus encore.</p></details>
 </div>
 </div>
+<!-- fr-score76-qa-panel:start -->
+<section class="fr-score76-qa" data-tool-verification-panel aria-label="Methodologie, sources et limites" style="max-width:900px;margin:24px auto;padding:16px 18px;border:1px solid #c7d2fe;border-radius:12px;background:linear-gradient(135deg,#eef2ff 0%,#f8fafc 100%);color:#1e293b;line-height:1.55;box-shadow:0 10px 24px rgba(15,23,42,.06)">
+  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Methodologie, sources et limites</h2>
+  <p style="margin:.35rem 0"><strong>Methodologie:</strong> le resultat combine les champs de la page, les donnees AfroTools disponibles et les regles appliquees par l outil. Gardez les hypotheses visibles avant de copier, telecharger ou utiliser le resultat.</p>
+  <p style="margin:.35rem 0"><strong>Sources:</strong> controle 2026 a confirmer avec la source officielle, l autorite competente, le fournisseur ou votre document de reference lorsque le prix, la loi, la sante, la taxe ou la disponibilite peuvent changer.</p>
+  <p style="margin:.35rem 0"><strong>Avertissement:</strong> estimation seulement; ce guide est non officiel et ne remplace pas un conseil professionnel, fiscal, juridique, medical ou technique.</p>
+</section>
+<!-- fr-score76-qa-panel:end -->
 <afro-footer></afro-footer>
 </body>
 </html>

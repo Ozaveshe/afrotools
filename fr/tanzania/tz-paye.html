@@ -57,9 +57,13 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tanzania/tz-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tanzania/tz-paye" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tanzania/tz-paye" />
+<style data-fr-country-brief-style>
+.fr-country-brief{max-width:960px;margin:22px auto;padding:18px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 12px 28px rgba(15,23,42,.07)}.fr-country-brief h2{margin:0 0 8px;color:#0f172a;font-size:clamp(1.18rem,2vw,1.5rem)}.fr-country-brief p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-country-brief form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-country-brief label{display:grid;gap:6px;font-size:.84rem;font-weight:800;color:#334155}.fr-country-brief input,.fr-country-brief select{min-height:44px;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#f8fafc;color:#0f172a}.fr-country-brief output{display:block;margin-top:12px;border:1px solid #e2e8f0;border-left:4px solid #2563eb;border-radius:0 10px 10px 0;background:#f8fafc;padding:12px;color:#334155;line-height:1.55;white-space:pre-line}.fr-country-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.fr-country-actions button,.fr-country-actions a{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.fr-country-actions button{background:#0f172a;color:#fff;cursor:pointer}.fr-country-actions a{background:#2563eb;color:#fff}@media(max-width:640px){.fr-country-actions button,.fr-country-actions a{width:100%}}
+</style>
 </head>
 <body class="tool-page">
 <afro-navbar theme="dark"></afro-navbar>
+<section class="fr-country-brief" data-fr-country-brief data-tool-verification-panel data-tool-title="Calculateur PAYE Tanzania 2026"><h2>Calculateur PAYE Tanzania 2026</h2><p>Preparez votre calcul en francais avant d utiliser le moteur complet. Ce brief reste local dans le navigateur et clarifie les donnees a verifier.</p><form><label>Pays ou contexte<input name="scope" value="PAYE Tanzania 2026" autocomplete="off"></label><label>Montant ou salaire<input name="amount" inputmode="decimal" placeholder="ex. 500000"></label><label>Besoin<select name="need"><option value="salaire net">Salaire net</option><option value="cout employeur">Cout employeur</option><option value="verification source">Verification source</option></select></label></form><output aria-live="polite"></output><div class="fr-country-actions"><button type="button" data-fr-country-copy>Copier le brief</button><a href="#main-content">Ouvrir le calculateur complet</a></div></section>
 <section class="tool-hero"><div class="container">
 <div>
 <nav class="breadcrumb"><a href="/fr/">AfroTools</a><span>&rsaquo;</span><a href="/fr/tanzania/">Tanzania</a><span>&rsaquo;</span>PAYE</nav>
@@ -67,7 +71,7 @@
 <p class="tool-hero-sub">Calculez votre salaire net en Tanzanie avec les tranches fiscales TRA 2026. Cotisations sociales et deductions incluses.</p>
 </div>
 </div></section>
-<main class="container" style="padding-top:32px;padding-bottom:64px">
+<main id="main-content" class="container" style="padding-top:32px;padding-bottom:64px">
 <div id="tz-paye-app"></div>
 </main>
 <!-- TOOL_VERIFICATION_PANEL_START -->
@@ -131,5 +135,8 @@
 </section>
 <!-- TOOL_VERIFICATION_PANEL_END -->
 <afro-footer></afro-footer>
+<script data-fr-country-brief-script>
+(function(){document.querySelectorAll('[data-fr-country-brief]').forEach(function(panel){var form=panel.querySelector('form');var output=panel.querySelector('output');var title=panel.getAttribute('data-tool-title')||'Calculateur';function val(name){var el=form&&form.elements[name];return el&&el.value?el.value.trim():'';}function summary(){return [title,'Pays/contexte: '+(val('scope')||'a preciser'),'Montant ou salaire: '+(val('amount')||'a renseigner'),'Besoin: '+(val('need')||'verification'),'Limite: estimation non officielle; verifier source, date et regle pays avant usage.'].join(String.fromCharCode(10));}function render(){if(output)output.textContent=summary();}if(form){form.addEventListener('input',render);form.addEventListener('change',render);form.addEventListener('submit',function(e){e.preventDefault();render();});}var copy=panel.querySelector('[data-fr-country-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text);render();});render();});})();
+</script>
 </body>
 </html>

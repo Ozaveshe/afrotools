@@ -90,6 +90,29 @@
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web"
 }</script>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "sw",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Ongezeko la bei na asilimia ya faida zinatofautiana vipi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ongezeko la bei hupimwa juu ya gharama. Asilimia ya faida hupimwa kama sehemu ya bei ya kuuza."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Je, ongezeko la bei kubwa ni bora kila mara?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Si lazima. Angalia ushindani, uwezo wa mteja kulipa, gharama za delivery, VAT, ada za malipo na kasi ya kuuza akiba ya bidhaa."
+      }
+    }
+  ]
+}</script>
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
 </head>
 <body>
@@ -138,9 +161,16 @@
         <a href="/sw/zana/usajili-biashara/">Usajili wa biashara</a>
       </div>
     </section>
-<section class="section note warn">
+    <section class="section note warn">
       <strong>Angalizo:</strong> Matokeo haya ni makadirio ya kupanga bei na ongezeko la bei. Hayathibitishi faida, ufadhili, bei, thamani ya kampuni, malipo ya mtoa huduma au uhai wa biashara. Hakiki namba zako na mshauri wa biashara, mhasibu, mtoa huduma wa malipo, msajili au mamlaka ya kodi inapohitajika.
-    </section><section class="section panel">
+    </section>
+    <section class="section panel" data-tool-verification-panel>
+      <h2>Mbinu na chanzo cha kuthibitisha</h2>
+      <p>Mbinu: tunatumia gharama ya bidhaa, gharama ya ziada, ongezeko la bei, idadi ya kuuza na sarafu kuonyesha bei ya kuuza, faida kwa bidhaa na asilimia ya faida. Matokeo ni makadirio tu, si taarifa rasmi ya kodi, bei ya soko, quote ya supplier au ushauri wa biashara.</p>
+      <p class="note"><strong>Chanzo cha mwisho:</strong> invoice ya supplier, VAT/kodi, ada za malipo, delivery, spoilage, stock loss, bei za washindani na sera ya punguzo. Tarehe ya ukaguzi: 2026-06-19.</p>
+      <div class="actions"><button type="button" onclick="copyProof('Thibitisha gharama ya supplier, VAT, delivery, ada za malipo, shrinkage, punguzo, bei ya mshindani, minimum margin na idadi halisi ya stock kabla ya kuchapisha bei.')">Nakili checklist</button></div>
+    </section>
+    <section class="section panel">
       <h2>Maswali ya haraka</h2>
       <h3>Ongezeko la bei na asilimia ya faida zinatofautiana vipi?</h3><p>Ongezeko la bei hupimwa juu ya gharama. Asilimia ya faida hupimwa kama sehemu ya bei ya kuuza.</p>
       <h3>Je, ongezeko la bei kubwa ni bora kila mara?</h3><p>Si lazima. Angalia ushindani, uwezo wa mteja kulipa na kasi ya kuuza akiba ya bidhaa.</p>
@@ -168,7 +198,8 @@ function setResults(html){ q('results').innerHTML = html; }
 function setDetail(html){ const el = q('detail'); if (el) el.innerHTML = html; }
 function bind(calc, reset){ q('calculate').addEventListener('click', calc); if (q('reset')) q('reset').addEventListener('click', function(){ reset(); calc(); }); calc(); }
 function calc(){ const cur=q('currency').value; const kipimoCost=num('cost')+num('extra'); const sell=kipimoCost*(1+num('markup')/100); const profit=sell-kipimoCost; const margin=sell?profit/sell*100:0; setResults(metric('Bei ya kuuza', money(sell,cur), 'Kwa bidhaa') + metric('Faida kwa bidhaa', money(profit,cur), '') + metric('Asilimia ya faida', pct(margin), 'Faida / bei') + metric('Faida kwa akiba ya bidhaa yote', money(profit*num('qty'),cur), num('qty') + ' bidhaa')); setDetail('<p class="note">Ikiwa unatoa punguzo, hakikisha bei baada ya punguzo bado inalinda asilimia ya faida.</p>'); }
-function reset(){ q('cost').value=1000; q('ongezeko la bei').value=35; q('qty').value=100; q('extra').value=0; }
+function copyProof(text){ if (navigator.clipboard) navigator.clipboard.writeText(text); }
+function reset(){ q('cost').value=1000; q('markup').value=35; q('qty').value=100; q('extra').value=0; }
 bind(calc, reset);
   </script>
 </body>

@@ -215,6 +215,20 @@
     <p>Tujulishe unachohitaji, kisha tutaipanga kwa kipaumbele kulingana na mahitaji ya watumiaji.</p>
     <a href="/sw/pendekeza-zana/">Omba Zana &rarr;</a>
   </div>
+<section data-sw-finance-planner style="max-width:1120px;margin:24px auto;padding:0 20px;">
+  <div style="background:#fff;border:1px solid #bfdbfe;border-radius:14px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.05);">
+    <h2 style="font-size:1.12rem;margin:0 0 8px;color:#0f172a;">Mpango wa kuthibitisha hesabu</h2>
+    <p style="margin:0 0 14px;color:#475569;line-height:1.65;"><strong>Mbinu:</strong> weka nchi au sarafu, kiasi na lengo; kisha tumia zana kuu na viungo vya ukurasa huu kuthibitisha makisio. Vyanzo: data na viungo vinavyoonekana kwenye AfroTools, pamoja na mamlaka rasmi inapohitajika. Imesasishwa kwa ukaguzi wa bidhaa wa 2026.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Nchi au sarafu<input data-sw-fin-country type="text" placeholder="Mfano: Kenya, XOF, NGN" style="width:100%;border:1px solid #bfdbfe;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Kiasi au mapato<input data-sw-fin-amount type="text" placeholder="Mfano: 250000" style="width:100%;border:1px solid #bfdbfe;border-radius:10px;padding:10px;font:inherit;"></label>
+      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Lengo<input data-sw-fin-goal type="text" placeholder="Mfano: kodi, akiba, uwekezaji" style="width:100%;border:1px solid #bfdbfe;border-radius:10px;padding:10px;font:inherit;"></label>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"><button type="button" data-sw-fin-button style="border:0;border-radius:999px;background:#0369a1;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer;">Tengeneza muhtasari</button><span data-sw-fin-status aria-live="polite" style="align-self:center;color:#64748b;"></span></div>
+    <output data-sw-fin-output style="display:block;margin-top:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;color:#0f172a;line-height:1.6;">Ongeza maelezo ili kupata muhtasari wa kuthibitisha.</output>
+    <p style="margin:12px 0 0;color:#475569;line-height:1.65;"><strong>Kanusho:</strong> haya ni makadirio tu na hayabadilishi ushauri wa kodi, fedha, uwekezaji, sharia au sheria. Hakiki na mamlaka rasmi, mhasibu, taasisi ya fedha au mshauri anayefaa kabla ya kulipa, kuwasilisha au kuwekeza.</p>
+  </div>
+</section>
 </main>
 
 <afro-footer></afro-footer>
@@ -247,5 +261,26 @@ window.HUB_CONFIG = {
 <script src="/assets/js/salary-tax-hub.js?v=caf85c22" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script>
+(function(){
+  const root = document.querySelector('[data-sw-finance-planner]');
+  if (!root) return;
+  const country = root.querySelector('[data-sw-fin-country]');
+  const amount = root.querySelector('[data-sw-fin-amount]');
+  const goal = root.querySelector('[data-sw-fin-goal]');
+  const output = root.querySelector('[data-sw-fin-output]');
+  const status = root.querySelector('[data-sw-fin-status]');
+  function render(){
+    const bits=[];
+    if(country.value.trim()) bits.push('Nchi/sarafu: '+country.value.trim());
+    if(amount.value.trim()) bits.push('Kiasi: '+amount.value.trim());
+    if(goal.value.trim()) bits.push('Lengo: '+goal.value.trim());
+    output.textContent = bits.length ? bits.join(' | ') + '. Tumia ukurasa huu kuthibitisha makisio, vyanzo na hatua inayofuata.' : 'Ongeza maelezo ili kupata muhtasari wa kuthibitisha.';
+    if(status) status.textContent = bits.length ? 'Muhtasari uko tayari.' : '';
+  }
+  root.querySelector('[data-sw-fin-button]')?.addEventListener('click', render);
+  [country, amount, goal].forEach(function(input){ input && input.addEventListener('input', render); });
+})();
+</script>
 </body>
 </html>

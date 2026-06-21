@@ -39,6 +39,7 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools Hausa","item":"https://afrotools.com/ha/"},{"@type":"ListItem","position":2,"name":"Kayan aiki","item":"https://afrotools.com/ha/kayan-aiki/"},{"@type":"ListItem","position":3,"name":"Kudin makaranta","item":"https://afrotools.com/ha/kayan-aiki/kwatanta-kudin-makaranta/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"ha","mainEntity":[{"@type":"Question","name":"Me zan kwatanta kafin zabar makaranta?","acceptedAnswer":{"@type":"Answer","text":"Kwatanta kudin karatu, registration, hostel, abinci, transport, books, exam fees, scholarship da tsarin biyan kudi."}},{"@type":"Question","name":"Shin AfroTools yana tabbatar da kudin makaranta?","acceptedAnswer":{"@type":"Answer","text":"A'a. Wannan shafi yana taimaka wa iyali su tsara tambayoyi da budget. Tabbatar da adadi daga makaranta ko portal kafin biya."}},{"@type":"Question","name":"Me yasa app din kwatantawa yake Turanci?","acceptedAnswer":{"@type":"Answer","text":"Cikakken app din school fees yana Turanci tukuna, amma wannan shafin Hausa yana ba da hanya, checklist da brief kafin budewa."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -73,6 +74,8 @@
   .note{padding:18px;border-radius:12px;background:#FFF7ED;border:1px solid #FED7AA;color:#7C2D12}
   .list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
   .list li{padding:14px 16px;border:1px solid var(--color-border);border-radius:10px;background:white}
+  .planner{margin-top:22px;background:#fff;border:1px solid #bfdbfe;border-radius:12px;padding:18px;color:#0f172a}
+  .planner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.planner label{display:grid;gap:6px;font-weight:800;font-size:.86rem}.planner input{border:1px solid #cbd5e1;border-radius:10px;padding:10px 11px;font:inherit}.planner output{display:block;margin-top:12px;border:1px solid #dbeafe;background:#eff6ff;border-radius:10px;color:#1e3a8a;padding:12px}.planner button{margin-top:10px;border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:900;padding:10px 14px;cursor:pointer}.planner-status{margin-left:10px;color:#64748b;font-size:.86rem}
   @media(max-width:720px){.hero{padding-top:88px}.section{padding:34px 16px}}
 </style>
 </head>
@@ -87,6 +90,16 @@
       <div class="actions">
         <a class="btn" href="/tools/school-fees/app">Bude manhajar kwatantawa ta Turanci</a>
         <a class="btn secondary" href="/ha/ilimi/">Komawa hub din ilimi</a>
+      </div>
+      <div class="planner" data-tool-verification-panel>
+        <h2 style="margin:0 0 8px;font-size:1.05rem;">Shirya tambayoyin kudin makaranta</h2>
+        <div class="planner-grid">
+          <label>Makaranta ko zabi<input id="schoolName" autocomplete="off" placeholder="Ex: School A"></label>
+          <label>Kudin da aka fada<input id="schoolCost" inputmode="numeric" placeholder="Ex: 450000"></label>
+          <label>Abin da bai bayyana ba<input id="schoolGap" autocomplete="off" placeholder="Ex: hostel, books, transport"></label>
+        </div>
+        <output id="schoolBrief">Rubuta makaranta, kudin da aka fada da abin da bai bayyana ba.</output>
+        <button type="button" id="copySchoolBrief">Kwafa brief</button><span class="planner-status" id="schoolBriefStatus" aria-live="polite"></span>
       </div>
     </div>
   </section>
@@ -135,5 +148,8 @@
 </main>
 <afro-related-tools category="education" current="school-fees-ha"></afro-related-tools>
 <afro-footer></afro-footer>
+<script>
+!function(){var name=document.getElementById('schoolName'),cost=document.getElementById('schoolCost'),gap=document.getElementById('schoolGap'),out=document.getElementById('schoolBrief'),status=document.getElementById('schoolBriefStatus');function brief(){var parts=[];if(name.value.trim())parts.push('Makaranta: '+name.value.trim());if(cost.value.trim())parts.push('Kudin da aka fada: '+cost.value.trim());if(gap.value.trim())parts.push('A tabbatar: '+gap.value.trim());return parts.length?parts.join(' | ')+' | Tabbatar da adadi daga makaranta ko portal kafin biya.':'Rubuta makaranta, kudin da aka fada da abin da bai bayyana ba.'}function render(){out.textContent=brief();if(status)status.textContent=''}[name,cost,gap].forEach(function(el){el.addEventListener('input',render)});document.getElementById('copySchoolBrief').addEventListener('click',function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief ya kwafu.'}).catch(function(){if(status)status.textContent=text})}else if(status){status.textContent=text}});render()}();
+</script>
 </body>
 </html>

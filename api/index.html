@@ -84,9 +84,13 @@
     .plan li{font-size:13px;color:#374151;line-height:1.45}
     .plan li::before{content:'+';color:var(--api-green);font-weight:900;margin-right:7px}
     .plan .btn{margin-top:auto;width:100%}
+    .api-faq{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .api-faq details{background:#fff;border:1px solid var(--api-line);border-radius:8px;padding:22px}
+    .api-faq summary{cursor:pointer;font-size:16px;font-weight:900;line-height:1.35;color:#111827}
+    .api-faq p{color:#5f6b7a;font-size:14px;line-height:1.6;margin:12px 0 0}
     .final-cta{background:#f7f9fc;border-top:1px solid var(--api-line);text-align:center}
     .final-cta .section{max-width:820px}.final-cta p{color:#5f6b7a;line-height:1.65;margin:12px auto 24px}
-    @media(max-width:980px){.hero-inner{grid-template-columns:1fr}.catalog,.pricing-preview{grid-template-columns:repeat(2,minmax(0,1fr))}.use-grid,.trust-grid{grid-template-columns:1fr}.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{display:block}}
+    @media(max-width:980px){.hero-inner{grid-template-columns:1fr}.catalog,.pricing-preview{grid-template-columns:repeat(2,minmax(0,1fr))}.use-grid,.trust-grid,.api-faq{grid-template-columns:1fr}.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{display:block}}
     @media(max-width:620px){.hero{padding-top:70px}.hero-actions{display:grid}.btn{width:100%}.catalog,.pricing-preview,.flow{grid-template-columns:1fr}.console pre{font-size:12px;padding:16px}.section{padding:48px 18px}}
   </style>
   <meta property="og:locale" content="en_US">
@@ -99,18 +103,72 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "AfroTools API",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Web",
-    "url": "https://afrotools.com/api/",
-    "offers": {
-      "@type": "AggregateOffer",
-      "lowPrice": "0",
-      "highPrice": "499",
-      "priceCurrency": "USD",
-      "offerCount": "4"
-    }
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "AfroTools API",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "url": "https://afrotools.com/api/",
+        "offers": {
+          "@type": "AggregateOffer",
+          "lowPrice": "0",
+          "highPrice": "499",
+          "priceCurrency": "USD",
+          "offerCount": "4"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "name": "AfroTools API - African Data for Product Teams",
+        "url": "https://afrotools.com/api/",
+        "description": "African tax, VAT, FX, fuel, central-bank, and country APIs for payroll, fintech, accounting, HR, media, and business software teams.",
+        "inLanguage": "en",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "AfroTools",
+          "url": "https://afrotools.com/"
+        },
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://afrotools.com/assets/img/og-default.png"
+        },
+        "potentialAction": {
+          "@type": "ViewAction",
+          "name": "Read AfroTools API documentation",
+          "target": "https://afrotools.com/api/docs/"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can developers test the AfroTools API before a sales call?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Developers can use sandbox examples and create a free dashboard key for supported authenticated endpoints before requesting a paid pilot."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which teams are a fit for the AfroTools API?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Payroll, HR, fintech, accounting, media, research, and marketplace teams are the best fit when they need reusable African tax, VAT, FX, fuel, rate, or country data."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "When does an API integration need review?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Paid pilots, higher-volume use, compliance-sensitive products, custom data scope, and production claims need review before activation."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/api/" />
@@ -329,6 +387,30 @@ curl -X POST <span class="green">"https://afrotools.com/api/v1/tax/paye"</span> 
         <ul><li>Custom request limits</li><li>Data subscription review</li><li>Dedicated support</li></ul>
         <a class="btn btn-secondary" href="/business-enquiry/?offer=api-enterprise&amp;prospect=developer-api&amp;source=api">Contact sales</a>
       </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>API buyer questions.</h2>
+        <p class="section-desc">The API path is designed for developers who want to test first and business teams that need production scope reviewed before promises are made.</p>
+      </div>
+      <a class="status-link" href="/api/docs/">Review docs</a>
+    </div>
+    <div class="api-faq">
+      <details open>
+        <summary>Can developers test before a sales call?</summary>
+        <p>Yes. Developers can use sandbox examples and create a free dashboard key for supported authenticated endpoints before requesting a paid pilot.</p>
+      </details>
+      <details>
+        <summary>Which teams are a fit?</summary>
+        <p>Payroll, HR, fintech, accounting, media, research, and marketplace teams are the best fit when they need reusable African tax, VAT, FX, fuel, rate, or country data.</p>
+      </details>
+      <details>
+        <summary>When does an integration need review?</summary>
+        <p>Paid pilots, higher-volume use, compliance-sensitive products, custom data scope, and production claims need review before activation.</p>
+      </details>
     </div>
   </section>
 

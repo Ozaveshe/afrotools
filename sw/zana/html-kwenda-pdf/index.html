@@ -638,6 +638,41 @@
     font-family: 'DM Sans', sans-serif;
   }
 
+  .sw-proof-panel {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    padding: 0 20px;
+  }
+
+  .sw-proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .sw-proof-card {
+    border: 1px solid #dbe6f4;
+    border-radius: 12px;
+    background: #fff;
+    padding: 14px;
+    box-shadow: 0 1px 8px rgba(15, 23, 42, 0.05);
+  }
+
+  .sw-proof-card strong {
+    display: block;
+    color: #0f172a;
+    font-size: 0.9rem;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .sw-proof-card p {
+    margin: 0;
+    color: #52637a;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
   /* Hidden render container */
   #renderContainer {
     position: absolute;
@@ -658,19 +693,22 @@
     .advanced-grid {
       grid-template-columns: 1fr;
     }
+    .sw-proof-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 <script src="/assets/js/bundles/core.c3deb143.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 
 
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale" content="sw_KE">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-04-28">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HTML kwenda PDF","url":"https://afrotools.com/sw/zana/html-kwenda-pdf/","applicationCategory":"BusinessApplication","operatingSystem":"Any","inLanguage":"sw","description":"Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Hati na PDF","item":"https://afrotools.com/sw/hati-na-pdf/"},{"@type":"ListItem","position":4,"name":"HTML kwenda PDF","item":"https://afrotools.com/sw/zana/html-kwenda-pdf/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, HTML yangu inapakiwa?","acceptedAnswer":{"@type":"Answer","text":"Ubadilishaji umeundwa kufanyika kwenye kivinjari kwa maktaba za ndani. Picha za nje zinaweza kutegemea CORS na ruhusa za chanzo."}},{"@type":"Question","name":"Je, output ni sawa kabisa na browser page?","acceptedAnswer":{"@type":"Answer","text":"Hapana, export fidelity hutegemea CSS, fonts, picha, ukubwa wa ukurasa na uwezo wa browser. Hakiki PDF kabla ya kuituma."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, HTML yangu inapakiwa?","acceptedAnswer":{"@type":"Answer","text":"Ubadilishaji umeundwa kufanyika kwenye kivinjari kwa maktaba za ndani. Picha za nje zinaweza kutegemea CORS na ruhusa za chanzo."}},{"@type":"Question","name":"Je, output ni sawa kabisa na browser page?","acceptedAnswer":{"@type":"Answer","text":"Hapana, export fidelity hutegemea CSS, fonts, picha, ukubwa wa ukurasa na uwezo wa browser. Hakiki PDF kabla ya kuituma."}},{"@type":"Question","name":"Ukubwa gani wa ukurasa unaungwa mkono?","acceptedAnswer":{"@type":"Answer","text":"Unaweza kutumia A4, A3, Letter au Legal kwa mwelekeo wa wima au mlalo, pamoja na margin za kawaida, nyembamba, pana, bila margin au maalum."}},{"@type":"Question","name":"Naweza kubadilisha rich text yenye formatting kuwa PDF?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Tumia tab ya Hariri rich text kwa bold, italic, headings, orodha, links na alignment, kisha badilisha moja kwa moja kuwa PDF."}},{"@type":"Question","name":"Je, maudhui marefu hugawanywa kwenye kurasa nyingi?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Maudhui marefu hugawanywa kulingana na ukubwa wa ukurasa, margins na render scale uliyochagua."}}]}</script>
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
 </head>
 <body>
@@ -681,7 +719,7 @@
     <div class="breadcrumb">
       <a href="/">AfroTools</a> / <a href="/sw/tools/">Zana</a> / <span>HTML kwenda PDF</span>
     </div>
-    <h1>HTML to <em>PDF</em></h1>
+    <h1>HTML kwenda <em>PDF</em></h1>
     <p class="hero-sub">Badilisha HTML au rich text kuwa PDF iliyopangwa kwa templates, CSS maalum, header, footer, namba za kurasa, ubora na uchakataji wa kivinjari.</p>
     <div class="hero-badges">
       <span class="badge b-green">Maktaba za ndani</span>
@@ -709,13 +747,13 @@
         <div class="card-head">Ingizo la HTML</div>
         <div class="card-body">
           <div class="sample-strip">
-            <button class="sample-btn" type="button" data-template="invoice">Invoice</button>
+            <button class="sample-btn" type="button" data-template="invoice">Ankara</button>
             <button class="sample-btn" type="button" data-template="report">Ripoti</button>
-            <button class="sample-btn" type="button" data-template="letter">Letter</button>
-            <button class="sample-btn" type="button" data-template="certificate">Certificate</button>
+            <button class="sample-btn" type="button" data-template="letter">Barua</button>
+            <button class="sample-btn" type="button" data-template="certificate">Cheti</button>
             <button class="mini-action" id="previewHtmlBtn" type="button">Onyesha HTML</button>
           </div>
-          <textarea id="htmlInput" placeholder="<h1 aria-label="Html Input">Hello World</h1>&#10;<p>Bandika HTML yako hapa...</p>&#10;&#10;<ul>&#10;  <li>Inaunga mkono inline styles</li>&#10;  <li>Majedwali, picha na orodha</li>&#10;  <li>Maudhui ya kurasa nyingi</li>&#10;</ul>"></textarea>
+          <textarea id="htmlInput" aria-label="Ingizo la HTML" placeholder="&lt;h1&gt;Hati yangu&lt;/h1&gt;&#10;&lt;p&gt;Bandika HTML yako hapa...&lt;/p&gt;&#10;&#10;&lt;ul&gt;&#10;  &lt;li&gt;Inaunga mkono inline styles&lt;/li&gt;&#10;  &lt;li&gt;Majedwali, picha na orodha&lt;/li&gt;&#10;  &lt;li&gt;Maudhui ya kurasa nyingi&lt;/li&gt;&#10;&lt;/ul&gt;"></textarea>
 
           <div class="options-row">
             <div class="option-group">
@@ -763,25 +801,25 @@
               <label for="renderScale">Kiwango cha render</label>
               <select id="renderScale">
                 <option value="1.5">Haraka</option>
-                <option value="2" selected>Balanced</option>
+                <option value="2" selected>Wastani</option>
                 <option value="2.75">Ubora wa juu</option>
               </select>
             </div>
             <div class="option-group">
               <label for="imageQuality">Ubora wa picha</label>
               <select id="imageQuality">
-                <option value="0.82">Small file</option>
-                <option value="0.92" selected>Balanced</option>
+                <option value="0.82">Faili ndogo</option>
+                <option value="0.92" selected>Wastani</option>
                 <option value="0.98">Ubora wa juu</option>
               </select>
             </div>
             <div class="option-group">
-              <label for="headerMaandishi">Header</label>
-              <input id="headerMaandishi" type="text" placeholder="Optional page header">
+              <label for="headerText">Header</label>
+              <input id="headerText" type="text" placeholder="Header ya hiari ya ukurasa">
             </div>
             <div class="option-group">
-              <label for="footerMaandishi">Footer</label>
-              <input id="footerMaandishi" type="text" placeholder="Optional page footer">
+              <label for="footerText">Footer</label>
+              <input id="footerText" type="text" placeholder="Footer ya hiari ya ukurasa">
             </div>
             <div class="option-group wide-field">
               <label for="customCss">CSS maalum</label>
@@ -875,9 +913,9 @@
     <!-- Preview + Pakua -->
     <div id="previewSection" class="preview-section">
       <div class="tool-card" style="margin-top:24px">
-        <div class="card-head">HTML Preview</div>
+        <div class="card-head">Muonekano wa HTML</div>
         <div class="card-body">
-          <iframe id="htmlPreview" class="preview-frame html-preview-frame" title="HTML Preview"></iframe>
+          <iframe id="htmlPreview" class="preview-frame html-preview-frame" title="Muonekano wa HTML"></iframe>
         </div>
       </div>
       <div class="tool-card" style="margin-top:24px">
@@ -906,6 +944,14 @@
   <p>AfroTools HTML kwenda PDF hubadilisha HTML ghafi au rich text kuwa hati za PDF kwa browser-local rendering. Tumia templates za ankara, ripoti, barua na vyeti, au bandika HTML yako yenye inline styles, majedwali, orodha na picha. Chagua ukubwa wa ukurasa, mwelekeo, margins, render quality, CSS, headers, footers, namba za kurasa na tarehe kabla ya export.</p>
   <p>Kila kitu hufanyika client-side kwa kutumia html2canvas na jsPDF assets za ndani. Maudhui yako hayatoki kwenye kifaa chako, hivyo yanafaa kwa ankara, mikataba, ripoti, risiti, barua za shule na nyaraka za ndani. Kwa kunasa live URLs kwa usahihi wa pixel, tumia server-side renderer; kwa HTML au rich text uliyobandika kwa faragha, zana hii inatoa kasi na udhibiti.</p>
 </section>
+<section class="sw-proof-panel" aria-labelledby="html-pdf-proof-title">
+  <h2 id="html-pdf-proof-title" style="margin:0 0 12px;color:#0f172a;font-size:1.25rem;">Kabla ya ku-export PDF</h2>
+  <div class="sw-proof-grid">
+    <div class="sw-proof-card"><strong>Inafaa kwa nini</strong><p>Ankara, risiti, barua, ripoti fupi, vyeti, notes za darasa na hati za ndani unazotaka kuunda bila kupakia maudhui.</p></div>
+    <div class="sw-proof-card"><strong>Faragha ya kazi</strong><p>HTML na rich text hukaa kwenye browser. Picha za nje zinaweza kushindwa kama chanzo hakiruhusu CORS.</p></div>
+    <div class="sw-proof-card"><strong>Hakiki kabla ya kutuma</strong><p>PDF ya canvas inaweza kubadilisha fonti au spacing. Fungua preview, kagua kurasa, kisha pakua.</p></div>
+  </div>
+</section>
 
 <!-- FAQ Section -->
 
@@ -923,24 +969,24 @@
     </details>
     <details>
       <summary>
-        What page sizes and orientations are supported?
+        Ukubwa gani wa ukurasa na mwelekeo unaungwa mkono?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">The converter supports A4, A3, Letter, and Legal page sizes in portrait or landscape. You can choose normal, narrow, wide, no-margin, or custom margin settings.</div>
+      <div class="faq-body">Zana inaunga mkono A4, A3, Letter na Legal kwa wima au mlalo. Unaweza kuchagua margin za kawaida, nyembamba, pana, bila margin au maalum.</div>
     </details>
     <details>
       <summary>
         Naweza kubadilisha rich text yenye formatting kuwa PDF?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Yes. Switch to the Hariri rich text tab to use a visual editor with bold, italic, underline, headings, lists, links, and text alignment. The formatted content converts directly to PDF.</div>
+      <div class="faq-body">Ndiyo. Fungua tab ya Hariri rich text kutumia editor yenye bold, italic, underline, headings, orodha, links na alignment. Maudhui hayo hubadilishwa moja kwa moja kuwa PDF.</div>
     </details>
     <details>
       <summary>
-        Does the converter handle multi-page content?
+        Je, zana hushughulikia maudhui ya kurasa nyingi?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Yes. Long content is split across multiple PDF pages based on your chosen page size, margins, and render scale. Headers, footers, page numbers, and dates are applied to every page.</div>
+      <div class="faq-body">Ndiyo. Maudhui marefu hugawanywa kwenye kurasa nyingi kulingana na ukubwa wa ukurasa, margins na render scale uliyochagua. Header, footer, namba za kurasa na tarehe hutumika kwenye kila ukurasa.</div>
     </details>
     <details>
       <summary>
@@ -1244,16 +1290,17 @@
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="HTML to PDF" tool-slug="html-to-pdf"></share-result-button>';
+  div.innerHTML = '<share-result-button tool-name="HTML kwenda PDF" tool-slug="html-to-pdf"></share-result-button>';
   target.appendChild(div);
 })();
 </script>
 <email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
+<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script>
 (function(){
-  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza Hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Ready","Tayari"],["Error","Hitilafu"]]);
+  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading...","Inapakia..."],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Please paste some HTML code first.","Bandika msimbo wa HTML kwanza."],["Please type some content in the rich text editor.","Andika maudhui kwenye rich text editor kwanza."],["Paste HTML or choose a template before previewing.","Bandika HTML au chagua template kabla ya preview."],["Popup blocked. Please allow popups for preview.","Popup imezuiwa. Ruhusu popups ili kuona preview."],["PDF generated successfully","PDF imeundwa vizuri"],["Conversion failed:","Ubadilishaji umeshindikana:"],["Ready","Tayari"],["Error","Hitilafu"]]);
   const attrMap = textMap;
   function swapText(node){
     const raw = node.textContent || '';

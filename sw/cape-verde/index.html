@@ -206,6 +206,30 @@
   </div>
 </section>
 <!-- /sw-country-vat-compliance -->
+<section class="sec sw-country-planner" data-sw-country-planner style="padding:42px 0;background:#eef6ff;">
+  <div class="wrap">
+    <div class="eyebrow">Mpango wa hatua</div>
+    <h2 class="sec-title">Chagua unachotaka kufanya sasa</h2>
+    <p class="sec-sub">Tumia sehemu hii kuchagua njia ya haraka: PAYE, VAT, sarafu, usajili au pendekezo la zana. Matokeo ni mwongozo wa kuanza, si uamuzi rasmi.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:18px;">
+      <label style="display:grid;gap:6px;font-weight:800;color:#0f172a;">Lengo lako
+        <select data-country-goal style="width:100%;border:1px solid #bfdbfe;border-radius:10px;padding:11px;font:inherit;">
+          <option value="paye">Kokotoa mshahara au PAYE</option>
+          <option value="vat">Tafuta VAT na kodi ya biashara</option>
+          <option value="fx">Linganishia sarafu na FX</option>
+          <option value="business">Andaa usajili au ankara</option>
+          <option value="request">Omba zana ya nchi hii</option>
+        </select>
+      </label>
+      <label style="display:grid;gap:6px;font-weight:800;color:#0f172a;">Maelezo mafupi
+        <input data-country-detail type="text" placeholder="Mfano: mshahara wa mwezi, ankara, bei au usajili" style="width:100%;border:1px solid #bfdbfe;border-radius:10px;padding:11px;font:inherit;">
+      </label>
+      <div style="display:flex;align-items:end;"><button type="button" data-country-plan-button style="width:100%;border:0;border-radius:10px;background:#007aff;color:#fff;font-weight:900;padding:12px 14px;cursor:pointer;">Panga njia</button></div>
+    </div>
+    <output data-country-plan-output style="display:block;margin-top:12px;background:#fff;border:1px solid #dbeafe;border-left:4px solid #007aff;border-radius:12px;padding:14px;color:#0f172a;line-height:1.6;">Chagua lengo ili kupata njia ya haraka ya ukurasa huu.</output>
+    <p style="margin-top:12px;color:#475569;line-height:1.65;"><strong>Kanusho:</strong> haya ni makadirio tu na mwongozo wa bidhaa. Hakiki viwango, tarehe, kodi, ada na mahitaji na mamlaka rasmi, mwajiri, mhasibu au mshauri wa ndani kabla ya kufanya malipo, kusaini au kuwasilisha faili.</p>
+  </div>
+</section>
 </main>
 <!-- seo-internal-links -->
 <nav class="seo-links" aria-label="Vikokotoo vya Kodi vya Cabo Verde">
@@ -238,6 +262,32 @@ if (typeof onRegistryReady === 'function') {
 } else {
   document.addEventListener('DOMContentLoaded', initSwCountryHub);
 }
+</script>
+<script>
+(function(){
+  const root = document.querySelector('[data-sw-country-planner]');
+  if (!root) return;
+  const goal = root.querySelector('[data-country-goal]');
+  const detail = root.querySelector('[data-country-detail]');
+  const output = root.querySelector('[data-country-plan-output]');
+  const button = root.querySelector('[data-country-plan-button]');
+  const links = {
+    paye: ['/sw/mshahara-na-kodi/','Anza na Mshahara na Kodi, kisha fungua kikokotoo cha PAYE kilichopo kwenye ukurasa huu ikiwa kimeorodheshwa.'],
+    vat: ['/sw/vat-na-kodi/','Anza na VAT na Kodi ya Biashara, kisha tumia TIN au ankara kama hatua inayofuata.'],
+    fx: ['/sw/mshahara-na-kodi/fx/','Fungua zana za sarafu na FX kabla ya kubadilisha bei, mshahara au ankara.'],
+    business: ['/sw/zana/usajili-biashara/','Andaa usajili wa biashara, TIN, VAT na ankara kabla ya kutoa quotation rasmi.'],
+    request: ['/sw/pendekeza-zana/','Tuma ombi la zana ya nchi hii ili timu iongeze ukurasa au kikokotoo kinachokosekana.']
+  };
+  function render(){
+    const chosen = links[goal.value] || links.paye;
+    const note = detail.value.trim() ? ' Maelezo yako: ' + detail.value.trim() + '.' : '';
+    output.innerHTML = chosen[1] + note + ' <a href="' + chosen[0] + '" style="color:#007aff;font-weight:900;">Fungua hatua hii &rarr;</a>';
+  }
+  button && button.addEventListener('click', render);
+  goal && goal.addEventListener('change', render);
+  detail && detail.addEventListener('input', render);
+  render();
+})();
 </script>
 </body>
 </html>

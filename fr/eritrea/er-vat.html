@@ -57,6 +57,9 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/eritrea/er-vat" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/eritrea/er-vat" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/eritrea/er-vat" />
+<style data-fr-vat-fallback-style>
+.fr-vat-fallback{border:1px solid #bfdbfe;border-radius:14px;background:#fff;box-shadow:0 12px 28px rgba(15,23,42,.06);padding:18px;margin:0 0 22px}.fr-vat-fallback h2{margin:0 0 8px;font-size:1.12rem;color:#0f172a}.fr-vat-fallback p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-vat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}.fr-vat-grid label{display:grid;gap:6px;font-weight:800;color:#334155;font-size:.88rem}.fr-vat-grid input,.fr-vat-grid select{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px 11px;font:inherit;background:#fff}.fr-vat-fallback button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:900;padding:11px 15px;cursor:pointer}.fr-vat-output{display:block;margin-top:12px;border:1px solid #dbeafe;border-radius:12px;background:#eff6ff;color:#1e3a8a;padding:12px;line-height:1.55;min-height:48px}.fr-vat-note{margin-top:10px;color:#64748b;font-size:.86rem;line-height:1.5}
+</style>
 </head>
 <body class="tool-page">
 <afro-navbar></afro-navbar>
@@ -68,6 +71,13 @@
 </div>
 </div></section>
 <main class="container" style="padding-top:32px;padding-bottom:64px">
+<section class="fr-vat-fallback" data-vat-fallback-calc aria-label="Calcul rapide TVA">
+<h2>Calcul rapide HT / TTC</h2>
+<p>Entrez le montant et le taux TVA actuellement applicable dans votre cas. Le calcul reste local et sert de controle avant verification officielle.</p>
+<div class="fr-vat-grid"><label>Montant<input data-vat-amount type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex. 1000"></label><label>Taux TVA (%)<input data-vat-rate type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex. 15"></label><label>Mode<select data-vat-mode><option value="add">Ajouter la TVA au HT</option><option value="remove">Retirer la TVA du TTC</option></select></label><label>Action<button type="button" data-vat-run>Calculer</button></label></div>
+<output class="fr-vat-output" data-vat-output>Ajoutez un montant et un taux pour afficher HT, TVA et TTC.</output>
+<p class="fr-vat-note">Verifiez toujours le taux, l exemption, la categorie de produit et les obligations de depot avec l administration fiscale ou un conseiller local.</p>
+</section>
 <div id="er-vat-app"></div>
 </main>
 <!-- TOOL_VERIFICATION_PANEL_START -->
@@ -130,5 +140,8 @@
 </section>
 <!-- TOOL_VERIFICATION_PANEL_END -->
 <afro-footer></afro-footer>
+<script data-fr-vat-fallback-script>
+(function(){document.querySelectorAll('[data-vat-fallback-calc]').forEach(function(card){var out=card.querySelector('[data-vat-output]');function money(x){return (isFinite(x)?x:0).toLocaleString('fr-FR',{maximumFractionDigits:2});}function calc(){var amount=parseFloat(card.querySelector('[data-vat-amount]').value)||0;var rate=(parseFloat(card.querySelector('[data-vat-rate]').value)||0)/100;var mode=card.querySelector('[data-vat-mode]').value;var net,tax,total;if(mode==='remove'){total=amount;net=rate?amount/(1+rate):amount;tax=total-net;}else{net=amount;tax=net*rate;total=net+tax;}out.textContent='HT: '+money(net)+' | TVA: '+money(tax)+' | TTC: '+money(total);}card.addEventListener('input',calc);var btn=card.querySelector('[data-vat-run]');if(btn)btn.addEventListener('click',calc);});})();
+</script>
 </body>
 </html>

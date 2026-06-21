@@ -106,6 +106,19 @@
 .related-tool-link{display:block;padding:14px;background:#F8FAFD;border:1px solid #e2e8f0;border-radius:8px;text-decoration:none;color:#1e293b;font-size:.85rem;font-weight:600;transition:border-color 150ms,background 150ms}
 .related-tool-link:hover{border-color:var(--calc-accent);background:#EBF4FF}
 .sources-footer{font-size:.72rem;color:#94a3af;text-align:center;padding:24px 0;line-height:1.6}
+
+.sw-agri-actions{background:#fff;border:1px solid #dbeafe;border-radius:10px;box-shadow:0 1px 3px rgba(15,23,42,.06);padding:18px;margin-bottom:24px}
+.sw-agri-actions h2{font-size:1rem;margin:0 0 8px;color:#0f172a;letter-spacing:-.01em}
+.sw-agri-actions p{font-size:.84rem;color:#64748b;line-height:1.6;margin:0 0 12px}
+.sw-agri-action-row{display:flex;flex-wrap:wrap;gap:8px}
+.sw-agri-action-row button{border:1.5px solid #bfdbfe;background:#eff6ff;color:#075985;border-radius:999px;padding:10px 13px;font:inherit;font-size:.82rem;font-weight:800;cursor:pointer}
+.sw-agri-action-row button:focus{outline:3px solid rgba(0,122,255,.2);outline-offset:2px}
+.sw-agri-status{margin-top:10px;font-size:.8rem;color:#166534;min-height:1.2em}
+.sw-agri-verification{background:#f8fafc;border:1px solid #dbeafe;border-radius:10px;padding:16px;margin:0 0 24px;color:#334155}
+.sw-agri-verification h2{font-size:1rem;margin:0 0 10px;color:#0f172a}
+.sw-agri-verification-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.sw-agri-verification-grid div{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px;font-size:.82rem;line-height:1.55}
+.sw-agri-verification-grid strong{display:block;color:#0f172a;margin-bottom:4px}
 </style>
 <meta property="article:modified_time" content="2026-03-29">
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
@@ -199,6 +212,24 @@
       <div class="card-body"><div class="org-grid" id="organicGrid"></div></div>
     </div>
   </div>
+  <section class="sw-agri-actions" aria-labelledby="sw-agri-actions-title">
+    <h2 id="sw-agri-actions-title">Endeleza mpango wako</h2>
+    <p>Baada ya kukokotoa, hifadhi matokeo kama muhtasari wa shamba, nakili kwa WhatsApp au upakue TXT kwa kumbukumbu ya msimu. Data hubaki kwenye browser yako.</p>
+    <div class="sw-agri-action-row">
+      <button type="button" data-agri-action="copy">Nakili muhtasari</button>
+      <button type="button" data-agri-action="download">Pakua TXT</button>
+      <button type="button" data-agri-action="save">Hifadhi kwenye browser</button>
+    </div>
+    <div class="sw-agri-status" id="swAgriActionStatus" role="status" aria-live="polite"></div>
+  </section>
+  <section class="sw-agri-verification" data-tool-verification-panel aria-labelledby="sw-agri-verification-title">
+    <h2 id="sw-agri-verification-title">Mbinu, vyanzo na kanusho 2026</h2>
+    <div class="sw-agri-verification-grid">
+      <div><strong>Mbinu</strong>Makadirio hutumia ukubwa wa shamba, zao, eneo, udongo, mbolea au umwagiliaji kisha huonyesha range ya kupanga, si guarantee ya mavuno.</div>
+      <div><strong>Vyanzo</strong>Hulinganishwa na data ya AfroTools, FAOSTAT, CGIAR na taasisi za kilimo zilizotajwa kwenye ukurasa wa Kiingereza.</div>
+      <div><strong>Kanusho</strong>Bei, mvua, magonjwa, ruzuku, pembejeo na huduma za extension hubadilika. Thibitisha na afisa wa kilimo, soil test au mtaalamu kabla ya kutumia pesa.</div>
+    </div>
+  </section>
   <div class="sources-footer">Vyanzo: FAOSTAT, KALRO Kenya, CGIAR. Ilisasishwa: 2026.</div>
 </main>
 <section class="seo-content">
@@ -247,6 +278,37 @@
     $('scheduleContainer').innerHTML=r.schedule.map(function(s,i){var n=[];if(s.nutrients.N>0)n.push(fmtN(s.nutrients.N)+' kg N');if(s.nutrients.P>0)n.push(fmtN(s.nutrients.P)+' kg P');if(s.nutrients.K>0)n.push(fmtN(s.nutrients.K)+' kg K');return'<div class="sched-item"><div class="sched-num">'+(i+1)+'</div><div><div class="sched-stage">'+s.stage+'</div><div class="sched-timing">'+s.timing+'</div><div class="sched-detail"><strong>'+n.join(' + ')+'</strong><br>'+s.note+'</div></div></div>'}).join('');
     $('organicGrid').innerHTML=r.organic.map(function(o){return'<div class="org-card"><div class="org-val">'+fmtN(o.tonnes)+' t</div><div class="org-label">'+o.label+'</div></div>'}).join('');
   };
+})();
+</script>
+<script>
+(function(){
+  var status=document.getElementById('swAgriActionStatus');
+  function summary(){
+    var title=(document.querySelector('h1')||{}).textContent||'Mpango wa kilimo';
+    var results=document.getElementById('resultsPanel');
+    var text=results&&results.classList.contains('on')?results.innerText.trim():'Bado hujakokotoa matokeo. Jaza fomu kisha bonyeza kitufe cha hesabu.';
+    return title.trim()+'\n\n'+text+'\n\nMbinu: makadirio ya kupanga 2026. Thibitisha na chanzo cha kilimo, soil test au afisa wa ugani kabla ya kununua pembejeo.';
+  }
+  function setStatus(msg){if(status){status.textContent=msg;}}
+  document.querySelectorAll('[data-agri-action]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var action=btn.getAttribute('data-agri-action');
+      var text=summary();
+      if(action==='copy'){
+        if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){setStatus('Muhtasari umenakiliwa.');}).catch(function(){setStatus('Imeshindikana kunakili moja kwa moja.');});}
+        else{setStatus('Browser hii haina clipboard ya moja kwa moja.');}
+      }
+      if(action==='download'){
+        var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+        var url=URL.createObjectURL(blob);
+        var a=document.createElement('a');a.href=url;a.download='afrotools-mpango-kilimo.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);setStatus('TXT imeandaliwa kwa kupakua.');
+      }
+      if(action==='save'){
+        try{localStorage.setItem('afrotools.sw.agri.lastPlan',text);setStatus('Mpango umehifadhiwa kwenye browser hii.');}
+        catch(e){setStatus('Hifadhi ya browser imezuiwa.');}
+      }
+    });
+  });
 })();
 </script>
 <script src="/assets/js/lib/cross-tool-nav.js?v=98f5d16e" defer></script>

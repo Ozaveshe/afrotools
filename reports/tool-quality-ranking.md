@@ -1,6 +1,6 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-06-18T03:42:55.199Z
+Generated: 2026-06-19T17:31:18.534Z
 
 ## Scope
 
@@ -22,39 +22,39 @@ Generated: 2026-06-18T03:42:55.199Z
 
 | Rank | Rows | Weighted instances |
 | --- | ---: | ---: |
-| A | 1814 | 3597 |
-| B | 604 | 604 |
-| C | 341 | 341 |
-| D | 467 | 467 |
-| F | 15 | 15 |
+| A | 3054 | 4837 |
+| B | 187 | 187 |
+| C | 0 | 0 |
+| D | 0 | 0 |
+| F | 0 | 0 |
 
-Low-ranked rows below C: 482
-Repair-first rows below D: 15
+Low-ranked rows below C: 0
+Repair-first rows below D: 0
 
 ## Lowest Category Averages
 
 | Category | Rows | Instances | Avg score | Low rows | P0 | Browser failures |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Sports & Entertainment | 30 | 30 | 73.1 | 15 | 0 | 0 |
-| Small Business & SME | 66 | 81 | 74 | 30 | 0 | 0 |
-| Career & Development | 17 | 17 | 74.7 | 5 | 0 | 0 |
-| Health & Wellness | 104 | 104 | 75.2 | 36 | 0 | 0 |
-| Religious & Cultural | 51 | 51 | 75.2 | 19 | 0 | 0 |
-| Fintech & Banking | 72 | 72 | 75.3 | 29 | 0 | 0 |
-| Travel & Tourism | 20 | 20 | 75.9 | 6 | 0 | 0 |
-| Climate & Environment | 32 | 35 | 76 | 13 | 0 | 0 |
-| Document & PDF | 118 | 118 | 76.5 | 30 | 0 | 0 |
-| Government & Civic | 38 | 146 | 76.8 | 11 | 0 | 0 |
-| Education | 135 | 135 | 77.1 | 47 | 0 | 0 |
-| Security & Safety | 16 | 16 | 77.4 | 7 | 0 | 0 |
-| Personal Finance | 25 | 25 | 77.7 | 4 | 0 | 0 |
-| Mortgage & Property | 267 | 445 | 78.2 | 41 | 0 | 0 |
-| HR & Payroll | 27 | 312 | 78.5 | 5 | 0 | 0 |
-| Transport & Logistics | 46 | 46 | 78.8 | 11 | 0 | 0 |
-| Engineering & Construction | 53 | 53 | 79.6 | 13 | 0 | 0 |
-| Uniquely African | 118 | 133 | 79.8 | 14 | 0 | 0 |
-| Telecom & Mobile | 52 | 52 | 79.8 | 2 | 0 | 0 |
-| VAT & Business Tax | 242 | 242 | 80.6 | 14 | 0 | 0 |
+| Document & PDF | 118 | 118 | 87.2 | 0 | 0 | 0 |
+| Sports & Entertainment | 30 | 30 | 87.4 | 0 | 0 | 0 |
+| Creative Economy | 59 | 59 | 88.4 | 0 | 0 | 0 |
+| Travel & Tourism | 20 | 20 | 88.5 | 0 | 0 | 0 |
+| Health & Wellness | 104 | 104 | 88.6 | 0 | 0 | 0 |
+| Climate & Environment | 32 | 35 | 88.6 | 0 | 0 | 0 |
+| Fintech & Banking | 72 | 72 | 88.7 | 0 | 0 | 0 |
+| Engineering & Construction | 53 | 53 | 89.2 | 0 | 0 | 0 |
+| Small Business & SME | 66 | 81 | 89.2 | 0 | 0 | 0 |
+| Security & Safety | 16 | 16 | 89.3 | 0 | 0 | 0 |
+| Government & Civic | 38 | 146 | 89.4 | 0 | 0 | 0 |
+| Uniquely African | 118 | 133 | 89.4 | 0 | 0 | 0 |
+| Transport & Logistics | 46 | 46 | 89.4 | 0 | 0 | 0 |
+| Religious & Cultural | 51 | 51 | 89.5 | 0 | 0 | 0 |
+| Finance, Tax & Market Data | 466 | 466 | 89.9 | 0 | 0 | 0 |
+| Energy & Utilities | 237 | 504 | 89.9 | 0 | 0 | 0 |
+| Personal Finance | 25 | 25 | 90 | 0 | 0 | 0 |
+| Developer Tools | 83 | 83 | 90.1 | 0 | 0 | 0 |
+| Agriculture | 507 | 1113 | 90.3 | 0 | 0 | 0 |
+| Telecom & Mobile | 52 | 52 | 90.4 | 0 | 0 | 0 |
 
 ## P0 Queue
 
@@ -63,150 +63,110 @@ No rows in this queue.
 
 ## High-Value P1 Queue
 
-| Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
-| ---: | --- | --- | --- | --- | --- | --- |
-| 49 | F | P1-high-value-upgrade | pdf-workspace-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 50 | D | P1-high-value-upgrade | document-pdf-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 50 | D | P1-high-value-upgrade | jamb-tutor-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 52 | D | P1-high-value-upgrade | pdf-sign-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-reorder-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-watermark-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | waec-neco-calculator-yo | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-ocr-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | jamb-mathematics-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-bates-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | jamb-biology-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 53 | D | P1-high-value-upgrade | telecom-data-plan-ha | Telecom & Mobile | General online utility | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 54 | D | P1-high-value-upgrade | pdf-image-convert-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-form-filler-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-to-audio-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-protect-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-page-numbers-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-repair-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-header-footer-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-find-replace-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | jamb-economics-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 54 | D | P1-high-value-upgrade | jamb-government-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 56 | D | P1-high-value-upgrade | pdf-compare-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 56 | D | P1-high-value-upgrade | html-to-pdf-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 56 | D | P1-high-value-upgrade | jamb-chemistry-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 56 | D | P1-high-value-upgrade | jamb-physics-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 57 | D | P1-high-value-upgrade | pdf-sign-ha | Document & PDF | PDF workflow utility | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 58 | D | P1-high-value-upgrade | pdf-compress-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 58 | D | P1-high-value-upgrade | business-registration-yo | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 60 | D | P1-high-value-upgrade | pdf-chat-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 60 | D | P1-high-value-upgrade | yoruba-home | Uniquely African | General online utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 60 | D | P1-high-value-upgrade | pdf-translate-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 60 | D | P1-high-value-upgrade | pdf-redact-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 60 | D | P1-high-value-upgrade | tin-guide-nigeria-ha | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 62 | D | P1-high-value-upgrade | pdf-merge-split-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 62 | D | P1-high-value-upgrade | pdf-convert-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 62 | D | P1-high-value-upgrade | yoruba-vat-business-tax | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 62 | D | P1-high-value-upgrade | fish-farming-nigeria-yo | Agriculture | Agriculture and market-data tool | unclear primary action; thin visible copy; no workflow or methodology evidence; missing export/copy/save path |
-| 62 | D | P1-high-value-upgrade | telecom-airtime-ha | Telecom & Mobile | General online utility | unclear primary action; no workflow or methodology evidence; missing export/copy/save path; browser smoke not run |
-| 63 | D | P1-high-value-upgrade | livestock-feed-nigeria-yo | Agriculture | Agriculture and market-data tool | unclear primary action; thin visible copy; no workflow or methodology evidence; missing export/copy/save path |
+No rows in this queue.
+
 
 ## Lowest 100 Individual Tools
 
 | Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 48 | F | P2-upgrade | suivi-tontine-fr | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 48 | F | P2-upgrade | encodeur-base64-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | recadrer-image-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 48 | F | P2-upgrade | za-plus-value-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 48 | F | P2-upgrade | convertisseur-binaire-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | formateur-sql-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | francais-africain-fr | Language & Translation | Language and translation utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 48 | F | P2-upgrade | calculateur-ovulation-fr | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 49 | F | P1-high-value-upgrade | pdf-workspace-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 49 | F | P2-upgrade | palette-couleurs-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 49 | F | P2-upgrade | afrocuisine-fr | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 49 | F | P2-upgrade | suivi-matieres-premieres-fr | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 49 | F | P2-upgrade | planificateur-retraite-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 49 | F | P2-upgrade | pret-automobile-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 49 | F | P2-upgrade | afroprix-fr | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 50 | D | P1-high-value-upgrade | document-pdf-ha | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; no obvious output/result model; weak input surface |
-| 50 | D | P1-high-value-upgrade | jamb-tutor-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 50 | D | P2-upgrade | rapport-medical-fr | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 50 | D | P2-upgrade | reference-taux-interet-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 50 | D | P2-upgrade | gestion-stocks-fr | VAT & Business Tax | VAT, invoice, ecommerce calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 50 | D | P2-upgrade | verificateur-diplome-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 50 | D | P2-upgrade | verificateur-cac-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 50 | D | P2-upgrade | calculateur-microfinance-fr | Fintech & Banking | Fintech and payments tool | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 50 | D | P2-upgrade | carte-conflits-afrique-fr | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 50 | D | P2-upgrade | jours-feries-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 50 | D | P2-upgrade | za-gepf-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 50 | D | P2-upgrade | traducteur-yoruba-fr | Language & Translation | Language and translation utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 50 | D | P2-upgrade | pitch-nollywood-fr | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 51 | D | P2-upgrade | guide-diaspora-fr | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 51 | D | P2-upgrade | supprimer-arriere-plan-fr | Image & Design | Image and design utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 51 | D | P2-upgrade | calendrier-semis-fr | Agriculture | Agriculture and market-data tool | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 51 | D | P2-upgrade | generateur-sitemap-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 51 | D | P2-upgrade | selecteur-aleatoire-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 51 | D | P2-upgrade | rendement-investissement-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 51 | D | P2-upgrade | calculateur-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 51 | D | P2-upgrade | generateur-degrade-css-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 51 | D | P2-upgrade | createur-fiches-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 52 | D | P1-high-value-upgrade | pdf-sign-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-reorder-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-watermark-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | waec-neco-calculator-yo | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-ocr-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | jamb-mathematics-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | pdf-bates-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P1-high-value-upgrade | jamb-biology-ha | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 52 | D | P2-upgrade | afrotaux-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 52 | D | P2-upgrade | cout-employe-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 52 | D | P2-upgrade | compteur-mots-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 52 | D | P2-upgrade | bac-a-sable-sql-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 52 | D | P2-upgrade | cout-cipc-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 52 | D | P2-upgrade | ke-helb-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 52 | D | P2-upgrade | tableau-periodique-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 52 | D | P2-upgrade | calculateur-lobola-fr | Religious & Cultural | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 52 | D | P2-upgrade | calculateur-conges-fr | Career & Development | Career tool | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 52 | D | P2-upgrade | capacite-emprunt-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 53 | D | P1-high-value-upgrade | telecom-data-plan-ha | Telecom & Mobile | General online utility | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 53 | D | P2-upgrade | sn-vs-ci-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 53 | D | P2-upgrade | afroatlas-fr | Uniquely African | General online utility | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 53 | D | P2-upgrade | assurance-sante-fr | Insurance | Insurance estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 53 | D | P2-upgrade | calculateur-waec-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 53 | D | P2-upgrade | capacite-loyer-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 53 | D | P2-upgrade | ratio-taille-hanches-fr | Health & Wellness | Health and wellness estimator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 53 | D | P2-upgrade | calculateur-location-courte-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 53 | D | P2-upgrade | etude-faisabilite-fr | Small Business & SME | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 53 | D | P2-upgrade | constructeur-cron-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 53 | D | P2-upgrade | regles-origine-sadc-fr | Trade & Import | Trade and logistics calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 53 | D | P2-upgrade | testeur-api-fr | Developer Tools | Developer utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 53 | D | P2-upgrade | convertisseur-donnees-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 53 | D | P2-upgrade | comparateur-texte-fr | Business & ROI | General online utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 53 | D | P2-upgrade | taille-terrain-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 53 | D | P2-upgrade | calculateur-jamb-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-image-convert-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-form-filler-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-to-audio-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-protect-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-page-numbers-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-repair-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-header-footer-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | pdf-find-replace-fr | Document & PDF | PDF workflow utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P1-high-value-upgrade | jamb-economics-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 54 | D | P1-high-value-upgrade | jamb-government-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 54 | D | P2-upgrade | jamb-commerce-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 54 | D | P2-upgrade | jamb-literature-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 54 | D | P2-upgrade | budget-construction-fr | Mortgage & Property | Legal and compliance workflow | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 54 | D | P2-upgrade | jamb-history-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 54 | D | P2-upgrade | jamb-crk-ha | Education | Education calculator or guide | no obvious output/result model; weak input surface; no app/script evidence; no input path |
-| 54 | D | P2-upgrade | charge-electrique-fr | Energy & Utilities | Energy and utility estimator | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 54 | D | P2-upgrade | ng-retenue-source-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 54 | D | P2-upgrade | calculateur-armature-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 54 | D | P2-upgrade | dosage-beton-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 54 | D | P2-upgrade | ke-retenue-source-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 54 | D | P2-upgrade | gh-retenue-source-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
-| 54 | D | P2-upgrade | calculateur-carrelage-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 54 | D | P2-upgrade | calculateur-peinture-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 54 | D | P2-upgrade | calculateur-toiture-fr | Engineering & Construction | General online utility | thin or no visible controls; unclear primary action; weak input surface; no input path |
-| 54 | D | P2-upgrade | calculateur-gpa-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P2-upgrade | budget-album-ep-fr | Personal Finance | Personal finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P2-upgrade | calculateur-conges-pto-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P2-upgrade | calculateur-indemnite-depart-fr | HR & Payroll | Payroll and HR utility | thin or no visible controls; unclear primary action; weak input surface; thin visible copy |
-| 54 | D | P2-upgrade | calculateur-statistiques-fr | Education | Education calculator or guide | thin or no visible controls; unclear primary action; weak input surface; no app/script evidence |
+| 76 | B | P3-monitor | hospital-cost-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 76 | B | P3-monitor | hospital-cost-yo | Health & Wellness | Health and wellness estimator | unclear primary action; no workflow or methodology evidence; browser smoke not run; missing official/verification evidence |
+| 76 | B | P3-monitor | ng-pension-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; stale or undated assumptions |
+| 77 | B | P3-monitor | invoice-generator-yo | Document & PDF | PDF workflow utility | thin visible copy; browser smoke not run; missing source/reference evidence; stale or undated assumptions |
+| 77 | B | P3-monitor | genotype-checker-yo | Health & Wellness | Health and wellness estimator | no workflow or methodology evidence; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
+| 77 | B | P3-monitor | language-translation-yo | Language & Translation | Language and translation utility | weak input surface; no app/script evidence; no input path; browser smoke not run |
+| 77 | B | P3-monitor | yoruba-translator-yo | Language & Translation | Language and translation utility | no workflow or methodology evidence; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
+| 77 | B | P3-monitor | childbirth-cost-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing disclaimer/limitations |
+| 77 | B | P3-monitor | pdf-workspace-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; stale or undated assumptions |
+| 77 | B | P3-monitor | ng-wht-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing source/reference evidence; stale or undated assumptions; missing disclaimer/limitations |
+| 78 | B | P3-monitor | telecom-ussd-yo | Telecom & Mobile | General online utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; stale or undated assumptions |
+| 78 | B | P3-monitor | waec-neco-calculator-yo | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | genotype-checker-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 78 | B | P3-monitor | receipt-generator-yo | Document & PDF | PDF workflow utility | thin visible copy; browser smoke not run; missing source/reference evidence; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-aggregate-yo | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | sickle-cell-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 78 | B | P3-monitor | ng-cit-yo | Finance, Tax & Market Data | Tax, salary, finance calculator | unclear primary action; no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown |
+| 78 | B | P3-monitor | nysc-allowance-yo | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | african-meal-plan-ha | Health & Wellness | Health and wellness estimator | missing or duplicate h1; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
+| 78 | B | P3-monitor | telecom-data-usage-ha | Telecom & Mobile | General online utility | thin visible copy; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
+| 78 | B | P3-monitor | jamb-cbt-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-mathematics-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-tutor-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-biology-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-economics-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-government-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-commerce-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-literature-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-history-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 78 | B | P3-monitor | jamb-crk-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 79 | B | P3-monitor | vat-calculator-ha | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing disclaimer/limitations |
+| 79 | B | P3-monitor | receipt-generator-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 79 | B | P3-monitor | pdf-compress-yo | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 79 | B | P3-monitor | telecom-airtime-ha | Telecom & Mobile | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 79 | B | P3-monitor | naira-to-words-ha | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 80 | B | P3-monitor | cassava-processing-nigeria-ha | Agriculture | Agriculture and market-data tool | missing export/copy/save path; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
+| 80 | B | P3-monitor | payslip-generator-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 80 | B | P3-monitor | remittance-compare-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 80 | B | P3-monitor | tin-guide-nigeria-ha | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 80 | B | P3-monitor | staff-cost-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 81 | B | P3-monitor | vat-calculator-yo | VAT & Business Tax | VAT, invoice, ecommerce calculator | unclear primary action; missing export/copy/save path; browser smoke not run; stale or undated assumptions |
+| 81 | B | P3-monitor | crop-yield-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 81 | B | P3-monitor | fertilizer-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 81 | B | P3-monitor | cassava-processing-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 81 | B | P3-monitor | hausa-translator-ha | Language & Translation | Language and translation utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; stale or undated assumptions |
+| 81 | B | P3-monitor | farm-budget-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 81 | B | P3-monitor | staple-basket-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 81 | B | P3-monitor | commodity-prices-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 81 | B | P3-monitor | fish-farming-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 81 | B | P3-monitor | seed-rate-nigeria-ha | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 81 | B | P3-monitor | naira-to-words-yo | Document & PDF | PDF workflow utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 82 | B | P3-monitor | farm-profit-nigeria-ha | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing disclaimer/limitations |
+| 82 | B | P3-monitor | currency-converter-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 82 | B | P3-monitor | livestock-feed-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 82 | B | P3-monitor | scholarship-finder-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 82 | B | P3-monitor | jamb-chemistry-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing disclaimer/limitations |
+| 82 | B | P3-monitor | jamb-physics-ha | Education | Education calculator or guide | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 82 | B | P3-monitor | zana-ukaguzi-usajili-wa-sim-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 82 | B | P3-monitor | calculateur-conges-fr | Career & Development | Career tool | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 82 | B | P3-monitor | conformite-dpa-kenya-fr | Government & Civic | Government and civic guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 82 | B | P3-monitor | modele-demande-acces-information-fr | Government & Civic | Government and civic guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 82 | B | P3-monitor | contrat-bail-cote-d-ivoire-fr | Mortgage & Property | Legal and compliance workflow | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 82 | B | P3-monitor | suivi-hawala-fr | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 82 | B | P3-monitor | assurance-auto-cote-d-ivoire-fr | Insurance | Insurance estimator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 82 | B | P3-monitor | planificateur-retraite-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; stale or undated assumptions; missing disclaimer/limitations; weak meta description length |
+| 83 | B | P3-monitor | cd-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 83 | B | P3-monitor | gambia-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
+| 83 | B | P3-monitor | mshahara-na-kodi-business-tax-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; missing official/verification evidence; no verification panel |
+| 83 | B | P3-monitor | south-sudan-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
+| 83 | B | P3-monitor | comparateur-financement-commerce-fr | Trade & Import | Trade and logistics calculator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 83 | B | P3-monitor | afroatlas-fr | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 83 | B | P3-monitor | generateur-recu-fr | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
+| 83 | B | P3-monitor | guide-diaspora-fr | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 83 | B | P3-monitor | budget-album-ep-fr | Personal Finance | Personal finance calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 83 | B | P3-monitor | calendrier-semis-fr | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 83 | B | P3-monitor | comparateur-fonds-monetaires-fr | Fintech & Banking | Fintech and payments tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 83 | B | P3-monitor | frais-marchand-fr | Fintech & Banking | Fintech and payments tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 83 | B | P3-monitor | frais-pos-fr | Fintech & Banking | Fintech and payments tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 83 | B | P3-monitor | prix-vols-afrique-fr | Travel & Tourism | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 83 | B | P3-monitor | securite-sociale-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 83 | B | P3-monitor | taxe-paris-sportifs-fr | Sports & Entertainment | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 83 | B | P3-monitor | facture-freelance-fr | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 83 | B | P3-monitor | impot-crypto-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 83 | B | P3-monitor | comparateur-assurance-sante-ethiopia-fr | Insurance | Insurance estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 83 | B | P3-monitor | comparateur-assurance-sante-morocco-fr | Insurance | Insurance estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 83 | B | P3-monitor | comparateur-assurance-sante-rwanda-fr | Insurance | Insurance estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 83 | B | P3-monitor | assurance-obseques-ethiopia-fr | Insurance | Insurance estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 83 | B | P3-monitor | assurance-obseques-morocco-fr | Insurance | Insurance estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 83 | B | P3-monitor | assurance-obseques-rwanda-fr | Insurance | Insurance estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 83 | B | P3-monitor | compteur-calories-fr | Health & Wellness | Health and wellness estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 84 | B | P3-monitor | document-pdf-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 84 | B | P3-monitor | pdf-translate-fr | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; stale or undated assumptions; missing methodology/breakdown |
+| 84 | B | P3-monitor | health-yo | Health & Wellness | Health and wellness estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 84 | B | P3-monitor | nysc-allowance-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing disclaimer/limitations |
+| 84 | B | P3-monitor | cover-letter-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
+| 84 | B | P3-monitor | telecom-data-plan-ha | Telecom & Mobile | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 84 | B | P3-monitor | pdf-sign-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 84 | B | P3-monitor | student-budget-ha | Education | Education calculator or guide | thin visible copy; browser smoke not run; missing source/reference evidence; stale or undated assumptions |
+| 84 | B | P3-monitor | tn-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 84 | B | P3-monitor | liberia-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |

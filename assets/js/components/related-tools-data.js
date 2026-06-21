@@ -95,18 +95,6 @@
         "imageKey": "gpa-calculator"
       },
       {
-        "id": "daily-brain-teaser",
-        "name": "Daily Brain Teaser",
-        "icon": "BT",
-        "desc": "Daily puzzle plus quick arcade games for logic, ...",
-        "href": "/tools/daily-brain-teaser/",
-        "category": "education",
-        "lang": "en",
-        "priority": 84,
-        "estTraffic": 6000,
-        "imageExt": ""
-      },
-      {
         "id": "study-planner",
         "name": "Study Planner & Timetable",
         "icon": "📅",

@@ -52,6 +52,35 @@
 <div style="display:flex;flex-wrap:wrap;gap:8px;"><a href="/sw/nishati-na-huduma/">Nishati na huduma</a><a href="/sw/hali-ya-hewa-na-mazingira/">Hali ya hewa na mazingira</a><a href="/sw/zana/kikokotoo-tariff-ya-umeme/">Tariff ya umeme</a><a href="/sw/zana/faida-ya-solar/">Faida ya solar</a><a href="/sw/zana/hatari-ya-ukame/">Hatari ya ukame</a><a href="/sw/zana/mapato-ya-carbon-credit/">Carbon credit</a><a href="/sw/zana/kadi-ya-uendelevu-wa-biashara/">Uendelevu wa biashara</a></div>
 </section>
 <!-- SW-ENERGY-CLIMATE-BRIDGE:end -->
+
+<section data-sw-transport-planner style="max-width:1120px;margin:28px auto;padding:0 20px;">
+  <div data-tool-verification-panel style="background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:20px;box-shadow:0 12px 30px rgba(15,23,42,.06);">
+    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#2563eb;font-weight:900;margin-bottom:8px;">Planner ya usafiri</div>
+    <h2 style="margin:0 0 8px;color:#0f172a;letter-spacing:-.02em;">Panga gharama ya safari, gari au fleet</h2>
+    <p style="margin:0 0 16px;color:#526071;line-height:1.65;">Chagua muktadha wako kisha pata hatua ya kwanza. Hii ni planner ya mwaka 2026 kwa kuelekeza kwenye zana sahihi, si uamuzi rasmi.</p>
+    <form data-sw-planner-form style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;align-items:end;">
+      <label style="display:block;font-weight:800;color:#334155;font-size:.84rem;line-height:1.35;">Kipaumbele<select data-sw-planner-field="0" style="width:100%;margin-top:6px;border:1.5px solid #dbe3ef;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;color:#0f172a;"><option>Kuagiza gari</option><option>Mafuta na safari</option><option>Nauli za mijini</option><option>Delivery au fleet</option></select></label><label style="display:block;font-weight:800;color:#334155;font-size:.84rem;line-height:1.35;">Gharama inayokusumbua<select data-sw-planner-field="1" style="width:100%;margin-top:6px;border:1.5px solid #dbe3ef;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;color:#0f172a;"><option>Fuel</option><option>Forodha na usajili</option><option>Bima na matengenezo</option><option>Nauli au toll</option></select></label><label style="display:block;font-weight:800;color:#334155;font-size:.84rem;line-height:1.35;">Unahitaji matokeo gani?<select data-sw-planner-field="2" style="width:100%;margin-top:6px;border:1.5px solid #dbe3ef;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;color:#0f172a;"><option>Bajeti ya mwezi</option><option>Gharama ya safari moja</option><option>Ulinganisho wa chaguo mbili</option><option>Orodha ya kuhakiki</option></select></label>
+      <button type="submit" style="border:0;border-radius:10px;background:#2563eb;color:#fff;font-weight:900;padding:12px 16px;font:inherit;cursor:pointer;">Panga hatua</button>
+    </form>
+    <div data-sw-planner-result role="status" aria-live="polite" style="margin-top:14px;border:1px solid #bfdbfe;background:#eff6ff;border-radius:12px;padding:14px;color:#1e3a8a;line-height:1.6;">Chagua chaguo zako kisha bonyeza Panga hatua ili kuona muhtasari.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px;">
+      <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;background:#fbfdff;"><strong>Njia ya kukokotoa</strong><p style="margin:6px 0 0;color:#526071;line-height:1.55;">Njia ya kukokotoa huanza na umbali, matumizi ya mafuta, ada, bima, matengenezo na gharama za usajili au forodha pale zinapohusika.</p></div>
+      <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;background:#fbfdff;"><strong>Chanzo na ukaguzi</strong><p style="margin:6px 0 0;color:#526071;line-height:1.55;">Hakiki bei ya mafuta, nauli, toll, bima, usajili na forodha na mamlaka au mtoa huduma. Tarehe ya ukaguzi: 2026.</p></div>
+      <div style="border:1px solid #fed7aa;border-radius:12px;padding:14px;background:#fff7ed;color:#7c2d12;"><strong>Kanusho</strong><p style="margin:6px 0 0;line-height:1.55;">Matokeo ni makadirio ya kupanga tu; si quote ya delivery, bei rasmi ya mafuta, ushuru wa mwisho au uthibitisho wa roadworthiness.</p></div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root=document.querySelector('[data-sw-transport-planner]'); if(!root) return;
+  var form=root.querySelector('[data-sw-planner-form]'); var out=root.querySelector('[data-sw-planner-result]');
+  form.addEventListener('submit', function(event){
+    event.preventDefault();
+    var values=[].slice.call(root.querySelectorAll('[data-sw-planner-field]')).map(function(el){return el.options?el.options[el.selectedIndex].text:el.value;});
+    out.textContent='Muhtasari: '+values.join(' + ')+'. Hatua inayofuata: fungua zana iliyo karibu kwenye ukurasa huu, weka viwango vilivyothibitishwa, kisha hifadhi au nakili matokeo kwa mazungumzo na mtoa huduma husika.';
+  });
+})();
+</script>
 </main>
 <!-- sw-government-civic-docs -->
 <section id="serikali-na-nyaraka" style="padding:38px 20px;background:#f8fafc;border-top:1px solid #e5e7eb">

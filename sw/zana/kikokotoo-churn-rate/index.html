@@ -43,6 +43,7 @@
     button, .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 8px; padding: 11px 16px; background: #0f766e; color: #fff; font-weight: 800; text-decoration: none; cursor: pointer; }
     button.secondary, .button.secondary { background: #e5f1eb; color: #174539; }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .result-actions { border-top: 1px solid #d9e7df; padding-top: 14px; margin-top: 14px; }
     .results { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 18px; }
     .metric { border: 1px solid #d9e7df; border-radius: 8px; padding: 14px; background: #fbfdfb; }
     .metric strong { display: block; font-size: 1.35rem; color: #0f3f35; margin-top: 6px; overflow-wrap: anywhere; }
@@ -123,6 +124,12 @@
         <h2>Retention na churn</h2>
         <div id="results" class="results"></div>
         <div id="detail"></div>
+        <div class="actions result-actions">
+          <button type="button" class="secondary" id="copySummary">Nakili muhtasari</button>
+          <button type="button" class="secondary" id="downloadSummary">Pakua TXT</button>
+          <button type="button" class="secondary" id="saveSummary">Hifadhi kwenye kifaa</button>
+        </div>
+        <p id="actionStatus" class="note" style="display:none" aria-live="polite"></p>
       </div>
     </section>
 <section class="section panel">
@@ -139,6 +146,11 @@
         <a href="/sw/zana/mwongozo-tin/">TIN</a>
         <a href="/sw/zana/usajili-biashara/">Usajili wa biashara</a>
       </div>
+    </section>
+<section class="section panel" data-tool-verification-panel>
+      <h2>Mbinu na hatua inayofuata</h2>
+      <p>Churn huhesabiwa kutoka wateja waliokuwepo mwanzo, wateja wapya na wateja waliobaki mwisho wa kipindi. MRR churn na NRR hutumia mapato ya mwanzo na mwisho kama signal ya subscription health.</p>
+      <p>Baada ya kukokotoa, nakili au pakua muhtasari, linganisha na cohorts zako halisi, kisha tengeneza action list ya win-back, onboarding, support au bei kabla hujabadilisha mkakati.</p>
     </section>
 <section class="section note warn">
       <strong>Angalizo:</strong> Matokeo haya ni makadirio ya kupanga churn na retention. Hayathibitishi faida, ufadhili, bei, thamani ya kampuni, malipo ya mtoa huduma au uhai wa biashara. Hakiki namba zako na mshauri wa biashara, mhasibu, mtoa huduma wa malipo, msajili au mamlaka ya kodi inapohitajika.
@@ -161,6 +173,8 @@ function pct(v){ return (Number(v) || 0).toFixed(1) + '%'; }
 function metric(label, value, help){ return '<div class="metric"><span>' + label + '</span><strong>' + value + '</strong>' + (help ? '<small>' + help + '</small>' : '') + '</div>'; }
 function setResults(html){ q('results').innerHTML = html; }
 function setDetail(html){ const el = q('detail'); if (el) el.innerHTML = html; }
+let latestSummary = "";
+function status(msg){ const el=q('actionStatus'); if(el){ el.textContent=msg; el.style.display='block'; } }
 function bind(calc, reset){ q('calculate').addEventListener('click', calc); if (q('reset')) q('reset').addEventListener('click', function(){ reset(); calc(); }); calc(); }
 function calc(){
   const cur=q('currency').value;
@@ -173,9 +187,13 @@ function calc(){
   setResults(metric('Wateja waliopotea', String(churned), '') + metric('Customer churn', pct(customerChurn), q('period').selectedOptions[0].text) + metric('MRR churn', pct(mrrChurn), money(mrrLost,cur) + ' imepotea') + metric('NRR ya makadirio', pct(nrr), 'Mapato mwisho dhidi ya mwanzo'));
   const rows=[10,25,50].map(function(save){ const kept=mrrLost*save/100; return '<tr><td>Punguza MRR churn kwa ' + save + '%</td><td>' + money(kept,cur) + '</td></tr>'; }).join('');
   setDetail('<table><thead><tr><th>Scenario</th><th>Mapato yanayoweza kubaki</th></tr></thead><tbody>' + rows + '</tbody></table><p class="note">Annual equivalent ya churn ya wateja: ' + pct(annual) + '.</p>');
+  latestSummary = 'Churn summary | Wateja waliopotea: ' + churned + ' | Customer churn: ' + pct(customerChurn) + ' | MRR churn: ' + pct(mrrChurn) + ' | NRR: ' + pct(nrr) + ' | Annual equivalent: ' + pct(annual);
 }
 function reset(){ q('startCustomers').value=1200; q('newCustomers').value=180; q('endCustomers').value=1250; q('mrrStart').value=2400000; q('mrrEnd').value=2520000; }
 bind(calc, reset);
+if(q('copySummary')) q('copySummary').addEventListener('click', function(){ const text=latestSummary||q('results').innerText; if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ status('Muhtasari umenakiliwa.'); }).catch(function(){ status(text); }); } else status(text); });
+if(q('downloadSummary')) q('downloadSummary').addEventListener('click', function(){ const text=latestSummary||q('results').innerText; const blob=new Blob([text],{type:'text/plain;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='afrotools-churn-summary.txt'; a.click(); URL.revokeObjectURL(a.href); status('Faili ya TXT imepakuliwa.'); });
+if(q('saveSummary')) q('saveSummary').addEventListener('click', function(){ localStorage.setItem('afrotools_sw_churn_summary', latestSummary||q('results').innerText); status('Muhtasari umehifadhiwa kwenye kifaa hiki.'); });
   </script>
 </body>
 </html>

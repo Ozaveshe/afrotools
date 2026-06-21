@@ -54,6 +54,19 @@
 </section>
 <main>
 <section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="age-calculator-african"></section>
+<section data-sw-age-fallback style="max-width:1080px;margin:24px auto;padding:0 24px;">
+  <div data-tool-verification-panel style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 8px rgba(15,23,42,.05);">
+    <h2 style="margin:0 0 10px;color:#0f172a;">Kikokotoo cha haraka cha umri</h2>
+    <form id="swAgeQuick" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;align-items:end;">
+      <label style="font-weight:800;color:#334155;">Tarehe ya kuzaliwa<input id="swAgeDate" type="date" style="width:100%;margin-top:6px;border:1.5px solid #dbe3ef;border-radius:10px;padding:11px;"></label>
+      <label style="font-weight:800;color:#334155;">Muktadha<select id="swAgeCulture" style="width:100%;margin-top:6px;border:1.5px solid #dbe3ef;border-radius:10px;padding:11px;"><option>Jina la siku</option><option>Kumbukumbu ya familia</option><option>Hati rasmi</option></select></label>
+      <button type="submit" style="border:0;border-radius:10px;background:#7c3aed;color:#fff;font-weight:900;padding:12px 16px;">Hesabu umri</button>
+    </form>
+    <div id="swAgeQuickOut" role="status" aria-live="polite" style="margin-top:12px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:13px;color:#4c1d95;line-height:1.6;">Weka tarehe ya kuzaliwa ili kuona umri na hatua inayofuata.</div>
+    <p style="font-size:.88rem;color:#475569;line-height:1.65;margin:12px 0 0;"><strong>Njia ya kukokotoa:</strong> tunatumia tofauti ya tarehe ya leo na tarehe ya kuzaliwa. <strong>Chanzo:</strong> tumia birth certificate au hati rasmi kwa maamuzi. <strong>Kanusho:</strong> muktadha wa jina la siku ni kitamaduni, si sheria ya jamii zote. Ukaguzi: 2026.</p>
+  </div>
+</section>
+<script>(function(){var f=document.getElementById('swAgeQuick');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var d=document.getElementById('swAgeDate').value;var out=document.getElementById('swAgeQuickOut');if(!d){out.textContent='Tafadhali weka tarehe ya kuzaliwa.';return;}var birth=new Date(d+'T00:00:00');var now=new Date();var years=now.getFullYear()-birth.getFullYear();var m=now.getMonth()-birth.getMonth();if(m<0||(m===0&&now.getDate()<birth.getDate()))years--;var day=birth.toLocaleDateString('sw',{weekday:'long'});out.textContent='Umri wa makadirio: '+years+' miaka. Siku ya kuzaliwa ilikuwa '+day+'. Tumia matokeo haya kama kumbukumbu; hati rasmi ndiyo chanzo cha mwisho.';});})();</script>
 </main>
 <afro-footer></afro-footer>
 <script src="/assets/js/religious-cultural-apps.js?v=6fdda1a6" defer></script>

@@ -53,51 +53,59 @@
 <section class="en-tool-hero"><div class="container">
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/sw/">Nyumbani</a> <span>/</span> <a href="/sw/nishati-na-huduma/">Nishati na Huduma</a> <span>/</span> Uwezekano wa Mini-grid</nav>
 <h1>Uwezekano wa Mini-grid</h1>
-<p class="en-tool-hero-sub">Tumia kuchunguza viability ya mini-grid kabla ya feasibility study. Miradi ya kweli huhitaji engineer, permits na demand survey.</p>
+<p class="en-tool-hero-sub">Tumia kuchunguza uwezekano wa mini-grid kabla ya utafiti kamili wa feasibility. Miradi ya kweli huhitaji mhandisi, vibali na uchunguzi wa mahitaji ya umeme.</p>
 </div></section>
 <main class="en-main">
-<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span></span><h2>Community Details</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span></span><h2>Maelezo ya jamii</h2><span class="en-card-toggle">&#x25BE;</span></div>
 <div class="en-card-body"><div class="en-form-grid">
 <div class="en-field"><label class="en-label" for="countrySelect">Nchi</label><select class="en-select" id="countrySelect">
 <option value="NG">Nigeria</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="KE">Kenya</option><option value="GH">Ghana</option><option value="CI">Cte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option><option value="ML">Mali</option><option value="NE">Niger</option><option value="BF">Burkina Faso</option><option value="MZ">Mozambique</option><option value="MW">Malawi</option><option value="MG">Madagascar</option><option value="ZM">Zambia</option>
 </select></div>
-<div class="en-field"><label class="en-label" for="households">Number of Households</label><input class="en-input" type="number" id="households" placeholder="e.g. 200" inputmode="numeric"></div>
-<div class="en-field"><label class="en-label" for="businesses">Number of Businesses / Anchors</label><input class="en-input" type="number" id="businesses" placeholder="e.g. 15" inputmode="numeric"></div>
-<div class="en-field"><label class="en-label" for="avgKWhHousehold">Avg kWh / Household / Month</label><select class="en-select" id="avgKWhHousehold">
-<option value="10">10 kWh  Tier 1 (lights + phone)</option>
-<option value="30" selected>30 kWh  Tier 2 (lights + TV + fan)</option>
-<option value="50">50 kWh  Tier 3 (full home)</option>
-<option value="100">100 kWh  Tier 4 (productive use)</option>
+<div class="en-field"><label class="en-label" for="households">Idadi ya kaya</label><input class="en-input" type="number" id="households" placeholder="mf. 200" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="businesses">Biashara au anchor loads</label><input class="en-input" type="number" id="businesses" placeholder="mf. 15" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="avgKWhHousehold">Wastani kWh / kaya / mwezi</label><select class="en-select" id="avgKWhHousehold">
+<option value="10">10 kWh  Tier 1 (taa + simu)</option>
+<option value="30" selected>30 kWh  Tier 2 (taa + TV + feni)</option>
+<option value="50">50 kWh  Tier 3 (nyumba nzima)</option>
+<option value="100">100 kWh  Tier 4 (matumizi ya uzalishaji)</option>
 </select></div>
-<div class="en-field"><label class="en-label" for="avgKWhBusiness">Avg kWh / Business / Month</label><select class="en-select" id="avgKWhBusiness">
-<option value="50">50 kWh  small shop</option>
-<option value="100" selected>100 kWh  standard business</option>
-<option value="200">200 kWh  anchor (mill, clinic, school)</option>
+<div class="en-field"><label class="en-label" for="avgKWhBusiness">Wastani kWh / biashara / mwezi</label><select class="en-select" id="avgKWhBusiness">
+<option value="50">50 kWh  duka dogo</option>
+<option value="100" selected>100 kWh  biashara ya kawaida</option>
+<option value="200">200 kWh  anchor (kinu, kliniki, shule)</option>
 </select></div>
 </div>
-<button class="en-btn" id="calcBtn" type="button">Assess Feasibility</button></div></div>
+<button class="en-btn" id="calcBtn" type="button">Kadiria uwezekano</button></div></div>
 <div class="en-results" id="results">
-<div class="en-res-hero"><div class="en-res-label">Viability Assessment</div><div class="en-res-amount" id="rViability"></div><div class="en-res-sub" id="rPayback">Payback: </div></div>
-<table class="en-results-table"><thead><tr><th>System Component</th><th>Value</th></tr></thead><tbody>
-<tr><td>Solar Array</td><td id="rSolar"></td></tr>
-<tr><td>Battery Storage</td><td id="rBattery"></td></tr>
-<tr><td>Peak Demand</td><td id="rPeak"></td></tr>
-<tr><td>Monthly Generation</td><td id="rGen"></td></tr>
+<div class="en-res-hero"><div class="en-res-label">Tathmini ya uwezekano</div><div class="en-res-amount" id="rViability"></div><div class="en-res-sub" id="rPayback">Muda wa kurudisha gharama: </div></div>
+<table class="en-results-table"><thead><tr><th>Sehemu ya mfumo</th><th>Thamani</th></tr></thead><tbody>
+<tr><td>Solar array</td><td id="rSolar"></td></tr>
+<tr><td>Betri ya kuhifadhi</td><td id="rBattery"></td></tr>
+<tr><td>Mahitaji ya juu kabisa</td><td id="rPeak"></td></tr>
+<tr><td>Uzalishaji wa mwezi</td><td id="rGen"></td></tr>
 </tbody></table>
-<table class="en-results-table" style="margin-top:12px"><thead><tr><th>Financial Metric</th><th>Value</th></tr></thead><tbody>
+<table class="en-results-table" style="margin-top:12px"><thead><tr><th>Kipimo cha fedha</th><th>Thamani</th></tr></thead><tbody>
 <tr><td>Total CAPEX (USD)</td><td id="rCapexUSD"></td></tr>
-<tr><td>CAPEX per Connection</td><td id="rPerConn"></td></tr>
-<tr><td>Monthly Revenue</td><td id="rMonthly"></td></tr>
-<tr><td>Annual Revenue</td><td id="rAnnual"></td></tr>
-<tr><td>Payback Period</td><td id="rPaybackRow"></td></tr>
-<tr><td>Grant Potential (DFI)</td><td id="rGrant"></td></tr>
+<tr><td>CAPEX kwa connection</td><td id="rPerConn"></td></tr>
+<tr><td>Mapato ya mwezi</td><td id="rMonthly"></td></tr>
+<tr><td>Mapato ya mwaka</td><td id="rAnnual"></td></tr>
+<tr><td>Muda wa kurudisha gharama</td><td id="rPaybackRow"></td></tr>
+<tr><td>Uwezekano wa grant (DFI)</td><td id="rGrant"></td></tr>
 </tbody></table>
 <div class="en-observations" id="rObs"></div>
 </div>
 <section class="en-seo">
-<h2>Solar Uwezekano wa Mini-grid in Africa  Key Considerations</h2>
-<p>Rural Africa has over 600 million people without reliable electricity access. Solar mini-grids offer a faster and often cheaper path to electrification than grid extension. This calculator provides a first-pass feasibility assessment including CAPEX, revenue projections, and payback period  the starting point for any DFI or investor proposal.</p>
-<p><strong>Disclaimer:</strong> These are screening-level estimates. Full feasibility studies require site assessment, load surveys, and detailed engineering design.</p>
+<h2>Mambo muhimu ya mini-grid za solar Afrika</h2>
+<p>Mini-grid za solar zinaweza kusaidia jamii, shule, kliniki na biashara kupata umeme pale grid kuu inapochelewa au haina uhakika. Kikokotoo hiki hutoa tathmini ya kwanza ya CAPEX, mapato na muda wa kurudisha gharama kabla ya proposal ya DFI au investor.</p>
+<p><strong>Kanusho:</strong> Haya ni makadirio tu ya uchunguzi wa awali. Feasibility study kamili inahitaji site assessment, load survey, vibali, uchambuzi wa demand na engineering design ya kina.</p>
+</section>
+
+<section data-tool-verification-panel class="sw-tool-verification" aria-label="Mbinu, vyanzo na mipaka ya mini-grid" style="max-width:1120px;margin:26px auto 18px;padding:0 24px;">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+    <article style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:14px;padding:16px 18px;color:#1e3a8a;"><strong>Mbinu ya kukokotoa</strong><p style="margin:.45rem 0 0;line-height:1.65;">Tunatumia idadi ya kaya, biashara, matumizi ya kWh, system size, CAPEX, tariff na mapato ili kutoa makisio ya uwezo, revenue na payback.</p></article>
+    <article style="border:1px solid #fde68a;background:#fffbeb;border-radius:14px;padding:16px 18px;color:#92400e;"><strong>Makadirio tu</strong><p style="margin:.45rem 0 0;line-height:1.65;">Si engineering design, idhini ya regulator, quote ya installer au ahadi ya grant. Hakiki demand, ardhi, permits, tariff, O&M na grid-extension risk kabla ya kuwekeza.</p></article>
+    <article style="border:1px solid #bbf7d0;background:#f0fdf4;border-radius:14px;padding:16px 18px;color:#166534;"><strong>Chanzo na uhakiki</strong><p style="margin:.45rem 0 .8rem;line-height:1.65;">Vyanzo ni load survey, utility/regulator, installer, engineer, community records na site assessment. Tarehe ya ukaguzi: 2026-06-19.</p><button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText('Hakiki mini-grid: load survey, demand, permits, land, tariff, CAPEX, O&M, grid-extension risk, installer quote na engineer review.')" style="border:0;border-radius:999px;background:#166534;color:#fff;font-weight:700;padding:.62rem .95rem;cursor:pointer;">Nakili checklist ya mini-grid</button></article>
+  </div>
 </section>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
