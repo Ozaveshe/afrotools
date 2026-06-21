@@ -121,12 +121,18 @@ for (const filePath of targetFiles) {
   assert(Array.isArray(entry.change_history) && entry.change_history.length > 0, `${toolId} is missing change_history`, failures);
   assert(Array.isArray(entry.test_cases) && entry.test_cases.length > 0, `${toolId} is missing test_cases`, failures);
   assert(html.includes("data-tool-verification-panel"), `${relative} is missing rendered verification panel`, failures);
-  assert(
-    html.includes("Sources &amp; verification") || html.includes("Sources & verification"),
-    `${relative} is missing Sources & verification heading`,
-    failures,
-  );
-  assert(html.includes("Report calculation error"), `${relative} is missing report calculation error CTA`, failures);
+  const hasVerificationHeading =
+    html.includes("Sources &amp; verification") ||
+    html.includes("Sources & verification") ||
+    html.includes("Sources et verification") ||
+    html.includes("Sources et v&eacute;rification") ||
+    html.includes("Sources et vérification");
+  assert(hasVerificationHeading, `${relative} is missing Sources & verification heading`, failures);
+
+  const hasReportCalculationErrorCta =
+    html.includes("Report calculation error") ||
+    html.includes("Signaler une erreur de calcul");
+  assert(hasReportCalculationErrorCta, `${relative} is missing report calculation error CTA`, failures);
   assert(html.includes("/assets/css/tool-verification.css"), `${relative} is missing tool verification stylesheet`, failures);
   assert(
     !/<span class="badge[^"]*">[^<]*(?:FIRS\s+)?Verified[^<]*<\/span>/i.test(html),
