@@ -1,12 +1,12 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-06-19T17:31:18.534Z
+Generated: 2026-06-21T16:04:38.160Z
 
 ## Scope
 
-- Registry rows scored: 3241
-- Live/new expanded tool instances represented: 2595
-- Unique live/new routes: 3238
+- Registry rows scored: 3240
+- Live/new expanded tool instances represented: 2594
+- Unique live/new routes: 3237
 - Browser smoke: not run
 - Reports: `reports/tool-quality-ranking.json`, `reports/tool-quality-ranking.csv`
 
@@ -22,9 +22,9 @@ Generated: 2026-06-19T17:31:18.534Z
 
 | Rank | Rows | Weighted instances |
 | --- | ---: | ---: |
-| A | 3054 | 4837 |
-| B | 187 | 187 |
-| C | 0 | 0 |
+| A | 3044 | 4773 |
+| B | 195 | 249 |
+| C | 1 | 1 |
 | D | 0 | 0 |
 | F | 0 | 0 |
 
@@ -35,24 +35,24 @@ Repair-first rows below D: 0
 
 | Category | Rows | Instances | Avg score | Low rows | P0 | Browser failures |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Document & PDF | 118 | 118 | 87.2 | 0 | 0 | 0 |
+| Document & PDF | 118 | 118 | 87.1 | 0 | 0 | 0 |
 | Sports & Entertainment | 30 | 30 | 87.4 | 0 | 0 | 0 |
 | Creative Economy | 59 | 59 | 88.4 | 0 | 0 | 0 |
 | Travel & Tourism | 20 | 20 | 88.5 | 0 | 0 | 0 |
 | Health & Wellness | 104 | 104 | 88.6 | 0 | 0 | 0 |
+| Fintech & Banking | 72 | 72 | 88.6 | 0 | 0 | 0 |
 | Climate & Environment | 32 | 35 | 88.6 | 0 | 0 | 0 |
-| Fintech & Banking | 72 | 72 | 88.7 | 0 | 0 | 0 |
-| Engineering & Construction | 53 | 53 | 89.2 | 0 | 0 | 0 |
+| Engineering & Construction | 53 | 53 | 89.1 | 0 | 0 | 0 |
 | Small Business & SME | 66 | 81 | 89.2 | 0 | 0 | 0 |
 | Security & Safety | 16 | 16 | 89.3 | 0 | 0 | 0 |
 | Government & Civic | 38 | 146 | 89.4 | 0 | 0 | 0 |
 | Uniquely African | 118 | 133 | 89.4 | 0 | 0 | 0 |
 | Transport & Logistics | 46 | 46 | 89.4 | 0 | 0 | 0 |
+| Developer Tools | 83 | 83 | 89.5 | 0 | 0 | 0 |
 | Religious & Cultural | 51 | 51 | 89.5 | 0 | 0 | 0 |
+| Energy & Utilities | 237 | 504 | 89.8 | 0 | 0 | 0 |
 | Finance, Tax & Market Data | 466 | 466 | 89.9 | 0 | 0 | 0 |
-| Energy & Utilities | 237 | 504 | 89.9 | 0 | 0 | 0 |
 | Personal Finance | 25 | 25 | 90 | 0 | 0 | 0 |
-| Developer Tools | 83 | 83 | 90.1 | 0 | 0 | 0 |
 | Agriculture | 507 | 1113 | 90.3 | 0 | 0 | 0 |
 | Telecom & Mobile | 52 | 52 | 90.4 | 0 | 0 | 0 |
 
@@ -70,9 +70,11 @@ No rows in this queue.
 
 | Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
 | ---: | --- | --- | --- | --- | --- | --- |
+| 72 | C | P3-monitor | formateur-sql-fr | Developer Tools | Developer utility | no workflow or methodology evidence; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
 | 76 | B | P3-monitor | hospital-cost-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
 | 76 | B | P3-monitor | hospital-cost-yo | Health & Wellness | Health and wellness estimator | unclear primary action; no workflow or methodology evidence; browser smoke not run; missing official/verification evidence |
 | 76 | B | P3-monitor | ng-pension-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; stale or undated assumptions |
+| 76 | B | P3-monitor | encodeur-base64-fr | Developer Tools | Developer utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; stale or undated assumptions |
 | 77 | B | P3-monitor | invoice-generator-yo | Document & PDF | PDF workflow utility | thin visible copy; browser smoke not run; missing source/reference evidence; stale or undated assumptions |
 | 77 | B | P3-monitor | genotype-checker-yo | Health & Wellness | Health and wellness estimator | no workflow or methodology evidence; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
 | 77 | B | P3-monitor | language-translation-yo | Language & Translation | Language and translation utility | weak input surface; no app/script evidence; no input path; browser smoke not run |
@@ -105,6 +107,8 @@ No rows in this queue.
 | 79 | B | P3-monitor | pdf-compress-yo | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
 | 79 | B | P3-monitor | telecom-airtime-ha | Telecom & Mobile | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
 | 79 | B | P3-monitor | naira-to-words-ha | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 79 | B | P3-monitor | formateur-json-fr | Developer Tools | Developer utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; stale or undated assumptions |
+| 79 | B | P3-monitor | document-pdf | Document & PDF | PDF workflow utility | unclear primary action; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
 | 80 | B | P3-monitor | cassava-processing-nigeria-ha | Agriculture | Agriculture and market-data tool | missing export/copy/save path; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
 | 80 | B | P3-monitor | payslip-generator-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
 | 80 | B | P3-monitor | remittance-compare-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
@@ -135,6 +139,7 @@ No rows in this queue.
 | 82 | B | P3-monitor | suivi-hawala-fr | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
 | 82 | B | P3-monitor | assurance-auto-cote-d-ivoire-fr | Insurance | Insurance estimator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
 | 82 | B | P3-monitor | planificateur-retraite-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; stale or undated assumptions; missing disclaimer/limitations; weak meta description length |
+| 82 | B | P3-monitor | invoice-factoring | Fintech & Banking | Fintech and payments tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
 | 83 | B | P3-monitor | cd-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
 | 83 | B | P3-monitor | gambia-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
 | 83 | B | P3-monitor | mshahara-na-kodi-business-tax-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; missing official/verification evidence; no verification panel |
@@ -161,12 +166,7 @@ No rows in this queue.
 | 83 | B | P3-monitor | assurance-obseques-rwanda-fr | Insurance | Insurance estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
 | 83 | B | P3-monitor | compteur-calories-fr | Health & Wellness | Health and wellness estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
 | 84 | B | P3-monitor | document-pdf-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
+| 84 | B | P3-monitor | solar-roi | Energy & Utilities | Energy and utility estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing disclaimer/limitations |
 | 84 | B | P3-monitor | pdf-translate-fr | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; stale or undated assumptions; missing methodology/breakdown |
 | 84 | B | P3-monitor | health-yo | Health & Wellness | Health and wellness estimator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
 | 84 | B | P3-monitor | nysc-allowance-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing disclaimer/limitations |
-| 84 | B | P3-monitor | cover-letter-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 84 | B | P3-monitor | telecom-data-plan-ha | Telecom & Mobile | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 84 | B | P3-monitor | pdf-sign-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 84 | B | P3-monitor | student-budget-ha | Education | Education calculator or guide | thin visible copy; browser smoke not run; missing source/reference evidence; stale or undated assumptions |
-| 84 | B | P3-monitor | tn-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 84 | B | P3-monitor | liberia-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |

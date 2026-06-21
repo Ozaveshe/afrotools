@@ -234,6 +234,11 @@ h1 em{color:#fde68a;font-style:normal}
 <div class="result-box"><div class="r-label">Power Factor</div><div class="r-value" id="rPF">0.8</div></div>
 </div>
 <div class="recommendation" id="recommendation"></div>
+<div class="df-actions" style="margin-top:14px">
+<button type="button" onclick="copyGeneratorSizingSummary()">Copy load schedule</button>
+<button type="button" id="generatorSizingCsvBtn">Download CSV</button>
+</div>
+<p class="export-status" id="generatorSizingStatus" role="status" aria-live="polite"></p>
 </div></div>
 </div>
 
@@ -275,26 +280,21 @@ h1 em{color:#fde68a;font-style:normal}
 <section class="df-upgrade" data-df-upgrade="generator-sizing">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Generator Size Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for generator size calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Generator Size Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Backup power workflow</span>
+      <h2>Turn appliance load into a buyer-ready generator spec</h2>
+      <p>Select the appliances you actually need during an outage, calculate the surge-aware KVA range, then export the load schedule for an electrician, installer, landlord, or equipment supplier.</p>
+      <ul class="df-upgrade__bullets"><li>Running watts are summed across all selected appliances; startup surge uses the largest modeled surge load.</li><li>The recommended KVA includes power-factor conversion and headroom so the generator is not constantly overloaded.</li><li>Copy the load schedule before requesting quotes, and ask suppliers to confirm surge, phase, fuel type, AVR/inverter quality, noise, ventilation, and service support.</li><li>Use this together with the solar-vs-generator and generator-fuel tools before buying a larger unit.</li></ul>
+      <p class="df-upgrade__note"><strong>Safety note.</strong> This is a planning estimate. Confirm wiring, earthing, transfer switch, ventilation, carbon-monoxide safety, and appliance surge data with a qualified local technician.</p>
     </div>
-    <form class="df-form" data-df-form="generator-sizing">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="generator-sizing" data-df-base="Generator Size Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Generator Size Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="generator-sizing">Copy summary</button></div>
-    </form>
+    <div class="df-form" aria-label="Generator sizing outputs">
+      <label>Current spec<output class="df-result" id="generatorSizingWorkflowResult" aria-live="polite">Calculate to create a KVA recommendation, load schedule, and installer handoff.</output></label>
+      <div class="df-actions"><button type="button" onclick="copyGeneratorSizingSummary()">Copy load schedule</button><button type="button" class="generator-sizing-csv-action">Download CSV</button></div>
+    </div>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="generator-sizing-faq-title">
   <h2 id="generator-sizing-faq-title">Generator Size Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>What should I send to a generator supplier?</summary><p>Send the running load, startup load, recommended KVA, appliance list, fuel preference, expected run hours, and whether the load includes ACs, pumps, fridges, or other surge-heavy equipment.</p></details><details><summary>Why add headroom?</summary><p>Headroom reduces overload trips and leaves room for startup surge, but too much headroom wastes fuel. Ask a technician to confirm the final size for your wiring and appliance mix.</p></details><details><summary>Is this an electrical safety certificate?</summary><p>No. It is an educational load estimate. Installation, transfer switching, earthing, ventilation, and carbon-monoxide protection need qualified local review.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -346,6 +346,7 @@ const APPLIANCES=[
 ];
 
 let selectedAppliances=[];
+let lastGeneratorSizingResult=null;
 
 function init(){
   // Default appliances for a typical Nigerian home
@@ -435,6 +436,7 @@ function calculate(){
   // Round to standard generator sizes
   const stdSizes=[1,2.5,3.5,5,6.5,7.5,10,12.5,15,20,25,30,40,50,60,80,100,150,200,250,350,500];
   const bestSize=stdSizes.find(s=>s>=recommendedKVA)||stdSizes[stdSizes.length-1];
+  lastGeneratorSizingResult={runningWatts:totalRunning,startupWatts:totalStartup,powerFactor:pf,recommendedKVA:bestSize,headroomPercent:totalRunning?((bestSize*pf*1000/totalRunning-1)*100):0,appliances:selectedAppliances.filter(a=>a.qty>0).map(a=>({name:a.name,watts:a.watts,qty:a.qty,surge:a.surge,runningWatts:a.watts*a.qty}))};
 
   document.getElementById('rRunning').textContent=(totalRunning/1000).toFixed(1)+' kW';
   document.getElementById('rStartup').textContent=(totalStartup/1000).toFixed(1)+' kW';
@@ -449,8 +451,50 @@ function calculate(){
 
   document.getElementById('recommendation').innerHTML=recMsg;
   document.getElementById('results').style.display='block';
+  var workflow=document.getElementById('generatorSizingWorkflowResult');
+  if(workflow)workflow.textContent='Recommended '+bestSize+' KVA for '+(totalRunning/1000).toFixed(1)+' kW running load and '+(totalStartup/1000).toFixed(1)+' kW startup load.';
+  var status=document.getElementById('generatorSizingStatus');
+  if(status)status.textContent='Sizing ready. Copy the load schedule or download CSV before requesting quotes.';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
+function generatorSizingSummary(){
+  if(!lastGeneratorSizingResult){calculate();}
+  var r=lastGeneratorSizingResult;
+  var applianceList=r.appliances.map(function(a){return a.name+' x'+a.qty+' ('+a.runningWatts+'W running)';}).join('; ');
+  return 'Generator sizing estimate: running load '+(r.runningWatts/1000).toFixed(1)+' kW, startup load '+(r.startupWatts/1000).toFixed(1)+' kW, recommended generator '+r.recommendedKVA+' KVA at power factor '+r.powerFactor+', headroom '+r.headroomPercent.toFixed(0)+'%. Appliances: '+applianceList+'. Verify surge ratings, phase, wiring, earthing, ventilation, transfer switch, and carbon-monoxide safety with a qualified technician.';
+}
+function copyGeneratorSizingSummary(){
+  var text=generatorSizingSummary();
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){document.getElementById('generatorSizingStatus').textContent='Load schedule copied.';});}
+  else document.getElementById('generatorSizingStatus').textContent=text;
+}
+function downloadGeneratorSizingCsv(){
+  if(!lastGeneratorSizingResult){calculate();}
+  var r=lastGeneratorSizingResult;
+  var rows=[['appliance','qty','watts_each','running_watts','surge_multiplier']];
+  r.appliances.forEach(function(a){rows.push([a.name,a.qty,a.watts,a.runningWatts,a.surge]);});
+  rows.push([]);
+  rows.push(['metric','value']);
+  rows.push(['running_watts',r.runningWatts]);
+  rows.push(['startup_watts',r.startupWatts]);
+  rows.push(['recommended_kva',r.recommendedKVA]);
+  rows.push(['power_factor',r.powerFactor]);
+  rows.push(['headroom_percent',r.headroomPercent.toFixed(0)]);
+  var csv=rows.map(function(row){return row.map(function(cell){return '"'+String(cell||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob=new Blob([csv],{type:'text/csv'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='afrotools-generator-sizing-load-schedule.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  document.getElementById('generatorSizingStatus').textContent='CSV downloaded. Confirm final sizing with a technician.';
+}
+
+document.querySelectorAll('#generatorSizingCsvBtn,.generator-sizing-csv-action').forEach(function(btn){
+  btn.addEventListener('click',downloadGeneratorSizingCsv);
+});
 
 window.addEventListener('DOMContentLoaded',init);
 </script>

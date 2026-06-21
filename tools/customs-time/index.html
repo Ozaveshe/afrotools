@@ -209,6 +209,11 @@ details[open] summary::after{content:'\2212'}
       </div>
 
       <div class="tips-box" id="custTips"></div>
+      <div class="df-actions" style="margin-top:14px">
+        <button type="button" onclick="copyCustomsSummary()">Copy clearance brief</button>
+        <button type="button" onclick="downloadCustomsCsv()">Download CSV</button>
+      </div>
+      <p class="export-status" id="custStatus" role="status" aria-live="polite"></p>
     </div>
   </div>
 
@@ -217,26 +222,21 @@ details[open] summary::after{content:'\2212'}
 <section class="df-upgrade" data-df-upgrade="customs-time">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Customs Clearance Time Estimator Africa decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for customs clearance time estimator africa so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Customs Clearance Time Estimator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, saveExport, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Importer handoff workflow</span>
+      <h2>Plan the clearance conversation before cargo arrives</h2>
+      <p>Use the estimate to brief a clearing agent, freight forwarder, buyer, or finance team. The key output is not a guaranteed port date; it is a documented range, missing-document risk, and fee checklist to verify before shipment.</p>
+      <ul class="df-upgrade__bullets"><li>Calculate with the actual destination port, goods type, document readiness, and cargo value.</li><li>Copy the clearance brief for WhatsApp or email when asking agents for quotes.</li><li>Download CSV for a shipment file alongside invoice, packing list, bill of lading, permits, and inspection notes.</li><li>Confirm final procedures with the customs authority, port operator, licensed agent, and any regulator for food, pharma, electronics, or vehicles.</li></ul>
+      <p class="df-upgrade__note"><strong>Planning estimate.</strong> Times and fees are modeled reference values, not official customs decisions, live port status, or a guarantee of release.</p>
     </div>
-    <form class="df-form" data-df-form="customs-time">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="customs-time" data-df-base="Customs Clearance Time Estimator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Customs Clearance Time Estimator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="customs-time">Copy summary</button></div>
-    </form>
+    <div class="df-form" aria-label="Customs clearance outputs">
+      <label>Current brief<output class="df-result" id="custWorkflowResult" aria-live="polite">Run an estimate to create a clearance brief with days, fees, documents, and verification notes.</output></label>
+      <div class="df-actions"><button type="button" onclick="copyCustomsSummary()">Copy brief</button><button type="button" onclick="downloadCustomsCsv()">Download CSV</button></div>
+    </div>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="customs-time-faq-title">
   <h2 id="customs-time-faq-title">Customs Clearance Time Estimator Africa FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>What should I verify before shipment?</summary><p>Verify HS code, permits, invoice and packing list details, bill of lading, inspection needs, port free-time, storage rates, and agent fees with current official or provider guidance.</p></details><details><summary>Can I send this to my clearing agent?</summary><p>Yes. Copy the brief or download CSV as a planning handoff, then ask the agent to replace modeled values with written quotes and final authority requirements.</p></details><details><summary>Is this an official customs timeline?</summary><p>No. It is an educational planning estimate. Customs release depends on documents, inspections, valuation, permits, congestion, and authority decisions.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -272,6 +272,7 @@ var DOCS_BY_TYPE = {
   pharma:    ['Bill of Lading', 'Commercial Invoice', 'Certificate of Analysis', 'Good Manufacturing Practice (GMP) Certificate', 'Import Permit', 'Product Registration Certificate'],
   electronics:['Bill of Lading', 'Commercial Invoice', 'Packing List', 'Certificate of Origin', 'Type Approval Certificate', 'Standards Certificate (KEBS/NAFDAC/SABS)']
 };
+var lastCustomsResult=null;
 
 function calcCustomsTime() {
   var country = document.getElementById('custCountry').value;
@@ -311,6 +312,36 @@ function calcCustomsTime() {
   document.getElementById('custTips').innerHTML = '&#x1f4a1; <strong>Port-specific tip (' + data.port + '):</strong> ' + data.tips;
 
   document.getElementById('custResults').classList.add('on');
+  lastCustomsResult={country:country,port:data.port,goodsType:goodsType,docStatus:docStatus,cargoValue:cargoValue,min:tMin,typical:tTyp,max:tMax,agentFee:agentFee,storageCost:storageCost,inspectFee:data.inspectFee,portFee:data.portFee,docs:docs,tips:data.tips};
+  var workflow=document.getElementById('custWorkflowResult');
+  if(workflow)workflow.textContent='Typical '+tTyp+' day clearance window at '+data.port+' with estimated agent fee $'+agentFee.toLocaleString()+', storage $'+storageCost.toLocaleString()+', and '+docs.length+' document checks.';
+  var status=document.getElementById('custStatus');
+  if(status)status.textContent='Estimate ready. Copy the brief or download CSV for agent review.';
+}
+function customsSummary(){
+  var r=lastCustomsResult;
+  if(!r){calcCustomsTime();r=lastCustomsResult;}
+  return 'Customs clearance planning brief: '+r.port+', '+r.goodsType+' goods, documents '+r.docStatus+', expected range '+r.min+'-'+r.max+' days (typical '+r.typical+'). Estimated agent fee $'+r.agentFee.toLocaleString()+', storage $'+r.storageCost.toLocaleString()+', inspection $'+r.inspectFee+', port handling $'+r.portFee+'. Required documents: '+r.docs.join('; ')+'. Verify with customs authority, port operator, licensed clearing agent, and any product regulator before shipment.';
+}
+function copyCustomsSummary(){
+  var text=customsSummary();
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){document.getElementById('custStatus').textContent='Clearance brief copied.';});}
+  else document.getElementById('custStatus').textContent=text;
+}
+function downloadCustomsCsv(){
+  var r=lastCustomsResult;
+  if(!r){calcCustomsTime();r=lastCustomsResult;}
+  var rows=[['metric','value'],['port',r.port],['goods_type',r.goodsType],['document_status',r.docStatus],['cargo_value_usd',r.cargoValue],['min_days',r.min],['typical_days',r.typical],['max_days',r.max],['agent_fee_usd',r.agentFee],['storage_usd',r.storageCost],['inspection_fee_usd',r.inspectFee],['port_handling_usd',r.portFee],['documents',r.docs.join('; ')]];
+  var csv=rows.map(function(row){return row.map(function(cell){return '"'+String(cell).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob=new Blob([csv],{type:'text/csv'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='afrotools-customs-clearance-brief.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  document.getElementById('custStatus').textContent='CSV downloaded. Replace modeled values with current written quotes.';
 }
 </script>
 <script src="/assets/js/trade-toolkit.js?v=cadfd9a1" defer></script>

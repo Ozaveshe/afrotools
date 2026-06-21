@@ -91,7 +91,7 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 
 /* Tabs */
 .sc-tabs{background:#fff;border-bottom:2px solid var(--sc-border);position:sticky;top:0;z-index:50}
-.sc-tabs-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sc-tabs-inner{max-width:1200px;width:100%;box-sizing:border-box;margin:0 auto;padding:0 24px;display:flex;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .sc-tab-btn{padding:14px 20px;border:none;background:none;font-weight:700;font-size:.82rem;cursor:pointer;color:var(--sc-muted);border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s;font-family:inherit;min-height:44px}
 .sc-tab-btn:hover{color:var(--sc-primary-dark)}
 .sc-tab-btn.active{color:var(--sc-primary-dark);border-bottom-color:var(--sc-primary)}
@@ -100,15 +100,16 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 
 /* Main layout */
 .sc-main{padding:32px 0 72px;background:var(--color-bg,#FAFAF8)}
-.sc-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}
+.sc-main-inner{max-width:1200px;width:100%;box-sizing:border-box;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}
+.sc-calc-area,.sc-sidebar{min-width:0;width:100%}
 
 /* Cards */
-.sc-card{background:#fff;border:1px solid var(--sc-border);border-radius:var(--sc-radius);overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04)}
+.sc-card{min-width:0;box-sizing:border-box;background:#fff;border:1px solid var(--sc-border);border-radius:var(--sc-radius);overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04)}
 .sc-card+.sc-card{margin-top:18px}
-.sc-card-head{padding:14px 22px;border-bottom:1px solid #f1f5f9;background:var(--sc-bg);display:flex;align-items:center;gap:8px}
+.sc-card-head{min-width:0;box-sizing:border-box;padding:14px 22px;border-bottom:1px solid #f1f5f9;background:var(--sc-bg);display:flex;align-items:center;gap:8px}
 .sc-card-icon{width:18px;height:18px;color:var(--sc-primary)}
 .sc-card-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sc-text)}
-.sc-card-body{padding:20px 22px}
+.sc-card-body{min-width:0;box-sizing:border-box;padding:20px 22px}
 
 /* Form */
 .sc-field{margin-bottom:16px}
@@ -221,7 +222,7 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 
 /* Responsive */
 @media(max-width:900px){.sc-main-inner{grid-template-columns:1fr}.mc-row{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.sc-row{grid-template-columns:1fr}.sc-result-grid{grid-template-columns:1fr 1fr}.sc-budget-summary{grid-template-columns:1fr 1fr}.sc-term-grid{grid-template-columns:1fr 1fr}.mc-row{grid-template-columns:1fr}}
+@media(max-width:600px){.sc-tabs-inner,.sc-main-inner{padding-left:16px;padding-right:16px}.sc-row{grid-template-columns:1fr}.sc-result-grid{grid-template-columns:1fr 1fr}.sc-budget-summary{grid-template-columns:1fr 1fr}.sc-term-grid{grid-template-columns:1fr 1fr}.mc-row{grid-template-columns:1fr}}
 @media(max-width:400px){.sc-result-grid{grid-template-columns:1fr}.sc-term-grid{grid-template-columns:1fr}}
 
 /* Disabled button state */
@@ -611,26 +612,21 @@ h1 em{color:var(--sc-primary-light);font-style:normal}
 <section class="df-upgrade" data-df-upgrade="staff-cost">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Employee Cost Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for employee cost calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Employee Cost Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, officialSource, verificationPanel, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Hiring budget workflow</span>
+      <h2>Move from salary offer to true first-year cost</h2>
+      <p>Use the result as a hiring budget packet: monthly cost to company, annual cost, estimated take-home, budget gap, and a 12-month forecast that includes selected benefits and recruitment costs.</p>
+      <ul class="df-upgrade__bullets"><li>Run the cost calculator first, then copy the hiring brief or download CSV for finance review.</li><li>Use FTE vs contractor when the question is employment model, not only gross salary.</li><li>Use multi-country comparison for expansion planning, then verify country rules before making an offer.</li><li>Keep payroll filing, employment contracts, immigration, benefits, and termination decisions with qualified local advisors.</li></ul>
+      <p class="df-upgrade__note"><strong>Planning estimate.</strong> Payroll rates and employment obligations can change. This tool does not submit payroll, file statutory returns, disburse salary, or guarantee compliance.</p>
     </div>
-    <form class="df-form" data-df-form="staff-cost">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="staff-cost" data-df-base="Employee Cost Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Employee Cost Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="staff-cost">Copy summary</button></div>
-    </form>
+    <div class="df-form" aria-label="Employee cost workflow outputs">
+      <label>Current hiring brief<output class="df-result" id="staffCostWorkflowResult" aria-live="polite">Calculate a salary scenario to create a copyable hiring brief and CSV export.</output></label>
+      <div class="df-actions"><button type="button" onclick="copyStaffCostSummary()">Copy hiring brief</button><button type="button" onclick="downloadStaffCostCsv()">Download CSV</button></div>
+    </div>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="staff-cost-faq-title">
   <h2 id="staff-cost-faq-title">Employee Cost Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>What should finance verify?</summary><p>Verify current statutory rates, allowances, sector levies, benefits, recruitment costs, exchange assumptions, contract terms, and payroll calendar before making an offer.</p></details><details><summary>Can I use this for payroll filing?</summary><p>No. It is a planning estimate for hiring and budgeting. Payroll filing, statutory remittance, and payslip issuance need the relevant payroll workflow and current local review.</p></details><details><summary>What can I export?</summary><p>After calculating, copy the hiring brief, download CSV, save to Vault if signed in, or move the scenario into AfroPayroll for a reviewable monthly payroll draft.</p></details></div>
 </section>
 <afro-footer></afro-footer>
 
@@ -765,6 +761,9 @@ function calculate() {
 
   if (calcBtn) { calcBtn.disabled = false; calcBtn.textContent = 'Calculate Total Cost'; }
   if (typeof gtag === 'function') gtag('event','staff_cost_calc',{country:code,currency:cur,gross:gross});
+  window.__staffCostLatest={country:country.name,countryCode:code,currency:cur,gross:gross,totalMonthly:totalMonthly,totalAnnual:totalAnnual,takeHome:takeHome,multiplier:multiplier,rows:rows.map(function(r){return {item:r.item,type:r.type,amount:r.amount};})};
+  var workflow=document.getElementById('staffCostWorkflowResult');
+  if(workflow)workflow.textContent=country.name+' hiring brief: '+E.fmt(totalMonthly,cur)+' monthly cost to company, '+E.fmt(totalAnnual,cur)+' annualized, '+multiplier.toFixed(2)+'x overhead multiplier.';
 }
 
 // ── BUDGET FORECAST ──
@@ -1015,9 +1014,37 @@ if (mcSels[1]) mcSels[1].value = 'KE';
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;align-items:stretch';
-  div.innerHTML = '<button type="button" class="sc-vault-btn" onclick="saveStaffCostToVault()" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;min-height:44px;border:1.5px solid #e2e8f0;border-radius:10px;background:#fff;color:#0f172a;font-family:inherit;font-size:.875rem;font-weight:600;cursor:pointer;transition:all 150ms ease"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save to Vault</button><a class="sc-pro-cta" href="/tools/afropayroll-os/workspace"><span><strong>Build a reviewable payroll draft</strong>Repeat this monthly in AfroPayroll Pro and export handoff files for accountant review. No salary disbursement, statutory filing, or compliance guarantee.</span></a>';
+  div.innerHTML = '<button type="button" class="sc-vault-btn" onclick="copyStaffCostSummary()" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;min-height:44px;border:1.5px solid #e2e8f0;border-radius:10px;background:#fff;color:#0f172a;font-family:inherit;font-size:.875rem;font-weight:600;cursor:pointer;transition:all 150ms ease">Copy hiring brief</button><button type="button" class="sc-vault-btn" id="staffCostCsvBtn" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;min-height:44px;border:1.5px solid #e2e8f0;border-radius:10px;background:#fff;color:#0f172a;font-family:inherit;font-size:.875rem;font-weight:600;cursor:pointer;transition:all 150ms ease">Download CSV</button><button type="button" class="sc-vault-btn" onclick="saveStaffCostToVault()" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;min-height:44px;border:1.5px solid #e2e8f0;border-radius:10px;background:#fff;color:#0f172a;font-family:inherit;font-size:.875rem;font-weight:600;cursor:pointer;transition:all 150ms ease"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save to Vault</button><a class="sc-pro-cta" href="/tools/afropayroll-os/workspace"><span><strong>Build a reviewable payroll draft</strong>Repeat this monthly in AfroPayroll Pro and export handoff files for accountant review. No salary disbursement, statutory filing, or compliance guarantee.</span></a>';
+  div.querySelector('#staffCostCsvBtn').addEventListener('click',downloadStaffCostCsv);
   target.appendChild(div);
 })();
+
+function ensureStaffCostLatest(){
+  if(!window.__staffCostLatest){calculate();}
+  return window.__staffCostLatest;
+}
+function copyStaffCostSummary(){
+  var r=ensureStaffCostLatest();
+  if(!r)return;
+  var text='Employee cost hiring brief: '+r.country+' gross package '+E.fmt(r.gross,r.currency)+', monthly cost to company '+E.fmt(r.totalMonthly,r.currency)+', annualized cost '+E.fmt(r.totalAnnual,r.currency)+', estimated take-home '+E.fmt(Math.max(0,r.takeHome),r.currency)+', overhead multiplier '+r.multiplier.toFixed(2)+'x. Verify statutory rates, allowances, benefits, contract terms, payroll calendar, and local employment advice before issuing an offer.';
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(window.AfroTools&&AfroTools.toast)AfroTools.toast.success('Hiring brief copied');});}
+}
+function downloadStaffCostCsv(){
+  var r=ensureStaffCostLatest();
+  if(!r)return;
+  var rows=[['metric','value'],['country',r.country],['currency',r.currency],['gross_package',Math.round(r.gross)],['monthly_cost_to_company',Math.round(r.totalMonthly)],['annual_cost_to_company',Math.round(r.totalAnnual)],['estimated_take_home',Math.round(r.takeHome)],['overhead_multiplier',r.multiplier.toFixed(2)],[],['breakdown_item','type','monthly_amount']];
+  r.rows.forEach(function(row){rows.push([row.item,row.type,Math.round(row.amount)]);});
+  var csv=rows.map(function(row){return row.map(function(cell){return '"'+String(cell||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob=new Blob([csv],{type:'text/csv'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='afrotools-employee-cost-brief.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  if(window.AfroTools&&AfroTools.toast)AfroTools.toast.success('CSV downloaded');
+}
 
 function saveStaffCostToVault() {
   var gross = document.getElementById('rMonthly');

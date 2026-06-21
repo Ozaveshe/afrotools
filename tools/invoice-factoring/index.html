@@ -153,6 +153,9 @@ details[open] summary::after{content:'\2212'}
   ]
 }
 </script>
+<script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 </head>
 <body>
 <afro-navbar theme="dark" active="fintech"></afro-navbar>
@@ -208,6 +211,10 @@ details[open] summary::after{content:'\2212'}
       <button type="button" class="btn-secondary" id="if-csv">Download CSV</button>
     </div>
     <p class="status-line" id="if-status" aria-live="polite"></p>
+    <div class="button-row" style="grid-template-columns:auto auto;justify-content:start;margin-top:.25rem">
+      <save-result-button tool-slug="invoice-factoring" tool-name="Invoice Factoring Calculator"></save-result-button>
+      <share-result-button tool-name="Invoice Factoring Calculator" tool-slug="invoice-factoring"></share-result-button>
+    </div>
     <div class="results" id="if-results">
       <div class="res-hero">
         <div class="res-label">Cash Today</div>
@@ -240,6 +247,9 @@ details[open] summary::after{content:'\2212'}
     <div class="faq-item"><details><summary>Recourse vs non-recourse factoring?</summary><div class="faq-a">With recourse factoring, your business may have to repay the advance or replace the invoice if the debtor does not pay. Non-recourse structures shift more credit risk to the provider, so this calculator models an added risk premium.</div></details></div>
     <div class="faq-item"><details><summary>Who should I compare?</summary><div class="faq-a">Compare banks, specialist factors, trade-finance providers, and working-capital fintechs available in your market. Treat every offer as provider-specific and verify fees, eligibility, debtor notice, reserve release timing, and legal terms before signing.</div></details></div>
   </div>
+  <afro-business-cta
+    tool-name="Invoice Factoring Calculator"
+    save-note="Calculate the factoring offer, then save or export the scenario for lender, accountant, or founder review."></afro-business-cta>
 </div>
 <afro-footer></afro-footer>
 <script>
@@ -288,6 +298,14 @@ function calcInvoiceFactoring(){
   document.getElementById('if-decision').innerHTML='<h3>Decision handoff</h3><ul><li>'+verdict+'</li><li>Ask when the reserve is released and whether debtor notice is required.</li><li>Compare against overdraft, supplier credit, customer discount, or waiting for payment.</li><li>'+shortfall+'</li></ul>';
   document.getElementById('if-status').textContent='Factoring scenario calculated locally. No invoice data was sent.';
   document.getElementById('if-results').classList.add('on');
+  var saveBtn=document.querySelector('save-result-button[tool-slug="invoice-factoring"]');
+  if(saveBtn&&typeof saveBtn.setData==='function'){
+    saveBtn.setData({inputs:{currency:data.currency,invoice:data.invoice,advanceRatePercent:data.advancePct*100,feePercent:data.baseFeePct*100,days:data.days,recourse:data.recourse},outputs:{cashToday:advance,totalFee:totalFee,reserveRelease:reserveRelease,totalReceived:totalReceived,effectiveAprPercent:apr}});
+  }
+  var shareBtn=document.querySelector('share-result-button[tool-slug="invoice-factoring"]');
+  if(shareBtn&&typeof shareBtn.setResult==='function'){
+    shareBtn.setResult({headline:'Invoice factoring estimate',mainValue:fmt(advance)+' cash today',subValues:[{label:'Total fee',value:fmt(totalFee)},{label:'Reserve release',value:fmt(reserveRelease)},{label:'Effective APR',value:apr.toFixed(1)+'%'}],inputs:{invoice:data.invoice,days:data.days,recourse:data.recourse}});
+  }
   return lastFactoringResult;
 }
 function factoringSummary(){

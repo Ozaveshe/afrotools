@@ -156,8 +156,13 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="toolbar">
 <button type="button" class="btn btn-primary" onclick="openModal()">+ Add Product</button>
 <input aria-label="Search products" type="text" class="search-input" id="searchInput" placeholder="Search products..." oninput="renderTable()">
+<button type="button" class="btn btn-outline" onclick="copyInventorySummary()">Copy Summary</button>
 <button type="button" class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
+<button type="button" class="btn btn-outline" onclick="exportJSON()">Backup JSON</button>
+<label class="btn btn-outline" for="importJson" style="cursor:pointer">Import JSON</label>
+<input id="importJson" type="file" accept="application/json,.json" style="position:absolute;left:-9999px" onchange="importJSON(this)">
 </div>
+<p id="inventoryStatus" style="min-height:22px;margin:0 0 10px;color:#475569;font-size:.85rem" aria-live="polite"></p>
 <div style="overflow-x:auto">
 <table class="inv-table">
 <thead><tr><th>Product</th><th>Category</th><th>Cost Price</th><th>Sell Price</th><th>Stock</th><th>Min Stock</th><th>Status</th><th>Value</th><th>Actions</th></tr></thead>
@@ -196,21 +201,16 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <section class="df-upgrade" data-df-upgrade="inventory">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Inventory Tracker decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for inventory tracker so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Inventory Tracker: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, businessCta, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Stock control workflow</span>
+      <h2>Turn the stock list into a restock plan</h2>
+      <p>Add products with cost, selling price, stock on hand, and minimum stock. The dashboard turns those rows into stock value, potential revenue, low-stock alerts, and a downloadable handoff for your accountant or next buying trip.</p>
+      <ul class="df-upgrade__bullets"><li>Use low-stock rows as the reorder list before market day, delivery day, or supplier calls.</li><li>Export CSV for spreadsheet review and JSON as a browser-local backup you can re-import later.</li><li>Copy the summary when you need a quick WhatsApp or notes handoff without sharing raw product details.</li><li>Verify live supplier prices, expiry dates, damaged stock, and cash collection before buying more inventory.</li></ul>
+      <p class="df-upgrade__note"><strong>Local-first.</strong> Product rows stay in this browser unless you export or share them. This is a planning tracker, not a POS system, accounting ledger, or cloud inventory service.</p>
     </div>
-    <form class="df-form" data-df-form="inventory">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="inventory" data-df-base="Inventory Tracker: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Inventory Tracker: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="inventory">Copy summary</button></div>
-    </form>
+    <div class="df-form" aria-label="Inventory workflow outputs">
+      <label>Primary result<output class="df-result" id="inventoryWorkflowResult" aria-live="polite">Add products to see stock value, potential revenue, low-stock count, and backup actions.</output></label>
+      <div class="df-actions"><button type="button" onclick="copyInventorySummary()">Copy summary</button><button type="button" onclick="exportJSON()">Backup JSON</button></div>
+    </div>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="inventory-faq-title">
@@ -224,7 +224,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <h2>Frequently Asked Questions</h2>
 <details><summary>Where is my data stored?</summary><p>All data is stored locally in your browser's localStorage. It persists across sessions but is tied to this browser on this device. If you clear your browser data, the inventory will be reset. Use the Export CSV feature regularly to back up your data.</p></details>
 <details><summary>How many products can I track?</summary><p>There's no hard limit, but performance is best with up to 500 products. For most small businesses, this is more than sufficient. If you need to track more, consider a dedicated inventory management app.</p></details>
-<details><summary>Can I import my existing inventory?</summary><p>Currently, products must be added one at a time through the interface. We're considering adding CSV import in a future update. For now, use the Add Product button to enter each item.</p></details>
+<details><summary>Can I import my existing inventory?</summary><p>Yes. Export JSON from this page as a local backup, then import that JSON on the same or another browser. CSV export is available for bookkeeping review.</p></details>
 <details><summary>Is this suitable for a retail shop?</summary><p>Yes, this tool is designed for small retail businesses: provision stores, phone accessory shops, cosmetics stores, hardware shops, etc. For businesses with complex needs like multiple locations, barcode scanning, or employee access control, consider a dedicated POS system.</p></details>
 </section>
 <afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
@@ -234,11 +234,24 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 let products=JSON.parse(localStorage.getItem('afro_inventory')||'[]');
 let editingId=null;
 function save(){localStorage.setItem('afro_inventory',JSON.stringify(products));}
+function inventoryTotals(){
+  return {
+    total:products.length,
+    low:products.filter(p=>p.stock<=p.minStock).length,
+    totalValue:products.reduce((s,p)=>s+p.cost*p.stock,0),
+    totalRevenue:products.reduce((s,p)=>s+p.sell*p.stock,0)
+  };
+}
+function setInventoryStatus(message){
+  var el=document.getElementById('inventoryStatus');
+  if(el)el.textContent=message;
+}
 function renderStats(){
-  const total=products.length;
-  const low=products.filter(p=>p.stock<=p.minStock).length;
-  const totalValue=products.reduce((s,p)=>s+p.cost*p.stock,0);
-  const totalRevenue=products.reduce((s,p)=>s+p.sell*p.stock,0);
+  const totals=inventoryTotals();
+  const total=totals.total;
+  const low=totals.low;
+  const totalValue=totals.totalValue;
+  const totalRevenue=totals.totalRevenue;
   document.getElementById('statsGrid').innerHTML=`
     <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-value">${total}</div></div>
     <div class="stat-card ${low>0?'warning':''}"><div class="stat-label">Low Stock</div><div class="stat-value" style="color:${low>0?'#dc2626':'#16a34a'}">${low}</div></div>
@@ -249,6 +262,8 @@ function renderStats(){
   var shareBtn=document.querySelector('share-result-button[tool-slug="inventory"]');
   if(saveBtn&&typeof saveBtn.setData==='function'){saveBtn.setData({inputs:{totalProducts:total,lowStockItems:low},outputs:{stockValueCost:totalValue,potentialRevenue:totalRevenue,potentialProfit:totalRevenue-totalValue}});}
   if(shareBtn&&typeof shareBtn.setResult==='function'){shareBtn.setResult({headline:'Inventory Summary',mainValue:total+' Products',subValues:[{label:'Stock Value',value:totalValue.toLocaleString()},{label:'Potential Revenue',value:totalRevenue.toLocaleString()},{label:'Low Stock',value:String(low)}],inputs:{totalProducts:total,lowStockItems:low}});}
+  var workflow=document.getElementById('inventoryWorkflowResult');
+  if(workflow){workflow.textContent=total+' product(s), '+low+' low-stock item(s), cost value '+totalValue.toLocaleString()+', potential revenue '+totalRevenue.toLocaleString()+'.';}
 }
 function renderTable(){
   const search=document.getElementById('searchInput').value.toLowerCase();
@@ -305,6 +320,39 @@ function exportCSV(){
   let csv='Product,Category,Cost Price,Sell Price,Stock,Min Stock,Stock Value\n';
   products.forEach(p=>{csv+=`"${p.name}","${p.category}",${p.cost},${p.sell},${p.stock},${p.minStock},${p.cost*p.stock}\n`;});
   const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inventory-export.csv';a.click();
+  setInventoryStatus('CSV exported. Review supplier prices and stock counts before sharing.');
+}
+function inventorySummary(){
+  const t=inventoryTotals();
+  const lowItems=products.filter(p=>p.stock<=p.minStock).slice(0,8).map(p=>p.name+' ('+p.stock+' left)').join('; ')||'none';
+  return 'Inventory summary: '+t.total+' products, '+t.low+' low-stock items, stock cost value '+t.totalValue.toLocaleString()+', potential revenue '+t.totalRevenue.toLocaleString()+'. Low stock: '+lowItems+'. Data is stored locally in this browser unless exported.';
+}
+function copyInventorySummary(){
+  const text=inventorySummary();
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>setInventoryStatus('Inventory summary copied.'));}
+  else setInventoryStatus(text);
+}
+function exportJSON(){
+  const payload={exportedAt:new Date().toISOString(),tool:'inventory',products:products};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='afrotools-inventory-backup.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);
+  setInventoryStatus('JSON backup exported. Keep it private; it contains your product list.');
+}
+function importJSON(input){
+  const file=input.files&&input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(){
+    try{
+      const payload=JSON.parse(reader.result);
+      const incoming=Array.isArray(payload)?payload:payload.products;
+      if(!Array.isArray(incoming))throw new Error('Missing products array');
+      products=incoming.map(p=>({id:p.id||Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:String(p.name||'Unnamed product'),category:String(p.category||'Other'),cost:parseFloat(p.cost)||0,sell:parseFloat(p.sell)||0,stock:parseInt(p.stock,10)||0,minStock:parseInt(p.minStock,10)||0}));
+      save();renderTable();setInventoryStatus('JSON inventory imported locally.');
+    }catch(err){setInventoryStatus('Import failed. Use a JSON backup exported from this tool.');}
+    input.value='';
+  };
+  reader.readAsText(file);
 }
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 renderTable();
