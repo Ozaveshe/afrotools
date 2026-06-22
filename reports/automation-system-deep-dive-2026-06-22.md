@@ -6,6 +6,17 @@ Deep-dive pass across AfroTools Codex automations, daily deploy discipline, self
 
 The main checkout was already dirty before this pass. Unrelated localized/tool/report changes were preserved and not reverted.
 
+## Post-Deploy Update
+
+This pass was committed, pushed, and deployed after the initial report draft.
+
+- Commit `d92e69f2d1d061d6544a62162bfde10548d68dc7` (`fix: harden automation live health checks`) shipped the automation reports, live-health auditor, blog posts, scheduled-event helper, and affected scheduled-function fixes.
+- Commit `1cc7482` (`fix: remove duplicate ai advisor contexts`) removed duplicate `TOOL_CONTEXT` keys in `netlify/functions/ai-advisor.js` so Netlify function bundling no longer emits duplicate-key warnings.
+- Final production deploy: `6a398695cd7f1519fe052982`, published at `2026-06-22T19:07:10.844Z`, state `ready`, URL `https://afrotools.com`.
+- Netlify deploy proof: 170 functions deployed, 35 scheduled functions present, 3368 redirects and 42 header rules processed.
+- Live route proof: `/`, `/blog/pdf-workflow-job-applications-africa/`, and `/blog/import-cost-checklist-african-small-business/` returned HTTP 200 on production.
+- Live scheduler proof after deploy: `npm run automation:live-health` improved from 15 OK / 5 red to 19 OK / 1 missing. Remaining natural proof point is `afrostream-sync` at `2026-06-22T20:16Z`.
+
 ## Repo Changes Made
 
 - `scripts/audit-automation-registry.js`
@@ -21,6 +32,8 @@ The main checkout was already dirty before this pass. Unrelated localized/tool/r
   - Added a shared Netlify scheduled-event detector that accepts both the legacy `x-nf-event: schedule` header and the current Netlify scheduled body shape with `next_run`.
 - `netlify/functions/afrostream-livecheck.js`, `netlify/functions/afrostream-news-monitor.js`, `netlify/functions/afrostream-sync.js`, `netlify/functions/scheduled-refresh-market-data.js`, and `netlify/functions/scheduled-source-health-watchdog.js`
   - Updated scheduled detection to use the shared helper. This fixes scheduled runs being mislabeled as manual or treated as unauthorized/read-only health requests when Netlify sends the `next_run` scheduled payload.
+- `netlify/functions/ai-advisor.js`
+  - Removed duplicate `TOOL_CONTEXT` entries while preserving the later definitions that runtime already used. This removes Netlify function-bundling duplicate-key warnings.
 - `package.json`
   - Added `npm run automation:live-health`.
 - `docs/codex-playbook.md`
@@ -47,11 +60,12 @@ The main checkout was already dirty before this pass. Unrelated localized/tool/r
 ## Automation App Changes Made
 
 - `daily-5pm-publish-deploy-gate`
-  - Prompt updated to follow the Agent Commit pattern: `main` as source of truth, clean status first, `git diff --cached --check`, fetch/rebase-before-push, separate local push proof from CI, Netlify publish, and live-route proof.
+  - Prompt updated to follow the Agent Commit pattern: `main` as source of truth, clean status first, `git diff --cached --check`, fetch/rebase-before-push, separate local push proof from CI, Netlify publish, live-route proof, and live scheduled-function proof.
+  - Added the clean detached worktree fallback for cases where Netlify Git auto-deploy does not start or the MCP upload path fails: build `dist` in the clean worktree and deploy only `dist` plus `netlify/functions`.
 - `automation-self-learning-loop`
-  - Prompt updated to regenerate automation evidence first, consume the JSON report as structured truth, promote only durable evidence-backed lessons, and classify stale warnings separately from real regressions.
+  - Prompt updated to regenerate automation evidence first, consume JSON reports as structured truth, run `automation:live-health`, promote only durable evidence-backed lessons, and classify stale warnings separately from real regressions.
 - `automation-system-maintainer`
-  - Prompt updated to consume structured JSON reports, classify warning types precisely, and separate deployed schedules from live run evidence.
+  - Prompt updated to consume structured JSON reports, run `automation:live-health`, classify warning types precisely, and separate deployed schedules from live run evidence.
 - `field-service-warranty-automation`
   - Prompt updated to run `automation:preflight` before browser proof and to finish with an explicit blocked-browser note instead of leaving runs half-finished.
 - `afrostream-newswire-agent`
@@ -67,14 +81,15 @@ The main checkout was already dirty before this pass. Unrelated localized/tool/r
 
 - Netlify project: `afrotools`
 - Site ID: `8aa543db-b4bd-4631-98f8-221440055c41`
-- Current deploy: `6a38884262553400080930fd`
+- Current deploy: `6a398695cd7f1519fe052982`
 - State: `ready`
 - Branch: `main`
-- Commit: `d03aeac6d5d6acb2aacd79120d910df26db34653`
-- Published at: `2026-06-22T01:01:02.178Z`
-- Deployed scheduled function list includes `afrostream-news-monitor` at `46 */6 * * *`.
+- Commit source: manual CLI deploy from clean detached worktree at pushed commit `1cc7482`
+- Published at: `2026-06-22T19:07:10.844Z`
+- Deployed scheduled function list includes all 35 schedules, including `afrostream-livecheck`, `afrostream-news-monitor`, `afrostream-sync`, `scheduled-refresh-market-data`, and `scheduled-source-health-watchdog`.
+- Final deploy summary: 170 functions deployed, 3368 redirect rules processed, 42 header rules processed.
 
-This proves the current production deploy state. It does not deploy the new local changes from this pass.
+This proves the final production deploy state for this pass. Netlify Git auto-deploy did not immediately start after push, and the Netlify MCP upload path failed with HTTP 500. The safe fallback was a clean detached worktree deploy of `dist` plus `netlify/functions`, not the dirty main checkout or repo root.
 
 ### AfroStream Newswire
 
@@ -110,15 +125,17 @@ Current live evidence summary:
 
 - Netlify scheduled functions parsed: 35.
 - Monitored live evidence checks: 20.
-- Fresh/OK checks: 15.
-- Red checks before deploying the scheduled-event fix:
-  - `afrostream-livecheck`: missing scheduled `scraper_runs` row; latest any-source row is manual.
-  - `scheduled-source-health-watchdog`: stale `automation-health-latest`, last updated `2026-06-18T03:04:34.194Z`.
-  - `afrostream-news-monitor`: latest scheduled `scraper_runs` row is `2026-06-12T02:12:55.402Z`; latest June 18 proof is manual.
-  - `afrostream-sync`: missing scheduled `scraper_runs` row; latest any-source proof is manual.
-  - `scheduled-refresh-market-data`: latest scheduled `market_data_source_runs` proof is `2026-05-24T12:24:57.384Z`.
+- Fresh/OK checks after deploy: 19.
+- Missing checks after deploy: 1.
+- Remaining issue:
+  - `afrostream-sync`: no scheduled `scraper_runs` row yet; latest any-source proof is still the manual Codex MCP snapshot repair from `2026-06-18`.
+- Recovered scheduled proof:
+  - `afrostream-livecheck`: scheduled row at `2026-06-22T19:04:49.827Z`.
+  - `scheduled-source-health-watchdog`: `automation-health-latest` updated at `2026-06-22T18:57:09.004Z`.
+  - `afrostream-news-monitor`: scheduled row at `2026-06-22T18:46:52.187Z`.
+  - `scheduled-refresh-market-data`: `market_data_source_runs` netlify-schedule row at `2026-06-22T18:40:04.524Z`.
 
-Root cause identified: affected functions relied only on `x-nf-event: schedule` and/or `GET` to identify Netlify scheduled invocations. Netlify's current scheduled function event includes a JSON body with `next_run`. Simple scraper functions still ran because they did not gate on scheduled detection; health-gated functions either labeled scheduled traffic as manual or skipped mutation behind admin/manual checks. Source patch is in repo; production proof requires deploy plus the next scheduled fire.
+Root cause identified and fixed: affected functions relied only on `x-nf-event: schedule` and/or `GET` to identify Netlify scheduled invocations. Netlify's current scheduled function event includes a JSON body with `next_run`. Simple scraper functions still ran because they did not gate on scheduled detection; health-gated functions either labeled scheduled traffic as manual or skipped mutation behind admin/manual checks. Production deploy is complete; only `afrostream-sync` still needs its next natural cron proof at `2026-06-22T20:16Z`.
 
 ### Scholarships
 
@@ -147,6 +164,16 @@ Interpretation: scholarship live data is fresh today. The Codex automation no-ev
 - Structured JSON check - pass: schema 1, 73 definitions, 286 runs, 10 no-run active jobs, 0 missing memory files, latest deploy gate completed.
 - `npm run audit:schedules` - pass, no missing production runner schedules.
 - `npm run automation:live-health` - pass; produced 15 OK live evidence checks, 3 stale checks, 2 missing scheduled-evidence checks, 0 unavailable checks. The remaining red checks are expected until the scheduled-event fix is deployed and the next scheduled fires complete.
+- `npm run automation:live-health` after deploy - pass; produced 19 OK live evidence checks, 0 stale checks, 1 missing scheduled-evidence check, 0 unavailable checks.
+- `node --check netlify\functions\ai-advisor.js` - pass.
+- `TOOL_CONTEXT` duplicate-key parser for `netlify/functions/ai-advisor.js` - pass, 356 keys, 0 duplicates.
+- Clean worktree `npm ci` for deploy `1cc7482` - pass, with existing npm audit advisories.
+- Clean worktree `npm run build:deploy` for deploy `1cc7482` - pass.
+- Clean worktree `npm run audit:dist` for deploy `1cc7482` - pass.
+- Clean worktree `npm run security:scan` for deploy `1cc7482` - pass.
+- Netlify CLI production deploy from clean worktree - pass, deploy `6a398695cd7f1519fe052982`, URL `https://afrotools.com`.
+- Netlify deploy reader verification - pass, deploy state `ready`, 170 functions, 35 schedules.
+- Production HTTP smoke - pass for `/`, `/blog/pdf-workflow-job-applications-africa/`, and `/blog/import-cost-checklist-african-small-business/`.
 - `npm run automation:preflight` - pass with 12 passes, 2 warnings for optional email/blob secrets.
 - `npm run automation:preflight -- --no-browser-launch` - pass with 11 passes, 3 warnings for skipped browser launch plus optional email/blob secrets.
 - `npm run security:scan` - pass.
@@ -168,16 +195,14 @@ The following Codex jobs were updated after their last scheduled fire and need n
 - `scholarship-source-expansion-agent`: verify after `2026-06-23T07:45Z`.
 - Tuesday Pro follow-up lanes: verify after their listed `2026-06-23` proof points in `npm run audit:schedules`.
 - `field-service-warranty-automation`: latest report status was interrupted, but the definition was updated afterward; verify after `2026-06-29T04:55Z`.
-- After deploying the scheduled-event source fix, rerun `npm run automation:live-health` after the next relevant scheduled fires:
-  - `afrostream-livecheck`: within 1 hour.
-  - `afrostream-sync`: within 4 hours.
-  - `scheduled-source-health-watchdog`: within 4 hours.
-  - `scheduled-refresh-market-data`: within 6 to 36 hours depending on first successful scheduled refresh.
-  - `afrostream-news-monitor`: after the next 6-hour schedule.
+- Post-deploy live-health recovered all previously red live scheduled lanes except `afrostream-sync`.
+- Rerun `npm run automation:live-health` after `afrostream-sync`'s next natural cron at `2026-06-22T20:16Z`.
 
 ## Rollback Notes
 
 - Repo changes are source/report-only and can be reviewed by file.
 - Automation app prompt changes are outside git; inspect `C:\Users\Oza\.codex\automations\<id>\automation.toml`.
-- No Supabase writes, migrations, or Netlify writes were performed in this pass.
-- No commit or push was performed because the main checkout had substantial unrelated dirty work before this run.
+- No Supabase writes or migrations were performed in this pass.
+- Netlify production writes were performed by CLI deploy from clean detached worktrees only: `6a3982a08a552e10d987a9b7` and `6a398695cd7f1519fe052982`.
+- Two commits were pushed to `main`: `d92e69f2d1d061d6544a62162bfde10548d68dc7` and `1cc7482`.
+- The user's unrelated dirty main-checkout work was preserved and was not deployed.
