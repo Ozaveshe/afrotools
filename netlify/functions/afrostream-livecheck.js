@@ -10,6 +10,7 @@ var TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 var KICK_CLIENT_ID = process.env.KICK_CLIENT_ID;
 var KICK_CLIENT_SECRET = process.env.KICK_CLIENT_SECRET;
 var YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+var { isScheduledEvent } = require('./_shared/scheduled-event');
 
 // ── Supabase helper ───────────────────────────────────────────────
 async function sb(method, path, body) {
@@ -39,7 +40,7 @@ function getHeader(event, headerName) {
 }
 
 function livecheckSource(event) {
-  return getHeader(event, 'x-nf-event') === 'schedule' ? 'Netlify Scheduled Function' : 'Manual livecheck endpoint';
+  return isScheduledEvent(event) ? 'Netlify Scheduled Function' : 'Manual livecheck endpoint';
 }
 
 function summarizeLivecheckErrors(summary) {

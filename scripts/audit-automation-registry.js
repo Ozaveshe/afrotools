@@ -103,8 +103,9 @@ function parseGithubWorkflows() {
 function parseCodexAutomationDefinitions() {
   const definitions = new Set();
   const statuses = new Map();
+  const metadata = new Map();
   if (!fs.existsSync(CODEX_AUTOMATIONS_DIR)) {
-    return { available: false, definitions, statuses };
+    return { available: false, definitions, statuses, metadata };
   }
 
   for (const entry of fs.readdirSync(CODEX_AUTOMATIONS_DIR, { withFileTypes: true })) {
@@ -114,11 +115,18 @@ function parseCodexAutomationDefinitions() {
     const text = readText(tomlPath);
     const id = (text.match(/^id\s*=\s*"([^"]+)"/m) || [null, entry.name])[1];
     const status = (text.match(/^status\s*=\s*"([^"]+)"/m) || [null, 'UNKNOWN'])[1];
+    const rrule = (text.match(/^rrule\s*=\s*"([^"]+)"/m) || [null, null])[1];
+    const updatedAtRaw = (text.match(/^updated_at\s*=\s*(\d+)/m) || [null, null])[1];
+    const updatedAt = updatedAtRaw ? new Date(Number(updatedAtRaw)) : null;
     definitions.add(id);
     statuses.set(id, status);
+    metadata.set(id, {
+      rrule,
+      updatedAt: updatedAt && !Number.isNaN(updatedAt.valueOf()) ? updatedAt : null,
+    });
   }
 
-  return { available: true, definitions, statuses };
+  return { available: true, definitions, statuses, metadata };
 }
 
 function findLatestAutomationReport() {
@@ -135,22 +143,62 @@ function findLatestAutomationReport() {
 function parseAutomationRunReport() {
   const reportPath = findLatestAutomationReport();
   if (!reportPath) {
-    return { available: false, path: null, seen: new Set(), noRun: new Set(), statuses: new Map() };
+    return { available: false, path: null, seen: new Set(), noRun: new Set(), statuses: new Map(), latestRunAt: new Map(), generatedAt: null };
+  }
+
+  const jsonPath = reportPath.replace(/\.md$/, '.json');
+  if (fs.existsSync(jsonPath)) {
+    try {
+      const report = readJson(jsonPath);
+      const seen = new Set();
+      const noRun = new Set(report.no_run_active_automation_ids || []);
+      const statuses = new Map();
+      const latestRunAt = new Map();
+      const generatedAt = report.generated_at ? new Date(report.generated_at) : null;
+
+      for (const automation of report.automations || []) {
+        if (!automation || !automation.id) continue;
+        seen.add(automation.id);
+        if (Number(automation.run_count || 0) === 0) noRun.add(automation.id);
+        const latestRun = automation.latest_run || null;
+        if (!latestRun) continue;
+        const latestStatus = String(latestRun.status || '').trim().toLowerCase();
+        const runAt = latestRun.timestamp ? new Date(latestRun.timestamp) : null;
+        if (runAt && !Number.isNaN(runAt.valueOf())) latestRunAt.set(automation.id, runAt);
+        if (/interrupted|in progress|incomplete|blocked|failed/i.test(latestStatus)) {
+          statuses.set(automation.id, latestStatus);
+        }
+      }
+
+      return {
+        available: true,
+        path: reportPath,
+        jsonPath,
+        seen,
+        noRun,
+        statuses,
+        latestRunAt,
+        generatedAt: generatedAt && !Number.isNaN(generatedAt.valueOf()) ? generatedAt : null,
+      };
+    } catch (error) {
+      console.warn(`Warning: could not parse ${path.relative(ROOT, jsonPath)} as structured automation evidence: ${error.message}`);
+    }
   }
 
   const text = readText(reportPath);
   const seen = new Set();
   const noRun = new Set();
   const statuses = new Map();
+  const latestStatuses = new Map();
+  const latestRunAt = new Map();
+  const generatedMatch = text.match(/^Generated:\s+([^\n]+)$/m);
+  const generatedAt = generatedMatch ? new Date(generatedMatch[1].trim()) : null;
 
   for (const match of text.matchAll(/^\d+\.\s+`([^`]+)`[^\n]*?-\s+(\d+)\s+run\(s\)(?::\s+\{([^}]+)\})?/gm)) {
     const id = match[1];
     const runCount = Number(match[2]);
-    const statusText = match[3] || '';
     seen.add(id);
     if (runCount === 0) noRun.add(id);
-    const nonCompletedStatus = statusText.match(/\b(interrupted|in progress|incomplete|blocked|failed)\b/i);
-    if (nonCompletedStatus) statuses.set(id, nonCompletedStatus[1].toLowerCase());
   }
 
   const noRunSection = text.match(/## No-Run Active Automation IDs\s+([\s\S]*?)(?:\n## |\s*$)/);
@@ -161,12 +209,94 @@ function parseAutomationRunReport() {
     }
   }
 
-  for (const match of text.matchAll(/^- \d{4}-\d{2}-\d{2}[^\n]*?`([^`]+)` - ([^:]+):/gm)) {
-    seen.add(match[1]);
-    if (/interrupted|in progress|incomplete|blocked|failed/i.test(match[2])) statuses.set(match[1], match[2].toLowerCase());
+  for (const match of text.matchAll(/^- (\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2})\s+-\s+`([^`]+)` - ([^:]+):/gm)) {
+    const runAt = new Date(`${match[1]}T${match[2]}:00Z`);
+    const automationId = match[3];
+    seen.add(automationId);
+    latestStatuses.set(automationId, match[4].trim().toLowerCase());
+    if (!Number.isNaN(runAt.valueOf())) latestRunAt.set(automationId, runAt);
   }
 
-  return { available: true, path: reportPath, seen, noRun, statuses };
+  for (const [id, status] of latestStatuses) {
+    if (/interrupted|in progress|incomplete|blocked|failed/i.test(status)) {
+      statuses.set(id, status);
+    }
+  }
+
+  return { available: true, path: reportPath, seen, noRun, statuses, latestRunAt, generatedAt: generatedAt && !Number.isNaN(generatedAt.valueOf()) ? generatedAt : null };
+}
+
+function parseRRule(rrule) {
+  if (!rrule) return null;
+  const fields = Object.fromEntries(
+    rrule.split(';').map((part) => {
+      const [key, value] = part.split('=');
+      return [key, value];
+    }),
+  );
+  const hour = Number(fields.BYHOUR || 0);
+  const minute = Number(fields.BYMINUTE || 0);
+  const second = Number(fields.BYSECOND || 0);
+  if (!Number.isFinite(hour) || !Number.isFinite(minute) || !Number.isFinite(second)) return null;
+  return {
+    freq: fields.FREQ || null,
+    days: fields.BYDAY ? new Set(fields.BYDAY.split(',').filter(Boolean)) : null,
+    hour,
+    minute,
+    second,
+  };
+}
+
+function matchesRuleDay(date, rule) {
+  if (rule.freq === 'DAILY' && !rule.days) return true;
+  if (!rule.days || rule.days.size === 0) return true;
+  const dayCode = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'][date.getDay()];
+  return rule.days.has(dayCode);
+}
+
+function scheduledCandidate(date, rule) {
+  const candidate = new Date(date);
+  candidate.setHours(rule.hour, rule.minute, rule.second, 0);
+  return candidate;
+}
+
+function findScheduledAt(rrule, referenceDate, direction) {
+  const rule = parseRRule(rrule);
+  if (!rule || !referenceDate || Number.isNaN(referenceDate.valueOf())) return null;
+  for (let offset = 0; offset <= 14; offset += 1) {
+    const date = new Date(referenceDate);
+    date.setDate(referenceDate.getDate() + (direction === 'next' ? offset : -offset));
+    if (!matchesRuleDay(date, rule)) continue;
+    const candidate = scheduledCandidate(date, rule);
+    if (direction === 'next' && candidate > referenceDate) return candidate;
+    if (direction !== 'next' && candidate <= referenceDate) return candidate;
+  }
+  return null;
+}
+
+function formatScheduleDate(date) {
+  if (!date || Number.isNaN(date.valueOf())) return null;
+  return date.toISOString().replace(/:\d{2}\.\d{3}Z$/, 'Z');
+}
+
+function waitingForPostUpdateRun(metadata, runReport) {
+  if (!metadata || !metadata.updatedAt || !metadata.rrule || !runReport.generatedAt) return null;
+  const latestScheduledAt = findScheduledAt(metadata.rrule, runReport.generatedAt, 'latest');
+  if (!latestScheduledAt || metadata.updatedAt <= latestScheduledAt) return null;
+  return {
+    updatedAt: metadata.updatedAt,
+    nextScheduledAt: findScheduledAt(metadata.rrule, metadata.updatedAt, 'next'),
+  };
+}
+
+function postRunDefinitionUpdate(metadata, runReport, codexAutomationId) {
+  if (!metadata || !metadata.updatedAt) return null;
+  const latestRunAt = runReport.latestRunAt.get(codexAutomationId);
+  if (!latestRunAt || metadata.updatedAt <= latestRunAt) return null;
+  return {
+    updatedAt: metadata.updatedAt,
+    nextScheduledAt: metadata.rrule ? findScheduledAt(metadata.rrule, metadata.updatedAt, 'next') : null,
+  };
 }
 
 function loadRegistry() {
@@ -216,6 +346,7 @@ function audit() {
   const warnings = [];
   const ids = new Set();
   const registeredNetlifyFunctions = new Set();
+  const registeredCodexAutomationIds = new Set();
 
   for (const record of records) {
     for (const field of REQUIRED_FIELDS) {
@@ -241,6 +372,7 @@ function audit() {
     const netlifyFunctions = normalizeList(record.netlify_function);
     const githubWorkflows = normalizeList(record.github_workflow);
     const codexAutomationId = record.codex_automation_id || null;
+    if (codexAutomationId) registeredCodexAutomationIds.add(codexAutomationId);
 
     if (record.production_required && record.runner === 'netlify' && netlifyFunctions.length === 0) {
       failures.push(`${record.id}: production Netlify automation must name netlify_function.`);
@@ -282,9 +414,21 @@ function audit() {
         if (!runReport.available) {
           warnings.push(`${record.id}: no recent Codex run evidence report is available.`);
         } else if (!runReport.seen.has(codexAutomationId) || runReport.noRun.has(codexAutomationId)) {
-          warnings.push(`${record.id}: no recent Codex run evidence in ${path.basename(runReport.path)}.`);
+          const waitState = waitingForPostUpdateRun(codexDefinitions.metadata.get(codexAutomationId), runReport);
+          if (waitState) {
+            const nextRun = formatScheduleDate(waitState.nextScheduledAt) || 'the next scheduled run';
+            warnings.push(`${record.id}: no recent Codex run evidence in ${path.basename(runReport.path)}; definition was updated at ${formatScheduleDate(waitState.updatedAt)} after its last scheduled fire, so verify after ${nextRun}.`);
+          } else {
+            warnings.push(`${record.id}: no recent Codex run evidence in ${path.basename(runReport.path)}.`);
+          }
         } else if (runReport.statuses.has(codexAutomationId)) {
-          warnings.push(`${record.id}: latest report includes non-completed status "${runReport.statuses.get(codexAutomationId)}".`);
+          const updateState = postRunDefinitionUpdate(codexDefinitions.metadata.get(codexAutomationId), runReport, codexAutomationId);
+          if (updateState) {
+            const nextRun = formatScheduleDate(updateState.nextScheduledAt) || 'the next scheduled run';
+            warnings.push(`${record.id}: latest report includes non-completed status "${runReport.statuses.get(codexAutomationId)}"; definition was updated at ${formatScheduleDate(updateState.updatedAt)} after that run, so verify after ${nextRun}.`);
+          } else {
+            warnings.push(`${record.id}: latest report includes non-completed status "${runReport.statuses.get(codexAutomationId)}".`);
+          }
         }
       }
     }
@@ -312,6 +456,14 @@ function audit() {
   for (const functionName of netlifySchedules.keys()) {
     if (!registeredNetlifyFunctions.has(functionName)) {
       warnings.push(`netlify:${functionName}: scheduled function is present in netlify.toml but not registered in automation-registry.json.`);
+    }
+  }
+
+  if (codexDefinitions.available) {
+    for (const codexId of codexDefinitions.definitions) {
+      if (codexDefinitions.statuses.get(codexId) === 'ACTIVE' && !registeredCodexAutomationIds.has(codexId)) {
+        warnings.push(`codex:${codexId}: active local Codex automation is present on disk but not registered in automation-registry.json.`);
+      }
     }
   }
 

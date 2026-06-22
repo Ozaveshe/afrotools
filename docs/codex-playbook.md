@@ -158,6 +158,21 @@
 ## Automation Operating Model
 
 - Before browser-dependent tasks, run `npm run automation:preflight`.
+- For automation health reviews, run `npm run automation:report` before
+  `npm run audit:schedules`. The report now writes both Markdown and a
+  structured JSON twin under `reports/automation-run-report-*.json`; use the
+  JSON file as the machine-readable source of truth for run counts, latest
+  status, missing memory, no-run IDs, timestamps, and flags. Treat the Markdown
+  file as the human handoff.
+- For live Netlify scheduled-function proof, run
+  `npm run automation:live-health` after the schedule audit. It reads the
+  AfroTools Supabase live evidence layer (`scraper_runs`, `live_data_store`,
+  and `market_data_source_runs`) and writes both dated and latest
+  `reports/live-automation-health-*.json` / `.md` files. Keep manual run proof
+  separate from scheduled proof, especially for AfroStream news.
+- When `audit:schedules` reports no recent Codex evidence, separate a truly
+  stale job from a definition that was reactivated after its last scheduled fire
+  and is waiting for the next proof point.
 - If the preflight reports a missing Playwright Chromium browser, run
   `npx playwright install chromium` when network/tool permissions allow it,
   then rerun `npm run automation:preflight`.

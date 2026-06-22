@@ -1,6 +1,7 @@
 // netlify/functions/afrostream-news-monitor.js
 // Scheduled AfroStream RSS mention monitor.
 // Reads configured RSS/Atom feeds, matches published AfroStream creators, and writes as_news rows.
+var { isScheduledEvent } = require('./_shared/scheduled-event');
 var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 var ADMIN_SECRET = process.env.ADMIN_SECRET;
@@ -27,7 +28,7 @@ function getHeader(event, headerName) {
 }
 
 function isScheduled(event) {
-  return event.httpMethod === 'GET' && getHeader(event, 'x-nf-event') === 'schedule';
+  return isScheduledEvent(event);
 }
 
 function isAuthorized(event) {

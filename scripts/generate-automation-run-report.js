@@ -76,7 +76,8 @@ function summarize(text) {
   return String(text || '')
     .replace(/\s+/g, ' ')
     .trim()
-    .slice(0, 420);
+    .slice(0, 420)
+    .trim();
 }
 
 function parseRollout(filePath) {
@@ -177,6 +178,7 @@ function formatCounts(counts) {
 function writeReport() {
   const since = getArg('since', '2026-05-20');
   const until = getArg('until', new Date().toISOString().slice(0, 10));
+  const generatedAt = new Date().toISOString();
   const start = new Date(`${since}T00:00:00.000Z`);
   const end = new Date(`${until}T00:00:00.000Z`);
   end.setUTCDate(end.getUTCDate() + 1);
@@ -203,11 +205,36 @@ function writeReport() {
   const activeNoRun = Array.from(activeIds).filter((id) => !runsById.has(id)).sort();
   const statusCounts = countBy(runs, (run) => run.status);
   const missingMemory = automations.filter((item) => item.status === 'ACTIVE' && !item.hasMemory).map((item) => item.id);
+  const automationSummaries = automations.map((automation) => {
+    const entries = runsById.get(automation.id) || [];
+    const latest = entries[entries.length - 1] || null;
+    return {
+      id: automation.id,
+      name: automation.name,
+      status: automation.status,
+      rrule: automation.rrule,
+      execution_environment: automation.executionEnvironment,
+      has_memory: automation.hasMemory,
+      run_count: entries.length,
+      status_counts: countBy(entries, (run) => run.status),
+      latest_run: latest
+        ? {
+            timestamp: latest.timestamp,
+            status: latest.status,
+            summary: latest.summary || '',
+            flags: latest.flags,
+            session_id: latest.sessionId,
+            cwd: latest.cwd,
+            archive_file: path.relative(CODEX_HOME, latest.filePath),
+          }
+        : null,
+    };
+  });
 
   const lines = [];
   lines.push(`# Automation Run Report - ${since} to ${until}`);
   lines.push('');
-  lines.push(`Generated: ${new Date().toISOString()}`);
+  lines.push(`Generated: ${generatedAt}`);
   lines.push(`Source archives: \`${ARCHIVE_DIR}\``);
   lines.push(`Definitions: \`${AUTOMATIONS_DIR}\``);
   lines.push('');
@@ -271,8 +298,44 @@ function writeReport() {
 
   if (!fs.existsSync(REPORTS_DIR)) fs.mkdirSync(REPORTS_DIR, { recursive: true });
   const outputPath = path.join(REPORTS_DIR, `automation-run-report-${since}-to-${until}.md`);
-  fs.writeFileSync(outputPath, `${lines.join('\n')}\n`);
+  const jsonPath = path.join(REPORTS_DIR, `automation-run-report-${since}-to-${until}.json`);
+  const reportJson = {
+    schema_version: 1,
+    since,
+    until,
+    generated_at: generatedAt,
+    sources: {
+      archive_dir: ARCHIVE_DIR,
+      definitions_dir: AUTOMATIONS_DIR,
+    },
+    summary: {
+      automation_definitions: automations.length,
+      active_definitions: automations.filter((item) => item.status === 'ACTIVE').length,
+      paused_definitions: automations.filter((item) => item.status === 'PAUSED').length,
+      runs_found: runs.length,
+      active_run_status: statusCounts,
+      active_without_run_evidence: activeNoRun.length,
+      active_missing_memory: missingMemory.length,
+    },
+    automations: automationSummaries,
+    recent_runs: runs.map((run) => ({
+      timestamp: run.timestamp,
+      automation_id: run.automation.id,
+      automation_name: run.automation.name,
+      status: run.status,
+      summary: run.summary || '',
+      flags: run.flags,
+      session_id: run.sessionId,
+      cwd: run.cwd,
+      archive_file: path.relative(CODEX_HOME, run.filePath),
+    })),
+    no_run_active_automation_ids: activeNoRun,
+    active_automations_missing_memory: missingMemory,
+  };
+  fs.writeFileSync(outputPath, `${lines.join('\n').trimEnd()}\n`);
+  fs.writeFileSync(jsonPath, `${JSON.stringify(reportJson, null, 2)}\n`);
   console.log(`Wrote ${path.relative(ROOT, outputPath)}`);
+  console.log(`Wrote ${path.relative(ROOT, jsonPath)}`);
   console.log(`Runs found: ${runs.length}; active without run evidence: ${activeNoRun.length}; missing memory: ${missingMemory.length}`);
 }
 

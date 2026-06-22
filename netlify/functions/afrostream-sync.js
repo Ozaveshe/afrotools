@@ -15,6 +15,7 @@ var KICK_CLIENT_ID = process.env.KICK_CLIENT_ID;
 var KICK_CLIENT_SECRET = process.env.KICK_CLIENT_SECRET;
 var YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 var BACKGROUND_SYNC_PATH = '/.netlify/functions/afrostream-sync-background';
+var { isScheduledEvent } = require('./_shared/scheduled-event');
 
 // ── Helpers ──────────────────────────────────────────────────────
 
@@ -1141,7 +1142,7 @@ exports.handler = async function(event) {
   }
 
   // Scheduled invocations (Netlify Scheduled Functions)
-  var isScheduled = event.httpMethod === 'GET' && getHeader(event, 'x-nf-event') === 'schedule';
+  var isScheduled = isScheduledEvent(event);
 
   // Manual trigger requires auth
   if (!isScheduled && !isAuthorized(event)) {

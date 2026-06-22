@@ -1,6 +1,7 @@
 const { getAllowedOrigin } = require('./utils/cors');
 const { SUPABASE_URL, SUPABASE_KEY, normalizeSubtype } = require('./_shared/market-data');
 const { refreshActiveMarketData } = require('./_shared/market-data-refresh');
+const { isScheduledEvent } = require('./_shared/scheduled-event');
 
 function getHeader(event, headerName) {
   const headers = event?.headers || {};
@@ -16,7 +17,7 @@ function getAdminSecret() {
 }
 
 function isScheduledInvocation(event) {
-  return getHeader(event, 'x-nf-event') === 'schedule';
+  return isScheduledEvent(event);
 }
 
 function corsHeaders(event) {

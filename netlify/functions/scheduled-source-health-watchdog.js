@@ -2,6 +2,7 @@ const { getData, setData } = require('./_shared/data-store');
 const { loadScholarshipFeed, SCHOLARSHIP_PUBLIC_MIN_COUNT } = require('./_shared/scholarship-platform');
 const { getCollector } = require('./_shared/market-data-refresh');
 const { isEmailConfigured, sendEmail } = require('./_shared/email-adapter');
+const { isScheduledEvent } = require('./_shared/scheduled-event');
 
 const WATCHDOG_KEY = 'automation-health-latest';
 const DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
@@ -54,7 +55,7 @@ function getHeader(event, headerName) {
 }
 
 function isScheduledInvocation(event) {
-  return getHeader(event, 'x-nf-event') === 'schedule';
+  return isScheduledEvent(event);
 }
 
 function isAdminRequest(event) {

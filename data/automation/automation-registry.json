@@ -4,6 +4,103 @@
   "source_note": "Generated from accessible Codex automation TOMLs, current netlify.toml schedules, GitHub workflow files, and repo audit surfaces. Re-run audit before relying on live status.",
   "records": [
     {
+      "id": "codex:africa-election-candidate-evidence-review",
+      "display_name": "Africa Election Candidate Evidence Review",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TH;BYHOUR=7;BYMINUTE=45;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "africa-election-candidate-evidence-review",
+      "sla_hours": 96,
+      "product_surface": "government",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "data/government/africa-election-tracker.json"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and civic source evidence",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run elections:validate",
+        "npm run elections:feeds:check",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:africa-election-tracker-freshness-watch",
+      "display_name": "Africa Election Tracker Freshness Watch",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=DAILY;BYHOUR=7;BYMINUTE=20;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "africa-election-tracker-freshness-watch",
+      "sla_hours": 48,
+      "product_surface": "government",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "data/government/africa-election-tracker.json"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Government and civic source freshness",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "npm run elections:validate",
+        "npm run elections:feeds:check",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:afrotools-car-market-data-refresh",
+      "display_name": "AfroTools Car Market Data Refresh",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=8;BYMINUTE=0;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "afrotools-car-market-data-refresh",
+      "sla_hours": 168,
+      "product_surface": "transport",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "data/cars/import-duty-online-price-evidence.json",
+        "data/cars/import-duty-vehicle-estimates.csv",
+        "data/cars/car-market-refresh-queue.json"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Transport and car market source freshness",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run cars:market:refresh",
+        "npm run cars:catalog:validate",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:daily-4pm-sitemap-refresh",
+      "display_name": "Daily 4PM Sitemap Refresh",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=DAILY;BYHOUR=16;BYMINUTE=0;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "daily-4pm-sitemap-refresh",
+      "sla_hours": 24,
+      "product_surface": "release_quality",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "SEO and deploy preflight",
+      "severity_if_stale": "p2",
+      "validation_commands": [
+        "npm run sitemap",
+        "npm run seo:report",
+        "git diff --check",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
       "id": "codex:afrokitchen-media-freshness-agent",
       "display_name": "AfroKitchen Media Freshness Agent",
       "runner": "codex",
@@ -479,6 +576,29 @@
       "validation_commands": [
         "npm run blog:feed:check",
         "npm run blog:verify",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
+      "id": "codex:localized-content-rotation-batch",
+      "display_name": "Localized Content Rotation Batch",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=DAILY;BYHOUR=11;BYMINUTE=30;BYSECOND=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "localized-content-rotation-batch",
+      "sla_hours": 24,
+      "product_surface": "content_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Localized content publishing operations",
+      "severity_if_stale": "p3",
+      "validation_commands": [
+        "npm run build:i18n:validate",
+        "npm run validate:hreflang",
+        "npm run check-links",
         "npm run audit:automation-registry"
       ]
     },
@@ -2673,5 +2793,5 @@
       ]
     }
   ],
-  "updated_at": "2026-05-19T00:00:00.000Z"
+  "updated_at": "2026-06-22T00:00:00.000Z"
 }
